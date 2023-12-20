@@ -225,7 +225,7 @@ public class PickListRenderer extends InputRenderer {
             encodeFilter(context, pickList, listId + "_filter", isSource);
         }
 
-        if (ComponentUtils.shouldRenderFacet(caption)) {
+        if (FacetUtils.shouldRenderFacet(caption)) {
             encodeCaption(context, caption);
             styleClass += " ui-corner-bottom";
         }

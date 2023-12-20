@@ -68,7 +68,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.hideEvent = this.cfg.hideEvent ? this.cfg.hideEvent + '.tooltip' : 'mouseleave.tooltip';
         this.cfg.showEffect = this.cfg.showEffect ? this.cfg.showEffect : 'fade';
         this.cfg.hideEffect = this.cfg.hideEffect ? this.cfg.hideEffect : 'fade';
-        this.cfg.showDelay = PrimeFaces.utils.defaultNumeric(this.cfg.showDelay, 150);
+        this.cfg.showDelay = PrimeFaces.utils.defaultNumeric(this.cfg.showDelay, 400);
         this.cfg.hideDelay = PrimeFaces.utils.defaultNumeric(this.cfg.hideDelay, 0);
         this.cfg.hideEffectDuration = this.cfg.target ? 250 : 1;
         this.cfg.position = this.cfg.position || 'right';
@@ -132,6 +132,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
 
         $(document).off(this.cfg.showEvent + ' ' + this.cfg.hideEvent, this.cfg.globalSelector)
             .on(this.cfg.showEvent, this.cfg.globalSelector, function(e) {
+                $this.hide();
                 var element = $(this);
                 if (element.prop('disabled')) {
                     return;
@@ -163,7 +164,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                     else
                         $this.jq.children('.ui-tooltip-text').html(text);
 
-                    PrimeFaces.queueTask(function() {
+                    $this.timeout = PrimeFaces.queueTask(function() {
                         $this.globalTitle = text;
                         $this.target = element;
                         $this._show();
@@ -171,9 +172,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                 }
             })
             .on(this.cfg.hideEvent + '.tooltip', this.cfg.globalSelector, function() {
-                if ($this.globalTitle) {
-                    $this.hide();
-                }
+                $this.hide();
             });
 
         PrimeFaces.utils.registerResizeHandler(this, 'resize.tooltip' + '_align', $this.jq, function() {

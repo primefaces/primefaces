@@ -5,7 +5,7 @@ are many other third party libraries and plugins used to support features.
 
 | Library | Version | URL |
 | --- | --- | --- |
-| [AutoNumeric](../jsdocs/classes/node_modules_autonumeric.export_-1.html) | 4.10.0 | https://github.com/autoNumeric/autoNumeric |
+| [AutoNumeric](../jsdocs/classes/node_modules_autonumeric.export_-1.html) | 4.10.1 | https://github.com/autoNumeric/autoNumeric |
 | [Chart.js](../jsdocs/classes/node_modules__types_chart_js.export_-1.html) | 4.4.0 | https://www.chartjs.org |
 | [Coloris](../jsdocs/interfaces/src_PrimeFaces.Coloris.html) | 0.21.1 | https://github.com/mdbassit/Coloris |
 | [Cookie](../jsdocs/modules/node_modules__types_js_cookie.html) | 3.0.5 | https://github.com/js-cookie/js-cookie |
@@ -36,5 +36,5 @@ are many other third party libraries and plugins used to support features.
 | [Raphaël](../jsdocs/interfaces/node_modules__types_raphael.RaphaelStatic.html) | 2.3.0 | http://raphaeljs.com |
 | [Signature](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#signature) | 1.2.0 | http://keith-wood.name/signature.html |
 | [Timeline](../jsdocs/modules/node_modules_vis_timeline_declarations.html) | 7.7.2 | https://github.com/visjs/vis-timeline |
-| [TouchSwipe](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#swipe) | 1.6.18 | https://github.com/mattbryson/TouchSwipe-Jquery-Plugin |
-| [WebcamJS](../jsdocs/modules/src_PrimeFaces.Webcam.html) | 1.0.26 | http://github.com/jhuckaby |
+| [TouchSwipe](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#swipe) | 1.6.19 | https://github.com/mattbryson/TouchSwipe-Jquery-Plugin |
+| [WebcamJS](../jsdocs/modules/src_PrimeFaces.Webcam.html) | 1.0.26 | https://github.com/jhuckaby/webcamjs |

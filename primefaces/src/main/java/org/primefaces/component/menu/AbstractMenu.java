@@ -48,7 +48,11 @@ public abstract class AbstractMenu extends UIPanel implements MenuItemAware {
     public static final String OPTIONS_CLASS = "ui-menuitem ui-menubar-options ui-widget ui-corner-all";
 
     public enum PropertyKeys {
-        tabindex
+        tabindex,
+        autoDisplay,
+        showDelay,
+        hideDelay,
+        toggleEvent;
     }
 
     public String getTabindex() {
@@ -57,6 +61,38 @@ public abstract class AbstractMenu extends UIPanel implements MenuItemAware {
 
     public void setTabindex(String tabindex) {
         getStateHelper().put(PropertyKeys.tabindex, tabindex);
+    }
+
+    public boolean isAutoDisplay() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.autoDisplay, true);
+    }
+
+    public void setAutoDisplay(boolean autoDisplay) {
+        getStateHelper().put(PropertyKeys.autoDisplay, autoDisplay);
+    }
+
+    public int getShowDelay() {
+        return (Integer) getStateHelper().eval(PropertyKeys.showDelay, 0);
+    }
+
+    public void setShowDelay(int showDelay) {
+        getStateHelper().put(PropertyKeys.showDelay, showDelay);
+    }
+
+    public int getHideDelay() {
+        return (Integer) getStateHelper().eval(PropertyKeys.hideDelay, 0);
+    }
+
+    public void setHideDelay(int hideDelay) {
+        getStateHelper().put(PropertyKeys.hideDelay, hideDelay);
+    }
+
+    public String getToggleEvent() {
+        return (String) getStateHelper().eval(PropertyKeys.toggleEvent, null);
+    }
+
+    public void setToggleEvent(String toggleEvent) {
+        getStateHelper().put(PropertyKeys.toggleEvent, toggleEvent);
     }
 
     @Override

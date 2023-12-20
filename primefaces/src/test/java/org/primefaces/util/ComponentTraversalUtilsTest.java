@@ -31,10 +31,10 @@ import javax.faces.component.UIOutput;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
-public class ComponentTraversalUtilsTest {
+class ComponentTraversalUtilsTest {
 
     @Test
-    public void closestForm() {
+    void closestForm() {
         UIForm outerForm = new UIForm();
         UIForm innerForm = new UIForm();
         UINamingContainer container = new UINamingContainer();
@@ -49,7 +49,7 @@ public class ComponentTraversalUtilsTest {
     }
 
     @Test
-    public void closestNamingContainer() {
+    void closestNamingContainer() {
         UINamingContainer outerContainer = new UINamingContainer();
         UINamingContainer innerContainer = new UINamingContainer();
         UIForm form = new UIForm();

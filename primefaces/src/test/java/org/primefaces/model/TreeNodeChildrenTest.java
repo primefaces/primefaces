@@ -29,10 +29,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TreeNodeChildrenTest {
+class TreeNodeChildrenTest {
 
     @Test
-    public void swapRetainsParent() {
+    void swapRetainsParent() {
         // Arrange
         TreeNode<String> root = new DefaultTreeNode<>("Parent", null);
         TreeNode<String> child0 = new DefaultTreeNode<>("Child 0", root);
@@ -60,7 +60,7 @@ public class TreeNodeChildrenTest {
     }
 
     @Test
-    public void moveNodeSameListDown() {
+    void moveNodeSameListDown() {
         // Arrange
         TreeNode<String> root = new DefaultTreeNode<>("Node R", null);
         TreeNode<String> node0 = new DefaultTreeNode<>("Node 0", root);
@@ -100,7 +100,7 @@ public class TreeNodeChildrenTest {
     }
 
     @Test
-    public void moveNodeSameListUp() {
+    void moveNodeSameListUp() {
         // Arrange
         TreeNode<String> root = new DefaultTreeNode<>("Node R", null);
         TreeNode<String> node0 = new DefaultTreeNode<>("Node 0", root);
@@ -138,7 +138,7 @@ public class TreeNodeChildrenTest {
     }
 
     @Test
-    public void moveNodeToChild() {
+    void moveNodeToChild() {
         // Arrange
         TreeNode<String> root = new DefaultTreeNode<>("Node R", null);
         TreeNode<String> node0 = new DefaultTreeNode<>("Node 0", root);
@@ -191,7 +191,7 @@ public class TreeNodeChildrenTest {
     }
 
     @Test
-    public void moveNodeToParent() {
+    void moveNodeToParent() {
         // Arrange
         TreeNode<String> root = new DefaultTreeNode<>("Node R", null);
         TreeNode<String> node0 = new DefaultTreeNode<>("Node 0", root);

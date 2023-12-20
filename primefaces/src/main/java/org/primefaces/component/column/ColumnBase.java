@@ -56,6 +56,7 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
         filterMatchMode,
         filterMaxLength,
         filterPosition,
+        filterPlaceholder,
         filterStyle,
         filterStyleClass,
         filterValue,
@@ -68,7 +69,7 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
         responsivePriority,
         rowspan,
         selectRow,
-        selectionMode,
+        selectionBox,
         sortBy,
         sortFunction,
         sortOrder,
@@ -168,6 +169,15 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
         return (String) getStateHelper().eval(PropertyKeys.filterPosition, "bottom");
     }
 
+    @Override
+    public String getFilterPlaceholder() {
+        return (String) getStateHelper().eval(PropertyKeys.filterPlaceholder, null);
+    }
+
+    public void setFilterPlaceholder(String filterPlaceholder) {
+        getStateHelper().put(PropertyKeys.filterPlaceholder, filterPlaceholder);
+    }
+
     public void setFilterPosition(String filterPosition) {
         getStateHelper().put(PropertyKeys.filterPosition, filterPosition);
     }
@@ -190,6 +200,7 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
         getStateHelper().put(PropertyKeys.colspan, colspan);
     }
 
+    @Override
     public Object getConverter() {
         return getStateHelper().eval(PropertyKeys.converter, null);
     }
@@ -217,12 +228,12 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
     }
 
     @Override
-    public String getSelectionMode() {
-        return (String) getStateHelper().eval(PropertyKeys.selectionMode, null);
+    public boolean isSelectionBox() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.selectionBox, false);
     }
 
-    public void setSelectionMode(String selectionMode) {
-        getStateHelper().put(PropertyKeys.selectionMode, selectionMode);
+    public void setSelectionBox(boolean selectionBox) {
+        getStateHelper().put(PropertyKeys.selectionBox, selectionBox);
     }
 
     @Override

@@ -36,6 +36,12 @@ if (!PrimeFaces.env) {
          * @type {boolean}
          */
         preferredColorSchemeLight : false,
+        
+        /**
+         * `true` if the user's current OS setting prefers reduced motion or animations, `false` otherwise.
+         * @type {boolean}
+         */
+        prefersReducedMotion : false,
 
         /**
          * Initializes the environment by reading the browser environment.
@@ -47,6 +53,7 @@ if (!PrimeFaces.env) {
             this.ios = /iPhone|iPad|iPod/i.test(window.navigator.userAgent) || (/mac/i.test(window.navigator.userAgent) && PrimeFaces.env.touch);
             this.preferredColorSchemeDark = PrimeFaces.env.evaluateMediaQuery('(prefers-color-scheme: dark)');
             this.preferredColorSchemeLight = !this.preferredColorSchemeDark;
+            this.prefersReducedMotion =  PrimeFaces.env.evaluateMediaQuery('(prefers-reduced-motion: reduce)');
         },
 
        /**

@@ -120,7 +120,7 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     updateFloatLabel: function() {
-        PrimeFaces.utils.updateFloatLabel(this.jq, this.input, this.hasFloatLabel);
+        PrimeFaces.utils.updateFloatLabel(this.jq, this.input.add(this.hinput), this.hasFloatLabel);
     },
 
     /**

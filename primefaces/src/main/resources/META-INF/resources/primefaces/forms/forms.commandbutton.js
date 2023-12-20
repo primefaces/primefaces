@@ -3,7 +3,7 @@
  * 
  * CommandButton is an extended version of standard commandButton with AJAX and theming.
  *
- * @prop {number} [ajaxCount] Number of concurrent active Ajax requests.
+ * @forcedProp {number} [ajaxCount] Number of concurrent active Ajax requests.
  *
  * @interface {PrimeFaces.widget.CommandButtonCfg} cfg The configuration for the {@link  CommandButton| CommandButton widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
@@ -41,39 +41,7 @@ PrimeFaces.widget.CommandButton = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     bindTriggers: function() {
-        var $this = this;
-        $this.ajaxCount = 0;
-        $(document).on('pfAjaxSend.' + this.id, function(e, xhr, settings) {
-            if (PrimeFaces.ajax.Utils.isXhrSource($this, settings)) {
-                $this.ajaxCount++;
-                if ($this.ajaxCount > 1) {
-                    return;
-                }
-                $this.jq.addClass('ui-state-loading');
-                if ($this.cfg.disableOnAjax !== false) {
-                    $this.disable();
-                }
-                var loadIcon = $('<span class="ui-icon-loading ui-icon ui-c pi pi-spin pi-spinner"></span>');
-                var uiIcon = $this.jq.find('.ui-icon');
-                if (uiIcon.length) {
-                    var prefix = 'ui-button-icon-';
-                    loadIcon.addClass(prefix + uiIcon.attr('class').includes(prefix + 'left') ? 'left' : 'right');
-                }
-                $this.jq.prepend(loadIcon);
-            }
-        }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings, args) {
-            if (PrimeFaces.ajax.Utils.isXhrSource($this, settings)) {
-                $this.ajaxCount--;
-                if ($this.ajaxCount > 0 || args.redirect) {
-                    return;
-                }
-                $this.jq.removeClass('ui-state-loading');
-                if ($this.cfg.disableOnAjax !== false && !$this.cfg.disabledAttr) {
-                    $this.enable();
-                }
-                $this.jq.find('.ui-icon-loading').remove();
-            }
-        });
+        PrimeFaces.bindButtonInlineAjaxStatus(this, this.jq);
     },
 
     /**

@@ -23,7 +23,9 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -33,21 +35,21 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.OutputLabel;
 
-public class DataTable027Test extends AbstractDataTableTest {
+class DataTable027Test extends AbstractDataTableTest {
 
     @Test
     @Order(1)
     @DisplayName("DataTable: GitHub #7954 verify virtual scrolling works with count() method.")
-    public void testFilterByName(Page page) {
+    void filterByName(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
 
         // Act
         // Assert
-        Assertions.assertEquals(page.beforeCount.getText(), "0");
-        Assertions.assertEquals(page.aferCount.getText(), "75");
+        assertEquals("0", page.beforeCount.getText());
+        assertEquals("75", page.aferCount.getText());
         assertCss(dataTable, "ui-datatable", "ui-widget", "ui-datatable-scrollable");
-        Assertions.assertNotNull(
+        assertNotNull(
                 dataTable.findElement(
                     By.cssSelector(".ui-datatable-scrollable-body > .ui-datatable-virtualscroll-wrapper > .ui-datatable-virtualscroll-table")),
                 "Datatable virtual scrolling CSS has changed!");

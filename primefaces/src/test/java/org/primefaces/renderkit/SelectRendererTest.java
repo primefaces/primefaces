@@ -47,7 +47,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 
-public class SelectRendererTest {
+class SelectRendererTest {
 
     private static class ErrorString {
 
@@ -194,7 +194,7 @@ public class SelectRendererTest {
     }
 
     @Test
-    public void isSelected_converter() {
+    void isSelected_converter() {
         KvPair kv1 = new KvPair("", "");
         KvPair kv2 = new KvPair("foo", "");
         KvPair kv3 = new KvPair("", "bar");
@@ -211,7 +211,7 @@ public class SelectRendererTest {
     }
 
     @Test
-    public void isSelected_converter_nonStringValue_stringArray() {
+    void isSelected_converter_nonStringValue_stringArray() {
         KvPair kv1 = new KvPair("foo", "bar");
         KvPair kv2 = new KvPair("baz", "bom");
 
@@ -220,7 +220,7 @@ public class SelectRendererTest {
     }
 
     @Test
-    public void isSelected_converter_stringValue_nonStringArray() {
+    void isSelected_converter_stringValue_nonStringArray() {
         KvPair kv1 = new KvPair("foo", "bar");
         KvPair kv2 = new KvPair("baz", "bom");
 
@@ -229,7 +229,7 @@ public class SelectRendererTest {
     }
 
     @Test
-    public void isSelected_converter_stringValue_stringArray() {
+    void isSelected_converter_stringValue_stringArray() {
         assertFalse(renderer.isSelected(context, component, "foo", new String[]{}, converter));
         assertFalse(renderer.isSelected(context, component, "foo", new String[]{""}, converter));
         assertFalse(renderer.isSelected(context, component, "foo", new String[]{"bar"}, converter));
@@ -239,7 +239,7 @@ public class SelectRendererTest {
     }
 
     @Test
-    public void isSelected_noConverter() {
+    void isSelected_noConverter() {
         assertFalse(renderer.isSelected(context, component, "foo", new String[]{}, null));
         assertFalse(renderer.isSelected(context, component, "foo", new String[]{""}, null));
         assertFalse(renderer.isSelected(context, component, "foo", new String[]{"bar"}, null));
@@ -249,7 +249,7 @@ public class SelectRendererTest {
     }
 
     @Test
-    public void isSelected_noConverter_exceptionDuringCoerce() {
+    void isSelected_noConverter_exceptionDuringCoerce() {
         assertTrue(renderer.isSelected(context, component, new ErrorString("foo"),
                 new ErrorString[]{new ErrorString("foofoo")}, null));
         assertTrue(renderer.isSelected(context, component, new ErrorString("err"),
@@ -259,7 +259,7 @@ public class SelectRendererTest {
     }
 
     @Test
-    public void isSelected_nullArguments() {
+    void isSelected_nullArguments() {
         assertTrue(renderer.isSelected(context, component, null, null, null));
         assertFalse(renderer.isSelected(context, component, null, new String[]{""}, null));
         assertFalse(renderer.isSelected(context, component, "", null, null));
@@ -278,7 +278,7 @@ public class SelectRendererTest {
     }
 
     @Test
-    public void isSelected_refEqualArguments() {
+    void isSelected_refEqualArguments() {
         String str = "foo";
         String[] strArr = new String[]{""};
         KvPair kvPair = new KvPair("foo", "bar");
@@ -293,7 +293,7 @@ public class SelectRendererTest {
     }
 
     @Test
-    public void isSelected_valueArrayNotAnArray() {
+    void isSelected_valueArrayNotAnArray() {
         assertTrue(renderer.isSelected(context, component, new String(""), new String(""), null));
         assertFalse(renderer.isSelected(context, component, new String("foo"), new String(""), null));
         assertTrue(renderer.isSelected(context, component, new KvPair("a", "b"), new KvPair("a", "b"), null));
@@ -306,7 +306,7 @@ public class SelectRendererTest {
     }
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         renderer = mock(SelectRenderer.class);
         when(renderer.isSelected(any(), any(), any(), any(), any())).thenCallRealMethod();
         when(renderer.isSelectValueEqual(any(), any(), any(), any(), any())).thenCallRealMethod();
@@ -332,6 +332,6 @@ public class SelectRendererTest {
     }
 
     @AfterEach
-    public void teardown() {
+    void teardown() {
     }
 }

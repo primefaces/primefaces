@@ -23,15 +23,15 @@
  */
 package org.primefaces.showcase.view.data.datatable;
 
-import javax.faces.view.ViewScoped;
-import org.primefaces.showcase.domain.Product;
-import org.primefaces.showcase.service.ProductService;
-
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-import javax.inject.Named;
 import java.io.Serializable;
 import java.util.List;
+import javax.annotation.PostConstruct;
+import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
+
+import org.primefaces.showcase.domain.Product;
+import org.primefaces.showcase.service.ProductService;
 
 @Named("dtBasicView")
 @ViewScoped
@@ -54,4 +54,5 @@ public class BasicView implements Serializable {
     public void setService(ProductService service) {
         this.service = service;
     }
+
 }

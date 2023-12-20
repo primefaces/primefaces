@@ -23,8 +23,9 @@
  */
 package org.primefaces.integrationtests.spinner;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -35,21 +36,21 @@ import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.Spinner;
 
-public class Spinner003Test extends AbstractPrimePageTest {
+class Spinner003Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("Spinner: Test starting at 0 and decrementing should rotate to max")
-    public void testMinRotateAjax(Page page) {
+    void minRotateAjax(Page page) {
         // Arrange
         Spinner spinner = page.spinner;
-        Assertions.assertEquals("0", spinner.getValue());
+        assertEquals("0", spinner.getValue());
 
         // Act
         PrimeSelenium.guardAjax(spinner.getButtonDown()).click();
 
         // Assert
-        Assertions.assertEquals("2", spinner.getValue());
+        assertEquals("2", spinner.getValue());
         assertOutputLabel(page, "2");
         assertConfiguration(spinner.getWidgetConfiguration());
     }
@@ -57,10 +58,10 @@ public class Spinner003Test extends AbstractPrimePageTest {
     @Test
     @Order(2)
     @DisplayName("Spinner: Test starting at 0 and incrementing past max should rotate to min")
-    public void testMaxRotateAjax(Page page) {
+    void maxRotateAjax(Page page) {
         // Arrange
         Spinner spinner = page.spinner;
-        Assertions.assertEquals("0", spinner.getValue());
+        assertEquals("0", spinner.getValue());
 
         // Act
         PrimeSelenium.guardAjax(spinner.getButtonUp()).click();
@@ -70,7 +71,7 @@ public class Spinner003Test extends AbstractPrimePageTest {
         PrimeSelenium.guardAjax(spinner.getButtonUp()).click();
 
         // Assert
-        Assertions.assertEquals("0", spinner.getValue());
+        assertEquals("0", spinner.getValue());
         assertOutputLabel(page, "0");
         assertConfiguration(spinner.getWidgetConfiguration());
     }
@@ -78,44 +79,44 @@ public class Spinner003Test extends AbstractPrimePageTest {
     @Test
     @Order(3)
     @DisplayName("Spinner: AJAX setting value with widget method")
-    public void testAjaxSetValue(Page page) {
+    void ajaxSetValue(Page page) {
         // Arrange
         Spinner spinner = page.spinner;
-        Assertions.assertEquals("0", spinner.getValue());
+        assertEquals("0", spinner.getValue());
 
         // Act
         spinner.setValue("4");
         spinner.change();
 
         // Assert
-        Assertions.assertEquals("4", spinner.getValue());
+        assertEquals("4", spinner.getValue());
         assertConfiguration(spinner.getWidgetConfiguration());
     }
 
     @Test
     @Order(4)
     @DisplayName("Spinner: AJAX Test integer increment by 1")
-    public void testAjaxSpinUp(Page page) {
+    void ajaxSpinUp(Page page) {
         // Arrange
         Spinner spinner = page.spinner;
-        Assertions.assertEquals("0", spinner.getValue());
+        assertEquals("0", spinner.getValue());
 
         // Act
         spinner.increment();
         spinner.change();
 
         // Assert
-        Assertions.assertEquals("1", spinner.getValue());
+        assertEquals("1", spinner.getValue());
         assertConfiguration(spinner.getWidgetConfiguration());
     }
 
     @Test
     @Order(5)
     @DisplayName("Spinner: AJAX Test integer decrement by 2")
-    public void testSpinAjaxDown(Page page) {
+    void spinAjaxDown(Page page) {
         // Arrange
         Spinner spinner = page.spinner;
-        Assertions.assertEquals("0", spinner.getValue());
+        assertEquals("0", spinner.getValue());
 
         // Act
         spinner.setValue("6");
@@ -124,26 +125,26 @@ public class Spinner003Test extends AbstractPrimePageTest {
         spinner.change();
 
         // Assert
-        Assertions.assertEquals("2", spinner.getValue());
+        assertEquals("2", spinner.getValue());
         assertConfiguration(spinner.getWidgetConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("Spinner Config = " + cfg);
-        Assertions.assertEquals(1, cfg.getInt("step"));
-        Assertions.assertEquals(".", cfg.get("decimalSeparator"));
-        Assertions.assertEquals(",", cfg.get("thousandSeparator"));
+        assertEquals(1, cfg.getInt("step"));
+        assertEquals(".", cfg.get("decimalSeparator"));
+        assertEquals(",", cfg.get("thousandSeparator"));
         if (cfg.has("decimalPlaces")) {
-            Assertions.assertEquals("0", cfg.get("decimalPlaces"));
+            assertEquals("0", cfg.get("decimalPlaces"));
         }
         if (cfg.has("precision")) {
-            Assertions.assertEquals(0, cfg.getInt("precision"));
+            assertEquals(0, cfg.getInt("precision"));
         }
     }
 
     private void assertOutputLabel(Page page, String value) {
-        Assertions.assertEquals(value, page.output.getText());
+        assertEquals(value, page.output.getText());
     }
 
     public static class Page extends AbstractPrimePage {

@@ -21,14 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.export;
+package org.primefaces.util;
 
-@Deprecated
-public enum ExporterType {
-    XLS,
-    PDF,
-    CSV,
-    XML,
-    XLSX,
-    XLSXSTREAM
+import java.io.Serializable;
+import java.util.function.Predicate;
+
+@FunctionalInterface
+public interface SerializablePredicate<T> extends Predicate<T>, Serializable {
 }

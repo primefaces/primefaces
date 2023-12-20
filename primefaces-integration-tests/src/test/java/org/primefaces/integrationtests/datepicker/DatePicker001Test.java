@@ -23,11 +23,12 @@
  */
 package org.primefaces.integrationtests.datepicker;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -43,15 +44,15 @@ import org.primefaces.selenium.component.DatePicker;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.base.ComponentUtils;
 
-public class DatePicker001Test extends AbstractDatePickerTest {
+class DatePicker001Test extends AbstractDatePickerTest {
 
     @Test
     @Order(1)
     @DisplayName("DatePicker: set date and basic panel validation")
-    public void testBasic(Page page) {
+    void basic(Page page) {
         // Arrange
         DatePicker datePicker = page.datePicker;
-        Assertions.assertEquals(LocalDate.now(), datePicker.getValue().toLocalDate());
+        assertEquals(LocalDate.now(), datePicker.getValue().toLocalDate());
         LocalDate value = LocalDate.of(1978, 2, 19);
 
         // Act
@@ -63,7 +64,7 @@ public class DatePicker001Test extends AbstractDatePickerTest {
         // Assert Submit Value
         page.button.click();
         LocalDate newValue = datePicker.getValueAsLocalDate();
-        Assertions.assertEquals(value, newValue);
+        assertEquals(value, newValue);
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         assertConfiguration(datePicker.getWidgetConfiguration(), newValue.format(dateTimeFormatter));
     }
@@ -71,7 +72,7 @@ public class DatePicker001Test extends AbstractDatePickerTest {
     @Test
     @Order(2)
     @DisplayName("DatePicker: select date via click on day in the next month")
-    public void testSelectDateNextMonth(Page page) {
+    void selectDateNextMonth(Page page) {
         // Arrange
         DatePicker datePicker = page.datePicker;
         LocalDate value = LocalDate.of(1978, 2, 19);
@@ -84,12 +85,12 @@ public class DatePicker001Test extends AbstractDatePickerTest {
 
         // Assert selected value
         LocalDate expectedDate = LocalDate.of(1978, 3, 25);
-        Assertions.assertEquals(expectedDate, datePicker.getValueAsLocalDate());
+        assertEquals(expectedDate, datePicker.getValueAsLocalDate());
 
         // Assert Submit Value
         page.button.click();
         LocalDate newValue = datePicker.getValueAsLocalDate();
-        Assertions.assertEquals(expectedDate, newValue);
+        assertEquals(expectedDate, newValue);
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         assertConfiguration(datePicker.getWidgetConfiguration(), newValue.format(dateTimeFormatter));
     }
@@ -97,7 +98,7 @@ public class DatePicker001Test extends AbstractDatePickerTest {
     @Test
     @Order(3)
     @DisplayName("DatePicker: select date via click on day in the previous month")
-    public void testSelectDatePreviousMonth(Page page) {
+    void selectDatePreviousMonth(Page page) {
         // Arrange
         DatePicker datePicker = page.datePicker;
         LocalDate value = LocalDate.of(1978, 2, 19);
@@ -110,12 +111,12 @@ public class DatePicker001Test extends AbstractDatePickerTest {
 
         // Assert selected value
         LocalDate expectedDate = LocalDate.of(1978, 1, 8);
-        Assertions.assertEquals(expectedDate, datePicker.getValueAsLocalDate());
+        assertEquals(expectedDate, datePicker.getValueAsLocalDate());
 
         // Assert Submit Value
         page.button.click();
         LocalDate newValue = datePicker.getValueAsLocalDate();
-        Assertions.assertEquals(expectedDate, newValue);
+        assertEquals(expectedDate, newValue);
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         assertConfiguration(datePicker.getWidgetConfiguration(), newValue.format(dateTimeFormatter));
     }
@@ -123,7 +124,7 @@ public class DatePicker001Test extends AbstractDatePickerTest {
     @Test
     @Order(4)
     @DisplayName("DatePicker: highlight today and selected")
-    public void testHighlight(Page page) {
+    void highlight(Page page) {
         // Arrange
         DatePicker datePicker = page.datePicker;
         LocalDate selectedDate = LocalDate.now();
@@ -147,17 +148,17 @@ public class DatePicker001Test extends AbstractDatePickerTest {
     @Test
     @Order(5)
     @DisplayName("DatePicker: Use disable() widget method to disable DatePicker")
-    public void testDisable(Page page) {
+    void disable(Page page) {
         // Arrange
         DatePicker datePicker = page.datePicker;
-        Assertions.assertEquals(LocalDate.now(), datePicker.getValue().toLocalDate());
+        assertEquals(LocalDate.now(), datePicker.getValue().toLocalDate());
 
         // Act
         datePicker.disable();
         WebElement panel = datePicker.showPanel();
 
         // Assert
-        Assertions.assertFalse(datePicker.isEnabled());
+        assertFalse(datePicker.isEnabled());
         assertNotDisplayed(panel);
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         assertConfiguration(datePicker.getWidgetConfiguration(), LocalDate.now().format(dateTimeFormatter));
@@ -166,18 +167,18 @@ public class DatePicker001Test extends AbstractDatePickerTest {
     @Test
     @Order(6)
     @DisplayName("DatePicker: Use enable() widget method to enable DatePicker")
-    public void testEnable(Page page) {
+    void enable(Page page) {
         // Arrange
         DatePicker datePicker = page.datePicker;
         datePicker.disable();
-        Assertions.assertFalse(datePicker.isEnabled());
+        assertFalse(datePicker.isEnabled());
 
         // Act
         datePicker.enable();
         WebElement panel = datePicker.showPanel();
 
         // Assert
-        Assertions.assertTrue(datePicker.isEnabled());
+        assertTrue(datePicker.isEnabled());
         assertDisplayed(panel);
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         assertConfiguration(datePicker.getWidgetConfiguration(), LocalDate.now().format(dateTimeFormatter));
@@ -186,7 +187,7 @@ public class DatePicker001Test extends AbstractDatePickerTest {
     @Test
     @Order(7)
     @DisplayName("DatePicker: illegal date")
-    public void testIllegalDate(Page page) {
+    void illegalDate(Page page) {
         // Arrange
         DatePicker datePicker = page.datepickerEditable;
         datePicker.clear();
@@ -196,16 +197,16 @@ public class DatePicker001Test extends AbstractDatePickerTest {
         page.button.click();
 
         // Assert
-        Assertions.assertTrue(page.messages.isDisplayed());
-        Assertions.assertEquals(1, page.messages.getAllMessages().size());
-        Assertions.assertTrue(page.messages.getAllMessages().get(0).getDetail().contains("could not be understood as a date"));
+        assertTrue(page.messages.isDisplayed());
+        assertEquals(1, page.messages.getAllMessages().size());
+        assertTrue(page.messages.getAllMessages().get(0).getDetail().contains("could not be understood as a date"));
         assertNoJavascriptErrors();
     }
 
     @Test
     @Order(8)
     @DisplayName("DatePicker: correct date")
-    public void testCorrectDate(Page page) {
+    void correctDate(Page page) {
         // Arrange
         DatePicker datePicker = page.datepickerEditable;
         datePicker.clear();
@@ -215,15 +216,15 @@ public class DatePicker001Test extends AbstractDatePickerTest {
         page.button.click();
 
         // Assert
-        Assertions.assertFalse(page.messages.isDisplayed());
-        Assertions.assertEquals(0, page.messages.getAllMessages().size());
+        assertFalse(page.messages.isDisplayed());
+        assertEquals(0, page.messages.getAllMessages().size());
         assertNoJavascriptErrors();
     }
 
     @Test
     @Order(9)
     @DisplayName("DatePicker: Arrow Down should trigger the popup")
-    public void testArrowDownOnInput(Page page) {
+    void arrowDownOnInput(Page page) {
         // Arrange
         DatePicker datePicker = page.datepickerEditable;
         datePicker.clear();
@@ -233,14 +234,14 @@ public class DatePicker001Test extends AbstractDatePickerTest {
         ComponentUtils.sendKeys(datePicker.getInput(), Keys.ARROW_DOWN);
 
         // Assert
-        Assertions.assertTrue(datePicker.getPanel().isDisplayed());
+        assertTrue(datePicker.getPanel().isDisplayed());
         assertNoJavascriptErrors();
     }
 
     @Test
     @Order(9)
     @DisplayName("DatePicker: ENTER should trigger the popup")
-    public void testEnterOnInput(Page page) {
+    void enterOnInput(Page page) {
         // Arrange
         DatePicker datePicker = page.datepickerEditable;
         datePicker.clear();
@@ -250,25 +251,25 @@ public class DatePicker001Test extends AbstractDatePickerTest {
         ComponentUtils.sendKeys(datePicker.getInput(), Keys.ENTER);
 
         // Assert
-        Assertions.assertTrue(datePicker.getPanel().isDisplayed());
+        assertTrue(datePicker.getPanel().isDisplayed());
         assertNoJavascriptErrors();
     }
 
     @Test
     @Order(10)
     @DisplayName("DatePicker: ESCAPE should close the popup")
-    public void testEscapeOnPanel(Page page) {
+    void escapeOnPanel(Page page) {
         // Arrange
         DatePicker datePicker = page.datepickerEditable;
         datePicker.clear();
         ComponentUtils.sendKeys(datePicker.getInput(), Keys.ENTER);
-        Assertions.assertTrue(datePicker.getPanel().isDisplayed());
+        assertTrue(datePicker.getPanel().isDisplayed());
 
         // Act
         ComponentUtils.sendKeys(datePicker.getInput(), Keys.ESCAPE);
 
         // Assert
-        Assertions.assertFalse(datePicker.getPanel().isDisplayed());
+        assertFalse(datePicker.getPanel().isDisplayed());
         assertNoJavascriptErrors();
     }
 
@@ -276,16 +277,16 @@ public class DatePicker001Test extends AbstractDatePickerTest {
         PrimeSelenium.wait(100);
         datePicker.showPanel();
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.elementToBeClickable(datePicker.getPanel().findElement(By.linkText(day))));
-        Assertions.assertTrue(PrimeSelenium.hasCssClass(datePicker.getPanel().findElement(By.linkText(day)), styleClass));
+        assertTrue(PrimeSelenium.hasCssClass(datePicker.getPanel().findElement(By.linkText(day)), styleClass));
     }
 
     private void assertConfiguration(JSONObject cfg, String defaultDate) {
         assertNoJavascriptErrors();
         System.out.println("DatePicker Config = " + cfg);
-        Assertions.assertEquals("mm/dd/yy", cfg.getString("dateFormat"));
-        Assertions.assertEquals(defaultDate, cfg.getString("defaultDate"));
-        Assertions.assertEquals("single", cfg.getString("selectionMode"));
-        Assertions.assertFalse(cfg.getBoolean("inline"));
+        assertEquals("mm/dd/yy", cfg.getString("dateFormat"));
+        assertEquals(defaultDate, cfg.getString("defaultDate"));
+        assertEquals("single", cfg.getString("selectionMode"));
+        assertFalse(cfg.getBoolean("inline"));
     }
 
     public static class Page extends AbstractPrimePage {

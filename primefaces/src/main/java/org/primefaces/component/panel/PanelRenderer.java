@@ -25,7 +25,6 @@ package org.primefaces.component.panel;
 
 import java.io.IOException;
 import java.util.Map;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -33,6 +32,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
@@ -172,12 +172,7 @@ public class PanelRenderer extends CoreRenderer {
     protected boolean shouldRenderHeader(FacesContext context, Panel panel) throws IOException {
         UIComponent header = panel.getFacet("header");
         String headerText = panel.getHeader();
-        boolean shouldRenderFacet = ComponentUtils.shouldRenderFacet(header, panel.isRenderEmptyFacets());
-
-        if (headerText == null && !shouldRenderFacet) {
-            return false;
-        }
-        return true;
+        return headerText != null || FacetUtils.shouldRenderFacet(header, panel.isRenderEmptyFacets());
     }
 
     protected void encodeHeader(FacesContext context, Panel panel, Menu optionsMenu) throws IOException {
@@ -185,7 +180,7 @@ public class PanelRenderer extends CoreRenderer {
         UIComponent header = panel.getFacet("header");
         String headerText = panel.getHeader();
         String clientId = panel.getClientId(context);
-        boolean shouldRenderFacet = ComponentUtils.shouldRenderFacet(header, panel.isRenderEmptyFacets());
+        boolean shouldRenderFacet = FacetUtils.shouldRenderFacet(header, panel.isRenderEmptyFacets());
 
         writer.startElement("div", null);
         writer.writeAttribute("id", panel.getClientId(context) + "_header", null);
@@ -225,7 +220,7 @@ public class PanelRenderer extends CoreRenderer {
 
         //Actions
         UIComponent actionsFacet = panel.getFacet("actions");
-        if (ComponentUtils.shouldRenderFacet(actionsFacet)) {
+        if (FacetUtils.shouldRenderFacet(actionsFacet)) {
             writer.startElement("div", null);
             writer.writeAttribute("class", Panel.PANEL_ACTIONS_CLASS, null);
             actionsFacet.encodeAll(context);
@@ -254,7 +249,7 @@ public class PanelRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         UIComponent footer = panel.getFacet("footer");
         String footerText = panel.getFooter();
-        boolean shouldRenderFacet = ComponentUtils.shouldRenderFacet(footer, panel.isRenderEmptyFacets());
+        boolean shouldRenderFacet = FacetUtils.shouldRenderFacet(footer, panel.isRenderEmptyFacets());
 
         if (footerText == null && !shouldRenderFacet) {
             return;

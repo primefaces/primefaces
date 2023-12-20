@@ -23,7 +23,7 @@
 	            <p:badge value="8" severity="success" styleClass="mr-2"></p:badge>
 	            <p:badge value="4" severity="info" styleClass="mr-2"></p:badge>
 	            <p:badge value="12" severity="warning" styleClass="mr-2"></p:badge>
-	            <p:badge value="3" severity="danger"></p:badge>
+	            <p:badge value="3" severity="danger" onclick="alert('danger clicked!')"></p:badge>
 
 	            <h5 class="mb-4">Positioned Badge</h5>
 	            <p:badge value="2">
@@ -53,6 +53,20 @@
 	            <p:badge value="0" visible="false">
 	                <i class="pi pi-bell" style="font-size: 2rem"/>
 	            </p:badge>
+	            
+	            <h5>Icon</h5>
+                <p:badge icon="pi pi-bell" severity="danger">
+                    <p:commandButton value="Alerts" />
+                </p:badge>
+                <p:badge icon="pi pi-envelope" severity="danger">
+                    <p:commandButton value="Emails" styleClass="ml-4"/>
+                </p:badge>
+                <p:badge icon="pi pi-plus" iconPos="left" value=" 99" severity="danger" >
+                    <p:commandButton value="Left Icon" styleClass="ml-4"/>
+                </p:badge>
+                <p:badge icon="pi pi-plus" iconPos="right" value="99 " severity="danger">
+                    <p:commandButton value="Right Icon" styleClass="ml-4"/>
+                </p:badge>
             </h:form>
         </div>
     </ui:define>

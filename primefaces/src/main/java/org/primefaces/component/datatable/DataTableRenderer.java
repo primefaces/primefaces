@@ -23,24 +23,6 @@
  */
 package org.primefaces.component.datatable;
 
-import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.el.ELContext;
-import javax.el.MethodExpression;
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
-import javax.faces.component.ValueHolder;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.celleditor.CellEditor;
@@ -58,7 +40,30 @@ import org.primefaces.model.ColumnMeta;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 import org.primefaces.renderkit.DataRenderer;
-import org.primefaces.util.*;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.MessageFactory;
+import org.primefaces.util.WidgetBuilder;
+
+import javax.el.ELContext;
+import javax.el.MethodExpression;
+import javax.el.ValueExpression;
+import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DataTableRenderer extends DataRenderer {
 
@@ -164,10 +169,10 @@ public class DataTableRenderer extends DataRenderer {
         //Selection
         wb.attr("selectionMode", selectionMode, null)
                 .attr("selectionPageOnly", table.isSelectionPageOnly(), true)
-                .attr("rowSelectMode", table.getRowSelectMode(), "new")
+                .attr("rowSelectMode", table.getSelectionRowMode(), "new")
                 .attr("nativeElements", table.isNativeElements(), false)
                 .attr("rowSelector", table.getRowSelector(), null)
-                .attr("disabledTextSelection", table.isDisabledTextSelection(), true);
+                .attr("disabledTextSelection", table.isSelectionTextDisabled(), true);
 
         //Filtering
         if (table.isFilteringEnabled()) {
@@ -590,7 +595,7 @@ public class DataTableRenderer extends DataRenderer {
         boolean sortable = table.isColumnSortable(context, column);
         boolean filterable = table.isColumnFilterable(context, column);
         boolean isGroupedColumn = column.isGroupRow();
-        String selectionMode = column.getSelectionMode();
+        boolean selectionBox = column.isSelectionBox();
         SortMeta sortMeta = null;
         boolean resizable = table.isResizableColumns() && column.isResizable();
         boolean draggable = table.isDraggableColumns() && column.isDraggable();
@@ -605,7 +610,7 @@ public class DataTableRenderer extends DataRenderer {
                 .add(DataTable.COLUMN_HEADER_CLASS)
                 .add(sortable, DataTable.SORTABLE_COLUMN_CLASS)
                 .add(filterable, DataTable.FILTER_COLUMN_CLASS)
-                .add(selectionMode != null, DataTable.SELECTION_COLUMN_CLASS)
+                .add(selectionBox, DataTable.SELECTION_COLUMN_CLASS)
                 .add(isGroupedColumn, DataTable.GROUPED_COLUMN_CLASS)
                 .add(resizable,  DataTable.RESIZABLE_COLUMN_CLASS)
                 .add(draggable, DataTable.DRAGGABLE_COLUMN_CLASS)
@@ -679,7 +684,7 @@ public class DataTableRenderer extends DataRenderer {
             encodeColumnHeaderContent(context, table, column, sortMeta);
         }
 
-        if ("multiple".equalsIgnoreCase(selectionMode) && table.isShowSelectAll()) {
+        if (selectionBox && "multiple".equalsIgnoreCase(table.getSelectionMode()) && table.isShowSelectAll()) {
             encodeCheckbox(context, table, table.isSelectAll(), false, HTML.CHECKBOX_ALL_CLASS, true);
         }
 
@@ -709,7 +714,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", DataTable.COLUMN_TITLE_CLASS, null);
 
-        if (ComponentUtils.shouldRenderFacet(header, table.isRenderEmptyFacets())) {
+        if (FacetUtils.shouldRenderFacet(header, table.isRenderEmptyFacets())) {
             header.encodeAll(context);
         }
         else if (headerText != null) {
@@ -745,14 +750,14 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         ResponseWriter writer = context.getResponseWriter();
-        UIComponent filterFacet = column.getFilterComponent();
+        UIComponent filterFacet = column.getFacet("filter");
 
-        if (!ComponentUtils.shouldRenderFacet(filterFacet, table.isRenderEmptyFacets())) {
+        if (!FacetUtils.shouldRenderFacet(filterFacet, table.isRenderEmptyFacets())) {
             encodeDefaultFilter(context, table, column, writer);
         }
         else {
             Object filterValue = table.getFilterValue(column);
-            ((ValueHolder) filterFacet).setValue(filterValue);
+            column.setFilterValueToValueHolder(filterValue);
 
             writer.startElement("div", null);
             writer.writeAttribute("class", DataTable.COLUMN_CUSTOM_FILTER_CLASS, null);
@@ -795,6 +800,10 @@ public class DataTableRenderer extends DataRenderer {
 
         if (column.getFilterMaxLength() != Integer.MAX_VALUE) {
             writer.writeAttribute("maxlength", column.getFilterMaxLength(), null);
+        }
+
+        if (LangUtils.isNotBlank(column.getFilterPlaceholder())) {
+            writer.writeAttribute("placeholder", column.getFilterPlaceholder(), null);
         }
 
         writer.endElement("input");
@@ -866,7 +875,7 @@ public class DataTableRenderer extends DataRenderer {
         //Footer content
         UIComponent facet = column.getFacet("footer");
         String text = column.getFooterText();
-        if (ComponentUtils.shouldRenderFacet(facet, table.isRenderEmptyFacets())) {
+        if (FacetUtils.shouldRenderFacet(facet, table.isRenderEmptyFacets())) {
             facet.encodeAll(context);
         }
         else if (text != null) {
@@ -975,11 +984,16 @@ public class DataTableRenderer extends DataRenderer {
         int rows = table.getRows();
         int first = table.isClientCacheRequest(context) ? Integer.parseInt(params.get(clientId + "_first")) + rows : table.getFirst();
         int rowCount = table.getRowCount();
-        int rowCountToRender = rows == 0 ? (table.isLiveScroll() ? (table.getScrollRows() + table.getScrollOffset()) : rowCount) : rows;
 
+        int rowCountToRender;
         if (table.isVirtualScroll()) {
-            int virtualScrollRowCount = (table.getScrollRows() * 2);
-            rowCountToRender = Math.min(virtualScrollRowCount, rowCount);
+            rowCountToRender = Math.min(table.getScrollRows() * 2, rowCount);
+        }
+        else if (table.isLiveScroll()) {
+            rowCountToRender = rows == 0 ? (table.getScrollRows() + table.getScrollOffset()) : rows;
+        }
+        else {
+            rowCountToRender = rows == 0 ? rowCount : rows;
         }
 
         int frozenRows = table.getFrozenRows();
@@ -995,7 +1009,7 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("id", tbodyClientId, null);
             writer.writeAttribute("class", DataTable.DATA_CLASS, null);
 
-            if (table.isRowSelectionEnabled()) {
+            if (table.isSelectionEnabled()) {
                 writer.writeAttribute("tabindex", table.getTabindex(), null);
             }
         }
@@ -1018,7 +1032,7 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("colspan", table.getColumnsCountWithSpan(), null);
 
             UIComponent emptyFacet = table.getFacet("emptyMessage");
-            if (ComponentUtils.shouldRenderFacet(emptyFacet, table.isRenderEmptyFacets())) {
+            if (FacetUtils.shouldRenderFacet(emptyFacet, table.isRenderEmptyFacets())) {
                 emptyFacet.encodeAll(context);
             }
             else {
@@ -1124,7 +1138,7 @@ public class DataTableRenderer extends DataRenderer {
 
         //Preselection
         boolean selected = selectionEnabled && table.getSelectedRowKeys().contains(rowKey);
-        boolean disabled = table.isDisabledSelection();
+        boolean disabled = table.isSelectionDisabled();
         boolean allowSelection = selectionEnabled && !disabled;
         boolean expanded = table.isExpandedRow() || (rowExpansionAvailable && table.getExpandedRowKeys().contains(rowKey));
 
@@ -1189,7 +1203,7 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         ResponseWriter writer = context.getResponseWriter();
-        boolean columnSelectionEnabled = column.getSelectionMode() != null;
+        boolean columnSelectionEnabled = column.isSelectionBox();
         boolean isGroupedColumn = column.isGroupRow();
         CellEditor editor = column.getCellEditor();
         boolean editorEnabled = editor != null && editor.isRendered();
@@ -1355,7 +1369,7 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected void encodeFacet(FacesContext context, DataTable table, UIComponent facet, String styleClass) throws IOException {
-        if (!ComponentUtils.shouldRenderFacet(facet, table.isRenderEmptyFacets())) {
+        if (!FacetUtils.shouldRenderFacet(facet, table.isRenderEmptyFacets())) {
             return;
         }
         ResponseWriter writer = context.getResponseWriter();
@@ -1419,7 +1433,7 @@ public class DataTableRenderer extends DataRenderer {
     protected void encodeColumnSelection(FacesContext context, DataTable table, UIColumn column, boolean selected, boolean rowSelectionEnabled)
             throws IOException {
 
-        String selectionMode = column.getSelectionMode();
+        String selectionMode = table.getSelectionMode();
 
         if ("single".equalsIgnoreCase(selectionMode)) {
             encodeRadio(context, table, selected, !rowSelectionEnabled);

@@ -23,7 +23,9 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -35,22 +37,22 @@ import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.Messages;
 
-public class DataTable024Test extends AbstractDataTableTest {
+class DataTable024Test extends AbstractDataTableTest {
 
     @Test
     @Order(1)
     @DisplayName("DataTable: RowGroup - rowspan")
-    public void testRowGroup(Page page) {
+    void rowGroup(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
-        Assertions.assertNotNull(dataTable);
+        assertNotNull(dataTable);
 
         // Act
         CommandButton button = PrimeSelenium.createFragment(CommandButton.class, By.id("form:datatable:0:select"));
         button.click();
 
         // Assert
-        Assertions.assertEquals("Entry selected: 1", page.messages.getMessage(0).getDetail());
+        assertEquals("Entry selected: 1", page.messages.getMessage(0).getDetail());
 
         // Act
         // Act - do some filtering
@@ -58,7 +60,7 @@ public class DataTable024Test extends AbstractDataTableTest {
         button.click();
 
         // Assert
-        Assertions.assertEquals("Entry selected: 2", page.messages.getMessage(0).getDetail());
+        assertEquals("Entry selected: 2", page.messages.getMessage(0).getDetail());
     }
 
     public static class Page extends AbstractPrimePage {

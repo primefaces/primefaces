@@ -46,7 +46,6 @@ import org.primefaces.model.SortMeta;
 import org.primefaces.model.TreeNode;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
-import org.primefaces.util.LocaleUtils;
 import org.primefaces.util.MapBuilder;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
@@ -311,8 +310,7 @@ public class TreeTable extends TreeTableBase {
     }
 
     public Locale resolveDataLocale() {
-        FacesContext context = getFacesContext();
-        return LocaleUtils.resolveLocale(context, getDataLocale(), getClientId(context));
+        return resolveDataLocale(getFacesContext());
     }
 
     @Override

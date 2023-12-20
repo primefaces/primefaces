@@ -24,7 +24,6 @@
 package org.primefaces.integrationtests.treetable;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -45,42 +44,45 @@ import org.primefaces.selenium.component.model.datatable.Header;
 import org.primefaces.selenium.component.model.treetable.Row;
 
 import java.util.Comparator;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.List;
 
-public class TreeTable001Test extends AbstractTreeTableTest {
+class TreeTable001Test extends AbstractTreeTableTest {
 
     @Test
     @Order(1)
     @DisplayName("TreeTable: Basic & Toggling")
-    public void testBasicAndToggling(Page page) {
+    void basicAndToggling(Page page) {
         // Arrange
         TreeTable treeTable = page.treeTable;
-        Assertions.assertNotNull(treeTable);
+        assertNotNull(treeTable);
 
         // Assert
-        Assertions.assertNotNull(treeTable.getHeaderWebElement());
+        assertNotNull(treeTable.getHeaderWebElement());
 
         List<WebElement> rowElts = treeTable.getRowsWebElement();
-        Assertions.assertNotNull(rowElts);
-        Assertions.assertEquals(root.getChildCount(), rowElts.size());
+        assertNotNull(rowElts);
+        assertEquals(root.getChildCount(), rowElts.size());
 
         List<Row> rows = treeTable.getRows();
-        Assertions.assertNotNull(rows);
-        Assertions.assertEquals(root.getChildCount(), rows.size());
+        assertNotNull(rows);
+        assertEquals(root.getChildCount(), rows.size());
 
         assertRows(treeTable, root);
 
         Header header = treeTable.getHeader();
-        Assertions.assertNotNull(header);
-        Assertions.assertNotNull(header.getCells());
-        Assertions.assertEquals(4, header.getCells().size());
-        Assertions.assertEquals("Name", header.getCell(0).getColumnTitle().getText());
-        Assertions.assertEquals("Size", header.getCell(1).getColumnTitle().getText());
-        Assertions.assertEquals("Type", header.getCell(2).getColumnTitle().getText());
+        assertNotNull(header);
+        assertNotNull(header.getCells());
+        assertEquals(4, header.getCells().size());
+        assertEquals("Name", header.getCell(0).getColumnTitle().getText());
+        assertEquals("Size", header.getCell(1).getColumnTitle().getText());
+        assertEquals("Type", header.getCell(2).getColumnTitle().getText());
 
         Row firstRow = treeTable.getRow(0);
-        Assertions.assertTrue(firstRow.isToggleable());
-        Assertions.assertEquals(1, firstRow.getLevel());
+        assertTrue(firstRow.isToggleable());
+        assertEquals(1, firstRow.getLevel());
 
         assertConfiguration(treeTable.getWidgetConfiguration());
 
@@ -89,11 +91,11 @@ public class TreeTable001Test extends AbstractTreeTableTest {
 
         // Assert - Part 2
         rows = treeTable.getRows();
-        Assertions.assertNotNull(rows);
-        Assertions.assertEquals(root.getChildCount() + root.getChildren().get(0).getChildCount(), rows.size());
+        assertNotNull(rows);
+        assertEquals(root.getChildCount() + root.getChildren().get(0).getChildCount(), rows.size());
 
         Row firstChildRow = treeTable.getRow(1);
-        Assertions.assertEquals(2, firstChildRow.getLevel());
+        assertEquals(2, firstChildRow.getLevel());
 
         root.getChildren().get(0).setExpanded(true);
         assertRows(treeTable, root);
@@ -105,8 +107,8 @@ public class TreeTable001Test extends AbstractTreeTableTest {
 
         // Assert - Part 3
         rows = treeTable.getRows();
-        Assertions.assertNotNull(rows);
-        Assertions.assertEquals(root.getChildCount(), rows.size());
+        assertNotNull(rows);
+        assertEquals(root.getChildCount(), rows.size());
 
         root.getChildren().get(0).setExpanded(false);
         assertRows(treeTable, root);
@@ -117,10 +119,10 @@ public class TreeTable001Test extends AbstractTreeTableTest {
     @Test
     @Order(2)
     @DisplayName("TreeTable: single sort including recursive subtree sorting")
-    public void testSortSingle(Page page) {
+    void sortSingle(Page page) {
         // Arrange
         TreeTable treeTable = page.treeTable;
-        Assertions.assertNotNull(treeTable);
+        assertNotNull(treeTable);
 
         treeTable.getRow(0).toggle();
         root.getChildren().get(0).setExpanded(true);
@@ -151,7 +153,7 @@ public class TreeTable001Test extends AbstractTreeTableTest {
     @Test
     @Order(3)
     @DisplayName("TreeTable: filter")
-    public void testFilter(Page page) {
+    void filter(Page page) {
         TreeTable treeTable = page.treeTable;
         treeTable.sort("Name");
 
@@ -161,14 +163,14 @@ public class TreeTable001Test extends AbstractTreeTableTest {
         // Assert
         // we try to avoid duplicating logic from TreeTableRenderer#filter, so we take the simple/stupid way
         List<Row> rows = treeTable.getRows();
-        Assertions.assertNotNull(rows);
-        Assertions.assertEquals(3, rows.size());
-        Assertions.assertEquals("Applications", rows.get(0).getCell(0).getText());
-        Assertions.assertEquals("Primefaces", rows.get(1).getCell(0).getText());
-        Assertions.assertEquals("mobile.app", rows.get(2).getCell(0).getText());
-        Assertions.assertEquals(1, rows.get(0).getLevel());
-        Assertions.assertEquals(2, rows.get(1).getLevel());
-        Assertions.assertEquals(3, rows.get(2).getLevel());
+        assertNotNull(rows);
+        assertEquals(3, rows.size());
+        assertEquals("Applications", rows.get(0).getCell(0).getText());
+        assertEquals("Primefaces", rows.get(1).getCell(0).getText());
+        assertEquals("mobile.app", rows.get(2).getCell(0).getText());
+        assertEquals(1, rows.get(0).getLevel());
+        assertEquals(2, rows.get(1).getLevel());
+        assertEquals(3, rows.get(2).getLevel());
 
         // Act (filter on L1)
         treeTable.filter("Name", "down");
@@ -176,28 +178,28 @@ public class TreeTable001Test extends AbstractTreeTableTest {
 
         // Assert
         rows = treeTable.getRows();
-        Assertions.assertNotNull(rows);
-        Assertions.assertEquals(3, rows.size());
-        Assertions.assertEquals("Downloads", rows.get(0).getCell(0).getText());
-        Assertions.assertEquals("Spanish", rows.get(1).getCell(0).getText());
-        Assertions.assertEquals("Travel", rows.get(2).getCell(0).getText());
-        Assertions.assertEquals(1, rows.get(0).getLevel());
-        Assertions.assertEquals(2, rows.get(1).getLevel());
-        Assertions.assertEquals(2, rows.get(1).getLevel());
+        assertNotNull(rows);
+        assertEquals(3, rows.size());
+        assertEquals("Downloads", rows.get(0).getCell(0).getText());
+        assertEquals("Spanish", rows.get(1).getCell(0).getText());
+        assertEquals("Travel", rows.get(2).getCell(0).getText());
+        assertEquals(1, rows.get(0).getLevel());
+        assertEquals(2, rows.get(1).getLevel());
+        assertEquals(2, rows.get(1).getLevel());
 
         // Act
         page.buttonUpdate.click();
 
         // Assert - filter must not be lost after update
         rows = treeTable.getRows();
-        Assertions.assertNotNull(rows);
-        Assertions.assertEquals(3, rows.size());
-        Assertions.assertEquals("Downloads", rows.get(0).getCell(0).getText());
-        Assertions.assertEquals("Spanish", rows.get(1).getCell(0).getText());
-        Assertions.assertEquals("Travel", rows.get(2).getCell(0).getText());
-        Assertions.assertEquals(1, rows.get(0).getLevel());
-        Assertions.assertEquals(2, rows.get(1).getLevel());
-        Assertions.assertEquals(2, rows.get(1).getLevel());
+        assertNotNull(rows);
+        assertEquals(3, rows.size());
+        assertEquals("Downloads", rows.get(0).getCell(0).getText());
+        assertEquals("Spanish", rows.get(1).getCell(0).getText());
+        assertEquals("Travel", rows.get(2).getCell(0).getText());
+        assertEquals(1, rows.get(0).getLevel());
+        assertEquals(2, rows.get(1).getLevel());
+        assertEquals(2, rows.get(1).getLevel());
 
         assertConfiguration(treeTable.getWidgetConfiguration());
     }
@@ -205,7 +207,7 @@ public class TreeTable001Test extends AbstractTreeTableTest {
     @Test
     @Order(4)
     @DisplayName("TreeTable: global filter")
-    public void testGlobalFilter(Page page) {
+    void globalFilter(Page page) {
         TreeTable treeTable = page.treeTable;
         treeTable.sort("Name");
 
@@ -215,14 +217,14 @@ public class TreeTable001Test extends AbstractTreeTableTest {
         // Assert
         // we try to avoid duplicating logic from TreeTableRenderer#filter, so we take the simple/stupid way
         List<Row> rows = treeTable.getRows();
-        Assertions.assertNotNull(rows);
-        Assertions.assertEquals(3, rows.size());
-        Assertions.assertEquals("Applications", rows.get(0).getCell(0).getText());
-        Assertions.assertEquals("Primefaces", rows.get(1).getCell(0).getText());
-        Assertions.assertEquals("mobile.app", rows.get(2).getCell(0).getText());
-        Assertions.assertEquals(1, rows.get(0).getLevel());
-        Assertions.assertEquals(2, rows.get(1).getLevel());
-        Assertions.assertEquals(3, rows.get(2).getLevel());
+        assertNotNull(rows);
+        assertEquals(3, rows.size());
+        assertEquals("Applications", rows.get(0).getCell(0).getText());
+        assertEquals("Primefaces", rows.get(1).getCell(0).getText());
+        assertEquals("mobile.app", rows.get(2).getCell(0).getText());
+        assertEquals(1, rows.get(0).getLevel());
+        assertEquals(2, rows.get(1).getLevel());
+        assertEquals(3, rows.get(2).getLevel());
 
         // Act (filter on L1)
         filterGlobal(page.globalFilter, "down");
@@ -230,28 +232,28 @@ public class TreeTable001Test extends AbstractTreeTableTest {
 
         // Assert
         rows = treeTable.getRows();
-        Assertions.assertNotNull(rows);
-        Assertions.assertEquals(3, rows.size());
-        Assertions.assertEquals("Downloads", rows.get(0).getCell(0).getText());
-        Assertions.assertEquals("Spanish", rows.get(1).getCell(0).getText());
-        Assertions.assertEquals("Travel", rows.get(2).getCell(0).getText());
-        Assertions.assertEquals(1, rows.get(0).getLevel());
-        Assertions.assertEquals(2, rows.get(1).getLevel());
-        Assertions.assertEquals(2, rows.get(1).getLevel());
+        assertNotNull(rows);
+        assertEquals(3, rows.size());
+        assertEquals("Downloads", rows.get(0).getCell(0).getText());
+        assertEquals("Spanish", rows.get(1).getCell(0).getText());
+        assertEquals("Travel", rows.get(2).getCell(0).getText());
+        assertEquals(1, rows.get(0).getLevel());
+        assertEquals(2, rows.get(1).getLevel());
+        assertEquals(2, rows.get(1).getLevel());
 
         // Act
         PrimeSelenium.guardAjax(page.buttonUpdate).click();
 
         // Assert - filter must not be lost after update
         rows = treeTable.getRows();
-        Assertions.assertNotNull(rows);
-        Assertions.assertEquals(3, rows.size());
-        Assertions.assertEquals("Downloads", rows.get(0).getCell(0).getText());
-        Assertions.assertEquals("Spanish", rows.get(1).getCell(0).getText());
-        Assertions.assertEquals("Travel", rows.get(2).getCell(0).getText());
-        Assertions.assertEquals(1, rows.get(0).getLevel());
-        Assertions.assertEquals(2, rows.get(1).getLevel());
-        Assertions.assertEquals(2, rows.get(1).getLevel());
+        assertNotNull(rows);
+        assertEquals(3, rows.size());
+        assertEquals("Downloads", rows.get(0).getCell(0).getText());
+        assertEquals("Spanish", rows.get(1).getCell(0).getText());
+        assertEquals("Travel", rows.get(2).getCell(0).getText());
+        assertEquals(1, rows.get(0).getLevel());
+        assertEquals(2, rows.get(1).getLevel());
+        assertEquals(2, rows.get(1).getLevel());
 
         assertConfiguration(treeTable.getWidgetConfiguration());
     }
@@ -259,7 +261,7 @@ public class TreeTable001Test extends AbstractTreeTableTest {
     @Test
     @Order(5)
     @DisplayName("TreeTable: show selected document (not a TreeTable feature)")
-    public void testShowSelectedDocument(Page page) {
+    void showSelectedDocument(Page page) {
         TreeTable treeTable = page.treeTable;
         treeTable.sort("Name");
 
@@ -275,7 +277,7 @@ public class TreeTable001Test extends AbstractTreeTableTest {
     @Test
     @Order(6)
     @DisplayName("TreeTable: single select (via TreeTable-selection feature)")
-    public void testShowSelectedNode(Page page) {
+    void showSelectedNode(Page page) {
         TreeTable treeTable = page.treeTable;
         treeTable.sort("Name");
 
@@ -292,7 +294,7 @@ public class TreeTable001Test extends AbstractTreeTableTest {
     @Test
     @Order(7)
     @DisplayName("TreeTable: select-event")
-    public void testSelectedEvent(Page page) {
+    void selectedEvent(Page page) {
         TreeTable treeTable = page.treeTable;
         treeTable.sort("Name");
 
@@ -308,7 +310,7 @@ public class TreeTable001Test extends AbstractTreeTableTest {
     @Test
     @Order(8)
     @DisplayName("TreeTable: unselect-event")
-    public void testUnselectedEvent(Page page) {
+    void unselectedEvent(Page page) {
         TreeTable treeTable = page.treeTable;
         treeTable.sort("Name");
 
@@ -327,10 +329,10 @@ public class TreeTable001Test extends AbstractTreeTableTest {
     @Test
     @Order(9)
     @DisplayName("TreeTable: switch data (without filter-feature)")
-    public void testSwitchDataWithoutFilter(Page page) {
+    void switchDataWithoutFilter(Page page) {
         // Arrange
         TreeTable treeTable = page.treeTable;
-        Assertions.assertNotNull(treeTable);
+        assertNotNull(treeTable);
 
         // Act
         treeTable.getRow(0).toggle();
@@ -339,8 +341,8 @@ public class TreeTable001Test extends AbstractTreeTableTest {
 
         // Assert
         List<Row> rows = treeTable.getRows();
-        Assertions.assertNotNull(rows);
-        Assertions.assertEquals(rootOtherDocument.getChildCount(), rows.size());
+        assertNotNull(rows);
+        assertEquals(rootOtherDocument.getChildCount(), rows.size());
 
         assertConfiguration(treeTable.getWidgetConfiguration());
     }
@@ -348,10 +350,10 @@ public class TreeTable001Test extends AbstractTreeTableTest {
     @Test
     @Order(10)
     @DisplayName("TreeTable: switch data (with filter-feature) - https://github.com/primefaces/primefaces/issues/8073")
-    public void testSwitchDataWithFilter(Page page) {
+    void switchDataWithFilter(Page page) {
         // Arrange
         TreeTable treeTable = page.treeTable;
-        Assertions.assertNotNull(treeTable);
+        assertNotNull(treeTable);
 
         // Act
         treeTable.getRow(0).toggle();
@@ -362,8 +364,8 @@ public class TreeTable001Test extends AbstractTreeTableTest {
 
         // Assert
         List<Row> rows = treeTable.getRows();
-        Assertions.assertNotNull(rows);
-        Assertions.assertEquals(rootOtherDocument.getChildCount(), rows.size());
+        assertNotNull(rows);
+        assertEquals(rootOtherDocument.getChildCount(), rows.size());
 
         // Act
         page.buttonOtherDocuments.click();
@@ -374,8 +376,8 @@ public class TreeTable001Test extends AbstractTreeTableTest {
         // Act
         page.buttonOtherDocuments.click();
         rows = treeTable.getRows();
-        Assertions.assertNotNull(rows);
-        Assertions.assertEquals(rootOtherDocument.getChildren().stream().filter(n -> n.getData().getName().contains("B")).count(), rows.size());
+        assertNotNull(rows);
+        assertEquals(rootOtherDocument.getChildren().stream().filter(n -> n.getData().getName().contains("B")).count(), rows.size());
 
         assertConfiguration(treeTable.getWidgetConfiguration());
     }
@@ -383,7 +385,7 @@ public class TreeTable001Test extends AbstractTreeTableTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("TreeTable Config = " + cfg);
-        Assertions.assertEquals("treeTable", cfg.getString("widgetVar"));
+        assertEquals("treeTable", cfg.getString("widgetVar"));
     }
 
     public static class Page extends AbstractPrimePage {

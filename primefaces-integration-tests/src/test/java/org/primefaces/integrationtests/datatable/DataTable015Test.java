@@ -23,10 +23,11 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.List;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -37,16 +38,16 @@ import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 
-public class DataTable015Test extends AbstractDataTableTest {
+class DataTable015Test extends AbstractDataTableTest {
 
     @Test
     @Order(1)
     @DisplayName("DataTable: MultiViewState - sort & filter")
-    public void multiViewStateSortFilter(Page page, OtherPage otherPage) {
+    void multiViewStateSortFilter(Page page, OtherPage otherPage) {
         // Arrange
         PrimeSelenium.goTo(page);
         DataTable dataTable = page.dataTable;
-        Assertions.assertNotNull(dataTable);
+        assertNotNull(dataTable);
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(dataTable));
 
         // Act
@@ -72,12 +73,12 @@ public class DataTable015Test extends AbstractDataTableTest {
     @Test
     @Order(2)
     @DisplayName("DataTable: MultiViewState - paginator")
-    public void multiViewStatePage(Page page, OtherPage otherPage) {
+    void multiViewStatePage(Page page, OtherPage otherPage) {
         // Arrange
         PrimeSelenium.goTo(page);
         PrimeSelenium.guardAjax(page.buttonClearTableState).click();
         DataTable dataTable = page.dataTable;
-        Assertions.assertNotNull(dataTable);
+        assertNotNull(dataTable);
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(dataTable));
 
         // Act
@@ -87,7 +88,7 @@ public class DataTable015Test extends AbstractDataTableTest {
 
         // Assert - page must not be lost after navigating to another page and back
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(dataTable));
-        Assertions.assertEquals(2, dataTable.getPaginator().getActivePage().getNumber());
+        assertEquals(2, dataTable.getPaginator().getActivePage().getNumber());
 
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
@@ -95,7 +96,7 @@ public class DataTable015Test extends AbstractDataTableTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("DataTable Config = " + cfg);
-        Assertions.assertTrue(cfg.has("paginator"));
+        assertTrue(cfg.has("paginator"));
     }
 
     public static class Page extends AbstractPrimePage {

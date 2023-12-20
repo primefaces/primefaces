@@ -24,7 +24,6 @@
 package org.primefaces.integrationtests.cascadeselect;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.WebElement;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CascadeSelect;
@@ -33,24 +32,27 @@ import org.primefaces.selenium.component.model.Msg;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 public abstract class BaseCascadeSelectTest extends AbstractPrimePageTest {
 
     protected void assertItems(CascadeSelect cascadeSelect, int leafItemCount) {
         List<WebElement> options = cascadeSelect.getLeafItems();
         // List<String> labels = cascadeSelect.getLabels();
-        Assertions.assertEquals(leafItemCount, options.size());
+        assertEquals(leafItemCount, options.size());
     }
 
     protected void assertMessage(Messages messages, int index, String summary, String detail) {
         Msg message = messages.getMessage(index);
-        Assertions.assertEquals(summary, message.getSummary());
-        Assertions.assertEquals(detail, message.getDetail());
+        assertEquals(summary, message.getSummary());
+        assertEquals(detail, message.getDetail());
     }
 
     protected void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("CascadeSelect Config = " + cfg);
-        Assertions.assertTrue(cfg.has("appendTo"));
-        Assertions.assertTrue(cfg.has("behaviors"));
+        assertTrue(cfg.has("appendTo"));
+        assertTrue(cfg.has("behaviors"));
     }
 }

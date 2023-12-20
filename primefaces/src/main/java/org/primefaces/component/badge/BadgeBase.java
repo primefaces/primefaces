@@ -24,7 +24,6 @@
 package org.primefaces.component.badge;
 
 import org.primefaces.component.api.Widget;
-
 import javax.faces.component.UIComponentBase;
 
 public abstract class BadgeBase extends UIComponentBase implements Widget {
@@ -39,7 +38,10 @@ public abstract class BadgeBase extends UIComponentBase implements Widget {
         size,
         style,
         styleClass,
-        visible
+        visible,
+        icon,
+        iconPos,
+        onclick
     }
 
     public BadgeBase() {
@@ -97,5 +99,28 @@ public abstract class BadgeBase extends UIComponentBase implements Widget {
 
     public void setVisible(boolean visible) {
         getStateHelper().put(PropertyKeys.visible, visible);
+    }
+    public String getIcon() {
+        return (String) getStateHelper().eval(PropertyKeys.icon, null);
+    }
+
+    public void setIcon(String icon) {
+        getStateHelper().put(PropertyKeys.icon, icon);
+    }
+
+    public String getIconPos() {
+        return (String) getStateHelper().eval(PropertyKeys.iconPos, "left");
+    }
+
+    public void setIconPos(String iconPos) {
+        getStateHelper().put(PropertyKeys.iconPos, iconPos);
+    }
+
+    public String getOnclick() {
+        return (String) getStateHelper().eval(PropertyKeys.onclick, null);
+    }
+
+    public void setOnclick(String onClick) {
+        getStateHelper().put(PropertyKeys.onclick, onClick);
     }
 }

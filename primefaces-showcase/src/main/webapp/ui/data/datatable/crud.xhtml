@@ -43,7 +43,7 @@
 
                 <p:dataTable id="dt-products" widgetVar="dtProducts" var="product" value="#{crudView.products}"
                     reflow="true" styleClass="products-table" selection="#{crudView.selectedProducts}"
-                    rowKey="#{product.id}" paginator="true" rows="10" rowSelectMode="add" paginatorPosition="bottom">
+                    rowKey="#{product.id}" paginator="true" rows="10" selectionRowMode="add" paginatorPosition="bottom">
                     <f:facet name="header">
                         <div class="products-table-header">
                             <span style="font-weight: bold">PRODUCTS</span>

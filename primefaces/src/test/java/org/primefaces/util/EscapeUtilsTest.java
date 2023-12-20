@@ -27,10 +27,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-public class EscapeUtilsTest {
+class EscapeUtilsTest {
 
     @Test
-    public void forXmlTag() {
+    void forXmlTag() {
         final String input = "hello world & >";
 
         // invalid
@@ -42,12 +42,12 @@ public class EscapeUtilsTest {
     }
 
     @Test
-    public void forJavascriptVarName() {
+    void forJavascriptVarName() {
         assertEquals("form_datatable_0_my_input_text", EscapeUtils.forJavaScriptVarName("form:datatable:0:my_input_text"));
     }
 
     @Test
-    public void forJavascriptNullInput() {
+    void forJavascriptNullInput() {
         assertEquals("null", EscapeUtils.forJavaScript(null));
     }
 }

@@ -23,22 +23,24 @@
  */
 package org.primefaces.component.api;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import org.primefaces.component.celleditor.CellEditor;
+import org.primefaces.model.MatchMode;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.LangUtils;
+
 import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
+import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
-import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
-
-import org.primefaces.component.celleditor.CellEditor;
-import org.primefaces.model.MatchMode;
-import org.primefaces.util.LangUtils;
+import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public interface UIColumn {
 
@@ -141,7 +143,7 @@ public interface UIColumn {
 
     String getClientId(FacesContext context);
 
-    String getSelectionMode();
+    boolean isSelectionBox();
 
     boolean isResizable();
 
@@ -156,6 +158,8 @@ public interface UIColumn {
     int getColspan();
 
     String getFilterPosition();
+
+    String getFilterPlaceholder();
 
     UIComponent getFacet(String facet);
 
@@ -241,23 +245,34 @@ public interface UIColumn {
 
     int getDisplayPriority();
 
-    default <C extends UIComponent & ValueHolder> C getFilterComponent() {
+    Object getConverter();
+
+    default Object getFilterValueFromValueHolder() {
         UIComponent filterFacet = getFacet("filter");
-        if (filterFacet != null) {
-            if (filterFacet instanceof ValueHolder) {
-                return (C) filterFacet;
-            }
-
-            for (UIComponent child : filterFacet.getChildren()) {
-                if (!child.isRendered()) {
-                    continue;
-                }
-
-                if (child instanceof ValueHolder) {
-                    return (C) child;
-                }
-            }
+        if (filterFacet == null) {
+            return null;
         }
-        return null;
+        AtomicReference<Object> filterValue = new AtomicReference<>(null);
+
+        FacetUtils.invokeOnEditableValueHolder(FacesContext.getCurrentInstance(), filterFacet, (ctx, component) -> {
+            filterValue.set(((EditableValueHolder) component).getValue());
+        });
+
+        return filterValue.get();
+    }
+
+    default void setFilterValueToValueHolder(Object value) {
+        UIComponent filterFacet = getFacet("filter");
+
+        FacetUtils.invokeOnEditableValueHolder(FacesContext.getCurrentInstance(), filterFacet, (ctx, component) -> {
+            ((EditableValueHolder) component).setValue(value);
+        });
+    }
+
+    default UIComponent asUIComponent() {
+        if (this instanceof UIComponent) {
+            return (UIComponent) this;
+        }
+        throw new UnsupportedOperationException(getClass().getName() + "#asUIComponent is not implemented");
     }
 }

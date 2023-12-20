@@ -34,6 +34,7 @@ import org.primefaces.PrimeFaces;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class DataScrollerRenderer extends CoreRenderer {
@@ -90,7 +91,7 @@ public class DataScrollerRenderer extends CoreRenderer {
             writer.writeAttribute("style", style, null);
         }
 
-        if (ComponentUtils.shouldRenderFacet(header)) {
+        if (FacetUtils.shouldRenderFacet(header)) {
             writer.startElement("div", ds);
             writer.writeAttribute("class", DataScroller.HEADER_CLASS, null);
             header.encodeAll(context);
@@ -110,7 +111,7 @@ public class DataScrollerRenderer extends CoreRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("class", DataScroller.LOADING_CLASS, null);
-        if (ComponentUtils.shouldRenderFacet(loading)) {
+        if (FacetUtils.shouldRenderFacet(loading)) {
             loading.encodeAll(context);
         }
         else {
@@ -125,7 +126,9 @@ public class DataScrollerRenderer extends CoreRenderer {
 
         if (inline && ds.isVirtualScroll()) {
             int virtualScrollRowCount = (chunkSize * 2);
-            int rowCountToRender = (isLazy && rowCount == 0) ? virtualScrollRowCount : ((virtualScrollRowCount > rowCount) ? rowCount : virtualScrollRowCount);
+            int rowCountToRender = (isLazy && rowCount == 0)
+                    ? virtualScrollRowCount
+                    : Math.min(virtualScrollRowCount, rowCount);
 
             if (ds.isStartAtBottom()) {
                 int totalPage = (int) Math.ceil(rowCount * 1d / chunkSize);
@@ -143,7 +146,7 @@ public class DataScrollerRenderer extends CoreRenderer {
 
             writer.startElement("div", null);
             writer.writeAttribute("class", DataScroller.LOADER_CLASS, null);
-            if (rowCount > chunkSize && ComponentUtils.shouldRenderFacet(loader)) {
+            if (rowCount > chunkSize && FacetUtils.shouldRenderFacet(loader)) {
                 loader.encodeAll(context);
             }
             writer.endElement("div");
@@ -181,7 +184,7 @@ public class DataScrollerRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("DataScroller", ds)
                 .attr("chunkSize", chunkSize)
-                .attr("totalSize", ds.getRowCount())
+                .attr("totalSize", getTotalSize(ds))
                 .attr("loadEvent", loadEvent)
                 .attr("mode", ds.getMode(), "document")
                 .attr("buffer", ds.getBuffer())
@@ -191,6 +194,16 @@ public class DataScrollerRenderer extends CoreRenderer {
         encodeClientBehaviors(context, ds);
 
         wb.finish();
+    }
+
+    protected int getTotalSize(DataScroller ds) {
+        if (ds.isLazy()) {
+            LazyDataModel lazyModel = (LazyDataModel) ds.getValue();
+            if (lazyModel != null) {
+                return lazyModel.count(Collections.emptyMap());
+            }
+        }
+        return ds.getRowCount();
     }
 
     protected void loadChunk(FacesContext context, DataScroller ds, int start, int size) throws IOException {

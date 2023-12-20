@@ -23,9 +23,11 @@
  */
 package org.primefaces.integrationtests.inputnumber;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -37,41 +39,41 @@ import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.InputNumber;
 
-public class InputNumber004Test extends AbstractPrimePageTest {
+class InputNumber004Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("InputNumber: GitHub #6590 Integer bean validation constraints @Positive still ensure decimalPlaces='0'")
-    public void testIntegerNoDecimalPlaces(final Page page) {
+    void integerNoDecimalPlaces(final Page page) {
         // Arrange
         InputNumber inputNumber = page.integer;
-        Assertions.assertEquals("66", inputNumber.getValue());
+        assertEquals("66", inputNumber.getValue());
 
         // Act
         inputNumber.setValue("87.31");
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("87", inputNumber.getValue());
+        assertEquals("87", inputNumber.getValue());
         assertConfiguration(inputNumber.getWidgetConfiguration(), "0", "0", "999999");
     }
 
     @Test
     @Order(2)
     @DisplayName("InputNumber: GitHub #6590 Integer bean validation constraints @Positive doesn't accept negative number")
-    public void testIntegerPositiveConstraint(final Page page) {
+    void integerPositiveConstraint(final Page page) {
         // Arrange
         InputNumber inputNumber = page.integer;
-        Assertions.assertEquals("66", inputNumber.getValue());
+        assertEquals("66", inputNumber.getValue());
 
         // Act
         try {
             inputNumber.setValue("-5");
-            Assertions.fail("Should be blocked by AutoNumeric javascript.");
+            fail("Should be blocked by AutoNumeric javascript.");
         }
         catch (JavascriptException ex) {
             // Assert
-            Assertions.assertEquals(
+            assertEquals(
                         "The value [-5] being set falls outside of the minimumValue [0] and maximumValue [999999] range set for this element",
                         StringUtils.substringBetween(ex.getMessage(), ": ", "\n"));
         }
@@ -80,19 +82,19 @@ public class InputNumber004Test extends AbstractPrimePageTest {
     @Test
     @Order(3)
     @DisplayName("InputNumber: GitHub #6590 Integer bean validation constraints @Max doesn't accept higher than max value")
-    public void testIntegerMaxConstraint(final Page page) {
+    void integerMaxConstraint(final Page page) {
         // Arrange
         InputNumber inputNumber = page.integer;
-        Assertions.assertEquals("66", inputNumber.getValue());
+        assertEquals("66", inputNumber.getValue());
 
         // Act
         try {
             inputNumber.setValue("23999999");
-            Assertions.fail("Should be blocked by AutoNumeric javascript.");
+            fail("Should be blocked by AutoNumeric javascript.");
         }
         catch (JavascriptException ex) {
             // Assert
-            Assertions.assertEquals(
+            assertEquals(
                         "The value [23999999] being set falls outside of the minimumValue [0] and maximumValue [999999] range set for this element",
                         StringUtils.substringBetween(ex.getMessage(), ": ", "\n"));
         }
@@ -101,20 +103,20 @@ public class InputNumber004Test extends AbstractPrimePageTest {
     @Test
     @Order(4)
     @DisplayName("InputNumber: GitHub #6590 Integer bean validation constraints @Positive removing value resets component")
-    public void testIntegerRemovingValue(final Page page) {
+    void integerRemovingValue(final Page page) {
         // Arrange
         InputNumber inputNumber = page.integer;
-        Assertions.assertEquals("66", inputNumber.getValue());
+        assertEquals("66", inputNumber.getValue());
 
         // Act
         inputNumber.setValue("3");
         inputNumber.getInput().sendKeys(Keys.BACK_SPACE);
         inputNumber.getInput().sendKeys(Keys.DELETE);
-        Assertions.assertEquals("", inputNumber.getValue());
+        assertEquals("", inputNumber.getValue());
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("", inputNumber.getValue());
+        assertEquals("", inputNumber.getValue());
 
         assertConfiguration(inputNumber.getWidgetConfiguration(), "0", "0", "999999");
     }
@@ -122,36 +124,36 @@ public class InputNumber004Test extends AbstractPrimePageTest {
     @Test
     @Order(5)
     @DisplayName("InputNumber: GitHub #6590 Decimal bean validation constraints @Positive still ensure decimalPlaces='2'")
-    public void testDecimal(final Page page) {
+    void decimal(final Page page) {
         // Arrange
         InputNumber inputNumber = page.decimal;
-        Assertions.assertEquals("6.78", inputNumber.getValue());
+        assertEquals("6.78", inputNumber.getValue());
 
         // Act
         inputNumber.setValue("31.9");
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("31.90", inputNumber.getValue());
+        assertEquals("31.90", inputNumber.getValue());
         assertConfiguration(inputNumber.getWidgetConfiguration(), "2", "0.0000001", "999999.99");
     }
 
     @Test
     @Order(6)
     @DisplayName("InputNumber: GitHub #6590 Decimal bean validation constraints @Positive doesn't accept negative number")
-    public void testDecimalPositiveConstraint(final Page page) {
+    void decimalPositiveConstraint(final Page page) {
         // Arrange
         InputNumber inputNumber = page.decimal;
-        Assertions.assertEquals("6.78", inputNumber.getValue());
+        assertEquals("6.78", inputNumber.getValue());
 
         // Act
         try {
             inputNumber.setValue("-8.23");
-            Assertions.fail("Should be blocked by AutoNumeric javascript.");
+            fail("Should be blocked by AutoNumeric javascript.");
         }
         catch (JavascriptException ex) {
             // Assert
-            Assertions.assertEquals(
+            assertEquals(
                         "The value [-8.23] being set falls outside of the minimumValue [0.0000001] and maximumValue [999999.99] range set for this element",
                         StringUtils.substringBetween(ex.getMessage(), ": ", "\n"));
         }
@@ -160,19 +162,19 @@ public class InputNumber004Test extends AbstractPrimePageTest {
     @Test
     @Order(7)
     @DisplayName("InputNumber: GitHub #6590 Decimal bean validation constraints @Max doesn't accept higher than max value")
-    public void testDecimalMaxConstraint(final Page page) {
+    void decimalMaxConstraint(final Page page) {
         // Arrange
         InputNumber inputNumber = page.decimal;
-        Assertions.assertEquals("6.78", inputNumber.getValue());
+        assertEquals("6.78", inputNumber.getValue());
 
         // Act
         try {
             inputNumber.setValue("4599999999999");
-            Assertions.fail("Should be blocked by AutoNumeric javascript.");
+            fail("Should be blocked by AutoNumeric javascript.");
         }
         catch (JavascriptException ex) {
             // Assert
-            Assertions.assertEquals(
+            assertEquals(
                         "The value [4599999999999] being set falls outside of the minimumValue "
                                 + "[0.0000001] and maximumValue [999999.99] range set for this element",
                         StringUtils.substringBetween(ex.getMessage(), ": ", "\n"));
@@ -182,9 +184,9 @@ public class InputNumber004Test extends AbstractPrimePageTest {
     private void assertConfiguration(JSONObject cfg, String decimalPlaces, String minValue, String maxValue) {
         assertNoJavascriptErrors();
         System.out.println("InputNumber Config = " + cfg);
-        Assertions.assertEquals(decimalPlaces, cfg.get("decimalPlaces"));
-        Assertions.assertEquals(minValue, cfg.get("minimumValue"));
-        Assertions.assertEquals(maxValue, cfg.get("maximumValue"));
+        assertEquals(decimalPlaces, cfg.get("decimalPlaces"));
+        assertEquals(minValue, cfg.get("minimumValue"));
+        assertEquals(maxValue, cfg.get("maximumValue"));
     }
 
     public static class Page extends AbstractPrimePage {

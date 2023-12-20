@@ -37,6 +37,7 @@ import javax.faces.convert.ConverterException;
 import org.primefaces.component.column.Column;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.GridLayoutUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
@@ -108,14 +109,19 @@ public class OrderListRenderer extends CoreRenderer {
         String clientId = ol.getClientId(context);
         UIComponent caption = ol.getFacet("caption");
         String listStyleClass = OrderList.LIST_CLASS;
-        String columnGridClass = ol.getControlsLocation().equals("none")
-                ? GridLayoutUtils.getColumnClass(flex, 1)
-                : (flex ? "col-12 md:col-10" : "ui-g-12 ui-md-10");
+
+        String columnGridClass;
+        if ("none".equals(ol.getControlsLocation())) {
+            columnGridClass = GridLayoutUtils.getColumnClass(flex, 1);
+        }
+        else {
+            columnGridClass = flex ? "col-12 md:col-10" : "ui-g-12 ui-md-10";
+        }
 
         writer.startElement("div", null);
         writer.writeAttribute("class", columnGridClass, null);
 
-        if (ComponentUtils.shouldRenderFacet(caption)) {
+        if (FacetUtils.shouldRenderFacet(caption)) {
             encodeCaption(context, caption);
             listStyleClass += " ui-corner-bottom";
         }

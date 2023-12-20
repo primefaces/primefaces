@@ -24,7 +24,6 @@
 package org.primefaces.integrationtests.datatable;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -44,54 +43,57 @@ import org.primefaces.selenium.component.model.datatable.Header;
 import org.primefaces.selenium.component.model.datatable.Row;
 
 import java.util.Comparator;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class DataTable001Test extends AbstractDataTableTest {
+class DataTable001Test extends AbstractDataTableTest {
 
     @ParameterizedTest
     @MethodSource("provideXhtmls")
     @Order(1)
     @DisplayName("DataTable: Basic & Paginator")
-    public void testBasicAndPaginator(String xhtml) {
+    void basicAndPaginator(String xhtml) {
         // Arrange
         goTo(xhtml);
         DataTable dataTable = getDataTable();
-        Assertions.assertNotNull(dataTable);
+        assertNotNull(dataTable);
 
         // Act
         //page.button.click();
         // Assert
-        Assertions.assertNotNull(dataTable.getPaginatorWebElement());
-        Assertions.assertNotNull(dataTable.getHeaderWebElement());
+        assertNotNull(dataTable.getPaginatorWebElement());
+        assertNotNull(dataTable.getHeaderWebElement());
 
         List<WebElement> rowElts = dataTable.getRowsWebElement();
-        Assertions.assertNotNull(rowElts);
-        Assertions.assertEquals(3, rowElts.size());
+        assertNotNull(rowElts);
+        assertEquals(3, rowElts.size());
 
         List<Row> rows = dataTable.getRows();
-        Assertions.assertNotNull(rows);
-        Assertions.assertEquals(3, rows.size());
+        assertNotNull(rows);
+        assertEquals(3, rows.size());
 
         Row firstRow = dataTable.getRow(0);
-        Assertions.assertEquals("1", firstRow.getCell(0).getText());
-        Assertions.assertEquals("Java", firstRow.getCell(2).getText());
+        assertEquals("1", firstRow.getCell(0).getText());
+        assertEquals("Java", firstRow.getCell(2).getText());
 
         Header header = dataTable.getHeader();
-        Assertions.assertNotNull(header);
-        Assertions.assertNotNull(header.getCells());
-        Assertions.assertEquals(4, header.getCells().size());
-        Assertions.assertEquals("ID", header.getCell(0).getColumnTitle().getText());
-        Assertions.assertEquals("Type", header.getCell(1).getColumnTitle().getText());
-        Assertions.assertEquals("Name", header.getCell(2).getColumnTitle().getText());
+        assertNotNull(header);
+        assertNotNull(header.getCells());
+        assertEquals(4, header.getCells().size());
+        assertEquals("ID", header.getCell(0).getColumnTitle().getText());
+        assertEquals("Type", header.getCell(1).getColumnTitle().getText());
+        assertEquals("Name", header.getCell(2).getColumnTitle().getText());
 
         Paginator paginator = dataTable.getPaginator();
-        Assertions.assertNotNull(paginator);
-        Assertions.assertNotNull(paginator.getPages());
-        Assertions.assertEquals(2, paginator.getPages().size());
-        Assertions.assertEquals(1, paginator.getPage(0).getNumber());
-        Assertions.assertEquals(2, paginator.getPage(1).getNumber());
+        assertNotNull(paginator);
+        assertNotNull(paginator.getPages());
+        assertEquals(2, paginator.getPages().size());
+        assertEquals(1, paginator.getPage(0).getNumber());
+        assertEquals(2, paginator.getPage(1).getNumber());
 
         assertConfiguration(dataTable.getWidgetConfiguration());
 
@@ -100,8 +102,8 @@ public class DataTable001Test extends AbstractDataTableTest {
 
         // Assert - Part 2
         rows = dataTable.getRows();
-        Assertions.assertNotNull(rows);
-        Assertions.assertEquals(2, rows.size());
+        assertNotNull(rows);
+        assertEquals(2, rows.size());
 
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
@@ -110,11 +112,11 @@ public class DataTable001Test extends AbstractDataTableTest {
     @MethodSource("provideXhtmls")
     @Order(2)
     @DisplayName("DataTable: single sort")
-    public void testSortSingle(String xhtml) {
+    void sortSingle(String xhtml) {
         // Arrange
         goTo(xhtml);
         DataTable dataTable = getDataTable();
-        Assertions.assertNotNull(dataTable);
+        assertNotNull(dataTable);
         dataTable.selectPage(1);
 
         // Act - ascending
@@ -144,7 +146,7 @@ public class DataTable001Test extends AbstractDataTableTest {
     @MethodSource("provideXhtmls")
     @Order(3)
     @DisplayName("DataTable: filter")
-    public void testFilter(String xhtml) {
+    void filter(String xhtml) {
         // Arrange
         goTo(xhtml);
         DataTable dataTable = getDataTable();
@@ -171,7 +173,7 @@ public class DataTable001Test extends AbstractDataTableTest {
     @MethodSource("provideXhtmls")
     @Order(4)
     @DisplayName("DataTable: filter plus paging")
-    public void testFilterPlusPaging(String xhtml) {
+    void filterPlusPaging(String xhtml) {
         // Arrange
         goTo(xhtml);
         DataTable dataTable = getDataTable();
@@ -203,12 +205,12 @@ public class DataTable001Test extends AbstractDataTableTest {
     @MethodSource("provideXhtmls")
     @Order(5)
     @DisplayName("DataTable: global filter with globalFilterOnly=false")
-    public void testGlobalFilter(String xhtml) {
+    void globalFilter(String xhtml) {
         // Arrange
         goTo(xhtml);
         DataTable dataTable = getDataTable();
         InputText globalFilter = getGlobalFilter();
-        Assertions.assertNotNull(globalFilter);
+        assertNotNull(globalFilter);
         dataTable.selectPage(1);
         dataTable.sort("Name");
 
@@ -225,12 +227,12 @@ public class DataTable001Test extends AbstractDataTableTest {
     @MethodSource("provideXhtmls")
     @Order(6)
     @DisplayName("DataTable: GitHub #7193 global filter with globalFilterOnly=true")
-    public void testGlobalFilterIncludeNotDisplayedFilter(String xhtml) {
+    void globalFilterIncludeNotDisplayedFilter(String xhtml) {
         // Arrange
         goTo(xhtml);
         DataTable dataTable = getDataTable();
         InputText globalFilter = getGlobalFilter();
-        Assertions.assertNotNull(globalFilter);
+        assertNotNull(globalFilter);
         dataTable.selectPage(1);
         dataTable.sort("Type");
 
@@ -249,16 +251,16 @@ public class DataTable001Test extends AbstractDataTableTest {
     @Order(7)
     @DisplayName("DataTable: rows per page & reset; "
             + "includes https://github.com/primefaces/primefaces/issues/5465 & https://github.com/primefaces/primefaces/issues/5481")
-    public void testRowsPerPageAndReset_5465_5481(String xhtml) {
+    void rowsPerPageAndReset_5465_5481(String xhtml) {
         // Arrange
         goTo(xhtml);
         DataTable dataTable = getDataTable();
-        Assertions.assertNotNull(dataTable);
+        assertNotNull(dataTable);
 
         // Assert
         Select selectRowsPerPage = new Select(dataTable.getPaginatorWebElement().findElement(By.className("ui-paginator-rpp-options")));
-        Assertions.assertEquals("3", selectRowsPerPage.getFirstSelectedOption().getText());
-        Assertions.assertEquals(3, dataTable.getRows().size());
+        assertEquals("3", selectRowsPerPage.getFirstSelectedOption().getText());
+        assertEquals(3, dataTable.getRows().size());
 
         // Act
         dataTable.selectPage(1);
@@ -267,7 +269,7 @@ public class DataTable001Test extends AbstractDataTableTest {
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(dataTable));
 
         // Assert
-        Assertions.assertEquals(languages.size(), dataTable.getRows().size());
+        assertEquals(languages.size(), dataTable.getRows().size());
 
         // Act
         dataTable.filter("Name", "Java");
@@ -275,8 +277,8 @@ public class DataTable001Test extends AbstractDataTableTest {
 
         // Assert
         selectRowsPerPage = new Select(getDataTable().getPaginatorWebElement().findElement(By.className("ui-paginator-rpp-options")));
-        Assertions.assertEquals("3", selectRowsPerPage.getFirstSelectedOption().getText());
-        Assertions.assertEquals(3, getDataTable().getRows().size());
+        assertEquals("3", selectRowsPerPage.getFirstSelectedOption().getText());
+        assertEquals(3, getDataTable().getRows().size());
         assertRows(getDataTable(), languages.stream().limit(3).collect(Collectors.toList())); //implicit checks reset sort & filter
 
         assertConfiguration(getDataTable().getWidgetConfiguration());
@@ -285,9 +287,9 @@ public class DataTable001Test extends AbstractDataTableTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("DataTable Config = " + cfg);
-        Assertions.assertTrue(cfg.has("paginator"));
-        Assertions.assertEquals("wgtTable", cfg.getString("widgetVar"));
-        Assertions.assertEquals(0, cfg.getInt("tabindex"));
+        assertTrue(cfg.has("paginator"));
+        assertEquals("wgtTable", cfg.getString("widgetVar"));
+        assertEquals(0, cfg.getInt("tabindex"));
     }
 
     private static Stream<Arguments> provideXhtmls() {

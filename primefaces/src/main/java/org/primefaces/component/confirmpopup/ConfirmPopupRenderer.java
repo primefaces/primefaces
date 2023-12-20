@@ -31,7 +31,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class ConfirmPopupRenderer extends CoreRenderer {
@@ -88,7 +88,7 @@ public class ConfirmPopupRenderer extends CoreRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", ConfirmPopup.MESSAGE_CLASS, null);
 
-        if (ComponentUtils.shouldRenderFacet(messageFacet)) {
+        if (FacetUtils.shouldRenderFacet(messageFacet)) {
             messageFacet.encodeAll(context);
         }
         else if (messageText != null) {

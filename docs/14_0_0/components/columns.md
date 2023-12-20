@@ -22,6 +22,7 @@ Columns is used by datatable to create columns dynamically.
 | caseSensitiveSort         | false              | Boolean          | Case sensitivity for sorting, insensitive by default.
 | colspan | 1 | Integer | Defines the number of columns the column spans.
 | columnIndexVar | null | String | Name of iterator to refer each index.
+| converter | null | Converter/String | An EL expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id
 | displayPriority           | 0                  | Integer          | Defines the display priority, in which order the columns should be displayed. Lower values have more priority.
 | draggable | true | Boolean | Defines if columns are draggable if draggableColumns is set. Default true.
 | exportColspan | 0 | Integer | Defines the number of columns the column spans to be exported.
@@ -37,7 +38,8 @@ Columns is used by datatable to create columns dynamically.
 | filterFunction | null | MethodExpr | Custom implementation to filter a value against a constraint.
 | filterMatchMode | startsWith | String | Match mode for filtering.
 | filterMaxLength | null | Integer | Maximum number of characters for an input filter.
-| filterOptions | null | Object | A collection of selectitems for filter dropdown.
+| filterPosition | bottom | String | Location of the column filter with respect to header content. Options are 'bottom'(default) and 'top'.
+| filterPlaceholder | null | String | Placeholder for plain input text style filters.
 | filterStyle | null | String | Inline style of the filter element
 | filterStyleClass | null | String | Style class of the filter element
 | filterValue | null | Object | Value of the filter field.

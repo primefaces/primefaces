@@ -23,8 +23,9 @@
  */
 package org.primefaces.integrationtests.blockui;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -35,23 +36,23 @@ import org.primefaces.selenium.component.BlockUI;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Panel;
 
-public class BlockUI001Test extends AbstractPrimePageTest {
+class BlockUI001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("BlockUI: Show the blocker")
-    public void testShow(Page page) {
+    void show(Page page) {
         // Arrange
         BlockUI blockUI = page.blockUI;
         assertClickable(page.panel1);
         assertClickable(page.panel2);
-        Assertions.assertFalse(blockUI.isBlocking());
+        assertFalse(blockUI.isBlocking());
 
         // Act
         blockUI.show();
 
         // Assert
-        Assertions.assertTrue(blockUI.isBlocking());
+        assertTrue(blockUI.isBlocking());
         assertNotClickable(page.panel1);
         assertNotClickable(page.panel2);
         assertConfiguration(blockUI.getWidgetConfiguration());
@@ -60,11 +61,11 @@ public class BlockUI001Test extends AbstractPrimePageTest {
     @Test
     @Order(2)
     @DisplayName("BlockUI: Hide the blocker")
-    public void testHide(Page page) {
+    void hide(Page page) {
         // Arrange
         BlockUI blockUI = page.blockUI;
         blockUI.show();
-        Assertions.assertTrue(blockUI.isBlocking());
+        assertTrue(blockUI.isBlocking());
         assertNotClickable(page.panel1);
         assertNotClickable(page.panel2);
 
@@ -74,20 +75,20 @@ public class BlockUI001Test extends AbstractPrimePageTest {
         // Assert
         assertClickable(page.panel1);
         assertClickable(page.panel2);
-        Assertions.assertFalse(blockUI.isBlocking());
+        assertFalse(blockUI.isBlocking());
         assertConfiguration(blockUI.getWidgetConfiguration());
     }
 
     @Test
     @Order(3)
     @DisplayName("BlockUI: Destroy the blocker and make sure DOM elements removed")
-    public void testDestroy(Page page) {
+    void destroy(Page page) {
         // Arrange
         BlockUI blockUI = page.blockUI;
         blockUI.show();
-        Assertions.assertTrue(blockUI.isBlocking());
-        Assertions.assertEquals(2, blockUI.getOverlays().size());
-        Assertions.assertEquals(1, blockUI.getContents().size());
+        assertTrue(blockUI.isBlocking());
+        assertEquals(2, blockUI.getOverlays().size());
+        assertEquals(1, blockUI.getContents().size());
         assertNotClickable(page.panel1);
         assertNotClickable(page.panel2);
 
@@ -97,15 +98,15 @@ public class BlockUI001Test extends AbstractPrimePageTest {
         // Assert
         assertClickable(page.panel1);
         assertClickable(page.panel2);
-        Assertions.assertEquals(0, blockUI.getOverlays().size());
-        Assertions.assertEquals(0, blockUI.getContents().size());
+        assertEquals(0, blockUI.getOverlays().size());
+        assertEquals(0, blockUI.getContents().size());
         assertNoJavascriptErrors();
     }
 
     @Test
     @Order(4)
     @DisplayName("BlockUI: #8548 Refresh the panel and make sure the blocker is not removed")
-    public void testRefresh(Page page) {
+    void refresh(Page page) {
         // Arrange
         BlockUI blockUI = page.blockUI;
         assertClickable(page.panel1);
@@ -116,14 +117,14 @@ public class BlockUI001Test extends AbstractPrimePageTest {
         blockUI.show();
 
         // Assert
-        Assertions.assertTrue(blockUI.isBlocking());
+        assertTrue(blockUI.isBlocking());
         assertNoJavascriptErrors();
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("BlockUI Config = " + cfg);
-        Assertions.assertEquals(cfg.get("block"), "form:panel1,form:panel2");
+        assertEquals("form:panel1,form:panel2", cfg.get("block"));
     }
 
     public static class Page extends AbstractPrimePage {

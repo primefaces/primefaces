@@ -23,10 +23,7 @@
  */
 package org.primefaces.util;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -41,7 +38,6 @@ import javax.faces.validator.ValidatorException;
 import javax.faces.FacesException;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
@@ -50,14 +46,14 @@ import org.primefaces.component.fileupload.FileUpload;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.model.file.UploadedFile;
 
-public class FileUploadUtilsTest {
+class FileUploadUtilsTest {
 
     private FileUpload fileUpload;
     private InputStream inputStream;
     private PrimeApplicationContext appContext;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         fileUpload = mock(FileUpload.class);
         inputStream = mock(InputStream.class);
         FacesContext context = mock(FacesContext.class);
@@ -69,7 +65,7 @@ public class FileUploadUtilsTest {
     }
 
     @AfterEach
-    public void teardown() {
+    void teardown() {
         inputStream = null;
         fileUpload = null;
     }
@@ -87,37 +83,37 @@ public class FileUploadUtilsTest {
     }
 
     @Test
-    public void isValidType_NameCheck() {
+    void isValidType_NameCheck() {
         when(fileUpload.getAllowTypes()).thenReturn(null);
-        Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.png", "image/png", inputStream)));
+        assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.png", "image/png", inputStream)));
 
         when(fileUpload.getAllowTypes()).thenReturn("/\\.(gif|png|jpe?g)$/i");
-        Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.PNG", "image/png", inputStream)));
-        Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.jpeg", "image/jpeg", inputStream)));
-        Assertions.assertFalse(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.bmp", "image/bitmap", inputStream)));
+        assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.PNG", "image/png", inputStream)));
+        assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.jpeg", "image/jpeg", inputStream)));
+        assertFalse(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.bmp", "image/bitmap", inputStream)));
     }
 
     @Test
-    public void isValidType_MimeTypeCheck() {
+    void isValidType_MimeTypeCheck() {
         when(fileUpload.getAllowTypes()).thenReturn("/image/g");
-        Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.PNG", "image/png", inputStream)));
-        Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.jpeg", "image/png", inputStream)));
-        Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.bmp", "image/bitmap", inputStream)));
-        Assertions.assertFalse(FileUploadUtils.isValidType(appContext, fileUpload, createFile("adobe.pdf", "application/pdf", inputStream)));
+        assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.PNG", "image/png", inputStream)));
+        assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.jpeg", "image/png", inputStream)));
+        assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.bmp", "image/bitmap", inputStream)));
+        assertFalse(FileUploadUtils.isValidType(appContext, fileUpload, createFile("adobe.pdf", "application/pdf", inputStream)));
     }
 
     @Test
-    public void isValidType_InvalidRegex() {
+    void isValidType_InvalidRegex() {
         when(fileUpload.getAllowTypes()).thenReturn("x");
         // all of these should be true when the regex is not valid
-        Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.PNG", "image/png", inputStream)));
-        Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.jpeg", "image/png", inputStream)));
-        Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.bmp", "image/bitmap", inputStream)));
-        Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("adobe.pdf", "application/pdf", inputStream)));
+        assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.PNG", "image/png", inputStream)));
+        assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.jpeg", "image/png", inputStream)));
+        assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.bmp", "image/bitmap", inputStream)));
+        assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("adobe.pdf", "application/pdf", inputStream)));
     }
 
     @Test
-    public void isValidTypeContentTypeCheck() throws IOException {
+    void isValidTypeContentTypeCheck() throws IOException {
         InputStream tif = new ByteArrayInputStream(new byte[]{0x49, 0x49, 0x2A, 0x00});
         InputStream mp4 = new ByteArrayInputStream(new byte[]{0x00, 0x00, 0x00, 0x00, 0x66, 0x74, 0x79, 0x70, 0x69, 0x73, 0x6F, 0x6D});
         InputStream png = new ByteArrayInputStream(IOUtils.toByteArray(getClass().getClassLoader().getResourceAsStream("test.png")));
@@ -128,34 +124,34 @@ public class FileUploadUtilsTest {
         when(fileUpload.isValidateContentType()).thenReturn(false);
 
         when(fileUpload.getAccept()).thenReturn("image/png");
-        Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.TIF", "image/tif", tif)));
-        Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.mp4", "application/music", mp4)));
+        assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.TIF", "image/tif", tif)));
+        assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.mp4", "application/music", mp4)));
 
         when(fileUpload.isValidateContentType()).thenReturn(true);
 
         when(fileUpload.getAccept()).thenReturn("");
-        Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.png", "image/png", png)));
+        assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.png", "image/png", png)));
 
         when(fileUpload.getAccept()).thenReturn(".png,.bmp");
-        Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.png", "image/png", png)));
-        Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.bmp", "image/bmp", bmp)));
-        Assertions.assertFalse(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.tif", "image/tif", tif)));
+        assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.png", "image/png", png)));
+        assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.bmp", "image/bmp", bmp)));
+        assertFalse(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.tif", "image/tif", tif)));
 
         when(fileUpload.getAccept()).thenReturn("video/*");
-        Assertions.assertFalse(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.png", "image/png", png)));
-        Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.mp4", "application/music", mp4)));
+        assertFalse(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.png", "image/png", png)));
+        assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.mp4", "application/music", mp4)));
 
         when(fileUpload.getAccept()).thenReturn("image/tiff");
-        Assertions.assertFalse(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.png", "image/png", png)));
+        assertFalse(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.png", "image/png", png)));
 
         //Tampered - Apache Tika or Mime Type must be in the classpath for this to work
         when(fileUpload.getAccept()).thenReturn("image/gif");
-        Assertions.assertFalse(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.gif", "image/gif", exe)));
-        Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.png", "image/png", gif)));
+        assertFalse(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.gif", "image/gif", exe)));
+        assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.png", "image/png", gif)));
     }
 
     @Test
-    public void requireValidFilePath_AbsoluteFile() {
+    void requireValidFilePath_AbsoluteFile() {
         // Unix systems can start with / but Windows cannot
         String os = System.getProperty("os.name").toLowerCase();
 
@@ -180,7 +176,32 @@ public class FileUploadUtilsTest {
     }
 
     @Test
-    public void requireValidFilePath_PathTraversal() {
+    void requireValidFilePath_AbsoluteFileWithWindowsSpaces() {
+        // Unix systems can start with / but Windows cannot
+        String os = System.getProperty("os.name").toLowerCase();
+
+        // Arrange
+        String relativePath = "/D:/Development/OS%20Projects/primefaces/primefaces/target/test-classes/test.png";
+
+        // Act
+        if (os.contains("win")) {
+            try {
+                FileUploadUtils.requireValidFilePath(relativePath, false);
+                fail("File was absolute path and should have failed");
+            }
+            catch (ValidatorException e) {
+                // Assert
+                assertEquals("Invalid directory, name does not match the canonical path.", e.getFacesMessage().getDetail());
+            }
+        }
+        else {
+            String result = FileUploadUtils.requireValidFilePath(relativePath, false);
+            assertTrue(result.endsWith("test.png"));
+        }
+    }
+
+    @Test
+    void requireValidFilePath_PathTraversal() {
         // Arrange
         String relativePath = "../../test.png";
 
@@ -196,7 +217,7 @@ public class FileUploadUtilsTest {
     }
 
     @Test
-    public void convertJavaScriptRegex_Normal() {
+    void convertJavaScriptRegex_Normal() {
         // Arrange
         String jsRegex = "/(\\.|\\/)(gif|jpe?g|png)$/";
 
@@ -208,7 +229,7 @@ public class FileUploadUtilsTest {
     }
 
     @Test
-    public void convertJavaScriptRegex_CaseInsensitive() {
+    void convertJavaScriptRegex_CaseInsensitive() {
         // Arrange
         String jsRegex = "/\\.(gif|png|jpe?g)$/i";
 
@@ -220,7 +241,7 @@ public class FileUploadUtilsTest {
     }
 
     @Test
-    public void convertJavaScriptRegex_Short() {
+    void convertJavaScriptRegex_Short() {
         // Arrange
         String jsRegex = "/x/";
 
@@ -232,7 +253,7 @@ public class FileUploadUtilsTest {
     }
 
     @Test
-    public void convertJavaScriptRegex_NotRegex() {
+    void convertJavaScriptRegex_NotRegex() {
         // Arrange
         String jsRegex = "x";
 
@@ -244,7 +265,7 @@ public class FileUploadUtilsTest {
     }
 
     @Test
-    public void getValidFilename_GitHub8359() {
+    void getValidFilename_GitHub8359() {
         // Arrange
         String filename = "~myfile.txt";
 
@@ -256,7 +277,7 @@ public class FileUploadUtilsTest {
     }
 
     @Test
-    public void requireValidFilename_Linux() {
+    void requireValidFilename_Linux() {
         try (MockedStatic<FileUploadUtils> fileUploadUtilsMockedStatic = Mockito.mockStatic(FileUploadUtils.class, Mockito.CALLS_REAL_METHODS)) {
             fileUploadUtilsMockedStatic.when(FileUploadUtils::isSystemWindows).thenReturn(false);
 
@@ -270,7 +291,7 @@ public class FileUploadUtilsTest {
     }
 
     @Test
-    public void requireValidFilename_Windows() {
+    void requireValidFilename_Windows() {
         try (MockedStatic<FileUploadUtils> fileUploadUtilsMockedStatic = Mockito.mockStatic(FileUploadUtils.class, Mockito.CALLS_REAL_METHODS)) {
             fileUploadUtilsMockedStatic.when(FileUploadUtils::isSystemWindows).thenReturn(true);
 

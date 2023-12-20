@@ -30,7 +30,7 @@ import org.primefaces.selenium.component.base.AbstractToggleComponent;
  *
  * @deprecated since 10.0 and removal possible anytime after that
  */
-@Deprecated
+@Deprecated(since = "10.0", forRemoval  =  true)
 public abstract class InputSwitch extends AbstractToggleComponent {
 
 }

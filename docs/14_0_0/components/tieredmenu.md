@@ -31,6 +31,9 @@ trigger | null | String | Id of the component whose triggerEvent will show the d
 my | null | String | Corner of menu to align with trigger element.
 at | null | String | Corner of trigger to align with menu element.
 overlay | false | Boolean | Defines positioning, when enabled menu is displayed with absolute position relative to the trigger. Default is false, meaning static positioning.
+showDelay | 0 | int | Delay in milliseconds before displaying the submenu. Default is 0 meaning immediate.
+hideDelay | 0 | int | Delay in milliseconds before hiding the submenu., if 0 not hidden until document.click(). Default is 0.
+tabindex | 0 | String | Position of the element in the tabbing order.
 triggerEvent | click | String | Event name of trigger that will show the dynamic positioned menu.
 toggleEvent | hover | String | Event to toggle the submenus, valid values are "hover" and "click".
 

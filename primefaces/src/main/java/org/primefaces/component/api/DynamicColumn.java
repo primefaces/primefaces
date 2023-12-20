@@ -25,7 +25,6 @@ package org.primefaces.component.api;
 
 import java.io.IOException;
 import java.util.List;
-
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
@@ -49,6 +48,11 @@ public class DynamicColumn implements UIColumn {
         this.baseColumnKey = columns.getColumnKey();
         this.separatorChar = UINamingContainer.getSeparatorChar(context);
         this.columnKey = baseColumnKey + separatorChar + index;
+    }
+
+    @Override
+    public UIComponent asUIComponent() {
+        return columns;
     }
 
     public int getIndex() {
@@ -100,8 +104,8 @@ public class DynamicColumn implements UIColumn {
     }
 
     @Override
-    public String getSelectionMode() {
-        return columns.getSelectionMode();
+    public boolean isSelectionBox() {
+        return columns.isSelectionBox();
     }
 
     @Override
@@ -363,4 +367,13 @@ public class DynamicColumn implements UIColumn {
         return columns.getTitle();
     }
 
+    @Override
+    public String getFilterPlaceholder() {
+        return columns.getFilterPlaceholder();
+    }
+
+    @Override
+    public Object getConverter() {
+        return columns.getConverter();
+    }
 }

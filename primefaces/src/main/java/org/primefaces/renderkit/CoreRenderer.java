@@ -686,7 +686,8 @@ public abstract class CoreRenderer extends Renderer {
         return PrimeRequestContext.getCurrentInstance(context).getStyleBuilder();
     }
 
-    protected void renderValidationMetadata(FacesContext context, EditableValueHolder component) throws IOException {
+    protected void renderValidationMetadata(FacesContext context, EditableValueHolder component,
+                                            ClientValidator... clientValidators) throws IOException {
         if (!PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             return; //GitHub #4049: short circuit method
         }
@@ -744,7 +745,7 @@ public abstract class CoreRenderer extends Renderer {
                 }
                 if (beanValidationMetadata.getValidatorIds() != null) {
                     if (validatorIds == null) {
-                        validatorIds = new ArrayList<>();
+                        validatorIds = new ArrayList<>(5);
                     }
                     validatorIds.addAll(beanValidationMetadata.getValidatorIds());
                 }
@@ -763,14 +764,27 @@ public abstract class CoreRenderer extends Renderer {
                 if (validator instanceof ClientValidator) {
                     ClientValidator clientValidator = (ClientValidator) validator;
                     if (validatorIds == null) {
-                        validatorIds = new ArrayList<>();
+                        validatorIds = new ArrayList<>(5);
                     }
                     validatorIds.add(clientValidator.getValidatorId());
-                    Map<String, Object> metadata = clientValidator.getMetadata();
 
+                    Map<String, Object> metadata = clientValidator.getMetadata();
                     if (metadata != null && !metadata.isEmpty()) {
                         renderValidationMetadataMap(context, metadata);
                     }
+                }
+            }
+        }
+        if (clientValidators != null && clientValidators.length > 0) {
+            for (ClientValidator clientValidator : clientValidators) {
+                if (validatorIds == null) {
+                    validatorIds = new ArrayList<>(5);
+                }
+                validatorIds.add(clientValidator.getValidatorId());
+
+                Map<String, Object> metadata = clientValidator.getMetadata();
+                if (metadata != null && !metadata.isEmpty()) {
+                    renderValidationMetadataMap(context, metadata);
                 }
             }
         }

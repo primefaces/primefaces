@@ -18,13 +18,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK ${{ matrix.java }}
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: ${{ matrix.java }}
           cache: 'maven'
       - name: Build
-        run: mvn clean install -T1C -Psecurity-checks,jsdoc,minify --batch-mode --show-version
+        run: mvn clean install -T1C -Pjsdoc,minify --batch-mode --show-version
       - name: Sonar Cloud
         if: github.repository == 'primefaces/primefaces' && github.ref == 'refs/heads/master' && matrix.java == 17
         run: mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.organization=primefaces -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=${{secrets.SONAR_TOKEN}}  -fprimefaces/pom.xml
@@ -45,7 +45,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK ${{ matrix.java }}
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: ${{ matrix.java }}
@@ -68,7 +68,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK ${{ matrix.java }}
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: ${{ matrix.java }}

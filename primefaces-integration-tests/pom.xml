@@ -33,8 +33,8 @@
         <lombok.version>1.18.30</lombok.version>
         <myfaces.version>2.3.10</myfaces.version>
         <myfaces-next.version>2.3-next-M7</myfaces-next.version>
-        <tomcat.version>9.0.82</tomcat.version>
-        <resteasy.version>5.0.8.Final</resteasy.version>
+        <tomcat.version>9.0.84</tomcat.version>
+        <resteasy.version>5.0.9.Final</resteasy.version>
         <owb.version>2.0.27</owb.version>
         <jetty.version>9.4.53.v20231009</jetty.version>
     </properties>
@@ -217,7 +217,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.13.0</version>
+            <version>3.14.0</version>
             <scope>runtime</scope>
         </dependency>
 
@@ -396,7 +396,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.6.0</version>
+                <version>3.6.1</version>
             </plugin>
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>

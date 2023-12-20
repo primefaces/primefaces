@@ -30,7 +30,7 @@
 
         <!-- dependency versions -->
         <lombok.version>1.18.30</lombok.version>
-        <tomcat.version>10.1.14</tomcat.version>
+        <tomcat.version>10.1.16</tomcat.version>
         <jetty.version>11.0.15</jetty.version>
     </properties>
 
@@ -91,7 +91,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.13.0</version>
+            <version>3.14.0</version>
             <scope>runtime</scope>
         </dependency>
 
@@ -229,7 +229,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.6.0</version>
+                <version>3.6.1</version>
             </plugin>
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
@@ -370,7 +370,7 @@
                 <dependency>
                     <groupId>org.glassfish</groupId>
                     <artifactId>jakarta.faces</artifactId>
-                    <version>4.0.4</version>
+                    <version>4.0.5</version>
                 </dependency>
             </dependencies>
         </profile>

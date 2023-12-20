@@ -60,7 +60,7 @@ PrimeFaces.widget.CommandLink = PrimeFaces.widget.BaseWidget.extend({
                 }
             }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings, args) {
                 $this.ajaxCount--;
-                if ($this.ajaxCount > 0 || args.redirect) {
+                if ($this.ajaxCount > 0 || !args || args.redirect) {
                     return;
                 }
                 if (PrimeFaces.ajax.Utils.isXhrSource($this, settings)) {

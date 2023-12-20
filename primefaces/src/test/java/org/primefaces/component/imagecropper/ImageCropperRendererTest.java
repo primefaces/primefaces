@@ -27,9 +27,11 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.imageio.ImageIO;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -42,13 +44,13 @@ import java.io.ByteArrayOutputStream;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
-public class ImageCropperRendererTest {
+class ImageCropperRendererTest {
 
     private FacesContext context;
     private ExternalContext externalContext;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         context = mock(FacesContext.class);
         externalContext = mock(ExternalContext.class);
         when(context.getExternalContext()).thenReturn(externalContext);
@@ -56,16 +58,16 @@ public class ImageCropperRendererTest {
     }
 
     @Test
-    public void checkStreamIsNullButImageIsGiven() {
+    void checkStreamIsNullButImageIsGiven() {
         ImageCropper cropper = new ImageCropper();
         cropper.setImage("org/primefaces/images/nature/nature1.jpg");
         ImageCropperRenderer renderer = new ImageCropperRenderer();
         Object value = renderer.getConvertedValue(context, cropper, "1_100_1_100");
-        Assertions.assertNotNull(value);
+        assertNotNull(value);
     }
 
     @Test
-    public void checkImageIsNullButStreamIsGiven() {
+    void checkImageIsNullButStreamIsGiven() {
         ImageCropper cropper = new ImageCropper();
         StreamedContent stream = DefaultStreamedContent.builder().contentType("image/png").stream(() -> {
             try {
@@ -84,25 +86,25 @@ public class ImageCropperRendererTest {
         cropper.setImage(stream);
         ImageCropperRenderer renderer = new ImageCropperRenderer();
         Object value = renderer.getConvertedValue(context, cropper, "1_100_1_100");
-        Assertions.assertNotNull(value);
+        assertNotNull(value);
     }
 
     @Test
-    public void checkImageAndStreamAreNull() {
+    void checkImageAndStreamAreNull() {
         ImageCropper cropper = new ImageCropper();
         try {
             ImageCropperRenderer renderer = new ImageCropperRenderer();
             renderer.getConvertedValue(context, cropper, "1_100_1_100");
-            Assertions.fail("should thrown IllegalArgumentException");
+            fail("should thrown IllegalArgumentException");
         }
         catch (IllegalArgumentException e) {
             String message = e.getMessage();
             if (!"ImageCropper 'image' must be either a String relative path or a StreamedObject.".equals(message)) {
-                Assertions.fail("should thrown IllegalArgumentException with message: " + message);
+                fail("should thrown IllegalArgumentException with message: " + message);
             }
         }
         catch (Exception e) {
-            Assertions.fail("should thrown IllegalArgumentException");
+            fail("should thrown IllegalArgumentException");
         }
     }
 

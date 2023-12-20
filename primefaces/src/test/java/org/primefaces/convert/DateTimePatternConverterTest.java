@@ -32,7 +32,7 @@ import org.junit.jupiter.api.Test;
  * Test the Java date time pattern to jquery UI pattern conversion
  * {@link DateTimePatternConverter}.
  */
-public class DateTimePatternConverterTest {
+class DateTimePatternConverterTest {
 
     private static final PatternConverter[] PATTERN_CONVERTERS = new PatternConverter[]{new OldTimePatternConverter(),
         new OldDatePatternConverter()};
@@ -40,7 +40,7 @@ public class DateTimePatternConverterTest {
     private PatternConverter converter;
 
     @Test
-    public void testCommonPatterns() {
+    void commonPatterns() {
         assertConvertsSame("yy-mm-dd", "yyyy-MM-dd");
         assertConvertsSame("dd-mm-yy", "dd-MM-yyyy");
         assertConvertsSame("yy-mm-dd HH:mm:ss", "yyyy-MM-dd HH:mm:ss");
@@ -57,7 +57,7 @@ public class DateTimePatternConverterTest {
     }
 
     @Test
-    public void testDoublePatternLetters() {
+    void doublePatternLetters() {
         assertConvertsSame("AA", "AA");
         assertConvertsSame("BB", "BB");
         assertConvertsSame("CC", "CC");
@@ -114,13 +114,13 @@ public class DateTimePatternConverterTest {
     }
 
     @Test
-    public void testEmpty() {
+    void empty() {
         assertConvertsSame("", null);
         assertConvertsSame("", "");
     }
 
     @Test
-    public void testLiteral() {
+    void literal() {
         // Literal that needs no quoting
         assertConvertsSame(".", ".");
         assertConvertsSame(":", ":");
@@ -154,7 +154,7 @@ public class DateTimePatternConverterTest {
     }
 
     @Test
-    public void testQuadruplePatternLetters() {
+    void quadruplePatternLetters() {
         assertConvertsSame("AAAA", "AAAA");
         assertConvertsSame("BBBB", "BBBB");
         assertConvertsSame("CCCC", "CCCC");
@@ -211,7 +211,7 @@ public class DateTimePatternConverterTest {
     }
 
     @Test
-    public void testQuintuplePatternLetters() {
+    void quintuplePatternLetters() {
         assertConvertsSame("AAAAA", "AAAAA");
         assertConvertsSame("BBBBB", "BBBBB");
         assertConvertsSame("CCCCC", "CCCCC");
@@ -268,7 +268,7 @@ public class DateTimePatternConverterTest {
     }
 
     @Test
-    public void testSimpleDateFormatExamples() {
+    void simpleDateFormatExamples() {
         assertConvertsDifferently("yy.mm.dd G' at 'HH:mm:ss z", "yy.mm.dd G 'TTt' HH:mm:ss z",
                 "yyyy.MM.dd G 'at' HH:mm:ss z");
         assertConvertsSame("D, M d, ''y", "EEE, MMM d, ''yy");
@@ -284,7 +284,7 @@ public class DateTimePatternConverterTest {
     }
 
     @Test
-    public void testSinglePatternLetters() {
+    void singlePatternLetters() {
         assertConvertsSame("A", "A");
         assertConvertsSame("B", "B");
         assertConvertsSame("C", "C");
@@ -341,7 +341,7 @@ public class DateTimePatternConverterTest {
     }
 
     @Test
-    public void testTriplePatternLetters() {
+    void triplePatternLetters() {
         assertConvertsSame("AAA", "AAA");
         assertConvertsSame("BBB", "BBB");
         assertConvertsSame("CCC", "CCC");
@@ -416,7 +416,7 @@ public class DateTimePatternConverterTest {
     }
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         this.converter = new DateTimePatternConverter();
     }
 

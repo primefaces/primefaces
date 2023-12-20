@@ -59,7 +59,7 @@ public class PrimeFacesContext extends FacesContextWrapper {
 
         moveScriptsToBottom = config.isMoveScriptsToBottom();
         if (moveScriptsToBottom) {
-            moveScriptsToBottomState = new MoveScriptsToBottomState();
+            moveScriptsToBottomState = new MoveScriptsToBottomState(config.isMoveScriptsToBottomDeferred());
         }
 
         csp = config.isCsp();

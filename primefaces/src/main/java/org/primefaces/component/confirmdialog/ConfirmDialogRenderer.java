@@ -33,6 +33,7 @@ import org.primefaces.component.dialog.Dialog;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class ConfirmDialogRenderer extends CoreRenderer {
@@ -101,7 +102,7 @@ public class ConfirmDialogRenderer extends CoreRenderer {
         writer.writeAttribute("id", dialog.getClientId(context) + "_title", null);
         writer.writeAttribute("class", Dialog.TITLE_CLASS, null);
 
-        if (ComponentUtils.shouldRenderFacet(headerFacet)) {
+        if (FacetUtils.shouldRenderFacet(headerFacet)) {
             headerFacet.encodeAll(context);
         }
         else if (header != null) {
@@ -144,7 +145,7 @@ public class ConfirmDialogRenderer extends CoreRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", ConfirmDialog.MESSAGE_CLASS, null);
 
-        if (ComponentUtils.shouldRenderFacet(messageFacet)) {
+        if (FacetUtils.shouldRenderFacet(messageFacet)) {
             messageFacet.encodeAll(context);
         }
         else if (messageText != null) {

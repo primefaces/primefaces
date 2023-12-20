@@ -127,7 +127,7 @@
                 <h5>RadioButton</h5>
                 <p:dataTable id="radioDT" var="product" value="#{dtSelectionView.products5}"
                              selection="#{dtSelectionView.selectedProduct}" rowKey="#{product.id}">
-                    <p:column selectionMode="single" style="width:16px;text-align:center"/>
+                    <p:column selectionBox="true" style="width:16px;text-align:center"/>
                     <p:column headerText="Code">
                         <h:outputText value="#{product.code}" />
                     </p:column>
@@ -155,7 +155,7 @@
                 <p:dataTable id="checkboxDT" var="product" value="#{dtSelectionView.products6}"
                              selection="#{dtSelectionView.selectedProducts}" rowKey="#{product.id}"
                              style="margin-bottom:0" paginator="true" rows="5" selectionPageOnly="false" rowSelectMode="none">
-                    <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                    <p:column selectionBox="true" style="width:16px;text-align:center"/>
                     <p:column headerText="Code">
                         <h:outputText value="#{product.code}" />
                     </p:column>

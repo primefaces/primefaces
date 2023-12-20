@@ -23,16 +23,13 @@
  */
 package org.primefaces.component.treetable.feature;
 
-import javax.faces.FacesException;
-import javax.faces.context.FacesContext;
 import java.io.IOException;
-import java.text.Collator;
 import java.util.Arrays;
-import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import javax.faces.FacesException;
+import javax.faces.context.FacesContext;
 
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.treetable.TreeTable;
@@ -44,6 +41,7 @@ import org.primefaces.model.SortOrder;
 import org.primefaces.model.TreeNode;
 import org.primefaces.model.TreeNodeList;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.SortTableComparator;
 
 public class SortFeature implements TreeTableFeature {
 
@@ -122,15 +120,10 @@ public class SortFeature implements TreeTableFeature {
             return;
         }
 
-        AtomicInteger comparisonResult = new AtomicInteger();
-
         String var = table.getVar();
-        Locale locale = table.resolveDataLocale();
-        Collator collator = Collator.getInstance(locale);
-
         Object varBackup = context.getExternalContext().getRequestMap().get(var);
 
-        sortNode(table, sortBy, comparisonResult, root, context, var, locale, collator);
+        sortNode(context, table, root);
 
         if (varBackup == null) {
             context.getExternalContext().getRequestMap().remove(var);
@@ -140,38 +133,17 @@ public class SortFeature implements TreeTableFeature {
         }
     }
 
-    protected void sortNode(TreeTable table, Map<String, SortMeta> sortBy, AtomicInteger comparisonResult,
-            TreeNode<?> node, FacesContext context, String var, Locale locale, Collator collator) {
+    protected void sortNode(FacesContext context, TreeTable table, TreeNode<?> node) {
         TreeNodeList<?> children = (TreeNodeList) node.getChildren();
 
         if (children != null && !children.isEmpty()) {
             Object[] childrenArray = children.toArray();
-
-            Arrays.sort(childrenArray, (o1, o2) -> {
-                for (SortMeta sortMeta : sortBy.values()) {
-                    comparisonResult.set(0);
-
-                    table.invokeOnColumn(sortMeta.getColumnKey(), column -> {
-                        int result = table.compare(context, var, sortMeta,
-                                ((TreeNode) o1).getData(),
-                                ((TreeNode) o2).getData(),
-                                collator, locale);
-                        comparisonResult.set(result);
-                    });
-
-                    if (comparisonResult.get() != 0) {
-                        return comparisonResult.get();
-                    }
-                }
-
-                return 0;
-            });
-
+            Arrays.sort(childrenArray, SortTableComparator.comparingTreeNodeSortByVE(context, table));
             for (int i = 0; i < childrenArray.length; i++) {
                 children.set(i, (TreeNode) childrenArray[i]);
             }
             for (int i = 0; i < children.size(); i++) {
-                sortNode(table, sortBy, comparisonResult, children.get(i), context, var, locale, collator);
+                sortNode(context, table, children.get(i));
             }
         }
     }

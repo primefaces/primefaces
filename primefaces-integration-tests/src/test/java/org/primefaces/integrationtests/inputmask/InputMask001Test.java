@@ -23,8 +23,10 @@
  */
 package org.primefaces.integrationtests.inputmask;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -33,80 +35,80 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.InputMask;
 
-public class InputMask001Test extends AbstractInputMaskTest {
+class InputMask001Test extends AbstractInputMaskTest {
 
     @Test
     @Order(1)
     @DisplayName("InputMask: Default AJAX event fires on blur")
-    public void testAjaxChangeEvent(final Page page) {
+    void ajaxChangeEvent(final Page page) {
         // Arrange
         final InputMask inputMask = page.inputMask;
-        Assertions.assertEquals("", inputMask.getValue());
+        assertEquals("", inputMask.getValue());
 
         // Act
         inputMask.setValue("123456789");
 
         // Assert
-        Assertions.assertEquals("123-45-6789", inputMask.getValue());
+        assertEquals("123-45-6789", inputMask.getValue());
         assertConfiguration(inputMask.getWidgetConfiguration());
     }
 
     @Test
     @Order(2)
     @DisplayName("InputMask: Value is allowed if it does not match the mask and autoClear='false'")
-    public void testAutoClearFalse(final Page page) {
+    void autoClearFalse(final Page page) {
         // Arrange
         final InputMask inputMask = page.inputMask;
-        Assertions.assertEquals("", inputMask.getValue());
+        assertEquals("", inputMask.getValue());
 
         // Act
         inputMask.setValue("12345");
 
         // Assert
-        Assertions.assertEquals("123-45-____", inputMask.getValue());
+        assertEquals("123-45-____", inputMask.getValue());
         assertConfiguration(inputMask.getWidgetConfiguration());
     }
 
     @Test
     @Order(3)
     @DisplayName("InputMask: Server side validation should reject value if it does not match mask when validateMask='true'")
-    public void testServerSideValidation(final Page page) {
+    void serverSideValidation(final Page page) {
         // Arrange
         final InputMask inputMask = page.inputMask;
-        Assertions.assertEquals("", inputMask.getValue());
+        assertEquals("", inputMask.getValue());
 
         // Act
         inputMask.setValue("12345");
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("", inputMask.getValue());
+        assertEquals("", inputMask.getValue());
         assertConfiguration(inputMask.getWidgetConfiguration());
     }
 
     @Test
     @Order(4)
     @DisplayName("InputMask: Client side widget get and set value methods")
-    public void testWidgetGetSet(final Page page) {
+    void widgetGetSet(final Page page) {
         // Arrange
         final InputMask inputMask = page.inputMask;
-        Assertions.assertEquals("", inputMask.getValue());
+        assertEquals("", inputMask.getValue());
 
         // Act
         inputMask.setWidgetValue("45678");
 
         // Assert
-        Assertions.assertEquals("456-78-____", inputMask.getWidgetValue());
-        Assertions.assertEquals("45678", inputMask.getWidgetValueUnmasked());
+        assertEquals("456-78-____", inputMask.getWidgetValue());
+        assertEquals("45678", inputMask.getWidgetValueUnmasked());
         assertConfiguration(inputMask.getWidgetConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("InputMask Config = " + cfg);
-        Assertions.assertEquals("999-99-9999", cfg.getString("mask"));
-        Assertions.assertFalse(cfg.has("placeholder"));
-        Assertions.assertFalse(cfg.getBoolean(AbstractInputMaskTest.AUTO_CLEAR));
+        assertEquals("999-99-9999", cfg.getString("mask"));
+        assertFalse(cfg.has("placeholder"));
+        assertFalse(cfg.getBoolean(AbstractInputMaskTest.AUTO_CLEAR));
     }
 
     public static class Page extends AbstractPrimePage {

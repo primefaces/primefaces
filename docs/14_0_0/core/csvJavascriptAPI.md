@@ -9,6 +9,7 @@ method used by PrimeFaces commands like `p:commandButton` when `validateClient` 
 /**
  * Triggers client-side-validation of single or multiple containers (complex validation or simple inputs).
  * @function
+ * @param {JQuery} source The source element.
  * @param {string | HTMLElement | JQuery} process The elements to be processed.
  * @param {string | HTMLElement | JQuery} update The elements to be updated.
  * @param {boolean} highlight If invalid elements should be highlighted.
@@ -17,14 +18,14 @@ method used by PrimeFaces commands like `p:commandButton` when `validateClient` 
  * @param {boolean} validateInvisibleElements If invisible elements should be validated.
  * @return {boolean} `true` if the request would not result in validation errors, or `false` otherwise.
  */
-validate : function(process, update, highlight, focus, renderMessages, validateInvisibleElements) {
+validate : function(source, process, update, highlight, focus, renderMessages, validateInvisibleElements) {
     ...
 }
 ```
 
 To validate a form or container, you can simply use:
 ```js
-PrimeFaces.validation.validate($('#myForm'), $('#myForm'), true, true, true, false);
+PrimeFaces.validation.validate($('#myButton'), $('#myForm'), $('#myForm'), true, true, true, false);
 ```
 
 ## PrimeFaces.validation.validateInstant

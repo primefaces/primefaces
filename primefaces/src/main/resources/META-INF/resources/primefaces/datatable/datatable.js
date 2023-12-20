@@ -281,6 +281,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * @inheritdoc
      */
     _render: function() {
+        var $this = this;
         this.isRTL = this.jq.hasClass('ui-datatable-rtl');
         this.cfg.partialUpdate = (this.cfg.partialUpdate === false) ? false : true;
 
@@ -302,7 +303,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         if(this.cfg.stickyHeader) {
-            this.setupStickyHeader();
+            PrimeFaces.queueTask(function () {$this.setupStickyHeader();}, 1);
         }
 
         if(this.cfg.onRowClick) {
@@ -755,7 +756,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         filter.off('keydown.dataTable-blockenter ' + filterEventName)
         .on('keydown.dataTable-blockenter', PrimeFaces.utils.blockEnterKey)
         .on(filterEventName, function(e) {
-            if (PrimeFaces.utils.ignoreFilterKey(e)) {
+            if (e.key && PrimeFaces.utils.ignoreFilterKey(e)) {
                 return;
             }
 
@@ -1356,7 +1357,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             reflowHeaderText = headerColumn.find('.ui-reflow-headertext:first').text(),
             colTitleEl = headerColumn.children('.ui-column-title'),
             title = (reflowHeaderText && reflowHeaderText.length) ? reflowHeaderText : colTitleEl.text();
-            this.tbody.find('> tr:not(.ui-datatable-empty-message,.ui-datatable-summaryrow) > td:nth-child(' + (i + 1) + ')').prepend('<span class="ui-column-title">' + PrimeFaces.escapeHTML(title) + '</span>');
+
+            var column = this.tbody.find('> tr:not(.ui-datatable-empty-message,.ui-datatable-summaryrow) > td:nth-child(' + (i + 1) + ')')
+            column.find(".ui-column-title").remove(); // #11078
+            column.prepend('<span class="ui-column-title">' + PrimeFaces.escapeHTML(title) + '</span>');
         }
     },
 

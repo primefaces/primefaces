@@ -23,7 +23,9 @@
  */
 package org.primefaces.integrationtests.inputmask;
 
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -33,22 +35,22 @@ import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.InputMask;
 import org.primefaces.selenium.component.Messages;
 
-public class InputMask005Test extends AbstractInputMaskTest {
+class InputMask005Test extends AbstractInputMaskTest {
 
     @Test
     @Order(1)
     @DisplayName("InputMask: readonly and disabled together with CommandButton set to ajax=false - https://github.com/primefaces/primefaces/issues/7362")
-    public void testReadonlyDisabled(final Page page) {
+    void readonlyDisabled(final Page page) {
         // Arrange
         final InputMask inputMask = page.inputMask;
-        Assertions.assertNotNull(inputMask);
+        assertNotNull(inputMask);
 
         // Act
         page.button.click();
 
         // Assert
-        Assertions.assertEquals(1, page.msgs.getAllMessages().size());
-        Assertions.assertEquals("test", page.msgs.getMessage(0).getSummary());
+        assertEquals(1, page.msgs.getAllMessages().size());
+        assertEquals("test", page.msgs.getMessage(0).getSummary());
         assertNoJavascriptErrors();
     }
 

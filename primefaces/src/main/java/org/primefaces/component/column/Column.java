@@ -25,12 +25,12 @@ package org.primefaces.component.column;
 
 import java.io.IOException;
 import java.util.List;
-
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.celleditor.CellEditor;
+import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.LangUtils;
 
 public class Column extends ColumnBase {
@@ -39,20 +39,7 @@ public class Column extends ColumnBase {
 
     @Override
     public CellEditor getCellEditor() {
-        CellEditor cellEditor = null;
-
-        int childCount = getChildCount();
-        if (childCount > 0) {
-            for (int i = 0; i < childCount; i++) {
-                UIComponent child = getChildren().get(i);
-                if (child instanceof CellEditor && ((CellEditor) child).isRendered()) {
-                    cellEditor = (CellEditor) child;
-                    break;
-                }
-            }
-        }
-
-        return cellEditor;
+        return ComponentTraversalUtils.firstChildRendered(CellEditor.class, this);
     }
 
     @Override

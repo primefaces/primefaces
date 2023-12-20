@@ -818,7 +818,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         var escape = $this.cfg.escape;
                         var text = escape ? item.html() : item.text();
                         var escaped_re = escape ? /${PrimeFaces.escapeHTML(text)}/g : /${text}/g;
-                        item.html(text.replace(escaped_re, '<span class="ui-autocomplete-query">$&</span>'));
+                        text = text.replace(escaped_re, '$&');
+                        item.html(text.replace(re, '<span class="ui-autocomplete-query">$&</span>'));
                     });
                 }
             }

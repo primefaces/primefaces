@@ -105,4 +105,41 @@ if (window.PrimeFaces) {
         }
     };
 
+    PrimeFaces.validator['primefaces.File'] = {
+        FILE_LIMIT_MESSAGE_ID: 'primefaces.FileValidator.FILE_LIMIT',
+        ALLOW_TYPES_MESSAGE_ID: 'primefaces.FileValidator.ALLOW_TYPES',
+        SIZE_LIMIT_MESSAGE_ID: 'primefaces.FileValidator.SIZE_LIMIT',
+
+        validate: function(element, value) {
+            if(value !== null) {
+
+                var filelimit = element.data('p-filelimit'),
+                    allowtypes = element.data('p-allowtypes'),
+                    sizelimit = element.data('p-sizelimit'),
+                    vc = PrimeFaces.validation.ValidationContext;
+
+                var allowtypesRegExp = null;
+                if (allowtypes) {
+                    // normally a regex is a object like /(\.|\/)(csv)$/
+                    // but as we parse the data-attribute from string to RegEx object, we must remove leading and ending slashes
+                    var transformedAllowtypes = allowtypes.substring(1, allowtypes.length - 1);
+                    allowtypesRegExp = new RegExp(transformedAllowtypes);
+                }
+
+                if (filelimit && value.length > filelimit) {
+                    throw vc.getMessage(this.FILE_LIMIT_MESSAGE_ID, filelimit);
+                }
+
+                for (var file of value) {
+                    if (allowtypesRegExp && (!allowtypesRegExp.test(file.type) && !allowtypesRegExp.test(file.name)))  {
+                        throw vc.getMessage(this.ALLOW_TYPES_MESSAGE_ID, file.name);
+                    }
+
+                    if (sizelimit && file.size > sizelimit) {
+                        throw vc.getMessage(this.SIZE_LIMIT_MESSAGE_ID, file.name, PrimeFaces.utils.formatBytes(sizelimit));
+                    }
+                }
+            }
+        },
+    };
 }

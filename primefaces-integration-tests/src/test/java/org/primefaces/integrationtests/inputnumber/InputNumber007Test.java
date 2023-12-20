@@ -35,34 +35,37 @@ import org.primefaces.selenium.component.InputNumber;
 import org.primefaces.selenium.component.InputText;
 import org.primefaces.selenium.component.Messages;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class InputNumber007Test extends AbstractPrimePageTest {
+class InputNumber007Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("InputNumber: no valueChange event after it has been updated, is blurred and NO inputs were made")
-    public void testNoValueChangeEventAfterUpdate(Page page) {
-        // Arrange
-        Messages messages = page.messages;
-        InputText otherInput = page.otherInput;
+    void noValueChangeEventAfterUpdate(Page page) {
+        assertDoesNotThrow(() -> {
+            // Arrange
+            Messages messages = page.messages;
+            InputText otherInput = page.otherInput;
 
-        // Act
-        // Sends tab after changing input, focus is on inputNumber afterwards
-        otherInput.setValue("asdf");
+            // Act
+            // Sends tab after changing input, focus is on inputNumber afterwards
+            otherInput.setValue("asdf");
 
-        // blur inputNumber without sending any inputs. no guardAjax used here, ajax should not be happening
-        otherInput.getInput().click();
-        TestUtils.wait(100);
+            // blur inputNumber without sending any inputs. no guardAjax used here, ajax should not be happening
+            otherInput.getInput().click();
+            TestUtils.wait(100);
 
-        // Assert
-        assertNotDisplayed(messages);
+            // Assert
+            assertNotDisplayed(messages);
+        });
     }
 
     @Test
     @Order(2)
     @DisplayName("InputNumber: valueChange event after it has been updated, is blurred AND inputs were made")
-    public void testValueChangeEventAfterUpdate(Page page) {
+    void valueChangeEventAfterUpdate(Page page) {
         // Arrange
         Messages messages = page.messages;
         InputText otherInput = page.otherInput;

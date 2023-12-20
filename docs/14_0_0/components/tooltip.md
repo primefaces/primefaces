@@ -30,7 +30,7 @@ showEvent | mouseover | String | Event displaying the tooltip.
 showEffect | fade | String | Effect to be used for displaying.
 hideEvent | mouseout | String | Event hiding the tooltip.
 hideEffect | fade | String | Effect to be used for hiding.
-showDelay | 150 | Integer | Delay time to show tooltip in milliseconds.
+showDelay | 400 | Integer | Delay time to show tooltip in milliseconds.
 hideDelay | 0 | Integer | Delay time to hide tooltip in milliseconds.
 for | null | String | Component to attach the tooltip.
 style | null | String | Inline style of the tooltip.

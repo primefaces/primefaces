@@ -24,7 +24,7 @@
 package org.primefaces.application.resource;
 
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.ArgumentMatchers.matches;
@@ -35,21 +35,20 @@ import java.io.IOException;
 import javax.faces.FacesException;
 import javax.faces.context.ResponseWriter;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
 
-public class MoveScriptsToBottomResponseWriterTest {
+class MoveScriptsToBottomResponseWriterTest {
 
     private MoveScriptsToBottomResponseWriter writer;
     private MoveScriptsToBottomState state;
     private ResponseWriter wrappedWriter;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         wrappedWriter = mock(ResponseWriter.class);
         state = new MoveScriptsToBottomState();
         writer = new MoveScriptsToBottomResponseWriter(wrappedWriter, state);
@@ -58,9 +57,9 @@ public class MoveScriptsToBottomResponseWriterTest {
     }
 
     @Test
-    public void testNoScripts() throws IOException {
-        Assertions.assertTrue(state.getInlines().isEmpty());
-        Assertions.assertTrue(state.getIncludes().isEmpty());
+    void noScripts() throws IOException {
+        assertTrue(state.getInlines().isEmpty());
+        assertTrue(state.getIncludes().isEmpty());
 
         writer.startElement("style", null);
         verify(wrappedWriter).startElement("style", null);
@@ -71,12 +70,12 @@ public class MoveScriptsToBottomResponseWriterTest {
         writer.endElement("style");
         verify(wrappedWriter).endElement("style");
 
-        Assertions.assertTrue(state.getInlines().isEmpty());
-        Assertions.assertTrue(state.getIncludes().isEmpty());
+        assertTrue(state.getInlines().isEmpty());
+        assertTrue(state.getIncludes().isEmpty());
     }
 
     @Test
-    public void testSingleInlineScript() throws IOException {
+    void singleInlineScript() throws IOException {
         writer.startElement("HTML", null);
         verify(wrappedWriter).startElement("HTML", null);
 
@@ -90,9 +89,9 @@ public class MoveScriptsToBottomResponseWriterTest {
         writer.endElement("script");
         verify(wrappedWriter, never()).endElement("script");
 
-        Assertions.assertEquals(1, state.getInlines().get("text/javascript").size());
-        Assertions.assertTrue(state.getIncludes().isEmpty());
-        Assertions.assertEquals(0, state.getSavedInlineTags());
+        assertEquals(1, state.getInlines().get("text/javascript").size());
+        assertTrue(state.getIncludes().isEmpty());
+        assertEquals(0, state.getSavedInlineTags());
 
         writer.endElement("body");
         verify(wrappedWriter).endElement("body");
@@ -106,7 +105,7 @@ public class MoveScriptsToBottomResponseWriterTest {
     }
 
     @Test
-    public void testMultipleInlineScripts() throws IOException {
+    void multipleInlineScripts() throws IOException {
         writer.startElement("body", null);
         verify(wrappedWriter).startElement("body", null);
 
@@ -118,9 +117,9 @@ public class MoveScriptsToBottomResponseWriterTest {
         writer.writeText("script2", null);
         writer.endElement("script");
 
-        Assertions.assertEquals(2, state.getInlines().get("text/javascript").size());
-        Assertions.assertTrue(state.getIncludes().isEmpty());
-        Assertions.assertEquals(1, state.getSavedInlineTags());
+        assertEquals(2, state.getInlines().get("text/javascript").size());
+        assertTrue(state.getIncludes().isEmpty());
+        assertEquals(1, state.getSavedInlineTags());
 
         writer.endElement("body");
 
@@ -133,7 +132,7 @@ public class MoveScriptsToBottomResponseWriterTest {
      * https://github.com/primefaces/primefaces/issues/3854
      */
     @Test
-    public void testMultipleInlineScriptsDifferentTypes() throws IOException {
+    void multipleInlineScriptsDifferentTypes() throws IOException {
         writer.startElement("body", null);
         verify(wrappedWriter).startElement("body", null);
 
@@ -160,8 +159,41 @@ public class MoveScriptsToBottomResponseWriterTest {
         verify(wrappedWriter, times(2)).endElement("script");
     }
 
+    /**
+     * https://github.com/primefaces/primefaces/issues/10845
+     */
     @Test
-    public void testPassthroughAttributes() throws IOException {
+    void multipleInlineScriptsNonJavascript() throws IOException {
+        writer.startElement("body", null);
+        verify(wrappedWriter).startElement("body", null);
+
+        writer.startElement("script", null);
+        writer.writeAttribute("type", "application/ld+json", null);
+        writer.writeText("JSONLinkingData1", null);
+        writer.endElement("script");
+
+        writer.startElement("script", null);
+        // default type is text/javascript
+        writer.writeText("javascript2", null);
+        writer.endElement("script");
+
+        writer.startElement("script", null);
+        writer.writeAttribute("type", "application/ld+json", null);
+        writer.writeText("JSONLinkingData2", null);
+        writer.endElement("script");
+
+        writer.endElement("body");
+
+        // assert both LD files are still in their own inline script
+        verify(wrappedWriter, times(3)).startElement("script", null);
+        verify(wrappedWriter).write(matches("(?s).*JSONLinkingData1(?!.*javascript2.*).*"));
+        verify(wrappedWriter).write(matches("(?s).*javascript2(?!.*JSONLinkingData1.*).*"));
+        verify(wrappedWriter).write(matches("(?s).*JSONLinkingData2(?!.*javascript2.*).*"));
+        verify(wrappedWriter, times(3)).endElement("script");
+    }
+
+    @Test
+    void passthroughAttributes() throws IOException {
         writer.startElement("body", null);
         verify(wrappedWriter).startElement("body", null);
 
@@ -183,7 +215,7 @@ public class MoveScriptsToBottomResponseWriterTest {
     }
 
     @Test
-    public void testInlineScriptMinimization() throws IOException {
+    void inlineScriptMinimization() throws IOException {
         writer.startElement("body", null);
         verify(wrappedWriter).startElement("body", null);
 
@@ -197,7 +229,7 @@ public class MoveScriptsToBottomResponseWriterTest {
     }
 
     @Test
-    public void testIncludeScripts() throws IOException {
+    void includeScripts() throws IOException {
         writer.startElement("body", null);
         verify(wrappedWriter).startElement("body", null);
 
@@ -219,8 +251,8 @@ public class MoveScriptsToBottomResponseWriterTest {
 
         writer.endElement("body");
 
-        Assertions.assertEquals(3, state.getIncludes().get("text/javascript").size());
-        Assertions.assertTrue(state.getInlines().isEmpty());
+        assertEquals(3, state.getIncludes().get("text/javascript").size());
+        assertTrue(state.getInlines().isEmpty());
 
         InOrder inOrder = inOrder(wrappedWriter);
         inOrder.verify(wrappedWriter).startElement("div", null);
@@ -228,7 +260,7 @@ public class MoveScriptsToBottomResponseWriterTest {
     }
 
     @Test
-    public void testInlineAndIncludeScripts() throws IOException {
+    void inlineAndIncludeScripts() throws IOException {
         writer.startElement("body", null);
         verify(wrappedWriter).startElement("body", null);
 
@@ -243,8 +275,8 @@ public class MoveScriptsToBottomResponseWriterTest {
 
         writer.endElement("body");
 
-        Assertions.assertEquals(1, state.getIncludes().get("text/javascript").size());
-        Assertions.assertEquals(1, state.getInlines().get("text/javascript").size());
+        assertEquals(1, state.getIncludes().get("text/javascript").size());
+        assertEquals(1, state.getInlines().get("text/javascript").size());
         verify(wrappedWriter, times(2)).startElement("script", null);
         verify(wrappedWriter).writeAttribute("src", "include", null);
         verify(wrappedWriter).writeAttribute("charset", "UTF-8", null);
@@ -252,7 +284,7 @@ public class MoveScriptsToBottomResponseWriterTest {
     }
 
     @Test
-    public void testDuplicateHtmlElements() throws IOException {
+    void duplicateHtmlElements() throws IOException {
         writer.startElement("HTML", null);
         verify(wrappedWriter).startElement("HTML", null);
 
@@ -260,11 +292,11 @@ public class MoveScriptsToBottomResponseWriterTest {
         FacesException exception = assertThrows(FacesException.class, () -> {
             writer.startElement("HtmL", null);
         });
-        Assertions.assertEquals("Duplicate <html> elements were found in the response.", exception.getMessage());
+        assertEquals("Duplicate <html> elements were found in the response.", exception.getMessage());
     }
 
     @Test
-    public void testDuplicateBodyElements() throws IOException {
+    void duplicateBodyElements() throws IOException {
         writer.startElement("HTML", null);
         verify(wrappedWriter).startElement("HTML", null);
         writer.startElement("BODY", null);
@@ -274,7 +306,7 @@ public class MoveScriptsToBottomResponseWriterTest {
         FacesException exception = assertThrows(FacesException.class, () -> {
             writer.startElement("BoDy", null);
         });
-        Assertions.assertEquals("Duplicate <body> elements were found in the response.", exception.getMessage());
+        assertEquals("Duplicate <body> elements were found in the response.", exception.getMessage());
     }
 
 }

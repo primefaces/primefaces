@@ -39,13 +39,11 @@ public abstract class TieredMenuBase extends AbstractMenu implements Widget, Ove
         model,
         style,
         styleClass,
-        autoDisplay,
         trigger,
         my,
         at,
         overlay,
-        triggerEvent,
-        toggleEvent;
+        triggerEvent;
     }
 
     public TieredMenuBase() {
@@ -90,14 +88,6 @@ public abstract class TieredMenuBase extends AbstractMenu implements Widget, Ove
         getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
-    public boolean isAutoDisplay() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.autoDisplay, true);
-    }
-
-    public void setAutoDisplay(boolean autoDisplay) {
-        getStateHelper().put(PropertyKeys.autoDisplay, autoDisplay);
-    }
-
     @Override
     public String getTrigger() {
         return (String) getStateHelper().eval(PropertyKeys.trigger, null);
@@ -140,13 +130,5 @@ public abstract class TieredMenuBase extends AbstractMenu implements Widget, Ove
 
     public void setTriggerEvent(String triggerEvent) {
         getStateHelper().put(PropertyKeys.triggerEvent, triggerEvent);
-    }
-
-    public String getToggleEvent() {
-        return (String) getStateHelper().eval(PropertyKeys.toggleEvent, null);
-    }
-
-    public void setToggleEvent(String toggleEvent) {
-        getStateHelper().put(PropertyKeys.toggleEvent, toggleEvent);
     }
 }

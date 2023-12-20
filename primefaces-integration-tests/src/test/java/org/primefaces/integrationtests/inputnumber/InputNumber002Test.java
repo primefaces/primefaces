@@ -23,8 +23,9 @@
  */
 package org.primefaces.integrationtests.inputnumber;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -34,29 +35,29 @@ import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.InputNumber;
 
-public class InputNumber002Test extends AbstractPrimePageTest {
+class InputNumber002Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("InputNumber: Test decimal input without decimal places default to 2")
-    public void testBigDecimal(Page page) {
+    void bigDecimal(Page page) {
         // Arrange
         InputNumber inputNumber = page.inputnumber;
-        Assertions.assertEquals("", inputNumber.getValue());
+        assertEquals("", inputNumber.getValue());
 
         // Act
         inputNumber.setValue("88.76");
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("88.76", inputNumber.getValue());
+        assertEquals("88.76", inputNumber.getValue());
         assertConfiguration(inputNumber.getWidgetConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("InputNumber Config = " + cfg);
-        Assertions.assertEquals("2", cfg.get("decimalPlaces"));
+        assertEquals("2", cfg.get("decimalPlaces"));
     }
 
     public static class Page extends AbstractPrimePage {

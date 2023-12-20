@@ -38,7 +38,7 @@ import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.Separator;
 import org.primefaces.model.menu.Submenu;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
@@ -51,6 +51,8 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("TieredMenu", menu)
                 .attr("autoDisplay", menu.isAutoDisplay())
+                .attr("showDelay", menu.getShowDelay(), 0)
+                .attr("hideDelay", menu.getHideDelay(), 0)
                 .attr("toggleEvent", menu.getToggleEvent(), null);
 
         if (menu.isOverlay()) {
@@ -92,7 +94,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
             encodeElements(context, menu, menu.getElements());
         }
 
-        if (ComponentUtils.shouldRenderFacet(optionsFacet)) {
+        if (FacetUtils.shouldRenderFacet(optionsFacet)) {
             writer.startElement("li", null);
             writer.writeAttribute("class", Menu.OPTIONS_CLASS, null);
             writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);

@@ -22,7 +22,7 @@
         <mojarra.version>2.3.21</mojarra.version>
         <myfaces.version>2.3.10</myfaces.version>
         <myfaces-next.version>2.3-next-M8</myfaces-next.version>
-        <resteasy.version>5.0.8.Final</resteasy.version>
+        <resteasy.version>5.0.9.Final</resteasy.version>
         <jetty.version>9.4.53.v20231009</jetty.version>
         <jsf.project.stage>Production</jsf.project.stage>
     </properties>
@@ -118,6 +118,12 @@
             <groupId>jfree</groupId>
             <artifactId>jfreechart</artifactId>
             <version>1.0.1</version>
+            <exclusions>
+                 <exclusion>
+                      <groupId>junit</groupId>
+                      <artifactId>junit</artifactId>
+                  </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- Barcode -->
@@ -247,6 +253,7 @@
                     <noSourceMap>true</noSourceMap>
                     <style>COMPRESSED</style>
                     <quiet>false</quiet>
+                    <version>1.68.0</version>
                 </configuration>
             </plugin>
             <plugin>

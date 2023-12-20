@@ -583,7 +583,14 @@ if (!PrimeFaces.utils) {
          * @return {boolean} `true` if the key is a meta key, or `false` otherwise.
          */
         isMetaKey: function(e) {
-            return PrimeFaces.env.browser.mac ? e.metaKey : e.ctrlKey;
+            if (e.originalEvent) {
+                // original event returns the metakey value at the time the event was generated
+                return PrimeFaces.env.browser.mac ? e.originalEvent.metaKey : e.originalEvent.ctrlKey;
+            }
+            else {
+                // jQuery returns the real time value of the meta key
+                return PrimeFaces.env.browser.mac ? e.metaKey  : e.ctrlKey;
+            }
         },
 
         /**
@@ -601,20 +608,16 @@ if (!PrimeFaces.utils) {
          * @return {boolean} `true` if the key is a printable key, or `false` otherwise.
          */
         isPrintableKey: function(e) {
-            return e.key.length === 1 || e.key === 'Unidentified';
+            return e && e.key && (e.key.length === 1 || e.key === 'Unidentified');
         },
-
+        
         /**
-         * Ignores unprintable keys on filter input text box. Useful in filter input events in many components.
+         * Checks if the key pressed is cut, copy, or paste.
          * @param {JQuery.TriggeredEvent} e The key event that occurred.
-         * @return {boolean} `true` if the one of the keys to ignore was pressed, or `false` otherwise.
+         * @return {boolean} `true` if the key is cut/copy/paste, or `false` otherwise.
          */
-        ignoreFilterKey: function(e) {
+        isClipboardKey: function(e) {
             switch (e.key) {
-                case 'Backspace':
-                case 'Enter':
-                case 'Delete':
-                    return false;
                 case 'a':
                 case 'A':
                 case 'c':
@@ -623,8 +626,28 @@ if (!PrimeFaces.utils) {
                 case 'X':
                 case 'v':
                 case 'V':
-                    // allow select all, cut, copy, paste
                     return PrimeFaces.utils.isMetaKey(e);
+                default:
+                    return false;
+            }
+        },
+
+        /**
+         * Ignores unprintable keys on filter input text box. Useful in filter input events in many components.
+         * @param {JQuery.TriggeredEvent} e The key event that occurred.
+         * @return {boolean} `true` if the one of the keys to ignore was pressed, or `false` otherwise.
+         */
+        ignoreFilterKey: function(e) {
+            // cut copy paste allows filter to trigger
+            if (PrimeFaces.utils.isClipboardKey(e)) {
+                return false;
+            }
+            // backspace,enter,delete trigger a filter as well as printable key like 'a'
+            switch (e.key) {
+                case 'Backspace':
+                case 'Enter':
+                case 'Delete':
+                    return false;
                 default:
                     return !PrimeFaces.utils.isPrintableKey(e);
             }
@@ -837,6 +860,7 @@ if (!PrimeFaces.utils) {
 
             return null;
         },
+
         /**
          * Count the bytes of the inputtext.
          * borrowed from the ckeditor wordcount plugin
@@ -853,6 +877,27 @@ if (!PrimeFaces.utils) {
             }
             return count;
         },
+
+        /**
+         * Formats the given data size in a more human-friendly format, e.g. `1.5 MB` etc.
+         * @param {number} bytes File size in bytes to format
+         * @return {string} The given file size, formatted in a more human-friendly format.
+         */
+        formatBytes: function(bytes) {
+            if (bytes === undefined)
+                return '';
+
+            if (bytes === 0)
+                return 'N/A';
+
+            var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+            var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+            if (i === 0)
+                return bytes + ' ' + sizes[i];
+            else
+                return (bytes / Math.pow(1024, i)).toFixed(1) + ' ' + sizes[i];
+        },
+
         /**
          * This method concatenates the classes into a string according to the condition of the arguments and returns it.
          * @private
@@ -919,18 +964,41 @@ if (!PrimeFaces.utils) {
          * Handles floating label CSS if wrapped in a floating label.
          * @private
          * @param {JQuery | undefined} element the to add the CSS classes to
-         * @param {JQuery | undefined} input the input to check if filled
+         * @param {JQuery | undefined} inputs the input(s) to check if filled
          * @param {boolean | undefined} hasFloatLabel true if this is wrapped in a floating label
          */
-        updateFloatLabel: function(element, input, hasFloatLabel) {
-            if (!element || !input || !hasFloatLabel) {
+        updateFloatLabel: function(element, inputs, hasFloatLabel) {
+            if (!element || !inputs || !hasFloatLabel) {
                 return;
             }
-            if (input.val() !== '' || element.find('.ui-chips-token').length !== 0) {
-                element.addClass('ui-inputwrapper-filled');
+
+            var isEmpty = true;
+            inputs.each(function() {
+                var input = $(this);
+                if (input.is('select')) {
+                    if (input.attr('multiple')) {
+                        isEmpty = input.find('option:selected').length === 0;
+                    }
+                    else {
+                        var value = input.find('option:selected').attr('value');
+                        isEmpty = value === null || value === '';
+                    }
+                }
+                else {
+                    var value = input.val();
+                    isEmpty = value === null || value === '';
+                }
+
+                if (!isEmpty) {
+                    return false;
+                }
+            });
+
+            if (isEmpty) {
+                element.removeClass('ui-inputwrapper-filled');
             }
             else {
-                element.removeClass('ui-inputwrapper-filled');
+                element.addClass('ui-inputwrapper-filled');
             }
         },
 
@@ -991,4 +1059,9 @@ if (!PrimeFaces.utils) {
         },
     };
 
+    // set animation state globally
+    if (PrimeFaces.env.prefersReducedMotion) {
+        PrimeFaces.utils.disableAnimations();
+        PrimeFaces.warn("Animations are disabled because OS has requested prefers-reduced-motion: reduce")
+    }
 }

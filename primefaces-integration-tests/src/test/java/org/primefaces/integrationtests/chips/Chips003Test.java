@@ -23,10 +23,12 @@
  */
 package org.primefaces.integrationtests.chips;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.List;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -37,20 +39,20 @@ import org.primefaces.selenium.component.Chips;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Messages;
 
-public class Chips003Test extends AbstractPrimePageTest {
+class Chips003Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("Chips: GitHub #6643 Test unique attribute only allowing distinct items")
-    public void testUnique(Page page) {
+    void unique(Page page) {
         // Arrange
         Chips chips = page.chips;
 
         // Assert initial state
         List<String> values = chips.getValues();
-        Assertions.assertEquals(2, values.size());
-        Assertions.assertEquals("One", values.get(0));
-        Assertions.assertEquals("Two", values.get(1));
+        assertEquals(2, values.size());
+        assertEquals("One", values.get(0));
+        assertEquals("Two", values.get(1));
 
         // Act - add values
         chips.addValue("One"); //duplicate should be ignored
@@ -61,20 +63,20 @@ public class Chips003Test extends AbstractPrimePageTest {
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("One, Two, Three", page.messages.getMessage(0).getSummary());
+        assertEquals("One, Two, Three", page.messages.getMessage(0).getSummary());
         values = chips.getValues();
-        Assertions.assertEquals(3, values.size());
-        Assertions.assertEquals("One", values.get(0));
-        Assertions.assertEquals("Two", values.get(1));
-        Assertions.assertEquals("Three", values.get(2));
+        assertEquals(3, values.size());
+        assertEquals("One", values.get(0));
+        assertEquals("Two", values.get(1));
+        assertEquals("Three", values.get(2));
         assertConfiguration(chips.getWidgetConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("Chips Config = " + cfg);
-        Assertions.assertTrue(cfg.has("id"));
-        Assertions.assertTrue(cfg.getBoolean("unique"));
+        assertTrue(cfg.has("id"));
+        assertTrue(cfg.getBoolean("unique"));
     }
 
     public static class Page extends AbstractPrimePage {

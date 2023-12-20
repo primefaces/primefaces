@@ -23,7 +23,8 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -33,12 +34,12 @@ import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.model.datatable.Row;
 
-public class DataTable029Test extends AbstractDataTableTest {
+class DataTable029Test extends AbstractDataTableTest {
 
     @Test
     @Order(1)
     @DisplayName("DataTable: Sort is lost after data refresh - https://github.com/primefaces/primefaces/issues/7951")
-    public void testSortLostAfterRefresh(Page page) {
+    void sortLostAfterRefresh(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
 
@@ -61,7 +62,7 @@ public class DataTable029Test extends AbstractDataTableTest {
 
         for (Row row: dt.getRows()) {
             int actNumber = Integer.parseInt(row.getCell(1).getText());
-            Assertions.assertTrue(actNumber >= lastNumber);
+            assertTrue(actNumber >= lastNumber);
             lastNumber = actNumber;
         }
     }

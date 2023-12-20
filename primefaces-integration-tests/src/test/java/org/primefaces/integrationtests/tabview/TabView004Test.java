@@ -23,7 +23,8 @@
  */
 package org.primefaces.integrationtests.tabview;
 
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertSame;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebElement;
@@ -35,18 +36,18 @@ import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.SelectOneMenu;
 import org.primefaces.selenium.component.TabView;
 
-public class TabView004Test extends AbstractPrimePageTest {
+class TabView004Test extends AbstractPrimePageTest {
 
     @Test
     @DisplayName("TabView: Tab#loaded should be reset when rendering TabView again, otherwise select components are reset")
-    public void testDynamic(Page page) {
+    void dynamic(Page page) {
         page.tabView.toggleTab(1);
 
         page.button.click();
         page.button.click();
         page.button.click();
 
-        Assertions.assertSame(0, page.msgs.getAllMessages().size());
+        assertSame(0, page.msgs.getAllMessages().size());
     }
 
     public static class Page extends AbstractPrimePage {

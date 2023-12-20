@@ -230,55 +230,42 @@ public class DataTable extends DataTableBase {
         return "cancel".equals(value);
     }
 
-    public boolean isRowSelectionEnabled() {
-        return getSelectionMode() != null;
-    }
-
-    public boolean isColumnSelectionEnabled() {
-        return LangUtils.isNotBlank(getColumnSelectionMode());
-    }
-
-    public String getColumnSelectionMode() {
+    public boolean hasSelectionColumn() {
         for (int i = 0; i < getChildCount(); i++) {
             UIComponent child = getChildren().get(i);
             if (child.isRendered() && (child instanceof Column)) {
-                String selectionMode = ((Column) child).getSelectionMode();
-                if (selectionMode != null) {
-                    return selectionMode;
+                boolean selectionBox = ((Column) child).isSelectionBox();
+                if (selectionBox) {
+                    return true;
                 }
             }
         }
 
-        return null;
+        return false;
     }
 
     public boolean isSelectionEnabled() {
-        return isRowSelectionEnabled() || isColumnSelectionEnabled();
+        return getSelectionMode() != null;
     }
 
     public boolean isSingleSelectionMode() {
         String selectionMode = getSelectionMode();
-
-        if (LangUtils.isNotBlank(selectionMode)) {
-            return "single".equalsIgnoreCase(selectionMode);
-        }
-        else {
-            String columnSelectionMode = getColumnSelectionMode();
-            return "single".equalsIgnoreCase(columnSelectionMode);
-        }
+        return "single".equalsIgnoreCase(selectionMode);
     }
 
     @Override
     public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
         super.processEvent(event);
 
-        // restore "value" from "filteredValue" - we must work on filtered data when filtering is active
-        // in future we might remember filtered rowKeys and skip them while rendering instead of doing it this way
+        // restored filter-state if it was filtered in the previous request
         if (event instanceof PostRestoreStateEvent
                 && this == event.getComponent()
+                && !isLazy()
                 && isFilteringEnabled()
-                && !isLazy()) {
+                && isFilteringCurrentlyActive()) {
 
+            // restore "value" from "filteredValue" - we must work on filtered data
+            // in future we might remember filtered rowKeys and skip them while rendering instead of doing it this way
             ValueExpression ve = getValueExpression(PropertyKeys.filteredValue.name());
             if (ve != null) {
                 List<?> filteredValue = getFilteredValue();
@@ -290,9 +277,7 @@ public class DataTable extends DataTableBase {
                 // trigger filter as previous requests were filtered
                 // in older PF versions, we stored the filtered data in the viewstate but this blows up memory
                 // and caused bugs with editing and serialization like #7999
-                if (isFilteringCurrentlyActive()) {
-                    filterAndSort();
-                }
+                filterAndSort();
             }
         }
     }
@@ -508,9 +493,9 @@ public class DataTable extends DataTableBase {
 
         if (calculateFirst()) {
             offset = getFirst();
-            LOGGER.warning(() -> "DataTable#loadLazyScrollData: offset has been recalculated due to overflow (first >= rowCount)");
+            LOGGER.fine(() -> "DataTable#loadLazyScrollData: offset has been recalculated due to overflow (first >= rowCount)");
             if (clientCacheRequest) {
-                LOGGER.warning(() -> "DataTable#loadLazyScrollData: fetching next page has been canceled due to overflow (first >= rowCount)");
+                LOGGER.fine(() -> "DataTable#loadLazyScrollData: fetching next page has been canceled due to overflow (first >= rowCount)");
                 return;
             }
         }
@@ -555,14 +540,7 @@ public class DataTable extends DataTableBase {
     }
 
     public RowExpansion getRowExpansion() {
-        for (int i = 0; i < getChildCount(); i++) {
-            UIComponent child = getChildren().get(i);
-            if (child instanceof RowExpansion) {
-                return (RowExpansion) child;
-            }
-        }
-
-        return null;
+        return ComponentTraversalUtils.firstChildRendered(RowExpansion.class, this);
     }
 
     @Override
@@ -576,14 +554,7 @@ public class DataTable extends DataTableBase {
     }
 
     public SubTable getSubTable() {
-        for (int i = 0; i < getChildCount(); i++) {
-            UIComponent child = getChildren().get(i);
-            if (child instanceof SubTable) {
-                return (SubTable) child;
-            }
-        }
-
-        return null;
+        return ComponentTraversalUtils.firstChildRendered(SubTable.class, this);
     }
 
     public String getRowKey(Object object) {
@@ -635,7 +606,10 @@ public class DataTable extends DataTableBase {
     }
 
     public String getSelectedRowKeysAsString() {
-        return String.join(",", getSelectedRowKeys());
+        return getSelectedRowKeys()
+                .stream()
+                .filter(s -> s != null && !s.isBlank())
+                .collect(Collectors.joining(","));
     }
 
     public boolean isSelectAll() {
@@ -660,14 +634,7 @@ public class DataTable extends DataTableBase {
 
     @Override
     public HeaderRow getHeaderRow() {
-        for (int i = 0; i < getChildCount(); i++) {
-            UIComponent child = getChildren().get(i);
-            if (child.isRendered() && child instanceof HeaderRow) {
-                return (HeaderRow) child;
-            }
-        }
-
-        return null;
+        return ComponentTraversalUtils.firstChildRendered(HeaderRow.class, this);
     }
 
     @Override
@@ -712,9 +679,8 @@ public class DataTable extends DataTableBase {
     }
 
     public String resolveSelectionMode() {
-        String columnSelectionMode = getColumnSelectionMode();
-        if (LangUtils.isNotBlank(columnSelectionMode)) {
-            return "single".equals(columnSelectionMode) ? "radio" : "checkbox";
+        if (hasSelectionColumn()) {
+            return isSingleSelectionMode() ? "radio" : "checkbox";
         }
         else {
             return getSelectionMode();
@@ -856,8 +822,7 @@ public class DataTable extends DataTableBase {
     }
 
     public Locale resolveDataLocale() {
-        FacesContext context = getFacesContext();
-        return LocaleUtils.resolveLocale(context, getDataLocale(), getClientId(context));
+        return resolveDataLocale(getFacesContext());
     }
 
     @Override

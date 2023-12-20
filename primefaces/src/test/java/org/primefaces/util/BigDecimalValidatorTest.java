@@ -60,7 +60,7 @@ class BigDecimalValidatorTest {
      * Test Valid currency values
      */
     @Test
-    public void testValid() {
+    void valid() {
         BigDecimalValidator validator = BigDecimalValidator.getInstance();
         BigDecimal expected = new BigDecimal("1234.56");
         BigDecimal negative = new BigDecimal("-1234.56");
@@ -84,7 +84,7 @@ class BigDecimalValidatorTest {
      * Test Valid integer (non-decimal) currency values
      */
     @Test
-    public void testIntegerValid() {
+    void integerValid() {
         BigDecimalValidator validator = BigDecimalValidator.getInstance();
         BigDecimal expected = new BigDecimal("1234");
         BigDecimal negative = new BigDecimal("-1234");
@@ -100,7 +100,7 @@ class BigDecimalValidatorTest {
      * Test Infinity is not parsed
      */
     @Test
-    public void testWeirdPatternIsNotParsed() {
+    void weirdPatternIsNotParsed() {
         BigDecimalValidator validator = BigDecimalValidator.getInstance();
 
         Number result = validator.validate("74E12341", US);

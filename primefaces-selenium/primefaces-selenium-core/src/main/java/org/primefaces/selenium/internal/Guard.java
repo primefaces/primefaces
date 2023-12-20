@@ -88,10 +88,15 @@ public class Guard {
                 WebDriver driver = WebDriverProvider.get();
 
                 WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(ConfigProvider.getInstance().getTimeoutHttp()), Duration.ofMillis(100));
-                wait.until(ExpectedConditions.and(
-                        PrimeExpectedConditions.documentLoaded(),
-                        PrimeExpectedConditions.notNavigating(),
-                        PrimeExpectedConditions.notSubmitting()));
+                wait.until((ExpectedCondition<Boolean>) d -> {
+                    if (PrimeExpectedConditions.validationFailed().apply(driver)) {
+                        return true;
+                    }
+                    return ExpectedConditions.and(
+                            PrimeExpectedConditions.documentLoaded(),
+                            PrimeExpectedConditions.notNavigating(),
+                            PrimeExpectedConditions.notSubmitting()).apply(driver);
+                });
 
                 return result;
             }
@@ -180,10 +185,10 @@ public class Guard {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(ConfigProvider.getInstance().getTimeoutAjax()), Duration.ofMillis(50));
         wait.until(d -> {
             return (Boolean) ((JavascriptExecutor) driver)
-                        .executeScript("return document.readyState === 'complete'"
+                        .executeScript("return (window.pfselenium && pfselenium.validationFailed === true) || (document.readyState === 'complete'"
                                     + " && (!window.jQuery || jQuery.active == 0)"
                                     + " && (!window.PrimeFaces || (PrimeFaces.ajax.Queue.isEmpty() && PrimeFaces.animationActive === false))"
-                                    + " && (!window.pfselenium || (pfselenium.xhr == null && pfselenium.navigating === false));");
+                                    + " && (!window.pfselenium || (pfselenium.xhr == null && pfselenium.navigating === false)));");
         });
     }
 

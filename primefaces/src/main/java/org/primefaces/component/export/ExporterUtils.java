@@ -43,6 +43,7 @@ import org.primefaces.component.rowtoggler.RowToggler;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.EscapeUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.LangUtils;
 
 public final class ExporterUtils {
@@ -168,7 +169,7 @@ public final class ExporterUtils {
 
     public static String getComponentFacetValue(FacesContext context, UIComponent parent, String facetname) {
         UIComponent facet = parent.getFacet(facetname);
-        if (ComponentUtils.shouldRenderFacet(facet)) {
+        if (FacetUtils.shouldRenderFacet(facet)) {
             if (facet instanceof UIPanel) {
                 for (UIComponent child : facet.getChildren()) {
                     if (child.isRendered()) {
@@ -198,7 +199,7 @@ public final class ExporterUtils {
         }
 
         UIComponent facet = column.getFacet(columnType.facet());
-        if (LangUtils.isBlank(columnValue.toString()) && ComponentUtils.shouldRenderFacet(facet)) {
+        if (LangUtils.isBlank(columnValue.toString()) && FacetUtils.shouldRenderFacet(facet)) {
             columnValue = ColumnValue.of(getComponentValue(context, facet));
         }
 

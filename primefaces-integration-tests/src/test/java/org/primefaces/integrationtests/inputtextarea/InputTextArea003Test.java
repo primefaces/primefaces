@@ -23,8 +23,10 @@
  */
 package org.primefaces.integrationtests.inputtextarea;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -35,52 +37,52 @@ import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.InputTextarea;
 
-public class InputTextArea003Test extends AbstractPrimePageTest {
+class InputTextArea003Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("InputTextarea: MaxLength using less than max # of characters")
-    public void testMaxLengthLessThan(Page page) {
+    void maxLengthLessThan(Page page) {
         // Arrange
         InputTextarea inputText = page.inputtext;
-        Assertions.assertEquals("", inputText.getValue());
+        assertEquals("", inputText.getValue());
 
         // Act
         inputText.setValue("four");
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("MaxLength Counter", inputText.getAssignedLabelText());
-        Assertions.assertEquals("four", inputText.getValue());
-        Assertions.assertEquals("6 characters remaining.", page.display.getText());
+        assertEquals("MaxLength Counter", inputText.getAssignedLabelText());
+        assertEquals("four", inputText.getValue());
+        assertEquals("6 characters remaining.", page.display.getText());
         assertConfiguration(inputText.getWidgetConfiguration());
     }
 
     @Test
     @Order(2)
     @DisplayName("InputTextarea: MaxLength using more than max # of characters")
-    public void testMaxLengthMoreThan(Page page) {
+    void maxLengthMoreThan(Page page) {
         // Arrange
         InputTextarea inputText = page.inputtext;
-        Assertions.assertEquals("", inputText.getValue());
+        assertEquals("", inputText.getValue());
 
         // Act
         inputText.setValue("12345678901234");
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("MaxLength Counter", inputText.getAssignedLabelText());
-        Assertions.assertEquals("1234567890", inputText.getValue());
-        Assertions.assertEquals("0 characters remaining.", page.display.getText());
+        assertEquals("MaxLength Counter", inputText.getAssignedLabelText());
+        assertEquals("1234567890", inputText.getValue());
+        assertEquals("0 characters remaining.", page.display.getText());
         assertConfiguration(inputText.getWidgetConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("InputTextarea Config = " + cfg);
-        Assertions.assertTrue(cfg.getBoolean("autoResize"));
-        Assertions.assertEquals(10, cfg.getInt("maxlength"));
-        Assertions.assertEquals("{0} characters remaining.", cfg.getString("counterTemplate"));
+        assertTrue(cfg.getBoolean("autoResize"));
+        assertEquals(10, cfg.getInt("maxlength"));
+        assertEquals("{0} characters remaining.", cfg.getString("counterTemplate"));
     }
 
     public static class Page extends AbstractPrimePage {

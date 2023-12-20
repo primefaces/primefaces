@@ -23,12 +23,14 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -43,14 +45,14 @@ import org.primefaces.selenium.component.SelectManyMenu;
 import org.primefaces.selenium.component.base.ComponentUtils;
 import org.primefaces.selenium.component.model.datatable.Row;
 
-public class DataTable026NotTest extends AbstractDataTableTest {
+class DataTable026NotTest extends AbstractDataTableTest {
 
     protected final List<Employee> employees = new EmployeeService().getEmployees();
 
     @Test
     @Order(1)
     @DisplayName("DataTable: filter: NOT equals")
-    public void testFilterNotEquals(Page page) {
+    void filterNotEquals(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
 
@@ -69,7 +71,7 @@ public class DataTable026NotTest extends AbstractDataTableTest {
     @Test
     @Order(2)
     @DisplayName("DataTable: filter: NOT between")
-    public void testFilterNotBetween(Page page) {
+    void filterNotBetween(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
 
@@ -98,7 +100,7 @@ public class DataTable026NotTest extends AbstractDataTableTest {
     @Test
     @Order(3)
     @DisplayName("DataTable: filter: NOT between invalid filter")
-    public void testFilterNotBetweenInvalid(Page page) {
+    void filterNotBetweenInvalid(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
 
@@ -117,8 +119,8 @@ public class DataTable026NotTest extends AbstractDataTableTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("DataTable Config = " + cfg);
-        Assertions.assertEquals("wgtTable", cfg.getString("widgetVar"));
-        Assertions.assertEquals(0, cfg.getInt("tabindex"));
+        assertEquals("wgtTable", cfg.getString("widgetVar"));
+        assertEquals(0, cfg.getInt("tabindex"));
     }
 
     public static class Page extends AbstractPrimePage {
@@ -163,13 +165,13 @@ public class DataTable026NotTest extends AbstractDataTableTest {
 
     private void assertEmployeeRows(List<Row> rows, List<Employee> employees) {
         int expectedSize = employees.size();
-        Assertions.assertNotNull(rows);
-        Assertions.assertEquals(expectedSize, rows.size());
+        assertNotNull(rows);
+        assertEquals(expectedSize, rows.size());
 
         int row = 0;
         for (Employee employee : employees) {
             String rowText = rows.get(row).getCell(0).getText();
-            Assertions.assertEquals(employee.getId(), Integer.parseInt(rowText.trim()));
+            assertEquals(employee.getId(), Integer.parseInt(rowText.trim()));
             row++;
         }
     }

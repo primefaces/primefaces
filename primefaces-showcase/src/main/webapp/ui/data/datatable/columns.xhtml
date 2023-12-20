@@ -33,7 +33,7 @@
 
                     <p:columns value="#{dtColumnsView.columns}" var="column" headerText="#{column.header}" field="#{column.property}">
                         <f:facet name="filter">
-                            <p:datePicker selectionMode="range" onchange="PF('customersTable').filter()" rendered="#{column.type eq 'date'}"/>
+                            <p:datePicker selectionMode="range" converter="javax.faces.DateTime" onchange="PF('customersTable').filter()" rendered="#{column.type eq 'date'}"/>
                             <p:selectOneMenu onchange="PF('customersTable').filter()" rendered="#{column.type eq 'enum'}">
                                 <f:selectItem itemValue="#{null}" itemLabel=""/>
                                 <f:selectItems value="#{column.klazz.enumConstants}" />

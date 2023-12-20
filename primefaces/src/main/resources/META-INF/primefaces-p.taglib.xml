@@ -5540,14 +5540,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A collection of selectitems for filter dropdown.]]>
-            </description>
-            <name>filterOptions</name>
-            <required>false</required>
-            <type>java.lang.Object</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Match mode for filtering.]]>
             </description>
             <name>filterMatchMode</name>
@@ -5559,6 +5551,14 @@
                 <![CDATA[Location of the column filter with respect to header content. Options are 'bottom'(default) and 'top'.]]>
             </description>
             <name>filterPosition</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Placeholder for plain input text style filters.]]>
+            </description>
+            <name>filterPlaceholder</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -5596,11 +5596,11 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Enables selection mode, valid values are "single" and "multiple".]]>
+                <![CDATA[Indicates whether or not the column should contain a radiobutton or checkbox for selection]]>
             </description>
-            <name>selectionMode</name>
+            <name>selectionBox</name>
             <required>false</required>
-            <type>java.lang.String</type>
+            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -5993,14 +5993,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A collection of selectitems for filter dropdown.]]>
-            </description>
-            <name>filterOptions</name>
-            <required>false</required>
-            <type>java.lang.Object</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Match mode for filtering.]]>
             </description>
             <name>filterMatchMode</name>
@@ -6012,6 +6004,14 @@
                 <![CDATA[Location of the column filter with respect to header content. Options are 'bottom'(default) and 'top'.]]>
             </description>
             <name>filterPosition</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Placeholder for plain input text style filters.]]>
+            </description>
+            <name>filterPlaceholder</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -6246,6 +6246,15 @@
             <name>displayPriority</name>
             <required>false</required>
             <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[An EL expression or a literal text that defines a converter for the component. When it's an EL expression, it's resolved to a converter instance.
+    In case it's a static text, it must refer to a converter id.]]>
+            </description>
+            <name>converter</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
         </attribute>
     </tag>
     <tag>
@@ -8679,7 +8688,7 @@
             <description>
                 <![CDATA[Disables row selection when true.]]>
             </description>
-            <name>disabledSelection</name>
+            <name>selectionDisabled</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -8687,7 +8696,7 @@
             <description>
                 <![CDATA[Defines row select mode for checkbox based selection, valid values are new (default), and none.]]>
             </description>
-            <name>rowSelectMode</name>
+            <name>selectionRowMode</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -8743,7 +8752,7 @@
             <description>
                 <![CDATA[Disables text selection on row click. Default is true.]]>
             </description>
-            <name>disabledTextSelection</name>
+            <name>selectionTextDisabled</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -11008,6 +11017,14 @@
             <name>dropZone</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Simple Mode: if the filename should be displayed.]]>
+            </description>
+            <name>displayFilename</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
     </tag>
     <tag>
@@ -14099,7 +14116,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
+            <![CDATA[Deprecated since 10.0 for removal in 15.0.0)]]>
         </description>
         <tag-name>inputSwitch</tag-name>
         <component>
@@ -17486,6 +17503,22 @@
             <name>toggleEvent</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Delay in milliseconds before displaying the submenu. Default is 0 meaning immediate.]]>
+            </description>
+            <name>showDelay</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Delay in milliseconds before hiding the submenu., if 0 not hidden until document.click(). Default is 0.]]>
+            </description>
+            <name>hideDelay</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
         </attribute>
     </tag>
     <tag>
@@ -27386,6 +27419,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Adds a close icon to hide the message.]]>
+            </description>
+            <name>closable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -28638,6 +28679,22 @@
             <name>toggleEvent</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Delay in milliseconds before displaying the submenu. Default is 0 meaning immediate.]]>
+            </description>
+            <name>showDelay</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Delay in milliseconds before hiding the submenu., if 0 not hidden until document.click(). Default is 0.]]>
+            </description>
+            <name>hideDelay</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
         </attribute>
     </tag>
     <tag>
@@ -33096,6 +33153,30 @@
             <name>visible</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Icon of the badge.]]>
+            </description>
+            <name>icon</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Position of the icon, default value is left.]]>
+            </description>
+            <name>iconPos</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the badge element clicked.]]>
+            </description>
+            <name>onclick</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
     </tag>
     <tag>

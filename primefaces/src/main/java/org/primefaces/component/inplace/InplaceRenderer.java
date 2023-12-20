@@ -56,7 +56,7 @@ public class InplaceRenderer extends CoreRenderer {
         boolean disabled = inplace.isDisabled();
         boolean validationFailed = context.isValidationFailed() && !inplace.isValid();
         UIComponent outputFacet = inplace.getFacet("output");
-        boolean shouldRenderFacet = ComponentUtils.shouldRenderFacet(outputFacet);
+        boolean shouldRenderFacet = FacetUtils.shouldRenderFacet(outputFacet);
         boolean withPassword = !shouldRenderFacet && isPassword(inplace.getChildren().get(0));
         String styleClass = getStyleClassBuilder(context)
                 .add(Inplace.CONTAINER_CLASS, inplace.getStyleClass())
@@ -115,7 +115,7 @@ public class InplaceRenderer extends CoreRenderer {
             writer.writeAttribute("class", Inplace.CONTENT_CLASS, null);
             writer.writeAttribute("style", inputStyle, null);
 
-            if (ComponentUtils.shouldRenderFacet(inputFacet)) {
+            if (FacetUtils.shouldRenderFacet(inputFacet)) {
                 inputFacet.encodeAll(context);
             }
             else {

@@ -21,19 +21,40 @@
         <p:growl id="messages" showDetail="true"/>
         <div class="card">
             <h5>Single</h5>
-            <h:form>
-                <p:fileUpload value="#{fileUploadView.file}" mode="simple" skinSimple="true" auto="true"
+            <h:form id="formSingle">
+                <p:fileUpload id="upload" value="#{fileUploadView.file}"
+                              mode="simple" skinSimple="true" auto="true"
                               process="@this" update="messages"
-                              listener="#{fileUploadView.handleFileUpload}"/>
+                              listener="#{fileUploadView.handleFileUpload}" />
+            </h:form>
+        </div>
+        <div class="card">
+            <h5>Single (allowTypes &amp; sizeLimit CSV)</h5>
+            <h:form id="formSingleCSV">
+                <p:fileUpload id="upload" value="#{fileUploadView.file}"
+                              mode="simple" skinSimple="true" auto="true"
+                              process="@this" update="messages"
+                              listener="#{fileUploadView.handleFileUpload}"
+                              allowTypes="/(\.|\/)(pdf)$/" sizeLimit="100" />
             </h:form>
         </div>
         <div class="card">
             <h5>Multiple</h5>
-            <h:form>
-                <p:fileUpload value="#{fileUploadView.files}" mode="simple" skinSimple="true" multiple="true"
-                              auto="true"
+            <h:form id="formMulti">
+                <p:fileUpload id="upload" value="#{fileUploadView.files}"
+                              mode="simple" skinSimple="true" multiple="true" auto="true"
                               process="@this" update="messages"
                               listener="#{fileUploadView.handleFilesUpload}"/>
+            </h:form>
+        </div>
+        <div class="card">
+            <h5>Multiple (allowTyped &amp; sizeLimit &amp; fileLimit CSV)</h5>
+            <h:form id="formMultiCSV">
+                <p:fileUpload id="upload" value="#{fileUploadView.files}"
+                              mode="simple" skinSimple="true" multiple="true" auto="true"
+                              process="@this" update="messages"
+                              listener="#{fileUploadView.handleFilesUpload}"
+                              allowTypes="/(\.|\/)(pdf)$/" sizeLimit="100" fileLimit="2" />
             </h:form>
         </div>
     </ui:define>

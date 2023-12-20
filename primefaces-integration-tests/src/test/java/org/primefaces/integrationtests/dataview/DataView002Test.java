@@ -24,7 +24,6 @@
 package org.primefaces.integrationtests.dataview;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -41,59 +40,61 @@ import org.primefaces.selenium.component.model.data.Paginator;
 
 import java.util.List;
 
-public class DataView002Test extends AbstractDataTableTest {
+import static org.junit.jupiter.api.Assertions.*;
+
+class DataView002Test extends AbstractDataTableTest {
 
     private final ProgrammingLanguageLazyDataModel lazyDataModel = new ProgrammingLanguageLazyDataModel();
 
     @Test
     @Order(1)
     @DisplayName("DataView: Lazy: Basic & Paginator")
-    public void testBasicAndPaginator(Page page) {
+    void basicAndPaginator(Page page) {
         // Arrange
         DataView dataView = page.dataView;
-        Assertions.assertNotNull(dataView);
+        assertNotNull(dataView);
 
         // Act
         //page.button.click();
         // Assert
-        Assertions.assertNotNull(dataView.getLayoutOptionsWebElement());
-        Assertions.assertNotNull(dataView.getPaginatorWebElement());
-        Assertions.assertEquals(DataView.Layout.LIST, dataView.getActiveLayout());
+        assertNotNull(dataView.getLayoutOptionsWebElement());
+        assertNotNull(dataView.getPaginatorWebElement());
+        assertEquals(DataView.Layout.LIST, dataView.getActiveLayout());
 
         List<WebElement> rowElts = dataView.getRowsWebElement();
-        Assertions.assertNotNull(rowElts);
-        Assertions.assertEquals(9, rowElts.size());
+        assertNotNull(rowElts);
+        assertEquals(9, rowElts.size());
 
         WebElement firstRowElt = dataView.getRowWebElement(0);
-        Assertions.assertTrue(firstRowElt.getText().contains(lazyDataModel.getLangs().get(0).getId().toString()));
-        Assertions.assertTrue(firstRowElt.getText().contains(lazyDataModel.getLangs().get(0).getName()));
-        Assertions.assertTrue(PrimeSelenium.hasCssClass(firstRowElt, "ui-dataview-row"));
+        assertTrue(firstRowElt.getText().contains(lazyDataModel.getLangs().get(0).getId().toString()));
+        assertTrue(firstRowElt.getText().contains(lazyDataModel.getLangs().get(0).getName()));
+        assertTrue(PrimeSelenium.hasCssClass(firstRowElt, "ui-dataview-row"));
 
         Paginator paginator = dataView.getPaginator();
-        Assertions.assertNotNull(paginator);
-        Assertions.assertNotNull(paginator.getPages());
-        Assertions.assertEquals(9, paginator.getPages().size());
-        Assertions.assertEquals(1, paginator.getPage(0).getNumber());
-        Assertions.assertEquals(2, paginator.getPage(1).getNumber());
+        assertNotNull(paginator);
+        assertNotNull(paginator.getPages());
+        assertEquals(9, paginator.getPages().size());
+        assertEquals(1, paginator.getPage(0).getNumber());
+        assertEquals(2, paginator.getPage(1).getNumber());
 
         // Act - Part 2
         dataView.selectPage(2);
 
         // Assert - Part 2
         rowElts = dataView.getRowsWebElement();
-        Assertions.assertEquals(9, rowElts.size());
+        assertEquals(9, rowElts.size());
 
         // Act - Part 3
         dataView.selectPage(9);
 
         // Assert - Part 3
         rowElts = dataView.getRowsWebElement();
-        Assertions.assertNotNull(rowElts);
-        Assertions.assertEquals(3, rowElts.size());
+        assertNotNull(rowElts);
+        assertEquals(3, rowElts.size());
 
         firstRowElt = dataView.getRowWebElement(0);
-        Assertions.assertTrue(firstRowElt.getText().contains(lazyDataModel.getLangs().get(72).getId().toString()));
-        Assertions.assertTrue(firstRowElt.getText().contains(lazyDataModel.getLangs().get(72).getName()));
+        assertTrue(firstRowElt.getText().contains(lazyDataModel.getLangs().get(72).getId().toString()));
+        assertTrue(firstRowElt.getText().contains(lazyDataModel.getLangs().get(72).getName()));
 
         assertConfiguration(dataView.getWidgetConfiguration());
     }
@@ -101,25 +102,25 @@ public class DataView002Test extends AbstractDataTableTest {
     @Test
     @Order(2)
     @DisplayName("DataView: Lazy: delete rows from last page - similar to https://github.com/primefaces/primefaces/issues/1921")
-    public void testLazyRowDeleteFromLastPage(Page page) {
+    void lazyRowDeleteFromLastPage(Page page) {
         // Arrange
         DataView dataView = page.dataView;
-        Assertions.assertNotNull(dataView);
+        assertNotNull(dataView);
         dataView.selectPage(dataView.getPaginator().getPages().size());
 
         // Act & Assert
         for (int row = 3; row > 1; row--) {
-            Assertions.assertEquals(row, dataView.getRowsWebElement().size());
+            assertEquals(row, dataView.getRowsWebElement().size());
             PrimeSelenium.guardAjax(dataView.getRowWebElement(0).findElement(By.className("ui-button"))).click();
-            Assertions.assertEquals(9, dataView.getPaginator().getActivePage().getNumber());
+            assertEquals(9, dataView.getPaginator().getActivePage().getNumber());
         }
 
         // Act - delete last row on page 9
         PrimeSelenium.guardAjax(dataView.getRowWebElement(0).findElement(By.className("ui-button"))).click();
 
         // Assert
-        Assertions.assertEquals(8, dataView.getPaginator().getActivePage().getNumber());
-        Assertions.assertEquals(9, dataView.getRowsWebElement().size());
+        assertEquals(8, dataView.getPaginator().getActivePage().getNumber());
+        assertEquals(9, dataView.getRowsWebElement().size());
 
         assertConfiguration(dataView.getWidgetConfiguration());
     }
@@ -127,7 +128,7 @@ public class DataView002Test extends AbstractDataTableTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("DataView Config = " + cfg);
-        Assertions.assertTrue(cfg.has("paginator"));
+        assertTrue(cfg.has("paginator"));
     }
 
     public static class Page extends AbstractPrimePage {

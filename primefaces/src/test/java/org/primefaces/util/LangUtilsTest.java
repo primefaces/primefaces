@@ -23,59 +23,53 @@
  */
 package org.primefaces.util;
 
-import java.lang.reflect.Field;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.util.List;
-import org.junit.jupiter.api.Assertions;
 
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class LangUtilsTest {
+class LangUtilsTest {
 
     private static final String FOO = "foo";
     private static final String SENTENCE = "foo bar baz";
 
     @Test
-    public void getTypeFromCollectionProperty_Simple() {
+    void getTypeFromCollectionProperty_Simple() {
         Class type = LangUtils.getTypeFromCollectionProperty(new SimpleClass(), "strings");
 
         assertEquals(String.class, type);
     }
 
     @Test
-    public void getTypeFromCollectionProperty_Inheritance() {
+    void getTypeFromCollectionProperty_Inheritance() {
         Class type = LangUtils.getTypeFromCollectionProperty(new ConcreteClass(), "ints");
 
         assertEquals(Integer.class, type);
     }
 
     @Test
-    public void getTypeFromCollectionProperty_GenericInheritance() {
+    void getTypeFromCollectionProperty_GenericInheritance() {
         Class type = LangUtils.getTypeFromCollectionProperty(new ConcreteGenericClass(), "values");
 
         assertEquals(String.class, type);
     }
 
     @Test
-    public void getTypeFromCollectionProperty_GenericInheritance_Multilevel() {
+    void getTypeFromCollectionProperty_GenericInheritance_Multilevel() {
         Class type = LangUtils.getTypeFromCollectionProperty(new DetailedConcreteGenericClass(), "values");
 
         assertEquals(String.class, type);
     }
 
     @Test
-    public void testCountMatches_char() {
+    void countMatches_char() {
         assertEquals(0, LangUtils.countMatches(null, 'D'));
         assertEquals(5, LangUtils.countMatches("one long someone sentence of one", ' '));
         assertEquals(6, LangUtils.countMatches("one long someone sentence of one", 'o'));
     }
 
     @Test
-    public void substring() {
+    void substring() {
         assertNull(LangUtils.substring(null, 0, 0));
         assertNull(LangUtils.substring(null, 1, 2));
         assertEquals("", LangUtils.substring("", 0, 0));
@@ -93,7 +87,7 @@ public class LangUtilsTest {
     }
 
     @Test
-    public void testIsParsable() {
+    void isParsable() {
         assertFalse(LangUtils.isNumeric(null));
         assertFalse(LangUtils.isNumeric(""));
         assertFalse(LangUtils.isNumeric("0xC1AB"));
@@ -116,48 +110,13 @@ public class LangUtilsTest {
     }
 
     @Test
-    public void toCapitalCase() {
+    void toCapitalCase() {
         assertEquals("", LangUtils.toCapitalCase(null));
         assertEquals("", LangUtils.toCapitalCase(""));
         assertEquals("", LangUtils.toCapitalCase(" "));
         assertEquals("This Is A Test", LangUtils.toCapitalCase("thisIsATest"));
         assertEquals("Uppercase First Char", LangUtils.toCapitalCase("UppercaseFirstChar"));
         assertEquals("My Über String", LangUtils.toCapitalCase("myÜberString"));
-    }
-
-    @Test
-    public void getField() {
-        Field field = null;
-
-        field = LangUtils.getFieldRecursive(AbstractClass.class, "container.string");
-        Assertions.assertNotNull(field);
-        Assertions.assertEquals(Container.class, field.getDeclaringClass());
-        Assertions.assertEquals("string", field.getName());
-
-        field = LangUtils.getFieldRecursive(AbstractClass.class, "container.container.string");
-        Assertions.assertNotNull(field);
-        Assertions.assertEquals(Container.class, field.getDeclaringClass());
-        Assertions.assertEquals("string", field.getName());
-
-        field = LangUtils.getFieldRecursive(AbstractClass.class, "container.container");
-        Assertions.assertNotNull(field);
-        Assertions.assertEquals(Container.class, field.getDeclaringClass());
-        Assertions.assertEquals("container", field.getName());
-
-        field = LangUtils.getField(SimpleClass.class, "strings");
-        Assertions.assertNotNull(field);
-        Assertions.assertEquals(SimpleClass.class, field.getDeclaringClass());
-        Assertions.assertEquals("strings", field.getName());
-
-        Assertions.assertNotNull(LangUtils.getField(AbstractClass.class, "ints"));
-        Assertions.assertNotNull(LangUtils.getField(ConcreteClass.class, "ints"));
-        Assertions.assertNotNull(LangUtils.getField(AbstractGenericClass.class, "values"));
-        Assertions.assertNotNull(LangUtils.getField(ConcreteGenericClass.class, "values"));
-        Assertions.assertNotNull(LangUtils.getField(DetailedConcreteGenericClass.class, "values"));
-
-        Assertions.assertThrows(IllegalArgumentException.class, () -> LangUtils.getField(DetailedConcreteGenericClass.class, "rasdasd"));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> LangUtils.getFieldRecursive(AbstractClass.class, "container2.stringss"));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> LangUtils.getFieldRecursive(AbstractClass.class, "container.stringss"));
     }
 
     class SimpleClass {

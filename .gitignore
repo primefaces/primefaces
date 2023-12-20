@@ -4,6 +4,7 @@
 nbactions.xml
 .DS_STORE
 .idea/
+!.idea/codeStyles/*
 *.iml
 **/pom.xml.versionsBackup
 *~

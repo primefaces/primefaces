@@ -62,7 +62,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
     protected void encodeMarkup(FacesContext context, SelectOneRadio radio) throws IOException {
         String layout = radio.getLayout();
         if (LangUtils.isEmpty(layout)) {
-            layout = ComponentUtils.shouldRenderFacet(radio.getFacet("custom")) ? "custom" : "lineDirection";
+            layout = FacetUtils.shouldRenderFacet(radio.getFacet("custom")) ? "custom" : "lineDirection";
         }
         boolean custom = "custom".equals(layout);
 
@@ -79,7 +79,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
 
     protected void encodeScript(FacesContext context, SelectOneRadio radio) throws IOException {
         String layout = radio.getLayout();
-        if (LangUtils.isEmpty(layout) && ComponentUtils.shouldRenderFacet(radio.getFacet("custom"))) {
+        if (LangUtils.isEmpty(layout) && FacetUtils.shouldRenderFacet(radio.getFacet("custom"))) {
             layout = "custom";
         }
         boolean custom = "custom".equals(layout);
@@ -151,7 +151,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
 
                 String columnClass = (colMod < columnClasses.length) ? columnClasses[colMod].trim() : "";
                 if (!columnClass.contains("md-") && !columnClass.contains("col-") && !lineDirection) {
-                    columnClass += (!"".equals(columnClass) ? " " : "") + GridLayoutUtils.getFlexColumnClass(columns);
+                    columnClass += (!"".equals(columnClass) ? " " : "") + GridLayoutUtils.getColumnClass(flex, columns);
                 }
 
                 writer.startElement("div", null);
@@ -238,7 +238,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
 
     protected void encodeCustomLayout(FacesContext context, SelectOneRadio radio) throws IOException {
         UIComponent customFacet = radio.getFacet("custom");
-        if (ComponentUtils.shouldRenderFacet(customFacet)) {
+        if (FacetUtils.shouldRenderFacet(customFacet)) {
             ResponseWriter writer = context.getResponseWriter();
             String style = radio.getStyle();
             String styleClass = getStyleClassBuilder(context)

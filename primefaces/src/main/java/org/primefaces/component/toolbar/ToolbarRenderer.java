@@ -30,7 +30,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 
 public class ToolbarRenderer extends CoreRenderer {
 
@@ -100,7 +100,9 @@ public class ToolbarRenderer extends CoreRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("class", "ui-toolbar-group-" + facetName, null);
-        if (ComponentUtils.shouldRenderFacet(facet)) facet.encodeAll(context);
+        if (FacetUtils.shouldRenderFacet(facet)) {
+            facet.encodeAll(context);
+        }
         writer.endElement("div");
     }
 

@@ -25,7 +25,6 @@ package org.primefaces.config;
 
 import java.util.Map;
 import java.util.Objects;
-
 import javax.faces.component.UIInput;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -55,6 +54,7 @@ public class PrimeConfiguration {
     private final boolean interpolateClientSideValidationMessages;
     private final boolean earlyPostParamEvaluation;
     private final boolean moveScriptsToBottom;
+    private final boolean moveScriptsToBottomDeferred;
     private final boolean html5Compliance;
     private boolean csp;
     private boolean policyProvided;
@@ -124,8 +124,21 @@ public class PrimeConfiguration {
         value = externalContext.getInitParameter(Constants.ContextParams.CLIENT_SIDE_LOCALISATION);
         clientSideLocalizationEnabled = Boolean.parseBoolean(value);
 
-        value = externalContext.getInitParameter(Constants.ContextParams.MOVE_SCRIPTS_TO_BOTTOM);
-        moveScriptsToBottom = Boolean.parseBoolean(value);
+        value = Objects.toString(externalContext.getInitParameter(Constants.ContextParams.MOVE_SCRIPTS_TO_BOTTOM));
+        switch (value) {
+            case "true":
+                moveScriptsToBottom = Boolean.TRUE;
+                moveScriptsToBottomDeferred = Boolean.FALSE;
+                break;
+            case "defer":
+                moveScriptsToBottom = Boolean.TRUE;
+                moveScriptsToBottomDeferred = Boolean.TRUE;
+                break;
+            default:
+                moveScriptsToBottom = Boolean.FALSE;
+                moveScriptsToBottomDeferred = Boolean.FALSE;
+                break;
+        }
 
         value = externalContext.getInitParameter(Constants.ContextParams.HTML5_COMPLIANCE);
         html5Compliance = Boolean.parseBoolean(value);
@@ -257,6 +270,10 @@ public class PrimeConfiguration {
 
     public boolean isMoveScriptsToBottom() {
         return moveScriptsToBottom;
+    }
+
+    public boolean isMoveScriptsToBottomDeferred() {
+        return moveScriptsToBottomDeferred;
     }
 
     public boolean isHtml5Compliant() {

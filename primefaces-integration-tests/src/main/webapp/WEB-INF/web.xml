@@ -51,6 +51,14 @@
         <param-value>client-window</param-value>
     </context-param>
     <context-param>
+        <param-name>primefaces.CLIENT_SIDE_VALIDATION</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    <context-param>
+        <param-name>primefaces.CLIENT_SIDE_LOCALISATION</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    <context-param>
         <param-name>primefaces.UPLOADER</param-name>
         <param-value>${primefaces.UPLOADER}</param-value>
     </context-param>

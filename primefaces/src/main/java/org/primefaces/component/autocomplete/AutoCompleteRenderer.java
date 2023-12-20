@@ -38,6 +38,7 @@ import org.primefaces.event.AutoCompleteEvent;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
@@ -516,7 +517,7 @@ public class AutoCompleteRenderer extends InputRenderer {
 
     protected void encodeFooter(FacesContext context, AutoComplete ac) throws IOException {
         UIComponent footer = ac.getFacet("footer");
-        if (ComponentUtils.shouldRenderFacet(footer)) {
+        if (FacetUtils.shouldRenderFacet(footer)) {
             ResponseWriter writer = context.getResponseWriter();
             writer.startElement("div", null);
             writer.writeAttribute("class", "ui-autocomplete-footer", null);
@@ -537,7 +538,7 @@ public class AutoCompleteRenderer extends InputRenderer {
 
         for (int i = 0; i < ac.getColums().size(); i++) {
             Column column = ac.getColums().get(i);
-            if (column.isRendered() && (column.getHeaderText() != null || ComponentUtils.shouldRenderFacet(column.getFacet("header")))) {
+            if (column.isRendered() && (column.getHeaderText() != null || FacetUtils.shouldRenderFacet(column.getFacet("header")))) {
                 hasHeader = true;
                 break;
             }
@@ -565,7 +566,7 @@ public class AutoCompleteRenderer extends InputRenderer {
                     writer.writeAttribute("style", column.getStyle(), null);
                 }
 
-                if (ComponentUtils.shouldRenderFacet(headerFacet)) {
+                if (FacetUtils.shouldRenderFacet(headerFacet)) {
                     headerFacet.encodeAll(context);
                 }
                 else if (headerText != null) {
@@ -701,7 +702,7 @@ public class AutoCompleteRenderer extends InputRenderer {
 
         writer.endElement("li");
 
-        if (ComponentUtils.shouldRenderFacet(itemtip)) {
+        if (FacetUtils.shouldRenderFacet(itemtip)) {
             writer.startElement("li", null);
             writer.writeAttribute("class", AutoComplete.ITEMTIP_CONTENT_CLASS, null);
             itemtip.encodeAll(context);
@@ -757,7 +758,7 @@ public class AutoCompleteRenderer extends InputRenderer {
             }
         }
 
-        if (ComponentUtils.shouldRenderFacet(itemtip)) {
+        if (FacetUtils.shouldRenderFacet(itemtip)) {
             writer.startElement("td", null);
             writer.writeAttribute("class", AutoComplete.ITEMTIP_CONTENT_CLASS, null);
             encodeIndexedId(context, itemtip, index);
@@ -791,13 +792,13 @@ public class AutoCompleteRenderer extends InputRenderer {
                 .attr("queryMode", ac.getQueryMode())
                 .attr("completeEndpoint", ac.getCompleteEndpoint())
                 .attr("moreText", ac.getMoreText())
-                .attr("hasFooter", ComponentUtils.shouldRenderFacet(ac.getFacet("footer")));
+                .attr("hasFooter", FacetUtils.shouldRenderFacet(ac.getFacet("footer")));
 
         if (ac.isCache()) {
             wb.attr("cache", true).attr("cacheTimeout", ac.getCacheTimeout());
         }
 
-        if (ComponentUtils.shouldRenderFacet(ac.getFacet("itemtip"))) {
+        if (FacetUtils.shouldRenderFacet(ac.getFacet("itemtip"))) {
             wb.attr("itemtip", true, false)
                     .attr("itemtipMyPosition", ac.getItemtipMyPosition(), null)
                     .attr("itemtipAtPosition", ac.getItemtipAtPosition(), null);

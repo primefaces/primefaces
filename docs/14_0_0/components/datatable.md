@@ -29,8 +29,6 @@ DataTable displays data in tabular format.
 | dataLocale                | null               | Object           | Locale to be used in features such as filtering and sorting, defaults to view locale.
 | dir                       | ltr                | String           | Defines text direction, valid values are `ltr` and `rtl`.
 | disableContextMenuIfEmpty | false              | Boolean          | Decides whether to disable context menu or not if a table has no records.
-| disabledSelection         | false              | Boolean          | Disables row selection when true. Overrides p:column's disabledSelection attr. Example: var="xxx" disabledSelection="#{xxx.year > 1960}"
-| disabledTextSelection     | true               | Boolean          | Disables text selection on row click.
 | draggableColumns          | false              | Boolean          | Columns can be reordered with dragdrop when enabled.
 | draggableRows             | false              | Boolean          | When enabled, rows can be reordered using dragdrop.
 | draggableRowsFunction     | null               | MethodExpression | Method expression to execute after dragging row.
@@ -78,7 +76,6 @@ DataTable displays data in tabular format.
 | rowHover                  | false              | Boolean          | Adds hover effect to rows, default is false. Hover is always on when selection is enabled.
 | rowIndexVar               | null               | String           | Name of iterator to refer each row index.
 | rowKey                    | null               | String           | Unique identifier of a row. Must be defined when using selection together with non-lazy datasource (eg value-attribute bound to a instance of `java.util.List`).
-| rowSelectMode             | new                | String           | Defines row selection mode. Valid values are "new", "add" and "none".
 | rowSelector               | null               | String           | Client side check if rowclick triggered row click event not a clickable element in row content.
 | rowStatePreserved         | false              | Boolean          | Keeps state of its children on a per-row basis. Default is false.
 | rowStyleClass             | null               | String           | Style class for each row.
@@ -93,7 +90,10 @@ DataTable displays data in tabular format.
 | scrollable                | false              | Boolean          | Makes data scrollable with fixed header.
 | selectAllFilteredOnly     | false              | Boolean          | When enabled, toggle select will only apply on filtered items. Default is false.
 | selection                 | null               | Object           | Reference to the selection data.
+| selectionRowMode          | new                | String           | Defines row selection mode. Valid values are "new", "add" and "none".
 | selectionMode             | null               | String           | Enables row selection, valid values are "single" and "multiple". Automatically detected based on value-binding to `selection` property. So no need to set this explicit.
+| selectionDisabled         | false              | Boolean          | Disables row selection when true. Example: var="xxx" selectionDisabled="#{xxx.year > 1960}"
+| selectionTextDisabled     | true               | Boolean          | Disables text selection on row click.
 | selectionPageOnly         | true               | Boolean          | When using a paginator and selection mode is `checkbox`, the select all checkbox in the header will select all rows on the current page if `true`, or all rows on all pages if `false`. Default is `true`.
 | showGridlines             | false              | Boolean          | When enabled, cell borders are displayed.
 | size                      | regular            | String           | Size of the table content, valid values are "small" and "large". Leave empty for regular size.
@@ -173,8 +173,8 @@ We suggest you to not store your data model inside a longer-living scope like `@
 
 So either you use a `@RequestScoped` like in the _Getting started_, or use a `LazyDataModel` to load your data on-the-fly.   
 PrimeFaces comes with 2 built-in `LazyDataModel`:
-- `JpaLazyDataModel`: implementation to load the data via JPA
-- `ReflectionLazyDataModel`: implementation which loads the data via lambda. It also performance better (up to 30%) compared to binding a simple List.
+- `JPALazyDataModel`: implementation to load the data via JPA
+- `DefaultLazyDataModel`: implementation which loads the data via lambda. It also performs better (up to 30%) compared to binding a simple List.
 
 
 ```java
@@ -187,8 +187,9 @@ public class CarBean {
 
     @PostConstruct
     public void init() {
-        cars = ReflectionLazyDataModel.builder(() -> carService.getCars())
-                .rowKeyProvider((car) -> Integer.toString(car.getId())) // required for selection
+        cars = DefaultLazyDataModel.<Car>builder()
+                .valueSupplier(() -> carService.getCars())
+                .rowKeyProvider(Car::getId) // required for selection
                 .build();
     }
 
@@ -544,81 +545,56 @@ public void init() {
 In case of custom filters (e.g `SelectOneMenu`), you have the possibilites to use either `Column#filterValue` or custom filter value attribute (e.g `SelectOneMenu#value`)
 
 ## Row Selection
-There are several ways to select row(s) from datatable. Let’s begin by adding a Car reference for
-single selection and a Car array for multiple selection to the CarBean to hold the selected data.
 
-```java
-public class CarBean {
-    private List<Car> cars;
-    private Car selectedCar;
-    private List<Car> selectedCars;
-
-    public CarBean() {
-        cars = new ArrayList<Car>();
-        //populate cars
-    }
-    //getters and setters
-}
-```
-
-#### Single Selection with a Command Component
-This method is implemented with a command component such as commandLink or
-commandButton. Selected row can be set to a server side instance by passing as a parameter if you
-are using EL 2.2 or using `<f:setPropertyActionListener />`.
+At first, you could implement selection by yourself by simply defining a column with a command component (e.g commandLink/commandButton). 
+Selected row(s) can be set to a server side instance by passing as a parameter or using `<f:setPropertyActionListener />`.
 
 ```xhtml
 <p:dataTable var="car" value="#{carBean.cars}">
-    <p:column>
-        <p:commandButton value="Select">
-            <f:setPropertyActionListener value="#{car}" target="#{carBean.selectedCar}" />
-        </p:commandButton>
+    <p:column headerText="Actions">
+        <p:commandButton value="Select" action="#{targetBean.addSelectedCar(car)}" />
     </p:column>
-    ...columns
 </p:dataTable>
 ```
 
-#### Single Selection with Row Click
-Previous method works when the button is clicked, if you’d like to enable selection wherever the
-row is clicked, use `selectionMode` option.
+But at this point, there is still a lot of work to be done: styling, what if you want checkbox/radiobutton selection etc.
+Fortunately, PF comes with built-in features and provides several ways to select row(s) from datatable
+  - Row selection (clicking on a row)
+  - Column selection (clicking on a radiobutton or checkbox, rendered by PF)
 
-```xhtml
-<p:dataTable var="car" value="#{carBean.cars}" selectionMode="single" selection="#{carBean.selectedCar}" rowKey="#{car.id}">
-    ...columns
-</p:dataTable>
-```
-
-#### Multiple Selection with Row Click
-Multiple row selection is similar to single selection but selection should reference an array or a list
-of the domain object displayed and user needs to use press modifier key(e.g. ctrl) during selection *.
-
-```xhtml
-<p:dataTable var="car" value="#{carBean.cars}" selectionMode="multiple" selection="#{carBean.selectedCars}" rowKey="#{car.id}" >
-    ...columns
-</p:dataTable>
-```
-#### Single Selection with RadioButton
-Selection a row with a radio button placed on each row is a common case, datatable has built-in
-support for this method so that you don’t need to deal with h:selectOneRadios and low level bits. In
-order to enable this feature, define a column with `selectionMode` set as single.
+### Selection with Row Click
+To enable basic selection, it's important to set `selection` and `rowKey` attributes. 
+In previous PF versions, you had to set `selectionMode` to define whether it's single or multiple selection: this is no longer required.
+Depending `selection` value-binding, multiple selection will be used if bound to an array or a collection, single selection otherwise.
 
 ```xhtml
 <p:dataTable var="car" value="#{carBean.cars}" selection="#{carBean.selectedCar}" rowKey="#{car.id}">
-    <p:column selectionMode="single"/>
     ...columns
 </p:dataTable>
 ```
-#### Multiple Selection with Checkboxes
-Similar to how radio buttons are enabled, define a selection column with a multiple selectionMode.
-DataTable will also provide a selectAll checkbox at column header.
+
+In this example, `selectedCar` property is a single `Car` therefore single selection will be used (e.g `selectionMode` will be set to `single`)
+
+### Selection with RadioButtons or Checkboxes
+Selecting a row with a radio button or a checkbox placed on each row is a common case, datatable has built-in
+support for this so that you don't need to deal with low level bits. 
+
+As explained before, `DataTable` component already knows what kind of selection should be used (e.g single or multiple). 
+If single selection, you might want to render radiobuttons, else checkboxes will best fit multiple selection. 
+At this point, the only thing left is to create the "selection column" using `selectionBox` property:   
 
 ```xhtml
-<p:dataTable var="car" value="#{carBean.cars}" selection="#{carBean.selectedCars}" rowKey="#{car.id}" >
-    <p:column selectionMode="multiple"/>
+<p:dataTable var="car" value="#{carBean.cars}" selection="#{carBean.selectedCars}" rowKey="#{car.id}">
+    <p:column selectionBox="true"/>
+    
     ...columns
 </p:dataTable>
 ```
 
-?> **Tip**: Use rowSelectMode option to customize the default behavior on row click of a
+In this example, `selectedCars` property is a `Collection` of `Car` therefore multiple selection will be used and also, 
+since there is a "selection column", checkboxes will be rendered
+
+?> **Tip**: Use `selectionRowMode` option to customize the default behavior on row click of a
 selection enabled datatable. Default value is "new" that clears previous selections, "add" mode
 keeps previous selections same as selecting a row with mouse click when metakey is on and
 "none" completely disables selection when clicking on the row itself.
@@ -630,8 +606,7 @@ rows. You must define this key by using the `rowKey` attribute.
 !> RowKey must not contain a comma `,` as it will break row selection. See [`GitHub #8932`](https://github.com/primefaces/primefaces/issues/8932).
 
 ## Dynamic Columns
-`Columns` component is used to define the columns programmatically. It requires a collection as the value, two
-iterator variables called `var` and `columnIndexVar`.
+`Columns` component is used to define the columns programmatically. It requires a collection as the value:
 
 ```xhtml
 <p:dataTable var="car" value="#{tableBean.cars}">
@@ -675,6 +650,7 @@ public class CarBean {
     }
 }
 ```
+
 ## Column Grouping
 Grouping is defined by ColumnGroup component used to combine datatable header and footers.
 
@@ -994,68 +970,89 @@ public class CarBean {
 }
 ```
 
-### JpaLazyDataModel
+### JPALazyDataModel
 
 PrimeFaces provides a OOTB implementation for JPA users, which supports basic features.
 
 ```java
-new JpaLazyDataModel<>(MyEntity.class, () -> entityManager);
+JPALazyDataModel<MyEntity> lazyDataModel = JPALazyDataModel.<MyEntity>builder())
+        .entityClass(MyEntity.class)
+        .entityManager(() -> entityManager)
+        .build();
 ```
 
-If you have selection enabled, you can either pass the rowKey via JPA metamodel:
+If you have selection enabled, we need a `rowKey`. 
+It's very likely that this is the mapped JPA `@Id`, so we try to auto-lookup per default.
+Otherwise you can also define it:
 
 ```java
-JpaLazyDataModel<MyEntity> lazyDataModel = JpaLazyDataModel.builder(MyEntity.class, () -> entityManager)
-    .rowKey(MyEntity_.id)
-    .build();
-```
-
-or as plain String:
-
-```java
-JpaLazyDataModel<MyEntity> lazyDataModel = JpaLazyDataModel.builder(MyEntity.class, () -> entityManager)
-    .rowKey("id")
-    .build();
+JPALazyDataModel<MyEntity> lazyDataModel = JPALazyDataModel.<MyEntity>builder())
+        ...
+        .rowKeyField(MyEntity_.id) // JPA MetaModel
+        .rowKeyField("id") // or as String
+        ...
 ```
 
 or provide a existing JSF `Converter`:
 
 ```java
-JpaLazyDataModel<MyEntity> lazyDataModel = JpaLazyDataModel.builder(MyEntity.class, () -> entityManager)
-    .rowKeyConverter(myConverter)
-    .build();
+JPALazyDataModel<MyEntity> lazyDataModel = JPALazyDataModel.<MyEntity>builder())
+        ...
+        .rowKeyConverter(myConverter)
+        ...
 ```
 
-or enable case insensitive searching:
+#### Case insensitive searching
+Per default the filters are case sensitive but you can also disable it:
 
 ```java
-JpaLazyDataModel<MyEntity> lazyDataModel = JpaLazyDataModel.builder(MyEntity.class, () -> entityManager)
-    .caseSensitive(false)
-    .build();
+JPALazyDataModel<MyEntity> lazyDataModel = JPALazyDataModel.<MyEntity>builder())
+        ...
+        .caseSensitive(false)
+        ...
 ```
 
-or enable wildcard support for characters `*`, `%`, `?` and `_`. Characters `*` and `%` means any characters 
+#### Wildcards
+Enable wildcard support for characters `*`, `%`, `?` and `_`. Characters `*` and `%` means any characters 
 while `?` and `_` mean replace a single character.  For example `Smith*` would find all matches starting with 
 the word `Smith`. For single character replacement like `Te?t` would match words `Tent` and `Test`.
 
 ```java
-JpaLazyDataModel<MyEntity> lazyDataModel = JpaLazyDataModel.builder(MyEntity.class, () -> entityManager)
-    .wildcardSupport(true)
-    .build();
+JPALazyDataModel<MyEntity> lazyDataModel = JPALazyDataModel.<MyEntity>builder())
+        ...
+        .wildcardSupport(true)
+        ...
 ```
 
-Also you can add global filters or manipulate generated predicates (from the DataTable columns) via:
+#### Add global filters
+You can add global filters or manipulate generated predicates (from the DataTable columns) via:
+
 ```java
-JpaLazyDataModel<MyEntity> lazyDataModel = JpaLazyDataModel.builder(MyEntity.class, () -> entityManager)
-    .filterEnricher((filterBy, cb, cq, root, predicates) -> {
-        predicates.add(cb.isNull(root.get("id")));
-    })
-    .build();
+JPALazyDataModel<MyEntity> lazyDataModel = JPALazyDataModel.<MyEntity>builder())
+        ...
+        .filterEnricher((filterBy, cb, cq, root, predicates) -> {
+            predicates.add(cb.isNull(root.get("id")));
+        })
+        ...
 ```
+### FlowLogix JPALazyDataModel (PrimeFaces Community)
+`JPALazyDataModel` implementation that's fully integrated with Jakarta EE and `@Inject`able.
 
-### ReflectionLazyDataModel
+```java
+@Named
+@ViewScoped
+public class UserViewer implements Serializable {
+    @Inject
+    // optional configuration annotation
+    @LazyModelConfig(caseInsensitive = true)
+    JPALazyDataModel<UserEntity> lazyModel;
+}
+```
+Developer's guide is available at https://docs.flowlogix.com/#section-jpa-lazymodel. Project page is available at https://github.com/flowlogix/flowlogix
 
-`ReflectionLazyDataModel` is a `LazyDataModel` implementation which takes a supplier as datasource and implements filtering and sorting via reflection.
+### DefaultLazyDataModel
+
+`DefaultLazyDataModel` is a `LazyDataModel` implementation which takes a supplier as datasource and implements filtering and sorting via reflection.
 It can be used for cases where you would dynamically load the datasource e.g. from a webservice.
 
 Also it can be used as replacement for binding a simple List as it has some benefits:
@@ -1064,12 +1061,13 @@ Also it can be used as replacement for binding a simple List as it has some bene
 3) it allows some additional features like applying additional filtering or sorting via lambda.
 
 ```java
-private ReflectionLazyDataModel<MyPojo> dataModel;
+private DefaultLazyDataModel<MyPojo> dataModel;
 
 @PostConstruct
 public void init() {
-    dataModel = ReflectionLazyDataModel.builder(() -> service.getListOfMyPojos())
-        .rowKeyProvider((o) -> Integer.toString(o.getId())) // required for selection
+    dataModel = DefaultLazyDataModel.<MyPojo>builder()
+        .valueSupplier(() -> service.getListOfMyPojos())
+        .rowKeyProvider(MyPojo::getId) // required for selection
         .build();
 ```
 
@@ -1240,18 +1238,20 @@ Widget: `PrimeFaces.widget.DataTable`
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |
-| getPaginator() | - | Paginator | Returns the paginator insance.
+| addRow() | - | void | Fetches the last row from the backend and inserts a row instead of updating the table itself.
 | clearFilters() | - | void | Clears all column filters
-| getSelectedRowsCount() | - | Number | Returns number of selected rows.
-| selectRow(r, silent) | r : number or tr element as jQuery object, silent : flag to fire row select ajax behavior | void | Selects the given row.
-| unselectRow(r, silent) | r : number or tr element as jQuery object, silent : flag to fire row select ajax behavior | void | Unselects the given row.
-| unselectAllRows() | - | void | Unselects all rows.
-| toggleCheckAll() | - | void | Toggles header checkbox state.
+| collapseAllRows() | - | void | Collapses all rows that are currently expanded.
 | filter() | - | void | Filters the data.
+| getPaginator() | - | Paginator | Returns the paginator insance.
+| getSelectedRowsCount() | - | Number | Returns number of selected rows.
 | selectAllRows() | - | void | Select all rows.
 | selectAllRowsOnPage() | - | void | Select all rows on current page.
+| selectRow(r, silent) | r : number or tr element as jQuery object, silent : flag to fire row select ajax behavior | void | Selects the given row.
+| toggleCheckAll() | - | void | Toggles header checkbox state.
+| unselectAllRows() | - | void | Unselects all rows.
 | unselectAllRowsOnPage() | - | void | Unselect all rows on current page.
-| addRow() | - | void | Fetches the last row from the backend and inserts a row instead of updating the table itself.
+| unselectRow(r, silent) | r : number or tr element as jQuery object, silent : flag to fire row select ajax behavior | void | Unselects the given row.
+
 
 
 ## Server Side API

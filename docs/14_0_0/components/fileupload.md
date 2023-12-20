@@ -18,69 +18,70 @@ powered rich solution with graceful degradation for legacy browsers.
 
 ## Attributes
 
-| Name | Default | Type | Description|
-| --- | --- | --- | --- |
-| id | null | String | Unique identifier of the component.
-| accept | null | String | Filters files in native file browser dialog.
-| allowTypes | null | String | Regular expression for accepted file types, e.g. /(\\.\|\\/)(gif\|jpe?g\|png)$/
-| auto | false | Boolean | When set to true, selecting a file starts the upload process implicitly.
-| binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
-| cancelButtonTitle | null | String | Native title tooltip for cancel button
-| cancelButtonStyleClass | null | String | Style class for cancel button.
-| cancelIcon | pi pi-times | String | The icon of cancel button
-| cancelLabel | Cancel | String | Label of the cancel button.
-| chooseButtonTitle | null | String | Native title tooltip for choose button
-| chooseButtonStyleClass | null | String | Style class for choose button.
-| chooseIcon | pi pi-plus | String | The icon of choose button
-| converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id.
-| converterMessage | null | String | Message to be displayed when conversion fails.
-| disabled | false | Boolean | Disables component when set true.
-| dragDropSupport | true | Boolean | Specifies dragdrop based file selection from filesystem, default is true and works only on supported browsers.
-| dropZone | null | String | Component that should be used as custom drop zone.
-| fileLimit | null | Integer | Maximum number of files allowed to upload.
-| fileLimitMessage | Maximum number of files exceeded | String | Message to display when file limit exceeds.
-| global | true | Boolean | Global AJAX requests are listened by ajaxStatus component, setting global to false will not trigger ajaxStatus. Default is false.
-| immediate | false | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
-| invalidFileMessage | Invalid file type | String | Message to display when file is not accepted.
-| invalidSizeMessage | Invalid file size | String | Message to display when size limit exceeds.
-| label | Choose | String | Label of the browse button.
-| listener | null | MethodExpr | Method to invoke when a file is uploaded.
-| maxChunkSize | 0 | Long | To upload large files in smaller chunks, set this option to a preferred maximum chunk size. If set to 0 (default), null or undefined, or the browser does not support the required Blob API, files will be uploaded as a whole. Only works in "advanced" mode.
-| maxRetries | 30 | Integer | Only for chunked file upload: Amount of retries when upload get´s interrupted due to e.g. unstable network connection.
-| messageTemplate | {name} {size} | String | Message template to use when displaying file validation errors.
-| mode | advanced | String | Mode of the fileupload, can be _simple_ or _advanced_.
-| multiple | false | Boolean | Allows choosing of multi file uploads from native file browse dialog
-| onAdd | null | String | Advanced Mode Only. Callback to execute before adding a file.
-| oncancel | null | String | Advanced Mode Only. Callback to execute after fileupload request is cancelled.
-| oncomplete | null | String | Client side callback to execute when upload ends.
-| onerror | null | String | Callback to execute if fileupload request fails.
-| onstart | null | String | Client side callback to execute when upload begins.
-| onupload | null | String | Advanced Mode Only. Callback to execute before the files are sent. If this callback returns false, the file upload request is not started.
-| onvalidationfailure | null | String | Handler called when client-side validation fails.
-| previewWidth | 80 | Integer | Width for image previews in pixels.
-| process | @all | String | Component(s) to process in fileupload request.
-| rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-| required | false | Boolean | Marks component as required.
-| requiredMessage | null | String | Message to be displayed when required field validation fails.
-| retryTimeout | 1000 | Integer | Only for chunked file upload: (Base-)Timeout in milliseconds to wait until the next retry. It is multiplied with the retry count. (first retry: retryTimeout * 1, second retry: retryTimeout *2, ...)
-| sequential | false | Boolean | Uploads are concurrent by default, set this option to true for sequential uploads.
-| sizeLimit | null | Long | Individual file size limit in bytes.
-| skinSimple | false | Boolean | Applies theming to simple uploader.
-| style | null | String | Inline style of the component.
-| styleClass | null | String | Style class of the component.
-| title | null | String | Native title tooltip for simple mode
-| update | @none | String | Component(s) to update after fileupload completes.
-| uploadButtonStyleClass | null | String | Style class for upload button.
-| uploadButtonTitle | null | String | Native title tooltip for upload button
-| uploadIcon | pi pi-upload | String | The icon of upload button
-| uploadLabel | Upload | String | Label of the upload button.
-| validateContentType | false | Boolean | Whether content type validation should be performed, based on the types defined in the accept attribute. Default is false.
-| validator | null | MethodExpr | A method expression that refers to a method validating the input.
-| validatorMessage | null | String | Message to be displayed when validation fails.
-| value | null | Object | Value of the component than can be either an EL expression of a literal text.
-| valueChangeListener | null | MethodExpr | A method expression that refers to a method for handling a valuchangeevent.
-| virusScan | false | Boolean | Whether virus scan should be performed. Default is false.
-| widgetVar | null | String | Name of the client side widget.
+| Name | Default                                      | Type | Description|
+| --- |----------------------------------------------| --- | --- |
+| id | null                                         | String | Unique identifier of the component.
+| accept | null                                         | String | Filters files in native file browser dialog.
+| allowTypes | null                                         | String | Regular expression for accepted file types, e.g. /(\\.\|\\/)(gif\|jpe?g\|png)$/
+| auto | false                                        | Boolean | When set to true, selecting a file starts the upload process implicitly.
+| binding | null                                         | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
+| cancelButtonTitle | null                                         | String | Native title tooltip for cancel button
+| cancelButtonStyleClass | null                                         | String | Style class for cancel button.
+| cancelIcon | pi pi-times                                  | String | The icon of cancel button
+| cancelLabel | Cancel                                       | String | Label of the cancel button.
+| chooseButtonTitle | null                                         | String | Native title tooltip for choose button
+| chooseButtonStyleClass | null                                         | String | Style class for choose button.
+| chooseIcon | pi pi-plus                                   | String | The icon of choose button
+| converter | null                                         | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id.
+| converterMessage | null                                         | String | Message to be displayed when conversion fails.
+| disabled | false                                        | Boolean | Disables component when set true.
+| displayFilename | true, false when mode='simple' && auto='true' | Boolean | Simple Mode: if the filename should be displayed. 
+| dragDropSupport | true                                         | Boolean | Specifies dragdrop based file selection from filesystem, default is true and works only on supported browsers.
+| dropZone | null                                         | String | Component that should be used as custom drop zone.
+| fileLimit | null                                         | Integer | Maximum number of files allowed to upload.
+| fileLimitMessage | Maximum number of files exceeded             | String | Message to display when file limit exceeds.
+| global | true                                         | Boolean | Global AJAX requests are listened by ajaxStatus component, setting global to false will not trigger ajaxStatus. Default is false.
+| immediate | false                                        | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
+| invalidFileMessage | Invalid file type                            | String | Message to display when file is not accepted.
+| invalidSizeMessage | Invalid file size                            | String | Message to display when size limit exceeds.
+| label | Choose                                       | String | Label of the browse button.
+| listener | null                                         | MethodExpr | Method to invoke when a file is uploaded.
+| maxChunkSize | 0                                            | Long | To upload large files in smaller chunks, set this option to a preferred maximum chunk size. If set to 0 (default), null or undefined, or the browser does not support the required Blob API, files will be uploaded as a whole. Only works in "advanced" mode.
+| maxRetries | 30                                           | Integer | Only for chunked file upload: Amount of retries when upload get´s interrupted due to e.g. unstable network connection.
+| messageTemplate | {name} {size}                                | String | Message template to use when displaying file validation errors.
+| mode | advanced                                     | String | Mode of the fileupload, can be _simple_ or _advanced_.
+| multiple | false                                        | Boolean | Allows choosing of multi file uploads from native file browse dialog
+| onAdd | null                                         | String | Advanced Mode Only. Callback to execute before adding a file.
+| oncancel | null                                         | String | Advanced Mode Only. Callback to execute after fileupload request is cancelled.
+| oncomplete | null                                         | String | Client side callback to execute when upload ends.
+| onerror | null                                         | String | Callback to execute if fileupload request fails.
+| onstart | null                                         | String | Client side callback to execute when upload begins.
+| onupload | null                                         | String | Advanced Mode Only. Callback to execute before the files are sent. If this callback returns false, the file upload request is not started.
+| onvalidationfailure | null                                         | String | Handler called when client-side validation fails.
+| previewWidth | 80                                           | Integer | Width for image previews in pixels.
+| process | @all                                         | String | Component(s) to process in fileupload request.
+| rendered | true                                         | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
+| required | false                                        | Boolean | Marks component as required.
+| requiredMessage | null                                         | String | Message to be displayed when required field validation fails.
+| retryTimeout | 1000                                         | Integer | Only for chunked file upload: (Base-)Timeout in milliseconds to wait until the next retry. It is multiplied with the retry count. (first retry: retryTimeout * 1, second retry: retryTimeout *2, ...)
+| sequential | false                                        | Boolean | Uploads are concurrent by default, set this option to true for sequential uploads.
+| sizeLimit | null                                         | Long | Individual file size limit in bytes.
+| skinSimple | false                                        | Boolean | Applies theming to simple uploader.
+| style | null                                         | String | Inline style of the component.
+| styleClass | null                                         | String | Style class of the component.
+| title | null                                         | String | Native title tooltip for simple mode
+| update | @none                                        | String | Component(s) to update after fileupload completes.
+| uploadButtonStyleClass | null                                         | String | Style class for upload button.
+| uploadButtonTitle | null                                         | String | Native title tooltip for upload button
+| uploadIcon | pi pi-upload                                 | String | The icon of upload button
+| uploadLabel | Upload                                       | String | Label of the upload button.
+| validateContentType | false                                        | Boolean | Whether content type validation should be performed, based on the types defined in the accept attribute. Default is false.
+| validator | null                                         | MethodExpr | A method expression that refers to a method validating the input.
+| validatorMessage | null                                         | String | Message to be displayed when validation fails.
+| value | null                                         | Object | Value of the component than can be either an EL expression of a literal text.
+| valueChangeListener | null                                         | MethodExpr | A method expression that refers to a method for handling a valuchangeevent.
+| virusScan | false                                        | Boolean | Whether virus scan should be performed. Default is false.
+| widgetVar | null                                         | String | Name of the client side widget.
 
 ## Getting started with FileUpload
 FileUpload engine on the server side can either be servlet 3.0 or commons fileupload. PrimeFaces

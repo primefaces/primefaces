@@ -23,16 +23,17 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import lombok.Data;
-import org.primefaces.event.SelectEvent;
-import org.primefaces.integrationtests.general.utilities.TestUtils;
-
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import java.io.Serializable;
-import java.util.ArrayList;
-import org.primefaces.model.ReflectionLazyDataModel;
+
+import lombok.Data;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.integrationtests.general.utilities.TestUtils;
+import org.primefaces.model.DefaultLazyDataModel;
 
 @Named
 @ViewScoped
@@ -41,9 +42,9 @@ public class DataTable002 implements Serializable {
 
     private static final long serialVersionUID = -7518459955779385834L;
 
-    protected ArrayList<ProgrammingLanguage> programmingLanguages;
+    protected List<ProgrammingLanguage> programmingLanguages;
     protected ProgrammingLanguageLazyDataModel lazyDataModel;
-    protected ReflectionLazyDataModel<ProgrammingLanguage> reflectionLazyDataModel;
+    protected DefaultLazyDataModel<ProgrammingLanguage> reflectionLazyDataModel;
     protected ProgrammingLanguage selectedProgrammingLanguage;
 
     @PostConstruct
@@ -54,8 +55,9 @@ public class DataTable002 implements Serializable {
                     ((i % 2) == 0) ? ProgrammingLanguage.ProgrammingLanguageType.COMPILED : ProgrammingLanguage.ProgrammingLanguageType.INTERPRETED));
         }
         lazyDataModel = new ProgrammingLanguageLazyDataModel();
-        reflectionLazyDataModel = ReflectionLazyDataModel.builder(() -> programmingLanguages)
-                .rowKeyProvider((obj) -> Integer.toString(obj.getId()))
+        reflectionLazyDataModel = DefaultLazyDataModel.<ProgrammingLanguage>builder()
+                .valueSupplier(() -> programmingLanguages)
+                .rowKeyProvider(ProgrammingLanguage::getId)
                 .build();
     }
 

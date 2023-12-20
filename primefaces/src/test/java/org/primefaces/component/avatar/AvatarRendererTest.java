@@ -68,7 +68,7 @@ class AvatarRendererTest {
     }
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         // system under test
         sut = new AvatarRenderer();
 
@@ -79,7 +79,7 @@ class AvatarRendererTest {
 
     @ParameterizedTest
     @MethodSource("data")
-    public void testCalculateLabel(String input, String expected) {
+    void calculateLabel(String input, String expected) {
         // Arrange
         when(avatar.getLabel()).thenReturn(input);
 

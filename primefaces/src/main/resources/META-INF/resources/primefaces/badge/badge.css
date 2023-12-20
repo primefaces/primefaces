@@ -8,6 +8,7 @@
 .ui-overlay-badge {
     position: relative;
     display: inline-block;
+    cursor: pointer;
 }
 
 .ui-overlay-badge .ui-badge {
@@ -35,4 +36,9 @@
 
 .ui-badge.ui-state-hidden {
     display: none;
+}
+
+.ui-badge .ui-badge-icon {
+	font-size: 0.75rem;
+	margin-top: 0.4rem;
 }

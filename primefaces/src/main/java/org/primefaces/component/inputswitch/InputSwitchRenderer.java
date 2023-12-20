@@ -34,6 +34,12 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
+/**
+*
+* @deprecated in 10.0 use ToggleSwitch
+*
+*/
+@Deprecated(since = "10.0", forRemoval = true)
 public class InputSwitchRenderer extends InputRenderer {
 
     @Override

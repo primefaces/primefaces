@@ -23,11 +23,12 @@
  */
 package org.primefaces.integrationtests.datepicker;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.time.LocalDate;
 import java.util.List;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -39,15 +40,15 @@ import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.DatePicker;
 
-public class DatePicker012Test extends AbstractDatePickerTest {
+class DatePicker012Test extends AbstractDatePickerTest {
 
     @Test
     @Order(1)
     @DisplayName("DatePicker: refresh lazy meta data model on show panel; see #7457")
-    public void testRefreshLazyModel(Page page) {
+    void refreshLazyModel(Page page) {
         // Assert initial state
-        Assertions.assertNull(page.datePicker1.getValue());
-        Assertions.assertNull(page.datePicker2.getValue());
+        assertNull(page.datePicker1.getValue());
+        assertNull(page.datePicker2.getValue());
 
         // Act - 1st show panel
         page.datePicker1.click();
@@ -70,7 +71,7 @@ public class DatePicker012Test extends AbstractDatePickerTest {
 
         // Assert
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(page.datePicker1));
-        Assertions.assertEquals(LocalDate.now().withDayOfMonth(5).atStartOfDay(), page.datePicker1.getValue());
+        assertEquals(LocalDate.now().withDayOfMonth(5).atStartOfDay(), page.datePicker1.getValue());
 
         // Act - 4th show other panel
         page.datePicker2.click();
@@ -85,7 +86,7 @@ public class DatePicker012Test extends AbstractDatePickerTest {
 
         // Assert
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(page.datePicker2));
-        Assertions.assertEquals(LocalDate.now().withDayOfMonth(6).atStartOfDay(), page.datePicker2.getValue());
+        assertEquals(LocalDate.now().withDayOfMonth(6).atStartOfDay(), page.datePicker2.getValue());
 
         // Act - 6th show panel
         page.datePicker1.click();
@@ -102,24 +103,24 @@ public class DatePicker012Test extends AbstractDatePickerTest {
     private void assertNoDisablebCalendarDates(DatePicker datePicker) {
         List<WebElement> days = datePicker.getPanel().findElements(
                     By.cssSelector(".ui-datepicker-calendar td:not(.ui-datepicker-other-month) .tst-disabled"));
-        Assertions.assertTrue(days.isEmpty(), days.toString());
+        assertTrue(days.isEmpty(), days.toString());
     }
 
     private void assertDisabledCalendarDate(DatePicker datePicker, String day) {
         List<WebElement> days = datePicker.getPanel().findElements(
                     By.cssSelector(".ui-datepicker-calendar td:not(.ui-datepicker-other-month) .tst-disabled"));
-        Assertions.assertEquals(1, days.size(), days.toString());
-        Assertions.assertEquals(day, days.get(0).getText());
-        Assertions.assertTrue(days.get(0).getAttribute("class").contains("ui-state-disabled"));
+        assertEquals(1, days.size(), days.toString());
+        assertEquals(day, days.get(0).getText());
+        assertTrue(days.get(0).getAttribute("class").contains("ui-state-disabled"));
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("DatePicker Config = " + cfg);
-        Assertions.assertFalse(cfg.getBoolean("inline"));
-        Assertions.assertTrue(cfg.getJSONObject("behaviors").getString("dateSelect").contains("dateSelect"),
+        assertFalse(cfg.getBoolean("inline"));
+        assertTrue(cfg.getJSONObject("behaviors").getString("dateSelect").contains("dateSelect"),
                     "missing behaviour dateSelect");
-        Assertions.assertTrue(cfg.getJSONObject("behaviors").getString("viewChange").contains("viewChange"),
+        assertTrue(cfg.getJSONObject("behaviors").getString("viewChange").contains("viewChange"),
                     "missing behaviour viewChange");
     }
 
