@@ -1739,7 +1739,7 @@
         _bindEvents: function () {
             var $this = this;
             if (!this.options.inline) {
-                this.inputfield.off('focus.datePicker blur.datePicker keydown.datePicker input.datePicker click.datePicker')
+                this.inputfield.off('focus.datePicker blur.datePicker change.datePicker keydown.datePicker input.datePicker click.datePicker')
                     .on('focus.datePicker', this.onInputFocus.bind($this))
                     .on('blur.datePicker', this.onInputBlur.bind($this))
                     .on('change.datePicker', this.onInputChange.bind($this))
