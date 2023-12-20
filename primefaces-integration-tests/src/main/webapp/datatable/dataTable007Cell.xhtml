@@ -13,11 +13,13 @@
 
         <h:form id="form">
             <p:messages id="msgs" showDetail="true"/>
+            
+            <h:outputText id="outside" value="Click me"/>
 
-            <p:dataTable id="datatable" widgetVar="wgtTable" value="#{dataTable007.progLanguages}" var="lang" editable="true"
-                         editMode="row" filteredValue="#{dataTable007.filteredProgLanguages}">
-                <p:ajax event="rowEdit" listener="#{dataTable007.onRowEdit}" update="form:msgs"/>
-                <p:ajax event="rowEditCancel" listener="#{dataTable007.onRowCancel}" update="form:msgs"/>
+            <p:dataTable id="datatable" widgetVar="wgtTable" value="#{dataTable007Cell.progLanguages}" var="lang" editable="true"
+                         editMode="cell" filteredValue="#{dataTable007Cell.filteredProgLanguages}">
+                <p:ajax event="cellEdit" listener="#{dataTable007Cell.onCellEdit}" update="form:msgs"/>
+                <p:ajax event="cellEditCancel" listener="#{dataTable007Cell.onCellCancel}" update="form:msgs"/>
 
                 <p:column headerText="ID" sortBy="#{lang.id}">
                     <h:outputText value="#{lang.id}"/>
@@ -37,16 +39,12 @@
                                                            converter="javax.faces.Integer"/></f:facet>
                     </p:cellEditor>
                 </p:column>
-
-                <p:column style="width:35px">
-                    <p:rowEditor/>
-                </p:column>
             </p:dataTable>
 
             <br/>
-            <p:commandButton id="btnSubmit" value="Submit" update="@form" action="#{dataTable007.submit}"/>
+            <p:commandButton id="btnSubmit" value="Submit" update="@form" action="#{dataTable007Cell.submit}"/>
             <p:commandButton id="btnAddRow" value="Add new row"
-                             action="#{dataTable007.onAddNew()}"
+                             action="#{dataTable007Cell.onAddNew()}"
                              oncomplete="PF('wgtTable').addRow();"
                              process="@this" update="form:msgs" ignoreAutoUpdate="true"/>
         </h:form>
