@@ -249,6 +249,7 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
                     break;
 
                     case 'Enter':
+                    case 'NumpadEnter':
                         var currentLink = currentitem.children('.ui-menuitem-link');
                         currentLink.trigger('click');
                         $this.jq.trigger("blur");

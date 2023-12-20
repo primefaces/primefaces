@@ -902,7 +902,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             }
 
             if($this.focusedRow) {
-                switch(e.key) {
+                switch(e.code) {
                     case 'ArrowUp':
                     case 'ArrowDown':
                         var rowSelector = 'tr.ui-widget-content.ui-datatable-selectable',
@@ -928,7 +928,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     break;
 
                     case 'Enter':
-                    case ' ':
+                    case 'NumpadEnter':
+                    case 'Space':
                         if($this.focusedRowWithCheckbox) {
                             $this.focusedRow.find('> td.ui-selection-column > div.ui-chkbox > div.ui-chkbox-box').trigger('click.dataTable');
                         }

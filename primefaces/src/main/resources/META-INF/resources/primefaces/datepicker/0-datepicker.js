@@ -1929,9 +1929,10 @@
             var currentElement = $(event.currentTarget);
             var $tabbableElements = $this.panel.find('a:tabbable');
             var currentIndex = $tabbableElements.index(currentElement);
-            switch (event.key) {
+            switch (event.code) {
                 case 'Enter':
-                case ' ':
+                case 'NumpadEnter':
+                case 'Space':
                     $this.onDateSelect(event, dateMeta);
                     event.preventDefault();
                     break;
@@ -2010,9 +2011,10 @@
             var currentElement = $(event.currentTarget);
             var $tabbableElements = $this.panel.find('a:tabbable');
             var currentIndex = $tabbableElements.index(currentElement);
-            switch (event.key) {
+            switch (event.code) {
                 case 'Enter':
-                case ' ':
+                case 'NumpadEnter':
+                case 'Space':
                     $this.onMonthSelect(event, index);
                     event.preventDefault();
                     break;

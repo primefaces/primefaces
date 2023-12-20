@@ -504,6 +504,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         break;
 
                     case 'Enter':
+                    case 'NumpadEnter':
                         if ($this.timeout) {
                             $this.deleteTimeout();
                         }
@@ -547,6 +548,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         break;
 
                     case 'Enter':
+                    case 'NumpadEnter':
                         var itemValue = $(this).val();
                         var valid = true;
                         if ($this.cfg.queryEvent === 'enter' || ($this.timeout > 0) || $this.querying) {
