@@ -881,9 +881,12 @@ public class UIData extends javax.faces.component.UIData {
     }
 
     protected boolean visitColumnContent(VisitContext context, VisitCallback callback, UIComponent component) {
-        if (component.getChildCount() > 0) {
+        if (component.getChildCount() > 0 && component.isRendered()) {
             for (int i = 0; i < component.getChildCount(); i++) {
                 UIComponent grandkid = component.getChildren().get(i);
+                if (!grandkid.isRendered()) {
+                    continue;
+                }
                 if (grandkid.visitTree(context, callback)) {
                     return true;
                 }
