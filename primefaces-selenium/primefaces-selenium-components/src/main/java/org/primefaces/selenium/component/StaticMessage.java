@@ -23,11 +23,19 @@
  */
 package org.primefaces.selenium.component;
 
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.component.base.AbstractMessage;
 
 /**
- * Component wrapper for the PrimeFaces {@code p:message}.
+ * Component wrapper for the PrimeFaces {@code p:staticMessage}.
  */
-public abstract class Message extends AbstractMessage {
+public abstract class StaticMessage extends AbstractMessage {
 
+    @FindBy(css = ".ui-messages-close")
+    private WebElement closeButton;
+
+    public WebElement getCloseButton() {
+        return closeButton;
+    }
 }
