@@ -21,13 +21,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.selenium.component;
+package org.primefaces.integrationtests.staticmessage;
 
-import org.primefaces.selenium.component.base.AbstractMessage;
+import lombok.Data;
 
-/**
- * Component wrapper for the PrimeFaces {@code p:message}.
- */
-public abstract class Message extends AbstractMessage {
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
+import java.io.Serializable;
+
+@Named
+@ViewScoped
+@Data
+public class StaticMessage001 implements Serializable {
+
+    private static final long serialVersionUID = -3664548553854145624L;
+
+    private boolean closed;
+
+    public void info() {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "Message Content"));
+    }
+
+    public void warn() {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning", "Message Content"));
+    }
+
+    public void error() {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Message Content."));
+    }
+
+    public void onClose() {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Message is closed", null));
+        closed = true;
+    }
 
 }
