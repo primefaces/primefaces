@@ -950,7 +950,7 @@ if (window.PrimeFaces) {
 
         /**
          * Resolves process-attribute of a PrimeFaces-component. (e.g. CommandButton)
-         * @param {PrimeFaces.ajax.Configuration} cfg Configuration of the PrimeFaces-component.
+         * @param {PrimeFaces.validation.Configuration} cfg Configuration of the PrimeFaces-component.
          * @param {JQuery} source The source element.
          * @returns {JQuery} Resolved jQuery-element.
          */
@@ -964,7 +964,7 @@ if (window.PrimeFaces) {
 
         /**
          * Resolves update-attribute of a PrimeFaces-component. (e.g. CommandButton)
-         * @param {PrimeFaces.ajax.Configuration} cfg Configuration of the PrimeFaces-component.
+         * @param {PrimeFaces.validation.Configuration} cfg Configuration of the PrimeFaces-component.
          * @param {JQuery} source The source element.
          * @returns {JQuery} Resolved jQuery-element.
          */
