@@ -4221,7 +4221,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         resizableColumns.prepend('<span class="ui-column-resizer">&nbsp;</span>');
 
         if(this.cfg.resizeMode === 'fit') {
-            resizableColumns.filter(':last-child').children('span.ui-column-resizer').hide();
+            var child = this.isRTL ? ':first-child' : ':last-child';
+            resizableColumns.filter(child).children('span.ui-column-resizer').hide();
         }
 
         if(this.hasColumnGroup) {
@@ -4254,7 +4255,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         var title = columnHeader.children('.ui-column-title');
-        var nextColumnHeader = columnHeader.nextAll(':visible:first');
+        var nextColumnHeader = this.isRTL ? columnHeader.prevAll(':visible:first') : columnHeader.nextAll(':visible:first');
 
         if(this.cfg.liveResize) {
             change = columnHeader.outerWidth() - (event.pageX - columnHeader.offset().left),
