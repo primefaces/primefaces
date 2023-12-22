@@ -1383,8 +1383,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.percentageScrollHeight = this.cfg.scrollHeight && (this.cfg.scrollHeight.indexOf('%') !== -1);
         this.percentageScrollWidth = this.cfg.scrollWidth && (this.cfg.scrollWidth.indexOf('%') !== -1);
         var $this = this,
-        scrollBarWidth = this.getScrollbarWidth() + 'px',
-        hScrollWidth = this.scrollBody[0].scrollWidth;
+        scrollBarWidth = this.getScrollbarWidth() + 'px';
 
         if(this.cfg.scrollHeight) {
             if(this.percentageScrollHeight) {
@@ -1447,8 +1446,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             var scrollLeft = $this.scrollBody.scrollLeft();
 
             if ($this.isRTL) {
-                $this.scrollHeaderBox.css('margin-right', (scrollLeft - hScrollWidth + this.clientWidth) + 'px');
-                $this.scrollFooterBox.css('margin-right', (scrollLeft - hScrollWidth + this.clientWidth) + 'px');
+                $this.scrollHeaderBox.css('margin-right', scrollLeft + 'px');
+                $this.scrollFooterBox.css('margin-right', scrollLeft + 'px');
             }
             else {
                 $this.scrollHeaderBox.css('margin-left', -scrollLeft + 'px');
