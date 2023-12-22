@@ -280,3 +280,7 @@ PrimeFaces.validator['MyComplexValidator'] = {
     </p:panel>
 </h:form>
 ```
+
+## CommandButton - attribute enabledByValidateClient
+
+When set to true on a CommandButton, the button is only enabled after successful client side validation. Used together with `<p:clientValidator event="..." />` on all relevant input-components.

@@ -272,10 +272,12 @@ if (window.PrimeFaces) {
 
             if (widget) {
                 if (PrimeFaces.validation.validate($source, process, update, false, false, false, false)) {
-                    widget.jq[0].dataset.pfCsvValid = 'true';
+                    widget.jq.addClass('ui-state-csv-valid');
+                    widget.jq.removeClass('ui-state-csv-invalid');
                     widget.enable();
                 } else {
-                    widget.jq[0].dataset.pfCsvValid = 'false';
+                    widget.jq.addClass('ui-state-csv-invalid');
+                    widget.jq.removeClass('ui-state-csv-valid');
                     widget.disable();
                 }
             } else {
@@ -451,14 +453,16 @@ if (window.PrimeFaces) {
             if (valid) {
                 highlighter.unhighlight(element);
                 element.attr('aria-invalid', false);
-                element[0].dataset.pfCsvValid = 'true';
+                element.addClass('ui-state-csv-valid');
+                element.removeClass('ui-state-csv-invalid');
             }
             else {
                 if (highlight) {
                     highlighter.highlight(element);
                 }
                 element.attr('aria-invalid', true);
-                element[0].dataset.pfCsvValid = 'false';
+                element.addClass('ui-state-csv-invalid');
+                element.removeClass('ui-state-csv-valid');
             }
         },
 
