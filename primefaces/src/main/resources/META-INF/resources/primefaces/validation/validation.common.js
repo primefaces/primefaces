@@ -243,6 +243,7 @@ if (window.PrimeFaces) {
 
         /**
          * Searches for all CommandButtons with turned on dynamic CSV and triggers CSV.
+         * @function
          */
         validateButtonsCsvRequirements: function () {
             $('[data-pf-validateclient-dynamic]').each((index, btn) => {
@@ -252,8 +253,8 @@ if (window.PrimeFaces) {
 
         /**
          * Validates the CSV-requirements of a CommandButton.
-         * @param btn
-         * @param vc
+         * @function
+         * @param {HTMLButtonElement} btn CommandButton which´s CSV-requirements should be validated.
          */
         validateButtonCsvRequirements: function (btn) {
             console.log('CSV - ' + btn.id + ' - ' + btn.innerText + '; ajax: ' + btn.dataset.pfValidateclientAjax + '; process: ' + btn.dataset.pfValidateclientProcess + '; update: ' + btn.dataset.pfValidateclientUpdate);
@@ -271,11 +272,9 @@ if (window.PrimeFaces) {
 
             if (widget) {
                 if (PrimeFaces.validation.validate($source, process, update, false, false, false, false)) {
-                    //widget.jq.data('pf-csv-valid', true);
                     widget.jq[0].dataset.pfCsvValid = 'true';
                     widget.enable();
                 } else {
-                    //widget.jq.data('pf-csv-valid', false);
                     widget.jq[0].dataset.pfCsvValid = 'false';
                     widget.disable();
                 }
@@ -452,7 +451,6 @@ if (window.PrimeFaces) {
             if (valid) {
                 highlighter.unhighlight(element);
                 element.attr('aria-invalid', false);
-                //element.data('pf-csv-valid', true);
                 element[0].dataset.pfCsvValid = 'true';
             }
             else {
@@ -460,7 +458,6 @@ if (window.PrimeFaces) {
                     highlighter.highlight(element);
                 }
                 element.attr('aria-invalid', true);
-                //element.data('pf-csv-valid', false);
                 element[0].dataset.pfCsvValid = 'false';
             }
         },
@@ -951,19 +948,31 @@ if (window.PrimeFaces) {
             }
         },
 
-        resolveProcess: function(cfg, $source) {
+        /**
+         * Resolves process-attribute of a PrimeFaces-component. (e.g. CommandButton)
+         * @param {PrimeFaces.ajax.Configuration} cfg Configuration of the PrimeFaces-component.
+         * @param {JQuery} source The source element.
+         * @returns {JQuery} Resolved jQuery-element.
+         */
+        resolveProcess: function(cfg, source) {
             if (cfg.ajax && cfg.process) {
-                return PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector($source, cfg.process);
+                return PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(source, cfg.process);
             } else {
-                return $source.closest('form');
+                return source.closest('form');
             }
         },
 
-        resolveUpdate: function(cfg, $source) {
+        /**
+         * Resolves update-attribute of a PrimeFaces-component. (e.g. CommandButton)
+         * @param {PrimeFaces.ajax.Configuration} cfg Configuration of the PrimeFaces-component.
+         * @param {JQuery} source The source element.
+         * @returns {JQuery} Resolved jQuery-element.
+         */
+        resolveUpdate: function(cfg, source) {
             if (cfg.ajax && cfg.update) {
-                return PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector($source, cfg.update);
+                return PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(source, cfg.update);
             } else {
-                return $source.closest('form');
+                return source.closest('form');
             }
         }
     };
