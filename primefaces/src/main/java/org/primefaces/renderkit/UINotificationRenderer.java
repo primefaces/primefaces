@@ -28,12 +28,15 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.component.ContextCallback;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
+import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.UINotification;
 import org.primefaces.component.api.UINotifications;
 import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.util.CompositeUtils;
 import org.primefaces.util.LangUtils;
 
 public class UINotificationRenderer extends CoreRenderer {
@@ -71,6 +74,23 @@ public class UINotificationRenderer extends CoreRenderer {
         return severity;
     }
 
+    protected boolean hasDisplayableMessage(UINotification component, UIComponent target, FacesContext context) {
+        String clientId = target.getClientId(context);
+        Iterator<FacesMessage> msgs = context.getMessages(clientId);
+        while (msgs.hasNext()) {
+            FacesMessage msg = msgs.next();
+            String severityName = getSeverityName(msg);
+            if (shouldRender(component, msg, severityName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    protected String getTooltipTargetId(UIComponent target, FacesContext context) {
+        return (target instanceof InputHolder) ? ((InputHolder) target).getInputClientId() : target.getClientId(context);
+    }
+
     public List<FacesMessage> collectFacesMessages(UINotifications uiMessages, FacesContext context) {
         List<FacesMessage> messages = null;
 
@@ -96,9 +116,17 @@ public class UINotificationRenderer extends CoreRenderer {
             if (forType == null || "expression".equals(forType)) {
                 List<UIComponent> forComponents = SearchExpressionUtils.contextlessResolveComponents(context, uiMessages, _for,
                         SearchExpressionUtils.HINTS_IGNORE_NO_RESULT);
+                List<String> clientIds = new ArrayList<>();
                 for (int i = 0; i < forComponents.size(); i++) {
                     UIComponent forComponent = forComponents.get(i);
-                    String forComponentClientId = forComponent.getClientId(context);
+                    clientIds.add(forComponent.getClientId(context));
+                    if (CompositeUtils.isComposite(forComponent)) {
+                        ContextCallback callback = (fc, comp) -> clientIds.add(comp.getClientId(fc));
+                        CompositeUtils.invokeOnDeepestEditableValueHolder(context, forComponent, callback);
+                    }
+                }
+                for (int i = 0; i < clientIds.size(); i++) {
+                    String forComponentClientId = clientIds.get(i);
                     if (!_for.equals(forComponentClientId)) {
 
                         Iterator<FacesMessage> messagesIterator = context.getMessages(forComponentClientId);
