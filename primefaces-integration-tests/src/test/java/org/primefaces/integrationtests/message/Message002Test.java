@@ -56,8 +56,10 @@ class Message002Test extends AbstractPrimePageTest {
         assertPresent(page.msgCustomInputTextTooltipHolderWithComposite.getSummaryError());
         assertEquals("Label for standard InputText: Validation Error: Value is required.", page.msgStandardInputText.getSummaryError().getText());
         assertEquals("Label for custom InputTextTooltip: Validation Error: Value is required.", page.msgCustomInputTextTooltip.getSummaryError().getText());
-        assertEquals("Label for custom InputTextTooltipHolder", page.msgCustomInputTextTooltipHolder.getSummaryError().getText());
-        assertEquals("Label for custom InputTextTooltipHolderWithComposite", page.msgCustomInputTextTooltipHolderWithComposite.getSummaryError().getText());
+        assertEquals("Label for custom InputTextTooltipHolder: Validation Error: Value is required.",
+                page.msgCustomInputTextTooltipHolder.getSummaryError().getText());
+        assertEquals("Label for custom InputTextTooltipHolderWithComposite: Validation Error: Value is required.",
+                page.msgCustomInputTextTooltipHolderWithComposite.getSummaryError().getText());
 
 
         assertNoJavascriptErrors();
