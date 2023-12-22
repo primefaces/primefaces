@@ -252,8 +252,7 @@ if (window.PrimeFaces) {
 
         /**
          * Validates the CSV-requirements of a CommandButton.
-         * @param btn
-         * @param vc
+         * @param {HTMLButtonElement} btn CommandButton which´s CSV-requirements should be validated.
          */
         validateButtonCsvRequirements: function (btn) {
             console.log('CSV - ' + btn.id + ' - ' + btn.innerText + '; ajax: ' + btn.dataset.pfValidateclientAjax + '; process: ' + btn.dataset.pfValidateclientProcess + '; update: ' + btn.dataset.pfValidateclientUpdate);
@@ -271,11 +270,9 @@ if (window.PrimeFaces) {
 
             if (widget) {
                 if (PrimeFaces.validation.validate($source, process, update, false, false, false, false)) {
-                    //widget.jq.data('pf-csv-valid', true);
                     widget.jq[0].dataset.pfCsvValid = 'true';
                     widget.enable();
                 } else {
-                    //widget.jq.data('pf-csv-valid', false);
                     widget.jq[0].dataset.pfCsvValid = 'false';
                     widget.disable();
                 }
@@ -951,19 +948,31 @@ if (window.PrimeFaces) {
             }
         },
 
-        resolveProcess: function(cfg, $source) {
+        /**
+         * Resolves process-attribute of a PrimeFaces-component. (e.g. CommandButton)
+         * @param {{ajax: string, process: string, update: string}} cfg <s>Ajax-configuration of the PrimeFaces-component.
+         * @param {JQuery} source The source element.
+         * @returns {*|JQuery} Resolved JQuery-element.
+         */
+        resolveProcess: function(cfg, source) {
             if (cfg.ajax && cfg.process) {
-                return PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector($source, cfg.process);
+                return PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(source, cfg.process);
             } else {
-                return $source.closest('form');
+                return source.closest('form');
             }
         },
 
-        resolveUpdate: function(cfg, $source) {
+        /**
+         * Resolves update-attribute of a PrimeFaces-component. (e.g. CommandButton)
+         * @param {{ajax: string, process: string, update: string}} cfg Ajax-configuration of the PrimeFaces-component.
+         * @param {JQuery} source The source element.
+         * @returns {*|JQuery} Resolved JQuery-element.
+         */
+        resolveUpdate: function(cfg, source) {
             if (cfg.ajax && cfg.update) {
-                return PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector($source, cfg.update);
+                return PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(source, cfg.update);
             } else {
-                return $source.closest('form');
+                return source.closest('form');
             }
         }
     };
