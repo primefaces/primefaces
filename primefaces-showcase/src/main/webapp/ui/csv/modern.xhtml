@@ -21,12 +21,16 @@
                 padding: 0.5rem;
             }
 
-            button[data-pf-csv-valid="true"], input[data-pf-csv-valid="true"] {
+            button.ui-state-csv-valid, input.ui-state-csv-valid {
                 border-color: green;
+                border-style: dotted;
+                border-width: 2px;
             }
 
-            button[data-pf-csv-valid="false"], input[data-pf-csv-valid="red"] {
+            button.ui-state-csv-invalid, input.ui-state-csv-invalid {
                 border-color: red;
+                border-style: dotted;
+                border-width: 2px;
             }
         </style>
 

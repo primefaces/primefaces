@@ -243,6 +243,7 @@ if (window.PrimeFaces) {
 
         /**
          * Searches for all CommandButtons with turned on dynamic CSV and triggers CSV.
+         * @function
          */
         validateButtonsCsvRequirements: function () {
             $('[data-pf-validateclient-dynamic]').each((index, btn) => {
@@ -252,6 +253,7 @@ if (window.PrimeFaces) {
 
         /**
          * Validates the CSV-requirements of a CommandButton.
+         * @function
          * @param {HTMLButtonElement} btn CommandButton which´s CSV-requirements should be validated.
          */
         validateButtonCsvRequirements: function (btn) {
@@ -270,10 +272,12 @@ if (window.PrimeFaces) {
 
             if (widget) {
                 if (PrimeFaces.validation.validate($source, process, update, false, false, false, false)) {
-                    widget.jq[0].dataset.pfCsvValid = 'true';
+                    widget.jq.addClass('ui-state-csv-valid');
+                    widget.jq.removeClass('ui-state-csv-invalid');
                     widget.enable();
                 } else {
-                    widget.jq[0].dataset.pfCsvValid = 'false';
+                    widget.jq.addClass('ui-state-csv-invalid');
+                    widget.jq.removeClass('ui-state-csv-valid');
                     widget.disable();
                 }
             } else {
@@ -449,16 +453,16 @@ if (window.PrimeFaces) {
             if (valid) {
                 highlighter.unhighlight(element);
                 element.attr('aria-invalid', false);
-                //element.data('pf-csv-valid', true);
-                element[0].dataset.pfCsvValid = 'true';
+                element.addClass('ui-state-csv-valid');
+                element.removeClass('ui-state-csv-invalid');
             }
             else {
                 if (highlight) {
                     highlighter.highlight(element);
                 }
                 element.attr('aria-invalid', true);
-                //element.data('pf-csv-valid', false);
-                element[0].dataset.pfCsvValid = 'false';
+                element.addClass('ui-state-csv-invalid');
+                element.removeClass('ui-state-csv-valid');
             }
         },
 
@@ -950,9 +954,9 @@ if (window.PrimeFaces) {
 
         /**
          * Resolves process-attribute of a PrimeFaces-component. (e.g. CommandButton)
-         * @param {{ajax: string, process: string, update: string}} cfg <s>Ajax-configuration of the PrimeFaces-component.
+         * @param {PrimeFaces.validation.Configuration} cfg Configuration of the PrimeFaces-component.
          * @param {JQuery} source The source element.
-         * @returns {*|JQuery} Resolved JQuery-element.
+         * @returns {JQuery} Resolved jQuery-element.
          */
         resolveProcess: function(cfg, source) {
             if (cfg.ajax && cfg.process) {
@@ -964,9 +968,9 @@ if (window.PrimeFaces) {
 
         /**
          * Resolves update-attribute of a PrimeFaces-component. (e.g. CommandButton)
-         * @param {{ajax: string, process: string, update: string}} cfg Ajax-configuration of the PrimeFaces-component.
+         * @param {PrimeFaces.validation.Configuration} cfg Configuration of the PrimeFaces-component.
          * @param {JQuery} source The source element.
-         * @returns {*|JQuery} Resolved JQuery-element.
+         * @returns {JQuery} Resolved jQuery-element.
          */
         resolveUpdate: function(cfg, source) {
             if (cfg.ajax && cfg.update) {

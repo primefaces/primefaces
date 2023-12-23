@@ -1120,7 +1120,7 @@ declare namespace PrimeFaces.validation {
 
     /**
       * The options that can be passed to the Validation method. Note that you do not have to provide a value
-      * for all these property. Most methods methods such as `PrimeFaces.vb` have got sensible defaults in case you
+      * for all these property. Most methods such as `PrimeFaces.vb` have got sensible defaults in case you
       * do not.
       */
     export interface Configuration {
