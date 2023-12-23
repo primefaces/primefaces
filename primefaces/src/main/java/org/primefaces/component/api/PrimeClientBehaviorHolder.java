@@ -24,10 +24,15 @@
 package org.primefaces.component.api;
 
 import java.util.Map;
+import java.util.Set;
 
 import javax.faces.event.BehaviorEvent;
 
 public interface PrimeClientBehaviorHolder {
+
+    Set<String> DEFAULT_SELECT_EVENT_NAMES =
+            Set.of("blur", "change", "valueChange", "click", "dblclick", "focus", "keydown", "keypress", "keyup",
+                    "mousedown", "mousemove", "mouseout", "mouseover", "mouseup");
 
     Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping();
 }

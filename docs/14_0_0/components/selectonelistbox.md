@@ -84,7 +84,7 @@ reject a value. To add a filter to previous example;
 The following AJAX behavior events are available for this component. If no event is specified the default event is called.  
   
 **Default Event:** `valueChange`  
-**Available Events:** `blur, change, click, dblclick, focus, keydown, keypress, keyup, mousedown, mousemove, mouseout, mouseover, mouseup, valueChange`  
+**Available Events:** `blur, change, click, dblclick, focus, itemSelect, itemUnselect, keydown, keypress, keyup, mousedown, mousemove, mouseout, mouseover, mouseup, valueChange`  
 
 ```xhtml
 <p:ajax event="valueChange" listener="#{bean.handlevalueChange}" update="msgs" />

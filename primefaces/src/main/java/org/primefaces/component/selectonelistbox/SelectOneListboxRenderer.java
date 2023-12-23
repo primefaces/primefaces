@@ -98,6 +98,8 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
                     .attr("filterNormalize", listbox.isFilterNormalize(), false);
         }
 
+        encodeClientBehaviors(context, listbox);
+
         wb.finish();
     }
 
