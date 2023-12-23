@@ -44,6 +44,7 @@ import javax.faces.render.Renderer;
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.SharedStringBuilder;
 
@@ -1064,7 +1065,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                     }
                 }
                 else {
-                    ComponentUtils.processDecodesOfFacetsAndChilds(this, context);
+                    FacetUtils.processDecodesOfFacetsAndChilds(this, context);
                 }
             }
         }
@@ -1112,7 +1113,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                 }
             }
             else {
-                ComponentUtils.processValidatorsOfFacetsAndChilds(this, context);
+                FacetUtils.processValidatorsOfFacetsAndChilds(this, context);
             }
         }
 
@@ -1153,7 +1154,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                 }
             }
             else {
-                ComponentUtils.processUpdatesOfFacetsAndChilds(this, context);
+                FacetUtils.processUpdatesOfFacetsAndChilds(this, context);
             }
         }
 

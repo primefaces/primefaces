@@ -288,51 +288,6 @@ public class ComponentUtils {
         return component.isFlex() || PrimeRequestContext.getCurrentInstance(context).isFlex();
     }
 
-    public static void processDecodesOfFacetsAndChilds(UIComponent component, FacesContext context) {
-        if (component.getFacetCount() > 0) {
-            for (UIComponent facet : component.getFacets().values()) {
-                facet.processDecodes(context);
-            }
-        }
-
-        if (component.getChildCount() > 0) {
-            for (int i = 0, childCount = component.getChildCount(); i < childCount; i++) {
-                UIComponent child = component.getChildren().get(i);
-                child.processDecodes(context);
-            }
-        }
-    }
-
-    public static void processValidatorsOfFacetsAndChilds(UIComponent component, FacesContext context) {
-        if (component.getFacetCount() > 0) {
-            for (UIComponent facet : component.getFacets().values()) {
-                facet.processValidators(context);
-            }
-        }
-
-        if (component.getChildCount() > 0) {
-            for (int i = 0, childCount = component.getChildCount(); i < childCount; i++) {
-                UIComponent child = component.getChildren().get(i);
-                child.processValidators(context);
-            }
-        }
-    }
-
-    public static void processUpdatesOfFacetsAndChilds(UIComponent component, FacesContext context) {
-        if (component.getFacetCount() > 0) {
-            for (UIComponent facet : component.getFacets().values()) {
-                facet.processUpdates(context);
-            }
-        }
-
-        if (component.getChildCount() > 0) {
-            for (int i = 0, childCount = component.getChildCount(); i < childCount; i++) {
-                UIComponent child = component.getChildren().get(i);
-                child.processUpdates(context);
-            }
-        }
-    }
-
     public static NavigationCase findNavigationCase(FacesContext context, String outcome) {
         ConfigurableNavigationHandler navHandler = (ConfigurableNavigationHandler) context.getApplication().getNavigationHandler();
         String outcomeValue = (outcome == null) ? context.getViewRoot().getViewId() : outcome;
@@ -494,6 +449,30 @@ public class ComponentUtils {
     @Deprecated
     public static boolean shouldRenderFacet(UIComponent facet) {
         return FacetUtils.shouldRenderFacet(facet);
+    }
+
+    /**
+     * @deprecated use FacetUtils
+     */
+    @Deprecated
+    public static void processDecodesOfFacetsAndChilds(UIComponent component, FacesContext context) {
+        FacetUtils.processValidatorsOfFacetsAndChilds(component, context);
+    }
+
+    /**
+     * @deprecated use FacetUtils
+     */
+    @Deprecated
+    public static void processValidatorsOfFacetsAndChilds(UIComponent component, FacesContext context) {
+        FacetUtils.processValidatorsOfFacetsAndChilds(component, context);
+    }
+
+    /**
+     * @deprecated use FacetUtils
+     */
+    @Deprecated
+    public static void processUpdatesOfFacetsAndChilds(UIComponent component, FacesContext context) {
+        FacetUtils.processUpdatesOfFacetsAndChilds(component, context);
     }
 
     /**
