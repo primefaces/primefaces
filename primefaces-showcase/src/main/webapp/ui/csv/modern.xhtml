@@ -21,13 +21,13 @@
                 padding: 0.5rem;
             }
 
-            button.ui-state-csv-valid, input.ui-state-csv-valid {
+            button.ui-state-csv-valid, input.ui-state-csv-valid, .ui-inputfield.ui-state-error.ui-state-csv-valid, .ui-selectonemenu.ui-state-csv-valid {
                 border-color: green;
                 border-style: dotted;
                 border-width: 2px;
             }
 
-            button.ui-state-csv-invalid, input.ui-state-csv-invalid {
+            button.ui-state-csv-invalid, input.ui-state-csv-invalid, span.ui-inputnumber.ui-state-csv-invalid, .ui-selectonemenu.ui-state-csv-invalid {
                 border-color: red;
                 border-style: dotted;
                 border-width: 2px;
@@ -56,10 +56,11 @@
                              columnClasses="col-12 xl:col-3, col-12 xl:col-2, col-12 xl:col-5, col-12 xl:col-2"
                              contentStyleClass="align-items-baseline ui-fluid">
                     <p:outputLabel for="number" value="Number:"/>
-                    <p:inputMask id="number" value="#{validationView.integer}" label="Number" mask="9[99]"
+                    <p:inputNumber id="number" value="#{validationView.integer}" label="Number"
                                     validateMask="false" required="true">
+                        <f:validateLongRange minimum="100" maximum="9999" />
                         <p:clientValidator event="keyup" />
-                    </p:inputMask>
+                    </p:inputNumber>
                     <p:message for="number"/>
                     <h:outputText value="#{validationView.integer}"/>
                 </p:panelGrid>
@@ -86,14 +87,13 @@
                     <p:message for="regex"/>
                     <h:outputText value="#{validationView.regexText}"/>
 
-                    <p:outputLabel for="localDate3" value="LocalDate (Java8; PF DatePicker)"
-                                   />
-                    <p:datePicker id="localDate3" value="#{validationView.localDate3}" pattern="MM/dd/yyyy"
+                    <p:outputLabel for="localDate" value="LocalDate (Java8; PF DatePicker)"/>
+                    <p:datePicker id="localDate" value="#{validationView.localDate}" pattern="MM/dd/yyyy"
                                     label="LocalDate (DatePicker)" required="true">
                         <p:clientValidator />
                     </p:datePicker>
                     <p:message for="localDate3"/>
-                    <h:outputText value="#{validationView.localDate3}">
+                    <h:outputText value="#{validationView.localDate}">
                         <f:convertDateTime pattern="MM/dd/yyyy" type="localDate"/>
                     </h:outputText>
 
