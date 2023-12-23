@@ -38,6 +38,32 @@ public class Csv001Test extends AbstractColorPickerTest {
 
     @Test
     @Order(1)
+    @DisplayName("CSV: InputText")
+    public void testInputText(Page page) {
+        // Arrange
+
+        // Assert
+        Assertions.assertEquals("", page.msgName.getText());
+
+        // Act
+        page.inputTextName.setValue("aa");
+
+        // Assert
+        assertConfiguration();
+        Assertions.assertEquals("Name (3-50 characters): Validation Error: Length is less than allowable minimum of '3'.",
+                page.msgName.getText());
+
+        // Act
+        page.inputTextName.setValue("aaa");
+
+        // Assert
+        Assertions.assertEquals("", page.msgName.getText());
+    }
+
+    // TODO: more classic CSV-IT´s
+
+    @Test
+    @Order(100)
     @DisplayName("CSV / CommandButton-enabledByValidateClient: Initial state after page-load")
     public void testCommandButtonEnabledByInitialState(Page page) {
         // Arrange
@@ -54,7 +80,7 @@ public class Csv001Test extends AbstractColorPickerTest {
     }
 
     @Test
-    @Order(2)
+    @Order(101)
     @DisplayName("CSV / CommandButton-enabledByValidateClient: updated state after (partial) ajax-update")
     public void testCommandButtonEnabledByAjaxRefresh(Page page) {
         // Arrange
@@ -72,7 +98,7 @@ public class Csv001Test extends AbstractColorPickerTest {
     }
 
     @Test
-    @Order(3)
+    @Order(102)
     @DisplayName("CSV / CommandButton-enabledByValidateClient: fill form")
     public void testCommandButtonEnabledByFillForm(Page page) {
         // Arrange
@@ -118,9 +144,6 @@ public class Csv001Test extends AbstractColorPickerTest {
         Assertions.assertFalse(page.btnRemoteCommand.isEnabled());
     }
 
-
-    // TODO: classic CSV-IT´s
-
     private void assertConfiguration() {
         assertNoJavascriptErrors();
     }
@@ -132,20 +155,38 @@ public class Csv001Test extends AbstractColorPickerTest {
         @FindBy(id = "form:name")
         InputText inputTextName;
 
+        @FindBy(id = "form:msgName")
+        Messages msgName;
+
         @FindBy(id = "form:number")
         InputNumber inputNumber;
+
+        @FindBy(id = "form:msgNumber")
+        Messages msgNumber;
 
         @FindBy(id = "form:double")
         InputText inputTextDouble;
 
+        @FindBy(id = "form:msgDouble")
+        Messages msgDouble;
+
         @FindBy(id = "form:regex")
         InputText inputTextRegex;
+
+        @FindBy(id = "form:msgRegex")
+        Messages msgRegex;
 
         @FindBy(id = "form:localDate")
         DatePicker datePicker;
 
+        @FindBy(id = "form:msgLocalDate")
+        Messages msgDatePicker;
+
         @FindBy(id = "form:selectOneMenu")
         SelectOneMenu selectOneMenu;
+
+        @FindBy(id = "form:msgSelectOneMenu")
+        Messages msgSelectOneMenu;
 
         @FindBy(id = "form:btnNonAjax")
         CommandButton bntNonAjax;

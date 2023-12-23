@@ -24,7 +24,7 @@
                     <f:validateLength minimum="3" maximum="50"/>
                     <p:clientValidator event="keyup" />
                 </p:inputText>
-                <p:message for="name"/>
+                <p:message for="name" id="msgName"/>
                 <h:outputText value="#{csv001.text}"/>
             </p:panelGrid>
 
@@ -37,7 +37,7 @@
                     <f:validateLongRange minimum="100" maximum="9999" />
                     <p:clientValidator event="keyup" />
                 </p:inputNumber>
-                <p:message for="number"/>
+                <p:message for="number" id="msgNumber"/>
                 <h:outputText value="#{csv001.integer}"/>
             </p:panelGrid>
 
@@ -50,7 +50,7 @@
                     <f:validateDoubleRange minimum="5.5" maximum="8.5"/>
                     <p:clientValidator event="keyup" />
                 </p:inputText>
-                <p:message for="double"/>
+                <p:message for="double" id="msgDouble"/>
                 <h:outputText value="#{csv001.doubleNumber}"/>
 
 
@@ -60,7 +60,7 @@
                     <f:validateRegex pattern="^[a-zA-Z]+$"/>
                     <p:clientValidator event="keyup" />
                 </p:inputText>
-                <p:message for="regex"/>
+                <p:message for="regex" id="msgRegex"/>
                 <h:outputText value="#{csv001.regexText}"/>
 
                 <p:outputLabel for="localDate" value="LocalDate (Java8; PF DatePicker)"/>
@@ -68,7 +68,7 @@
                               label="LocalDate (DatePicker)" required="true">
                     <p:clientValidator />
                 </p:datePicker>
-                <p:message for="localDate"/>
+                <p:message for="localDate" id="msgLocalDate"/>
                 <h:outputText value="#{csv001.localDate}">
                     <f:convertDateTime pattern="MM/dd/yyyy" type="localDate"/>
                 </h:outputText>
@@ -82,7 +82,7 @@
                     <f:selectItem itemLabel="Vue" itemValue="Vue" />
                     <p:clientValidator />
                 </p:selectOneMenu>
-                <p:message for="selectOneMenu"/>
+                <p:message for="selectOneMenu" id="msgSelectOneMenu"/>
                 <h:outputText value="#{csv001.uiLibrary}"/>
             </p:panelGrid>
 
