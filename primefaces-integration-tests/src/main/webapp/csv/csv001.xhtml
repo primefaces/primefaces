@@ -44,13 +44,13 @@
             <p:panelGrid id="gridEverythingElse" columns="4" layout="flex"
                          columnClasses="col-12 xl:col-3, col-12 xl:col-2, col-12 xl:col-5, col-12 xl:col-2"
                          contentStyleClass="align-items-baseline ui-fluid">
-                <p:outputLabel for="dd" value="Double (5.5 - 8.5):"/>
-                <p:inputText id="dd" value="#{csv001.doubleNumber}"
+                <p:outputLabel for="double" value="Double (5.5 - 8.5):"/>
+                <p:inputText id="double" value="#{csv001.doubleNumber}"
                              converterMessage="Cannot convert to double." required="true">
                     <f:validateDoubleRange minimum="5.5" maximum="8.5"/>
                     <p:clientValidator event="keyup" />
                 </p:inputText>
-                <p:message for="dd"/>
+                <p:message for="double"/>
                 <h:outputText value="#{csv001.doubleNumber}"/>
 
 
@@ -90,18 +90,18 @@
             <p:defaultCommand target="btnAjax"/>
 
             <div class="pt-3">
-                <p:commandButton value="Non-Ajax" ajax="false" validateClient="true" enabledByValidateClient="true" styleClass="mr-2" />
+                <p:commandButton value="Non-Ajax" id="btnNonAjax" ajax="false" validateClient="true" enabledByValidateClient="true" styleClass="mr-2" />
                 <p:commandButton value="Ajax" id="btnAjax" update="@form"  validateClient="true" enabledByValidateClient="true" styleClass="mr-2" />
-                <p:commandButton value="Partial (name + number)" update="gridName gridNumber" process="name number" validateClient="true" enabledByValidateClient="true" styleClass="mr-2" />
-                <p:commandButton value="Disabled" ajax="false" enabledByValidateClient="true" styleClass="mr-2"/>
-                <p:commandButton value="Remote Command" type="button" enabledByValidateClient="true" onclick="rc()" />
+                <p:commandButton value="Partial (name + number)" id="btnPartial" update="gridName gridNumber" process="name number" validateClient="true" enabledByValidateClient="true" styleClass="mr-2" />
+                <p:commandButton value="Disabled" id="btnDisabled" ajax="false" enabledByValidateClient="true" styleClass="mr-2"/>
+                <p:commandButton value="Remote Command" id="btnRemoteCommand" type="button" enabledByValidateClient="true" onclick="rc()" />
             </div>
 
             <div class="pt-3">
                 Simulate server-side modifications:<br/>
-                <p:commandButton value="Modify Name + Number" update="gridName gridNumber" process="@this" action="#{csv001.modifyValues()}" styleClass="mr-2" />
-                <p:commandButton value="Modify Number" update="gridNumber" process="@this" action="#{csv001.modifyInteger()}" styleClass="mr-2" />
-                <p:commandButton value="Clear Values" update="@form" process="@this" action="#{csv001.clearValues()}" />
+                <p:commandButton value="Modify Name + Number" id="btnModifyNameNumber" update="gridName gridNumber" process="@this" action="#{csv001.modifyValues()}" styleClass="mr-2" />
+                <p:commandButton value="Modify Number" id="btnModifyNumber" update="gridNumber" process="@this" action="#{csv001.modifyInteger()}" styleClass="mr-2" />
+                <p:commandButton value="Clear Values" id="btnClearValues" update="@form" process="@this" action="#{csv001.clearValues()}" />
             </div>
 
         </h:form>

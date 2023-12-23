@@ -97,7 +97,8 @@ public abstract class AbstractComponent extends AbstractPrimePageFragment {
         // now check for CSP events
         String id = element.getAttribute("id");
         String cspScript = String.format(CSP_SCRIPT, id, event);
-        return PrimeSelenium.executeScript(cspScript);
+        Boolean csp = PrimeSelenium.executeScript(cspScript);
+        return csp != null && csp;
     }
 
     /**
