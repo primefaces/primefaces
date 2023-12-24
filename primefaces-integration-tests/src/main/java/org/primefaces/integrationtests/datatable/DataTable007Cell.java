@@ -23,8 +23,10 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import java.io.Serializable;
-import java.util.List;
+import lombok.Data;
+
+import org.primefaces.event.CellEditEvent;
+import org.primefaces.event.RowEditEvent;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -32,15 +34,13 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-
-import org.primefaces.event.RowEditEvent;
-
-import lombok.Data;
+import java.io.Serializable;
+import java.util.List;
 
 @Named
 @ViewScoped
 @Data
-public class DataTable007 implements Serializable {
+public class DataTable007Cell implements Serializable {
 
     private static final long serialVersionUID = -7518459955779385834L;
 
@@ -55,12 +55,17 @@ public class DataTable007 implements Serializable {
         progLanguages = service.getLangs();
     }
 
-    public void onRowEdit(RowEditEvent<ProgrammingLanguage> event) {
-        FacesMessage msg = new FacesMessage("ProgrammingLanguage Edited", Integer.toString(event.getObject().getId()));
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+    public void onCellEdit(CellEditEvent<Object> event) {
+        Object oldValue = event.getOldValue();
+        Object newValue = event.getNewValue();
+
+        if (newValue != null && !newValue.equals(oldValue)) {
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed", "Old: " + oldValue + ", New:" + newValue);
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+        }
     }
 
-    public void onRowCancel(RowEditEvent<ProgrammingLanguage> event) {
+    public void onCellCancel(RowEditEvent<ProgrammingLanguage> event) {
         FacesMessage msg = new FacesMessage("Edit Cancelled", Integer.toString(event.getObject().getId()));
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }

@@ -15,7 +15,7 @@
             <p:messages id="msgs" showDetail="true"/>
 
             <p:dataTable id="datatable" widgetVar="wgtTable" value="#{dataTable007Lazy.lazyDataModel}" var="lang" editable="true"
-                         paginator="true" rows="10">
+                         editMode="row" paginator="true" rows="10">
                 <p:ajax event="rowEdit" listener="#{dataTable007Lazy.onRowEdit}" update="form:msgs"/>
                 <p:ajax event="rowEditCancel" listener="#{dataTable007Lazy.onRowCancel}" update="form:msgs"/>
 

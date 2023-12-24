@@ -3203,12 +3203,40 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
+     * Disables all cell editors to prevent extra data on form posts.
+     * @private
+     * @param {JQuery} element the row or cell to find inputs to enable for editing
+     */
+    disableCellEditors: function(element) {
+        if (element) {
+            $(element).find(":input:enabled").attr('disabled', 'disabled');
+        }
+        else {
+            $(".ui-cell-editor-input :input:enabled").attr('disabled', 'disabled').attr("data-disabled-by-editor", "true");
+        }
+    },
+    
+    /**
+     * Enables all cell editors that were previously disabled by the UI and not alreayd disabled from user.
+     * @private
+     * @param {JQuery} element the row or cell to find inputs to enable for editing
+     */
+    enableCellEditors: function(element) {
+        if (element) {
+            element.find(":input[data-disabled-by-editor='true']").removeAttr('disabled');
+        }
+    },
+
+    /**
      * Binds editor events non-obtrusively.
      * @private
      */
     bindEditEvents: function() {
         var $this = this;
         this.cfg.saveOnCellBlur = (this.cfg.saveOnCellBlur === false) ? false : true;
+        
+        // #3571 Set all fields to disabled by default
+        this.disableCellEditors();
 
         if(this.cfg.editMode === 'row') {
             var rowEditorSelector = '> tr > td > div.ui-row-editor > a';
@@ -3353,6 +3381,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             column.find('.ui-cell-editor-output').hide();
             column.find('.ui-cell-editor-input').show();
         });
+        
+        this.enableCellEditors(row);
 
         var inputs=row.find(':input:enabled');
         if (inputs.length > 0) {
@@ -3485,8 +3515,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
             var cellEditor = cell.children('div.ui-cell-editor'),
             displayContainer = cellEditor.children('div.ui-cell-editor-output'),
-            inputContainer = cellEditor.children('div.ui-cell-editor-input'),
-            inputs = inputContainer.find(':input:enabled[type!=hidden]'),
+            inputContainer = cellEditor.children('div.ui-cell-editor-input');
+            this.enableCellEditors(inputContainer);
+            var inputs = inputContainer.find(':input:enabled[type!=hidden]'),
             multi = inputs.length > 1;
 
             cell.addClass('ui-state-highlight ui-cell-editing');
@@ -3713,6 +3744,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
                 else{
                     cell.data('valid', true);
+                    $this.disableCellEditors(cell);
                     $this.viewMode(cell);
                 }
 
@@ -3776,6 +3808,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 if($this.cfg.clientCache) {
                     $this.clearCacheMap();
                 }
+                
+                $this.disableCellEditors();
             }
         };
 
@@ -3856,6 +3890,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         newRow = $this.tbody.children('tr').eq(index);
                         $this.getRowEditors(newRow).children('.ui-cell-editor-input').children().remove();
                     }
+                    
+                    $this.disableCellEditors();
                 }
 
                 if($this.cfg.clientCache) {
