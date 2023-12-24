@@ -400,7 +400,7 @@
                     }
 
                     button.addClass('ui-state-loading');
-                    button.data('astart', Date.now());
+                    button.data('ajaxstart', Date.now());
 
                     if (typeof widget.disable === 'function'
                         && widget.cfg.disableOnAjax !== false) {
@@ -424,7 +424,7 @@
 
                     PrimeFaces.queueTask(
                         PrimeFaces.buttonEndAjaxDisabled,
-                        Math.max(PrimeFaces.ajax.minLoadAnim + button.data('astart') - Date.now(), 0),
+                        Math.max(PrimeFaces.ajax.minLoadAnim + button.data('ajaxstart') - Date.now(), 0),
                         widget,
                         button
                     );
