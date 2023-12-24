@@ -402,7 +402,8 @@
                     button.addClass('ui-state-loading');
                     button.data('astart', Date.now());
 
-                    if (widget.cfg.disableOnAjax !== false) {
+                    if (typeof widget.disable === 'function'
+                        && widget.cfg.disableOnAjax !== false) {
                         widget.disable();
                     }
 
@@ -421,9 +422,12 @@
                         return;
                     }
 
-                    setTimeout(PrimeFaces.buttonEndAjaxDisabled,
-                               Math.max(PrimeFaces.ajax.minLoadAnim + button.data('astart') - Date.now(), 0),
-                               widget, button);
+                    PrimeFaces.queueTask(
+                        PrimeFaces.buttonEndAjaxDisabled,
+                        Math.max(PrimeFaces.ajax.minLoadAnim + button.data('astart') - Date.now(), 0),
+                        widget,
+                        button
+                    );
                 }
             });
         },
@@ -436,7 +440,8 @@
         buttonEndAjaxDisabled: function(widget, button) {
             button.removeClass('ui-state-loading');
 
-            if (widget.cfg.disableOnAjax !== false
+            if (typeof widget.enable === 'function'
+                && widget.cfg.disableOnAjax !== false
                 && !widget.cfg.disabledAttr) {
                 widget.enable();
             }
