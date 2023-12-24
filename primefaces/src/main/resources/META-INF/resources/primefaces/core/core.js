@@ -1322,10 +1322,13 @@
          *
          * @param {() => void} fn the function to call after the delay
          * @param {number | undefined} delay the optional delay in milliseconds
+         * @param {array} [args] parameters.
          * @return {number | undefined} the id associated to the timeout or undefined if no timeout used
          */
-        queueTask: function(fn, delay) {
-            return PrimeFaces.utils.queueTask(fn, delay);
+        queueTask: function(fn, delay, ...args) {
+            var params = args;
+            params.unshift(fn, delay);
+            return PrimeFaces.utils.queueTask.apply(this, params);
         },
 
         /**
