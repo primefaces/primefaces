@@ -26,6 +26,7 @@ package org.primefaces.selenium.component.base;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.primefaces.selenium.PrimeSelenium;
 
 public abstract class AbstractInputComponent extends AbstractComponent {
@@ -130,6 +131,13 @@ public abstract class AbstractInputComponent extends AbstractComponent {
      */
     public void disable() {
         PrimeSelenium.executeScript(getWidgetByIdScript() + ".disable();");
+    }
+
+    /**
+     * Sets tje focus to the element.
+     */
+    public void focus() {
+        new Actions(getWebDriver()).moveToElement(getInput()).click().perform();
     }
 
 }

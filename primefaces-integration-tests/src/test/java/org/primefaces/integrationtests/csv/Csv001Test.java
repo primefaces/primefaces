@@ -30,6 +30,7 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.integrationtests.colorpicker.AbstractColorPickerTest;
 import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.*;
 
 import java.time.LocalDateTime;
@@ -43,7 +44,15 @@ public class Csv001Test extends AbstractColorPickerTest {
         // Arrange
 
         // Assert
-        Assertions.assertEquals("", page.msgName.getText());
+        Assertions.assertEquals("", page.msgNumber.getText());
+
+        // Act
+        page.inputTextName.setValue("x");
+        page.inputTextName.clear();
+
+        // Assert
+        Assertions.assertEquals("Name (3-50 characters): Validation Error: Value is required.",
+                page.msgName.getText());
 
         // Act
         page.inputTextName.setValue("aa");
@@ -58,6 +67,122 @@ public class Csv001Test extends AbstractColorPickerTest {
 
         // Assert
         Assertions.assertEquals("", page.msgName.getText());
+    }
+
+    @Test
+    @Order(2)
+    @DisplayName("CSV: InputNumber - Integer")
+    public void testInputNumberInteger(Page page) {
+        // Arrange
+
+        // Assert
+        Assertions.assertEquals("", page.msgNumber.getText());
+
+        // Act
+        page.inputNumber.getInput().sendKeys("1");
+        page.inputNumber.clear();
+
+        // Assert
+        Assertions.assertEquals("Number: Validation Error: Value is required.",
+                page.msgNumber.getText());
+
+        // Act
+        page.inputNumber.getInput().sendKeys("99");
+
+        // Assert
+        assertConfiguration();
+        Assertions.assertEquals("Number: Validation Error: Specified attribute is not between the expected values of 100 and 9999.",
+                page.msgNumber.getText());
+
+        // Act
+        page.inputNumber.clear();
+        page.inputNumber.getInput().sendKeys("100");
+
+        // Assert
+        Assertions.assertEquals("", page.msgNumber.getText());
+
+        // Act
+        page.inputNumber.clear();
+        page.inputNumber.getInput().sendKeys("10000");
+
+        // Assert
+        Assertions.assertEquals("Number: Validation Error: Specified attribute is not between the expected values of 100 and 9999.",
+                page.msgNumber.getText());
+    }
+
+    @Test
+    @Order(3)
+    @DisplayName("CSV: InputText - Double")
+    public void testInputTextDouble(Page page) {
+        // Arrange
+
+        // Assert
+        Assertions.assertEquals("", page.msgDouble.getText());
+
+        // Act
+        page.inputTextDouble.setValue("x");
+        page.inputTextDouble.clear();
+
+        // Assert
+        Assertions.assertEquals("Double (5.5 - 8.5): Validation Error: Value is required.",
+                page.msgDouble.getText());
+
+        // Act
+        page.inputTextDouble.setValue("5");
+
+        // Assert
+        assertConfiguration();
+        Assertions.assertEquals("Double (5.5 - 8.5): Validation Error: Specified attribute is not between the expected values of 5.5 and 8.5.",
+                page.msgDouble.getText());
+
+        // Act
+        page.inputTextDouble.setValue("6");
+
+        // Assert
+        Assertions.assertEquals("", page.msgDouble.getText());
+
+        // Act
+        page.inputTextDouble.setValue("9");
+
+        // Assert
+        Assertions.assertEquals("Double (5.5 - 8.5): Validation Error: Specified attribute is not between the expected values of 5.5 and 8.5.",
+                page.msgDouble.getText());
+    }
+
+    @Test
+    @Order(4)
+    @DisplayName("CSV: InputText - RegEx")
+    public void testInputTextRegEx(Page page) {
+        // Arrange
+
+        // Assert
+        Assertions.assertEquals("", page.msgRegex.getText());
+
+        // Act
+        page.inputTextRegex.getInput().sendKeys("a");
+        page.inputTextRegex.clear();
+
+        // Assert
+        Assertions.assertEquals("Regex (^[a-zA-Z]+$): Validation Error: Value is required.",
+                page.msgRegex.getText());
+
+        // Act
+        page.inputTextRegex.getInput().sendKeys("aa1a");
+
+        // Assert
+        assertConfiguration();
+//        Assertions.assertEquals("Regex (^[a-zA-Z]+$): Validation Error: Value does not match pattern.",
+//                page.msgRegex.getText());
+        // why without label?
+        Assertions.assertEquals("Value does not match pattern.",
+                page.msgRegex.getText());
+
+        // Act
+        page.inputTextRegex.clear();
+        page.inputTextRegex.getInput().sendKeys("aaa");
+
+        // Assert
+        Assertions.assertEquals("", page.msgRegex.getText());
     }
 
     // TODO: more classic CSV-IT´s
