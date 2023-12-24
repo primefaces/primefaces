@@ -30,7 +30,6 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.integrationtests.colorpicker.AbstractColorPickerTest;
 import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.*;
 
 import java.time.LocalDateTime;
