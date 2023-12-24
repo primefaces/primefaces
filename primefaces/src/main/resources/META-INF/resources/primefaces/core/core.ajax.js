@@ -87,6 +87,12 @@ if (!PrimeFaces.ajax) {
         },
 
         /**
+         * Minimum number of milliseconds to show Ajax load animations.
+         * @type {number}
+         */
+        minLoadAnim : 500,
+
+        /**
          * This object contains utility methods for AJAX requests, primarily used internally.
          * @interface {PrimeFaces.ajax.Utils} . The class for the object with the AJAX utility methods, used for
          * handling and working with AJAX requests and updates.
