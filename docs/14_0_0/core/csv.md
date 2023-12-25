@@ -281,6 +281,14 @@ PrimeFaces.validator['MyComplexValidator'] = {
 </h:form>
 ```
 
-## CommandButton - attribute enabledByValidateClient
+## CommandButton - automatically enable/disable based on CSV
 
-When set to true on a CommandButton, the button is only enabled after successful client side validation. Used together with `<p:clientValidator event="..." />` on all relevant input-components.
+When `enabledByValidateClient` is set to true on a CommandButton, the button is only enabled after successful client side validation. Used together with `<p:clientValidator event="..." />` on all relevant input-components.
+
+### CSS-classes
+
+Following CSS-classes may be used (additional to classic `ui-state-error`) to style inputs dependent on their (client-side-)validation-state.  
+(This behaviour is inspired by following Angular´s https://angular.io/guide/form-validation#control-status-css-classes)
+
+* `ui-state-csv-valid`
+* `ui-state-csv-invalid`

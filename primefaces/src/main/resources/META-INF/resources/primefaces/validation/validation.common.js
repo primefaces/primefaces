@@ -188,7 +188,7 @@ if (window.PrimeFaces) {
                 PrimeFaces.validation.validateInput(source, inputs.eq(i), highlight);
             }
 
-            // validate complex validations, which cann be applied to any container element
+            // validate complex validations, which can be applied to any container element
             var nonInputs = $();
             for (var i = 0; i < process.length; i++) {
                 var component = process.eq(i);
@@ -205,7 +205,7 @@ if (window.PrimeFaces) {
                 PrimeFaces.validation.validateComplex(source, nonInputs.eq(i), highlight);
             }
 
-            // early exit - we dont need to render messages
+            // early exit - we don't need to render messages
             if (vc.isEmpty()) {
                 return true;
             }
