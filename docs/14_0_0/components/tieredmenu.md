@@ -26,6 +26,7 @@ widgetVar | null | String | Name of the client side widget.
 model | null | MenuModel | MenuModel instance for programmatic menu.
 style | null | String | Inline style of the component.
 styleClass | null | String | Style class of the component.
+dir | null | String | Direction indication for text that does not inherit directionality. Valid values are LTR and RTL.
 autoDisplay | true | Boolean | Defines whether the first level of submenus will be displayed on mouseover or not. When set to false, click event is required to display.
 trigger | null | String | Id of the component whose triggerEvent will show the dynamic positioned menu.
 my | null | String | Corner of menu to align with trigger element.
