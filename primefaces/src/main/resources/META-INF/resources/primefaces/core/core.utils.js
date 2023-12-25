@@ -1022,20 +1022,20 @@ if (!PrimeFaces.utils) {
          *
          * @param {() => void} fn the function to call after the delay
          * @param {number | undefined} delay the optional delay in milliseconds
-         * @param {array} [args] parameters.
          * @return {number | undefined} the id associated to the timeout or undefined if no timeout used
          */
-        queueTask: function(fn, delay, ...args) {
+        queueTask: function(fn, delay) {
+            var params = Array.from(arguments).slice(2);
             // if delay is 0 use microtask
             if (!delay || delay <= 0) {
                 // queueMicrotask adds the function (task) into a queue and each function is executed one by one (FIFO)
                 // after the current task has completed its work and when there is no other code waiting to be run 
                 // before control of the execution context is returned to the browser's event loop.
-                window.queueMicrotask(function(){fn.apply(this, args)});
+                window.queueMicrotask(function(){fn.apply(this, params)});
                 return undefined;
             }
             // In the case of setTimeout, each task is executed from the event queue, after control is given to the event loop.
-            return window.setTimeout(fn, delay, args);
+            return window.setTimeout(fn, delay, params);
         },
 
         /**
