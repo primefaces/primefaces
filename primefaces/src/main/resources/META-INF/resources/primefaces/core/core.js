@@ -423,10 +423,8 @@
                     }
 
                     PrimeFaces.queueTask(
-                        PrimeFaces.buttonEndAjaxDisabled,
+                        function(){ PrimeFaces.buttonEndAjaxDisabled(widget, button); },
                         Math.max(PrimeFaces.ajax.minLoadAnim + button.data('ajaxstart') - Date.now(), 0),
-                        widget,
-                        button
                     );
                 }
             });
@@ -1325,7 +1323,7 @@
          * @return {number | undefined} the id associated to the timeout or undefined if no timeout used
          */
         queueTask: function(fn, delay) {
-            return PrimeFaces.utils.queueTask.apply(this, arguments);
+            return PrimeFaces.utils.queueTask(fn, delay);
         },
 
         /**

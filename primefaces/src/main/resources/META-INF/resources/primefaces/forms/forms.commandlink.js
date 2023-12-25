@@ -66,9 +66,8 @@ PrimeFaces.widget.CommandLink = PrimeFaces.widget.BaseWidget.extend({
                 }
                 if (PrimeFaces.ajax.Utils.isXhrSource($this, settings)) {
                     PrimeFaces.queueTask(
-                        $this.endAjaxDisabled,
+                        function(){ $this.endAjaxDisabled($this); },
                         Math.max(PrimeFaces.ajax.minLoadAnim + $this.jq.data('ajaxstart') - Date.now(), 0),
-                        $this
                     );
                 }
             });
