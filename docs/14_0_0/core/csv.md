@@ -285,6 +285,11 @@ PrimeFaces.validator['MyComplexValidator'] = {
 
 When `enabledByValidateClient` is set to true on a CommandButton, the button is only enabled after successful client side validation. Used together with `<p:clientValidator event="..." />` on all relevant input-components.
 
+The logic behind is triggered on following events:
+* initial (full) page-load
+* AJAX-updates
+* `<p:clientValidator event="..." />` on components
+
 ### CSS-classes
 
 Following CSS-classes may be used (additional to classic `ui-state-error`) to style inputs dependent on their (client-side-)validation-state.  
