@@ -56,6 +56,7 @@ PrimeFaces.widget.CommandLink = PrimeFaces.widget.BaseWidget.extend({
                 }
                 if (PrimeFaces.ajax.Utils.isXhrSource($this, settings)) {
                     $this.jq.addClass('ui-state-loading');
+                    $this.jq.data('ajaxstart', Date.now());
                     $this.disable();
                 }
             }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings, args) {
@@ -64,12 +65,25 @@ PrimeFaces.widget.CommandLink = PrimeFaces.widget.BaseWidget.extend({
                     return;
                 }
                 if (PrimeFaces.ajax.Utils.isXhrSource($this, settings)) {
-                    $this.jq.removeClass('ui-state-loading');
-                    if (!$this.cfg.disabledAttr) {
-                        $this.enable();
-                    }
+                    PrimeFaces.queueTask(
+                        $this.endAjaxDisabled,
+                        Math.max(PrimeFaces.ajax.minLoadAnim + $this.jq.data('ajaxstart') - Date.now(), 0),
+                        $this
+                    );
                 }
             });
+        }
+    },
+
+    /**
+     * Ends the AJAX disabled state.
+     * @param {PrimeFaces.widget.BaseWidget} [widget] the widget.
+     */
+    endAjaxDisabled: function(widget) {
+        widget.jq.removeClass('ui-state-loading');
+
+        if (!widget.cfg.disabledAttr) {
+            widget.enable();
         }
     },
 
