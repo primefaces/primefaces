@@ -1322,7 +1322,6 @@
          *
          * @param {() => void} fn the function to call after the delay
          * @param {number | undefined} delay the optional delay in milliseconds
-         * @param {array} [args] parameters.
          */
         queueTask: function(fn, delay) {
             return PrimeFaces.utils.queueTask.apply(this, arguments);
