@@ -35,6 +35,7 @@ Look into [migration guide](https://primefaces.github.io/primefaces/14_0_0/#/../
 * MenuBar
     * Added `showDelay` delay in milliseconds before displaying the submenu. Default is 0 meaning immediate.
     * Added `hideDelay` delay in milliseconds before hiding the submenu., if 0 not hidden until document.click(). Default is 0.
+    * Added `dir` for right-to-left support. Default is ltr.
     
 * SelectCheckBoxMenu
     * Added `selectedLabel` to display a label when items selected similar to `emptyMessage`.
@@ -45,6 +46,7 @@ Look into [migration guide](https://primefaces.github.io/primefaces/14_0_0/#/../
 * TieredMenu
     * Added `showDelay` delay in milliseconds before displaying the submenu. Default is 0 meaning immediate.
     * Added `hideDelay` delay in milliseconds before hiding the submenu., if 0 not hidden until document.click(). Default is 0.
+    * Added `dir` for right-to-left support. Default is ltr.
     
 * TreeTable
     * Added `filterPlaceholder` for `Column` and `Columns`
