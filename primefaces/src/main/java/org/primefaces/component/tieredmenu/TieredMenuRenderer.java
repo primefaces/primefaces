@@ -68,8 +68,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
         String style = menu.getStyle();
         String styleClass = getStyleClassBuilder(context)
                 .add(menu.getStyleClass())
-                .add(menu.isOverlay(), TieredMenu.DYNAMIC_CONTAINER_CLASS)
-                .add(!menu.isOverlay(), TieredMenu.STATIC_CONTAINER_CLASS)
+                .add(menu.isOverlay(), TieredMenu.DYNAMIC_CONTAINER_CLASS, TieredMenu.STATIC_CONTAINER_CLASS)
                 .add(ComponentUtils.isRTL(context, abstractMenu), AbstractMenu.MENU_RTL_CLASS)
                 .build();
 
