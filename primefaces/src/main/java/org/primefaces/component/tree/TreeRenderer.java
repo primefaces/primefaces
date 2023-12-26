@@ -377,14 +377,12 @@ public class TreeRenderer extends CoreRenderer {
         }
 
         //container class
-        String containerClass = tree.isRTLRendering() ? Tree.CONTAINER_RTL_CLASS : Tree.CONTAINER_CLASS;
-        containerClass = isDisabled ? containerClass + " ui-state-disabled" : containerClass;
-        if (tree.getStyleClass() != null) {
-            containerClass = containerClass + " " + tree.getStyleClass();
-        }
-        if (tree.isShowUnselectableCheckbox()) {
-            containerClass = containerClass + " ui-tree-checkbox-all";
-        }
+        String containerClass = getStyleClassBuilder(context)
+                .add(tree.isRTLRendering(), Tree.CONTAINER_RTL_CLASS, Tree.CONTAINER_CLASS)
+                .add(tree.getStyleClass())
+                .add(tree.isDisabled(), "ui-state-disabled")
+                .add(tree.isShowUnselectableCheckbox(), "ui-tree-checkbox-all")
+                .build();
 
         writer.startElement("div", tree);
         writer.writeAttribute("id", clientId, null);
@@ -448,13 +446,18 @@ public class TreeRenderer extends CoreRenderer {
         boolean dynamic = tree.isDynamic();
         boolean checkboxSelectionMode = tree.isCheckboxSelectionMode();
 
-        String containerClass = tree.getStyleClass() == null
-                                ? Tree.HORIZONTAL_CONTAINER_CLASS
-                                : Tree.HORIZONTAL_CONTAINER_CLASS + " " + tree.getStyleClass();
-        containerClass = tree.isDisabled() ? containerClass + " ui-state-disabled" : containerClass;
-        if (tree.isShowUnselectableCheckbox()) {
-            containerClass = containerClass + " ui-tree-checkbox-all";
+        //enable RTL
+        if (ComponentUtils.isRTL(context, tree)) {
+            tree.setRTLRendering(true);
         }
+
+        //container class
+        String containerClass = getStyleClassBuilder(context)
+                .add(tree.isRTLRendering(), Tree.HORIZONTAL_CONTAINER_RTL_CLASS, Tree.HORIZONTAL_CONTAINER_CLASS)
+                .add(tree.getStyleClass())
+                .add(tree.isDisabled(), "ui-state-disabled")
+                .add(tree.isShowUnselectableCheckbox(), "ui-tree-checkbox-all")
+                .build();
 
         writer.startElement("div", tree);
         writer.writeAttribute("id", clientId, null);
@@ -482,25 +485,14 @@ public class TreeRenderer extends CoreRenderer {
         boolean selectable = node.isSelectable();
         boolean partialSelected = node.isPartialSelected();
         boolean selected = node.isSelected();
-
-        String nodeClass;
-        if (leaf) {
-            nodeClass = Tree.LEAF_NODE_CLASS;
-        }
-        else {
-            nodeClass = Tree.PARENT_NODE_CLASS;
-            nodeClass = expanded ? nodeClass + " ui-treenode-expanded" : nodeClass + " ui-treenode-collapsed";
-        }
-
-        if (selected) {
-            nodeClass += " ui-treenode-selected";
-        }
-        else if (partialSelected) {
-            nodeClass += " ui-treenode-hasselected";
-        }
-        else {
-            nodeClass += " ui-treenode-unselected";
-        }
+        String nodeClass = getStyleClassBuilder(context)
+                .add(leaf, Tree.LEAF_NODE_CLASS, Tree.PARENT_NODE_CLASS)
+                .add(!leaf && expanded, "ui-treenode-expanded", "ui-treenode-collapsed")
+                .add(selected, "ui-treenode-selected")
+                .add(!selected && partialSelected, "ui-treenode-hasselected")
+                .add(!selected && !partialSelected, "ui-treenode-unselected")
+                .add(uiTreeNode.getStyleClass())
+                .build();
 
         writer.startElement("table", tree);
         writer.startElement("tbody", null);
@@ -524,13 +516,12 @@ public class TreeRenderer extends CoreRenderer {
             writer.writeAttribute("data-rowkey", ROOT_ROW_KEY, null);
         }
 
-        nodeClass = uiTreeNode.getStyleClass() == null ? nodeClass : nodeClass + " " + uiTreeNode.getStyleClass();
         writer.writeAttribute("class", nodeClass, null);
 
-        String nodeContentClass = (tree.isSelectionEnabled() && node.isSelectable()) ? Tree.SELECTABLE_NODE_CONTENT_CLASS_H : Tree.NODE_CONTENT_CLASS_H;
-        if (selected) {
-            nodeContentClass += " ui-state-highlight";
-        }
+        String nodeContentClass = getStyleClassBuilder(context)
+                .add(tree.isSelectionEnabled() && node.isSelectable(), Tree.SELECTABLE_NODE_CONTENT_CLASS_H, Tree.NODE_CONTENT_CLASS_H)
+                .add(selected, "ui-state-highlight")
+                .build();
         writer.startElement("div", null);
         writer.writeAttribute("class", nodeContentClass, null);
 
