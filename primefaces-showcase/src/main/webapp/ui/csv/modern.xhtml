@@ -22,15 +22,15 @@
             }
 
             button.ui-state-csv-valid, input.ui-state-csv-valid, .ui-inputfield.ui-state-error.ui-state-csv-valid, .ui-selectonemenu.ui-state-csv-valid {
-                border-color: green;
-                border-style: dotted;
-                border-width: 2px;
+                border-left-color: green !important; /* !important to override border-color set by ui-state-focus */
+                border-left-style: solid;
+                border-left-width: 5px;
             }
 
             button.ui-state-csv-invalid, input.ui-state-csv-invalid, span.ui-inputnumber.ui-state-csv-invalid, .ui-selectonemenu.ui-state-csv-invalid {
-                border-color: red;
-                border-style: dotted;
-                border-width: 2px;
+                border-left-color: red !important; /* !important to override border-color set by ui-state-focus */
+                border-left-style: solid;
+                border-left-width: 5px;
             }
         </style>
 

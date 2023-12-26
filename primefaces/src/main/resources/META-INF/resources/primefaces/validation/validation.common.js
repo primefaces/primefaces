@@ -455,16 +455,10 @@ if (window.PrimeFaces) {
             if (valid) {
                 highlighter.unhighlight(element);
                 element.attr('aria-invalid', false);
-                element.addClass('ui-state-csv-valid');
-                element.removeClass('ui-state-csv-invalid');
             }
             else {
-                if (highlight) {
-                    highlighter.highlight(element);
-                }
+                highlighter.highlight(element, !highlight);
                 element.attr('aria-invalid', true);
-                element.addClass('ui-state-csv-invalid');
-                element.removeClass('ui-state-csv-valid');
             }
         },
 
