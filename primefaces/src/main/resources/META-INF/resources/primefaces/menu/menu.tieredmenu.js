@@ -12,6 +12,7 @@
  * @prop {JQuery} links DOM element with all links for the menu entries of this tiered menu.
  * @prop {JQuery} rootLinks DOM element with all links for the root (top-level) menu entries of this tiered menu.
  * @prop {number} [timeoutId] Timeout ID, used for the animation when the menu is shown.
+ * @prop {boolean} isRTL Whether the writing direction is set to right-to-left.
  * 
  * @interface {PrimeFaces.widget.TieredMenuCfg} cfg The configuration for the {@link  TieredMenu| TieredMenu widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
@@ -39,6 +40,7 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
         this.cfg.hideDelay = this.cfg.hideDelay || 0;
         this.links = this.jq.find('a.ui-menuitem-link:not(.ui-state-disabled)');
         this.rootLinks = this.jq.find('> ul.ui-menu-list > .ui-menuitem > .ui-menuitem-link');
+        this.isRTL = this.jq.hasClass('ui-menu-rtl');
 
         this.bindEvents();
     },
@@ -275,8 +277,8 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
      */
     showSubmenu: function(menuitem, submenu) {
         var pos = {
-            my: 'left top',
-            at: 'right top',
+            my: this.isRTL ? 'right top' : 'left top',
+            at: this.isRTL ? 'left top' : 'right top',
             of: menuitem,
             collision: 'flipfit'
         };

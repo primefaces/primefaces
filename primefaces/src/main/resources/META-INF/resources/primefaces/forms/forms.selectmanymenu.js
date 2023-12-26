@@ -137,6 +137,7 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
 
         switch (event.code) {
             case 'Enter':
+            case 'NumpadEnter':
             case 'Space':
                 if (!metaKey && !$this.cfg.showCheckbox) {
                     $this.unselectAll();

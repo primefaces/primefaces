@@ -41,6 +41,7 @@ import javax.faces.render.Renderer;
 
 import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.GridLayoutUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
@@ -69,7 +70,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String layout = checkbox.getLayout();
         if (LangUtils.isEmpty(layout)) {
-            layout = ComponentUtils.shouldRenderFacet(checkbox.getFacet("custom")) ? "custom" : "lineDirection";
+            layout = FacetUtils.shouldRenderFacet(checkbox.getFacet("custom")) ? "custom" : "lineDirection";
         }
         boolean custom = ("custom".equals(layout));
 

@@ -26,16 +26,16 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
 
         if(menuitem.parent().hasClass('ui-menu-child')) {
             pos = {
-                my: 'left top',
-                at: 'right top',
+                my: this.isRTL ? 'right top' : 'left top',
+                at: this.isRTL ? 'left top' : 'right top',
                 of: menuitem,
                 collision: 'flipfit'
             };
         }
         else {
             pos = {
-                my: 'left top',
-                at: 'left bottom',
+                my: this.isRTL ? 'right top' : 'left top',
+                at: this.isRTL ? 'right bottom' : 'left bottom',
                 of: menuitem,
                 collision: 'flipfit'
             };
@@ -154,6 +154,7 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
                     break;
 
                     case 'Enter':
+                    case 'NumpadEnter':
                         var currentLink = currentitem.children('.ui-menuitem-link');
                         currentLink.trigger('click');
                         $this.jq.trigger("blur");

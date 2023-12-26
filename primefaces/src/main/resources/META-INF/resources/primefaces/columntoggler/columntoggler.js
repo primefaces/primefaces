@@ -245,6 +245,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         }).on('keydown.columnToggler', function(e) {
             switch (e.code) {
                 case 'Enter':
+                case 'NumpadEnter':
                 case 'Space':
                     if ($this.visible)
                         $this.hide();
@@ -287,6 +288,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
                     e.preventDefault();
                     break;
                 case 'Enter':
+                case 'NumpadEnter':
                 case 'Space':
                     $this.toggle($(this));
                     e.preventDefault();
@@ -305,6 +307,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         this.closer.on('keydown.columnToggler', function(e) {
             switch (e.code) {
                 case 'Enter':
+                case 'NumpadEnter':
                 case 'Space':
                     $this.hide();
                     $this.trigger.trigger('focus');

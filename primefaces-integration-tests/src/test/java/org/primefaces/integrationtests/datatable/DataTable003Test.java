@@ -23,11 +23,12 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -40,15 +41,15 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.DataTable;
 
-public class DataTable003Test extends AbstractDataTableTest {
+class DataTable003Test extends AbstractDataTableTest {
 
     @Test
     @Order(1)
     @DisplayName("DataTable: multisort - firstAppeared desc, name asc")
-    public void testMultiSort(Page page) {
+    void multiSort(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
-        Assertions.assertNotNull(dataTable);
+        assertNotNull(dataTable);
 
         // Act
         Actions actions = new Actions(page.getWebDriver());
@@ -76,10 +77,10 @@ public class DataTable003Test extends AbstractDataTableTest {
     @Test
     @Order(2)
     @DisplayName("DataTable: multisort - firstAppeared desc, name desc")
-    public void testMultiSort2(Page page) {
+    void multiSort2(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
-        Assertions.assertNotNull(dataTable);
+        assertNotNull(dataTable);
 
         // Act
         Actions actions = new Actions(page.getWebDriver());
@@ -109,8 +110,8 @@ public class DataTable003Test extends AbstractDataTableTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("DataTable Config = " + cfg);
-        Assertions.assertTrue(cfg.getBoolean("multiSort"));
-        Assertions.assertFalse(cfg.getBoolean("allowUnsorting"));
+        assertTrue(cfg.getBoolean("multiSort"));
+        assertFalse(cfg.getBoolean("allowUnsorting"));
     }
 
     public static class Page extends AbstractPrimePage {

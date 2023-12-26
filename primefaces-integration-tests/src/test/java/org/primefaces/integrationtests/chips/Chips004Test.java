@@ -23,10 +23,16 @@
  */
 package org.primefaces.integrationtests.chips;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.List;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
@@ -35,22 +41,23 @@ import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.InputText;
 import org.primefaces.selenium.component.Messages;
 
-public class Chips004Test extends AbstractPrimePageTest {
+class Chips004Test extends AbstractPrimePageTest {
 
+    // can't get copy and paste working on Safari
     @Test
     @Order(1)
     @DisplayName("Chips: GitHub #1895/#6691: Chips allow pasting of delimited list")
-    @Tag("SafariExclude") // can't get copy and paste working on Safari
-    public void testClipboardPaste(Page page) {
+    @Tag("SafariExclude")
+    void clipboardPaste(Page page) {
         // Arrange
         Chips chips = page.chips;
         InputText clipboard = page.clipboard;
 
         // Assert initial state
-        Assertions.assertEquals("apple;orange;banana", clipboard.getValue());
-        Assertions.assertEquals("", chips.getText());
+        assertEquals("apple;orange;banana", clipboard.getValue());
+        assertEquals("", chips.getText());
         List<String> values = chips.getValues();
-        Assertions.assertEquals(0, values.size());
+        assertEquals(0, values.size());
 
         // Act - add values and submit
         clipboard.copyToClipboard();
@@ -58,26 +65,26 @@ public class Chips004Test extends AbstractPrimePageTest {
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("apple, orange, banana", page.messages.getMessage(0).getSummary());
+        assertEquals("apple, orange, banana", page.messages.getMessage(0).getSummary());
         values = chips.getValues();
-        Assertions.assertEquals(3, values.size());
-        Assertions.assertEquals("apple", values.get(0));
-        Assertions.assertEquals("orange", values.get(1));
-        Assertions.assertEquals("banana", values.get(2));
+        assertEquals(3, values.size());
+        assertEquals("apple", values.get(0));
+        assertEquals("orange", values.get(1));
+        assertEquals("banana", values.get(2));
         assertConfiguration(chips.getWidgetConfiguration());
     }
 
     @Test
     @Order(2)
     @DisplayName("Chips: GitHub #6691: Chips toggle editor between list and tokens")
-    public void testToggleEditor(Page page) {
+    void toggleEditor(Page page) {
         // Arrange
         Chips chips = page.chips;
 
         // Assert initial state
-        Assertions.assertEquals("", chips.getText());
+        assertEquals("", chips.getText());
         List<String> values = chips.getValues();
-        Assertions.assertEquals(0, values.size());
+        assertEquals(0, values.size());
 
         // Act - add values and toggle editor
         chips.addValue("Excel");
@@ -86,7 +93,7 @@ public class Chips004Test extends AbstractPrimePageTest {
         chips.toggleEditor();
 
         // Assert (editing mode)
-        Assertions.assertEquals("Excel;Outlook;Word", chips.getInput().getAttribute("value"));
+        assertEquals("Excel;Outlook;Word", chips.getInput().getAttribute("value"));
 
         // Act - close editor and submit
         chips.toggleEditor();
@@ -94,19 +101,19 @@ public class Chips004Test extends AbstractPrimePageTest {
 
         // Assert (final values)
         values = chips.getValues();
-        Assertions.assertEquals(3, values.size());
-        Assertions.assertEquals("Excel", values.get(0));
-        Assertions.assertEquals("Outlook", values.get(1));
-        Assertions.assertEquals("Word", values.get(2));
+        assertEquals(3, values.size());
+        assertEquals("Excel", values.get(0));
+        assertEquals("Outlook", values.get(1));
+        assertEquals("Word", values.get(2));
         assertConfiguration(chips.getWidgetConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("Chips Config = " + cfg);
-        Assertions.assertTrue(cfg.has("id"));
-        Assertions.assertTrue(cfg.getBoolean("addOnPaste"));
-        Assertions.assertEquals(";", cfg.get("separator"));
+        assertTrue(cfg.has("id"));
+        assertTrue(cfg.getBoolean("addOnPaste"));
+        assertEquals(";", cfg.get("separator"));
     }
 
     public static class Page extends AbstractPrimePage {

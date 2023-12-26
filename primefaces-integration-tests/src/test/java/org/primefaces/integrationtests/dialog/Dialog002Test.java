@@ -23,8 +23,10 @@
  */
 package org.primefaces.integrationtests.dialog;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -37,16 +39,16 @@ import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.*;
 
-public class Dialog002Test extends AbstractPrimePageTest {
+class Dialog002Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("Dialog: Close button should receive focus if no other focusable elements")
-    public void testShowWidget(Page page) {
+    void showWidget(Page page) {
         // Arrange
         Dialog dialog = page.dialog;
         dialog.show();
-        Assertions.assertTrue(dialog.isVisible());
+        assertTrue(dialog.isVisible());
 
         // Act (ENTER key should close the dialog because the Close button is focused)
         Actions actions = new Actions(page.getWebDriver());
@@ -59,21 +61,21 @@ public class Dialog002Test extends AbstractPrimePageTest {
 
     private void assertDialog(Page page, boolean visible) {
         Dialog dialog = page.dialog;
-        Assertions.assertEquals(visible, dialog.isVisible());
-        Assertions.assertEquals(visible, dialog.isDisplayed());
+        assertEquals(visible, dialog.isVisible());
+        assertEquals(visible, dialog.isDisplayed());
         assertConfiguration(dialog.getWidgetConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("Dialog Config = " + cfg);
-        Assertions.assertTrue(cfg.getBoolean("draggable"));
-        Assertions.assertTrue(cfg.getBoolean("cache"));
-        Assertions.assertTrue(cfg.getBoolean("resizable"));
-        Assertions.assertTrue(cfg.getBoolean("modal"));
-        Assertions.assertEquals("auto", cfg.getString("width"));
-        Assertions.assertEquals("100", cfg.getString("height"));
-        Assertions.assertEquals("center", cfg.getString("position"));
+        assertTrue(cfg.getBoolean("draggable"));
+        assertTrue(cfg.getBoolean("cache"));
+        assertTrue(cfg.getBoolean("resizable"));
+        assertTrue(cfg.getBoolean("modal"));
+        assertEquals("auto", cfg.getString("width"));
+        assertEquals("100", cfg.getString("height"));
+        assertEquals("center", cfg.getString("position"));
     }
 
     public static class Page extends AbstractPrimePage {

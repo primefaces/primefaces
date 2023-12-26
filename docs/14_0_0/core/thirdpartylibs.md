@@ -5,14 +5,14 @@ are many other third party libraries and plugins used to support features.
 
 | Library | Version | URL |
 | --- | --- | --- |
-| [AutoNumeric](../jsdocs/classes/node_modules_autonumeric.export_-1.html) | 4.10.0 | https://github.com/autoNumeric/autoNumeric |
+| [AutoNumeric](../jsdocs/classes/node_modules_autonumeric.export_-1.html) | 4.10.1 | https://github.com/autoNumeric/autoNumeric |
 | [Chart.js](../jsdocs/classes/node_modules__types_chart_js.export_-1.html) | 3.9.1 | https://www.chartjs.org |
 | [Coloris](../jsdocs/interfaces/src_PrimeFaces.Coloris.html) | 0.21.1 | https://github.com/mdbassit/Coloris |
 | [Cookie](../jsdocs/modules/node_modules__types_js_cookie.html) | 3.0.5 | https://github.com/js-cookie/js-cookie |
 | [Cropper.js](../jsdocs/classes/node_modules_cropperjs_types.Cropper-1.html) | 1.5.13 | https://github.com/fengyuanchen/cropperjs |
 | [Download.js](../jsdocs/modules/node_modules__types_downloadjs.html) | 4.2 | http://danml.com/download.html |
 | [FullCalendar](../jsdocs/classes/node_modules__fullcalendar_core_main.Calendar.html) | 5.11.3 | https://fullcalendar.io/ |
-| [Idle Timer](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#idleTimer) | 1.1.0 - 2016-03-21 | https://github.com/thorst/jquery-idletimer |
+| [Idle Timer](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#idleTimer) | 1.1.1 | https://github.com/thorst/jquery-idletimer |
 | [Input Mask](../jsdocs/interfaces/node_modules__types_inputmask.default.Static.html) | 5.0.9 | https://github.com/RobinHerbots/Inputmask |
 | [jQuery Autosize](../jsdocs/modules/src_PrimeFaces.html#autosize-1) | 4.0.2 | http://www.jacklmoore.com/autosize |
 | [jQuery Browser Plugin](../jsdocs/interfaces/src_PrimeFaces.JQueryStatic.html#browser)  | 0.1.0 | https://github.com/gabceb/jquery-browser-plugin |

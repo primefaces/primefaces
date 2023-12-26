@@ -23,8 +23,9 @@
  */
 package org.primefaces.integrationtests.treetable;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -38,15 +39,15 @@ import org.primefaces.selenium.component.InputText;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.TreeTable;
 
-public class TreeTable007Test extends AbstractTreeTableTest {
+class TreeTable007Test extends AbstractTreeTableTest {
 
     @Test
     @Order(1)
     @DisplayName("TreeTable: cellEdit (with filter and sort applied)")
-    public void testCellEdit(Page page) {
+    void cellEdit(Page page) {
         // Arrange
         TreeTable treeTable = page.treeTable;
-        Assertions.assertNotNull(treeTable);
+        assertNotNull(treeTable);
 
         treeTable.getRow(0).toggle();
         root.getChildren().get(0).setExpanded(true);
@@ -89,8 +90,8 @@ public class TreeTable007Test extends AbstractTreeTableTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("TreeTable Config = " + cfg);
-        Assertions.assertEquals("treeTable", cfg.getString("widgetVar"));
-        Assertions.assertEquals(true, cfg.getBoolean("editable"));
+        assertEquals("treeTable", cfg.getString("widgetVar"));
+        assertTrue(cfg.getBoolean("editable"));
     }
 
     public static class Page extends AbstractPrimePage {

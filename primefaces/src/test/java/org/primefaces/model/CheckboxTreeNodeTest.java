@@ -28,13 +28,13 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class CheckboxTreeNodeTest {
+class CheckboxTreeNodeTest {
 
     private TreeNode<?> root;
 
     @SuppressWarnings("unused")
     @BeforeEach
-    public void initModel() {
+    void initModel() {
         root = new CheckboxTreeNode("Files", null);
 
         TreeNode documents = new CheckboxTreeNode("Documents", root);
@@ -66,7 +66,7 @@ public class CheckboxTreeNodeTest {
     }
 
     @Test
-    public void shouldPropagateDown() {
+    void shouldPropagateDown() {
         TreeNode<?> work = root.getChildren().get(0).getChildren().get(0);
         assertEquals("Work", work.getData());
 
@@ -80,7 +80,7 @@ public class CheckboxTreeNodeTest {
     }
 
     @Test
-    public void shouldPropagateUpWhenOneChildOfANodeIsSelected() {
+    void shouldPropagateUpWhenOneChildOfANodeIsSelected() {
         TreeNode<?> document = root.getChildren().get(0);
         TreeNode<?> work = document.getChildren().get(0);
         TreeNode expenses = work.getChildren().get(0);
@@ -94,7 +94,7 @@ public class CheckboxTreeNodeTest {
     }
 
     @Test
-    public void shouldPropagateUpWhenAllChildrenOfANodeIsSelected() {
+    void shouldPropagateUpWhenAllChildrenOfANodeIsSelected() {
         TreeNode<?> document = root.getChildren().get(0);
         TreeNode<?> work = document.getChildren().get(0);
         TreeNode<?> expenses = work.getChildren().get(0);
@@ -109,7 +109,7 @@ public class CheckboxTreeNodeTest {
     }
 
     @Test
-    public void shouldDeleteNode() {
+    void shouldDeleteNode() {
         TreeNode work = root.getChildren().get(0).getChildren().get(0);
         TreeNode expenses = root.getChildren().get(0).getChildren().get(0).getChildren().get(0);
 
@@ -123,7 +123,7 @@ public class CheckboxTreeNodeTest {
     }
 
     @Test
-    public void shouldUpdateSelectionStateWhenNodesAreAdded() {
+    void shouldUpdateSelectionStateWhenNodesAreAdded() {
         TreeNode work = root.getChildren().get(0).getChildren().get(0);
         assertEquals("Work", work.getData());
         assertEquals(2, work.getChildCount());
@@ -149,7 +149,7 @@ public class CheckboxTreeNodeTest {
     }
 
     @Test
-    public void shouldUpdateSelectionStateWhenNodesAreRemoved() {
+    void shouldUpdateSelectionStateWhenNodesAreRemoved() {
         TreeNode<?> work = root.getChildren().get(0).getChildren().get(0);
         assertEquals("Work", work.getData());
         assertEquals(2, work.getChildCount());

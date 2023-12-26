@@ -169,7 +169,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
 
             var searchRowkey = "";
 
-            switch(e.key) {
+            switch(e.code) {
                 case 'ArrowLeft':
                     var rowkey = $this.focusedNode.data('rowkey').toString(),
                     keyLength = rowkey.length;
@@ -261,7 +261,8 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 break;
 
                 case 'Enter':
-                case ' ':
+                case 'NumpadEnter':
+                case 'Space':
                     if($this.cfg.selectionMode) {
                         var selectable = $this.focusedNode.children('.ui-treenode-content').hasClass('ui-tree-selectable');
 

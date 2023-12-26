@@ -23,8 +23,10 @@
  */
 package org.primefaces.integrationtests.autocomplete;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -34,32 +36,32 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.AutoComplete;
 
-public class AutoComplete004Test extends AbstractPrimePageTest {
+class AutoComplete004Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("AutoComplete: GitHub #6711 AJAX change event in CSP and non CSP mode")
-    public void testAjaxChange(Page page) {
+    void ajaxChange(Page page) {
         // Arrange
         AutoComplete autoComplete = page.autoComplete;
-        Assertions.assertEquals("", autoComplete.getValue());
+        assertEquals("", autoComplete.getValue());
         assertNotDisplayed(autoComplete.getPanel());
 
         // Act
         autoComplete.setValue("Nintendo");
 
         // Assert
-        Assertions.assertEquals("Nintendo", page.output.getText());
+        assertEquals("Nintendo", page.output.getText());
         assertConfiguration(autoComplete.getWidgetConfiguration());
     }
 
     @Test
     @Order(2)
     @DisplayName("AutoComplete: AJAX clear event when clearing out the input")
-    public void testAjaxClear(Page page) {
+    void ajaxClear(Page page) {
         // Arrange
         AutoComplete autoComplete = page.autoComplete;
-        Assertions.assertEquals("", autoComplete.getValue());
+        assertEquals("", autoComplete.getValue());
         assertNotDisplayed(autoComplete.getPanel());
 
         // Act
@@ -67,14 +69,14 @@ public class AutoComplete004Test extends AbstractPrimePageTest {
         autoComplete.clear();
 
         // Assert
-        Assertions.assertEquals("", page.output.getText());
+        assertEquals("", page.output.getText());
         assertConfiguration(autoComplete.getWidgetConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("AutoComplete Config = " + cfg);
-        Assertions.assertTrue(cfg.has("appendTo"));
+        assertTrue(cfg.has("appendTo"));
     }
 
     public static class Page extends AbstractPrimePage {

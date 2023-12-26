@@ -23,8 +23,10 @@
  */
 package org.primefaces.integrationtests.dialog;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -33,12 +35,12 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.*;
 
-public class Dialog003Test extends AbstractPrimePageTest {
+class Dialog003Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("Dialog: visible=true dialog should be visible on page load")
-    public void testVisible(Page page) {
+    void visible(Page page) {
         // Arrange
         // no action dialog should be displayed
 
@@ -51,22 +53,22 @@ public class Dialog003Test extends AbstractPrimePageTest {
 
     private void assertDialog(Page page, boolean visible) {
         Dialog dialog = page.dialog;
-        Assertions.assertEquals(visible, dialog.isVisible());
-        Assertions.assertEquals(visible, dialog.isDisplayed());
+        assertEquals(visible, dialog.isVisible());
+        assertEquals(visible, dialog.isDisplayed());
         assertConfiguration(dialog.getWidgetConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("Dialog Config = " + cfg);
-        Assertions.assertTrue(cfg.getBoolean("draggable"));
-        Assertions.assertTrue(cfg.getBoolean("cache"));
-        Assertions.assertTrue(cfg.getBoolean("resizable"));
-        Assertions.assertTrue(cfg.getBoolean("modal"));
-        Assertions.assertTrue(cfg.getBoolean("visible"));
-        Assertions.assertEquals("auto", cfg.getString("width"));
-        Assertions.assertEquals("100", cfg.getString("height"));
-        Assertions.assertEquals("center", cfg.getString("position"));
+        assertTrue(cfg.getBoolean("draggable"));
+        assertTrue(cfg.getBoolean("cache"));
+        assertTrue(cfg.getBoolean("resizable"));
+        assertTrue(cfg.getBoolean("modal"));
+        assertTrue(cfg.getBoolean("visible"));
+        assertEquals("auto", cfg.getString("width"));
+        assertEquals("100", cfg.getString("height"));
+        assertEquals("center", cfg.getString("position"));
     }
 
     public static class Page extends AbstractPrimePage {

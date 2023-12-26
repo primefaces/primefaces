@@ -101,6 +101,8 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
                     .attr("filterNormalize", menu.isFilterNormalize(), false);
         }
 
+        encodeClientBehaviors(context, menu);
+
         wb.finish();
     }
 

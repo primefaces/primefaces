@@ -38,6 +38,7 @@ import org.primefaces.component.panel.Panel;
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.SharedStringBuilder;
 import org.primefaces.util.WidgetBuilder;
@@ -267,7 +268,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
         writer.writeAttribute("class", iconStyleClass, null);
         writer.endElement("span");
 
-        if (ComponentUtils.shouldRenderFacet(titleFacet)) {
+        if (FacetUtils.shouldRenderFacet(titleFacet)) {
             titleFacet.encodeAll(context);
         }
         else if (title != null) {
@@ -284,7 +285,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
 
         //actions
         UIComponent actionsFacet = tab.getFacet("actions");
-        if (ComponentUtils.shouldRenderFacet(actionsFacet)) {
+        if (FacetUtils.shouldRenderFacet(actionsFacet)) {
             writer.startElement("div", null);
             writer.writeAttribute("class", Panel.PANEL_ACTIONS_CLASS, null);
             writer.writeAttribute("onclick", "event.stopPropagation()", null);

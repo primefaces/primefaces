@@ -23,10 +23,12 @@
  */
 package org.primefaces.integrationtests.selectonemenu;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.List;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -37,12 +39,12 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.SelectOneMenu;
 
-public class SelectOneMenu013Test extends AbstractPrimePageTest {
+class SelectOneMenu013Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("SelectOneMenu: #9677 disabled using advanced table display")
-    public void testDisabled(Page page) {
+    void disabled(Page page) {
         // Arrange
         SelectOneMenu selectOneMenu = page.selectOneMenu;
 
@@ -51,7 +53,7 @@ public class SelectOneMenu013Test extends AbstractPrimePageTest {
 
         // Assert
         WebElement table = selectOneMenu.getPanel().findElement(By.className("ui-selectonemenu-table"));
-        Assertions.assertNotNull(table);
+        assertNotNull(table);
         List<WebElement> options = table.findElements(By.className("ui-selectonemenu-item"));
 
         assertCss(options.get(0), "ui-selectonemenu-item", "ui-selectonemenu-row", "ui-state-highlight");
@@ -64,7 +66,7 @@ public class SelectOneMenu013Test extends AbstractPrimePageTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("SelectOneMenu Config = " + cfg);
-        Assertions.assertTrue(cfg.has("appendTo"));
+        assertTrue(cfg.has("appendTo"));
     }
 
     public static class Page extends AbstractPrimePage {

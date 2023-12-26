@@ -23,9 +23,10 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.List;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -34,12 +35,12 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.model.datatable.Row;
 
-public class DataTable042Test extends AbstractDataTableTest {
+class DataTable042Test extends AbstractDataTableTest {
 
     @Test
     @Order(1)
     @DisplayName("DataTable: Custom sortFunction legacy - https://github.com/primefaces/primefaces/issues/10545")
-    public void testSortFunctionLegacy(Page page) {
+    void sortFunctionLegacy(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
 
@@ -48,16 +49,16 @@ public class DataTable042Test extends AbstractDataTableTest {
 
         // Assert
         List<Row> rows = dataTable.getRows();
-        Assertions.assertEquals("", rows.get(0).getCell(0).getText());
-        Assertions.assertEquals("A1", rows.get(1).getCell(0).getText());
-        Assertions.assertEquals("A3", rows.get(2).getCell(0).getText());
+        assertEquals("", rows.get(0).getCell(0).getText());
+        assertEquals("A1", rows.get(1).getCell(0).getText());
+        assertEquals("A3", rows.get(2).getCell(0).getText());
         assertNoJavascriptErrors();
     }
 
     @Test
     @Order(2)
     @DisplayName("DataTable: Custom sortFunction modern - https://github.com/primefaces/primefaces/issues/10545")
-    public void testSortFunctionModern(Page page) {
+    void sortFunctionModern(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
 
@@ -66,9 +67,9 @@ public class DataTable042Test extends AbstractDataTableTest {
 
         // Assert
         List<Row> rows = dataTable.getRows();
-        Assertions.assertEquals("B3", rows.get(0).getCell(1).getText());
-        Assertions.assertEquals("B1", rows.get(1).getCell(1).getText());
-        Assertions.assertEquals("", rows.get(2).getCell(1).getText());
+        assertEquals("B3", rows.get(0).getCell(1).getText());
+        assertEquals("B1", rows.get(1).getCell(1).getText());
+        assertEquals("", rows.get(2).getCell(1).getText());
         assertNoJavascriptErrors();
     }
 

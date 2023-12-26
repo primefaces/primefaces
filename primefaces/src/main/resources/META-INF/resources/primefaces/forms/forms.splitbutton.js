@@ -146,7 +146,7 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
             if ($this.cfg.disabled) {
                 return;
             }
-            switch(e.key) {
+            switch(e.code) {
                 case 'ArrowUp':
                     $this.highlightPrev(e);
                 break;
@@ -156,7 +156,8 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
                 break;
 
                 case 'Enter':
-                case ' ':
+                case 'NumpadEnter':
+                case 'Space':
                     $this.handleEnterKey(e);
                 break;
 

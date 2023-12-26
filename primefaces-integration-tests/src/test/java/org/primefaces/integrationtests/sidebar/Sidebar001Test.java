@@ -23,7 +23,8 @@
  */
 package org.primefaces.integrationtests.sidebar;
 
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -33,24 +34,24 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.*;
 
-public class Sidebar001Test extends AbstractPrimePageTest {
+class Sidebar001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("Sidebar: show")
-    public void testShow(Page page) throws InterruptedException {
+    void show(Page page) throws InterruptedException {
 
-        Assertions.assertTrue(getWebDriver().getPageSource().contains("sidebar1 content"));
-        Assertions.assertFalse(page.sidebar1.isVisible());
+        assertTrue(getWebDriver().getPageSource().contains("sidebar1 content"));
+        assertFalse(page.sidebar1.isVisible());
 
         // Act
         page.sidebar1.show();
 
         // Assert
-        Assertions.assertTrue(getWebDriver().getPageSource().contains("sidebar1 content"));
-        Assertions.assertTrue(page.sidebar1.isVisible());
+        assertTrue(getWebDriver().getPageSource().contains("sidebar1 content"));
+        assertTrue(page.sidebar1.isVisible());
 
-        Assertions.assertDoesNotThrow(() -> {
+        assertDoesNotThrow(() -> {
             page.sidebar2.findElement(By.className("ui-sidebar-close")).isDisplayed();
         });
     }
@@ -58,19 +59,19 @@ public class Sidebar001Test extends AbstractPrimePageTest {
     @Test
     @Order(2)
     @DisplayName("Sidebar: show dynamic")
-    public void testDynamicShow(Page page) {
+    void dynamicShow(Page page) {
 
-        Assertions.assertFalse(getWebDriver().getPageSource().contains("sidebar2 content"));
-        Assertions.assertFalse(page.sidebar2.isVisible());
+        assertFalse(getWebDriver().getPageSource().contains("sidebar2 content"));
+        assertFalse(page.sidebar2.isVisible());
 
         // Act
         page.sidebar2.show();
 
         // Assert
-        Assertions.assertTrue(getWebDriver().getPageSource().contains("sidebar2 content"));
-        Assertions.assertTrue(page.sidebar2.isVisible());
+        assertTrue(getWebDriver().getPageSource().contains("sidebar2 content"));
+        assertTrue(page.sidebar2.isVisible());
 
-        Assertions.assertDoesNotThrow(() -> {
+        assertDoesNotThrow(() -> {
             page.sidebar2.findElement(By.className("ui-sidebar-close")).isDisplayed();
         });
     }

@@ -368,7 +368,7 @@
             }).on("blur", function() {
                 $(this).removeClass('ui-state-focus ui-state-active');
             }).on("keydown", function(e) {
-                if(e.key === ' ' || e.key === 'Enter') {
+                if(e.code === 'Space' || e.key === 'Enter') {
                     $(this).addClass('ui-state-active');
                 }
             }).on("keyup", function() {

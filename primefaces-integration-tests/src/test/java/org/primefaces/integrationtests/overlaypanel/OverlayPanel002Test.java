@@ -23,8 +23,9 @@
  */
 package org.primefaces.integrationtests.overlaypanel;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -35,106 +36,106 @@ import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Dialog;
 import org.primefaces.selenium.component.OverlayPanel;
 
-public class OverlayPanel002Test extends AbstractPrimePageTest {
+class OverlayPanel002Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("OverlayPanel: Dialog Show panel on button click")
-    public void testDialogShow(Page page) {
+    void dialogShow(Page page) {
         // Arrange
         OverlayPanel overlayPanel = page.overlayPanel;
         page.btnDialog.click();
-        Assertions.assertTrue(page.dialog.isDisplayed());
+        assertTrue(page.dialog.isDisplayed());
 
         // Act
         page.btnShow.click();
         overlayPanel.waitForDisplay();
 
         // Assert
-        Assertions.assertTrue(overlayPanel.isDisplayed());
+        assertTrue(overlayPanel.isDisplayed());
         assertConfiguration(overlayPanel.getWidgetConfiguration(), "@(body)");
     }
 
     @Test
     @Order(2)
     @DisplayName("OverlayPanel: Dialog Show/Hide panel using API methods")
-    public void testDialogWidgetShowHide(Page page) {
+    void dialogWidgetShowHide(Page page) {
         // Arrange
         OverlayPanel overlayPanel = page.overlayPanel;
         page.btnDialog.click();
-        Assertions.assertTrue(page.dialog.isDisplayed());
+        assertTrue(page.dialog.isDisplayed());
 
         // Act
         overlayPanel.show();
 
         // Assert
-        Assertions.assertTrue(overlayPanel.isDisplayed());
+        assertTrue(overlayPanel.isDisplayed());
 
         // Act
         overlayPanel.hide();
 
         // Assert
-        Assertions.assertFalse(overlayPanel.isDisplayed());
+        assertFalse(overlayPanel.isDisplayed());
         assertConfiguration(overlayPanel.getWidgetConfiguration(), "@(body)");
     }
 
     @Test
     @Order(3)
     @DisplayName("OverlayPanel: Dialog Update overlay")
-    public void testDialogUpdate(Page page) {
+    void dialogUpdate(Page page) {
         // Arrange
         OverlayPanel overlayPanel = page.overlayPanel;
         page.btnDialog.click();
-        Assertions.assertTrue(page.dialog.isDisplayed());
+        assertTrue(page.dialog.isDisplayed());
         overlayPanel.show();
-        Assertions.assertTrue(overlayPanel.isDisplayed());
+        assertTrue(overlayPanel.isDisplayed());
 
         // Act
         page.btnUpdate.click();
 
         // Assert
-        Assertions.assertFalse(overlayPanel.isDisplayed());
+        assertFalse(overlayPanel.isDisplayed());
         assertConfiguration(overlayPanel.getWidgetConfiguration(), "@(body)");
     }
 
     @Test
     @Order(4)
     @DisplayName("OverlayPanel: Dialog Destroy overlay")
-    public void testDialogDestroy(Page page) {
+    void dialogDestroy(Page page) {
         // Arrange
         OverlayPanel overlayPanel = page.overlayPanel;
         page.btnDialog.click();
-        Assertions.assertTrue(page.dialog.isDisplayed());
+        assertTrue(page.dialog.isDisplayed());
         overlayPanel.show();
-        Assertions.assertTrue(overlayPanel.isDisplayed());
+        assertTrue(overlayPanel.isDisplayed());
 
         // Act
         page.btnDestroy.click();
 
         // Assert
-        Assertions.assertFalse(overlayPanel.isDisplayed());
+        assertFalse(overlayPanel.isDisplayed());
         assertConfiguration(overlayPanel.getWidgetConfiguration(), "@(body)");
     }
 
     @Test
     @Order(5)
     @DisplayName("OverlayPanel: Dialog update appendTo from @(body) to the dialog.")
-    public void testDialogChangeAppendTo(Page page) {
+    void dialogChangeAppendTo(Page page) {
         // Arrange
         OverlayPanel overlayPanel = page.overlayPanel;
         page.btnDialog.click();
-        Assertions.assertTrue(page.dialog.isDisplayed());
+        assertTrue(page.dialog.isDisplayed());
         overlayPanel.show();
-        Assertions.assertTrue(overlayPanel.isDisplayed());
+        assertTrue(overlayPanel.isDisplayed());
 
         // Act
         page.btnAppend.click();
-        Assertions.assertFalse(overlayPanel.isDisplayed());
+        assertFalse(overlayPanel.isDisplayed());
         overlayPanel.show();
 
         // Assert
-        Assertions.assertTrue(page.dialog.isDisplayed());
-        Assertions.assertTrue(overlayPanel.isDisplayed());
+        assertTrue(page.dialog.isDisplayed());
+        assertTrue(overlayPanel.isDisplayed());
         assertConfiguration(overlayPanel.getWidgetConfiguration(), "@(body)");
     }
 
@@ -145,15 +146,15 @@ public class OverlayPanel002Test extends AbstractPrimePageTest {
         if (cfg.has("appendTo")) {
             String widgetAppendTo = cfg.getString("appendTo");
             if (widgetAppendTo.length() > 0) {
-                Assertions.assertEquals(appendTo, widgetAppendTo);
+                assertEquals(appendTo, widgetAppendTo);
             }
             else {
-                Assertions.assertEquals("", widgetAppendTo);
+                assertEquals("", widgetAppendTo);
             }
         }
-        Assertions.assertTrue(cfg.getBoolean("dismissable"));
-        Assertions.assertEquals("form:btnShow", cfg.getString("target"));
-        Assertions.assertEquals(0, cfg.getInt("showDelay"));
+        assertTrue(cfg.getBoolean("dismissable"));
+        assertEquals("form:btnShow", cfg.getString("target"));
+        assertEquals(0, cfg.getInt("showDelay"));
     }
 
     public static class Page extends AbstractPrimePage {

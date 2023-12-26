@@ -151,7 +151,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
                 return;
             }
 
-            switch(e.key) {
+            switch(e.code) {
                 case 'ArrowLeft':
                     if($this.isExpanded($this.focusedItem)) {
                         $this.focusedItem.children('.ui-menuitem-link').trigger('click');
@@ -219,7 +219,8 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
                 break;
 
                 case 'Enter':
-                case ' ':
+                case 'NumpadEnter':
+                case 'Space':
                     var currentLink = $this.focusedItem.children('.ui-menuitem-link');
                     PrimeFaces.queueTask(function(){
                         currentLink.trigger('click');

@@ -24,9 +24,10 @@
 package org.primefaces.integrationtests.datepicker;
 
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.time.LocalDateTime;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -36,37 +37,37 @@ import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DatePicker;
 import org.primefaces.selenium.component.Messages;
 
-public class DatePicker014Test extends AbstractDatePickerTest {
+class DatePicker014Test extends AbstractDatePickerTest {
 
     @Test
     @Order(1)
     @DisplayName("DatePicker: f:convertDateTime with own converter")
-    public void testOwnConverterBasic(Page page) {
+    void ownConverterBasic(Page page) {
         // Arrange
         DatePicker datePicker = page.datePicker;
         LocalDateTime expected = LocalDateTime.of(2021, 1, 10, 1, 16, 04);
 
         // Assert
-        Assertions.assertEquals(expected, datePicker.getValue());
+        assertEquals(expected, datePicker.getValue());
 
         // Act
         page.button.click();
 
         // Assert
         assertNoJavascriptErrors();
-        Assertions.assertEquals(expected, datePicker.getValue());
+        assertEquals(expected, datePicker.getValue());
     }
 
     @Test
     @Order(2)
     @DisplayName("DatePicker: f:convertDateTime with own converter; modify date on client")
-    public void testOwnConverterModify(Page page) {
+    void ownConverterModify(Page page) {
         // Arrange
         DatePicker datePicker = page.datePicker;
         LocalDateTime expected = LocalDateTime.of(2021, 1, 10, 1, 16, 04);
 
         // Assert
-        Assertions.assertEquals(expected, datePicker.getValue());
+        assertEquals(expected, datePicker.getValue());
 
         // Act
         LocalDateTime newDateTime = LocalDateTime.of(2022, 6, 17, 20, 0, 0);
@@ -75,8 +76,8 @@ public class DatePicker014Test extends AbstractDatePickerTest {
 
         // Assert
         assertNoJavascriptErrors();
-        Assertions.assertEquals(newDateTime, datePicker.getValue());
-        Assertions.assertEquals("2022-6-17 20:0:0", page.messages.getMessage(0).getDetail());
+        assertEquals(newDateTime, datePicker.getValue());
+        assertEquals("2022-6-17 20:0:0", page.messages.getMessage(0).getDetail());
     }
 
     public static class Page extends AbstractPrimePage {

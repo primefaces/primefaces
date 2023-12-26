@@ -39,6 +39,7 @@ import org.primefaces.event.FlowEvent;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
@@ -257,7 +258,7 @@ public class WizardRenderer extends CoreRenderer {
                     writer.writeAttribute("title", tab.getTitletip(), null);
                 }
 
-                if (ComponentUtils.shouldRenderFacet(titleFacet)) {
+                if (FacetUtils.shouldRenderFacet(titleFacet)) {
                     titleFacet.encodeAll(context);
                 }
                 else if (title != null) {

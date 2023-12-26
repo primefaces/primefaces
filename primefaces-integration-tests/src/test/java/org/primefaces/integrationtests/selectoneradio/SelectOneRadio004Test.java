@@ -23,7 +23,8 @@
  */
 package org.primefaces.integrationtests.selectoneradio;
 
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -35,28 +36,28 @@ import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.RadioButton;
 import org.primefaces.selenium.component.SelectOneRadio;
 
-public class SelectOneRadio004Test extends AbstractPrimePageTest {
+class SelectOneRadio004Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("SelectOneRadio: Custom: Facet")
-    public void testCustomFacet(Page page) {
+    void customFacet(Page page) {
         // Arrange
-        Assertions.assertTrue(page.opt3.isSelected());
+        assertTrue(page.opt3.isSelected());
 
         // Act
         page.opt2.select();
         page.submit.click();
 
         // Assert
-        Assertions.assertTrue(page.opt2.isSelected());
+        assertTrue(page.opt2.isSelected());
 
         // Act
         getWebDriver().findElement(By.cssSelector("label[for='form:selectoneradio:3_clone']")).click();
         page.submit.click();
 
         // Assert
-        Assertions.assertTrue(page.opt4.isSelected());
+        assertTrue(page.opt4.isSelected());
     }
 
     public static class Page extends AbstractPrimePage {

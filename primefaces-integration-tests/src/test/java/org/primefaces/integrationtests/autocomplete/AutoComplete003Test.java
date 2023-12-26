@@ -23,10 +23,12 @@
  */
 package org.primefaces.integrationtests.autocomplete;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.List;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -36,19 +38,19 @@ import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.AutoComplete;
 import org.primefaces.selenium.component.CommandButton;
 
-public class AutoComplete003Test extends AbstractPrimePageTest {
+class AutoComplete003Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("AutoComplete: multiple mode with unique values")
-    public void testMultiple(Page page) {
+    void multiple(Page page) {
         // Arrange
         AutoComplete autoComplete = page.autoComplete;
 
         // Assert initial state
         List<String> values = autoComplete.getValues();
-        Assertions.assertEquals(1, values.size());
-        Assertions.assertEquals("Ringo", values.get(0));
+        assertEquals(1, values.size());
+        assertEquals("Ringo", values.get(0));
 
         // Act
         autoComplete.addItem("Ringo"); // duplicate should be ignored
@@ -59,24 +61,24 @@ public class AutoComplete003Test extends AbstractPrimePageTest {
 
         // Assert
         values = autoComplete.getValues();
-        Assertions.assertEquals(3, values.size());
-        Assertions.assertEquals("Ringo", values.get(0));
-        Assertions.assertEquals("John", values.get(1));
-        Assertions.assertEquals("George", values.get(2));
+        assertEquals(3, values.size());
+        assertEquals("Ringo", values.get(0));
+        assertEquals("John", values.get(1));
+        assertEquals("George", values.get(2));
         assertConfiguration(autoComplete.getWidgetConfiguration());
     }
 
     @Test
     @Order(2)
     @DisplayName("AutoComplete: multiple mode add item and remove item")
-    public void testAddAndRemoveItem(Page page) {
+    void addAndRemoveItem(Page page) {
         // Arrange
         AutoComplete autoComplete = page.autoComplete;
 
         // Assert initial state
         List<String> values = autoComplete.getValues();
-        Assertions.assertEquals(1, values.size());
-        Assertions.assertEquals("Ringo", values.get(0));
+        assertEquals(1, values.size());
+        assertEquals("Ringo", values.get(0));
 
         // Act
         autoComplete.addItem("Paul");
@@ -85,22 +87,22 @@ public class AutoComplete003Test extends AbstractPrimePageTest {
 
         // Assert
         values = autoComplete.getValues();
-        Assertions.assertEquals(1, values.size());
-        Assertions.assertEquals("Paul", values.get(0));
+        assertEquals(1, values.size());
+        assertEquals("Paul", values.get(0));
         assertConfiguration(autoComplete.getWidgetConfiguration());
     }
 
     @Test
     @Order(3)
     @DisplayName("AutoComplete: adding/removing an item while disabled should have no effect")
-    public void testDisabled(Page page) {
+    void disabled(Page page) {
         // Arrange
         AutoComplete autoComplete = page.autoComplete;
 
         // Assert initial state
         List<String> values = autoComplete.getValues();
-        Assertions.assertEquals(1, values.size());
-        Assertions.assertEquals("Ringo", values.get(0));
+        assertEquals(1, values.size());
+        assertEquals("Ringo", values.get(0));
 
         // Act
         autoComplete.disable();
@@ -110,22 +112,22 @@ public class AutoComplete003Test extends AbstractPrimePageTest {
 
         // Assert
         values = autoComplete.getValues();
-        Assertions.assertEquals(1, values.size());
-        Assertions.assertEquals("Ringo", values.get(0));
+        assertEquals(1, values.size());
+        assertEquals("Ringo", values.get(0));
         assertConfiguration(autoComplete.getWidgetConfiguration());
     }
 
     @Test
     @Order(4)
     @DisplayName("AutoComplete: test enabling and disabling")
-    public void testEnabled(Page page) {
+    void enabled(Page page) {
         // Arrange
         AutoComplete autoComplete = page.autoComplete;
 
         // Assert initial state
         List<String> values = autoComplete.getValues();
-        Assertions.assertEquals(1, values.size());
-        Assertions.assertEquals("Ringo", values.get(0));
+        assertEquals(1, values.size());
+        assertEquals("Ringo", values.get(0));
 
         // Act
         autoComplete.disable();
@@ -138,17 +140,17 @@ public class AutoComplete003Test extends AbstractPrimePageTest {
 
         // Assert
         values = autoComplete.getValues();
-        Assertions.assertEquals(1, values.size());
-        Assertions.assertEquals("George", values.get(0));
+        assertEquals(1, values.size());
+        assertEquals("George", values.get(0));
         assertConfiguration(autoComplete.getWidgetConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("AutoComplete Config = " + cfg);
-        Assertions.assertTrue(cfg.getBoolean("multiple"));
-        Assertions.assertTrue(cfg.getBoolean("unique"));
-        Assertions.assertEquals(3, cfg.getInt("selectLimit"));
+        assertTrue(cfg.getBoolean("multiple"));
+        assertTrue(cfg.getBoolean("unique"));
+        assertEquals(3, cfg.getInt("selectLimit"));
     }
 
     public static class Page extends AbstractPrimePage {

@@ -24,6 +24,7 @@ rendered | true | Boolean | Boolean value to specify the rendering of the compon
 binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
 widgetVar | null | String | Name of the client side widget
 model | null | MenuModel | MenuModel instance to create menus programmatically
+dir | null | String | Direction indication for text that does not inherit directionality. Valid values are LTR and RTL.
 style | null | String | Inline style of menubar
 styleClass | null | String | Style class of menubar
 autoDisplay | false | Boolean | Defines whether the first level of submenus will be displayed on mouseover or not. When set to false, click event is required to display.

@@ -23,8 +23,9 @@
  */
 package org.primefaces.integrationtests.confirmpopup;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -38,75 +39,75 @@ import org.primefaces.selenium.component.ConfirmPopup;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.model.Msg;
 
-public class ConfirmPopup001Test extends AbstractPrimePageTest {
+class ConfirmPopup001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("ConfirmPopup: Show the popup")
-    public void testShowWidget(Page page) {
+    void showWidget(Page page) {
         // Arrange
         ConfirmPopup popup = page.popup;
-        Assertions.assertFalse(popup.isVisible());
+        assertFalse(popup.isVisible());
 
         // Act
         page.confirm.click();
 
         // Assert
-        Assertions.assertTrue(popup.isVisible());
-        Assertions.assertEquals("Are you sure you want to proceed?", popup.getMessage().getText());
-        Assertions.assertEquals("ui-confirm-popup-icon pi pi-exclamation-triangle", popup.getIcon().getAttribute("class"));
+        assertTrue(popup.isVisible());
+        assertEquals("Are you sure you want to proceed?", popup.getMessage().getText());
+        assertEquals("ui-confirm-popup-icon pi pi-exclamation-triangle", popup.getIcon().getAttribute("class"));
         assertConfiguration(popup.getWidgetConfiguration());
     }
 
     @Test
     @Order(2)
     @DisplayName("ConfirmPopup: Show widget method")
-    public void testHideWidget(Page page) {
+    void hideWidget(Page page) {
         // Arrange
         ConfirmPopup popup = page.popup;
         page.confirm.click();
-        Assertions.assertTrue(popup.isVisible());
+        assertTrue(popup.isVisible());
 
         // Act
         popup.hidePopup();
 
         // Assert
-        Assertions.assertFalse(popup.isVisible());
+        assertFalse(popup.isVisible());
         assertConfiguration(popup.getWidgetConfiguration());
     }
 
     @Test
     @Order(3)
     @DisplayName("ConfirmPopup: Confirm button pressing NO")
-    public void testConfirmNo(Page page) {
+    void confirmNo(Page page) {
         // Arrange
         ConfirmPopup popup = page.popup;
-        Assertions.assertFalse(popup.isVisible());
+        assertFalse(popup.isVisible());
         page.confirm.click();
 
         // Act
         popup.getNoButton().click();
 
         // Assert
-        Assertions.assertFalse(popup.isVisible());
-        Assertions.assertTrue(page.messages.isEmpty());
+        assertFalse(popup.isVisible());
+        assertTrue(page.messages.isEmpty());
         assertConfiguration(popup.getWidgetConfiguration());
     }
 
     @Test
     @Order(4)
     @DisplayName("ConfirmPopup: Confirm button pressing YES")
-    public void testConfirmYes(Page page) {
+    void confirmYes(Page page) {
         // Arrange
         ConfirmPopup popup = page.popup;
-        Assertions.assertFalse(popup.isVisible());
+        assertFalse(popup.isVisible());
         page.confirm.click();
 
         // Act
         PrimeSelenium.guardAjax(popup.getYesButton()).click();
 
         // Assert
-        Assertions.assertFalse(popup.isVisible());
+        assertFalse(popup.isVisible());
         assertMessage(page, "You have accepted");
         assertConfiguration(popup.getWidgetConfiguration());
     }
@@ -114,35 +115,35 @@ public class ConfirmPopup001Test extends AbstractPrimePageTest {
     @Test
     @Order(5)
     @DisplayName("ConfirmPopup: Delete button pressing NO")
-    public void testDeleteNo(Page page) {
+    void deleteNo(Page page) {
         // Arrange
         ConfirmPopup popup = page.popup;
-        Assertions.assertFalse(popup.isVisible());
+        assertFalse(popup.isVisible());
         page.delete.click();
 
         // Act
         popup.getNoButton().click();
 
         // Assert
-        Assertions.assertFalse(popup.isVisible());
-        Assertions.assertTrue(page.messages.isEmpty());
+        assertFalse(popup.isVisible());
+        assertTrue(page.messages.isEmpty());
         assertConfiguration(popup.getWidgetConfiguration());
     }
 
     @Test
     @Order(6)
     @DisplayName("ConfirmPopup: Delete button pressing YES")
-    public void testDeleteYes(Page page) {
+    void deleteYes(Page page) {
         // Arrange
         ConfirmPopup popup = page.popup;
-        Assertions.assertFalse(popup.isVisible());
+        assertFalse(popup.isVisible());
         page.delete.click();
 
         // Act
         PrimeSelenium.guardAjax(popup.getYesButton()).click();
 
         // Assert
-        Assertions.assertFalse(popup.isVisible());
+        assertFalse(popup.isVisible());
         assertMessage(page, "Record deleted");
         assertConfiguration(popup.getWidgetConfiguration());
     }
@@ -151,15 +152,15 @@ public class ConfirmPopup001Test extends AbstractPrimePageTest {
         Messages messages = page.messages;
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(messages));
         Msg msg = messages.getMessage(0);
-        Assertions.assertEquals(message, msg.getDetail());
+        assertEquals(message, msg.getDetail());
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("ConfirmPopup Config = " + cfg);
-        Assertions.assertTrue(cfg.getBoolean("global"));
-        Assertions.assertTrue(cfg.getBoolean("dismissable"));
-        Assertions.assertEquals("@(body)", cfg.getString("appendTo"));
+        assertTrue(cfg.getBoolean("global"));
+        assertTrue(cfg.getBoolean("dismissable"));
+        assertEquals("@(body)", cfg.getString("appendTo"));
     }
 
     public static class Page extends AbstractPrimePage {

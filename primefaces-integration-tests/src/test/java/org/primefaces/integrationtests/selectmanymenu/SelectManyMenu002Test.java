@@ -24,7 +24,6 @@
 package org.primefaces.integrationtests.selectmanymenu;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -36,12 +35,15 @@ import org.primefaces.selenium.component.SelectManyMenu;
 
 import java.util.Arrays;
 
-public class SelectManyMenu002Test extends AbstractSelectManyMenuTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+class SelectManyMenu002Test extends AbstractSelectManyMenuTest {
 
     @Test
     @Order(1)
     @DisplayName("SelectManyMenu: basic usecase with converter + showCheckbox")
-    public void testBasicWithConverter(Page page) {
+    void basicWithConverter(Page page) {
         // Arrange
         SelectManyMenu selectManyMenu = page.selectManyMenu;
         assertSelected(selectManyMenu, Arrays.asList("Max", "Charles"));
@@ -52,9 +54,9 @@ public class SelectManyMenu002Test extends AbstractSelectManyMenuTest {
 
         // Assert - part 1
         assertSelected(selectManyMenu, Arrays.asList("Max", "Charles", "Lando"));
-        Assertions.assertEquals(1, page.messages.getAllMessages().size());
-        Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("selected drivers"));
-        Assertions.assertTrue(page.messages.getMessage(0).getDetail().contains("Max,Charles,Lando"));
+        assertEquals(1, page.messages.getAllMessages().size());
+        assertTrue(page.messages.getMessage(0).getSummary().contains("selected drivers"));
+        assertTrue(page.messages.getMessage(0).getDetail().contains("Max,Charles,Lando"));
         assertConfiguration(selectManyMenu.getWidgetConfiguration());
 
         // Act
@@ -63,16 +65,16 @@ public class SelectManyMenu002Test extends AbstractSelectManyMenuTest {
 
         // Assert - part 2
         assertSelected(selectManyMenu, Arrays.asList("Max", "Lando"));
-        Assertions.assertEquals(1, page.messages.getAllMessages().size());
-        Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("selected drivers"));
-        Assertions.assertTrue(page.messages.getMessage(0).getDetail().contains("Max,Lando"));
+        assertEquals(1, page.messages.getAllMessages().size());
+        assertTrue(page.messages.getMessage(0).getSummary().contains("selected drivers"));
+        assertTrue(page.messages.getMessage(0).getDetail().contains("Max,Lando"));
         assertConfiguration(selectManyMenu.getWidgetConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("SelectManyMenu Config = " + cfg);
-        Assertions.assertTrue(cfg.has("id"));
+        assertTrue(cfg.has("id"));
     }
 
     public static class Page extends AbstractPrimePage {

@@ -23,8 +23,9 @@
  */
 package org.primefaces.integrationtests.spinner;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -41,17 +42,17 @@ public class Spinner004Test extends AbstractPrimePageTest {
     @Test
     @Order(1)
     @DisplayName("Spinner: Test decimal increment by 0.33 using euro notation")
-    public void testSpinnerForEuroNotation(Page page) {
+    void spinnerForEuroNotation(Page page) {
         // Arrange
         Spinner spinner = page.spinner;
-        Assertions.assertEquals("", spinner.getValue());
+        assertEquals("", spinner.getValue());
 
         // Act
         spinner.increment();
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("€0,33", spinner.getValue());
+        assertEquals("€0,33", spinner.getValue());
         assertOutputLabel(page, "0.33");
         assertConfiguration(spinner.getWidgetConfiguration());
     }
@@ -59,17 +60,17 @@ public class Spinner004Test extends AbstractPrimePageTest {
     @Test
     @Order(1)
     @DisplayName("Spinner: Test setting large value for euro notation")
-    public void testEuroNotationWithThousandsAndDecimal(Page page) {
+    void euroNotationWithThousandsAndDecimal(Page page) {
         // Arrange
         Spinner spinner = page.spinner;
-        Assertions.assertEquals("", spinner.getValue());
+        assertEquals("", spinner.getValue());
 
         // Act
         sendKeys(spinner, "1.456,78");
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("€1.456,78", spinner.getValue());
+        assertEquals("€1.456,78", spinner.getValue());
         assertOutputLabel(page, "1456.78");
         assertConfiguration(spinner.getWidgetConfiguration());
     }
@@ -77,19 +78,19 @@ public class Spinner004Test extends AbstractPrimePageTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("Spinner Config = " + cfg);
-        Assertions.assertEquals(0.33, cfg.getDouble("step"));
-        Assertions.assertEquals(",", cfg.get("decimalSeparator"));
-        Assertions.assertEquals(".", cfg.get("thousandSeparator"));
+        assertEquals(0.33, cfg.getDouble("step"));
+        assertEquals(",", cfg.get("decimalSeparator"));
+        assertEquals(".", cfg.get("thousandSeparator"));
         if (cfg.has("decimalPlaces")) {
-            Assertions.assertEquals("2", cfg.get("decimalPlaces"));
+            assertEquals("2", cfg.get("decimalPlaces"));
         }
         if (cfg.has("precision")) {
-            Assertions.assertEquals(2, cfg.getInt("precision"));
+            assertEquals(2, cfg.getInt("precision"));
         }
     }
 
     private void assertOutputLabel(Page page, String value) {
-        Assertions.assertEquals(value, page.output.getText());
+        assertEquals(value, page.output.getText());
     }
 
     public void sendKeys(Spinner spinner, CharSequence value) {

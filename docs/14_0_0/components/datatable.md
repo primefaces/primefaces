@@ -1238,18 +1238,20 @@ Widget: `PrimeFaces.widget.DataTable`
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |
-| getPaginator() | - | Paginator | Returns the paginator insance.
+| addRow() | - | void | Fetches the last row from the backend and inserts a row instead of updating the table itself.
 | clearFilters() | - | void | Clears all column filters
-| getSelectedRowsCount() | - | Number | Returns number of selected rows.
-| selectRow(r, silent) | r : number or tr element as jQuery object, silent : flag to fire row select ajax behavior | void | Selects the given row.
-| unselectRow(r, silent) | r : number or tr element as jQuery object, silent : flag to fire row select ajax behavior | void | Unselects the given row.
-| unselectAllRows() | - | void | Unselects all rows.
-| toggleCheckAll() | - | void | Toggles header checkbox state.
+| collapseAllRows() | - | void | Collapses all rows that are currently expanded.
 | filter() | - | void | Filters the data.
+| getPaginator() | - | Paginator | Returns the paginator insance.
+| getSelectedRowsCount() | - | Number | Returns number of selected rows.
 | selectAllRows() | - | void | Select all rows.
 | selectAllRowsOnPage() | - | void | Select all rows on current page.
+| selectRow(r, silent) | r : number or tr element as jQuery object, silent : flag to fire row select ajax behavior | void | Selects the given row.
+| toggleCheckAll() | - | void | Toggles header checkbox state.
+| unselectAllRows() | - | void | Unselects all rows.
 | unselectAllRowsOnPage() | - | void | Unselect all rows on current page.
-| addRow() | - | void | Fetches the last row from the backend and inserts a row instead of updating the table itself.
+| unselectRow(r, silent) | r : number or tr element as jQuery object, silent : flag to fire row select ajax behavior | void | Unselects the given row.
+
 
 
 ## Server Side API

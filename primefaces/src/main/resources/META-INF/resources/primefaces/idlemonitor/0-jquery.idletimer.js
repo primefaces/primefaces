@@ -1,6 +1,6 @@
-/* Idle Timer - v1.1.0 - 2016-03-21
+/*! Idle Timer - v1.1.1 - 2020-06-25
 * https://github.com/thorst/jquery-idletimer
-* Copyright (c) 2016 Paul Irish; Licensed MIT */
+* Copyright (c) 2020 Paul Irish; Licensed MIT */
 /*
 	mousewheel (deprecated) -> IE6.0, Chrome, Opera, Safari
 	DOMMouseScroll (deprecated) -> Firefox 1.0

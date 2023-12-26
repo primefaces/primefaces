@@ -23,17 +23,12 @@
  */
 package org.primefaces.util;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.io.UncheckedIOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.*;
-import java.util.function.Supplier;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import org.primefaces.component.api.*;
+import org.primefaces.config.PrimeConfiguration;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.csp.CspResponseWriter;
+
 import javax.el.ELException;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -52,12 +47,18 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.render.Renderer;
+import java.io.IOException;
+import java.io.Serializable;
+import java.io.UncheckedIOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.*;
+import java.util.function.Supplier;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import org.primefaces.component.api.*;
-import org.primefaces.config.PrimeConfiguration;
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.context.PrimeRequestContext;
-import org.primefaces.csp.CspResponseWriter;
 import static org.primefaces.renderkit.RendererUtils.getRenderKit;
 
 public class ComponentUtils {
@@ -406,7 +407,7 @@ public class ComponentUtils {
     }
 
     /**
-     * Duplicate code from OmniFacew project under apache license:
+     * Duplicate code from OmniFaces project under apache license:
      * https://github.com/omnifaces/omnifaces/blob/develop/license.txt
      * <p>
      * URI-encode the given string using UTF-8. URIs (paths and filenames) have different encoding rules as compared to
@@ -475,42 +476,24 @@ public class ComponentUtils {
      * @param facet The Facet component to check
      * @param alwaysRender flag to ignore children and only check the facet itself
      * @return true if the facet should be rendered, false if not
+     *
+     * @deprecated use FacetUtils
      */
+    @Deprecated
     public static boolean shouldRenderFacet(UIComponent facet, boolean alwaysRender) {
-        // no facet declared at all or facet without any content
-        if (facet == null) {
-            return false;
-        }
-
-        // user wants to always render this facet so it can be updated
-        if (alwaysRender) {
-            return true;
-        }
-
-        // the facet contains multiple childs, so its wrapped inside a UIPanel
-        // NOTE: we need a equals check as instanceof would also catch e.g. p:dialog
-        if (facet.getClass().equals(UIPanel.class)) {
-            // For any future version of JSF where the f:facet gets a rendered attribute
-            if (!facet.isRendered()) {
-                return false;
-            }
-
-            // check all childs - if all of them are rendered=false, we skip rendering the whole facet
-            return shouldRenderChildren(facet);
-        }
-
-        // the facet contains only one child now, which means that the facet is the child component
-        // we dont want to check children, just if the component is rendered=true
-        return facet.isRendered();
+        return FacetUtils.shouldRenderFacet(facet, alwaysRender);
     }
 
     /**
      * Checks if the facet and one of the first level children is rendered.
      * @param facet The Facet component to check
      * @return true when facet and one of the first level children is rendered.
+     *
+     * @deprecated use FacetUtils
      */
+    @Deprecated
     public static boolean shouldRenderFacet(UIComponent facet) {
-        return shouldRenderFacet(facet, false);
+        return FacetUtils.shouldRenderFacet(facet);
     }
 
     /**

@@ -23,8 +23,10 @@
  */
 package org.primefaces.integrationtests.inputnumber;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -37,12 +39,12 @@ import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.InputNumber;
 import org.primefaces.selenium.component.Messages;
 
-public class InputNumber006Test extends AbstractPrimePageTest {
+class InputNumber006Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("InputNumber: click on button after typing into InputNumber must trigger two ajax-calls (valueChange-Event)")
-    public void testAjaxValueChangeEvent(final Page page) {
+    void ajaxValueChangeEvent(final Page page) {
         // Arrange
         InputNumber inputNumber = page.inputnumber;
 
@@ -56,9 +58,9 @@ public class InputNumber006Test extends AbstractPrimePageTest {
         PrimeSelenium.wait(500);
 
         // Assert
-        Assertions.assertEquals("value = 1234", page.outputpanel.getText());
-        Assertions.assertFalse(page.messages.isEmpty());
-        Assertions.assertEquals("some action; value: 1234", page.messages.getMessage(0).getSummary());
+        assertEquals("value = 1234", page.outputpanel.getText());
+        assertFalse(page.messages.isEmpty());
+        assertEquals("some action; value: 1234", page.messages.getMessage(0).getSummary());
 
         assertConfiguration(inputNumber.getWidgetConfiguration());
     }
@@ -66,7 +68,7 @@ public class InputNumber006Test extends AbstractPrimePageTest {
     @Test
     @Order(2)
     @DisplayName("InputNumber: click on button after typing into InputNumber must trigger two ajax-calls (blur-Event)")
-    public void testAjaxBlurEvent(final Page page) {
+    void ajaxBlurEvent(final Page page) {
         // Arrange
         InputNumber inputNumber = page.inputnumber2;
 
@@ -80,9 +82,9 @@ public class InputNumber006Test extends AbstractPrimePageTest {
         PrimeSelenium.wait(500);
 
         // Assert
-        Assertions.assertEquals("value = 5678", page.outputpanel2.getText());
-        Assertions.assertFalse(page.messages.isEmpty());
-        Assertions.assertEquals("some second action; value: 5678", page.messages.getMessage(0).getSummary());
+        assertEquals("value = 5678", page.outputpanel2.getText());
+        assertFalse(page.messages.isEmpty());
+        assertEquals("some second action; value: 5678", page.messages.getMessage(0).getSummary());
 
         assertConfiguration(inputNumber.getWidgetConfiguration());
     }
@@ -90,7 +92,7 @@ public class InputNumber006Test extends AbstractPrimePageTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("InputNumber Config = " + cfg);
-        Assertions.assertEquals("0", cfg.get("decimalPlaces"));
+        assertEquals("0", cfg.get("decimalPlaces"));
     }
 
     public static class Page extends AbstractPrimePage {

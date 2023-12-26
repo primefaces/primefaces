@@ -23,7 +23,6 @@
  */
 package org.primefaces.integrationtests.accordionpanel;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
@@ -33,42 +32,45 @@ import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.model.Tab;
 
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class AccordionPanel001Test extends AbstractPrimePageTest {
+class AccordionPanel001Test extends AbstractPrimePageTest {
 
     @Test
-    public void test(Page page) {
+    void test(Page page) {
         // Arrange
         AccordionPanel accordionPanel = page.accordionPanel;
 
         // Assert - part 1
         List<Tab> tabs = accordionPanel.getTabs();
-        Assertions.assertNotNull(tabs);
-        Assertions.assertEquals(3, tabs.size());
+        assertNotNull(tabs);
+        assertEquals(3, tabs.size());
         AtomicInteger cnt = new AtomicInteger(0);
         tabs.forEach(tab -> {
-            Assertions.assertNotNull(tab.getHeader());
-            Assertions.assertNotNull(tab.getContent());
-            Assertions.assertEquals(cnt.getAndIncrement(), tab.getIndex());
+            assertNotNull(tab.getHeader());
+            assertNotNull(tab.getContent());
+            assertEquals(cnt.getAndIncrement(), tab.getIndex());
         });
-        Assertions.assertEquals("Panel1", tabs.get(0).getTitle());
-        Assertions.assertEquals("Panel2", tabs.get(1).getTitle());
+        assertEquals("Panel1", tabs.get(0).getTitle());
+        assertEquals("Panel2", tabs.get(1).getTitle());
 
-        Assertions.assertNotNull(accordionPanel.getSelectedTabs());
-        Assertions.assertEquals(1, accordionPanel.getSelectedTabs().size());
-        Assertions.assertEquals(0, accordionPanel.getSelectedTabs().get(0).getIndex());
-        Assertions.assertEquals("Panel1", accordionPanel.getSelectedTabs().get(0).getTitle());
+        assertNotNull(accordionPanel.getSelectedTabs());
+        assertEquals(1, accordionPanel.getSelectedTabs().size());
+        assertEquals(0, accordionPanel.getSelectedTabs().get(0).getIndex());
+        assertEquals("Panel1", accordionPanel.getSelectedTabs().get(0).getTitle());
 
         // Act
         accordionPanel.toggleTab(2);
 
         // Assert - part 2
         assertNoJavascriptErrors();
-        Assertions.assertNotNull(accordionPanel.getSelectedTabs());
-        Assertions.assertEquals(1, accordionPanel.getSelectedTabs().size());
-        Assertions.assertEquals(2, accordionPanel.getSelectedTabs().get(0).getIndex());
-        Assertions.assertEquals("Panel3", accordionPanel.getSelectedTabs().get(0).getTitle());
+        assertNotNull(accordionPanel.getSelectedTabs());
+        assertEquals(1, accordionPanel.getSelectedTabs().size());
+        assertEquals(2, accordionPanel.getSelectedTabs().get(0).getIndex());
+        assertEquals("Panel3", accordionPanel.getSelectedTabs().get(0).getTitle());
     }
 
     public static class Page extends AbstractPrimePage {

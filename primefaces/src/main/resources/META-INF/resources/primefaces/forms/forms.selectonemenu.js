@@ -646,7 +646,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this;
 
         this.keyboardTarget.on('keydown.ui-selectonemenu', function(e) {
-            switch(e.key) {
+            switch(e.code) {
                 case 'ArrowUp':
                 case 'ArrowLeft':
                     $this.callHandleMethod($this.highlightPrev, e);
@@ -658,6 +658,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 break;
 
                 case 'Enter':
+                case 'NumpadEnter':
                     $this.handleEnterKey(e);
                 break;
 
@@ -669,7 +670,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                     $this.handleEscapeKey(e);
                 break;
 
-                case ' ':
+                case 'Space':
                     $this.handleSpaceKey(e);
                 break;
             }
@@ -796,7 +797,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         })
         .on('keydown.ui-selectonemenu',function(e) {
 
-            switch(e.key) {
+            switch(e.code) {
                 case 'ArrowUp':
                     $this.highlightPrev(e);
                 break;
@@ -806,18 +807,21 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 break;
 
                 case 'Enter':
-                    $this.handleEnterKey(e);
+                case 'NumpadEnter':
+                    $this.keyboardTarget.trigger("focus");
+                    $this.keyboardTarget.trigger(jQuery.Event('keydown', { key: e.key, code: e.code }));
                 break;
 
                 case 'Tab':
-                    $this.handleTabKey(e);
+                    $this.keyboardTarget.trigger("focus");
+                    $this.keyboardTarget.trigger(jQuery.Event('keydown', { key: e.key, code: e.code }));
                 break;
 
                 case 'Escape':
                     $this.handleEscapeKey(e);
                 break;
 
-                case ' ':
+                case 'Space':
                     $this.handleSpaceKey(e);
                 break;
 

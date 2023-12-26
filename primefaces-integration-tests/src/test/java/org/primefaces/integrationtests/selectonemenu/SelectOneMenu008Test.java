@@ -23,8 +23,9 @@
  */
 package org.primefaces.integrationtests.selectonemenu;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -35,25 +36,25 @@ import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.SelectOneMenu;
 
-public class SelectOneMenu008Test extends AbstractPrimePageTest {
+class SelectOneMenu008Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("SelectOneMenu: basic usecase with converter")
-    public void testBasicWithConverter(Page page) {
+    void basicWithConverter(Page page) {
         // Arrange
         SelectOneMenu selectOneMenu = page.selectOneMenu;
-        Assertions.assertEquals("Charles", selectOneMenu.getSelectedLabel());
+        assertEquals("Charles", selectOneMenu.getSelectedLabel());
 
         // Act
         selectOneMenu.select("Max");
         page.button.click();
 
         // Assert - part 1
-        Assertions.assertEquals("Max", selectOneMenu.getSelectedLabel());
-        Assertions.assertEquals(1, page.messages.getAllMessages().size());
-        Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("selected driver"));
-        Assertions.assertTrue(page.messages.getMessage(0).getDetail().contains("Max"));
+        assertEquals("Max", selectOneMenu.getSelectedLabel());
+        assertEquals(1, page.messages.getAllMessages().size());
+        assertTrue(page.messages.getMessage(0).getSummary().contains("selected driver"));
+        assertTrue(page.messages.getMessage(0).getDetail().contains("Max"));
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
 
         // Act
@@ -61,21 +62,21 @@ public class SelectOneMenu008Test extends AbstractPrimePageTest {
         page.button.click();
 
         // Assert - part 2
-        Assertions.assertEquals("Lando", selectOneMenu.getSelectedLabel());
-        Assertions.assertEquals(1, page.messages.getAllMessages().size());
-        Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("selected driver"));
-        Assertions.assertTrue(page.messages.getMessage(0).getDetail().contains("Lando"));
+        assertEquals("Lando", selectOneMenu.getSelectedLabel());
+        assertEquals(1, page.messages.getAllMessages().size());
+        assertTrue(page.messages.getMessage(0).getSummary().contains("selected driver"));
+        assertTrue(page.messages.getMessage(0).getDetail().contains("Lando"));
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("SelectOneMenu Config = " + cfg);
-        Assertions.assertTrue(cfg.has("appendTo"));
-        Assertions.assertEquals("auto", cfg.getString("autoWidth"));
-        Assertions.assertFalse(cfg.getBoolean("dynamic"));
-        Assertions.assertEquals("fade", cfg.getString("effect"));
-        Assertions.assertEquals("normal", cfg.getString("effectSpeed"));
+        assertTrue(cfg.has("appendTo"));
+        assertEquals("auto", cfg.getString("autoWidth"));
+        assertFalse(cfg.getBoolean("dynamic"));
+        assertEquals("fade", cfg.getString("effect"));
+        assertEquals("normal", cfg.getString("effectSpeed"));
     }
 
     public static class Page extends AbstractPrimePage {

@@ -139,7 +139,7 @@ public class DataViewRenderer extends DataRenderer {
         writer.startElement("div", dataview);
         writer.writeAttribute("class", DataView.HEADER_CLASS, null);
 
-        if (ComponentUtils.shouldRenderFacet(fHeader)) {
+        if (FacetUtils.shouldRenderFacet(fHeader)) {
             fHeader.encodeAll(context);
         }
 
@@ -234,7 +234,7 @@ public class DataViewRenderer extends DataRenderer {
         if (dataview.getRowCount() == 0) {
             ResponseWriter writer = context.getResponseWriter();
             UIComponent emptyFacet = dataview.getFacet("emptyMessage");
-            if (ComponentUtils.shouldRenderFacet(emptyFacet)) {
+            if (FacetUtils.shouldRenderFacet(emptyFacet)) {
                 emptyFacet.encodeAll(context);
             }
             else {
@@ -270,7 +270,7 @@ public class DataViewRenderer extends DataRenderer {
 
             String columnClass = getStyleClassBuilder(context)
                     .add(DataView.GRID_LAYOUT_COLUMN_CLASS)
-                    .add(flex, GridLayoutUtils.getColumnClass(flex, columns))
+                    .add(GridLayoutUtils.getColumnClass(flex, columns))
                     .add(dataview.getGridRowStyleClass())
                     .build();
 

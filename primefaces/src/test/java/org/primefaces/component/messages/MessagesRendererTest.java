@@ -23,17 +23,18 @@
  */
 package org.primefaces.component.messages;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.primefaces.mock.FacesContextMock;
 
-public class MessagesRendererTest {
+class MessagesRendererTest {
 
     @Test
-    public void collectFacesMessagesWithEmptyIgnores() {
+    void collectFacesMessagesWithEmptyIgnores() {
         FacesContext context = new FacesContextMock();
         context.addMessage("test1", new FacesMessage());
         context.addMessage("test2", new FacesMessage());
@@ -46,11 +47,11 @@ public class MessagesRendererTest {
 
         MessagesRenderer renderer = new MessagesRenderer();
 
-        Assertions.assertEquals(3, renderer.collectFacesMessages(messages, context).size());
+        assertEquals(3, renderer.collectFacesMessages(messages, context).size());
     }
 
     @Test
-    public void collectFacesMessagesWithNullIgnores() {
+    void collectFacesMessagesWithNullIgnores() {
         FacesContext context = new FacesContextMock();
         context.addMessage("test1", new FacesMessage());
         context.addMessage("test2", new FacesMessage());
@@ -63,11 +64,11 @@ public class MessagesRendererTest {
 
         MessagesRenderer renderer = new MessagesRenderer();
 
-        Assertions.assertEquals(3, renderer.collectFacesMessages(messages, context).size());
+        assertEquals(3, renderer.collectFacesMessages(messages, context).size());
     }
 
     @Test
-    public void collectFacesMessagesWithIgnores() {
+    void collectFacesMessagesWithIgnores() {
         FacesContext context = new FacesContextMock();
         context.addMessage("test1", new FacesMessage());
         context.addMessage("test2", new FacesMessage());
@@ -81,11 +82,11 @@ public class MessagesRendererTest {
 
         MessagesRenderer renderer = new MessagesRenderer();
 
-        Assertions.assertEquals(3, renderer.collectFacesMessages(messages, context).size());
+        assertEquals(3, renderer.collectFacesMessages(messages, context).size());
     }
 
     @Test
-    public void collectFacesMessagesWithMultipleIgnores() {
+    void collectFacesMessagesWithMultipleIgnores() {
         FacesContext context = new FacesContextMock();
         context.addMessage("test1", new FacesMessage());
         context.addMessage("test2", new FacesMessage());
@@ -100,6 +101,6 @@ public class MessagesRendererTest {
 
         MessagesRenderer renderer = new MessagesRenderer();
 
-        Assertions.assertEquals(1, renderer.collectFacesMessages(messages, context).size());
+        assertEquals(1, renderer.collectFacesMessages(messages, context).size());
     }
 }

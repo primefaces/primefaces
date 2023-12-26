@@ -23,8 +23,10 @@
  */
 package org.primefaces.integrationtests.password;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -34,46 +36,46 @@ import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Password;
 
-public class Password001Test extends AbstractPrimePageTest {
+class Password001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("Password: Value should not be redisplayed after submission")
-    public void testRedisplayFalse(Page page) {
+    void redisplayFalse(Page page) {
         // Arrange
         Password password = page.password;
-        Assertions.assertEquals("", password.getValue());
+        assertEquals("", password.getValue());
 
         // Act
         password.setValue("encryptme!");
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("", password.getValue());
+        assertEquals("", password.getValue());
         assertConfiguration(password.getWidgetConfiguration());
     }
 
     @Test
     @Order(2)
     @DisplayName("Password: Value should be redisplayed after submission")
-    public void testRedisplayTrue(Page page) {
+    void redisplayTrue(Page page) {
         // Arrange
         Password password = page.redisplay;
-        Assertions.assertEquals("", password.getValue());
+        assertEquals("", password.getValue());
 
         // Act
         password.setValue("encryptme!");
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("encryptme!", password.getValue());
+        assertEquals("encryptme!", password.getValue());
         assertConfiguration(password.getWidgetConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("Password Config = " + cfg);
-        Assertions.assertTrue(cfg.has("widgetVar"));
+        assertTrue(cfg.has("widgetVar"));
     }
 
     public static class Page extends AbstractPrimePage {

@@ -23,8 +23,9 @@
  */
 package org.primefaces.integrationtests.inputtextarea;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
@@ -33,45 +34,45 @@ import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.InputTextarea;
 
-public class InputTextArea001Test extends AbstractPrimePageTest {
+class InputTextArea001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
-    public void testInputTextAreaWithAjax(Page page) {
+    void inputTextAreaWithAjax(Page page) {
         // Arrange
         InputTextarea inputText = page.inputtext1;
-        Assertions.assertEquals("byebye!", inputText.getValue());
+        assertEquals("byebye!", inputText.getValue());
 
         // Act
         inputText.setValue("hello!");
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("hello!", inputText.getValue());
+        assertEquals("hello!", inputText.getValue());
         assertConfiguration(inputText.getWidgetConfiguration());
     }
 
     @Test
     @Order(2)
-    public void testInputTextAreaWithoutAjax(Page page) {
+    void inputTextAreaWithoutAjax(Page page) {
         // Arrange
         InputTextarea inputText = page.inputtext2;
-        Assertions.assertEquals("safari", inputText.getValue());
+        assertEquals("safari", inputText.getValue());
 
         // Act
         inputText.setValue("hello safari!");
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("hello safari!", inputText.getValue());
+        assertEquals("hello safari!", inputText.getValue());
         assertConfiguration(inputText.getWidgetConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("InputTextarea Config = " + cfg);
-        Assertions.assertFalse(cfg.has("maxlength"));
-        Assertions.assertTrue(cfg.getBoolean("autoResize"));
+        assertFalse(cfg.has("maxlength"));
+        assertTrue(cfg.getBoolean("autoResize"));
     }
 
     public static class Page extends AbstractPrimePage {

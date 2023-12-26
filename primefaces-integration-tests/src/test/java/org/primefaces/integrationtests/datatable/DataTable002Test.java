@@ -24,7 +24,6 @@
 package org.primefaces.integrationtests.datatable;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -40,32 +39,35 @@ import org.primefaces.selenium.component.SelectCheckboxMenu;
 import org.primefaces.selenium.component.model.datatable.Row;
 
 import java.util.Comparator;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class DataTable002Test extends AbstractDataTableTest {
+class DataTable002Test extends AbstractDataTableTest {
 
     @ParameterizedTest
     @MethodSource("provideXhtmls")
     @Order(1)
     @DisplayName("DataTable: Lazy: Basic & Paginator")
-    public void testLazyAndPaginator(String xhtml) {
+    void lazyAndPaginator(String xhtml) {
         // Arrange
         goTo(xhtml);
         DataTable dataTable = getDataTable();
-        Assertions.assertNotNull(dataTable);
+        assertNotNull(dataTable);
 
         // Act
         //page.button.click();
         // Assert
         List<Row> rows = dataTable.getRows();
-        Assertions.assertNotNull(rows);
-        Assertions.assertEquals(10, rows.size());
+        assertNotNull(rows);
+        assertEquals(10, rows.size());
 
         Row firstRow = dataTable.getRow(0);
-        Assertions.assertEquals("1", firstRow.getCell(0).getText());
-        Assertions.assertEquals("Language 1", firstRow.getCell(1).getText());
+        assertEquals("1", firstRow.getCell(0).getText());
+        assertEquals("Language 1", firstRow.getCell(1).getText());
 
         assertConfiguration(dataTable.getWidgetConfiguration());
 
@@ -74,12 +76,12 @@ public class DataTable002Test extends AbstractDataTableTest {
 
         // Assert
         rows = dataTable.getRows();
-        Assertions.assertNotNull(rows);
-        Assertions.assertEquals(10, rows.size());
+        assertNotNull(rows);
+        assertEquals(10, rows.size());
 
         firstRow = dataTable.getRow(0);
-        Assertions.assertEquals("11", firstRow.getCell(0).getText());
-        Assertions.assertEquals("Language 11", firstRow.getCell(1).getText());
+        assertEquals("11", firstRow.getCell(0).getText());
+        assertEquals("Language 11", firstRow.getCell(1).getText());
 
         assertConfiguration(dataTable.getWidgetConfiguration());
 
@@ -88,8 +90,8 @@ public class DataTable002Test extends AbstractDataTableTest {
 
         // Assert
         rows = dataTable.getRows();
-        Assertions.assertNotNull(rows);
-        Assertions.assertEquals(5, rows.size());
+        assertNotNull(rows);
+        assertEquals(5, rows.size());
 
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
@@ -98,11 +100,11 @@ public class DataTable002Test extends AbstractDataTableTest {
     @MethodSource("provideXhtmls")
     @Order(2)
     @DisplayName("DataTable: Lazy: single sort")
-    public void testLazySortSingle(String xhtml) {
+    void lazySortSingle(String xhtml) {
         // Arrange
         goTo(xhtml);
         DataTable dataTable = getDataTable();
-        Assertions.assertNotNull(dataTable);
+        assertNotNull(dataTable);
         List<ProgrammingLanguage> langsAsc = model.getLangs().stream().sorted(Comparator.comparing(ProgrammingLanguage::getName)).collect(Collectors.toList());
         List<ProgrammingLanguage> langsDesc = model.getLangs().stream().sorted(Comparator.comparing(ProgrammingLanguage::getName).reversed())
                 .collect(Collectors.toList());
@@ -113,24 +115,24 @@ public class DataTable002Test extends AbstractDataTableTest {
 
         // Assert
         List<Row> rows = dataTable.getRows();
-        Assertions.assertNotNull(rows);
-        Assertions.assertEquals(10, rows.size());
+        assertNotNull(rows);
+        assertEquals(10, rows.size());
 
-        Assertions.assertEquals(langsAsc.get(0).getName(), rows.get(0).getCell(1).getText());
-        Assertions.assertEquals(langsAsc.get(1).getName(), rows.get(1).getCell(1).getText());
-        Assertions.assertEquals(langsAsc.get(9).getName(), rows.get(9).getCell(1).getText());
+        assertEquals(langsAsc.get(0).getName(), rows.get(0).getCell(1).getText());
+        assertEquals(langsAsc.get(1).getName(), rows.get(1).getCell(1).getText());
+        assertEquals(langsAsc.get(9).getName(), rows.get(9).getCell(1).getText());
 
         // Act - descending
         dataTable.sort("Name");
 
         // Assert
         rows = dataTable.getRows();
-        Assertions.assertNotNull(rows);
-        Assertions.assertEquals(10, rows.size());
+        assertNotNull(rows);
+        assertEquals(10, rows.size());
 
-        Assertions.assertEquals(langsDesc.get(0).getName(), rows.get(0).getCell(1).getText());
-        Assertions.assertEquals(langsDesc.get(1).getName(), rows.get(1).getCell(1).getText());
-        Assertions.assertEquals(langsDesc.get(9).getName(), rows.get(9).getCell(1).getText());
+        assertEquals(langsDesc.get(0).getName(), rows.get(0).getCell(1).getText());
+        assertEquals(langsDesc.get(1).getName(), rows.get(1).getCell(1).getText());
+        assertEquals(langsDesc.get(9).getName(), rows.get(9).getCell(1).getText());
 
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
@@ -139,11 +141,11 @@ public class DataTable002Test extends AbstractDataTableTest {
     @MethodSource("provideXhtmls")
     @Order(3)
     @DisplayName("DataTable: Lazy: filter")
-    public void testLazyFilter(String xhtml) {
+    void lazyFilter(String xhtml) {
         // Arrange
         goTo(xhtml);
         DataTable dataTable = getDataTable();
-        Assertions.assertNotNull(dataTable);
+        assertNotNull(dataTable);
         List<ProgrammingLanguage> langsFiltered = model.getLangs().stream()
                 .filter(l -> l.getFirstAppeared() >= 1998)
                 .sorted(Comparator.comparingInt(ProgrammingLanguage::getFirstAppeared))
@@ -156,20 +158,20 @@ public class DataTable002Test extends AbstractDataTableTest {
 
         // Assert
         List<Row> rows = dataTable.getRows();
-        Assertions.assertNotNull(rows);
-        Assertions.assertEquals(10, rows.size()); //one page
-        Assertions.assertEquals(langsFiltered.get(0).getName(), rows.get(0).getCell(1).getText());
-        Assertions.assertEquals(langsFiltered.get(1).getName(), rows.get(1).getCell(1).getText());
+        assertNotNull(rows);
+        assertEquals(10, rows.size()); //one page
+        assertEquals(langsFiltered.get(0).getName(), rows.get(0).getCell(1).getText());
+        assertEquals(langsFiltered.get(1).getName(), rows.get(1).getCell(1).getText());
 
         // Act
         getButtonUpdate().click();
 
         // Assert - filter must not be lost after update
         rows = dataTable.getRows();
-        Assertions.assertNotNull(rows);
-        Assertions.assertEquals(10, rows.size()); //one page
-        Assertions.assertEquals(langsFiltered.get(0).getName(), rows.get(0).getCell(1).getText());
-        Assertions.assertEquals(langsFiltered.get(1).getName(), rows.get(1).getCell(1).getText());
+        assertNotNull(rows);
+        assertEquals(10, rows.size()); //one page
+        assertEquals(langsFiltered.get(0).getName(), rows.get(0).getCell(1).getText());
+        assertEquals(langsFiltered.get(1).getName(), rows.get(1).getCell(1).getText());
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
@@ -177,11 +179,11 @@ public class DataTable002Test extends AbstractDataTableTest {
     @MethodSource("provideXhtmls")
     @Order(4)
     @DisplayName("DataTable: Lazy: filter - selectCheckboxMenu")
-    public void testLazyFilterSelectCheckboxMenu(String xhtml) {
+    void lazyFilterSelectCheckboxMenu(String xhtml) {
         // Arrange
         goTo(xhtml);
         DataTable dataTable = getDataTable();
-        Assertions.assertNotNull(dataTable);
+        assertNotNull(dataTable);
         List<ProgrammingLanguage> langsFiltered = model.getLangs().stream()
                 .filter(l -> l.getType() == ProgrammingLanguage.ProgrammingLanguageType.COMPILED)
                 .sorted(Comparator.comparingInt(ProgrammingLanguage::getFirstAppeared))
@@ -197,10 +199,10 @@ public class DataTable002Test extends AbstractDataTableTest {
 
         // Assert
         List<Row> rows = dataTable.getRows();
-        Assertions.assertNotNull(rows);
-        Assertions.assertEquals(10, rows.size()); //one page
+        assertNotNull(rows);
+        assertEquals(10, rows.size()); //one page
         for (int row = 0; row < 10; row++) {
-            Assertions.assertEquals(langsFiltered.get(row).getName(), rows.get(row).getCell(1).getText());
+            assertEquals(langsFiltered.get(row).getName(), rows.get(row).getCell(1).getText());
         }
 
         // Act
@@ -208,10 +210,10 @@ public class DataTable002Test extends AbstractDataTableTest {
 
         // Assert - filter must not be lost after update
         rows = dataTable.getRows();
-        Assertions.assertNotNull(rows);
-        Assertions.assertEquals(10, rows.size()); //one page
+        assertNotNull(rows);
+        assertEquals(10, rows.size()); //one page
         for (int row = 0; row < 10; row++) {
-            Assertions.assertEquals(langsFiltered.get(row).getName(), rows.get(row).getCell(1).getText());
+            assertEquals(langsFiltered.get(row).getName(), rows.get(row).getCell(1).getText());
         }
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
@@ -220,20 +222,20 @@ public class DataTable002Test extends AbstractDataTableTest {
     @MethodSource("provideXhtmls")
     @Order(20)
     @DisplayName("DataTable: Lazy: rowSelect-event")
-    public void testLazyRowSelect(String xhtml) {
+    void lazyRowSelect(String xhtml) {
         // Arrange
         goTo(xhtml);
         DataTable dataTable = getDataTable();
-        Assertions.assertNotNull(dataTable);
+        assertNotNull(dataTable);
 
         // Act
         PrimeSelenium.guardAjax(dataTable.getCell(3, 0).getWebElement()).click();
 
         // Assert
-        Assertions.assertEquals(1, getMessages().getAllMessages().size());
-        Assertions.assertEquals("ProgrammingLanguage Selected", getMessages().getMessage(0).getSummary());
+        assertEquals(1, getMessages().getAllMessages().size());
+        assertEquals("ProgrammingLanguage Selected", getMessages().getMessage(0).getSummary());
         String row3ProgLang = dataTable.getRow(3).getCell(0).getText() + " - " + dataTable.getCell(3, 1).getText();
-        Assertions.assertEquals(row3ProgLang, getMessages().getMessage(0).getDetail());
+        assertEquals(row3ProgLang, getMessages().getMessage(0).getDetail());
 
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
@@ -242,11 +244,11 @@ public class DataTable002Test extends AbstractDataTableTest {
     @MethodSource("provideXhtmls")
     @Order(21)
     @DisplayName("DataTable: Lazy: rowSelect-event with filter applied before")
-    public void testLazyRowSelectWithFilterApplied(String xhtml) {
+    void lazyRowSelectWithFilterApplied(String xhtml) {
         // Arrange
         goTo(xhtml);
         DataTable dataTable = getDataTable();
-        Assertions.assertNotNull(dataTable);
+        assertNotNull(dataTable);
         dataTable.selectPage(1);
         dataTable.sort("First Appeared");
         dataTable.filter("First Appeared", "1998");
@@ -255,10 +257,10 @@ public class DataTable002Test extends AbstractDataTableTest {
         PrimeSelenium.guardAjax(dataTable.getCell(3, 0).getWebElement()).click();
 
         // Assert
-        Assertions.assertEquals(1, getMessages().getAllMessages().size());
-        Assertions.assertEquals("ProgrammingLanguage Selected", getMessages().getMessage(0).getSummary());
+        assertEquals(1, getMessages().getAllMessages().size());
+        assertEquals("ProgrammingLanguage Selected", getMessages().getMessage(0).getSummary());
         String row3ProgLang = dataTable.getRow(3).getCell(0).getText() + " - " + dataTable.getCell(3, 1).getText();
-        Assertions.assertEquals(row3ProgLang, getMessages().getMessage(0).getDetail());
+        assertEquals(row3ProgLang, getMessages().getMessage(0).getDetail());
 
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
@@ -267,11 +269,11 @@ public class DataTable002Test extends AbstractDataTableTest {
     @MethodSource("provideXhtmls")
     @Order(22)
     @DisplayName("DataTable: Lazy: selection with filter applied before")
-    public void testLazySelectionWithFilterApplied(String xhtml) {
+    void lazySelectionWithFilterApplied(String xhtml) {
         // Arrange
         goTo(xhtml);
         DataTable dataTable = getDataTable();
-        Assertions.assertNotNull(dataTable);
+        assertNotNull(dataTable);
         dataTable.selectPage(1);
         dataTable.sort("First Appeared");
         dataTable.filter("First Appeared", "1998");
@@ -281,10 +283,10 @@ public class DataTable002Test extends AbstractDataTableTest {
         getButtonSubmit().click();
 
         // Assert
-        Assertions.assertEquals(1, getMessages().getAllMessages().size());
-        Assertions.assertEquals("Selected ProgrammingLanguage", getMessages().getMessage(0).getSummary());
+        assertEquals(1, getMessages().getAllMessages().size());
+        assertEquals("Selected ProgrammingLanguage", getMessages().getMessage(0).getSummary());
         String row3ProgLang = getDataTable().getRow(3).getCell(0).getText();
-        Assertions.assertEquals(row3ProgLang, getMessages().getMessage(0).getDetail());
+        assertEquals(row3ProgLang, getMessages().getMessage(0).getDetail());
 
         assertConfiguration(getDataTable().getWidgetConfiguration());
     }
@@ -293,40 +295,40 @@ public class DataTable002Test extends AbstractDataTableTest {
     @MethodSource("provideXhtmls")
     @Order(30)
     @DisplayName("DataTable: Lazy: delete rows from last page - https://github.com/primefaces/primefaces/issues/1921")
-    public void testLazyRowDeleteFromLastPage(String xhtml) {
+    void lazyRowDeleteFromLastPage(String xhtml) {
         // Arrange
         goTo(xhtml);
         DataTable dataTable = getDataTable();
-        Assertions.assertNotNull(dataTable);
+        assertNotNull(dataTable);
         dataTable.selectPage(dataTable.getPaginator().getPages().size());
         int colDeleteButton = 4;
 
         // Act & Assert
         for (int row = 5; row > 1; row--) {
-            Assertions.assertEquals(row, getDataTable().getRows().size());
+            assertEquals(row, getDataTable().getRows().size());
             PrimeSelenium.guardAjax(getDataTable().getCell(0, colDeleteButton).getWebElement().findElement(By.className("ui-button"))).click();
-            Assertions.assertEquals(8, getDataTable().getPaginator().getActivePage().getNumber());
+            assertEquals(8, getDataTable().getPaginator().getActivePage().getNumber());
         }
 
         // Act & Assert - delete last row on page 8
         PrimeSelenium.guardAjax(getDataTable().getCell(0, colDeleteButton).getWebElement().findElement(By.className("ui-button"))).click();
-        Assertions.assertEquals(7, getDataTable().getPaginator().getActivePage().getNumber());
-        Assertions.assertEquals(10, getDataTable().getRows().size());
+        assertEquals(7, getDataTable().getPaginator().getActivePage().getNumber());
+        assertEquals(10, getDataTable().getRows().size());
 
         // Act & Assert - select first row on page 7
         PrimeSelenium.guardAjax(getDataTable().getCell(0, 0).getWebElement()).click();
-        Assertions.assertEquals(1, getMessages().getAllMessages().size());
-        Assertions.assertEquals("ProgrammingLanguage Selected", getMessages().getMessage(0).getSummary());
+        assertEquals(1, getMessages().getAllMessages().size());
+        assertEquals("ProgrammingLanguage Selected", getMessages().getMessage(0).getSummary());
         String row0ProgLang = getDataTable().getRow(0).getCell(0).getText() + " - " + getDataTable().getCell(0, 1).getText();
-        Assertions.assertEquals(row0ProgLang, getMessages().getMessage(0).getDetail());
+        assertEquals(row0ProgLang, getMessages().getMessage(0).getDetail());
 
         // Act & Assert - delete first row on page 7
         PrimeSelenium.guardAjax(getDataTable().getCell(0, colDeleteButton).getWebElement().findElement(By.className("ui-button"))).click();
-        Assertions.assertEquals(1, getMessages().getAllMessages().size());
-        Assertions.assertEquals("ProgrammingLanguage Deleted", getMessages().getMessage(0).getSummary());
-        Assertions.assertEquals(row0ProgLang, getMessages().getMessage(0).getDetail());
-        Assertions.assertEquals(7, getDataTable().getPaginator().getActivePage().getNumber());
-        Assertions.assertEquals(9, getDataTable().getRows().size());
+        assertEquals(1, getMessages().getAllMessages().size());
+        assertEquals("ProgrammingLanguage Deleted", getMessages().getMessage(0).getSummary());
+        assertEquals(row0ProgLang, getMessages().getMessage(0).getDetail());
+        assertEquals(7, getDataTable().getPaginator().getActivePage().getNumber());
+        assertEquals(9, getDataTable().getRows().size());
 
         assertConfiguration(getDataTable().getWidgetConfiguration());
     }
@@ -334,7 +336,7 @@ public class DataTable002Test extends AbstractDataTableTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("DataTable Config = " + cfg);
-        Assertions.assertTrue(cfg.has("paginator"));
+        assertTrue(cfg.has("paginator"));
     }
 
     private static Stream<Arguments> provideXhtmls() {

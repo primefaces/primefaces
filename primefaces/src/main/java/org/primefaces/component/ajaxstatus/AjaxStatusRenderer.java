@@ -30,7 +30,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class AjaxStatusRenderer extends CoreRenderer {
@@ -74,13 +74,13 @@ public class AjaxStatusRenderer extends CoreRenderer {
             String event = AjaxStatus.EVENTS.get(i);
             UIComponent facet = status.getFacet(event);
 
-            if (ComponentUtils.shouldRenderFacet(facet)) {
+            if (FacetUtils.shouldRenderFacet(facet)) {
                 encodeFacet(context, clientId, facet, event, true);
             }
         }
 
         UIComponent defaultFacet = status.getFacet(AjaxStatus.DEFAULT);
-        if (ComponentUtils.shouldRenderFacet(defaultFacet)) {
+        if (FacetUtils.shouldRenderFacet(defaultFacet)) {
             encodeFacet(context, clientId, defaultFacet, AjaxStatus.DEFAULT, false);
         }
 

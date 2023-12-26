@@ -23,24 +23,6 @@
  */
 package org.primefaces.component.datatable;
 
-import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.el.ELContext;
-import javax.el.MethodExpression;
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
-import javax.faces.component.ValueHolder;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.celleditor.CellEditor;
@@ -58,7 +40,30 @@ import org.primefaces.model.ColumnMeta;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 import org.primefaces.renderkit.DataRenderer;
-import org.primefaces.util.*;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.MessageFactory;
+import org.primefaces.util.WidgetBuilder;
+
+import javax.el.ELContext;
+import javax.el.MethodExpression;
+import javax.el.ValueExpression;
+import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DataTableRenderer extends DataRenderer {
 
@@ -709,7 +714,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", DataTable.COLUMN_TITLE_CLASS, null);
 
-        if (ComponentUtils.shouldRenderFacet(header, table.isRenderEmptyFacets())) {
+        if (FacetUtils.shouldRenderFacet(header, table.isRenderEmptyFacets())) {
             header.encodeAll(context);
         }
         else if (headerText != null) {
@@ -747,13 +752,12 @@ public class DataTableRenderer extends DataRenderer {
         ResponseWriter writer = context.getResponseWriter();
         UIComponent filterFacet = column.getFacet("filter");
 
-        if (!ComponentUtils.shouldRenderFacet(filterFacet, table.isRenderEmptyFacets())) {
+        if (!FacetUtils.shouldRenderFacet(filterFacet, table.isRenderEmptyFacets())) {
             encodeDefaultFilter(context, table, column, writer);
         }
         else {
             Object filterValue = table.getFilterValue(column);
-            ValueHolder filterValueHolder = column.getFilterValueHolder();
-            filterValueHolder.setValue(filterValue);
+            column.setFilterValueToValueHolder(filterValue);
 
             writer.startElement("div", null);
             writer.writeAttribute("class", DataTable.COLUMN_CUSTOM_FILTER_CLASS, null);
@@ -871,7 +875,7 @@ public class DataTableRenderer extends DataRenderer {
         //Footer content
         UIComponent facet = column.getFacet("footer");
         String text = column.getFooterText();
-        if (ComponentUtils.shouldRenderFacet(facet, table.isRenderEmptyFacets())) {
+        if (FacetUtils.shouldRenderFacet(facet, table.isRenderEmptyFacets())) {
             facet.encodeAll(context);
         }
         else if (text != null) {
@@ -1028,7 +1032,7 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("colspan", table.getColumnsCountWithSpan(), null);
 
             UIComponent emptyFacet = table.getFacet("emptyMessage");
-            if (ComponentUtils.shouldRenderFacet(emptyFacet, table.isRenderEmptyFacets())) {
+            if (FacetUtils.shouldRenderFacet(emptyFacet, table.isRenderEmptyFacets())) {
                 emptyFacet.encodeAll(context);
             }
             else {
@@ -1365,7 +1369,7 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected void encodeFacet(FacesContext context, DataTable table, UIComponent facet, String styleClass) throws IOException {
-        if (!ComponentUtils.shouldRenderFacet(facet, table.isRenderEmptyFacets())) {
+        if (!FacetUtils.shouldRenderFacet(facet, table.isRenderEmptyFacets())) {
             return;
         }
         ResponseWriter writer = context.getResponseWriter();

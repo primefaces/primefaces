@@ -24,7 +24,6 @@
 package org.primefaces.integrationtests.datatable;
 
 import org.apache.commons.lang3.StringUtils;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -38,13 +37,15 @@ import org.primefaces.selenium.component.DataTable;
 
 import java.util.stream.Stream;
 
-public class DataTable028Test extends AbstractDataTableTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class DataTable028Test extends AbstractDataTableTest {
 
     @ParameterizedTest
     @MethodSource("provideXhtmls")
     @Order(1)
     @DisplayName("DataTable: filter + sort + edit with own inputs - wrong manipulation of list elements - https://github.com/primefaces/primefaces/issues/7999")
-    public void testFilterSortEdit(String xhtml) {
+    void filterSortEdit(String xhtml) {
         // Arrange
         goTo(xhtml);
         getButtonSave().click();
@@ -88,7 +89,7 @@ public class DataTable028Test extends AbstractDataTableTest {
     @MethodSource("provideXhtmls")
     @Order(2)
     @DisplayName("DataTable: filter + sort + edit with own inputs - V2")
-    public void testFilterSortEditV2(String xhtml) {
+    void filterSortEditV2(String xhtml) {
         // Arrange
         goTo(xhtml);
         getButtonSave().click();
@@ -129,7 +130,7 @@ public class DataTable028Test extends AbstractDataTableTest {
     @MethodSource("provideXhtmls")
     @Order(10)
     @DisplayName("DataTable: sort + edit with own inputs")
-    public void testSortEdit(String xhtml) {
+    void sortEdit(String xhtml) {
         // Arrange
         goTo(xhtml);
         getButtonSave().click();
@@ -163,7 +164,7 @@ public class DataTable028Test extends AbstractDataTableTest {
     @MethodSource("provideXhtmls")
     @Order(11)
     @DisplayName("DataTable: sort + edit with own inputs - V2")
-    public void testSortEditV2(String xhtml) {
+    void sortEditV2(String xhtml) {
         // Arrange
         goTo(xhtml);
         getButtonSave().click();
@@ -197,7 +198,7 @@ public class DataTable028Test extends AbstractDataTableTest {
                 + "515, EUR, BB, BB2, C\n"
                 + "516, USA, AA, AA, D\n"
                 + "517, USA, AA, AA, E");
-        Assertions.assertEquals(expected, StringUtils.deleteWhitespace(getEltDebugActual().getText()));
+        assertEquals(expected, StringUtils.deleteWhitespace(getEltDebugActual().getText()));
     }
 
     private void assertAfterBb3Update() {
@@ -207,7 +208,7 @@ public class DataTable028Test extends AbstractDataTableTest {
                 + "515, EUR, BB, BB3, C\n"
                 + "516, USA, AA, AA, D\n"
                 + "517, USA, AA, AA, E");
-        Assertions.assertEquals(expected, StringUtils.deleteWhitespace(getEltDebugActual().getText()));
+        assertEquals(expected, StringUtils.deleteWhitespace(getEltDebugActual().getText()));
     }
 
     private void assertAfterBb3UpdateSorted() {
@@ -217,7 +218,7 @@ public class DataTable028Test extends AbstractDataTableTest {
                 + "509, EUR, BB, BB3, A\n"
                 + "512, EUR, BB, BB3, B\n"
                 + "515, EUR, BB, BB3, C");
-        Assertions.assertEquals(expected, StringUtils.deleteWhitespace(getEltDebugActual().getText()));
+        assertEquals(expected, StringUtils.deleteWhitespace(getEltDebugActual().getText()));
     }
 
     private static Stream<Arguments> provideXhtmls() {

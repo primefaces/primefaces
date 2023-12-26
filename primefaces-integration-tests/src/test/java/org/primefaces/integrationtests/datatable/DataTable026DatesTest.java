@@ -23,6 +23,9 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -31,7 +34,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -47,14 +49,14 @@ import org.primefaces.selenium.component.base.ComponentUtils;
 import org.primefaces.selenium.component.model.datatable.Row;
 import org.primefaces.util.CalendarUtils;
 
-public class DataTable026DatesTest extends AbstractDataTableTest {
+class DataTable026DatesTest extends AbstractDataTableTest {
 
     protected final List<Employee> employees = new EmployeeService().getEmployees();
 
     @Test
     @Order(1)
     @DisplayName("DataTable: filter: between LocalDateTime")
-    public void testFilterBetweenLocalDateTime(Page page) {
+    void filterBetweenLocalDateTime(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
 
@@ -83,7 +85,7 @@ public class DataTable026DatesTest extends AbstractDataTableTest {
     @Test
     @Order(2)
     @DisplayName("DataTable: filter: between Date")
-    public void testFilterBetweenDate(Page page) {
+    void filterBetweenDate(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
 
@@ -112,7 +114,7 @@ public class DataTable026DatesTest extends AbstractDataTableTest {
     @Test
     @Order(3)
     @DisplayName("DataTable: filter: lt LocalDateTime")
-    public void testFilterLtLocalDateTime(Page page) {
+    void filterLtLocalDateTime(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
 
@@ -142,7 +144,7 @@ public class DataTable026DatesTest extends AbstractDataTableTest {
     @Test
     @Order(4)
     @DisplayName("DataTable: filter: lt Date")
-    public void testFilterLtDate(Page page) {
+    void filterLtDate(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
 
@@ -170,7 +172,7 @@ public class DataTable026DatesTest extends AbstractDataTableTest {
     @Test
     @Order(5)
     @DisplayName("DataTable: filter: between invalid filter")
-    public void testFilterNotBetweenInvalid(Page page) {
+    void filterNotBetweenInvalid(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
 
@@ -189,8 +191,8 @@ public class DataTable026DatesTest extends AbstractDataTableTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("DataTable Config = " + cfg);
-        Assertions.assertEquals("wgtTable", cfg.getString("widgetVar"));
-        Assertions.assertEquals(0, cfg.getInt("tabindex"));
+        assertEquals("wgtTable", cfg.getString("widgetVar"));
+        assertEquals(0, cfg.getInt("tabindex"));
     }
 
     public static class Page extends AbstractPrimePage {
@@ -235,13 +237,13 @@ public class DataTable026DatesTest extends AbstractDataTableTest {
 
     private void assertEmployeeRows(List<Row> rows, List<Employee> employees) {
         int expectedSize = employees.size();
-        Assertions.assertNotNull(rows);
-        Assertions.assertEquals(expectedSize, rows.size());
+        assertNotNull(rows);
+        assertEquals(expectedSize, rows.size());
 
         int row = 0;
         for (Employee employee : employees) {
             String rowText = rows.get(row).getCell(0).getText();
-            Assertions.assertEquals(employee.getId(), Integer.parseInt(rowText.trim()));
+            assertEquals(employee.getId(), Integer.parseInt(rowText.trim()));
             row++;
         }
     }

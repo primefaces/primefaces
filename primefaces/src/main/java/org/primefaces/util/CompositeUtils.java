@@ -66,20 +66,20 @@ public class CompositeUtils {
                 AttachedObjectTarget target = targets.get(i);
                 if (target instanceof EditableValueHolderAttachedObjectTarget) {
 
-                    List<UIComponent> childs = target.getTargets(composite);
-                    if (childs == null || childs.isEmpty()) {
+                    List<UIComponent> children = target.getTargets(composite);
+                    if (children == null || children.isEmpty()) {
                         throw new FacesException(
                                 "Cannot not resolve editableValueHolder target in composite component with id: \""
                                 + composite.getClientId() + "\"");
                     }
 
-                    if (childs.size() > 1) {
+                    if (children.size() > 1) {
                         throw new FacesException(
                                 "Only a single editableValueHolder target is supported in composite component with id: \""
                                 + composite.getClientId() + "\"");
                     }
 
-                    final UIComponent child = childs.get(0);
+                    final UIComponent child = children.get(0);
 
                     composite.invokeOnComponent(context, composite.getClientId(context), new ContextCallback() {
 

@@ -23,12 +23,6 @@
  */
 package org.primefaces.event;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIPanel;
-import javax.faces.component.ValueHolder;
-import javax.faces.component.behavior.Behavior;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.api.UIData;
@@ -36,6 +30,16 @@ import org.primefaces.component.api.UITree;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.treetable.TreeTable;
+import org.primefaces.util.FacetUtils;
+
+import javax.faces.FacesException;
+import javax.faces.component.EditableValueHolder;
+import javax.faces.component.UIComponent;
+import javax.faces.component.behavior.Behavior;
+import javax.faces.context.FacesContext;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class CellEditEvent<T> extends AbstractAjaxBehaviorEvent {
 
@@ -114,22 +118,21 @@ public class CellEditEvent<T> extends AbstractAjaxBehaviorEvent {
             if (child instanceof CellEditor) {
                 UIComponent inputFacet = child.getFacet("input");
 
-                //multiple
-                if (inputFacet instanceof UIPanel) {
-                    List<Object> values = new ArrayList<>();
-                    for (UIComponent kid : inputFacet.getChildren()) {
-                        if (kid instanceof ValueHolder) {
-                            values.add(((ValueHolder) kid).getValue());
-                        }
-                    }
+                AtomicBoolean invoked = new AtomicBoolean(false);
+                List<Object> values = new ArrayList<>(1);
 
-                    value = (T) values;
-                }
-                //single
-                else {
-                    value = (T) ((ValueHolder) inputFacet).getValue();
+                FacetUtils.invokeOnEditableValueHolder(FacesContext.getCurrentInstance(), inputFacet, (ctx, component) -> {
+                    values.add(((EditableValueHolder) component).getValue());
+                    invoked.set(true);
+                });
+
+                if (!invoked.get()) {
+                    throw new FacesException("No ValueHolder found inside the 'input' facet of the CellEditor!");
                 }
 
+                if (!values.isEmpty()) {
+                    value = values.size() > 1 ? (T) values : (T) values.get(0);
+                }
             }
         }
 

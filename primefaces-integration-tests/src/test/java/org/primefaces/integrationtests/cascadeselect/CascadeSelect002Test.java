@@ -23,7 +23,8 @@
  */
 package org.primefaces.integrationtests.cascadeselect;
 
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -33,12 +34,12 @@ import org.primefaces.selenium.component.CascadeSelect;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Messages;
 
-public class CascadeSelect002Test extends BaseCascadeSelectTest {
+class CascadeSelect002Test extends BaseCascadeSelectTest {
 
     @Test
     @Order(1)
     @DisplayName("CascadeSelect: select and submit item (SelectItems with value and label)")
-    public void testBasic(Page page) {
+    void basic(Page page) {
         // Arrange
         CascadeSelect cascadeSelect = page.cascadeSelect;
         cascadeSelect.toggleDropdown();
@@ -58,7 +59,7 @@ public class CascadeSelect002Test extends BaseCascadeSelectTest {
 
         // Assert
         assertMessage(page.messages, 0, "Selected GPU", "2080");
-        Assertions.assertEquals("RTX 2080", cascadeSelect.getSelectedLabel());
+        assertEquals("RTX 2080", cascadeSelect.getSelectedLabel());
         assertConfiguration(cascadeSelect.getWidgetConfiguration());
     }
 

@@ -23,9 +23,10 @@
  */
 package org.primefaces.integrationtests.tree;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.List;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -38,15 +39,15 @@ import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.Tree;
 import org.primefaces.selenium.component.model.tree.TreeNode;
 
-public class Tree003Test extends AbstractTreeTest {
+class Tree003Test extends AbstractTreeTest {
 
     @Test
     @Order(1)
     @DisplayName("Tree: Drag and drop still allows tab and arrow keys to select")
-    public void testTabbing(Page page) {
+    void tabbing(Page page) {
         // Arrange
         Tree tree = page.tree;
-        Assertions.assertNotNull(tree);
+        assertNotNull(tree);
 
         // Act
         Actions actions = new Actions(page.getWebDriver());
@@ -55,20 +56,20 @@ public class Tree003Test extends AbstractTreeTest {
 
         // Assert
         List<TreeNode> children = tree.getChildren();
-        Assertions.assertNotNull(children);
-        Assertions.assertEquals(3, children.size());
+        assertNotNull(children);
+        assertEquals(3, children.size());
 
         TreeNode second = children.get(1);
-        Assertions.assertEquals("Events", second.getLabelText());
-        Assertions.assertTrue(second.getWebElement().isDisplayed());
+        assertEquals("Events", second.getLabelText());
+        assertTrue(second.getWebElement().isDisplayed());
 
         List<TreeNode> secondChildren = second.getChildren();
-        Assertions.assertNotNull(secondChildren);
-        Assertions.assertEquals(3, secondChildren.size());
+        assertNotNull(secondChildren);
+        assertEquals(3, secondChildren.size());
 
-        Assertions.assertTrue(secondChildren.get(0).getWebElement().isDisplayed());
-        Assertions.assertTrue(secondChildren.get(1).getWebElement().isDisplayed());
-        Assertions.assertTrue(secondChildren.get(2).getWebElement().isDisplayed());
+        assertTrue(secondChildren.get(0).getWebElement().isDisplayed());
+        assertTrue(secondChildren.get(1).getWebElement().isDisplayed());
+        assertTrue(secondChildren.get(2).getWebElement().isDisplayed());
 
         assertConfiguration(tree.getWidgetConfiguration());
     }

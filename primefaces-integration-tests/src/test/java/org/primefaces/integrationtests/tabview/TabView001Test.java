@@ -23,7 +23,6 @@
  */
 package org.primefaces.integrationtests.tabview;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
@@ -33,38 +32,41 @@ import org.primefaces.selenium.component.TabView;
 import org.primefaces.selenium.component.model.Tab;
 
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class TabView001Test extends AbstractPrimePageTest {
+class TabView001Test extends AbstractPrimePageTest {
 
     @Test
-    public void test(Page page) {
+    void test(Page page) {
         // Arrange
         TabView tabView = page.tabView;
 
         // Assert - part 1
         List<Tab> tabs = tabView.getTabs();
-        Assertions.assertNotNull(tabs);
-        Assertions.assertEquals(3, tabs.size());
+        assertNotNull(tabs);
+        assertEquals(3, tabs.size());
         AtomicInteger cnt = new AtomicInteger(0);
         tabs.forEach(tab -> {
-            Assertions.assertNotNull(tab.getHeader());
-            Assertions.assertNotNull(tab.getContent());
-            Assertions.assertEquals(tab.getIndex(), cnt.getAndIncrement());
+            assertNotNull(tab.getHeader());
+            assertNotNull(tab.getContent());
+            assertEquals(tab.getIndex(), cnt.getAndIncrement());
         });
-        Assertions.assertEquals("Tab1", tabs.get(0).getTitle());
-        Assertions.assertEquals("Tab2", tabs.get(1).getTitle());
+        assertEquals("Tab1", tabs.get(0).getTitle());
+        assertEquals("Tab2", tabs.get(1).getTitle());
 
-        Assertions.assertEquals(0, tabView.getSelectedTab().getIndex());
-        Assertions.assertEquals("Tab1", tabView.getSelectedTab().getTitle());
+        assertEquals(0, tabView.getSelectedTab().getIndex());
+        assertEquals("Tab1", tabView.getSelectedTab().getTitle());
 
         // Act
         tabView.toggleTab(2);
 
         // Assert - part 2
         assertNoJavascriptErrors();
-        Assertions.assertEquals(2, tabView.getSelectedTab().getIndex());
-        Assertions.assertEquals("Tab3", tabView.getSelectedTab().getTitle());
+        assertEquals(2, tabView.getSelectedTab().getIndex());
+        assertEquals("Tab3", tabView.getSelectedTab().getTitle());
     }
 
     public static class Page extends AbstractPrimePage {

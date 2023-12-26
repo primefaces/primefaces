@@ -23,10 +23,11 @@
  */
 package org.primefaces.integrationtests.tree;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.io.File;
 import java.util.List;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -36,35 +37,35 @@ import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.Tree;
 import org.primefaces.selenium.component.model.tree.TreeNode;
 
-public class Tree006Test extends AbstractTreeTest {
+class Tree006Test extends AbstractTreeTest {
 
     @Test
     @Order(1)
     @DisplayName("Tree: Lazy Loading")
-    public void testSingleSelection(Page page) {
+    void singleSelection(Page page) {
 
         File webappRoot = new File("src/main/webapp");
 
         // Assert - loading root folder content
-        Assertions.assertEquals(1, page.messages.getAllMessages().size());
+        assertEquals(1, page.messages.getAllMessages().size());
         String lazyLoadedPath = page.messages.getMessage(0).getDetail().replace("\\", "/");
-        Assertions.assertTrue(lazyLoadedPath.endsWith("primefaces-integration-tests/src/main/webapp/") //src
+        assertTrue(lazyLoadedPath.endsWith("primefaces-integration-tests/src/main/webapp/") //src
             || lazyLoadedPath.endsWith("primefaces-integration-tests/")); //target
 
         // Arrange
         Tree tree = page.tree;
-        Assertions.assertNotNull(tree);
+        assertNotNull(tree);
 
         List<TreeNode> children = tree.getChildren();
-        Assertions.assertNotNull(children);
-        Assertions.assertEquals(webappRoot.listFiles().length, children.size() - 1); // -1 because of missing META-INF
+        assertNotNull(children);
+        assertEquals(webappRoot.listFiles().length, children.size() - 1); // -1 because of missing META-INF
 
         TreeNode child = children.stream()
                 .filter(node -> "accordionpanel".equals(node.getLabelText())).findFirst().orElse(null);
-        Assertions.assertNotNull(child);
+        assertNotNull(child);
         child = children.stream()
                 .filter(node -> "WEB-INF".equals(node.getLabelText())).findFirst().orElse(null);
-        Assertions.assertNotNull(child);
+        assertNotNull(child);
 
         // Act
         child = children.stream()
@@ -72,9 +73,9 @@ public class Tree006Test extends AbstractTreeTest {
         child.toggle();
 
         // Assert - loading "tree" folder content
-        Assertions.assertEquals(1, page.messages.getAllMessages().size());
+        assertEquals(1, page.messages.getAllMessages().size());
         lazyLoadedPath = page.messages.getMessage(0).getDetail().replace("\\", "/");
-        Assertions.assertTrue(lazyLoadedPath.endsWith("primefaces-integration-tests/src/main/webapp/tree") //src
+        assertTrue(lazyLoadedPath.endsWith("primefaces-integration-tests/src/main/webapp/tree") //src
             || lazyLoadedPath.endsWith("primefaces-integration-tests/tree"));  //target
     }
 

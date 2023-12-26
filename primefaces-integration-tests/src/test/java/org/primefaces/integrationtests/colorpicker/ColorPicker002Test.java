@@ -23,8 +23,10 @@
  */
 package org.primefaces.integrationtests.colorpicker;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -35,12 +37,12 @@ import org.primefaces.selenium.component.ColorPicker;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Messages;
 
-public class ColorPicker002Test extends AbstractColorPickerTest {
+class ColorPicker002Test extends AbstractColorPickerTest {
 
     @Test
     @Order(1)
     @DisplayName("ColorPicker: Check I8LN for Dutch language that all labels are translated")
-    public void testAria(Page page) {
+    void aria(Page page) {
         // Arrange
         ColorPicker colorPicker = page.colorPicker;
 
@@ -63,15 +65,15 @@ public class ColorPicker002Test extends AbstractColorPickerTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("ColorPicker Config = " + cfg);
-        Assertions.assertEquals("popup", cfg.getString("mode"));
-        Assertions.assertEquals("light", cfg.getString("themeMode"));
-        Assertions.assertEquals("pill", cfg.getString("theme"));
-        Assertions.assertEquals("nl", cfg.getString("locale"));
-        Assertions.assertEquals("Wissen", cfg.getString("clearLabel"));
-        Assertions.assertEquals("Sluit", cfg.getString("closeLabel"));
-        Assertions.assertTrue(cfg.getBoolean("clearButton"));
-        Assertions.assertTrue(cfg.getBoolean("closeButton"));
-        Assertions.assertTrue(cfg.getBoolean("formatToggle"));
+        assertEquals("popup", cfg.getString("mode"));
+        assertEquals("light", cfg.getString("themeMode"));
+        assertEquals("pill", cfg.getString("theme"));
+        assertEquals("nl", cfg.getString("locale"));
+        assertEquals("Wissen", cfg.getString("clearLabel"));
+        assertEquals("Sluit", cfg.getString("closeLabel"));
+        assertTrue(cfg.getBoolean("clearButton"));
+        assertTrue(cfg.getBoolean("closeButton"));
+        assertTrue(cfg.getBoolean("formatToggle"));
     }
 
     public static class Page extends AbstractPrimePage {

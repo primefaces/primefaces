@@ -27,24 +27,24 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-public class EffectBuilderTest {
+class EffectBuilderTest {
 
     @Test
-    public void buildHighlightEffectWithNoOptions() {
+    void buildHighlightEffectWithNoOptions() {
         String effect = new EffectBuilder("highlight", "id", true).atSpeed(1000).build();
 
         assertEquals("$(PrimeFaces.escapeClientId('id')).effect('highlight',{},1000);", effect);
     }
 
     @Test
-    public void buildHighlightEffectWithAnOption() {
+    void buildHighlightEffectWithAnOption() {
         String effect = new EffectBuilder("highlight", "id", false).withOption("startcolor", "'#FFFFFF'").atSpeed(5000).build();
 
         assertEquals("$(PrimeFaces.escapeClientId('id')).stop(true,true).effect('highlight',{startcolor:'#FFFFFF'},5000);", effect);
     }
 
     @Test
-    public void buildHighlightEffectWitManyOptions() {
+    void buildHighlightEffectWitManyOptions() {
         String effect = new EffectBuilder("highlight", "id", false)
                 .withOption("startcolor", "'#FFFFFF'")
                 .withOption("endcolor", "'#CCCCCC'")
