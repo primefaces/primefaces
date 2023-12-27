@@ -23,7 +23,25 @@
  */
 package org.primefaces.util;
 
-import java.io.*;
+import org.apache.commons.io.FilenameUtils;
+import org.primefaces.component.fileupload.FileUpload;
+import org.primefaces.component.fileupload.FileUploadChunkDecoder;
+import org.primefaces.component.fileupload.FileUploadDecoder;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.model.file.UploadedFile;
+import org.primefaces.virusscan.VirusException;
+
+import javax.faces.FacesException;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
+import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PushbackInputStream;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -38,19 +56,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.faces.FacesException;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.faces.validator.ValidatorException;
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.io.FilenameUtils;
-import org.primefaces.component.fileupload.FileUpload;
-import org.primefaces.component.fileupload.FileUploadChunkDecoder;
-import org.primefaces.component.fileupload.FileUploadDecoder;
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.model.file.UploadedFile;
-import org.primefaces.virusscan.VirusException;
 
 /**
  * Utilities for FileUpload components.
@@ -162,12 +167,14 @@ public class FileUploadUtils {
      * @param context the {@link PrimeApplicationContext}
      * @param fileUpload the {@link FileUpload} component
      * @param uploadedFile the details of the uploaded file
+     * @param allowTypes the Javascript regex
      * @return <code>true</code>, if all validations regarding filename and content type passed, <code>false</code> else
      */
-    public static boolean isValidType(PrimeApplicationContext context, FileUpload fileUpload, UploadedFile uploadedFile) {
+    public static boolean isValidType(PrimeApplicationContext context, FileUpload fileUpload,
+                                      UploadedFile uploadedFile, String allowTypes) {
         String fileName = uploadedFile.getFileName();
         try (InputStream input = uploadedFile.getInputStream()) {
-            boolean validType = isValidFileName(fileUpload, uploadedFile)
+            boolean validType = isValidFileName(fileUpload, uploadedFile, allowTypes)
                         && isValidFileContent(context, fileUpload, fileName, input);
             if (validType) {
                 if (LOGGER.isLoggable(Level.FINE)) {
@@ -184,8 +191,7 @@ public class FileUploadUtils {
         }
     }
 
-    private static boolean isValidFileName(FileUpload fileUpload, UploadedFile uploadedFile) {
-        String javascriptRegex = fileUpload.getAllowTypes();
+    private static boolean isValidFileName(FileUpload fileUpload, UploadedFile uploadedFile, String javascriptRegex) {
         if (LangUtils.isBlank(javascriptRegex)) {
             return true;
         }
@@ -231,7 +237,8 @@ public class FileUploadUtils {
         return LangUtils.substring(jsRegex, start, end);
     }
 
-    private static boolean isValidFileContent(PrimeApplicationContext primeAppContext, FileUpload fileUpload, String fileName, InputStream stream)
+    private static boolean isValidFileContent(PrimeApplicationContext primeAppContext, FileUpload fileUpload, String fileName,
+                                              InputStream stream)
             throws IOException {
         if (!fileUpload.isValidateContentType()) {
             if (LOGGER.isLoggable(Level.FINE)) {
@@ -338,7 +345,7 @@ public class FileUploadUtils {
             throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, fileUpload.getInvalidSizeMessage(), ""));
         }
 
-        if (!isValidType(appContext, fileUpload, uploadedFile)) {
+        if (!isValidType(appContext, fileUpload, uploadedFile, fileUpload.getAllowTypes())) {
             throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, fileUpload.getInvalidFileMessage(), ""));
         }
 
@@ -399,5 +406,24 @@ public class FileUploadUtils {
 
     public static <T extends HttpServletRequest> String getWebkitRelativePath(T request) {
         return request.getParameter("X-File-Webkit-Relative-Path");
+    }
+
+    public static String formatBytes(Long bytes) {
+        if (bytes == null) {
+            return "";
+        }
+
+        if (bytes == 0) {
+            return "N/A";
+        }
+
+        String[] sizes = new String[] {"Bytes", "KB", "MB", "GB", "TB"};
+        int i = (int) Math.floor(Math.log(bytes) / Math.log(1024));
+        if (i == 0) {
+            return bytes + ' ' + sizes[i];
+        }
+        else {
+            return ((int) (bytes / Math.pow(1024, i))) + ' ' + sizes[i];
+        }
     }
 }

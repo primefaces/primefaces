@@ -8,6 +8,7 @@
 
     <function>
         <function-name>resolveClientId</function-name>
+        <function-name>resolveClientId</function-name>
         <function-class>org.primefaces.expression.SearchExpressionUtils</function-class>
         <function-signature>java.lang.String resolveClientId(java.lang.String, javax.faces.component.UIComponent)</function-signature>
     </function>
@@ -106,6 +107,45 @@
         <function-class>org.primefaces.util.LocaleUtils</function-class>
         <function-signature>java.lang.String getCurrentLanguage()</function-signature>
     </function>
+
+    <tag>
+        <tag-name>validateFile</tag-name>
+        <validator>
+            <validator-id>primefaces.File</validator-id>
+        </validator>
+        <attribute>
+            <description>
+                <![CDATA[Regular expression for accepted file types, e.g. /(\.|\/)(gif|jpe?g|png)$/]]>
+            </description>
+            <name>allowTypes</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Maximum number of files to be uploaded.]]>
+            </description>
+            <name>fileLimit</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Individual file size limit in bytes. Default is unlimited.]]>
+            </description>
+            <name>sizeLimit</name>
+            <required>false</required>
+            <type>java.lang.Long</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether virus scan should be performed. Default is false.]]>
+            </description>
+            <name>virusScan</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+    </tag>
 
     <tag>
         <description>AutoUpdate is a TagHandler to mark the parent component to be updated at every AJAX request.

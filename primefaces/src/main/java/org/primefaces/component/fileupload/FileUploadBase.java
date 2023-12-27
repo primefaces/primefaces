@@ -23,10 +23,10 @@
  */
 package org.primefaces.component.fileupload;
 
-import javax.faces.component.UIInput;
-
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
+
+import javax.faces.component.UIInput;
 
 public abstract class FileUploadBase extends UIInput implements Widget {
 
@@ -274,8 +274,7 @@ public abstract class FileUploadBase extends UIInput implements Widget {
     }
 
     public String getOnvalidationfailure() {
-        Object eval = getStateHelper().eval(PropertyKeys.onvalidationfailure, null);
-        return (String) eval;
+        return (String) getStateHelper().eval(PropertyKeys.onvalidationfailure, null);
     }
 
     public void setOnvalidationfailure(String onvalidationfailure) {
