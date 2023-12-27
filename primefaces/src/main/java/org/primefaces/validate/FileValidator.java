@@ -31,6 +31,7 @@ import org.primefaces.model.file.UploadedFiles;
 import org.primefaces.util.FileUploadUtils;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.MessageFactory;
+import org.primefaces.virusscan.VirusException;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.PartialStateHolder;
@@ -50,8 +51,11 @@ public class FileValidator implements Validator, PartialStateHolder, ClientValid
     private static final String SIZE_LIMIT_MESSAGE_ID = "primefaces.FileValidator.SIZE_LIMIT";
 
     private Integer fileLimit;
+    private String fileLimitMessage;
     private Long sizeLimit;
+    private String sizeLimitMessage;
     private String allowTypes;
+    private String allowTypesMessage;
 
     private Boolean virusScan;
 
@@ -79,6 +83,9 @@ public class FileValidator implements Validator, PartialStateHolder, ClientValid
 
     protected void validateUploadedFiles(FacesContext context, FileUpload fileUpload, UploadedFiles uploadedFiles) {
         if (fileLimit != null && uploadedFiles.getFiles().size() > fileLimit) {
+            if (LangUtils.isNotBlank(fileLimitMessage)) {
+                throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, fileLimitMessage, ""));
+            }
             throw new ValidatorException(
                     MessageFactory.getFacesMessage(FILE_LIMIT_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, fileLimit));
         }
@@ -90,6 +97,9 @@ public class FileValidator implements Validator, PartialStateHolder, ClientValid
         }
 
         if (sizeLimit != null && totalSize > sizeLimit) {
+            if (LangUtils.isNotBlank(sizeLimitMessage)) {
+                throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, sizeLimitMessage, ""));
+            }
             throw new ValidatorException(
                     MessageFactory.getFacesMessage(SIZE_LIMIT_MESSAGE_ID, FacesMessage.SEVERITY_ERROR,
                             "*", FileUploadUtils.formatBytes(sizeLimit)));
@@ -100,18 +110,30 @@ public class FileValidator implements Validator, PartialStateHolder, ClientValid
         PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(context);
 
         if (sizeLimit != null && uploadedFile.getSize() > sizeLimit) {
+            if (LangUtils.isNotBlank(sizeLimitMessage)) {
+                throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, sizeLimitMessage, ""));
+            }
             throw new ValidatorException(
                     MessageFactory.getFacesMessage(SIZE_LIMIT_MESSAGE_ID, FacesMessage.SEVERITY_ERROR,
                             uploadedFile.getFileName(), FileUploadUtils.formatBytes(sizeLimit)));
         }
 
         if (LangUtils.isNotBlank(allowTypes) && !FileUploadUtils.isValidType(applicationContext, fileUpload, uploadedFile, allowTypes)) {
+            if (LangUtils.isNotBlank(allowTypesMessage)) {
+                throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, allowTypesMessage, ""));
+            }
             throw new ValidatorException(
                     MessageFactory.getFacesMessage(ALLOW_TYPES_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, uploadedFile.getFileName()));
         }
 
         if (virusScan != null && virusScan) {
-            PrimeApplicationContext.getCurrentInstance(context).getVirusScannerService().performVirusScan(uploadedFile);
+            try {
+                PrimeApplicationContext.getCurrentInstance(context).getVirusScannerService().performVirusScan(uploadedFile);
+            }
+            catch (VirusException e) {
+                throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), ""), e);
+            }
+
         }
     }
 
@@ -121,14 +143,26 @@ public class FileValidator implements Validator, PartialStateHolder, ClientValid
 
         if (fileLimit != null) {
             metadata.put("data-p-filelimit", fileLimit);
+
+            if (LangUtils.isNotBlank(fileLimitMessage)) {
+                metadata.put("data-p-filelimitmsg", fileLimitMessage);
+            }
         }
 
         if (sizeLimit != null) {
             metadata.put("data-p-sizelimit", sizeLimit);
+
+            if (LangUtils.isNotBlank(sizeLimitMessage)) {
+                metadata.put("data-p-sizelimitmsg", sizeLimitMessage);
+            }
         }
 
         if (!StringUtil.isBlank(allowTypes)) {
             metadata.put("data-p-allowtypes", allowTypes);
+
+            if (LangUtils.isNotBlank(allowTypesMessage)) {
+                metadata.put("data-p-allowtypesmsg", allowTypesMessage);
+            }
         }
 
         return metadata;
@@ -163,11 +197,14 @@ public class FileValidator implements Validator, PartialStateHolder, ClientValid
         }
 
         if (!initialStateMarked()) {
-            Object[] values = new Object[4];
+            Object[] values = new Object[7];
             values[0] = fileLimit;
-            values[1] = sizeLimit;
-            values[2] = allowTypes;
-            values[3] = virusScan;
+            values[1] = fileLimitMessage;
+            values[2] = sizeLimit;
+            values[3] = sizeLimitMessage;
+            values[4] = allowTypes;
+            values[5] = allowTypesMessage;
+            values[6] = virusScan;
             return values;
         }
         return null;
@@ -182,9 +219,12 @@ public class FileValidator implements Validator, PartialStateHolder, ClientValid
         if (state != null) {
             Object[] values = (Object[]) state;
             fileLimit = (Integer) values[0];
-            sizeLimit = (Long) values[1];
-            allowTypes = (String) values[2];
-            virusScan = (Boolean) values[3];
+            fileLimitMessage = (String) values[1];
+            sizeLimit = (Long) values[2];
+            sizeLimitMessage = (String) values[3];
+            allowTypes = (String) values[4];
+            allowTypesMessage = (String) values[5];
+            virusScan = (Boolean) values[6];
         }
     }
 
@@ -210,14 +250,17 @@ public class FileValidator implements Validator, PartialStateHolder, ClientValid
         }
         FileValidator that = (FileValidator) o;
         return Objects.equals(fileLimit, that.fileLimit)
+                && Objects.equals(fileLimitMessage, that.fileLimitMessage)
                 && Objects.equals(sizeLimit, that.sizeLimit)
+                && Objects.equals(sizeLimitMessage, that.sizeLimitMessage)
                 && Objects.equals(allowTypes, that.allowTypes)
+                && Objects.equals(allowTypesMessage, that.allowTypesMessage)
                 && Objects.equals(virusScan, that.virusScan);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(fileLimit, sizeLimit, allowTypes, virusScan);
+        return Objects.hash(fileLimit, fileLimitMessage, sizeLimit, sizeLimitMessage, allowTypes, allowTypesMessage, virusScan);
     }
 
 
@@ -230,6 +273,14 @@ public class FileValidator implements Validator, PartialStateHolder, ClientValid
         this.fileLimit = fileLimit;
     }
 
+    public String getFileLimitMessage() {
+        return fileLimitMessage;
+    }
+
+    public void setFileLimitMessage(String fileLimitMessage) {
+        this.fileLimitMessage = fileLimitMessage;
+    }
+
     public Long getSizeLimit() {
         return sizeLimit;
     }
@@ -238,12 +289,28 @@ public class FileValidator implements Validator, PartialStateHolder, ClientValid
         this.sizeLimit = sizeLimit;
     }
 
+    public String getSizeLimitMessage() {
+        return sizeLimitMessage;
+    }
+
+    public void setSizeLimitMessage(String sizeLimitMessage) {
+        this.sizeLimitMessage = sizeLimitMessage;
+    }
+
     public String getAllowTypes() {
         return allowTypes;
     }
 
     public void setAllowTypes(String allowTypes) {
         this.allowTypes = allowTypes;
+    }
+
+    public String getAllowTypesMessage() {
+        return allowTypesMessage;
+    }
+
+    public void setAllowTypesMessage(String allowTypesMessage) {
+        this.allowTypesMessage = allowTypesMessage;
     }
 
     public Boolean getVirusScan() {
