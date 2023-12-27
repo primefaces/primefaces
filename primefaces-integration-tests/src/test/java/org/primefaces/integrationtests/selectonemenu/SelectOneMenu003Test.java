@@ -23,10 +23,11 @@
  */
 package org.primefaces.integrationtests.selectonemenu;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.List;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -38,12 +39,12 @@ import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.SelectOneMenu;
 
-public class SelectOneMenu003Test extends AbstractPrimePageTest {
+class SelectOneMenu003Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("SelectOneMenu: disabled")
-    public void testDisabled(Page page) {
+    void disabled(Page page) {
         // Arrange
         SelectOneMenu selectOneMenu = page.selectOneMenu;
 
@@ -52,8 +53,8 @@ public class SelectOneMenu003Test extends AbstractPrimePageTest {
 
         // Assert
         List<WebElement> options = selectOneMenu.getItems().findElements(By.className("ui-selectonemenu-item"));
-        Assertions.assertEquals(null, options.get(2).getAttribute("disabled"));
-        Assertions.assertEquals("true", options.get(3).getAttribute("disabled"));
+        assertNull(options.get(2).getAttribute("disabled"));
+        assertEquals("true", options.get(3).getAttribute("disabled"));
 
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
@@ -61,7 +62,7 @@ public class SelectOneMenu003Test extends AbstractPrimePageTest {
     @Test
     @Order(2)
     @DisplayName("SelectOneMenu: itemEscaped")
-    public void testItemEscaped(Page page) {
+    void itemEscaped(Page page) {
         // Arrange
         SelectOneMenu selectOneMenu = page.selectOneMenu;
 
@@ -70,8 +71,8 @@ public class SelectOneMenu003Test extends AbstractPrimePageTest {
 
         // Assert
         List<WebElement> options = selectOneMenu.getItems().findElements(By.className("ui-selectonemenu-item"));
-        Assertions.assertEquals("Wii U", options.get(4).getText());
-        Assertions.assertEquals("Nintendo Switch", options.get(5).getText());
+        assertEquals("Wii U", options.get(4).getText());
+        assertEquals("Nintendo Switch", options.get(5).getText());
 
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
@@ -79,7 +80,7 @@ public class SelectOneMenu003Test extends AbstractPrimePageTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("SelectOneMenu Config = " + cfg);
-        Assertions.assertTrue(cfg.has("appendTo"));
+        assertTrue(cfg.has("appendTo"));
     }
 
     public static class Page extends AbstractPrimePage {

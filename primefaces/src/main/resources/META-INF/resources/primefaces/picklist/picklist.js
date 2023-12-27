@@ -360,10 +360,9 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 return;
             }
 
-            var list = $(this),
-                key = e.key;
+            var list = $(this);
 
-            switch(key) {
+            switch(e.code) {
                 case 'ArrowUp':
                     $this.removeOutline();
 
@@ -405,7 +404,8 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 break;
 
                 case 'Enter':
-                case ' ':
+                case 'NumpadEnter':
+                case 'Space':
                     if($this.focusedItem && $this.focusedItem.hasClass('ui-state-highlight')) {
                         $this.focusedItem.trigger('dblclick.pickList');
                         $this.focusedItem = null;
@@ -415,7 +415,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 default:
                     // #3304 find first item matching the character typed
                     if (PrimeFaces.utils.isPrintableKey(e)) {
-                        var keyChar = key.toLowerCase();
+                        var keyChar = e.key.toLowerCase();
                         list.children('.ui-picklist-item').each(function() {
                             var item = $(this),
                                 itemLabel = item.attr('data-item-label');

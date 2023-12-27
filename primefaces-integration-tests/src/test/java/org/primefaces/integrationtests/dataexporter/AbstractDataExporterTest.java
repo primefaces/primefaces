@@ -23,6 +23,8 @@
  */
 package org.primefaces.integrationtests.dataexporter;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.io.*;
 import java.net.URL;
 
@@ -35,7 +37,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.xssf.extractor.XSSFExcelExtractor;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.junit.jupiter.api.Assertions;
 import org.primefaces.selenium.AbstractPrimePageTest;
 
 public abstract class AbstractDataExporterTest extends AbstractPrimePageTest {
@@ -47,24 +48,24 @@ public abstract class AbstractDataExporterTest extends AbstractPrimePageTest {
     protected File assertDownloadFileNotExists(String downloadFileName) {
         File file = new File(downloadFileName);
         FileUtils.deleteQuietly(file);
-        Assertions.assertFalse(file.exists(), "Download file " + downloadFileName + " already exists!");
+        assertFalse(file.exists(), "Download file " + downloadFileName + " already exists!");
         return file;
     }
 
     protected File getExpectedFile(String fileName) {
         String folder = AbstractDataExporterTest.class.getPackage().getName().replace(".", "/");
         URL url = AbstractDataExporterTest.class.getResource("/" + folder + "/" + fileName);
-        Assertions.assertNotNull(url, "dataexporter test file " + fileName + " does not exist in /" + folder);
+        assertNotNull(url, "dataexporter test file " + fileName + " does not exist in /" + folder);
         return new File(url.getPath().replace("%20", " "));
     }
 
     protected void assertFileEquals(File expected, File actual, String message) throws IOException {
         assertNoJavascriptErrors();
-        Assertions.assertNotNull(expected);
-        Assertions.assertNotNull(actual);
+        assertNotNull(expected);
+        assertNotNull(actual);
 
-        Assertions.assertTrue(expected.exists(), "Expected file does not exist!");
-        Assertions.assertTrue(actual.exists(), "Actual file does not exist!");
+        assertTrue(expected.exists(), "Expected file does not exist!");
+        assertTrue(actual.exists(), "Actual file does not exist!");
 
         String extension = FilenameUtils.getExtension(expected.getName());
         switch (extension) {
@@ -74,18 +75,18 @@ public abstract class AbstractDataExporterTest extends AbstractPrimePageTest {
 
                 final PdfReader expectedPdf = new PdfReader(expected.getAbsolutePath());
                 final String expectedPdfContent = new PdfTextExtractor(expectedPdf).getTextFromPage(1);
-                Assertions.assertTrue(Objects.equal(actualPdfContent, expectedPdfContent), message);
+                assertTrue(Objects.equal(actualPdfContent, expectedPdfContent), message);
                 break;
             case "xlsx":
                 String workbookActual = new XSSFExcelExtractor(loadWorkbook(actual)).getText();
                 String workbookExpected = new XSSFExcelExtractor(loadWorkbook(expected)).getText();
-                Assertions.assertTrue(Objects.equal(workbookActual, workbookExpected), message);
+                assertTrue(Objects.equal(workbookActual, workbookExpected), message);
                 break;
 
             default:
                 Reader reader1 = new BufferedReader(new FileReader(expected));
                 Reader reader2 = new BufferedReader(new FileReader(actual));
-                Assertions.assertTrue(IOUtils.contentEqualsIgnoreEOL(reader1, reader2), message);
+                assertTrue(IOUtils.contentEqualsIgnoreEOL(reader1, reader2), message);
                 break;
         }
 

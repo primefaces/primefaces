@@ -23,8 +23,10 @@
  */
 package org.primefaces.integrationtests.spinner;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -41,63 +43,63 @@ public class Spinner005Test extends AbstractPrimePageTest {
     @Test
     @Order(1)
     @DisplayName("Spinner: Test round to the nearest stepFactor")
-    public void testRound(Page page) {
+    void round(Page page) {
         // Arrange
         Spinner spinner = page.spinner;
-        Assertions.assertEquals("", spinner.getValue());
+        assertEquals("", spinner.getValue());
 
         // Act
         sendKeys(spinner, "12");
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("15", spinner.getValue());
+        assertEquals("15", spinner.getValue());
         assertConfiguration(spinner.getWidgetConfiguration());
     }
 
     @Test
     @Order(1)
     @DisplayName("Spinner: Test round already on stepFactor does not modify value")
-    public void testRoundNoChange(Page page) {
+    void roundNoChange(Page page) {
         // Arrange
         Spinner spinner = page.spinner;
-        Assertions.assertEquals("", spinner.getValue());
+        assertEquals("", spinner.getValue());
 
         // Act
         sendKeys(spinner, "20");
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("20", spinner.getValue());
+        assertEquals("20", spinner.getValue());
         assertConfiguration(spinner.getWidgetConfiguration());
     }
 
     @Test
     @Order(3)
     @DisplayName("Spinner: Test entering above max value rounds to max")
-    public void testRoundAboveMax(Page page) {
+    void roundAboveMax(Page page) {
         // Arrange
         Spinner spinner = page.spinner;
-        Assertions.assertEquals("", spinner.getValue());
+        assertEquals("", spinner.getValue());
 
         // Act
         sendKeys(spinner, "67");
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("55", spinner.getValue());
+        assertEquals("55", spinner.getValue());
         assertConfiguration(spinner.getWidgetConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("Spinner Config = " + cfg);
-        Assertions.assertEquals(5, cfg.getInt("step"));
-        Assertions.assertEquals(".", cfg.get("decimalSeparator"));
-        Assertions.assertEquals(",", cfg.get("thousandSeparator"));
-        Assertions.assertEquals(0, cfg.getInt("precision"));
-        Assertions.assertEquals("0", cfg.get("decimalPlaces"));
-        Assertions.assertTrue(cfg.getBoolean("round"));
+        assertEquals(5, cfg.getInt("step"));
+        assertEquals(".", cfg.get("decimalSeparator"));
+        assertEquals(",", cfg.get("thousandSeparator"));
+        assertEquals(0, cfg.getInt("precision"));
+        assertEquals("0", cfg.get("decimalPlaces"));
+        assertTrue(cfg.getBoolean("round"));
     }
 
     public void sendKeys(Spinner spinner, CharSequence value) {

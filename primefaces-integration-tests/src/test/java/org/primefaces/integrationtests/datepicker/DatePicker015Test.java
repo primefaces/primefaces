@@ -24,11 +24,13 @@
 package org.primefaces.integrationtests.datepicker;
 
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import java.text.DateFormatSymbols;
 import java.time.LocalDateTime;
 import java.util.Locale;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -43,12 +45,12 @@ import org.primefaces.selenium.component.DatePicker;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.util.Constants;
 
-public class DatePicker015Test extends AbstractDatePickerTest {
+class DatePicker015Test extends AbstractDatePickerTest {
 
     @Test
     @Order(1)
     @DisplayName("DatePicker: German AM / PM")
-    public void testGermanAmPm(Page page) {
+    void germanAmPm(Page page) {
         // Arrange
         DatePicker datePicker = page.german;
         LocalDateTime expected = LocalDateTime.of(2020, 2, 10, 1, 16, 0);
@@ -59,8 +61,8 @@ public class DatePicker015Test extends AbstractDatePickerTest {
         String pm = ampm[1];
 
         // Assert
-        Assertions.assertEquals(expected, datePicker.getValue());
-        assertEquals(expectedString + am, datePicker.getInput().getAttribute("value"));
+        assertEquals(expected, datePicker.getValue());
+        assertDateEquals(expectedString + am, datePicker.getInput().getAttribute("value"));
 
         // Act
         WebElement panel = datePicker.showPanel();
@@ -71,14 +73,14 @@ public class DatePicker015Test extends AbstractDatePickerTest {
 
         // Assert
         assertNoJavascriptErrors();
-        assertEquals(expectedString + pm, datePicker.getInput().getAttribute("value"));
-        assertEquals(expectedString + pm, page.messages.getMessage(0).getDetail());
+        assertDateEquals(expectedString + pm, datePicker.getInput().getAttribute("value"));
+        assertDateEquals(expectedString + pm, page.messages.getMessage(0).getDetail());
     }
 
     @Test
     @Order(2)
     @DisplayName("DatePicker: Spanish AM / PM")
-    public void testSpanishAmPm(Page page) {
+    void spanishAmPm(Page page) {
         // Arrange
         DatePicker datePicker = page.spanish;
         LocalDateTime expected = LocalDateTime.of(2021, 4, 13, 5, 21, 0);
@@ -89,8 +91,8 @@ public class DatePicker015Test extends AbstractDatePickerTest {
         String pm = ampm[1];
 
         // Assert
-        Assertions.assertEquals(expected, datePicker.getValue());
-        assertEquals(expectedString + am, datePicker.getInput().getAttribute("value"));
+        assertEquals(expected, datePicker.getValue());
+        assertDateEquals(expectedString + am, datePicker.getInput().getAttribute("value"));
 
         // Act
         WebElement panel = datePicker.showPanel();
@@ -101,14 +103,14 @@ public class DatePicker015Test extends AbstractDatePickerTest {
 
         // Assert
         assertNoJavascriptErrors();
-        assertEquals(expectedString + pm, datePicker.getInput().getAttribute("value"));
-        assertEquals(expectedString + pm, page.messages.getMessage(1).getDetail());
+        assertDateEquals(expectedString + pm, datePicker.getInput().getAttribute("value"));
+        assertDateEquals(expectedString + pm, page.messages.getMessage(1).getDetail());
     }
 
     @Test
     @Order(3)
     @DisplayName("DatePicker: English AM / PM Defaults")
-    public void testEnglishAmPm(Page page) {
+    void englishAmPm(Page page) {
         // Arrange
         DatePicker datePicker = page.english;
         LocalDateTime expected = LocalDateTime.of(2022, 5, 30, 17, 07, 0);
@@ -119,8 +121,8 @@ public class DatePicker015Test extends AbstractDatePickerTest {
         String pm = ampm[1];
 
         // Assert
-        Assertions.assertEquals(expected, datePicker.getValue());
-        assertEquals(expectedString + pm, datePicker.getInput().getAttribute("value"));
+        assertEquals(expected, datePicker.getValue());
+        assertDateEquals(expectedString + pm, datePicker.getInput().getAttribute("value"));
 
         // Act
         WebElement panel = datePicker.showPanel();
@@ -131,29 +133,29 @@ public class DatePicker015Test extends AbstractDatePickerTest {
 
         // Assert
         assertNoJavascriptErrors();
-        assertEquals(expectedString + am, datePicker.getInput().getAttribute("value"));
-        assertEquals(expectedString + am, page.messages.getMessage(2).getDetail());
+        assertDateEquals(expectedString + am, datePicker.getInput().getAttribute("value"));
+        assertDateEquals(expectedString + am, page.messages.getMessage(2).getDetail());
     }
 
     protected void assertAmPm(WebElement panel, String ampm) {
-        Assertions.assertNotNull(panel);
+        assertNotNull(panel);
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(panel));
         WebElement timePicker = panel.findElement(By.className("ui-timepicker"));
-        assertEquals(ampm, timePicker.findElement(By.cssSelector("div.ui-ampm-picker > span")).getText());
+        assertDateEquals(ampm, timePicker.findElement(By.cssSelector("div.ui-ampm-picker > span")).getText());
     }
 
     protected void toggleAmPm(WebElement panel) {
-        Assertions.assertNotNull(panel);
+        assertNotNull(panel);
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(panel));
         WebElement amPmPicker = panel.findElement(By.className("ui-ampm-picker"));
         amPmPicker.findElement(By.className("ui-picker-down")).click();
     }
 
-    protected void assertEquals(String expected, String actual) {
+    protected void assertDateEquals(String expected, String actual) {
         // between JDK8 and 11 some space characters became non breaking space '\u00A0'
         expected = expected.replaceAll("\\p{Z}", Constants.SPACE);
         actual = actual.replaceAll("\\p{Z}", Constants.SPACE);
-        Assertions.assertEquals(expected, actual);
+        assertEquals(expected, actual);
     }
 
     public static class Page extends AbstractPrimePage {

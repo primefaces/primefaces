@@ -23,6 +23,8 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
@@ -36,52 +38,56 @@ import org.primefaces.selenium.component.DataTable;
  * Test for multiple filtered columns added via
  * {@link javax.faces.view.facelets.FaceletContext#includeFacelet}
  */
-public class DataTable022Test extends AbstractDataTableTest {
+class DataTable022Test extends AbstractDataTableTest {
 
     @Test
     @Order(1)
     @DisplayName("DataTable: filter by name")
-    public void testFilterByName(Page page) {
-        // Arrange
-        DataTable dataTable = page.dataTable;
+    void filterByName(Page page) {
+        assertDoesNotThrow(() -> {
+            // Arrange
+            DataTable dataTable = page.dataTable;
 
-        // Act
-        dataTable.filter("Name", "C#");
+            // Act
+            dataTable.filter("Name", "C#");
 
-        // Assert
-        List<ProgrammingLanguage> langsFiltered = filterByName("C#");
-        assertRows(dataTable, langsFiltered);
+            // Assert
+            List<ProgrammingLanguage> langsFiltered = filterByName("C#");
+            assertRows(dataTable, langsFiltered);
 
-        // Act
-        dataTable.removeFilter("Name");
+            // Act
+            dataTable.removeFilter("Name");
 
-        // Assert
-        assertRows(dataTable, languages);
+            // Assert
+            assertRows(dataTable, languages);
 
-        assertNoJavascriptErrors();
+            assertNoJavascriptErrors();
+        });
     }
 
     @Test
     @Order(0)
     @DisplayName("DataTable: filter by id")
-    public void testFilterById(Page page) {
-        // Arrange
-        DataTable dataTable = page.dataTable;
+    void filterById(Page page) {
+        assertDoesNotThrow(() -> {
+            // Arrange
+            DataTable dataTable = page.dataTable;
 
-        // Act
-        dataTable.filter("Id", "1");
+            // Act
+            dataTable.filter("Id", "1");
 
-        // Assert
-        List<ProgrammingLanguage> langsFiltered = filterById(1);
-        assertRows(dataTable, langsFiltered);
+            // Assert
+            List<ProgrammingLanguage> langsFiltered = filterById(1);
+            assertRows(dataTable, langsFiltered);
 
-        // Act
-        dataTable.removeFilter("Id");
+            // Act
+            dataTable.removeFilter("Id");
 
-        // Assert
-        assertRows(dataTable, languages);
+            // Assert
+            assertRows(dataTable, languages);
 
-        assertNoJavascriptErrors();
+            assertNoJavascriptErrors();
+        });
     }
 
     public static class Page extends AbstractPrimePage {

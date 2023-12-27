@@ -1808,7 +1808,7 @@
         _bindEvents: function() {
             var $this = this;
             if (!this.options.inline) {
-                this.inputfield.off('focus.datePicker blur.datePicker keydown.datePicker input.datePicker click.datePicker')
+                this.inputfield.off('focus.datePicker blur.datePicker change.datePicker keydown.datePicker input.datePicker click.datePicker')
                     .on('focus.datePicker', this.onInputFocus.bind($this))
                     .on('blur.datePicker', this.onInputBlur.bind($this))
                     .on('change.datePicker', this.onInputChange.bind($this))
@@ -1929,9 +1929,10 @@
             var currentElement = $(event.currentTarget);
             var $tabbableElements = $this.panel.find('a:tabbable');
             var currentIndex = $tabbableElements.index(currentElement);
-            switch (event.key) {
+            switch (event.code) {
                 case 'Enter':
-                case ' ':
+                case 'NumpadEnter':
+                case 'Space':
                     $this.onDateSelect(event, dateMeta);
                     event.preventDefault();
                     break;
@@ -2010,9 +2011,10 @@
             var currentElement = $(event.currentTarget);
             var $tabbableElements = $this.panel.find('a:tabbable');
             var currentIndex = $tabbableElements.index(currentElement);
-            switch (event.key) {
+            switch (event.code) {
                 case 'Enter':
-                case ' ':
+                case 'NumpadEnter':
+                case 'Space':
                     $this.onMonthSelect(event, index);
                     event.preventDefault();
                     break;
@@ -2212,11 +2214,7 @@
         },
 
         onEscapeKey: function(event) {
-            if (this.options.touchUI) {
-                this.disableModality();
-            }
-
-            this.hideOverlay();
+            this.hideOverlay(event);
         },
 
         onUserInput: function(event) {
@@ -2427,13 +2425,7 @@
             if (this.options.minDate) {
                 let firstDayOfMonth = new Date(newViewDate.getTime());
 
-                if (firstDayOfMonth.getMonth() === 0) {
-                    firstDayOfMonth.setMonth(11, 1);
-                    firstDayOfMonth.setFullYear(firstDayOfMonth.getFullYear() - 1);
-                } else {
-                    firstDayOfMonth.setMonth(firstDayOfMonth.getMonth(), 1);
-                }
-
+                firstDayOfMonth.setMonth(firstDayOfMonth.getMonth(), 1);
                 firstDayOfMonth.setHours(0);
                 firstDayOfMonth.setMinutes(0);
                 firstDayOfMonth.setSeconds(0);
@@ -2449,13 +2441,7 @@
             if (this.options.maxDate) {
                 let lastDayOfMonth = new Date(newViewDate.getTime());
 
-                if (lastDayOfMonth.getMonth() === 11) {
-                    lastDayOfMonth.setMonth(0, 1);
-                    lastDayOfMonth.setFullYear(lastDayOfMonth.getFullYear() + 1);
-                } else {
-                    lastDayOfMonth.setMonth(lastDayOfMonth.getMonth() + 1, 1);
-                }
-
+                lastDayOfMonth.setMonth(lastDayOfMonth.getMonth() + 1, 1);
                 lastDayOfMonth.setHours(0);
                 lastDayOfMonth.setMinutes(0);
                 lastDayOfMonth.setSeconds(0);
@@ -2555,15 +2541,13 @@
                         $this.alignPanel();
                     },
                     onEntered: function() {
-                        if (!$this.options.touchUI) {
-                            $this.datepickerClick = true;
-                            PrimeFaces.queueTask(function() { $this.datepickerClick = false; }, 200);
-                            $this.bindDocumentClickListener();
-                            $this.bindWindowResizeListener();
+                        $this.datepickerClick = true;
+                        PrimeFaces.queueTask(function() { $this.datepickerClick = false; }, 200);
+                        $this.bindDocumentClickListener();
+                        $this.bindWindowResizeListener();
 
-                            if (!$this.options.inline) {
-                                $this.bindScrollListener();
-                            }
+                        if (!$this.options.inline) {
+                            $this.bindScrollListener();
                         }
 
                         var focused = null;
@@ -2607,6 +2591,9 @@
 
                 //put the focus back to the inputfield
                 $this.inputfield.trigger('focus');
+                
+                // if using mask disable the modality
+                $this.disableModality();
 
                 this.transition.hide({
                     onExit: function() {
@@ -2690,11 +2677,7 @@
 
             var $this = this;
             $(window).on('resize.' + this.options.id, function() {
-                if (PrimeFaces.env.mobile) {
-                    $this.alignPanel();
-                } else {
-                    $this.hideOverlay();
-                }
+                $this.hideOverlay();
             });
         },
 
@@ -2803,8 +2786,6 @@
                 if (!bodyChildren.length) {
                     $(document.body).removeClass('ui-overflow-hidden');
                 }
-
-                this.hideOverlay();
             }
         },
 
@@ -2842,10 +2823,6 @@
                 PrimeFaces.queueTask(function() {
                     $this.hideOverlay();
                 }, 100);
-
-                if (this.mask) {
-                    this.disableModality();
-                }
             }
 
             if (event) {

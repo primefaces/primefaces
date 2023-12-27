@@ -27,6 +27,7 @@ import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.tieredmenu.TieredMenuRenderer;
 import org.primefaces.model.menu.Submenu;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 import javax.faces.context.FacesContext;
@@ -53,23 +54,27 @@ public class MenubarRenderer extends TieredMenuRenderer {
     protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         Menubar menubar = (Menubar) abstractMenu;
         String style = menubar.getStyle();
-        String styleClass = menubar.getStyleClass();
-        styleClass = styleClass == null ? Menubar.CONTAINER_CLASS : Menubar.CONTAINER_CLASS + " " + styleClass;
+        String styleClass = getStyleClassBuilder(context)
+                .add(menubar.getStyleClass())
+                .add(Menubar.CONTAINER_CLASS)
+                .add(ComponentUtils.isRTL(context, abstractMenu), AbstractMenu.MENU_RTL_CLASS)
+                .build();
 
         encodeMenu(context, menubar, style, styleClass, "menubar");
     }
 
     @Override
-    protected void encodeSubmenuIcon(FacesContext context, Submenu submenu) throws IOException {
+    protected void encodeSubmenuIcon(FacesContext context, Submenu submenu, boolean isRtl) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Object parent = submenu.getParent();
         String icon = null;
+        String rtlStyleClass = isRtl ? Menu.SUBMENU_LEFT_ICON_CLASS : Menu.SUBMENU_RIGHT_ICON_CLASS;
 
         if (parent == null) {
-            icon = (submenu.getId().startsWith("_")) ? Menu.SUBMENU_DOWN_ICON_CLASS : Menu.SUBMENU_RIGHT_ICON_CLASS;
+            icon = (submenu.getId().startsWith("_")) ? Menu.SUBMENU_DOWN_ICON_CLASS : rtlStyleClass;
         }
         else {
-            icon = (parent instanceof Menubar) ? Menu.SUBMENU_DOWN_ICON_CLASS : Menu.SUBMENU_RIGHT_ICON_CLASS;
+            icon = (parent instanceof Menubar) ? Menu.SUBMENU_DOWN_ICON_CLASS : rtlStyleClass;
         }
 
         writer.startElement("span", null);

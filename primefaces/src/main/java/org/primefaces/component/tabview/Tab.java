@@ -23,11 +23,11 @@
  */
 package org.primefaces.component.tabview;
 
+import org.primefaces.component.menu.Menu;
+import org.primefaces.util.FacetUtils;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-
-import org.primefaces.component.menu.Menu;
-import org.primefaces.util.ComponentUtils;
 
 public class Tab extends TabBase {
 
@@ -85,7 +85,7 @@ public class Tab extends TabBase {
 
     public Menu getOptionsMenu() {
         UIComponent optionsFacet = getFacet("options");
-        if (ComponentUtils.shouldRenderFacet(optionsFacet)) {
+        if (FacetUtils.shouldRenderFacet(optionsFacet)) {
             if (optionsFacet instanceof Menu) {
                 return (Menu) optionsFacet;
             }

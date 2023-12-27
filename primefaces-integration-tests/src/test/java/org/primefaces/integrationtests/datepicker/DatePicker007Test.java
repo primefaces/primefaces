@@ -23,10 +23,11 @@
  */
 package org.primefaces.integrationtests.datepicker;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.time.LocalTime;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -37,23 +38,23 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DatePicker;
 
-public class DatePicker007Test extends AbstractDatePickerTest {
+class DatePicker007Test extends AbstractDatePickerTest {
 
     @Test
     @Order(1)
     @DisplayName("DatePicker: GitHub #6636 TimeOnly at 12AM issue")
-    public void testBasic(Page page) {
+    void basic(Page page) {
         // Arrange
         DatePicker datePicker = page.datePicker;
-        Assertions.assertEquals(LocalTime.of(0, 4), datePicker.getValue().toLocalTime());
+        assertEquals(LocalTime.of(0, 4), datePicker.getValue().toLocalTime());
 
         // Act
         WebElement panel = datePicker.showPanel(); // focus to bring up panel
 
         // Assert Panel (12:04 AM)
-        Assertions.assertNotNull(panel);
+        assertNotNull(panel);
         assertTime(panel, "12", "04", null);
-        Assertions.assertTrue(panel.getText().contains("AM"));
+        assertTrue(panel.getText().contains("AM"));
 
         // Act (go down by 1 hour)
         WebElement hourPicker = panel.findElement(By.className("ui-hour-picker"));
@@ -61,17 +62,17 @@ public class DatePicker007Test extends AbstractDatePickerTest {
 
         // Assert (new time should be 11:04 PM)
         assertTime(panel, "11", "04", null);
-        Assertions.assertTrue(panel.getText().contains("PM"));
+        assertTrue(panel.getText().contains("PM"));
         assertConfiguration(datePicker.getWidgetConfiguration(), "12:04 AM");
     }
 
     private void assertConfiguration(JSONObject cfg, String defaultDate) {
         assertNoJavascriptErrors();
         System.out.println("DatePicker Config = " + cfg);
-        Assertions.assertEquals(defaultDate, cfg.getString("defaultDate"));
-        Assertions.assertEquals("single", cfg.getString("selectionMode"));
-        Assertions.assertFalse(cfg.getBoolean("inline"));
-        Assertions.assertTrue(cfg.getBoolean("timeOnly"));
+        assertEquals(defaultDate, cfg.getString("defaultDate"));
+        assertEquals("single", cfg.getString("selectionMode"));
+        assertFalse(cfg.getBoolean("inline"));
+        assertTrue(cfg.getBoolean("timeOnly"));
     }
 
     public static class Page extends AbstractPrimePage {

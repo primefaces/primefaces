@@ -41,7 +41,7 @@ import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.seo.JsonLDItem;
 import org.primefaces.model.seo.JsonLDModel;
 import org.primefaces.seo.JsonLD;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
@@ -125,7 +125,7 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
             }
 
             UIComponent optionsFacet = menu.getFacet("options");
-            if (ComponentUtils.shouldRenderFacet(optionsFacet)) {
+            if (FacetUtils.shouldRenderFacet(optionsFacet)) {
                 writer.startElement("li", null);
                 writer.writeAttribute("class", BreadCrumb.OPTIONS_CLASS, null);
                 optionsFacet.encodeAll(context);

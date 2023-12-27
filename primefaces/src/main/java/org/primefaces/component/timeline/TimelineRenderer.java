@@ -70,7 +70,7 @@ public class TimelineRenderer extends CoreRenderer {
         }
 
         UIComponent menuFacet = timeline.getFacet("menu");
-        if (ComponentUtils.shouldRenderFacet(menuFacet)) {
+        if (FacetUtils.shouldRenderFacet(menuFacet)) {
             writer.startElement("div", null);
             StringBuilder cssMenu = new StringBuilder("timeline-menu");
 
@@ -185,7 +185,7 @@ public class TimelineRenderer extends CoreRenderer {
             wb.nativeAttr("extender", timeline.getExtender());
         }
         UIComponent menuFacet = timeline.getFacet("menu");
-        if (ComponentUtils.shouldRenderFacet(menuFacet)) {
+        if (FacetUtils.shouldRenderFacet(menuFacet)) {
             wb.attr("isMenuPresent", Boolean.TRUE);
         }
 
@@ -293,7 +293,7 @@ public class TimelineRenderer extends CoreRenderer {
         }
 
         UIComponent loadingFacet = timeline.getFacet("loading");
-        if (ComponentUtils.shouldRenderFacet(loadingFacet)) {
+        if (FacetUtils.shouldRenderFacet(loadingFacet)) {
             String loading = encodeAllToString(context, writer, fswHtml, loadingFacet);
             // writing facet content's
             wb.nativeAttr("loadingScreenTemplate", "function() { return \"" + EscapeUtils.forJavaScript(loading) + "\";}");
@@ -315,7 +315,7 @@ public class TimelineRenderer extends CoreRenderer {
         if (LangUtils.isNotBlank(timeline.getVarGroup()) && data != null) {
             context.getExternalContext().getRequestMap().put(timeline.getVarGroup(), data);
         }
-        if (ComponentUtils.shouldRenderFacet(groupFacet)) {
+        if (FacetUtils.shouldRenderFacet(groupFacet)) {
             String groupRender = encodeAllToString(context, writer, fswHtml, groupFacet);
             // extract the content of the group, first buffer and then render it
             groupsContent.put(group.getId(), EscapeUtils.forJavaScript(groupRender));
@@ -478,7 +478,7 @@ public class TimelineRenderer extends CoreRenderer {
             fsw.write(EscapeUtils.forJavaScript(event.getTitle()));
             fsw.write("\"");
         }
-        else if (ComponentUtils.shouldRenderFacet(eventTitleFacet)) {
+        else if (FacetUtils.shouldRenderFacet(eventTitleFacet)) {
             String title = encodeAllToString(context, writer, fswHtml, eventTitleFacet);
             fsw.write(", title:\"");
             fsw.write(EscapeUtils.forJavaScript(title));

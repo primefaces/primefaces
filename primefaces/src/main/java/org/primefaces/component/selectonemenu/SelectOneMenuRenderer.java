@@ -384,7 +384,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
     protected void encodePanelFooter(FacesContext context, SelectOneMenu menu) throws IOException {
         UIComponent facet = menu.getFacet("footer");
-        if (!ComponentUtils.shouldRenderFacet(facet)) {
+        if (!FacetUtils.shouldRenderFacet(facet)) {
             return;
         }
 
@@ -428,7 +428,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                 }
 
                 UIComponent headerFacet = column.getFacet("header");
-                if (ComponentUtils.shouldRenderFacet(headerFacet)) {
+                if (FacetUtils.shouldRenderFacet(headerFacet)) {
                     headerFacet.encodeAll(context);
                 }
                 else if (headerText != null) {

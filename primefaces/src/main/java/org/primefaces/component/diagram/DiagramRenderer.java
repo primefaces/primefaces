@@ -38,7 +38,7 @@ import org.primefaces.model.diagram.connector.Connector;
 import org.primefaces.model.diagram.endpoint.EndPoint;
 import org.primefaces.model.diagram.overlay.Overlay;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.SharedStringBuilder;
 import org.primefaces.util.WidgetBuilder;
 
@@ -422,7 +422,7 @@ public class DiagramRenderer extends CoreRenderer {
                         requestMap.put(var, data);
                     }
 
-                    if (ComponentUtils.shouldRenderFacet(elementFacet)) {
+                    if (FacetUtils.shouldRenderFacet(elementFacet)) {
                         elementFacet.encodeAll(context);
                     }
                     else if (data != null) {

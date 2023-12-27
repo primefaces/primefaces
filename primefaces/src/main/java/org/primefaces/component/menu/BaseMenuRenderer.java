@@ -38,6 +38,7 @@ import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.MenuModel;
 import org.primefaces.renderkit.MenuItemAwareRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
@@ -79,7 +80,7 @@ public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
         if (isMenuItemComponent) {
             UIComponent uiMenuItem = (UIComponent) menuitem;
             UIComponent custom = uiMenuItem.getFacet("custom");
-            if (ComponentUtils.shouldRenderFacet(custom)) {
+            if (FacetUtils.shouldRenderFacet(custom)) {
                 custom.encodeAll(context);
                 return;
             }
@@ -153,11 +154,11 @@ public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
     protected void encodeMenuItemContent(FacesContext context, AbstractMenu menu, MenuItem menuitem) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Object value = menuitem.getValue();
-        String iconPos = menuitem.getIconPos();
+        boolean isRtl = ComponentUtils.isRTL(context, menu);
+        String iconPos = isRtl ? "right" : menuitem.getIconPos();
 
-        boolean isIconLeft = "left".equals(iconPos) || LangUtils.isBlank(iconPos);
-        if (isIconLeft) {
-            encodeIcon(writer, menu, menuitem, isIconLeft);
+        if ("left".equals(iconPos)) {
+            encodeIcon(writer, menu, menuitem, iconPos);
         }
 
         writer.startElement("span", null);
@@ -177,17 +178,16 @@ public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
 
         writer.endElement("span");
 
-        boolean isIconRight = "right".equals(menuitem.getIconPos());
-        if (isIconRight) {
-            encodeIcon(writer, menu, menuitem, isIconRight);
+        if ("right".equals(iconPos)) {
+            encodeIcon(writer, menu, menuitem, iconPos);
         }
     }
 
-    protected void encodeIcon(ResponseWriter writer, AbstractMenu menu, MenuItem menuitem, boolean shouldRender) throws IOException {
+    protected void encodeIcon(ResponseWriter writer, AbstractMenu menu, MenuItem menuitem, String iconPos) throws IOException {
         String icon = menuitem.getIcon();
-        if (icon != null && shouldRender) {
+        if (icon != null && LangUtils.isNotBlank(iconPos)) {
             writer.startElement("span", null);
-            writer.writeAttribute("class", AbstractMenu.MENUITEM_ICON_CLASS + " " + icon + " ui-menuitem-icon-" + menuitem.getIconPos(), null);
+            writer.writeAttribute("class", AbstractMenu.MENUITEM_ICON_CLASS + " " + icon + " ui-menuitem-icon-" + iconPos, null);
             writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
             writer.endElement("span");
         }

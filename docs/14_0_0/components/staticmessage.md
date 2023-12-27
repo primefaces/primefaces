@@ -27,6 +27,8 @@ display | both | String | Defines the display mode.
 escape | true | Boolean | Defines whether HTML would be escaped or not.
 style | null | String | Style of main container element.
 styleClass | null | String | Style class of main container.
+closable | false | Boolean | Adds a close icon to hide the message.
+widgetVar | null | String | Name of the client side widget.
 
 
 ## Getting Started with StaticMessage
@@ -34,6 +36,7 @@ styleClass | null | String | Style class of main container.
 ```xhtml
 <p:staticMessage severity="info" summary="INFO!" detail="Hey, i'm a info!" />
 ```
+
 ## Display Mode
 StaticMessage component has three different display modes;
 
@@ -41,3 +44,5 @@ StaticMessage component has three different display modes;
 - icon : Only message severity is displayed and message text is visible as a tooltip.
 - both (default) : Both icon and text are displayed.
 
+## Ajax Behavior Events
+StaticMessage component has one event: `close`.

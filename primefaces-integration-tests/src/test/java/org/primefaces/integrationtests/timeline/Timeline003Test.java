@@ -23,12 +23,13 @@
  */
 package org.primefaces.integrationtests.timeline;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.List;
 import java.util.Locale;
 
 import org.apache.commons.lang3.math.NumberUtils;
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -46,7 +47,7 @@ public class Timeline003Test extends AbstractPrimePageTest {
     @Test
     @Order(1)
     @DisplayName("Schedule: Locale switching english")
-    public void testLocaleEnglish(Page page) {
+    void localeEnglish(Page page) {
         // Arrange
         Timeline timeline = page.timeline;
 
@@ -64,7 +65,7 @@ public class Timeline003Test extends AbstractPrimePageTest {
     @Test
     @Order(2)
     @DisplayName("Schedule: Locale switching french")
-    public void testLocaleFrench(Page page) {
+    void localeFrench(Page page) {
         // Arrange
         Timeline timeline = page.timeline;
 
@@ -82,24 +83,24 @@ public class Timeline003Test extends AbstractPrimePageTest {
     private void assertConfiguration(JSONObject cfg, String locale) {
         assertNoJavascriptErrors();
         System.out.println("Timeline Config = " + cfg);
-        Assertions.assertTrue(cfg.has("data"));
+        assertTrue(cfg.has("data"));
 
         JSONObject options = cfg.getJSONObject("opts");
-        Assertions.assertNotNull(options);
-        Assertions.assertEquals(locale, options.get("locale"));
+        assertNotNull(options);
+        assertEquals(locale, options.get("locale"));
     }
 
     private void assertMonth(Timeline timeline, String month, String il8n) {
         List<WebElement> monthElements = getMonth(timeline, month);
         for (WebElement monthElement : monthElements) {
-            Assertions.assertNotNull(monthElement);
+            assertNotNull(monthElement);
             String monthText = monthElement.getText();
 
             // sometimes the month CSS contains a year which might be a bug in vis-timeline
             if (NumberUtils.isDigits(monthText)) {
                 continue;
             }
-            Assertions.assertEquals(il8n, monthText);
+            assertEquals(il8n, monthText);
         }
     }
 

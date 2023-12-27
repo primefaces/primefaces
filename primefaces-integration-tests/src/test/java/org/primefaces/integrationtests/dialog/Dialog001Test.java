@@ -23,8 +23,9 @@
  */
 package org.primefaces.integrationtests.dialog;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -35,32 +36,32 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.*;
 
-public class Dialog001Test extends AbstractPrimePageTest {
+class Dialog001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("Dialog: Show widget method")
-    public void testShowWidget(Page page) {
+    void showWidget(Page page) {
         // Arrange
         Dialog dialog = page.dialog;
-        Assertions.assertFalse(dialog.isVisible());
+        assertFalse(dialog.isVisible());
 
         // Act
         dialog.show();
 
         // Assert
         assertDialog(page, true);
-        Assertions.assertEquals("Modal Dialog", dialog.getTitle());
+        assertEquals("Modal Dialog", dialog.getTitle());
     }
 
     @Test
     @Order(2)
     @DisplayName("Dialog: Hide widget method")
-    public void testHideWidget(Page page) {
+    void hideWidget(Page page) {
         // Arrange
         Dialog dialog = page.dialog;
         dialog.show();
-        Assertions.assertTrue(dialog.isVisible());
+        assertTrue(dialog.isVisible());
 
         // Act
         dialog.hide();
@@ -72,10 +73,10 @@ public class Dialog001Test extends AbstractPrimePageTest {
     @Test
     @Order(3)
     @DisplayName("Dialog: Open Dialog with click")
-    public void testBasicOk(Page page) {
+    void basicOk(Page page) {
         // Arrange
         Dialog dialog = page.dialog;
-        Assertions.assertFalse(dialog.isVisible());
+        assertFalse(dialog.isVisible());
 
         // Act
         page.buttonShowDialog.click();
@@ -87,10 +88,10 @@ public class Dialog001Test extends AbstractPrimePageTest {
     @Test
     @Order(4)
     @DisplayName("Dialog: edit values within dialog, OK, close-event")
-    public void testClose(Page page) {
+    void close(Page page) {
         // Arrange
         Dialog dialog = page.dialog;
-        Assertions.assertFalse(dialog.isVisible());
+        assertFalse(dialog.isVisible());
         page.buttonShowDialog.click();
         page.inputText2Dialog.setValue("test123");
 
@@ -99,24 +100,24 @@ public class Dialog001Test extends AbstractPrimePageTest {
 
         // Assert
         assertDialog(page, false);
-        Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("Dialog - close-event"));
-        Assertions.assertTrue(page.messages.getMessage(0).getDetail().contains("text2: test123"));
-        Assertions.assertEquals("test123", page.inputText2Readonly.getValue());
+        assertTrue(page.messages.getMessage(0).getSummary().contains("Dialog - close-event"));
+        assertTrue(page.messages.getMessage(0).getDetail().contains("text2: test123"));
+        assertEquals("test123", page.inputText2Readonly.getValue());
 
         // Act
         page.buttonSubmit.click();
 
         // Assert
-        Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("Submit"));
-        Assertions.assertTrue(page.messages.getMessage(0).getDetail().contains("text2: test123"));
-        Assertions.assertEquals("test123", page.inputText2Readonly.getValue());
+        assertTrue(page.messages.getMessage(0).getSummary().contains("Submit"));
+        assertTrue(page.messages.getMessage(0).getDetail().contains("text2: test123"));
+        assertEquals("test123", page.inputText2Readonly.getValue());
         assertConfiguration(page.dialog.getWidgetConfiguration());
     }
 
     @Test
     @Order(5)
     @DisplayName("Dialog: edit values within dialog, Cancel, close event")
-    public void testBasicCancel(Page page) {
+    void basicCancel(Page page) {
         // Arrange
         Dialog dialog = page.dialog;
         page.buttonShowDialog.click();
@@ -128,31 +129,31 @@ public class Dialog001Test extends AbstractPrimePageTest {
 
         // Assert
         assertDialog(page, false);
-        Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("Dialog - close-event"));
-        Assertions.assertTrue(page.messages.getMessage(0).getDetail().contains("text2: null"));
-        Assertions.assertEquals("", page.inputText2Readonly.getValue());
+        assertTrue(page.messages.getMessage(0).getSummary().contains("Dialog - close-event"));
+        assertTrue(page.messages.getMessage(0).getDetail().contains("text2: null"));
+        assertEquals("", page.inputText2Readonly.getValue());
 
         // Act
         page.buttonSubmit.click();
 
         // Assert
-        Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("Submit"));
-        Assertions.assertTrue(page.messages.getMessage(0).getDetail().contains("text2: null"));
-        Assertions.assertEquals("", page.inputText2Readonly.getValue());
+        assertTrue(page.messages.getMessage(0).getSummary().contains("Submit"));
+        assertTrue(page.messages.getMessage(0).getDetail().contains("text2: null"));
+        assertEquals("", page.inputText2Readonly.getValue());
         assertConfiguration(page.dialog.getWidgetConfiguration());
     }
 
     private void assertDialog(Page page, boolean visible) {
         Dialog dialog = page.dialog;
-        Assertions.assertEquals(visible, dialog.isVisible());
-        Assertions.assertEquals(visible, dialog.isDisplayed());
+        assertEquals(visible, dialog.isVisible());
+        assertEquals(visible, dialog.isDisplayed());
         assertConfiguration(dialog.getWidgetConfiguration());
 
         if (visible) {
             try {
                 // modal dialog should block clickability of button
                 page.buttonSubmit.click();
-                Assertions.fail("Button should not be clickable because modal mask is covering it!");
+                fail("Button should not be clickable because modal mask is covering it!");
             }
             catch (ElementClickInterceptedException ex) {
                 // element should be blocked by modal mask!
@@ -169,13 +170,13 @@ public class Dialog001Test extends AbstractPrimePageTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("Dialog Config = " + cfg);
-        Assertions.assertTrue(cfg.getBoolean("draggable"));
-        Assertions.assertTrue(cfg.getBoolean("cache"));
-        Assertions.assertTrue(cfg.getBoolean("resizable"));
-        Assertions.assertTrue(cfg.getBoolean("modal"));
-        Assertions.assertEquals("auto", cfg.getString("width"));
-        Assertions.assertEquals("100", cfg.getString("height"));
-        Assertions.assertEquals("center", cfg.getString("position"));
+        assertTrue(cfg.getBoolean("draggable"));
+        assertTrue(cfg.getBoolean("cache"));
+        assertTrue(cfg.getBoolean("resizable"));
+        assertTrue(cfg.getBoolean("modal"));
+        assertEquals("auto", cfg.getString("width"));
+        assertEquals("100", cfg.getString("height"));
+        assertEquals("center", cfg.getString("position"));
     }
 
     public static class Page extends AbstractPrimePage {

@@ -23,10 +23,12 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.List;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -36,12 +38,12 @@ import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.InputText;
 
-public class DataTable019Test extends AbstractDataTableTest {
+class DataTable019Test extends AbstractDataTableTest {
 
     @Test
     @Order(1)
     @DisplayName("DataTable: Global Filter Function finds results by name")
-    public void testGlobalFilterFunctionByName(Page page) {
+    void globalFilterFunctionByName(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
         InputText globalFilter = page.globalFilter;
@@ -53,7 +55,7 @@ public class DataTable019Test extends AbstractDataTableTest {
 
         // Assert
         List<ProgrammingLanguage> langsFiltered = filterByName("Java");
-        Assertions.assertEquals(2, langsFiltered.size());
+        assertEquals(2, langsFiltered.size());
         assertRows(dataTable, langsFiltered);
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
@@ -61,7 +63,7 @@ public class DataTable019Test extends AbstractDataTableTest {
     @Test
     @Order(2)
     @DisplayName("DataTable: Global Filter Function finds results by type")
-    public void testGlobalFilterFunctionByType(Page page) {
+    void globalFilterFunctionByType(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
         InputText globalFilter = page.globalFilter;
@@ -73,7 +75,7 @@ public class DataTable019Test extends AbstractDataTableTest {
 
         // Assert
         List<ProgrammingLanguage> langsFiltered = filterByType(ProgrammingLanguage.ProgrammingLanguageType.COMPILED);
-        Assertions.assertEquals(2, langsFiltered.size());
+        assertEquals(2, langsFiltered.size());
         assertRows(dataTable, langsFiltered);
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
@@ -81,7 +83,7 @@ public class DataTable019Test extends AbstractDataTableTest {
     @Test
     @Order(3)
     @DisplayName("DataTable: Global Filter Function finds NO results")
-    public void testGlobalFilterFunctionNoResults(Page page) {
+    void globalFilterFunctionNoResults(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
         InputText globalFilter = page.globalFilter;
@@ -93,7 +95,7 @@ public class DataTable019Test extends AbstractDataTableTest {
 
         // Assert
         List<ProgrammingLanguage> langsFiltered = filterByName("Clojure");
-        Assertions.assertEquals(0, langsFiltered.size());
+        assertEquals(0, langsFiltered.size());
         assertRows(dataTable, langsFiltered);
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
@@ -101,23 +103,23 @@ public class DataTable019Test extends AbstractDataTableTest {
     @Test
     @Order(4)
     @DisplayName("DataTable: Global Filter Function clearing field resets all rows")
-    public void testGlobalFilterFunctionClear(Page page) {
+    void globalFilterFunctionClear(Page page) {
         // Arrange
-        testGlobalFilterFunctionNoResults(page);
+        globalFilterFunctionNoResults(page);
         DataTable dataTable = page.dataTable;
 
         // Act
         PrimeSelenium.executeScript(true, "PF('wgtTable').clearFilters()");
 
         // Assert
-        Assertions.assertEquals(5, languages.size());
+        assertEquals(5, languages.size());
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
     @Test
     @Order(5)
     @DisplayName("DataTable: Column Filter Function finds results by type")
-    public void testColumnFilterFunctionByType(Page page) {
+    void columnFilterFunctionByType(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
         dataTable.selectPage(1);
@@ -128,7 +130,7 @@ public class DataTable019Test extends AbstractDataTableTest {
 
         // Assert
         List<ProgrammingLanguage> langsFiltered = filterByType(ProgrammingLanguage.ProgrammingLanguageType.INTERPRETED);
-        Assertions.assertEquals(3, langsFiltered.size());
+        assertEquals(3, langsFiltered.size());
         assertRows(dataTable, langsFiltered);
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
@@ -136,9 +138,9 @@ public class DataTable019Test extends AbstractDataTableTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("DataTable Config = " + cfg);
-        Assertions.assertTrue(cfg.has("paginator"));
-        Assertions.assertEquals("wgtTable", cfg.getString("widgetVar"));
-        Assertions.assertEquals(0, cfg.getInt("tabindex"));
+        assertTrue(cfg.has("paginator"));
+        assertEquals("wgtTable", cfg.getString("widgetVar"));
+        assertEquals(0, cfg.getInt("tabindex"));
     }
 
     public static class Page extends AbstractPrimePage {

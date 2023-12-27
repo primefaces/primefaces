@@ -30,6 +30,7 @@ import org.primefaces.event.data.PageEvent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.MapBuilder;
 
 import javax.faces.FacesException;
@@ -197,7 +198,7 @@ public class DataList extends DataListBase {
                 }
             }
 
-            if (definition && ComponentUtils.shouldRenderFacet(descriptionFacet)) {
+            if (definition && FacetUtils.shouldRenderFacet(descriptionFacet)) {
                 process(context, descriptionFacet, phaseId);
             }
         });

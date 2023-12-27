@@ -23,10 +23,11 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import java.util.List;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -34,15 +35,15 @@ import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.DataTable;
 
-public class DataTable013Test extends AbstractDataTableTest {
+class DataTable013Test extends AbstractDataTableTest {
 
     @Test
     @Order(1)
     @DisplayName("DataTable: multiple sort; sortBy on p:column; initial sort via sortMeta on dataTable")
-    public void testSortByWithDefault(Page page) {
+    void sortByWithDefault(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
-        Assertions.assertNotNull(dataTable);
+        assertNotNull(dataTable);
 
         // Act
 

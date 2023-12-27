@@ -47,8 +47,8 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 /**
  *               AutoNumeric.js
  *
- * @version      4.10.0
- * @date         2023-05-17 UTC 20:45
+ * @version      4.10.1
+ * @date         2023-12-15 UTC 18:00
  *
  * @authors      2016-2023 Alexandre Bonneau <alexandre.bonneau@linuxfr.eu>
  *               2009-2016 Bob Knothe <bob.knothe@gmail.com>
@@ -5592,14 +5592,20 @@ var AutoNumeric = /*#__PURE__*/function () {
 
       var isUp = false;
       var isDown = false;
+      var isDeltaYZero = false;
       if (_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isWheelUpEvent(e)) {
         isUp = true;
       } else if (_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isWheelDownEvent(e)) {
         isDown = true;
+      } else if (_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isWheelEventWithZeroDeltaY(e)) {
+        // Ignore that event (maybe call e.preventDefault() ?)
+        isDeltaYZero = true;
       } else {
         _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].throwError("The event is not a 'wheel' event.");
       }
-      this._wheelAndUpDownActions(e, isUp, isDown, this.settings.wheelStep);
+      if (!isDeltaYZero) {
+        this._wheelAndUpDownActions(e, isUp, isDown, this.settings.wheelStep);
+      }
       this.isWheelEvent = false; // Set back the mouse wheel indicator to its default
     }
 
@@ -6949,7 +6955,7 @@ var AutoNumeric = /*#__PURE__*/function () {
      * @returns {string}
      */
     function version() {
-      return '4.10.0';
+      return '4.10.1';
     }
   }, {
     key: "_setArgumentsValues",
@@ -11372,6 +11378,18 @@ var AutoNumericHelper = /*#__PURE__*/function () {
         this.throwError("The event passed as a parameter is not a valid wheel event, '".concat(wheelEvent.type, "' given."));
       }
       return wheelEvent.deltaY > 0;
+    }
+
+    /**
+     * Return `true` if the given event is an instance of WheelEvent and the deltaY value is equal to zero
+     *
+     * @param {WheelEvent} wheelEvent The event to test
+     * @returns {boolean} Return `true` if the event is an instance of WheelEvent and the deltaY value is equal to zero, FALSE otherwise
+     */
+  }, {
+    key: "isWheelEventWithZeroDeltaY",
+    value: function isWheelEventWithZeroDeltaY(wheelEvent) {
+      return this.isWheelEvent(wheelEvent) && this.isUndefinedOrNullOrEmpty(wheelEvent.deltaY) && wheelEvent.deltaY === 0;
     }
 
     /**

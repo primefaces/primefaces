@@ -23,10 +23,17 @@
  */
 package org.primefaces.component.api;
 
-import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import org.primefaces.component.column.ColumnBase;
+import org.primefaces.component.headerrow.HeaderRow;
+import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.model.ColumnMeta;
+import org.primefaces.model.FilterMeta;
+import org.primefaces.model.SortMeta;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.LocaleUtils;
+
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -36,16 +43,10 @@ import javax.faces.component.ValueHolder;
 import javax.faces.component.search.SearchExpressionHint;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.ConverterException;
-
-import org.primefaces.component.column.ColumnBase;
-import org.primefaces.component.headerrow.HeaderRow;
-import org.primefaces.expression.SearchExpressionUtils;
-import org.primefaces.model.ColumnMeta;
-import org.primefaces.model.FilterMeta;
-import org.primefaces.model.SortMeta;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.LocaleUtils;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public interface UITable<T extends UITableState> extends ColumnAware, MultiViewStateAware<T> {
 
@@ -176,8 +177,12 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
         FilterMeta globalFilter = filterBy.get(FilterMeta.GLOBAL_FILTER_KEY);
         if (globalFilter != null) {
-            globalFilter.setFilterValue(
-                    params.get(((UIComponent) this).getClientId(context) + separator + FilterMeta.GLOBAL_FILTER_KEY));
+            String componentIdPrefix = ((UIComponent) this).getClientId(context) + separator + FilterMeta.GLOBAL_FILTER_KEY;
+            String filterValue = params.entrySet().stream()
+                    .filter(e -> e.getKey() != null && e.getKey().startsWith(componentIdPrefix))
+                    .map(e -> e.getValue())
+                    .findFirst().orElse(null);
+            globalFilter.setFilterValue(filterValue);
         }
 
         forEachColumn(column -> {
@@ -190,12 +195,11 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                 ((DynamicColumn) column).applyModel();
             }
 
-            ValueHolder filterValueHolder = column.getFilterValueHolder();
-            boolean hasCustomFilter = filterValueHolder != null;
+            boolean hasCustomFilter = column.getFacet("filter") != null;
 
             Object filterValue;
             if (hasCustomFilter) {
-                filterValue = filterValueHolder.getLocalValue();
+                filterValue = column.getFilterValueFromValueHolder();
             }
             else {
                 String valueHolderClientId = column instanceof DynamicColumn
@@ -550,7 +554,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
             if (child.isRendered() && (child instanceof UIColumn)) {
                 UIColumn column = (UIColumn) child;
 
-                if (column.getFooterText() != null || ComponentUtils.shouldRenderFacet(column.getFacet("footer"))) {
+                if (column.getFooterText() != null || FacetUtils.shouldRenderFacet(column.getFacet("footer"))) {
                     return true;
                 }
             }

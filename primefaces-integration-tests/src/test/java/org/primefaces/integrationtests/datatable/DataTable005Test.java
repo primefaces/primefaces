@@ -24,7 +24,6 @@
 package org.primefaces.integrationtests.datatable;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -40,17 +39,20 @@ import org.primefaces.selenium.component.Messages;
 
 import java.util.stream.Stream;
 
-public class DataTable005Test extends AbstractDataTableTest {
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+class DataTable005Test extends AbstractDataTableTest {
 
     @ParameterizedTest
     @MethodSource("provideXhtmls")
     @Order(1)
     @DisplayName("DataTable: selection - multiple")
-    public void testSelectionMultiple(String xhtml) {
+    void selectionMultiple(String xhtml) {
         // Arrange
         goTo(xhtml);
         DataTable dataTable = getDataTable();
-        Assertions.assertNotNull(dataTable);
+        assertNotNull(dataTable);
 
         // Act
         dataTable.getCell(0, 0).getWebElement().click();
@@ -78,11 +80,11 @@ public class DataTable005Test extends AbstractDataTableTest {
     @MethodSource("provideXhtmls")
     @Order(2)
     @DisplayName("DataTable: GitHub #7368 Selection with filtering")
-    public void testSelectionWithFilter(String xhtml) {
+    void selectionWithFilter(String xhtml) {
         // Arrange
         goTo(xhtml);
         DataTable dataTable = getDataTable();
-        Assertions.assertNotNull(dataTable);
+        assertNotNull(dataTable);
 
         // Act
         dataTable.getCell(0, 0).getWebElement().click();
@@ -118,14 +120,14 @@ public class DataTable005Test extends AbstractDataTableTest {
     }
 
     private void assertMessage(String summary, String detail) {
-        Assertions.assertTrue(getMessages().getMessage(0).getSummary().contains(summary));
-        Assertions.assertTrue(getMessages().getMessage(0).getDetail().contains(detail));
+        assertTrue(getMessages().getMessage(0).getSummary().contains(summary));
+        assertTrue(getMessages().getMessage(0).getDetail().contains(detail));
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("DataTable Config = " + cfg);
-        Assertions.assertTrue(cfg.has("selectionMode"));
+        assertTrue(cfg.has("selectionMode"));
     }
 
     private static Stream<Arguments> provideXhtmls() {

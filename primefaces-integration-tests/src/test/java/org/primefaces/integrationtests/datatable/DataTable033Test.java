@@ -23,11 +23,12 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
@@ -37,21 +38,21 @@ import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.InputText;
 import org.primefaces.selenium.component.model.datatable.Header;
 
-public class DataTable033Test extends AbstractDataTableTest {
+class DataTable033Test extends AbstractDataTableTest {
 
     @Test
     @DisplayName("DataTable: test filtering after column order change")
-    public void testColumnOrderChangeAndFiltering(Page page) {
+    void columnOrderChangeAndFiltering(Page page) {
 
         int allRowsCount = page.dataTable.getRows().size();
 
         // test filter
         page.dataTable.filter("ID", "1002");
-        Assertions.assertNotSame(allRowsCount, 1);
+        assertNotSame(1, allRowsCount);
 
         // reset filter
         page.dataTable.filter("ID", "");
-        Assertions.assertSame(allRowsCount, page.dataTable.getRows().size());
+        assertSame(allRowsCount, page.dataTable.getRows().size());
 
         // switch column order now
         page.template.setValue("name country date status activity id");
@@ -59,31 +60,31 @@ public class DataTable033Test extends AbstractDataTableTest {
 
         // test filter
         page.dataTable.filter("ID", "1002");
-        Assertions.assertNotSame(allRowsCount, 1);
+        assertNotSame(1, allRowsCount);
 
         // reset filter
         page.dataTable.filter("ID", "");
-        Assertions.assertSame(allRowsCount, page.dataTable.getRows().size());
+        assertSame(allRowsCount, page.dataTable.getRows().size());
     }
 
     @Test
     @DisplayName("DataTable: multiple p:columns")
-    public void testHybridColumns(Page page) {
+    void hybridColumns(Page page) {
         // switch column order now
         page.template.setValue("id");
         page.updateColumns.click();
 
         Header header = page.dataTable.getHeader();
-        Assertions.assertEquals(4, header.getCells().size());
-        Assertions.assertEquals("ID", header.getCell(0).getColumnTitle().getText());
-        Assertions.assertEquals("NAME", header.getCell(1).getColumnTitle().getText());
-        Assertions.assertEquals("COUNTRY", header.getCell(2).getColumnTitle().getText());
-        Assertions.assertEquals("Activity", header.getCell(3).getColumnTitle().getText());
+        assertEquals(4, header.getCells().size());
+        assertEquals("ID", header.getCell(0).getColumnTitle().getText());
+        assertEquals("NAME", header.getCell(1).getColumnTitle().getText());
+        assertEquals("COUNTRY", header.getCell(2).getColumnTitle().getText());
+        assertEquals("Activity", header.getCell(3).getColumnTitle().getText());
 
         // test filter
         long countryCount = page.dataTable.getRows().stream().filter(r -> r.getCell(1).getText().equals("Aruna Figeroa")).count();
         page.dataTable.filter(1, "Aruna Figeroa");
-        Assertions.assertEquals(countryCount, page.dataTable.getRows().size());
+        assertEquals(countryCount, page.dataTable.getRows().size());
 
         // reset filter
         page.dataTable.filter("NAME", "");
@@ -98,8 +99,8 @@ public class DataTable033Test extends AbstractDataTableTest {
         List<String> sortedListPostFilter = page.dataTable.getRows().stream()
                 .map(r -> r.getCell(1).getText())
                 .collect(Collectors.toList());
-        Assertions.assertEquals(sortedList.size(), sortedListPostFilter.size());
-        Assertions.assertLinesMatch(sortedList, sortedListPostFilter);
+        assertEquals(sortedList.size(), sortedListPostFilter.size());
+        assertLinesMatch(sortedList, sortedListPostFilter);
     }
 
     public static class Page extends AbstractPrimePage {

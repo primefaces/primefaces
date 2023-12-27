@@ -161,7 +161,7 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
             if ($this.cfg.disabled) {
                 return;
             }
-            switch(e.key) {
+            switch(e.code) {
                 case 'ArrowUp':
                     if($this.menu.is(':visible')) {
                         var highlightedItem = $this.menuitems.filter('.ui-state-hover'),
@@ -189,7 +189,8 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
                 break;
 
                 case 'Enter':
-                case ' ':
+                case 'NumpadEnter':
+                case 'Space':
                     if($this.menu.is(':visible'))
                         $this.menuitems.filter('.ui-state-hover').children('a').trigger('click');
                     else

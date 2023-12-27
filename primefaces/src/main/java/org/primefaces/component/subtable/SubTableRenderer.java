@@ -35,7 +35,7 @@ import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.row.Row;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.LangUtils;
 
 public class SubTableRenderer extends CoreRenderer {
@@ -58,7 +58,7 @@ public class SubTableRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         UIComponent header = table.getFacet("header");
 
-        if (ComponentUtils.shouldRenderFacet(header)) {
+        if (FacetUtils.shouldRenderFacet(header)) {
             writer.startElement("tr", null);
             writer.writeAttribute("class", "ui-widget-header", null);
 
@@ -148,7 +148,7 @@ public class SubTableRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         UIComponent footer = table.getFacet("footer");
 
-        if (ComponentUtils.shouldRenderFacet(footer)) {
+        if (FacetUtils.shouldRenderFacet(footer)) {
             writer.startElement("tr", null);
             writer.writeAttribute("class", "ui-widget-header", null);
 
@@ -218,7 +218,7 @@ public class SubTableRenderer extends CoreRenderer {
 
         // Footer content
         UIComponent facet = column.getFacet(facetName);
-        if (ComponentUtils.shouldRenderFacet(facet)) {
+        if (FacetUtils.shouldRenderFacet(facet)) {
             facet.encodeAll(context);
         }
         else if (text != null) {
