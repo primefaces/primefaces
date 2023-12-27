@@ -13,7 +13,7 @@ if (window.PrimeFaces) {
         /**
          * When an element is invalid due to a validation error, the user needs to be informed. This method highlights
          * the label for the given element by adding an appropriate CSS class.
-         * @param {string} forElement ID of an element with a label to highlight.
+         * @param {JQuery} forElement Element with a label to highlight.
          */
         highlightLabel: function(forElement) {
             var label = $("label[for='" + forElement.attr('id') + "']");
@@ -25,12 +25,29 @@ if (window.PrimeFaces) {
         /**
          * When an element is invalid due to a validation error, the user needs to be informed. This method removes the
          * highlighting on a label for the given element by removing the appropriate CSS class.
-         * @param {string} forElement ID of an element with a label to unhighlight.
+         * @param {JQuery} forElement Element with a label to unhighlight.
          */
         unhighlightLabel: function(forElement) {
             var label = $("label[for='" + forElement.attr('id') + "']");
             if (label.hasClass('ui-outputlabel')) {
                 label.removeClass('ui-state-error');
+            }
+        },
+
+        /**
+         * Applies ui-state-XXX - css-classes to an element (component).
+         * @param {JQuery} element Element to which apply the css-classes.
+         * @param {boolean} valid Is the input of the element valid?
+         * @param {boolean} csvStateOnly Only set ui-state-csv-XXX - classes but nothing else like ui-state-error.
+         */
+        applyStateCssClasses: function(element, valid, csvStateOnly) {
+            if (valid) {
+                element.removeClass('ui-state-error');
+                element.removeClass('ui-state-csv-invalid').addClass('ui-state-csv-valid');
+            }
+            else {
+                if (!csvStateOnly) element.addClass('ui-state-error');
+                element.addClass('ui-state-csv-invalid').removeClass('ui-state-csv-valid');
             }
         },
 
@@ -43,44 +60,26 @@ if (window.PrimeFaces) {
             'default': {
 
                 highlight: function(element, csvStateOnly) {
-                    // TODO: we may pass element to a (private) function together with csvStateOnly and do addClass/removeClass there
-
-                    if (!csvStateOnly) {
-                        element.addClass('ui-state-error');
-                        PrimeFaces.validator.Highlighter.highlightLabel(element);
-                    }
-                    element.addClass('ui-state-csv-invalid').removeClass('ui-state-csv-valid');
+                    if (!csvStateOnly)  PrimeFaces.validator.Highlighter.highlightLabel(element);
+                    PrimeFaces.validator.Highlighter.applyStateCssClasses(element, false, csvStateOnly);
                 },
 
                 unhighlight: function(element, csvStateOnly) {
-                    // TODO: we may pass element to a (private) function together with csvStateOnly and do addClass/removeClass there
-
-                    if (!csvStateOnly) {
-                        element.removeClass('ui-state-error');
-                        PrimeFaces.validator.Highlighter.unhighlightLabel(element);
-                    }
-                    element.removeClass('ui-state-csv-invalid').addClass('ui-state-csv-valid');
+                    if (!csvStateOnly) PrimeFaces.validator.Highlighter.unhighlightLabel(element);
+                    PrimeFaces.validator.Highlighter.applyStateCssClasses(element, true, csvStateOnly);
                 }
             },
 
             'booleanchkbox': {
 
                 highlight: function(element, csvStateOnly) {
-                    var elt2AddState = element.parent().next();
-                    if (!csvStateOnly) {
-                        elt2AddState.addClass('ui-state-error');
-                        PrimeFaces.validator.Highlighter.highlightLabel(element);
-                    }
-                    elt2AddState.addClass('ui-state-csv-invalid').removeClass('ui-state-csv-valid');
+                    if (!csvStateOnly) PrimeFaces.validator.Highlighter.highlightLabel(element);
+                    PrimeFaces.validator.Highlighter.applyStateCssClasses(element.parent().next(), false, csvStateOnly);
                 },
 
                 unhighlight: function(element, csvStateOnly) {
-                    var elt2AddState = element.parent().next();
-                    if (!csvStateOnly) {
-                        elt2AddState.removeClass('ui-state-error');
-                        PrimeFaces.validator.Highlighter.unhighlightLabel(element);
-                    }
-                    elt2AddState.removeClass('ui-state-csv-invalid').addClass('ui-state-csv-valid');
+                    if (!csvStateOnly) PrimeFaces.validator.Highlighter.unhighlightLabel(element);
+                    PrimeFaces.validator.Highlighter.applyStateCssClasses(element.parent().next(), true, csvStateOnly);
                 }
 
             },
@@ -101,8 +100,7 @@ if (window.PrimeFaces) {
                     }
 
                     for(var i = 0; i < chkboxes.length; i++) {
-                        if (!csvStateOnly) chkboxes.eq(i).addClass('ui-state-error');
-                        chkboxes.eq(i).addClass('ui-state-csv-invalid').removeClass('ui-state-csv-valid');
+                        PrimeFaces.validator.Highlighter.applyStateCssClasses(chkboxes.eq(i), false, csvStateOnly);
                     }
                 },
 
@@ -120,8 +118,7 @@ if (window.PrimeFaces) {
                     }
 
                     for(var i = 0; i < chkboxes.length; i++) {
-                        if (!csvStateOnly) chkboxes.eq(i).removeClass('ui-state-error');
-                        chkboxes.eq(i).removeClass('ui-state-csv-invalid').addClass('ui-state-csv-valid');
+                        PrimeFaces.validator.Highlighter.applyStateCssClasses(chkboxes.eq(i), true, csvStateOnly);
                     }
                 }
 
@@ -130,21 +127,13 @@ if (window.PrimeFaces) {
             'listbox': {
 
                 highlight: function(element, csvStateOnly) {
-                    var elt2AddState = element.closest('.ui-inputfield'); 
-                    if (!csvStateOnly) {
-                        elt2AddState.addClass('ui-state-error');
-                        PrimeFaces.validator.Highlighter.highlightLabel(element.closest('.ui-inputfield'));
-                    }
-                    elt2AddState.addClass('ui-state-csv-invalid').removeClass('ui-state-csv-valid');
+                    PrimeFaces.validator.Highlighter.applyStateCssClasses(element.closest('.ui-inputfield'), false, csvStateOnly);
+                    if (!csvStateOnly) PrimeFaces.validator.Highlighter.highlightLabel(element.closest('.ui-inputfield'));
                 },
 
                 unhighlight: function(element, csvStateOnly) {
-                    var elt2AddState = element.closest('.ui-inputfield');
-                    if (!csvStateOnly) {
-                        elt2AddState.removeClass('ui-state-error');
-                        PrimeFaces.validator.Highlighter.unhighlightLabel(element.closest('.ui-inputfield'));
-                    }
-                    elt2AddState.removeClass('ui-state-csv-invalid').addClass('ui-state-csv-valid');
+                    PrimeFaces.validator.Highlighter.applyStateCssClasses(element.closest('.ui-inputfield'), true, csvStateOnly);
+                    if (!csvStateOnly) PrimeFaces.validator.Highlighter.unhighlightLabel(element.closest('.ui-inputfield'));
                 }
 
             },
@@ -153,20 +142,16 @@ if (window.PrimeFaces) {
 
                 highlight: function(element, csvStateOnly) {
                     var siblings = element.parent().siblings('.ui-selectonemenu-trigger');
-                    if (!csvStateOnly) {
-                        siblings.addClass('ui-state-error').parent().addClass('ui-state-error');
-                        PrimeFaces.validator.Highlighter.highlightLabel(this.getFocusElement(element));
-                    }
-                    siblings.addClass('ui-state-csv-invalid').removeClass('ui-state-csv-valid').parent().addClass('ui-state-csv-invalid').removeClass('ui-state-csv-valid');
+                    PrimeFaces.validator.Highlighter.applyStateCssClasses(siblings, false, csvStateOnly);
+                    PrimeFaces.validator.Highlighter.applyStateCssClasses(siblings.parent(), false, csvStateOnly);
+                    if (!csvStateOnly) PrimeFaces.validator.Highlighter.highlightLabel(this.getFocusElement(element));
                 },
 
                 unhighlight: function(element, csvStateOnly) {
                     var siblings = element.parent().siblings('.ui-selectonemenu-trigger');
-                    if (!csvStateOnly) {
-                        siblings.removeClass('ui-state-error').parent().removeClass('ui-state-error');
-                        PrimeFaces.validator.Highlighter.unhighlightLabel(this.getFocusElement(element));
-                    }
-                    siblings.removeClass('ui-state-csv-invalid').addClass('ui-state-csv-valid').parent().removeClass('ui-state-csv-invalid').addClass('ui-state-csv-valid');
+                    PrimeFaces.validator.Highlighter.applyStateCssClasses(siblings, true, csvStateOnly);
+                    PrimeFaces.validator.Highlighter.applyStateCssClasses(siblings.parent(), true, csvStateOnly);
+                    if (!csvStateOnly) PrimeFaces.validator.Highlighter.unhighlightLabel(this.getFocusElement(element));
                 },
 
                 getFocusElement: function(element) {
@@ -177,21 +162,13 @@ if (window.PrimeFaces) {
             'spinner': {
 
                 highlight: function(element, csvStateOnly) {
-                    var elt2AddState = element.parent();
-                    if (!csvStateOnly) {
-                        elt2AddState.addClass('ui-state-error');
-                        PrimeFaces.validator.Highlighter.highlightLabel(element.parent());
-                    }
-                    elt2AddState.addClass('ui-state-csv-invalid').removeClass('ui-state-csv-valid');
+                    PrimeFaces.validator.Highlighter.applyStateCssClasses(element.parent(), false, csvStateOnly);
+                    if (!csvStateOnly) PrimeFaces.validator.Highlighter.highlightLabel(element.parent());
                 },
 
                 unhighlight: function(element, csvStateOnly) {
-                    var elt2AddState = element.parent();
-                    if (!csvStateOnly) {
-                        elt2AddState.removeClass('ui-state-error');
-                        PrimeFaces.validator.Highlighter.unhighlightLabel(element.parent());
-                    }
-                    elt2AddState.removeClass('ui-state-csv-invalid').addClass('ui-state-csv-valid');
+                    PrimeFaces.validator.Highlighter.applyStateCssClasses(element.parent(), true, csvStateOnly);
+                    if (!csvStateOnly) PrimeFaces.validator.Highlighter.unhighlightLabel(element.parent());
                 }
 
             },
@@ -203,8 +180,7 @@ if (window.PrimeFaces) {
                     radios = container.find('div.ui-radiobutton-box');
 
                     for(var i = 0; i < radios.length; i++) {
-                        if (!csvStateOnly) radios.eq(i).addClass('ui-state-error');
-                        radios.eq(i).addClass('ui-state-csv-invalid').removeClass('ui-state-csv-valid');
+                        PrimeFaces.validator.Highlighter.applyStateCssClasses(radios.eq(i), false, csvStateOnly);
                     }
                     if (!csvStateOnly) PrimeFaces.validator.Highlighter.highlightLabel(container);
                 },
@@ -214,8 +190,7 @@ if (window.PrimeFaces) {
                     radios = container.find('div.ui-radiobutton-box');
 
                     for(var i = 0; i < radios.length; i++) {
-                        if (!csvStateOnly) radios.eq(i).removeClass('ui-state-error');
-                        radios.eq(i).removeClass('ui-state-csv-invalid').addClass('ui-state-csv-valid');                        
+                        PrimeFaces.validator.Highlighter.applyStateCssClasses(radios.eq(i), true, csvStateOnly);
                     }
                     if (!csvStateOnly) PrimeFaces.validator.Highlighter.unhighlightLabel(container);
                 }
@@ -225,15 +200,11 @@ if (window.PrimeFaces) {
             'booleanbutton': {
 
                 highlight: function(element, csvStateOnly) {
-                    var elt2AddState = element.parent().parent();
-                    if (!csvStateOnly) elt2AddState.addClass('ui-state-error');
-                    elt2AddState.addClass('ui-state-csv-invalid').removeClass('ui-state-csv-valid');
+                    PrimeFaces.validator.Highlighter.applyStateCssClasses(element.parent().parent(), false, csvStateOnly);
                 },
 
                 unhighlight: function(element, csvStateOnly) {
-                    var elt2AddState = element.parent().parent();
-                    if (!csvStateOnly) elt2AddState.removeClass('ui-state-error');
-                    radios.eq(i).removeClass('ui-state-csv-invalid').addClass('ui-state-csv-valid');
+                    PrimeFaces.validator.Highlighter.applyStateCssClasses(element.parent().parent(), true, csvStateOnly);
                 }
 
             },
@@ -241,15 +212,11 @@ if (window.PrimeFaces) {
             'toggleswitch': {
 
                 highlight: function(element, csvStateOnly) {
-                    var elt2AddState = element.parent().next();
-                    if (!csvStateOnly) elt2AddState.addClass('ui-state-error');
-                    elt2AddState.addClass('ui-state-csv-invalid').removeClass('ui-state-csv-valid');
+                    PrimeFaces.validator.Highlighter.applyStateCssClasses(element.parent().next(), false, csvStateOnly);
                 },
 
                 unhighlight: function(element, csvStateOnly) {
-                    var elt2AddState = element.parent().next();
-                    if (!csvStateOnly) elt2AddState.removeClass('ui-state-error');
-                    radios.eq(i).removeClass('ui-state-csv-invalid').addClass('ui-state-csv-valid');
+                    PrimeFaces.validator.Highlighter.applyStateCssClasses(element.parent().next(), true, csvStateOnly);
                 }
 
             },
@@ -259,26 +226,24 @@ if (window.PrimeFaces) {
                 highlight: function(element, csvStateOnly) {
                     var orginalInput = element.prev('input');
                     if (!csvStateOnly) {
-                        orginalInput.addClass('ui-state-error');
                         PrimeFaces.validator.Highlighter.highlightLabel(orginalInput);
 
                         // see #3706
                         orginalInput.parent().addClass('ui-state-error');
                     }
-                    orginalInput.addClass('ui-state-csv-invalid').removeClass('ui-state-csv-valid');
+                    PrimeFaces.validator.Highlighter.applyStateCssClasses(orginalInput, false, csvStateOnly);
                     // orginalInput.parent().addClass('ui-state-csv-invalid').removeClass('ui-state-csv-valid'); // makes visual no sense
                 },
 
                 unhighlight: function(element, csvStateOnly) {
                     var orginalInput = element.prev('input');
                     if (!csvStateOnly) {
-                        orginalInput.removeClass('ui-state-error');
                         PrimeFaces.validator.Highlighter.unhighlightLabel(orginalInput);
 
                         // see #3706
                         orginalInput.parent().removeClass('ui-state-error');
                     }
-                    orginalInput.removeClass('ui-state-csv-invalid').addClass('ui-state-csv-valid');
+                    PrimeFaces.validator.Highlighter.applyStateCssClasses(orginalInput, true, csvStateOnly);
                     // orginalInput.parent().removeClass('ui-state-csv-invalid').addClass('ui-state-csv-valid'); // makes visual no sense
                 }
 
