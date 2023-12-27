@@ -7,6 +7,24 @@
 <f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
     <h:head>
         <h:outputStylesheet name="css/primeflex3.css" library="it"/><!-- latest primeflex -->
+
+        <style type="text/css">
+            body .ui-panelgrid .ui-panelgrid-cell {
+                padding: 0.5rem;
+            }
+
+            button.ui-state-csv-valid, input.ui-state-csv-valid, .ui-inputfield.ui-state-error.ui-state-csv-valid, .ui-selectonemenu.ui-state-csv-valid {
+                border-left-color: green !important; /* !important to override border-color set by ui-state-focus */
+                border-left-style: solid;
+                border-left-width: 5px;
+            }
+
+            button.ui-state-csv-invalid, input.ui-state-csv-invalid, span.ui-inputnumber.ui-state-csv-invalid, .ui-selectonemenu.ui-state-csv-invalid {
+                border-left-color: red !important; /* !important to override border-color set by ui-state-focus */
+                border-left-style: solid;
+                border-left-width: 5px;
+            }
+        </style>
     </h:head>
 
     <h:body>
@@ -91,7 +109,7 @@
 
             <div class="pt-3">
                 <p:commandButton value="Non-Ajax" id="btnNonAjax" ajax="false" validateClient="true" enabledByValidateClient="true" styleClass="mr-2" />
-                <p:commandButton value="Ajax" id="btnAjax" update="@form"  validateClient="true" enabledByValidateClient="true" styleClass="mr-2" />
+                <p:commandButton value="Ajax" id="btnAjax" update="@form" validateClient="true" enabledByValidateClient="true" styleClass="mr-2" />
                 <p:commandButton value="Partial (name + number)" id="btnPartial" update="gridName gridNumber" process="name number" validateClient="true" enabledByValidateClient="true" styleClass="mr-2" />
                 <p:commandButton value="Disabled" id="btnDisabled" ajax="false" enabledByValidateClient="true" styleClass="mr-2"/>
                 <p:commandButton value="Remote Command" id="btnRemoteCommand" type="button" enabledByValidateClient="true" onclick="rc()" />

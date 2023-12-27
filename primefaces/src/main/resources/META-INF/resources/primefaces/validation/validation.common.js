@@ -257,8 +257,6 @@ if (window.PrimeFaces) {
          * @param {HTMLButtonElement} btn CommandButton which´s CSV-requirements should be validated.
          */
         validateButtonCsvRequirements: function (btn) {
-            console.log('CSV - ' + btn.id + ' - ' + btn.innerText + '; ajax: ' + btn.dataset.pfValidateclientAjax + '; process: ' + btn.dataset.pfValidateclientProcess + '; update: ' + btn.dataset.pfValidateclientUpdate);
-
             const $source = $(btn);
             const cfg = {
                 ajax: btn.dataset.pfValidateclientAjax,
@@ -536,8 +534,6 @@ if (window.PrimeFaces) {
          */
         bindAjaxComplete: function() {
             if (this.ajaxCompleteBound) return;
-
-            console.log('Bind to Ajax-Complete-events to update CSV-state after an Ajax-call may have changed state');
 
             var doc = $(document),
                 $this = this;

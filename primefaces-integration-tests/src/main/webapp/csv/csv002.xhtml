@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+        <h:outputStylesheet name="css/primeflex3.css" library="it"/><!-- latest primeflex -->
+
+        <style type="text/css">
+            body .ui-panelgrid .ui-panelgrid-cell {
+                padding: 0.5rem;
+            }
+
+            button.ui-state-csv-valid, input.ui-state-csv-valid, .ui-inputfield.ui-state-error.ui-state-csv-valid, .ui-selectonemenu.ui-state-csv-valid {
+                border-left-color: green !important; /* !important to override border-color set by ui-state-focus */
+                border-left-style: solid;
+                border-left-width: 5px;
+            }
+
+            button.ui-state-csv-invalid, input.ui-state-csv-invalid, span.ui-inputnumber.ui-state-csv-invalid, .ui-selectonemenu.ui-state-csv-invalid {
+                border-left-color: red !important; /* !important to override border-color set by ui-state-focus */
+                border-left-style: solid;
+                border-left-width: 5px;
+            }
+        </style>
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="messages" showDetail="true" closable="true">
+                <p:autoUpdate/>
+            </p:messages>
+
+
+            <p:panelGrid id="gridEverythingElse" columns="4" layout="flex"
+                         columnClasses="col-12 xl:col-2, col-12 xl:col-4, col-12 xl:col-5, col-12 xl:col-1"
+                         contentStyleClass="align-items-baseline ui-fluid">
+
+                <p:outputLabel for="@next" value="yes/no:"/>
+                <p:selectBooleanCheckbox id="selectBooleanCheckbox" value="#{csv002.yesNo}" required="true" itemLabel="yes/no">
+                    <p:clientValidator />
+                </p:selectBooleanCheckbox>
+                <p:message for="@previous" id="msgSelectBooleanCheckbox"/>
+                <h:outputText value="#{csv002.yesNo}"/>
+
+                <p:outputLabel for="@next" value="yes/no/maybe:"/>
+                <p:triStateCheckbox id="triStateCheckbox" value="#{csv002.yesNoMaybe}" required="true" itemLabel="yes/no/maybe">
+                    <p:clientValidator />
+                </p:triStateCheckbox>
+                <p:message for="@previous" id="msgTriStateCheckbox"/>
+                <h:outputText value="#{csv002.yesNoMaybe}"/>
+
+                <p:outputLabel for="@next" value="Country:"/>
+                <p:selectManyCheckbox id="selectManyCheckbox" value="#{csv002.countries}" required="true">
+                    <f:selectItem itemLabel="Germany" itemValue="DEU"/>
+                    <f:selectItem itemLabel="Turkey" itemValue="TUR"/>
+                    <f:selectItem itemLabel="Spain" itemValue="ESP"/>
+                    <f:selectItem itemLabel="USA" itemValue="USA"/>
+                    <p:clientValidator />
+                </p:selectManyCheckbox>
+                <p:message for="@previous" id="msgSelectManyCheckbox"/>
+                <h:outputText value="#{csv002.countries}"/>
+
+                <p:outputLabel for="@next" value="Spinner:"/>
+                <p:spinner id="spinner" value="#{csv002.spinner}" required="true">
+                    <p:clientValidator />
+                </p:spinner>
+                <p:message for="@previous" id="msgSpinner"/>
+                <h:outputText value="#{csv002.spinner}"/>
+
+                <p:outputLabel for="@next" value="Select UI-library:"/>
+                <p:selectOneListbox id="selectOneListbox" value="#{csv002.uiLibrary}" required="true">
+                    <f:selectItem itemLabel=" " itemValue="" noSelectionOption="true" />
+                    <f:selectItem itemLabel="JSF" itemValue="JSF" />
+                    <f:selectItem itemLabel="Angular" itemValue="Angular" />
+                    <f:selectItem itemLabel="React" itemValue="React" />
+                    <f:selectItem itemLabel="Vue" itemValue="Vue" />
+                    <p:clientValidator />
+                </p:selectOneListbox>
+                <p:message for="@previous" id="msgSelectOneListbox"/>
+                <h:outputText value="#{csv002.uiLibrary}"/>
+
+                <p:outputLabel for="@next" value="Select programming language:"/>
+                <p:selectOneRadio id="selectOneRadio" value="#{csv002.progLanguage}" layout="lineDirection" unselectable="true" required="true">
+                    <f:selectItem itemLabel="TypeScript" itemValue="TS"/>
+                    <f:selectItem itemLabel="Java" itemValue="Java"/>
+                    <f:selectItem itemLabel="C#" itemValue="C#"/>
+                    <f:selectItem itemLabel="Python" itemValue="Python"/>
+                    <p:clientValidator />
+                </p:selectOneRadio>
+                <p:message for="@previous" id="msgSelectOneRadio"/>
+                <h:outputText value="#{csv002.progLanguage}"/>
+
+                <p:outputLabel for="@next" value="Toggleswitch:"/>
+                <p:toggleSwitch id="toggleSwitch" value="#{csv002.toggleSwitch}" required="true">
+                    <p:clientValidator />
+                </p:toggleSwitch>
+                <p:message for="@previous" id="msgToggleSwitch"/>
+                <h:outputText value="#{csv002.toggleSwitch}"/>
+
+            </p:panelGrid>
+
+            <div class="pt-3">
+                <p:commandButton value="Ajax" id="btnAjax" update="@form" validateClient="true" enabledByValidateClient="true" styleClass="mr-2" />
+            </div>
+
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>
