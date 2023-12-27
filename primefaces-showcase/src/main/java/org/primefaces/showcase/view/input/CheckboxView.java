@@ -35,6 +35,7 @@ import javax.faces.model.SelectItemGroup;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.showcase.domain.Country;
 import org.primefaces.showcase.service.CountryService;
@@ -189,6 +190,14 @@ public class CheckboxView {
 
     public void setSelectedCountries3(List<Country> selectedCountries3) {
         this.selectedCountries3 = selectedCountries3;
+    }
+
+    public void onItemSelect(SelectEvent event) {
+        FacesMessage msg = new FacesMessage();
+        msg.setSummary("Item selected: " + event.getObject().toString());
+        msg.setSeverity(FacesMessage.SEVERITY_INFO);
+
+        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
     public void onItemUnselect(UnselectEvent event) {

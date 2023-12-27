@@ -32,6 +32,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractInputComponent;
+import org.primefaces.selenium.component.base.ComponentUtils;
 import org.primefaces.selenium.findby.FindByParentPartialId;
 
 import java.util.ArrayList;
@@ -52,8 +53,26 @@ public abstract class SelectManyMenu extends AbstractInputComponent {
     @FindByParentPartialId(value = "_filter", searchFromRoot = true)
     private WebElement filterInput;
 
+    /**
+     * Is the input using AJAX "itemSelect" event?
+     *
+     * @return true if using AJAX for itemSelect
+     */
+    public boolean isItemSelectAjaxified() {
+        return ComponentUtils.hasAjaxBehavior(getRoot(), "itemSelect");
+    }
+
+    /**
+     * Is the input using AJAX "itemUnselect" event?
+     *
+     * @return true if using AJAX for itemUnselect
+     */
+    public boolean isItemUnselectAjaxified() {
+        return ComponentUtils.hasAjaxBehavior(getRoot(), "itemUnselect");
+    }
+
     public void deselect(String label) {
-        deselect(label, false);
+        deselect(label, isItemUnselectAjaxified());
     }
 
     public void deselect(String label, boolean withGuardAjax) {
@@ -65,7 +84,7 @@ public abstract class SelectManyMenu extends AbstractInputComponent {
     }
 
     public void select(String label, boolean withMetaKey) {
-        select(label, withMetaKey, false);
+        select(label, withMetaKey, isItemSelectAjaxified());
     }
 
     public void select(String label, boolean withMetaKey, boolean withGuardAjax) {

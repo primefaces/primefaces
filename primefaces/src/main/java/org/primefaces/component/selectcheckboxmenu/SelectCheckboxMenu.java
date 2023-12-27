@@ -36,6 +36,7 @@ import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 
 import org.primefaces.component.column.Column;
+import org.primefaces.event.SelectEvent;
 import org.primefaces.event.ToggleSelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.util.ComponentUtils;
@@ -77,6 +78,7 @@ public class SelectCheckboxMenu extends SelectCheckboxMenuBase {
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("change", null)
             .put("toggleSelect", ToggleSelectEvent.class)
+            .put("itemSelect", SelectEvent.class)
             .put("itemUnselect", UnselectEvent.class)
             .build();
 
@@ -143,8 +145,13 @@ public class SelectCheckboxMenu extends SelectCheckboxMenuBase {
                 boolean checked = Boolean.parseBoolean(params.get(clientId + "_checked"));
                 ToggleSelectEvent toggleSelectEvent = new ToggleSelectEvent(this, ((AjaxBehaviorEvent) event).getBehavior(), checked);
                 toggleSelectEvent.setPhaseId(event.getPhaseId());
-
                 super.queueEvent(toggleSelectEvent);
+            }
+            else if ("itemSelect".equals(eventName)) {
+                Object selectedItemValue = ComponentUtils.getConvertedValue(context, this, params.get(getClientId(context) + "_itemSelect"));
+                SelectEvent selectEvent = new SelectEvent(this, ((AjaxBehaviorEvent) event).getBehavior(), selectedItemValue);
+                selectEvent.setPhaseId(event.getPhaseId());
+                super.queueEvent(selectEvent);
             }
             else if ("itemUnselect".equals(eventName)) {
                 Object unselectedItemValue = ComponentUtils.getConvertedValue(context, this, params.get(getClientId(context) + "_itemUnselect"));

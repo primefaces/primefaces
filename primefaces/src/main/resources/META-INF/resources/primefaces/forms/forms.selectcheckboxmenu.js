@@ -671,16 +671,6 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
                 //".ui-chkbox" is a grandchild when columns are used!
                 $this.uncheck(item.find('.ui-chkbox').children('.ui-chkbox-box'), true);
-
-                if ($this.hasBehavior('itemUnselect')) {
-                    var ext = {
-                        params: [
-                            { name: $this.id + '_itemUnselect', value: itemValue }
-                        ]
-                    };
-
-                    $this.callBehavior('itemUnselect', ext);
-                }
             }
 
             e.stopPropagation();
@@ -976,6 +966,16 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                     this.createMultipleItem(item);
                     this.alignPanel();
                 }
+                
+                if (this.hasBehavior('itemSelect')) {
+                    var ext = {
+                        params: [
+                            { name: this.id + '_itemSelect', value: item.data("item-value") }
+                        ]
+                    };
+
+                    this.callBehavior('itemSelect', ext);
+                }
             }
 
             this.updateLabel();
@@ -1007,6 +1007,16 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                     checkbox.removeClass('ui-state-focus');
                     this.removeMultipleItem(item);
                     this.alignPanel();
+                }
+                
+                if (this.hasBehavior('itemUnselect')) {
+                    var ext = {
+                        params: [
+                            { name: this.id + '_itemUnselect', value: item.data("item-value") }
+                        ]
+                    };
+
+                    this.callBehavior('itemUnselect', ext);
                 }
             }
 
@@ -1187,7 +1197,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                 box.removeClass('ui-state-focus');
         })
         .on('keydown.selectCheckboxMenu', function(e) {
-                if (e.key === ' ') {
+                if (e.code === 'Space') {
                     e.preventDefault();
                 }
                 else if (e.key === 'Escape') {
