@@ -98,6 +98,17 @@ enable() | - | void | Enables the component.
 disable() | - | void | Disables the component.
 showItemGroup(item) | li element as jQuery object | void | Shows subcategories of a given item.
 
+## Ajax Behavior Events
+
+The following AJAX behavior events are available for this component. If no event is specified the default event is called.  
+  
+**Default Event:** `change`  
+**Available Events:** `blur, change, click, dblclick, focus, itemSelect, itemUnselect, keydown, keypress, keyup, mousedown, mousemove, mouseout, mouseover, mouseup, valueChange`  
+
+```xhtml
+<p:ajax event="change" listener="#{bean.handlechange}" update="msgs" />
+```
+
 ## Skinning
 MultiSelectListbox resides in a main container which _style_ and _styleClass_ attributes apply. As
 skinning style classes are global, see the main theming section for more information. Following is

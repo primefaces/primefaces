@@ -26,9 +26,10 @@ package org.primefaces.component.selectmanymenu;
 import javax.faces.component.html.HtmlSelectManyMenu;
 
 import org.primefaces.component.api.InputHolder;
+import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
 
-public abstract class SelectManyMenuBase extends HtmlSelectManyMenu implements Widget, InputHolder {
+public abstract class SelectManyMenuBase extends HtmlSelectManyMenu implements Widget, InputHolder, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

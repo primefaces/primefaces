@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:composite="http://xmlns.jcp.org/jsf/composite/composite"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+	<h:head>
+
+	</h:head>
+
+	<h:body>
+
+		<h:form id="form">
+			<h:panelGrid columns="3">
+                <p:outputLabel for="standardInputText" value="Label for standard InputText"/>
+                <h:inputText id="standardInputText" value="#{message002.testInputStandard}" required="true"/>
+                <p:message id="msgStandardInputText" for="standardInputText" display="text"/>
+
+                <p:outputLabel for="customInputTextTooltip" value="Label for custom InputTextTooltip"/>
+                <composite:inputTextTooltip id="customInputTextTooltip" value="#{message002.testInputCustom}" tooltip="Test tooltip text" required="true"/>
+                <p:message id="msgCustomInputTextTooltip" for="customInputTextTooltip" display="text"/>
+
+
+                <p:outputLabel for="customInputTextTooltipHolder" value="Label for custom InputTextTooltipHolder" />
+                <composite:inputTextTooltipHolder id="customInputTextTooltipHolder" value="#{message002.testInputCustomHolder}" tooltip="Test tooltip text holder" required="true" />
+                <p:message id="msgCustomInputTextTooltipHolder" for="customInputTextTooltipHolder" display="text" />
+
+                <p:outputLabel for="customInputTextTooltipHolderWithComposite" value="Label for custom InputTextTooltipHolderWithComposite" />
+                <composite:inputTextTooltipHolderWithComposite id="customInputTextTooltipHolderWithComposite"  value="#{message002.testInputCustomHolderWithComposite}" tooltip="Test tooltip text holder with composite" required="true" />
+                <p:message id="msgCustomInputTextTooltipHolderWithComposite" for="customInputTextTooltipHolderWithComposite" display="text" />
+            </h:panelGrid>
+            
+            <p:commandButton id="buttonSubmit" value="Submit" update="@form" />
+            <p:commandButton id="buttonReset" value="Reset" update="@form" process="@this">
+                <p:resetInput target="form" />
+            </p:commandButton>
+		</h:form>
+
+	</h:body>
+</f:view>
+
+</html>

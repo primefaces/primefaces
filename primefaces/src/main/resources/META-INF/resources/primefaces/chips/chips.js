@@ -95,6 +95,7 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
                     break;
 
                 case 'Enter':
+                case 'NumpadEnter':
                     $this.addItem(value, true);
                     e.preventDefault();
                     e.stopPropagation();

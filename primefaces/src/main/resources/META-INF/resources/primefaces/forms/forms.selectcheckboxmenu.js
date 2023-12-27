@@ -522,15 +522,14 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             $this.jq.removeClass('ui-state-focus');
             $this.menuIcon.removeClass('ui-state-focus');
         }).on('keydown.selectCheckboxMenu', function(e) {
-            var key = e.key;
-
             if (!$this.isLoaded()) {
                 $this._renderPanel();
             }
 
-            switch (key) {
+            switch (e.code) {
                 case 'Enter':
-                case ' ':
+                case 'NumpadEnter':
+                case 'Space':
                     $this.togglePanel();
                     if ($this.panel.is(":hidden")) {
                         e.stopPropagation(); // GitHub #8340

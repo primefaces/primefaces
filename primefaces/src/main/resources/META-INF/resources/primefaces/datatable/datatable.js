@@ -902,7 +902,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             }
 
             if($this.focusedRow) {
-                switch(e.key) {
+                switch(e.code) {
                     case 'ArrowUp':
                     case 'ArrowDown':
                         var rowSelector = 'tr.ui-widget-content.ui-datatable-selectable',
@@ -928,7 +928,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     break;
 
                     case 'Enter':
-                    case ' ':
+                    case 'NumpadEnter':
+                    case 'Space':
                         if($this.focusedRowWithCheckbox) {
                             $this.focusedRow.find('> td.ui-selection-column > div.ui-chkbox > div.ui-chkbox-box').trigger('click.dataTable');
                         }
@@ -1382,8 +1383,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.percentageScrollHeight = this.cfg.scrollHeight && (this.cfg.scrollHeight.indexOf('%') !== -1);
         this.percentageScrollWidth = this.cfg.scrollWidth && (this.cfg.scrollWidth.indexOf('%') !== -1);
         var $this = this,
-        scrollBarWidth = this.getScrollbarWidth() + 'px',
-        hScrollWidth = this.scrollBody[0].scrollWidth;
+        scrollBarWidth = this.getScrollbarWidth() + 'px';
 
         if(this.cfg.scrollHeight) {
             if(this.percentageScrollHeight) {
@@ -1446,8 +1446,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             var scrollLeft = $this.scrollBody.scrollLeft();
 
             if ($this.isRTL) {
-                $this.scrollHeaderBox.css('margin-right', (scrollLeft - hScrollWidth + this.clientWidth) + 'px');
-                $this.scrollFooterBox.css('margin-right', (scrollLeft - hScrollWidth + this.clientWidth) + 'px');
+                $this.scrollHeaderBox.css('margin-right', scrollLeft + 'px');
+                $this.scrollFooterBox.css('margin-right', scrollLeft + 'px');
             }
             else {
                 $this.scrollHeaderBox.css('margin-left', -scrollLeft + 'px');
@@ -3203,12 +3203,40 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
+     * Disables all cell editors to prevent extra data on form posts.
+     * @private
+     * @param {JQuery} element the row or cell to find inputs to enable for editing
+     */
+    disableCellEditors: function(element) {
+        if (element) {
+            $(element).find(":input:enabled").attr('disabled', 'disabled');
+        }
+        else {
+            $(".ui-cell-editor-input :input:enabled").attr('disabled', 'disabled').attr("data-disabled-by-editor", "true");
+        }
+    },
+    
+    /**
+     * Enables all cell editors that were previously disabled by the UI and not alreayd disabled from user.
+     * @private
+     * @param {JQuery} element the row or cell to find inputs to enable for editing
+     */
+    enableCellEditors: function(element) {
+        if (element) {
+            element.find(":input[data-disabled-by-editor='true']").removeAttr('disabled');
+        }
+    },
+
+    /**
      * Binds editor events non-obtrusively.
      * @private
      */
     bindEditEvents: function() {
         var $this = this;
         this.cfg.saveOnCellBlur = (this.cfg.saveOnCellBlur === false) ? false : true;
+        
+        // #3571 Set all fields to disabled by default
+        this.disableCellEditors();
 
         if(this.cfg.editMode === 'row') {
             var rowEditorSelector = '> tr > td > div.ui-row-editor > a';
@@ -3353,6 +3381,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             column.find('.ui-cell-editor-output').hide();
             column.find('.ui-cell-editor-input').show();
         });
+        
+        this.enableCellEditors(row);
 
         var inputs=row.find(':input:enabled');
         if (inputs.length > 0) {
@@ -3485,8 +3515,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
             var cellEditor = cell.children('div.ui-cell-editor'),
             displayContainer = cellEditor.children('div.ui-cell-editor-output'),
-            inputContainer = cellEditor.children('div.ui-cell-editor-input'),
-            inputs = inputContainer.find(':input:enabled[type!=hidden]'),
+            inputContainer = cellEditor.children('div.ui-cell-editor-input');
+            this.enableCellEditors(inputContainer);
+            var inputs = inputContainer.find(':input:enabled[type!=hidden]'),
             multi = inputs.length > 1;
 
             cell.addClass('ui-state-highlight ui-cell-editing');
@@ -3713,6 +3744,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
                 else{
                     cell.data('valid', true);
+                    $this.disableCellEditors(cell);
                     $this.viewMode(cell);
                 }
 
@@ -3776,6 +3808,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 if($this.cfg.clientCache) {
                     $this.clearCacheMap();
                 }
+                
+                $this.disableCellEditors();
             }
         };
 
@@ -3856,6 +3890,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         newRow = $this.tbody.children('tr').eq(index);
                         $this.getRowEditors(newRow).children('.ui-cell-editor-input').children().remove();
                     }
+                    
+                    $this.disableCellEditors();
                 }
 
                 if($this.cfg.clientCache) {
@@ -4220,7 +4256,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         resizableColumns.prepend('<span class="ui-column-resizer">&nbsp;</span>');
 
         if(this.cfg.resizeMode === 'fit') {
-            resizableColumns.filter(':last-child').children('span.ui-column-resizer').hide();
+            var child = this.isRTL ? ':first-child' : ':last-child';
+            resizableColumns.filter(child).children('span.ui-column-resizer').hide();
         }
 
         if(this.hasColumnGroup) {
@@ -4253,7 +4290,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         var title = columnHeader.children('.ui-column-title');
-        var nextColumnHeader = columnHeader.nextAll(':visible:first');
+        var nextColumnHeader = this.isRTL ? columnHeader.prevAll(':visible:first') : columnHeader.nextAll(':visible:first');
 
         if(this.cfg.liveResize) {
             change = columnHeader.outerWidth() - (event.pageX - columnHeader.offset().left),

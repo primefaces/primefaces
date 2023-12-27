@@ -198,6 +198,21 @@
     direction: rtl;
 }
 
+.ui-tree.ui-tree-rtl.ui-tree-horizontal .ui-treenode.ui-treenode-leaf,
+.ui-tree.ui-tree-rtl.ui-tree-horizontal .ui-treenode.ui-treenode-collapsed {
+    padding-left:0px;
+    padding-right:40px;
+}
+
+.ui-tree-rtl.ui-tree-horizontal .ui-treenode:before {
+    left: 0px;
+    width: auto;
+}
+
+.ui-tree.ui-tree-rtl.ui-tree-horizontal .ui-treenode-children {
+    padding: 0 0 0 16px;
+}
+
 .ui-tree.ui-tree-rtl .ui-treenode-children {
     padding: 0 16px 0 0;
 }
