@@ -23,14 +23,14 @@ id | null | String | Unique identifier of the component
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
 widgetVar | null | String | Name of the client side widget.
-model | null | MenuModel | MenuModel instance for programmatic menu.
-style | null | String | Inline style of the component.
-styleClass | null | String | Style class of the component.
-backLabel | Back | String | Text for back link.
-trigger | null | String | Id of the component whose triggerEvent will show the dynamic positioned menu.
 my | null | String | Corner of menu to align with trigger element.
 at | null | String | Corner of trigger to align with menu element.
+backLabel | Back | String | Text for back link.
+model | null | MenuModel | MenuModel instance for programmatic menu.
 overlay | false | Boolean | Defines positioning, when enabled menu is displayed with absolute position relative to the trigger. Default is false, meaning static positioning.
+style | null | String | Inline style of the component.
+styleClass | null | String | Style class of the component.
+trigger | null | String | Id of the component whose triggerEvent will show the dynamic positioned menu.
 triggerEvent | click | String | Event name of trigger that will show the dynamic positioned menu.
 
 ## Getting started with the SlideMenu
