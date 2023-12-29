@@ -4,6 +4,7 @@
  * CommandLink is an extended version of standard commandLink with AJAX and theming.
  *
  * @prop {number} [ajaxCount] Number of concurrent active Ajax requests.
+ * @prop {number} [ajaxCount] Timestamp of the Ajax request that started the animation.
  * 
  * @interface {PrimeFaces.widget.CommandLinkCfg} cfg The configuration for the {@link  CommandLink| CommandLink widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
@@ -56,7 +57,7 @@ PrimeFaces.widget.CommandLink = PrimeFaces.widget.BaseWidget.extend({
                 }
                 if (PrimeFaces.ajax.Utils.isXhrSource($this, settings)) {
                     $this.jq.addClass('ui-state-loading');
-                    $this.jq.data('ajaxstart', Date.now());
+                    $this.ajaxStart = Date.now();
                     $this.disable();
                 }
             }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings, args) {
@@ -67,7 +68,7 @@ PrimeFaces.widget.CommandLink = PrimeFaces.widget.BaseWidget.extend({
                 if (PrimeFaces.ajax.Utils.isXhrSource($this, settings)) {
                     PrimeFaces.queueTask(
                         function(){ $this.endAjaxDisabled($this); },
-                        Math.max(PrimeFaces.ajax.minLoadAnim + $this.jq.data('ajaxstart') - Date.now(), 0)
+                        Math.max(PrimeFaces.ajax.minLoadAnim + $this.ajaxStart - Date.now(), 0)
                     );
                 }
             });

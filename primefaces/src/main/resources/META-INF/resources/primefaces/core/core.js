@@ -400,7 +400,7 @@
                     }
 
                     button.addClass('ui-state-loading');
-                    button.data('ajaxstart', Date.now());
+                    widget.ajaxStart = Date.now();
 
                     if (typeof widget.disable === 'function'
                         && widget.cfg.disableOnAjax !== false) {
@@ -424,7 +424,7 @@
 
                     PrimeFaces.queueTask(
                         function(){ PrimeFaces.buttonEndAjaxDisabled(widget, button); },
-                        Math.max(PrimeFaces.ajax.minLoadAnim + button.data('ajaxstart') - Date.now(), 0)
+                        Math.max(PrimeFaces.ajax.minLoadAnim + widget.ajaxStart - Date.now(), 0)
                     );
                 }
             });

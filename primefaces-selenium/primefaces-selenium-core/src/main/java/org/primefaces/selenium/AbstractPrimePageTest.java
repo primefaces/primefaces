@@ -315,7 +315,14 @@ public abstract class AbstractPrimePageTest {
     }
 
     protected void noMinLoadAnim() {
-        PrimeSelenium.executeScript("PrimeFaces.ajax.minLoadAnim = 0;");
+        setMinLoadAnim(0);
+    }
+
+    protected void setMinLoadAnim(int milliseconds) {
+        if (milliseconds < 0) {
+            throw new IllegalArgumentException("milliseconds cannot be negative");
+        }
+        PrimeSelenium.executeScript("PrimeFaces.ajax.minLoadAnim = " + milliseconds + ";");
     }
 
     /**
