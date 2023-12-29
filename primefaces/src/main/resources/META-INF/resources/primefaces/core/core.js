@@ -426,6 +426,7 @@
                         function(){ PrimeFaces.buttonEndAjaxDisabled(widget, button); },
                         Math.max(PrimeFaces.ajax.minLoadAnim + widget.ajaxStart - Date.now(), 0)
                     );
+                    delete widget.ajaxStart;
                 }
             });
         },

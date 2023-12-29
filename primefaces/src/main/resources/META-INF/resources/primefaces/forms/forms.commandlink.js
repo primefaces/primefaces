@@ -70,6 +70,7 @@ PrimeFaces.widget.CommandLink = PrimeFaces.widget.BaseWidget.extend({
                         function(){ $this.endAjaxDisabled($this); },
                         Math.max(PrimeFaces.ajax.minLoadAnim + $this.ajaxStart - Date.now(), 0)
                     );
+                    delete $this.ajaxStart;
                 }
             });
         }
