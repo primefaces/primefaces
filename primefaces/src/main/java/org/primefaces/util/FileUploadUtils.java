@@ -160,8 +160,8 @@ public class FileUploadUtils {
     }
 
     /**
-     * Check if an uploaded file meets all specifications regarding its filename and content type. It evaluates {@link FileUpload#getAllowTypes}
-     * as well as {@link FileUpload#getAccept} and uses the installed {@link java.nio.file.spi.FileTypeDetector} implementation.
+     * Check if an uploaded file meets all specifications regarding its filename and content type.
+     * It evaluates allowTypes as well as accept and uses the installed {@link java.nio.file.spi.FileTypeDetector} implementation.
      * For most reliable content type checking it's recommended to plug in Apache Tika as an implementation.
      *
      * @param context the {@link PrimeApplicationContext}
@@ -246,7 +246,7 @@ public class FileUploadUtils {
 
         String prefix = FilenameUtils.removeExtension(fileName);
         Path tempFile = Files.createTempFile(prefix, Constants.EMPTY_STRING);
-        String contentType = null;
+        String contentType;
 
         try (InputStream in = new PushbackInputStream(new BufferedInputStream(stream));
              OutputStream out = Files.newOutputStream(tempFile)) {
@@ -284,16 +284,16 @@ public class FileUploadUtils {
 
         boolean accepted = Stream.of(accepts)
                 .map(String::trim)
-                .anyMatch(acceptPart -> {
+                .anyMatch(acceptType -> {
                     // try with extension first
-                    if (acceptPart.startsWith(".") && filenameLC.endsWith(acceptPart)) {
-                        LOGGER.log(Level.FINE, () -> String.format("File extension %s of the uploaded file %s is accepted", acceptPart, fileName));
+                    if (acceptType.startsWith(".") && filenameLC.endsWith(acceptType)) {
+                        LOGGER.log(Level.FINE, () -> String.format("File extension %s of the uploaded file %s is accepted", acceptType, fileName));
                         return true;
                     }
                     // or try with IANA media types
-                    if (FilenameUtils.wildcardMatch(contentTypeLC, acceptPart)) {
+                    if (FilenameUtils.wildcardMatch(contentTypeLC, acceptType)) {
                         LOGGER.log(Level.FINE,
-                                () -> String.format("Content type %s of the uploaded file %s is accepted by %s", contentTypeLC, fileName, acceptPart));
+                                () -> String.format("Content type %s of the uploaded file %s is accepted by %s", contentTypeLC, fileName, acceptType));
                         return true;
                     }
 
