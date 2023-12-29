@@ -139,6 +139,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[The HTML accept attribute, which will be used to validate the content type.]]>
+            </description>
+            <name>accept</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Whether virus scan should be performed. Default is false.]]>
             </description>
             <name>virusScan</name>

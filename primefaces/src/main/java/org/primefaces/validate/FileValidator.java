@@ -56,12 +56,9 @@ public class FileValidator implements Validator, PartialStateHolder, ClientValid
     private static final String SIZE_LIMIT_MESSAGE_ID = "primefaces.FileValidator.SIZE_LIMIT";
 
     private Integer fileLimit;
-    private String fileLimitMessage;
     private Long sizeLimit;
-    private String sizeLimitMessage;
     private String allowTypes;
-    private String allowTypesMessage;
-
+    private String accept;
     private Boolean virusScan;
 
     private boolean isTransient = false;
@@ -71,9 +68,6 @@ public class FileValidator implements Validator, PartialStateHolder, ClientValid
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 
         if (component instanceof FileUpload) {
-            FileUpload fileUpload = (FileUpload) component;
-            String accept = fileUpload.isValidateContentType() ? fileUpload.getAccept() : null;
-
             if (value instanceof UploadedFile) {
                 UploadedFile uploadedFile = (UploadedFile) value;
 
@@ -89,9 +83,6 @@ public class FileValidator implements Validator, PartialStateHolder, ClientValid
             }
         }
         else if (component instanceof HtmlInputFile) {
-            // getter only available in Faces 4+
-            String accept = (String) component.getAttributes().get("accept");
-
             if (value instanceof Part) {
                 UploadedFile uploadedFile = new NativeUploadedFile((Part) value, sizeLimit, null);
                 validateUploadedFile(context, uploadedFile, accept);
@@ -113,9 +104,6 @@ public class FileValidator implements Validator, PartialStateHolder, ClientValid
 
     protected void validateUploadedFiles(FacesContext context, UploadedFiles uploadedFiles, String accept) {
         if (fileLimit != null && uploadedFiles.getFiles().size() > fileLimit) {
-            if (LangUtils.isNotBlank(fileLimitMessage)) {
-                throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, fileLimitMessage, ""));
-            }
             throw new ValidatorException(
                     MessageFactory.getFacesMessage(FILE_LIMIT_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, fileLimit));
         }
@@ -127,9 +115,6 @@ public class FileValidator implements Validator, PartialStateHolder, ClientValid
         }
 
         if (sizeLimit != null && totalSize > sizeLimit) {
-            if (LangUtils.isNotBlank(sizeLimitMessage)) {
-                throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, sizeLimitMessage, ""));
-            }
             throw new ValidatorException(
                     MessageFactory.getFacesMessage(SIZE_LIMIT_MESSAGE_ID, FacesMessage.SEVERITY_ERROR,
                             "*", FileUploadUtils.formatBytes(sizeLimit)));
@@ -140,18 +125,12 @@ public class FileValidator implements Validator, PartialStateHolder, ClientValid
         PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(context);
 
         if (sizeLimit != null && uploadedFile.getSize() > sizeLimit) {
-            if (LangUtils.isNotBlank(sizeLimitMessage)) {
-                throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, sizeLimitMessage, ""));
-            }
             throw new ValidatorException(
                     MessageFactory.getFacesMessage(SIZE_LIMIT_MESSAGE_ID, FacesMessage.SEVERITY_ERROR,
                             uploadedFile.getFileName(), FileUploadUtils.formatBytes(sizeLimit)));
         }
 
         if (LangUtils.isNotBlank(allowTypes) && !FileUploadUtils.isValidType(applicationContext, uploadedFile, allowTypes, accept)) {
-            if (LangUtils.isNotBlank(allowTypesMessage)) {
-                throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, allowTypesMessage, ""));
-            }
             throw new ValidatorException(
                     MessageFactory.getFacesMessage(ALLOW_TYPES_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, uploadedFile.getFileName()));
         }
@@ -173,26 +152,14 @@ public class FileValidator implements Validator, PartialStateHolder, ClientValid
 
         if (fileLimit != null) {
             metadata.put("data-p-filelimit", fileLimit);
-
-            if (LangUtils.isNotBlank(fileLimitMessage)) {
-                metadata.put("data-p-filelimitmsg", fileLimitMessage);
-            }
         }
 
         if (sizeLimit != null) {
             metadata.put("data-p-sizelimit", sizeLimit);
-
-            if (LangUtils.isNotBlank(sizeLimitMessage)) {
-                metadata.put("data-p-sizelimitmsg", sizeLimitMessage);
-            }
         }
 
         if (!StringUtil.isBlank(allowTypes)) {
             metadata.put("data-p-allowtypes", allowTypes);
-
-            if (LangUtils.isNotBlank(allowTypesMessage)) {
-                metadata.put("data-p-allowtypesmsg", allowTypesMessage);
-            }
         }
 
         return metadata;
@@ -227,14 +194,12 @@ public class FileValidator implements Validator, PartialStateHolder, ClientValid
         }
 
         if (!initialStateMarked()) {
-            Object[] values = new Object[7];
+            Object[] values = new Object[5];
             values[0] = fileLimit;
-            values[1] = fileLimitMessage;
-            values[2] = sizeLimit;
-            values[3] = sizeLimitMessage;
-            values[4] = allowTypes;
-            values[5] = allowTypesMessage;
-            values[6] = virusScan;
+            values[1] = sizeLimit;
+            values[2] = allowTypes;
+            values[3] = accept;
+            values[4] = virusScan;
             return values;
         }
         return null;
@@ -249,12 +214,10 @@ public class FileValidator implements Validator, PartialStateHolder, ClientValid
         if (state != null) {
             Object[] values = (Object[]) state;
             fileLimit = (Integer) values[0];
-            fileLimitMessage = (String) values[1];
-            sizeLimit = (Long) values[2];
-            sizeLimitMessage = (String) values[3];
-            allowTypes = (String) values[4];
-            allowTypesMessage = (String) values[5];
-            virusScan = (Boolean) values[6];
+            sizeLimit = (Long) values[1];
+            allowTypes = (String) values[2];
+            accept = (String) values[3];
+            virusScan = (Boolean) values[4];
         }
     }
 
@@ -280,17 +243,15 @@ public class FileValidator implements Validator, PartialStateHolder, ClientValid
         }
         FileValidator that = (FileValidator) o;
         return Objects.equals(fileLimit, that.fileLimit)
-                && Objects.equals(fileLimitMessage, that.fileLimitMessage)
                 && Objects.equals(sizeLimit, that.sizeLimit)
-                && Objects.equals(sizeLimitMessage, that.sizeLimitMessage)
                 && Objects.equals(allowTypes, that.allowTypes)
-                && Objects.equals(allowTypesMessage, that.allowTypesMessage)
+                && Objects.equals(accept, that.accept)
                 && Objects.equals(virusScan, that.virusScan);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(fileLimit, fileLimitMessage, sizeLimit, sizeLimitMessage, allowTypes, allowTypesMessage, virusScan);
+        return Objects.hash(fileLimit, sizeLimit, allowTypes, accept, virusScan);
     }
 
 
@@ -303,28 +264,12 @@ public class FileValidator implements Validator, PartialStateHolder, ClientValid
         this.fileLimit = fileLimit;
     }
 
-    public String getFileLimitMessage() {
-        return fileLimitMessage;
-    }
-
-    public void setFileLimitMessage(String fileLimitMessage) {
-        this.fileLimitMessage = fileLimitMessage;
-    }
-
     public Long getSizeLimit() {
         return sizeLimit;
     }
 
     public void setSizeLimit(Long sizeLimit) {
         this.sizeLimit = sizeLimit;
-    }
-
-    public String getSizeLimitMessage() {
-        return sizeLimitMessage;
-    }
-
-    public void setSizeLimitMessage(String sizeLimitMessage) {
-        this.sizeLimitMessage = sizeLimitMessage;
     }
 
     public String getAllowTypes() {
@@ -335,12 +280,12 @@ public class FileValidator implements Validator, PartialStateHolder, ClientValid
         this.allowTypes = allowTypes;
     }
 
-    public String getAllowTypesMessage() {
-        return allowTypesMessage;
+    public String getAccept() {
+        return accept;
     }
 
-    public void setAllowTypesMessage(String allowTypesMessage) {
-        this.allowTypesMessage = allowTypesMessage;
+    public void setAccept(String accept) {
+        this.accept = accept;
     }
 
     public Boolean getVirusScan() {
