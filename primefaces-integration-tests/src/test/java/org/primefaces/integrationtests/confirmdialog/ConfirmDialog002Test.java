@@ -47,6 +47,7 @@ class ConfirmDialog002Test extends AbstractPrimePageTest {
     void showDialog(Page page) {
         // Arrange
         ConfirmDialog dialog = page.dialog;
+        noMinLoadAnim();
         assertFalse(dialog.isVisible());
 
         // Act
@@ -64,6 +65,7 @@ class ConfirmDialog002Test extends AbstractPrimePageTest {
     void showWidget(Page page) {
         // Arrange
         ConfirmDialog dialog = page.dialog;
+        noMinLoadAnim();
 
         // Act
         dialog.show();
@@ -78,6 +80,7 @@ class ConfirmDialog002Test extends AbstractPrimePageTest {
     void hideWidget(Page page) {
         // Arrange
         ConfirmDialog dialog = page.dialog;
+        noMinLoadAnim();
         dialog.show();
         assertTrue(dialog.isVisible());
 
@@ -94,6 +97,7 @@ class ConfirmDialog002Test extends AbstractPrimePageTest {
     void confirmNo(Page page) {
         // Arrange
         ConfirmDialog dialog = page.dialog;
+        noMinLoadAnim();
         assertFalse(dialog.isVisible());
         page.confirm.click();
 
@@ -111,6 +115,7 @@ class ConfirmDialog002Test extends AbstractPrimePageTest {
     void confirmYes(Page page) {
         // Arrange
         ConfirmDialog dialog = page.dialog;
+        noMinLoadAnim();
         page.confirm.click();
         assertTrue(dialog.isVisible());
 
@@ -128,6 +133,7 @@ class ConfirmDialog002Test extends AbstractPrimePageTest {
     void deleteNo(Page page) {
         // Arrange
         ConfirmDialog dialog = page.dialog;
+        noMinLoadAnim();
         assertFalse(dialog.isVisible());
         page.delete.click();
 
@@ -145,6 +151,7 @@ class ConfirmDialog002Test extends AbstractPrimePageTest {
     void deleteYes(Page page) {
         // Arrange
         ConfirmDialog dialog = page.dialog;
+        noMinLoadAnim();
         assertFalse(dialog.isVisible());
         page.delete.click();
 

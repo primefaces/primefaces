@@ -314,6 +314,10 @@ public abstract class AbstractPrimePageTest {
         // success
     }
 
+    protected void noMinLoadAnim() {
+        PrimeSelenium.executeScript("PrimeFaces.ajax.minLoadAnim = 0;");
+    }
+
     /**
      * <p>
      * Similar to <a href="http://www.w3.org/TR/xpath/#function-normalize-space">http://www.w3.org/TR/xpath/#function-normalize -space</a>
