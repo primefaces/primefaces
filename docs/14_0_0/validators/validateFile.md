@@ -12,13 +12,13 @@
 
 ## Attributes
 
-| Name           | Default | Type       | Description     |
-|----------------| ------- |------------| ----------------- |
-| allowTypes     | null    | String     | Regular expression for accepted file types, e.g. /(\.|\/)(gif|jpe?g|png)$/
-| fileLimit      | null    | Integer    | Maximum number of files to be uploaded.
-| sizeLimit      | null    | Long       | Individual file size limit in bytes. Default is unlimited.
-| accept         | null    | String     | The HTML accept attribute, which will be used to validate the content type.
-| virusScan      | null    | String     | Whether virus scan should be performed. Default is false.
+| Name           | Default | Type    | Description     |
+|----------------| ------- |---------| ----------------- |
+| allowTypes     | null    | String  | Regular expression for accepted file types, e.g. /(\.|\/)(gif|jpe?g|png)$/
+| fileLimit      | null    | Integer | Maximum number of files to be uploaded.
+| sizeLimit      | null    | Long    | Individual file size limit in bytes. Default is unlimited.
+| contentType    | null    | Boolean | Wheter the contentType should be validated based on the accept attribute of the attached component. Default is false.
+| virusScan      | null    | Boolean  | Whether virus scan should be performed. Default is false.
 
 ## Getting Started
 Either attach it to `p:fileUpload` or `h:inputFile`. Even CSV is supported:

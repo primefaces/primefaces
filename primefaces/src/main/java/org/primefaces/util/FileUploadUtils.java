@@ -47,9 +47,12 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -401,7 +404,7 @@ public class FileUploadUtils {
         return request.getParameter("X-File-Webkit-Relative-Path");
     }
 
-    public static String formatBytes(Long bytes) {
+    public static String formatBytes(Long bytes, Locale locale) {
         if (bytes == null) {
             return "";
         }
@@ -413,10 +416,11 @@ public class FileUploadUtils {
         String[] sizes = new String[] {"Bytes", "KB", "MB", "GB", "TB"};
         int i = (int) Math.floor(Math.log(bytes) / Math.log(1024));
         if (i == 0) {
-            return bytes + ' ' + sizes[i];
+            return bytes + " " + sizes[i];
         }
         else {
-            return ((int) (bytes / Math.pow(1024, i))) + ' ' + sizes[i];
+            DecimalFormat decimalFormat = new DecimalFormat("0.0", DecimalFormatSymbols.getInstance(locale));
+            return decimalFormat.format((bytes / Math.pow(1024, i))) + " " + sizes[i];
         }
     }
 }

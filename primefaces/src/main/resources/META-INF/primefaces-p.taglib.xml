@@ -139,9 +139,9 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[The HTML accept attribute, which will be used to validate the content type.]]>
+                <![CDATA[Wheter the content type should be validated based on the accept attribute of the attached component. Default is false.]]>
             </description>
-            <name>accept</name>
+            <name>contentType</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>

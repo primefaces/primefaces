@@ -40,6 +40,7 @@ import javax.faces.validator.ValidatorException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -319,4 +320,9 @@ class FileUploadUtilsTest {
         }
     }
 
+    @Test
+    void formatBytes() {
+        assertEquals("1000 Bytes", FileUploadUtils.formatBytes(1000L, Locale.US));
+        assertEquals("1.0 KB", FileUploadUtils.formatBytes(1025L, Locale.US));
+    }
 }
