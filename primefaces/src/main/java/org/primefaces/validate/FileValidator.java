@@ -26,6 +26,7 @@ package org.primefaces.validate;
 import org.apache.poi.util.StringUtil;
 import org.primefaces.component.fileupload.FileUpload;
 import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.model.file.NativeUploadedFile;
 import org.primefaces.model.file.UploadedFile;
 import org.primefaces.model.file.UploadedFiles;
 import org.primefaces.util.FileUploadUtils;
@@ -36,12 +37,16 @@ import org.primefaces.virusscan.VirusException;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.PartialStateHolder;
 import javax.faces.component.UIComponent;
+import javax.faces.component.html.HtmlInputFile;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
+import javax.servlet.http.Part;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class FileValidator implements Validator, PartialStateHolder, ClientValidator {
 
@@ -67,21 +72,46 @@ public class FileValidator implements Validator, PartialStateHolder, ClientValid
 
         if (component instanceof FileUpload) {
             FileUpload fileUpload = (FileUpload) component;
+            String accept = fileUpload.isValidateContentType() ? fileUpload.getAccept() : null;
 
             if (value instanceof UploadedFile) {
                 UploadedFile uploadedFile = (UploadedFile) value;
 
-                validateUploadedFile(context, fileUpload, uploadedFile);
+                validateUploadedFile(context, uploadedFile, accept);
             }
             else if (value instanceof UploadedFiles) {
                 UploadedFiles uploadedFiles = (UploadedFiles) value;
 
-                validateUploadedFiles(context, fileUpload, uploadedFiles);
+                validateUploadedFiles(context, uploadedFiles, accept);
             }
+            else if (value != null) {
+                throw new IllegalArgumentException("Argument of type '" + value.getClass().getName() + "' not supported");
+            }
+        }
+        else if (component instanceof HtmlInputFile) {
+            // getter only available in Faces 4+
+            String accept = (String) component.getAttributes().get("accept");
+
+            if (value instanceof Part) {
+                UploadedFile uploadedFile = new NativeUploadedFile((Part) value, sizeLimit, null);
+                validateUploadedFile(context, uploadedFile, accept);
+            }
+            else if (value instanceof List) {
+                List<UploadedFile> uploadedFiles = (List<UploadedFile>) ((List) value).stream()
+                        .map(part -> new NativeUploadedFile((Part) part, sizeLimit, null))
+                        .collect(Collectors.toList());
+                validateUploadedFiles(context, new UploadedFiles(uploadedFiles), accept);
+            }
+            else if (value != null) {
+                throw new IllegalArgumentException("Argument of type '" + value.getClass().getName() + "' not supported");
+            }
+        }
+        else {
+            throw new IllegalArgumentException("Component of type '" + component.getClass() + "' not supported");
         }
     }
 
-    protected void validateUploadedFiles(FacesContext context, FileUpload fileUpload, UploadedFiles uploadedFiles) {
+    protected void validateUploadedFiles(FacesContext context, UploadedFiles uploadedFiles, String accept) {
         if (fileLimit != null && uploadedFiles.getFiles().size() > fileLimit) {
             if (LangUtils.isNotBlank(fileLimitMessage)) {
                 throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, fileLimitMessage, ""));
@@ -93,7 +123,7 @@ public class FileValidator implements Validator, PartialStateHolder, ClientValid
         long totalSize = 0;
         for (UploadedFile file : uploadedFiles.getFiles()) {
             totalSize += file.getSize();
-            validate(context, fileUpload, file);
+            validateUploadedFile(context, file, accept);
         }
 
         if (sizeLimit != null && totalSize > sizeLimit) {
@@ -106,7 +136,7 @@ public class FileValidator implements Validator, PartialStateHolder, ClientValid
         }
     }
 
-    protected void validateUploadedFile(FacesContext context, FileUpload fileUpload, UploadedFile uploadedFile) {
+    protected void validateUploadedFile(FacesContext context, UploadedFile uploadedFile, String accept) {
         PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(context);
 
         if (sizeLimit != null && uploadedFile.getSize() > sizeLimit) {
@@ -118,7 +148,7 @@ public class FileValidator implements Validator, PartialStateHolder, ClientValid
                             uploadedFile.getFileName(), FileUploadUtils.formatBytes(sizeLimit)));
         }
 
-        if (LangUtils.isNotBlank(allowTypes) && !FileUploadUtils.isValidType(applicationContext, fileUpload, uploadedFile, allowTypes)) {
+        if (LangUtils.isNotBlank(allowTypes) && !FileUploadUtils.isValidType(applicationContext, uploadedFile, allowTypes, accept)) {
             if (LangUtils.isNotBlank(allowTypesMessage)) {
                 throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, allowTypesMessage, ""));
             }

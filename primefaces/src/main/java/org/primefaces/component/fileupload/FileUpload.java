@@ -85,7 +85,7 @@ public class FileUpload extends FileUploadBase {
 
         boolean hasFileValidator = Arrays.stream(getValidators()).anyMatch(v -> v instanceof FileValidator);
 
-        if (isValid() && ComponentUtils.isRequestSource(this, context) && !hasFileValidator) {
+        if (!hasFileValidator && isValid() && ComponentUtils.isRequestSource(this, context)) {
             try {
                 if (newValue instanceof UploadedFile) {
                     FileUploadUtils.tryValidateFile(context, this, (UploadedFile) newValue);

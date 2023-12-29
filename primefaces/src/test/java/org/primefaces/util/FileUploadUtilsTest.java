@@ -83,40 +83,40 @@ class FileUploadUtilsTest {
 
     @Test
     void isValidType_NameCheck() {
-        assertTrue(FileUploadUtils.isValidType(appContext, fileUpload,
-                createFile("test.png", "image/png", inputStream), null));
+        assertTrue(FileUploadUtils.isValidType(appContext,
+                createFile("test.png", "image/png", inputStream), null, null));
 
-        assertTrue(FileUploadUtils.isValidType(appContext, fileUpload,
-                createFile("test.PNG", "image/png", inputStream), "/\\.(gif|png|jpe?g)$/i"));
-        assertTrue(FileUploadUtils.isValidType(appContext, fileUpload,
-                createFile("test.jpeg", "image/jpeg", inputStream), "/\\.(gif|png|jpe?g)$/i"));
-        assertFalse(FileUploadUtils.isValidType(appContext, fileUpload,
-                createFile("test.bmp", "image/bitmap", inputStream), "/\\.(gif|png|jpe?g)$/i"));
+        assertTrue(FileUploadUtils.isValidType(appContext,
+                createFile("test.PNG", "image/png", inputStream), "/\\.(gif|png|jpe?g)$/i", null));
+        assertTrue(FileUploadUtils.isValidType(appContext,
+                createFile("test.jpeg", "image/jpeg", inputStream), "/\\.(gif|png|jpe?g)$/i", null));
+        assertFalse(FileUploadUtils.isValidType(appContext,
+                createFile("test.bmp", "image/bitmap", inputStream), "/\\.(gif|png|jpe?g)$/i", null));
     }
 
     @Test
     void isValidType_MimeTypeCheck() {
-        assertTrue(FileUploadUtils.isValidType(appContext, fileUpload,
-                createFile("test.PNG", "image/png", inputStream), "/image/g"));
-        assertTrue(FileUploadUtils.isValidType(appContext, fileUpload,
-                createFile("test.jpeg", "image/png", inputStream), "/image/g"));
-        assertTrue(FileUploadUtils.isValidType(appContext, fileUpload,
-                createFile("test.bmp", "image/bitmap", inputStream), "/image/g"));
-        assertFalse(FileUploadUtils.isValidType(appContext, fileUpload,
-                createFile("adobe.pdf", "application/pdf", inputStream), "/image/g"));
+        assertTrue(FileUploadUtils.isValidType(appContext,
+                createFile("test.PNG", "image/png", inputStream), "/image/g", null));
+        assertTrue(FileUploadUtils.isValidType(appContext,
+                createFile("test.jpeg", "image/png", inputStream), "/image/g", null));
+        assertTrue(FileUploadUtils.isValidType(appContext,
+                createFile("test.bmp", "image/bitmap", inputStream), "/image/g", null));
+        assertFalse(FileUploadUtils.isValidType(appContext,
+                createFile("adobe.pdf", "application/pdf", inputStream), "/image/g", null));
     }
 
     @Test
     void isValidType_InvalidRegex() {
         // all of these should be true when the regex is not valid
-        assertTrue(FileUploadUtils.isValidType(appContext, fileUpload,
-                createFile("test.PNG", "image/png", inputStream), "x"));
-        assertTrue(FileUploadUtils.isValidType(appContext, fileUpload,
-                createFile("test.jpeg", "image/png", inputStream), "x"));
-        assertTrue(FileUploadUtils.isValidType(appContext, fileUpload,
-                createFile("test.bmp", "image/bitmap", inputStream), "x"));
-        assertTrue(FileUploadUtils.isValidType(appContext, fileUpload,
-                createFile("adobe.pdf", "application/pdf", inputStream), "x"));
+        assertTrue(FileUploadUtils.isValidType(appContext,
+                createFile("test.PNG", "image/png", inputStream), "x", null));
+        assertTrue(FileUploadUtils.isValidType(appContext,
+                createFile("test.jpeg", "image/png", inputStream), "x", null));
+        assertTrue(FileUploadUtils.isValidType(appContext,
+                createFile("test.bmp", "image/bitmap", inputStream), "x", null));
+        assertTrue(FileUploadUtils.isValidType(appContext,
+                createFile("adobe.pdf", "application/pdf", inputStream), "x", null));
     }
 
     @Test
@@ -128,44 +128,34 @@ class FileUploadUtilsTest {
         InputStream gif = new ByteArrayInputStream(new byte[]{0x47, 0x49, 0x46, 0x38, 0x39, 0x61});
         InputStream exe = new ByteArrayInputStream(new byte[]{0x4D, 0x5A});
 
-        when(fileUpload.isValidateContentType()).thenReturn(false);
+        assertTrue(FileUploadUtils.isValidType(appContext,
+                createFile("test.TIF", "image/tif", tif), null, null));
+        assertTrue(FileUploadUtils.isValidType(appContext,
+                createFile("test.mp4", "application/music", mp4), null, null));
 
-        when(fileUpload.getAccept()).thenReturn("image/png");
-        assertTrue(FileUploadUtils.isValidType(appContext, fileUpload,
-                createFile("test.TIF", "image/tif", tif), null));
-        assertTrue(FileUploadUtils.isValidType(appContext, fileUpload,
-                createFile("test.mp4", "application/music", mp4), null));
+        assertTrue(FileUploadUtils.isValidType(appContext,
+                createFile("test.png", "image/png", png), null, ""));
 
-        when(fileUpload.isValidateContentType()).thenReturn(true);
+        assertTrue(FileUploadUtils.isValidType(appContext,
+                createFile("test.png", "image/png", png), null, ".png,.bmp"));
+        assertTrue(FileUploadUtils.isValidType(appContext,
+                createFile("test.bmp", "image/bmp", bmp), null, ".png,.bmp"));
+        assertFalse(FileUploadUtils.isValidType(appContext,
+                createFile("test.tif", "image/tif", tif), null, ".png,.bmp"));
 
-        when(fileUpload.getAccept()).thenReturn("");
-        assertTrue(FileUploadUtils.isValidType(appContext, fileUpload,
-                createFile("test.png", "image/png", png), null));
+        assertFalse(FileUploadUtils.isValidType(appContext,
+                createFile("test.png", "image/png", png), null, "video/*"));
+        assertTrue(FileUploadUtils.isValidType(appContext,
+                createFile("test.mp4", "application/music", mp4), null, "video/*"));
 
-        when(fileUpload.getAccept()).thenReturn(".png,.bmp");
-        assertTrue(FileUploadUtils.isValidType(appContext, fileUpload,
-                createFile("test.png", "image/png", png), null));
-        assertTrue(FileUploadUtils.isValidType(appContext, fileUpload,
-                createFile("test.bmp", "image/bmp", bmp), null));
-        assertFalse(FileUploadUtils.isValidType(appContext, fileUpload,
-                createFile("test.tif", "image/tif", tif), null));
-
-        when(fileUpload.getAccept()).thenReturn("video/*");
-        assertFalse(FileUploadUtils.isValidType(appContext, fileUpload,
-                createFile("test.png", "image/png", png), null));
-        assertTrue(FileUploadUtils.isValidType(appContext, fileUpload,
-                createFile("test.mp4", "application/music", mp4), null));
-
-        when(fileUpload.getAccept()).thenReturn("image/tiff");
-        assertFalse(FileUploadUtils.isValidType(appContext, fileUpload,
-                createFile("test.png", "image/png", png), null));
+        assertFalse(FileUploadUtils.isValidType(appContext,
+                createFile("test.png", "image/png", png), null, "image/tiff"));
 
         //Tampered - Apache Tika or Mime Type must be in the classpath for this to work
-        when(fileUpload.getAccept()).thenReturn("image/gif");
-        assertFalse(FileUploadUtils.isValidType(appContext, fileUpload,
-                createFile("test.gif", "image/gif", exe), null));
-        assertTrue(FileUploadUtils.isValidType(appContext, fileUpload,
-                createFile("test.png", "image/png", gif), null));
+        assertFalse(FileUploadUtils.isValidType(appContext,
+                createFile("test.gif", "image/gif", exe), null, "image/gif"));
+        assertTrue(FileUploadUtils.isValidType(appContext,
+                createFile("test.png", "image/png", gif), null, "image/gif"));
     }
 
     @Test

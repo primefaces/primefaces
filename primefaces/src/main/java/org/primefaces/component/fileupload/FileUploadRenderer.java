@@ -23,7 +23,6 @@
  */
 package org.primefaces.component.fileupload;
 
-import org.apache.poi.util.StringUtil;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
@@ -346,7 +345,7 @@ public class FileUploadRenderer extends CoreRenderer {
                 }
 
                 String allowTypes = fileUpload.getAllowTypes();
-                if (!StringUtil.isBlank(allowTypes)) {
+                if (LangUtils.isNotBlank(allowTypes)) {
                     fileValidator.setAllowTypes(allowTypes);
                 }
 

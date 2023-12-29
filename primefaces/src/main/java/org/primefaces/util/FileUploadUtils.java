@@ -165,17 +165,17 @@ public class FileUploadUtils {
      * For most reliable content type checking it's recommended to plug in Apache Tika as an implementation.
      *
      * @param context the {@link PrimeApplicationContext}
-     * @param fileUpload the {@link FileUpload} component
      * @param uploadedFile the details of the uploaded file
      * @param allowTypes the Javascript regex
+     * @param accept the accept types
      * @return <code>true</code>, if all validations regarding filename and content type passed, <code>false</code> else
      */
-    public static boolean isValidType(PrimeApplicationContext context, FileUpload fileUpload,
-                                      UploadedFile uploadedFile, String allowTypes) {
+    public static boolean isValidType(PrimeApplicationContext context,
+                                      UploadedFile uploadedFile, String allowTypes, String accept) {
         String fileName = uploadedFile.getFileName();
         try (InputStream input = uploadedFile.getInputStream()) {
-            boolean validType = isValidFileName(fileUpload, uploadedFile, allowTypes)
-                        && isValidFileContent(context, fileUpload, fileName, input);
+            boolean validType = isValidFileName(uploadedFile, allowTypes)
+                        && isValidFileContent(context, accept, fileName, input);
             if (validType) {
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine(String.format("The uploaded file %s meets the filename and content type specifications", fileName));
@@ -191,7 +191,7 @@ public class FileUploadUtils {
         }
     }
 
-    private static boolean isValidFileName(FileUpload fileUpload, UploadedFile uploadedFile, String javascriptRegex) {
+    private static boolean isValidFileName(UploadedFile uploadedFile, String javascriptRegex) {
         if (LangUtils.isBlank(javascriptRegex)) {
             return true;
         }
@@ -237,16 +237,10 @@ public class FileUploadUtils {
         return LangUtils.substring(jsRegex, start, end);
     }
 
-    private static boolean isValidFileContent(PrimeApplicationContext primeAppContext, FileUpload fileUpload, String fileName,
+    private static boolean isValidFileContent(PrimeApplicationContext primeAppContext, String accept, String fileName,
                                               InputStream stream)
             throws IOException {
-        if (!fileUpload.isValidateContentType()) {
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("Content type checking is disabled");
-            }
-            return true;
-        }
-        if (LangUtils.isBlank(fileUpload.getAccept())) {
+        if (LangUtils.isBlank(accept)) {
             return true;
         }
 
@@ -284,22 +278,22 @@ public class FileUploadUtils {
         }
 
         //Comma-separated values: file_extension|audio/*|video/*|image/*|media_type (see https://www.w3schools.com/tags/att_input_accept.asp)
-        String[] accepts = fileUpload.getAccept().split(",");
+        String[] accepts = accept.split(",");
         final String filenameLC = fileName.toLowerCase();
         final String contentTypeLC = contentType.toLowerCase();
 
         boolean accepted = Stream.of(accepts)
                 .map(String::trim)
-                .anyMatch(accept -> {
+                .anyMatch(acceptPart -> {
                     // try with extension first
-                    if (accept.startsWith(".") && filenameLC.endsWith(accept)) {
-                        LOGGER.log(Level.FINE, () -> String.format("File extension %s of the uploaded file %s is accepted", accept, fileName));
+                    if (acceptPart.startsWith(".") && filenameLC.endsWith(acceptPart)) {
+                        LOGGER.log(Level.FINE, () -> String.format("File extension %s of the uploaded file %s is accepted", acceptPart, fileName));
                         return true;
                     }
                     // or try with IANA media types
-                    if (FilenameUtils.wildcardMatch(contentTypeLC, accept)) {
+                    if (FilenameUtils.wildcardMatch(contentTypeLC, acceptPart)) {
                         LOGGER.log(Level.FINE,
-                                () -> String.format("Content type %s of the uploaded file %s is accepted by %s", contentTypeLC, fileName, accept));
+                                () -> String.format("Content type %s of the uploaded file %s is accepted by %s", contentTypeLC, fileName, acceptPart));
                         return true;
                     }
 
@@ -309,7 +303,7 @@ public class FileUploadUtils {
         if (!accepted) {
             LOGGER.log(Level.FINE,
                     () -> String.format("Uploaded file %s with content type %s does not match the accept specification %s",
-                            fileName, contentTypeLC, fileUpload.getAccept()));
+                            fileName, contentTypeLC, accept));
             return false;
         }
 
@@ -345,7 +339,8 @@ public class FileUploadUtils {
             throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, fileUpload.getInvalidSizeMessage(), ""));
         }
 
-        if (!isValidType(appContext, fileUpload, uploadedFile, fileUpload.getAllowTypes())) {
+        String accept = fileUpload.isValidateContentType() ? fileUpload.getAccept() : null;
+        if (!isValidType(appContext, uploadedFile, fileUpload.getAllowTypes(), accept)) {
             throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, fileUpload.getInvalidFileMessage(), ""));
         }
 
