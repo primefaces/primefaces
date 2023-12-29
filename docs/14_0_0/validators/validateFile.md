@@ -30,6 +30,6 @@ Either attach it to `p:fileUpload` or `h:inputFile`. Even CSV is supported:
     </p:fileUpload>
 
     <p:commandButton value="Submit" action="#{fileUploadView.upload}"
-                     validateClient="false" process="@form" update="messages"/>
+                     validateClient="true" process="@form" update="messages"/>
 </h:form>
 ```
