@@ -237,10 +237,9 @@ public class FileUploadUtils {
         return LangUtils.substring(jsRegex, start, end);
     }
 
-    private static boolean isValidFileContent(PrimeApplicationContext primeAppContext, String accept, String fileName,
-                                              InputStream stream)
-            throws IOException {
-        if (LangUtils.isBlank(accept)) {
+    private static boolean isValidFileContent(PrimeApplicationContext primeAppContext, String allowedContentTypes,
+                                              String fileName, InputStream stream) throws IOException {
+        if (LangUtils.isBlank(allowedContentTypes)) {
             return true;
         }
 
@@ -278,22 +277,21 @@ public class FileUploadUtils {
         }
 
         //Comma-separated values: file_extension|audio/*|video/*|image/*|media_type (see https://www.w3schools.com/tags/att_input_accept.asp)
-        String[] accepts = accept.split(",");
         final String filenameLC = fileName.toLowerCase();
         final String contentTypeLC = contentType.toLowerCase();
 
-        boolean accepted = Stream.of(accepts)
+        boolean accepted = Stream.of(allowedContentTypes.split(","))
                 .map(String::trim)
-                .anyMatch(acceptType -> {
+                .anyMatch(allowedContentType -> {
                     // try with extension first
-                    if (acceptType.startsWith(".") && filenameLC.endsWith(acceptType)) {
-                        LOGGER.log(Level.FINE, () -> String.format("File extension %s of the uploaded file %s is accepted", acceptType, fileName));
+                    if (allowedContentType.startsWith(".") && filenameLC.endsWith(allowedContentType)) {
+                        LOGGER.log(Level.FINE, () -> String.format("File extension %s of the uploaded file %s is accepted", allowedContentType, fileName));
                         return true;
                     }
                     // or try with IANA media types
-                    if (FilenameUtils.wildcardMatch(contentTypeLC, acceptType)) {
+                    if (FilenameUtils.wildcardMatch(contentTypeLC, allowedContentType)) {
                         LOGGER.log(Level.FINE,
-                                () -> String.format("Content type %s of the uploaded file %s is accepted by %s", contentTypeLC, fileName, acceptType));
+                                () -> String.format("Content type %s of the uploaded file %s is accepted by %s", contentTypeLC, fileName, allowedContentType));
                         return true;
                     }
 
@@ -303,7 +301,7 @@ public class FileUploadUtils {
         if (!accepted) {
             LOGGER.log(Level.FINE,
                     () -> String.format("Uploaded file %s with content type %s does not match the accept specification %s",
-                            fileName, contentTypeLC, accept));
+                            fileName, contentTypeLC, allowedContentTypes));
             return false;
         }
 
