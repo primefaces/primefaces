@@ -49,6 +49,7 @@ class Dialog002Test extends AbstractPrimePageTest {
         Dialog dialog = page.dialog;
         dialog.show();
         assertTrue(dialog.isVisible());
+        PrimeSelenium.wait(400);
 
         // Act (ENTER key should close the dialog because the Close button is focused)
         Actions actions = new Actions(page.getWebDriver());
