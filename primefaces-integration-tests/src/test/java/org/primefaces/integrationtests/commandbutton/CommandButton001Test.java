@@ -42,7 +42,7 @@ public class CommandButton001Test extends AbstractPrimePageTest {
     void loadingState(Page page) {
         // Arrange
         CommandButton button = page.button;
-        setMinLoadAnim(100);
+        setMinLoadAnim(200);
 
         // Act
         page.button.click();
