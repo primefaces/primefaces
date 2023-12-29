@@ -1240,7 +1240,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
      */
     makeParent: function(node) {
         node.removeClass('ui-treenode-leaf').addClass('ui-treenode-parent');
-        node.find('> .ui-treenode-content > span.ui-treenode-leaf-icon').removeClass('ui-treenode-leaf-icon').addClass('ui-tree-toggler ui-icon ui-icon-triangle-1-e');
+        node.find('> .ui-treenode-content > span.ui-treenode-leaf-icon').removeClass('ui-treenode-leaf-icon').addClass('ui-tree-toggler ui-icon ' + this.cfg.collapsedIcon);
         node.children('.ui-treenode-children').append('<li class="ui-tree-droppoint ui-droppable"></li>');
 
         this.makeDropPoints(node.find('> ul.ui-treenode-children > li.ui-tree-droppoint'));
@@ -1449,7 +1449,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
 
                         if(hasChildNodes) {
                             node.removeClass('ui-treenode-parent').addClass('ui-treenode-leaf')
-                                .find('> .ui-treenode-content > .ui-tree-toggler').removeClass('ui-tree-toggler ui-icon ui-icon-triangle-1-e').addClass('ui-treenode-leaf-icon');
+                                .find('> .ui-treenode-content > .ui-tree-toggler').removeClass('ui-tree-toggler ui-icon ' + this.cfg.collapsedIcon).addClass('ui-treenode-leaf-icon');
                         }
                     }
                 }
