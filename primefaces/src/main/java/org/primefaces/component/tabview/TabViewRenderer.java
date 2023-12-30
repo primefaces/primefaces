@@ -267,6 +267,7 @@ public class TabViewRenderer extends CoreRenderer {
         String tabId = tab.getId();
         if (tabId == null) {
             tabId = "tab-" + index;
+            tab.setId(tabId);
         }
         writer.writeAttribute("id", tabId, null);
         writer.writeAttribute("role", "tab", null);
@@ -344,7 +345,7 @@ public class TabViewRenderer extends CoreRenderer {
         writer.writeAttribute(HTML.ARIA_HIDDEN, String.valueOf(!active), null);
         writer.writeAttribute("data-index", index, null);
         writer.writeAttribute("tabindex", "0", null);
-        writer.writeAttribute("aria-labelledby", tabId, null);
+        writer.writeAttribute("aria-labelledby", tab.getId(), null);
 
         if (dynamic) {
             if (active) {
