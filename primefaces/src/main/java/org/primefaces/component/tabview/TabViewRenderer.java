@@ -253,25 +253,33 @@ public class TabViewRenderer extends CoreRenderer {
         //header container
         writer.startElement("li", tab);
         writer.writeAttribute("class", styleClass, null);
-        writer.writeAttribute("role", "tab", null);
-        writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(active), null);
-        writer.writeAttribute(HTML.ARIA_SELECTED, String.valueOf(active), null);
-        writer.writeAttribute(HTML.ARIA_LABEL, tab.getAriaLabel(), null);
-        writer.writeAttribute("data-index", index, null);
+        writer.writeAttribute("role", "presentation", null);
         if (tab.getTitleStyle() != null) {
             writer.writeAttribute("style", tab.getTitleStyle(), null);
         }
         if (tab.getTitletip() != null) {
             writer.writeAttribute("title", tab.getTitletip(), null);
         }
-        if (tabindex != null) {
-            writer.writeAttribute("tabindex", tabindex, null);
-        }
 
         //title
         writer.startElement("a", null);
         writer.writeAttribute("href", "#" + tab.getClientId(context), null);
-        writer.writeAttribute("tabindex", "-1", null);
+        String tabId = tab.getId();
+        if (tabId == null) {
+            tabId = "tab-" + index;
+        }
+        writer.writeAttribute("id", tabId, null);
+        writer.writeAttribute("role", "tab", null);
+        writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(active), null);
+        writer.writeAttribute(HTML.ARIA_SELECTED, String.valueOf(active), null);
+        writer.writeAttribute(HTML.ARIA_LABEL, tab.getAriaLabel(), null);
+        writer.writeAttribute("data-index", index, null);
+        writer.writeAttribute("aria-controls", tab.getClientId(context), null);
+        if(active) {
+            writer.writeAttribute("tabindex", "0", null);
+        } else {
+            writer.writeAttribute("tabindex", "-1", null);
+        }
         if (!FacetUtils.shouldRenderFacet(titleFacet)) {
             String tabTitle = tab.getTitle();
             if (tabTitle != null) {
@@ -335,6 +343,8 @@ public class TabViewRenderer extends CoreRenderer {
         writer.writeAttribute("role", "tabpanel", null);
         writer.writeAttribute(HTML.ARIA_HIDDEN, String.valueOf(!active), null);
         writer.writeAttribute("data-index", index, null);
+        writer.writeAttribute("tabindex", "0", null);
+        writer.writeAttribute("aria-labelledby", tabId, null);
 
         if (dynamic) {
             if (active) {

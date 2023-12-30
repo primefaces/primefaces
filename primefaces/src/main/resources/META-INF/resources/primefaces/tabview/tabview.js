@@ -305,8 +305,55 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         })
         .on('keydown.tabview', function(e) {
             var element = $(this);
+            var keyCode = e.which;
             if(PrimeFaces.utils.isActionKey(e) && !element.hasClass('ui-state-disabled')) {
                 $this.select(element.index());
+                e.preventDefault();
+            }
+            // Right arrow key
+            else if(keyCode === $.ui.keyCode.RIGHT) {
+                var nextTab = element.nextAll('.ui-tabview-nav:not(.ui-state-disabled)').first();
+                if(nextTab.length) {
+                    nextTab.trigger('focus.tabview');
+                }
+                e.preventDefault();
+            }
+            // Left arrow key
+            else if(keyCode === $.ui.keyCode.LEFT) {
+                var prevTab = element.prevAll('.ui-tabview-nav:not(.ui-state-disabled)').first();
+                if(prevTab.length) {
+                    prevTab.trigger('focus.tabview');
+                }
+                e.preventDefault();
+            }
+            // Enter or Space key
+            if(keyCode === $.ui.keyCode.ENTER || keyCode === $.ui.keyCode.SPACE) {
+                $this.select(element.index());
+                e.preventDefault();
+            }
+            // Home key
+            else if(keyCode === $.ui.keyCode.HOME) {
+                $this.headerContainer.first().trigger('focus.tabview');
+                e.preventDefault();
+            }
+            // End key
+            else if(keyCode === $.ui.keyCode.END) {
+                $this.headerContainer.last().trigger('focus.tabview');
+                e.preventDefault();
+            }
+            // Page up key
+            else if(keyCode === $.ui.keyCode.PAGE_UP) {
+                // Scroll to the first tab header
+                $this.scrollPanel.scrollTop(0);
+                $this.headerContainer.first().trigger('focus.tabview');
+                e.preventDefault();
+            }
+            // Page down key
+            else if(keyCode === $.ui.keyCode.PAGE_DOWN) {
+                // Scroll to the last tab header
+                var scrollPanelHeight = $this.scrollPanel[0].scrollHeight;
+                $this.scrollPanel.scrollTop(scrollPanelHeight);
+                $this.headerContainer.last().trigger('focus.tabview');
                 e.preventDefault();
             }
         });
