@@ -277,7 +277,7 @@ public final class PrimeSelenium {
     }
 
     /**
-     * Is the Element visisible in the current viewport??
+     * Is the Element visible in the current viewport??
      *
      * @param element the WebElement to check
      * @return true if visible
