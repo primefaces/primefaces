@@ -31,13 +31,13 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.component.selectoneradio.SelectOneRadio;
 import org.primefaces.integrationtests.colorpicker.AbstractColorPickerTest;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.SelectBooleanCheckbox;
 import org.primefaces.selenium.component.SelectManyCheckbox;
+import org.primefaces.selenium.component.SelectOneRadio;
 import org.primefaces.selenium.component.Spinner;
 import org.primefaces.selenium.component.ToggleSwitch;
 import org.primefaces.selenium.component.TriStateCheckbox;
@@ -146,6 +146,33 @@ public class Csv002Test extends AbstractColorPickerTest {
         Assertions.assertEquals("", page.msgSelectOneListbox.getText());
         assertNoJavascriptErrors();
     }
+
+    @Test
+    @Order(6)
+    @DisplayName("CSV: SelectOneRadio")
+    public void selectOneRadio(Page page) {
+        // Arrange
+
+        // Assert
+        Assertions.assertEquals("", page.msgSelectOneRadio.getText());
+
+        // Act
+        page.selectOneRadio.select(3);
+        page.selectOneRadio.select(3); // = deselect
+
+        // Assert
+        Assertions.assertEquals("Select programming language: Validation Error: Value is required.",
+                page.msgSelectOneRadio.getText());
+
+        // Act
+        page.selectOneRadio.select(1);
+
+        // Assert
+        Assertions.assertEquals("", page.msgSelectOneRadio.getText());
+        assertNoJavascriptErrors();
+    }
+
+    // TODO: Toggleswitch
 
     public static class Page extends AbstractPrimePage {
         @FindBy(id = "form:messages")
