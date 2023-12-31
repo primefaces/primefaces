@@ -311,7 +311,6 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
                 e.preventDefault();
             } else {
                 switch(keyCode) {
-                    // Right arrow key
                     case 'ArrowRight':
                         var nextTab = element.nextAll('.ui-tabview-nav:not(.ui-state-disabled)').first();
                         if(nextTab.length) {
@@ -319,7 +318,6 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
                         }
                         e.preventDefault();
                         break;
-                    // Left arrow key
                     case 'ArrowLeft':
                         var prevTab = element.prevAll('.ui-tabview-nav:not(.ui-state-disabled)').first();
                         if(prevTab.length) {
@@ -327,20 +325,19 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
                         }
                         e.preventDefault();
                         break;
-                    // Space and Enter key
                     case 'NumpadEnter':
                     case 'Enter':
                     case 'Space':
                         $this.select(element.index());
                         e.preventDefault();
                         break;
-                    // Home key
                     case 'Home':
+                    case 'PageUp':
                         $this.headerContainer.first().trigger('focus.tabview');
                         e.preventDefault();
                         break;
-                    // End key
                     case 'End':
+                    case 'PageDown':
                         $this.headerContainer.last().trigger('focus.tabview');
                         e.preventDefault();
                         break;
