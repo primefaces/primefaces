@@ -305,14 +305,14 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         })
         .on('keydown.tabview', function(e) {
             var element = $(this);
-            var keyCode = e.which;
+            var keyCode = e.code;
             if(PrimeFaces.utils.isActionKey(e) && !element.hasClass('ui-state-disabled')) {
                 $this.select(element.index());
                 e.preventDefault();
             } else {
                 switch(keyCode) {
                     // Right arrow key
-                    case $.ui.keyCode.RIGHT:
+                    case 'ArrowRight':
                         var nextTab = element.nextAll('.ui-tabview-nav:not(.ui-state-disabled)').first();
                         if(nextTab.length) {
                             nextTab.trigger('focus.tabview');
@@ -320,7 +320,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
                         e.preventDefault();
                         break;
                     // Left arrow key
-                    case $.ui.keyCode.LEFT:
+                    case 'ArrowLeft':
                         var prevTab = element.prevAll('.ui-tabview-nav:not(.ui-state-disabled)').first();
                         if(prevTab.length) {
                             prevTab.trigger('focus.tabview');
@@ -328,29 +328,29 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
                         e.preventDefault();
                         break;
                     // Space and Enter key
-                    case $.ui.keyCode.ENTER:
-                    case $.ui.keyCode.SPACE:
+                    case 'NumpadEnter':
+                    case 'Space':
                         $this.select(element.index());
                         e.preventDefault();
                         break;
                     // Home key
-                    case $.ui.keyCode.HOME:
+                    case 'Home':
                         $this.headerContainer.first().trigger('focus.tabview');
                         e.preventDefault();
                         break;
                     // End key
-                    case $.ui.keyCode.END:
+                    case 'End':
                         $this.headerContainer.last().trigger('focus.tabview');
                         e.preventDefault();
                         break;
                     // Page up key
-                    case $.ui.keyCode.PAGE_UP:
+                    case 'PageUp':
                         $this.scrollPanel.scrollTop(0);
                         $this.headerContainer.first().trigger('focus.tabview');
                         e.preventDefault();
                         break;
                     // Page down key
-                    case $.ui.keyCode.PAGE_DOWN:
+                    case 'PageDown':
                         var scrollPanelHeight = $this.scrollPanel[0].scrollHeight;
                         $this.scrollPanel.scrollTop(scrollPanelHeight);
                         $this.headerContainer.last().trigger('focus.tabview');

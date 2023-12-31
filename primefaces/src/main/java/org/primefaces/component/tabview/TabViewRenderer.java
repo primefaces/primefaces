@@ -262,26 +262,24 @@ public class TabViewRenderer extends CoreRenderer {
         }
 
         //title
+        String tabHeaderId = tab.getClientId(context) + "_header";
+        String tabContentId = tab.getClientId(context) + "_content";
         writer.startElement("a", null);
         writer.writeAttribute("href", "#" + tab.getClientId(context), null);
-        String tabId = tab.getId();
-        if (tabId == null) {
-            tabId = "tab-" + index;
-            tab.setId(tabId);
-        }
-        writer.writeAttribute("id", tabId, null);
+        writer.writeAttribute("id", tabHeaderId, null);
         writer.writeAttribute("role", "tab", null);
         writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(active), null);
         writer.writeAttribute(HTML.ARIA_SELECTED, String.valueOf(active), null);
         writer.writeAttribute(HTML.ARIA_LABEL, tab.getAriaLabel(), null);
         writer.writeAttribute("data-index", index, null);
-        writer.writeAttribute("aria-controls", tab.getClientId(context), null);
-        if(active) {
+        writer.writeAttribute("aria-controls", tabContentId, null);
+        if (active) {
             writer.writeAttribute("tabindex", "0", null);
         } else {
             writer.writeAttribute("tabindex", "-1", null);
         }
-        if (!FacetUtils.shouldRenderFacet(titleFacet)) {
+        if (!FacetUtils.shouldRenderFacet(titleFacet))
+        {
             String tabTitle = tab.getTitle();
             if (tabTitle != null) {
                 writer.writeText(tabTitle, null);
@@ -338,14 +336,16 @@ public class TabViewRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = active ? TabView.ACTIVE_TAB_CONTENT_CLASS : TabView.INACTIVE_TAB_CONTENT_CLASS;
 
+        String tabHeaderId = tab.getClientId(context) + "_header";
+        String tabContentId = tab.getClientId(context) + "_content";
         writer.startElement("div", null);
-        writer.writeAttribute("id", tab.getClientId(context), null);
+        writer.writeAttribute("id", tabContentId, null);
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute("role", "tabpanel", null);
         writer.writeAttribute(HTML.ARIA_HIDDEN, String.valueOf(!active), null);
         writer.writeAttribute("data-index", index, null);
         writer.writeAttribute("tabindex", "0", null);
-        writer.writeAttribute("aria-labelledby", tab.getId(), null);
+        writer.writeAttribute("aria-labelledby", tabHeaderId, null);
 
         if (dynamic) {
             if (active) {

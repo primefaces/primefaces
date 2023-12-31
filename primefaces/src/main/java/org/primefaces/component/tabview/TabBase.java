@@ -39,8 +39,7 @@ public abstract class TabBase extends UIPanel {
         closable,
         titletip,
         ariaLabel,
-        menuTitle,
-        id
+        menuTitle
     }
 
     public TabBase() {
@@ -114,14 +113,6 @@ public abstract class TabBase extends UIPanel {
 
     public void setMenuTitle(String menuTitle) {
         getStateHelper().put(PropertyKeys.menuTitle, menuTitle);
-    }
-
-    public String getId() {
-        return (String) getStateHelper().eval(PropertyKeys.id, null);
-    }
-
-    public void setId(String id) {
-        getStateHelper().put(PropertyKeys.id, id);
     }
 
 }
