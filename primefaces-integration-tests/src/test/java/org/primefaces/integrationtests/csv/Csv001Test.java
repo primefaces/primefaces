@@ -39,7 +39,7 @@ public class Csv001Test extends AbstractColorPickerTest {
     @Test
     @Order(1)
     @DisplayName("CSV: InputText")
-    public void testInputText(Page page) {
+    public void inputText(Page page) {
         // Arrange
 
         // Assert
@@ -71,7 +71,7 @@ public class Csv001Test extends AbstractColorPickerTest {
     @Test
     @Order(2)
     @DisplayName("CSV: InputNumber - Integer")
-    public void testInputNumberInteger(Page page) {
+    public void inputNumberInteger(Page page) {
         // Arrange
 
         // Assert
@@ -112,7 +112,7 @@ public class Csv001Test extends AbstractColorPickerTest {
     @Test
     @Order(3)
     @DisplayName("CSV: InputText - Double")
-    public void testInputTextDouble(Page page) {
+    public void inputTextDouble(Page page) {
         // Arrange
 
         // Assert
@@ -151,7 +151,7 @@ public class Csv001Test extends AbstractColorPickerTest {
     @Test
     @Order(4)
     @DisplayName("CSV: InputText - RegEx")
-    public void testInputTextRegEx(Page page) {
+    public void inputTextRegEx(Page page) {
         // Arrange
 
         // Assert
@@ -189,7 +189,7 @@ public class Csv001Test extends AbstractColorPickerTest {
     @Test
     @Order(100)
     @DisplayName("CSV / CommandButton-enabledByValidateClient: Initial state after page-load")
-    public void testCommandButtonEnabledByInitialState(Page page) {
+    public void commandButtonEnabledByInitialState(Page page) {
         // Arrange
 
         // Act
@@ -224,7 +224,7 @@ public class Csv001Test extends AbstractColorPickerTest {
     @Test
     @Order(102)
     @DisplayName("CSV / CommandButton-enabledByValidateClient: fill form")
-    public void testCommandButtonEnabledByFillForm(Page page) {
+    public void commandButtonEnabledByFillForm(Page page) {
         // Arrange
 
         // Assert

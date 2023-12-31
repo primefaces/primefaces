@@ -24,9 +24,11 @@
 package org.primefaces.integrationtests.csv;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.component.selectoneradio.SelectOneRadio;
@@ -45,7 +47,8 @@ public class Csv002Test extends AbstractColorPickerTest {
     @Test
     @Order(1)
     @DisplayName("CSV: SelectBooleanCheckbox")
-    public void testSelectBooleanCheckbox(Page page) {
+    @Disabled("Because required=true does not seem to have impact on SelectBooleanCheckbox beside adding a star to the label")
+    public void selectBooleanCheckbox(Page page) {
         // Arrange
 
         // Assert
@@ -53,7 +56,7 @@ public class Csv002Test extends AbstractColorPickerTest {
 
         // Act
         page.selectBooleanCheckbox.check();
-        page.selectBooleanCheckbox.uncheck();;
+        page.selectBooleanCheckbox.uncheck();
 
         // Assert
         Assertions.assertEquals("yes/no: Validation Error: Value is required.",
@@ -64,6 +67,83 @@ public class Csv002Test extends AbstractColorPickerTest {
 
         // Assert
         Assertions.assertEquals("", page.msgSelectBooleanCheckbox.getText());
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(2)
+    @DisplayName("CSV: TriStateCheckbox")
+    @Disabled("Because required=true does not seem to have impact on TriStateCheckbox beside adding a star to the label")
+    public void triStateCheckbox(Page page) {
+        // Arrange
+
+        // Assert
+        Assertions.assertEquals("", page.msgTriStateCheckbox.getText());
+
+        // Act
+        page.triStateCheckbox.setValue("2");
+        page.triStateCheckbox.setValue("0");
+
+        // Assert
+        Assertions.assertEquals("yes/no/maybe: Validation Error: Value is required.",
+                page.msgTriStateCheckbox.getText());
+
+        // Act
+        page.triStateCheckbox.setValue("1");
+
+        // Assert
+        Assertions.assertEquals("", page.msgTriStateCheckbox.getText());
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(3)
+    @DisplayName("CSV: SelectManyCheckbox")
+    public void selectManyCheckbox(Page page) {
+        // Arrange
+
+        // Assert
+        Assertions.assertEquals("", page.msgSelectManyCheckbox.getText());
+
+        // Act
+        page.selectManyCheckbox.select(0);
+        page.selectManyCheckbox.deselect(0);
+
+        // Assert
+        Assertions.assertEquals("Country: Validation Error: Value is required.",
+                page.msgSelectManyCheckbox.getText());
+
+        // Act
+        page.selectManyCheckbox.select(1);
+
+        // Assert
+        Assertions.assertEquals("", page.msgSelectManyCheckbox.getText());
+        assertNoJavascriptErrors();
+    }
+
+    // TODO: Spinner
+
+    @Test
+    @Order(5)
+    @DisplayName("CSV: SelectOneListbox")
+    public void selectOneListbox(Page page) {
+        // Arrange
+
+        // Assert
+        Assertions.assertEquals("", page.msgSelectOneListbox.getText());
+
+        // Act
+        page.selectOneListbox.findElement(By.cssSelector("ul li.ui-selectlistbox-item[aria-label=\" \"]")).click();
+
+        // Assert
+        Assertions.assertEquals("Select UI-library: Validation Error: Value is required.",
+                page.msgSelectOneListbox.getText());
+
+        // Act
+        page.selectOneListbox.findElement(By.cssSelector("ul li.ui-selectlistbox-item[aria-label=\"JSF\"]")).click();
+
+        // Assert
+        Assertions.assertEquals("", page.msgSelectOneListbox.getText());
         assertNoJavascriptErrors();
     }
 
@@ -96,7 +176,7 @@ public class Csv002Test extends AbstractColorPickerTest {
         Messages msgSpinner;
 
         @FindBy(id = "form:selectOneListbox")
-        WebElement selectOneListbox;
+        WebElement selectOneListbox; // TODO: provide PrimeFaces Selenium abstraction for SelectOneListbox
 
         @FindBy(id = "form:msgSelectOneListbox")
         Messages msgSelectOneListbox;
