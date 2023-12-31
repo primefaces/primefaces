@@ -51,7 +51,9 @@ class Tree003Test extends AbstractTreeTest {
 
         // Act
         Actions actions = new Actions(page.getWebDriver());
-        Action actionSelect = actions.sendKeys(Keys.TAB, Keys.ARROW_DOWN, Keys.ARROW_RIGHT).build();
+        Action actionSelect = actions.sendKeys(Keys.TAB).pause(300)
+                .sendKeys(Keys.ARROW_DOWN).pause(300)
+                .sendKeys(Keys.ARROW_RIGHT).pause(300).build();
         actionSelect.perform();
 
         // Assert
