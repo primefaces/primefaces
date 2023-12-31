@@ -237,13 +237,12 @@ public class TabViewRenderer extends CoreRenderer {
             throws IOException {
         boolean withFacet = false;
         ResponseWriter writer = context.getResponseWriter();
-        String defaultStyleClass = active ? TabView.ACTIVE_TAB_HEADER_CLASS : TabView.INACTIVE_TAB_HEADER_CLASS;
-        defaultStyleClass = defaultStyleClass + " ui-corner-" + tabView.getOrientation();   //cornering
-        if (tab.isDisabled()) {
-            defaultStyleClass = defaultStyleClass + " ui-state-disabled";
-        }
-        String styleClass = tab.getTitleStyleClass();
-        styleClass = (styleClass == null) ? defaultStyleClass : defaultStyleClass + " " + styleClass;
+        String styleClass = getStyleClassBuilder(context)
+                .add(active, TabView.ACTIVE_TAB_HEADER_CLASS, TabView.INACTIVE_TAB_HEADER_CLASS)
+                .add("ui-corner-" + tabView.getOrientation())
+                .add(tab.isDisabled(), "ui-state-disabled")
+                .add(tab.getTitleStyleClass())
+                .build();
         UIComponent titleFacet = tab.getFacet("title");
         String tabindex = tab.isDisabled() ? "-1" : tabView.getTabindex();
 
@@ -316,7 +315,8 @@ public class TabViewRenderer extends CoreRenderer {
 
         tabView.forEachTab((tab, i, active) -> {
             try {
-                encodeTabContent(context, tab, i, active, dynamic, repeating);
+                String tabindex = active ? tabView.getTabindex() : "-1";
+                encodeTabContent(context, tab, i, active, dynamic, repeating, tabindex);
             }
             catch (IOException ex) {
                 throw new FacesException(ex);
@@ -326,11 +326,10 @@ public class TabViewRenderer extends CoreRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeTabContent(FacesContext context, Tab tab, int index, boolean active, boolean dynamic, boolean repeating)
+    protected void encodeTabContent(FacesContext context, Tab tab, int index, boolean active, boolean dynamic, boolean repeating, String tabindex)
             throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = active ? TabView.ACTIVE_TAB_CONTENT_CLASS : TabView.INACTIVE_TAB_CONTENT_CLASS;
-
         String clientId = tab.getClientId(context);
         String tabHeaderId = clientId + "_header";
         writer.startElement("div", null);
@@ -340,7 +339,7 @@ public class TabViewRenderer extends CoreRenderer {
         writer.writeAttribute(HTML.ARIA_HIDDEN, String.valueOf(!active), null);
         writer.writeAttribute(HTML.ARIA_LABELLEDBY, tabHeaderId, null);
         writer.writeAttribute("data-index", index, null);
-        writer.writeAttribute("tabindex", "0", null);
+        writer.writeAttribute("tabindex", tabindex, null);
 
         if (dynamic) {
             if (active) {
