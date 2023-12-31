@@ -51,8 +51,10 @@ class Tree003Test extends AbstractTreeTest {
 
         // Act
         Actions actions = new Actions(page.getWebDriver());
-        Action actionUnselect = actions.sendKeys(Keys.TAB, Keys.ARROW_DOWN, Keys.ARROW_RIGHT).build();
-        actionUnselect.perform();
+        Action actionSelect = actions.sendKeys(Keys.TAB).pause(300)
+                .sendKeys(Keys.ARROW_DOWN).pause(300)
+                .sendKeys(Keys.ARROW_RIGHT).pause(300).build();
+        actionSelect.perform();
 
         // Assert
         List<TreeNode> children = tree.getChildren();
@@ -61,15 +63,15 @@ class Tree003Test extends AbstractTreeTest {
 
         TreeNode second = children.get(1);
         assertEquals("Events", second.getLabelText());
-        assertTrue(second.getWebElement().isDisplayed());
+        assertDisplayed(second.getWebElement());
 
         List<TreeNode> secondChildren = second.getChildren();
         assertNotNull(secondChildren);
         assertEquals(3, secondChildren.size());
 
-        assertTrue(secondChildren.get(0).getWebElement().isDisplayed());
-        assertTrue(secondChildren.get(1).getWebElement().isDisplayed());
-        assertTrue(secondChildren.get(2).getWebElement().isDisplayed());
+        assertDisplayed(secondChildren.get(0).getWebElement());
+        assertDisplayed(secondChildren.get(1).getWebElement());
+        assertDisplayed(secondChildren.get(2).getWebElement());
 
         assertConfiguration(tree.getWidgetConfiguration());
     }
