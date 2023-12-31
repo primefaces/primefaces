@@ -275,11 +275,11 @@ public class TabViewRenderer extends CoreRenderer {
         writer.writeAttribute("aria-controls", tabContentId, null);
         if (active) {
             writer.writeAttribute("tabindex", "0", null);
-        } else {
+        }
+        else {
             writer.writeAttribute("tabindex", "-1", null);
         }
-        if (!FacetUtils.shouldRenderFacet(titleFacet))
-        {
+        if (!FacetUtils.shouldRenderFacet(titleFacet)) {
             String tabTitle = tab.getTitle();
             if (tabTitle != null) {
                 writer.writeText(tabTitle, null);
