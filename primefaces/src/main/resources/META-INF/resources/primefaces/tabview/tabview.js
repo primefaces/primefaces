@@ -344,19 +344,6 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
                         $this.headerContainer.last().trigger('focus.tabview');
                         e.preventDefault();
                         break;
-                    // Page up key
-                    case 'PageUp':
-                        $this.scrollPanel.scrollTop(0);
-                        $this.headerContainer.first().trigger('focus.tabview');
-                        e.preventDefault();
-                        break;
-                    // Page down key
-                    case 'PageDown':
-                        var scrollPanelHeight = $this.scrollPanel[0].scrollHeight;
-                        $this.scrollPanel.scrollTop(scrollPanelHeight);
-                        $this.headerContainer.last().trigger('focus.tabview');
-                        e.preventDefault();
-                        break;
                 }
             }
         });
