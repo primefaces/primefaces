@@ -40,7 +40,7 @@ import org.primefaces.selenium.component.model.Tab;
  */
 public abstract class TabView extends AbstractComponent {
 
-    @FindBy(xpath = "//*[@role='tab']")
+    @FindBy(css = ".ui-tabs-header")
     private List<WebElement> headers;
 
     @FindBy(css = ".ui-tabs-panel")
@@ -53,7 +53,7 @@ public abstract class TabView extends AbstractComponent {
             List<Tab> tabs = new ArrayList<>();
 
             headers.forEach(headerElt -> {
-                String title = headerElt.getText();
+                String title = headerElt.findElement(By.tagName("a")).getText();
                 int index = getIndexOfHeader(headerElt);
                 WebElement content = contents.get(index);
 
@@ -89,7 +89,7 @@ public abstract class TabView extends AbstractComponent {
      * @return the selected tab
      */
     public Tab getSelectedTab() {
-        WebElement selectedTabHeader = findElement(By.className("ui-tabs-selected")).findElement(By.tagName("a"));
+        WebElement selectedTabHeader = findElement(By.className("ui-tabs-selected"));
         int index = getIndexOfHeader(selectedTabHeader);
 
         return getTabs().get(index);
