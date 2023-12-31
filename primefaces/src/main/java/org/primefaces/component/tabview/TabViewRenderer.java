@@ -254,6 +254,7 @@ public class TabViewRenderer extends CoreRenderer {
         writer.startElement("li", tab);
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute("role", "presentation", null);
+        writer.writeAttribute("data-index", index, null);
         if (tab.getTitleStyle() != null) {
             writer.writeAttribute("style", tab.getTitleStyle(), null);
         }
