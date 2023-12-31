@@ -89,7 +89,7 @@ public abstract class TabView extends AbstractComponent {
      * @return the selected tab
      */
     public Tab getSelectedTab() {
-        WebElement selectedTabHeader = findElement(new By.ByClassName("ui-tabs-selected"));
+        WebElement selectedTabHeader = findElement(By.className("ui-tabs-selected")).findElement(By.tagName("a"));
         int index = getIndexOfHeader(selectedTabHeader);
 
         return getTabs().get(index);
