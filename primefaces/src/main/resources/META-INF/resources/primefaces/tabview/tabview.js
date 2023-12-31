@@ -282,10 +282,11 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
             tabs = this.headerContainer;
 
         /* For Screen Reader and Keyboard accessibility */
-        tabs.not('.ui-state-disabled').attr('tabindex', this.tabindex);
+        tabs = tabs.not('.ui-state-disabled').find('a');
+        tabs.attr('tabindex', this.tabindex);
 
         tabs.on('focus.tabview', function(e) {
-            var focusedTab = $(this);
+            var focusedTab = $(this).parent();
 
             if(!focusedTab.hasClass('ui-state-disabled')) {
                 focusedTab.addClass('ui-tabs-outline');
@@ -301,47 +302,43 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
             }
         })
         .on('blur.tabview', function(){
-            $(this).removeClass('ui-tabs-outline');
+            $(this).parent().removeClass('ui-tabs-outline');
         })
         .on('keydown.tabview', function(e) {
-            var element = $(this);
-            var keyCode = e.code;
-            if(PrimeFaces.utils.isActionKey(e) && !element.hasClass('ui-state-disabled')) {
-                $this.select(element.index());
-                e.preventDefault();
-            } else {
-                switch(keyCode) {
-                    case 'ArrowRight':
-                        var nextTab = element.nextAll('.ui-tabview-nav:not(.ui-state-disabled)').first();
-                        if(nextTab.length) {
-                            nextTab.trigger('focus.tabview');
-                        }
+            var element = $(this).parent();
+            switch (e.code) {
+                case 'ArrowRight':
+                    var nextTab = element.nextAll('.ui-tabs-header:not(.ui-state-disabled)');
+                    if (nextTab.length) {
+                        nextTab.first().find('a').trigger('focus.tabview');
+                    }
+                    e.preventDefault();
+                    break;
+                case 'ArrowLeft':
+                    var prevTab = element.prevAll('.ui-tabs-header:not(.ui-state-disabled)');
+                    if (prevTab.length) {
+                        prevTab.first().find('a').trigger('focus.tabview');
+                    }
+                    e.preventDefault();
+                    break;
+                case 'NumpadEnter':
+                case 'Enter':
+                case 'Space':
+                    if (!element.hasClass('ui-state-disabled')) {
+                        $this.select(element.data('index'));
                         e.preventDefault();
-                        break;
-                    case 'ArrowLeft':
-                        var prevTab = element.prevAll('.ui-tabview-nav:not(.ui-state-disabled)').first();
-                        if(prevTab.length) {
-                            prevTab.trigger('focus.tabview');
-                        }
-                        e.preventDefault();
-                        break;
-                    case 'NumpadEnter':
-                    case 'Enter':
-                    case 'Space':
-                        $this.select(element.index());
-                        e.preventDefault();
-                        break;
-                    case 'Home':
-                    case 'PageUp':
-                        $this.headerContainer.first().trigger('focus.tabview');
-                        e.preventDefault();
-                        break;
-                    case 'End':
-                    case 'PageDown':
-                        $this.headerContainer.last().trigger('focus.tabview');
-                        e.preventDefault();
-                        break;
-                }
+                    }
+                    break;
+                case 'Home':
+                case 'PageUp':
+                    $this.headerContainer.first().find('a').trigger('focus.tabview');
+                    e.preventDefault();
+                    break;
+                case 'End':
+                case 'PageDown':
+                    $this.headerContainer.last().find('a').trigger('focus.tabview');
+                    e.preventDefault();
+                    break;
             }
         });
 
@@ -584,16 +581,16 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         //aria
         oldPanel.attr('aria-hidden', true);
         oldPanel.addClass('ui-helper-hidden');
-        oldHeader.attr('aria-expanded', false);
-        oldHeader.attr('aria-selected', false);
+        oldHeader.find('a').attr('aria-expanded', false);
+        oldHeader.find('a').attr('aria-selected', false);
         if(hasOldActions) {
             oldActions.attr('aria-hidden', true);
         }
 
         newPanel.attr('aria-hidden', false);
         newPanel.removeClass('ui-helper-hidden');
-        newHeader.attr('aria-expanded', true);
-        newHeader.attr('aria-selected', true);
+        newHeader.find('a').attr('aria-expanded', true);
+        newHeader.find('a').attr('aria-selected', true);
         if(hasNewActions) {
             newActions.attr('aria-hidden', false);
         }
@@ -822,7 +819,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
      * @param {number} index 0-based index of the tab to disable.
      */
     disable: function(index) {
-        this.headerContainer.eq(index).addClass('ui-state-disabled').attr('tabindex', '-1');
+        this.headerContainer.eq(index).addClass('ui-state-disabled').find('a').attr('tabindex', '-1');
     },
 
     /**
@@ -830,7 +827,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
      * @param {number} index 0-based index of the tab to enable.
      */
     enable: function(index) {
-        this.headerContainer.eq(index).removeClass('ui-state-disabled').attr('tabindex', this.tabindex);
+        this.headerContainer.eq(index).removeClass('ui-state-disabled').find('a').attr('tabindex', this.tabindex);
     },
 
     /**
