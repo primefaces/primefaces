@@ -53,7 +53,7 @@ public abstract class TabView extends AbstractComponent {
             List<Tab> tabs = new ArrayList<>();
 
             headers.forEach(headerElt -> {
-                String title = headerElt.findElement(By.tagName("a")).getText();
+                String title = headerElt.getText();
                 int index = getIndexOfHeader(headerElt);
                 WebElement content = contents.get(index);
 
