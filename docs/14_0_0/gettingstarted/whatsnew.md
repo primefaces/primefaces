@@ -9,25 +9,26 @@ This page contains a list of big features. Please check the GitHub issues for al
 Look into [migration guide](https://primefaces.github.io/primefaces/14_0_0/#/../migrationguide/14_0_0) for more enhancements and changes.
 
 * Core
-    * `MOVE_SCRIPTS_TO_BOTTOM` adds new option `defer` to defer loading scripts
-    * OS settings for `prefers-reduced-motion: reduce` is now respected and PF disables all animations
+    * `MOVE_SCRIPTS_TO_BOTTOM` adds new option `defer` to defer loading scripts.
+    * OS settings for `prefers-reduced-motion: reduce` is now respected and PF disables all animations.
+    * Minimum inline Ajax load animation duration via `PrimeFaces.ajax.minLoadAnim`.
 
 * Accordion
     * Added `toggleSpeed` for toggle speed animation duration.
-    * Added `scrollIntoView` to allow the active tab to be scrolled into the viewport
+    * Added `scrollIntoView` to allow the active tab to be scrolled into the viewport.
     
 * Badge
-    * Added `icon` and `iconPos` to allow icons to be used in badge
-    * Added 'onclick` to allow client side click of badge. If not set it delegates the click to its target element
+    * Added `icon` and `iconPos` to allow icons to be used in badge.
+    * Added 'onclick` to allow client side click of badge. If not set it delegates the click to its target element.
 
 * DataExporter
-    * Added `bufferSize` to control how many items are fetched at a time when `DataTable#lazy` is enabled
+    * Added `bufferSize` to control how many items are fetched at a time when `DataTable#lazy` is enabled.
 
 * DataTable
-    * JPALazyDataModel now supports case insensitive filters with `setCaseSensitive(false);`
-    * JPALazyDataModel now supports wildcard filters with `setWildcardSupport(true);` so you can use `*`, `%`, `_` or `?` in filter
+    * JPALazyDataModel now supports case insensitive filters with `setCaseSensitive(false);`,
+    * JPALazyDataModel now supports wildcard filters with `setWildcardSupport(true);` so you can use `*`, `%`, `_` or `?` in filter.
     * JPALazyDataModel now supports builder pattern for constructor.
-    * Added `filterPlaceholder` for `Column` and `Columns`
+    * Added `filterPlaceholder` for `Column` and `Columns`.
 
 * Messages
     * Added `clearMessages` widget method to clear all current messages.
@@ -47,7 +48,7 @@ Look into [migration guide](https://primefaces.github.io/primefaces/14_0_0/#/../
     * Added `hideDelay` delay in milliseconds before hiding the submenu., if 0 not hidden until document.click(). Default is 0.
     
 * TreeTable
-    * Added `filterPlaceholder` for `Column` and `Columns`
+    * Added `filterPlaceholder` for `Column` and `Columns`.
     
 * Wizard
     * Added `disableOnAjax` attribute to disable next and back navigation buttons during Ajax requests triggered by them.
