@@ -262,8 +262,9 @@ public class TabViewRenderer extends CoreRenderer {
         }
 
         //title
-        String tabHeaderId = tab.getClientId(context) + "_header";
-        String tabContentId = tab.getClientId(context) + "_content";
+        String clientId = tab.getClientId(context);
+        String tabHeaderId = clientId + "_header";
+        String tabContentId = clientId + "_content";
         writer.startElement("a", null);
         writer.writeAttribute("href", "#" + tab.getClientId(context), null);
         writer.writeAttribute("id", tabHeaderId, null);
@@ -336,8 +337,9 @@ public class TabViewRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = active ? TabView.ACTIVE_TAB_CONTENT_CLASS : TabView.INACTIVE_TAB_CONTENT_CLASS;
 
-        String tabHeaderId = tab.getClientId(context) + "_header";
-        String tabContentId = tab.getClientId(context) + "_content";
+        String clientId = tab.getClientId(context);
+        String tabHeaderId = clientId + "_header";
+        String tabContentId = clientId + "_content";
         writer.startElement("div", null);
         writer.writeAttribute("id", tabContentId, null);
         writer.writeAttribute("class", styleClass, null);

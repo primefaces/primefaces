@@ -43,7 +43,7 @@ public abstract class TabView extends AbstractComponent {
     @FindBy(xpath = "//*[@role='tab']")
     private List<WebElement> headers;
 
-    @FindBy(xpath = "//*[@role='tabpanel']")
+    @FindBy(css = ".ui-tabs-panel")
     private List<WebElement> contents;
 
     private List<Tab> tabs = null;
@@ -52,15 +52,13 @@ public abstract class TabView extends AbstractComponent {
         if (tabs == null) {
             List<Tab> tabs = new ArrayList<>();
 
-            for (int i = 0; i < headers.size(); i++) {
-                WebElement headerElt = headers.get(i);
+            headers.forEach(headerElt -> {
                 String title = headerElt.findElement(By.tagName("a")).getText();
                 int index = getIndexOfHeader(headerElt);
-                // Assuming contents are aligned with headers
-                WebElement content = contents.size() > i ? contents.get(i) : null;
+                WebElement content = contents.get(index);
 
                 tabs.add(new Tab(title, index, headerElt, content));
-            }
+            });
 
             this.tabs = tabs;
         }
@@ -76,19 +74,12 @@ public abstract class TabView extends AbstractComponent {
     public void toggleTab(int index) {
         final JSONObject cfg = getWidgetConfiguration();
         final boolean isDynamic = cfg.has("dynamic") && cfg.getBoolean("dynamic");
-        WebElement tabToToggle = headers.get(index); // Assumes headers are correctly identified
 
-        if (tabToToggle != null) {
-            if (isDynamic || ComponentUtils.hasAjaxBehavior(getRoot(), "tabChange")) {
-                PrimeSelenium.guardAjax(tabToToggle).click();
-            }
-            else {
-                tabToToggle.click();
-            }
+        if (isDynamic || ComponentUtils.hasAjaxBehavior(getRoot(), "tabChange")) {
+            PrimeSelenium.guardAjax(headers.get(index)).click();
         }
         else {
-            // Handle the case where the tab is not found or index is out of range
-            throw new NoSuchElementException("Tab at index " + index + " not found.");
+            headers.get(index).click();
         }
     }
 
@@ -105,10 +96,6 @@ public abstract class TabView extends AbstractComponent {
     }
 
     private Integer getIndexOfHeader(WebElement headerElt) {
-        String id = headerElt.getAttribute("id");
-        if (id != null && id.contains("_header")) {
-            return Integer.parseInt(id.substring(id.lastIndexOf('-') + 1, id.indexOf("_header")));
-        }
-        return null;
+        return Integer.parseInt(headerElt.getAttribute("data-index"));
     }
 }

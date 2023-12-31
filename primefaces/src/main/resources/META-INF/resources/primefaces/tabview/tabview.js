@@ -329,6 +329,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
                         break;
                     // Space and Enter key
                     case 'NumpadEnter':
+                    case 'Enter':
                     case 'Space':
                         $this.select(element.index());
                         e.preventDefault();
