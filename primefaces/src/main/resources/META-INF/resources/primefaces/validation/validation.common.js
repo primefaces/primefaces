@@ -269,8 +269,6 @@ if (window.PrimeFaces) {
             const widget = PrimeFaces.getWidgetById(btn.id);
 
             if (widget) {
-                // TODO: see/reuse(?) validation.highlighter.js for complex components like onemenu, inputnumber, ..
-
                 if (PrimeFaces.validation.validate($source, process, update, false, false, false, false)) {
                     widget.jq.addClass('ui-state-csv-valid');
                     widget.jq.removeClass('ui-state-csv-invalid');

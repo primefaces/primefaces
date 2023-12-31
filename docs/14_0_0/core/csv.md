@@ -281,11 +281,14 @@ PrimeFaces.validator['MyComplexValidator'] = {
 </h:form>
 ```
 
-## CommandButton - automatically enable/disable based on CSV
+## Modern CSV
 
-When `enabledByValidateClient` is set to true on a CommandButton, the button is only enabled after successful client side validation. Used together with `<p:clientValidator event="..." />` on all relevant input-components.
+Immediate client side validation - like used from modern JS-based-UI-Frameworks like React, Angular or Vue - on all input-components (trigger by keyup- respectively change-events depending on component)
+can be done by using the event-mechanism described before. (Using keyup- und change-events depending on component. `<p:clientValidator event="..." />`)
 
-The logic behind is triggered on following events:
+Additional CommandButton´s with `enabledByValidateClient="true"` are only enabled after successful CSV of all input-components relevant due to process-attribute.
+
+The logic behind `enabledByValidateClient="true"` is triggered on following events:
 * initial (full) page-load
 * AJAX-updates
 * `<p:clientValidator event="..." />` on components

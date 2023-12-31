@@ -28,11 +28,14 @@ PrimeFaces.widget.CommandButton = PrimeFaces.widget.BaseWidget.extend({
 
         if (cfg.validateClientDynamic) {
             let that = this;
+
+            // init enabled/disabled-state after initial page-load
             setTimeout( function() {
-                PrimeFaces.validation.validateButtonCsvRequirements(that.jq[0]); // TODO: Which code runs when we click the button? Are there some possible synergies? Refactoring possible?
+                PrimeFaces.validation.validateButtonCsvRequirements(that.jq[0]);
             }, 0 );
 
-            PrimeFaces.validation.bindAjaxComplete(); // TODO: do this only once for the whole page not per CommandButton!
+            // update enabled/disabled-state after ajax-updates
+            PrimeFaces.validation.bindAjaxComplete();
         }
     },
 
