@@ -134,16 +134,13 @@ public class TabViewRenderer extends CoreRenderer {
         String clientId = tabView.getClientId(context);
         String widgetVar = tabView.resolveWidgetVar(context);
         String orientation = tabView.getOrientation();
-        String styleClass = tabView.getStyleClass();
-        String defaultStyleClass = TabView.CONTAINER_CLASS + " ui-tabs-" + orientation;
-        if (tabView.isScrollable()) {
-            defaultStyleClass = defaultStyleClass + " " + TabView.SCROLLABLE_TABS_CLASS;
-        }
-        styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
-
-        if (ComponentUtils.isRTL(context, tabView)) {
-            styleClass += " ui-tabs-rtl";
-        }
+        String styleClass = getStyleClassBuilder(context)
+                .add(TabView.CONTAINER_CLASS)
+                .add("ui-tabs-" + orientation)
+                .add(tabView.isScrollable(), TabView.SCROLLABLE_TABS_CLASS)
+                .add(tabView.getStyleClass())
+                .add(ComponentUtils.isRTL(context, tabView), "ui-tabs-rtl")
+                .build();
 
         writer.startElement("div", tabView);
         writer.writeAttribute("id", clientId, null);
@@ -265,21 +262,17 @@ public class TabViewRenderer extends CoreRenderer {
         //title
         String clientId = tab.getClientId(context);
         String tabHeaderId = clientId + "_header";
-        String tabContentId = clientId + "_content";
         writer.startElement("a", null);
-        writer.writeAttribute("href", "#" + tab.getClientId(context), null);
         writer.writeAttribute("id", tabHeaderId, null);
+        writer.writeAttribute("href", "#" + clientId, null);
         writer.writeAttribute("role", "tab", null);
         writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(active), null);
         writer.writeAttribute(HTML.ARIA_SELECTED, String.valueOf(active), null);
         writer.writeAttribute(HTML.ARIA_LABEL, tab.getAriaLabel(), null);
         writer.writeAttribute("data-index", index, null);
-        writer.writeAttribute("aria-controls", tabContentId, null);
-        if (active) {
-            writer.writeAttribute("tabindex", "0", null);
-        }
-        else {
-            writer.writeAttribute("tabindex", "-1", null);
+        writer.writeAttribute("aria-controls", clientId, null);
+        if (tabindex != null) {
+            writer.writeAttribute("tabindex", tabindex, null);
         }
         if (!FacetUtils.shouldRenderFacet(titleFacet)) {
             String tabTitle = tab.getTitle();
@@ -340,15 +333,14 @@ public class TabViewRenderer extends CoreRenderer {
 
         String clientId = tab.getClientId(context);
         String tabHeaderId = clientId + "_header";
-        String tabContentId = clientId + "_content";
         writer.startElement("div", null);
-        writer.writeAttribute("id", tabContentId, null);
+        writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute("role", "tabpanel", null);
         writer.writeAttribute(HTML.ARIA_HIDDEN, String.valueOf(!active), null);
+        writer.writeAttribute(HTML.ARIA_LABELLEDBY, tabHeaderId, null);
         writer.writeAttribute("data-index", index, null);
         writer.writeAttribute("tabindex", "0", null);
-        writer.writeAttribute("aria-labelledby", tabHeaderId, null);
 
         if (dynamic) {
             if (active) {
