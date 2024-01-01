@@ -28,6 +28,7 @@ import org.primefaces.model.file.UploadedFile;
 import org.primefaces.model.file.UploadedFiles;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.FileUploadUtils;
+import org.primefaces.validate.FileValidator;
 import org.primefaces.virusscan.VirusException;
 
 import javax.el.MethodExpression;
@@ -38,6 +39,8 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 import javax.faces.validator.ValidatorException;
 import org.primefaces.event.FilesUploadEvent;
+
+import java.util.Arrays;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "fileupload/fileupload.css")
@@ -80,7 +83,9 @@ public class FileUpload extends FileUploadBase {
     protected void validateValue(FacesContext context, Object newValue) {
         super.validateValue(context, newValue);
 
-        if (isValid() && ComponentUtils.isRequestSource(this, context)) {
+        boolean hasFileValidator = Arrays.stream(getValidators()).anyMatch(v -> v instanceof FileValidator);
+
+        if (!hasFileValidator && isValid() && ComponentUtils.isRequestSource(this, context)) {
             try {
                 if (newValue instanceof UploadedFile) {
                     FileUploadUtils.tryValidateFile(context, this, (UploadedFile) newValue);
