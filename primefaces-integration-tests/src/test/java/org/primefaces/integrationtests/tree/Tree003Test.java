@@ -47,7 +47,7 @@ class Tree003Test extends AbstractTreeTest {
 
     @Test
     @Order(1)
-    @RepeatedTest(2)
+    @RepeatedTest(200)
     @DisplayName("Tree: Drag and drop still allows tab and arrow keys to select")
     void tabbing(Page page) {
         // Arrange
