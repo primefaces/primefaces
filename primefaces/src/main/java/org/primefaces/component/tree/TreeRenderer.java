@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -213,6 +213,11 @@ public class TreeRenderer extends CoreRenderer {
         Tree tree = (Tree) component;
         TreeNode root = tree.getValue();
 
+        //enable RTL
+        if (ComponentUtils.isRTL(context, tree)) {
+            tree.setRTLRendering(true);
+        }
+
         if (tree.isNodeExpandRequest(context)) {
             boolean vertical = tree.getOrientation().equals("vertical");
             String clientId = tree.getClientId(context);
@@ -371,11 +376,6 @@ public class TreeRenderer extends CoreRenderer {
             tree.initPreselection();
         }
 
-        //enable RTL
-        if (ComponentUtils.isRTL(context, tree)) {
-            tree.setRTLRendering(true);
-        }
-
         //container class
         String containerClass = getStyleClassBuilder(context)
                 .add(tree.isRTLRendering(), Tree.CONTAINER_RTL_CLASS, Tree.CONTAINER_CLASS)
@@ -445,11 +445,6 @@ public class TreeRenderer extends CoreRenderer {
         String clientId = tree.getClientId(context);
         boolean dynamic = tree.isDynamic();
         boolean checkboxSelectionMode = tree.isCheckboxSelectionMode();
-
-        //enable RTL
-        if (ComponentUtils.isRTL(context, tree)) {
-            tree.setRTLRendering(true);
-        }
 
         //container class
         String containerClass = getStyleClassBuilder(context)
