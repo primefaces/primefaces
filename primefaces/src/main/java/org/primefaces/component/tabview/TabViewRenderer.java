@@ -134,16 +134,13 @@ public class TabViewRenderer extends CoreRenderer {
         String clientId = tabView.getClientId(context);
         String widgetVar = tabView.resolveWidgetVar(context);
         String orientation = tabView.getOrientation();
-        String styleClass = tabView.getStyleClass();
-        String defaultStyleClass = TabView.CONTAINER_CLASS + " ui-tabs-" + orientation;
-        if (tabView.isScrollable()) {
-            defaultStyleClass = defaultStyleClass + " " + TabView.SCROLLABLE_TABS_CLASS;
-        }
-        styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
-
-        if (ComponentUtils.isRTL(context, tabView)) {
-            styleClass += " ui-tabs-rtl";
-        }
+        String styleClass = getStyleClassBuilder(context)
+                .add(TabView.CONTAINER_CLASS)
+                .add("ui-tabs-" + orientation)
+                .add(tabView.isScrollable(), TabView.SCROLLABLE_TABS_CLASS)
+                .add(tabView.getStyleClass())
+                .add(ComponentUtils.isRTL(context, tabView), "ui-tabs-rtl")
+                .build();
 
         writer.startElement("div", tabView);
         writer.writeAttribute("id", clientId, null);
@@ -240,23 +237,19 @@ public class TabViewRenderer extends CoreRenderer {
             throws IOException {
         boolean withFacet = false;
         ResponseWriter writer = context.getResponseWriter();
-        String defaultStyleClass = active ? TabView.ACTIVE_TAB_HEADER_CLASS : TabView.INACTIVE_TAB_HEADER_CLASS;
-        defaultStyleClass = defaultStyleClass + " ui-corner-" + tabView.getOrientation();   //cornering
-        if (tab.isDisabled()) {
-            defaultStyleClass = defaultStyleClass + " ui-state-disabled";
-        }
-        String styleClass = tab.getTitleStyleClass();
-        styleClass = (styleClass == null) ? defaultStyleClass : defaultStyleClass + " " + styleClass;
+        String styleClass = getStyleClassBuilder(context)
+                .add(active, TabView.ACTIVE_TAB_HEADER_CLASS, TabView.INACTIVE_TAB_HEADER_CLASS)
+                .add("ui-corner-" + tabView.getOrientation())
+                .add(tab.isDisabled(), "ui-state-disabled")
+                .add(tab.getTitleStyleClass())
+                .build();
         UIComponent titleFacet = tab.getFacet("title");
         String tabindex = tab.isDisabled() ? "-1" : tabView.getTabindex();
 
         //header container
         writer.startElement("li", tab);
         writer.writeAttribute("class", styleClass, null);
-        writer.writeAttribute("role", "tab", null);
-        writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(active), null);
-        writer.writeAttribute(HTML.ARIA_SELECTED, String.valueOf(active), null);
-        writer.writeAttribute(HTML.ARIA_LABEL, tab.getAriaLabel(), null);
+        writer.writeAttribute("role", "presentation", null);
         writer.writeAttribute("data-index", index, null);
         if (tab.getTitleStyle() != null) {
             writer.writeAttribute("style", tab.getTitleStyle(), null);
@@ -264,14 +257,22 @@ public class TabViewRenderer extends CoreRenderer {
         if (tab.getTitletip() != null) {
             writer.writeAttribute("title", tab.getTitletip(), null);
         }
+
+        //title
+        String clientId = tab.getClientId(context);
+        String tabHeaderId = clientId + "_header";
+        writer.startElement("a", null);
+        writer.writeAttribute("id", tabHeaderId, null);
+        writer.writeAttribute("href", "#" + clientId, null);
+        writer.writeAttribute("role", "tab", null);
+        writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(active), null);
+        writer.writeAttribute(HTML.ARIA_SELECTED, String.valueOf(active), null);
+        writer.writeAttribute(HTML.ARIA_LABEL, tab.getAriaLabel(), null);
+        writer.writeAttribute("data-index", index, null);
+        writer.writeAttribute("aria-controls", clientId, null);
         if (tabindex != null) {
             writer.writeAttribute("tabindex", tabindex, null);
         }
-
-        //title
-        writer.startElement("a", null);
-        writer.writeAttribute("href", "#" + tab.getClientId(context), null);
-        writer.writeAttribute("tabindex", "-1", null);
         if (!FacetUtils.shouldRenderFacet(titleFacet)) {
             String tabTitle = tab.getTitle();
             if (tabTitle != null) {
@@ -314,7 +315,8 @@ public class TabViewRenderer extends CoreRenderer {
 
         tabView.forEachTab((tab, i, active) -> {
             try {
-                encodeTabContent(context, tab, i, active, dynamic, repeating);
+                String tabindex = active ? tabView.getTabindex() : "-1";
+                encodeTabContent(context, tab, i, active, dynamic, repeating, tabindex);
             }
             catch (IOException ex) {
                 throw new FacesException(ex);
@@ -324,17 +326,20 @@ public class TabViewRenderer extends CoreRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeTabContent(FacesContext context, Tab tab, int index, boolean active, boolean dynamic, boolean repeating)
+    protected void encodeTabContent(FacesContext context, Tab tab, int index, boolean active, boolean dynamic, boolean repeating, String tabindex)
             throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = active ? TabView.ACTIVE_TAB_CONTENT_CLASS : TabView.INACTIVE_TAB_CONTENT_CLASS;
-
+        String clientId = tab.getClientId(context);
+        String tabHeaderId = clientId + "_header";
         writer.startElement("div", null);
-        writer.writeAttribute("id", tab.getClientId(context), null);
+        writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute("role", "tabpanel", null);
         writer.writeAttribute(HTML.ARIA_HIDDEN, String.valueOf(!active), null);
+        writer.writeAttribute(HTML.ARIA_LABELLEDBY, tabHeaderId, null);
         writer.writeAttribute("data-index", index, null);
+        writer.writeAttribute("tabindex", tabindex, null);
 
         if (dynamic) {
             if (active) {
