@@ -8,7 +8,6 @@
 
     <function>
         <function-name>resolveClientId</function-name>
-        <function-name>resolveClientId</function-name>
         <function-class>org.primefaces.expression.SearchExpressionUtils</function-class>
         <function-signature>java.lang.String resolveClientId(java.lang.String, javax.faces.component.UIComponent)</function-signature>
     </function>
