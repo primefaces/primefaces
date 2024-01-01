@@ -31,13 +31,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.Tree;
 import org.primefaces.selenium.component.model.tree.TreeNode;
@@ -59,7 +58,7 @@ class Tree003Test extends AbstractTreeTest {
         actionSelect.perform();
 
         // Assert
-        tree = PrimeSelenium.createFragment(Tree.class, By.id("form:tree")); // does this improve stability?
+        // tree = PrimeSelenium.createFragment(Tree.class, By.id("form:tree")); // does this improve stability?
         List<TreeNode> children = tree.getChildren();
         assertNotNull(children);
         assertEquals(3, children.size());
@@ -68,6 +67,14 @@ class Tree003Test extends AbstractTreeTest {
         assertEquals("Events", second.getLabelText());
         assertDisplayed(second.getWebElement());
         System.out.println("Tree - second node, HTML: " + second.getWebElement().getAttribute("innerHTML"));
+
+        JavascriptExecutor j = (JavascriptExecutor) page.getWebDriver();
+        Long verticalScrollPosition = (Long) j.executeScript("return window.pageYOffset;");
+        Long horizontalScrollPosition = (Long) j.executeScript("return window.pageXOffset;");
+        System.out.println("Vertical scroll position: " + verticalScrollPosition + ", horizontal scroll position: " + horizontalScrollPosition);
+        Long windowHeight = (Long) j.executeScript("return window.innerHeight;");
+        Long windowWidth = (Long) j.executeScript("return window.innerWidth;");
+        System.out.println("Window - height: " + windowHeight + ", width: " + windowWidth);
 
         List<TreeNode> secondChildren = second.getChildren();
         assertNotNull(secondChildren);
