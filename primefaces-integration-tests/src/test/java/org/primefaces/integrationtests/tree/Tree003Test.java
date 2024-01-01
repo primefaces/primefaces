@@ -88,7 +88,8 @@ class Tree003Test extends AbstractTreeTest {
 
         secondChildren.forEach(t -> {
             System.out.println("Tree - second node - child, HTML: " + t.getWebElement().getAttribute("innerHTML"));
-            PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(t.getWebElement())); // stabilize flickering test - be sure keyboard-action was executed
+            // stabilize flickering test - be sure keyboard-action was executed
+            PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(t.getWebElement()));
             assertDisplayed(t.getWebElement());
         });
 
