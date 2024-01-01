@@ -31,11 +31,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.component.InputText;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.Tree;
 import org.primefaces.selenium.component.model.tree.TreeNode;
@@ -57,6 +60,7 @@ class Tree003Test extends AbstractTreeTest {
         actionSelect.perform();
 
         // Assert
+        tree = PrimeSelenium.createFragment(Tree.class, By.id("form:tree")); // does this improve stability?
         List<TreeNode> children = tree.getChildren();
         assertNotNull(children);
         assertEquals(3, children.size());
@@ -64,14 +68,16 @@ class Tree003Test extends AbstractTreeTest {
         TreeNode second = children.get(1);
         assertEquals("Events", second.getLabelText());
         assertDisplayed(second.getWebElement());
+        System.out.println("Tree - second node, HTML: " + second.getWebElement().getAttribute("innerHTML"));
 
         List<TreeNode> secondChildren = second.getChildren();
         assertNotNull(secondChildren);
         assertEquals(3, secondChildren.size());
 
-        assertDisplayed(secondChildren.get(0).getWebElement());
-        assertDisplayed(secondChildren.get(1).getWebElement());
-        assertDisplayed(secondChildren.get(2).getWebElement());
+        secondChildren.forEach(t -> {
+            System.out.println("Tree - second node - child, HTML: " + t.getWebElement().getAttribute("innerHTML"));
+            assertDisplayed(t.getWebElement());
+        });
 
         assertConfiguration(tree.getWidgetConfiguration());
     }
