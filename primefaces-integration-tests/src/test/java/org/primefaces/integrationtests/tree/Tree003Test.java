@@ -47,7 +47,7 @@ class Tree003Test extends AbstractTreeTest {
 
     @Test
     @Order(1)
-    @RepeatedTest(200)
+    @RepeatedTest(2)
     @DisplayName("Tree: Drag and drop still allows tab and arrow keys to select")
     void tabbing(Page page) {
         // Arrange
@@ -56,8 +56,12 @@ class Tree003Test extends AbstractTreeTest {
 
         // Act
         Actions actions = new Actions(page.getWebDriver());
-        Action actionSelect = actions.sendKeys(Keys.TAB, Keys.ARROW_DOWN, Keys.ARROW_RIGHT).build();
-        actionSelect.perform();
+        Action action = actions.sendKeys(Keys.TAB).build();
+        action.perform();
+        action = actions.sendKeys(Keys.ARROW_DOWN).build();
+        action.perform();
+        action = actions.sendKeys(Keys.ARROW_RIGHT).build();
+        action.perform();
 
         // Assert
         // tree = PrimeSelenium.createFragment(Tree.class, By.id("form:tree")); // does this improve stability?
@@ -84,7 +88,7 @@ class Tree003Test extends AbstractTreeTest {
 
         secondChildren.forEach(t -> {
             System.out.println("Tree - second node - child, HTML: " + t.getWebElement().getAttribute("innerHTML"));
-            PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(t.getWebElement()));
+            PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(t.getWebElement())); // stabilize flickering test - be sure keyboard-action was executed
             assertDisplayed(t.getWebElement());
         });
 
