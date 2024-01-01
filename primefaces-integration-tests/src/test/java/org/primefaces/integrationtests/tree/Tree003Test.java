@@ -29,6 +29,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.interactions.Action;
@@ -43,6 +44,7 @@ class Tree003Test extends AbstractTreeTest {
 
     @Test
     @Order(1)
+    @RepeatedTest(200)
     @DisplayName("Tree: Drag and drop still allows tab and arrow keys to select")
     void tabbing(Page page) {
         // Arrange
@@ -51,9 +53,7 @@ class Tree003Test extends AbstractTreeTest {
 
         // Act
         Actions actions = new Actions(page.getWebDriver());
-        Action actionSelect = actions.sendKeys(Keys.TAB).pause(300)
-                .sendKeys(Keys.ARROW_DOWN).pause(300)
-                .sendKeys(Keys.ARROW_RIGHT).pause(300).build();
+        Action actionSelect = actions.sendKeys(Keys.TAB, Keys.ARROW_DOWN, Keys.ARROW_RIGHT).build();
         actionSelect.perform();
 
         // Assert
