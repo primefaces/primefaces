@@ -14,11 +14,11 @@
 
 | Name           | Default | Type    | Description     |
 |----------------| ------- |---------| ----------------- |
-| allowTypes     | null    | String  | Regular expression for accepted file types, e.g. /(\.|\/)(gif|jpe?g|png)$/
+| allowTypes     | null    | String  | Javascript regular expression for accepted file types, e.g. /(\.|\/)(gif|jpe?g|png)$/
 | fileLimit      | null    | Integer | Maximum number of files to be uploaded.
 | sizeLimit      | null    | Long    | Individual file size limit in bytes. Default is unlimited.
-| contentType    | null    | Boolean | Wheter the contentType should be validated based on the accept attribute of the attached component. Default is false.
-| virusScan      | null    | Boolean  | Whether virus scan should be performed. Default is false.
+| contentType    | null    | Boolean | Whether the contentType should be validated based on the accept attribute of the attached component. Default is false.
+| virusScan      | null    | Boolean | Whether virus scan should be performed. Default is false.
 
 ## Getting Started
 Either attach it to `p:fileUpload` or `h:inputFile`. Even CSV is supported:
