@@ -40,12 +40,49 @@ public abstract class Dialog extends AbstractComponent {
     @FindBy(className = "ui-dialog-title")
     private WebElement title;
 
+    @FindBy(className = "ui-dialog-titlebar-close")
+    private WebElement closeButton;
+
+    @FindBy(className = "ui-dialog-titlebar-minimize")
+    private WebElement minimizeButton;
+
+    @FindBy(className = "ui-dialog-titlebar-maximize")
+    private WebElement maximizeButton;
+
     public WebElement getContent() {
         return content;
     }
 
     public String getTitle() {
         return title.getText();
+    }
+
+    public WebElement getCloseButton() {
+        return closeButton;
+    }
+
+    public void setCloseButton(WebElement closeButton) {
+        this.closeButton = closeButton;
+    }
+
+    public WebElement getMinimizeButton() {
+        return minimizeButton;
+    }
+
+    public void setMinimizeButton(WebElement minimizeButton) {
+        this.minimizeButton = minimizeButton;
+    }
+
+    public WebElement getMaximizeButton() {
+        return maximizeButton;
+    }
+
+    public void setMaximizeButton(WebElement maximizeButton) {
+        this.maximizeButton = maximizeButton;
+    }
+
+    public void setContent(WebElement content) {
+        this.content = content;
     }
 
     /**
@@ -55,6 +92,20 @@ public abstract class Dialog extends AbstractComponent {
      */
     public boolean isVisible() {
         return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".isVisible();");
+    }
+
+    /**
+     * Minimize the dialog.
+     */
+    public void toggleMinimize() {
+        PrimeSelenium.executeScript(getWidgetByIdScript() + ".toggleMinimize();");
+    }
+
+    /**
+     * Maximize the dialog.
+     */
+    public void toggleMaximize() {
+        PrimeSelenium.executeScript(getWidgetByIdScript() + ".toggleMaximize();");
     }
 
     /**
