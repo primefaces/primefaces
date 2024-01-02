@@ -52,18 +52,52 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
 
         this.jq.addClass('ui-menu-overlay');
 
-        this.cfg.trigger = this.cfg.trigger.replace(/\\\\:/g,"\\:");
+        this.cfg.trigger = this.cfg.trigger.replace(/\\\\:/g, "\\:");
 
-        this.trigger = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.trigger);
-
-        //mark trigger and descandants of trigger as a trigger for a primefaces overlay
-        this.trigger.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
+        // register trigger and events
+        this.bindTrigger();
 
         if (!this.cfg.appendTo) {
             this.cfg.appendTo = '@(body)';
         }
         PrimeFaces.utils.registerDynamicOverlay(this, this.jq, this.id);
         this.transition = PrimeFaces.utils.registerCSSTransition(this.jq, 'ui-connected-overlay');
+
+        // register for AJAX updates on trigger
+        this.bindAjaxListener();
+
+        //dialog support
+        this.setupDialogSupport();
+    },
+    
+    /**
+      * Sets up the event listener on the trigger.
+      * @private
+      */
+    bindTrigger: function() {
+        var $this = this;
+
+        this.trigger = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.trigger);
+
+        //mark trigger and descendants of trigger as a trigger for a primefaces overlay
+        this.trigger.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
+
+        this.trigger.off(this.cfg.triggerEvent + '.ui-menu').on(this.cfg.triggerEvent + '.ui-menu', function(e) {
+            var trigger = $(this);
+
+            if ($this.jq.is(':visible')) {
+                $this.hide();
+            }
+            else {
+                $this.show();
+
+                if (trigger.is(':button')) {
+                    trigger.addClass('ui-state-focus');
+                }
+
+                e.preventDefault();
+            }
+        });
 
         this.cfg.pos = {
             my: this.cfg.my,
@@ -74,26 +108,22 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
                 $(this).css('transform-origin', 'center ' + directions.vertical).css(pos);
             }
         };
+    },
+    
+    /**
+      * Sets up the global event listeners on the document in case trigger has been updated in DOM
+      * @private
+      */
+    bindAjaxListener: function() {
+        var $this = this;
 
-        this.trigger.off(this.cfg.triggerEvent + '.ui-menu').on(this.cfg.triggerEvent + '.ui-menu', function(e) {
-            var trigger = $(this);
-
-            if($this.jq.is(':visible')) {
-                $this.hide();
-            }
-            else {
-                $this.show();
-
-                if(trigger.is(':button')) {
-                    trigger.addClass('ui-state-focus');
-                }
-
-                e.preventDefault();
+        //listen global ajax send and complete callbacks
+        $(document).on('pfAjaxUpdated.' + this.id, function(e, xhr, settings) {
+            // #3921 if the trigger is updated we need to re-subscribe
+            if (PrimeFaces.ajax.Utils.isXhrSourceATrigger($this, settings, true)) {
+                PrimeFaces.queueTask(function() { $this.bindTrigger() });
             }
         });
-
-        //dialog support
-        this.setupDialogSupport();
     },
 
     /**
