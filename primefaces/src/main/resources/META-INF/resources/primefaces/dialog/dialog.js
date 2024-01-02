@@ -37,6 +37,7 @@
  * @prop {JQuery} maximizeIcon DOM element of the icon for maximizing this dialog, when this dialog can be maximized.
  * @prop {boolean} [minimized] Whether the dialog is currently minimized.
  * @prop {JQuery} minimizeIcon DOM element of the icon for minimizing this dialog, when this dialog can be minimized.
+ * @prop {JQuery} minimizeClone DOM element clone of the JQ to be used for minimizing.
  * @prop {JQuery} parent The DOM element of the parent that contains this dialog, i.e the element to which the dialog
  * was appended.
  * @prop {boolean} positionInitialized Whether the position of the dialog was already set. If not, it must be set the
@@ -686,6 +687,17 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         }
         else {
             this.saveState();
+            
+            // create a minimize clone which is just the titlebar
+            this.minimizeClone = this.jq.clone(true);
+            this.minimizeClone.attr('id', this.jq.attr('id') + '_clone')
+            this.minimizeClone.addClass('ui-dialog-minimized');
+            this.minimizeClone.children('.ui-dialog-content').remove();
+            this.minimizeClone.find('.ui-dialog-footer').remove();
+
+            if (this.cfg.resizable) {
+                this.minimizeClone.children('.ui-resizable-handle').remove();
+            }
 
             if(animate) {
                 this.jq.effect('transfer', {
@@ -694,14 +706,23 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
                                 }, 500,
                                 function() {
                                     $this.dock(dockingZone);
-                                    $this.jq.addClass('ui-dialog-minimized');
                                 });
             }
             else {
                 this.dock(dockingZone);
-                this.jq.addClass('ui-dialog-minimized');
             }
         }
+    },
+
+    /**
+     * Called when this dialog is minimized. Restores the original position of this dialog.
+     * @protected
+     */
+    removeMinimize: function() {
+        this.minimizeClone.remove();
+        this.jq.show();
+        this.restoreState();
+        this.minimized = false;
     },
 
     /**
@@ -712,17 +733,12 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
      */
     dock: function(zone) {
         zone.css('z-index', this.jq.css('z-index'));
-        this.jq.appendTo(zone).css('position', 'static');
-        this.jq.css({'height':'auto', 'width':'auto', 'float': 'left'});
-        this.content.hide();
-        this.footer.hide();
-        this.minimizeIcon.removeClass('ui-state-hover').children('.ui-icon').removeClass('ui-icon-minus').addClass('ui-icon-plus');
+        this.jq.hide();
+        this.minimizeClone.appendTo(zone).css({'position':'static', 'height':'auto', 'width':'auto', 'float': 'left'});
+        var titlebar = this.minimizeClone.children('.ui-dialog-titlebar');
+        var minimizeIcon = titlebar.children('.ui-dialog-titlebar-minimize');
+        minimizeIcon.removeClass('ui-state-hover').children('.ui-icon').removeClass('ui-icon-minus').addClass('ui-icon-plus');
         this.minimized = true;
-
-        if(this.cfg.resizable) {
-            this.resizers.hide();
-        }
-
         this.callBehavior('minimize');
     },
 
@@ -827,7 +843,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
      * @return {boolean} `true` if this dialog is currently being shown, `false` otherwise.
      */
     isVisible: function() {
-        return this.jq.is(':visible');
+        return this.jq.is(':visible') || this.minimized === true;
     },
 
     /**
@@ -861,23 +877,6 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 $this.positionInitialized = false;
             }
         });
-    },
-
-    /**
-     * Called when this dialog is minimized. Restores the original position of this dialog.
-     * @protected
-     */
-    removeMinimize: function() {
-        this.jq.appendTo(this.parent).removeClass('ui-dialog-minimized').css({'position':'fixed', 'float':'none'});
-        this.restoreState();
-        this.content.show();
-        this.footer.show();
-        this.minimizeIcon.removeClass('ui-state-hover').children('.ui-icon').removeClass('ui-icon-plus').addClass('ui-icon-minus');
-        this.minimized = false;
-
-        if(this.cfg.resizable) {
-            this.resizers.show();
-        }
     }
 
 });
