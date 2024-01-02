@@ -119,10 +119,7 @@ PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
             },
             drag: function(event, ui) {
                 var original = ui.originalPosition;
-                var zoomFactor = 1.0;
-                if (widget.zoomFactor) {
-                    zoomFactor = widget.zoomFactor;
-                }
+                var zoomFactor = widget.zoomFactor || 1.0;
                 ui.position = {
                     left: (event.clientX - initialDragPosition.x + original.left) / zoomFactor,
                     top:  (event.clientY - initialDragPosition.y + original.top ) / zoomFactor
@@ -132,8 +129,10 @@ PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
 
         droppableNodes.droppable({
             accept: ".ui-organigram-node.draggable",
+            tolerance: "pointer",
             activeClass: "drag-active",
-            hoverClass: "drop-hover"
+            hoverClass: "drop-hover",
+            zoomFactor: function() {return widget.zoomFactor || 1.0}
         });
 
         // drop & drop happens in the target dom
