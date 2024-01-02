@@ -46,6 +46,7 @@
                                       multiple="true" emptyLabel="Please select..." updateLabel="true"
                                       style="min-width: 15rem" panelStyle="width: 30rem" scrollHeight="250"
                                       value="#{checkboxView.selectedCities2}">
+                        <p:ajax event="itemSelect" listener="#{checkboxView.onItemSelect}"/>
                         <p:ajax event="itemUnselect" listener="#{checkboxView.onItemUnselect}"/>
                         <f:selectItems value="#{checkboxView.cities}"/>
                     </p:selectCheckboxMenu>

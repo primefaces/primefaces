@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,13 +23,12 @@
  */
 package org.primefaces.showcase.menu;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 @Named
 @ApplicationScoped
@@ -615,13 +614,13 @@ public class AppMenu {
 
         for (MenuCategory category : menuCategories) {
             for (MenuItem menuItem : category.getMenuItems()) {
-                menuItem.setParentLabel(category.getLabel());
+                menuItem.setParent(category);
                 if (menuItem.getUrl() != null) {
                     menuItems.add(menuItem);
                 }
                 if (menuItem.getMenuItems() != null) {
                     for (MenuItem item : menuItem.getMenuItems()) {
-                        item.setParentLabel(menuItem.getLabel());
+                        item.setParent(menuItem);
                         if (item.getUrl() != null) {
                             menuItems.add(item);
                         }
@@ -635,8 +634,8 @@ public class AppMenu {
         String queryLowerCase = query.toLowerCase();
         List<MenuItem> filteredItems = new ArrayList<>();
         for (MenuItem item : menuItems) {
-            if (item.getUrl() != null && (item.getLabel().toLowerCase().contains(queryLowerCase)
-                    || item.getParentLabel().toLowerCase().contains(queryLowerCase))) {
+            if (item.getUrl() != null
+                    && (item.getLabel().toLowerCase().contains(queryLowerCase) || anyParentContainsQuery(item, queryLowerCase))) {
                 filteredItems.add(item);
             }
             else if (item.getBadge() != null) {
@@ -645,8 +644,20 @@ public class AppMenu {
                 }
             }
         }
-        filteredItems.sort(Comparator.comparing(MenuItem::getParentLabel));
+        filteredItems.sort(Comparator.comparing(m -> m.getParent().getLabel()));
         return filteredItems;
+    }
+
+    protected boolean anyParentContainsQuery(MenuItem item, String query) {
+        MenuItem parent = item.getParent();
+        while (parent != null) {
+            if (parent.getLabel().toLowerCase().contains(query)) {
+                return true;
+            }
+            parent = parent.getParent();
+        }
+
+        return false;
     }
 
     public List<MenuItem> getMenuItems() {
