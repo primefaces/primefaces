@@ -1111,7 +1111,7 @@ declare namespace PrimeFaces.validation {
          * A map between the client ID of an element and a list of faces message for that element.
          * @type {Record<string, PrimeFaces.FacesMessage[]>}
          */
-        messages: {},
+        messages: Record<string, PrimeFaces.FacesMessage[]>,
 
         /**
          * If the result is valid / if it has any validation errors.
