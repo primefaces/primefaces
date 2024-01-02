@@ -109,21 +109,11 @@ public class FileUploadRenderer extends CoreRenderer {
                 .attr("process", SearchExpressionUtils.resolveClientIdsForClientSide(context, fileUpload, process))
                 .attr("global", fileUpload.isGlobal(), true)
                 .attr("disabled", fileUpload.isDisabled(), false)
-                .attr("invalidSizeMessage", fileUpload.getInvalidSizeMessage(), null)
-                .attr("invalidFileMessage", fileUpload.getInvalidFileMessage(), null)
-                .attr("fileLimitMessage", fileUpload.getFileLimitMessage(), null)
                 .attr("messageTemplate", fileUpload.getMessageTemplate(), null)
-                .attr("maxFileSize", fileUpload.getSizeLimit(), Long.MAX_VALUE)
-                .attr("fileLimit", fileUpload.getFileLimit(), Integer.MAX_VALUE)
                 .callback("onstart", "function()", fileUpload.getOnstart())
                 .callback("onerror", "function()", fileUpload.getOnerror())
                 .callback("oncomplete", "function(args)", fileUpload.getOncomplete())
                 .callback("onvalidationfailure", "function(msg)", fileUpload.getOnvalidationfailure());
-
-        String allowTypes = fileUpload.getAllowTypes();
-        if (allowTypes != null) {
-            wb.append(",allowTypes:").append(allowTypes);
-        }
 
         wb.finish();
     }

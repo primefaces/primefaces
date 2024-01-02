@@ -162,10 +162,9 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
             ? PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(this.jq, this.cfg.update).join(' ')
             : null;
 
-        if (PrimeFaces.validation) {
-            if (!PrimeFaces.validation.validate($this.jq, process, update, true, true, true, false)) {
-                return;
-            }
+        var validationResult = PrimeFaces.validation.validate($this.jq, process, update, true, true, true, false);
+        if (!validationResult.valid) {
+            return;
         }
 
         var files = this.input[0].files;

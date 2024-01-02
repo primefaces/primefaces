@@ -24,7 +24,6 @@
 package org.primefaces.util;
 
 import org.apache.commons.io.FilenameUtils;
-import org.primefaces.component.fileupload.FileUpload;
 import org.primefaces.component.fileupload.FileUploadChunkDecoder;
 import org.primefaces.component.fileupload.FileUploadDecoder;
 import org.primefaces.context.PrimeApplicationContext;
@@ -330,37 +329,6 @@ public class FileUploadUtils {
 
     public static void performVirusScan(FacesContext facesContext, UploadedFile file) throws VirusException {
         PrimeApplicationContext.getCurrentInstance(facesContext).getVirusScannerService().performVirusScan(file);
-    }
-
-    public static void tryValidateFile(FacesContext context, FileUpload fileUpload, UploadedFile uploadedFile) throws ValidatorException {
-        Long sizeLimit = fileUpload.getSizeLimit();
-        PrimeApplicationContext appContext = PrimeApplicationContext.getCurrentInstance(context);
-
-        if (sizeLimit != null && uploadedFile.getSize() > sizeLimit) {
-            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, fileUpload.getInvalidSizeMessage(), ""));
-        }
-
-        String accept = fileUpload.isValidateContentType() ? fileUpload.getAccept() : null;
-        if (!isValidType(appContext, uploadedFile, fileUpload.getAllowTypes(), accept)) {
-            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, fileUpload.getInvalidFileMessage(), ""));
-        }
-
-        if (fileUpload.isVirusScan()) {
-            performVirusScan(context, uploadedFile);
-        }
-    }
-
-    public static void tryValidateFiles(FacesContext context, FileUpload fileUpload, List<UploadedFile> files) {
-        long totalPartSize = 0;
-        Long sizeLimit = fileUpload.getSizeLimit();
-        for (UploadedFile file : files) {
-            totalPartSize += file.getSize();
-            tryValidateFile(context, fileUpload, file);
-        }
-
-        if (sizeLimit != null && totalPartSize > sizeLimit) {
-            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, fileUpload.getInvalidFileMessage(), ""));
-        }
     }
 
     public static List<Path> listChunks(Path path) {

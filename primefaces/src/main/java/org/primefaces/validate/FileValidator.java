@@ -51,10 +51,10 @@ import java.util.stream.Collectors;
 
 public class FileValidator implements Validator, PartialStateHolder, ClientValidator {
 
-    private static final String VALIDATOR_ID = "primefaces.File";
-    private static final String FILE_LIMIT_MESSAGE_ID = "primefaces.FileValidator.FILE_LIMIT";
-    private static final String ALLOW_TYPES_MESSAGE_ID = "primefaces.FileValidator.ALLOW_TYPES";
-    private static final String SIZE_LIMIT_MESSAGE_ID = "primefaces.FileValidator.SIZE_LIMIT";
+    public static final String VALIDATOR_ID = "primefaces.File";
+    public static final String FILE_LIMIT_MESSAGE_ID = "primefaces.FileValidator.FILE_LIMIT";
+    public static final String ALLOW_TYPES_MESSAGE_ID = "primefaces.FileValidator.ALLOW_TYPES";
+    public static final String SIZE_LIMIT_MESSAGE_ID = "primefaces.FileValidator.SIZE_LIMIT";
 
     private Integer fileLimit;
     private Long sizeLimit;

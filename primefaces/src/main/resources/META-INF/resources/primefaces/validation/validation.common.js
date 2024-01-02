@@ -24,7 +24,7 @@ if (window.PrimeFaces) {
                 delete cfg[option];
             }
         }
-        
+
         var highlight = cfg.highlight || true;
         var focus = cfg.focus || true;
         var renderMessages = cfg.renderMessages || true;
@@ -48,7 +48,8 @@ if (window.PrimeFaces) {
             update = $source.closest('form');
         }
 
-        return PrimeFaces.validation.validate($source, process, update, highlight, focus, renderMessages, validateInvisibleElements);
+        var result = PrimeFaces.validation.validate($source, process, update, highlight, focus, renderMessages, validateInvisibleElements);
+        return result.valid;
     };
 
     /**
@@ -62,7 +63,7 @@ if (window.PrimeFaces) {
     PrimeFaces.vi = function(element, highlight, renderMessages) {
         return PrimeFaces.validation.validateInstant(element, highlight, renderMessages);
     };
-    
+
     /**
      * PrimeFaces Client Side Validation Framework
      */
@@ -169,7 +170,7 @@ if (window.PrimeFaces) {
          * @param {boolean} focus If the first invalid element should be focused.
          * @param {boolean} renderMessages If messages should be rendered.
          * @param {boolean} validateInvisibleElements If invisible elements should be validated.
-         * @return {boolean} `true` if the request would not result in validation errors, or `false` otherwise.
+         * @return {PrimeFaces.validation.ValidationResult} The validation result.
          */
         validate : function(source, process, update, highlight, focus, renderMessages, validateInvisibleElements) {
             var vc = PrimeFaces.validation.ValidationContext;
@@ -213,7 +214,7 @@ if (window.PrimeFaces) {
 
             // early exit - we dont need to render messages
             if (vc.isEmpty()) {
-                return true;
+                return { valid: true, messages: {}, hasUnrenderedMessage: false };
             }
 
             // render messages
@@ -241,9 +242,37 @@ if (window.PrimeFaces) {
                 }
             }
 
+            var result = {
+                valid: vc.isEmpty(),
+                messages : vc.messages,
+                hasUnrenderedMessage: false
+            };
+
+            for (let clientId in vc.messages) {
+                var msgs = vc.messages[clientId];
+                for (let msg of msgs) {
+                    if (!msg.rendered) {
+                        result.hasUnrenderedMessage = true;
+                    }
+                }
+            }
+
+            if (result.hasUnrenderedMessage) {
+                PrimeFaces.warn("There are some unhandled FacesMessages, this means not every FacesMessage had a chance to be rendered. These unhandled FacesMessages are:");
+
+                for (let clientId in vc.messages) {
+                    var msgs = vc.messages[clientId];
+                    for (let msg of msgs) {
+                        if (!msg.rendered) {
+                            PrimeFaces.warn(msg.detail);
+                        }
+                    }
+                }
+            }
+
             vc.clear();
 
-            return false;
+            return result;
         },
 
         /**
@@ -308,7 +337,7 @@ if (window.PrimeFaces) {
 
         /**
          * __NOTE__: This is a internal method and should only by used by `PrimeFaces.validation.validate`.
-         * 
+         *
          * Performs a client-side validation of (the value of) the given input element. If the element is valid, removes old
          * messages from the element. If the value of the element is invalid, adds the appropriate validation failure
          * messages.
@@ -336,8 +365,8 @@ if (window.PrimeFaces) {
             }
 
             var submittedValue = PrimeFaces.validation.Utils.getSubmittedValue(element),
-            valid = true,
-            converterId = element.data('p-con');
+                valid = true,
+                converterId = element.data('p-con');
 
             if (PrimeFaces.settings.considerEmptyStringNull && ((!submittedValue) || submittedValue.length === 0)) {
                 submittedValue = null;
@@ -350,7 +379,7 @@ if (window.PrimeFaces) {
                 }
                 catch (ce) {
                     var converterMessageStr = element.data('p-cmsg'),
-                    converterMsg = (converterMessageStr) ? {summary:converterMessageStr,detail:converterMessageStr} : ce;
+                        converterMsg = (converterMessageStr) ? {summary:converterMessageStr,detail:converterMessageStr} : ce;
                     valid = false;
                     vc.addMessage(element, converterMsg);
                 }
@@ -375,15 +404,15 @@ if (window.PrimeFaces) {
                 valid = false;
             }
 
-            if (valid 
-                    && ((submittedValue !== null && PrimeFaces.trim(submittedValue).length > 0) || PrimeFaces.settings.validateEmptyFields)) {
+            if (valid
+                && ((submittedValue !== null && PrimeFaces.trim(submittedValue).length > 0) || PrimeFaces.settings.validateEmptyFields)) {
                 var validatorIds = element.data('p-val');
                 if (validatorIds) {
                     validatorIds = validatorIds.split(',');
 
                     for (var j = 0; j < validatorIds.length; j++) {
                         var validatorId = validatorIds[j],
-                        validator = PrimeFaces.validator[validatorId];
+                            validator = PrimeFaces.validator[validatorId];
 
                         if (validator) {
                             try {
@@ -405,7 +434,7 @@ if (window.PrimeFaces) {
             }
 
             var highlighterType = element.data('p-hl') || 'default',
-            highlighter = PrimeFaces.validator.Highlighter.types[highlighterType];
+                highlighter = PrimeFaces.validator.Highlighter.types[highlighterType];
 
             if (valid) {
                 highlighter.unhighlight(element);
@@ -442,7 +471,7 @@ if (window.PrimeFaces) {
 
                 for (var j = 0; j < validatorIds.length; j++) {
                     var validatorId = validatorIds[j],
-                    validator = PrimeFaces.validator[validatorId];
+                        validator = PrimeFaces.validator[validatorId];
 
                     if (validator) {
                         try {
@@ -529,6 +558,8 @@ if (window.PrimeFaces) {
                 msg.severity = "error";
             }
 
+            msg.rendered = false;
+
             this.messages[clientId].push(msg);
         },
 
@@ -588,7 +619,7 @@ if (window.PrimeFaces) {
         /**
          * Checks whether the given element group is in the list of groups to be validated. An element group is often
          * just the name of a single INPUT, TEXTAREA or SELECT element, but may also consist of multiple DOM elements,
-         * such as in the case of a select list of checkboxes. 
+         * such as in the case of a select list of checkboxes.
          * @param {string} name Name of an element group to check.
          * @return {boolean} `true` if the given group is to be validated, or `false` otherwise.
          */
@@ -604,19 +635,13 @@ if (window.PrimeFaces) {
         /**
          * Adds a group to the list of element groups to validate. An element group is often just the name of a single
          * INPUT, TEXTAREA or SELECT element, but may also consist of multiple DOM elements, such as in the case of
-         * select list of checkboxes. 
+         * select list of checkboxes.
          * @param {string} name Name of an element group to add.
          */
         addElementGroup: function(name) {
             this.elementGroups.push(name);
         }
     };
-
-    /**
-     * @deprecated Backward compatibility, remove later
-     * @namespace
-     */
-    PrimeFaces.util.ValidationContext = PrimeFaces.validation.ValidationContext;
 
     /**
      * Mostly internal utility methods used to validate data on the client.
@@ -643,7 +668,7 @@ if (window.PrimeFaces) {
                 }
                 else if (display === 'icon') {
                     uiMessage.addClass('ui-message-icon-only')
-                            .append('<span class="ui-message-error-icon" title="' + PrimeFaces.escapeHTML(msg.detail) + '"></span>');
+                        .append('<span class="ui-message-error-icon" title="' + PrimeFaces.escapeHTML(msg.detail) + '"></span>');
                 }
             }
             else {
@@ -747,7 +772,7 @@ if (window.PrimeFaces) {
          * @param {string} clientId ID of a component for which to find the ui message.
          * @param {JQuery} uiMessageCollection A JQuery instance with a list of `ui-message`s, or `null` if no
          * such element exists.
-         * @return {JQuery | null} The DOM element with the messages for the given component, or `null` when no such 
+         * @return {JQuery | null} The DOM element with the messages for the given component, or `null` when no such
          * element could be found.
          */
         findUIMessage: function(clientId, uiMessageCollection) {
@@ -760,7 +785,7 @@ if (window.PrimeFaces) {
 
             return null;
         },
-        
+
 
         /**
          * Renders all given messages in the given container.
@@ -779,10 +804,10 @@ if (window.PrimeFaces) {
 
             for (var i = 0; i < uiMessages.length; i++) {
                 var uiMessagesComponent = uiMessages.eq(i),
-                globalOnly = uiMessagesComponent.data('global'),
-                redisplay = uiMessagesComponent.data('redisplay'),
-                showSummary = uiMessagesComponent.data('summary'),
-                showDetail = uiMessagesComponent.data('detail');
+                    globalOnly = uiMessagesComponent.data('global'),
+                    redisplay = uiMessagesComponent.data('redisplay'),
+                    showSummary = uiMessagesComponent.data('summary'),
+                    showDetail = uiMessagesComponent.data('detail');
 
                 uiMessagesComponent.html('');
 
@@ -818,11 +843,11 @@ if (window.PrimeFaces) {
 
             for (var i = 0; i < growlComponents.length; i++) {
                 var growl = growlComponents.eq(i),
-                redisplay = growl.data('redisplay'),
-                globalOnly = growl.data('global'),
-                showSummary = growl.data('summary'),
-                showDetail = growl.data('detail'),
-                growlWidget = PF(growl.data('widget'));
+                    redisplay = growl.data('redisplay'),
+                    globalOnly = growl.data('global'),
+                    showSummary = growl.data('summary'),
+                    showDetail = growl.data('detail'),
+                    growlWidget = PF(growl.data('widget'));
 
                 growlWidget.removeAll();
 
@@ -852,8 +877,8 @@ if (window.PrimeFaces) {
 
             for(var i = 0; i < uiMessageCollection.length; i++) {
                 var uiMessage = uiMessageCollection.eq(i),
-                target = uiMessage.data('target'),
-                redisplay = uiMessage.data('redisplay');
+                    target = uiMessage.data('target'),
+                    redisplay = uiMessage.data('redisplay');
 
                 for (var clientId in messages) {
                     if (target === clientId) {

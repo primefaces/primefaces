@@ -23,11 +23,15 @@
  */
 package org.primefaces.component.fileupload;
 
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.event.FilesUploadEvent;
 import org.primefaces.model.file.UploadedFile;
 import org.primefaces.model.file.UploadedFiles;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.FileUploadUtils;
+import org.primefaces.util.LocaleUtils;
+import org.primefaces.util.MessageFactory;
 import org.primefaces.validate.FileValidator;
 import org.primefaces.virusscan.VirusException;
 
@@ -38,9 +42,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 import javax.faces.validator.ValidatorException;
-import org.primefaces.event.FilesUploadEvent;
-
 import java.util.Arrays;
+import java.util.List;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "fileupload/fileupload.css")
@@ -88,10 +91,10 @@ public class FileUpload extends FileUploadBase {
         if (!hasFileValidator && isValid() && ComponentUtils.isRequestSource(this, context)) {
             try {
                 if (newValue instanceof UploadedFile) {
-                    FileUploadUtils.tryValidateFile(context, this, (UploadedFile) newValue);
+                    tryValidateFile((UploadedFile) newValue);
                 }
                 else if (newValue instanceof UploadedFiles) {
-                    FileUploadUtils.tryValidateFiles(context, this, ((UploadedFiles) newValue).getFiles());
+                    tryValidateFiles(((UploadedFiles) newValue).getFiles());
                 }
                 else if (newValue != null) {
                     throw new IllegalArgumentException("Argument of type '" + newValue.getClass().getName() + "' not supported");
@@ -111,6 +114,48 @@ public class FileUpload extends FileUploadBase {
                         ? ((ValidatorException) e).getFacesMessage()
                         : new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), ""));
             }
+        }
+    }
+
+    protected void tryValidateFile(UploadedFile uploadedFile) throws ValidatorException {
+        Long sizeLimit = getSizeLimit();
+        PrimeApplicationContext appContext = PrimeApplicationContext.getCurrentInstance(getFacesContext());
+
+        if (sizeLimit != null && uploadedFile.getSize() > sizeLimit) {
+            throw new ValidatorException(
+                    MessageFactory.getFacesMessage(FileValidator.SIZE_LIMIT_MESSAGE_ID, FacesMessage.SEVERITY_ERROR,
+                            "*", FileUploadUtils.formatBytes(sizeLimit, LocaleUtils.getCurrentLocale(getFacesContext()))));
+        }
+
+        String accept = isValidateContentType() ? getAccept() : null;
+        if (!FileUploadUtils.isValidType(appContext, uploadedFile, getAllowTypes(), accept)) {
+            throw new ValidatorException(
+                    MessageFactory.getFacesMessage(FileValidator.ALLOW_TYPES_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, uploadedFile.getFileName()));
+        }
+
+        if (isVirusScan()) {
+            FileUploadUtils.performVirusScan(getFacesContext(), uploadedFile);
+        }
+    }
+
+    protected void tryValidateFiles(List<UploadedFile> files) {
+        Integer fileLimit = getFileLimit();
+        if (files != null && files.size() > fileLimit) {
+            throw new ValidatorException(
+                    MessageFactory.getFacesMessage(FileValidator.FILE_LIMIT_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, fileLimit));
+        }
+
+        long totalPartSize = 0;
+        Long sizeLimit = getSizeLimit();
+        for (UploadedFile file : files) {
+            totalPartSize += file.getSize();
+            tryValidateFile(file);
+        }
+
+        if (sizeLimit != null && totalPartSize > sizeLimit) {
+            throw new ValidatorException(
+                    MessageFactory.getFacesMessage(FileValidator.SIZE_LIMIT_MESSAGE_ID, FacesMessage.SEVERITY_ERROR,
+                            "*", FileUploadUtils.formatBytes(sizeLimit, LocaleUtils.getCurrentLocale(getFacesContext()))));
         }
     }
 }

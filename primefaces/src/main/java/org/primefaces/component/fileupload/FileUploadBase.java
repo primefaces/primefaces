@@ -46,15 +46,15 @@ public abstract class FileUploadBase extends UIInput implements Widget {
         multiple,
         auto,
         label,
+        @Deprecated
         allowTypes,
+        @Deprecated
         fileLimit,
+        @Deprecated
         sizeLimit,
         mode,
         uploadLabel,
         cancelLabel,
-        invalidSizeMessage,
-        invalidFileMessage,
-        fileLimitMessage,
         dragDropSupport,
         onstart,
         oncomplete,
@@ -215,30 +215,6 @@ public abstract class FileUploadBase extends UIInput implements Widget {
 
     public void setCancelLabel(String cancelLabel) {
         getStateHelper().put(PropertyKeys.cancelLabel, cancelLabel);
-    }
-
-    public String getInvalidSizeMessage() {
-        return (String) getStateHelper().eval(PropertyKeys.invalidSizeMessage, null);
-    }
-
-    public void setInvalidSizeMessage(String invalidSizeMessage) {
-        getStateHelper().put(PropertyKeys.invalidSizeMessage, invalidSizeMessage);
-    }
-
-    public String getInvalidFileMessage() {
-        return (String) getStateHelper().eval(PropertyKeys.invalidFileMessage, null);
-    }
-
-    public void setInvalidFileMessage(String invalidFileMessage) {
-        getStateHelper().put(PropertyKeys.invalidFileMessage, invalidFileMessage);
-    }
-
-    public String getFileLimitMessage() {
-        return (String) getStateHelper().eval(PropertyKeys.fileLimitMessage, null);
-    }
-
-    public void setFileLimitMessage(String fileLimitMessage) {
-        getStateHelper().put(PropertyKeys.fileLimitMessage, fileLimitMessage);
     }
 
     public boolean isDragDropSupport() {
