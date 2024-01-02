@@ -199,6 +199,19 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                     $this.clearMessages();
                 }
 
+                // we need to fake the filelimit as the jquery-fileupload input always only contains 1 file
+                var fileLimit = data.fileInput.data('p-filelimit');
+                if (fileLimit && ($this.uploadedFileCount + $this.files.length + 1) > fileLimit) {
+                    $this.clearMessages();
+
+                    var msg = PrimeFaces.validation.Utils.getMessage('primefaces.FileValidator.FILE_LIMIT', fileLimit);
+                    $this.showMessage({
+                        summary: msg.summary
+                    });
+
+                    return;
+                }
+
                 var file = data.files ? data.files[0] : null;
                 if (file) {
                     $this.clearMessages();
