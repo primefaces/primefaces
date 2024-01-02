@@ -122,7 +122,7 @@ public class PrimeConfiguration {
         earlyPostParamEvaluation = Boolean.parseBoolean(value);
 
         value = externalContext.getInitParameter(Constants.ContextParams.CLIENT_SIDE_LOCALISATION);
-        clientSideLocalizationEnabled = Boolean.parseBoolean(value);
+        clientSideLocalizationEnabled = Boolean.parseBoolean(Objects.toString(value, "true"));
 
         value = Objects.toString(externalContext.getInitParameter(Constants.ContextParams.MOVE_SCRIPTS_TO_BOTTOM));
         switch (value) {
