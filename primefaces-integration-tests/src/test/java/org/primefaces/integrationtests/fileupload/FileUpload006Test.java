@@ -176,7 +176,7 @@ class FileUpload006Test extends AbstractFileUploadTest {
         fileUpload.setValue(file5);
         assertTrue(fileUpload.getWidgetValues().isEmpty(), fileUpload.getWidgetValues().toString());
         // upload button is not visible
-        assertTrue(fileUpload.getWidgetErrorMessages().contains("Maximum number of files exceeded"), fileUpload.getWidgetErrorMessages().toString());
+        assertTrue(fileUpload.getWidgetErrorMessages().toString().contains("Maximum number of files exceeded"), fileUpload.getWidgetErrorMessages().toString());
 
         // Assert
         assertNoJavascriptErrors();
@@ -186,7 +186,7 @@ class FileUpload006Test extends AbstractFileUploadTest {
 
     @Test
     @Order(6)
-    void advancedMultipleUploadSizeLimit(Page page) {
+    void advancedMultipleUploadSizeLimit(Page page) throws InterruptedException {
         // Arrange
         FileUpload fileUpload = page.fileupload;
         assertEquals("", fileUpload.getValue());
@@ -196,7 +196,7 @@ class FileUpload006Test extends AbstractFileUploadTest {
         fileUpload.setValue(file);
         assertTrue(fileUpload.getWidgetValues().isEmpty(), fileUpload.getWidgetValues().toString());
         // upload button is not visible
-        assertTrue(fileUpload.getWidgetErrorMessages().contains("Invalid file size"), fileUpload.getWidgetErrorMessages().toString());
+        assertTrue(fileUpload.getWidgetErrorMessages().toString().contains("Invalid file size"), fileUpload.getWidgetErrorMessages().toString());
 
         // Assert
         assertNoJavascriptErrors();
@@ -216,7 +216,7 @@ class FileUpload006Test extends AbstractFileUploadTest {
         fileUpload.setValue(file);
         assertTrue(fileUpload.getWidgetValues().isEmpty(), fileUpload.getWidgetValues().toString());
         // upload button is not visible
-        assertTrue(fileUpload.getWidgetErrorMessages().contains("Invalid file type"), fileUpload.getWidgetErrorMessages().toString());
+        assertTrue(fileUpload.getWidgetErrorMessages().toString().contains("Invalid file type"), fileUpload.getWidgetErrorMessages().toString());
 
         // Assert
         assertNoJavascriptErrors();

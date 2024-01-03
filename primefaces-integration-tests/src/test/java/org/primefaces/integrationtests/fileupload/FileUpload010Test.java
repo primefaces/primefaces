@@ -135,7 +135,7 @@ class FileUpload010Test extends AbstractFileUploadTest {
         fileUpload.setValue(file5);
         assertTrue(fileUpload.getWidgetValues().isEmpty(), fileUpload.getWidgetValues().toString());
         // upload button is not visible
-        assertTrue(fileUpload.getWidgetErrorMessages().contains("Maximum number of files exceeded"), fileUpload.getWidgetErrorMessages().toString());
+        assertTrue(fileUpload.getWidgetErrorMessages().toString().contains("Maximum number of files exceeded"), fileUpload.getWidgetErrorMessages().toString());
 
         // Assert
         assertNoJavascriptErrors();
@@ -155,7 +155,7 @@ class FileUpload010Test extends AbstractFileUploadTest {
         fileUpload.setValue(file);
         assertTrue(fileUpload.getWidgetValues().isEmpty(), fileUpload.getWidgetValues().toString());
         // upload button is not visible
-        assertTrue(fileUpload.getWidgetErrorMessages().contains("Invalid file size"), fileUpload.getWidgetErrorMessages().toString());
+        assertTrue(fileUpload.getWidgetErrorMessages().toString().contains("Invalid file size"), fileUpload.getWidgetErrorMessages().toString());
 
         // Assert
         assertNoJavascriptErrors();
@@ -175,7 +175,7 @@ class FileUpload010Test extends AbstractFileUploadTest {
         fileUpload.setValue(file);
         assertTrue(fileUpload.getWidgetValues().isEmpty(), fileUpload.getWidgetValues().toString());
         // upload button is not visible
-        assertTrue(fileUpload.getWidgetErrorMessages().contains("Invalid file type"), fileUpload.getWidgetErrorMessages().toString());
+        assertTrue(fileUpload.getWidgetErrorMessages().toString().contains("Invalid file type"), fileUpload.getWidgetErrorMessages().toString());
 
         // Assert
         assertNoJavascriptErrors();
