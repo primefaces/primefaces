@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -180,9 +180,6 @@ class FileUpload011Test extends AbstractFileUploadTest {
         // Arrange
         FileUpload fileUpload = page.fileupload;
         assertEquals("", fileUpload.getValue());
-        String fileLimitMsg = fileUpload.getWidgetConfiguration().getString("fileLimitMessage");
-        assertNotNull(fileLimitMsg);
-        assertFalse(fileLimitMsg.isEmpty());
 
         // Act
         File file1 = chooseBigFile(0);
@@ -209,7 +206,7 @@ class FileUpload011Test extends AbstractFileUploadTest {
         fileUpload.setValue(file3);
         assertTrue(fileUpload.getWidgetValues().isEmpty(), fileUpload.getWidgetValues().toString());
         // upload button is not visible
-        assertTrue(fileUpload.getWidgetErrorMessages().contains(fileLimitMsg), fileUpload.getWidgetErrorMessages().toString());
+        assertTrue(fileUpload.getWidgetErrorMessages().toString().contains("Maximum number of files exceeded"), fileUpload.getWidgetErrorMessages().toString());
 
         // Assert
         assertNoJavascriptErrors();
@@ -223,16 +220,13 @@ class FileUpload011Test extends AbstractFileUploadTest {
         // Arrange
         FileUpload fileUpload = page.fileupload;
         assertEquals("", fileUpload.getValue());
-        String invalidSizeMsg = fileUpload.getWidgetConfiguration().getString("invalidSizeMessage");
-        assertNotNull(invalidSizeMsg);
-        assertFalse(invalidSizeMsg.isEmpty());
 
         // Act
         File file = chooseBigFile(2);
         fileUpload.setValue(file);
         assertTrue(fileUpload.getWidgetValues().isEmpty(), fileUpload.getWidgetValues().toString());
         // upload button is not visible
-        assertTrue(fileUpload.getWidgetErrorMessages().contains(invalidSizeMsg), fileUpload.getWidgetErrorMessages().toString());
+        assertTrue(fileUpload.getWidgetErrorMessages().toString().contains("Invalid file size"), fileUpload.getWidgetErrorMessages().toString());
 
         // Assert
         assertNoJavascriptErrors();
@@ -246,16 +240,13 @@ class FileUpload011Test extends AbstractFileUploadTest {
         // Arrange
         FileUpload fileUpload = page.fileupload;
         assertEquals("", fileUpload.getValue());
-        String invalidTypeMsg = fileUpload.getWidgetConfiguration().getString("invalidFileMessage");
-        assertNotNull(invalidTypeMsg);
-        assertFalse(invalidTypeMsg.isEmpty());
 
         // Act
         File file = locateClientSideFile("file1.png");
         fileUpload.setValue(file);
         assertTrue(fileUpload.getWidgetValues().isEmpty(), fileUpload.getWidgetValues().toString());
         // upload button is not visible
-        assertTrue(fileUpload.getWidgetErrorMessages().contains(invalidTypeMsg), fileUpload.getWidgetErrorMessages().toString());
+        assertTrue(fileUpload.getWidgetErrorMessages().toString().contains("Invalid file type"), fileUpload.getWidgetErrorMessages().toString());
 
         // Assert
         assertNoJavascriptErrors();
@@ -269,9 +260,9 @@ class FileUpload011Test extends AbstractFileUploadTest {
         assertFalse(cfg.has("skinSimple"));
         assertFalse(cfg.has("auto"));
         assertFalse(cfg.getBoolean("dnd"));
-        assertEquals(2, cfg.getInt("fileLimit"));
-        assertEquals(2097152, cfg.getInt("maxFileSize"));
-        assertEquals("/(\\.|\\/)(.ar)$/", cfg.getString("allowTypes"));
+        assertEquals(2, Integer.parseInt(fileUpload.getInput().getAttribute("data-p-filelimit")));
+        assertEquals(2097152, Long.parseLong(fileUpload.getInput().getAttribute("data-p-sizelimit")));
+        assertEquals("/(\\.|\\/)(.ar)$/", fileUpload.getInput().getAttribute("data-p-allowtypes"));
         assertNull(fileUpload.getInput().getAttribute("multiple"));
         assertEquals(65536, cfg.getInt("maxChunkSize"));
     }

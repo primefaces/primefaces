@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,34 +23,41 @@
  */
 package org.primefaces.util;
 
-import java.io.*;
+import org.apache.commons.io.FilenameUtils;
+import org.primefaces.component.fileupload.FileUploadChunkDecoder;
+import org.primefaces.component.fileupload.FileUploadDecoder;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.model.file.UploadedFile;
+import org.primefaces.virusscan.VirusException;
+
+import javax.faces.FacesException;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
+import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PushbackInputStream;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.faces.FacesException;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.faces.validator.ValidatorException;
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.io.FilenameUtils;
-import org.primefaces.component.fileupload.FileUpload;
-import org.primefaces.component.fileupload.FileUploadChunkDecoder;
-import org.primefaces.component.fileupload.FileUploadDecoder;
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.model.file.UploadedFile;
-import org.primefaces.virusscan.VirusException;
 
 /**
  * Utilities for FileUpload components.
@@ -155,20 +162,22 @@ public class FileUploadUtils {
     }
 
     /**
-     * Check if an uploaded file meets all specifications regarding its filename and content type. It evaluates {@link FileUpload#getAllowTypes}
-     * as well as {@link FileUpload#getAccept} and uses the installed {@link java.nio.file.spi.FileTypeDetector} implementation.
+     * Check if an uploaded file meets all specifications regarding its filename and content type.
+     * It evaluates allowTypes as well as accept and uses the installed {@link java.nio.file.spi.FileTypeDetector} implementation.
      * For most reliable content type checking it's recommended to plug in Apache Tika as an implementation.
      *
      * @param context the {@link PrimeApplicationContext}
-     * @param fileUpload the {@link FileUpload} component
      * @param uploadedFile the details of the uploaded file
+     * @param allowTypes the Javascript regex
+     * @param accept the accept types
      * @return <code>true</code>, if all validations regarding filename and content type passed, <code>false</code> else
      */
-    public static boolean isValidType(PrimeApplicationContext context, FileUpload fileUpload, UploadedFile uploadedFile) {
+    public static boolean isValidType(PrimeApplicationContext context,
+                                      UploadedFile uploadedFile, String allowTypes, String accept) {
         String fileName = uploadedFile.getFileName();
         try (InputStream input = uploadedFile.getInputStream()) {
-            boolean validType = isValidFileName(fileUpload, uploadedFile)
-                        && isValidFileContent(context, fileUpload, fileName, input);
+            boolean validType = isValidFileName(uploadedFile, allowTypes)
+                        && isValidFileContent(context, accept, fileName, input);
             if (validType) {
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine(String.format("The uploaded file %s meets the filename and content type specifications", fileName));
@@ -184,8 +193,7 @@ public class FileUploadUtils {
         }
     }
 
-    private static boolean isValidFileName(FileUpload fileUpload, UploadedFile uploadedFile) {
-        String javascriptRegex = fileUpload.getAllowTypes();
+    private static boolean isValidFileName(UploadedFile uploadedFile, String javascriptRegex) {
         if (LangUtils.isBlank(javascriptRegex)) {
             return true;
         }
@@ -231,21 +239,15 @@ public class FileUploadUtils {
         return LangUtils.substring(jsRegex, start, end);
     }
 
-    private static boolean isValidFileContent(PrimeApplicationContext primeAppContext, FileUpload fileUpload, String fileName, InputStream stream)
-            throws IOException {
-        if (!fileUpload.isValidateContentType()) {
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("Content type checking is disabled");
-            }
-            return true;
-        }
-        if (LangUtils.isBlank(fileUpload.getAccept())) {
+    private static boolean isValidFileContent(PrimeApplicationContext primeAppContext, String allowedContentTypes,
+                                              String fileName, InputStream stream) throws IOException {
+        if (LangUtils.isBlank(allowedContentTypes)) {
             return true;
         }
 
         String prefix = FilenameUtils.removeExtension(fileName);
         Path tempFile = Files.createTempFile(prefix, Constants.EMPTY_STRING);
-        String contentType = null;
+        String contentType;
 
         try (InputStream in = new PushbackInputStream(new BufferedInputStream(stream));
              OutputStream out = Files.newOutputStream(tempFile)) {
@@ -277,22 +279,21 @@ public class FileUploadUtils {
         }
 
         //Comma-separated values: file_extension|audio/*|video/*|image/*|media_type (see https://www.w3schools.com/tags/att_input_accept.asp)
-        String[] accepts = fileUpload.getAccept().split(",");
         final String filenameLC = fileName.toLowerCase();
         final String contentTypeLC = contentType.toLowerCase();
 
-        boolean accepted = Stream.of(accepts)
+        boolean accepted = Stream.of(allowedContentTypes.split(","))
                 .map(String::trim)
-                .anyMatch(accept -> {
+                .anyMatch(allowedContentType -> {
                     // try with extension first
-                    if (accept.startsWith(".") && filenameLC.endsWith(accept)) {
-                        LOGGER.log(Level.FINE, () -> String.format("File extension %s of the uploaded file %s is accepted", accept, fileName));
+                    if (allowedContentType.startsWith(".") && filenameLC.endsWith(allowedContentType)) {
+                        LOGGER.log(Level.FINE, () -> String.format("File extension %s of the uploaded file %s is accepted", allowedContentType, fileName));
                         return true;
                     }
                     // or try with IANA media types
-                    if (FilenameUtils.wildcardMatch(contentTypeLC, accept)) {
+                    if (FilenameUtils.wildcardMatch(contentTypeLC, allowedContentType)) {
                         LOGGER.log(Level.FINE,
-                                () -> String.format("Content type %s of the uploaded file %s is accepted by %s", contentTypeLC, fileName, accept));
+                                () -> String.format("Content type %s of the uploaded file %s is accepted by %s", contentTypeLC, fileName, allowedContentType));
                         return true;
                     }
 
@@ -302,7 +303,7 @@ public class FileUploadUtils {
         if (!accepted) {
             LOGGER.log(Level.FINE,
                     () -> String.format("Uploaded file %s with content type %s does not match the accept specification %s",
-                            fileName, contentTypeLC, fileUpload.getAccept()));
+                            fileName, contentTypeLC, allowedContentTypes));
             return false;
         }
 
@@ -328,36 +329,6 @@ public class FileUploadUtils {
 
     public static void performVirusScan(FacesContext facesContext, UploadedFile file) throws VirusException {
         PrimeApplicationContext.getCurrentInstance(facesContext).getVirusScannerService().performVirusScan(file);
-    }
-
-    public static void tryValidateFile(FacesContext context, FileUpload fileUpload, UploadedFile uploadedFile) throws ValidatorException {
-        Long sizeLimit = fileUpload.getSizeLimit();
-        PrimeApplicationContext appContext = PrimeApplicationContext.getCurrentInstance(context);
-
-        if (sizeLimit != null && uploadedFile.getSize() > sizeLimit) {
-            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, fileUpload.getInvalidSizeMessage(), ""));
-        }
-
-        if (!isValidType(appContext, fileUpload, uploadedFile)) {
-            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, fileUpload.getInvalidFileMessage(), ""));
-        }
-
-        if (fileUpload.isVirusScan()) {
-            performVirusScan(context, uploadedFile);
-        }
-    }
-
-    public static void tryValidateFiles(FacesContext context, FileUpload fileUpload, List<UploadedFile> files) {
-        long totalPartSize = 0;
-        Long sizeLimit = fileUpload.getSizeLimit();
-        for (UploadedFile file : files) {
-            totalPartSize += file.getSize();
-            tryValidateFile(context, fileUpload, file);
-        }
-
-        if (sizeLimit != null && totalPartSize > sizeLimit) {
-            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, fileUpload.getInvalidFileMessage(), ""));
-        }
     }
 
     public static List<Path> listChunks(Path path) {
@@ -399,5 +370,25 @@ public class FileUploadUtils {
 
     public static <T extends HttpServletRequest> String getWebkitRelativePath(T request) {
         return request.getParameter("X-File-Webkit-Relative-Path");
+    }
+
+    public static String formatBytes(Long bytes, Locale locale) {
+        if (bytes == null) {
+            return "";
+        }
+
+        if (bytes == 0) {
+            return "N/A";
+        }
+
+        String[] sizes = new String[] {"Bytes", "KB", "MB", "GB", "TB"};
+        int i = (int) Math.floor(Math.log(bytes) / Math.log(1024));
+        if (i == 0) {
+            return bytes + " " + sizes[i];
+        }
+        else {
+            DecimalFormat decimalFormat = new DecimalFormat("0.0", DecimalFormatSymbols.getInstance(locale));
+            return decimalFormat.format((bytes / Math.pow(1024, i))) + " " + sizes[i];
+        }
     }
 }

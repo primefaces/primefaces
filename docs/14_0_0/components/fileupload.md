@@ -39,11 +39,8 @@ powered rich solution with graceful degradation for legacy browsers.
 | dragDropSupport | true                                         | Boolean | Specifies dragdrop based file selection from filesystem, default is true and works only on supported browsers.
 | dropZone | null                                         | String | Component that should be used as custom drop zone.
 | fileLimit | null                                         | Integer | Maximum number of files allowed to upload.
-| fileLimitMessage | Maximum number of files exceeded             | String | Message to display when file limit exceeds.
 | global | true                                         | Boolean | Global AJAX requests are listened by ajaxStatus component, setting global to false will not trigger ajaxStatus. Default is false.
 | immediate | false                                        | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
-| invalidFileMessage | Invalid file type                            | String | Message to display when file is not accepted.
-| invalidSizeMessage | Invalid file size                            | String | Message to display when size limit exceeds.
 | label | Choose                                       | String | Label of the browse button.
 | listener | null                                         | MethodExpr | Method to invoke when a file is uploaded.
 | maxChunkSize | 0                                            | Long | To upload large files in smaller chunks, set this option to a preferred maximum chunk size. If set to 0 (default), null or undefined, or the browser does not support the required Blob API, files will be uploaded as a whole. Only works in "advanced" mode.
@@ -309,9 +306,8 @@ FileLimit restricts the number of maximum files that can be uploaded.
 ```
 
 
-## Validation Messages
-`invalidFileMessage` , `invalidSizeMessage` and `fileLimitMessage` options are provided to display
-validation messages to the users. Similar to the FacesMessage message API, these message define
+## Messages
+Similar to the FacesMessage message API, these message define
 the summary part, the detail part is retrieved from the `messageTemplate` option where default value
 is `{name} {size}`.
 

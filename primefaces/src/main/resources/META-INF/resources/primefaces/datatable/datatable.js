@@ -68,7 +68,7 @@
  * @prop {JQuery} [contextMenuCell] DOM element of the table cell for which the context menu was opened.
  * @prop {PrimeFaces.widget.ContextMenu} contextMenuWidget Widget with the context menu for the DataTable.
  * @prop {JQuery} currentCell Current cell to be edited.
- * @prop {number | null} cursorIndex 0-based index of row where the the cursor is located.
+ * @prop {PrimeFaces.widget.DataTable.RowMeta | null} cursorRowMeta 0-based index of row where the the cursor is located.
  * @prop {string} [descMessage] Localized message for sorting a column in descending order.
  * @prop {JQuery} dragIndicatorBottom DOM element of the icon that indicates a column is draggable.
  * @prop {JQuery} dragIndicatorTop DOM element of the icon that indicates a column is draggable.
@@ -94,7 +94,7 @@
  * @prop {boolean} loadingLiveScroll Whether data is currently being loaded due to the live scrolling feature.
  * @prop {boolean} mousedownOnRow Whether a mousedown event occurred on a row.
  * @prop {JQuery} orderStateHolder INPUT element storing the current column / row order.
- * @prop {number | null} originRowIndex The original row index of the row that was clicked.
+ * @prop {PrimeFaces.widget.DataTable.RowMeta | null} originRowMeta The original row index of the row that was clicked.
  * @prop {string} [otherMessage] Localized message for removing the sort order and showing rows in their
  * original order.
  * @prop {PrimeFaces.widget.Paginator} paginator When pagination is enabled: The paginator widget instance used for
@@ -797,10 +797,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         var preselection = $(this.selectionHolder).val();
         this.selection = !preselection ? [] : preselection.split(',');
-
-        //shift key based range selection
-        this.originRowIndex = null;
-        this.cursorIndex = null;
         
         // set aria labels
         this.tbody.find(this.rowSelector).each(function() {
@@ -808,6 +804,26 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         });
 
         this.bindSelectionEvents();
+        
+        //shift key based range selection
+        this.originRowMeta = this.originRowMeta ? this.getRowMeta(this.tbody.find("[data-rk='" + this.originRowMeta.key + "']")) : null;
+        if (this.cursorRowMeta) {
+            // #3551 lookup row after update by row key
+            var cursorRow = this.tbody.find("[data-rk='" + this.cursorRowMeta.key + "']");
+            this.cursorRowMeta = this.getRowMeta(cursorRow);
+
+            if (this.isMultipleSelection() && this.originRowMeta !== null) {
+                this.selectRowsInRange(cursorRow, true);
+            }
+            else {
+                this.originRowMeta = this.getRowMeta(cursorRow);
+                this.cursorRowMeta = null;
+                this.selectRow(cursorRow, true);
+            }
+        }
+        else {
+            this.cursorRowMeta = null;
+        }
     },
 
     /**
@@ -1862,7 +1878,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 $this.allLoadedLiveScroll = ($this.scrollOffset + $this.cfg.scrollStep) >= $this.cfg.scrollLimit;
 
                 // reset index of shift selection on multiple mode
-                $this.originRowIndex = null;
+                $this.originRowMeta = null;
             }
         };
 
@@ -1916,7 +1932,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
 
                 // reset index of shift selection on multiple mode
-                $this.originRowIndex = null;
+                $this.originRowMeta = null;
             }
         };
         if (this.hasBehavior('virtualScroll')) {
@@ -1995,7 +2011,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
                 $this.updateColumnsView();
                 // reset index of shift selection on multiple mode
-                $this.originRowIndex = null;
+                $this.originRowMeta = null;
             };
         }
 
@@ -2214,7 +2230,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 $this.updateColumnsView();
 
                 // reset index of shift selection on multiple mode
-                $this.originRowIndex = null;
+                $this.originRowMeta = null;
             }
         }
 
@@ -2370,7 +2386,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 $this.updateEmptyColspan();
 
                 // reset index of shift selection on multiple mode
-                $this.originRowIndex = null;
+                $this.originRowMeta = null;
             }
         }
 
@@ -2410,16 +2426,16 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
 
                 //range selection with shift key
-                if(this.isMultipleSelection() && event && event.shiftKey && this.originRowIndex !== null) {
-                    this.selectRowsInRange(row);
+                if(this.isMultipleSelection() && event && event.shiftKey && this.originRowMeta !== null) {
+                    this.selectRowsInRange(row, false);
                 }
                 else if(this.cfg.rowSelectMode === 'add' && selected) {
                     this.unselectRow(row, silent);
                 }
                 //select current row
                 else {
-                    this.originRowIndex = row.index();
-                    this.cursorIndex = null;
+                    this.originRowMeta = this.getRowMeta(row);
+                    this.cursorRowMeta = null;
                     this.selectRow(row, silent);
                 }
             }
@@ -2507,16 +2523,19 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * Select the rows between the cursor and the given row.
      * @private
      * @param {JQuery} row A row of this DataTable.
+     * @param {boolean} [silent] `true` to prevent behaviors and event listeners from being invoked, or `false`
+     * otherwise.
      */
-    selectRowsInRange: function(row) {
+    selectRowsInRange: function(row, silent) {
         var rows = this.tbody.children(),
         rowMeta = this.getRowMeta(row),
+        newCursorIndex = this.originRowMeta.index;
         $this = this;
 
         //unselect previously selected rows with shift
-        if(this.cursorIndex !== null) {
-            var oldCursorIndex = this.cursorIndex,
-            rowsToUnselect = oldCursorIndex > this.originRowIndex ? rows.slice(this.originRowIndex, oldCursorIndex + 1) : rows.slice(oldCursorIndex, this.originRowIndex + 1);
+        if(this.cursorRowMeta !== null) {
+            var oldCursorIndex = this.cursorRowMeta.index,
+            rowsToUnselect = oldCursorIndex > newCursorIndex ? rows.slice(newCursorIndex, oldCursorIndex + 1) : rows.slice(oldCursorIndex, newCursorIndex + 1);
 
             rowsToUnselect.each(function(i, item) {
                 $this.unselectRow($(item), true);
@@ -2524,15 +2543,18 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         //select rows between cursor and origin
-        this.cursorIndex = row.index();
+        this.cursorRowMeta = rowMeta;
+        var currentIndex = rowMeta.index;
 
-        var rowsToSelect = this.cursorIndex > this.originRowIndex ? rows.slice(this.originRowIndex, this.cursorIndex + 1) : rows.slice(this.cursorIndex, this.originRowIndex + 1);
+        var rowsToSelect = currentIndex > newCursorIndex ? rows.slice(newCursorIndex, currentIndex + 1) : rows.slice(currentIndex, newCursorIndex + 1);
 
         rowsToSelect.each(function(i, item) {
             $this.selectRow($(item), true);
         });
 
-        this.fireRowSelectEvent(rowMeta.key, 'rowSelect');
+        if (!silent) {
+            this.fireRowSelectEvent(rowMeta.key, 'rowSelect');
+        }
     },
 
     /**
