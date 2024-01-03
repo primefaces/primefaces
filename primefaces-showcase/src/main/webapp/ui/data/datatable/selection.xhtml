@@ -154,7 +154,7 @@
                 <h5>Checkbox</h5>
                 <p:dataTable id="checkboxDT" var="product" value="#{dtSelectionView.products6}"
                              selection="#{dtSelectionView.selectedProducts}" rowKey="#{product.id}"
-                             style="margin-bottom:0" paginator="true" rows="5" selectionPageOnly="false" rowSelectMode="none">
+                             style="margin-bottom:0" paginator="true" rows="5" selectionPageOnly="false" selectionRowMode="none">
                     <p:column selectionBox="true" style="width:16px;text-align:center"/>
                     <p:column headerText="Code">
                         <h:outputText value="#{product.code}" />
