@@ -69,7 +69,7 @@ public class FileValidator implements Validator, PartialStateHolder, ClientValid
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 
         if (component instanceof FileUpload) {
-            String accept = Boolean.TRUE.equals(contentType)  ? ((FileUpload) component).getAccept() : null;
+            String accept = Boolean.TRUE.equals(contentType) ? ((FileUpload) component).getAccept() : null;
             if (value instanceof UploadedFile) {
                 UploadedFile uploadedFile = (UploadedFile) value;
 
@@ -85,7 +85,7 @@ public class FileValidator implements Validator, PartialStateHolder, ClientValid
             }
         }
         else if (component instanceof HtmlInputFile) {
-            String accept = Boolean.TRUE.equals(contentType)  ? (String) component.getAttributes().get("accept") : null;
+            String accept = Boolean.TRUE.equals(contentType) ? (String) component.getAttributes().get("accept") : null;
 
             if (value instanceof Part) {
                 UploadedFile uploadedFile = new NativeUploadedFile((Part) value, sizeLimit, null);
@@ -134,7 +134,7 @@ public class FileValidator implements Validator, PartialStateHolder, ClientValid
                             uploadedFile.getFileName(), FileUploadUtils.formatBytes(sizeLimit, LocaleUtils.getCurrentLocale(context))));
         }
 
-        if (LangUtils.isNotBlank(allowTypes) && !FileUploadUtils.isValidType(applicationContext, uploadedFile, allowTypes, accept)) {
+        if (!FileUploadUtils.isValidType(applicationContext, uploadedFile, allowTypes, accept)) {
             throw new ValidatorException(
                     MessageFactory.getFacesMessage(ALLOW_TYPES_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, uploadedFile.getFileName()));
         }
