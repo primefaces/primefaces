@@ -44,13 +44,13 @@ public class ScreenshotOnFailureExtension implements TestWatcher {
 
     public static String path4Screenshots;
 
-    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
 
     @Override
     public void testFailed(ExtensionContext context, Throwable cause) {
         if (StringUtils.isNotBlank(path4Screenshots)) {
             File scrFile = ((TakesScreenshot) WebDriverProvider.get()).getScreenshotAs(OutputType.FILE);
-            String filename = path4Screenshots + LocalDateTime.now().format(dateTimeFormatter) + "_" + UUID.randomUUID().toString();
+            String filename = path4Screenshots + LocalDateTime.now().format(DATE_TIME_FORMATTER) + "_" + UUID.randomUUID().toString();
 
             try {
                 FileUtils.moveFile(scrFile, new File(filename + ".png"));
