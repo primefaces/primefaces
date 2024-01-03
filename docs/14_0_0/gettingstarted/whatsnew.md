@@ -28,6 +28,7 @@ Look into [migration guide](https://primefaces.github.io/primefaces/14_0_0/#/../
     * JPALazyDataModel now supports wildcard filters with `setWildcardSupport(true);` so you can use `*`, `%`, `_` or `?` in filter
     * JPALazyDataModel now supports builder pattern for constructor.
     * Added `filterPlaceholder` for `Column` and `Columns`
+    * Added `rowData` to `CellEditEvent` which contains the entire row from the cell being edited.
 
 * Messages
     * Added `clearMessages` widget method to clear all current messages.

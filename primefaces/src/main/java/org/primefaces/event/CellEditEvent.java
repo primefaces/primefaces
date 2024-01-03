@@ -45,15 +45,35 @@ public class CellEditEvent<T> extends AbstractAjaxBehaviorEvent {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Old value of the cell
+     */
     private T oldValue;
 
+    /**
+     * New value of the cell
+     */
     private T newValue;
 
+    /**
+     * (Optional) Row Index used only for DataTable to identify row
+     */
     private int rowIndex;
 
+    /**
+     * (Optional) Row Key used only for TreeTable to identify TreeNode
+     */
+    private String rowKey;
+
+    /**
+     * Column of the cell being edited
+     */
     private UIColumn column;
 
-    private String rowKey;
+    /**
+     * Data contained in the DataTable row or TreeTable node.
+     */
+    private Object rowData;
 
     public CellEditEvent(UIComponent component, Behavior behavior, int rowIndex, UIColumn column) {
         super(component, behavior);
@@ -85,6 +105,13 @@ public class CellEditEvent<T> extends AbstractAjaxBehaviorEvent {
         return newValue;
     }
 
+    public Object getRowData() {
+        if (rowData == null) {
+            rowData = resolveRowData();
+        }
+        return rowData;
+    }
+
     public int getRowIndex() {
         return rowIndex;
     }
@@ -95,6 +122,20 @@ public class CellEditEvent<T> extends AbstractAjaxBehaviorEvent {
 
     public String getRowKey() {
         return rowKey;
+    }
+
+    private Object resolveRowData() {
+        if (source instanceof UIData) {
+            DataTable data = (DataTable) source;
+            data.setRowModel(rowIndex);
+            return data.getRowData();
+        }
+        else if (source instanceof UITree) {
+            TreeTable data = (TreeTable) source;
+            data.setRowKey(data.getValue(), rowKey);
+            return data.getRowNode();
+        }
+        return null;
     }
 
     private T resolveValue() {
