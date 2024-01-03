@@ -128,7 +128,7 @@ public class FileUpload extends FileUploadBase {
         if (sizeLimit != null && uploadedFile.getSize() > sizeLimit) {
             throw new ValidatorException(
                     MessageFactory.getFacesMessage(FileValidator.SIZE_LIMIT_MESSAGE_ID, FacesMessage.SEVERITY_ERROR,
-                            "*", FileUploadUtils.formatBytes(sizeLimit, LocaleUtils.getCurrentLocale(getFacesContext()))));
+                            uploadedFile.getFileName(), FileUploadUtils.formatBytes(sizeLimit, LocaleUtils.getCurrentLocale(getFacesContext()))));
         }
 
         String accept = isValidateContentType() ? getAccept() : null;
