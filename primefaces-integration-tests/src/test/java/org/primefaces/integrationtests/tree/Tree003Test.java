@@ -104,7 +104,7 @@ class Tree003Test extends AbstractTreeTest {
             });
         }
         catch (Exception ex) {
-            File scrFile = ((TakesScreenshot)page.getWebDriver()).getScreenshotAs(OutputType.FILE);
+            File scrFile = ((TakesScreenshot) page.getWebDriver()).getScreenshotAs(OutputType.FILE);
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddhhmmss");
             FileUtils.copyFile(scrFile, new File("/tmp/pf_it/" + LocalDateTime.now().format(formatter) + "_" + UUID.randomUUID().toString() + ".png"));
             throw ex;
