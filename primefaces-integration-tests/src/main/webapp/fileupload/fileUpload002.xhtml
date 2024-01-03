@@ -17,8 +17,9 @@
 
             <p:fileUpload id="fileupload"
                           value="#{fileUploadHandler.files}"
-                          mode="simple" skinSimple="true" multiple="true"
-                          fileLimit="2" sizeLimit="100" virusScan="true" allowTypes="/(\.|\/)(csv)$/"/>
+                          mode="simple" skinSimple="true" multiple="true">
+                <p:validateFile fileLimit="2" sizeLimit="100" virusScan="true" allowTypes="/(\.|\/)(csv)$/" />
+            </p:fileUpload>
 
             <p:commandButton id="button" value="Submit" ajax="false" update="@form" action="#{fileUploadHandler.uploadFiles}"
                 validateClient="true" />
@@ -30,10 +31,6 @@
 
                 <p:column headerText="Size">
                     <h:outputText value="#{file.size}" />
-                </p:column>
-
-                <p:column headerText="Error">
-                    <h:outputText value="#{file.errorMessage}" />
                 </p:column>
             </p:dataTable>
 

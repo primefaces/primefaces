@@ -86,33 +86,37 @@ public class FileUpload extends FileUploadBase {
     protected void validateValue(FacesContext context, Object newValue) {
         super.validateValue(context, newValue);
 
-        boolean hasFileValidator = Arrays.stream(getValidators()).anyMatch(v -> v instanceof FileValidator);
+        if (isValid() && ComponentUtils.isRequestSource(this, context)) {
 
-        if (!hasFileValidator && isValid() && ComponentUtils.isRequestSource(this, context)) {
-            try {
-                if (newValue instanceof UploadedFile) {
-                    tryValidateFile((UploadedFile) newValue);
+            boolean hasFileValidator = Arrays.stream(getValidators()).anyMatch(v -> v instanceof FileValidator);
+            if (!hasFileValidator) {
+                try {
+                    if (newValue instanceof UploadedFile) {
+                        tryValidateFile((UploadedFile) newValue);
+                    }
+                    else if (newValue instanceof UploadedFiles) {
+                        tryValidateFiles(((UploadedFiles) newValue).getFiles());
+                    }
+                    else if (newValue != null) {
+                        throw new IllegalArgumentException("Argument of type '" + newValue.getClass().getName() + "' not supported");
+                    }
                 }
-                else if (newValue instanceof UploadedFiles) {
-                    tryValidateFiles(((UploadedFiles) newValue).getFiles());
-                }
-                else if (newValue != null) {
-                    throw new IllegalArgumentException("Argument of type '" + newValue.getClass().getName() + "' not supported");
-                }
+                catch (VirusException | ValidatorException e) {
+                    setValid(false);
 
+                    context.addMessage(getClientId(), e instanceof ValidatorException
+                            ? ((ValidatorException) e).getFacesMessage()
+                            : new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), ""));
+                }
+            }
+
+            if (isValid()) {
                 if (newValue instanceof UploadedFile) {
                     queueEvent(new FileUploadEvent(this, (UploadedFile) newValue));
                 }
                 else if (newValue instanceof UploadedFiles) {
                     queueEvent(new FilesUploadEvent(this, (UploadedFiles) newValue));
                 }
-            }
-            catch (VirusException | ValidatorException e) {
-                setValid(false);
-
-                context.addMessage(getClientId(), e instanceof ValidatorException
-                        ? ((ValidatorException) e).getFacesMessage()
-                        : new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), ""));
             }
         }
     }

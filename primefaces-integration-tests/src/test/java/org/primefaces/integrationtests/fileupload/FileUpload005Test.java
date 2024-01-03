@@ -122,7 +122,7 @@ class FileUpload005Test extends AbstractFileUploadTest {
 
     @Test
     @Order(4)
-    void advancedSingleUploadFileLimit(Page page) throws InterruptedException {
+    void advancedSingleUploadFileLimit(Page page) {
         // Arrange
         FileUpload fileUpload = page.fileupload;
         assertEquals("", fileUpload.getValue());

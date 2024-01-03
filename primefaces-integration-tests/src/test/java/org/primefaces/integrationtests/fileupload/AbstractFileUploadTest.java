@@ -51,7 +51,7 @@ public abstract class AbstractFileUploadTest extends AbstractPrimePageTest {
     }
 
     /**
-     * Uploaded files are displayed in a data table with columns name, size and errorMessage.
+     * Uploaded files are displayed in a data table with columns name and size.
      * @param uploadedFiles the data tble to check against
      * @param files the (client side) files uploaded
      */
@@ -80,7 +80,6 @@ public abstract class AbstractFileUploadTest extends AbstractPrimePageTest {
         for (int f = 0; f < files.length; ++f) {
             Row row = rows.get(f);
             assertEquals(files[f].getName(), row.getCell(0).getText()); // same file name
-            assertEquals("", row.getCell(2).getText(), row.getCell(2).getText()); // empty error message
             assertEquals(files[f].length(), Long.parseLong(row.getCell(1).getText())); // same file size
         }
     }
