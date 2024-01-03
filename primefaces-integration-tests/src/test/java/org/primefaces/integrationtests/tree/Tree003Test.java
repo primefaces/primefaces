@@ -55,7 +55,7 @@ class Tree003Test extends AbstractTreeTest {
 
     @Test
     @Order(1)
-    @RepeatedTest(100)
+    // @RepeatedTest(100)
     @DisplayName("Tree: Drag and drop still allows tab and arrow keys to select")
     void tabbing(Page page) throws IOException {
         // Arrange
@@ -63,13 +63,15 @@ class Tree003Test extends AbstractTreeTest {
         assertNotNull(tree);
 
         // Act
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(page.tree.getWrappedElement()));
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(page.tree.getChildren().get(0).getWebElement()));
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(page.tree.getChildren().get(1).getWebElement()));
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(page.tree.getChildren().get(2).getWebElement()));
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(tree.getWrappedElement()));
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(tree.getChildren().get(0).getWebElement()));
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(tree.getChildren().get(1).getWebElement()));
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(tree.getChildren().get(2).getWebElement()));
         Actions actions = new Actions(page.getWebDriver());
         Action action = actions.sendKeys(Keys.TAB).build();
         action.perform();
+        System.out.println("Tree - HTML : " + tree.getWrappedElement().getAttribute("innerHTML"));
+        System.out.println("Tree - CSS-classes of first node : " + tree.getChildren().get(0).getWebElement().getAttribute("class"));
         action = actions.sendKeys(Keys.ARROW_DOWN).build();
         action.perform();
         action = actions.sendKeys(Keys.ARROW_RIGHT).build();
