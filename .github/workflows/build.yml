@@ -58,7 +58,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: failed_it_screenshots
+          name: failed_it_screenshots_${{ matrix.java }}_${{ matrix.facesimpl }}
           path: /tmp/pf_it/
 
 
