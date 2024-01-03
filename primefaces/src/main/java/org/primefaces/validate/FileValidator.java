@@ -30,7 +30,6 @@ import org.primefaces.model.file.NativeUploadedFile;
 import org.primefaces.model.file.UploadedFile;
 import org.primefaces.model.file.UploadedFiles;
 import org.primefaces.util.FileUploadUtils;
-import org.primefaces.util.LangUtils;
 import org.primefaces.util.LocaleUtils;
 import org.primefaces.util.MessageFactory;
 import org.primefaces.virusscan.VirusException;
@@ -51,10 +50,10 @@ import java.util.stream.Collectors;
 
 public class FileValidator implements Validator, PartialStateHolder, ClientValidator {
 
-    private static final String VALIDATOR_ID = "primefaces.File";
-    private static final String FILE_LIMIT_MESSAGE_ID = "primefaces.FileValidator.FILE_LIMIT";
-    private static final String ALLOW_TYPES_MESSAGE_ID = "primefaces.FileValidator.ALLOW_TYPES";
-    private static final String SIZE_LIMIT_MESSAGE_ID = "primefaces.FileValidator.SIZE_LIMIT";
+    public static final String VALIDATOR_ID = "primefaces.File";
+    public static final String FILE_LIMIT_MESSAGE_ID = "primefaces.FileValidator.FILE_LIMIT";
+    public static final String ALLOW_TYPES_MESSAGE_ID = "primefaces.FileValidator.ALLOW_TYPES";
+    public static final String SIZE_LIMIT_MESSAGE_ID = "primefaces.FileValidator.SIZE_LIMIT";
 
     private Integer fileLimit;
     private Long sizeLimit;
@@ -69,7 +68,7 @@ public class FileValidator implements Validator, PartialStateHolder, ClientValid
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 
         if (component instanceof FileUpload) {
-            String accept = Boolean.TRUE.equals(contentType)  ? ((FileUpload) component).getAccept() : null;
+            String accept = Boolean.TRUE.equals(contentType) ? ((FileUpload) component).getAccept() : null;
             if (value instanceof UploadedFile) {
                 UploadedFile uploadedFile = (UploadedFile) value;
 
@@ -85,7 +84,7 @@ public class FileValidator implements Validator, PartialStateHolder, ClientValid
             }
         }
         else if (component instanceof HtmlInputFile) {
-            String accept = Boolean.TRUE.equals(contentType)  ? (String) component.getAttributes().get("accept") : null;
+            String accept = Boolean.TRUE.equals(contentType) ? (String) component.getAttributes().get("accept") : null;
 
             if (value instanceof Part) {
                 UploadedFile uploadedFile = new NativeUploadedFile((Part) value, sizeLimit, null);
@@ -134,7 +133,7 @@ public class FileValidator implements Validator, PartialStateHolder, ClientValid
                             uploadedFile.getFileName(), FileUploadUtils.formatBytes(sizeLimit, LocaleUtils.getCurrentLocale(context))));
         }
 
-        if (LangUtils.isNotBlank(allowTypes) && !FileUploadUtils.isValidType(applicationContext, uploadedFile, allowTypes, accept)) {
+        if (!FileUploadUtils.isValidType(applicationContext, uploadedFile, allowTypes, accept)) {
             throw new ValidatorException(
                     MessageFactory.getFacesMessage(ALLOW_TYPES_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, uploadedFile.getFileName()));
         }

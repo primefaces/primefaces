@@ -454,6 +454,11 @@ declare namespace PrimeFaces {
          * The severity in I18N human readable text for ARIA screen readers.
          */
         severityText?: string;
+
+        /**
+         * If the message was successfully rendered by a message/growl component.
+         */
+        rendered: boolean;
     }
 
     /*
@@ -1096,6 +1101,28 @@ declare namespace PrimeFaces.ajax {
 }
 
 declare namespace PrimeFaces.validation {
+
+    /**
+     * The validation result.
+     */
+    export interface ValidationResult {
+
+        /**
+         * A map between the client ID of an element and a list of faces message for that element.
+         * @type {Record<string, PrimeFaces.FacesMessage[]>}
+         */
+        messages: Record<string, PrimeFaces.FacesMessage[]>,
+
+        /**
+         * If the result is valid / if it has any validation errors.
+         */
+        valid: boolean;
+
+        /**
+         * If the result has any unrendered message.
+         */
+        hasUnrenderedMessage: boolean;
+    }
 
     /**
      * When an element is invalid due to a validation error, the user needs to be informed. A highlight handler is

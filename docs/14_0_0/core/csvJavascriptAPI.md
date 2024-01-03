@@ -16,7 +16,7 @@ method used by PrimeFaces commands like `p:commandButton` when `validateClient` 
  * @param {boolean} focus If the first invalid element should be focused.
  * @param {boolean} renderMessages If messages should be rendered.
  * @param {boolean} validateInvisibleElements If invisible elements should be validated.
- * @return {boolean} `true` if the request would not result in validation errors, or `false` otherwise.
+ * @return {PrimeFaces.validation.ValidationResult} The validation result.
  */
 validate : function(source, process, update, highlight, focus, renderMessages, validateInvisibleElements) {
     ...
@@ -25,7 +25,10 @@ validate : function(source, process, update, highlight, focus, renderMessages, v
 
 To validate a form or container, you can simply use:
 ```js
-PrimeFaces.validation.validate($('#myButton'), $('#myForm'), $('#myForm'), true, true, true, false);
+var result = PrimeFaces.validation.validate($('#myButton'), $('#myForm'), $('#myForm'), true, true, true, false);
+if (!result.valid) {
+    
+}
 ```
 
 ## PrimeFaces.validation.validateInstant

@@ -10827,30 +10827,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Message to display when file size validation fails.]]>
-            </description>
-            <name>invalidSizeMessage</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Message to display when file limit validation fails.]]>
-            </description>
-            <name>invalidFileMessage</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Message to display when file count validation fails.]]>
-            </description>
-            <name>fileLimitMessage</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Specifies dragdrop based file selection from filesystem, default is true and works only on supported browsers.]]>
             </description>
             <name>dragDropSupport</name>
