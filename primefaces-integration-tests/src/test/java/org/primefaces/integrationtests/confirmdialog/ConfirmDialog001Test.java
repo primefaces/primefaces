@@ -43,7 +43,7 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
-    @DisplayName("ConfirmDialog: Show the dialog")
+    @DisplayName("ConfirmDialog: Button Show the dialog")
     void showDialog(Page page) {
         // Arrange
         ConfirmDialog dialog = page.dialog;
@@ -60,7 +60,7 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(2)
-    @DisplayName("ConfirmDialog: Show widget method")
+    @DisplayName("ConfirmDialog: Button Show widget method")
     void showWidget(Page page) {
         // Arrange
         ConfirmDialog dialog = page.dialog;
@@ -74,7 +74,7 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(3)
-    @DisplayName("ConfirmDialog: Hide widget method")
+    @DisplayName("ConfirmDialog: Button Hide widget method")
     void hideWidget(Page page) {
         // Arrange
         ConfirmDialog dialog = page.dialog;
@@ -90,7 +90,7 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(4)
-    @DisplayName("ConfirmDialog: Confirm button pressing NO")
+    @DisplayName("ConfirmDialog: Button Confirm button pressing NO")
     void confirmNo(Page page) {
         // Arrange
         ConfirmDialog dialog = page.dialog;
@@ -107,7 +107,7 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(5)
-    @DisplayName("ConfirmDialog: Confirm button pressing YES")
+    @DisplayName("ConfirmDialog: Button Confirm button pressing YES")
     void confirmYes(Page page) {
         // Arrange
         ConfirmDialog dialog = page.dialog;
@@ -124,7 +124,7 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(6)
-    @DisplayName("ConfirmDialog: Delete button pressing NO")
+    @DisplayName("ConfirmDialog: Button Delete button pressing NO")
     void deleteNo(Page page) {
         // Arrange
         ConfirmDialog dialog = page.dialog;
@@ -141,7 +141,7 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(7)
-    @DisplayName("ConfirmDialog: Delete button pressing YES")
+    @DisplayName("ConfirmDialog: Button Delete button pressing YES")
     void deleteYes(Page page) {
         // Arrange
         ConfirmDialog dialog = page.dialog;
@@ -153,6 +153,41 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("Record deleted", page.message.getMessage(0).getDetail());
+        assertDialog(page, false);
+    }
+
+    @Test
+    @Order(7)
+    @DisplayName("ConfirmDialog: Button Non AJAX button pressing NO")
+    void nonAjaxNo(Page page) {
+        // Arrange
+        ConfirmDialog dialog = page.dialog;
+        assertFalse(dialog.isVisible());
+        page.nonAjax.click();
+
+        // Act
+        dialog.getNoButton().click();
+
+        // Assert
+        assertTrue(page.message.isEmpty());
+        assertDialog(page, false);
+    }
+
+    @Test
+    @Order(8)
+    @DisplayName("ConfirmDialog: Button Non AJAX button pressing YES")
+    void nonAjaxYes(Page page) {
+        // Arrange
+        ConfirmDialog dialog = page.dialog;
+        assertFalse(dialog.isVisible());
+        page.nonAjax.click();
+
+        // Act
+        PrimeSelenium.guardHttp(dialog.getYesButton().getRoot()).click();
+
+        // Assert
+        //PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(page.message));
+        //assertEquals("Full page submitted", page.message.getMessage(0).getDetail());
         assertDialog(page, false);
     }
 
@@ -208,6 +243,9 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
 
         @FindBy(id = "form:delete")
         CommandButton delete;
+
+        @FindBy(id = "form:nonAjax")
+        CommandButton nonAjax;
 
         @Override
         public String getLocation() {

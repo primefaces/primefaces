@@ -198,6 +198,18 @@ if (!PrimeFaces.ajax) {
 
                 return $.inArray(sourceId, triggers) !== -1;
             },
+            
+            /**
+             * Is this script an AJAX request?
+             * @param {string} script the JS script to check
+             * @returns {boolean} `true` if this script contains an AJAX request
+             */
+            isAjaxRequest: function(script) {
+                return script.includes("PrimeFaces.ab(") || script.includes("pf.ab(")
+                    || script.includes("mojarra.ab(")
+                    || script.includes("myfaces.ab(")
+                    || script.includes("jsf.ajax.request") || script.includes("faces.ajax.request");
+            },
 
             /**
              * Updates the main hidden input element for each form.
