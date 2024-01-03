@@ -73,7 +73,11 @@ public class TomcatDeploymentAdapter implements DeploymentAdapter {
         Thread.sleep(2000);
 
         // make screenshots of failed tests
-        ScreenshotOnFailureExtension.path4Screenshots="c:/tmp/"; // TODO: /tmp/pf_it/, only when running on Github actions?
+        if ("true".equals(System.getenv("CI"))) {
+            // CI is running - see https://docs.github.com/en/actions/learn-github-actions/variables#default-environment-variables
+            ScreenshotOnFailureExtension.path4Screenshots = "/tmp/pf_it/";
+            System.out.println("CI is running - so take screenshots when ITs fail");
+        }
     }
 
     @Override

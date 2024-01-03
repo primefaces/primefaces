@@ -25,6 +25,7 @@ package org.primefaces.selenium.internal.junit;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestWatcher;
 import org.openqa.selenium.OutputType;
@@ -32,7 +33,9 @@ import org.openqa.selenium.TakesScreenshot;
 import org.primefaces.selenium.spi.WebDriverProvider;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
@@ -41,13 +44,26 @@ public class ScreenshotOnFailureExtension implements TestWatcher {
 
     public static String path4Screenshots;
 
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
+
     @Override
     public void testFailed(ExtensionContext context, Throwable cause) {
         if (StringUtils.isNotBlank(path4Screenshots)) {
             File scrFile = ((TakesScreenshot) WebDriverProvider.get()).getScreenshotAs(OutputType.FILE);
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
+            String filename = path4Screenshots + LocalDateTime.now().format(dateTimeFormatter) + "_" + UUID.randomUUID().toString();
+
             try {
-                FileUtils.copyFile(scrFile, new File(path4Screenshots + LocalDateTime.now().format(formatter) + "_" + UUID.randomUUID().toString() + ".png"));
+                FileUtils.moveFile(scrFile, new File(filename + ".png"));
+
+                // write additional textfile with context-information
+                PrintWriter printWriter = new PrintWriter(new FileWriter(filename + ".txt"));
+                if (context.getTestMethod().isPresent()) {
+                    printWriter.println("Test-method: " + context.getTestMethod().get());
+                }
+                printWriter.println("Test-description: " + context.getDisplayName());
+                printWriter.println("");
+                printWriter.println("Stacktrace: " + ExceptionUtils.getStackTrace(cause));
+                printWriter.close();
             }
             catch (IOException ex) {
                 System.err.println("Failed to save screenshot auf failed test: " + ex.getMessage());

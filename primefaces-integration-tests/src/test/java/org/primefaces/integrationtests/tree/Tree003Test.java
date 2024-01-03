@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,22 +25,12 @@ package org.primefaces.integrationtests.tree;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.io.File;
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.UUID;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
@@ -55,70 +45,38 @@ class Tree003Test extends AbstractTreeTest {
 
     @Test
     @Order(1)
-    // @RepeatedTest(100)
     @DisplayName("Tree: Drag and drop still allows tab and arrow keys to select")
-    void tabbing(Page page) throws IOException {
+    void tabbing(Page page) {
         // Arrange
         Tree tree = page.tree;
         assertNotNull(tree);
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(page.tree.getWrappedElement()));
 
         // Act
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(tree.getWrappedElement()));
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(tree.getChildren().get(0).getWebElement()));
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(tree.getChildren().get(1).getWebElement()));
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(tree.getChildren().get(2).getWebElement()));
         Actions actions = new Actions(page.getWebDriver());
-        Action action = actions.sendKeys(Keys.TAB).build();
-        action.perform();
-        System.out.println("Tree - HTML : " + tree.getWrappedElement().getAttribute("innerHTML"));
-        System.out.println("Tree - CSS-classes of first node : " + tree.getChildren().get(0).getWebElement().getAttribute("class"));
-        action = actions.sendKeys(Keys.ARROW_DOWN).build();
-        action.perform();
-        action = actions.sendKeys(Keys.ARROW_RIGHT).build();
-        action.perform();
+        Action actionSelect = actions.sendKeys(Keys.TAB).sendKeys(Keys.ARROW_DOWN).sendKeys(Keys.ARROW_RIGHT).build();
+        actionSelect.perform();
 
-        throw new RuntimeException("test");
+        // Assert
+        List<TreeNode> children = tree.getChildren();
+        assertNotNull(children);
+        assertEquals(3, children.size());
 
-//        // Assert
-//        // tree = PrimeSelenium.createFragment(Tree.class, By.id("form:tree")); // does this improve stability?
-//        List<TreeNode> children = tree.getChildren();
-//        assertNotNull(children);
-//        assertEquals(3, children.size());
-//
-//        TreeNode second = children.get(1);
-//        assertEquals("Events", second.getLabelText());
-//        assertDisplayed(second.getWebElement());
-//        System.out.println("Tree - second node, HTML: " + second.getWebElement().getAttribute("innerHTML"));
-//
-//
-//        try {
-//            JavascriptExecutor j = (JavascriptExecutor) page.getWebDriver();
-//            Long verticalScrollPosition = (Long) j.executeScript("return window.pageYOffset;");
-//            Long horizontalScrollPosition = (Long) j.executeScript("return window.pageXOffset;");
-//            System.out.println("Vertical scroll position: " + verticalScrollPosition + ", horizontal scroll position: " + horizontalScrollPosition);
-//            Long windowHeight = (Long) j.executeScript("return window.innerHeight;");
-//            Long windowWidth = (Long) j.executeScript("return window.innerWidth;");
-//            System.out.println("Window - height: " + windowHeight + ", width: " + windowWidth);
-//
-//            List<TreeNode> secondChildren = second.getChildren();
-//            assertNotNull(secondChildren);
-//            assertEquals(3, secondChildren.size());
-//
-//            secondChildren.forEach(t -> {
-//                System.out.println("Tree - second node - child, HTML: " + t.getWebElement().getAttribute("innerHTML"));
-//                // stabilize flickering test - be sure keyboard-action was executed
-//                PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(t.getWebElement()));
-//                assertDisplayed(t.getWebElement());
-//            });
-//        }
-//        catch (Exception ex) {
-//            File scrFile = ((TakesScreenshot) page.getWebDriver()).getScreenshotAs(OutputType.FILE);
-//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddhhmmss");
-//            FileUtils.copyFile(scrFile, new File("/tmp/pf_it/" + LocalDateTime.now().format(formatter) + "_" + UUID.randomUUID().toString() + ".png"));
-//            throw ex;
-//        }
-//
-//        assertConfiguration(tree.getWidgetConfiguration());
+        TreeNode second = children.get(1);
+        assertEquals("Events", second.getLabelText());
+        assertDisplayed(second.getWebElement());
+
+        List<TreeNode> secondChildren = second.getChildren();
+        assertNotNull(secondChildren);
+        assertEquals(3, secondChildren.size());
+
+        assertDisplayed(secondChildren.get(0).getWebElement());
+        assertDisplayed(secondChildren.get(1).getWebElement());
+        assertDisplayed(secondChildren.get(2).getWebElement());
+
+        assertConfiguration(tree.getWidgetConfiguration());
+
+        throw new RuntimeException("some IT - failure a screenshot should be taken");
     }
 
     public static class Page extends AbstractPrimePage {
