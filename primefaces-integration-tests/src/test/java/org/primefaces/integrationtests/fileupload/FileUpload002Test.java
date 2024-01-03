@@ -208,9 +208,9 @@ class FileUpload002Test extends AbstractFileUploadTest {
         assertEquals("{name} {size}", cfg.getString("messageTemplate"));
         assertTrue(cfg.getBoolean("skinSimple"));
         assertFalse(cfg.has("auto"));
-        assertEquals(2, cfg.getInt("fileLimit"));
-        assertEquals(100, cfg.getInt("maxFileSize"));
-        assertEquals("/(\\.|\\/)(csv)$/", cfg.getString("allowTypes"));
+        assertEquals(2, Integer.parseInt(fileUpload.getInput().getAttribute("data-p-filelimit")));
+        assertEquals(100, Long.parseLong(fileUpload.getInput().getAttribute("data-p-sizelimit")));
+        assertEquals("/(\\.|\\/)(csv)$/", fileUpload.getInput().getAttribute("data-p-allowtypes"));
         assertNotNull(fileUpload.getInput().getAttribute("multiple"));
     }
 

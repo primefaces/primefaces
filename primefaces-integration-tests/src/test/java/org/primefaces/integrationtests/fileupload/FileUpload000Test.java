@@ -153,9 +153,9 @@ class FileUpload000Test extends AbstractFileUploadTest {
         System.out.println("FileInput Config = " + cfg);
         assertFalse(cfg.has("skinSimple"));
         assertFalse(cfg.has("auto"));
-        assertEquals(1, cfg.getInt("fileLimit"));
-        assertEquals(100, cfg.getInt("maxFileSize"));
-        assertEquals("/(\\.|\\/)(csv)$/", cfg.getString("allowTypes"));
+        assertEquals(1, Integer.parseInt(fileUpload.getInput().getAttribute("data-p-filelimit")));
+        assertEquals(100, Long.parseLong(fileUpload.getInput().getAttribute("data-p-sizelimit")));
+        assertEquals("/(\\.|\\/)(csv)$/", fileUpload.getInput().getAttribute("data-p-allowtypes"));
         assertNull(fileUpload.getInput().getAttribute("multiple"));
     }
 
