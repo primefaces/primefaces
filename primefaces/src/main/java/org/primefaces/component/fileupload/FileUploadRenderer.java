@@ -315,32 +315,29 @@ public class FileUploadRenderer extends CoreRenderer {
             writer.writeAttribute("title", fileUpload.getTitle(), null);
         }
 
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
+        boolean hasFileValidator = Arrays.stream(fileUpload.getValidators()).anyMatch(v -> v instanceof FileValidator);
+        if (hasFileValidator) {
+            renderValidationMetadata(context, fileUpload);
+        }
+        else {
+            FileValidator fileValidator = new FileValidator();
 
-            boolean hasFileValidator = Arrays.stream(fileUpload.getValidators()).anyMatch(v -> v instanceof FileValidator);
-            if (hasFileValidator) {
-                renderValidationMetadata(context, fileUpload);
+            int fileLimit = fileUpload.getFileLimit();
+            if (fileLimit != Integer.MAX_VALUE) {
+                fileValidator.setFileLimit(fileLimit);
             }
-            else {
-                FileValidator fileValidator = new FileValidator();
 
-                int fileLimit = fileUpload.getFileLimit();
-                if (fileLimit != Integer.MAX_VALUE) {
-                    fileValidator.setFileLimit(fileLimit);
-                }
-
-                long sizeLimit = fileUpload.getSizeLimit();
-                if (sizeLimit != Long.MAX_VALUE) {
-                    fileValidator.setSizeLimit(sizeLimit);
-                }
-
-                String allowTypes = fileUpload.getAllowTypes();
-                if (LangUtils.isNotBlank(allowTypes)) {
-                    fileValidator.setAllowTypes(allowTypes);
-                }
-
-                renderValidationMetadata(context, fileUpload, fileValidator);
+            long sizeLimit = fileUpload.getSizeLimit();
+            if (sizeLimit != Long.MAX_VALUE) {
+                fileValidator.setSizeLimit(sizeLimit);
             }
+
+            String allowTypes = fileUpload.getAllowTypes();
+            if (LangUtils.isNotBlank(allowTypes)) {
+                fileValidator.setAllowTypes(allowTypes);
+            }
+
+            renderValidationMetadata(context, fileUpload, fileValidator);
         }
 
         renderDynamicPassThruAttributes(context, fileUpload);
