@@ -54,7 +54,9 @@ jobs:
         run: mvn clean install -pl -primefaces-integration-tests-jakarta -T1C -DskipTests -Dcheckstyle.skip -Djsdoc.skip.typedoc=true -Dmaven.javadoc.skip=true -Dit.test=Tree003Test --batch-mode --show-version
       - name: Integration Tests
         run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,parallel-execution,headless,chrome,theme-saga,csp,${{ matrix.facesimpl }}
-      - uses: actions/upload-artifact@v4
+      - name: Upload failure-screenshots
+        uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: failed_it_screenshots
           path: /tmp/pf_it/
