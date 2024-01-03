@@ -29,12 +29,15 @@ import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.PrimeExpectedConditions;
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.Tree;
 import org.primefaces.selenium.component.model.tree.TreeNode;
@@ -43,17 +46,17 @@ class Tree003Test extends AbstractTreeTest {
 
     @Test
     @Order(1)
+    @RepeatedTest(200)
     @DisplayName("Tree: Drag and drop still allows tab and arrow keys to select")
     void tabbing(Page page) {
         // Arrange
         Tree tree = page.tree;
         assertNotNull(tree);
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(page.tree.getWrappedElement()));
 
         // Act
         Actions actions = new Actions(page.getWebDriver());
-        Action actionSelect = actions.sendKeys(Keys.TAB).pause(300)
-                .sendKeys(Keys.ARROW_DOWN).pause(300)
-                .sendKeys(Keys.ARROW_RIGHT).pause(300).build();
+        Action actionSelect = actions.sendKeys(Keys.TAB).sendKeys(Keys.ARROW_DOWN).sendKeys(Keys.ARROW_RIGHT).build();
         actionSelect.perform();
 
         // Assert
