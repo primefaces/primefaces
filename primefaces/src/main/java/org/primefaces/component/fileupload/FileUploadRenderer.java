@@ -315,30 +315,7 @@ public class FileUploadRenderer extends CoreRenderer {
             writer.writeAttribute("title", fileUpload.getTitle(), null);
         }
 
-        boolean hasFileValidator = Arrays.stream(fileUpload.getValidators()).anyMatch(v -> v instanceof FileValidator);
-        if (hasFileValidator) {
-            renderValidationMetadata(context, fileUpload);
-        }
-        else {
-            FileValidator fileValidator = new FileValidator();
-
-            int fileLimit = fileUpload.getFileLimit();
-            if (fileLimit != Integer.MAX_VALUE) {
-                fileValidator.setFileLimit(fileLimit);
-            }
-
-            long sizeLimit = fileUpload.getSizeLimit();
-            if (sizeLimit != Long.MAX_VALUE) {
-                fileValidator.setSizeLimit(sizeLimit);
-            }
-
-            String allowTypes = fileUpload.getAllowTypes();
-            if (LangUtils.isNotBlank(allowTypes)) {
-                fileValidator.setAllowTypes(allowTypes);
-            }
-
-            renderValidationMetadata(context, fileUpload, fileValidator);
-        }
+        renderValidationMetadata(context, fileUpload);
 
         renderDynamicPassThruAttributes(context, fileUpload);
 
@@ -372,6 +349,8 @@ public class FileUploadRenderer extends CoreRenderer {
         if (styleClass != null) {
             writer.writeAttribute("class", styleClass, "styleClass");
         }
+
+        renderValidationMetadata(context, fileUpload);
 
         renderDynamicPassThruAttributes(context, fileUpload);
 
@@ -413,6 +392,33 @@ public class FileUploadRenderer extends CoreRenderer {
         writer.endElement("span");
 
         writer.endElement("button");
+    }
+
+    protected void renderValidationMetadata(FacesContext context, FileUpload fileUpload) throws IOException {
+        boolean hasFileValidator = Arrays.stream(fileUpload.getValidators()).anyMatch(v -> v instanceof FileValidator);
+        if (hasFileValidator) {
+            renderValidationMetadata(context, fileUpload);
+        }
+        else {
+            FileValidator fileValidator = new FileValidator();
+
+            int fileLimit = fileUpload.getFileLimit();
+            if (fileLimit != Integer.MAX_VALUE) {
+                fileValidator.setFileLimit(fileLimit);
+            }
+
+            long sizeLimit = fileUpload.getSizeLimit();
+            if (sizeLimit != Long.MAX_VALUE) {
+                fileValidator.setSizeLimit(sizeLimit);
+            }
+
+            String allowTypes = fileUpload.getAllowTypes();
+            if (LangUtils.isNotBlank(allowTypes)) {
+                fileValidator.setAllowTypes(allowTypes);
+            }
+
+            renderValidationMetadata(context, fileUpload, fileValidator);
+        }
     }
 
     @Override
