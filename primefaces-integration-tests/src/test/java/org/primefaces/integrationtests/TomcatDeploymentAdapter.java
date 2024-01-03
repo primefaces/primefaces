@@ -36,6 +36,7 @@ import java.util.Random;
 import java.util.UUID;
 import org.apache.catalina.Context;
 import org.apache.tomcat.util.scan.StandardJarScanner;
+import org.primefaces.selenium.internal.junit.ScreenshotOnFailureExtension;
 import org.primefaces.selenium.spi.DeploymentAdapter;
 
 public class TomcatDeploymentAdapter implements DeploymentAdapter {
@@ -70,6 +71,9 @@ public class TomcatDeploymentAdapter implements DeploymentAdapter {
         con.disconnect();
 
         Thread.sleep(2000);
+
+        // make screenshots of failed tests
+        ScreenshotOnFailureExtension.path4Screenshots="c:/tmp/"; // TODO: /tmp/pf_it/, only when running on Github actions?
     }
 
     @Override
