@@ -315,7 +315,7 @@ public class FileUploadRenderer extends CoreRenderer {
             writer.writeAttribute("title", fileUpload.getTitle(), null);
         }
 
-        renderValidationMetadata(context, fileUpload);
+        renderValidation(context, fileUpload);
 
         renderDynamicPassThruAttributes(context, fileUpload);
 
@@ -350,7 +350,7 @@ public class FileUploadRenderer extends CoreRenderer {
             writer.writeAttribute("class", styleClass, "styleClass");
         }
 
-        renderValidationMetadata(context, fileUpload);
+        renderValidation(context, fileUpload);
 
         renderDynamicPassThruAttributes(context, fileUpload);
 
@@ -394,7 +394,7 @@ public class FileUploadRenderer extends CoreRenderer {
         writer.endElement("button");
     }
 
-    protected void renderValidationMetadata(FacesContext context, FileUpload fileUpload) throws IOException {
+    protected void renderValidation(FacesContext context, FileUpload fileUpload) throws IOException {
         boolean hasFileValidator = Arrays.stream(fileUpload.getValidators()).anyMatch(v -> v instanceof FileValidator);
         if (hasFileValidator) {
             renderValidationMetadata(context, fileUpload);
