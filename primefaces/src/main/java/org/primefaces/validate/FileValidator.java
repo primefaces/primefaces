@@ -30,7 +30,6 @@ import org.primefaces.model.file.NativeUploadedFile;
 import org.primefaces.model.file.UploadedFile;
 import org.primefaces.model.file.UploadedFiles;
 import org.primefaces.util.FileUploadUtils;
-import org.primefaces.util.LangUtils;
 import org.primefaces.util.LocaleUtils;
 import org.primefaces.util.MessageFactory;
 import org.primefaces.virusscan.VirusException;
