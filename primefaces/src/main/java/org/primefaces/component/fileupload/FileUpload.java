@@ -44,6 +44,7 @@ import javax.faces.event.FacesEvent;
 import javax.faces.validator.ValidatorException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "fileupload/fileupload.css")
@@ -112,7 +113,13 @@ public class FileUpload extends FileUploadBase {
 
             if (isValid()) {
                 if (newValue instanceof UploadedFile) {
-                    queueEvent(new FileUploadEvent(this, (UploadedFile) newValue));
+                    int totalFilesCount = 0;
+                    if ("advanced".equals(getMode())) {
+                        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+                        totalFilesCount = Integer.parseInt(params.get(this.getClientId(context) + "_totalFilesCount"));
+                    }
+
+                    queueEvent(new FileUploadEvent(this, (UploadedFile) newValue, totalFilesCount));
                 }
                 else if (newValue instanceof UploadedFiles) {
                     queueEvent(new FilesUploadEvent(this, (UploadedFiles) newValue));

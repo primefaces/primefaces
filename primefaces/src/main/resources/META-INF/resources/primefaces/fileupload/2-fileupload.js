@@ -657,6 +657,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         PrimeFaces.ajax.Request.addParam(params, PrimeFaces.PARTIAL_REQUEST_PARAM, true, parameterPrefix);
         PrimeFaces.ajax.Request.addParam(params, PrimeFaces.PARTIAL_PROCESS_PARAM, process, parameterPrefix);
         PrimeFaces.ajax.Request.addParam(params, PrimeFaces.PARTIAL_SOURCE_PARAM, this.id, parameterPrefix);
+        PrimeFaces.ajax.Request.addParam(params, this.id + "_totalFilesCount", this.files.length, parameterPrefix);
 
         if (this.cfg.update) {
             var update = PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(this.jq, this.cfg.update).join(' ');
@@ -675,7 +676,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
      * @return {string} An identifier for the given file.
      */
     createXFileId: function(file) {
-      return [file.name, file.lastModified, file.type, file.size].join();
+        return [file.name, file.lastModified, file.type, file.size].join();
     },
 
     /**
