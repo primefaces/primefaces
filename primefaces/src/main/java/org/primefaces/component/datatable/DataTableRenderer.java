@@ -710,9 +710,15 @@ public class DataTableRenderer extends DataRenderer {
 
         UIComponent header = column.getFacet("header");
         String headerText = column.getHeaderText();
+        String ariaHeaderText = column.getAriaHeaderText();
+        String titleStyleClass = getStyleClassBuilder(context)
+                .add(DataTable.COLUMN_TITLE_CLASS)
+                .add(LangUtils.isNotBlank(ariaHeaderText), "ui-helper-hidden-accessible")
+                .build();
+        headerText = LangUtils.isNotBlank(headerText) ? headerText : ariaHeaderText;
 
         writer.startElement("span", null);
-        writer.writeAttribute("class", DataTable.COLUMN_TITLE_CLASS, null);
+        writer.writeAttribute("class", titleStyleClass, null);
 
         if (FacetUtils.shouldRenderFacet(header, table.isRenderEmptyFacets())) {
             header.encodeAll(context);
