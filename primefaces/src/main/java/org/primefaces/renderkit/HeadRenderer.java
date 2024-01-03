@@ -76,7 +76,6 @@ public class HeadRenderer extends Renderer {
         ResponseWriter writer = context.getResponseWriter();
         PrimeRequestContext requestContext = PrimeRequestContext.getCurrentInstance(context);
         PrimeApplicationContext applicationContext = requestContext.getApplicationContext();
-        boolean csvEnabled = applicationContext.getConfig().isClientSideValidationEnabled();
 
         writer.startElement("head", component);
         writer.writeAttribute("id", component.getClientId(context), "id");
@@ -125,8 +124,12 @@ public class HeadRenderer extends Renderer {
             resource.encodeAll(context);
         }
 
-        if (csvEnabled) {
-            encodeValidationResources(context, applicationContext.getConfig().isBeanValidationEnabled());
+        // normal CSV is a required dependency for some special components like fileupload
+        encodeJS(context, LIBRARY, "validation/validation.js");
+        // BV CSV is optional and must be enabled by config
+        if (applicationContext.getConfig().isClientSideValidationEnabled()
+                && applicationContext.getConfig().isBeanValidationEnabled()) {
+            encodeJS(context, LIBRARY, "validation/validation.bv.js");
         }
 
         if (applicationContext.getConfig().isClientSideLocalizationEnabled()) {
@@ -142,7 +145,7 @@ public class HeadRenderer extends Renderer {
             }
         }
 
-        encodeSettingScripts(context, applicationContext, requestContext, writer, csvEnabled);
+        encodeSettingScripts(context, applicationContext, requestContext, writer);
 
         // encode initialization scripts
         encodeInitScripts(context, writer);
@@ -193,16 +196,8 @@ public class HeadRenderer extends Renderer {
         }
     }
 
-    protected void encodeValidationResources(FacesContext context, boolean beanValidationEnabled) throws IOException {
-        encodeJS(context, LIBRARY, "validation/validation.js");
-
-        if (beanValidationEnabled) {
-            encodeJS(context, LIBRARY, "validation/validation.bv.js");
-        }
-    }
-
     protected void encodeSettingScripts(FacesContext context, PrimeApplicationContext applicationContext, PrimeRequestContext requestContext,
-            ResponseWriter writer, boolean csvEnabled) throws IOException {
+            ResponseWriter writer) throws IOException {
 
         ProjectStage projectStage = context.getApplication().getProjectStage();
 
@@ -219,10 +214,8 @@ public class HeadRenderer extends Renderer {
             writer.write("PrimeFaces.settings.cookiesSameSite='" + applicationContext.getConfig().getCookiesSameSite() + "';");
         }
 
-        if (csvEnabled) {
-            writer.write("PrimeFaces.settings.validateEmptyFields=" + applicationContext.getConfig().isValidateEmptyFields() + ";");
-            writer.write("PrimeFaces.settings.considerEmptyStringNull=" + applicationContext.getConfig().isInterpretEmptyStringAsNull() + ";");
-        }
+        writer.write("PrimeFaces.settings.validateEmptyFields=" + applicationContext.getConfig().isValidateEmptyFields() + ";");
+        writer.write("PrimeFaces.settings.considerEmptyStringNull=" + applicationContext.getConfig().isInterpretEmptyStringAsNull() + ";");
 
         if (applicationContext.getConfig().isLegacyWidgetNamespace()) {
             writer.write("PrimeFaces.settings.legacyWidgetNamespace=true;");

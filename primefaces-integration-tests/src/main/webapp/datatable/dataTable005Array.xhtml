@@ -27,6 +27,7 @@
 
             <p:commandButton id="button" value="Submit" update="@form" action="#{dataTable005Array.submit}"/>
             <p:commandButton id="buttonUpdate" value="Update" update="datatable"/>
+            <p:commandButton id="buttonProcess" value="Process" update="datatable" process="@this"/>
         </h:form>
 
     </h:body>
