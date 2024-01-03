@@ -63,6 +63,10 @@ class Tree003Test extends AbstractTreeTest {
         assertNotNull(tree);
 
         // Act
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(page.tree.getWrappedElement()));
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(page.tree.getChildren().get(0).getWebElement()));
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(page.tree.getChildren().get(1).getWebElement()));
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(page.tree.getChildren().get(2).getWebElement()));
         Actions actions = new Actions(page.getWebDriver());
         Action action = actions.sendKeys(Keys.TAB).build();
         action.perform();
