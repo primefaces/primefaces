@@ -30,7 +30,7 @@
  *
  * @typedef {"expand" | "fit"} PrimeFaces.widget.DataTable.ResizeMode Indicates the resize behavior of columns.
  *
- * @typedef {"new" | "add" | "none"} PrimeFaces.widget.DataTable.RowSelectMode Indicates how rows of a DataTable
+ * @typedef {"new" | "add" | "none"} PrimeFaces.widget.DataTable.SelectionRowMode Indicates how rows of a DataTable
  * may be selected, when clicking on the row itself (not the checkbox / radiobutton from p:column).
  * `new` always unselects other rows, `add` preserves the currently selected rows, and `none` disables row selection.
  *
@@ -173,7 +173,7 @@
  * @prop {PrimeFaces.widget.DataTable.RowEditMode} cfg.rowEditMode Defines the row edit.
  * @prop {PrimeFaces.widget.DataTable.RowExpandMode} cfg.rowExpandMode Defines row expand mode.
  * @prop {boolean} cfg.rowHover Adds hover effect to rows. Hover is always on when selection is enabled.
- * @prop {PrimeFaces.widget.DataTable.RowSelectMode} cfg.rowSelectMode Defines row selection mode when clicking on the row itself.
+ * @prop {PrimeFaces.widget.DataTable.SelectionRowMode} cfg.selectionRowMode Defines row selection mode when clicking on the row itself.
  * @prop {string} cfg.rowSelector CSS selector find finding the rows of this DataTable.
  * @prop {boolean} cfg.saveOnCellBlur Saves the changes in cell editing on blur, when set to false changes are
  * discarded.
@@ -789,7 +789,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     setupSelection: function() {
         var $this = this;
         this.selectionHolder = this.jqId + '_selection';
-        this.cfg.rowSelectMode = this.cfg.rowSelectMode||'new';
+        this.cfg.selectionRowMode = this.cfg.selectionRowMode||'new';
         this.rowSelector = '> tr.ui-widget-content.ui-datatable-selectable';
         this.cfg.disabledTextSelection = this.cfg.disabledTextSelection === false ? false : true;
         this.cfg.selectionPageOnly = this.cfg.selectionPageOnly !== false;
@@ -806,6 +806,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.bindSelectionEvents();
         
         //shift key based range selection
+        if (this.isCheckboxSelectionEnabled()) {
+            this.originRowMeta = null;
+            this.cursorRowMeta = null;
+        }
+
         this.originRowMeta = this.originRowMeta ? this.getRowMeta(this.tbody.find("[data-rk='" + this.originRowMeta.key + "']")) : null;
         if (this.cursorRowMeta) {
             // #3551 lookup row after update by row key
@@ -834,7 +839,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(this.cfg.selectionMode === 'radio') {
             this.bindRadioEvents();
 
-            if(this.cfg.rowSelectMode !== 'none') {
+            if(this.cfg.selectionRowMode !== 'none') {
                 this.bindRowEvents();
             }
             else {
@@ -845,7 +850,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             this.bindCheckboxEvents();
             this.updateHeaderCheckbox();
 
-            if(this.cfg.rowSelectMode !== 'none') {
+            if(this.cfg.selectionRowMode !== 'none') {
                 this.bindRowEvents();
             }
             else {
@@ -1117,9 +1122,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 var checkbox = $(this);
 
                 if(checkbox.prop('checked'))
-                    $this.selectRowWithCheckbox(checkbox);
+                    $this.selectRowWithCheckbox(checkbox, e);
                 else
-                    $this.unselectRowWithCheckbox(checkbox);
+                    $this.unselectRowWithCheckbox(checkbox, e);
             });
         }
         else {
@@ -1156,14 +1161,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         .on('mouseleave.dataTable', checkboxSelector, null, function() {
                             $(this).removeClass('ui-state-hover');
                         })
-                        .on('click.dataTable', checkboxSelector, null, function() {
+                        .on('click.dataTable', checkboxSelector, null, function(e) {
                             var checkbox = $(this);
 
                             if(checkbox.attr('aria-checked') === "true") {
-                                $this.unselectRowWithCheckbox(checkbox);
+                                $this.unselectRowWithCheckbox(checkbox, e);
                             }
                             else {
-                                $this.selectRowWithCheckbox(checkbox);
+                                $this.selectRowWithCheckbox(checkbox, e);
                             }
                         });
         }
@@ -1192,10 +1197,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         var input = $(this);
 
                         if(input.attr('aria-checked') === "true" || input.prop('checked')) {
-                            $this.selectRowWithCheckbox(input);
+                            $this.selectRowWithCheckbox(input, e);
                         }
                         else {
-                            $this.unselectRowWithCheckbox(input);
+                            $this.unselectRowWithCheckbox(input, e);
                         }
                     });
 
@@ -2421,7 +2426,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             }
             else {
                 //unselect previous selection if this is single selection or multiple one with no keys
-                if(this.isSingleSelection() || (this.isMultipleSelection() && event && !metaKey && !shiftKey && this.cfg.rowSelectMode === 'new' )) {
+                if(this.isSingleSelection() || (this.isMultipleSelection() && event && !metaKey && !shiftKey && this.cfg.selectionRowMode === 'new' )) {
                     this.unselectAllRows();
                 }
 
@@ -2429,7 +2434,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 if(this.isMultipleSelection() && event && event.shiftKey && this.originRowMeta !== null) {
                     this.selectRowsInRange(row, false);
                 }
-                else if(this.cfg.rowSelectMode === 'add' && selected) {
+                else if(this.cfg.selectionRowMode === 'add' && selected) {
                     this.unselectRow(row, silent);
                 }
                 //select current row
@@ -2758,27 +2763,41 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * Selects the corresponding row of a checkbox based column selection
      * @private
      * @param {JQuery} checkbox A checkox INPUT element
+     * @param {JQuery.TriggeredEvent} event Event that occurred.
      * @param {boolean} [silent] `true` to prevent behaviors from being invoked, `false` otherwise.
      */
-    selectRowWithCheckbox: function(checkbox, silent) {
+    selectRowWithCheckbox: function(checkbox, event, silent) {
         var row = checkbox.closest('tr');
-        if(!row.hasClass('ui-datatable-selectable')) {
+        if (!row.hasClass('ui-datatable-selectable')) {
             return;
         }
 
+        var rangeSelected = false;
         var rowMeta = this.getRowMeta(row);
 
-        this.highlightRow(row);
+        if (this.getSelectedRowsCount() > 0 && this.originRowMeta) {
+            this.cursorRowMeta = rowMeta;
 
-        if(!this.cfg.nativeElements) {
-            this.selectCheckbox(checkbox);
+            if (event && event.shiftKey) {
+                this.selectRowsInRange(row, silent);
+                rangeSelected = true;
+            }
+        }
+        else {
+            this.originRowMeta = rowMeta;
+            this.cursorRowMeta = null;
         }
 
-        this.addSelection(rowMeta.key);
-
+        if (!rangeSelected) {
+            this.addSelection(rowMeta.key);
+            this.highlightRow(row);
+            if (!this.cfg.nativeElements) {
+                this.selectCheckbox(checkbox);
+            }
+        }
         this.writeSelections();
 
-        if(!silent) {
+        if (!silent) {
             this.updateHeaderCheckbox();
             this.fireRowSelectEvent(rowMeta.key, "rowSelectCheckbox");
         }
@@ -2788,9 +2807,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * Unselects the corresponding row of a checkbox based column selection
      * @private
      * @param {JQuery} checkbox A checkox INPUT element
+     * @param {JQuery.TriggeredEvent} event Event that occurred.
      * @param {boolean} [silent] `true` to prevent behaviors from being invoked, `false` otherwise.
      */
-    unselectRowWithCheckbox: function(checkbox, silent) {
+    unselectRowWithCheckbox: function(checkbox, event, silent) {
         var row = checkbox.closest('tr');
         if(!row.hasClass('ui-datatable-selectable')) {
             return;
@@ -2809,6 +2829,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.uncheckHeaderCheckbox();
 
         this.writeSelections();
+
+        this.originRowMeta = null;
 
         if(!silent) {
             this.fireRowUnselectEvent(rowMeta.key, "rowUnselectCheckbox");
@@ -2913,12 +2935,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 if(checked) {
                     var checkbox = $(this);
                     checkbox.prop('checked', true);
-                    $this.selectRowWithCheckbox(checkbox, true);
+                    $this.selectRowWithCheckbox(checkbox, null, true);
                 }
                 else {
                     var checkbox = $(this);
                     checkbox.prop('checked', false);
-                    $this.unselectRowWithCheckbox(checkbox, true);
+                    $this.unselectRowWithCheckbox(checkbox, null, true);
                     shouldCheckAll = false;
                 }
             });
@@ -2934,7 +2956,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 shouldCheckAll = false;
 
                 checkboxes.each(function() {
-                    $this.unselectRowWithCheckbox($(this), true);
+                    $this.unselectRowWithCheckbox($(this), null, true);
                 });
             }
             else {
@@ -2943,7 +2965,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 
 
                 checkboxes.each(function() {
-                    $this.selectRowWithCheckbox($(this), true);
+                    $this.selectRowWithCheckbox($(this), null, true);
                 });
             }
         }

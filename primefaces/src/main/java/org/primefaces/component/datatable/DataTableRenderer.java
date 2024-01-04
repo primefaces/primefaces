@@ -169,7 +169,7 @@ public class DataTableRenderer extends DataRenderer {
         //Selection
         wb.attr("selectionMode", selectionMode, null)
                 .attr("selectionPageOnly", table.isSelectionPageOnly(), true)
-                .attr("rowSelectMode", table.getSelectionRowMode(), "new")
+                .attr("selectionRowMode", table.getSelectionRowMode(), "new")
                 .attr("nativeElements", table.isNativeElements(), false)
                 .attr("rowSelector", table.getRowSelector(), null)
                 .attr("disabledTextSelection", table.isSelectionTextDisabled(), true);
