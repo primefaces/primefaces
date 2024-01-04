@@ -472,6 +472,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Callback to execute before displaying confirmation dialog. Return false to prevent dialog from appearing.]]>
+            </description>
+            <name>beforeShow</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
 
     <tag>
