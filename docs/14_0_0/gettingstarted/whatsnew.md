@@ -12,6 +12,9 @@ Look into [migration guide](https://primefaces.github.io/primefaces/14_0_0/#/../
     * `MOVE_SCRIPTS_TO_BOTTOM` adds new option `defer` to defer loading scripts
     * OS settings for `prefers-reduced-motion: reduce` is now respected and PF disables all animations
 
+* ConfirmDialog
+   * Added `ajax=false` support.
+
 * Accordion
     * Added `toggleSpeed` for toggle speed animation duration.
     * Added `scrollIntoView` to allow the active tab to be scrolled into the viewport
