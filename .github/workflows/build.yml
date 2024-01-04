@@ -5,7 +5,7 @@ on: [push, pull_request, workflow_dispatch]
 env:
     MAVEN_OPTS: >-
         -Dmaven.wagon.httpconnectionManager.ttlSeconds=120
-    junit_path4Screenshots: '/tmp/pf_it/'
+    JUNIT_PATH4SCREENSHOTS: '/tmp/pf_it/'
 
 jobs:
   build:
@@ -60,7 +60,8 @@ jobs:
         if: always()
         with:
           name: failed_tests_screenshots_java${{ matrix.java }}_${{ matrix.facesimpl }}
-          path: $junit_path4Screenshots
+          if-no-files-found: ignore
+          path: /tmp/pf_it/
 
 
   integration-tests-40:
@@ -89,4 +90,5 @@ jobs:
         if: always()
         with:
           name: failed_tests_screenshots_java${{ matrix.java }}_${{ matrix.facesimpl }}_jakarta
-          path: $junit_path4Screenshots
+          if-no-files-found: ignore
+          path: /tmp/pf_it/
