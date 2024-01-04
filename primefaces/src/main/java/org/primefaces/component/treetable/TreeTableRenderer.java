@@ -623,6 +623,13 @@ public class TreeTableRenderer extends DataRenderer {
         ResponseWriter writer = context.getResponseWriter();
         UIComponent header = column.getFacet("header");
         String headerText = column.getHeaderText();
+        String ariaHeaderText = column.getAriaHeaderText();
+        headerText = LangUtils.isNotBlank(headerText) ? headerText : ariaHeaderText;
+
+        String titlestyleClass = getStyleClassBuilder(context)
+                .add("ui-column-title")
+                .add(LangUtils.isNotBlank(ariaHeaderText), "ui-helper-hidden-accessible")
+                .build();
 
         boolean columnVisible = column.isVisible();
         if (columnMeta != null && columnMeta.getVisible() != null) {
@@ -687,13 +694,13 @@ public class TreeTableRenderer extends DataRenderer {
         }
 
         writer.startElement("span", null);
-        writer.writeAttribute("class", "ui-column-title", null);
+        writer.writeAttribute("class", titlestyleClass, null);
 
         if (FacetUtils.shouldRenderFacet(header)) {
             header.encodeAll(context);
         }
         else if (headerText != null) {
-            writer.writeText(headerText, null);
+            writer.writeText(headerText, "headerText");
         }
 
         writer.endElement("span");

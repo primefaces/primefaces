@@ -939,8 +939,16 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
                 if(el.hasClass('ui-confirmdialog-yes') && PrimeFaces.confirmSource) {
                     var id = PrimeFaces.confirmSource.get(0);
                     var js = PrimeFaces.confirmSource.data('pfconfirmcommand');
-
-                    PrimeFaces.csp.executeEvent(id, js, e);
+                    
+                    // Test if the function matches the pattern
+                    if (PrimeFaces.ajax.Utils.isAjaxRequest(js)) {
+                        // command is ajax=true
+                        PrimeFaces.csp.executeEvent(id, js, e);
+                    }
+                    else {
+                        // command is ajax=false
+                        $(id).removeAttr("data-pfconfirmcommand").removeAttr("onclick").click();
+                    }
 
                     PrimeFaces.confirmDialog.hide();
                     PrimeFaces.confirmSource = null;

@@ -47,6 +47,10 @@ public class ConfirmDialog001 implements Serializable {
         addMessage("Deleted", "Record deleted");
     }
 
+    public void nonAjax() {
+        addMessage("Non AJAX", "Full page submitted");
+    }
+
     public void addMessage(String summary, String detail) {
         TestUtils.addMessage(summary, detail);
     }
