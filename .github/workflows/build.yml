@@ -60,7 +60,7 @@ jobs:
         if: always()
         with:
           name: failed_tests_screenshots_java${{ matrix.java }}_${{ matrix.facesimpl }}
-          path: ${{ junit_path4Screenshots }}
+          path: $junit_path4Screenshots
 
 
   integration-tests-40:
@@ -89,4 +89,4 @@ jobs:
         if: always()
         with:
           name: failed_tests_screenshots_java${{ matrix.java }}_${{ matrix.facesimpl }}_jakarta
-          path: ${{ junit_path4Screenshots }}
+          path: $junit_path4Screenshots

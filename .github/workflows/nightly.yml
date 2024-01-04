@@ -41,4 +41,4 @@ jobs:
         if: always()
         with:
           name: failed_tests_screenshots_java${{ matrix.java }}_${{ matrix.facesimpl }}
-          path: ${{ junit_path4Screenshots }}
+          path: $junit_path4Screenshots
