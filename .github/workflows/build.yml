@@ -5,6 +5,7 @@ on: [push, pull_request, workflow_dispatch]
 env:
     MAVEN_OPTS: >-
         -Dmaven.wagon.httpconnectionManager.ttlSeconds=120
+    junit.path4Screenshots: '/tmp/pf_it/'
 
 jobs:
   build:
@@ -59,7 +60,7 @@ jobs:
         if: always()
         with:
           name: failed_tests_screenshots_java${{ matrix.java }}_${{ matrix.facesimpl }}
-          path: /tmp/pf_it/
+          path: ${{ junit.path4Screenshots }}
 
 
   integration-tests-40:
@@ -83,3 +84,9 @@ jobs:
         run: mvn clean install -T1C -DskipTests -Dcheckstyle.skip -Djsdoc.skip.typedoc=true -Dmaven.javadoc.skip=true --batch-mode --show-version
       - name: Integration Tests
         run: mvn -B -V clean install -fprimefaces-integration-tests-jakarta/pom.xml -Pintegration-tests,parallel-execution,headless,chrome,theme-saga,csp,${{ matrix.facesimpl }}
+      - name: Upload failure-screenshots
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: failed_tests_screenshots_java${{ matrix.java }}_${{ matrix.facesimpl }}
+          path: ${{ junit.path4Screenshots }}

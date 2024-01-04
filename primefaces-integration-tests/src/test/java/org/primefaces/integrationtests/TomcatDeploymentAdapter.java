@@ -36,7 +36,6 @@ import java.util.Random;
 import java.util.UUID;
 import org.apache.catalina.Context;
 import org.apache.tomcat.util.scan.StandardJarScanner;
-import org.primefaces.selenium.internal.junit.ScreenshotOnFailureExtension;
 import org.primefaces.selenium.spi.DeploymentAdapter;
 
 public class TomcatDeploymentAdapter implements DeploymentAdapter {
@@ -71,13 +70,6 @@ public class TomcatDeploymentAdapter implements DeploymentAdapter {
         con.disconnect();
 
         Thread.sleep(2000);
-
-        // make screenshots of failed tests
-        if ("true".equals(System.getenv("CI"))) {
-            // CI is running - see https://docs.github.com/en/actions/learn-github-actions/variables#default-environment-variables
-            ScreenshotOnFailureExtension.path4Screenshots = "/tmp/pf_it/";
-            System.out.println("CI is running - so take screenshots when ITs fail");
-        }
     }
 
     @Override

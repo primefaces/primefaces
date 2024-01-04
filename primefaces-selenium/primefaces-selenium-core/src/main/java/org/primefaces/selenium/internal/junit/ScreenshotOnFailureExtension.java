@@ -30,6 +30,7 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestWatcher;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
+import org.primefaces.selenium.internal.ConfigProvider;
 import org.primefaces.selenium.spi.WebDriverProvider;
 
 import java.io.File;
@@ -42,12 +43,12 @@ import java.util.UUID;
 
 public class ScreenshotOnFailureExtension implements TestWatcher {
 
-    public static String path4Screenshots;
-
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
 
     @Override
     public void testFailed(ExtensionContext context, Throwable cause) {
+        String path4Screenshots = ConfigProvider.getInstance().getJunitPath4Screenshots();
+
         if (StringUtils.isNotBlank(path4Screenshots)) {
             File scrFile = ((TakesScreenshot) WebDriverProvider.get()).getScreenshotAs(OutputType.FILE);
             String filename = path4Screenshots + LocalDateTime.now().format(DATE_TIME_FORMATTER) + "_" + UUID.randomUUID().toString();
