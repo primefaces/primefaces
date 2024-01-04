@@ -13,6 +13,9 @@ Look into [migration guide](https://primefaces.github.io/primefaces/14_0_0/#/../
     * OS settings for `prefers-reduced-motion: reduce` is now respected and PF disables all animations.
     * Minimum inline Ajax load animation duration via `PrimeFaces.ajax.minLoadAnim`.
 
+* ConfirmDialog
+   * Added `ajax=false` support.
+
 * Accordion
     * Added `toggleSpeed` for toggle speed animation duration.
     * Added `scrollIntoView` to allow the active tab to be scrolled into the viewport.
@@ -28,7 +31,8 @@ Look into [migration guide](https://primefaces.github.io/primefaces/14_0_0/#/../
     * JPALazyDataModel now supports case insensitive filters with `setCaseSensitive(false);`,
     * JPALazyDataModel now supports wildcard filters with `setWildcardSupport(true);` so you can use `*`, `%`, `_` or `?` in filter.
     * JPALazyDataModel now supports builder pattern for constructor.
-    * Added `filterPlaceholder` for `Column` and `Columns`.
+    * Added `filterPlaceholder` for `Column` and `Columns`
+    * Added `rowData` to `CellEditEvent` which contains the entire row from the cell being edited.
 
 * Messages
     * Added `clearMessages` widget method to clear all current messages.
@@ -36,6 +40,7 @@ Look into [migration guide](https://primefaces.github.io/primefaces/14_0_0/#/../
 * MenuBar
     * Added `showDelay` delay in milliseconds before displaying the submenu. Default is 0 meaning immediate.
     * Added `hideDelay` delay in milliseconds before hiding the submenu., if 0 not hidden until document.click(). Default is 0.
+    * Added `dir` for right-to-left support. Default is ltr.
     
 * SelectCheckBoxMenu
     * Added `selectedLabel` to display a label when items selected similar to `emptyMessage`.
@@ -46,6 +51,7 @@ Look into [migration guide](https://primefaces.github.io/primefaces/14_0_0/#/../
 * TieredMenu
     * Added `showDelay` delay in milliseconds before displaying the submenu. Default is 0 meaning immediate.
     * Added `hideDelay` delay in milliseconds before hiding the submenu., if 0 not hidden until document.click(). Default is 0.
+    * Added `dir` for right-to-left support. Default is ltr.
     
 * TreeTable
     * Added `filterPlaceholder` for `Column` and `Columns`.

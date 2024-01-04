@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,9 +23,6 @@
  */
 package org.primefaces.integrationtests.fileupload;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.io.File;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
@@ -35,7 +32,14 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.FileUpload;
-import org.primefaces.selenium.component.model.datatable.Row;
+import org.primefaces.selenium.component.Messages;
+
+import java.io.File;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests basic single file upload.
@@ -107,16 +111,16 @@ class FileUpload000Test extends AbstractFileUploadTest {
         page.button.click();
 
         // Assert
+        assertFalse(page.messages.getAllMessages().isEmpty());
+        assertEquals("Invalid file size.",
+                page.messages.getMessage(0).getSummary());
         assertNoJavascriptErrors();
-        // this error is raised by backing bean
-        // Primefaces only limits upload size to sizeLimit if mode=simple skinSimple=false
-        assertUploadErrors(page.uploadedFiles, "unexpected file size");
         assertConfiguration(fileUpload);
     }
 
     @Test
     @Order(4)
-    void basicSingleUploadAllowTypes(Page page) {
+    void basicSingleUploadAllowTypes(Page page) throws InterruptedException {
         // Arrange
         FileUpload fileUpload = page.fileupload;
         assertEquals("", fileUpload.getValue());
@@ -128,24 +132,11 @@ class FileUpload000Test extends AbstractFileUploadTest {
         page.button.click();
 
         // Assert
+        assertFalse(page.messages.getAllMessages().isEmpty());
+        assertEquals("Invalid file type.",
+                page.messages.getMessage(0).getSummary());
         assertNoJavascriptErrors();
-        // this error is raised by backing bean
-        // Primefaces does not check allowTypes if mode=simple skinSimple=false
-        assertUploadErrors(page.uploadedFiles, "unexpected file type");
         assertConfiguration(fileUpload);
-    }
-
-    private void assertUploadErrors(DataTable uploadedFiles, String... errors) {
-        assertNotNull(uploadedFiles);
-        assertNotNull(uploadedFiles.getRows());
-        assertEquals(errors.length, uploadedFiles.getRows().size());
-        for (int f = 0; f < errors.length; ++f) {
-            Row row = uploadedFiles.getRows().get(f);
-            // no file with UPLOADER=commons
-            if (row.getCells().size() != 1) {
-                assertTrue(row.getCell(2).getText().contains(errors[f]), row.getCell(2).getText()); // matching error message
-            }
-        }
     }
 
     private void assertConfiguration(FileUpload fileUpload) {
@@ -153,13 +144,16 @@ class FileUpload000Test extends AbstractFileUploadTest {
         System.out.println("FileInput Config = " + cfg);
         assertFalse(cfg.has("skinSimple"));
         assertFalse(cfg.has("auto"));
-        assertEquals(1, cfg.getInt("fileLimit"));
-        assertEquals(100, cfg.getInt("maxFileSize"));
-        assertEquals("/(\\.|\\/)(csv)$/", cfg.getString("allowTypes"));
+        assertEquals(1, Integer.parseInt(fileUpload.getInput().getAttribute("data-p-filelimit")));
+        assertEquals(100, Long.parseLong(fileUpload.getInput().getAttribute("data-p-sizelimit")));
+        assertEquals("/(\\.|\\/)(csv)$/", fileUpload.getInput().getAttribute("data-p-allowtypes"));
         assertNull(fileUpload.getInput().getAttribute("multiple"));
     }
 
     public static class Page extends AbstractPrimePage {
+        @FindBy(id = "form:msgs")
+        Messages messages;
+
         @FindBy(id = "form:fileupload")
         FileUpload fileupload;
 

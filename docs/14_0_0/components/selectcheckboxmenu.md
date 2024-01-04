@@ -135,11 +135,12 @@ public class MenuBean {
 The following AJAX behavior events are available for this component. If no event is specified the default event is called.  
   
 **Default Event:** `change`  
-**Available Events:** `change, itemUnselect, toggleSelect`  
+**Available Events:** `change, itemSelect, itemUnselect, toggleSelect`  
 
 | Event | Listener Parameter | Fired |
 | --- | --- | --- |
 toggleSelect | org.primefaces.event.ToggleSelectEvent | When toggle all checkbox changes.
+itemSelect | org.primefaces.event.SelectEvent | When a item is added via the checkbox.
 itemUnselect | org.primefaces.event.UnselectEvent | When a item is removed via the close-icon.
 
 ```xhtml

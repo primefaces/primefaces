@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -45,6 +45,10 @@ public class ConfirmDialog001 implements Serializable {
 
     public void delete() {
         addMessage("Deleted", "Record deleted");
+    }
+
+    public void nonAjax() {
+        addMessage("Non AJAX", "Full page submitted");
     }
 
     public void addMessage(String summary, String detail) {

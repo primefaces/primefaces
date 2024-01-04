@@ -86,6 +86,11 @@ The following AJAX behavior events are available for this component. If no event
 **Default Event:** `valueChange`  
 **Available Events:** `blur, change, click, dblclick, focus, itemSelect, itemUnselect, keydown, keypress, keyup, mousedown, mousemove, mouseout, mouseover, mouseup, valueChange`  
 
+| Event | Listener Parameter | Fired |
+| --- | --- | --- |
+itemSelect | org.primefaces.event.SelectEvent | When a item is added.
+itemUnselect | org.primefaces.event.UnselectEvent | When a item is removed.
+
 ```xhtml
 <p:ajax event="valueChange" listener="#{bean.handlevalueChange}" update="msgs" />
 ```

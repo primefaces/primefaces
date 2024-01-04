@@ -11,7 +11,7 @@
 
     <h:body>
 
-        <h:form id="form">
+        <h:form id="form" enctype="multipart/form-data">
 
             <p:messages id="msgs" />
 
@@ -19,8 +19,9 @@
                           value="#{fileUploadHandler.file}"
                           mode="simple" skinSimple="true" auto="true"
                           update="uploadedfiles msgs"
-                          listener="#{fileUploadHandler.handleFileUpload}"
-                          fileLimit="1" sizeLimit="100" virusScan="true" allowTypes="/(\.|\/)(csv)$/"/>
+                          listener="#{fileUploadHandler.handleFileUpload}">
+                <p:validateFile fileLimit="1" sizeLimit="100" virusScan="true" allowTypes="/(\.|\/)(csv)$/" />
+            </p:fileUpload>
 
             <p:dataTable id="uploadedfiles" var="file" value="#{fileUploadView.uploadedFiles}">
                 <p:column headerText="Name">
@@ -29,10 +30,6 @@
 
                 <p:column headerText="Size">
                     <h:outputText value="#{file.size}" />
-                </p:column>
-
-                <p:column headerText="Error">
-                    <h:outputText value="#{file.errorMessage}" />
                 </p:column>
             </p:dataTable>
 

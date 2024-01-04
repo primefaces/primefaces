@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -49,6 +49,7 @@ class Dialog002Test extends AbstractPrimePageTest {
         Dialog dialog = page.dialog;
         dialog.show();
         assertTrue(dialog.isVisible());
+        PrimeSelenium.wait(400);
 
         // Act (ENTER key should close the dialog because the Close button is focused)
         Actions actions = new Actions(page.getWebDriver());

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -58,6 +58,7 @@ public class Tree extends TreeBase {
     public static final String CONTAINER_CLASS = "ui-tree ui-widget ui-widget-content ui-corner-all";
     public static final String CONTAINER_RTL_CLASS = "ui-tree ui-tree-rtl ui-widget ui-widget-content ui-corner-all";
     public static final String HORIZONTAL_CONTAINER_CLASS = "ui-tree ui-tree-horizontal ui-widget ui-widget-content ui-corner-all";
+    public static final String HORIZONTAL_CONTAINER_RTL_CLASS = "ui-tree ui-tree-horizontal ui-tree-rtl ui-widget ui-widget-content ui-corner-all";
     public static final String ROOT_NODES_CLASS = "ui-tree-container";
     public static final String PARENT_NODE_CLASS = "ui-treenode ui-treenode-parent";
     public static final String LEAF_NODE_CLASS = "ui-treenode ui-treenode-leaf";

@@ -181,6 +181,43 @@ if (!PrimeFaces.ajax) {
             },
 
             /**
+             * Checks whether one of component's triggers equals the source ID from the provided settings.
+             *
+             * @param {PrimeFaces.widget.BaseWidget} widget of the component to check for being the source.
+             * @param {JQuery.AjaxSettings} settings containing source ID.
+             * @param {boolean} triggerMustExist flag to check if the trigger must exist
+             * @returns {boolean} `true` if if one of component's triggers equals the source ID from the provided settings.
+             */
+            isXhrSourceATrigger: function(widget, settings, triggerMustExist) {
+                var sourceId = PrimeFaces.ajax.Utils.getSourceId(settings);
+                if (!sourceId) {
+                    return false;
+                }
+                var cfgTrigger = widget.cfg.trigger || widget.cfg.triggers;
+                // we must evaluate it each time as the DOM might has been changed
+                var triggers = PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(widget.jq, cfgTrigger);
+
+                // if trigger is null it has been removed from DOM so we need to hide the block UI
+                if (!triggers || triggers.length === 0) {
+                    return !triggerMustExist;
+                }
+
+                return $.inArray(sourceId, triggers) !== -1;
+            },
+            
+            /**
+             * Is this script an AJAX request?
+             * @param {string} script the JS script to check
+             * @returns {boolean} `true` if this script contains an AJAX request
+             */
+            isAjaxRequest: function(script) {
+                return script.includes("PrimeFaces.ab(") || script.includes("pf.ab(")
+                    || script.includes("mojarra.ab(")
+                    || script.includes("myfaces.ab(")
+                    || script.includes("jsf.ajax.request") || script.includes("faces.ajax.request");
+            },
+
+            /**
              * Updates the main hidden input element for each form.
              * @param {string} name Name of the hidden form input element, usually the same as the form.
              * @param {string} value Value to set on the hidden input element.

@@ -31,7 +31,9 @@
 
                 <h5>Basic</h5>
                 <p:fileUpload listener="#{fileUploadView.handleFileUpload}" mode="advanced" dragDropSupport="true"
-                              update="messages" sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>
+                              update="messages">
+                        <p:validateFile sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+                </p:fileUpload>
 
                 <h5>Drop Zone</h5>
                 <div class="ui-fluid">

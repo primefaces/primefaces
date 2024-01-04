@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -119,6 +119,34 @@ class DataTable005Test extends AbstractDataTableTest {
         assertMessage("Selected ProgrammingLanguage(s)", "1,3,4,5");
     }
 
+    @ParameterizedTest
+    @MethodSource("provideXhtmls")
+    @Order(3)
+    @DisplayName("DataTable:GitHub #3551 selection remain selected after AJAX update of table")
+    void selectionUpdateKeepSelection(String xhtml) {
+        // Arrange
+        goTo(xhtml);
+        DataTable dataTable = getDataTable();
+        assertNotNull(dataTable);
+
+        // Act
+        Actions actions = new Actions(getWebDriver());
+        actions.keyDown(Keys.META).click(dataTable.getCell(2, 0).getWebElement()).keyUp(Keys.META).perform();
+        actions.keyDown(Keys.SHIFT).click(dataTable.getCell(4, 0).getWebElement()).keyUp(Keys.SHIFT).perform();
+        getButtonProcess().click();
+
+        // Assert
+        dataTable = getDataTable();
+        assertConfiguration(dataTable.getWidgetConfiguration());
+
+        // make sure rows 3,4,5 are still selected and 0,1 not selected
+        assertCss(dataTable.getRow(0).getWebElement(), "ui-widget-content", "ui-datatable-even", "ui-datatable-selectable");
+        assertCss(dataTable.getRow(1).getWebElement(), "ui-widget-content", "ui-datatable-odd", "ui-datatable-selectable");
+        assertCss(dataTable.getRow(2).getWebElement(), "ui-widget-content", "ui-datatable-even", "ui-datatable-selectable", "ui-state-highlight");
+        assertCss(dataTable.getRow(3).getWebElement(), "ui-widget-content", "ui-datatable-odd", "ui-datatable-selectable", "ui-state-highlight");
+        assertCss(dataTable.getRow(4).getWebElement(), "ui-widget-content", "ui-datatable-even", "ui-datatable-selectable", "ui-state-highlight");
+    }
+
     private void assertMessage(String summary, String detail) {
         assertTrue(getMessages().getMessage(0).getSummary().contains(summary));
         assertTrue(getMessages().getMessage(0).getDetail().contains(detail));
@@ -150,5 +178,9 @@ class DataTable005Test extends AbstractDataTableTest {
 
     private CommandButton getButtonUpdate() {
         return PrimeSelenium.createFragment(CommandButton.class, By.id("form:buttonUpdate"));
+    }
+
+    private CommandButton getButtonProcess() {
+        return PrimeSelenium.createFragment(CommandButton.class, By.id("form:buttonProcess"));
     }
 }

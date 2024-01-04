@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,7 @@
 package org.primefaces.component.menu;
 
 import org.primefaces.component.api.MenuItemAware;
+import org.primefaces.component.api.RTLAware;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuModel;
 
@@ -33,9 +34,10 @@ import javax.faces.event.FacesEvent;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public abstract class AbstractMenu extends UIPanel implements MenuItemAware {
+public abstract class AbstractMenu extends UIPanel implements MenuItemAware, RTLAware {
 
     public static final String LIST_CLASS = "ui-menu-list ui-helper-reset";
+    public static final String MENU_RTL_CLASS = "ui-menu-rtl";
     public static final String MENUITEM_CLASS = "ui-menuitem ui-widget ui-corner-all";
     public static final String MENUITEM_LINK_CLASS = "ui-menuitem-link ui-corner-all";
     public static final String MENUITEM_TEXT_CLASS = "ui-menuitem-text";
@@ -43,6 +45,7 @@ public abstract class AbstractMenu extends UIPanel implements MenuItemAware {
     public static final String TIERED_SUBMENU_CLASS = "ui-widget ui-menuitem ui-corner-all ui-menu-parent";
     public static final String TIERED_CHILD_SUBMENU_CLASS = "ui-widget-content ui-menu-list ui-corner-all ui-helper-clearfix ui-menu-child ui-shadow";
     public static final String SUBMENU_RIGHT_ICON_CLASS = "ui-icon ui-icon-triangle-1-e";
+    public static final String SUBMENU_LEFT_ICON_CLASS = "ui-icon ui-icon-triangle-1-w";
     public static final String SUBMENU_DOWN_ICON_CLASS = "ui-icon ui-icon-triangle-1-s";
     public static final String SUBMENU_LINK_CLASS = "ui-menuitem-link ui-submenu-link ui-corner-all";
     public static final String OPTIONS_CLASS = "ui-menuitem ui-menubar-options ui-widget ui-corner-all";
@@ -52,7 +55,8 @@ public abstract class AbstractMenu extends UIPanel implements MenuItemAware {
         autoDisplay,
         showDelay,
         hideDelay,
-        toggleEvent;
+        toggleEvent,
+        dir;
     }
 
     public String getTabindex() {
@@ -93,6 +97,15 @@ public abstract class AbstractMenu extends UIPanel implements MenuItemAware {
 
     public void setToggleEvent(String toggleEvent) {
         getStateHelper().put(PropertyKeys.toggleEvent, toggleEvent);
+    }
+
+    @Override
+    public String getDir() {
+        return (String) getStateHelper().eval(PropertyKeys.dir, "ltr");
+    }
+
+    public void setDir(String dir) {
+        getStateHelper().put(PropertyKeys.dir, dir);
     }
 
     @Override
