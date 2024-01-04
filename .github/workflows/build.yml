@@ -5,7 +5,7 @@ on: [push, pull_request, workflow_dispatch]
 env:
     MAVEN_OPTS: >-
         -Dmaven.wagon.httpconnectionManager.ttlSeconds=120
-    junit.path4Screenshots: '/tmp/pf_it/'
+    junit_path4Screenshots: '/tmp/pf_it/'
 
 jobs:
   build:
@@ -60,7 +60,7 @@ jobs:
         if: always()
         with:
           name: failed_tests_screenshots_java${{ matrix.java }}_${{ matrix.facesimpl }}
-          path: ${{ junit.path4Screenshots }}
+          path: ${{ junit_path4Screenshots }}
 
 
   integration-tests-40:
@@ -88,5 +88,5 @@ jobs:
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: failed_tests_screenshots_java${{ matrix.java }}_${{ matrix.facesimpl }}
-          path: ${{ junit.path4Screenshots }}
+          name: failed_tests_screenshots_java${{ matrix.java }}_${{ matrix.facesimpl }}_jakarta
+          path: ${{ junit_path4Screenshots }}

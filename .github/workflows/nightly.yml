@@ -6,7 +6,7 @@ on:
     - cron: '0 6 * * *'
 
 env:
-  junit.path4Screenshots: '/tmp/pf_it/'
+  junit_path4Screenshots: '/tmp/pf_it/'
 
 permissions:
   contents: read
@@ -41,4 +41,4 @@ jobs:
         if: always()
         with:
           name: failed_tests_screenshots_java${{ matrix.java }}_${{ matrix.facesimpl }}
-          path: ${{ junit.path4Screenshots }}
+          path: ${{ junit_path4Screenshots }}
