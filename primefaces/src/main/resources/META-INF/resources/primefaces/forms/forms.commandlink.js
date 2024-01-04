@@ -51,21 +51,21 @@ PrimeFaces.widget.CommandLink = PrimeFaces.widget.BaseWidget.extend({
 
         if (this.cfg.disableOnAjax !== false) {
             $(document).on('pfAjaxSend.' + this.id, function(e, xhr, settings) {
-                $this.ajaxCount++;
-                if ($this.ajaxCount > 1) {
-                    return;
-                }
                 if (PrimeFaces.ajax.Utils.isXhrSource($this, settings)) {
+                    $this.ajaxCount++;
+                    if ($this.ajaxCount > 1) {
+                        return;
+                    }
                     $this.jq.addClass('ui-state-loading');
                     $this.ajaxStart = Date.now();
                     $this.disable();
                 }
             }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings, args) {
-                $this.ajaxCount--;
-                if ($this.ajaxCount > 0 || !args || args.redirect) {
-                    return;
-                }
                 if (PrimeFaces.ajax.Utils.isXhrSource($this, settings)) {
+                    $this.ajaxCount--;
+                    if ($this.ajaxCount > 0 || !args || args.redirect) {
+                        return;
+                    }
                     PrimeFaces.queueTask(
                         function(){ $this.endAjaxDisabled($this); },
                         Math.max(PrimeFaces.ajax.minLoadAnim + $this.ajaxStart - Date.now(), 0)
