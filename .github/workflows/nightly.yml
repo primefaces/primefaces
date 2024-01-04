@@ -6,7 +6,7 @@ on:
     - cron: '0 6 * * *'
 
 env:
-  JUNIT_PATH4SCREENSHOTS: '/tmp/pf_it/'
+  SCREENSHOT_DIRECTORY: '/tmp/pf_it/'
 
 permissions:
   contents: read

@@ -68,7 +68,7 @@ public class ConfigProvider {
 
     private List<String> onloadScripts;
 
-    private String junitPath4Screenshots;
+    private String screenshotDirectory;
 
     public ConfigProvider() {
         try {
@@ -152,9 +152,9 @@ public class ConfigProvider {
                     this.onloadScriptsAdapter = (OnloadScriptsAdapter) Class.forName(onloadScriptsAdapter).getDeclaredConstructor().newInstance();
                 }
 
-                String junitPath4Screenshots = getAndResolveProperty(properties, "junit.path4Screenshots");
-                if (junitPath4Screenshots != null && !junitPath4Screenshots.trim().isEmpty()) {
-                    this.junitPath4Screenshots = junitPath4Screenshots;
+                String screenshotDirectory = getAndResolveProperty(properties, "screenshotDirectory");
+                if (screenshotDirectory != null && !screenshotDirectory.trim().isEmpty()) {
+                    this.screenshotDirectory = screenshotDirectory;
                 }
             }
 
@@ -282,8 +282,8 @@ public class ConfigProvider {
         return webdriverLogLevel;
     }
 
-    public String getJunitPath4Screenshots() {
-        return junitPath4Screenshots;
+    public String getScreenshotDirectory() {
+        return screenshotDirectory;
     }
 
     public static synchronized ConfigProvider getInstance() {

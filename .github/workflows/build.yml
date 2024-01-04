@@ -5,7 +5,7 @@ on: [push, pull_request, workflow_dispatch]
 env:
     MAVEN_OPTS: >-
         -Dmaven.wagon.httpconnectionManager.ttlSeconds=120
-    JUNIT_PATH4SCREENSHOTS: '/tmp/pf_it/'
+    SCREENSHOT_DIRECTORY: '/tmp/pf_it/'
 
 jobs:
   build:

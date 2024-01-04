@@ -47,7 +47,7 @@ public class ScreenshotOnFailureExtension implements TestWatcher {
 
     @Override
     public void testFailed(ExtensionContext context, Throwable cause) {
-        String path4Screenshots = ConfigProvider.getInstance().getJunitPath4Screenshots();
+        String path4Screenshots = ConfigProvider.getInstance().getScreenshotDirectory();
 
         if (StringUtils.isNotBlank(path4Screenshots)) {
             File scrFile = ((TakesScreenshot) WebDriverProvider.get()).getScreenshotAs(OutputType.FILE);
