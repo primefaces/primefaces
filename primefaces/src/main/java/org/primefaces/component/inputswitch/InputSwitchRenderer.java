@@ -102,7 +102,9 @@ public class InputSwitchRenderer extends InputRenderer {
         writer.startElement("span", null);
 
         if (showLabels) {
-            writer.writeText(label, null);
+            if (label != null) {
+                writer.writeText(label, null);
+            }
         }
         else {
             writer.write("&nbsp;");
