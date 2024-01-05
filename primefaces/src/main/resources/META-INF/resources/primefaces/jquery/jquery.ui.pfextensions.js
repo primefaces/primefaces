@@ -119,6 +119,7 @@ $.widget( "ui.sortable", $.ui.sortable, {
         if (!arguments || arguments.length === 0) {
             $(this).trigger(ev);
         }
+
         return orig.apply(this, arguments);
     }
 })();
