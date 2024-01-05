@@ -70,7 +70,12 @@ if (!PrimeFaces.expressions) {
                         }
                         else if (expression == '@form') {
                             var form = source.closest('form');
-                            elements = elements.add(form[0]);
+                            if (form.length == 0) {
+                                PrimeFaces.error("Could not resolve @form for source '" + source.attr('id') + "'");
+                            }
+                            else {
+                                elements = elements.add(form[0]);
+                            }
                         }
                     }
                 }
@@ -131,11 +136,15 @@ if (!PrimeFaces.expressions) {
                             }
                         }
                         else if (expression == '@form') {
-                            var element = source.closest('form'),
-                            clientId = element.data(PrimeFaces.CLIENT_ID_DATA) || element.attr('id');;
-                            
-                            if (!PrimeFaces.inArray(ids, clientId)) {
-                                ids.push(clientId);
+                            var form = source.closest('form');
+                            if (form.length == 0) {
+                                PrimeFaces.error("Could not resolve @form for source '" + source.attr('id') + "'");
+                            }
+                            else {
+                                var clientId = form.data(PrimeFaces.CLIENT_ID_DATA) || form.attr('id');
+                                if (!PrimeFaces.inArray(ids, clientId)) {
+                                    ids.push(clientId);
+                                }
                             }
                         }
                     }

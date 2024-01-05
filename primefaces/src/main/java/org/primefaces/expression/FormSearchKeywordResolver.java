@@ -21,47 +21,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.event;
+package org.primefaces.expression;
 
+import org.primefaces.util.ComponentTraversalUtils;
 
 import javax.faces.component.UIComponent;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.FacesListener;
+import javax.faces.component.search.SearchExpressionContext;
+import javax.faces.component.search.SearchKeywordContext;
+import javax.faces.component.search.SearchKeywordResolver;
 
-import org.primefaces.model.file.UploadedFile;
+/**
+ * See #11231
+ *
+ * We need to overwrite/reimplement the FormSearchKeywordResolver from the Faces implementation,
+ * as some PF components move their DOM elements and @form is a relative search expression and might not be resolveable at the client anymore.
+ */
+public class FormSearchKeywordResolver extends SearchKeywordResolver {
 
-public class FileUploadEvent extends FacesEvent {
-
-    private static final long serialVersionUID = 1L;
-
-    private final UploadedFile file;
-    private final int totalFilesCount;
-
-    public FileUploadEvent(UIComponent component, UploadedFile file, int totalFilesCount) {
-        super(component);
-        this.file = file;
-        this.totalFilesCount = totalFilesCount;
+    @Override
+    public void resolve(SearchKeywordContext expressionContext, UIComponent current, String keyword) {
+        expressionContext.invokeContextCallback(ComponentTraversalUtils.closestForm(current));
     }
 
     @Override
-    public boolean isAppropriateListener(FacesListener listener) {
+    public boolean isResolverForKeyword(SearchExpressionContext searchExpressionContext, String keyword) {
+        return "form".equalsIgnoreCase(keyword);
+    }
+
+    @Override
+    public boolean isPassthrough(SearchExpressionContext searchExpressionContext, String keyword) {
         return false;
     }
 
     @Override
-    public void processListener(FacesListener listener) {
-        throw new UnsupportedOperationException();
+    public boolean isLeaf(SearchExpressionContext searchExpressionContext, String keyword) {
+        return false;
     }
 
-    public UploadedFile getFile() {
-        return file;
-    }
-
-    /**
-     * The total files count if advanced mode is used.
-     * @return total files count.
-     */
-    public int getTotalFilesCount() {
-        return totalFilesCount;
-    }
 }

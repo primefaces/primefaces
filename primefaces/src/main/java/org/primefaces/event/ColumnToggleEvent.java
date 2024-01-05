@@ -23,45 +23,23 @@
  */
 package org.primefaces.event;
 
-
 import javax.faces.component.UIComponent;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.FacesListener;
+import javax.faces.component.behavior.Behavior;
+import org.primefaces.component.api.UIColumn;
+import org.primefaces.model.Visibility;
 
-import org.primefaces.model.file.UploadedFile;
-
-public class FileUploadEvent extends FacesEvent {
+public class ColumnToggleEvent extends ToggleEvent {
 
     private static final long serialVersionUID = 1L;
 
-    private final UploadedFile file;
-    private final int totalFilesCount;
+    private transient UIColumn column;
 
-    public FileUploadEvent(UIComponent component, UploadedFile file, int totalFilesCount) {
-        super(component);
-        this.file = file;
-        this.totalFilesCount = totalFilesCount;
+    public ColumnToggleEvent(UIComponent component, Behavior behavior, UIColumn column, Visibility visibility, Object data) {
+        super(component, behavior, visibility, data);
+        this.column = column;
     }
 
-    @Override
-    public boolean isAppropriateListener(FacesListener listener) {
-        return false;
-    }
-
-    @Override
-    public void processListener(FacesListener listener) {
-        throw new UnsupportedOperationException();
-    }
-
-    public UploadedFile getFile() {
-        return file;
-    }
-
-    /**
-     * The total files count if advanced mode is used.
-     * @return total files count.
-     */
-    public int getTotalFilesCount() {
-        return totalFilesCount;
+    public UIColumn getColumn() {
+        return column;
     }
 }
