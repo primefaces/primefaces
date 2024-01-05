@@ -116,7 +116,7 @@ $.widget( "ui.sortable", $.ui.sortable, {
         orig = $.fn.remove;
     $.fn.remove = function() {
         // Don't change JQuery.remove(selector) behavior, so trigger event only when remove is called without arguments.
-        if (arguments.length === 0) {
+        if (arguments && arguments.length === 0) {
             $(this).trigger(ev);
         }
         
