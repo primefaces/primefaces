@@ -75,8 +75,6 @@ class Tree003Test extends AbstractTreeTest {
         assertDisplayed(secondChildren.get(2).getWebElement());
 
         assertConfiguration(tree.getWidgetConfiguration());
-
-        throw new RuntimeException("some IT - failure a screenshot should be taken");
     }
 
     public static class Page extends AbstractPrimePage {

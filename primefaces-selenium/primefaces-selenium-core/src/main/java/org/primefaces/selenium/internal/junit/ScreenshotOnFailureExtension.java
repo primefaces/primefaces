@@ -47,11 +47,11 @@ public class ScreenshotOnFailureExtension implements TestWatcher {
 
     @Override
     public void testFailed(ExtensionContext context, Throwable cause) {
-        String path4Screenshots = ConfigProvider.getInstance().getScreenshotDirectory();
+        String screenshotDirectory = ConfigProvider.getInstance().getScreenshotDirectory();
 
-        if (StringUtils.isNotBlank(path4Screenshots)) {
+        if (StringUtils.isNotBlank(screenshotDirectory)) {
             File scrFile = ((TakesScreenshot) WebDriverProvider.get()).getScreenshotAs(OutputType.FILE);
-            String filename = path4Screenshots + LocalDateTime.now().format(DATE_TIME_FORMATTER) + "_" + UUID.randomUUID().toString();
+            String filename = screenshotDirectory + LocalDateTime.now().format(DATE_TIME_FORMATTER) + "_" + UUID.randomUUID().toString();
 
             try {
                 FileUtils.moveFile(scrFile, new File(filename + ".png"));
