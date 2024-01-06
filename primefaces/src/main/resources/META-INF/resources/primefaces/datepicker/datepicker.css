@@ -63,7 +63,13 @@
 
 .p-datepicker-panel .ui-timepicker.ui-timepicker-timeinput input {
     text-align: center;
-    -moz-appearance: textfield !important;
+    -moz-appearance: textfield;
+}
+
+.p-datepicker-panel .ui-timepicker.ui-timepicker-timeinput input::-webkit-outer-spin-button,
+.p-datepicker-panel .ui-timepicker.ui-timepicker-timeinput input::-webkit-inner-spin-button {
+	 -webkit-appearance: none;
+     margin: 0;
 }
 
 .p-datepicker-panel .ui-timepicker.ui-timepicker-timeinput .ui-millisecond-picker input {

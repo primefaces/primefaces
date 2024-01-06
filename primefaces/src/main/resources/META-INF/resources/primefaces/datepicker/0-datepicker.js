@@ -1427,16 +1427,21 @@
         renderTitleYearElement: function(year, index) {
             if (this.options.yearNavigator && index === 0) {
                 this.updateYearNavigator();
-                var yearOptions = [],
-                    years = this.options.yearRange.split(':'),
+                var years = this.options.yearRange.split(':'),
                     yearStart = parseInt(years[0], 10),
-                    yearEnd = parseInt(years[1], 10);
-
-                for (var i = yearStart; i <= yearEnd; i++) {
-                    yearOptions.push(i);
+                    yearEnd = parseInt(years[1], 10),
+                    minDate = this.options.minDate,
+                    maxDate = this.options.maxDate,
+                    minYear = yearStart,
+                    maxYear = yearEnd;
+                if (minDate) {
+                    minYear = Math.max(minDate.getFullYear(), yearStart);
+                }
+                if (maxDate) {
+                    maxYear = Math.min(maxDate.getFullYear(), yearEnd);
                 }
 
-                return '<select class="ui-datepicker-year" tabindex="0" aria-label="' + this.options.locale.year + '">' + this.renderTitleOptions('year', yearOptions, year) + '</select>';
+                return '<input class="ui-datepicker-year" size="6" maxlength="4" tabindex="0" aria-label="' + this.options.locale.year + '" type="number" min="' + minYear + '" max="' + maxYear + '" step="1" value="' + year + '"' + '></input>';
             }
             else {
                 return '<span class="ui-datepicker-year">' + year + '</span>';
@@ -1833,7 +1838,9 @@
             var monthNavigatorSelector = '.ui-datepicker-header > .ui-datepicker-title > .ui-datepicker-month',
                 yearNavigatorSelector = '.ui-datepicker-header > .ui-datepicker-title > .ui-datepicker-year';
             this.panel.off('change.datePicker-monthNav', monthNavigatorSelector).on('change.datePicker-monthNav', monthNavigatorSelector, null, this.onMonthDropdownChange.bind($this));
-            this.panel.off('change.datePicker-yearNav', yearNavigatorSelector).on('change.datePicker-yearNav', yearNavigatorSelector, null, this.onYearDropdownChange.bind($this));
+            this.panel.off('change.datePicker-yearnav keydown.datePicker-yearnav', yearNavigatorSelector)
+            .on('change.datePicker-yearnav', yearNavigatorSelector, null, this.onYearInputChange.bind($this))
+            .on('keydown.datePicker-yearnav', yearNavigatorSelector, null, function(event) {$this.onTimeInputKeyDown(event);});
 
             var monthViewMonthSelector = '.ui-monthpicker > .ui-monthpicker-month';
             this.panel.off('click.datePicker-monthViewMonth', monthViewMonthSelector).on('click.datePicker-monthViewMonth', monthViewMonthSelector, null, function(e) {
@@ -2108,11 +2115,21 @@
                     if (input.value.length >= input.maxLength) {
                         event.preventDefault();
                         event.stopPropagation();
+                        return;
                     }
+                    var val = input.value + event.key;
+                    
+                    // for year we only want to evaluate the full number
+                    if (input.maxLength === 4 && val.length != 4) {
+                        return;
+                    }
+                    
+                    // evaluate if its within min and max range
+                    val = parseInt(val, 10);
+                    var inputMin =  parseInt(input.min, 10);
+                    var inputMax =  parseInt(input.max, 10);
 
-                    const val = input.value + event.key;
-
-                    if (val < parseInt(input.min, 10) || val > parseInt(input.max, 10)) {
+                    if (val < inputMin || val > inputMax) {
                         event.preventDefault();
                         event.stopPropagation();
                     }
@@ -2180,7 +2197,6 @@
         },
 
         onInputChange: function(event) {
-            // TODO: The following code block will be rearranged according to PrimeNG/React/Vue library in future versions.
             if ((this.options.autoMonthFormat || !this.inputfield.val() || this.options.showMinMaxRange) && this.options.monthNavigator && this.options.view !== 'month') { 
                 var viewMonth = this.viewDate.getMonth();
                 viewMonth = (this.isInMaxYear() && Math.min(this.options.maxDate.getMonth(), viewMonth)) || (this.isInMinYear() && Math.max(this.options.minDate.getMonth(), viewMonth)) || viewMonth;
@@ -2265,7 +2281,7 @@
             this.updateViewDate(event, newViewDate);
         },
 
-        onYearDropdownChange: function(event) {
+        onYearInputChange: function(event) {
             var newViewDate = new Date(this.viewDate.getTime());
             newViewDate.setFullYear(parseInt(event.target.value, 10));
 
@@ -3221,7 +3237,7 @@
         },
 
         updateYearNavigator: function() {
-            if (this.hasCustomYearRange) {
+            if (this.hasCustomYearRange || this.options.yearRange) {
                 return;
             }
             if (this.options.yearNavigator) {

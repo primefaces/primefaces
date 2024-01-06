@@ -306,21 +306,13 @@ public abstract class DatePicker extends AbstractInputComponent {
     }
 
     /**
-     * Open the year select dropdown.
-     */
-    public void toggleYearDropdown() {
-        WebElement yearDropDown = showPanel().findElement(By.cssSelector("select.ui-datepicker-year"));
-        yearDropDown.click();
-    }
-
-    /**
-     * Select a year from the drodown.
+     * Select a year.
      *
      * @param year the year to select
      */
-    public void selectYearDropdown(int year) {
-        Select yearDropDown = new Select(showPanel().findElement(By.cssSelector("select.ui-datepicker-year")));
-        yearDropDown.selectByValue(Integer.toString(year));
+    public void selectYear(int year) {
+        WebElement yearInput = showPanel().findElement(By.cssSelector("input.ui-datepicker-year"));
+        yearInput.sendKeys(Integer.toString(year));
     }
 
 }
