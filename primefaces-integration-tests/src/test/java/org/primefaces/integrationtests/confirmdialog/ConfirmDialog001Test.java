@@ -186,8 +186,6 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
         PrimeSelenium.guardHttp(dialog.getYesButton().getRoot()).click();
 
         // Assert
-        //PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(page.message));
-        //assertEquals("Full page submitted", page.message.getMessage(0).getDetail());
         assertDialog(page, false);
     }
 
@@ -209,9 +207,8 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
             }
         }
         else {
-            waitAjaxMinLoadAnimation();
-            assertClickable(page.confirm);
-            assertClickable(page.delete);
+            assertClickableOrLoading(page.confirm);
+            assertClickableOrLoading(page.delete);
         }
 
         assertConfiguration(dialog.getWidgetConfiguration());
