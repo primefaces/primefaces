@@ -39,7 +39,7 @@ public class CommandButton001Test extends AbstractPrimePageTest {
     @Test
     @Order(1)
     @DisplayName("CommandButton: loading state")
-    void loadingState(Page page) {
+    void loadingState(Page page) throws Exception {
         // Arrange
         CommandButton button = page.button;
         setAjaxMinLoadAnimation(200);
@@ -49,6 +49,10 @@ public class CommandButton001Test extends AbstractPrimePageTest {
 
         // Assert
         assertTrue(PrimeSelenium.hasCssClass(button, "ui-state-loading"));
+
+        // Wait out min Ajax loading animation
+        Thread.sleep(250);
+        assertFalse(PrimeSelenium.hasCssClass(button, "ui-state-loading"));
     }
 
     @Test
