@@ -38,6 +38,8 @@ import org.primefaces.selenium.internal.junit.WebDriverExtension;
 import org.primefaces.selenium.spi.WebDriverProvider;
 
 import java.lang.reflect.InvocationTargetException;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -323,6 +325,13 @@ public abstract class AbstractPrimePageTest {
             throw new IllegalArgumentException("milliseconds cannot be negative");
         }
         PrimeSelenium.executeScript("PrimeFaces.ajax.minLoadAnimation = " + milliseconds + ";");
+    }
+
+    /**
+     * Waits for the default minimal Ajax load animation duration.
+     */
+    protected void waitAjaxMinLoadAnimation() {
+        getWebDriver().manage().timeouts().implicitlyWait(Duration.of(500, ChronoUnit.MILLIS));
     }
 
     /**

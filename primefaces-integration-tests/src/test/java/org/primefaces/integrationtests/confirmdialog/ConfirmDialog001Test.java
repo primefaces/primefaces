@@ -47,7 +47,6 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
     void showDialog(Page page) {
         // Arrange
         ConfirmDialog dialog = page.dialog;
-        noAjaxMinLoadAnimation();
         assertFalse(dialog.isVisible());
 
         // Act
@@ -65,7 +64,6 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
     void showWidget(Page page) {
         // Arrange
         ConfirmDialog dialog = page.dialog;
-        noAjaxMinLoadAnimation();
 
         // Act
         dialog.show();
@@ -80,7 +78,6 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
     void hideWidget(Page page) {
         // Arrange
         ConfirmDialog dialog = page.dialog;
-        noAjaxMinLoadAnimation();
         dialog.show();
         assertTrue(dialog.isVisible());
 
@@ -97,7 +94,6 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
     void confirmNo(Page page) {
         // Arrange
         ConfirmDialog dialog = page.dialog;
-        noAjaxMinLoadAnimation();
         assertFalse(dialog.isVisible());
         page.confirm.click();
 
@@ -115,7 +111,6 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
     void confirmYes(Page page) {
         // Arrange
         ConfirmDialog dialog = page.dialog;
-        noAjaxMinLoadAnimation();
         page.confirm.click();
         assertTrue(dialog.isVisible());
 
@@ -133,7 +128,6 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
     void deleteNo(Page page) {
         // Arrange
         ConfirmDialog dialog = page.dialog;
-        noAjaxMinLoadAnimation();
         assertFalse(dialog.isVisible());
         page.delete.click();
 
@@ -151,7 +145,6 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
     void deleteYes(Page page) {
         // Arrange
         ConfirmDialog dialog = page.dialog;
-        noAjaxMinLoadAnimation();
         assertFalse(dialog.isVisible());
         page.delete.click();
 
@@ -216,6 +209,7 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
             }
         }
         else {
+            waitAjaxMinLoadAnimation();
             assertClickable(page.confirm);
             assertClickable(page.delete);
         }
