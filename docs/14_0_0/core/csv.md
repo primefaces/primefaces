@@ -295,8 +295,7 @@ The logic behind `enabledByValidateClient="true"` is triggered on following even
 
 ### CSS-classes
 
-Following CSS-classes may be used (additional to classic `ui-state-error`) to style inputs dependent on their (client-side-)validation-state.  
+Following CSS-classes is used (additional to classic `ui-state-error`) to style inputs dependent on their (client-side-)validation-state.  
 (This behaviour is inspired by following Angular´s https://angular.io/guide/form-validation#control-status-css-classes)
 
 * `ui-state-csv-valid`
-* `ui-state-csv-invalid`
