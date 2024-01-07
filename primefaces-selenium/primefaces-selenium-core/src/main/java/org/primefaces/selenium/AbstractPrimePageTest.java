@@ -314,15 +314,15 @@ public abstract class AbstractPrimePageTest {
         // success
     }
 
-    protected void noMinLoadAnim() {
-        setMinLoadAnim(0);
+    protected void noAjaxMinLoadAnimation() {
+        setAjaxMinLoadAnimation(0);
     }
 
-    protected void setMinLoadAnim(int milliseconds) {
+    protected void setAjaxMinLoadAnimation(int milliseconds) {
         if (milliseconds < 0) {
             throw new IllegalArgumentException("milliseconds cannot be negative");
         }
-        PrimeSelenium.executeScript("PrimeFaces.ajax.minLoadAnim = " + milliseconds + ";");
+        PrimeSelenium.executeScript("PrimeFaces.ajax.minLoadAnimation = " + milliseconds + ";");
     }
 
     /**

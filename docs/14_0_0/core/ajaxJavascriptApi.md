@@ -116,5 +116,5 @@ Some components support an inline load animation. To avoid flickering on short l
 duration is defined. It's 500 milliseconds by default, but you can customize it. For example
 
 ```js
-PrimeFaces.ajax.minLoadAnim = 250;
+PrimeFaces.ajax.minLoadAnimation = 250;
 ```

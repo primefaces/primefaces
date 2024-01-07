@@ -87,10 +87,10 @@ if (!PrimeFaces.ajax) {
         },
 
         /**
-         * Minimum number of milliseconds to show Ajax load animations.
+         * Minimum number of milliseconds to show inline Ajax load animations.
          * @type {number}
          */
-        minLoadAnim : 500,
+        minLoadAnimation : 500,
 
         /**
          * This object contains utility methods for AJAX requests, primarily used internally.

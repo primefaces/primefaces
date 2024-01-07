@@ -424,7 +424,7 @@
 
                     PrimeFaces.queueTask(
                         function(){ PrimeFaces.buttonEndAjaxDisabled(widget, button); },
-                        Math.max(PrimeFaces.ajax.minLoadAnim + widget.ajaxStart - Date.now(), 0)
+                        Math.max(PrimeFaces.ajax.minLoadAnimation + widget.ajaxStart - Date.now(), 0)
                     );
                     delete widget.ajaxStart;
                 }

@@ -42,7 +42,7 @@ public class CommandButton001Test extends AbstractPrimePageTest {
     void loadingState(Page page) {
         // Arrange
         CommandButton button = page.button;
-        setMinLoadAnim(200);
+        setAjaxMinLoadAnimation(200);
 
         // Act
         page.button.click();
@@ -57,7 +57,7 @@ public class CommandButton001Test extends AbstractPrimePageTest {
     void loadingState2(Page page) {
         // Arrange
         CommandButton button = page.button;
-        noMinLoadAnim();
+        noAjaxMinLoadAnimation();
 
         // Act
         page.button.click();
