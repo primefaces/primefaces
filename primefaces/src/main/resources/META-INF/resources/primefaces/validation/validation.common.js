@@ -298,7 +298,7 @@ if (window.PrimeFaces) {
             const widget = PrimeFaces.getWidgetById(btn.id);
 
             if (widget) {
-                if (PrimeFaces.validation.validate($source, process, update, false, false, false, false)) {
+                if (PrimeFaces.validation.validate($source, process, update, false, false, false, false).valid) {
                     widget.jq.addClass('ui-state-csv-valid');
                     widget.jq.removeClass('ui-state-csv-invalid');
                     widget.enable();
