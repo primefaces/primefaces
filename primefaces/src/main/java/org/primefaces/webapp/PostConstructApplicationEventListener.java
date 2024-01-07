@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,17 +25,18 @@ package org.primefaces.webapp;
 
 import org.primefaces.config.PrimeEnvironment;
 import org.primefaces.config.StartupPrimeEnvironment;
+import org.primefaces.expression.FormSearchKeywordResolver;
+import org.primefaces.expression.ObserverSearchKeywordResolver;
+import org.primefaces.expression.PfsSearchKeywordResolver;
+import org.primefaces.expression.RowSearchKeywordResolver;
+import org.primefaces.expression.WidgetVarSearchKeywordResolver;
 
+import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.faces.context.FacesContext;
-import org.primefaces.expression.ObserverSearchKeywordResolver;
-import org.primefaces.expression.PfsSearchKeywordResolver;
-import org.primefaces.expression.RowSearchKeywordResolver;
-import org.primefaces.expression.WidgetVarSearchKeywordResolver;
 
 public class PostConstructApplicationEventListener implements SystemEventListener {
 
@@ -56,6 +57,7 @@ public class PostConstructApplicationEventListener implements SystemEventListene
                 environment.getBuildVersion());
 
         FacesContext context = event.getFacesContext();
+        context.getApplication().addSearchKeywordResolver(new FormSearchKeywordResolver());
         context.getApplication().addSearchKeywordResolver(new WidgetVarSearchKeywordResolver());
         context.getApplication().addSearchKeywordResolver(new ObserverSearchKeywordResolver());
         context.getApplication().addSearchKeywordResolver(new PfsSearchKeywordResolver());

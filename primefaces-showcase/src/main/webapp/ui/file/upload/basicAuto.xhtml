@@ -21,7 +21,7 @@
         <p:growl id="messages" showDetail="true"/>
         <div class="card">
             <h5>Single</h5>
-            <h:form id="formSingle">
+            <h:form id="frmSingle">
                 <p:fileUpload id="upload" value="#{fileUploadView.file}"
                               mode="simple" skinSimple="true" auto="true"
                               process="@this" update="messages"
@@ -30,17 +30,18 @@
         </div>
         <div class="card">
             <h5>Single (allowTypes &amp; sizeLimit CSV)</h5>
-            <h:form id="formSingleCSV">
+            <h:form id="frmSingleCSV">
                 <p:fileUpload id="upload" value="#{fileUploadView.file}"
                               mode="simple" skinSimple="true" auto="true"
                               process="@this" update="messages"
-                              listener="#{fileUploadView.handleFileUpload}"
-                              allowTypes="/(\.|\/)(pdf)$/" sizeLimit="100" />
+                              listener="#{fileUploadView.handleFileUpload}">
+                    <p:validateFile allowTypes="/(\.|\/)(pdf)$/" sizeLimit="100" />
+                </p:fileUpload>
             </h:form>
         </div>
         <div class="card">
             <h5>Multiple</h5>
-            <h:form id="formMulti">
+            <h:form id="frmMulti">
                 <p:fileUpload id="upload" value="#{fileUploadView.files}"
                               mode="simple" skinSimple="true" multiple="true" auto="true"
                               process="@this" update="messages"
@@ -49,7 +50,7 @@
         </div>
         <div class="card">
             <h5>Multiple (allowTyped &amp; sizeLimit &amp; fileLimit CSV)</h5>
-            <h:form id="formMultiCSV">
+            <h:form id="frmMultiCSV">
                 <p:fileUpload id="upload" value="#{fileUploadView.files}"
                               mode="simple" skinSimple="true" multiple="true" auto="true"
                               process="@this" update="messages"

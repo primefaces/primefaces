@@ -49,6 +49,10 @@
   - [Widgets](/core/widgets.md)
   - [Misc](/core/misc.md)
 
+- Validators
+
+  - [ValidateFile](/validators/validateFile.md)
+
 - Components
 
   - [AccordionPanel](/components/accordionpanel.md)

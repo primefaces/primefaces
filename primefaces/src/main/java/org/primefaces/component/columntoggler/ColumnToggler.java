@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,6 +34,9 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 
+import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.event.ColumnToggleEvent;
 import org.primefaces.event.ToggleCloseEvent;
 import org.primefaces.event.ToggleEvent;
 import org.primefaces.expression.SearchExpressionUtils;
@@ -87,7 +90,8 @@ public class ColumnToggler extends ColumnTogglerBase {
             Visibility visibility = Visibility.valueOf(params.get(clientId + "_visibility"));
             int index = Integer.parseInt(params.get(clientId + "_index"));
 
-            super.queueEvent(new ToggleEvent(this, ((AjaxBehaviorEvent) event).getBehavior(), visibility, index));
+            UIColumn column = ((DataTable) getDataSourceComponent()).getColumns().get(index);
+            super.queueEvent(new ColumnToggleEvent(this, ((AjaxBehaviorEvent) event).getBehavior(), column, visibility, index));
         }
         else if (event instanceof AjaxBehaviorEvent && "close".equals(eventName)) {
             String clientId = this.getClientId(context);

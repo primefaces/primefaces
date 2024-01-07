@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,6 +34,7 @@ import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.Logs;
 import org.primefaces.selenium.internal.junit.BootstrapExtension;
 import org.primefaces.selenium.internal.junit.PageInjectionExtension;
+import org.primefaces.selenium.internal.junit.ScreenshotOnFailureExtension;
 import org.primefaces.selenium.internal.junit.WebDriverExtension;
 import org.primefaces.selenium.spi.WebDriverProvider;
 
@@ -52,6 +53,7 @@ import java.util.stream.Collectors;
 @ExtendWith(BootstrapExtension.class)
 @ExtendWith(WebDriverExtension.class)
 @ExtendWith(PageInjectionExtension.class)
+@ExtendWith(ScreenshotOnFailureExtension.class)
 public abstract class AbstractPrimePageTest {
 
     @BeforeEach

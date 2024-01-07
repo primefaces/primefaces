@@ -17,7 +17,8 @@
             </p:messages>
 
             <p:dataTable id="datatable" value="#{dataTable005.progLanguages}" var="lang"
-                         selection="#{dataTable005.selectedProgLanguages}" rowKey="#{lang.id}">
+                         selection="#{dataTable005.selectedProgLanguages}" rowKey="#{lang.id}" 
+                         selectionMode="multiple">
                 <p:column field="id"/>
 
                 <p:column field="name"/>
@@ -27,6 +28,7 @@
 
             <p:commandButton id="button" value="Submit" update="@form" action="#{dataTable005.submit}"/>
             <p:commandButton id="buttonUpdate" value="Update" update="datatable"/>
+            <p:commandButton id="buttonProcess" value="Process" update="datatable" process="@this"/>
         </h:form>
 
     </h:body>

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,21 +23,21 @@
  */
 package org.primefaces.component.fileupload;
 
-import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+import org.primefaces.model.file.NativeUploadedFile;
+import org.primefaces.model.file.UploadedFile;
+import org.primefaces.util.FileUploadUtils;
+import org.primefaces.util.LangUtils;
+
 import javax.faces.context.FacesContext;
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
-
-import org.primefaces.model.file.NativeUploadedFile;
-import org.primefaces.model.file.UploadedFile;
-import org.primefaces.util.FileUploadUtils;
-import org.primefaces.util.LangUtils;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class NativeFileUploadDecoder extends AbstractFileUploadDecoder<HttpServletRequest> {
 

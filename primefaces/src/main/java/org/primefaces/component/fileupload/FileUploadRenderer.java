@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,6 @@
  */
 package org.primefaces.component.fileupload;
 
-import org.apache.poi.util.StringUtil;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
@@ -31,15 +30,14 @@ import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.StyleClassBuilder;
 import org.primefaces.util.WidgetBuilder;
-import org.primefaces.validate.ClientValidator;
+import org.primefaces.validate.FileValidator;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Arrays;
 import java.util.logging.Logger;
 
 public class FileUploadRenderer extends CoreRenderer {
@@ -111,21 +109,11 @@ public class FileUploadRenderer extends CoreRenderer {
                 .attr("process", SearchExpressionUtils.resolveClientIdsForClientSide(context, fileUpload, process))
                 .attr("global", fileUpload.isGlobal(), true)
                 .attr("disabled", fileUpload.isDisabled(), false)
-                .attr("invalidSizeMessage", fileUpload.getInvalidSizeMessage(), null)
-                .attr("invalidFileMessage", fileUpload.getInvalidFileMessage(), null)
-                .attr("fileLimitMessage", fileUpload.getFileLimitMessage(), null)
                 .attr("messageTemplate", fileUpload.getMessageTemplate(), null)
-                .attr("maxFileSize", fileUpload.getSizeLimit(), Long.MAX_VALUE)
-                .attr("fileLimit", fileUpload.getFileLimit(), Integer.MAX_VALUE)
                 .callback("onstart", "function()", fileUpload.getOnstart())
                 .callback("onerror", "function()", fileUpload.getOnerror())
                 .callback("oncomplete", "function(args)", fileUpload.getOncomplete())
                 .callback("onvalidationfailure", "function(msg)", fileUpload.getOnvalidationfailure());
-
-        String allowTypes = fileUpload.getAllowTypes();
-        if (allowTypes != null) {
-            wb.append(",allowTypes:").append(allowTypes);
-        }
 
         wb.finish();
     }
@@ -327,36 +315,7 @@ public class FileUploadRenderer extends CoreRenderer {
             writer.writeAttribute("title", fileUpload.getTitle(), null);
         }
 
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, fileUpload, new ClientValidator() {
-                @Override
-                public Map<String, Object> getMetadata() {
-                    HashMap metadata = new HashMap();
-
-                    int fileLimit = fileUpload.getFileLimit();
-                    if (fileLimit != Integer.MAX_VALUE) {
-                        metadata.put("data-p-filelimit", fileLimit);
-                    }
-
-                    long sizeLimit = fileUpload.getSizeLimit();
-                    if (sizeLimit != Long.MAX_VALUE) {
-                        metadata.put("data-p-sizelimit", sizeLimit);
-                    }
-
-                    String allowTypes = fileUpload.getAllowTypes();
-                    if (!StringUtil.isBlank(allowTypes)) {
-                        metadata.put("data-p-allowtypes", allowTypes);
-                    }
-
-                    return metadata;
-                }
-
-                @Override
-                public String getValidatorId() {
-                    return "primefaces.File";
-                }
-            });
-        }
+        renderValidation(context, fileUpload);
 
         renderDynamicPassThruAttributes(context, fileUpload);
 
@@ -390,6 +349,8 @@ public class FileUploadRenderer extends CoreRenderer {
         if (styleClass != null) {
             writer.writeAttribute("class", styleClass, "styleClass");
         }
+
+        renderValidation(context, fileUpload);
 
         renderDynamicPassThruAttributes(context, fileUpload);
 
@@ -431,6 +392,33 @@ public class FileUploadRenderer extends CoreRenderer {
         writer.endElement("span");
 
         writer.endElement("button");
+    }
+
+    protected void renderValidation(FacesContext context, FileUpload fileUpload) throws IOException {
+        boolean hasFileValidator = Arrays.stream(fileUpload.getValidators()).anyMatch(v -> v instanceof FileValidator);
+        if (hasFileValidator) {
+            renderValidationMetadata(context, fileUpload);
+        }
+        else {
+            FileValidator fileValidator = new FileValidator();
+
+            int fileLimit = fileUpload.getFileLimit();
+            if (fileLimit != Integer.MAX_VALUE) {
+                fileValidator.setFileLimit(fileLimit);
+            }
+
+            long sizeLimit = fileUpload.getSizeLimit();
+            if (sizeLimit != Long.MAX_VALUE) {
+                fileValidator.setSizeLimit(sizeLimit);
+            }
+
+            String allowTypes = fileUpload.getAllowTypes();
+            if (LangUtils.isNotBlank(allowTypes)) {
+                fileValidator.setAllowTypes(allowTypes);
+            }
+
+            renderValidationMetadata(context, fileUpload, fileValidator);
+        }
     }
 
     @Override

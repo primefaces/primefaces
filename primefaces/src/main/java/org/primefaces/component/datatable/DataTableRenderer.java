@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -169,7 +169,7 @@ public class DataTableRenderer extends DataRenderer {
         //Selection
         wb.attr("selectionMode", selectionMode, null)
                 .attr("selectionPageOnly", table.isSelectionPageOnly(), true)
-                .attr("rowSelectMode", table.getSelectionRowMode(), "new")
+                .attr("selectionRowMode", table.getSelectionRowMode(), "new")
                 .attr("nativeElements", table.isNativeElements(), false)
                 .attr("rowSelector", table.getRowSelector(), null)
                 .attr("disabledTextSelection", table.isSelectionTextDisabled(), true);
@@ -710,9 +710,15 @@ public class DataTableRenderer extends DataRenderer {
 
         UIComponent header = column.getFacet("header");
         String headerText = column.getHeaderText();
+        String ariaHeaderText = column.getAriaHeaderText();
+        String titleStyleClass = getStyleClassBuilder(context)
+                .add(DataTable.COLUMN_TITLE_CLASS)
+                .add(LangUtils.isNotBlank(ariaHeaderText), "ui-helper-hidden-accessible")
+                .build();
+        headerText = LangUtils.isNotBlank(headerText) ? headerText : ariaHeaderText;
 
         writer.startElement("span", null);
-        writer.writeAttribute("class", DataTable.COLUMN_TITLE_CLASS, null);
+        writer.writeAttribute("class", titleStyleClass, null);
 
         if (FacetUtils.shouldRenderFacet(header, table.isRenderEmptyFacets())) {
             header.encodeAll(context);

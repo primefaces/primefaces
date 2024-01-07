@@ -11,9 +11,11 @@
 
     <h:body>
 
-        <h:form id="form">
+        <h:form id="form" enctype="multipart/form-data">
             <p:fileUpload id="fileupload" listener="#{fileUploadHandler.handleFileUpload}" update="uploadedfiles"
-                          accept="text/csv" validateContentType="true"/>
+                          accept="text/csv">
+                <p:validateFile contentType="true" />
+            </p:fileUpload>
 
             <p:dataTable id="uploadedfiles" var="file" value="#{fileUploadView.uploadedFiles}">
                 <p:column headerText="Name">
@@ -22,10 +24,6 @@
 
                 <p:column headerText="Size">
                     <h:outputText value="#{file.size}" />
-                </p:column>
-
-                <p:column headerText="Error">
-                    <h:outputText value="#{file.errorMessage}" />
                 </p:column>
             </p:dataTable>
         </h:form>

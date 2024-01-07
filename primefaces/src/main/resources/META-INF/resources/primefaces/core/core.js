@@ -713,7 +713,7 @@
                 }
                 //page init
                 else {
-                    var newWidget = new this.widget[widgetName](cfg);
+		            var newWidget = new this.widget[widgetName](cfg);
                     this.widgets[widgetVar] = newWidget;
                     if(this.settings.legacyWidgetNamespace) {
                         window[widgetVar] = newWidget;

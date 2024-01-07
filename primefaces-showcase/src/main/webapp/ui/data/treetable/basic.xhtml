@@ -32,7 +32,7 @@
                     <p:column headerText="Type">
                         <h:outputText value="#{document.type}"/>
                     </p:column>
-                    <p:column style="width:3rem">
+                    <p:column style="width:3rem" ariaHeaderText="Actions">
                         <p:commandButton update=":form:documentPanel" oncomplete="PF('documentDialog').show()"
                                        title="View Detail" icon="pi pi-search">
                             <f:setPropertyActionListener value="#{document}" target="#{ttBasicView.selectedDocument}"/>
