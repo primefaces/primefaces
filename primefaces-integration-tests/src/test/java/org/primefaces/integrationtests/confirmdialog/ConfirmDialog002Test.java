@@ -186,8 +186,7 @@ class ConfirmDialog002Test extends AbstractPrimePageTest {
         dialog.getYesButton().click();
 
         // Assert
-        //PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(page.message));
-        //assertEquals("Full page submitted", page.message.getMessage(0).getDetail());
+        assertEquals("Full page submitted", page.message.getMessage(0).getDetail());
         assertDialog(page, false);
     }
 

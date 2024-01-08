@@ -76,8 +76,23 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 if (el.hasClass('ui-confirm-popup-yes') && PrimeFaces.confirmPopupSource) {
                     var id = PrimeFaces.confirmPopupSource.get(0);
                     var js = PrimeFaces.confirmPopupSource.data('pfconfirmcommand');
-    
-                    PrimeFaces.csp.executeEvent(id, js, e);
+                    var command = $(id);
+                    
+                    // Test if the function matches the pattern
+                    if (PrimeFaces.ajax.Utils.isAjaxRequest(js) || command.is('a')) {
+                        // command is ajax=true
+                        PrimeFaces.csp.executeEvent(id, js, e);
+                    }
+                    else {
+                        // command is ajax=false
+                        if (command.prop('onclick')) {
+                            command.removeAttr("onclick");
+                        }
+                        else {
+                            command.off("click");
+                        }
+                        command.removeAttr("data-pfconfirmcommand").click();
+                    }
     
                     PrimeFaces.confirmPopup.hide();
                     PrimeFaces.confirmPopupSource = null;

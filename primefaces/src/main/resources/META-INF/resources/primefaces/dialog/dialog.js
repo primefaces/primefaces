@@ -939,15 +939,22 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
                 if(el.hasClass('ui-confirmdialog-yes') && PrimeFaces.confirmSource) {
                     var id = PrimeFaces.confirmSource.get(0);
                     var js = PrimeFaces.confirmSource.data('pfconfirmcommand');
+                    var command = $(id);
                     
                     // Test if the function matches the pattern
-                    if (PrimeFaces.ajax.Utils.isAjaxRequest(js)) {
+                    if (PrimeFaces.ajax.Utils.isAjaxRequest(js) || command.is('a')) {
                         // command is ajax=true
                         PrimeFaces.csp.executeEvent(id, js, e);
                     }
                     else {
                         // command is ajax=false
-                        $(id).removeAttr("data-pfconfirmcommand").removeAttr("onclick").click();
+                        if (command.prop('onclick')) {
+                            command.removeAttr("onclick");
+                        }
+                        else {
+                            command.off("click");
+                        }
+                        command.removeAttr("data-pfconfirmcommand").click();
                     }
 
                     PrimeFaces.confirmDialog.hide();
