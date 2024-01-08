@@ -112,8 +112,7 @@ public class OverlayPanel002Test extends AbstractPrimePageTest {
         page.btnDestroy.click();
 
         // Assert
-        Assertions.assertFalse(overlayPanel.isDisplayed());
-        assertConfiguration(overlayPanel.getWidgetConfiguration(), "@(body)");
+        assertNotPresent(overlayPanel);
     }
 
     @Test
