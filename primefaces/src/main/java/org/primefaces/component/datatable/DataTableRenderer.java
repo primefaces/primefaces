@@ -407,10 +407,29 @@ public class DataTableRenderer extends DataRenderer {
         boolean hasFrozenColumns = (frozenColumns != 0);
         ResponseWriter writer = context.getResponseWriter();
         String clientId = table.getClientId(context);
-        int columnsCount = table.getColumns().size();
+        List<UIColumn> columns = table.getColumns();
+        int columnsCount = columns.size();
         boolean isVirtualScroll = table.isVirtualScroll();
 
         if (hasFrozenColumns) {
+            int lastFrozenColumn = 0;
+
+            // #11023 account for non-rendered frozen columns
+            for (int i = 0; i < columnsCount; i++) {
+                UIColumn column = columns.get(i);
+                if (column instanceof DynamicColumn) {
+                    ((DynamicColumn) column).applyModel();
+                }
+                if (column.isRendered()) {
+                    lastFrozenColumn++;
+                }
+
+                if (lastFrozenColumn == frozenColumns) {
+                    lastFrozenColumn = i + 1;
+                    break;
+                }
+            }
+
             writer.startElement("table", null);
             writer.writeAttribute("class", "ui-datatable-fs", null);
             writer.startElement("tbody", null);
@@ -422,19 +441,19 @@ public class DataTableRenderer extends DataRenderer {
             writer.startElement("div", null);
             writer.writeAttribute("class", "ui-datatable-frozen-container", null);
             encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_HEADER_CLASS, DataTable.SCROLLABLE_HEADER_BOX_CLASS, tableStyle, tableStyleClass);
-            encodeThead(context, table, 0, frozenColumns, clientId + "_frozenThead", "frozenHeader");
-            encodeFrozenRows(context, table, 0, frozenColumns);
+            encodeThead(context, table, 0, lastFrozenColumn, clientId + "_frozenThead", "frozenHeader");
+            encodeFrozenRows(context, table, 0, lastFrozenColumn);
             encodeScrollAreaEnd(context);
 
             if (isVirtualScroll) {
-                encodeVirtualScrollBody(context, table, tableStyle, tableStyleClass, 0, frozenColumns, clientId + "_frozenTbody");
+                encodeVirtualScrollBody(context, table, tableStyle, tableStyleClass, 0, lastFrozenColumn, clientId + "_frozenTbody");
             }
             else {
-                encodeScrollBody(context, table, tableStyle, tableStyleClass, 0, frozenColumns, clientId + "_frozenTbody");
+                encodeScrollBody(context, table, tableStyle, tableStyleClass, 0, lastFrozenColumn, clientId + "_frozenTbody");
             }
 
             encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_FOOTER_CLASS, DataTable.SCROLLABLE_FOOTER_BOX_CLASS, tableStyle, tableStyleClass);
-            encodeTFoot(context, table, 0, frozenColumns, clientId + "_frozenTfoot", "frozenFooter");
+            encodeTFoot(context, table, 0, lastFrozenColumn, clientId + "_frozenTfoot", "frozenFooter");
             encodeScrollAreaEnd(context);
             writer.endElement("div");
             writer.endElement("td");
@@ -446,19 +465,19 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("class", "ui-datatable-scrollable-container", null);
 
             encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_HEADER_CLASS, DataTable.SCROLLABLE_HEADER_BOX_CLASS, tableStyle, tableStyleClass);
-            encodeThead(context, table, frozenColumns, columnsCount, clientId + "_scrollableThead", "scrollableHeader");
-            encodeFrozenRows(context, table, frozenColumns, columnsCount);
+            encodeThead(context, table, lastFrozenColumn, columnsCount, clientId + "_scrollableThead", "scrollableHeader");
+            encodeFrozenRows(context, table, lastFrozenColumn, columnsCount);
             encodeScrollAreaEnd(context);
 
             if (isVirtualScroll) {
-                encodeVirtualScrollBody(context, table, tableStyle, tableStyleClass, frozenColumns, columnsCount, clientId + "_scrollableTbody");
+                encodeVirtualScrollBody(context, table, tableStyle, tableStyleClass, lastFrozenColumn, columnsCount, clientId + "_scrollableTbody");
             }
             else {
-                encodeScrollBody(context, table, tableStyle, tableStyleClass, frozenColumns, columnsCount, clientId + "_scrollableTbody");
+                encodeScrollBody(context, table, tableStyle, tableStyleClass, lastFrozenColumn, columnsCount, clientId + "_scrollableTbody");
             }
 
             encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_FOOTER_CLASS, DataTable.SCROLLABLE_FOOTER_BOX_CLASS, tableStyle, tableStyleClass);
-            encodeTFoot(context, table, frozenColumns, columnsCount, clientId + "_scrollableTfoot", "scrollableFooter");
+            encodeTFoot(context, table, lastFrozenColumn, columnsCount, clientId + "_scrollableTfoot", "scrollableFooter");
             encodeScrollAreaEnd(context);
             writer.endElement("div");
             writer.endElement("td");
