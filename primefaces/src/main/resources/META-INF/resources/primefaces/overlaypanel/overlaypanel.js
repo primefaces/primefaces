@@ -191,6 +191,11 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
             });
 
         this.bindAutoHide();
+        
+        // GitHub #5710 Helper to destroy overlay if its target is destroyed
+        $this.target.off('remove.overlay').on('remove.overlay', function() {
+            $this.destroy();
+        });
     },
 
     /**
