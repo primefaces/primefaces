@@ -57,7 +57,7 @@ public class CommandButton001Test extends AbstractPrimePageTest {
         assertTrue(PrimeSelenium.hasCssClass(button, "ui-state-loading"));
 
         // Wait out min Ajax loading animation
-        Thread.sleep(1000);
+        PrimeSelenium.wait(1000);
         assertFalse(PrimeSelenium.hasCssClass(button, "ui-state-loading"));
     }
 
