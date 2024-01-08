@@ -42,16 +42,22 @@ public class CommandButton001Test extends AbstractPrimePageTest {
     void loadingState(Page page) throws Exception {
         // Arrange
         CommandButton button = page.button;
-        setAjaxMinLoadAnimation(200);
+        setAjaxMinLoadAnimation(500);
 
         // Act
         page.button.click();
 
         // Assert
+        /*
+         * Very slow CI-infrastructure may interfere with this test.
+         * If necessary it may be an alternative using implicit wait.
+         * Maybe something like
+         * page.getWebDriver().findElement(("#" + button.getId().replace(":", "\\:") + " span.ui-icon-loading"));
+         */
         assertTrue(PrimeSelenium.hasCssClass(button, "ui-state-loading"));
 
         // Wait out min Ajax loading animation
-        Thread.sleep(250);
+        Thread.sleep(1000);
         assertFalse(PrimeSelenium.hasCssClass(button, "ui-state-loading"));
     }
 
