@@ -654,7 +654,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     source = PF($(element.data('dragsourceid')).data('widget')),
                     height = 20;
 
-                    if(source.cfg.multipleDrag && element.find('.ui-treenode-content').hasClass('ui-state-highlight')) {
+                    if(source.cfg.multipleDrag && element.hasClass('ui-treenode-content') && element.hasClass('ui-state-highlight')) {
                         source.draggedSourceKeys = $this.findSelectedParentKeys(source.selections.slice());
                         height = 20 * (source.draggedSourceKeys.length || 1);
                     }
@@ -727,7 +727,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
 
                     dragNodeKey = $this.getRowKey(targetDragNode);
 
-                    if(!transfer && dropNodeKey && dropNodeKey.indexOf(dragNodeKey) === 0) {
+                    if(!transfer && dropNodeKey && dropNodeKey.indexOf('_' + dragNodeKey) === 0) {
                         return;
                     }
 
@@ -891,7 +891,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
 
                     dragNodeKey = $this.getRowKey(targetDragNode);
 
-                    if(!transfer && dropNodeKey && dropNodeKey.indexOf(dragNodeKey) === 0) {
+                    if(!transfer && dropNodeKey && dropNodeKey.indexOf('_' + dragNodeKey) === 0) {
                         return;
                     }
 
@@ -1014,7 +1014,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
             var key = arr[i];
             for(var j = 0; j < arr.length && key !== -1; j++) {
                 var tempKey = arr[j];
-                if(tempKey !== -1 && key.length > tempKey.length && key.indexOf(tempKey) === 0) {
+                if(tempKey !== -1 && key.length > tempKey.length && key.indexOf('_' + tempKey) === 0) {
                     arr[i] = -1;
                 }
             }
