@@ -18,6 +18,9 @@
 
     <ui:define name="implementation">
     <h:form>
+        <p:growl>
+            <p:autoUpdate />
+        </p:growl>
         <div class="card">
         <div class="flex justify-content-between">
            <div>
@@ -40,13 +43,13 @@
                         <div>
                             <p:commandButton id="toggler" type="button" value="Columns" icon="pi pi-align-justify"/>
                             <p:columnToggler datasource="products" trigger="toggler">
-                                <p:ajax />
+                                <p:ajax event="toggle" listener="#{dtBasicView.onToggle}"/>
                             </p:columnToggler>
                         </div>
                     </div>
                 </f:facet>
 
-                <p:column>
+                <p:column ariaHeaderText="Code">
                     <f:facet name="header">
                         <h:outputText value="Code" title="Code"/>
                     </f:facet>

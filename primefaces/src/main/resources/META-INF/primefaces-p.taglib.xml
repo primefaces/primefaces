@@ -533,6 +533,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Callback to execute before displaying confirmation dialog. Return false to prevent dialog from appearing.]]>
+            </description>
+            <name>beforeShow</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
 
     <tag>
@@ -23607,6 +23615,19 @@
             <name>filterNormalize</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Optional
+                attribute that is a literal string that is the fully qualified
+                class name of a concrete class that implements
+                <code>java.util.Collection</code>, or an EL expression that
+                evaluates to either 1. such a String, or 2. the
+                <code>Class</code> object itself.]]>
+            </description>
+            <name>collectionType</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
     </tag>
     <tag>
