@@ -101,10 +101,7 @@ if (!PrimeFaces.csp) {
                         PrimeFaces.csp.EVENT_REGISTRY.set(id, new Map());
                     }
                     var script = js.toString();
-                    var isAjaxified = (script.indexOf("PrimeFaces.ab(") >= 0) || 
-                                      (script.indexOf("pf.ab(") >= 0) || 
-                                      (script.indexOf("mojarra.ab(") >= 0) || 
-                                      (script.indexOf("jsf.ajax.request") >= 0);
+                    var isAjaxified = PrimeFaces.ajax.Utils.isAjaxRequest(script);
                     PrimeFaces.csp.EVENT_REGISTRY.get(id).set(jqEvent, isAjaxified);
                 }
             }
