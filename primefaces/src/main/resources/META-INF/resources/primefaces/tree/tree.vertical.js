@@ -728,7 +728,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
 
                     dragNodeKey = $this.getRowKey(targetDragNode);
 
-                    if(!transfer && dropNodeKey && dropNodeKey.indexOf('_' + dragNodeKey) === 0) {
+                    if(!transfer && dropNodeKey && dropNodeKey.indexOf(dragNodeKey + '_') === 0) {
                         return;
                     }
 
@@ -892,7 +892,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
 
                     dragNodeKey = $this.getRowKey(targetDragNode);
 
-                    if(!transfer && dropNodeKey && dropNodeKey.indexOf('_' + dragNodeKey) === 0) {
+                    if(!transfer && dropNodeKey && dropNodeKey.indexOf(dragNodeKey + '_') === 0) {
                         return;
                     }
 
@@ -1015,7 +1015,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
             var key = arr[i];
             for(var j = 0; j < arr.length && key !== -1; j++) {
                 var tempKey = arr[j];
-                if(tempKey !== -1 && key.length > tempKey.length && key.indexOf('_' + tempKey) === 0) {
+                if(tempKey !== -1 && key.length > tempKey.length && key.indexOf(tempKey + '_') === 0) {
                     arr[i] = -1;
                 }
             }
