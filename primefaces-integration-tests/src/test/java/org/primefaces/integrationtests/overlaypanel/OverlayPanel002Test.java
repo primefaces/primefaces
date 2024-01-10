@@ -135,7 +135,7 @@ class OverlayPanel002Test extends AbstractPrimePageTest {
         // Assert
         assertTrue(page.dialog.isDisplayed());
         assertTrue(overlayPanel.isDisplayed());
-        assertConfiguration(overlayPanel.getWidgetConfiguration(), "@(body)");
+        assertConfiguration(overlayPanel.getWidgetConfiguration(), "form:btnDestroy");
     }
 
     private void assertConfiguration(JSONObject cfg, String appendTo) {

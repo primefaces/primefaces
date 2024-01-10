@@ -36,7 +36,7 @@ if (!PrimeFaces.utils) {
                     }
 
                     //append to body if not already appended by user choice
-                    if(!overlay.parent().is(document.body)) {
+                    if(!widget.cfg.appendTo) {
                         widget.cfg.appendTo = "@(body)";
                         return widget.cfg.appendTo;
                     }
