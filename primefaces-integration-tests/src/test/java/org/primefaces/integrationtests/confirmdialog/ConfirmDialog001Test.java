@@ -208,8 +208,8 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
             }
         }
         else {
-            assertClickable(page.confirm);
-            assertClickable(page.delete);
+            assertClickableOrLoading(page.confirm);
+            assertClickableOrLoading(page.delete);
         }
 
         assertConfiguration(dialog.getWidgetConfiguration());

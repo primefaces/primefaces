@@ -400,8 +400,9 @@
                     }
 
                     button.addClass('ui-state-loading');
+                    widget.ajaxStart = Date.now();
 
-                    if (widget.hasOwnProperty('disable')
+                    if (typeof widget.disable === 'function'
                         && widget.cfg.disableOnAjax !== false) {
                         widget.disable();
                     }
@@ -421,17 +422,30 @@
                         return;
                     }
 
-                    button.removeClass('ui-state-loading');
-
-                    if (widget.hasOwnProperty('enable')
-                        && widget.cfg.disableOnAjax !== false
-                        && !widget.cfg.disabledAttr) {
-                        widget.enable();
-                    }
-
-                    button.find('.ui-icon-loading').remove();
+                    PrimeFaces.queueTask(
+                        function(){ PrimeFaces.buttonEndAjaxDisabled(widget, button); },
+                        Math.max(PrimeFaces.ajax.minLoadAnimation + widget.ajaxStart - Date.now(), 0)
+                    );
+                    delete widget.ajaxStart;
                 }
             });
+        },
+
+        /**
+         * Ends the AJAX disabled state.
+         * @param {PrimeFaces.widget.BaseWidget} [widget] the widget.
+         * @param {JQuery} [button] The button DOM element.
+         */
+        buttonEndAjaxDisabled: function(widget, button) {
+            button.removeClass('ui-state-loading');
+
+            if (typeof widget.enable === 'function'
+                && widget.cfg.disableOnAjax !== false
+                && !widget.cfg.disabledAttr) {
+                widget.enable();
+            }
+
+            button.find('.ui-icon-loading').remove();
         },
 
         /**
