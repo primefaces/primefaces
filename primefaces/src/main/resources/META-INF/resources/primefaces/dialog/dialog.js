@@ -411,7 +411,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             $(this).removeClass('ui-state-focus');
         });
 
-        this.closeIcon.attr('aria-label', PrimeFaces.getAriaLabel('close'));
+        PrimeFaces.skinCloseAction(this.closeIcon);
         this.closeIcon.on('click', function(e) {
             $this.hide();
             e.preventDefault();

@@ -157,8 +157,8 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         this.togglerStateHolder.val(this.togglerState.join(','));
 
         //close icon
-        this.closer = $('<a href="#" class="ui-columntoggler-close"><span class="ui-icon ui-icon-close"></span></a>')
-            .attr('aria-label', PrimeFaces.getAriaLabel('close')).prependTo(this.panel);
+        this.closer = PrimeFaces.skinCloseAction($('<a href="#" class="ui-columntoggler-close"><span class="ui-icon ui-icon-close"></span></a>'))
+            .prependTo(this.panel);
 
         if (this.panel.outerHeight() > 200) {
             this.panel.height(200);
