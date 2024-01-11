@@ -377,6 +377,18 @@
 
             return this;
         },
+        
+        /**
+         * There are many Close buttons in PF that should get aria-label="close" and role="button".
+         * @param {JQuery} element BUTTON or LINK element
+         * @return {JQuery} this for chaining
+         */
+        skinCloseAction : function(element) {
+            if (!element || element.length === 0) return element;
+            element.attr('aria-label', PrimeFaces.getAriaLabel('close'));
+            element.attr('role', 'button');
+            return element;
+        },
 
         /**
          * Applies the inline AJAX status (ui-state-loading) to the given widget / button.
