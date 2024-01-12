@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +33,7 @@ public class MenuItem implements Serializable {
     private String url;
     private List<MenuItem> menuItems;
     private String badge;
-    private String parentLabel;
+    private MenuItem parent;
     private String imageSrc;
 
     public MenuItem(String label, String url) {
@@ -81,12 +81,12 @@ public class MenuItem implements Serializable {
         return menuItems;
     }
 
-    public String getParentLabel() {
-        return parentLabel;
+    public MenuItem getParent() {
+        return parent;
     }
 
-    public void setParentLabel(String parentLabel) {
-        this.parentLabel = parentLabel;
+    public void setParent(MenuItem parent) {
+        this.parent = parent;
     }
 
     public String getImageSrc() {

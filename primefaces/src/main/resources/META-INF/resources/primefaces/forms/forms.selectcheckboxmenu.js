@@ -206,7 +206,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         this.filterInputWrapper = this.header.children('.ui-selectcheckboxmenu-filter-container');
         this.filterInput = this.filterInputWrapper.children('.ui-inputtext');
         this.closer = this.header.children('.ui-selectcheckboxmenu-close');
-        this.closer.attr('aria-label', PrimeFaces.getAriaLabel('close'));
+        PrimeFaces.skinCloseAction(this.closer);
 
         if (this.cfg.renderPanelContentOnClient && this.itemContainerWrapper.children().length === 0) {
             this.renderItems();
@@ -522,15 +522,14 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             $this.jq.removeClass('ui-state-focus');
             $this.menuIcon.removeClass('ui-state-focus');
         }).on('keydown.selectCheckboxMenu', function(e) {
-            var key = e.key;
-
             if (!$this.isLoaded()) {
                 $this._renderPanel();
             }
 
-            switch (key) {
+            switch (e.code) {
                 case 'Enter':
-                case ' ':
+                case 'NumpadEnter':
+                case 'Space':
                     $this.togglePanel();
                     if ($this.panel.is(":hidden")) {
                         e.stopPropagation(); // GitHub #8340
@@ -672,16 +671,6 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
                 //".ui-chkbox" is a grandchild when columns are used!
                 $this.uncheck(item.find('.ui-chkbox').children('.ui-chkbox-box'), true);
-
-                if ($this.hasBehavior('itemUnselect')) {
-                    var ext = {
-                        params: [
-                            { name: $this.id + '_itemUnselect', value: itemValue }
-                        ]
-                    };
-
-                    $this.callBehavior('itemUnselect', ext);
-                }
             }
 
             e.stopPropagation();
@@ -977,6 +966,16 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                     this.createMultipleItem(item);
                     this.alignPanel();
                 }
+                
+                if (this.hasBehavior('itemSelect')) {
+                    var ext = {
+                        params: [
+                            { name: this.id + '_itemSelect', value: item.data("item-value") }
+                        ]
+                    };
+
+                    this.callBehavior('itemSelect', ext);
+                }
             }
 
             this.updateLabel();
@@ -1008,6 +1007,16 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                     checkbox.removeClass('ui-state-focus');
                     this.removeMultipleItem(item);
                     this.alignPanel();
+                }
+                
+                if (this.hasBehavior('itemUnselect')) {
+                    var ext = {
+                        params: [
+                            { name: this.id + '_itemUnselect', value: item.data("item-value") }
+                        ]
+                    };
+
+                    this.callBehavior('itemUnselect', ext);
                 }
             }
 
@@ -1188,7 +1197,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                 box.removeClass('ui-state-focus');
         })
         .on('keydown.selectCheckboxMenu', function(e) {
-                if (e.key === ' ') {
+                if (e.code === 'Space') {
                     e.preventDefault();
                 }
                 else if (e.key === 'Escape') {

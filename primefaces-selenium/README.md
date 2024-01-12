@@ -76,6 +76,7 @@ Properties:
 |   onloadScripts.adapter  | org.primefaces.extensions.selenium.spi.OnloadScriptsAdapter | | Adapter implementation to provide custom onload scripts  |
 |    disableAnimations     | boolean | true    | If animations should be disabled for tests  |
 |  scrollElementIntoView   | String  |         | Scroll the element to be clicked into view via the configured #scrollIntoView option. Valid options are a boolean or object |
+|   screenshotDirectory    | String  |         | Path where browser-screenshots should be saved if a test fails |
 
 ## Status
 

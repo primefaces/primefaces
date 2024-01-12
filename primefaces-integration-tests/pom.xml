@@ -33,7 +33,7 @@
         <lombok.version>1.18.30</lombok.version>
         <myfaces.version>2.3.10</myfaces.version>
         <myfaces-next.version>2.3-next-M7</myfaces-next.version>
-        <tomcat.version>9.0.84</tomcat.version>
+        <tomcat.version>9.0.85</tomcat.version>
         <resteasy.version>5.0.9.Final</resteasy.version>
         <owb.version>2.0.27</owb.version>
         <jetty.version>9.4.53.v20231009</jetty.version>
@@ -236,7 +236,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>2.0.9</version>
+            <version>2.0.11</version>
             <scope>test</scope>
         </dependency>
 

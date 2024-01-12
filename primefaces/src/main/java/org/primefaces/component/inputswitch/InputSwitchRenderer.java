@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -102,7 +102,9 @@ public class InputSwitchRenderer extends InputRenderer {
         writer.startElement("span", null);
 
         if (showLabels) {
-            writer.writeText(label, null);
+            if (label != null) {
+                writer.writeText(label, null);
+            }
         }
         else {
             writer.write("&nbsp;");

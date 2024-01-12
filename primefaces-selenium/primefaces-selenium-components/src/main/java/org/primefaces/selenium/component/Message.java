@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,74 +23,11 @@
  */
 package org.primefaces.selenium.component;
 
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.component.base.AbstractComponent;
+import org.primefaces.selenium.component.base.AbstractMessage;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:message}.
  */
-public abstract class Message extends AbstractComponent {
+public abstract class Message extends AbstractMessage {
 
-    @FindBy(css = ".ui-message-error-icon")
-    private WebElement iconError;
-    @FindBy(css = ".ui-message-info-icon")
-    private WebElement iconInfo;
-    @FindBy(css = ".ui-message-warn-icon")
-    private WebElement iconWarn;
-    @FindBy(css = ".ui-message-fatal-icon")
-    private WebElement iconFatal;
-    @FindBy(css = ".ui-message-error-summary")
-    private WebElement summaryError;
-    @FindBy(css = ".ui-message-info-summary")
-    private WebElement summaryInfo;
-    @FindBy(css = ".ui-message-warn-summary")
-    private WebElement summaryWarn;
-    @FindBy(css = ".ui-message-fatal-summary")
-    private WebElement summaryFatal;
-    @FindBy(css = ".ui-message-error-detail")
-    private WebElement detailError;
-    @FindBy(css = ".ui-message-info-detail")
-    private WebElement detailInfo;
-    @FindBy(css = ".ui-message-warn-detail")
-    private WebElement detailWarn;
-    @FindBy(css = ".ui-message-fatal-detail")
-    private WebElement detailFatal;
-
-    public WebElement getIconError() {
-        return iconError;
-    }
-    public WebElement getIconInfo() {
-        return iconInfo;
-    }
-    public WebElement getIconWarn() {
-        return iconWarn;
-    }
-    public WebElement getIconFatal() {
-        return iconFatal;
-    }
-    public WebElement getDetailError() {
-        return detailError;
-    }
-    public WebElement getDetailInfo() {
-        return detailInfo;
-    }
-    public WebElement getDetailWarn() {
-        return detailWarn;
-    }
-    public WebElement getDetailFatal() {
-        return detailFatal;
-    }
-    public WebElement getSummaryError() {
-        return summaryError;
-    }
-    public WebElement getSummaryInfo() {
-        return summaryInfo;
-    }
-    public WebElement getSummaryWarn() {
-        return summaryWarn;
-    }
-    public WebElement getSummaryFatal() {
-        return summaryFatal;
-    }
 }

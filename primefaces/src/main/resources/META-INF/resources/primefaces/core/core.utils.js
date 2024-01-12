@@ -36,7 +36,7 @@ if (!PrimeFaces.utils) {
                     }
 
                     //append to body if not already appended by user choice
-                    if(!overlay.parent().is(document.body)) {
+                    if(!widget.cfg.appendTo) {
                         widget.cfg.appendTo = "@(body)";
                         return widget.cfg.appendTo;
                     }
@@ -599,7 +599,7 @@ if (!PrimeFaces.utils) {
          * @return {boolean} `true` if the key is an action key, or `false` otherwise.
          */
         isActionKey: function(e) {
-            return e.key === ' ' || e.key === 'Enter';
+            return e.code === 'Space' || e.key === 'Enter';
         },
 
         /**
@@ -643,9 +643,10 @@ if (!PrimeFaces.utils) {
                 return false;
             }
             // backspace,enter,delete trigger a filter as well as printable key like 'a'
-            switch (e.key) {
+            switch (e.code) {
                 case 'Backspace':
                 case 'Enter':
+                case 'NumpadEnter':
                 case 'Delete':
                     return false;
                 default:

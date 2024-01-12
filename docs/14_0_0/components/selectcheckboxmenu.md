@@ -60,6 +60,7 @@ selectedLabel | null | String | Label to be shown in updateLabel mode when one o
 filterPlaceholder | null | String  | Placeholder text to show when filter input is empty.
 hideNoSelectionOption | false | boolean  | Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.
 var | null | String | Name of iterator to be used in custom content display.
+collectionType | null | String | Optional attribute that is a literal string that is the fully qualified class name of a concrete class that implements `java.util.Collection` or an EL expression that evaluates to either 1. such a String, or 2. the `Class` object itself.
 
 ## Getting started with SelectCheckboxMenu
 SelectCheckboxMenu usage is same as the standard selectManyCheckbox or PrimeFaces
@@ -135,11 +136,12 @@ public class MenuBean {
 The following AJAX behavior events are available for this component. If no event is specified the default event is called.  
   
 **Default Event:** `change`  
-**Available Events:** `change, itemUnselect, toggleSelect`  
+**Available Events:** `change, itemSelect, itemUnselect, toggleSelect`  
 
 | Event | Listener Parameter | Fired |
 | --- | --- | --- |
 toggleSelect | org.primefaces.event.ToggleSelectEvent | When toggle all checkbox changes.
+itemSelect | org.primefaces.event.SelectEvent | When a item is added via the checkbox.
 itemUnselect | org.primefaces.event.UnselectEvent | When a item is removed via the close-icon.
 
 ```xhtml

@@ -155,14 +155,15 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
         this.panel = $(panelMarkup).appendTo(document.body);
 
         this.jq.on("keyup", function(e) {
-            switch(e.key) {
+            switch(e.code) {
                 case 'ArrowUp':
                 case 'ArrowDown':
                 case 'ArrowLeft':
                 case 'ArrowRight':
                 case 'Enter':
+                case 'NumpadEnter':
                 case 'Tab':
-                case ' ':
+                case 'Space':
                 case 'Shift':
                 case 'Control':
                 case 'Alt':

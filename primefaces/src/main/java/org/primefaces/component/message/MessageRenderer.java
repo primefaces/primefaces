@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,15 +28,17 @@ import java.util.Iterator;
 import java.util.Objects;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.component.ContextCallback;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.component.api.InputHolder;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.UINotificationRenderer;
+import org.primefaces.util.CompositeUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.StyleClassBuilder;
 import org.primefaces.util.WidgetBuilder;
 
 public class MessageRenderer extends UINotificationRenderer {
@@ -46,10 +48,22 @@ public class MessageRenderer extends UINotificationRenderer {
         Message uiMessage = (Message) component;
 
         UIComponent target = SearchExpressionUtils.contextlessResolveComponent(context, uiMessage, uiMessage.getFor());
-        String targetClientId = target.getClientId(context);
+        final MessageState state = new MessageState();
+        state.setTargetId(target.getClientId(context));
+        state.setTooltipTargetId(getTooltipTargetId(target, context));
 
-        encodeMarkup(context, uiMessage, targetClientId);
-        encodeScript(context, uiMessage, target);
+        if (!hasDisplayableMessage(uiMessage, target, context) && CompositeUtils.isComposite(target)) {
+            ContextCallback callback = (FacesContext fc, UIComponent comp) -> {
+                if (hasDisplayableMessage(uiMessage, comp, fc)) {
+                    state.setTargetId(comp.getClientId(fc));
+                    state.setTooltipTargetId(getTooltipTargetId(comp, fc));
+                }
+            };
+            CompositeUtils.invokeOnDeepestEditableValueHolder(context, target, callback);
+        }
+
+        encodeMarkup(context, uiMessage, state.getTargetId());
+        encodeScript(context, uiMessage, state.getTooltipTargetId());
     }
 
     protected void encodeMarkup(FacesContext context, Message uiMessage, String targetClientId) throws IOException {
@@ -57,9 +71,9 @@ public class MessageRenderer extends UINotificationRenderer {
         String display = uiMessage.getDisplay();
         boolean iconOnly = "icon".equals(display);
         String style = uiMessage.getStyle();
-        String containerClass = "tooltip".equals(display) ? "ui-message ui-helper-hidden" : "ui-message";
-        String styleClass = uiMessage.getStyleClass();
-        styleClass = styleClass == null ? containerClass : styleClass + " " + containerClass;
+        StyleClassBuilder styleClassBuilder = getStyleClassBuilder(context)
+                .add("ui-message", uiMessage.getStyleClass())
+                .add("tooltip".equals(display), "ui-helper-hidden");
 
         Iterator<FacesMessage> msgs = context.getMessages(targetClientId);
 
@@ -86,13 +100,10 @@ public class MessageRenderer extends UINotificationRenderer {
 
             if (shouldRender(uiMessage, msg, severityName)) {
 
-                styleClass += " ui-message-" + severityName + " ui-widget ui-corner-all";
+                styleClassBuilder.add("ui-message-" + severityName + " ui-widget ui-corner-all");
+                styleClassBuilder.add(iconOnly, "ui-message-icon-only ui-helper-clearfix");
 
-                if (iconOnly) {
-                    styleClass += " ui-message-icon-only ui-helper-clearfix";
-                }
-
-                writer.writeAttribute("class", styleClass, null);
+                writer.writeAttribute("class", styleClassBuilder.build(), null);
 
                 writer.startElement("div", null);
 
@@ -124,7 +135,7 @@ public class MessageRenderer extends UINotificationRenderer {
         }
 
         if (!hasMessage) {
-            writer.writeAttribute("class", styleClass, null);
+            writer.writeAttribute("class", styleClassBuilder.build(), null);
         }
 
         writer.endElement("div");
@@ -155,10 +166,9 @@ public class MessageRenderer extends UINotificationRenderer {
         writer.endElement("span");
     }
 
-    protected void encodeScript(FacesContext context, Message uiMessage, UIComponent target) throws IOException {
+    protected void encodeScript(FacesContext context, Message uiMessage, String targetClientId) throws IOException {
         boolean tooltip = "tooltip".equals(uiMessage.getDisplay());
         if (tooltip || uiMessage.isShowDetail()) {
-            String targetClientId = (target instanceof InputHolder) ? ((InputHolder) target).getInputClientId() : target.getClientId(context);
             WidgetBuilder wb = getWidgetBuilder(context);
 
             wb.init("Message", uiMessage)

@@ -13,6 +13,7 @@ touch/touchswipe.js
 locales/locale-ar.js
 locales/locale-ca.js
 locales/locale-cs.js
+locales/locale-ckb.js
 locales/locale-da.js
 locales/locale-de.js
 locales/locale-el.js

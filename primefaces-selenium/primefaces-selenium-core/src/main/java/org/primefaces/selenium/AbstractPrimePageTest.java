@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,10 +34,13 @@ import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.Logs;
 import org.primefaces.selenium.internal.junit.BootstrapExtension;
 import org.primefaces.selenium.internal.junit.PageInjectionExtension;
+import org.primefaces.selenium.internal.junit.ScreenshotOnFailureExtension;
 import org.primefaces.selenium.internal.junit.WebDriverExtension;
 import org.primefaces.selenium.spi.WebDriverProvider;
 
 import java.lang.reflect.InvocationTargetException;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -52,6 +55,7 @@ import java.util.stream.Collectors;
 @ExtendWith(BootstrapExtension.class)
 @ExtendWith(WebDriverExtension.class)
 @ExtendWith(PageInjectionExtension.class)
+@ExtendWith(ScreenshotOnFailureExtension.class)
 public abstract class AbstractPrimePageTest {
 
     @BeforeEach
@@ -162,6 +166,12 @@ public abstract class AbstractPrimePageTest {
     protected void assertClickable(WebElement element) {
         if (!PrimeSelenium.isElementClickable(element)) {
             fail("Element should be clickable!");
+        }
+    }
+
+    protected void assertClickableOrLoading(WebElement element) {
+        if (!PrimeSelenium.hasCssClass(element, "ui-state-loading") && !PrimeSelenium.isElementClickable(element)) {
+            fail("Element should be clickable or loading!");
         }
     }
 
@@ -312,6 +322,24 @@ public abstract class AbstractPrimePageTest {
         }
 
         // success
+    }
+
+    protected void noAjaxMinLoadAnimation() {
+        setAjaxMinLoadAnimation(0);
+    }
+
+    protected void setAjaxMinLoadAnimation(int milliseconds) {
+        if (milliseconds < 0) {
+            throw new IllegalArgumentException("milliseconds cannot be negative");
+        }
+        PrimeSelenium.executeScript("PrimeFaces.ajax.minLoadAnimation = " + milliseconds + ";");
+    }
+
+    /**
+     * Waits for the default minimal Ajax load animation duration.
+     */
+    protected void waitAjaxMinLoadAnimation() {
+        getWebDriver().manage().timeouts().implicitlyWait(Duration.of(500, ChronoUnit.MILLIS));
     }
 
     /**

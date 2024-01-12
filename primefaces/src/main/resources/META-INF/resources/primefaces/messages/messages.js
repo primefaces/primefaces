@@ -19,7 +19,7 @@ PrimeFaces.widget.Messages = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
         this.closer = $('.ui-messages-close');
-        this.closer.attr('aria-label', PrimeFaces.getAriaLabel('close'));
+        PrimeFaces.skinCloseAction(this.closer);
     },
 
     /**
@@ -30,7 +30,7 @@ PrimeFaces.widget.Messages = PrimeFaces.widget.BaseWidget.extend({
         var closeLabel = PrimeFaces.getAriaLabel('close');
         this.jq.append(
              '<div class="ui-messages-' + msg.severity + ' ui-corner-all">' +
-                '<a href="#" class="ui-messages-close" onclick="$(this).parent().slideUp();return false;" aria-label="'+closeLabel+'">' +
+                '<a href="#" class="ui-messages-close" onclick="$(this).parent().slideUp();return false;" role="button" aria-label="'+closeLabel+'">' +
                     '<span class="ui-icon ui-icon-close"></span>' +
                 '</a>' +
                 '<span class="ui-messages-' + msg.severity + '-icon"></span>' +

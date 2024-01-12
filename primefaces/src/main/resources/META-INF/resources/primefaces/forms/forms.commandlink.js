@@ -4,6 +4,7 @@
  * CommandLink is an extended version of standard commandLink with AJAX and theming.
  *
  * @prop {number} [ajaxCount] Number of concurrent active Ajax requests.
+ * @prop {number} [ajaxStart] Timestamp of the Ajax request that started the animation.
  * 
  * @interface {PrimeFaces.widget.CommandLinkCfg} cfg The configuration for the {@link  CommandLink| CommandLink widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
@@ -50,26 +51,40 @@ PrimeFaces.widget.CommandLink = PrimeFaces.widget.BaseWidget.extend({
 
         if (this.cfg.disableOnAjax !== false) {
             $(document).on('pfAjaxSend.' + this.id, function(e, xhr, settings) {
-                $this.ajaxCount++;
-                if ($this.ajaxCount > 1) {
-                    return;
-                }
                 if (PrimeFaces.ajax.Utils.isXhrSource($this, settings)) {
+                    $this.ajaxCount++;
+                    if ($this.ajaxCount > 1) {
+                        return;
+                    }
                     $this.jq.addClass('ui-state-loading');
+                    $this.ajaxStart = Date.now();
                     $this.disable();
                 }
             }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings, args) {
-                $this.ajaxCount--;
-                if ($this.ajaxCount > 0 || !args || args.redirect) {
-                    return;
-                }
                 if (PrimeFaces.ajax.Utils.isXhrSource($this, settings)) {
-                    $this.jq.removeClass('ui-state-loading');
-                    if (!$this.cfg.disabledAttr) {
-                        $this.enable();
+                    $this.ajaxCount--;
+                    if ($this.ajaxCount > 0 || !args || args.redirect) {
+                        return;
                     }
+                    PrimeFaces.queueTask(
+                        function(){ $this.endAjaxDisabled($this); },
+                        Math.max(PrimeFaces.ajax.minLoadAnimation + $this.ajaxStart - Date.now(), 0)
+                    );
+                    delete $this.ajaxStart;
                 }
             });
+        }
+    },
+
+    /**
+     * Ends the AJAX disabled state.
+     * @param {PrimeFaces.widget.BaseWidget} [widget] the widget.
+     */
+    endAjaxDisabled: function(widget) {
+        widget.jq.removeClass('ui-state-loading');
+
+        if (!widget.cfg.disabledAttr) {
+            widget.enable();
         }
     },
 

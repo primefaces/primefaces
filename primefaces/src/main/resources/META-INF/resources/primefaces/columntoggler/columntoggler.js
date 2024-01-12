@@ -157,8 +157,8 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         this.togglerStateHolder.val(this.togglerState.join(','));
 
         //close icon
-        this.closer = $('<a href="#" class="ui-columntoggler-close"><span class="ui-icon ui-icon-close"></span></a>')
-            .attr('aria-label', PrimeFaces.getAriaLabel('close')).prependTo(this.panel);
+        this.closer = PrimeFaces.skinCloseAction($('<a href="#" class="ui-columntoggler-close"><span class="ui-icon ui-icon-close"></span></a>'))
+            .prependTo(this.panel);
 
         if (this.panel.outerHeight() > 200) {
             this.panel.height(200);
@@ -245,6 +245,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         }).on('keydown.columnToggler', function(e) {
             switch (e.code) {
                 case 'Enter':
+                case 'NumpadEnter':
                 case 'Space':
                     if ($this.visible)
                         $this.hide();
@@ -287,6 +288,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
                     e.preventDefault();
                     break;
                 case 'Enter':
+                case 'NumpadEnter':
                 case 'Space':
                     $this.toggle($(this));
                     e.preventDefault();
@@ -305,6 +307,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         this.closer.on('keydown.columnToggler', function(e) {
             switch (e.code) {
                 case 'Enter':
+                case 'NumpadEnter':
                 case 'Space':
                     $this.hide();
                     $this.trigger.trigger('focus');

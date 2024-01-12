@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -51,7 +51,7 @@ public abstract class AbstractFileUploadTest extends AbstractPrimePageTest {
     }
 
     /**
-     * Uploaded files are displayed in a data table with columns name, size and errorMessage.
+     * Uploaded files are displayed in a data table with columns name and size.
      * @param uploadedFiles the data tble to check against
      * @param files the (client side) files uploaded
      */
@@ -80,7 +80,6 @@ public abstract class AbstractFileUploadTest extends AbstractPrimePageTest {
         for (int f = 0; f < files.length; ++f) {
             Row row = rows.get(f);
             assertEquals(files[f].getName(), row.getCell(0).getText()); // same file name
-            assertEquals("", row.getCell(2).getText(), row.getCell(2).getText()); // empty error message
             assertEquals(files[f].length(), Long.parseLong(row.getCell(1).getText())); // same file size
         }
     }

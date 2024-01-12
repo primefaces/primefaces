@@ -108,6 +108,53 @@
     </function>
 
     <tag>
+        <tag-name>validateFile</tag-name>
+        <validator>
+            <validator-id>primefaces.File</validator-id>
+        </validator>
+        <attribute>
+            <description>
+                <![CDATA[Regular expression for accepted file types, e.g. /(\.|\/)(gif|jpe?g|png)$/]]>
+            </description>
+            <name>allowTypes</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Maximum number of files to be uploaded.]]>
+            </description>
+            <name>fileLimit</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Individual file size limit in bytes. Default is unlimited.]]>
+            </description>
+            <name>sizeLimit</name>
+            <required>false</required>
+            <type>java.lang.Long</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Wheter the content type should be validated based on the accept attribute of the attached component. Default is false.]]>
+            </description>
+            <name>contentType</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether virus scan should be performed. Default is false.]]>
+            </description>
+            <name>virusScan</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+    </tag>
+
+    <tag>
         <description>AutoUpdate is a TagHandler to mark the parent component to be updated at every AJAX request.
             AutoUpdate is ignored if the trigger (p:commandButton, p:ajax...) of AJAX request has the attribute ignoreAutoUpdate set to 'true'.
         </description>
@@ -485,6 +532,14 @@
             <name>escape</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Callback to execute before displaying confirmation dialog. Return false to prevent dialog from appearing.]]>
+            </description>
+            <name>beforeShow</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
     </tag>
 
@@ -10780,30 +10835,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Message to display when file size validation fails.]]>
-            </description>
-            <name>invalidSizeMessage</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Message to display when file limit validation fails.]]>
-            </description>
-            <name>invalidFileMessage</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Message to display when file count validation fails.]]>
-            </description>
-            <name>fileLimitMessage</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Specifies dragdrop based file selection from filesystem, default is true and works only on supported browsers.]]>
             </description>
             <name>dragDropSupport</name>
@@ -17520,6 +17551,14 @@
             <required>false</required>
             <type>java.lang.Integer</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines text direction, valid values are "ltr" (default) and "rtl".]]>
+            </description>
+            <name>dir</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -23577,6 +23616,19 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Optional
+                attribute that is a literal string that is the fully qualified
+                class name of a concrete class that implements
+                <code>java.util.Collection</code>, or an EL expression that
+                evaluates to either 1. such a String, or 2. the
+                <code>Class</code> object itself.]]>
+            </description>
+            <name>collectionType</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -28695,6 +28747,14 @@
             <name>hideDelay</name>
             <required>false</required>
             <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines text direction, valid values are "ltr" (default) and "rtl".]]>
+            </description>
+            <name>dir</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
     </tag>
     <tag>

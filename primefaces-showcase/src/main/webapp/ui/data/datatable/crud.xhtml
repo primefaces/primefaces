@@ -86,7 +86,7 @@
                         <h:outputText styleClass="product-badge status-#{product.inventoryStatus.name().toLowerCase()}"
                             value="#{product.inventoryStatus.text}" />
                     </p:column>
-                    <p:column exportable="false">
+                    <p:column exportable="false" ariaHeaderText="Actions">
                         <p:commandButton icon="pi pi-pencil" update=":dialogs:manage-product-content"
                             oncomplete="PF('manageProductDialog').show()"
                             styleClass="edit-button rounded-button ui-button-success" process="@this">

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -95,6 +95,7 @@ public class CountryService {
         locales.add(CountryService.toCountry(new Locale("hu", "HU")));
         locales.add(CountryService.toCountry(new Locale("he", "IL"), true));
         locales.add(CountryService.toCountry(new Locale("ka", "GE")));
+        locales.add(CountryService.toCountry(new Locale("ckb", "IQ"), true));
         locales.add(CountryService.toCountry(new Locale("ky", "KG")));
         locales.add(CountryService.toCountry(new Locale("lt", "LT")));
         locales.add(CountryService.toCountry(new Locale("lv", "LV")));

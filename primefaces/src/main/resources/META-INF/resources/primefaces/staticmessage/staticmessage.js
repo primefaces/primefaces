@@ -23,16 +23,16 @@ PrimeFaces.widget.StaticMessage = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Bind behavior events.
      */
-    bindEvents: function () {
+    bindEvents: function() {
         var $this = this;
+        var closer = $('.ui-messages-close', this.jq);
 
-        $('.ui-messages-close', this.jq).on('click.staticmessage', function(e) {
+        closer.on('click.staticmessage', function(e) {
             if ($this.hasBehavior('close')) {
                 $this.callBehavior('close');
             }
-        })
-            .attr('role', 'button')
-            .attr('aria-label', PrimeFaces.getAriaLabel('close'));
+        });
+        PrimeFaces.skinCloseAction(closer);
     }
 
 });

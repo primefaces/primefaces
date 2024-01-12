@@ -40,7 +40,7 @@ For this to contain meaningful ids your columns should define an id attribute ot
 
 | Event | Listener Parameter | Fired |
 | --- | --- | --- |
-| toggle | org.primefaces.event.ToggleEvent | On item selection/unselection. |
+| toggle | org.primefaces.event.ColumnToggleEvent | On item selection/unselection. |
 | close | org.primefaces.event.ToggleCloseEvent | On closing of toggler popup. |
 
 ## Client Side API
