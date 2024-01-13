@@ -30,9 +30,7 @@ PrimeFaces.widget.CommandButton = PrimeFaces.widget.BaseWidget.extend({
             let that = this;
 
             // init enabled/disabled-state after initial page-load
-            setTimeout( function() {
-                PrimeFaces.validation.validateButtonCsvRequirements(that.jq[0]);
-            }, 0 );
+            PrimeFaces.queueTask(() => PrimeFaces.validation.validateButtonCsvRequirements(that.jq[0]), 0)
 
             // update enabled/disabled-state after ajax-updates
             PrimeFaces.validation.bindAjaxComplete();
