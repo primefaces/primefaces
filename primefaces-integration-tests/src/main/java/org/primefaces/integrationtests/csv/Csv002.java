@@ -28,6 +28,8 @@ import lombok.Data;
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import javax.validation.constraints.AssertTrue;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.List;
 
@@ -38,11 +40,13 @@ public class Csv002 implements Serializable {
 
     private static final long serialVersionUID = 3759332540993079653L;
 
+    @AssertTrue
     private boolean yesNo;
     private String yesNoMaybe;
     private List<String> countries;
     private String uiLibrary;
     private String progLanguage;
+    @AssertTrue
     private boolean toggleSwitch;
     private int spinner;
 

@@ -47,7 +47,6 @@ public class Csv002Test extends AbstractColorPickerTest {
     @Test
     @Order(1)
     @DisplayName("CSV: SelectBooleanCheckbox")
-    @Disabled("Because required=true does not seem to have impact on SelectBooleanCheckbox beside adding a star to the label")
     public void selectBooleanCheckbox(Page page) {
         // Arrange
 
@@ -59,7 +58,7 @@ public class Csv002Test extends AbstractColorPickerTest {
         page.selectBooleanCheckbox.uncheck();
 
         // Assert
-        Assertions.assertEquals("yes/no: Validation Error: Value is required.",
+        Assertions.assertEquals("must be true.",
                 page.msgSelectBooleanCheckbox.getText());
 
         // Act
