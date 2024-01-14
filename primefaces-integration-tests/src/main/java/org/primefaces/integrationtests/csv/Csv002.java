@@ -29,7 +29,6 @@ import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.validation.constraints.AssertTrue;
-import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.List;
 

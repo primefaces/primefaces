@@ -562,10 +562,9 @@ if (window.PrimeFaces) {
         bindAjaxComplete: function() {
             if (this.ajaxCompleteBound) return;
 
-            var doc = $(document),
-                $this = this;
+            var $this = this;
 
-            doc.on('pfAjaxComplete', function(e, xhr, settings, args) {
+            $(document).on('pfAjaxComplete', function(e, xhr, settings, args) {
                 $this.validateButtonsCsvRequirements();
             });
 
