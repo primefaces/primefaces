@@ -75,7 +75,7 @@ public class ChartRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Chart", chart)
                 .nativeAttr("config", chart.getValue())
-                .attr("extender", chart.getExtender());
+                .nativeAttr("extender", chart.getExtender());
 
         encodeClientBehaviors(context, chart);
 

@@ -42,8 +42,14 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
         this.canvas = this.jq.children('canvas');
         this.ctx = this.canvas[0].getContext('2d');
 
-        if(this.cfg.extender) {
-            this.cfg.extender.call(this);
+        // user extension to configure gchart
+        var extender = this.cfg.extender;
+        if (extender) {
+            if (typeof extender === "function") {
+                extender.call(this);
+            } else {
+                PrimeFaces.error("Extender value is not a javascript function!");
+            }
         }
 
         this.renderDeferred();

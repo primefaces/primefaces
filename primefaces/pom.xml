@@ -20,7 +20,7 @@
         <minify.disabled>true</minify.disabled>
         <jakarta.jar.skip>false</jakarta.jar.skip>
         <resources.dir.compressed>${project.build.directory}/classes/META-INF/resources/primefaces</resources.dir.compressed>
-        <mockito.version>5.8.0</mockito.version>
+        <mockito.version>5.9.0</mockito.version>
     </properties>
 
     <dependencies>
@@ -558,8 +558,6 @@
                         <resourcesSet>
                             <includes>
                                 <include>calendar/**</include>
-                                <include>chart/**</include>
-                                <include>charts/**</include>
                                 <include>clock/**</include>
                                 <include>colorpicker/**</include>
                                 <include>datepicker/**</include>
@@ -608,6 +606,7 @@
                         <!-- uncompressed widgets -->
                         <resourcesSet>
                             <includes>
+                                <include>chart/**</include>
                                 <include>chartjs/**</include>
                             </includes>
                             <aggregations>

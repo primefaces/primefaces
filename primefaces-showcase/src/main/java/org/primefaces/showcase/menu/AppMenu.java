@@ -449,6 +449,14 @@ public class AppMenu {
 
         //Bar Nested MenuItem
         chartMenuItems.add(new MenuItem("Bar", "/ui/chart/bar"));
+        chartMenuItems.add(new MenuItem("Bubble", "/ui/chart/bubble"));
+        chartMenuItems.add(new MenuItem("Doughnut", "/ui/chart/doughnut"));
+        chartMenuItems.add(new MenuItem("Line", "/ui/chart/line"));
+        chartMenuItems.add(new MenuItem("Pie", "/ui/chart/pie"));
+        chartMenuItems.add(new MenuItem("Scatter", "/ui/chart/scatter"));
+        chartMenuItems.add(new MenuItem("PolarArea", "/ui/chart/polararea"));
+        chartMenuItems.add(new MenuItem("Radar", "/ui/chart/radar"));
+        chartMenuItems.add(new MenuItem("Custom", "/ui/chart/custom"));
         chartMenuItems.add(new MenuItem("Export", "/ui/chart/export"));
         menuCategories.add(new MenuCategory("Chart", chartMenuItems));
         //CHARTS CATEGORY END

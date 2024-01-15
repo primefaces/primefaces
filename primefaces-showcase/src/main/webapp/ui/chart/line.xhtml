@@ -1,0 +1,35 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style>
+            .ui-chart {
+                margin-bottom: 50px;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        Charts <span class="subitem">Line</span>
+    </ui:define>
+
+    <ui:define name="description">
+        LineChart is created with raw JSON or using an <a href="https://github.com/xdev-software/chartjs-java-model" target="_blank" rel="noopener noreferrer">XDEV</a> model.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/chart" />
+    <ui:param name="widgetLink" value="Chart" />
+
+    <ui:define name="implementation">
+        <div class="card">
+            <p:chart value="#{chartView.lineModel}" style="width: 100%; height: 500px;"/>
+        </div>
+
+        <div class="card">
+            <p:chart value="#{chartView.cartesianLinerModel}" style="width: 100%; height: 500px;"/>
+        </div>
+    </ui:define>
+
+</ui:composition>

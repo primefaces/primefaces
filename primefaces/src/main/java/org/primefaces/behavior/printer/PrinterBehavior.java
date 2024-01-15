@@ -73,7 +73,7 @@ public class PrinterBehavior extends AbstractBehavior {
             config = Constants.EMPTY_STRING;
         }
 
-        return String.format("PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector('%s').print(%s);return false;",
+        return String.format("PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(document.body,'%s').print(%s);return false;",
                     component, config);
     }
 

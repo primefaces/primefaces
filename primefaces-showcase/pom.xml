@@ -140,7 +140,7 @@
         <dependency>
             <groupId>com.xdev-software</groupId>
             <artifactId>chartjs-java-model</artifactId>
-            <version>1.1.0</version>
+            <version>1.1.1</version>
         </dependency>
 
         <!-- Conflict with resteasy-jackson2-provider -->

@@ -1,0 +1,58 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+        <script>
+            function chartExtender() {
+                var options = {
+                        plugins: [ChartDataLabels],
+                        options: {
+                           plugins: {
+                              // Change options for ALL labels of THIS CHART
+                              datalabels: {
+                                 color: 'HotPink'
+                              }
+                           }
+                        },
+                        data: {
+                           datasets: [{
+                              // Change options only for labels of THIS DATASET
+                              datalabels: {
+                                 color: 'Indigo'
+                              }
+                           }]
+                        }
+                     };
+
+                     //merge all options into the main chart options
+                     $.extend(true, this.cfg.config, options);
+            }
+        </script>
+    </ui:define>
+    
+    <ui:define name="title">
+        Charts <span class="subitem">Pie</span>
+    </ui:define>
+
+    <ui:define name="description">
+        PieChart is created with raw JSON or using an <a href="https://github.com/xdev-software/chartjs-java-model" target="_blank" rel="noopener noreferrer">XDEV</a> model.
+        Using the <strong>extender</strong> functionality to add Data Labels to the pie chart with the Data Labels plugin.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/chart" />
+    <ui:param name="widgetLink" value="Chart" />
+
+    <ui:define name="implementation">
+        <div class="grid">
+            <div class="col-12 lg:col-6 xl:col-4">
+                <div class="card">
+                    <p:chart value="#{chartView.pieModel}" extender="chartExtender"/>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+
+</ui:composition>
