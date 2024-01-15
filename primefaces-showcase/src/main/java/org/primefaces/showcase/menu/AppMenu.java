@@ -101,7 +101,7 @@ public class AppMenu {
         primeIconsMenuItems.add(new MenuItem("Icons v6.0.1", "/icons"));
         menuCategories.add(new MenuCategory("PrimeIcons", primeIconsMenuItems));
         //PRIMEICONS CATEGORY END
-        
+
         //UIKIT CATEGORY START
         List<MenuItem> uiKitMenuItems = new ArrayList<>();
         uiKitMenuItems.add(new MenuItem("Figma", "/uikit", "New"));
@@ -137,7 +137,7 @@ public class AppMenu {
         formMenuItems.add(new MenuItem("Calendar", calendarMenuItems));*/
         formMenuItems.add(new MenuItem("CascadeSelect", "/ui/input/cascadeSelect"));
         formMenuItems.add(new MenuItem("Chips", "/ui/input/chips"));
-        
+
         List<MenuItem> colorPickerMenuItems = new ArrayList<>();
         colorPickerMenuItems.add(new MenuItem("Popup", "/ui/input/colorPicker"));
         colorPickerMenuItems.add(new MenuItem("Inline", "/ui/input/colorPickerInline"));
@@ -443,6 +443,15 @@ public class AppMenu {
         menuMenuItems.add(new MenuItem("TieredMenu", "/ui/menu/tieredMenu"));
         menuCategories.add(new MenuCategory("Menu", menuMenuItems));
         //MENU CATEGORY END
+
+        //CHART CATEGORY START
+        List<MenuItem> chartMenuItems = new ArrayList<>();
+
+        //Bar Nested MenuItem
+        chartMenuItems.add(new MenuItem("Bar", "/ui/chart/bar"));
+        chartMenuItems.add(new MenuItem("Export", "/ui/chart/export"));
+        menuCategories.add(new MenuCategory("Chart", chartMenuItems));
+        //CHARTS CATEGORY END
 
         //CHARTS CATEGORY START
         List<MenuItem> chartsMenuItems = new ArrayList<>();

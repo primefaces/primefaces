@@ -558,6 +558,7 @@
                         <resourcesSet>
                             <includes>
                                 <include>calendar/**</include>
+                                <include>chart/**</include>
                                 <include>charts/**</include>
                                 <include>clock/**</include>
                                 <include>colorpicker/**</include>

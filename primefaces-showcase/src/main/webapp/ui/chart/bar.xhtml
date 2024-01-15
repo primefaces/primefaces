@@ -1,0 +1,39 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Charts <span class="subitem">Bar</span>
+    </ui:define>
+
+    <ui:define name="description">
+        BarChart is created with raw JSON or using an XDEV model.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/chart?id=barchart"/>
+    <ui:param name="widgetLink" value="BarChart"/>
+
+    <ui:define name="implementation">
+        <h:form>
+            <p:growl id="growl" showDetail="true"/>
+
+            <div class="card">
+                <h5>Raw JSON</h5>
+                <p:chart value="#{chartView.barModel}" style="width: 100%; height: 500px;">
+                    <p:ajax event="itemSelect" listener="#{chartView.itemSelect}" update="growl"/>
+                </p:chart>
+            </div>
+
+            <div class="card">
+                <h5>XDEV Model</h5>
+                <p:chart value="#{chartView.barModel2}" style="width: 100%; height: 500px;">
+                    <p:ajax event="itemSelect" listener="#{chartView.itemSelect}" update="growl"/>
+                </p:chart>
+            </div>
+
+        </h:form>
+    </ui:define>
+
+</ui:composition>

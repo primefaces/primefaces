@@ -1005,6 +1005,11 @@
     </component>
 
     <component>
+        <component-type>org.primefaces.component.Chart</component-type>
+        <component-class>org.primefaces.component.chart.Chart</component-class>
+    </component>
+
+    <component>
         <component-type>org.primefaces.component.BarChart</component-type>
         <component-class>org.primefaces.component.barchart.BarChart</component-class>
     </component>
@@ -1799,6 +1804,11 @@
             <component-family>org.primefaces.component</component-family>
             <renderer-type>org.primefaces.component.WizardRenderer</renderer-type>
             <renderer-class>org.primefaces.component.wizard.WizardRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.ChartRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.chart.ChartRenderer</renderer-class>
         </renderer>
         <renderer>
             <component-family>org.primefaces.component</component-family>
