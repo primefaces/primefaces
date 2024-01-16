@@ -18,6 +18,7 @@ any 3rd part work incorporated are compatible with the PrimeFaces Licenses.
 | barcode4j-light | org.primefaces.extensions | barcode4j-light | 2.3.0 | Optional | Barcode |
 | qrcodegen | io.nayuki | qrcodegen | 1.8.0 | Optional | QR Code support for Barcode |
 | owasp-java-html-sanitizer | com.googlecode.owasp-java-html-sanitizer | owasp-java-html-sanitizer |  20220608.1 | Optional | TextEditor |
+| XDev chartjs-java-model | com.xdev-software | chartjs-java-model |  1.1.1 | Optional | Chart |
 
 *Listed versions are tested and known to be working with PrimeFaces, other versions of these
 dependencies may also work but not tested.
