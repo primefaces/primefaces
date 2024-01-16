@@ -4651,10 +4651,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 checkboxes = this.tbody.find('> tr > td.ui-selection-column > div.ui-chkbox > .ui-chkbox-box');
                 enabledCheckboxes = checkboxes.filter(':not(.ui-state-disabled)');
                 disabledCheckboxes = checkboxes.filter('.ui-state-disabled');
-                selectedCheckboxes = checkboxes.filter("div[aria-checked='true']");
+                selectedCheckboxes = enabledCheckboxes.filter("div[aria-checked='true']");
             }
 
-            if(enabledCheckboxes.length && enabledCheckboxes.length === selectedCheckboxes.length)
+            var totalEnabled = enabledCheckboxes.length;
+            if(totalEnabled && totalEnabled === selectedCheckboxes.length)
                this.checkHeaderCheckbox();
             else
                this.uncheckHeaderCheckbox();
