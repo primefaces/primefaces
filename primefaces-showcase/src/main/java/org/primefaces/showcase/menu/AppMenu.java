@@ -457,6 +457,7 @@ public class AppMenu {
         chartMenuItems.add(new MenuItem("PolarArea", "/ui/chart/polararea"));
         chartMenuItems.add(new MenuItem("Radar", "/ui/chart/radar"));
         chartMenuItems.add(new MenuItem("Custom", "/ui/chart/custom"));
+        chartMenuItems.add(new MenuItem("Facet", "/ui/chart/facet"));
         chartMenuItems.add(new MenuItem("Export", "/ui/chart/export"));
         menuCategories.add(new MenuCategory("Chart", chartMenuItems));
         //CHARTS CATEGORY END

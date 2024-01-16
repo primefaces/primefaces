@@ -29,7 +29,9 @@ import java.util.List;
 
 /**
  * The data configuration for Charts
+ * @deprecated please use new p:chart component
  */
+@Deprecated(since = "14.0.0", forRemoval = true)
 public class ChartData implements Serializable {
 
     private static final long serialVersionUID = 1L;

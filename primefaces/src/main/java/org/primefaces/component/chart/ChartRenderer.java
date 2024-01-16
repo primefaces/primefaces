@@ -29,6 +29,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.FastStringWriter;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
@@ -74,11 +76,36 @@ public class ChartRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, Chart chart) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Chart", chart)
-                .nativeAttr("config", chart.getValue())
+                .nativeAttr("config", renderConfig(context, chart))
                 .nativeAttr("extender", chart.getExtender());
 
         encodeClientBehaviors(context, chart);
 
         wb.finish();
     }
+
+    /**
+     * Allow value to be a property or a facet of raw JSON.
+     */
+    protected String renderConfig(FacesContext context, Chart chart) throws IOException {
+        UIComponent facet = chart.getFacet("value");
+        if (FacetUtils.shouldRenderFacet(facet)) {
+            // swap writers
+            ResponseWriter originalWriter = context.getResponseWriter();
+            FastStringWriter fsw = new FastStringWriter();
+            ResponseWriter clonedWriter = originalWriter.cloneWithWriter(fsw);
+            context.setResponseWriter(clonedWriter);
+
+            // encode the component
+            facet.encodeAll(context);
+
+            // restore the original writer
+            context.setResponseWriter(originalWriter);
+            return fsw.toString();
+        }
+        else {
+            return chart.getValue();
+        }
+    }
+
 }

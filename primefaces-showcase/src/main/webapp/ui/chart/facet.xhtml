@@ -1,0 +1,47 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+
+    <ui:define name="title">
+        Charts <span class="subitem">Facet</span>
+    </ui:define>
+
+    <ui:define name="description">
+        For simpler charts you can render the chart right in the <strong>value</strong> facet.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/chart" />
+    <ui:param name="widgetLink" value="Chart" />
+
+    <ui:define name="implementation">
+        <div class="card">
+            <p:chart style="width: 100%; height: 500px;">
+               <f:facet name="value">
+               {
+                 type: 'bar',
+                 data: {
+                   labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                   datasets: [{
+                     label: '# of Votes',
+                     data: [12, 19, 3, 5, 2, 3],
+                     borderWidth: 1,
+                     backgroundColor: ['DarkRed', 'CornflowerBlue', 'Gold', 'Lime', 'BlueViolet', 'DarkOrange']
+                   }]
+                 },
+                 options: {
+                   scales: {
+                     y: {
+                       beginAtZero: true
+                     }
+                   }
+                 }
+               }
+               </f:facet>
+            </p:chart>
+        </div>
+    </ui:define>
+
+</ui:composition>

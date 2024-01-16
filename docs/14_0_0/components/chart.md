@@ -33,7 +33,7 @@ A bar chart provides a way of showing data values represented as vertical bars. 
 | value | null | String | XDEV Model object of data and settings or raw JSON string.
 | widgetVar | null | String | Name of the client side widget.
 
-### Getting Started with Raw JSON
+### Raw JSON
 
 You can pass any full Chart.js configuration using a raw JSON string of data and configuration. This allows you complete and total
 control over the chart and how it is rendered as well as any new Chart.js features as they come along.
@@ -150,6 +150,38 @@ public class Bean {
     }
 }
 ```
+
+### Facet
+
+If you have a simple chart and do not even want any Java code or controller you can use the `value` facet.
+
+```xhtml
+<p:chart style="width: 100%; height: 500px;">
+   <f:facet name="value">
+   {
+     type: 'bar',
+     data: {
+       labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+       datasets: [{
+         label: '# of Votes',
+         data: [12, 19, 3, 5, 2, 3],
+         borderWidth: 1,
+         backgroundColor: ['DarkRed', 'CornflowerBlue', 'Gold', 'Lime', 'BlueViolet', 'DarkOrange']
+       }]
+     },
+     options: {
+       scales: {
+         y: {
+           beginAtZero: true
+         }
+       }
+     }
+   }
+   </f:facet>
+</p:chart>
+
+```
+
 
 ### Getting Started with XDEV Java Model
 

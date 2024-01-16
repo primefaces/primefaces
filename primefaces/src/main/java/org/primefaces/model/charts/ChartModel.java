@@ -25,6 +25,10 @@ package org.primefaces.model.charts;
 
 import java.io.Serializable;
 
+/**
+ * @deprecated please use new p:chart component
+ */
+@Deprecated(since = "14.0.0", forRemoval = true)
 public abstract class ChartModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
