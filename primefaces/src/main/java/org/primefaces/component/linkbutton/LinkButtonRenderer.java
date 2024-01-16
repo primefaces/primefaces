@@ -24,6 +24,7 @@
 package org.primefaces.component.linkbutton;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -49,7 +50,7 @@ public class LinkButtonRenderer extends OutcomeTargetRenderer {
 
         boolean disabled = linkButton.isDisabled();
         boolean hasIcon = LangUtils.isNotBlank(linkButton.getIcon());
-        boolean hasValue = LangUtils.isNotBlank((String) linkButton.getValue()) || linkButton.hasDisplayedChildren();
+        boolean hasValue = LangUtils.isNotBlank(getValueAsString(linkButton)) || linkButton.hasDisplayedChildren();
         boolean isTextAndIcon = hasValue && hasIcon;
 
         String style = linkButton.getStyle();
@@ -112,21 +113,19 @@ public class LinkButtonRenderer extends OutcomeTargetRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
 
-        String value = (String) linkButton.getValue();
-        if (value == null) {
-            if (linkButton.hasDisplayedChildren()) {
-                renderChildren(context, linkButton);
-            }
-            else {
-                //For ScreenReader
-                renderButtonValue(writer, linkButton.isEscape(), null, linkButton.getTitle(), linkButton.getAriaLabel());
-            }
+        String value = getValueAsString(linkButton);
+        if (LangUtils.isBlank(value) && linkButton.hasDisplayedChildren()) {
+            renderChildren(context, linkButton);
         }
         else {
             renderButtonValue(writer, linkButton.isEscape(), value, linkButton.getTitle(), linkButton.getAriaLabel());
         }
 
         writer.endElement("span");
+    }
+
+    protected String getValueAsString(LinkButton linkButton) {
+        return Objects.toString(linkButton.getValue(), null);
     }
 
     @Override
