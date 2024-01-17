@@ -50,6 +50,10 @@ import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 
+/**
+ * @deprecated please use new p:chart component
+ */
+@Deprecated(since = "14.0.0", forRemoval = true)
 public class ChartRenderer extends CoreRenderer {
 
     @Override
