@@ -58,7 +58,12 @@ if (!PrimeFaces.csp) {
             if (event) {
                 var shortenedEvent = event.substring(2, event.length),
                     element = document.getElementById(id),
-                    jqEvent = shortenedEvent + '.' + id;
+                    jqEvent = shortenedEvent + '.' + id,
+                    script = js.toString(),
+                    isAjaxified = (script.indexOf("PrimeFaces.ab(") >= 0) || 
+                                      (script.indexOf("pf.ab(") >= 0) || 
+                                      (script.indexOf("mojarra.ab(") >= 0) || 
+                                      (script.indexOf("jsf.ajax.request") >= 0);
 
                 // if the eventhandler return false, we must use preventDefault
                 var jsWrapper = function(event) {
@@ -73,18 +78,13 @@ if (!PrimeFaces.csp) {
                     element = window;
                 }
 
-                $(element).off(jqEvent).on(jqEvent, jsWrapper);
+                $(element).off(jqEvent).on(jqEvent, jsWrapper).attr('data-ajax', isAjaxified);
 
                 //Collect some basic information about registered AJAXified event listeners
                 if (!PrimeFaces.isProductionProjectStage()) {
                     if (!PrimeFaces.csp.EVENT_REGISTRY.has(id)) {
                         PrimeFaces.csp.EVENT_REGISTRY.set(id, new Map());
                     }
-                    var script = js.toString();
-                    var isAjaxified = (script.indexOf("PrimeFaces.ab(") >= 0) || 
-                                      (script.indexOf("pf.ab(") >= 0) || 
-                                      (script.indexOf("mojarra.ab(") >= 0) || 
-                                      (script.indexOf("jsf.ajax.request") >= 0);
                     PrimeFaces.csp.EVENT_REGISTRY.get(id).set(jqEvent, isAjaxified);
                 }
             }
@@ -176,11 +176,12 @@ if (!PrimeFaces.csp) {
          * GitHub #5790: When using jQuery to trigger a click event on a button while using CSP
          * we must set preventDefault or else it will trigger a non-ajax button click.
          * 
+         * @param {JQuery} target the target of the click event.
          * @return {JQuery.TriggeredEvent} the JQuery click event
          */
-        clickEvent: function() {
+        clickEvent: function(target) {
             var clickEvent = $.Event( "click" );
-            if (PrimeFaces.csp.NONCE_VALUE) {
+            if (PrimeFaces.csp.NONCE_VALUE && target.attr('data-ajax') === "true") {
                 clickEvent.preventDefault();
             }
             return clickEvent;
