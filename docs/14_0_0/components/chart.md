@@ -236,6 +236,33 @@ public void itemSelect(ItemSelectEvent event) {
 }
 ```
 
+## Pinch and Zoom
+
+The Pinch and Zoom plugin is automatically included with this component.  You simply need to enable it.
+
+```js
+options: {
+    plugins: {
+        zoom: {
+            pan: {
+                enabled: true,
+                mode: 'xy',
+                threshold: 5,
+            },
+            zoom: {
+                wheel: {
+                    enabled: true
+                },
+                pinch: {
+                    enabled: true
+                },
+                mode: 'xy',
+            },
+        }
+    }
+}
+```
+
 ## Export
 
 Charts are canvas based and can be exported as static images with client side api.

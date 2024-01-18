@@ -558,6 +558,7 @@
                         <resourcesSet>
                             <includes>
                                 <include>calendar/**</include>
+                                <include>chart/9-chartjs-widget.js</include>
                                 <include>clock/**</include>
                                 <include>colorpicker/**</include>
                                 <include>datepicker/**</include>

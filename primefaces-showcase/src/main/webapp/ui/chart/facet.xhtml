@@ -36,6 +36,24 @@
                      y: {
                        beginAtZero: true
                      }
+                   },
+                   plugins: {
+                       zoom: {
+                           pan: {
+                               enabled: true,
+                               mode: 'y',
+                               threshold: 5,
+                           },
+                           zoom: {
+                               wheel: {
+                                   enabled: true
+                               },
+                               pinch: {
+                                   enabled: true
+                               },
+                               mode: 'y',
+                           },
+                       }
                    }
                  }
                }
