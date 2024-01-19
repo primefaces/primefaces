@@ -49,100 +49,118 @@ public class Bean {
 
     @PostConstruct
     public void init() {
-        json = "{\r\n"
-                + "  \"type\": \"line\",\r\n"
-                + "  \"data\": {\r\n"
-                + "    \"datasets\": [\r\n"
-                + "      {\r\n"
-                + "        \"backgroundColor\": \"rgba(40, 180, 99, 0.3)\",\r\n"
-                + "        \"borderColor\": \"rgb(40, 180, 99)\",\r\n"
-                + "        \"borderWidth\": 1,\r\n"
-                + "        \"data\": [\r\n"
-                + "          {\r\n"
-                + "            \"x\": 1699457269877,\r\n"
-                + "            \"y\": 20\r\n"
-                + "          },\r\n"
-                + "          {\r\n"
-                + "            \"x\": 1700047109694,\r\n"
-                + "            \"y\": 20\r\n"
-                + "          }\r\n"
-                + "        ],\r\n"
-                + "        \"hidden\": false,\r\n"
-                + "        \"label\": \"Device Id: 524967 Register: A - total Wh \",\r\n"
-                + "        \"minBarLength\": 3\r\n"
-                + "      },\r\n"
-                + "      {\r\n"
-                + "        \"backgroundColor\": \"rgba(218, 117, 255, 0.3)\",\r\n"
-                + "        \"borderColor\": \"rgb(218, 117, 255)\",\r\n"
-                + "        \"borderWidth\": 1,\r\n"
-                + "        \"data\": [\r\n"
-                + "          {\r\n"
-                + "            \"x\": 1699457267847,\r\n"
-                + "            \"y\": 10\r\n"
-                + "          },\r\n"
-                + "          {\r\n"
-                + "            \"x\": 1700047108397,\r\n"
-                + "            \"y\": 234\r\n"
-                + "          }\r\n"
-                + "        ],\r\n"
-                + "        \"hidden\": false,\r\n"
-                + "        \"label\": \"Device Id: 524967 Register: A+ total Wh \",\r\n"
-                + "        \"minBarLength\": 3\r\n"
-                + "      }\r\n"
-                + "    ]\r\n"
-                + "  },\r\n"
-                + "  \"options\": {\r\n"
-                + "    \"plugins\": {\r\n"
-                + "      \"legend\": {\r\n"
-                + "        \"display\": true,\r\n"
-                + "        \"fullWidth\": true,\r\n"
-                + "        \"position\": \"top\",\r\n"
-                + "        \"reverse\": false,\r\n"
-                + "        \"rtl\": false\r\n"
-                + "      },\r\n"
-                + "      \"title\": {\r\n"
-                + "        \"display\": true,\r\n"
-                + "        \"text\": \"Values from the meter\"\r\n"
-                + "      }\r\n"
-                + "    },\r\n"
-                + "    \"scales\": {\r\n"
-                + "      \"x\": {\r\n"
-                + "        \"beginAtZero\": false,\r\n"
-                + "        \"offset\": true,\r\n"
-                + "        \"reverse\": false,\r\n"
-                + "        \"stacked\": true,\r\n"
-                + "        \"ticks\": {\r\n"
-                + "          \"autoSkip\": true,\r\n"
-                + "          \"maxRotation\": 0,\r\n"
-                + "          \"minRotation\": 0,\r\n"
-                + "          \"mirror\": false,\r\n"
-                + "          \"source\": \"data\"\r\n"
-                + "        },\r\n"
-                + "        \"time\": {\r\n"
-                + "          \"displayFormats\": {\r\n"
-                + "            \"minute\": \"dd.LL T\"\r\n"
-                + "          },\r\n"
-                + "          \"round\": \"minute\",\r\n"
-                + "          \"stepSize\": \"60\",\r\n"
-                + "          \"unit\": \"minute\"\r\n"
-                + "        },\r\n"
-                + "        \"type\": \"time\"\r\n"
-                + "      },\r\n"
-                + "      \"y\": {\r\n"
-                + "        \"beginAtZero\": false,\r\n"
-                + "        \"offset\": false,\r\n"
-                + "        \"reverse\": false,\r\n"
-                + "        \"stacked\": true,\r\n"
-                + "        \"ticks\": {\r\n"
-                + "          \"autoSkip\": true,\r\n"
-                + "          \"mirror\": false\r\n"
-                + "        }\r\n"
-                + "      }\r\n"
-                + "    },\r\n"
-                + "    \"showLine\": true,\r\n"
-                + "    \"spanGaps\": false\r\n"
-                + "  }\r\n"
-                + "}";
+        json = """
+            {
+               "type":"line",
+               "data":{
+                  "datasets":[
+                     {
+                        "backgroundColor":"rgba(40, 180, 99, 0.3)",
+                        "borderColor":"rgb(40, 180, 99)",
+                        "borderWidth":1,
+                        "data":[
+                           {
+                              "x":1699457269877,
+                              "y":20
+                           },
+                           {
+                              "x":1700047109694,
+                              "y":20
+                           }
+                        ],
+                        "hidden":false,
+                        "label":"Device Id: 524967 Register: A - total Wh ",
+                        "minBarLength":3
+                     },
+                     {
+                        "backgroundColor":"rgba(218, 117, 255, 0.3)",
+                        "borderColor":"rgb(218, 117, 255)",
+                        "borderWidth":1,
+                        "data":[
+                           {
+                              "x":1699457267847,
+                              "y":10
+                           },
+                           {
+                              "x":1700047108397,
+                              "y":234
+                           }
+                        ],
+                        "hidden":false,
+                        "label":"Device Id: 524967 Register: A+ total Wh ",
+                        "minBarLength":3
+                     }
+                  ]
+               },
+               "options":{
+                  "plugins":{
+                     "legend":{
+                        "display":true,
+                        "fullWidth":true,
+                        "position":"top",
+                        "reverse":false,
+                        "rtl":false
+                     },
+                     "title":{
+                        "display":true,
+                        "text":"Values from the meter"
+                     },
+                     "zoom":{
+                        "pan":{
+                           "enabled":true,
+                           "mode":"xy",
+                           "threshold":5
+                        },
+                        "zoom":{
+                           "wheel":{
+                              "enabled":true
+                           },
+                           "pinch":{
+                              "enabled":true
+                           },
+                           "mode":"xy"
+                        }
+                     }
+                  },
+                  "scales":{
+                     "x":{
+                        "beginAtZero":false,
+                        "offset":true,
+                        "reverse":false,
+                        "stacked":true,
+                        "ticks":{
+                           "autoSkip":true,
+                           "maxRotation":0,
+                           "minRotation":0,
+                           "mirror":false,
+                           "source":"data"
+                        },
+                        "time":{
+                           "displayFormats":{
+                              "minute":"dd.LL T"
+                           },
+                           "round":"minute",
+                           "stepSize":"60",
+                           "unit":"minute"
+                        },
+                        "type":"time"
+                     },
+                     "y":{
+                        "beginAtZero":false,
+                        "offset":false,
+                        "reverse":false,
+                        "stacked":true,
+                        "ticks":{
+                           "autoSkip":true,
+                           "mirror":false
+                        }
+                     }
+                  },
+                  "showLine":true,
+                  "spanGaps":false
+               }
+            }
+            """;
     }
 
     public String getJson() {
