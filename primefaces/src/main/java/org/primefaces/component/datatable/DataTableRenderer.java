@@ -1497,7 +1497,7 @@ public class DataTableRenderer extends DataRenderer {
 
             writer.writeAttribute("id", table.getClientId(context) + "_" + rowKey + "_checkbox", null);
             writer.writeAttribute("role", "checkbox", null);
-            writer.writeAttribute("tabindex", "0", null);
+            writer.writeAttribute("tabindex", disabled ? "-1" : "0", null);
             writer.writeAttribute(HTML.ARIA_LABEL, ariaRowLabel, null);
             writer.writeAttribute(HTML.ARIA_CHECKED, String.valueOf(checked), null);
 
