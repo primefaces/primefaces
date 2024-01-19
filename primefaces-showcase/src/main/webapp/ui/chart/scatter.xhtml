@@ -19,13 +19,12 @@
         Scatter charts are based on basic line charts with the x axis changed to a linear axis. To use a scatter chart, data must be passed as objects containing X and Y properties.
     </ui:define>
 
-    <ui:param name="documentationLink" value="/components/charts"/>
-    <ui:param name="widgetLink" value="ScatterChart"/>
+    <ui:param name="documentationLink" value="/components/chart" />
+    <ui:param name="widgetLink" value="Chart" />
 
     <ui:define name="implementation">
-        <p:staticMessage severity="warn" summary="DEPRECATED" detail="Please use the new p:chart component" styleClass="w-full mb-2" />
         <div class="card">
-            <p:scatterChart model="#{chartJsView.scatterModel}" style="width: 100%; height: 500px;"/>
+            <p:chart value="#{chartView.scatterModel}" style="width: 100%; height: 500px;"/>
         </div>
     </ui:define>
 

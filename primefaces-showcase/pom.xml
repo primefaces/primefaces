@@ -136,6 +136,20 @@
             <artifactId>barcode4j-light</artifactId>
         </dependency>
 
+        <!-- ChartJS model -->
+        <dependency>
+            <groupId>com.xdev-software</groupId>
+            <artifactId>chartjs-java-model</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+
+        <!-- Conflict with resteasy-jackson2-provider -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.16.1</version>
+        </dependency>
+
         <!-- Cache -->
         <dependency>
             <groupId>org.ehcache</groupId>

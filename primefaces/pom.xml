@@ -558,7 +558,7 @@
                         <resourcesSet>
                             <includes>
                                 <include>calendar/**</include>
-                                <include>charts/**</include>
+                                <include>chart/9-chartjs-widget.js</include>
                                 <include>clock/**</include>
                                 <include>colorpicker/**</include>
                                 <include>datepicker/**</include>
@@ -607,6 +607,7 @@
                         <!-- uncompressed widgets -->
                         <resourcesSet>
                             <includes>
+                                <include>chart/**</include>
                                 <include>chartjs/**</include>
                             </includes>
                             <aggregations>

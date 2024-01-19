@@ -4,22 +4,21 @@
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="title">
-        Charts <span class="subitem">Polar Area</span>
+        Charts <span class="subitem">Doughnut</span>
     </ui:define>
 
     <ui:define name="description">
-        PolarAreaChart is created with a PolarAreaChartModel.
+        DoughnutChart is created with raw JSON or using an <a href="https://github.com/xdev-software/chartjs-java-model" target="_blank" rel="noopener noreferrer">XDEV</a> model.
     </ui:define>
 
-    <ui:param name="documentationLink" value="/components/charts?id=polarareachart"/>
-    <ui:param name="widgetLink" value="PolarAreaChart"/>
+    <ui:param name="documentationLink" value="/components/chart" />
+    <ui:param name="widgetLink" value="Chart" />
 
     <ui:define name="implementation">
-        <p:staticMessage severity="warn" summary="DEPRECATED" detail="Please use the new p:chart component" styleClass="w-full mb-2" />
         <div class="grid">
             <div class="col-12 lg:col-6 xl:col-4">
                 <div class="card">
-                    <p:polarAreaChart model="#{chartJsView.polarAreaModel}" style="width: 100%; height: 500px;"/>
+                    <p:chart value="#{chartView.donutModel}" style="width: 100%; height: 500px;"/>
                 </div>
             </div>
         </div>

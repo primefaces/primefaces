@@ -21,11 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.donutchart;
+package org.primefaces.component.chart;
 
 import java.util.Collection;
 import java.util.Map;
-
 import javax.faces.application.ResourceDependency;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
@@ -39,10 +38,7 @@ import org.primefaces.util.MapBuilder;
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "moment/moment.js")
 @ResourceDependency(library = "primefaces", name = "chart/chart.js")
-@ResourceDependency(library = "primefaces", name = "chartjs/chartjs.js")
-public class DonutChart extends DonutChartBase {
-
-    public static final String COMPONENT_TYPE = "org.primefaces.component.DonutChart";
+public class Chart extends ChartBase {
 
     private static final String DEFAULT_EVENT = "itemSelect";
 

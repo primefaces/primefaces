@@ -72,7 +72,7 @@ body .ui-panel.chart-dashlet .ui-panel-content .ui-chart {
                             </p:menu>
                         </f:facet>
                         
-                        <p:barChart model="#{chartJsView.barModel}" style="width: 100%; height: 100%;" />
+                        <p:chart value="#{chartView.barModel}" style="width: 100%; height: 100%;" />
                     </p:panel>
 
                     <p:panel id="stacked" header="Stacked" closable="true" styleClass="chart-dashlet" >
@@ -95,10 +95,10 @@ body .ui-panel.chart-dashlet .ui-panel-content .ui-chart {
                                 </p:submenu>
                             </p:menu>
                         </f:facet>
-                        <p:barChart model="#{chartJsView.stackedBarModel}" style="width: 100%; height: 100%;" />
+                        <p:chart value="#{chartView.stackedBarModel}" style="width: 100%; height: 100%;" />
                     </p:panel>
 
-                    <p:panel id="donut" header="Donut" closable="true" styleClass="chart-dashlet" >
+                    <p:panel id="donut" header="Doughnut" closable="true" styleClass="chart-dashlet" >
                         <p:ajax event="close" listener="#{dashboardView.handleClose}" />
                         <f:facet name="options">
                             <p:menu>
@@ -119,7 +119,7 @@ body .ui-panel.chart-dashlet .ui-panel-content .ui-chart {
                             </p:menu>
                         </f:facet>
 
-                        <p:donutChart model="#{chartJsView.donutModel}" style="width: 100%; height: 100%;" />
+                        <p:chart value="#{chartView.donutModel}" style="width: 100%; height: 100%;" />
                     </p:panel>
 
                     <p:panel id="cartesian" header="Cartesian" closable="true" styleClass="chart-dashlet" >
@@ -143,7 +143,7 @@ body .ui-panel.chart-dashlet .ui-panel-content .ui-chart {
                             </p:menu>
                         </f:facet>
 
-                        <p:lineChart id="chartline" model="#{chartJsView.lineModel}" style="width: 100%; height: 100%;" />
+                        <p:chart id="chartline" value="#{chartView.cartesianLinerModel}" style="width: 100%; height: 100%;" />
                     </p:panel>
                 </p:dashboard>
             </div>

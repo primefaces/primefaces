@@ -29,10 +29,12 @@ import java.util.Objects;
 
 public class MenuItem implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     private final String label;
     private String url;
     private List<MenuItem> menuItems;
     private String badge;
+    private String badgeSeverity;
     private MenuItem parent;
     private String imageSrc;
 
@@ -75,6 +77,20 @@ public class MenuItem implements Serializable {
 
     public String getBadge() {
         return badge;
+    }
+
+    public String getBadgeSeverity() {
+        if (badgeSeverity != null) {
+            return badgeSeverity;
+        }
+        badgeSeverity = "primary";
+        if ("Deprecated".equalsIgnoreCase(badge)) {
+            badgeSeverity = "warning";
+        }
+        if ("New".equalsIgnoreCase(badge)) {
+            badgeSeverity = "success";
+        }
+        return badgeSeverity;
     }
 
     public List<MenuItem> getMenuItems() {

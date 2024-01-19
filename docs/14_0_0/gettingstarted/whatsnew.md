@@ -13,6 +13,9 @@ Look into [migration guide](https://primefaces.github.io/primefaces/14_0_0/#/../
     * OS settings for `prefers-reduced-motion: reduce` is now respected and PF disables all animations.
     * Minimum inline Ajax load animation duration via `PrimeFaces.ajax.minLoadAnimation`.
 
+* Chart
+   * A new more flexible version of Chart.js can be used `<p:chart>` allowing raw JSON or [XDEV Chart.js Java Model](https://github.com/xdev-software/chartjs-java-model)
+   
 * ConfirmDialog
    * Added `ajax=false` support.
 
@@ -61,4 +64,4 @@ Look into [migration guide](https://primefaces.github.io/primefaces/14_0_0/#/../
   
 ### PrimeFaces Selenium 
 
-* ...
+* Added 'StaticMessage` component
