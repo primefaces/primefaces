@@ -15,7 +15,7 @@
                             #{menuItem.label}
                         </h:outputLink>
                         <h:link outcome="#{menuItem.url}" rendered="#{menuItem.url.startsWith('/') and empty menuItem.menuItems}" onclick="App.onSearchClick(event, 'sl_#{menuItem.parent.label.toLowerCase()}')">
-                            #{menuItem.label}<p:tag value="#{menuItem.badge}" styleClass="ml-2" rendered="#{not empty menuItem.badge}"/>
+                            #{menuItem.label}<p:tag value="#{menuItem.badge}" styleClass="ml-2" rendered="#{not empty menuItem.badge}" severity="#{menuItem.badgeSeverity}"/>
                         </h:link>
                     </p:column>
                 </p:autoComplete>
@@ -34,18 +34,18 @@
                             #{menuItem.label}
                         </h:outputLink>
                         <h:link outcome="#{menuItem.url}" rendered="#{menuItem.url.startsWith('/') and empty menuItem.menuItems}">
-                            #{menuItem.label}<p:tag value="#{menuItem.badge}" styleClass="ml-2" rendered="#{not empty menuItem.badge}"/>
+                            #{menuItem.label}<p:tag value="#{menuItem.badge}" styleClass="ml-2" rendered="#{not empty menuItem.badge}" severity="#{menuItem.badgeSeverity}"/>
                         </h:link>
                         <p:outputPanel rendered="#{not empty menuItem.menuItems}">
                             <a id="sl_#{menuItem.label.toLowerCase()}" tabindex="0" class="submenu-link">
-                                #{menuItem.label}<p:tag value="#{menuItem.badge}" styleClass="ml-2" rendered="#{not empty menuItem.badge}"/>
+                                #{menuItem.label}<p:tag value="#{menuItem.badge}" styleClass="ml-2" rendered="#{not empty menuItem.badge}" severity="#{menuItem.badgeSeverity}"/>
                             </a>
                             <div class="submenu">
                                 <ul>
                                     <ui:repeat value="#{menuItem.menuItems}" var="nestedMenuItem">
                                         <li><h:link outcome="#{nestedMenuItem.url}">
                                             #{nestedMenuItem.label}
-                                            <p:tag value="#{nestedMenuItem.badge}" styleClass="ml-2" rendered="#{not empty nestedMenuItem.badge}"/>
+                                            <p:tag value="#{nestedMenuItem.badge}" styleClass="ml-2" rendered="#{not empty nestedMenuItem.badge}" severity="#{nestedMenuItem.badgeSeverity}"/>
                                         </h:link></li>
                                     </ui:repeat>
                                 </ul>

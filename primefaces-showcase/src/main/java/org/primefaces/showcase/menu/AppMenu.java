@@ -466,17 +466,17 @@ public class AppMenu {
         List<MenuItem> chartsMenuItems = new ArrayList<>();
 
         //Bar Nested MenuItem
-        chartsMenuItems.add(new MenuItem("Bar", "/ui/chartjs/bar/bar"));
-        chartsMenuItems.add(new MenuItem("Bubble", "/ui/chartjs/bubble"));
-        chartsMenuItems.add(new MenuItem("Donut", "/ui/chartjs/donut"));
-        chartsMenuItems.add(new MenuItem("Line", "/ui/chartjs/line"));
-        chartsMenuItems.add(new MenuItem("Pie", "/ui/chartjs/pie"));
-        chartsMenuItems.add(new MenuItem("Scatter", "/ui/chartjs/scatter"));
-        chartsMenuItems.add(new MenuItem("PolarArea", "/ui/chartjs/polararea"));
-        chartsMenuItems.add(new MenuItem("Radar", "/ui/chartjs/radar"));
-        chartsMenuItems.add(new MenuItem("Mixed", "/ui/chartjs/mixed"));
-        chartsMenuItems.add(new MenuItem("Interactive", "/ui/chartjs/interactive"));
-        chartsMenuItems.add(new MenuItem("Export", "/ui/chartjs/export"));
+        chartsMenuItems.add(new MenuItem("Bar", "/ui/chartjs/bar/bar", "Deprecated"));
+        chartsMenuItems.add(new MenuItem("Bubble", "/ui/chartjs/bubble", "Deprecated"));
+        chartsMenuItems.add(new MenuItem("Donut", "/ui/chartjs/donut", "Deprecated"));
+        chartsMenuItems.add(new MenuItem("Line", "/ui/chartjs/line", "Deprecated"));
+        chartsMenuItems.add(new MenuItem("Pie", "/ui/chartjs/pie", "Deprecated"));
+        chartsMenuItems.add(new MenuItem("Scatter", "/ui/chartjs/scatter", "Deprecated"));
+        chartsMenuItems.add(new MenuItem("PolarArea", "/ui/chartjs/polararea", "Deprecated"));
+        chartsMenuItems.add(new MenuItem("Radar", "/ui/chartjs/radar", "Deprecated"));
+        chartsMenuItems.add(new MenuItem("Mixed", "/ui/chartjs/mixed", "Deprecated"));
+        chartsMenuItems.add(new MenuItem("Interactive", "/ui/chartjs/interactive", "Deprecated"));
+        chartsMenuItems.add(new MenuItem("Export", "/ui/chartjs/export", "Deprecated"));
         menuCategories.add(new MenuCategory("Charts", chartsMenuItems));
         //CHARTS CATEGORY END
 
