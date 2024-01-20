@@ -1225,7 +1225,8 @@
          */
         getAriaLabel: function(key) {
             var ariaLocaleSettings = this.getLocaleSettings()['aria'];
-            return (ariaLocaleSettings&&ariaLocaleSettings[key]) ? ariaLocaleSettings[key] : PrimeFaces.locales['en_US']['aria'][key];
+            var label = (ariaLocaleSettings&&ariaLocaleSettings[key]) ? ariaLocaleSettings[key] : PrimeFaces.locales['en_US']['aria'][key];
+            return label || "???"+key+"???";
         },
 
         /**
