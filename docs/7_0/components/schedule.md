@@ -38,6 +38,7 @@ rightHeaderTemplate | month, agendaWeek, agendaDay | String | Content of right s
 allDaySlot | true | Boolean | Determines if all-day slot will be displayed in agendaWeek or agendaDay views
 slotMinutes | 30 | Integer | Interval in minutes in an hour to create a slot. (deprecated: use slotDuration)
 slotDuration | 00:30:00 | String | The frequency for displaying time slots.
+slotLabelFormat | null | String | Determines the text that will be displayed within a time slot. The default English value will produce times that look like 5pm and 5:30pm. (see https://momentjs.com/docs/#/displaying/). Note that the format should be wrapped in a JSON array, for example `['HH:mm']`.
 firstHour | 6 | Integer | First hour to display in day view. (deprecated: use scrollTime)
 scrollTime | 06:00:00 | String | Determines how far down the scroll pane is initially scrolled down.
 minTime | null | String | Minimum time to display in a day view.
