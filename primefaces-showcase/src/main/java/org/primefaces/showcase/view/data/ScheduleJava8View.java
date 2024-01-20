@@ -85,7 +85,7 @@ public class ScheduleJava8View implements Serializable {
     private String timeFormat;
     private String slotDuration = "00:30:00";
     private String slotLabelInterval;
-    private String slotLabelFormat;
+    private String slotLabelFormat = "HH:mm";
     private String scrollTime = "06:00:00";
     private String minTime = "04:00:00";
     private String maxTime = "20:00:00";
