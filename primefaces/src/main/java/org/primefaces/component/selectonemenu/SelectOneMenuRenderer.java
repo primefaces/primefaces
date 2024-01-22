@@ -226,6 +226,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
     protected void encodeLabel(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String tabIndex = LangUtils.isNotBlank(menu.getTabindex()) ? menu.getTabindex() : "0";
 
         if (menu.isEditable()) {
             writer.startElement("input", null);
@@ -233,11 +234,8 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             writer.writeAttribute("type", "text", null);
             writer.writeAttribute("name", menu.getClientId(context) + "_editableInput", null);
             writer.writeAttribute("class", SelectOneMenu.LABEL_CLASS, null);
+            writer.writeAttribute("tabindex", tabIndex, null);
             encodeAriaLabel(writer, menu);
-
-            if (menu.getTabindex() != null) {
-                writer.writeAttribute("tabindex", menu.getTabindex(), null);
-            }
 
             if (menu.isDisabled()) {
                 writer.writeAttribute("disabled", "disabled", null);
@@ -279,7 +277,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             writer.startElement("span", null);
             writer.writeAttribute("id", menu.getClientId(context) + "_label", null);
             writer.writeAttribute("class", SelectOneMenu.LABEL_CLASS, null);
-            writer.writeAttribute("tabindex", 0, null);
+            writer.writeAttribute("tabindex", tabIndex, null);
             if (menu.getPlaceholder() != null) {
                 writer.writeAttribute("data-placeholder", menu.getPlaceholder(), null);
             }
