@@ -30,6 +30,7 @@ locales/locale-in.js
 locales/locale-it.js
 locales/locale-ja.js
 locales/locale-ka.js
+locales/locale-km.js
 locales/locale-ko.js
 locales/locale-ky.js
 locales/locale-lt.js
