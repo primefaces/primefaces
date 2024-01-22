@@ -380,7 +380,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
     returnFocus: function() {
         var el = this.focusedElementBeforeDialogOpened;
         if (el) {
-            el.focus();
+            el.focus({ preventScroll: true });
         }
     },
 
