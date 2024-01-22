@@ -1327,6 +1327,10 @@
             if (this.options.showTime){
                todayLabel = this.options.locale.now;
             }
+            else {
+                // only use date at 00:00 for comparison
+                now = this.truncateDate(now);
+            }
             if ((minDate && minDate > now) || (maxDate && maxDate < now)) {
                 todayStyleClass += ' ui-helper-hidden';
             }
@@ -2316,9 +2320,7 @@
                 }
 
                 // previous (check first day of month at 00:00:00)
-                newViewDate.setHours(0);
-                newViewDate.setMinutes(0);
-                newViewDate.setSeconds(0);
+                newViewDate = this.truncateDate(newViewDate);
 
                 // #5967 check if month can be navigated to by checking last day in month
                 var testDate = new Date(newViewDate.getTime()),
@@ -2381,9 +2383,7 @@
                 }
 
                 // next (check last day of month)
-                newViewDate.setHours(0);
-                newViewDate.setMinutes(0);
-                newViewDate.setSeconds(0);
+                newViewDate = this.truncateDate(newViewDate);
 
                 // #5967 check if month can be navigated to by checking first day next month
                 var maxDate = this.options.maxDate;
@@ -2442,9 +2442,7 @@
                 let firstDayOfMonth = new Date(newViewDate.getTime());
 
                 firstDayOfMonth.setMonth(firstDayOfMonth.getMonth(), 1);
-                firstDayOfMonth.setHours(0);
-                firstDayOfMonth.setMinutes(0);
-                firstDayOfMonth.setSeconds(0);
+                firstDayOfMonth = this.truncateDate(firstDayOfMonth);
 
                 if (this.options.minDate > firstDayOfMonth) {
                     navPrev.addClass('ui-state-disabled');
@@ -2458,9 +2456,7 @@
                 let lastDayOfMonth = new Date(newViewDate.getTime());
 
                 lastDayOfMonth.setMonth(lastDayOfMonth.getMonth() + 1, 1);
-                lastDayOfMonth.setHours(0);
-                lastDayOfMonth.setMinutes(0);
-                lastDayOfMonth.setSeconds(0);
+                lastDayOfMonth = this.truncateDate(lastDayOfMonth);
                 lastDayOfMonth.setSeconds(-1);
 
                 if (this.options.maxDate < lastDayOfMonth) {
@@ -3234,6 +3230,17 @@
             return String(value).replace(/[&<>"'`=\/]/g, function(s) {
                 return entityMap[s];
             });
+        },
+        
+        truncateDate: function(value) {
+            if (value) {
+                // only use date at 00:00 for comparison
+                value.setHours(0);
+                value.setMinutes(0);
+                value.setSeconds(0);
+                value.setMilliseconds(0);
+            }
+            return value;
         },
 
         updateYearNavigator: function() {
