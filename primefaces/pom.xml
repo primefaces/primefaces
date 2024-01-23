@@ -1042,6 +1042,9 @@
                                             <resource>META-INF/resources/primefaces/locales/locale-ka.js</resource>
                                         </transformer>
                                         <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                            <resource>META-INF/resources/primefaces/locales/locale-km.js</resource>
+                                        </transformer>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                                             <resource>META-INF/resources/primefaces/locales/locale-ko.js</resource>
                                         </transformer>
                                         <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
