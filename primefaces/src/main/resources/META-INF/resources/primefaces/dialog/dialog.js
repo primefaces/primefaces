@@ -443,11 +443,13 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 if(!e.isDefaultPrevented() && e.key === 'Escape' && $this.isVisible()) {
                     // GitHub #6677 if multiple dialogs check if this is the topmost active dialog to close
                     var currentZIndex = parseInt($this.jq.css('z-index'));
-                    var dialogZIndex = parseInt($('.ui-dialog:visible').first().css('z-index'));
-                    if(currentZIndex === dialogZIndex) {
-                         $this.hide();
-                         e.preventDefault();
-                         e.stopPropagation();
+                    var highestZIndex = Math.max(...$('.ui-dialog:visible').map(function() {
+                        return parseInt($(this).css('z-index')) || 0;
+                    }).get());
+                    if (currentZIndex === highestZIndex) {
+                        $this.hide();
+                        e.preventDefault();
+                        e.stopPropagation();
                     }
                 };
             });
