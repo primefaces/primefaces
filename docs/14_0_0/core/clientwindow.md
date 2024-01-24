@@ -10,20 +10,18 @@ Prime Client Window is activated in `faces-config.xml`
 <faces-config>
     ...
     <factory>
-        <lifecycle-factory>org.primefaces.clientwindow.PrimeClientWindowLifecycleFactory</lifecycle-factory>
+        <client-window-factory>org.primefaces.clientwindow.PrimeClientWindowFactory</client-window-factory>
     </factory>
 </faces-config>
 ```
 
-**MyFaces:**
-
-You can add the `PrimeClientWindowFactory` directly with no need for the LifeCyleFactory. 
-For **Mojarra** you must use the LifeCycleFactory until this issue is fixed see: https://github.com/eclipse-ee4j/mojarra/issues/5297
+**Mojarra:**
+For Mojarra you must use the LifeCycleFactory until this issue is fixed see: https://github.com/eclipse-ee4j/mojarra/issues/5297
 ```xml
 <faces-config>
     ...
     <factory>
-        <client-window-factory>org.primefaces.clientwindow.PrimeClientWindowFactory</client-window-factory>
+        <lifecycle-factory>org.primefaces.clientwindow.PrimeClientWindowLifecycleFactory</lifecycle-factory>
     </factory>
 </faces-config>
 ```
