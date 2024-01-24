@@ -3,7 +3,7 @@
 Since 2.2, the Faces specification contains a API to identify a browser tab (client-window) on the server side.
 This allows for separating state not only per session but also on a per client-window base.
 
-In PrimeFaces this feature can be used to store the state of MultiViewState-aware components (see [MultiViewState](core/multiviewstate.md) for details). 
+In PrimeFaces this feature can be used to store the state of MultiViewState-aware components (see [MultiViewState](core/multiviewstate.md) for details).  
 Faces 4.0 also contains a new `@ClientWindowScoped`, which enables you to store your data per browser tab.
 
 It can be activated via web.xml:
@@ -14,7 +14,7 @@ It can be activated via web.xml:
 </context-param>
 ```
 
-## PrimeFaces ClientWindow mode
+## PrimeFaces ClientWindow
 
 PrimeFaces provides a improved version of the Faces `url` `ClientWindow`, which is heavily inspired by Apache DeltaSpile `LAZY` mode:
 * JSF does NOT append the url param on initial redirect, so F5 creates a new windowId
@@ -26,7 +26,6 @@ PrimeFaces provides a improved version of the Faces `url` `ClientWindow`, which 
 PrimeFaces `ClientWindow` can be activated in `faces-config.xml`:
 ```xml
 <faces-config>
-    ...
     <factory>
         <client-window-factory>org.primefaces.clientwindow.PrimeClientWindowFactory</client-window-factory>
     </factory>
@@ -40,7 +39,6 @@ As it´s a replacement for the standard JSF-mechanism, make sure you dont have a
 For older Mojarra versions you must use the LifeCycleFactory because of this issue: https://github.com/eclipse-ee4j/mojarra/issues/5297
 ```xml
 <faces-config>
-    ...
     <factory>
         <lifecycle-factory>org.primefaces.clientwindow.PrimeClientWindowLifecycleFactory</lifecycle-factory>
     </factory>
