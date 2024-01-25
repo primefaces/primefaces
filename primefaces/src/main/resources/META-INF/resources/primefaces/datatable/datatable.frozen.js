@@ -80,8 +80,9 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
             }
 
             if(this.hasVerticalOverflow()) {
-                this.scrollHeaderBox.css('margin-right', scrollBarWidth);
-                this.scrollFooterBox.css('margin-right', scrollBarWidth);
+                var marginProperty = this.isRTL ? 'margin-left' : 'margin-right';
+                this.scrollHeaderBox.css(marginProperty, scrollBarWidth);
+                this.scrollFooterBox.css(marginProperty, scrollBarWidth);
             }
         }
 
@@ -136,17 +137,12 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         }
 
         this.scrollBody.on('scroll.datatable', function() {
-            var scrollLeft = $this.scrollBody.scrollLeft(),
+            var scrollShift = $this.getScrollbarWidth(),
             scrollTop = $this.scrollBody.scrollTop();
 
-            if ($this.isRTL) {
-                $this.scrollHeaderBox.css('margin-right', (scrollLeft - hScrollWidth + this.clientWidth) + 'px');
-                $this.scrollFooterBox.css('margin-right', (scrollLeft - hScrollWidth + this.clientWidth) + 'px');
-            }
-            else {
-                $this.scrollHeaderBox.css('margin-left', -scrollLeft + 'px');
-                $this.scrollFooterBox.css('margin-left', -scrollLeft + 'px');
-            }
+            var marginProperty = $this.isRTL ? 'margin-left' : 'margin-right';
+            $this.scrollHeaderBox.css(marginProperty, scrollShift + 'px');
+            $this.scrollFooterBox.css(marginProperty, scrollShift + 'px');
 
             $this.frozenBody.scrollTop(scrollTop);
 
