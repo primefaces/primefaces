@@ -1431,8 +1431,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             }
 
             if(this.hasVerticalOverflow()) {
-                this.scrollHeaderBox.css('margin-right', scrollBarWidth);
-                this.scrollFooterBox.css('margin-right', scrollBarWidth);
+                var marginProperty = this.isRTL ? 'margin-left' : 'margin-right';
+                this.scrollHeaderBox.css(marginProperty, scrollBarWidth);
+                this.scrollFooterBox.css(marginProperty, scrollBarWidth);
             }
         }
 
@@ -1483,16 +1484,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         this.scrollBody.on('scroll.dataTable', function() {
-            var scrollLeft = $this.scrollBody.scrollLeft();
+            var scrollShift = $this.getScrollbarWidth();
 
-            if ($this.isRTL) {
-                $this.scrollHeaderBox.css('margin-right', scrollLeft + 'px');
-                $this.scrollFooterBox.css('margin-right', scrollLeft + 'px');
-            }
-            else {
-                $this.scrollHeaderBox.css('margin-left', -scrollLeft + 'px');
-                $this.scrollFooterBox.css('margin-left', -scrollLeft + 'px');
-            }
+            var marginProperty = $this.isRTL ? 'margin-left' : 'margin-right';
+            $this.scrollHeaderBox.css(marginProperty, scrollShift + 'px');
+            $this.scrollFooterBox.css(marginProperty, scrollShift + 'px');
 
             if($this.isEmpty()) {
                 return;
@@ -1736,10 +1732,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      */
     alignScrollBody: function() {
-        var marginRight = this.hasVerticalOverflow() ? this.getScrollbarWidth() + 'px' : '0px';
+        var margin = this.hasVerticalOverflow() ? this.getScrollbarWidth() + 'px' : '0px';
 
-        this.scrollHeaderBox.css('margin-right', marginRight);
-        this.scrollFooterBox.css('margin-right', marginRight);
+        var marginProperty = this.isRTL ? 'margin-left' : 'margin-right';
+        this.scrollHeaderBox.css(marginProperty, margin);
+        this.scrollFooterBox.css(marginProperty, margin);
     },
 
     /**
