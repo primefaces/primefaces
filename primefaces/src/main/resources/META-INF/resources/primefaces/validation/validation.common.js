@@ -299,12 +299,12 @@ if (window.PrimeFaces) {
 
             if (widget) {
                 if (PrimeFaces.validation.validate($source, process, update, false, false, false, false).valid) {
-                    widget.jq.addClass('ui-state-valid');
-                    widget.jq.removeClass('ui-state-error');
+                    widget.jq.addClass('ui-state-csv-valid');
+                    widget.jq.removeClass('ui-state-csv-invalid');
                     widget.enable();
                 } else {
-                    widget.jq.addClass('ui-state-error');
-                    widget.jq.removeClass('ui-state-valid');
+                    widget.jq.addClass('ui-state-csv-invalid');
+                    widget.jq.removeClass('ui-state-csv-valid');
                     widget.disable();
                 }
             } else {
