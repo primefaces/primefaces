@@ -254,7 +254,7 @@ public class DatePicker extends DatePickerBase {
 
         if (isValid()) {
             List<Object> enabledDates = getEnabledDates();
-            if (enabledDates != null) {
+            if (enabledDates != null && !enabledDates.isEmpty()) {
 
                 boolean localValid = false;
 
