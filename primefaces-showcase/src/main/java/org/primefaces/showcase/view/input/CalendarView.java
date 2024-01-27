@@ -60,11 +60,13 @@ public class CalendarView implements Serializable {
     private Date date14;
     private Date date15;
     private Date date16;
+    private Date date17;
     private Date dateTimeDe;
     private Date dateTimeMillis;
     private List<Date> multi;
     private List<Date> range;
     private List<Date> invalidDates;
+    private List<Date> validDates;
     private List<Integer> invalidDays;
     private Date minDate;
     private Date maxDate;
@@ -81,6 +83,12 @@ public class CalendarView implements Serializable {
         long oneDay = 24 * 60 * 60 * 1000;
         for (int i = 0; i < 5; i++) {
             invalidDates.add(new Date(invalidDates.get(i).getTime() + oneDay));
+        }
+
+        validDates = new ArrayList<>();
+        validDates.add(today);
+        for (int i = 0; i < 5; i++) {
+            validDates.add(new Date(validDates.get(i).getTime() + oneDay));
         }
 
         invalidDays = new ArrayList<>();
@@ -244,6 +252,14 @@ public class CalendarView implements Serializable {
         this.date14 = date14;
     }
 
+    public Date getDate17() {
+        return date17;
+    }
+
+    public void setDate17(Date date17) {
+        this.date17 = date17;
+    }
+
     public List<Date> getMulti() {
         return multi;
     }
@@ -266,6 +282,14 @@ public class CalendarView implements Serializable {
 
     public void setInvalidDates(List<Date> invalidDates) {
         this.invalidDates = invalidDates;
+    }
+
+    public List<Date> getValidDates() {
+        return validDates;
+    }
+
+    public void setValidDates(List<Date> validDates) {
+        this.validDates = validDates;
     }
 
     public List<Integer> getInvalidDays() {

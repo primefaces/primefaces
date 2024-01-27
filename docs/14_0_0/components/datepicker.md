@@ -40,6 +40,7 @@ ajax selection and more.
 | disabled | false | Boolean | Disables input field
 | disabledDates | null | List<java.time.LocalDate>, List<java.util.Date> (deprecated) | List of dates that should be disabled.
 | disabledDays | null | List&lt;Integer&gt; | List of week day indexes that should be disabled.
+| enabledDates | null | List<java.time.LocalDate>, List<java.util.Date> (deprecated) | List of dates that should be enabled.
 | flex | false | Boolean | Use modern PrimeFlex-Grid instead of classic Grid CSS. (primeflex.css must be included into the template.xhtml)
 | focusOnSelect | false | Boolean | When enabled, input receives focus after a value is picked.
 | hideOnDateTimeSelect | false | Boolean | Defines if the popup should be hidden when a time is selected.

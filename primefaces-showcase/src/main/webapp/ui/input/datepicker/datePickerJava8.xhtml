@@ -214,6 +214,13 @@
                         <p:datePicker id="multi" value="#{calendarJava8View.date12}" numberOfMonths="3"
                                       monthNavigator="true" yearNavigator="true"/>
                     </div>
+
+                    <div class="field col-12 md:col-4">
+                        <p:outputLabel for="enabledDates" value="Enabled Dates"/>
+                        <p:datePicker id="enabledDates" value="#{calendarJava8View.date15}"
+                                     enabledDates="#{calendarJava8View.validDates}"
+                                     readonlyInput="true"/>
+                    </div>
                 </div>
 
                 <h5>Inline</h5>

@@ -225,6 +225,11 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
         if (disabledDates != null) {
             CalendarUtils.encodeListValue(context, datePicker, "disabledDates", disabledDates, pattern);
         }
+
+        List enabledDates = datePicker.getEnabledDates();
+        if (enabledDates != null) {
+            CalendarUtils.encodeListValue(context, datePicker, "enabledDates", enabledDates, pattern);
+        }
         encodeScriptDateStyleClasses(wb, datePicker);
 
         String dateTemplate = datePicker.getDateTemplate();

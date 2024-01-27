@@ -59,6 +59,7 @@ public class CalendarJava8View implements Serializable {
     private LocalDate date12;
     private LocalDate date13;
     private LocalDate date14;
+    private LocalDate date15;
     private LocalTime time1;
     private LocalTime time2;
     private LocalTime time3;
@@ -80,6 +81,7 @@ public class CalendarJava8View implements Serializable {
     private List<LocalDate> multi;
     private List<LocalDate> range;
     private List<LocalDate> invalidDates;
+    private List<LocalDate> validDates;
     private List<Integer> invalidDays;
     private LocalDate minDate;
     private LocalDate maxDate;
@@ -96,6 +98,12 @@ public class CalendarJava8View implements Serializable {
         invalidDates.add(LocalDate.now());
         for (int i = 0; i < 5; i++) {
             invalidDates.add(invalidDates.get(i).plusDays(1));
+        }
+
+        validDates = new ArrayList<>();
+        validDates.add(LocalDate.now());
+        for (int i = 0; i < 5; i++) {
+            validDates.add(validDates.get(i).plusDays(1));
         }
 
         invalidDays = new ArrayList<>();
@@ -288,6 +296,14 @@ public class CalendarJava8View implements Serializable {
         this.invalidDates = invalidDates;
     }
 
+    public List<LocalDate> getValidDates() {
+        return validDates;
+    }
+
+    public void setValidDates(List<LocalDate> validDates) {
+        this.validDates = validDates;
+    }
+
     public List<Integer> getInvalidDays() {
         return invalidDays;
     }
@@ -350,6 +366,14 @@ public class CalendarJava8View implements Serializable {
 
     public void setDate14(LocalDate date14) {
         this.date14 = date14;
+    }
+
+    public LocalDate getDate15() {
+        return date15;
+    }
+
+    public void setDate15(LocalDate date15) {
+        this.date15 = date15;
     }
 
     public ZonedDateTime getZonedDateTime1() {
