@@ -25,7 +25,7 @@ Look into [migration guide](https://primefaces.github.io/primefaces/14_0_0/#/../
 
 * CSV - Client Side Validation / CommandButton
     * Added `enabledByValidateClient` to enable CommandButton after CSV was successful (used together with `<p:clientValidator event="..." />` on all relevant input-components)  
-      See https://primefaces.github.io/primefaces/14_0_0/#/core/csv?id=modern-csv
+      See https://primefaces.github.io/primefaces/14_0_0/#/core/csv?id=immediate-csv
 
 * DataExporter
     * Added `bufferSize` to control how many items are fetched at a time when `DataTable#lazy` is enabled

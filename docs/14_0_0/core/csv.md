@@ -281,7 +281,7 @@ PrimeFaces.validator['MyComplexValidator'] = {
 </h:form>
 ```
 
-## Modern CSV
+## Immediate CSV
 
 Immediate client side validation - like used from modern JS-based-UI-Frameworks like React, Angular or Vue - on all input-components (trigger by keyup- respectively change-events depending on component)
 can be done by using the event-mechanism described before. (Using keyup- und change-events depending on component. `<p:clientValidator event="..." />`)
