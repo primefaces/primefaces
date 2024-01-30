@@ -26,7 +26,6 @@ package org.primefaces.component.tieredmenu;
 import java.io.IOException;
 import java.util.List;
 
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.badge.BadgeRenderer;
@@ -38,7 +37,6 @@ import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.Separator;
 import org.primefaces.model.menu.Submenu;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
@@ -105,17 +103,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeFacet(FacesContext context, AbstractMenu menu, String facetName, String styleClass) throws IOException {
-        UIComponent facet = menu.getFacet(facetName);
-        if (FacetUtils.shouldRenderFacet(facet)) {
-            ResponseWriter writer = context.getResponseWriter();
-            writer.startElement("li", null);
-            writer.writeAttribute("class", styleClass, null);
-            writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
-            facet.encodeAll(context);
-            writer.endElement("li");
-        }
-    }
+
 
     protected void encodeElements(FacesContext context, AbstractMenu menu, List<MenuElement> elements) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
@@ -191,14 +179,14 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
         }
 
         if (isRtl) {
-            encodeSubmenuIcon(context, submenu, isRtl);
+            encodeSubmenuIcon(context, submenu, isRtl, true);
             encodeMenuLabel(context, submenu);
             encodeMenuIcon(context, submenu);
         }
         else {
             encodeMenuIcon(context, submenu);
             encodeMenuLabel(context, submenu);
-            encodeSubmenuIcon(context, submenu, isRtl);
+            encodeSubmenuIcon(context, submenu, isRtl, true);
         }
 
         writer.endElement("a");
@@ -213,38 +201,5 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
                 writer.endElement("ul");
             }
         }
-    }
-
-    protected void encodeMenuIcon(FacesContext context, Submenu submenu) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        String icon = submenu.getIcon();
-
-        if (icon != null) {
-            writer.startElement("span", null);
-            writer.writeAttribute("class", Menu.MENUITEM_ICON_CLASS + " " + icon, null);
-            writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
-            writer.endElement("span");
-        }
-    }
-
-    protected void encodeMenuLabel(FacesContext context, Submenu submenu) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        String label = submenu.getLabel();
-
-        if (label != null) {
-            writer.startElement("span", null);
-            writer.writeAttribute("class", Menu.MENUITEM_TEXT_CLASS, null);
-            writer.writeText(label, "value");
-            writer.endElement("span");
-        }
-    }
-
-    protected void encodeSubmenuIcon(FacesContext context, Submenu submenu, boolean isRtl) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        String styleClass = isRtl ? Menu.SUBMENU_LEFT_ICON_CLASS : Menu.SUBMENU_RIGHT_ICON_CLASS;
-
-        writer.startElement("span", null);
-        writer.writeAttribute("class", styleClass, null);
-        writer.endElement("span");
     }
 }

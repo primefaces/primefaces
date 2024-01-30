@@ -24,6 +24,7 @@ rendered | true | Boolean | Boolean value to specify the rendering of the compon
 binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
 widgetVar | null | String | Name of the client side widget
 model | null | MenuModel | MenuModel instance to create menus programmatically
+dir | null | String | Direction indication for text that does not inherit directionality. Valid values are LTR and RTL.
 style | null | String | Inline style of the component.
 styleClass | null | String | Style class of the component.
 autoDisplay | true | Boolean | Defines whether submenus will be displayed on mouseover or not. When set to false, click event is required to display.
@@ -95,6 +96,21 @@ menubar item to execute an action to logout the user.
 ## Dynamic Menus
 Menus can be created programmatically as well, see the dynamic menus part in menu component
 section for more information and an example.
+
+## Facets
+MegaMenu supports `start` and `end` facets to control UI output or add logos or extras to the menu bar.
+
+```xhtml
+<p:megaMenu>
+    <f:facet name="start">
+       <p:graphicImage name="images/primefaces-logo.svg" library="showcase" />
+    </f:facet>
+    <p:menuitem label="Logout" action="#{bean.logout}"/>
+    <f:facet name="end">
+       <p:button value="Quit" icon="pi pi-fw pi-sign-out" styleClass="ui-button-info"/>
+    </f:facet>
+<p:megaMenu>
+```
 
 ## Skinning
 MegaMenu resides in a main container which _style_ and _styleClass_ attributes apply. Following is the

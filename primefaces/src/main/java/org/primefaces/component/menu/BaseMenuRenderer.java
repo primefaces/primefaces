@@ -36,6 +36,7 @@ import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.MenuModel;
+import org.primefaces.model.menu.Submenu;
 import org.primefaces.renderkit.MenuItemAwareRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.FacetUtils;
@@ -222,5 +223,51 @@ public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
         writer.writeAttribute("tabindex", menu.getTabindex(), null);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
         writer.endElement("div");
+    }
+
+    protected void encodeFacet(FacesContext context, AbstractMenu menu, String facetName, String styleClass) throws IOException {
+        UIComponent facet = menu.getFacet(facetName);
+        if (FacetUtils.shouldRenderFacet(facet)) {
+            ResponseWriter writer = context.getResponseWriter();
+            writer.startElement("li", null);
+            writer.writeAttribute("class", styleClass, null);
+            writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
+            facet.encodeAll(context);
+            writer.endElement("li");
+        }
+    }
+
+    protected void encodeMenuIcon(FacesContext context, Submenu submenu) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String icon = submenu.getIcon();
+
+        if (icon != null) {
+            writer.startElement("span", null);
+            writer.writeAttribute("class", Menu.MENUITEM_ICON_CLASS + " " + icon, null);
+            writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
+            writer.endElement("span");
+        }
+    }
+
+    protected void encodeMenuLabel(FacesContext context, Submenu submenu) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String label = submenu.getLabel();
+
+        if (label != null) {
+            writer.startElement("span", null);
+            writer.writeAttribute("class", Menu.MENUITEM_TEXT_CLASS, null);
+            writer.writeText(label, "value");
+            writer.endElement("span");
+        }
+    }
+
+    protected void encodeSubmenuIcon(FacesContext context, Submenu submenu, boolean isRtl, boolean isVertical) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String styleClass = isRtl ? Menu.SUBMENU_LEFT_ICON_CLASS : Menu.SUBMENU_RIGHT_ICON_CLASS;
+        styleClass = isVertical ? styleClass : Menu.SUBMENU_DOWN_ICON_CLASS;
+
+        writer.startElement("span", null);
+        writer.writeAttribute("class", styleClass, null);
+        writer.endElement("span");
     }
 }

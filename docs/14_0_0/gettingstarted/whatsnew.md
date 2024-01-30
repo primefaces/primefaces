@@ -40,6 +40,10 @@ Look into [migration guide](https://primefaces.github.io/primefaces/14_0_0/#/../
 * Messages
     * Added `clearMessages` widget method to clear all current messages.
     
+* MegaMenu
+    * Added `dir` for right-to-left support. Default is ltr.
+    * Added `start` and `end` facets.
+    
 * MenuBar
     * Added `showDelay` delay in milliseconds before displaying the submenu. Default is 0 meaning immediate.
     * Added `hideDelay` delay in milliseconds before hiding the submenu., if 0 not hidden until document.click(). Default is 0.
