@@ -28,7 +28,6 @@ import static org.primefaces.selenium.internal.ConfigProvider.DEPLOYMENT_BASEURL
 
 import java.time.Duration;
 import java.util.List;
-import java.util.Optional;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.html5.WebStorage;
@@ -161,11 +160,11 @@ public final class PrimeSelenium {
             baseLocation = getBaseUrl();
         }
         if (baseLocation == null) {
-            String message = "Cannot determine base url. Please either configure " + DEPLOYMENT_BASEURL + " or " + 
-            (ConfigProvider.getInstance().getDeploymentAdapter() != null ? 
-                            ("implement " + ConfigProvider.getInstance().getDeploymentAdapter().getClass().getCanonicalName() + "#getBaseUrl") : 
-                            ("define " + DEPLOYMENT_ADAPTER + " with implemented DeploymentAdapter#getBaseUrl")) + 
-            " or implement " + page.getClass().getCanonicalName() + "#getBaseLocation";
+            String message = "Cannot determine base url. Please either configure " + DEPLOYMENT_BASEURL + " or " +
+                    (ConfigProvider.getInstance().getDeploymentAdapter() != null ?
+                            ("implement " + ConfigProvider.getInstance().getDeploymentAdapter().getClass().getCanonicalName() + "#getBaseUrl") :
+                            ("define " + DEPLOYMENT_ADAPTER + " with implemented DeploymentAdapter#getBaseUrl")) +
+                    " or implement " + page.getClass().getCanonicalName() + "#getBaseLocation";
             throw new RuntimeException(message);
         }
         return baseLocation + page.getLocation();
@@ -180,9 +179,9 @@ public final class PrimeSelenium {
     public static String getUrl(String url) {
         String baseUrl = getBaseUrl();
         if (baseUrl == null) {
-            String message = "Cannot determine base url. Please either configure " + DEPLOYMENT_BASEURL + " or " + 
-                    (ConfigProvider.getInstance().getDeploymentAdapter() != null ? 
-                            ("implement " + ConfigProvider.getInstance().getDeploymentAdapter().getClass().getCanonicalName() + "#getBaseUrl") : 
+            String message = "Cannot determine base url. Please either configure " + DEPLOYMENT_BASEURL + " or " +
+                    (ConfigProvider.getInstance().getDeploymentAdapter() != null ?
+                            ("implement " + ConfigProvider.getInstance().getDeploymentAdapter().getClass().getCanonicalName() + "#getBaseUrl") :
                             ("define " + DEPLOYMENT_ADAPTER + " with implemented DeploymentAdapter#getBaseUrl"));
             throw new RuntimeException(message);
         }
