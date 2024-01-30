@@ -161,13 +161,12 @@ public final class PrimeSelenium {
             baseLocation = getBaseUrl();
         }
         if (baseLocation == null) {
-            StringBuilder messageBuilder = new StringBuilder("Cannot determine base url. Please either configure ").append(DEPLOYMENT_BASEURL).append(" or ");
-            Optional.ofNullable(ConfigProvider.getInstance().getDeploymentAdapter())
-                    .map(da -> da.getClass().getCanonicalName()).ifPresentOrElse(
-                            dacn -> messageBuilder.append("implement ").append(dacn).append("#getBaseUrl"),
-                            () -> messageBuilder.append("define ").append(DEPLOYMENT_ADAPTER).append(" with implemented DeploymentAdapter#getBaseUrl"));
-            messageBuilder.append(" or implement ").append(page.getClass().getCanonicalName()).append("#getBaseLocation");
-            throw new RuntimeException(messageBuilder.toString());
+            String message = "Cannot determine base url. Please either configure " + DEPLOYMENT_BASEURL + " or " + 
+            (ConfigProvider.getInstance().getDeploymentAdapter() != null ? 
+                            ("implement " + ConfigProvider.getInstance().getDeploymentAdapter().getClass().getCanonicalName() + "#getBaseUrl") : 
+                            ("define " + DEPLOYMENT_ADAPTER + " with implemented DeploymentAdapter#getBaseUrl")) + 
+            " or implement " + page.getClass().getCanonicalName() + "#getBaseLocation";
+            throw new RuntimeException(message);
         }
         return baseLocation + page.getLocation();
     }
@@ -181,12 +180,11 @@ public final class PrimeSelenium {
     public static String getUrl(String url) {
         String baseUrl = getBaseUrl();
         if (baseUrl == null) {
-            StringBuilder messageBuilder = new StringBuilder("Cannot determine base url. Please either configure ").append(DEPLOYMENT_BASEURL).append(" or ");
-            Optional.ofNullable(ConfigProvider.getInstance().getDeploymentAdapter())
-                    .map(da -> da.getClass().getCanonicalName()).ifPresentOrElse(
-                            dacn -> messageBuilder.append("implement ").append(dacn).append("#getBaseUrl"),
-                            () -> messageBuilder.append("define ").append(DEPLOYMENT_ADAPTER).append(" with implemented DeploymentAdapter#getBaseUrl"));
-            throw new RuntimeException(messageBuilder.toString());
+            String message = "Cannot determine base url. Please either configure " + DEPLOYMENT_BASEURL + " or " + 
+                    (ConfigProvider.getInstance().getDeploymentAdapter() != null ? 
+                            ("implement " + ConfigProvider.getInstance().getDeploymentAdapter().getClass().getCanonicalName() + "#getBaseUrl") : 
+                            ("define " + DEPLOYMENT_ADAPTER + " with implemented DeploymentAdapter#getBaseUrl"));
+            throw new RuntimeException(message);
         }
         return baseUrl + url;
     }
