@@ -23,9 +23,6 @@
  */
 package org.primefaces.selenium;
 
-import static org.primefaces.selenium.internal.ConfigProvider.DEPLOYMENT_ADAPTER;
-import static org.primefaces.selenium.internal.ConfigProvider.DEPLOYMENT_BASEURL;
-
 import java.time.Duration;
 import java.util.List;
 
@@ -160,10 +157,11 @@ public final class PrimeSelenium {
             baseLocation = getBaseUrl();
         }
         if (baseLocation == null) {
-            String message = "Cannot determine base url. Please either configure " + DEPLOYMENT_BASEURL + " or " +
-                    (ConfigProvider.getInstance().getDeploymentAdapter() != null ?
-                            ("implement " + ConfigProvider.getInstance().getDeploymentAdapter().getClass().getCanonicalName() + "#getBaseUrl") :
-                            ("define " + DEPLOYMENT_ADAPTER + " with implemented DeploymentAdapter#getBaseUrl")) +
+            DeploymentAdapter deploymentAdapter = ConfigProvider.getInstance().getDeploymentAdapter();
+            String message = "Cannot determine base url. Please either configure " + ConfigProvider.DEPLOYMENT_BASEURL + " or " +
+                    (deploymentAdapter != null ?
+                            ("implement " + deploymentAdapter.getClass().getCanonicalName() + "#getBaseUrl") :
+                            ("define " + ConfigProvider.DEPLOYMENT_ADAPTER + " with implemented DeploymentAdapter#getBaseUrl")) +
                     " or implement " + page.getClass().getCanonicalName() + "#getBaseLocation";
             throw new RuntimeException(message);
         }
@@ -179,10 +177,11 @@ public final class PrimeSelenium {
     public static String getUrl(String url) {
         String baseUrl = getBaseUrl();
         if (baseUrl == null) {
-            String message = "Cannot determine base url. Please either configure " + DEPLOYMENT_BASEURL + " or " +
-                    (ConfigProvider.getInstance().getDeploymentAdapter() != null ?
-                            ("implement " + ConfigProvider.getInstance().getDeploymentAdapter().getClass().getCanonicalName() + "#getBaseUrl") :
-                            ("define " + DEPLOYMENT_ADAPTER + " with implemented DeploymentAdapter#getBaseUrl"));
+            DeploymentAdapter deploymentAdapter = ConfigProvider.getInstance().getDeploymentAdapter();
+            String message = "Cannot determine base url. Please either configure " + ConfigProvider.DEPLOYMENT_BASEURL + " or " +
+                    (deploymentAdapter != null ?
+                            ("implement " + deploymentAdapter.getClass().getCanonicalName() + "#getBaseUrl") :
+                            ("define " + ConfigProvider.DEPLOYMENT_ADAPTER + " with implemented DeploymentAdapter#getBaseUrl"));
             throw new RuntimeException(message);
         }
         return baseUrl + url;
