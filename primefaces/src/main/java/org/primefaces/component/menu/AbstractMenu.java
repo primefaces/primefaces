@@ -49,6 +49,8 @@ public abstract class AbstractMenu extends UIPanel implements MenuItemAware, RTL
     public static final String SUBMENU_DOWN_ICON_CLASS = "ui-icon ui-icon-triangle-1-s";
     public static final String SUBMENU_LINK_CLASS = "ui-menuitem-link ui-submenu-link ui-corner-all";
     public static final String OPTIONS_CLASS = "ui-menuitem ui-menubar-options ui-widget ui-corner-all";
+    public static final String START_CLASS = "ui-menuitem ui-menubar-start ui-widget ui-corner-all";
+    public static final String END_CLASS = "ui-menuitem ui-menubar-end ui-widget ui-corner-all";
 
     public enum PropertyKeys {
         tabindex,

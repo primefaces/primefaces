@@ -82,6 +82,23 @@ overlay itself.
     //content
 </p:tieredMenu>
 ```
+
+## Facets
+TieredMenu supports `start` and `end` facets to control UI output or add logos or extras to the menu bar.
+
+```xhtml
+<p:commandButton type="button" value="Show" id="btn" />
+<p:tieredMenu autoDisplay="false" trigger="btn" my="left top" at="left bottom">
+    <f:facet name="start">
+       <p:graphicImage name="images/primefaces-logo.svg" library="showcase" />
+    </f:facet>
+    <p:menuitem label="Logout" action="#{bean.logout}"/>
+    <f:facet name="end">
+       <p:button value="Logout" icon="pi pi-fw pi-sign-out" styleClass="ui-button-info"/>
+    </f:facet>
+</p:tieredMenu>
+```
+
 ## Client Side API
 Widget: _PrimeFaces.widget.TieredMenu_
 
