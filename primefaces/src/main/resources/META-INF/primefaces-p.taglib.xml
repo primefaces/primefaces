@@ -229,30 +229,38 @@
     </tag>
 
     <tag>
-        <description>The legacy way to present dynamic binary data to the client is to write a servlet or a filter and stream the binary data.
-            FileDownload presents an easier way to do the same.
+        <description><![CDATA[The legacy way to present dynamic binary data to the client is to write a servlet or a filter and stream the binary data.
+            FileDownload presents an easier way to do the same.]]>
         </description>
         <tag-name>fileDownload</tag-name>
         <handler-class>
             org.primefaces.component.filedownload.FileDownloadTagHandler
         </handler-class>
         <attribute>
-            <description>A streamed content instance.</description>
+            <description><![CDATA[A streamed content instance.]]></description>
             <name>value</name>
             <required>true</required>
             <type>java.lang.Object</type>
         </attribute>
         <attribute>
-            <description>Specifies display mode (non-ajax), valid values are "attachment" (default) and "inline".</description>
+            <description><![CDATA[Specifies display mode (non-ajax), valid values are "attachment" (default) and "inline".]]></description>
             <name>contentDisposition</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description>Defines setting cookie key for monitorDownload method on client side.</description>
+            <description><![CDATA[Defines setting cookie key for monitorDownload method on client side.]]></description>
             <name>monitorKey</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Controls the 'no-store' attribute on the cache control header. Default false is to include 'no-store'.]]>
+            </description>
+            <name>store</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
     </tag>
 
