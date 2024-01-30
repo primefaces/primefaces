@@ -77,7 +77,6 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
 
     protected void encodeMenu(FacesContext context, AbstractMenu menu, String style, String styleClass, String role) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        UIComponent optionsFacet = menu.getFacet("options");
 
         writer.startElement("div", menu);
         writer.writeAttribute("id", menu.getClientId(context), "id");
@@ -92,21 +91,30 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
         writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUBAR, null);
         writer.writeAttribute("class", Menu.LIST_CLASS, null);
 
+        encodeFacet(context, menu, "start", Menu.START_CLASS);
+
         if (menu.getElementsCount() > 0) {
             encodeElements(context, menu, menu.getElements());
         }
 
-        if (FacetUtils.shouldRenderFacet(optionsFacet)) {
-            writer.startElement("li", null);
-            writer.writeAttribute("class", Menu.OPTIONS_CLASS, null);
-            writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
-            optionsFacet.encodeAll(context);
-            writer.endElement("li");
-        }
+        encodeFacet(context, menu, "options", Menu.OPTIONS_CLASS);
+        encodeFacet(context, menu, "end", Menu.END_CLASS);
 
         writer.endElement("ul");
 
         writer.endElement("div");
+    }
+
+    protected void encodeFacet(FacesContext context, AbstractMenu menu, String facetName, String styleClass) throws IOException {
+        UIComponent facet = menu.getFacet(facetName);
+        if (FacetUtils.shouldRenderFacet(facet)) {
+            ResponseWriter writer = context.getResponseWriter();
+            writer.startElement("li", null);
+            writer.writeAttribute("class", styleClass, null);
+            writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
+            facet.encodeAll(context);
+            writer.endElement("li");
+        }
     }
 
     protected void encodeElements(FacesContext context, AbstractMenu menu, List<MenuElement> elements) throws IOException {

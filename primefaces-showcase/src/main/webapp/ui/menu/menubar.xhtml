@@ -22,6 +22,9 @@
                 <p:growl id="messages"/>
 
                 <p:menubar hideDelay="1000">
+                     <f:facet name="start">
+                        <p:graphicImage name="images/primefaces-logo.svg" library="showcase" />
+                    </f:facet>
                     <p:submenu label="File" icon="pi pi-fw pi-file">
                         <p:submenu label="New" icon="pi pi-fw pi-plus">
                             <p:menuitem value="Bookmark" icon="pi pi-fw pi-bookmark"/>
@@ -64,7 +67,7 @@
 
                     <p:menuitem value="Quit" icon="pi pi-fw pi-power-off"/>
 
-                    <f:facet name="options">
+                    <f:facet name="end">
                         <div class="ui-input-icon-left mr-2">
                             <i class="pi pi-fw pi-search" />
                             <p:inputText placeholder="Search"/>
