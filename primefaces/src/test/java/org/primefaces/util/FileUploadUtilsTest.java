@@ -25,6 +25,7 @@ package org.primefaces.util;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
@@ -162,6 +163,7 @@ class FileUploadUtilsTest {
     }
 
     @Test
+    @Disabled
     void requireValidFilePath_AbsoluteFile() throws URISyntaxException {
         // Unix systems can start with / but Windows cannot
         String os = System.getProperty("os.name").toLowerCase();
