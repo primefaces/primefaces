@@ -31,7 +31,7 @@
                     <p:outputLabel for="number" value="Number:"/>
                     <p:inputMask id="number" value="#{validationView.integer}" label="Number" mask="9[99]"
                                  validateMask="false">
-                        <f:validateLongRange minimum="25" maximum="999"/>
+                        <f:validateLength minimum="2" maximum="3"/>
                     </p:inputMask>
                     <p:message for="number"/>
                     <h:outputText value="#{validationView.integer}"/>
