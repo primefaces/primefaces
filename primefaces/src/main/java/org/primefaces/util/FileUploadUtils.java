@@ -44,6 +44,7 @@ import java.io.PushbackInputStream;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DecimalFormat;
@@ -93,12 +94,22 @@ public class FileUploadUtils {
             throw validationError("Invalid filename: " + filename);
         }
 
+        Character ch = containsInvalidCharacters(filename);
+        if (ch != null) {
+            throw validationError("Invalid filename: (" + filename + ") contains invalid character: " + ch);
+        }
+
         return FilenameUtils.getName(filename);
     }
 
     public static String requireValidFilePath(String filePath, boolean mustExist) {
         if (LangUtils.isBlank(filePath)) {
             throw validationError("Path can not be the empty string or null");
+        }
+
+        Character ch = containsInvalidCharacters(filePath);
+        if (ch != null) {
+            throw validationError("Invalid path: (" + filePath + ") contains invalid character: " + ch);
         }
 
         filePath = URLDecoder.decode(filePath, StandardCharsets.UTF_8);
@@ -139,6 +150,18 @@ public class FileUploadUtils {
 
     static boolean isSystemWindows() {
         return File.separatorChar == '\\';
+    }
+
+    public static Character containsInvalidCharacters(String s) {
+        try {
+            Paths.get(s);
+        }
+        catch (InvalidPathException e) {
+            if (e.getInput() != null && e.getInput().length() > 0 && e.getIndex() >= 0) {
+                return s.toCharArray()[e.getIndex()];
+            }
+        }
+        return null;
     }
 
     /**
