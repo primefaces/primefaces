@@ -5130,7 +5130,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(this.reflowDD && this.cfg.reflow) {
             sortOrder = sortOrder > 0 ? 0 : 1;
 
-            var columnHeader = columnHeader.text();
+            var columnHeader = columnHeader.text().replace(/[^a-zA-Z0-9\u00C0-\u017F]/g, '');
             var filterby = columnHeader.indexOf("Filter by");
             if (filterby !== -1) {
                 columnHeader = columnHeader.substring(0, filterby);

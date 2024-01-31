@@ -1654,7 +1654,15 @@ public class DataTableRenderer extends DataRenderer {
 
             headerLabel.set(null);
             table.invokeOnColumn(sortMeta.getColumnKey(), (column) -> {
-                headerLabel.set(getHeaderLabel(context, column));
+                String label = getHeaderLabel(context, column);
+                if (LangUtils.isBlank(label)) {
+                    UIComponent headerFacet = column.getFacet("header");
+                    if (FacetUtils.shouldRenderFacet(headerFacet)) {
+                        // encode and strip all HTML tags
+                        label = ComponentUtils.encodeComponent(headerFacet, context).replaceAll("\\<.*?\\>", Constants.EMPTY_STRING);
+                    }
+                }
+                headerLabel.set(label);
             });
             headers.put(sortMeta, headerLabel.get());
         }
