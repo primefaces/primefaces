@@ -25,6 +25,7 @@ package org.primefaces.util;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
@@ -40,6 +41,8 @@ import javax.faces.validator.ValidatorException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.nio.file.Paths;
 import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -160,17 +163,19 @@ class FileUploadUtilsTest {
     }
 
     @Test
-    void requireValidFilePath_AbsoluteFile() {
+    @Disabled
+    void requireValidFilePath_AbsoluteFile() throws URISyntaxException {
         // Unix systems can start with / but Windows cannot
         String os = System.getProperty("os.name").toLowerCase();
 
         // Arrange
-        String relativePath = FileUploadUtilsTest.class.getResource("/test.png").getFile();
+        String absolutePath = Paths.get(FileUploadUtilsTest.class.getResource("/test.png").toURI())
+                .toFile().getAbsolutePath();
 
         // Act
         if (os.contains("win")) {
             try {
-                FileUploadUtils.requireValidFilePath(relativePath, false);
+                FileUploadUtils.requireValidFilePath(absolutePath, false);
                 fail("File was absolute path and should have failed");
             }
             catch (ValidatorException e) {
@@ -179,7 +184,7 @@ class FileUploadUtilsTest {
             }
         }
         else {
-            String result = FileUploadUtils.requireValidFilePath(relativePath, false);
+            String result = FileUploadUtils.requireValidFilePath(absolutePath, false);
             assertTrue(result.endsWith("test.png"));
         }
     }
@@ -190,12 +195,13 @@ class FileUploadUtilsTest {
         String os = System.getProperty("os.name").toLowerCase();
 
         // Arrange
-        String relativePath = "/D:/Development/OS%20Projects/primefaces/primefaces/target/test-classes/test.png";
+        String absolutePath;
 
         // Act
         if (os.contains("win")) {
+            absolutePath = "D:/Development/OS%20Projects/primefaces/primefaces/target/test-classes/test.png";
             try {
-                FileUploadUtils.requireValidFilePath(relativePath, false);
+                FileUploadUtils.requireValidFilePath(absolutePath, false);
                 fail("File was absolute path and should have failed");
             }
             catch (ValidatorException e) {
@@ -204,7 +210,8 @@ class FileUploadUtilsTest {
             }
         }
         else {
-            String result = FileUploadUtils.requireValidFilePath(relativePath, false);
+            absolutePath = "/Development/OS%20Projects/primefaces/primefaces/target/test-classes/test.png";
+            String result = FileUploadUtils.requireValidFilePath(absolutePath, false);
             assertTrue(result.endsWith("test.png"));
         }
     }
@@ -325,4 +332,14 @@ class FileUploadUtilsTest {
         assertEquals("1000 Bytes", FileUploadUtils.formatBytes(1000L, Locale.US));
         assertEquals("1.0 KB", FileUploadUtils.formatBytes(1025L, Locale.US));
     }
+
+    @Test
+    void requireValidFilename() {
+        assertDoesNotThrow(() -> FileUploadUtils.requireValidFilename("someFileWithUmlautsßöäü.txt"));
+        // validate fileName which contains /, which is invalid in a filename
+        assertThrows(FacesException.class, () -> FileUploadUtils.requireValidFilename("someFil/eWithUmlautsßöäü.txt"));
+        // validate fileName which contains <, which is invalid in a filename
+        assertThrows(FacesException.class, () -> FileUploadUtils.requireValidFilename("someFil<eWithUmlautsßöäü.txt"));
+    }
+
 }

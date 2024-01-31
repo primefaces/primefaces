@@ -44,6 +44,7 @@ import java.io.PushbackInputStream;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DecimalFormat;
@@ -93,9 +94,9 @@ public class FileUploadUtils {
             throw validationError("Invalid filename: " + filename);
         }
 
-        int ch = containsUnprintableCharacters(filename);
-        if (ch != -1) {
-            throw validationError("Invalid filename: (" + filename + ") contains unprintable character: " + ch);
+        Character ch = containsInvalidCharacters(filename);
+        if (ch != null) {
+            throw validationError("Invalid filename: (" + filename + ") contains invalid character: " + ch);
         }
 
         return FilenameUtils.getName(filename);
@@ -106,9 +107,9 @@ public class FileUploadUtils {
             throw validationError("Path can not be the empty string or null");
         }
 
-        int ch = containsUnprintableCharacters(filePath);
-        if (ch != -1) {
-            throw validationError("Invalid path: (" + filePath + ") contains unprintable character: " + ch);
+        Character ch = containsInvalidCharacters(filePath);
+        if (ch != null) {
+            throw validationError("Invalid path: (" + filePath + ") contains invalid character: " + ch);
         }
 
         filePath = URLDecoder.decode(filePath, StandardCharsets.UTF_8);
@@ -151,14 +152,16 @@ public class FileUploadUtils {
         return File.separatorChar == '\\';
     }
 
-    public static int containsUnprintableCharacters(String s) {
-        for (int i = 0; i < s.length(); i++) {
-            char ch = s.charAt(i);
-            if ((ch) < 32 || (ch) > 126) {
-                return ch;
+    public static Character containsInvalidCharacters(String s) {
+        try {
+            Paths.get(s);
+        }
+        catch (InvalidPathException e) {
+            if (e.getInput() != null && e.getInput().length() > 0 && e.getIndex() >= 0) {
+                return s.toCharArray()[e.getIndex()];
             }
         }
-        return -1;
+        return null;
     }
 
     /**
