@@ -934,9 +934,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         if(this.panel.is(':visible')) {
             this.revert();
             this.hide();
+            event.preventDefault();
         }
-
-        event.preventDefault();
     },
 
     /**
