@@ -85,7 +85,7 @@ public class DefaultWebDriverAdapter implements WebDriverAdapter {
 
         switch (config.getWebdriverBrowser()) {
             case "firefox":
-                FirefoxOptions firefoxOptions = new FirefoxOptions();
+                FirefoxOptions firefoxOptions = new FirefoxOptions().configureFromEnv();
                 firefoxOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
                 if (config.isWebdriverHeadless()) {
                     firefoxOptions.addArguments("-headless");
