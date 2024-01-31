@@ -478,7 +478,7 @@ if (window.PrimeFaces) {
                 highlighter = PrimeFaces.validator.Highlighter.types[highlighterType];
 
             if (valid) {
-                highlighter.unhighlight(element);
+                highlighter.unhighlight(element, !highlight);
                 element.attr('aria-invalid', false);
             }
             else {
@@ -534,13 +534,13 @@ if (window.PrimeFaces) {
 
                             if (valid) {
                                 if (highlighter) {
-                                    highlighter.unhighlight(element);
+                                    highlighter.unhighlight(element, !highlight);
                                 }
                                 element.attr('aria-invalid', false);
                             }
                             else {
-                                if (highlight && highlighter) {
-                                    highlighter.highlight(element);
+                                if (highlighter) {
+                                    highlighter.highlight(element, !highlight);
                                 }
                                 element.attr('aria-invalid', true);
                             }
