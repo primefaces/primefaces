@@ -97,7 +97,7 @@ Menubar supports `start` and `end` facets to control UI output or add logos or e
     </f:facet>
     <p:menuitem label="Logout" action="#{bean.logout}"/>
     <f:facet name="end">
-       <p:button value="Logout" icon="pi pi-fw pi-sign-out" styleClass="ui-button-info"/>
+       <p:button value="Quit" icon="pi pi-fw pi-sign-out" styleClass="ui-button-info"/>
     </f:facet>
 </p:menubar>
 ```

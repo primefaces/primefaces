@@ -21,6 +21,9 @@
             <h:form>
                 <h5>Horizontal</h5>
                 <p:megaMenu orientation="horizontal" autoDisplay="false">
+                    <f:facet name="start">
+                        <p:graphicImage name="images/primefaces-logo.svg" library="showcase" width="150"/>
+                    </f:facet>
                     <p:submenu label="Videos" icon="pi pi-fw pi-video">
                         <p:column>
                             <p:submenu label="Video 1">
@@ -127,10 +130,21 @@
                             </p:submenu>
                         </p:column>
                     </p:submenu>
+                    
+                    <f:facet name="end">
+                        <div class="ui-input-icon-left mr-2">
+                            <i class="pi pi-fw pi-search" />
+                            <p:inputText placeholder="Search"/>
+                        </div>
+                        <p:button value="Logout" icon="pi pi-fw pi-sign-out" styleClass="ui-button-info"/>
+                    </f:facet>
                 </p:megaMenu>
 
                 <h5>Vertical</h5>
                 <p:megaMenu orientation="vertical" autoDisplay="false">
+                    <f:facet name="start">
+                        <p:graphicImage name="images/primefaces-logo.svg" library="showcase" width="150" />
+                    </f:facet>
                     <p:submenu label="Videos" icon="pi pi-fw pi-video">
                         <p:column>
                             <p:submenu label="Video 1">
