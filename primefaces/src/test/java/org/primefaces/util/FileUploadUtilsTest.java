@@ -325,4 +325,13 @@ class FileUploadUtilsTest {
         assertEquals("1000 Bytes", FileUploadUtils.formatBytes(1000L, Locale.US));
         assertEquals("1.0 KB", FileUploadUtils.formatBytes(1025L, Locale.US));
     }
+
+    @Test
+    void requireValidFilename() {
+        assertDoesNotThrow(() -> FileUploadUtils.requireValidFilename("someFileWithUmlautsßöäü.txt"));
+        // validate fileName which contains /, which is invalid in a filename
+        assertThrows(FacesException.class, () -> FileUploadUtils.requireValidFilename("someFil/eWithUmlautsßöäü.txt"));
+        // validate fileName which contains <, which is invalid in a filename
+        assertThrows(FacesException.class, () -> FileUploadUtils.requireValidFilename("someFil<eWithUmlautsßöäü.txt"));
+    }
 }

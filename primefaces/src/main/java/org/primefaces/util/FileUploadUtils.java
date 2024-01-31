@@ -93,22 +93,12 @@ public class FileUploadUtils {
             throw validationError("Invalid filename: " + filename);
         }
 
-        int ch = containsUnprintableCharacters(filename);
-        if (ch != -1) {
-            throw validationError("Invalid filename: (" + filename + ") contains unprintable character: " + ch);
-        }
-
         return FilenameUtils.getName(filename);
     }
 
     public static String requireValidFilePath(String filePath, boolean mustExist) {
         if (LangUtils.isBlank(filePath)) {
             throw validationError("Path can not be the empty string or null");
-        }
-
-        int ch = containsUnprintableCharacters(filePath);
-        if (ch != -1) {
-            throw validationError("Invalid path: (" + filePath + ") contains unprintable character: " + ch);
         }
 
         filePath = URLDecoder.decode(filePath, StandardCharsets.UTF_8);
@@ -149,16 +139,6 @@ public class FileUploadUtils {
 
     static boolean isSystemWindows() {
         return File.separatorChar == '\\';
-    }
-
-    public static int containsUnprintableCharacters(String s) {
-        for (int i = 0; i < s.length(); i++) {
-            char ch = s.charAt(i);
-            if ((ch) < 32 || (ch) > 126) {
-                return ch;
-            }
-        }
-        return -1;
     }
 
     /**
