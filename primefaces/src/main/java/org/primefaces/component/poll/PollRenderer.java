@@ -91,6 +91,8 @@ public class PollRenderer extends CoreRenderer {
                 .attr("frequency", convertedInterval)
                 .attr("autoStart", poll.isAutoStart())
                 .attr("intervalType", poll.getIntervalType(), "second")
+                .callback("onActivated", "function()", poll.getOnactivated())
+                .callback("onDeactivated", "function()", poll.getOndeactivated())
                 .callback("fn", "function()", request);
 
         wb.finish();

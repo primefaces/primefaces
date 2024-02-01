@@ -35,30 +35,31 @@ public abstract class PollBase extends UIComponentBase implements AjaxSource, Wi
     public static final String DEFAULT_RENDERER = "org.primefaces.component.PollRenderer";
 
     public enum PropertyKeys {
-
-        widgetVar,
-        interval,
-        update,
-        listener,
-        immediate,
-        onstart,
-        oncomplete,
-        process,
-        onerror,
-        onsuccess,
-        global,
-        delay,
-        timeout,
         async,
         autoStart,
-        stop,
-        partialSubmit,
-        resetValues,
-        ignoreAutoUpdate,
-        partialSubmitFilter,
+        delay,
         form,
+        global,
+        ignoreAutoUpdate,
+        ignoreComponentNotFound,
+        immediate,
+        interval,
         intervalType,
-        ignoreComponentNotFound
+        listener,
+        onactivated,
+        oncomplete,
+        ondeactivated,
+        onerror,
+        onstart,
+        onsuccess,
+        partialSubmit,
+        partialSubmitFilter,
+        process,
+        resetValues,
+        stop,
+        timeout,
+        update,
+        widgetVar
     }
 
     public PollBase() {
@@ -268,5 +269,21 @@ public abstract class PollBase extends UIComponentBase implements AjaxSource, Wi
 
     public void setIgnoreComponentNotFound(boolean ignoreComponentNotFound) {
         getStateHelper().put(PropertyKeys.ignoreComponentNotFound, ignoreComponentNotFound);
+    }
+
+    public String getOnactivated() {
+        return (String) getStateHelper().eval(PropertyKeys.onactivated, null);
+    }
+
+    public void setOnactivated(String onactivated) {
+        getStateHelper().put(PropertyKeys.onactivated, onactivated);
+    }
+
+    public String getOndeactivated() {
+        return (String) getStateHelper().eval(PropertyKeys.ondeactivated, null);
+    }
+
+    public void setOndeactivated(String ondeactivated) {
+        getStateHelper().put(PropertyKeys.ondeactivated, ondeactivated);
     }
 }

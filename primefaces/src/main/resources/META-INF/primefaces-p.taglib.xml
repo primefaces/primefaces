@@ -21260,6 +21260,22 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Client side callback to execute when the poller is activated. Return false to prevent poller from starting.]]>
+            </description>
+            <name>onactivated</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the poller is deactivated. Return false to prevent poller from stopping.]]>
+            </description>
+            <name>ondeactivated</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Component id(s) to process partially instead of whole view.]]>
             </description>
             <name>process</name>
