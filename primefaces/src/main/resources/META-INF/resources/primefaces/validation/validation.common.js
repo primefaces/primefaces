@@ -478,11 +478,13 @@ if (window.PrimeFaces) {
                 highlighter = PrimeFaces.validator.Highlighter.types[highlighterType];
 
             if (valid) {
-                highlighter.unhighlight(element, !highlight);
+                highlighter.unhighlight(element);
                 element.attr('aria-invalid', false);
             }
             else {
-                highlighter.highlight(element, !highlight);
+                if (highlight) {
+                    highlighter.highlight(element);
+                }
                 element.attr('aria-invalid', true);
             }
         },
@@ -534,13 +536,13 @@ if (window.PrimeFaces) {
 
                             if (valid) {
                                 if (highlighter) {
-                                    highlighter.unhighlight(element, !highlight);
+                                    highlighter.unhighlight(element);
                                 }
                                 element.attr('aria-invalid', false);
                             }
                             else {
-                                if (highlighter) {
-                                    highlighter.highlight(element, !highlight);
+                                if (highlight && highlighter) {
+                                    highlighter.highlight(element);
                                 }
                                 element.attr('aria-invalid', true);
                             }
