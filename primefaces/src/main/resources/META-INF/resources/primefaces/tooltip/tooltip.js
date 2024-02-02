@@ -132,7 +132,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
 
         $(document).off(this.cfg.showEvent + ' ' + this.cfg.hideEvent, this.cfg.globalSelector)
             .on(this.cfg.showEvent, this.cfg.globalSelector, function(e) {
-                $this.hide();
+                $this._hide();
                 var element = $(this);
                 if (element.prop('disabled')) {
                     return;
@@ -164,6 +164,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                     else
                         $this.jq.children('.ui-tooltip-text').html(text);
 
+                    $this.clearTimeout();
                     $this.timeout = setTimeout(function() {
                         $this.globalTitle = text;
                         $this.target = element;
@@ -443,11 +444,14 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
      */
     hide: function() {
         var $this = this;
-        this.clearTimeout();
-
-        this.timeout = setTimeout(function() {
+        
+        if (this.cfg.hideDelay > 0) {
+            setTimeout(function() {
+                $this._hide();
+            }, this.cfg.hideDelay);
+        } else {
             $this._hide();
-        }, this.cfg.hideDelay);
+        }
     },
 
     /**
