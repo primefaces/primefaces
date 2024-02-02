@@ -532,6 +532,11 @@ declare namespace JQueryPrimeDatePicker {
         disabledDates: string[] | null;
 
         /**
+         * List of dates that should be enabled.
+         */
+        enabledDates: string[] | null;
+
+        /**
          * List of week day indexes that should be disabled.
          */
         disabledDays: DayOfTheWeek | null;

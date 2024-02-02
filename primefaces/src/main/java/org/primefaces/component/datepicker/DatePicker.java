@@ -253,6 +253,38 @@ public class DatePicker extends DatePickerBase {
         }
 
         if (isValid()) {
+            List<Object> enabledDates = getEnabledDates();
+            if (enabledDates != null && !enabledDates.isEmpty()) {
+
+                boolean localValid = false;
+
+                for (Object enabledDate : enabledDates) {
+                    if (enabledDate instanceof LocalDate) {
+                        if (((LocalDate) enabledDate).isEqual(date)) {
+                            localValid = true;
+                            break;
+                        }
+                    }
+                    else if (enabledDate instanceof Date) {
+                        Calendar c = Calendar.getInstance(TimeZone.getTimeZone(CalendarUtils.calculateZoneId(getTimeZone())), calculateLocale(context));
+                        c.setTime((Date) enabledDate);
+
+                        if (date.getYear() == c.get(Calendar.YEAR) &&
+                                date.getMonthValue() == (c.get(Calendar.MONTH) + 1) &&
+                                date.getDayOfMonth() == c.get(Calendar.DAY_OF_MONTH)) {
+                            localValid = true;
+                            break;
+                        }
+                    }
+                }
+                if (!localValid) {
+                    setValid(false);
+                    return ValidationResult.INVALID_DISABLED_DATE;
+                }
+            }
+        }
+
+        if (isValid()) {
             List<Integer> disabledDays = getDisabledDays();
             if (disabledDays != null) {
                 if (disabledDays.contains(date.getDayOfWeek().getValue())) {

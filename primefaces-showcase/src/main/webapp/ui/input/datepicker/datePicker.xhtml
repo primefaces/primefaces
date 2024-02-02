@@ -216,6 +216,11 @@
 						<p:datePicker id="timeonlyMillis" value="#{calendarView.date15}"
 							timeOnly="true" pattern="HH:mm:ss.SSS a" showSeconds="true"	showMilliseconds="true" hourFormat="12" />
 					</div>
+
+					<div class="field col-12 md:col-4">
+						<p:outputLabel for="enabledDates" value="Enabled Dates" />
+						<p:datePicker id="enabledDates" value="#{calendarView.date17}" enabledDates="#{calendarView.validDates}" readonlyInput="true"/>
+					</div>
 				</div>
 
 				<h5>Inline</h5>

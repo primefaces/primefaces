@@ -385,11 +385,15 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
                         var dateMetadata = JSON.parse(content).dateMetadata;
                         var pdp = $this.jq.data().primeDatePicker;
                         var disabledDates = [];
+                        var enabledDates = [];
                         var dateStyleClasses = {};
                         for (date in dateMetadata) {
                             var parsedDate = pdp.parseOptionValue(date);
                             if (dateMetadata[date].disabled) {
                                 disabledDates.push(parsedDate);
+                            }
+                            if (dateMetadata[date].enabled) {
+                                enabledDates.push(parsedDate);
                             }
                             if (dateMetadata[date].styleClass) {
                                 dateStyleClasses[pdp.toISODateString(parsedDate)] = dateMetadata[date].styleClass;
@@ -397,6 +401,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
                         }
                         pdp.options.dateStyleClasses = dateStyleClasses;
                         $this.setDisabledDates(disabledDates);
+                        $this.setEnabledDates(enabledDates);
                     }
                 });
                 return true;
@@ -497,6 +502,24 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         if (pdp.options.disabledDates) {
             for (var i = 0; i < pdp.options.disabledDates.length; i++) {
                 pdp.options.disabledDates[i] = pdp.parseOptionValue(pdp.options.disabledDates[i]);
+            }
+        }
+        this.updatePanel();
+    },
+
+    /**
+     * Sets the enabled dates.
+     * @param {string[] | Date[]} enabledDates The dates to enable.
+     */
+    setEnabledDates: function(enabledDates) {
+        var pdp = this.jq.data().primeDatePicker;
+
+        if (enabledDates != null && enabledDates.length > 0) {
+            pdp.options.enabledDates = enabledDates;
+            if (pdp.options.enabledDates) {
+                for (var i = 0; i < pdp.options.enabledDates.length; i++) {
+                    pdp.options.enabledDates[i] = pdp.parseOptionValue(pdp.options.enabledDates[i]);
+                }
             }
         }
         this.updatePanel();

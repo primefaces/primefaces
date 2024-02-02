@@ -110,6 +110,7 @@
             yearNavigator: false,
             dateStyleClasses: null,
             disabledDates: null,
+            enabledDates: null,
             disabledDays: null,
             minDate: null,
             maxDate: null,
@@ -245,6 +246,11 @@
             if (this.options.disabledDates) {
                 for (var i = 0; i < this.options.disabledDates.length; i++) {
                     this.options.disabledDates[i] = this.parseOptionValue(this.options.disabledDates[i]);
+                }
+            }
+            if (this.options.enabledDates && this.options.enabledDates.length > 0) {
+                for (var i = 0; i < this.options.enabledDates.length; i++) {
+                    this.options.enabledDates[i] = this.parseOptionValue(this.options.enabledDates[i]);
                 }
             }
             this.bindResponsiveResizeListener();
@@ -509,6 +515,10 @@
                 validDate = !this.isDateDisabled(day, month, year);
             }
 
+            if (this.options.enabledDates) {
+                validDate = this.isDateEnabled(day, month, year);
+            }
+
             if (this.options.disabledDays) {
                 validDay = !this.isDayDisabled(day, month, year);
             }
@@ -611,6 +621,20 @@
             }
 
             return false;
+        },
+
+        isDateEnabled: function(day, month, year) {
+            if (this.options.enabledDates && this.options.enabledDates.length > 0) {
+                for (var i = 0; i < this.options.enabledDates.length; i++) {
+                    var enabledDate = this.options.enabledDates[i];
+                    if (enabledDate.getFullYear() === year && enabledDate.getMonth() === month && enabledDate.getDate() === day) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            return true;
         },
 
         isDayDisabled: function(day, month, year) {
