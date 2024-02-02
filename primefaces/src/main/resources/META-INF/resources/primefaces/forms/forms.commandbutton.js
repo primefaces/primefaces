@@ -9,6 +9,8 @@
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ *
+ @prop {boolean} cfg.validateClientDynamic When set to `true` this button is only enabled after successful client side validation, otherwise classic behaviour. Used together with p:clientValidator.
  */
 PrimeFaces.widget.CommandButton = PrimeFaces.widget.BaseWidget.extend({
 
@@ -23,6 +25,16 @@ PrimeFaces.widget.CommandButton = PrimeFaces.widget.BaseWidget.extend({
         PrimeFaces.skinButton(this.jq);
 
         this.bindTriggers();
+
+        if (cfg.validateClientDynamic) {
+            let that = this;
+
+            // init enabled/disabled-state after initial page-load
+            PrimeFaces.queueTask(() => PrimeFaces.validation.validateButtonCsvRequirements(that.jq[0]), 0)
+
+            // update enabled/disabled-state after ajax-updates
+            PrimeFaces.validation.bindAjaxComplete();
+        }
     },
 
     /**

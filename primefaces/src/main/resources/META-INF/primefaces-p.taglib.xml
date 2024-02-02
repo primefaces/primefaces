@@ -6799,6 +6799,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[When set to true this button is only enabled after successful client side validation. Used together with p:clientValidator on all relevant input-components.]]>
+            </description>
+            <name>enabledByValidateClient</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Selector to use when partial submit is on, default is ":input" to select all descendant inputs of a partially processed components.]]>
             </description>
             <name>partialSubmitFilter</name>

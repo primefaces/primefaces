@@ -28,7 +28,7 @@
                     <p:message for="name"/>
                     <h:outputText value="#{validationView.text}"/>
 
-                    <h:outputLabel for="number" value="Number:"/>
+                    <p:outputLabel for="number" value="Number:"/>
                     <p:inputMask id="number" value="#{validationView.integer}" label="Number" mask="[99]"
                                     validateMask="false">
                         <f:validateLength minimum="2" maximum="3"/>

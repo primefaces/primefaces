@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+        <h:outputStylesheet name="css/primeflex3.css" library="it"/><!-- latest primeflex -->
+
+        <style type="text/css">
+            body .ui-panelgrid .ui-panelgrid-cell {
+                padding: 0.5rem;
+            }
+
+            button.ui-state-csv-valid, input.ui-state-csv-valid, .ui-inputfield.ui-state-error.ui-state-csv-valid, .ui-selectonemenu.ui-state-csv-valid {
+                border-left-color: green !important; /* !important to override border-color set by ui-state-focus */
+                border-left-style: solid;
+                border-left-width: 5px;
+            }
+
+            button.ui-state-csv-invalid, input.ui-state-csv-invalid, span.ui-inputnumber.ui-state-csv-invalid, .ui-selectonemenu.ui-state-csv-invalid {
+                border-left-color: red !important; /* !important to override border-color set by ui-state-focus */
+                border-left-style: solid;
+                border-left-width: 5px;
+            }
+        </style>
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="messages" showDetail="true" closable="true">
+                <p:autoUpdate/>
+            </p:messages>
+
+            <p:panelGrid id="gridName" columns="4" layout="flex"
+                         columnClasses="col-12 xl:col-3, col-12 xl:col-2, col-12 xl:col-5, col-12 xl:col-2"
+                         contentStyleClass="align-items-baseline ui-fluid">
+                <p:outputLabel for="name" value="Name (3-50 characters):"/>
+                <p:inputText id="name" value="#{csv001.text}" required="true" label="Name">
+                    <f:validateLength minimum="3" maximum="50"/>
+                    <p:clientValidator event="keyup" />
+                </p:inputText>
+                <p:message for="name" id="msgName"/>
+                <h:outputText value="#{csv001.text}"/>
+            </p:panelGrid>
+
+            <p:panelGrid id="gridNumber" columns="4" layout="flex"
+                         columnClasses="col-12 xl:col-3, col-12 xl:col-2, col-12 xl:col-5, col-12 xl:col-2"
+                         contentStyleClass="align-items-baseline ui-fluid">
+                <p:outputLabel for="number" value="Number:"/>
+                <p:inputNumber id="number" value="#{csv001.integer}" label="Number"
+                               validateMask="false" required="true">
+                    <f:validateLongRange minimum="100" maximum="9999" />
+                    <p:clientValidator event="keyup" />
+                </p:inputNumber>
+                <p:message for="number" id="msgNumber"/>
+                <h:outputText value="#{csv001.integer}"/>
+            </p:panelGrid>
+
+            <p:panelGrid id="gridEverythingElse" columns="4" layout="flex"
+                         columnClasses="col-12 xl:col-3, col-12 xl:col-2, col-12 xl:col-5, col-12 xl:col-2"
+                         contentStyleClass="align-items-baseline ui-fluid">
+                <p:outputLabel for="double" value="Double (5.5 - 8.5):"/>
+                <p:inputText id="double" value="#{csv001.doubleNumber}"
+                             converterMessage="Cannot convert to double." required="true">
+                    <f:validateDoubleRange minimum="5.5" maximum="8.5"/>
+                    <p:clientValidator event="keyup" />
+                </p:inputText>
+                <p:message for="double" id="msgDouble"/>
+                <h:outputText value="#{csv001.doubleNumber}"/>
+
+
+                <p:outputLabel for="regex" value="Regex (^[a-zA-Z]+$):"/>
+                <p:inputText id="regex" value="#{csv001.regexText}"
+                             validatorMessage="Value does not match pattern." required="true">
+                    <f:validateRegex pattern="^[a-zA-Z]+$"/>
+                    <p:clientValidator event="keyup" />
+                </p:inputText>
+                <p:message for="regex" id="msgRegex"/>
+                <h:outputText value="#{csv001.regexText}"/>
+
+                <p:outputLabel for="localDate" value="LocalDate (Java8; PF DatePicker)"/>
+                <p:datePicker id="localDate" value="#{csv001.localDate}" pattern="MM/dd/yyyy"
+                              label="LocalDate (DatePicker)" required="true">
+                    <p:clientValidator />
+                </p:datePicker>
+                <p:message for="localDate" id="msgLocalDate"/>
+                <h:outputText value="#{csv001.localDate}">
+                    <f:convertDateTime pattern="MM/dd/yyyy" type="localDate"/>
+                </h:outputText>
+
+                <p:outputLabel for="@next" value="Select UI-library" />
+                <p:selectOneMenu id="selectOneMenu" value="#{csv001.uiLibrary}" required="true">
+                    <f:selectItem itemLabel="" itemValue="" noSelectionOption="true" />
+                    <f:selectItem itemLabel="JSF" itemValue="JSF" />
+                    <f:selectItem itemLabel="Angular" itemValue="Angular" />
+                    <f:selectItem itemLabel="React" itemValue="React" />
+                    <f:selectItem itemLabel="Vue" itemValue="Vue" />
+                    <p:clientValidator />
+                </p:selectOneMenu>
+                <p:message for="selectOneMenu" id="msgSelectOneMenu"/>
+                <h:outputText value="#{csv001.uiLibrary}"/>
+            </p:panelGrid>
+
+            <p:remoteCommand name="rc" update="gridName gridNumber" process="name number" validateClient="true"/>
+            <p:defaultCommand target="btnAjax"/>
+
+            <div class="pt-3">
+                <p:commandButton value="Non-Ajax" id="btnNonAjax" ajax="false" validateClient="true" enabledByValidateClient="true" styleClass="mr-2" />
+                <p:commandButton value="Ajax" id="btnAjax" update="@form" validateClient="true" enabledByValidateClient="true" styleClass="mr-2" />
+                <p:commandButton value="Partial (name + number)" id="btnPartial" update="gridName gridNumber" process="name number" validateClient="true" enabledByValidateClient="true" styleClass="mr-2" />
+                <p:commandButton value="Disabled" id="btnDisabled" ajax="false" enabledByValidateClient="true" styleClass="mr-2"/>
+                <p:commandButton value="Remote Command" id="btnRemoteCommand" type="button" enabledByValidateClient="true" onclick="rc()" />
+            </div>
+
+            <div class="pt-3">
+                Simulate server-side modifications:<br/>
+                <p:commandButton value="Modify Name + Number" id="btnModifyNameNumber" update="gridName gridNumber" process="@this" action="#{csv001.modifyValues()}" styleClass="mr-2" />
+                <p:commandButton value="Modify Number" id="btnModifyNumber" update="gridNumber" process="@this" action="#{csv001.modifyInteger()}" styleClass="mr-2" />
+                <p:commandButton value="Clear Values" id="btnClearValues" update="@form" process="@this" action="#{csv001.clearValues()}" />
+            </div>
+
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

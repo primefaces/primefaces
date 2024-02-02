@@ -7,7 +7,7 @@ if (window.PrimeFaces) {
      * A shortcut for `PrimeFaces.validation.validate` used by server-side renderers.
      * If the `ajax` attribute is set to `true` (the default is `false`), all inputs configured by the `process` attribute are validated
      * and all messages for the inputs configured by the `update` attribute are rendered.
-     * Otherwise, if the `ajax` attribute is set to the `false`, all inputs of the the parent form, of the `source` attribute, are processed and updated.
+     * Otherwise, if the `ajax` attribute is set to the `false`, all inputs of the parent form, of the `source` attribute, are processed and updated.
      * @function
      * @param {Partial<PrimeFaces.validation.ShorthandConfiguration>} cfg An configuration.
      * @return {boolean} `true` if the request would not result in validation errors, or `false` otherwise.
@@ -32,21 +32,8 @@ if (window.PrimeFaces) {
 
         var $source = $(cfg.source);
 
-        var process;
-        if (cfg.ajax && cfg.process) {
-            process = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector($source, cfg.process);
-        }
-        else {
-            process = $source.closest('form');
-        }
-
-        var update;
-        if (cfg.ajax && cfg.update) {
-            update = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector($source, cfg.update);
-        }
-        else {
-            update = $source.closest('form');
-        }
+        var process = PrimeFaces.validation.Utils.resolveProcess(cfg, $source);
+        var update = PrimeFaces.validation.Utils.resolveUpdate(cfg, $source);
 
         var result = PrimeFaces.validation.validate($source, process, update, highlight, focus, renderMessages, validateInvisibleElements);
         return result.valid;
@@ -146,6 +133,13 @@ if (window.PrimeFaces) {
     PrimeFaces.validation = {
 
         /**
+         * Is the Ajax-complete-handler bound?
+         * @type {boolean}
+         * @private
+         */
+        ajaxCompleteBound: false,
+
+        /**
          * Parameter shortcut mapping for the method `PrimeFaces.vb`.
          * @type {Record<string, string>}
          */
@@ -195,7 +189,7 @@ if (window.PrimeFaces) {
                 PrimeFaces.validation.validateInput(source, inputs.eq(i), highlight);
             }
 
-            // validate complex validations, which cann be applied to any container element
+            // validate complex validations, which can be applied to any container element
             var nonInputs = $();
             for (var i = 0; i < process.length; i++) {
                 var component = process.eq(i);
@@ -212,7 +206,7 @@ if (window.PrimeFaces) {
                 PrimeFaces.validation.validateComplex(source, nonInputs.eq(i), highlight);
             }
 
-            // early exit - we dont need to render messages
+            // early exit - we don't need to render messages
             if (vc.isEmpty()) {
                 return { valid: true, messages: {}, hasUnrenderedMessage: false };
             }
@@ -275,6 +269,51 @@ if (window.PrimeFaces) {
             return result;
         },
 
+
+        /**
+         * Searches for all CommandButtons with turned on dynamic CSV and triggers CSV.
+         * @function
+         */
+        validateButtonsCsvRequirements: function () {
+            $('[data-pf-validateclient-dynamic]').each((index, btn) => {
+                this.validateButtonCsvRequirements(btn);
+            });
+        },
+
+        /**
+         * Validates the CSV-requirements of a CommandButton.
+         * @function
+         * @param {HTMLButtonElement} btn CommandButton which´s CSV-requirements should be validated.
+         */
+        validateButtonCsvRequirements: function (btn) {
+            const $source = $(btn);
+            const cfg = {
+                ajax: btn.dataset.pfValidateclientAjax,
+                process: btn.dataset.pfValidateclientProcess,
+                update: btn.dataset.pfValidateclientUpdate
+            };
+            const process = PrimeFaces.validation.Utils.resolveProcess(cfg, $source);
+            const update = PrimeFaces.validation.Utils.resolveUpdate(cfg, $source);
+
+            const widget = PrimeFaces.getWidgetById(btn.id);
+
+            if (widget) {
+                if (PrimeFaces.validation.validate($source, process, update, false, false, false, false).valid) {
+                    widget.jq.addClass('ui-state-csv-valid');
+                    widget.jq.removeClass('ui-state-csv-invalid');
+                    widget.enable();
+                } else {
+                    widget.jq.addClass('ui-state-csv-invalid');
+                    widget.jq.removeClass('ui-state-csv-valid');
+                    widget.disable();
+                }
+            } else {
+                console.warn('No widget found for ID ' + btn.id);
+            }
+
+            PrimeFaces.validation.ValidationContext.clear();
+        },
+
         /**
          * Performs a client-side validation of the given element. The context of this validation is a single field only.
          * If the element is valid, removes old messages from the element.
@@ -318,6 +357,8 @@ if (window.PrimeFaces) {
                     uiMessage.html('').removeClass('ui-message-error ui-message-icon-only ui-widget ui-corner-all ui-helper-clearfix');
                 }
             }
+
+            this.validateButtonsCsvRequirements();
 
             PrimeFaces.validation.validateInput(element, element, highlight);
 
@@ -449,7 +490,7 @@ if (window.PrimeFaces) {
         },
 
         /**
-         * __NOTE__: This is a internal method and should only by used by `PrimeFaces.validation.validate`.
+         * __NOTE__: This is an internal method and should only be used by `PrimeFaces.validation.validate`.
          *
          * Performs a client-side validation of (the value of) the given container element. If the element is valid,
          * removes old messages from the element. If the value of the element is invalid, adds the appropriate
@@ -511,6 +552,35 @@ if (window.PrimeFaces) {
             }
 
             return valid;
+        },
+
+
+        /**
+         * __NOTE__: This is an internal method and should only be used by PrimeFaces itself.
+         *
+         * Bind to Ajax-Complete-events to update CSV-state after an Ajax-call may have changed state.
+         * @internal
+         */
+        bindAjaxComplete: function() {
+            if (this.ajaxCompleteBound) return;
+
+            var $this = this;
+
+            $(document).on('pfAjaxComplete', function(e, xhr, settings, args) {
+                $this.validateButtonsCsvRequirements();
+            });
+
+            // also bind to JSF (f:ajax) events
+            // NOTE: PF always fires "complete" as last event, whereas JSF last events are either "success" or "error"
+            if (window.jsf && jsf.ajax) {
+                jsf.ajax.addOnEvent(function(data) {
+                    if(data.status === 'success' || data.status === 'error') {
+                        $this.validateButtonsCsvRequirements();
+                    }
+                });
+            }
+
+            this.ajaxCompleteBound = true;
         }
     };
 
@@ -895,6 +965,34 @@ if (window.PrimeFaces) {
                         }
                     }
                 }
+            }
+        },
+
+        /**
+         * Resolves process-attribute of a PrimeFaces-component. (e.g. CommandButton)
+         * @param {PrimeFaces.validation.Configuration} cfg Configuration of the PrimeFaces-component.
+         * @param {JQuery} source The source element.
+         * @returns {JQuery} Resolved jQuery-element.
+         */
+        resolveProcess: function(cfg, source) {
+            if (cfg.ajax && cfg.process) {
+                return PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(source, cfg.process);
+            } else {
+                return source.closest('form');
+            }
+        },
+
+        /**
+         * Resolves update-attribute of a PrimeFaces-component. (e.g. CommandButton)
+         * @param {PrimeFaces.validation.Configuration} cfg Configuration of the PrimeFaces-component.
+         * @param {JQuery} source The source element.
+         * @returns {JQuery} Resolved jQuery-element.
+         */
+        resolveUpdate: function(cfg, source) {
+            if (cfg.ajax && cfg.update) {
+                return PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(source, cfg.update);
+            } else {
+                return source.closest('form');
             }
         }
     };

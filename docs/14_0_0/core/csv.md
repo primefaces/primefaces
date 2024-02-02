@@ -280,3 +280,23 @@ PrimeFaces.validator['MyComplexValidator'] = {
     </p:panel>
 </h:form>
 ```
+
+## Immediate CSV
+
+Immediate client side validation - like used from modern JS-based-UI-Frameworks like React, Angular or Vue - on all input-components (trigger by keyup- respectively change-events depending on component)
+can be done by using the event-mechanism described before. (Using keyup- und change-events depending on component. `<p:clientValidator event="..." />`)
+
+Additional CommandButton´s with `enabledByValidateClient="true"` are only enabled after successful CSV of all input-components relevant due to process-attribute.
+
+The logic behind `enabledByValidateClient="true"` is triggered on following events:
+* initial (full) page-load
+* AJAX-updates
+* `<p:clientValidator event="..." />` on components
+
+### CSS-classes
+
+Following CSS-classes may be used (additional to classic `ui-state-error`) to style inputs dependent on their (client-side-)validation-state.  
+(This behaviour is inspired by following Angular´s https://angular.io/guide/form-validation#control-status-css-classes)
+
+* `ui-state-csv-valid`
+* `ui-state-csv-invalid`

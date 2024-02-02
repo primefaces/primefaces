@@ -58,6 +58,7 @@ public abstract class CommandButtonBase extends HtmlCommandButton implements Aja
         inline,
         escape,
         validateClient,
+        enabledByValidateClient,
         partialSubmitFilter,
         form,
         renderDisabledClick,
@@ -246,6 +247,14 @@ public abstract class CommandButtonBase extends HtmlCommandButton implements Aja
 
     public void setValidateClient(boolean validateClient) {
         getStateHelper().put(PropertyKeys.validateClient, validateClient);
+    }
+
+    public boolean isEnabledByValidateClient() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.enabledByValidateClient, false);
+    }
+
+    public void setEnabledByValidateClient(boolean enabledByValidateClient) {
+        getStateHelper().put(PropertyKeys.enabledByValidateClient, enabledByValidateClient);
     }
 
     @Override
