@@ -238,7 +238,10 @@ public class ScheduleRenderer extends CoreRenderer {
                 .attr("slotEventOverlap", schedule.isSlotEventOverlap(), true);
 
         if (LangUtils.isNotBlank(schedule.getSlotLabelFormat())) {
-            wb.nativeAttr("slotLabelFormat", schedule.getSlotLabelFormat());
+            wb.nativeAttr("slotLabelFormat",
+                    schedule.getSlotLabelFormat().startsWith("[")
+                        ? schedule.getSlotLabelFormat()
+                        : "['" + EscapeUtils.forJavaScript(schedule.getSlotLabelFormat()) + "']");
         }
 
         String displayEventEnd = schedule.getDisplayEventEnd();

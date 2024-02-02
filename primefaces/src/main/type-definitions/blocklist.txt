@@ -1,6 +1,8 @@
 # List of files to be excluded from the type declaration file.
 # Mainly third-party with doc comments libraries we do not want to document.
 chartjs/0-chartjs.min.js
+chart/0-chartjs.min.js
+chart/1-chartjs-adapter-moment.min.js
 inputnumber/0-autoNumeric.js
 keyboard/0-jquery.keypad.js
 moment/moment-timezone-with-data.js
@@ -10,8 +12,8 @@ timeline/0-vis-timeline.js
 touch/touchswipe.js
 locales/locale-ar.js
 locales/locale-ca.js
-locales/locale-cs.js
 locales/locale-ckb.js
+locales/locale-cs.js
 locales/locale-da.js
 locales/locale-de.js
 locales/locale-el.js
@@ -26,11 +28,11 @@ locales/locale-hr.js
 locales/locale-hu.js
 locales/locale-in.js
 locales/locale-it.js
-locales/locale-iw.js
 locales/locale-ja.js
 locales/locale-ka.js
-locales/locale-ky.js
+locales/locale-km.js
 locales/locale-ko.js
+locales/locale-ky.js
 locales/locale-lt.js
 locales/locale-lv.js
 locales/locale-ms.js

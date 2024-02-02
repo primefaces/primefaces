@@ -34,7 +34,7 @@ import org.primefaces.util.FastStringWriter;
  * From ChartJs version 3.8.0
  * @see <a href="https://www.chartjs.org/docs/3.8.0/axes/cartesian/time.html#time-units">ChartJS Time</a>
  */
-public abstract class CartesianTime implements Serializable {
+public class CartesianTime implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

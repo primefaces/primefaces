@@ -937,9 +937,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         if(this.panel.is(':visible')) {
             this.revert();
             this.hide();
+            event.preventDefault();
         }
-
-        event.preventDefault();
     },
 
     /**
@@ -1131,15 +1130,15 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      */
     setLabel: function(value) {
         var displayedLabel = this.getLabelToDisplay(value);
-
+        var valueEmpty = value === '&nbsp;' || value === '\xa0';
         if (this.cfg.editable) {
-            if (value === '&nbsp;')
+            if (valueEmpty)
                 this.label.val('');
             else
                 this.label.val(displayedLabel);
 
             var hasPlaceholder = this.label[0].hasAttribute('placeholder');
-            this.updatePlaceholderClass((hasPlaceholder && value === '&nbsp;'));
+            this.updatePlaceholderClass((hasPlaceholder && valueEmpty));
         }
         else if (this.cfg.alwaysDisplayLabel && this.cfg.label) {
             this.label.text(this.cfg.label);
@@ -1150,11 +1149,11 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 labelText = '&nbsp;';
             }
 
-            this.updatePlaceholderClass((value === '&nbsp;' && labelText !== '&nbsp;'));
+            this.updatePlaceholderClass((valueEmpty && labelText !== '&nbsp;'));
 
-            if (value === '&nbsp;') {
+            if (valueEmpty) {
                 if (labelText != '&nbsp;') {
-                   this.label.text(labelText);
+                    this.label.text(labelText);
                 } else {
                     this.label.html(labelText);
                 }
@@ -1163,7 +1162,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 this.label.removeClass('ui-state-disabled');
 
                 var option = null;
-                if(this.items) {
+                if (this.items) {
                     var selectedItem = this.items.filter('[data-label="' + $.escapeSelector(value) + '"]');
                     option = this.options.eq(this.resolveItemIndex(selectedItem));
                 }

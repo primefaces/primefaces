@@ -10,7 +10,7 @@ any 3rd part work incorporated are compatible with the PrimeFaces Licenses.
 | Servlet | | | 3.0+ | Required | Apache Tomcat, Eclipse Jetty, ... |
 | Expression Language | | | 2.2+ | Required | Apache Tomcat, Eclipse Jetty, ... |
 | Bean Validation | | | 1.1+ | Optional | Apache BVal, Hibernate Validator, ... |
-| Libre OpenPDF | com.github.librepdf | openpdf | 1.3.35 | Optional | DataExporter (PDF) |
+| Libre OpenPDF | com.github.librepdf | openpdf | 1.3.39 | Optional | DataExporter (PDF) |
 | Apache POI | org.apache.poi | poi | 5.2.5 | Optional | DataExporter (Excel XLS or XML) |
 | Apache POI | org.apache.poi | poi-ooxml | 5.2.5 | Optional | DataExporter (Excel XLSX Office 2003) |
 | Rome | com.rometools | rome | 1.15.0 | Optional | FeedReader |

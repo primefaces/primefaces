@@ -31,6 +31,10 @@ import org.primefaces.model.charts.optionconfig.legend.Legend;
 import org.primefaces.model.charts.optionconfig.title.Title;
 import org.primefaces.model.charts.optionconfig.tooltip.Tooltip;
 
+/**
+ * @deprecated please use new p:chart component
+ */
+@Deprecated(since = "14.0.0", forRemoval = true)
 public abstract class ChartOptions implements Serializable {
 
     private static final long serialVersionUID = 1L;

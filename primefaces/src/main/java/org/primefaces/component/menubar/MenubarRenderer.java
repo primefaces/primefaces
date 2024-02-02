@@ -64,7 +64,7 @@ public class MenubarRenderer extends TieredMenuRenderer {
     }
 
     @Override
-    protected void encodeSubmenuIcon(FacesContext context, Submenu submenu, boolean isRtl) throws IOException {
+    protected void encodeSubmenuIcon(FacesContext context, Submenu submenu, boolean isRtl, boolean isVertical) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Object parent = submenu.getParent();
         String icon = null;

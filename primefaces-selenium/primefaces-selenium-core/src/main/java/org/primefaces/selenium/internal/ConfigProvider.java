@@ -41,6 +41,9 @@ import org.primefaces.selenium.spi.OnloadScriptsAdapter;
 
 public class ConfigProvider {
 
+    public static final String DEPLOYMENT_ADAPTER = "deployment.adapter";
+    public static final String DEPLOYMENT_BASEURL = "deployment.baseUrl";
+
     private static ConfigProvider configProvider = null;
 
     private static final Pattern PROPERTY_ENV_PLACEHOLDER = Pattern.compile("\\$\\{(.*?)}");
@@ -112,12 +115,12 @@ public class ConfigProvider {
                     this.scrollElementIntoView = scrollElementIntoView;
                 }
 
-                String deploymentBaseUrl = getAndResolveProperty(properties, "deployment.baseUrl");
+                String deploymentBaseUrl = getAndResolveProperty(properties, DEPLOYMENT_BASEURL);
                 if (deploymentBaseUrl != null && !deploymentBaseUrl.trim().isEmpty()) {
                     this.deploymentBaseUrl = deploymentBaseUrl;
                 }
 
-                String deploymentAdapter = getAndResolveProperty(properties, "deployment.adapter");
+                String deploymentAdapter = getAndResolveProperty(properties, DEPLOYMENT_ADAPTER);
                 if (deploymentAdapter != null && !deploymentAdapter.trim().isEmpty()) {
                     this.deploymentAdapter = (DeploymentAdapter) Class.forName(deploymentAdapter).getDeclaredConstructor().newInstance();
                 }
@@ -163,8 +166,8 @@ public class ConfigProvider {
             }
 
             if (deploymentBaseUrl == null && deploymentAdapter == null) {
-                throw new RuntimeException("Please either provide a deployment.baseUrl for remote testing "
-                        + "or deployment.adapter via config.properties!");
+                throw new RuntimeException("Please either provide a " + DEPLOYMENT_BASEURL + " for remote testing or "
+                        + DEPLOYMENT_ADAPTER + " via config.properties!");
             }
 
             buildOnloadScripts();

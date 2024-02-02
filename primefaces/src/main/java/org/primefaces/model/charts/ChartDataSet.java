@@ -28,8 +28,9 @@ import java.io.Serializable;
 
 /**
  * Abstract base class for all ChartJS datasets.
- *
+ * @deprecated please use new p:chart component
  */
+@Deprecated(since = "14.0.0", forRemoval = true)
 public abstract class ChartDataSet implements Serializable {
 
     private static final long serialVersionUID = 1L;

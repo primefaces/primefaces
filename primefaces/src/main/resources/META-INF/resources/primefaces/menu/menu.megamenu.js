@@ -10,6 +10,7 @@
  * @prop {JQuery} rootList The DOM elements for the root level menu items with the class `.ui-menu-list`.
  * @prop {JQuery} subLinks The DOM elements for all menu links not a the root level, with the class `.ui-menuitem-link`.
  * @prop {number} [timeoutId] Timeout ID, used for the animation when the menu is shown.
+ * @prop {boolean} isRTL Whether the writing direction is set to right-to-left.
  *
  * @interface {PrimeFaces.widget.MegaMenuCfg} cfg The configuration for the {@link  MegaMenu| MegaMenu widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
@@ -38,6 +39,7 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
         this.rootLinks = this.rootList.find('> li.ui-menuitem > a.ui-menuitem-link:not(.ui-state-disabled)');
         this.subLinks = this.jq.find('.ui-menu-child a.ui-menuitem-link:not(.ui-state-disabled)');
         this.keyboardTarget = this.jq.children('.ui-helper-hidden-accessible');
+        this.isRTL = this.jq.hasClass('ui-menu-rtl');
 
         if(this.cfg.activeIndex !== undefined) {
             this.rootLinks.eq(this.cfg.activeIndex).addClass('ui-state-hover').closest('li.ui-menuitem').addClass('ui-menuitem-active');
@@ -415,16 +417,16 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
 
         if(this.cfg.vertical) {
             pos = {
-                my: 'left top',
-                at: 'right top',
+                my: this.isRTL ? 'right bottom' : 'left top',
+                at: this.isRTL ? 'left bottom' : 'right top',
                 of: menuitem,
                 collision: 'flipfit'
             };
         }
         else {
             pos = {
-                my: 'left top',
-                at: 'left bottom',
+                my: this.isRTL ? 'right top' : 'left top',
+                at: this.isRTL ? 'right bottom' : 'left bottom',
                 of: menuitem,
                 collision: 'flipfit'
             };

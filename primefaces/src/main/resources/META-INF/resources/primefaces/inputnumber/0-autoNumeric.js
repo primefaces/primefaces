@@ -47,8 +47,8 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 /**
  *               AutoNumeric.js
  *
- * @version      4.10.1
- * @date         2023-12-15 UTC 18:00
+ * @version      4.10.4
+ * @date         2024-01-18 UTC 19:36
  *
  * @authors      2016-2023 Alexandre Bonneau <alexandre.bonneau@linuxfr.eu>
  *               2009-2016 Bob Knothe <bob.knothe@gmail.com>
@@ -5598,7 +5598,7 @@ var AutoNumeric = /*#__PURE__*/function () {
       } else if (_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isWheelDownEvent(e)) {
         isDown = true;
       } else if (_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isWheelEventWithZeroDeltaY(e)) {
-        // Ignore that event (maybe call e.preventDefault() ?)
+        // Ignore that event (maybe call e.preventDefault() ?), fixes issue #776
         isDeltaYZero = true;
       } else {
         _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].throwError("The event is not a 'wheel' event.");
@@ -6955,7 +6955,7 @@ var AutoNumeric = /*#__PURE__*/function () {
      * @returns {string}
      */
     function version() {
-      return '4.10.1';
+      return '4.10.4';
     }
   }, {
     key: "_setArgumentsValues",
@@ -11389,7 +11389,7 @@ var AutoNumericHelper = /*#__PURE__*/function () {
   }, {
     key: "isWheelEventWithZeroDeltaY",
     value: function isWheelEventWithZeroDeltaY(wheelEvent) {
-      return this.isWheelEvent(wheelEvent) && this.isUndefinedOrNullOrEmpty(wheelEvent.deltaY) && wheelEvent.deltaY === 0;
+      return this.isWheelEvent(wheelEvent) && !this.isUndefinedOrNullOrEmpty(wheelEvent.deltaY) && wheelEvent.deltaY === 0;
     }
 
     /**

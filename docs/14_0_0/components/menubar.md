@@ -86,6 +86,22 @@ Menubar supports menuitem as root menu options as well;
     <p:menuitem label="Logout" action="#{bean.logout}"/>
 </p:menubar>
 ```
+
+## Facets
+Menubar supports `start` and `end` facets to control UI output or add logos or extras to the menu bar.
+
+```xhtml
+<p:menubar>
+    <f:facet name="start">
+       <p:graphicImage name="images/primefaces-logo.svg" library="showcase" />
+    </f:facet>
+    <p:menuitem label="Logout" action="#{bean.logout}"/>
+    <f:facet name="end">
+       <p:button value="Quit" icon="pi pi-fw pi-sign-out" styleClass="ui-button-info"/>
+    </f:facet>
+</p:menubar>
+```
+
 ## Ajax and Non-Ajax Actions
 As menu uses menuitems, it is easy to invoke actions with or without ajax as well as navigation. See
 menuitem documentation for more information about the capabilities.

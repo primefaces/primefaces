@@ -383,7 +383,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
     returnFocus: function() {
         var el = this.focusedElementBeforeDialogOpened;
         if (el) {
-            el.focus();
+            PrimeFaces.queueTask(function() { el.focus({ preventScroll: true }) }, 100);
         }
     },
 
@@ -411,7 +411,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             $(this).removeClass('ui-state-focus');
         });
 
-        this.closeIcon.attr('aria-label', PrimeFaces.getAriaLabel('close'));
+        PrimeFaces.skinCloseAction(this.closeIcon);
         this.closeIcon.on('click', function(e) {
             $this.hide();
             e.preventDefault();
@@ -444,11 +444,16 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
         if(this.cfg.closeOnEscape) {
             $(document).on('keydown.dialog_' + this.id, function(e) {
-                if(e.key === 'Escape' && $this.isVisible()) {
+                if(!e.isDefaultPrevented() && e.key === 'Escape' && $this.isVisible()) {
                     // GitHub #6677 if multiple dialogs check if this is the topmost active dialog to close
-                    var active = parseInt($this.jq.css('z-index')) === parseInt($('.ui-dialog:visible').last().css('z-index'));
-                    if(active) {
-                         $this.hide();
+                    var currentZIndex = parseInt($this.jq.css('z-index'));
+                    var highestZIndex = Math.max(...$('.ui-dialog:visible').map(function() {
+                        return parseInt($(this).css('z-index')) || 0;
+                    }).get());
+                    if (currentZIndex === highestZIndex) {
+                        $this.hide();
+                        e.preventDefault();
+                        e.stopPropagation();
                     }
                 };
             });
@@ -939,15 +944,22 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
                 if(el.hasClass('ui-confirmdialog-yes') && PrimeFaces.confirmSource) {
                     var id = PrimeFaces.confirmSource.get(0);
                     var js = PrimeFaces.confirmSource.data('pfconfirmcommand');
+                    var command = $(id);
                     
                     // Test if the function matches the pattern
-                    if (PrimeFaces.ajax.Utils.isAjaxRequest(js)) {
+                    if (PrimeFaces.ajax.Utils.isAjaxRequest(js) || command.is('a')) {
                         // command is ajax=true
                         PrimeFaces.csp.executeEvent(id, js, e);
                     }
                     else {
                         // command is ajax=false
-                        $(id).removeAttr("data-pfconfirmcommand").removeAttr("onclick").click();
+                        if (command.prop('onclick')) {
+                            command.removeAttr("onclick");
+                        }
+                        else {
+                            command.off("click");
+                        }
+                        command.removeAttr("data-pfconfirmcommand").click();
                     }
 
                     PrimeFaces.confirmDialog.hide();

@@ -44,6 +44,7 @@ import java.io.PushbackInputStream;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DecimalFormat;
@@ -70,56 +71,78 @@ public class FileUploadUtils {
     private static final Pattern INVALID_FILENAME_WINDOWS =
             Pattern.compile("^(?!^(PRN|AUX|CLOCK\\$|NUL|CON|COM\\d|LPT\\d|\\..*)(\\..+)?$)[^\\x00-\\x1f\\\\?*:\\\";|/<>]+$");
     private static final Pattern INVALID_FILENAME_LINUX = Pattern.compile(".*[/\0:*?\\\"<>|].*");
-    private static final Pattern PERCENTS_PAT = Pattern.compile("(%)([0-9a-fA-F])([0-9a-fA-F])");
+    private static final Pattern ENCODED_CHARS_PAT = Pattern.compile("(%)([0-9a-fA-F])([0-9a-fA-F])");
 
     private FileUploadUtils() {
+        // private constructor to prevent instantiation
     }
 
+    /**
+     * Checks file name for validity based on Windows or Linux rules.
+     * @param filename the name of the file to check
+     * @return the extracted file name
+     */
     public static String requireValidFilename(String filename) {
         if (LangUtils.isBlank(filename)) {
             throw validationError("Filename cannot be empty or null");
         }
 
+        // use java.nio Paths to detect a bad character
+        Character ch = containsInvalidCharacters(filename);
+        if (ch != null) {
+            throw validationError("Invalid filename: (" + filename + ") contains invalid character: " + ch);
+        }
+
+        // Windows and Linux have different allowed characters
         if (isSystemWindows()) {
             if (!INVALID_FILENAME_WINDOWS.matcher(filename).find()) {
-                throw validationError("Invalid filename: " + filename);
+                throw validationError("Invalid Windows filename: " + filename);
             }
         }
         else if (INVALID_FILENAME_LINUX.matcher(filename).find()) {
-            throw validationError("Invalid filename: " + filename);
+            throw validationError("Invalid Linux filename: " + filename);
         }
 
-        if (PERCENTS_PAT.matcher(filename).find()) {
-            throw validationError("Invalid filename: " + filename);
-        }
-
-        int ch = containsUnprintableCharacters(filename);
-        if (ch != -1) {
-            throw validationError("Invalid filename: (" + filename + ") contains unprintable character: " + ch);
+        // URL encoded characters like %20 are invalid
+        Matcher encodedMatcher = ENCODED_CHARS_PAT.matcher(filename);
+        if (encodedMatcher.find() ) {
+            throw validationError( "Invalid filename: (" + filename + ") contains invalid character: " + encodedMatcher.group());
         }
 
         return FilenameUtils.getName(filename);
     }
 
+    /**
+     * Check the file path to ensure its valid and prevent directory traversal security issues.
+     *
+     * @param filePath the file path to test
+     * @param mustExist true if the directory must exist on disk, false if not
+     * @return the updated file path
+     */
     public static String requireValidFilePath(String filePath, boolean mustExist) {
         if (LangUtils.isBlank(filePath)) {
             throw validationError("Path can not be the empty string or null");
         }
 
-        int ch = containsUnprintableCharacters(filePath);
-        if (ch != -1) {
-            throw validationError("Invalid path: (" + filePath + ") contains unprintable character: " + ch);
+        Character ch = containsInvalidCharacters(filePath);
+        if (ch != null) {
+            throw validationError("Invalid path: (" + filePath + ") contains invalid character: " + ch);
         }
 
         filePath = URLDecoder.decode(filePath, StandardCharsets.UTF_8);
-        if (PERCENTS_PAT.matcher(filePath).find()) {
-            throw validationError("Invalid path: " + filePath);
+
+        // standardize Windows paths from d:/test to d:\\test
+        if (isSystemWindows()) {
+            filePath = filePath.replace("/", "\\");
         }
 
         try {
             File file = new File(filePath);
             File parentFile = file.getParentFile();
 
+            if (file == null || parentFile == null) {
+                throw validationError("Invalid directory, \"" + filePath + "\" is not valid.");
+            }
             if (mustExist && !file.exists()) {
                 throw validationError("Invalid file, \"" + file + "\" does not exist.");
             }
@@ -129,9 +152,11 @@ public class FileUploadUtils {
             if (mustExist && !parentFile.isDirectory()) {
                 throw validationError("Invalid directory, file parent is not a directory.");
             }
+            // CVE-2022-31159 Partial Path Traversal Vulnerability
             if (!file.getCanonicalFile().toPath().startsWith(parentFile.getCanonicalFile().toPath())) {
                 throw validationError("Invalid directory, \"" + file + "\" does not reside inside specified parent.");
             }
+            // SONATYPE-2018-0608 prevent path traversal like "..\..\test"
             if (!file.getCanonicalPath().equals(filePath)) {
                 throw validationError("Invalid directory, name does not match the canonical path." );
             }
@@ -151,14 +176,16 @@ public class FileUploadUtils {
         return File.separatorChar == '\\';
     }
 
-    public static int containsUnprintableCharacters(String s) {
-        for (int i = 0; i < s.length(); i++) {
-            char ch = s.charAt(i);
-            if ((ch) < 32 || (ch) > 126) {
-                return ch;
+    public static Character containsInvalidCharacters(String s) {
+        try {
+            Paths.get(s);
+        }
+        catch (InvalidPathException e) {
+            if (e.getInput() != null && e.getInput().length() > 0 && e.getIndex() >= 0) {
+                return s.toCharArray()[e.getIndex()];
             }
         }
-        return -1;
+        return null;
     }
 
     /**

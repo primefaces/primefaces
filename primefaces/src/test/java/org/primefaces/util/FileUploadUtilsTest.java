@@ -40,6 +40,8 @@ import javax.faces.validator.ValidatorException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.nio.file.Paths;
 import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -160,28 +162,16 @@ class FileUploadUtilsTest {
     }
 
     @Test
-    void requireValidFilePath_AbsoluteFile() {
-        // Unix systems can start with / but Windows cannot
-        String os = System.getProperty("os.name").toLowerCase();
-
+    void requireValidFilePath_AbsoluteFile() throws URISyntaxException {
         // Arrange
-        String relativePath = FileUploadUtilsTest.class.getResource("/test.png").getFile();
+        String absolutePath = Paths.get(FileUploadUtilsTest.class.getResource("/test.png").toURI())
+                .toFile().getAbsolutePath();
 
         // Act
-        if (os.contains("win")) {
-            try {
-                FileUploadUtils.requireValidFilePath(relativePath, false);
-                fail("File was absolute path and should have failed");
-            }
-            catch (ValidatorException e) {
-                // Assert
-                assertEquals("Invalid directory, name does not match the canonical path.", e.getFacesMessage().getDetail());
-            }
-        }
-        else {
-            String result = FileUploadUtils.requireValidFilePath(relativePath, false);
-            assertTrue(result.endsWith("test.png"));
-        }
+        String result = FileUploadUtils.requireValidFilePath(absolutePath, false);
+
+        //Assert
+        assertTrue(result.endsWith("test.png"));
     }
 
     @Test
@@ -190,21 +180,17 @@ class FileUploadUtilsTest {
         String os = System.getProperty("os.name").toLowerCase();
 
         // Arrange
-        String relativePath = "/D:/Development/OS%20Projects/primefaces/primefaces/target/test-classes/test.png";
+        String absolutePath;
 
         // Act
         if (os.contains("win")) {
-            try {
-                FileUploadUtils.requireValidFilePath(relativePath, false);
-                fail("File was absolute path and should have failed");
-            }
-            catch (ValidatorException e) {
-                // Assert
-                assertEquals("Invalid directory, name does not match the canonical path.", e.getFacesMessage().getDetail());
-            }
+            absolutePath = "D:/Development/OS%20Projects/primefaces/primefaces/target/test-classes/test.png";
+            String result = FileUploadUtils.requireValidFilePath(absolutePath, false);
+            assertTrue(result.endsWith("test.png"));
         }
         else {
-            String result = FileUploadUtils.requireValidFilePath(relativePath, false);
+            absolutePath = "/Development/OS%20Projects/primefaces/primefaces/target/test-classes/test.png";
+            String result = FileUploadUtils.requireValidFilePath(absolutePath, false);
             assertTrue(result.endsWith("test.png"));
         }
     }
@@ -222,6 +208,48 @@ class FileUploadUtilsTest {
         catch (ValidatorException e) {
             // Assert
             assertEquals("Invalid directory, name does not match the canonical path.", e.getFacesMessage().getDetail());
+        }
+    }
+
+    @Test
+    void requireValidFilePath_NotNull() {
+        // Arrange
+        String invalidFileName = null;
+
+        // Act
+        ValidatorException ex = assertThrows(ValidatorException.class, () -> FileUploadUtils.requireValidFilePath(invalidFileName, false));
+
+        // Assert
+        assertEquals("Path can not be the empty string or null", ex.getFacesMessage().getDetail());
+    }
+
+    @Test
+    void requireValidFilePath_NotBlank() {
+        // Arrange
+        String invalidFileName = " ";
+
+        // Act
+        ValidatorException ex = assertThrows(ValidatorException.class, () -> FileUploadUtils.requireValidFilePath(invalidFileName, false));
+
+        // Assert
+        assertEquals("Path can not be the empty string or null", ex.getFacesMessage().getDetail());
+    }
+
+    @Test
+    void requireValidFilePath_InvalidCharacters() {
+        // Arrange
+        String os = System.getProperty("os.name").toLowerCase();
+        String invalidFileName = "invalid\\path*";
+
+        // Act
+        ValidatorException ex = assertThrows(ValidatorException.class, () -> FileUploadUtils.requireValidFilePath(invalidFileName, false));
+
+        // Assert
+        if (os.contains("win")) {
+            assertEquals("Invalid path: (invalid\\path*) contains invalid character: *", ex.getFacesMessage().getDetail());
+        }
+        else {
+            assertEquals("Invalid directory, \"invalid\\path*\" is not valid.", ex.getFacesMessage().getDetail());
         }
     }
 
@@ -286,6 +314,15 @@ class FileUploadUtilsTest {
     }
 
     @Test
+    void requireValidFilename_Valid() {
+        // valid files
+        assertEquals("someFileWithUmlautsßöäü.txt", FileUploadUtils.requireValidFilename("someFileWithUmlautsßöäü.txt"));
+        assertEquals("StringFinder.exe", FileUploadUtils.requireValidFilename("StringFinder.exe"));
+        assertEquals("January.xlsx", FileUploadUtils.requireValidFilename("January.xlsx"));
+        assertEquals("TravelBrochure.pdf", FileUploadUtils.requireValidFilename("TravelBrochure.pdf"));
+    }
+
+    @Test
     void requireValidFilename_Linux() {
         try (MockedStatic<FileUploadUtils> fileUploadUtilsMockedStatic = Mockito.mockStatic(FileUploadUtils.class, Mockito.CALLS_REAL_METHODS)) {
             fileUploadUtilsMockedStatic.when(FileUploadUtils::isSystemWindows).thenReturn(false);
@@ -301,6 +338,7 @@ class FileUploadUtilsTest {
 
     @Test
     void requireValidFilename_Windows() {
+        // invalid files
         try (MockedStatic<FileUploadUtils> fileUploadUtilsMockedStatic = Mockito.mockStatic(FileUploadUtils.class, Mockito.CALLS_REAL_METHODS)) {
             fileUploadUtilsMockedStatic.when(FileUploadUtils::isSystemWindows).thenReturn(true);
 
@@ -321,8 +359,75 @@ class FileUploadUtilsTest {
     }
 
     @Test
+    void requireValidFilename_EncodedChars() {
+        try (MockedStatic<FileUploadUtils> fileUploadUtilsMockedStatic = Mockito.mockStatic(FileUploadUtils.class, Mockito.CALLS_REAL_METHODS)) {
+            fileUploadUtilsMockedStatic.when(FileUploadUtils::isSystemWindows).thenReturn(false);
+
+            // Check each invalid character individually
+            String[] invalidCharacters = {"%20", "%21"};
+            for (String ch : invalidCharacters) {
+                String invalidFileName = "filename_with_" + ch;
+                ValidatorException ex = assertThrows(ValidatorException.class, () -> FileUploadUtils.requireValidFilename(invalidFileName));
+                assertEquals("Invalid filename: (filename_with_" + ch + ") contains invalid character: " + ch, ex.getFacesMessage().getDetail());
+            }
+        }
+    }
+
+    @Test
+    void requireValidFilename_NotNull() {
+        // Arrange
+        String invalidFileName = null;
+
+        // Act
+        ValidatorException ex = assertThrows(ValidatorException.class, () -> FileUploadUtils.requireValidFilename(invalidFileName));
+
+        // Assert
+        assertEquals("Filename cannot be empty or null", ex.getFacesMessage().getDetail());
+    }
+
+    @Test
+    void requireValidFilename_NotBlank() {
+        // Arrange
+        String invalidFileName = " ";
+
+        // Act
+        ValidatorException ex = assertThrows(ValidatorException.class, () -> FileUploadUtils.requireValidFilename(invalidFileName));
+
+        // Assert
+        assertEquals("Filename cannot be empty or null", ex.getFacesMessage().getDetail());
+    }
+
+    @Test
+    void requireValidFilename_InvalidCharacters() {
+        // Arrange
+        String invalidFileName = "file:*";
+        String os = System.getProperty("os.name").toLowerCase();
+
+        // Act
+        ValidatorException ex = assertThrows(ValidatorException.class, () -> FileUploadUtils.requireValidFilename(invalidFileName));
+
+        // Assert
+        if (os.contains("win")) {
+            assertEquals("Invalid filename: (file:*) contains invalid character: :", ex.getFacesMessage().getDetail());
+        }
+        else {
+            assertEquals("Invalid Linux filename: file:*", ex.getFacesMessage().getDetail());
+        }
+    }
+
+    @Test
     void formatBytes() {
         assertEquals("1000 Bytes", FileUploadUtils.formatBytes(1000L, Locale.US));
         assertEquals("1.0 KB", FileUploadUtils.formatBytes(1025L, Locale.US));
     }
+
+    @Test
+    void requireValidFilename() {
+        assertDoesNotThrow(() -> FileUploadUtils.requireValidFilename("someFileWithUmlautsßöäü.txt"));
+        // validate fileName which contains /, which is invalid in a filename
+        assertThrows(FacesException.class, () -> FileUploadUtils.requireValidFilename("someFil/eWithUmlautsßöäü.txt"));
+        // validate fileName which contains <, which is invalid in a filename
+        assertThrows(FacesException.class, () -> FileUploadUtils.requireValidFilename("someFil<eWithUmlautsßöäü.txt"));
+    }
+
 }

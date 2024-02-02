@@ -1,36 +1,12 @@
 # Client Window
 
-Prime Client Window provides a improved version of JSF´s (version 2.2 and up ) CLIENT_WINDOW_MODE.
-This allows for separating state not only per session but also on a per client-window-base.
-(Or call it per-browser-tab-base.)
+Since 2.2, the Faces specification contains a API to identify a browser tab (client-window) on the server side.
+This allows for separating state not only per session but also on a per client-window base.
 
+In PrimeFaces this feature can be used to store the state of MultiViewState-aware components (see [MultiViewState](core/multiviewstate.md) for details).  
+Faces 4.0 also contains a new `@ClientWindowScoped`, which enables you to store your data per browser tab.
 
-Prime Client Window is activated in `faces-config.xml`
-```xml
-<faces-config>
-    ...
-    <factory>
-        <lifecycle-factory>org.primefaces.clientwindow.PrimeClientWindowLifecycleFactory</lifecycle-factory>
-    </factory>
-</faces-config>
-```
-
-**MyFaces:**
-
-You can add the `PrimeClientWindowFactory` directly with no need for the LifeCyleFactory. 
-For **Mojarra** you must use the LifeCycleFactory until this issue is fixed see: https://github.com/eclipse-ee4j/mojarra/issues/5297
-```xml
-<faces-config>
-    ...
-    <factory>
-        <client-window-factory>org.primefaces.clientwindow.PrimeClientWindowFactory</client-window-factory>
-    </factory>
-</faces-config>
-```
-
-
-It´s a replacement for the standard JSF-mechanism activated in web.xml. So only add PrimeClientWindowLifecycleFactory
-but not add javax.faces.CLIENT_WINDOW_MODE!
+It can be activated via web.xml:
 ```xml
 <context-param>
     <param-name>javax.faces.CLIENT_WINDOW_MODE</param-name>
@@ -38,22 +14,41 @@ but not add javax.faces.CLIENT_WINDOW_MODE!
 </context-param>
 ```
 
-All PrimeFaces MultiViewState-aware components support client-window-mode.
-See [MultiViewState](core/multiviewstate.md) for details.
+## PrimeFaces ClientWindow
 
-Prime Client Window adds jfwid-parameter to all url´s rendered by JSF and PrimeFaces.
-Prime Client Window offers improved handling compared to JSF´s built in mechanism in following points:
-* JSF does NOT append the url param on initial redirect, so f5 creates a new windowId
+PrimeFaces provides a improved version of the Faces `url` `ClientWindow`, which is heavily inspired by Apache DeltaSpile `LAZY` mode:
+* JSF does NOT append the url param on initial redirect, so F5 creates a new windowId
 * JSF does NOT validate if the tab was initially opened with another windowId
 * it uses sessionStorage to save and validate the windowId
-* the workflow is the same as Apache DeltaSpike lazy mode
-
-## Requirements
-1. JSF 2.2 and up
-2. JSF - implementations
-   1. Mojarra 2.3 and up
-   2. MyFaces 2.2.13 (and up), 2.3.7 (and up), 3.0 and up
 
 
-## Further Notes
-JSF 4.0 also may add ClientWindowScoped OOTB - see https://github.com/eclipse-ee4j/faces-api/issues/1509
+### Configuration
+PrimeFaces `ClientWindow` can be activated in `faces-config.xml`:
+```xml
+<faces-config>
+    <factory>
+        <client-window-factory>org.primefaces.clientwindow.PrimeClientWindowFactory</client-window-factory>
+    </factory>
+</faces-config>
+```
+
+As it´s a replacement for the standard JSF-mechanism, make sure you dont have a `javax.faces.CLIENT_WINDOW_MODE` in your web.xml or configured to `none`.
+
+
+**Mojarra:**  
+For older Mojarra versions you must use the LifeCycleFactory because of this issue: https://github.com/eclipse-ee4j/mojarra/issues/5297
+```xml
+<faces-config>
+    <factory>
+        <lifecycle-factory>org.primefaces.clientwindow.PrimeClientWindowLifecycleFactory</lifecycle-factory>
+    </factory>
+</faces-config>
+```
+
+
+
+
+
+
+
+

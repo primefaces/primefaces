@@ -165,7 +165,7 @@ PrimeFaces.widget.Growl = PrimeFaces.widget.BaseWidget.extend({
 
         //remove message on click of close icon
         var closeIcon = message.find('div.ui-growl-icon-close');
-        closeIcon.attr('aria-label', PrimeFaces.getAriaLabel('close'));
+        PrimeFaces.skinCloseAction(closeIcon);
         closeIcon.on("click", function() {
             $this.removeMessage(message);
 

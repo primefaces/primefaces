@@ -348,7 +348,7 @@ public class ChartJsView implements Serializable {
         BarChartDataSet barDataSet = new BarChartDataSet();
         barDataSet.setLabel("My First Dataset");
 
-        List<Number> values = new ArrayList<>();
+        List<Object> values = new ArrayList<>();
         values.add(65);
         values.add(59);
         values.add(80);
@@ -436,7 +436,7 @@ public class ChartJsView implements Serializable {
         barDataSet.setBackgroundColor("rgba(255, 99, 132, 0.2)");
         barDataSet.setBorderColor("rgb(255, 99, 132)");
         barDataSet.setBorderWidth(1);
-        List<Number> values = new ArrayList<>();
+        List<Object> values = new ArrayList<>();
         values.add(65);
         values.add(59);
         values.add(80);
@@ -451,7 +451,7 @@ public class ChartJsView implements Serializable {
         barDataSet2.setBackgroundColor("rgba(255, 159, 64, 0.2)");
         barDataSet2.setBorderColor("rgb(255, 159, 64)");
         barDataSet2.setBorderWidth(1);
-        List<Number> values2 = new ArrayList<>();
+        List<Object> values2 = new ArrayList<>();
         values2.add(85);
         values2.add(69);
         values2.add(20);
@@ -502,7 +502,7 @@ public class ChartJsView implements Serializable {
         HorizontalBarChartDataSet hbarDataSet = new HorizontalBarChartDataSet();
         hbarDataSet.setLabel("My First Dataset");
 
-        List<Number> values = new ArrayList<>();
+        List<Object> values = new ArrayList<>();
         values.add(65);
         values.add(59);
         values.add(80);
@@ -572,7 +572,7 @@ public class ChartJsView implements Serializable {
         BarChartDataSet barDataSet = new BarChartDataSet();
         barDataSet.setLabel("Dataset 1");
         barDataSet.setBackgroundColor("rgb(255, 99, 132)");
-        List<Number> dataVal = new ArrayList<>();
+        List<Object> dataVal = new ArrayList<>();
         dataVal.add(62);
         dataVal.add(-58);
         dataVal.add(-49);
@@ -585,7 +585,7 @@ public class ChartJsView implements Serializable {
         BarChartDataSet barDataSet2 = new BarChartDataSet();
         barDataSet2.setLabel("Dataset 2");
         barDataSet2.setBackgroundColor("rgb(54, 162, 235)");
-        List<Number> dataVal2 = new ArrayList<>();
+        List<Object> dataVal2 = new ArrayList<>();
         dataVal2.add(-1);
         dataVal2.add(32);
         dataVal2.add(-52);
@@ -598,7 +598,7 @@ public class ChartJsView implements Serializable {
         BarChartDataSet barDataSet3 = new BarChartDataSet();
         barDataSet3.setLabel("Dataset 3");
         barDataSet3.setBackgroundColor("rgb(75, 192, 192)");
-        List<Number> dataVal3 = new ArrayList<>();
+        List<Object> dataVal3 = new ArrayList<>();
         dataVal3.add(-44);
         dataVal3.add(25);
         dataVal3.add(15);
@@ -655,7 +655,7 @@ public class ChartJsView implements Serializable {
         barDataSet.setLabel("Dataset 1");
         barDataSet.setBackgroundColor("rgb(255, 99, 132)");
         barDataSet.setStack("Stack 0");
-        List<Number> dataVal = new ArrayList<>();
+        List<Object> dataVal = new ArrayList<>();
         dataVal.add(-32);
         dataVal.add(-70);
         dataVal.add(-33);
@@ -669,7 +669,7 @@ public class ChartJsView implements Serializable {
         barDataSet2.setLabel("Dataset 2");
         barDataSet2.setBackgroundColor("rgb(54, 162, 235)");
         barDataSet2.setStack("Stack 0");
-        List<Number> dataVal2 = new ArrayList<>();
+        List<Object> dataVal2 = new ArrayList<>();
         dataVal2.add(83);
         dataVal2.add(18);
         dataVal2.add(86);
@@ -683,7 +683,7 @@ public class ChartJsView implements Serializable {
         barDataSet3.setLabel("Dataset 3");
         barDataSet3.setBackgroundColor("rgb(75, 192, 192)");
         barDataSet3.setStack("Stack 1");
-        List<Number> dataVal3 = new ArrayList<>();
+        List<Object> dataVal3 = new ArrayList<>();
         dataVal3.add(-45);
         dataVal3.add(73);
         dataVal3.add(-25);
@@ -900,7 +900,7 @@ public class ChartJsView implements Serializable {
         ChartData data = new ChartData();
 
         BarChartDataSet dataSet = new BarChartDataSet();
-        List<Number> values = new ArrayList<>();
+        List<Object> values = new ArrayList<>();
         values.add(10);
         values.add(20);
         values.add(30);

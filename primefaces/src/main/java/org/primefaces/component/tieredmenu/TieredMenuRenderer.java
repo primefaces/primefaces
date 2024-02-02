@@ -26,7 +26,6 @@ package org.primefaces.component.tieredmenu;
 import java.io.IOException;
 import java.util.List;
 
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.badge.BadgeRenderer;
@@ -38,7 +37,6 @@ import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.Separator;
 import org.primefaces.model.menu.Submenu;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
@@ -77,7 +75,6 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
 
     protected void encodeMenu(FacesContext context, AbstractMenu menu, String style, String styleClass, String role) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        UIComponent optionsFacet = menu.getFacet("options");
 
         writer.startElement("div", menu);
         writer.writeAttribute("id", menu.getClientId(context), "id");
@@ -92,22 +89,21 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
         writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUBAR, null);
         writer.writeAttribute("class", Menu.LIST_CLASS, null);
 
+        encodeFacet(context, menu, "start", Menu.START_CLASS);
+
         if (menu.getElementsCount() > 0) {
             encodeElements(context, menu, menu.getElements());
         }
 
-        if (FacetUtils.shouldRenderFacet(optionsFacet)) {
-            writer.startElement("li", null);
-            writer.writeAttribute("class", Menu.OPTIONS_CLASS, null);
-            writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
-            optionsFacet.encodeAll(context);
-            writer.endElement("li");
-        }
+        encodeFacet(context, menu, "options", Menu.OPTIONS_CLASS);
+        encodeFacet(context, menu, "end", Menu.END_CLASS);
 
         writer.endElement("ul");
 
         writer.endElement("div");
     }
+
+
 
     protected void encodeElements(FacesContext context, AbstractMenu menu, List<MenuElement> elements) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
@@ -183,14 +179,14 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
         }
 
         if (isRtl) {
-            encodeSubmenuIcon(context, submenu, isRtl);
+            encodeSubmenuIcon(context, submenu, isRtl, true);
             encodeMenuLabel(context, submenu);
             encodeMenuIcon(context, submenu);
         }
         else {
             encodeMenuIcon(context, submenu);
             encodeMenuLabel(context, submenu);
-            encodeSubmenuIcon(context, submenu, isRtl);
+            encodeSubmenuIcon(context, submenu, isRtl, true);
         }
 
         writer.endElement("a");
@@ -205,38 +201,5 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
                 writer.endElement("ul");
             }
         }
-    }
-
-    protected void encodeMenuIcon(FacesContext context, Submenu submenu) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        String icon = submenu.getIcon();
-
-        if (icon != null) {
-            writer.startElement("span", null);
-            writer.writeAttribute("class", Menu.MENUITEM_ICON_CLASS + " " + icon, null);
-            writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
-            writer.endElement("span");
-        }
-    }
-
-    protected void encodeMenuLabel(FacesContext context, Submenu submenu) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        String label = submenu.getLabel();
-
-        if (label != null) {
-            writer.startElement("span", null);
-            writer.writeAttribute("class", Menu.MENUITEM_TEXT_CLASS, null);
-            writer.writeText(label, "value");
-            writer.endElement("span");
-        }
-    }
-
-    protected void encodeSubmenuIcon(FacesContext context, Submenu submenu, boolean isRtl) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        String styleClass = isRtl ? Menu.SUBMENU_LEFT_ICON_CLASS : Menu.SUBMENU_RIGHT_ICON_CLASS;
-
-        writer.startElement("span", null);
-        writer.writeAttribute("class", styleClass, null);
-        writer.endElement("span");
     }
 }

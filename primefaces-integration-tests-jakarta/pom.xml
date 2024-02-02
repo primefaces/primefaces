@@ -30,7 +30,7 @@
 
         <!-- dependency versions -->
         <lombok.version>1.18.30</lombok.version>
-        <tomcat.version>10.1.16</tomcat.version>
+        <tomcat.version>10.1.17</tomcat.version>
         <jetty.version>11.0.15</jetty.version>
     </properties>
 
@@ -104,7 +104,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>2.0.10</version>
+            <version>2.0.11</version>
             <scope>test</scope>
         </dependency>
 

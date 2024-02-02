@@ -14,11 +14,11 @@
         <h:form id="form">
             <p:messages id="message" showDetail="true"/>
 
-            <p:commandLink id="confirm" value="Confirm" action="#{confirmDialog001.confirm}" update="message" styleClass="p-mr-2" icon="pi pi-check">
+            <p:commandLink id="confirm" value="Confirm" action="#{confirmDialog001.confirm}" update="message" styleClass="mr-2" icon="pi pi-check">
                 <p:confirm header="Confirmation" message="Are you sure you want to proceed?" icon="pi pi-exclamation-triangle"/>
             </p:commandLink>
 
-            <p:commandLink id="delete" value="Delete" action="#{confirmDialog001.delete}" update="message" styleClass="ui-button-danger" icon="pi pi-times">
+            <p:commandLink id="delete" value="Delete" action="#{confirmDialog001.delete}" update="message" styleClass="ui-button-danger mr-2" icon="pi pi-times">
                 <p:confirm header="Confirmation" message="Do you want to delete this record?" icon="pi pi-info-circle"/>
             </p:commandLink>
 

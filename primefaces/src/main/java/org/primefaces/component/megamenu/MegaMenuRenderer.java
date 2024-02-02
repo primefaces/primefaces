@@ -26,7 +26,6 @@ package org.primefaces.component.megamenu;
 import java.io.IOException;
 import java.util.List;
 
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
@@ -35,7 +34,7 @@ import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.separator.UISeparator;
 import org.primefaces.model.menu.*;
-import org.primefaces.util.FacetUtils;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
@@ -61,12 +60,12 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         boolean vertical = menu.getOrientation().equals("vertical");
         String clientId = menu.getClientId(context);
         String style = menu.getStyle();
-        String styleClass = menu.getStyleClass();
-        styleClass = styleClass == null ? MegaMenu.CONTAINER_CLASS : MegaMenu.CONTAINER_CLASS + " " + styleClass;
-
-        if (vertical) {
-            styleClass = styleClass + " " + MegaMenu.VERTICAL_CLASS;
-        }
+        String styleClass = getStyleClassBuilder(context)
+                .add(MegaMenu.CONTAINER_CLASS)
+                .add(menu.getStyleClass())
+                .add(vertical, MegaMenu.VERTICAL_CLASS)
+                .add(ComponentUtils.isRTL(context, abstractMenu), AbstractMenu.MENU_RTL_CLASS)
+                .build();
 
         writer.startElement("div", menu);
         writer.writeAttribute("id", clientId, "id");
@@ -81,18 +80,14 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUBAR, null);
         writer.writeAttribute("class", Menu.LIST_CLASS, null);
 
+        encodeFacet(context, menu, "start", Menu.START_CLASS);
+
         if (menu.getElementsCount() > 0) {
             encodeRootItems(context, menu);
         }
 
-        UIComponent optionsFacet = menu.getFacet("options");
-        if (FacetUtils.shouldRenderFacet(optionsFacet)) {
-            writer.startElement("li", null);
-            writer.writeAttribute("class", Menu.OPTIONS_CLASS, null);
-            writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
-            optionsFacet.encodeAll(context);
-            writer.endElement("li");
-        }
+        encodeFacet(context, menu, "options", Menu.OPTIONS_CLASS);
+        encodeFacet(context, menu, "end", Menu.END_CLASS);
 
         writer.endElement("ul");
 
@@ -124,9 +119,8 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
 
     protected void encodeRootSubmenu(FacesContext context, MegaMenu menu, Submenu submenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        boolean vertical = menu.getOrientation().equals("vertical");
-        String icon = submenu.getIcon();
-        String label = submenu.getLabel();
+        boolean isRtl = ComponentUtils.isRTL(context, menu);
+        boolean isVertical = menu.getOrientation().equals("vertical");
         String style = submenu.getStyle();
         String styleClass = submenu.getStyleClass();
         styleClass = styleClass == null ? Menu.TIERED_SUBMENU_CLASS : Menu.TIERED_SUBMENU_CLASS + " " + styleClass;
@@ -146,25 +140,17 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         writer.writeAttribute("class", Menu.SUBMENU_LINK_CLASS, null);
         writer.writeAttribute("tabindex", "-1", null);
 
-        if (icon != null) {
-            writer.startElement("span", null);
-            writer.writeAttribute("class", Menu.MENUITEM_ICON_CLASS + " " + icon, null);
-            writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
-            writer.endElement("span");
+        if (isRtl) {
+            encodeSubmenuIcon(context, submenu, isRtl, isVertical);
+            encodeMenuLabel(context, submenu);
+            encodeMenuIcon(context, submenu);
+        }
+        else {
+            encodeMenuIcon(context, submenu);
+            encodeMenuLabel(context, submenu);
+            encodeSubmenuIcon(context, submenu, isRtl, isVertical);
         }
 
-        if (label != null) {
-            writer.startElement("span", null);
-            writer.writeAttribute("class", Menu.MENUITEM_TEXT_CLASS, null);
-            writer.writeText(submenu.getLabel(), "value");
-            writer.endElement("span");
-        }
-
-        //submenu icon
-        String submenuIcon = (vertical) ? Menu.SUBMENU_RIGHT_ICON_CLASS : Menu.SUBMENU_DOWN_ICON_CLASS;
-        writer.startElement("span", null);
-        writer.writeAttribute("class", submenuIcon, null);
-        writer.endElement("span");
 
         writer.endElement("a");
 

@@ -57,6 +57,7 @@ labelSeparator | , | String | Separator for joining item lables if updateLabel i
 emptyLabel | null | String | Label to be shown in updateLabel mode when no item is selected. If not set the label is shown.
 filterPlaceholder | null | String  | Placeholder text to show when filter input is empty.
 hideNoSelectionOption | false | boolean  | Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.
+collectionType | null | String | Optional attribute that is a literal string that is the fully qualified class name of a concrete class that implements `java.util.Collection` or an EL expression that evaluates to either 1. such a String, or 2. the `Class` object itself.
 
 
 ## Getting started with SelectCheckboxMenu

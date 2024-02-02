@@ -23,33 +23,33 @@
                 </p:messages>
 
                 <h:panelGrid id="grid" columns="4" cellpadding="7">
-                    <p:outputLabel for="name" value="Name:"/>
+                    <h:outputLabel for="name" value="Name:"/>
                     <p:inputText id="name" value="#{validationView.text}" required="true" label="Name"/>
                     <p:message for="name"/>
                     <h:outputText value="#{validationView.text}"/>
 
                     <p:outputLabel for="number" value="Number:"/>
-                    <p:inputMask id="number" value="#{validationView.integer}" label="Number" mask="9[99]"
-                                 validateMask="false">
+                    <p:inputMask id="number" value="#{validationView.integer}" label="Number" mask="[99]"
+                                    validateMask="false">
                         <f:validateLength minimum="2" maximum="3"/>
                     </p:inputMask>
                     <p:message for="number"/>
                     <h:outputText value="#{validationView.integer}"/>
-
-                    <p:outputLabel for="color" value="Color:"/>
+                    
+                    <h:outputLabel for="color" value="Color:"/>
                     <p:colorPicker id="color" value="#{validationView.color}" required="true" label="Color"/>
                     <p:message for="color"/>
                     <h:outputText value="#{validationView.color}"/>
 
-                    <p:outputLabel for="dd" value="Double:"/>
+                    <h:outputLabel for="dd" value="Double:"/>
                     <p:inputText id="dd" value="#{validationView.doubleNumber}"
-                                 converterMessage="Cannot convert to double.">
+                                    converterMessage="Cannot convert to double.">
                         <f:validateDoubleRange minimum="5.5" maximum="8.5"/>
                     </p:inputText>
                     <p:message for="dd"/>
                     <h:outputText value="#{validationView.doubleNumber}"/>
 
-                    <p:outputLabel for="money" value="Currency ($):"/>
+                    <h:outputLabel for="money" value="Currency ($):"/>
                     <p:inputText id="money" value="#{validationView.money}" label="Currency">
                         <f:convertNumber type="currency" currencySymbol="$"/>
                     </p:inputText>
@@ -58,15 +58,15 @@
                         <f:convertNumber type="currency" currencySymbol="$"/>
                     </h:outputText>
 
-                    <p:outputLabel for="regex" value="Regex (^[a-zA-Z]+$):"/>
+                    <h:outputLabel for="regex" value="Regex (^[a-zA-Z]+$):"/>
                     <p:inputText id="regex" value="#{validationView.regexText}"
-                                 validatorMessage="Value does not match pattern.">
+                                    validatorMessage="Value does not match pattern.">
                         <f:validateRegex pattern="^[a-zA-Z]+$"/>
                     </p:inputText>
                     <p:message for="regex"/>
                     <h:outputText value="#{validationView.regexText}"/>
 
-                    <p:outputLabel for="date" value="Date (java.util.Date)"/>
+                    <h:outputLabel for="date" value="Date (java.util.Date)"/>
                     <p:inputText id="date" value="#{validationView.date}" label="Date (java.util.Date)">
                         <f:convertDateTime pattern="MM/dd/yyyy"/>
                     </p:inputText>
@@ -75,7 +75,7 @@
                         <f:convertDateTime pattern="MM/dd/yyyy"/>
                     </h:outputText>
 
-                    <p:outputLabel for="date2" value="Date (java.util.Date; PF Calendar)"/>
+                    <h:outputLabel for="date2" value="Date (java.util.Date; PF Calendar)"/>
                     <p:calendar id="date2" value="#{validationView.date2}" pattern="MM/dd/yyyy"
                                 label="Date (java.util.Date; PF Calendar)">
                         <f:convertDateTime pattern="MM/dd/yyyy"/>
@@ -85,10 +85,10 @@
                         <f:convertDateTime pattern="MM/dd/yyyy"/>
                     </h:outputText>
 
-                    <p:outputLabel for="date3" value="Date (java.util.Date; PF DatePicker)"
-                    />
+                    <h:outputLabel for="date3" value="Date (java.util.Date; PF DatePicker)"
+                                   />
                     <p:datePicker id="date3" value="#{validationView.date3}" pattern="MM/dd/yyyy"
-                                  label="Date (java.util.Date; PF DatePicker)">
+                                    label="Date (java.util.Date; PF DatePicker)">
                         <f:convertDateTime pattern="MM/dd/yyyy"/>
                     </p:datePicker>
                     <p:message for="date3"/>
@@ -96,7 +96,7 @@
                         <f:convertDateTime pattern="MM/dd/yyyy"/>
                     </h:outputText>
 
-                    <p:outputLabel for="localDate" value="LocalDate (Java8)"/>
+                    <h:outputLabel for="localDate" value="LocalDate (Java8)"/>
                     <p:inputText id="localDate" value="#{validationView.localDate}" label="LocalDate (Java8)">
                         <f:convertDateTime pattern="MM/dd/yyyy"/>
                     </p:inputText>
@@ -105,8 +105,8 @@
                         <f:convertDateTime pattern="MM/dd/yyyy"/>
                     </h:outputText>
 
-                    <p:outputLabel for="localDate2" value="LocalDate (Java8; PF Calendar)"
-                    />
+                    <h:outputLabel for="localDate2" value="LocalDate (Java8; PF Calendar)"
+                                   />
                     <p:calendar id="localDate2" value="#{validationView.localDate2}" pattern="MM/dd/yyyy"
                                 label="LocalDate (Java8; PF Calendar)">
                         <f:convertDateTime pattern="MM/dd/yyyy" type="localDate"/>
@@ -116,10 +116,10 @@
                         <f:convertDateTime pattern="MM/dd/yyyy" type="localDate"/>
                     </h:outputText>
 
-                    <p:outputLabel for="localDate3" value="LocalDate (Java8; PF DatePicker)"
-                    />
+                    <h:outputLabel for="localDate3" value="LocalDate (Java8; PF DatePicker)"
+                                   />
                     <p:datePicker id="localDate3" value="#{validationView.localDate3}" pattern="MM/dd/yyyy"
-                                  label="LocalDate (Java8; PF DatePicker)">
+                                    label="LocalDate (Java8; PF DatePicker)">
                         <f:convertDateTime pattern="MM/dd/yyyy" type="localDate"/>
                     </p:datePicker>
                     <p:message for="localDate3"/>
@@ -127,25 +127,13 @@
                         <f:convertDateTime pattern="MM/dd/yyyy" type="localDate"/>
                     </h:outputText>
 
-                    <p:outputLabel for="desc" value="Description"/>
+                    <h:outputLabel for="desc" value="Description"/>
                     <p:inputTextarea id="desc" value="#{validationView.description}" required="true"
-                                     label="Description">
+                                        label="Description">
                         <f:validateLength minimum="3" maximum="10"/>
                     </p:inputTextarea>
                     <p:message for="desc"/>
                     <h:outputText value="#{validationView.description}"/>
-
-                    <p:outputLabel for="@next" value="Select UI-library" />
-                    <p:selectOneMenu id="selectOneMenu" value="#{validationView.uiLibrary}" required="true">
-                        <f:selectItem itemLabel="" itemValue="" noSelectionOption="true" />
-                        <f:selectItem itemLabel="JSF" itemValue="JSF" />
-                        <f:selectItem itemLabel="Angular" itemValue="Angular" />
-                        <f:selectItem itemLabel="React" itemValue="React" />
-                        <f:selectItem itemLabel="Vue" itemValue="Vue" />
-                        <p:clientValidator />
-                    </p:selectOneMenu>
-                    <p:message for="selectOneMenu"/>
-                    <h:outputText value="#{validationView.uiLibrary}"/>
                 </h:panelGrid>
 
                 <p:remoteCommand name="rc" update="grid" process="name number" validateClient="true"/>
@@ -158,7 +146,7 @@
                     <p:commandButton value="Disabled" ajax="false"  styleClass="mr-2"/>
                     <p:commandButton value="Remote Command" type="button" onclick="rc()" />
                 </div>
-
+                
             </h:form>
         </div>
     </ui:define>

@@ -668,7 +668,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         filterColumns.children('.ui-column-filter').each(function() {
             var filter = $(this);
 
-            if(filter.is('input:text')) {
+            if(filter.is("input[type='search']")) {
                 PrimeFaces.skinInput(filter);
                 $this.bindTextFilter(filter);
             }
@@ -701,6 +701,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             this.bindEnterKeyFilter(filter);
         else
             this.bindFilterEvent(filter);
+
+        // #8113 clear 'x' event handler
+        this.bindClearFilterEvent(filter);
 
         // #7562 draggable columns cannot be filtered with touch
         if (PrimeFaces.env.isTouchable(this.cfg)) {
@@ -739,6 +742,22 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 $this.filter();
 
                 e.preventDefault();
+            }
+        });
+    },
+
+    /**
+     * Sets up the 'search' event which for HTML5 text search fields handles the clear 'x' button.
+     * @private
+     * @param {JQuery} filter INPUT element of the text filter.
+     */
+    bindClearFilterEvent: function(filter) {
+        var $this = this;
+
+        filter.off('search').on('search', function(e) {
+            // only care when 'X'' is clicked
+            if ($(this).val() == "") {
+                $this.filter();
             }
         });
     },
@@ -1412,8 +1431,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             }
 
             if(this.hasVerticalOverflow()) {
-                this.scrollHeaderBox.css('margin-right', scrollBarWidth);
-                this.scrollFooterBox.css('margin-right', scrollBarWidth);
+                var marginProperty = this.isRTL ? 'margin-left' : 'margin-right';
+                this.scrollHeaderBox.css(marginProperty, scrollBarWidth);
+                this.scrollFooterBox.css(marginProperty, scrollBarWidth);
             }
         }
 
@@ -1464,16 +1484,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         this.scrollBody.on('scroll.dataTable', function() {
-            var scrollLeft = $this.scrollBody.scrollLeft();
+            var scrollShift = $this.getScrollbarWidth();
 
-            if ($this.isRTL) {
-                $this.scrollHeaderBox.css('margin-right', scrollLeft + 'px');
-                $this.scrollFooterBox.css('margin-right', scrollLeft + 'px');
-            }
-            else {
-                $this.scrollHeaderBox.css('margin-left', -scrollLeft + 'px');
-                $this.scrollFooterBox.css('margin-left', -scrollLeft + 'px');
-            }
+            var marginProperty = $this.isRTL ? 'margin-left' : 'margin-right';
+            $this.scrollHeaderBox.css(marginProperty, scrollShift + 'px');
+            $this.scrollFooterBox.css(marginProperty, scrollShift + 'px');
 
             if($this.isEmpty()) {
                 return;
@@ -1717,10 +1732,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      */
     alignScrollBody: function() {
-        var marginRight = this.hasVerticalOverflow() ? this.getScrollbarWidth() + 'px' : '0px';
+        var margin = this.hasVerticalOverflow() ? this.getScrollbarWidth() + 'px' : '0px';
 
-        this.scrollHeaderBox.css('margin-right', marginRight);
-        this.scrollFooterBox.css('margin-right', marginRight);
+        var marginProperty = this.isRTL ? 'margin-left' : 'margin-right';
+        this.scrollHeaderBox.css(marginProperty, margin);
+        this.scrollFooterBox.css(marginProperty, margin);
     },
 
     /**
@@ -4815,10 +4831,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 checkboxes = this.tbody.find('> tr > td.ui-selection-column > div.ui-chkbox > .ui-chkbox-box');
                 enabledCheckboxes = checkboxes.filter(':not(.ui-state-disabled)');
                 disabledCheckboxes = checkboxes.filter('.ui-state-disabled');
-                selectedCheckboxes = checkboxes.filter("div[aria-checked='true']");
+                selectedCheckboxes = enabledCheckboxes.filter("div[aria-checked='true']");
             }
 
-            if(enabledCheckboxes.length && enabledCheckboxes.length === selectedCheckboxes.length)
+            var totalEnabled = enabledCheckboxes.length;
+            if(totalEnabled && totalEnabled === selectedCheckboxes.length)
                this.checkHeaderCheckbox();
             else
                this.uncheckHeaderCheckbox();
@@ -5113,7 +5130,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(this.reflowDD && this.cfg.reflow) {
             sortOrder = sortOrder > 0 ? 0 : 1;
 
-            var columnHeader = columnHeader.text();
+            var columnHeader = columnHeader.text().replace(/[^a-zA-Z0-9\u00C0-\u017F]/g, '');
             var filterby = columnHeader.indexOf("Filter by");
             if (filterby !== -1) {
                 columnHeader = columnHeader.substring(0, filterby);

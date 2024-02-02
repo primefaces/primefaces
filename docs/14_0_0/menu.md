@@ -75,6 +75,7 @@
   - [Carousel](/components/carousel.md)
   - [CascadeSelect](/components/cascadeselect.md)
   - [CellEditor](/components/celleditor.md)
+  - [Chart](/components/chart.md)
   - [Chart.js](/components/charts.md)
   - [Checkbox](/components/checkbox.md)
   - [Chip](/components/chip.md)

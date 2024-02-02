@@ -38,7 +38,7 @@ public class BarChartDataSet extends ChartDataSet {
 
     private static final long serialVersionUID = 1L;
 
-    private List<Number> data;
+    private List<Object> data;
     private String label;
     private String xaxisID;
     private String yaxisID;
@@ -54,20 +54,20 @@ public class BarChartDataSet extends ChartDataSet {
     private Object hoverBorderRadius;
 
     /**
-     * Gets the list of data in this dataSet
+     * Gets the list of data in this dataSet. Can either be a Number or a type of ChartJs Point.
      *
-     * @return List&#60;Number&#62; list of data
+     * @return List&#60;Object&#62; list of data
      */
-    public List<Number> getData() {
+    public List<Object> getData() {
         return data;
     }
 
     /**
-     * Sets the list of data in this dataSet
+     * Sets the list of data in this dataSet. Can either be a Number or a type of ChartJs Point.
      *
-     * @param data List&#60;Number&#62; list of data
+     * @param data List&#60;Object&#62; list of data
      */
-    public void setData(List<Number> data) {
+    public void setData(List<Object> data) {
         this.data = data;
     }
 

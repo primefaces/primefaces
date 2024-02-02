@@ -377,6 +377,18 @@
 
             return this;
         },
+        
+        /**
+         * There are many Close buttons in PF that should get aria-label="close" and role="button".
+         * @param {JQuery} element BUTTON or LINK element
+         * @return {JQuery} this for chaining
+         */
+        skinCloseAction : function(element) {
+            if (!element || element.length === 0) return element;
+            element.attr('aria-label', PrimeFaces.getAriaLabel('close'));
+            element.attr('role', 'button');
+            return element;
+        },
 
         /**
          * Applies the inline AJAX status (ui-state-loading) to the given widget / button.
@@ -400,8 +412,9 @@
                     }
 
                     button.addClass('ui-state-loading');
+                    widget.ajaxStart = Date.now();
 
-                    if (widget.hasOwnProperty('disable')
+                    if (typeof widget.disable === 'function'
                         && widget.cfg.disableOnAjax !== false) {
                         widget.disable();
                     }
@@ -421,17 +434,30 @@
                         return;
                     }
 
-                    button.removeClass('ui-state-loading');
-
-                    if (widget.hasOwnProperty('enable')
-                        && widget.cfg.disableOnAjax !== false
-                        && !widget.cfg.disabledAttr) {
-                        widget.enable();
-                    }
-
-                    button.find('.ui-icon-loading').remove();
+                    PrimeFaces.queueTask(
+                        function(){ PrimeFaces.buttonEndAjaxDisabled(widget, button); },
+                        Math.max(PrimeFaces.ajax.minLoadAnimation + widget.ajaxStart - Date.now(), 0)
+                    );
+                    delete widget.ajaxStart;
                 }
             });
+        },
+
+        /**
+         * Ends the AJAX disabled state.
+         * @param {PrimeFaces.widget.BaseWidget} [widget] the widget.
+         * @param {JQuery} [button] The button DOM element.
+         */
+        buttonEndAjaxDisabled: function(widget, button) {
+            button.removeClass('ui-state-loading');
+
+            if (typeof widget.enable === 'function'
+                && widget.cfg.disableOnAjax !== false
+                && !widget.cfg.disabledAttr) {
+                widget.enable();
+            }
+
+            button.find('.ui-icon-loading').remove();
         },
 
         /**
@@ -1199,7 +1225,8 @@
          */
         getAriaLabel: function(key) {
             var ariaLocaleSettings = this.getLocaleSettings()['aria'];
-            return (ariaLocaleSettings&&ariaLocaleSettings[key]) ? ariaLocaleSettings[key] : PrimeFaces.locales['en_US']['aria'][key];
+            var label = (ariaLocaleSettings&&ariaLocaleSettings[key]) ? ariaLocaleSettings[key] : PrimeFaces.locales['en_US']['aria'][key];
+            return label || "???"+key+"???";
         },
 
         /**
