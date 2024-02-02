@@ -512,7 +512,12 @@ public class DataTable extends DataTableBase {
             offset += rows;
         }
 
-        setFirst(offset);
+        if (isVirtualScroll() || isLiveScroll()) {
+            setFirst(0);
+        }
+        else {
+            setFirst(offset);
+        }
 
         if (calculateFirst()) {
             offset = getFirst();
