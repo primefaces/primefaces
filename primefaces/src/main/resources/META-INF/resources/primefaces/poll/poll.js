@@ -35,7 +35,7 @@ PrimeFaces.widget.Poll = PrimeFaces.widget.BaseWidget.extend({
 
         this.active = false;
 
-        if(this.cfg.autoStart) {
+        if (this.cfg.autoStart) {
             this.start();
         }
     },
@@ -63,23 +63,37 @@ PrimeFaces.widget.Poll = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Starts the polling, sending AJAX requests in periodic intervals.
+     * @return {boolean} `true` if polling was started, or `false` otherwise.
      */
     start: function() {
         if (!this.active) {
+            //Call user onactivated callback and block if they return false
+            if (this.cfg.onActivated && this.cfg.onActivated.call(this) === false) {
+                return false;
+            }
+
             var frequency = this.cfg.intervalType == 'millisecond' ? this.cfg.frequency : (this.cfg.frequency * 1000);
             this.timer = setInterval(this.cfg.fn, frequency);
             this.active = true;
         }
+        return true;
     },
 
     /**
      * Stops the polling so that no more AJAX requests are made.
+     * @return {boolean} `true` if polling wsa stopped, or `false` otherwise.
      */
     stop: function() {
         if (this.active) {
+            //Call user ondeactivated callback and block if they return false
+            if (this.cfg.onDeactivated && this.cfg.onDeactivated.call(this) === false) {
+                return false;
+            }
+
             clearInterval(this.timer);
             this.active = false;
         }
+        return true;
     },
 
     /**
