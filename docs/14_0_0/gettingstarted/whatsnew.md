@@ -59,7 +59,10 @@ Look into [migration guide](https://primefaces.github.io/primefaces/14_0_0/#/../
      
 * SelectCheckBoxMenu
     * Added `selectedLabel` to display a label when items selected similar to `emptyMessage`.
-    
+
+* Splitter
+    * Addded full ARIA and keyboard accessibility.
+        
 * StaticMessage
     * Added `closable` to add a close icon to hide the message similar to `Messages`.
 

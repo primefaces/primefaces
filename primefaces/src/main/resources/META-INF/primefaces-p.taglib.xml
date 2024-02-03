@@ -33863,6 +33863,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Step size when pressing arrow keys to resize panel. Default is 5.]]>
+            </description>
+            <name>step</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Storage identifier of a stateful Splitter.]]>
             </description>
             <name>stateKey</name>
@@ -33963,6 +33971,30 @@
                 <![CDATA[Style class of the component.]]>
             </description>
             <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Position in the tabbing order.]]>
+            </description>
+            <name>tabindex</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Splitter handle ARIA label for screenreader support.]]>
+            </description>
+            <name>ariaLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Establishes relationships between the splitter and panel label element IDs.]]>
+            </description>
+            <name>ariaLabelledBy</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>

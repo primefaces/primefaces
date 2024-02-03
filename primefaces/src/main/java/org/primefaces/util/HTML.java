@@ -293,6 +293,10 @@ public class HTML {
     public static final String ARIA_SELECTED = "aria-selected";
     public static final String ARIA_ORIENTATION = "aria-orientation";
     public static final String ARIA_ORIENTATION_HORIZONTAL = "horizontal";
+    public static final String ARIA_VALUE_NOW = "aria-valuenow";
+    public static final String ARIA_VALUE_TEXT = "aria-valuetext";
+    public static final String ARIA_VALUE_MIN = "aria-valuemin";
+    public static final String ARIA_VALUE_MAX = "aria-valuemax";
     public static final String ARIA_ROLE = "role";
     public static final String ARIA_ROLE_NONE = "none";
     public static final String ARIA_ROLE_COMBOBOX = "combobox";
