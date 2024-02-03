@@ -115,6 +115,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             DateMetadata metadata = entry.getValue();
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("disabled", metadata.isDisabled());
+            jsonObject.put("enabled", metadata.isEnabled());
             jsonObject.put("styleClass", metadata.getStyleClass());
             jsonDateMetadata.put(date, jsonObject);
         }
@@ -226,8 +227,8 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             CalendarUtils.encodeListValue(context, datePicker, "disabledDates", disabledDates, pattern);
         }
 
-        List enabledDates = datePicker.getEnabledDates();
-        if (enabledDates != null) {
+        List enabledDates = datePicker.getInitialEnabledDates(context);
+        if (enabledDates != null && !enabledDates.isEmpty()) {
             CalendarUtils.encodeListValue(context, datePicker, "enabledDates", enabledDates, pattern);
         }
         encodeScriptDateStyleClasses(wb, datePicker);

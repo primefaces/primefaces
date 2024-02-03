@@ -353,4 +353,19 @@ public class DatePicker extends DatePickerBase {
         return disabledDates;
     }
 
+    protected List<Object> getInitialEnabledDates(FacesContext context) {
+        List<Object> enabledDates = getEnabledDates();
+        DateMetadataModel model = getModel();
+        if (model != null) {
+            enabledDates = new ArrayList<>();
+            for (Map.Entry<LocalDate, DateMetadata> entry : model.getDateMetadata().entrySet()) {
+                if (entry.getValue().isEnabled()) {
+                    enabledDates.add(entry.getKey());
+                }
+            }
+        }
+
+        return enabledDates;
+    }
+
 }

@@ -32,6 +32,8 @@ public class DefaultDateMetadata implements DateMetadata, Serializable {
 
     private boolean disabled;
 
+    private boolean enabled;
+
     private String styleClass;
 
     public DefaultDateMetadata() {
@@ -55,6 +57,14 @@ public class DefaultDateMetadata implements DateMetadata, Serializable {
         this.styleClass = styleClass;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(disabled, styleClass);
@@ -72,12 +82,12 @@ public class DefaultDateMetadata implements DateMetadata, Serializable {
             return false;
         }
         DefaultDateMetadata other = (DefaultDateMetadata) obj;
-        return disabled == other.disabled && Objects.equals(styleClass, other.styleClass);
+        return disabled == other.disabled && enabled == other.enabled && Objects.equals(styleClass, other.styleClass);
     }
 
     @Override
     public String toString() {
-        return "DefaultDateMetadata{" + "disabled=" + disabled + ", styleClass=" + styleClass + '}';
+        return "DefaultDateMetadata{" + "disabled=" + disabled + ", enabled = " + enabled + ", styleClass=" + styleClass + '}';
     }
 
     public static Builder builder() {
@@ -99,6 +109,11 @@ public class DefaultDateMetadata implements DateMetadata, Serializable {
 
         public Builder styleClass(String styleClass) {
             dateMetadata.setStyleClass(styleClass);
+            return this;
+        }
+
+        public Builder enabled(boolean enabled) {
+            dateMetadata.setEnabled(enabled);
             return this;
         }
 

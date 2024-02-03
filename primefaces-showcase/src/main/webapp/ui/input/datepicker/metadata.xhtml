@@ -40,6 +40,11 @@
                                   model="#{datePickerMetadataView.modelLazy}"
                                   monthNavigator="true" yearNavigator="true"/>
 
+                    <p:outputLabel for="lazyEnabled" value="Lazy and Navigator - Enabled dates"/>
+                    <p:datePicker pattern="yyyy-MM-dd" id="lazyEnabled" value="#{datePickerMetadataView.date5}"
+                                  model="#{datePickerMetadataView.modelEnabledDaysLazy}"
+                                  monthNavigator="true" yearNavigator="true"/>
+
                     <p:outputLabel for="basicEvent" value="Basic and Event"/>
                     <p:datePicker id="basicEvent" value="#{datePickerMetadataView.date3}"
                                   model="#{datePickerMetadataView.model}">
@@ -49,6 +54,12 @@
                     <p:outputLabel for="lazyEvent" value="Lazy and Event"/>
                     <p:datePicker pattern="yyyy-MM-dd" id="lazyEvent" value="#{datePickerMetadataView.date4}"
                                   model="#{datePickerMetadataView.modelLazy}">
+                        <p:ajax event="viewChange" listener="#{datePickerMetadataView.onViewChange}" update="growl"/>
+                    </p:datePicker>
+
+                    <p:outputLabel for="lazyEnabledEvent" value="Lazy and Event - Enabled dates"/>
+                    <p:datePicker pattern="yyyy-MM-dd" id="lazyEnabledEvent" value="#{datePickerMetadataView.date6}"
+                                  model="#{datePickerMetadataView.modelEnabledDaysLazy}">
                         <p:ajax event="viewChange" listener="#{datePickerMetadataView.onViewChange}" update="growl"/>
                     </p:datePicker>
                 </h:panelGrid>
