@@ -15,8 +15,10 @@
  * @prop {boolean} [dragging] Whether the splitter is currently being dragged, i.e. whether an element is
  * being resized.
  * @prop {JQuery} gutters DOM elements of the gutter elements in splitter.
- * @prop {JQuery | null} [gutterElement] When resizing, the DOM elements of the gutter used for resizing .
- * @prop {boolean} horizontal Whether splitter element is horizontal or vertical.
+ * @prop {JQuery | null} [gutterElement] When resizing, the DOM elements of the gutter used for resizing.
+ *@prop {JQuery | null} [gutterHandle] DOM element of the gutter handle for keyboard events.
+ * @prop {boolean} horizontal Whether splitter element is horizontal.
+ * @prop {boolean} vertical Whether splitter element is vertical.
  * @prop {JQuery | null} [nextPanelElement] When resizing, the DOM element of the panel after the panel being
  * resized.  
  * @prop {number  | null} [nextPanelSize] When resizing, the width or height (depending on the resize
@@ -32,6 +34,7 @@
  * @prop {number | null} [size] Initial width or height of the splitter (depending on the resize direction)
  * when resizing started.
  * @prop {number | null} [startPos] Start position in pixels when resizing.
+ * @prop {number} timeout The interval for repeating key events.
  *
  * @interface {PrimeFaces.widget.SplitterCfg} cfg The configuration for the {@link  Splitter| Splitter widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
@@ -39,6 +42,7 @@
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  *
  * @prop {number} cfg.gutterSize Defines Size of the divider in pixels.
+ * @prop {number} cfg.step Defines step size when holding down keyboard arrow keys.
  * @prop {PrimeFaces.widget.Splitter.Layout} cfg.layout Defines orientation of the panels, whether the panels are split
  * horizontally or vertically.
  * @prop {string} cfg.stateKey Defines storage identifier of a stateful Splitter.
@@ -56,8 +60,9 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
 
         this.panels = this.jq.children('.ui-splitter-panel');
         this.gutters = this.jq.children('.ui-splitter-gutter');
-        this.panelSizes = [];
         this.horizontal = this.cfg.layout === 'horizontal';
+        this.vertical = !this.horizontal;
+        this.panelSizes = [];
 
         this.initPanelSize();
         this.bindGutterEvent();
@@ -78,10 +83,15 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
         if (!initialized) {
             this.jq.hide();
             this.panels.each(function(i, panel) {
-                var panelInitialSize = panel.dataset && panel.dataset.size;
-                var panelSize = panelInitialSize || (100 / $this.panels.length);
+                var panelSize = parseInt(panel.dataset.size) || 100 / $this.panels.length;
                 $this.panelSizes[i] = panelSize;
-                panel.style.flexBasis = 'calc(' + panelSize + '% - ' + (($this.panels.length - 1) * $this.cfg.gutterSize) + 'px)';
+
+                panel.style.flexBasis = `calc(${panelSize}% - ${($this.panels.length - 1) * $this.cfg.gutterSize}px)`;
+
+                $this.gutters.eq(i).find('.ui-splitter-gutter-handle')
+                    .attr('aria-valuenow', panelSize.toString())
+                    .attr('aria-valuetext', panelSize.toFixed(0) + '%');
+                $this.prevPanelSize = panelSize;
             });
             this.jq.show();
         }
@@ -95,12 +105,11 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
 
         $(document).on('mousemove.splitter', function(event) {
-                $this.onResize(event);
-            })
-            .on('mouseup.splitter', function(event) {
-                $this.onResizeEnd(event);
-                $this.unbindDocumentEvents();
-            });
+            $this.onResize(event);
+        }).on('mouseup.splitter', function(event) {
+            $this.onResizeEnd(event);
+            $this.unbindDocumentEvents();
+        });
     },
 
     /**
@@ -118,66 +127,179 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
     bindGutterEvent: function() {
         var $this = this;
 
-        this.gutters.off('mousedown.splitter touchstart.splitter touchmove.splitter touchend.splitter')
-            .on('mousedown.splitter', function(event) {
-                $this.onResizeStart(event);
-                $this.bindDocumentEvents();
-            })
-            .on('touchstart.splitter', function(event) {
-                $this.onResizeStart(event);
+        this.gutters.each(function(index, gutter) {
+            $(gutter).off('mousedown.splitter touchstart.splitter touchmove.splitter touchend.splitter keydown.splitter keyup.splitter')
+                .on('keydown.splitter', function(event) {
+                    $this.onGutterKeyDown(event, index);
+                })
+                .on('keyup.splitter', function(event) {
+                    $this.onGutterKeyUp(event, index);
+                })
+                .on('mousedown.splitter', function(event) {
+                    $this.onResizeStart(event);
+                    $this.bindDocumentEvents();
+                })
+                .on('touchstart.splitter', function(event) {
+                    $this.onResizeStart(event);
+                    event.preventDefault();
+                })
+                .on('touchmove.splitter', function(event) {
+                    $this.onResize(event);
+                    event.preventDefault();
+                })
+                .on('touchend.splitter', function(event) {
+                    $this.onResizeEnd(event);
+                    event.preventDefault();
+                });
+        });
+    },
+
+    /**
+     * Event handler for key down events.
+     * @private
+     * @param {JQuery.TriggeredEvent} event Event triggered for the key down.
+     * 
+     */
+    onGutterKeyDown: function(event) {
+        this.onResizeStart(event);
+        var minSize = parseFloat(this.panels[0].dataset.minsize) || 0;
+
+        switch (event.code) {
+            case 'ArrowLeft': {
+                if (this.horizontal) {
+                    this.setTimer(event, this.cfg.step * -1);
+                }
+
                 event.preventDefault();
-            })
-            .on('touchmove.splitter', function(event) {
-                $this.onResize(event);
+                break;
+            }
+
+            case 'ArrowRight': {
+                if (this.horizontal) {
+                    this.setTimer(event, this.cfg.step);
+                }
+
                 event.preventDefault();
-            })
-            .on('touchend.splitter', function(event) {
-                $this.onResizeEnd(event);
+                break;
+            }
+
+            case 'ArrowDown': {
+                if (this.vertical) {
+                    this.setTimer(event, this.cfg.step * -1);
+                }
+
                 event.preventDefault();
-            });
+                break;
+            }
+
+            case 'ArrowUp': {
+                if (this.vertical) {
+                    this.setTimer(event, this.cfg.step);
+                }
+
+                event.preventDefault();
+                break;
+            }
+
+            case 'Home': {
+                this.resizePanel(100, minSize);
+
+                event.preventDefault();
+                break;
+            }
+
+            case 'End': {
+                this.resizePanel(minSize, 100);
+
+                event.preventDefault();
+                break;
+            }
+
+            case 'Enter': {
+                if (this.prevPanelSize > (100 - (minSize || 5))) {
+                    this.resizePanel(minSize, 100);
+                } else {
+                    this.resizePanel(100, minSize);
+                }
+
+                event.preventDefault();
+                break;
+            }
+
+            default:
+                //no op
+                break;
+        }
+    },
+
+    /**
+     * Event handler for key up events.
+     * @private
+     * @param {JQuery.TriggeredEvent} event Event triggered for the key up.
+     * 
+     */
+    onGutterKeyUp: function(event) {
+        this.clearTimer();
+        this.onResizeEnd(event);
     },
 
     /**
      * The method that is called when the 'resize' event starts.
      * @private
      * @param {JQuery.TriggeredEvent} event Event triggered for the drag.
+     * @param {boolean} isKeyDown is key being held down
      */
-    onResizeStart: function(event) {
+    onResizeStart: function(event, isKeyDown) {
+        var pageX = event.type === 'touchstart' ? event.touches[0].pageX : event.pageX;
+        var pageY = event.type === 'touchstart' ? event.touches[0].pageY : event.pageY;
+
         this.gutterElement = $(event.currentTarget);
+        this.gutterHandle = this.gutterElement.find('.ui-splitter-gutter-handle')
         this.size = this.horizontal ? this.jq.width() : this.jq.height();
         this.dragging = true;
-        this.startPos = this.horizontal ? event.pageX : event.pageY;
+        this.startPos = this.horizontal ? pageX : pageY;
         this.prevPanelElement = this.gutterElement.prev();
         this.nextPanelElement = this.gutterElement.next();
-        this.prevPanelSize = 100 * (this.horizontal ? this.prevPanelElement.outerWidth(true) : this.prevPanelElement.outerHeight(true)) / this.size;
-        this.nextPanelSize = 100 * (this.horizontal ? this.nextPanelElement.outerWidth(true) : this.nextPanelElement.outerHeight(true)) / this.size;
         this.prevPanelIndex = this.panels.index(this.prevPanelElement);
         this.gutterElement.addClass('ui-splitter-gutter-resizing');
         this.jq.addClass('ui-splitter-resizing');
+        if (isKeyDown) {
+            this.prevPanelSize = this.horizontal ? this.prevPanelElement.outerWidth(true) : this.prevPanelElement.outerHeight(true);
+            this.nextPanelSize = this.horizontal ? this.nextPanelElement.outerWidth(true) : this.nextPanelElement.outerHeight(true);
+        } else {
+            this.prevPanelSize = 100 * (this.horizontal ? this.prevPanelElement.outerWidth(true) : this.prevPanelElement.outerHeight(true)) / this.size;
+            this.nextPanelSize = 100 * (this.horizontal ? this.nextPanelElement.outerWidth(true) : this.nextPanelElement.outerHeight(true)) / this.size;
+        }
     },
 
     /**
      * The method called while the 'resize' event is running.
      * @private
      * @param {JQuery.TriggeredEvent} event Event triggered for the resize.
+     * @param {number} step the step size
+     * @param {boolean} isKeyDown is key being held down
      */
-    onResize: function(event) {
-        var newPos;
+    onResize: function(event, step = 0, isKeyDown = false) {
+        var newPos, newNextPanelSize, newPrevPanelSize;
+        var pageX = event.type === 'touchmove' ? event.touches[0].pageX : event.pageX;
+        var pageY = event.type === 'touchmove' ? event.touches[0].pageY : event.pageY;
 
-        if (this.horizontal)
-            newPos = (event.pageX * 100 / this.size) - (this.startPos * 100 / this.size);
-        else
-            newPos = (event.pageY * 100 / this.size) - (this.startPos * 100 / this.size);
-
-        var newPrevPanelSize = this.prevPanelSize + newPos;
-        var newNextPanelSize = this.nextPanelSize - newPos;
-
-        if (this.validateResize(newPrevPanelSize, newNextPanelSize)) {
-            this.prevPanelElement.css('flexBasis', 'calc(' + newPrevPanelSize + '% - ' + ((this.panels.length - 1) * this.cfg.gutterSize) + 'px)');
-            this.nextPanelElement.css('flexBasis', 'calc(' + newNextPanelSize + '% - ' + ((this.panels.length - 1) * this.cfg.gutterSize) + 'px)');
-            this.panelSizes[this.prevPanelIndex] = newPrevPanelSize;
-            this.panelSizes[this.prevPanelIndex + 1] = newNextPanelSize;
+        if (isKeyDown) {
+            if (this.horizontal) {
+                newPrevPanelSize = (100 * (this.prevPanelSize + step)) / this.size;
+                newNextPanelSize = (100 * (this.nextPanelSize - step)) / this.size;
+            } else {
+                newPrevPanelSize = (100 * (this.prevPanelSize - step)) / this.size;
+                newNextPanelSize = (100 * (this.nextPanelSize + step)) / this.size;
+            }
+        } else {
+            if (this.horizontal) newPos = (pageX * 100) / this.size - (this.startPos * 100) / this.size;
+            else newPos = (pageY * 100) / this.size - (this.startPos * 100) / this.size;
+            newPrevPanelSize = this.prevPanelSize + newPos;
+            newNextPanelSize = this.nextPanelSize - newPos;
         }
+
+        this.resizePanel(newPrevPanelSize, newNextPanelSize);
     },
 
     /**
@@ -188,6 +310,9 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery.TriggeredEvent} event Event triggered for the resize end.
      */
     onResizeEnd: function(event) {
+        if (!this.gutterElement) {
+            return;
+        }
         if (this.isStateful()) {
             this.saveState();
         }
@@ -196,15 +321,15 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
         this.jq.removeClass('ui-splitter-resizing');
 
         //Call user onResizeEnd callback
-        if(this.cfg.onResizeEnd) {
+        if (this.cfg.onResizeEnd) {
             this.cfg.onResizeEnd.call(this, this.panelSizes);
         }
 
-        if(this.hasBehavior('resizeEnd')) {
+        if (this.hasBehavior('resizeEnd')) {
             var sizesArr = this.panelSizes;
             var ext = {
                 params: [
-                    {name: this.id + '_panelSizes', value: sizesArr.map(function(e) { return e.toFixed(2) }).join('_')},
+                    { name: this.id + '_panelSizes', value: sizesArr.map(function(e) { return e.toFixed(2) }).join('_') },
                 ]
             };
 
@@ -212,6 +337,25 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
         }
 
         this.clear();
+    },
+
+    /**
+     * Resizes the panel.
+     * @param {number} newPrevPanelSize the new size of the primary panel
+     * @param {number} newNextPanelSize the new size of the secondary panel
+     */
+    resizePanel: function(newPrevPanelSize, newNextPanelSize) {
+        if (this.validateResize(newPrevPanelSize, newNextPanelSize)) {
+            this.prevPanelElement.css('flexBasis', 'calc(' + newPrevPanelSize + '% - ' + ((this.panels.length - 1) * this.cfg.gutterSize) + 'px)');
+            this.nextPanelElement.css('flexBasis', 'calc(' + newNextPanelSize + '% - ' + ((this.panels.length - 1) * this.cfg.gutterSize) + 'px)');
+            this.panelSizes[this.prevPanelIndex] = newPrevPanelSize;
+            this.panelSizes[this.prevPanelIndex + 1] = newNextPanelSize;
+
+            // update ARIA for the primary panel
+            this.gutterHandle.attr('aria-valuenow', newPrevPanelSize.toString())
+                .attr('aria-valuetext', newPrevPanelSize.toFixed(0) + '%');
+            this.prevPanelSize = newPrevPanelSize;
+        }
     },
 
     /**
@@ -227,6 +371,7 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
         this.prevPanelSize = null;
         this.nextPanelSize = null;
         this.gutterElement = null;
+        this.gutterHandle = null;
         this.prevPanelIndex = null;
     },
 
@@ -238,6 +383,9 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
      * @return {boolean} `true` if resized, `false` if not.
      */
     validateResize: function(newPrevPanelSize, newNextPanelSize) {
+        if (newPrevPanelSize > 100 || newPrevPanelSize < 0) return false;
+        if (newNextPanelSize > 100 || newNextPanelSize < 0) return false;
+
         if (this.panels[0].dataset && parseFloat(this.panels[0].dataset.minsize) > newPrevPanelSize) {
             return false;
         }
@@ -291,7 +439,7 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
      * @return {Storage} The storage to be used.
      */
     getStorage: function() {
-        switch(this.cfg.stateStorage) {
+        switch (this.cfg.stateStorage) {
             case 'local':
                 return window.localStorage;
 
@@ -300,6 +448,42 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
 
             default:
                 throw new Error(this.cfg.stateStorage + ' is not a valid value for the state storage, supported values are "local" and "session".');
+        }
+    },
+
+    /**
+     * Repeat the current key using a step.
+     * @param {JQuery.TriggeredEvent} event Event triggered for the repeat.
+     * @param {number} step the increment to step by
+     * @private
+     */
+    repeat: function(event, step) {
+        this.onResizeStart(event, true);
+        this.onResize(event, step, true);
+    },
+
+    /**
+     * Sets the current interval for repeating keyboard events.
+     * @param {JQuery.TriggeredEvent} event Event triggered for the repeat.
+     * @param {number} step the increment to step by
+     * @private
+     */
+    setTimer: function(event, step) {
+        if (!this.timeout) {
+            var $this = this;
+            this.clearTimer();
+            this.timeout = setInterval(() => { $this.repeat(event, step); }, 40);
+        }
+    },
+
+    /**
+     * Clears the current interval for repeating keyboard events.
+     * @private
+     */
+    clearTimer: function() {
+        if (this.timeout) {
+            clearInterval(this.timeout);
+            this.timeout = null;
         }
     }
 });

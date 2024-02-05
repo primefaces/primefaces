@@ -24,6 +24,7 @@ Splitter component is used to categorize content.
 | binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
 | layout | horizontal | String | Orientation of the panels, valid values are "horizontal" and "vertical".
 | gutterSize | 4 | Integer | Size of the divider in pixels.
+| step | 5 | Integer | Step size when pressing arrow keys to resize panel. Default is 5.
 | stateKey | null | string | Storage identifier of a stateful Splitter.
 | stateStorage | session | string | Defines where a stateful splitter keeps its state, valid values are "session" for sessionStorage and "local" for localStorage.
 | onResizeEnd | null | String | Client-side callback to execute after the resizing end.

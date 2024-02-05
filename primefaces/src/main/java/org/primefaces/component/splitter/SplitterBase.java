@@ -43,7 +43,8 @@ public abstract class SplitterBase extends UIComponentBase implements Widget, Cl
         stateStorage,
         onResizeEnd,
         style,
-        styleClass
+        styleClass,
+        step
     }
 
     public SplitterBase() {
@@ -109,5 +110,13 @@ public abstract class SplitterBase extends UIComponentBase implements Widget, Cl
 
     public void setStyleClass(String styleClass) {
         getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+    public int getStep() {
+        return (Integer) getStateHelper().eval(PropertyKeys.step, 5);
+    }
+
+    public void setStep(int step) {
+        getStateHelper().put(PropertyKeys.step, step);
     }
 }

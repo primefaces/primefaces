@@ -117,7 +117,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("role", "radiogroup", null);
         if (labelledBy != null) {
-            writer.writeAttribute("aria-labelledby", labelledBy, "label");
+            writer.writeAttribute(HTML.ARIA_LABELLEDBY, labelledBy, "label");
         }
         writer.writeAttribute("class", styleClass, "styleClass");
         if (style != null) {
@@ -202,7 +202,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("role", "radiogroup", null);
         if (labelledBy != null) {
-            writer.writeAttribute("aria-labelledby", labelledBy, "label");
+            writer.writeAttribute(HTML.ARIA_LABELLEDBY, labelledBy, "label");
         }
         writer.writeAttribute("class", styleClass, "styleClass");
         if (style != null) {
@@ -251,7 +251,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
             writer.writeAttribute("id", radio.getClientId(context), "id");
             writer.writeAttribute("role", "radiogroup", null);
             if (labelledBy != null) {
-                writer.writeAttribute("aria-labelledby", labelledBy, "label");
+                writer.writeAttribute(HTML.ARIA_LABELLEDBY, labelledBy, "label");
             }
             if (style != null) {
                 writer.writeAttribute("style", style, "style");
