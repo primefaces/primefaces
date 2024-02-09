@@ -19,9 +19,9 @@
                 <p:outputPanel id="dialogPanel">
                     <p:commandButton id="btnShow" value="Show" type="button"/>
                     <p:commandButton id="btnUpdate" value="Update" update="dialogPanel"/>
-                    <p:commandButton id="btnDestroy" value="Destroy" actionListener="#{overlayPanel002.destroy}" update="dialogPanel"/>
+                    <p:commandButton id="btnDestroy" value="Destroy" actionListener="#{overlayPanel002.destroy}" update="dialogPanel" onstart="PF('wgtOverlaypanel').destroy();"/>
                     <p:commandButton id="btnAppend" value="Append" actionListener="#{overlayPanel002.appendToSomething}" update="dialogPanel"/>
-                    <p:overlayPanel id="overlaypanel" for="btnShow" rendered="#{overlayPanel002.rendered}" appendTo="#{overlayPanel002.appendTo}">
+                    <p:overlayPanel id="overlaypanel" widgetVar="wgtOverlaypanel" for="btnShow" rendered="#{overlayPanel002.rendered}" appendTo="#{overlayPanel002.appendTo}">
                         <p>Content of overlay panel.</p>
                     </p:overlayPanel>
                 </p:outputPanel>
