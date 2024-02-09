@@ -36,6 +36,7 @@ displayOnly | false | Boolean | Enables static display mode.
 global | true | Boolean | Global ajax requests are listened by ajaxStatus component, setting global to false will not trigger ajaxStatus.
 mode | determinate | String | Defines the mode of the progress, valid values are "determinate" and "indeterminate".
 animationDuration | 500 | Integer | Animation duration in milliseconds determining how long the animation will run. Default is 500.
+severity | null | String | Severity type of the progressbar.
 
 ## Getting started with the ProgressBar
 ProgressBar has two modes, "client"(default) or "ajax". Following is a pure client side progressBar.
@@ -120,6 +121,19 @@ display static value of the process on each page, you can use a static progressB
 ```xhtml
 <p:progressBar value="50" displayOnly="true" />
 ```
+
+## Severities
+Different color options are available as severity levels.
+
+* success
+* info
+* warning
+* danger
+
+```xhtml
+<p:progressBar value="#{progressBean.progress}" severity="#{progressBean.progress eq 100 ? 'success' : 'warning'}"/>
+```
+
 ## Client Side API
 Widget: _PrimeFaces.widget.ProgressBar_
 
@@ -139,6 +153,10 @@ list of structural style classes;
 .ui-progressbar | Main container.
 .ui-progressbar-value | Value of the progressbar
 .ui-progressbar-label | Progress label.
+.ui-progressbar-success | Progress element with success severity.
+.ui-progressbar-info | Progress element with info severity.
+.ui-progressbar-warning | Progress element with warning severity.
+.ui-progressbar-danger | Progress element with danger severity.
 
 As skinning style classes are global, see the main theming section for more information.
 

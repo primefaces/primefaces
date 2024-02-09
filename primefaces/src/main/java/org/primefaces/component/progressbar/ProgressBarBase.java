@@ -49,7 +49,8 @@ public abstract class ProgressBarBase extends UIComponentBase implements Widget,
         global,
         mode,
         animationDuration,
-        title
+        title,
+        severity
     }
 
     public ProgressBarBase() {
@@ -163,5 +164,13 @@ public abstract class ProgressBarBase extends UIComponentBase implements Widget,
 
     public void setTitle(String title) {
         getStateHelper().put(PropertyKeys.title, title);
+    }
+
+    public String getSeverity() {
+        return (String) getStateHelper().eval(PropertyKeys.severity, null);
+    }
+
+    public void setSeverity(String severity) {
+        getStateHelper().put(PropertyKeys.severity, severity);
     }
 }
