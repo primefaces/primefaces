@@ -51,6 +51,7 @@
  * @prop {number} cfg.showDelay Delay in milliseconds applied when the overlay panel is shown.
  * @prop {string} cfg.showEvent Event on target to hide the panel.
  * @prop {string} cfg.target Search expression for target component to display panel next to.
+ * @prop {boolean} cfg.destroyWithTarget Destroys the overlay panel if the target element is removed from the DOM, default is `false`.
  */
 PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
@@ -167,18 +168,18 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
                     }
                 }
             })
-            .on(hideEvent, function(e) {
-                clearTimeout($this.showTimeout);
-                if ($this.isVisible()) {
-                    // GitHub #8546
-                    if (!$this.isAutoHide() && $(e.relatedTarget).is('div.ui-overlaypanel-content')) {
-                        $this.allowHide = false;
-                        return;
-                    }
+                .on(hideEvent, function(e) {
+                    clearTimeout($this.showTimeout);
+                    if ($this.isVisible()) {
+                        // GitHub #8546
+                        if (!$this.isAutoHide() && $(e.relatedTarget).is('div.ui-overlaypanel-content')) {
+                            $this.allowHide = false;
+                            return;
+                        }
 
-                    $this.hide();
-                }
-            });
+                        $this.hide();
+                    }
+                });
         }
 
         $this.target.off('keydown.ui-overlaypanel keyup.ui-overlaypanel')
@@ -193,12 +194,14 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.bindAutoHide();
 
         // GitHub #5710 Helper to destroy overlay if its target is destroyed
-        $this.target.off('remove.overlay').on('remove.overlay', function() {
-            // only destroy the overlay if it lives outside of the target
-            if (!$.contains($this.target[0], $this.jq[0])) {
-                $this.destroy();
-            }
-        });
+        if ($this.cfg.destroyWithTarget) {
+            $this.target.off('remove.overlay').on('remove.overlay', function() {
+                // only destroy the overlay if it lives outside of the target
+                if (!$.contains($this.target[0], $this.jq[0])) {
+                    $this.destroy();
+                }
+            });
+        }
     },
 
     /**
@@ -538,7 +541,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 }
             };
 
-        if(this.hasBehavior('loadContent')) {
+        if (this.hasBehavior('loadContent')) {
             this.callBehavior('loadContent', options);
         }
         else {

@@ -56,7 +56,8 @@ public abstract class OverlayPanelBase extends UIPanel implements Widget, Client
         blockScroll,
         showDelay,
         autoHide,
-        cache;
+        cache,
+        destroyWithTarget;
 
         private String toString;
 
@@ -240,5 +241,13 @@ public abstract class OverlayPanelBase extends UIPanel implements Widget, Client
 
     public void setCache(boolean cache) {
         getStateHelper().put(PropertyKeys.cache, cache);
+    }
+
+    public void setDestroyWithTarget(boolean destroyWithTarget) {
+        getStateHelper().put(PropertyKeys.destroyWithTarget, destroyWithTarget);
+    }
+
+    public boolean isDestroyWithTarget() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.destroyWithTarget, false);
     }
 }

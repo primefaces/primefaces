@@ -83,6 +83,7 @@ public class OverlayPanelRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("OverlayPanel", panel)
                 .attr("target", target)
+                .attr("destroyWithTarget", panel.isDestroyWithTarget(), false)
                 .attr("showEvent", panel.getShowEvent(), null)
                 .attr("hideEvent", panel.getHideEvent(), null)
                 .callback("onShow", "function()", panel.getOnShow())

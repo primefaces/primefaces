@@ -19520,6 +19520,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Destroys the overlay panel if the target 'for' element is removed from the DOM, default is `false`.]]>
+            </description>
+            <name>destroyWithTarget</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Whether to block scrolling of the document when panel is modal.]]>
             </description>
             <name>blockScroll</name>

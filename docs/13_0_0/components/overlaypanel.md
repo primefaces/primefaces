@@ -28,6 +28,7 @@ at | left bottom | String | Position of the target relative to the panel.
 autoHide | true | boolean | Whether to hide overlay when hovering over overlay content when using custom show/hide events.
 cache | true | Boolean | Only relevant for dynamic="true": Defines if activating the panel should load the contents from server again. For cache="true" (default) the panel content is only loaded once.
 collision | flip | String | When the positioned element overflows the window in some direction, move it to an alternative position. Similar to my and at, this accepts a single value or a pair for horizontal/vertical, e.g., "flip", "fit", "fit flip", "fit none".
+destroyWithTarget | false | Boolean | Destroys the overlay panel if the target 'for' element is removed from the DOM, default is `false`.
 dismissable | true | Boolean | When set true, clicking outside of the panel hides the overlay.
 dynamic | false | Boolean | Defines if dynamic loading is enabled for the element's panel. If the value is "true", the overlay is not rendered on page load to improve performance. Default is false.
 for | null | String | Target component to display panel next to.
