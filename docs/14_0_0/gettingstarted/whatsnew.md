@@ -56,6 +56,9 @@ Look into [migration guide](https://primefaces.github.io/primefaces/14_0_0/#/../
    
 * Poll
     * Added `onactivate` and `ondeactivate` client side callbacks for when the poll starts and stops
+   
+* ProgressBar
+    * Added `severity` attribute to easily change the bar color.
      
 * SelectCheckBoxMenu
     * Added `selectedLabel` to display a label when items selected similar to `emptyMessage`.
