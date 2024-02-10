@@ -101,6 +101,9 @@ public class SearchExpressionUtils {
 
     public static List<UIComponent> contextlessResolveComponents(FacesContext context, UIComponent component, String expression,
             Set<SearchExpressionHint> hints) {
+        if (LangUtils.isBlank(expression)) {
+            return null;
+        }
         List<UIComponent> result = new ArrayList<>();
 
         context.getApplication().getSearchExpressionHandler().resolveComponents(
@@ -146,6 +149,9 @@ public class SearchExpressionUtils {
     }
 
     public static String resolveClientId(FacesContext context, UIComponent component, String expression) {
+        if (LangUtils.isBlank(expression)) {
+            return null;
+        }
         return context.getApplication().getSearchExpressionHandler().resolveClientId(
                 SearchExpressionContext.createSearchExpressionContext(context, component),
                 expression);
@@ -173,6 +179,9 @@ public class SearchExpressionUtils {
 
     // used by p:resolveClientId
     public static String resolveClientId(String expression, UIComponent source) {
+        if (LangUtils.isBlank(expression)) {
+            return null;
+        }
         FacesContext context = FacesContext.getCurrentInstance();
         return context.getApplication().getSearchExpressionHandler().resolveClientId(
                 SearchExpressionContext.createSearchExpressionContext(context, source),
