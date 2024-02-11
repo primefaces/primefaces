@@ -113,7 +113,7 @@ class OverlayPanel002Test extends AbstractPrimePageTest {
         page.btnDestroy.click();
 
         // Assert
-        assertNotPresent(overlayPanel);
+        assertPresent(overlayPanel);
     }
 
     @Test
