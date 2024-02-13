@@ -786,11 +786,16 @@ if (!PrimeFaces.ajax) {
 
                     //add form state if necessary
                     if (!formProcessed) {
+                        // Faces
                         PrimeFaces.ajax.Request.addParamFromInput(postParams, PrimeFaces.VIEW_STATE, form, parameterPrefix);
                         PrimeFaces.ajax.Request.addParamFromInput(postParams, PrimeFaces.CLIENT_WINDOW, form, parameterPrefix);
+                        // PrimeFaces
                         PrimeFaces.ajax.Request.addParamFromInput(postParams, PrimeFaces.csp.NONCE_INPUT, form, parameterPrefix);
+                        // DeltaSpike
                         PrimeFaces.ajax.Request.addParamFromInput(postParams, 'dsPostWindowId', form, parameterPrefix);
                         PrimeFaces.ajax.Request.addParamFromInput(postParams, 'dspwid', form, parameterPrefix);
+                        // Spring Security
+                        PrimeFaces.ajax.Request.addParamFromInput(postParams, '_csrf', form, parameterPrefix);
                     }
 
                 }
@@ -1188,11 +1193,16 @@ if (!PrimeFaces.ajax) {
                     PrimeFaces.ajax.Request.addFormData(formData, PrimeFaces.PARTIAL_UPDATE_PARAM, update, parameterPrefix);
                 }
 
+                // Faces
                 PrimeFaces.ajax.Request.addFormDataFromInput(formData, PrimeFaces.VIEW_STATE, form, parameterPrefix);
                 PrimeFaces.ajax.Request.addFormDataFromInput(formData, PrimeFaces.CLIENT_WINDOW, form, parameterPrefix);
+                // PrimeFaces
                 PrimeFaces.ajax.Request.addFormDataFromInput(formData, PrimeFaces.csp.NONCE_INPUT, form, parameterPrefix);
+                // DeltaSpike
                 PrimeFaces.ajax.Request.addFormDataFromInput(formData, 'dsPostWindowId', form, parameterPrefix);
                 PrimeFaces.ajax.Request.addFormDataFromInput(formData, 'dspwid', form, parameterPrefix);
+                // Spring Security
+                PrimeFaces.ajax.Request.addFormDataFromInput(formData, '_csrf', form, parameterPrefix);
 
                 return formData;
             }
