@@ -20,7 +20,8 @@ PrimeFaces.widget.Message = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
 
-        var text = this.jq.find('.ui-message-error-detail').text();
+        var summaryOrDetail = this.jq.find('.ui-message-error-summary').length ? "summary" : "detail";
+        var text = this.jq.find('.ui-message-error-' + summaryOrDetail).text();
 
         if(text) {
            var target = $(PrimeFaces.escapeClientId(this.cfg.target));
@@ -29,7 +30,7 @@ PrimeFaces.widget.Message = PrimeFaces.widget.BaseWidget.extend({
               target.data('tooltip', text);
            }
 
-           target.attr('aria-describedby', this.id + '_error-detail');
+           target.attr('aria-describedby', this.id + '_error-' + + summaryOrDetail);
         }
     }
 });
