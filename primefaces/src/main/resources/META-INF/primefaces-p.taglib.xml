@@ -32859,6 +32859,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Whether to hide the overlay on date selection is completed when selectionMode is range. Default is false.]]>
+            </description>
+            <name>hideOnRangeSelection</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Maximum number of selectable dates in multiple mode. Default is java.lang.Integer.MAX_VALUE.]]>
             </description>
             <name>maxDateCount</name>

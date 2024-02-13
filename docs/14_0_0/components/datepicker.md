@@ -44,6 +44,7 @@ ajax selection and more.
 | flex | false | Boolean | Use modern PrimeFlex-Grid instead of classic Grid CSS. (primeflex.css must be included into the template.xhtml)
 | focusOnSelect | false | Boolean | When enabled, input receives focus after a value is picked.
 | hideOnDateTimeSelect | false | Boolean | Defines if the popup should be hidden when a time is selected.
+| hideOnRangeSelection | false | Boolean | Whether to hide the overlay on date selection is completed when selectionMode is range. Default is false.
 | hourFormat | '24' | String | Defines the hour format, valid values are '12' and '24'
 | immediate | false | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
 | inline |  false | Boolean | Whether to show the datepicker inline or as a popup

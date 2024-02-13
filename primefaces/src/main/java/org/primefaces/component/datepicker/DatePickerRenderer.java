@@ -175,6 +175,8 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
         DateFormatSymbols symbols = new DateFormatSymbols(locale);
         String[] ampm = symbols.getAmPmStrings();
 
+        String selectionMode = datePicker.getSelectionMode();
+
         wb.attr("defaultDate", defaultDate, null)
             .attr("inline", datePicker.isInline())
             .attr("userLocale", locale.toString())
@@ -190,7 +192,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             .attr("yearRange", datePicker.getYearRange(), null)
             .attr("minDate", getMinMaxDate(context, datePicker, datePicker.getMindate(), false), null)
             .attr("maxDate", getMinMaxDate(context, datePicker, datePicker.getMaxdate(), true), null)
-            .attr("selectionMode", datePicker.getSelectionMode(), null)
+            .attr("selectionMode", selectionMode, null)
             .attr("showOnFocus", datePicker.isShowOnFocus())
             .attr("shortYearCutoff", datePicker.getShortYearCutoff(), null)
             .attr("monthNavigator", datePicker.isMonthNavigator(), false)
@@ -273,6 +275,10 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
                 .attr("stepSecond", datePicker.getStepSecond(), 1)
                 .attr("stepMillisecond", datePicker.getStepSecond(), 1)
                 .attr("hideOnDateTimeSelect", datePicker.isHideOnDateTimeSelect(), false);
+        }
+
+        if ("range".equalsIgnoreCase(selectionMode)) {
+            wb.attr("hideOnRangeSelection", datePicker.isHideOnRangeSelection(), false);
         }
 
         String mask = datePicker.getMask();

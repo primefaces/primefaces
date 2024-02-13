@@ -33,6 +33,9 @@ Look into [migration guide](https://primefaces.github.io/primefaces/14_0_0/#/../
 
 * DataExporter
     * Added `bufferSize` to control how many items are fetched at a time when `DataTable#lazy` is enabled.
+    
+* DatePicker
+    * Added `hideOnRangeSelection` to control hiding the overlay on date selection is completed when selectionMode is range.
 
 * DataTable
     * JPALazyDataModel now supports case insensitive filters with `setCaseSensitive(false);`,
