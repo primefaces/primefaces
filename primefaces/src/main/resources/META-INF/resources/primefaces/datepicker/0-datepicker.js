@@ -64,6 +64,7 @@
             stepMillisecond: 1,
             shortYearCutoff: '+10',
             hideOnDateTimeSelect: false,
+            hideOnRangeSelection: false,
             userLocale: null,
             locale: {
                 firstDayOfWeek: 0,
@@ -2856,6 +2857,12 @@
             }
 
             if (!this.options.inline && this.isSingleSelection() && (!this.options.showTime || this.options.hideOnDateTimeSelect)) {
+                PrimeFaces.queueTask(function() {
+                    $this.hideOverlay();
+                }, 100);
+            }
+            
+            if (!this.options.inline && this.isRangeSelection() && this.options.hideOnRangeSelection && this.value && this.value[1]) {
                 PrimeFaces.queueTask(function() {
                     $this.hideOverlay();
                 }, 100);
