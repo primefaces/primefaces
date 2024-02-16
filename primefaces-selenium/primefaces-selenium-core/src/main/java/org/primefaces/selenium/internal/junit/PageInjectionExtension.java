@@ -23,29 +23,56 @@
  */
 package org.primefaces.selenium.internal.junit;
 
-import java.lang.reflect.Field;
-
-import javax.inject.Inject;
-
-import org.junit.jupiter.api.extension.*;
+import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.ParameterContext;
+import org.junit.jupiter.api.extension.ParameterResolutionException;
+import org.junit.jupiter.api.extension.ParameterResolver;
+import org.junit.jupiter.api.extension.TestInstancePostProcessor;
 import org.openqa.selenium.WebDriver;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.spi.PrimePageFactory;
 import org.primefaces.selenium.spi.WebDriverProvider;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+
 public class PageInjectionExtension implements ParameterResolver, TestInstancePostProcessor {
+
+    private List<Class<? extends Annotation>> injectionMarkerAnnotations;
+
+    public PageInjectionExtension() {
+        injectionMarkerAnnotations = new ArrayList<>();
+
+        try {
+            injectionMarkerAnnotations.add(
+                    (Class<? extends Annotation>) Class.forName("javax.inject.Inject"));
+        }
+        catch (ClassNotFoundException e) {
+            // ignore
+        }
+
+        try {
+            injectionMarkerAnnotations.add(
+                    (Class<? extends Annotation>) Class.forName("jakarta.inject.Inject"));
+        }
+        catch (ClassNotFoundException e) {
+            // ignore
+        }
+    }
 
     @Override
     public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext)
-                throws ParameterResolutionException {
+            throws ParameterResolutionException {
 
         return AbstractPrimePage.class.isAssignableFrom(parameterContext.getParameter().getType());
     }
 
     @Override
     public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext)
-                throws ParameterResolutionException {
+            throws ParameterResolutionException {
 
         WebDriver driver = WebDriverProvider.get(true);
 
@@ -61,9 +88,9 @@ public class PageInjectionExtension implements ParameterResolver, TestInstancePo
         for (Field field : testInstance.getClass().getDeclaredFields()) {
             field.setAccessible(true);
 
-            if (field.getAnnotation(Inject.class) != null
-                        && AbstractPrimePage.class.isAssignableFrom(field.getType())
-                        && field.get(testInstance) == null) {
+            if ((injectionMarkerAnnotations.stream().anyMatch(it -> field.getAnnotation(it) != null))
+                    && AbstractPrimePage.class.isAssignableFrom(field.getType())
+                    && field.get(testInstance) == null) {
 
                 WebDriver driver = WebDriverProvider.get(true);
 
@@ -73,5 +100,4 @@ public class PageInjectionExtension implements ParameterResolver, TestInstancePo
             }
         }
     }
-
 }
