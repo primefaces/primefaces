@@ -4903,12 +4903,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     setupStickyHeader: function() {
         var table = this.thead.parent(),
-        offset = table.offset(),
-        win = $(window),
-        $this = this,
-        orginTableContent = this.jq.find('> .ui-datatable-tablewrapper > table'),
-        fixedElementsOnTop = this.cfg.stickyTopAt ? $(this.cfg.stickyTopAt) : null,
-        fixedElementsHeight = 0;
+            offset = table.offset(),
+            win = $(window),
+            $this = this,
+            orginTableContent = this.jq.find('> .ui-datatable-tablewrapper > table'),
+            fixedElementsOnTop = this.cfg.stickyTopAt ? $(this.cfg.stickyTopAt) : null,
+            fixedElementsHeight = 0;
 
         if (fixedElementsOnTop && fixedElementsOnTop.length) {
             for (var i = 0; i < fixedElementsOnTop.length; i++) {
@@ -4926,47 +4926,51 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             width: table.outerWidth() + 'px',
             top: offset.top + 'px',
             left: offset.left + 'px',
-            'z-index': PrimeFaces.nextZindex()
+            display: 'none'
         });
 
         this.jq.prepend(this.stickyContainer);
 
-        if(this.cfg.resizableColumns) {
+        if (this.cfg.resizableColumns) {
             this.relativeHeight = 0;
         }
 
         PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id, function() {
             var scrollTop = win.scrollTop(),
-            tableOffset = table.offset();
+                tableOffset = table.offset();
 
-            if(scrollTop + fixedElementsHeight > tableOffset.top) {
+            if (scrollTop + fixedElementsHeight > tableOffset.top) {
+                if (!$this.stickyContainer.hasClass('ui-shadow ui-sticky')) {
+                    $this.stickyContainer.css({ 'z-index': PrimeFaces.nextZindex() });
+                }
                 $this.stickyContainer.css({
-                                        'position': 'fixed',
-                                        'top': fixedElementsHeight + 'px'
-                                    })
-                                    .addClass('ui-shadow ui-sticky');
+                    'position': 'fixed',
+                    'top': fixedElementsHeight + 'px'
+                }).addClass('ui-shadow ui-sticky');
 
-                if($this.cfg.resizableColumns) {
+                if ($this.cfg.resizableColumns) {
                     $this.relativeHeight = (scrollTop + fixedElementsHeight) - tableOffset.top;
                 }
 
-                if(scrollTop + fixedElementsHeight >= (tableOffset.top + $this.tbody.height()))
+                if (scrollTop + fixedElementsHeight >= (tableOffset.top + $this.tbody.height())) {
                     $this.stickyContainer.hide();
-                else
+                }
+                else {
                     $this.stickyContainer.show();
+                }
             }
             else {
                 $this.stickyContainer.css({
-                                        'position': 'absolute',
-                                        'top': tableOffset.top + 'px'
-                                    })
-                                    .removeClass('ui-shadow ui-sticky');
+                    'position': 'absolute',
+                    'top': tableOffset.top + 'px'
+                }).removeClass('ui-shadow ui-sticky');
 
-                if($this.stickyContainer.is(':hidden')) {
+                if ($this.stickyContainer.is(':hidden')) {
+                    $this.stickyContainer.css({ 'z-index': PrimeFaces.nextZindex() });
                     $this.stickyContainer.show();
                 }
 
-                if($this.cfg.resizableColumns) {
+                if ($this.cfg.resizableColumns) {
                     $this.relativeHeight = 0;
                 }
             }
@@ -4982,9 +4986,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                 $this.stickyContainer.hide();
                 $this.resizeTimeout = PrimeFaces.queueTask(function() {
-                    $this.stickyContainer.css('left', orginTableContent.offset().left + 'px');
+                    $this.stickyContainer.css({ left: orginTableContent.offset().left + 'px', 'z-index': PrimeFaces.nextZindex() });
                     $this.stickyContainer.width(table.outerWidth());
-                    $this.stickyContainer.show();
+                    // Dispatch the scroll event on the window
+                    window.dispatchEvent(new Event('scroll'));
                 }, _delay);
             }
             else {

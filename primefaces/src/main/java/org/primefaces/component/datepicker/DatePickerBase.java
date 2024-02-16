@@ -79,6 +79,7 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         panelStyle,
         keepInvalid,
         hideOnDateTimeSelect,
+        hideOnRangeSelection,
         maxDateCount,
         numberOfMonths,
         view,
@@ -346,6 +347,14 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
 
     public void setHideOnDateTimeSelect(boolean hideOnDateTimeSelect) {
         getStateHelper().put(PropertyKeys.hideOnDateTimeSelect, hideOnDateTimeSelect);
+    }
+
+    public boolean isHideOnRangeSelection() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.hideOnRangeSelection, false);
+    }
+
+    public void setHideOnRangeSelection(boolean hideOnRangeSelection) {
+        getStateHelper().put(PropertyKeys.hideOnRangeSelection, hideOnRangeSelection);
     }
 
     public int getMaxDateCount() {
