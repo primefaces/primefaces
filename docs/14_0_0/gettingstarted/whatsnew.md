@@ -87,3 +87,5 @@ Look into [migration guide](https://primefaces.github.io/primefaces/14_0_0/#/../
 ### PrimeFaces Selenium 
 
 * Added 'StaticMessage` component
+* Added support for `jakarta.inject.Inject`
+* Removed `javax.inject:javax.inject:1` dependency
