@@ -39,22 +39,35 @@ public class DefaultDashboardWidget implements DashboardWidget, Serializable {
     private List<String> widgets;
     private String style;
     private String styleClass;
+    private Object value;
 
     public DefaultDashboardWidget() {
         widgets = new LinkedList<>();
+    }
+
+    public DefaultDashboardWidget(String style, String styleClass, Object value, Collection<String> widgets) {
+        this();
+        this.widgets.addAll(widgets);
+        this.style = style;
+        this.styleClass = styleClass;
+        this.value = value;
+    }
+
+    public DefaultDashboardWidget(String style, String styleClass, Collection<String> widgets) {
+        this(style, styleClass, null, widgets);
+    }
+
+    public DefaultDashboardWidget(String widgetId, String styleClass, Object value) {
+        this();
+        getWidgets().addAll(Arrays.asList(widgetId));
+        setStyleClass(styleClass);
+        setValue(value);
     }
 
     public DefaultDashboardWidget(String widgetId, String styleClass) {
         this();
         getWidgets().addAll(Arrays.asList(widgetId));
         setStyleClass(styleClass);
-    }
-
-    public DefaultDashboardWidget(String style, String styleClass, Collection<String> widgets) {
-        this();
-        this.widgets.addAll(widgets);
-        this.style = style;
-        this.styleClass = styleClass;
     }
 
     public DefaultDashboardWidget(Collection<String> widgets) {
@@ -116,6 +129,16 @@ public class DefaultDashboardWidget implements DashboardWidget, Serializable {
     @Override
     public void setStyleClass(String styleClass) {
         this.styleClass = styleClass;
+    }
+
+    @Override
+    public Object getValue() {
+        return value;
+    }
+
+    @Override
+    public void setValue(Object value) {
+        this.value = value;
     }
 
 }

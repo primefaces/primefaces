@@ -26,6 +26,7 @@ package org.primefaces.component.dashboard;
 import java.io.IOException;
 import java.util.List;
 
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -35,6 +36,7 @@ import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.dashboard.DashboardModel;
 import org.primefaces.model.dashboard.DashboardWidget;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.GridLayoutUtils;
 import org.primefaces.util.WidgetBuilder;
 
@@ -57,6 +59,7 @@ public class DashboardRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = dashboard.getClientId(context);
         boolean responsive = dashboard.isResponsive();
+        String var = dashboard.getVar();
 
         writer.startElement("div", dashboard);
         writer.writeAttribute("id", clientId, "id");
@@ -92,7 +95,14 @@ public class DashboardRenderer extends CoreRenderer {
                 for (String widgetId : column.getWidgets()) {
                     Panel widget = (Panel) SearchExpressionUtils.contextlessResolveComponent(context, dashboard, widgetId);
                     if (widget != null) {
-                        renderChild(context, widget);
+                        ComponentUtils.executeInRequestScope(context, var, column.getValue(), () -> {
+                            try {
+                                return renderChild(context, widget);
+                            }
+                            catch (IOException e) {
+                                throw new FacesException(e);
+                            }
+                        });
                     }
                 }
 
