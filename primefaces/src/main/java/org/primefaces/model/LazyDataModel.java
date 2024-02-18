@@ -112,8 +112,8 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
                         + ", when basic rowKey algorithm is not used [component=%s,view=%s]."));
     }
 
-    public T getRowData(int rowIndex, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
-        List<T> loaded = load(rowIndex, rowIndex + 1, sortBy, filterBy);
+    public T loadOne(int rowIndex, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
+        List<T> loaded = load(rowIndex, 1, sortBy, filterBy);
         if (loaded == null || loaded.isEmpty()) {
             return null;
         }
