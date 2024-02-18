@@ -423,7 +423,7 @@ public class DiagramRenderer extends CoreRenderer {
                     }
 
                     if (ComponentUtils.shouldRenderFacet(elementFacet)) {
-                        elementFacet.encodeAll(context);
+                        ComponentUtils.encodeIndexedId(context, elementFacet, i);
                     }
                     else if (data != null) {
                         writer.writeText(data, null);
