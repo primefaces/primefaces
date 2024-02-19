@@ -116,8 +116,8 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
      * Loads a single row for the rowIndex provided.
      *
      * @param rowIndex the row index to load
-     * @param sortBy a map with all sort information (only relevant for DataTable, not for eg DataView)
-     * @param filterBy a map with all filter information (only relevant for DataTable, not for eg DataView)
+     * @param sortBy a map with all sort information
+     * @param filterBy a map with all filter information
      * @return the data
      */
     public T loadOne(int rowIndex, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
