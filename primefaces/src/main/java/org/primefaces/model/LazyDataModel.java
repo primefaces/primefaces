@@ -120,7 +120,7 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
      * @param filterBy a map with all filter information (only relevant for DataTable, not for eg DataView)
      * @return the data
      */
-    public T loadRow(int rowIndex, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
+    public T loadOne(int rowIndex, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
         List<T> loaded = load(rowIndex, 1, sortBy, filterBy);
         if (loaded == null || loaded.isEmpty()) {
             return null;
