@@ -80,7 +80,10 @@ Look into [migration guide](https://primefaces.github.io/primefaces/14_0_0/#/../
     * Added `hideDelay` delay in milliseconds before hiding the submenu., if 0 not hidden until document.click(). Default is 0.
     * Added `dir` for right-to-left support. Default is ltr.
     * Added `start` and `end` facets.
-    
+
+* Tree
+    * Added `dropMode` with values `move` or `copy` if you want nodes to be copied by default.
+        
 * TreeTable
     * Added `filterPlaceholder` for `Column` and `Columns`.
     

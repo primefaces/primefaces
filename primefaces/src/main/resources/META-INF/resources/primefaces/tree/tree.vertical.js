@@ -702,7 +702,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 dropNodeKey = $this.getRowKey(dropNode),
                 transfer = (dragSource.id !== dropSource.id),
                 draggedSourceKeys = dragSource.draggedSourceKeys,
-                isDroppedNodeCopy = ($this.cfg.dropCopyNode && $this.shiftKey),
+                isDroppedNodeCopy = $this.cfg.dropMode === 'copy' || ($this.cfg.dropCopyNode && $this.shiftKey),
                 draggedNodes,
                 dragNodeKey;
 

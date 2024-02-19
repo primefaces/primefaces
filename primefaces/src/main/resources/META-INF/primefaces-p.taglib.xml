@@ -30177,11 +30177,19 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[When enabled, the copy of the selected nodes can be dropped from a tree to another tree using Shift key.]]>
+                <![CDATA[When enabled and dropMode='move', the copy of the selected nodes can be dropped from a tree to another tree using Shift key.]]>
             </description>
             <name>dropCopyNode</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether to 'move' or 'copy' the node on drop. Default is 'move'.]]>
+            </description>
+            <name>dropMode</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
