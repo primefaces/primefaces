@@ -70,9 +70,9 @@ public abstract class CoreRenderer extends Renderer {
         }
     }
 
-    protected void renderChild(FacesContext context, UIComponent child) throws IOException {
+    protected UIComponent renderChild(FacesContext context, UIComponent child) throws IOException {
         if (!child.isRendered()) {
-            return;
+            return child;
         }
 
         child.encodeBegin(context);
@@ -84,6 +84,7 @@ public abstract class CoreRenderer extends Renderer {
             renderChildren(context, child);
         }
         child.encodeEnd(context);
+        return child;
     }
 
     protected String getResourceURL(FacesContext context, String value) {

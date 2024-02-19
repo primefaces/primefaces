@@ -48,4 +48,8 @@ public interface DashboardWidget {
     void setStyle(String style);
 
     void setStyleClass(String styleClass);
+
+    Object getValue();
+
+    void setValue(Object value);
 }
