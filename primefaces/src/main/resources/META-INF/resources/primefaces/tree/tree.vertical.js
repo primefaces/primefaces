@@ -1452,6 +1452,14 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                         }
                     }
                 }
+
+                if ($this.cfg.draggable) {
+                    $this.initDraggable();
+                }
+
+                if ($this.cfg.droppable) {
+                    $this.initDroppable();
+                }
             }
         };
 
