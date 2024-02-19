@@ -1086,7 +1086,6 @@ public class DataTableRenderer extends DataRenderer {
         String clientId = table.getClientId(context);
         List<SummaryRow> summaryRows = table.getSummaryRows();
         HeaderRow headerRow = table.getHeaderRow();
-        ELContext elContext = context.getELContext();
 
         SortMeta sort = table.getHighestPriorityActiveSortMeta();
         boolean encodeHeaderRow = headerRow != null && headerRow.isEnabled() && sort != null;
@@ -1102,7 +1101,7 @@ public class DataTableRenderer extends DataRenderer {
 
             table.setRowIndex(i);
 
-            if (encodeHeaderRow && (i == first || !isInSameGroup(context, table, i, -1, sort.getSortBy(), elContext))) {
+            if (encodeHeaderRow && (i == first || !isInSameGroup(context, table, i, -1, sort.getSortBy(), false))) {
                 table.setRowIndex(i);
                 encodeHeaderRow(context, table, headerRow);
             }
@@ -1110,7 +1109,7 @@ public class DataTableRenderer extends DataRenderer {
             table.setRowIndex(i);
             encodeRow(context, table, clientId, i, columnStart, columnEnd);
 
-            if (encodeSummaryRow && !isInSameGroup(context, table, i, 1, sort.getSortBy(), elContext)) {
+            if (encodeSummaryRow && !isInSameGroup(context, table, i, 1, sort.getSortBy(), i == last - 1)) {
                 table.setRowIndex(i);
                 encodeSummaryRow(context, summaryRows, sort);
             }
@@ -1598,8 +1597,8 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected boolean isInSameGroup(FacesContext context, DataTable table, int currentRowIndex, int step, ValueExpression groupByVE,
-                                    ELContext elContext) {
-
+                                    boolean loadFirstRowOfNextPage) {
+        ELContext elContext = context.getELContext();
         table.setRowIndex(currentRowIndex);
         Object currentGroupByData = groupByVE.getValue(elContext);
 
@@ -1607,11 +1606,10 @@ public class DataTableRenderer extends DataRenderer {
 
         Object nextGroupByData;
 
-        // in case of a lazy DataTable, the LazyDataModel currently only loads rows inside the current page; we need a small hack here
-        // 1) get the rowData manually for the next row
-        // 2) put it into request-scope
-        // 3) invoke the groupBy ValueExpression
-        if (table.isLazy()) {
+        // An additional check is required to ensure summaryRow will be rendered in case
+        // number of rows of the current page is equals to the number of items in the current group (otherwise, it'll never be rendered)
+        // see #9077
+        if (loadFirstRowOfNextPage && table.isLazy()) {
             Object nextRowData = table.getLazyDataModel().getRowData(nextRowIndex, table.getActiveSortMeta(), table.getActiveFilterMeta());
             if (nextRowData == null) {
                 return false;
