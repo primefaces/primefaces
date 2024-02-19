@@ -112,7 +112,15 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
                         + ", when basic rowKey algorithm is not used [component=%s,view=%s]."));
     }
 
-    public T loadOne(int rowIndex, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
+    /**
+     * Loads a single row for the rowIndex provided.
+     *
+     * @param rowIndex the row index to load
+     * @param sortBy a map with all sort information (only relevant for DataTable, not for eg DataView)
+     * @param filterBy a map with all filter information (only relevant for DataTable, not for eg DataView)
+     * @return the data
+     */
+    public T loadRow(int rowIndex, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
         List<T> loaded = load(rowIndex, 1, sortBy, filterBy);
         if (loaded == null || loaded.isEmpty()) {
             return null;
