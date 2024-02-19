@@ -1580,7 +1580,7 @@ public class DataTableRenderer extends DataRenderer {
         // number of rows of the current page is equals to the number of items in the current group (otherwise, it'll never be rendered)
         // see #9077
         if (loadFirstRowOfNextPage && table.isLazy()) {
-            Object nextRowData = table.getLazyDataModel().loadOne(nextRowIndex, table.getActiveSortMeta(), table.getActiveFilterMeta());
+            Object nextRowData = table.getLazyDataModel().loadRow(nextRowIndex, table.getActiveSortMeta(), table.getActiveFilterMeta());
             if (nextRowData == null) {
                 return false;
             }
