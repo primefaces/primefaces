@@ -63,7 +63,7 @@
         <dependency>
             <groupId>io.github.bonigarcia</groupId>
             <artifactId>webdrivermanager</artifactId>
-            <version>5.6.3</version>
+            <version>5.6.4</version>
         </dependency>
 
         <dependency>
