@@ -1085,7 +1085,6 @@ public class DataTableRenderer extends DataRenderer {
     protected void encodeRows(FacesContext context, DataTable table, int first, int last, int columnStart, int columnEnd) throws IOException {
         List<SummaryRow> summaryRows = table.getSummaryRows();
         HeaderRow headerRow = table.getHeaderRow();
-        ELContext elContext = context.getELContext();
 
         SortMeta sort = table.getHighestPriorityActiveSortMeta();
         boolean encodeHeaderRow = headerRow != null && headerRow.isEnabled() && sort != null;
@@ -1097,13 +1096,13 @@ public class DataTableRenderer extends DataRenderer {
                 break;
             }
 
-            if (encodeHeaderRow && (i == first || !isInSameGroup(context, table, i, -1, sort.getSortBy(), elContext))) {
+            if (encodeHeaderRow && (i == first || !isInSameGroup(context, table, i, -1, sort.getSortBy(), false))) {
                 encodeHeaderRow(context, table, headerRow);
             }
 
             encodeRow(context, table, i, columnStart, columnEnd);
 
-            if (encodeSummaryRow && !isInSameGroup(context, table, i, 1, sort.getSortBy(), elContext)) {
+            if (encodeSummaryRow && !isInSameGroup(context, table, i, 1, sort.getSortBy(), i == last - 1)) {
                 encodeSummaryRow(context, summaryRows, sort);
             }
         }
@@ -1571,18 +1570,17 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected boolean isInSameGroup(FacesContext context, DataTable table, int currentRowIndex, int step, ValueExpression groupByVE,
-                                    ELContext elContext) {
-
+                                    boolean loadFirstRowOfNextPage) {
+        ELContext elContext = context.getELContext();
         Object currentGroupByData = groupByVE.getValue(elContext);
         int nextRowIndex = currentRowIndex + step;
         Object nextGroupByData;
 
-        // in case of a lazy DataTable, the LazyDataModel currently only loads rows inside the current page; we need a small hack here
-        // 1) get the rowData manually for the next row
-        // 2) put it into request-scope
-        // 3) invoke the groupBy ValueExpression
-        if (table.isLazy()) {
-            Object nextRowData = table.getLazyDataModel().getRowData(nextRowIndex, table.getActiveSortMeta(), table.getActiveFilterMeta());
+        // An additional check is required to ensure summaryRow will be rendered in case
+        // number of rows of the current page is equals to the number of items in the current group (otherwise, it'll never be rendered)
+        // see #9077
+        if (loadFirstRowOfNextPage && table.isLazy()) {
+            Object nextRowData = table.getLazyDataModel().loadOne(nextRowIndex, table.getActiveSortMeta(), table.getActiveFilterMeta());
             if (nextRowData == null) {
                 return false;
             }
