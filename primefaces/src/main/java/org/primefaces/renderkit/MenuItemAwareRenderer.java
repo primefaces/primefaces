@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -57,17 +57,37 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
         decodeDynamicMenuItem(context, component);
     }
 
+    protected boolean isMenuItemLink(FacesContext context, UIComponent source, MenuItem menuitem) {
+        return LangUtils.isNotBlank(menuitem.getUrl()) || LangUtils.isNotBlank(menuitem.getOutcome());
+    }
+
+    protected boolean isMenuItemSubmitting(FacesContext context, UIComponent source, MenuItem menuitem) {
+        boolean submitting;
+
+        // #1 first check for assigned server side callbacks
+        submitting = menuitem.getFunction() != null || LangUtils.isNotBlank(menuitem.getCommand());
+        if (!submitting && menuitem instanceof UIMenuItem) {
+            submitting = ((UIMenuItem) menuitem).getActionExpression() != null
+                    || ((UIMenuItem) menuitem).getActionListeners().length > 0;
+        }
+
+        // 2# AJAX
+        if (!submitting && menuitem.isAjax()) {
+            submitting = menuitem.isResetValues()
+                    || LangUtils.isNotBlank(menuitem.getUpdate())
+                    || LangUtils.isNotBlank(menuitem.getProcess());
+        }
+
+        return submitting;
+    }
+
     protected void encodeOnClick(FacesContext context, UIComponent source, MenuItem menuitem) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         setConfirmationScript(context, menuitem);
 
         String onclick = menuitem.getOnclick();
-        boolean isLink = LangUtils.isNotBlank(menuitem.getUrl()) || LangUtils.isNotBlank(menuitem.getOutcome());
-        boolean isCommand = LangUtils.isNotBlank(menuitem.getCommand());
-        if (!isCommand && menuitem instanceof UIMenuItem) {
-            UIMenuItem uim = (UIMenuItem) menuitem;
-            isCommand = uim.getActionExpression() != null || uim.getActionListeners().length > 0;
-        }
+        boolean isLink = isMenuItemLink(context, source, menuitem);
+        boolean isSubmitting = isMenuItemSubmitting(context, source, menuitem);
 
         //GET
         if (isLink) {
@@ -80,14 +100,14 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
         }
         //POST
         else {
-            writer.writeAttribute("href", "javascript:void(0)", null);
+            writer.writeAttribute("href", "#", null);
         }
 
-        if (isCommand) {
+        if (isSubmitting) {
             String menuClientId = source.getClientId(context);
             UIForm form = ComponentTraversalUtils.closestForm(source);
             if (form == null) {
-                LOGGER.log(Level.FINE, "Menu '" + menuClientId
+                LOGGER.log(Level.FINE, () -> "Menu '" + menuClientId
                             + "' should be inside a form or should reference a form via its form attribute."
                             + " We will try to find a fallback form on the client side.");
             }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,13 +24,16 @@
 package org.primefaces.component.datatable.export;
 
 
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.*;
+import java.io.IOException;
+import javax.faces.context.FacesContext;
+
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class DataTableExcelXExporter extends DataTableExcelExporter {
 
     @Override
-    protected Workbook createWorkBook() {
+    protected Workbook createDocument(FacesContext context) throws IOException {
         return new XSSFWorkbook();
     }
 

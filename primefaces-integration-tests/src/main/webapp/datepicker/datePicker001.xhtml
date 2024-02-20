@@ -15,6 +15,8 @@
             <p:messages id="msgs" showDetail="true"/>
 
             <p:datePicker id="datepicker" value="#{datePicker001.localDate}" pattern="MM/dd/yyyy"/>
+            
+            <p:datePicker id="datepickerEditable" value="#{datePicker001.localDateEditable}" pattern="MM/dd/yyyy" showOnFocus="false"/>
 
             <p:commandButton id="button" value="Submit" update="@form"/>
         </h:form>

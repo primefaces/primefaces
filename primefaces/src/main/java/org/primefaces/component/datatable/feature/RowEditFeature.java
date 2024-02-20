@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -77,7 +77,7 @@ public class RowEditFeature implements DataTableFeature {
         }
 
         if (table.isRowAvailable()) {
-            renderer.encodeRow(context, table, clientId, editedRowId);
+            renderer.encodeRow(context, table, editedRowId);
         }
     }
 

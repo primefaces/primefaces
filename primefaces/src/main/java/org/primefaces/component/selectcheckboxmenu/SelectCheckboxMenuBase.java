@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,10 +25,11 @@ package org.primefaces.component.selectcheckboxmenu;
 
 import javax.faces.component.html.HtmlSelectManyCheckbox;
 
+import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
 
-public abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox implements Widget, PrimeClientBehaviorHolder {
+public abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox implements Widget, InputHolder, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -57,6 +58,7 @@ public abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox impl
         dynamic,
         labelSeparator,
         emptyLabel,
+        selectedLabel,
         filterNormalize
     }
 
@@ -239,6 +241,14 @@ public abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox impl
 
     public void setEmptyLabel(String emptyLabel) {
         getStateHelper().put(PropertyKeys.emptyLabel, emptyLabel);
+    }
+
+    public String getSelectedLabel() {
+        return (String) getStateHelper().eval(PropertyKeys.selectedLabel, null);
+    }
+
+    public void setSelectedLabel(String selectedLabel) {
+        getStateHelper().put(PropertyKeys.selectedLabel, selectedLabel);
     }
 
     public boolean isFilterNormalize() {

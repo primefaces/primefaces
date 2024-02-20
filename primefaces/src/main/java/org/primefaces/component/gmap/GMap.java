@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,10 +24,8 @@
 package org.primefaces.component.gmap;
 
 import java.util.*;
-
 import javax.faces.FacesException;
 import javax.faces.application.ResourceDependency;
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
@@ -39,6 +37,7 @@ import org.primefaces.model.map.GeocodeResult;
 import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.LatLngBounds;
 import org.primefaces.model.map.Marker;
+import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.MapBuilder;
@@ -159,12 +158,6 @@ public class GMap extends GMapBase {
     }
 
     public GMapInfoWindow getInfoWindow() {
-        for (UIComponent kid : getChildren()) {
-            if (kid instanceof GMapInfoWindow) {
-                return (GMapInfoWindow) kid;
-            }
-        }
-
-        return null;
+        return ComponentTraversalUtils.firstChildRendered(GMapInfoWindow.class, this);
     }
 }

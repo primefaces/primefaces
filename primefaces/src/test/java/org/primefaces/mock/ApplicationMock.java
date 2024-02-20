@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,6 +35,7 @@ import javax.faces.application.NavigationHandler;
 import javax.faces.application.StateManager;
 import javax.faces.application.ViewHandler;
 import javax.faces.component.UIComponent;
+import javax.faces.component.search.SearchExpressionHandler;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.el.MethodBinding;
@@ -50,6 +51,7 @@ import javax.faces.validator.Validator;
 public class ApplicationMock extends Application {
 
     private ExpressionFactory expressionFactory = new de.odysseus.el.ExpressionFactoryImpl(ExpressionFactoryImpl.Profile.JEE6);
+    private SearchExpressionHandler searchExpressionHandler = new SearchExpressionHandlerMock();
 
     @Override
     public ActionListener getActionListener() {
@@ -236,5 +238,10 @@ public class ApplicationMock extends Application {
     @Override
     public ExpressionFactory getExpressionFactory() {
         return expressionFactory;
+    }
+
+    @Override
+    public SearchExpressionHandler getSearchExpressionHandler() {
+        return searchExpressionHandler;
     }
 }

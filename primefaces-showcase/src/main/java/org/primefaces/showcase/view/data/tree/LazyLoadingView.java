@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,30 +33,32 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
+import org.primefaces.model.LazyDefaultTreeNode;
 
 @Named("treeLazyLoadingView")
 @ViewScoped
 public class LazyLoadingView implements Serializable {
 
-    private TreeNode root;
+    private TreeNode<FileInfo> root;
 
     @PostConstruct
     public void init() {
         FacesContext context = FacesContext.getCurrentInstance();
-        FileInfo path = new FileInfo(context.getExternalContext().getRealPath("/"), true);
-        root = new LazyLoadingTreeNode(path, (folder) -> listFiles(folder));
+        root = new LazyDefaultTreeNode<>(new FileInfo(context.getExternalContext().getRealPath("/"), true),
+                (fileInfo) -> listFiles(fileInfo),
+                (fileInfo) -> !fileInfo.isDirectory());
     }
 
-    public static List<FileInfo> listFiles(String parentFolder) {
-        File[] files = new File(parentFolder).listFiles();
-        if (files == null) {
-            return new ArrayList<>();
+    public static List<FileInfo> listFiles(FileInfo parentFolder) {
+        List<FileInfo> result = new ArrayList<>();
+
+        File[] files = new File(parentFolder.getPath()).listFiles();
+        if (files != null) {
+            for (File file : files) {
+                result.add(new FileInfo(file.getAbsolutePath(), file.isDirectory()));
+            }
         }
 
-        List<FileInfo> result = new ArrayList<>();
-        for (File file : files) {
-            result.add(new FileInfo(file.getAbsolutePath(), file.isDirectory()));
-        }
         return result;
     }
 

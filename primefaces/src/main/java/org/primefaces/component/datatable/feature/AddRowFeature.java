@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,12 +37,11 @@ public class AddRowFeature implements DataTableFeature {
             DataTableFeatures.selectionFeature().decodeSelectionRowKeys(context, table);
         }
 
-        String clientId = table.getClientId(context);
         int rowIndex = table.getRowCount() - 1;
         table.setRowIndex(table.getRowCount() - 1);
 
         if (table.isRowAvailable()) {
-            renderer.encodeRow(context, table, clientId, rowIndex);
+            renderer.encodeRow(context, table, rowIndex);
         }
     }
 

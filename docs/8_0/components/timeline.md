@@ -193,7 +193,7 @@ timeline javascript gets loaded. Following is an example of Spanish localization
 ## Examples
 For examples on editing, grouping, styling, ranges, linked timelines and lazy loading please visit:
 
-https://www.primefaces.org/showcase/ui/data/timeline/basic.xhtml
+https://www.primefaces.org/showcase-v8/ui/data/timeline/basic.xhtml
 
 ## Ajax Behavior Events
 

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -49,16 +49,16 @@ public abstract class PickList extends AbstractComponent {
     private static final String ITEM_VALUE_ATTR = "data-item-value";
     private static final By CHECK_SELECTOR = By.cssSelector("div[class*='ui-chkbox']");
 
-    @FindBy(css = "button[title='Add']")
+    @FindBy(css = "button[class*='ui-picklist-button-add']")
     private WebElement add;
 
-    @FindBy(css = "button[title='Add all']")
+    @FindBy(css = "button[class*='ui-picklist-button-add-all']")
     private WebElement addAll;
 
-    @FindBy(css = "button[title='Remove']")
+    @FindBy(css = "button[class*='ui-picklist-button-remove']")
     private WebElement remove;
 
-    @FindBy(css = "button[title='Remove all']")
+    @FindBy(css = "button[class*='ui-picklist-button-remove-all']")
     private WebElement removeAll;
 
     @FindBy(css = "ul[class*='ui-picklist-source']")
@@ -386,7 +386,7 @@ public abstract class PickList extends AbstractComponent {
      * @return the "Move up" button
      */
     private WebElement getMoveUpButton(final WebElement controls) {
-        return controls.findElement(By.cssSelector("button[title='Move up']"));
+        return controls.findElement(By.cssSelector("button[title='Move Up']"));
     }
 
     /**
@@ -396,7 +396,7 @@ public abstract class PickList extends AbstractComponent {
      * @return the "Move down" button
      */
     private WebElement getMoveDownButton(final WebElement controls) {
-        return controls.findElement(By.cssSelector("button[title='Move down']"));
+        return controls.findElement(By.cssSelector("button[title='Move Down']"));
     }
 
     /**
@@ -406,7 +406,7 @@ public abstract class PickList extends AbstractComponent {
      * @return the "Move top" button
      */
     private WebElement getMoveTopButton(final WebElement controls) {
-        return controls.findElement(By.cssSelector("button[title='Move top']"));
+        return controls.findElement(By.cssSelector("button[title='Move Top']"));
     }
 
     /**
@@ -416,7 +416,7 @@ public abstract class PickList extends AbstractComponent {
      * @return the "Move bottom" button
      */
     private WebElement getMoveBottomButton(final WebElement controls) {
-        return controls.findElement(By.cssSelector("button[title='Move bottom']"));
+        return controls.findElement(By.cssSelector("button[title='Move Bottom']"));
     }
 
     /**

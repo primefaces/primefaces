@@ -1,15 +1,16 @@
-/* js-cookie v3.0.0-rc.0 | MIT */
+/*! js-cookie v3.0.5 | MIT */
 ;
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
   typeof define === 'function' && define.amd ? define(factory) :
-  (global = global || self, (function () {
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, (function () {
     var current = global.Cookies;
     var exports = global.Cookies = factory();
     exports.noConflict = function () { global.Cookies = current; return exports; };
-  }()));
-}(this, (function () { 'use strict';
+  })());
+})(this, (function () { 'use strict';
 
+  /* eslint-disable no-var */
   function assign (target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
@@ -19,18 +20,29 @@
     }
     return target
   }
+  /* eslint-enable no-var */
 
+  /* eslint-disable no-var */
   var defaultConverter = {
     read: function (value) {
-      return value.replace(/%3B/g, ';')
+      if (value[0] === '"') {
+        value = value.slice(1, -1);
+      }
+      return value.replace(/(%[\dA-F]{2})+/gi, decodeURIComponent)
     },
     write: function (value) {
-      return value.replace(/;/g, '%3B')
+      return encodeURIComponent(value).replace(
+        /%(2[346BF]|3[AC-F]|40|5[BDE]|60|7[BCD])/g,
+        decodeURIComponent
+      )
     }
   };
+  /* eslint-enable no-var */
+
+  /* eslint-disable no-var */
 
   function init (converter, defaultAttributes) {
-    function set (key, value, attributes) {
+    function set (name, value, attributes) {
       if (typeof document === 'undefined') {
         return
       }
@@ -44,9 +56,9 @@
         attributes.expires = attributes.expires.toUTCString();
       }
 
-      key = defaultConverter.write(key).replace(/=/g, '%3D');
-
-      value = converter.write(String(value), key);
+      name = encodeURIComponent(name)
+        .replace(/%(2[346B]|5E|60|7C)/g, decodeURIComponent)
+        .replace(/[()]/g, escape);
 
       var stringifiedAttributes = '';
       for (var attributeName in attributes) {
@@ -60,14 +72,22 @@
           continue
         }
 
+        // Considers RFC 6265 section 5.2:
+        // ...
+        // 3.  If the remaining unparsed-attributes contains a %x3B (";")
+        //     character:
+        // Consume the characters of the unparsed-attributes up to,
+        // not including, the first %x3B (";") character.
+        // ...
         stringifiedAttributes += '=' + attributes[attributeName].split(';')[0];
       }
 
-      return (document.cookie = key + '=' + value + stringifiedAttributes)
+      return (document.cookie =
+        name + '=' + converter.write(value, name) + stringifiedAttributes)
     }
 
-    function get (key) {
-      if (typeof document === 'undefined' || (arguments.length && !key)) {
+    function get (name) {
+      if (typeof document === 'undefined' || (arguments.length && !name)) {
         return
       }
 
@@ -78,24 +98,27 @@
       for (var i = 0; i < cookies.length; i++) {
         var parts = cookies[i].split('=');
         var value = parts.slice(1).join('=');
-        var foundKey = defaultConverter.read(parts[0]).replace(/%3D/g, '=');
-        jar[foundKey] = converter.read(value, foundKey);
 
-        if (key === foundKey) {
-          break
-        }
+        try {
+          var found = decodeURIComponent(parts[0]);
+          jar[found] = converter.read(value, found);
+
+          if (name === found) {
+            break
+          }
+        } catch (e) {}
       }
 
-      return key ? jar[key] : jar
+      return name ? jar[name] : jar
     }
 
     return Object.create(
       {
-        set: set,
-        get: get,
-        remove: function (key, attributes) {
+        set,
+        get,
+        remove: function (name, attributes) {
           set(
-            key,
+            name,
             '',
             assign({}, attributes, {
               expires: -1
@@ -117,7 +140,8 @@
   }
 
   var api = init(defaultConverter, { path: '/' });
+  /* eslint-enable no-var */
 
   return api;
 
-})));
+}));

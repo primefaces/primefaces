@@ -1,12 +1,10 @@
 datatable
 	langs
-		idid
-		typetype
-		namename
+		id: 4
+		type: INTERPRETED
+		name: TypeScript
 	langs
-	langs
-		idid
-		typetype
-		namename
-	langs
+		id: 5
+		type: INTERPRETED
+		name: Python
 datatable

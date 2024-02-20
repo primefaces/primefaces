@@ -71,11 +71,11 @@
  */
 PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
 
-	/**
-	 * @override
-	 * @inheritdoc
+    /**
+     * @override
+     * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
-	 */
+     */
     init: function(cfg) {
         this._super(cfg);
 
@@ -91,26 +91,21 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
         $this = this;
 
         doc.on('pfAjaxStart', function() {
-            var delay = $this.cfg.delay;
-            if (delay > 0 ) {
-                $this.timeout = setTimeout(function () {
-                    $this.trigger('start', arguments);
-                }, delay);
-            } else {
+            $this.timeout = PrimeFaces.queueTask(function() {
                 $this.trigger('start', arguments);
-            }
+            }, $this.cfg.delay);
         })
-        .on('pfAjaxError', function() {
-            $this.trigger('error', arguments);
+        .on('pfAjaxError', function(e, xhr, settings, error) {
+            $this.trigger('error', [xhr, settings, error]);
         })
-        .on('pfAjaxSuccess', function() {
-            $this.trigger('success', arguments);
+        .on('pfAjaxSuccess', function(e, xhr, settings) {
+            $this.trigger('success', [xhr, settings]);
         })
-        .on('pfAjaxComplete', function() {
-            if($this.timeout) {
+        .on('pfAjaxComplete', function(e, xhr, settings, args) {
+            if($this.timeout && args && !args.redirect) {
                 $this.deleteTimeout();
             }
-            $this.trigger('complete', arguments);
+            $this.trigger('complete', [xhr, settings, args]);
         });
 
         // also bind to JSF (f:ajax) events
@@ -118,14 +113,9 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
         if (window.jsf && jsf.ajax) {
             jsf.ajax.addOnEvent(function(data) {
                 if(data.status === 'begin') {
-                    var delay = $this.cfg.delay;
-                    if (delay > 0 ) {
-                        $this.timeout = setTimeout(function () {
-                            $this.trigger('start', arguments);
-                        }, delay);
-                    } else {
+                    $this.timeout = PrimeFaces.queueTask(function() {
                         $this.trigger('start', arguments);
-                    }
+                    }, $this.cfg.delay);
                 }
                 else if(data.status === 'complete') {
 
@@ -164,8 +154,37 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
             callback.apply(document, args);
         }
 
-        if (event !== 'complete' || this.jq.children().filter(this.toFacetId('complete')).length) {
-            this.jq.children().hide().filter(this.toFacetId(event)).show();
+        // We have the following events:
+        // 1) start
+        // 2) success or error
+        // 3) complete
+        var facets = this.jq.children();
+        var facet = facets.filter(this.toFacetId(event));
+        if (event === 'start') {
+            facets.hide();
+            facet.show();
+        }
+        else if (event === 'success' || event === 'error') {
+            // we now expect that either a complete or success/error facet is defined
+            // if no success/error is defined, lets just rely upon the complete-facet
+            if (facet.length > 0) {
+                facets.hide();
+                facet.show();
+            }
+        }
+        else if (event === 'complete') {
+            // if the current request leads in a redirect, skip hiding the previous facet (in best case this is the start-facet)
+            // when a sucess/error-facet is defined, this wont work as expected as the 'redirect' information is not available before
+            var pfArgs = args[2];
+            if (!pfArgs || pfArgs.redirect) {
+                return;
+            }
+
+            // skip hiding success/error, if no complete-facet is defined
+            if (facet.length > 0) {
+                facets.hide();
+                facet.show(); 
+            }
         }
     },
 

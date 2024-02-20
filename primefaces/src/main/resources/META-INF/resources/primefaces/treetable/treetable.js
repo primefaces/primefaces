@@ -145,6 +145,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
      * @inheritdoc
      */
     _render: function() {
+        var $this = this;
         if(this.cfg.scrollable) {
             this.setupScrolling();
         }
@@ -165,7 +166,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         if(this.cfg.stickyHeader) {
-            this.setupStickyHeader();
+            PrimeFaces.queueTask(function () {$this.setupStickyHeader();}, 1);
         }
 
         if(this.cfg.editable) {
@@ -248,13 +249,23 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         filterColumns.children('.ui-column-filter').each(function() {
             var filter = $(this);
 
-            if(filter.is('input:text')) {
+            if(filter.is("input[type='search']")) {
                 PrimeFaces.skinInput(filter);
                 $this.bindTextFilter(filter);
             }
             else {
                 PrimeFaces.skinSelect(filter);
                 $this.bindChangeFilter(filter);
+            }
+        });
+        // ARIA labels for filters
+        filterColumns.each(function() {
+            var filterColumn = $(this);
+            var filter = filterColumn.find(':input');
+            var title = filterColumn.find('.ui-column-title')
+
+            if (filter && title) {
+                filter.attr('aria-label', PrimeFaces.getLocaleLabel('filter') + " " + title.text());
             }
         });
     },
@@ -296,6 +307,9 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         else
             this.bindFilterEvent(filter);
 
+        // #8113 clear 'x' event handler
+        this.bindClearFilterEvent(filter);
+
         // #7562 draggable columns cannot be filtered with touch
         if (PrimeFaces.env.isTouchable(this.cfg)) {
             filter.on('touchstart', function(e) {
@@ -336,6 +350,22 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
+     * Sets up the 'search' event which for HTML5 text search fields handles the clear 'x' button.
+     * @private
+     * @param {JQuery} filter INPUT element of the text filter.
+     */
+    bindClearFilterEvent: function(filter) {
+        var $this = this;
+
+        filter.off('search').on('search', function(e) {
+            // only care when 'X'' is clicked
+            if ($(this).val() == "") {
+                $this.filter();
+            }
+        });
+    },
+
+    /**
      * Sets up the event listeners required for filtering this tree table.
      * @private
      * @param {JQuery} filter The filter input field.
@@ -350,7 +380,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 clearTimeout($this.filterTimeout);
             }
 
-            $this.filterTimeout = setTimeout(function() {
+            $this.filterTimeout = PrimeFaces.queueTask(function() {
                 $this.filter();
                 $this.filterTimeout = null;
             },
@@ -411,6 +441,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             update: this.id,
             process: this.id,
             params: [
+                {name: this.id + '_encodeFeature', value: true},
                 {name: this.id + '_pagination', value: true},
                 {name: this.id + '_first', value: newState.first},
                 {name: this.id + '_rows', value: newState.rows}
@@ -607,8 +638,14 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         var targetEvent = cfg.event + '.treetable';
 
         $(document).off(targetEvent, targetSelector).on(targetEvent, targetSelector, null, function(e) {
-            targetWidget.onRowRightClick(e, $(this));
-            menuWidget.show(e);
+            var isContextMenuDelayed = targetWidget.onRowRightClick(e, $(this), function() {
+                menuWidget.show(e);
+            });
+
+            if (isContextMenuDelayed) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
         });
     },
 
@@ -688,7 +725,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
 
                 $this.stickyContainer.hide();
-                $this.resizeTimeout = setTimeout(function() {
+                $this.resizeTimeout = PrimeFaces.queueTask(function() {
                     $this.stickyContainer.css('left', orginTableContent.offset().left + 'px');
                     $this.stickyContainer.width(table.outerWidth());
                     $this.stickyContainer.show();
@@ -797,6 +834,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             process: this.id,
             formId: this.getParentFormId(),
             params: [
+                {name: this.id + '_encodeFeature', value: true},
                 {name: this.id + '_sorting', value: true}
             ],
             onsuccess: function(responseXML, status, xhr) {
@@ -869,6 +907,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             process: this.id,
             update: this.id,
             params: [
+                {name: this.id + '_encodeFeature', value: true},
                 {name: this.id + '_expand', value: nodeKey}
             ],
             onsuccess: function(responseXML, status, xhr) {
@@ -939,6 +978,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             process: this.id,
             update: this.id,
             params: [
+                {name: this.id + '_encodeFeature', value: true},
                 {name: this.id + '_collapse', value: nodeKey}
             ],
             onsuccess: function(responseXML, status, xhr) {
@@ -1010,27 +1050,28 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      * @param {JQuery.TriggeredEvent} event The click event that occurred.
      * @param {JQuery} node The node that was clicked.
+     * @param {() => void} [fnShowMenu] Optional callback function invoked when the menu was opened.
      * @return {boolean} true to hide the native browser context menu, false to display it
      */
-    onRowRightClick: function(event, node) {
+    onRowRightClick: function(event, node, fnShowMenu) {
         var selected = node.hasClass('ui-state-highlight'),
             nodeKey = node.attr('data-rk');
 
-        if(this.isCheckboxSelection()) {
-            if(!selected) {
+        if (this.isCheckboxSelection()) {
+            if (!selected) {
                 this.toggleCheckboxNode(node);
             }
         }
         else {
-            if(this.isSingleSelection() || !selected ) {
+            if (this.isSingleSelection() || !selected) {
                 this.unselectAllNodes();
             }
-            this.selectNode(node);
+            this.selectNode(node, true);
         }
 
-        this.fireSelectEvent(nodeKey, 'contextMenu');
+        this.fireSelectEvent(nodeKey, 'contextMenu', fnShowMenu);
 
-        if(this.cfg.disabledTextSelection) {
+        if (this.cfg.disabledTextSelection) {
             PrimeFaces.clearSelection();
         }
 
@@ -1042,15 +1083,26 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      * @param {string} nodeKey The key of the node that was selected.
      * @param {string} behaviorEvent Name of the event to fire.
+     * @param {() => void} [fnShowMenu] Optional callback function invoked when the menu was opened.
      */
-    fireSelectEvent: function(nodeKey, behaviorEvent) {
-        if(this.hasBehavior(behaviorEvent)) {
+    fireSelectEvent: function(nodeKey, behaviorEvent, fnShowMenu) {
+        if (this.hasBehavior(behaviorEvent)) {
             var ext = {
-                    params: [{name: this.id + '_instantSelection', value: nodeKey}
-                ]
+                params: [{ name: this.id + '_instantSelection', value: nodeKey }
+                ],
+                oncomplete: function() {
+                    if (typeof fnShowMenu === "function") {
+                        fnShowMenu();
+                    }
+                }
             };
 
             this.callBehavior(behaviorEvent, ext);
+        }
+        else {
+            if (typeof fnShowMenu === "function") {
+                fnShowMenu();
+            }
         }
     },
 
@@ -1992,7 +2044,8 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             update: this.id,
             formId: this.getParentFormId(),
             params: [{name: this.id + '_rowEditIndex', value: rowKey},
-                     {name: this.id + '_rowEditAction', value: action}],
+                     {name: this.id + '_rowEditAction', value: action},
+                     {name: this.id + '_encodeFeature', value: true}],
             onsuccess: function(responseXML, status, xhr) {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                         widget: $this,
@@ -2276,7 +2329,8 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             source: this.id,
             process: this.id,
             update: this.id,
-            params: [{name: this.id + '_cellInfo', value: cellInfo},
+            params: [{name: this.id + '_encodeFeature', value: true},
+                     {name: this.id + '_cellInfo', value: cellInfo},
                      {name: cellEditorId, value: cellEditorId}],
             onsuccess: function(responseXML, status, xhr) {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
@@ -2322,7 +2376,8 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             source: this.id,
             process: this.id,
             update: this.id,
-            params: [{name: this.id + '_cellEditCancel', value: true},
+            params: [{name: this.id + '_encodeFeature', value: true},
+                     {name: this.id + '_cellEditCancel', value: true},
                      {name: this.id + '_cellInfo', value: cellInfo}],
             onsuccess: function(responseXML, status, xhr) {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
@@ -2364,7 +2419,8 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             process: this.id,
             update: this.id,
             global: false,
-            params: [{name: this.id + '_cellEditInit', value: true},
+            params: [{name: this.id + '_encodeFeature', value: true},
+                     {name: this.id + '_cellEditInit', value: true},
                      {name: this.id + '_cellInfo', value: cellInfo}],
             onsuccess: function(responseXML, status, xhr) {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {

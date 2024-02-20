@@ -29,7 +29,7 @@
  * @prop {PrimeFaces.CssTransitionHandler | null} [transition] Handler for CSS transitions used by this widget.
  * @prop {PrimeFaces.UnbindCallback} [resizeHandler] Unbind callback for the resize handler.
  * @prop {PrimeFaces.UnbindCallback} [scrollHandler] Unbind callback for the scroll handler.
- * @prop {number} [ajaxCount] Number of concurrent active Ajax requests.
+ * @forcedProp {number} [ajaxCount] Number of concurrent active Ajax requests.
  *
  * @interface {PrimeFaces.widget.SplitButtonCfg} cfg The configuration for the {@link  SplitButton| SplitButton widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
@@ -42,6 +42,7 @@
  * @prop {boolean} cfg.disabled Whether this input is currently disabled.
  * @prop {boolean} cfg.filter Whether client side filtering feature is enabled.
  * @prop {boolean} cfg.filterNormalize Defines if filtering would be done using normalized values.
+ * @prop {boolean} cfg.filterInputAutoFocus Defines if the filter should receive focus on overlay popup.
  * @prop {PrimeFaces.widget.SplitButton.FilterFunction} cfg.filterFunction Custom JavaScript function for filtering the
  * available split button actions.
  */
@@ -61,6 +62,7 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
         this.menuitemContainer = this.menu.find('.ui-menu-list');
         this.menuitems = this.menuitemContainer.children('.ui-menuitem:not(.ui-state-disabled)');
         this.cfg.disabled = this.button.is(':disabled');
+        this.cfg.filterInputAutoFocus = (this.cfg.filterInputAutoFocus === undefined) ? true : this.cfg.filterInputAutoFocus;
 
         this.bindEvents();
 
@@ -144,7 +146,7 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
             if ($this.cfg.disabled) {
                 return;
             }
-            switch(e.key) {
+            switch(e.code) {
                 case 'ArrowUp':
                     $this.highlightPrev(e);
                 break;
@@ -154,7 +156,8 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
                 break;
 
                 case 'Enter':
-                case ' ':
+                case 'NumpadEnter':
+                case 'Space':
                     $this.handleEnterKey(e);
                 break;
 
@@ -170,38 +173,17 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
             }
         });
 
-        $this.ajaxCount = 0;
-        $(document).on('pfAjaxSend.' + this.id, function(e, xhr, settings) {
-            if ($this.isXhrSource(settings)) {
-                $this.ajaxCount++;
-                if ($this.ajaxCount > 1) {
-                    return;
-                }
-                $this.button.addClass('ui-state-loading');
-                if ($this.cfg.disableOnAjax !== false) {
-                    $this.disable();
-                }
-                var loadIcon = $('<span class="ui-icon-loading ui-icon ui-c pi pi-spin pi-spinner"></span>');
-                var uiIcon = $this.button.find('.ui-icon');
-                if (uiIcon.length) {
-                    var prefix = 'ui-button-icon-';
-                    loadIcon.addClass(prefix + uiIcon.attr('class').includes(prefix + 'left') ? 'left' : 'right');
-                }
-                $this.button.prepend(loadIcon);
+        PrimeFaces.bindButtonInlineAjaxStatus($this, $this.button, function(widget, settings) {
+            // Checks whether the ID of the button, or one if its menu items equals the source ID from the provided settings.
+            var sourceId = PrimeFaces.ajax.Utils.getSourceId(settings);
+            if (sourceId === null) {
+                return false;
             }
-        }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings) {
-            if ($this.isXhrSource(settings)) {
-                $this.ajaxCount--;
-                if ($this.ajaxCount > 0) {
-                    return;
-                }
-                $this.button.removeClass('ui-state-loading');
-                if ($this.cfg.disableOnAjax !== false && !$this.cfg.disabledAttr) {
-                    $this.enable();
-                }
-                $this.button.find('.ui-icon-loading').remove();
+            if ($this.id === sourceId) {
+                return true;
             }
-        });        
+            return $this.menuitems.find('[id="' + sourceId + '"]').length;
+        });
 
         if(this.cfg.filter) {
             this.setupFilterMatcher();
@@ -210,25 +192,6 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
 
             this.bindFilterEvents();
         }
-    },
-
-    /**
-     * Checks whether the ID of the button, or one if its menu items equals the source ID from the provided settings.
-     *
-     * @param {JQuery.AjaxSettings} settings containing source ID.
-     * @returns {boolean} `true` if the ID of the button, or one if its menu items equals the source ID from the
-     * provided settings.
-     * @private
-     */
-    isXhrSource: function(settings) {
-        var sourceId = PrimeFaces.ajax.Utils.getSourceId(settings);
-        if (sourceId === null) {
-            return false;
-        }
-        if (this.id === sourceId) {
-            return true;
-        }
-        return this.menuitems.find('[id="' + sourceId + '"]').length;
     },
 
     /**
@@ -326,9 +289,9 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
                 break;
             }
         }).on('paste.ui-splitbutton', function() {
-            setTimeout(function(){
+            PrimeFaces.queueTask(function(){
                 $this.filter($this.filterInput.val());
-            },2);
+            });
 	});
     },
 
@@ -528,7 +491,7 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
 
                     $this.jq.attr('aria-expanded', true);
 
-                    if ($this.cfg.filter) {
+                    if ($this.cfg.filter && $this.cfg.filterInputAutoFocus) {
                         $this.filterInput.trigger('focus');
                     }
                     else {
@@ -576,7 +539,7 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
             this.menu.position({
                 my: 'left top'
                 ,at: 'left bottom'
-                ,of: this.button
+                ,of: this.jq
                 ,collision: 'flipfit'
                 ,using: function(pos, directions) {
                     $(this).css('transform-origin', 'center ' + directions.vertical).css(pos);

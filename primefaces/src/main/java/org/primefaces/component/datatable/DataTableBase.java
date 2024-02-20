@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,10 +23,13 @@
  */
 package org.primefaces.component.datatable;
 
+import java.util.Collection;
 import javax.el.MethodExpression;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 
 import org.primefaces.component.api.*;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.ELUtils;
 
 public abstract class DataTableBase extends UIPageableData implements Widget, RTLAware, ClientBehaviorHolder,
         PrimeClientBehaviorHolder, UITable<DataTableState> {
@@ -46,8 +49,8 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         dataLocale,
         dir,
         disableContextMenuIfEmpty,
-        disabledSelection,
-        disabledTextSelection,
+        selectionDisabled,
+        selectionTextDisabled,
         draggableColumns,
         draggableRows,
         draggableRowsFunction,
@@ -84,7 +87,6 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         rowExpandMode,
         rowHover,
         rowKey,
-        rowSelectMode,
         rowSelector,
         rowStyleClass,
         rowTitle,
@@ -93,9 +95,11 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         scrollRows,
         scrollWidth,
         scrollable,
+        selectAllFilteredOnly,
         selection,
         selectionMode,
         selectionPageOnly,
+        selectionRowMode,
         skipChildren,
         sortBy,
         sortMode,
@@ -158,7 +162,26 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
     }
 
     public String getSelectionMode() {
-        return (String) getStateHelper().eval(PropertyKeys.selectionMode, null);
+        return ComponentUtils.eval(getStateHelper(), PropertyKeys.selectionMode, () -> {
+            // if not set by xhtml, we need to check the type of the value binding
+            Class<?> type = ELUtils.getType(getFacesContext(),
+                    getValueExpression(PropertyKeys.selection.toString()),
+                    this::getSelection);
+            if (type != null) {
+                String selectionMode = "single";
+                if (Collection.class.isAssignableFrom(type) || type.isArray()) {
+                    selectionMode = "multiple";
+                }
+
+                // remember in ViewState, to not do the same check again
+                setSelectionMode(selectionMode);
+
+                return selectionMode;
+            }
+            else {
+                return null;
+            }
+        });
     }
 
     public void setSelectionMode(String selectionMode) {
@@ -392,20 +415,20 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         getStateHelper().put(PropertyKeys.expandedRow, expandedRow);
     }
 
-    public boolean isDisabledSelection() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disabledSelection, false);
+    public boolean isSelectionDisabled() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.selectionDisabled, false);
     }
 
-    public void setDisabledSelection(boolean disabledSelection) {
-        getStateHelper().put(PropertyKeys.disabledSelection, disabledSelection);
+    public void setSelectionDisabled(boolean selectionDisabled) {
+        getStateHelper().put(PropertyKeys.selectionDisabled, selectionDisabled);
     }
 
-    public String getRowSelectMode() {
-        return (String) getStateHelper().eval(PropertyKeys.rowSelectMode, "new");
+    public String getSelectionRowMode() {
+        return (String) getStateHelper().eval(PropertyKeys.selectionRowMode, "new");
     }
 
-    public void setRowSelectMode(String rowSelectMode) {
-        getStateHelper().put(PropertyKeys.rowSelectMode, rowSelectMode);
+    public void setSelectionRowMode(String rowSelectMode) {
+        getStateHelper().put(PropertyKeys.selectionRowMode, rowSelectMode);
     }
 
     public String getRowExpandMode() {
@@ -456,12 +479,12 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         getStateHelper().put(PropertyKeys.skipChildren, skipChildren);
     }
 
-    public boolean isDisabledTextSelection() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disabledTextSelection, true);
+    public boolean isSelectionTextDisabled() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.selectionTextDisabled, true);
     }
 
-    public void setDisabledTextSelection(boolean disabledTextSelection) {
-        getStateHelper().put(PropertyKeys.disabledTextSelection, disabledTextSelection);
+    public void setSelectionTextDisabled(boolean selectionTextDisabled) {
+        getStateHelper().put(PropertyKeys.selectionTextDisabled, selectionTextDisabled);
     }
 
     public String getTabindex() {
@@ -736,4 +759,13 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
     public void setExportTag(String exportTag) {
         getStateHelper().put(PropertyKeys.exportTag, exportTag);
     }
+
+    public boolean isSelectAllFilteredOnly() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.selectAllFilteredOnly, false);
+    }
+
+    public void setSelectAllFilteredOnly(boolean selectAllFilteredOnly) {
+        getStateHelper().put(PropertyKeys.selectAllFilteredOnly, selectAllFilteredOnly);
+    }
+
 }

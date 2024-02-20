@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -238,7 +238,10 @@ public class ScheduleRenderer extends CoreRenderer {
                 .attr("slotEventOverlap", schedule.isSlotEventOverlap(), true);
 
         if (LangUtils.isNotBlank(schedule.getSlotLabelFormat())) {
-            wb.nativeAttr("slotLabelFormat", schedule.getSlotLabelFormat());
+            wb.nativeAttr("slotLabelFormat",
+                    schedule.getSlotLabelFormat().startsWith("[")
+                        ? schedule.getSlotLabelFormat()
+                        : "['" + EscapeUtils.forJavaScript(schedule.getSlotLabelFormat()) + "']");
         }
 
         String displayEventEnd = schedule.getDisplayEventEnd();

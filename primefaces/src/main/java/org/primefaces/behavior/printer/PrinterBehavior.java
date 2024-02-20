@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +30,7 @@ import javax.faces.context.FacesContext;
 import org.json.JSONObject;
 import org.primefaces.behavior.base.AbstractBehavior;
 import org.primefaces.behavior.base.BehaviorAttribute;
-import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 
@@ -60,7 +60,7 @@ public class PrinterBehavior extends AbstractBehavior {
     public String getScript(ClientBehaviorContext behaviorContext) {
         FacesContext context = behaviorContext.getFacesContext();
 
-        String component = SearchExpressionFacade.resolveClientId(
+        String component = SearchExpressionUtils.resolveClientIdForClientSide(
                     context, behaviorContext.getComponent(), getTarget());
 
         String config = getConfiguration();
@@ -73,7 +73,7 @@ public class PrinterBehavior extends AbstractBehavior {
             config = Constants.EMPTY_STRING;
         }
 
-        return String.format("PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector('%s').print(%s);return false;",
+        return String.format("PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(document.body,'%s').print(%s);return false;",
                     component, config);
     }
 

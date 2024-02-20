@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,8 @@
  */
 package org.primefaces.integrationtests.accordionpanel;
 
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
@@ -31,11 +32,11 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.AccordionPanel;
 
-public class AccordionPanel002Test extends AbstractPrimePageTest {
+class AccordionPanel002Test extends AbstractPrimePageTest {
 
     @Test
     @DisplayName("AccordionPanel: keep closed tab in MVS")
-    public void test(Page page) {
+    void test(Page page) {
         // Arrange
         AccordionPanel accordionPanel = page.accordionPanel;
 
@@ -44,7 +45,7 @@ public class AccordionPanel002Test extends AbstractPrimePageTest {
         getWebDriver().get(getWebDriver().getCurrentUrl()); // refresh current page
 
         // Assert
-        Assertions.assertEquals(0, accordionPanel.getSelectedTabs().size());
+        assertEquals(0, accordionPanel.getSelectedTabs().size());
     }
 
     public static class Page extends AbstractPrimePage {

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -65,7 +65,6 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
         paginator,
         paginatorTemplate,
         rowsPerPageTemplate,
-        rowsPerPageLabel,
         currentPageReportTemplate,
         pageLinks,
         paginatorPosition,
@@ -93,9 +92,7 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
     }
 
     protected enum InternalPropertyKeys {
-        defaultFilter,
         filterByAsMap,
-        defaultSort,
         sortByAsMap,
         columnMeta,
         width;
@@ -321,15 +318,6 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
 
     public void setRowsPerPageTemplate(String rowsPerPageTemplate) {
         getStateHelper().put(PropertyKeys.rowsPerPageTemplate, rowsPerPageTemplate);
-    }
-
-    @Override
-    public String getRowsPerPageLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.rowsPerPageLabel, null);
-    }
-
-    public void setRowsPerPageLabel(String rowsPerPageLabel) {
-        getStateHelper().put(PropertyKeys.rowsPerPageLabel, rowsPerPageLabel);
     }
 
     @Override

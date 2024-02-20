@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,6 +31,12 @@ import javax.faces.event.BehaviorEvent;
 
 import org.primefaces.util.MapBuilder;
 
+/**
+*
+* @deprecated in 10.0 use ToggleSwitch
+*
+*/
+@Deprecated(since = "10.0", forRemoval  =  true)
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "inputswitch/inputswitch.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")

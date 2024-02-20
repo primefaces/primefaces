@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,6 @@
 package org.primefaces.component.panelgrid;
 
 import java.io.IOException;
-
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIPanel;
@@ -36,6 +35,7 @@ import org.primefaces.component.row.Row;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.GridLayoutUtils;
 
 public class PanelGridRenderer extends CoreRenderer {
@@ -53,18 +53,12 @@ public class PanelGridRenderer extends CoreRenderer {
         }
         else {
             throw new FacesException("The value of 'layout' attribute of PanelGrid \"" + grid.getClientId(
-                context) + "\" must be 'grid', 'tabular' or 'flex'. Default value is 'tabular'.");
+                context) + "\" must be 'grid', 'tabular' or 'flex'. Default value is 'grid'.");
         }
     }
 
-    /**
-     * @deprecated in 13.0.0 remove in 14.0.0
-     */
-    @Deprecated
     public void encodeLegacyTableLayout(FacesContext context, PanelGrid grid) throws IOException {
         String clientId = grid.getClientId(context);
-        logDevelopmentWarning(context, "Table layout is deprecated and will be removed in future release. Please switch to responsive layout. ClientId: "
-                + clientId);
         ResponseWriter writer = context.getResponseWriter();
         int columns = grid.getColumns();
         String style = grid.getStyle();
@@ -189,7 +183,7 @@ public class PanelGridRenderer extends CoreRenderer {
         int i = 0;
 
         for (UIComponent child : grid.getChildren()) {
-            if (child instanceof Row || child.getClass().getName().endsWith("UIRepeat")) {
+            if (child instanceof Row || ComponentUtils.isUIRepeat(child)) {
                 // #6829 count row even though its not rendered
                 // #7780 count row if a UIRepeat and assume the user knows what they are doing
                 i++;
@@ -420,7 +414,7 @@ public class PanelGridRenderer extends CoreRenderer {
 
         UIComponent component = grid.getFacet(facet);
 
-        if (ComponentUtils.shouldRenderFacet(component)) {
+        if (FacetUtils.shouldRenderFacet(component)) {
             ResponseWriter writer = context.getResponseWriter();
             writer.startElement(tag, null);
             writer.writeAttribute("class", styleClass, null);
@@ -469,7 +463,7 @@ public class PanelGridRenderer extends CoreRenderer {
     public void encodeGridFacet(FacesContext context, PanelGrid grid, int columns, String facet, String styleClass) throws IOException {
         UIComponent component = grid.getFacet(facet);
 
-        if (ComponentUtils.shouldRenderFacet(component)) {
+        if (FacetUtils.shouldRenderFacet(component)) {
             ResponseWriter writer = context.getResponseWriter();
 
             writer.startElement("div", null);

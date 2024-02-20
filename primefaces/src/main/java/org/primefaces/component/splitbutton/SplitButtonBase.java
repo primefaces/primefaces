@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -69,6 +69,7 @@ public abstract class SplitButtonBase extends HtmlCommandButton implements AjaxS
         ignoreComponentNotFound,
         disableOnAjax,
         filterNormalize,
+        filterInputAutoFocus,
         ariaLabel
     }
 
@@ -335,6 +336,14 @@ public abstract class SplitButtonBase extends HtmlCommandButton implements AjaxS
 
     public void setFilterNormalize(boolean filterNormalize) {
         getStateHelper().put(PropertyKeys.filterNormalize, filterNormalize);
+    }
+
+    public boolean isFilterInputAutoFocus() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.filterInputAutoFocus, true);
+    }
+
+    public void setFilterInputAutoFocus(boolean filterInputAutoFocus) {
+        getStateHelper().put(PropertyKeys.filterInputAutoFocus, filterInputAutoFocus);
     }
 
     public String getAriaLabel() {

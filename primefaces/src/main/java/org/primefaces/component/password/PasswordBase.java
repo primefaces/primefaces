@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -93,7 +93,7 @@ public abstract class PasswordBase extends AbstractPrimeHtmlInputText implements
     }
 
     public String getPromptLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.promptLabel, "Please enter a password");
+        return (String) getStateHelper().eval(PropertyKeys.promptLabel, null);
     }
 
     public void setPromptLabel(String promptLabel) {
@@ -101,7 +101,7 @@ public abstract class PasswordBase extends AbstractPrimeHtmlInputText implements
     }
 
     public String getWeakLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.weakLabel, "Weak");
+        return (String) getStateHelper().eval(PropertyKeys.weakLabel, null);
     }
 
     public void setWeakLabel(String weakLabel) {
@@ -109,7 +109,7 @@ public abstract class PasswordBase extends AbstractPrimeHtmlInputText implements
     }
 
     public String getGoodLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.goodLabel, "Good");
+        return (String) getStateHelper().eval(PropertyKeys.goodLabel, null);
     }
 
     public void setGoodLabel(String goodLabel) {
@@ -117,7 +117,7 @@ public abstract class PasswordBase extends AbstractPrimeHtmlInputText implements
     }
 
     public String getStrongLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.strongLabel, "Strong");
+        return (String) getStateHelper().eval(PropertyKeys.strongLabel, null);
     }
 
     public void setStrongLabel(String strongLabel) {

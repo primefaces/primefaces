@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -111,13 +111,13 @@ public class Dashboard extends DashboardBase {
     protected void updateDashboardModel(DashboardModel model, String widgetId, Integer itemIndex, Integer receiverColumnIndex, Integer senderColumnIndex) {
         if (senderColumnIndex == null) {
             //Reorder widget in same column
-            DashboardWidget column = model.getColumn(receiverColumnIndex);
+            DashboardWidget column = model.getWidget(receiverColumnIndex);
             column.reorderWidget(itemIndex, widgetId);
         }
         else {
             //Transfer widget
-            DashboardWidget oldColumn = model.getColumn(senderColumnIndex);
-            DashboardWidget newColumn = model.getColumn(receiverColumnIndex);
+            DashboardWidget oldColumn = model.getWidget(senderColumnIndex);
+            DashboardWidget newColumn = model.getWidget(receiverColumnIndex);
             model.transferWidget(oldColumn, newColumn, widgetId, itemIndex, this.isResponsive());
         }
     }

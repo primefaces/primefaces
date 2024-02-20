@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -62,7 +62,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
     protected void encodeMarkup(FacesContext context, SelectOneRadio radio) throws IOException {
         String layout = radio.getLayout();
         if (LangUtils.isEmpty(layout)) {
-            layout = ComponentUtils.shouldRenderFacet(radio.getFacet("custom")) ? "custom" : "lineDirection";
+            layout = FacetUtils.shouldRenderFacet(radio.getFacet("custom")) ? "custom" : "lineDirection";
         }
         boolean custom = "custom".equals(layout);
 
@@ -79,7 +79,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
 
     protected void encodeScript(FacesContext context, SelectOneRadio radio) throws IOException {
         String layout = radio.getLayout();
-        if (LangUtils.isEmpty(layout) && ComponentUtils.shouldRenderFacet(radio.getFacet("custom"))) {
+        if (LangUtils.isEmpty(layout) && FacetUtils.shouldRenderFacet(radio.getFacet("custom"))) {
             layout = "custom";
         }
         boolean custom = "custom".equals(layout);
@@ -96,14 +96,20 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = radio.getClientId(context);
         List<SelectItem> selectItems = getSelectItems(context, radio);
+        String columnClassesValue = radio.getColumnClasses();
+        String[] columnClasses = columnClassesValue == null ? new String[0] : columnClassesValue.split(",");
         String style = radio.getStyle();
+        boolean flex = ComponentUtils.isFlex(context, radio);
+        if (flex) {
+            layout = "responsive";
+        }
         boolean lineDirection = "lineDirection".equals(layout);
-        boolean flex = !lineDirection && ComponentUtils.isFlex(context, radio);
         String styleClass = getStyleClassBuilder(context)
                 .add(lineDirection, "layout-line-direction")
                 .add(GridLayoutUtils.getResponsiveClass(flex))
                 .add(radio.getStyleClass())
-                .add(radio.isPlain(), SelectOneRadio.NATIVE_STYLE_CLASS, SelectOneRadio.STYLE_CLASS)
+                .add(SelectOneRadio.STYLE_CLASS)
+                .add(radio.isReadonly(), "ui-state-readonly")
                 .build();
         String labelledBy = radio.getLabel();
 
@@ -111,7 +117,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("role", "radiogroup", null);
         if (labelledBy != null) {
-            writer.writeAttribute("aria-labelledby", labelledBy, "label");
+            writer.writeAttribute(HTML.ARIA_LABELLEDBY, labelledBy, "label");
         }
         writer.writeAttribute("class", styleClass, "styleClass");
         if (style != null) {
@@ -143,10 +149,13 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
                     writer.writeAttribute("class", GridLayoutUtils.getFlexGridClass(flex), null);
                 }
 
-                writer.startElement("div", null);
-                if (!lineDirection) {
-                    writer.writeAttribute("class", GridLayoutUtils.getColumnClass(flex, columns), null);
+                String columnClass = (colMod < columnClasses.length) ? columnClasses[colMod].trim() : "";
+                if (!columnClass.contains("md-") && !columnClass.contains("col-") && !lineDirection) {
+                    columnClass += (!"".equals(columnClass) ? " " : "") + GridLayoutUtils.getColumnClass(flex, columns);
                 }
+
+                writer.startElement("div", null);
+                writer.writeAttribute("class", columnClass, null);
                 writer.writeAttribute("role", "radio", null);
                 writer.writeAttribute(HTML.ARIA_CHECKED, Boolean.toString(selected), null);
                 encodeOption(context, radio, selectItem, id, name, converter, selected, disabled);
@@ -184,7 +193,8 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         String style = radio.getStyle();
         String styleClass = getStyleClassBuilder(context)
                 .add(radio.getStyleClass())
-                .add(radio.isPlain(), SelectOneRadio.NATIVE_STYLE_CLASS, SelectOneRadio.STYLE_CLASS)
+                .add(SelectOneRadio.STYLE_CLASS)
+                .add(radio.isReadonly(), "ui-state-readonly")
                 .build();
         String labelledBy = radio.getLabel();
 
@@ -192,7 +202,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("role", "radiogroup", null);
         if (labelledBy != null) {
-            writer.writeAttribute("aria-labelledby", labelledBy, "label");
+            writer.writeAttribute(HTML.ARIA_LABELLEDBY, labelledBy, "label");
         }
         writer.writeAttribute("class", styleClass, "styleClass");
         if (style != null) {
@@ -228,19 +238,20 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
 
     protected void encodeCustomLayout(FacesContext context, SelectOneRadio radio) throws IOException {
         UIComponent customFacet = radio.getFacet("custom");
-        if (ComponentUtils.shouldRenderFacet(customFacet)) {
+        if (FacetUtils.shouldRenderFacet(customFacet)) {
             ResponseWriter writer = context.getResponseWriter();
             String style = radio.getStyle();
             String styleClass = getStyleClassBuilder(context)
                     .add(radio.getStyleClass())
                     .add(SelectOneRadio.STYLE_CLASS)
+                    .add(radio.isReadonly(), "ui-state-readonly")
                     .build();
             String labelledBy = radio.getLabel();
             writer.startElement("span", radio);
             writer.writeAttribute("id", radio.getClientId(context), "id");
             writer.writeAttribute("role", "radiogroup", null);
             if (labelledBy != null) {
-                writer.writeAttribute("aria-labelledby", labelledBy, "label");
+                writer.writeAttribute(HTML.ARIA_LABELLEDBY, labelledBy, "label");
             }
             if (style != null) {
                 writer.writeAttribute("style", style, "style");
@@ -386,7 +397,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
 
         ResponseWriter writer = context.getResponseWriter();
         String itemValueAsString = getOptionAsString(context, radio, converter, option.getValue());
-        String styleClass = radio.isPlain() ? HTML.RADIOBUTTON_NATIVE_CLASS : HTML.RADIOBUTTON_CLASS;
+        String styleClass = HTML.RADIOBUTTON_CLASS;
 
         writer.startElement("div", null);
         writer.writeAttribute("class", styleClass, null);

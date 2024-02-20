@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -81,9 +81,7 @@ public class LazyCustomerDataModel extends LazyDataModel<Customer> {
     public List<Customer> load(int offset, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
         // apply offset & filters
         List<Customer> customers = datasource.stream()
-                .skip(offset)
                 .filter(o -> filter(FacesContext.getCurrentInstance(), filterBy.values(), o))
-                .limit(pageSize)
                 .collect(Collectors.toList());
 
         // sort
@@ -95,7 +93,7 @@ public class LazyCustomerDataModel extends LazyDataModel<Customer> {
             customers.sort(cp);
         }
 
-        return customers;
+        return customers.subList(offset, Math.min(offset + pageSize, customers.size()));
     }
 
     private boolean filter(FacesContext context, Collection<FilterMeta> filterBy, Object o) {

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -47,6 +47,9 @@ public abstract class SelectCheckboxMenu extends AbstractInputComponent {
     @FindByParentPartialId(value = "_filter", searchFromRoot = true)
     private WebElement filterInput;
 
+    @FindBy(css = ".ui-selectcheckboxmenu-label")
+    private WebElement label;
+
     @FindBy(css = "input[type='checkbox']")
     private List<WebElement> checkboxes;
 
@@ -59,6 +62,10 @@ public abstract class SelectCheckboxMenu extends AbstractInputComponent {
 
     public WebElement getPanel() {
         return panel;
+    }
+
+    public WebElement getLabel() {
+        return label;
     }
 
     public List<WebElement> getCheckboxes() {

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,6 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import lombok.Data;
-
-import javax.annotation.PostConstruct;
-import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.time.LocalDate;
@@ -40,9 +34,15 @@ import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
+import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
+
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.primefaces.component.datatable.DataTable;
@@ -56,6 +56,7 @@ public class DataTable033 implements Serializable {
 
     private String columnTemplate = "id name country date status activity";
     private List<ColumnModel> columns;
+    private List<ColumnModel> columns2;
     private List<Customer> customers;
     private List<Customer> filteredCustomers;
     private Map<String, Class> validColumns;
@@ -82,6 +83,10 @@ public class DataTable033 implements Serializable {
                 columns.add(new ColumnModel(columnKey.toUpperCase(), columnKey, validColumns.get(key)));
             }
         }
+
+        columns2 = new ArrayList<>();
+        columns2.add(new ColumnModel("NAME", "name", String.class));
+        columns2.add(new ColumnModel("COUNTRY", "country", String.class));
     }
 
     public void updateColumns() {

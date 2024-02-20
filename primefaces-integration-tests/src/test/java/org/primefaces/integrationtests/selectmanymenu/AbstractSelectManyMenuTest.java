@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,11 +23,14 @@
  */
 package org.primefaces.integrationtests.selectmanymenu;
 
-import org.junit.jupiter.api.Assertions;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.SelectManyMenu;
 
 import java.util.HashSet;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.List;
 import java.util.Set;
 
@@ -35,7 +38,7 @@ public class AbstractSelectManyMenuTest extends AbstractPrimePageTest {
 
     protected void assertSelected(SelectManyMenu selectManyMenu, List<String> expectedSelection) {
         Set<String> selectedLabels = new HashSet<>(selectManyMenu.getSelectedLabels());
-        Assertions.assertEquals(expectedSelection.size(), selectedLabels.size());
-        expectedSelection.forEach(s -> Assertions.assertTrue(selectedLabels.contains(s)));
+        assertEquals(expectedSelection.size(), selectedLabels.size());
+        expectedSelection.forEach(s -> assertTrue(selectedLabels.contains(s)));
     }
 }

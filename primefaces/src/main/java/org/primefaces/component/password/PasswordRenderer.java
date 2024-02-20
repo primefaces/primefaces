@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -73,10 +73,10 @@ public class PasswordRenderer extends InputRenderer {
                     .attr("inline", password.isInline())
                     .attr("showEvent", password.getShowEvent(), null)
                     .attr("hideEvent", password.getHideEvent(), null)
-                    .attr("promptLabel", password.getPromptLabel())
-                    .attr("weakLabel", password.getWeakLabel())
-                    .attr("goodLabel", password.getGoodLabel())
-                    .attr("strongLabel", password.getStrongLabel());
+                    .attr("promptLabel", password.getPromptLabel(), null)
+                    .attr("weakLabel", password.getWeakLabel(), null)
+                    .attr("goodLabel", password.getGoodLabel(), null)
+                    .attr("strongLabel", password.getStrongLabel(), null);
         }
 
         wb.finish();

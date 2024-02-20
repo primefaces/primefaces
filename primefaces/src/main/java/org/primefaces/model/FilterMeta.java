@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,14 +23,6 @@
  */
 package org.primefaces.model;
 
-import java.io.Serializable;
-import java.util.Objects;
-
-import javax.el.ELContext;
-import javax.el.MethodExpression;
-import javax.el.ValueExpression;
-import javax.faces.context.FacesContext;
-
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.ColumnBase;
@@ -38,6 +30,16 @@ import org.primefaces.model.filter.FilterConstraint;
 import org.primefaces.model.filter.FilterConstraints;
 import org.primefaces.model.filter.FunctionFilterConstraint;
 import org.primefaces.model.filter.GlobalFilterConstraint;
+import org.primefaces.util.LangUtils;
+
+import javax.el.ELContext;
+import javax.el.MethodExpression;
+import javax.el.ValueExpression;
+import javax.faces.context.FacesContext;
+import java.io.Serializable;
+import java.lang.reflect.Array;
+import java.util.Collection;
+import java.util.Objects;
 
 public class FilterMeta implements Serializable {
 
@@ -48,7 +50,7 @@ public class FilterMeta implements Serializable {
     private String field;
     private String columnKey;
     private ValueExpression filterBy;
-    private Object filterValue;
+    private Object filterValue; // should be null if empty string/collection/array/object
     private MatchMode matchMode = MatchMode.CONTAINS;
     private FilterConstraint constraint;
 
@@ -62,21 +64,8 @@ public class FilterMeta implements Serializable {
         this.columnKey = columnKey;
         this.filterBy = filterBy;
         this.constraint = constraint;
-        this.filterValue = filterValue;
+        this.filterValue = resetToNullIfEmpty(filterValue);
         this.matchMode = matchMode;
-    }
-
-    /**
-     * @deprecated Use FilterMeta#builder() instead
-     */
-    @Deprecated
-    public FilterMeta(String field, String columnKey, ValueExpression filterByVE, MatchMode filterMatchMode, Object filterValue) {
-        this.field = field;
-        this.columnKey = columnKey;
-        this.filterBy = filterByVE;
-        this.constraint = FilterConstraints.of(filterMatchMode);
-        this.filterValue = filterValue;
-        this.matchMode = filterMatchMode;
     }
 
     public static FilterMeta of(FacesContext context, String var, UIColumn column) {
@@ -108,11 +97,16 @@ public class FilterMeta implements Serializable {
             constraint = new FunctionFilterConstraint(column.getFilterFunction());
         }
 
+        Object filterValue = column.getFilterValue();
+        if (filterValue == null) {
+            filterValue = column.getFilterValueFromValueHolder();
+        }
+
         return new FilterMeta(column.getColumnKey(),
                               field,
                               constraint,
                               filterByVE,
-                              column.getFilterValue(),
+                              filterValue,
                               matchMode);
     }
 
@@ -127,6 +121,17 @@ public class FilterMeta implements Serializable {
                               null,
                               globalFilterValue,
                               MatchMode.GLOBAL);
+    }
+
+    public static <T> T resetToNullIfEmpty(T filterValue) {
+        if (filterValue != null
+                && ((filterValue instanceof String && LangUtils.isBlank((String) filterValue))
+                || (filterValue instanceof Collection && ((Collection) filterValue).isEmpty())
+                || (filterValue instanceof Iterable && !((Iterable) filterValue).iterator().hasNext())
+                || (filterValue.getClass().isArray() && Array.getLength(filterValue) == 0))) {
+            filterValue = null;
+        }
+        return filterValue;
     }
 
     public String getField() {
@@ -150,7 +155,7 @@ public class FilterMeta implements Serializable {
     }
 
     public void setFilterValue(Object filterValue) {
-        this.filterValue = filterValue;
+        this.filterValue = resetToNullIfEmpty(filterValue);
     }
 
     public FilterConstraint getConstraint() {
@@ -225,6 +230,7 @@ public class FilterMeta implements Serializable {
             if (filterBy.matchMode != null) {
                 filterBy.constraint = FilterConstraints.of(filterBy.matchMode);
             }
+            filterBy.filterValue = resetToNullIfEmpty(filterBy.filterValue);
             Objects.requireNonNull(filterBy.constraint, "Filter constraint is required");
             Objects.requireNonNull(filterBy.field, "Field is required");
             return filterBy;

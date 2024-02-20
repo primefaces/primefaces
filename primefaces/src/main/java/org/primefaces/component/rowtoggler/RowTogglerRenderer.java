@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,7 +32,6 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.HTML;
-import org.primefaces.util.MessageFactory;
 
 public class RowTogglerRenderer extends CoreRenderer {
 
@@ -48,14 +47,12 @@ public class RowTogglerRenderer extends CoreRenderer {
         String collapseLabel = toggler.getCollapseLabel();
         boolean iconOnly = (expandLabel == null && collapseLabel == null);
         String togglerClass = iconOnly ? DataTable.ROW_TOGGLER_CLASS + " " + icon : DataTable.ROW_TOGGLER_CLASS;
-        String ariaLabel = MessageFactory.getMessage(RowToggler.ROW_TOGGLER);
 
         writer.startElement("div", toggler);
         writer.writeAttribute("class", togglerClass, null);
         writer.writeAttribute("tabindex", toggler.getTabindex(), null);
         writer.writeAttribute("role", "button", null);
         writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(expanded), null);
-        writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
 
         if (!iconOnly) {
             writeLabel(writer, expandLabel, !expanded);

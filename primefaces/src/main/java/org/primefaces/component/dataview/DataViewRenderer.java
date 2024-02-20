@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -139,7 +139,7 @@ public class DataViewRenderer extends DataRenderer {
         writer.startElement("div", dataview);
         writer.writeAttribute("class", DataView.HEADER_CLASS, null);
 
-        if (ComponentUtils.shouldRenderFacet(fHeader)) {
+        if (FacetUtils.shouldRenderFacet(fHeader)) {
             fHeader.encodeAll(context);
         }
 
@@ -171,15 +171,11 @@ public class DataViewRenderer extends DataRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", containerClass, null);
 
-        if (hasListItem) {
+        if (hasGridItem && hasListItem) {
             String listIcon = dataview.getListIcon() != null ? dataview.getListIcon() : "ui-icon-grip-dotted-horizontal";
-
             encodeButton(context, dataview, "list", listIcon, !isGridLayout);
-        }
 
-        if (hasGridItem) {
             String gridIcon = dataview.getGridIcon() != null ? dataview.getGridIcon() : "ui-icon-grip-dotted-vertical";
-
             encodeButton(context, dataview, "grid", gridIcon, isGridLayout);
         }
 
@@ -234,7 +230,7 @@ public class DataViewRenderer extends DataRenderer {
         if (dataview.getRowCount() == 0) {
             ResponseWriter writer = context.getResponseWriter();
             UIComponent emptyFacet = dataview.getFacet("emptyMessage");
-            if (ComponentUtils.shouldRenderFacet(emptyFacet)) {
+            if (FacetUtils.shouldRenderFacet(emptyFacet)) {
                 emptyFacet.encodeAll(context);
             }
             else {
@@ -270,7 +266,7 @@ public class DataViewRenderer extends DataRenderer {
 
             String columnClass = getStyleClassBuilder(context)
                     .add(DataView.GRID_LAYOUT_COLUMN_CLASS)
-                    .add(flex, GridLayoutUtils.getColumnClass(flex, columns))
+                    .add(GridLayoutUtils.getColumnClass(flex, columns))
                     .add(dataview.getGridRowStyleClass())
                     .build();
 

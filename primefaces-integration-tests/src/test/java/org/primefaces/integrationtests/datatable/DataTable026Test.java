@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,14 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -41,16 +43,17 @@ import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.DatePicker;
 import org.primefaces.selenium.component.SelectManyMenu;
+import org.primefaces.selenium.component.base.ComponentUtils;
 import org.primefaces.selenium.component.model.datatable.Row;
 
-public class DataTable026Test extends AbstractDataTableTest {
+class DataTable026Test extends AbstractDataTableTest {
 
     protected final List<Employee> employees = new EmployeeService().getEmployees();
 
     @Test
     @Order(1)
     @DisplayName("DataTable: filter: lt")
-    public void testFilterLt(Page page) {
+    void filterLt(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
 
@@ -67,7 +70,7 @@ public class DataTable026Test extends AbstractDataTableTest {
     @Test
     @Order(2)
     @DisplayName("DataTable: filter: lte")
-    public void testFilterLte(Page page) {
+    void filterLte(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
 
@@ -84,7 +87,7 @@ public class DataTable026Test extends AbstractDataTableTest {
     @Test
     @Order(3)
     @DisplayName("DataTable: filter: gt")
-    public void testFilterGt(Page page) {
+    void filterGt(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
 
@@ -101,7 +104,7 @@ public class DataTable026Test extends AbstractDataTableTest {
     @Test
     @Order(4)
     @DisplayName("DataTable: filter: gte")
-    public void testFilterGte(Page page) {
+    void filterGte(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
 
@@ -118,7 +121,7 @@ public class DataTable026Test extends AbstractDataTableTest {
     @Test
     @Order(5)
     @DisplayName("DataTable: filter: equals")
-    public void testFilterEquals(Page page) {
+    void filterEquals(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
 
@@ -135,7 +138,7 @@ public class DataTable026Test extends AbstractDataTableTest {
     @Test
     @Order(6)
     @DisplayName("DataTable: filter: startsWith")
-    public void testFilterStartsWith(Page page) {
+    void filterStartsWith(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
 
@@ -159,7 +162,7 @@ public class DataTable026Test extends AbstractDataTableTest {
     @Test
     @Order(7)
     @DisplayName("DataTable: filter: endsWith")
-    public void testFilterEndsWith(Page page) {
+    void filterEndsWith(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
 
@@ -183,7 +186,7 @@ public class DataTable026Test extends AbstractDataTableTest {
     @Test
     @Order(8)
     @DisplayName("DataTable: filter: contains")
-    public void testFilterContains(Page page) {
+    void filterContains(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
 
@@ -207,7 +210,7 @@ public class DataTable026Test extends AbstractDataTableTest {
     @Test
     @Order(9)
     @DisplayName("DataTable: filter: exact")
-    public void testFilterExact(Page page) {
+    void filterExact(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
 
@@ -231,12 +234,13 @@ public class DataTable026Test extends AbstractDataTableTest {
     @Test
     @Order(10)
     @DisplayName("DataTable: filter: range (part 1)")
-    public void testFilterRange1(Page page) {
+    void filterRange1(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
 
         // Act
-        page.birthdateRangeFilter.getInput().sendKeys("1/1/1970 - 1/5/1970");
+        page.birthdateRangeFilter.clear();
+        ComponentUtils.sendKeys(page.birthdateRangeFilter.getInput(), "1/1/1970 - 1/5/1970");
         PrimeSelenium.guardAjax(page.birthdateRangeFilter.getInput()).sendKeys(Keys.TAB);
 
         // Assert
@@ -251,12 +255,13 @@ public class DataTable026Test extends AbstractDataTableTest {
     @Test
     @Order(11)
     @DisplayName("DataTable: filter: range (part 2)")
-    public void testFilterRange2(Page page) {
+    void filterRange2(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
 
         // Act
-        page.birthdateRangeFilter.getInput().sendKeys("12/25/1969 - 1/3/1970");
+        page.birthdateRangeFilter.clear();
+        ComponentUtils.sendKeys(page.birthdateRangeFilter.getInput(), "12/25/1969 - 1/3/1970");
         PrimeSelenium.guardAjax(page.birthdateRangeFilter.getInput()).sendKeys(Keys.TAB);
 
         // Assert
@@ -272,7 +277,7 @@ public class DataTable026Test extends AbstractDataTableTest {
     @Test
     @Order(12)
     @DisplayName("DataTable: filter: in")
-    public void testFilterIn(Page page) {
+    void filterIn(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
 
@@ -307,8 +312,8 @@ public class DataTable026Test extends AbstractDataTableTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("DataTable Config = " + cfg);
-        Assertions.assertEquals("wgtTable", cfg.getString("widgetVar"));
-        Assertions.assertEquals(0, cfg.getInt("tabindex"));
+        assertEquals("wgtTable", cfg.getString("widgetVar"));
+        assertEquals(0, cfg.getInt("tabindex"));
     }
 
     public static class Page extends AbstractPrimePage {
@@ -353,13 +358,13 @@ public class DataTable026Test extends AbstractDataTableTest {
 
     private void assertEmployeeRows(List<Row> rows, List<Employee> employees) {
         int expectedSize = employees.size();
-        Assertions.assertNotNull(rows);
-        Assertions.assertEquals(expectedSize, rows.size());
+        assertNotNull(rows);
+        assertEquals(expectedSize, rows.size());
 
         int row = 0;
         for (Employee employee : employees) {
             String rowText = rows.get(row).getCell(0).getText();
-            Assertions.assertEquals(employee.getId(), Integer.parseInt(rowText.trim()));
+            assertEquals(employee.getId(), Integer.parseInt(rowText.trim()));
             row++;
         }
     }

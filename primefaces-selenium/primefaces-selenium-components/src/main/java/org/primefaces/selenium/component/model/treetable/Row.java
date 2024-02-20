@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +25,6 @@ package org.primefaces.selenium.component.model.treetable;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.model.datatable.Cell;
 
 import java.util.Arrays;
@@ -33,22 +32,12 @@ import java.util.List;
 import java.util.Optional;
 
 public class Row extends org.primefaces.selenium.component.model.datatable.Row {
-
     public Row(WebElement webElement, List<Cell> cells) {
         super(webElement, cells);
     }
 
-    public boolean isToggleable() {
-        return (getToggler() != null);
-    }
-
-    public void toggle() {
-        if (isToggleable()) {
-            PrimeSelenium.guardAjax(getToggler()).click();
-        }
-    }
-
-    private WebElement getToggler() {
+    @Override
+    public WebElement getToggler() {
         return getCell(0).getWebElement().findElement(By.className("ui-treetable-toggler"));
     }
 

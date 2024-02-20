@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -47,7 +47,7 @@ public class BadgeRenderer extends CoreRenderer {
             IOBiConsumer<FacesContext, T> contentRenderer, T component) throws IOException {
         BadgeModel badgeModel = Badge.getBadgeModel(badge);
         if (badgeModel != null) {
-            BadgeRenderer badgeRenderer = new BadgeRenderer();
+            BadgeRenderer badgeRenderer = Badge.create(context).getRenderer();
             badgeRenderer.encodeOverlayBegin(context, null);
             contentRenderer.accept(context, component);
             badgeRenderer.encode(context, null, badgeModel, false);
@@ -61,7 +61,7 @@ public class BadgeRenderer extends CoreRenderer {
     public static void encode(FacesContext context, Object badge) throws IOException {
         BadgeModel badgeModel = Badge.getBadgeModel(badge);
         if (badgeModel != null) {
-            BadgeRenderer badgeRenderer = new BadgeRenderer();
+            BadgeRenderer badgeRenderer = Badge.create(context).getRenderer();
             badgeRenderer.encode(context, null, badgeModel, false);
         }
     }
@@ -89,12 +89,14 @@ public class BadgeRenderer extends CoreRenderer {
         String value = model.getValue();
         boolean valueEmpty = LangUtils.isEmpty(value);
         String severity = model.getSeverity();
+        String icon = model.getIcon();
+        boolean iconEmpty = LangUtils.isEmpty(icon);
         String size = model.getSize();
         String styleClass = getStyleClassBuilder(context)
                     .add(Badge.STYLE_CLASS)
                     .add(model.getStyleClass())
                     .add(!valueEmpty && value.length() == 1, Badge.NO_GUTTER_CLASS)
-                    .add(valueEmpty, Badge.DOT_CLASS)
+                    .add(valueEmpty && iconEmpty, Badge.DOT_CLASS)
                     .add(!model.isVisible(), "ui-state-hidden")
                     .add("large".equals(size), Badge.SIZE_LARGE_CLASS)
                     .add("xlarge".equals(size), Badge.SIZE_XLARGE_CLASS)
@@ -117,14 +119,69 @@ public class BadgeRenderer extends CoreRenderer {
             writer.writeAttribute("style", model.getStyle(), "style");
         }
 
-        if (!valueEmpty && model.isVisible()) {
-            writer.writeText(value, "value");
+        if (model.getOnclick() != null) {
+            writer.writeAttribute("onclick", model.getOnclick(), "onclick");
         }
+        else if (renderChildren) {
+            // delegate click of badge to its child component
+            writer.writeAttribute("onclick", "$(this).next().click();", "onclick");
+        }
+
+        encodeValue(context, badge, model);
         writer.endElement("span");
 
         if (renderChildren) {
             renderChildren(context, badge);
             encodeOverlayEnd(context);
+        }
+    }
+
+    protected void encodeValue(FacesContext context, Badge badge, BadgeModel model) throws IOException {
+        if (!model.isVisible()) {
+            return;
+        }
+
+        String value = model.getValue();
+        boolean valueEmpty = LangUtils.isEmpty(value);
+        String icon = model.getIcon();
+        boolean iconEmpty = LangUtils.isEmpty(icon);
+        String iconPos = model.getIconPos();
+
+        if (iconEmpty) {
+            encodeLabel(context, badge, value, valueEmpty);
+            return;
+        }
+
+        if ("left".equalsIgnoreCase(iconPos)) {
+            // left icon
+            encodeIcon(context, badge, icon);
+            encodeLabel(context, badge, value, valueEmpty);
+        }
+        else {
+            // right icon
+            encodeLabel(context, badge, value, valueEmpty);
+            encodeIcon(context, badge, icon);
+        }
+    }
+
+    protected void encodeIcon(FacesContext context, Badge badge, String icon) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String iconStyleClass = getStyleClassBuilder(context)
+                .add(Badge.ICON_CLASS)
+                .add(icon)
+                .build();
+        writer.startElement("span", null);
+        writer.writeAttribute("class", iconStyleClass, null);
+        writer.endElement("span");
+    }
+
+    protected void encodeLabel(FacesContext context, Badge badge, String value, boolean valueEmpty) throws IOException {
+        if (!valueEmpty) {
+            ResponseWriter writer = context.getResponseWriter();
+            writer.startElement("span", null);
+            writer.writeAttribute("class", Badge.LABEL_CLASS, null);
+            writer.writeText(value, "value");
+            writer.endElement("span");
         }
     }
 

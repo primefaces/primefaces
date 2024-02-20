@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,6 +34,12 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
+/**
+*
+* @deprecated in 10.0 use ToggleSwitch
+*
+*/
+@Deprecated(since = "10.0", forRemoval = true)
 public class InputSwitchRenderer extends InputRenderer {
 
     @Override
@@ -96,7 +102,9 @@ public class InputSwitchRenderer extends InputRenderer {
         writer.startElement("span", null);
 
         if (showLabels) {
-            writer.writeText(label, null);
+            if (label != null) {
+                writer.writeText(label, null);
+            }
         }
         else {
             writer.write("&nbsp;");
@@ -143,7 +151,11 @@ public class InputSwitchRenderer extends InputRenderer {
 
     protected void encodeScript(FacesContext context, InputSwitch inputSwitch) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("InputSwitch", inputSwitch).finish();
+        wb.init("InputSwitch", inputSwitch)
+                .attr("showLabels", inputSwitch.isShowLabels())
+                .attr("onLabel", inputSwitch.getOnLabel(), null)
+                .attr("offLabel", inputSwitch.getOffLabel(), null)
+                .finish();
     }
 
     protected boolean isChecked(String value) {

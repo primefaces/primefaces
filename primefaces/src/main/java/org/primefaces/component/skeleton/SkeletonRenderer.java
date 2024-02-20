@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,7 +39,6 @@ public class SkeletonRenderer extends CoreRenderer {
         Skeleton skeleton = (Skeleton) component;
         ResponseWriter writer = context.getResponseWriter();
         String size = skeleton.getSize();
-        String borderRadius = skeleton.getBorderRadius();
         String styleClass = getStyleClassBuilder(context)
                     .add(Skeleton.STYLE_CLASS)
                     .add(skeleton.getStyleClass())
@@ -47,12 +46,11 @@ public class SkeletonRenderer extends CoreRenderer {
                     .add("none".equals(skeleton.getAnimation()), Skeleton.NONE_ANIMATION_CLASS)
                     .build();
 
-        boolean hasSize = size != null;
         String style = getStyleBuilder(context)
                          .add(skeleton.getStyle())
-                         .add(hasSize, "width", size, skeleton.getWidth())
-                         .add(hasSize, "height", size, skeleton.getHeight())
-                         .add(borderRadius != null, "border-radius", borderRadius)
+                         .add(size != null, "width", size, skeleton.getWidth())
+                         .add(size != null, "height", size, skeleton.getHeight())
+                         .add("border-radius", skeleton.getBorderRadius())
                          .build();
 
         writer.startElement("div", null);

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,8 +35,6 @@ public class RowToggler extends RowTogglerBase {
 
     public static final String COLLAPSED_ICON = "ui-icon ui-icon-circle-triangle-e";
     public static final String EXPANDED_ICON = "ui-icon ui-icon-circle-triangle-s";
-
-    public static final String ROW_TOGGLER = "primefaces.rowtoggler.aria.ROW_TOGGLER";
 
     private DataTable parentTable;
 

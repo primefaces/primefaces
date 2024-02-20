@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,9 +23,8 @@
  */
 package org.primefaces.util;
 
-import java.io.*;
-import java.util.*;
-import java.util.function.Consumer;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.context.PrimeRequestContext;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -36,14 +35,28 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.context.PrimeRequestContext;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+import java.util.function.Consumer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ResourceUtils {
 
     public static final String RENDERER_SCRIPT = "javax.faces.resource.Script";
     public static final String RENDERER_STYLESHEET = "javax.faces.resource.Stylesheet";
+    public static final String RES_NOT_FOUND = "RES_NOT_FOUND";
+
+    /**
+     * Used to extract resource name (e.g "#{resource['picture.png'}")
+     */
+    private static final Pattern RESOURCE_PATTERN = Pattern.compile("^#\\{resource\\['(.+)']}$");
 
     private ResourceUtils() {
     }
@@ -155,7 +168,23 @@ public class ResourceUtils {
      * @see <a href="https://github.com/primefaces/primefaces/issues/6359">FileDownload: configure Cache-Control</a>
      */
     public static void addNoCacheControl(ExternalContext externalContext) {
-        externalContext.setResponseHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        addNoCacheControl(externalContext, false);
+    }
+
+    /**
+     * Adds no cache pragma to the response to ensure it is not cached.  Dynamic downloads should always add this
+     * to prevent caching and for GDPR.
+     *
+     * @param externalContext the ExternalContext we add the pragma to
+     * @param store used to add no-store or exclude it if false
+     * @see <a href="https://github.com/primefaces/primefaces/issues/6359">FileDownload: configure Cache-Control</a>
+     */
+    public static void addNoCacheControl(ExternalContext externalContext, boolean store) {
+        String cacheControl = "no-cache, no-store, must-revalidate";
+        if (store) {
+            cacheControl = "no-cache, must-revalidate";
+        }
+        externalContext.setResponseHeader("Cache-Control", cacheControl);
         externalContext.setResponseHeader("Pragma", "no-cache");
         externalContext.setResponseHeader("Expires", "0");
     }
@@ -236,51 +265,21 @@ public class ResourceUtils {
         return RENDERER_STYLESHEET.equals(component.getRendererType());
     }
 
-    public static List<ResourceInfo> getComponentResources(FacesContext context) {
-        List<ResourceInfo> resourceInfos = new ArrayList<>();
-
-        List<UIComponent> resources = context.getViewRoot().getComponentResources(context, "head");
-        if (resources != null) {
-            for (int i = 0; i < resources.size(); i++) {
-                UIComponent resource = resources.get(i);
-                ResourceUtils.ResourceInfo resourceInfo = newResourceInfo(resource);
-                if (resourceInfo != null && !resourceInfos.contains(resourceInfo)) {
-                    resourceInfos.add(resourceInfo);
-                }
-            }
-        }
-
-        return resourceInfos;
+    public static String getResourceName(UIComponent component) {
+        return (String) component.getAttributes().get("name");
     }
 
-    public static boolean isInline(ResourceInfo resourceInfo) {
-        if (resourceInfo != null) {
-            return LangUtils.isBlank(resourceInfo.getLibrary()) && LangUtils.isBlank(resourceInfo.getName());
+    public static String getResourceLibrary(UIComponent component) {
+        return (String) component.getAttributes().get("library");
+    }
+
+    public static boolean isInline(UIComponent component) {
+        if (component != null) {
+            return LangUtils.isBlank(getResourceName(component))
+                    && LangUtils.isBlank(getResourceLibrary(component));
         }
 
         return false;
-    }
-
-    public static ResourceInfo newResourceInfo(UIComponent component) {
-
-        if (!(component instanceof UIOutput)) {
-            return null;
-        }
-
-        String library = (String) component.getAttributes().get("library");
-        String name = (String) component.getAttributes().get("name");
-
-        return new ResourceInfo(library, name, component);
-    }
-
-    public static Resource newResource(ResourceInfo resourceInfo, FacesContext context) {
-        Resource resource = context.getApplication().getResourceHandler().createResource(resourceInfo.getName(), resourceInfo.getLibrary());
-
-        if (resource == null) {
-            throw new FacesException("Resource '" + resourceInfo.getName() + "' in library '" + resourceInfo.getLibrary() + "' not found!");
-        }
-
-        return resource;
     }
 
     public static String getMonitorKeyCookieName(FacesContext context, ValueExpression monitorKey) {
@@ -297,56 +296,46 @@ public class ResourceUtils {
         return monitorKeyCookieName;
     }
 
-    public static class ResourceInfo implements Serializable {
 
-        private static final long serialVersionUID = 1L;
+    public static boolean isResourceNotFound(Resource resource) {
+        return resource != null && (RES_NOT_FOUND.equals(resource.toString()) || RES_NOT_FOUND.equals(resource.getRequestPath()));
+    }
 
-        private String library;
-        private String name;
-        private UIComponent resource;
+    /**
+     * Per default the JSF implementation evaluates resource expressions as String and returns {@link Resource#getRequestPath()}.
+     * This method resolves the expression to the {@link Resource} itself.
+     *
+     * @param facesContext The {@link FacesContext}
+     * @param valueExpression The {@link ValueExpression}
+     *
+     * @return Null if the valueExpression is not of the form #{resource['path/to/resource']} or #{resource['library:name']}.
+     * Otherwise the value obtained by {@link ResourceHandler#createResource(java.lang.String)}.
+     */
+    public static Resource evaluateResourceExpression(FacesContext facesContext, ValueExpression valueExpression) {
+        Resource resource = null;
 
-        public ResourceInfo(String library, String name, UIComponent resource) {
-            this.library = library;
-            this.name = name;
-            this.resource = resource;
+        if (valueExpression != null) {
+            String expressionString = valueExpression.getExpressionString();
+
+            Matcher matcher = RESOURCE_PATTERN.matcher(expressionString);
+            if (matcher.find()) {
+                String[] resourceInfo = matcher.group(1).split(":");
+
+                Application application = facesContext.getApplication();
+                ResourceHandler resourceHandler = application.getResourceHandler();
+
+                if (resourceInfo.length == 2) {
+                    String resourceLibrary = resourceInfo[0];
+                    String resourceName = resourceInfo[1];
+                    resource = resourceHandler.createResource(resourceName, resourceLibrary);
+                }
+                else {
+                    String resourceName = resourceInfo[0];
+                    resource = resourceHandler.createResource(resourceName);
+                }
+            }
         }
 
-        public String getLibrary() {
-            return library;
-        }
-
-        public void setLibrary(String library) {
-            this.library = library;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public UIComponent getResource() {
-            return resource;
-        }
-
-        public void setResource(UIComponent resource) {
-            this.resource = resource;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            ResourceInfo that = (ResourceInfo) o;
-            return Objects.equals(library, that.library) &&
-                    Objects.equals(name, that.name);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(library, name);
-        }
+        return !isResourceNotFound(resource) ? resource : null;
     }
 }

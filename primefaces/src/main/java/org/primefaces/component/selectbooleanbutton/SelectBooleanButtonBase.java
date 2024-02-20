@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,9 +32,6 @@ public abstract class SelectBooleanButtonBase extends HtmlSelectBooleanCheckbox 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.SelectBooleanButtonRenderer";
-
-    public static final String LABEL_ON = "primefaces.switch.LABEL_ON";
-    public static final String LABEL_OFF = "primefaces.switch.LABEL_OFF";
 
     public enum PropertyKeys {
 

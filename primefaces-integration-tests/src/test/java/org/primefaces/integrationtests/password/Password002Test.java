@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,21 +23,27 @@
  */
 package org.primefaces.integrationtests.password;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.Password;
 
-@Tag("FirefoxExclude") // stability-issues for Firefox (96, 97) together with Selenium 4 and password.showFeedback
-public class Password002Test extends AbstractPrimePageTest {
+// stability-issues for Firefox (96, 97) together with Selenium 4 and password.showFeedback
+@Tag("FirefoxExclude")
+class Password002Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("Password: Show feedback panel with widget method")
-    public void testFeedbackShow(Page page) {
+    void feedbackShow(Page page) {
         // Arrange
         Password password = page.password;
 
@@ -46,15 +52,15 @@ public class Password002Test extends AbstractPrimePageTest {
 
         // Assert
         WebElement feedback = password.getFeedbackPanel();
-        Assertions.assertEquals("block", feedback.getCssValue("display"));
-        assertText(feedback, "Please enter a password");
+        assertEquals("block", feedback.getCssValue("display"));
+        assertText(feedback, "Enter a password");
         assertConfiguration(password.getWidgetConfiguration());
     }
 
     @Test
     @Order(2)
     @DisplayName("Password: Hide feedback panel with widget method")
-    public void testFeedbackHide(Page page) {
+    void feedbackHide(Page page) {
         // Arrange
         Password password = page.password;
         password.showFeedback();
@@ -64,14 +70,14 @@ public class Password002Test extends AbstractPrimePageTest {
 
         // Assert
         WebElement feedback = password.getFeedbackPanel();
-        Assertions.assertEquals("none", feedback.getCssValue("display"));
+        assertEquals("none", feedback.getCssValue("display"));
         assertConfiguration(password.getWidgetConfiguration());
     }
 
     @Test
     @Order(3)
     @DisplayName("Password: Weak password")
-    public void testFeedbackWeak(Page page) {
+    void feedbackWeak(Page page) {
         // Arrange
         Password password = page.password;
 
@@ -88,7 +94,7 @@ public class Password002Test extends AbstractPrimePageTest {
     @Test
     @Order(4)
     @DisplayName("Password: Good password")
-    public void testFeedbackGood(Page page) {
+    void feedbackGood(Page page) {
         // Arrange
         Password password = page.password;
 
@@ -98,14 +104,14 @@ public class Password002Test extends AbstractPrimePageTest {
 
         // Assert
         WebElement feedback = password.getFeedbackPanel();
-        assertText(feedback, "Good");
+        assertText(feedback, "Medium");
         assertConfiguration(password.getWidgetConfiguration());
     }
 
     @Test
     @Order(5)
     @DisplayName("Password: Strong password")
-    public void testFeedbackStrong(Page page) {
+    void feedbackStrong(Page page) {
         // Arrange
         Password password = page.password;
 
@@ -122,8 +128,8 @@ public class Password002Test extends AbstractPrimePageTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("Password Config = " + cfg);
-        Assertions.assertTrue(cfg.getBoolean("feedback"));
-        Assertions.assertFalse(cfg.getBoolean("inline"));
+        assertTrue(cfg.getBoolean("feedback"));
+        assertFalse(cfg.getBoolean("inline"));
     }
 
     public static class Page extends AbstractPrimePage {

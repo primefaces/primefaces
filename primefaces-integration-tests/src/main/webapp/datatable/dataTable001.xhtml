@@ -12,7 +12,7 @@
     <h:body>
 
         <h:form id="form">
-            <p:dataTable id="datatable" widgetVar="wgtTable" value="#{dataTable001.progLanguages}" var="lang" paginator="true" rows="3"
+            <p:dataTable id="datatable" widgetVar="wgtTable" value="#{dataTable001.progLanguages}" var="lang" paginator="true" rows="#{dataTable001.rows}"
                          filteredValue="#{dataTable001.filteredProgLanguages}" 
                          filterEvent="enter"
                          globalFilterOnly="#{dataTable001.globalFilterOnly}"

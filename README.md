@@ -3,8 +3,9 @@
 [![Actions Status Integration Tests](https://github.com/primefaces/primefaces/workflows/IT/badge.svg)](https://github.com/primefaces/primefaces/actions/workflows/nightly.yml)
 [![Sonar](https://sonarcloud.io/api/project_badges/measure?project=org.primefaces%3Aprimefaces&metric=alert_status)](https://sonarcloud.io/dashboard?id=org.primefaces%3Aprimefaces)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Discord Chat](https://img.shields.io/badge/chat-discord-7289da)](https://discord.gg/gzKFYnpmCY)
+[![Discord Chat](https://img.shields.io/discord/557940238991753223.svg?color=7289da&label=chat&logo=discord)](https://discord.gg/gzKFYnpmCY)
 [![Stackoverflow](https://img.shields.io/badge/StackOverflow-primefaces-chocolate.svg)](https://stackoverflow.com/questions/tagged/primefaces+jsf)
+[![Prime Discussions](https://img.shields.io/github/discussions-search?query=org%3Aprimefaces&logo=github&label=Prime%20Discussions&link=https%3A%2F%2Fgithub.com%2Forgs%2Fprimefaces%2Fdiscussions)](https://github.com/orgs/primefaces/discussions)
 
 [![PrimeFaces Hero](https://www.primefaces.org/wp-content/uploads/2021/10/PrimeFaces-GitHub-2021Q4.jpg "PrimeFaces Hero")](https://www.primefaces.org/showcase)
 
@@ -37,9 +38,9 @@ What does that mean?
 
 Version | Binary | Source | JSF version | Java version | Documentation
 ------------ | -------------  | ------------- | ------------- | ------------- | ------------- |
-12.0.0| [primefaces-12.0.0.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/12.0.0/primefaces-12.0.0.jar)  | [primefaces-12.0.0-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/12.0.0/primefaces-12.0.0-sources.jar) | 2.0 - 4.0 | 1.8 - ? | [12.0.0 Documentation](https://primefaces.github.io/primefaces/12_0_0/#/)
-11.0.0| [primefaces-11.0.0.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/11.0.0/primefaces-11.0.0.jar)  | [primefaces-11.0.0-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/11.0.0/primefaces-11.0.0-sources.jar) | 2.0 - 4.0 | 1.8 - ? | [11.0.0 Documentation](https://primefaces.github.io/primefaces/11_0_0/#/)
-10.0.0| [primefaces-10.0.0.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/10.0.0/primefaces-10.0.0.jar)  | [primefaces-10.0.0-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/10.0.0/primefaces-10.0.0-sources.jar) | 2.0 - 3.0 | 1.8 - ? | [10.0.0 Documentation](https://primefaces.github.io/primefaces/10_0_0/#/)
+![14.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=14&color=cyan)| [JAR](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/14.0.0-RC1/primefaces-14.0.0-RC1.jar)  | [Sources](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/14.0.0-RC1/primefaces-14.0.0-RC1-sources.jar)| 2.3 - 4.0 | 11 - ? | [14.0.0 Documentation](https://primefaces.github.io/primefaces/14_0_0/#/)
+![13.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=13&color=cyan)| [JAR](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/13.0.6/primefaces-13.0.6.jar)  | [Sources](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/13.0.6/primefaces-13.0.6-sources.jar) | 2.0 - 4.0 | 1.8 - ? | [13.0.6 Documentation](https://primefaces.github.io/primefaces/13_0_0/#/)
+![12.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=12&color=cyan)| [JAR](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/12.0.0/primefaces-12.0.0.jar)  | [Sources](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/12.0.0/primefaces-12.0.0-sources.jar) | 2.0 - 4.0 | 1.8 - ? | [12.0.0 Documentation](https://primefaces.github.io/primefaces/12_0_0/#/)
 
 <details>
   <summary>Archive</summary>
@@ -47,6 +48,8 @@ Version | Binary | Source | JSF version | Java version | Documentation
 
 Version | Binary | Source | JSF version | Java version | Documentation
 ------------ | -------------  | ------------- | ------------- | ------------- | ------------- |
+11.0.0| [primefaces-11.0.0.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/11.0.0/primefaces-11.0.0.jar)  | [primefaces-11.0.0-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/11.0.0/primefaces-11.0.0-sources.jar) | 2.0 - 4.0 | 1.8 - ? | [11.0.0 Documentation](https://primefaces.github.io/primefaces/11_0_0/#/)
+10.0.0| [primefaces-10.0.0.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/10.0.0/primefaces-10.0.0.jar)  | [primefaces-10.0.0-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/10.0.0/primefaces-10.0.0-sources.jar) | 2.0 - 3.0 | 1.8 - ? | [10.0.0 Documentation](https://primefaces.github.io/primefaces/10_0_0/#/)
 8.0| [primefaces-8.0.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/8.0/primefaces-8.0.jar)  | [primefaces-8.0-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/8.0/primefaces-8.0-sources.jar) | 2.0 - 2.3 | 1.8 - ? | [8.0 Documentation](https://primefaces.github.io/primefaces/8_0/#/)
 7.0| [primefaces-7.0.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/7.0/primefaces-7.0.jar)  | [primefaces-7.0-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/7.0/primefaces-7.0-sources.jar) | 2.0 - 2.3 | 1.7 - ? | [7.0 Documentation](https://primefaces.github.io/primefaces/7_0/#/)
 6.2| [primefaces-6.2.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.2/primefaces-6.2.jar)  | [primefaces-6.2-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.2/primefaces-6.2-sources.jar) | 2.0 - 2.3 | 1.6 - ? | [6.2 Documentation](https://www.primefaces.org/docs/guide/primefaces_user_guide_6_2.pdf)
@@ -66,18 +69,18 @@ For a full list of the available downloads, please visit the [download page](htt
 ##### Release 
 
   ```xml
-  <!-- Java EE / javax.* / JSF 2.0 - JSF 2.3 -->
+  <!-- Java EE / javax.* / JSF 2.2 - JSF 2.3 -->
   <dependency>
       <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
-      <version>12.0.0</version>
+      <version>13.0.6</version>
   </dependency>
 
   <!-- Jakarta EE / jakarta.* / Faces 3.0 - Faces 4.0  -->	
   <dependency>
       <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
-      <version>12.0.0</version>
+      <version>13.0.6</version>
       <classifier>jakarta</classifier>
   </dependency>
   ```
@@ -85,26 +88,33 @@ For a full list of the available downloads, please visit the [download page](htt
 ##### SNAPSHOT
 
   ```xml
-  <!-- Java EE / javax.* / JSF 2.0 - JSF 2.3 -->
+  <!-- Java EE / javax.* / JSF 2.3 -->
   <dependency>
-      <groupId>com.github.primefaces</groupId>
+      <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
-      <version>master-SNAPSHOT</version>
+      <version>14.0.0-SNAPSHOT</version>
   </dependency>
 
   <!-- Jakarta EE / jakarta.* / Faces 3.0 - Faces 4.0  -->
   <dependency>
-      <groupId>com.github.primefaces</groupId>
+      <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
-      <version>master-SNAPSHOT</version>
+      <version>14.0.0-SNAPSHOT</version>
       <classifier>jakarta</classifier>
   </dependency>
 
   <repositories>
-      <repository>
-          <id>jitpack.io</id>
-          <url>https://jitpack.io</url>
-      </repository>
+    <repository>
+      <id>sonatype-snapshots</id>
+      <name>Sonatype Snapshot Repository</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+      <releases>
+          <enabled>false</enabled>
+      </releases>
+      <snapshots>
+          <enabled>true</enabled>
+      </snapshots>
+    </repository>
   </repositories>
   ```
 
@@ -144,9 +154,9 @@ Visit the [contribution](./CONTRIBUTING.md) page for detailed information.
 
 ### Release Instructions
 ***
-- Run `mvn versions:set -DgenerateBackupPoms=false -DnewVersion=11.0.0` to update all modules versions
+- Run `mvn versions:set -DgenerateBackupPoms=false -DnewVersion=14.0.0` to update all modules versions
 - Commit and push the changes to GitHub
-- In GitHub create a new Release titled `11.0.0` to tag this release
+- In GitHub create a new Release titled `14.0.0` to tag this release
 - Run `mvn clean deploy -Prelease` to push to Maven Central
 - Rename Milestone in GitHub Issues and close it
 - Create a new Milestone

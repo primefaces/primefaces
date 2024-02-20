@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,8 +38,8 @@ import org.primefaces.component.panel.Panel;
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
-import org.primefaces.util.MessageFactory;
 import org.primefaces.util.SharedStringBuilder;
 import org.primefaces.util.WidgetBuilder;
 
@@ -156,6 +156,8 @@ public class AccordionPanelRenderer extends CoreRenderer {
         }
 
         wb.attr("multiple", multiple, false)
+                .attr("toggleSpeed", acco.getToggleSpeed())
+                .attr("scrollIntoView", acco.getScrollIntoView(), null)
                 .callback("onTabChange", "function(panel)", acco.getOnTabChange())
                 .callback("onTabShow", "function(panel)", acco.getOnTabShow())
                 .callback("onTabClose", "function(panel)", acco.getOnTabClose())
@@ -266,7 +268,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
         writer.writeAttribute("class", iconStyleClass, null);
         writer.endElement("span");
 
-        if (ComponentUtils.shouldRenderFacet(titleFacet)) {
+        if (FacetUtils.shouldRenderFacet(titleFacet)) {
             titleFacet.encodeAll(context);
         }
         else if (title != null) {
@@ -278,12 +280,12 @@ public class AccordionPanelRenderer extends CoreRenderer {
 
         //options menu trigger
         if (optionsMenu != null) {
-            encodeIcon(context, tab, "ui-icon-gear", clientId + "_menu", tab.getMenuTitle(), MessageFactory.getMessage(Panel.ARIA_OPTIONS_MENU));
+            encodeIcon(context, tab, "ui-icon-gear", clientId + "_menu", tab.getMenuTitle(), null);
         }
 
         //actions
         UIComponent actionsFacet = tab.getFacet("actions");
-        if (ComponentUtils.shouldRenderFacet(actionsFacet)) {
+        if (FacetUtils.shouldRenderFacet(actionsFacet)) {
             writer.startElement("div", null);
             writer.writeAttribute("class", Panel.PANEL_ACTIONS_CLASS, null);
             writer.writeAttribute("onclick", "event.stopPropagation()", null);

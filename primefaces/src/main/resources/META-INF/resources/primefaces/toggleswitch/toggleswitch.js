@@ -31,6 +31,13 @@ PrimeFaces.widget.ToggleSwitch = PrimeFaces.widget.BaseWidget.extend({
         if(!this.input.is(':disabled')) {
             this._bindEvents();
         }
+        
+         if(this.input.attr('aria-checked') === "true" || this.input.prop('checked')) {
+            this.input.attr('aria-label', PrimeFaces.getAriaLabel('switch.ON'));
+        }
+        else {
+            this.input.attr('aria-label', PrimeFaces.getAriaLabel('switch.OFF'));
+        }
 
         //pfs metadata
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
@@ -98,7 +105,7 @@ PrimeFaces.widget.ToggleSwitch = PrimeFaces.widget.BaseWidget.extend({
      * @param {boolean} [silent] `true` to suppress triggering event listeners, or `false` otherwise.
      */
     check: function(silent) {
-        this.input.prop('checked', true).attr('aria-checked', true);
+        this.input.prop('checked', true).attr('aria-checked', true).attr('aria-label', PrimeFaces.getAriaLabel('switch.ON'));
         if (!silent) {
             this.input.trigger('change');
         }
@@ -110,7 +117,7 @@ PrimeFaces.widget.ToggleSwitch = PrimeFaces.widget.BaseWidget.extend({
      * @param {boolean} [silent] `true` to suppress triggering event listeners, or `false` otherwise.
      */
     uncheck: function(silent) {
-        this.input.prop('checked', false).attr('aria-checked', false);
+        this.input.prop('checked', false).attr('aria-checked', false).attr('aria-label', PrimeFaces.getAriaLabel('switch.OFF'));
         if (!silent) {
             this.input.trigger('change');
         }

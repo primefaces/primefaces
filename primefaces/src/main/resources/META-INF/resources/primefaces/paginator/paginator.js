@@ -33,6 +33,7 @@
  * @prop {JQuery} pageLinks DOM elements of each numbered page link.
  * @prop {JQuery} prevLink DOM element of the link back to the previous page.
  * @prop {JQuery} rppSelect SELECT element for selection the number of pages to display (`rows per page`).
+ * @prop {string} ariaPageLabel ARIA LABEL attribute for the page links.
  * 
  * @interface {PrimeFaces.widget.PaginatorCfg} cfg The configuration for the {@link  Paginator| Paginator widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
@@ -41,7 +42,6 @@
  * 
  * @prop {boolean} cfg.alwaysVisible `true` if the paginator should be displayed always, or `false` if it is allowed to
  * be hidden under some circumstances that depend on the widget that uses the paginator.
- * @prop {string} cfg.ariaPageLabel ARIA LABEL attribute for the page links.
  * @prop {string} cfg.currentPageTemplate Template for the paginator text. It may contain placeholders such as
  * `{currentPage}` or `{totalPages}`. 
  * @prop {number} cfg.page The current page, 0-based index.
@@ -54,6 +54,7 @@
  * @prop {number} cfg.prevRows The number of rows per page for the dropdown.
  * @prop {number} cfg.rowCount Total number of rows (records) to be displayed.
  * @prop {number} cfg.rows The number of rows per page.
+ * @prop {number} cfg.rpp The configured number of rows set per page.
  */
 PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
 
@@ -79,16 +80,31 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
 
         //metadata
         this.cfg.rows = this.cfg.rows == 0 ? this.cfg.rowCount : this.cfg.rows;
+        this.cfg.rpp = this.cfg.rows;
         this.cfg.prevRows = this.cfg.rows;
         this.cfg.pageCount = Math.ceil(this.cfg.rowCount / this.cfg.rows)||1;
         this.cfg.pageLinks = this.cfg.pageLinks||10;
         this.cfg.currentPageTemplate = this.cfg.currentPageTemplate||'({currentPage} of {totalPages})';
 
-        //aria message
-        this.cfg.ariaPageLabel = PrimeFaces.getAriaLabel('paginator.PAGE');
-
+        //aria messages
+        this.configureAria();
         //event bindings
         this.bindEvents();
+    },
+
+    /**
+     * Configures ARIA labels for screenreaders.
+     * @private
+     */
+    configureAria: function(){
+        this.ariaPageLabel = PrimeFaces.getAriaLabel('pageLabel');
+        this.rppSelect.attr('aria-label', PrimeFaces.getAriaLabel('rowsPerPageLabel'));
+        this.jtpSelect.attr('aria-label', PrimeFaces.getAriaLabel('jumpToPageDropdownLabel'));
+        this.jtpInput.attr('aria-label', PrimeFaces.getAriaLabel('jumpToPageInputLabel'));
+        this.firstLink.attr('aria-label', PrimeFaces.getAriaLabel('firstPageLabel'));
+        this.prevLink.attr('aria-label', PrimeFaces.getAriaLabel('previousPageLabel'));
+        this.nextLink.attr('aria-label', PrimeFaces.getAriaLabel('nextPageLabel'));
+        this.endLink.attr('aria-label', PrimeFaces.getAriaLabel('lastPageLabel'));
     },
 
     /**
@@ -215,7 +231,10 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
             var link = $(this),
             pageNumber = parseInt(link.text());
 
-            link.attr('aria-label', $this.cfg.ariaPageLabel.replace('{0}', (pageNumber)));
+            link.attr('aria-label', $this.ariaPageLabel.replace('{page}', (pageNumber)));
+            if (link.hasClass('ui-state-active')) {
+                link.attr('aria-current', 'page');
+            }
         });
 
         pageLinks.on('click.paginator', function(e) {
@@ -388,13 +407,15 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         this.pagesContainer.children().remove();
         for(var i = start; i <= end; i++) {
             var styleClass = 'ui-paginator-page ui-state-default ui-corner-all',
-            ariaLabel = this.cfg.ariaPageLabel.replace('{0}', (i+1));
+            ariaLabel = this.ariaPageLabel.replace('{page}', (i+1)),
+            ariaCurrentPage = '';
 
             if(this.cfg.page == i) {
-                styleClass += " ui-state-active";
+                styleClass += ' ui-state-active';
+                ariaCurrentPage = 'aria-current="page"';
             }
 
-            this.pagesContainer.append('<a class="' + styleClass + '" aria-label="' + ariaLabel + '" tabindex="0" href="#">' + (i + 1) + '</a>');
+            this.pagesContainer.append('<a class="' + styleClass + '" aria-label="' + ariaLabel + '" ' + ariaCurrentPage + ' tabindex="0" href="#">' + (i + 1) + '</a>');
         }
 
         if(focusContainer) {
@@ -407,7 +428,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Switches this pagination to the given page.
      * @param {number} p 0-based index of the page to switch to.
-     * @param {boolean} [silent=false] `true` to not invoke any event listeners, `false` otherwise. 
+     * @param {boolean} [silent=false] `true` to not invoke any event listeners, `false` otherwise.
      */
     setPage: function(p, silent) {
         if(p >= 0 && p < this.cfg.pageCount && this.cfg.page != p){
@@ -433,6 +454,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
      */
     setRowsPerPage: function(rpp) {
         this.rppSelect.find('option').removeAttr('selected');
+        this.cfg.rpp = rpp;
         if (rpp === '*') {
             this.cfg.rows = this.cfg.rowCount;
             this.cfg.pageCount = 1;
@@ -465,6 +487,9 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
      * @param {number} value The total number of items to set.
      */
     setTotalRecords: function(value) {
+        if (this.cfg.rpp === '*') {
+            this.cfg.rows = value;
+        }
         this.cfg.rowCount = value;
         this.cfg.pageCount = Math.ceil(value / this.cfg.rows)||1;
         this.cfg.page = 0;

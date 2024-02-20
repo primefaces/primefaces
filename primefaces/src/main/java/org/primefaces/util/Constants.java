@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -56,6 +56,7 @@ public class Constants {
         public static final String THEME = "primefaces.THEME";
         public static final String TOUCHABLE = "primefaces.TOUCHABLE";
         public static final String TRANSFORM_METADATA = "primefaces.TRANSFORM_METADATA";
+        @Deprecated(forRemoval = true, since = "14.0.0")
         public static final String UPLOADER = "primefaces.UPLOADER";
 
         private ContextParams() {
@@ -71,9 +72,9 @@ public class Constants {
         public static final String PARTIAL_PROCESS_PARAM = "javax.faces.partial.execute";
         public static final String PARTIAL_SOURCE_PARAM = "javax.faces.source";
         public static final String PARTIAL_BEHAVIOR_EVENT_PARAM = "javax.faces.behavior.event";
+        public static final String RESET_VALUES_PARAM = "javax.faces.partial.resetValues";
 
         // PF request params
-        public static final String RESET_VALUES_PARAM = "primefaces.resetvalues";
         public static final String IGNORE_AUTO_UPDATE_PARAM = "primefaces.ignoreautoupdate";
         public static final String SKIP_CHILDREN_PARAM = "primefaces.skipchildren";
         public static final String NONCE_PARAM = "primefaces.nonce";

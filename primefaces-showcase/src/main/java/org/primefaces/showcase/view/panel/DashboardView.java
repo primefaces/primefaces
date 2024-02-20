@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -58,9 +58,9 @@ public class DashboardView implements Serializable {
 
         // legacy
         legacyModel = new DefaultDashboardModel();
-        legacyModel.addColumn(new DefaultDashboardColumn(Arrays.asList("sports", "finance")));
-        legacyModel.addColumn(new DefaultDashboardColumn(Arrays.asList("lifestyle", "weather")));
-        legacyModel.addColumn(new DefaultDashboardColumn(Arrays.asList("politics")));
+        legacyModel.addWidget(new DefaultDashboardWidget(Arrays.asList("sports", "finance")));
+        legacyModel.addWidget(new DefaultDashboardWidget(Arrays.asList("lifestyle", "weather")));
+        legacyModel.addWidget(new DefaultDashboardWidget(Arrays.asList("politics")));
     }
 
     public void handleReorder(DashboardReorderEvent event) {

@@ -257,7 +257,7 @@
         _renderCloseButton: function () {
             if (this.options.fullScreen) {
                 return (
-                    '<button type="button" class="ui-galleria-close ui-corner-all ui-galleria-link">' +
+                    '<button type="button" class="ui-galleria-close ui-corner-all ui-galleria-link" aria-label="'+PrimeFaces.getAriaLabel('close')+'">' +
                         '<span class="ui-button-icon-left ui-galleria-close-icon ' + this.options.closeIcon + '"></span>' +
                     '</button>'
                 );

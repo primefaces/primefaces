@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,7 @@ package org.primefaces.component.progressbar;
 
 import java.io.IOException;
 import java.util.Map;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -66,13 +67,16 @@ public class ProgressBarRenderer extends CoreRenderer {
         String labelTemplate = progressBar.getLabelTemplate();
         String title = progressBar.getTitle();
         String style = progressBar.getStyle();
-        String styleClass = progressBar.getStyleClass();
-        styleClass = styleClass == null ? ProgressBar.CONTAINER_CLASS : ProgressBar.CONTAINER_CLASS + " " + styleClass;
-        styleClass = styleClass + " " + ("determinate".equals(mode) ? ProgressBar.DETERMINATE_CLASS : ProgressBar.INDETERMINATE_CLASS);
-
-        if (progressBar.isDisabled()) {
-            styleClass = styleClass + " ui-state-disabled";
-        }
+        String severity = progressBar.getSeverity();
+        String styleClass = getStyleClassBuilder(context)
+                .add(ProgressBar.CONTAINER_CLASS, progressBar.getStyleClass())
+                .add("determinate".equals(mode), ProgressBar.DETERMINATE_CLASS, ProgressBar.INDETERMINATE_CLASS)
+                .add(progressBar.isDisabled(), "ui-state-disabled")
+                .add("info".equals(severity), ProgressBar.SEVERITY_INFO_CLASS)
+                .add("success".equals(severity), ProgressBar.SEVERITY_SUCCESS_CLASS)
+                .add("warning".equals(severity), ProgressBar.SEVERITY_WARNING_CLASS)
+                .add("danger".equals(severity), ProgressBar.SEVERITY_DANGER_CLASS)
+                .build();
 
         writer.startElement("div", progressBar);
         writer.writeAttribute("id", progressBar.getClientId(context), "id");

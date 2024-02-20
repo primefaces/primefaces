@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,13 +23,13 @@
  */
 package org.primefaces.selenium;
 
-import java.io.File;
-
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+
+import java.io.File;
 
 public final class PrimeExpectedConditions {
 
@@ -43,6 +43,10 @@ public final class PrimeExpectedConditions {
 
     public static ExpectedCondition<Boolean> documentLoaded() {
         return script("return document.readyState === 'complete'");
+    }
+
+    public static ExpectedCondition<Boolean> validationFailed() {
+        return script("return (!window.pfselenium || pfselenium.validationFailed === false);");
     }
 
     public static ExpectedCondition<Boolean> notNavigating() {

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,6 @@
 package org.primefaces.component.api;
 
 import java.util.Map;
-
 import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.context.FacesContext;
@@ -60,12 +59,6 @@ public class UIPageableData extends UIData implements Pageable, TouchAware {
     public static final String PAGINATOR_NEXT_PAGE_ICON_CLASS = "ui-icon ui-icon-seek-next";
     public static final String PAGINATOR_LAST_PAGE_LINK_CLASS = "ui-paginator-last ui-state-default ui-corner-all";
     public static final String PAGINATOR_LAST_PAGE_ICON_CLASS = "ui-icon ui-icon-seek-end";
-    public static final String ARIA_HEADER_LABEL = "primefaces.paginator.aria.HEADER";
-    public static final String ARIA_FIRST_PAGE_LABEL = "primefaces.paginator.aria.FIRST_PAGE";
-    public static final String ARIA_PREVIOUS_PAGE_LABEL = "primefaces.paginator.aria.PREVIOUS_PAGE";
-    public static final String ARIA_NEXT_PAGE_LABEL = "primefaces.paginator.aria.NEXT_PAGE";
-    public static final String ARIA_LAST_PAGE_LABEL = "primefaces.paginator.aria.LAST_PAGE";
-    public static final String ROWS_PER_PAGE_LABEL = "primefaces.paginator.aria.ROWS_PER_PAGE";
     public static final String EMPTY_MESSAGE = "primefaces.data.EMPTY_MESSAGE";
 
     public enum PropertyKeys {
@@ -74,7 +67,6 @@ public class UIPageableData extends UIData implements Pageable, TouchAware {
         paginator,
         paginatorTemplate,
         rowsPerPageTemplate,
-        rowsPerPageLabel,
         currentPageReportTemplate,
         pageLinks,
         paginatorPosition,
@@ -129,15 +121,6 @@ public class UIPageableData extends UIData implements Pageable, TouchAware {
 
     public void setRowsPerPageTemplate(String rowsPerPageTemplate) {
         getStateHelper().put(PropertyKeys.rowsPerPageTemplate, rowsPerPageTemplate);
-    }
-
-    @Override
-    public String getRowsPerPageLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.rowsPerPageLabel, null);
-    }
-
-    public void setRowsPerPageLabel(String rowsPerPageLabel) {
-        getStateHelper().put(PropertyKeys.rowsPerPageLabel, rowsPerPageLabel);
     }
 
     @Override
@@ -225,12 +208,10 @@ public class UIPageableData extends UIData implements Pageable, TouchAware {
             //ValueExpression --> remove state to ensure the VE is re-evaluated
             getStateHelper().remove(PropertyKeys.rows);
         }
-        else {
-            //normal attribute value --> restore inital rows
-            Object rows = getStateHelper().eval(InternalPropertyKeys.rowsInitialValue);
-            if (rows != null) {
-                setRows((int) rows);
-            }
+        //normal attribute value --> restore inital rows
+        Object rows = getStateHelper().eval(InternalPropertyKeys.rowsInitialValue);
+        if (rows != null) {
+            setRows((int) rows);
         }
     }
 
@@ -244,19 +225,24 @@ public class UIPageableData extends UIData implements Pageable, TouchAware {
         }
     }
 
-    public void calculateFirst() {
+    public boolean calculateFirst() {
         int rows = getRows();
 
         if (rows > 0) {
             int first = getFirst();
             int rowCount = getRowCount();
 
-            if (rowCount > 0 && first >= rowCount) {
+            if (first >= rowCount) {
                 int numberOfPages = (int) Math.ceil(rowCount * 1d / rows);
+                int newFirst = Math.max((numberOfPages - 1) * rows, 0);
 
-                setFirst(Math.max((numberOfPages - 1) * rows, 0));
+                setFirst(newFirst);
+
+                return first != newFirst;
             }
         }
+
+        return false;
     }
 
     @Override
@@ -327,11 +313,11 @@ public class UIPageableData extends UIData implements Pageable, TouchAware {
 
     public void updatePaginationData(FacesContext context) {
         setRowIndex(-1);
-        String componentClientId = getClientId(context);
+        String clientId = getClientId(context);
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
-        String firstParam = params.get(componentClientId + "_first");
-        String rowsParam = params.get(componentClientId + "_rows");
+        String firstParam = params.get(clientId + "_first");
+        String rowsParam = params.get(clientId + "_rows");
 
         if (!isRowsPerPageValid(rowsParam)) {
             throw new IllegalArgumentException("Unsupported rows per page value: " + rowsParam);

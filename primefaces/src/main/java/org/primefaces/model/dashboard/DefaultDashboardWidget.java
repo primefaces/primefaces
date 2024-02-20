@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,18 +23,122 @@
  */
 package org.primefaces.model.dashboard;
 
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * DashBoard widgets used in responsive mode only.
  */
-public class DefaultDashboardWidget extends DefaultDashboardColumn {
+public class DefaultDashboardWidget implements DashboardWidget, Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    private List<String> widgets;
+    private String style;
+    private String styleClass;
+    private Object value;
+
     public DefaultDashboardWidget() {
-        super();
+        widgets = new LinkedList<>();
+    }
+
+    public DefaultDashboardWidget(String style, String styleClass, Object value, Collection<String> widgets) {
+        this();
+        this.widgets.addAll(widgets);
+        this.style = style;
+        this.styleClass = styleClass;
+        this.value = value;
+    }
+
+    public DefaultDashboardWidget(String style, String styleClass, Collection<String> widgets) {
+        this(style, styleClass, null, widgets);
+    }
+
+    public DefaultDashboardWidget(String widgetId, String styleClass, Object value) {
+        this();
+        getWidgets().addAll(Arrays.asList(widgetId));
+        setStyleClass(styleClass);
+        setValue(value);
     }
 
     public DefaultDashboardWidget(String widgetId, String styleClass) {
-        super(widgetId, styleClass);
+        this();
+        getWidgets().addAll(Arrays.asList(widgetId));
+        setStyleClass(styleClass);
     }
+
+    public DefaultDashboardWidget(Collection<String> widgets) {
+        this();
+        this.widgets.addAll(widgets);
+    }
+
+    @Override
+    public void removeWidget(String widgetId) {
+        widgets.remove(widgetId);
+    }
+
+    @Override
+    public List<String> getWidgets() {
+        return widgets;
+    }
+
+    @Override
+    public int getWidgetCount() {
+        return widgets.size();
+    }
+
+    @Override
+    public String getWidget(int index) {
+        return widgets.get(index);
+    }
+
+    @Override
+    public void addWidget(int index, String widgetId) {
+        widgets.add(index, widgetId);
+    }
+
+    @Override
+    public void reorderWidget(int index, String widgetId) {
+        widgets.remove(widgetId);
+        widgets.add(index, widgetId);
+    }
+
+    @Override
+    public void addWidget(String widgetId) {
+        widgets.add(widgetId);
+    }
+
+    @Override
+    public String getStyle() {
+        return style;
+    }
+
+    @Override
+    public void setStyle(String style) {
+        this.style = style;
+    }
+
+    @Override
+    public String getStyleClass() {
+        return styleClass;
+    }
+
+    @Override
+    public void setStyleClass(String styleClass) {
+        this.styleClass = styleClass;
+    }
+
+    @Override
+    public Object getValue() {
+        return value;
+    }
+
+    @Override
+    public void setValue(Object value) {
+        this.value = value;
+    }
+
 }

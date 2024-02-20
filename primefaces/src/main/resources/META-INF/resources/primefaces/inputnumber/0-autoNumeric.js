@@ -47,16 +47,16 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 /**
  *               AutoNumeric.js
  *
- * @version      4.8.1
- * @date         2023-03-24 UTC 07:46
+ * @version      4.10.4
+ * @date         2024-01-18 UTC 19:36
  *
  * @authors      2016-2023 Alexandre Bonneau <alexandre.bonneau@linuxfr.eu>
  *               2009-2016 Bob Knothe <bob.knothe@gmail.com>
  * @contributors Sokolov Yura and others, cf. AUTHORS
- * @copyright    2009 Robert J. Knothe
+ * @copyright    Alexandre Bonneau & Robert J. Knothe
  * @since        2009-08-09
  *
- * @summary      autoNumeric is a standalone Javascript library
+ * @summary      AutoNumeric is a standalone Javascript library
  *               that provides live *as-you-type* formatting for
  *               international numbers and currencies.
  *
@@ -198,12 +198,14 @@ var AutoNumeric = /*#__PURE__*/function () {
           case AutoNumeric.options.emptyInputBehavior.zero:
             valueToSet = '0';
             break;
-          // In order to stay consistent when `formatOnPageLoad` is set to `true`, it's still impossible to set the `null` value as the initial value
           case AutoNumeric.options.emptyInputBehavior.focus:
           case AutoNumeric.options.emptyInputBehavior.press:
           case AutoNumeric.options.emptyInputBehavior.always:
-          case AutoNumeric.options.emptyInputBehavior["null"]:
             valueToSet = '';
+            break;
+          // It's possible to set the `null` value as the initial value
+          case AutoNumeric.options.emptyInputBehavior["null"]:
+            valueToSet = null;
             break;
           // When `emptyInputBehavior` is a number or a string representing a number
           default:
@@ -229,8 +231,7 @@ var AutoNumeric = /*#__PURE__*/function () {
     // Save the initial values (html attribute + element.value) for the pristine test
     this._saveInitialValues(initialValue);
 
-    // Set up the data for the persistent storage solution (i.e. sessionStorage or cookies)
-    this.sessionStorageAvailable = this.constructor._storageTest();
+    // Set up the data for the persistent storage solution (i.e. sessionStorage)
     this.storageNamePrefix = 'AUTO_'; // The prefix for the raw value storage name variable can be modified here
     this._setPersistentStorageName();
 
@@ -2180,6 +2181,7 @@ var AutoNumeric = /*#__PURE__*/function () {
   }, {
     key: "_setRawValue",
     value: function _setRawValue(rawValue) {
+      var _this8 = this;
       var saveChangeToHistory = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
       // Only set the raw value if the given value is different from the current one
       if (this.rawValue !== rawValue) {
@@ -2210,7 +2212,9 @@ var AutoNumeric = /*#__PURE__*/function () {
         this._parseStyleRules();
         if (saveChangeToHistory) {
           // Save in the history the last known raw value and formatted result selection
-          this._historyTableAdd();
+          window.requestAnimationFrame(function () {
+            return _this8._historyTableAdd();
+          }); // The use of `requestAnimationFrame` fixes PR #731 by avoiding "Forced reflow"
         }
       }
     }
@@ -2916,7 +2920,7 @@ var AutoNumeric = /*#__PURE__*/function () {
   }, {
     key: "init",
     value: function init(domElementOrArrayOrString) {
-      var _this8 = this;
+      var _this9 = this;
       var attached = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
       var returnASingleAutoNumericObject = false; // By default, this function returns an array of AutoNumeric objects
       var domElementsArray = [];
@@ -2940,12 +2944,12 @@ var AutoNumeric = /*#__PURE__*/function () {
       // Instantiate (and link depending on `attached`) each AutoNumeric objects
       domElementsArray.forEach(function (domElement) {
         // Initialize the new AutoNumeric element
-        var originalCreateLocalListSetting = _this8.settings.createLocalList;
+        var originalCreateLocalListSetting = _this9.settings.createLocalList;
         if (attached) {
           // Temporary variable to know if we should create the local list during the initialization (since we'll remove it afterward)
-          _this8.settings.createLocalList = false;
+          _this9.settings.createLocalList = false;
         }
-        var newAutoNumericElement = new AutoNumeric(domElement, _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].getElementValue(domElement), _this8.settings);
+        var newAutoNumericElement = new AutoNumeric(domElement, _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].getElementValue(domElement), _this9.settings);
 
         // Set the common shared local list if needed
         // If the user wants to create a detached new AutoNumeric element, then skip the following step that bind the two elements together by default
@@ -2954,8 +2958,8 @@ var AutoNumeric = /*#__PURE__*/function () {
           newAutoNumericElement._setLocalList(currentLocalList);
 
           // 2) Add the new element to that existing list
-          _this8._addToLocalList(domElement, newAutoNumericElement); // Here we use the *new* AutoNumeric object reference to add to the local list, since we'll need the reference to `this` in the methods to points to that new AutoNumeric object.
-          _this8.settings.createLocalList = originalCreateLocalListSetting;
+          _this9._addToLocalList(domElement, newAutoNumericElement); // Here we use the *new* AutoNumeric object reference to add to the local list, since we'll need the reference to `this` in the methods to points to that new AutoNumeric object.
+          _this9.settings.createLocalList = originalCreateLocalListSetting;
         }
         autoNumericObjectsArray.push(newAutoNumericElement);
       });
@@ -3077,7 +3081,8 @@ var AutoNumeric = /*#__PURE__*/function () {
     }
 
     /**
-     * Return an array of the AutoNumeric-managed elements for the given form element is passed, otherwise for the current `this.parentForm` element.
+     * Returns an array of the AutoNumeric-managed elements for the given form element is passed, otherwise for the current `this.parentForm` element.
+     * This search for <input> elements, as well as contenteditable non-input tag ones. This also search for elements outside the `form` elements.
      *
      * @param {HTMLFormElement|null} formElement
      *
@@ -3087,17 +3092,40 @@ var AutoNumeric = /*#__PURE__*/function () {
   }, {
     key: "_getFormAutoNumericChildren",
     value: function _getFormAutoNumericChildren(formElement) {
-      var _this9 = this;
+      var _this10 = this;
       // Search for all the child AutoNumeric elements in that parent form
-      //TODO This only search for <input> elements, not contenteditable non-input tag ones, for now. Add a parameter to allow this function to search on every tags.
-      var inputList = _toConsumableArray(formElement.querySelectorAll('input'));
-      return inputList.filter(function (input) {
-        return _this9.constructor.isManagedByAutoNumeric(input);
+      var inputElementsList = _toConsumableArray(formElement.elements); //XXX `.elements` here only returns the form's inputs, not the other child elements that could be contenteditable
+      var nonInputContentEditableElementsList = this._getContenteditableElements(formElement); // Get the contenteditable elements inside and outside the form element
+      var elementsList = _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].arrayUnique(inputElementsList, nonInputContentEditableElementsList);
+      return elementsList.filter(function (element) {
+        return _this10.constructor.isManagedByAutoNumeric(element);
       });
     }
 
     /**
-     * Return a reference to the parent <form> element if it exists, otherwise return `null`.
+     * Returns an array of the non-input contenteditable elements linked to the given form element.
+     * Two types of elements are possible, either located inside the form element, or outside.
+     * For the outside elements, this only works if the form element has a defined id and that id is referenced on the non-input element as the `form` attribute.
+     * If no elements can be found, then an empty array is returned.
+     *
+     * @param {HTMLFormElement|null} formElement
+     *
+     * @returns {Array.<HTMLInputElement>}
+     * @private
+     */
+  }, {
+    key: "_getContenteditableElements",
+    value: function _getContenteditableElements(formElement) {
+      if (_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isUndefinedOrNullOrEmpty(formElement) || !formElement.hasAttribute('id')) {
+        return [];
+      }
+      var elementsInside = _toConsumableArray(formElement.querySelectorAll('[contenteditable=true]'));
+      var elementsOutside = _toConsumableArray(document.querySelectorAll("*:not(input)[form=".concat(formElement.id, "][contenteditable=true]")));
+      return _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].arrayUnique(elementsInside, elementsOutside);
+    }
+
+    /**
+     * Returns a reference to the parent <form> element if it exists, otherwise return `null`.
      *
      * @returns {HTMLFormElement|null}
      * @private
@@ -3105,6 +3133,8 @@ var AutoNumeric = /*#__PURE__*/function () {
   }, {
     key: "_getParentForm",
     value: function _getParentForm() {
+      if (!_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isUndefined(this.domElement.form)) return this.domElement.form; // This catches input elements outside the form element
+
       if (this.domElement.tagName.toLowerCase() === 'body') {
         return null;
       }
@@ -3815,7 +3845,10 @@ var AutoNumeric = /*#__PURE__*/function () {
             this.settings[key] = value(this, key);
           } else {
             // Calls the attached function from the html5 data. For instance: <tag data-currency-symbol="functionName"></tag>
-            var htmlAttribute = this.domElement.getAttribute(key); //TODO Use `dataset` instead of `getAttribute` when we won't need to support obsolete browsers
+            var htmlAttribute = '';
+            if (key in this.domElement.dataset) {
+              htmlAttribute = this.domElement.dataset[key];
+            }
             htmlAttribute = _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].camelize(htmlAttribute);
             if (typeof this.settings[htmlAttribute] === 'function') {
               this.settings[key] = htmlAttribute(this, key);
@@ -4187,23 +4220,15 @@ var AutoNumeric = /*#__PURE__*/function () {
     }
 
     /**
-     * Original settings saved for use when `decimalPlacesShownOnFocus` & `showOnlyNumbersOnFocus` options are being used.
-     * This is taken from Quirksmode.
-     *
-     * @param {string} name
-     * @returns {*}
-     */
-  }, {
-    key: "_trimLeadingAndTrailingZeros",
-    value:
-    /**
      * Removes any zeros in excess in the front and back of the given `value`, according to the `settings`.
      * This also manages the cases where the decimal point is on the far left or far right of the `value`.
      *
      * @param {string} value
      * @returns {string|null}
      */
-    function _trimLeadingAndTrailingZeros(value) {
+  }, {
+    key: "_trimLeadingAndTrailingZeros",
+    value: function _trimLeadingAndTrailingZeros(value) {
       // Return the empty string is the value is already empty. This prevents converting that value to '0'.
       if (value === '' || value === null) {
         return value;
@@ -4253,12 +4278,7 @@ var AutoNumeric = /*#__PURE__*/function () {
     key: "_saveValueToPersistentStorage",
     value: function _saveValueToPersistentStorage() {
       if (this.settings.saveValueToSessionStorage) {
-        if (this.sessionStorageAvailable) {
-          sessionStorage.setItem(this.rawValueStorageName, this.rawValue);
-        } else {
-          // Use cookies for obsolete browsers that do not support sessionStorage (i.e. IE 6 & 7)
-          document.cookie = "".concat(this.rawValueStorageName, "=").concat(this.rawValue, "; expires= ; path=/");
-        }
+        sessionStorage.setItem(this.rawValueStorageName, this.rawValue);
       }
     }
 
@@ -4272,13 +4292,7 @@ var AutoNumeric = /*#__PURE__*/function () {
     key: "_getValueFromPersistentStorage",
     value: function _getValueFromPersistentStorage() {
       if (this.settings.saveValueToSessionStorage) {
-        var result;
-        if (this.sessionStorageAvailable) {
-          result = sessionStorage.getItem(this.rawValueStorageName);
-        } else {
-          result = this.constructor._readCookie(this.rawValueStorageName);
-        }
-        return result;
+        return sessionStorage.getItem(this.rawValueStorageName);
       }
       _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].warning('`_getValueFromPersistentStorage()` is called but `settings.saveValueToSessionStorage` is false. There must be an error that needs fixing.', this.settings.showWarnings);
       return null;
@@ -4292,14 +4306,7 @@ var AutoNumeric = /*#__PURE__*/function () {
     key: "_removeValueFromPersistentStorage",
     value: function _removeValueFromPersistentStorage() {
       if (this.settings.saveValueToSessionStorage) {
-        if (this.sessionStorageAvailable) {
-          sessionStorage.removeItem(this.rawValueStorageName);
-        } else {
-          var date = new Date();
-          date.setTime(date.getTime() - 86400000); // -86400000 === -1 * 24 * 60 * 60 * 1000
-          var expires = "; expires=".concat(date.toUTCString());
-          document.cookie = "".concat(this.rawValueStorageName, "='' ;").concat(expires, "; path=/");
-        }
+        sessionStorage.removeItem(this.rawValueStorageName);
       }
     }
 
@@ -5029,11 +5036,7 @@ var AutoNumeric = /*#__PURE__*/function () {
         return;
       }
       var rawPastedText;
-      if (window.clipboardData && window.clipboardData.getData) {
-        // Special case for the obsolete and non-standard IE browsers 10 and 11
-        rawPastedText = window.clipboardData.getData('Text');
-      } else if (e.clipboardData && e.clipboardData.getData) {
-        // Normal case with modern browsers
+      if (e.clipboardData && e.clipboardData.getData) {
         rawPastedText = e.clipboardData.getData('text/plain');
       } else {
         _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].throwError('Unable to retrieve the pasted value. Please use a modern browser (i.e. Firefox or Chromium).');
@@ -5589,14 +5592,20 @@ var AutoNumeric = /*#__PURE__*/function () {
 
       var isUp = false;
       var isDown = false;
+      var isDeltaYZero = false;
       if (_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isWheelUpEvent(e)) {
         isUp = true;
       } else if (_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isWheelDownEvent(e)) {
         isDown = true;
+      } else if (_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isWheelEventWithZeroDeltaY(e)) {
+        // Ignore that event (maybe call e.preventDefault() ?), fixes issue #776
+        isDeltaYZero = true;
       } else {
         _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].throwError("The event is not a 'wheel' event.");
       }
-      this._wheelAndUpDownActions(e, isUp, isDown, this.settings.wheelStep);
+      if (!isDeltaYZero) {
+        this._wheelAndUpDownActions(e, isUp, isDown, this.settings.wheelStep);
+      }
       this.isWheelEvent = false; // Set back the mouse wheel indicator to its default
     }
 
@@ -5616,16 +5625,19 @@ var AutoNumeric = /*#__PURE__*/function () {
       // Note: by default browsers already prevent the drop on readOnly and disabled elements
       this.isDropEvent = true;
       e.preventDefault();
-      var format;
-      if (_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isIE11()) {
-        format = 'text';
-      } else {
-        format = 'text/plain';
-      }
-      var droppedText = e.dataTransfer.getData(format);
+      var droppedText = e.dataTransfer.getData('text/plain');
       var cleanedValue = this.unformatOther(droppedText);
+      var previousValue = this.rawValue;
       this.set(cleanedValue);
       this.isDropEvent = false;
+
+      // Test if a change event must be sent (if the dropped value is different from before)
+      var newValue = this.constructor._toNumericValue(cleanedValue, this.settings);
+      if (!isNaN(Number(newValue))) {
+        if (_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].trimPaddedZerosFromDecimalPlaces(previousValue) !== _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].trimPaddedZerosFromDecimalPlaces(newValue)) {
+          this._triggerEvent(AutoNumeric.events["native"].change, this.domElement);
+        }
+      }
     }
 
     /**
@@ -5637,11 +5649,11 @@ var AutoNumeric = /*#__PURE__*/function () {
   }, {
     key: "_onFormSubmit",
     value: function _onFormSubmit() {
-      var _this10 = this;
+      var _this11 = this;
       // Search for all the AutoNumeric children of the form element and call the `_unformatOnSubmit()` function
       var inputElements = this._getFormAutoNumericChildren(this.parentForm);
       var aNElements = inputElements.map(function (aNElement) {
-        return _this10.constructor.getAutoNumericElement(aNElement);
+        return _this11.constructor.getAutoNumericElement(aNElement);
       });
       aNElements.forEach(function (aNElement) {
         return aNElement._unformatOnSubmit();
@@ -5658,14 +5670,14 @@ var AutoNumeric = /*#__PURE__*/function () {
   }, {
     key: "_onFormReset",
     value: function _onFormReset() {
-      var _this11 = this;
+      var _this12 = this;
       var inputElements = this._getFormAutoNumericChildren(this.parentForm);
       var aNElements = inputElements.map(function (aNElement) {
-        return _this11.constructor.getAutoNumericElement(aNElement);
+        return _this12.constructor.getAutoNumericElement(aNElement);
       });
       // Tell all the AutoNumeric children to format their default value
       aNElements.forEach(function (aNElement) {
-        var val = _this11._getDefaultValue(aNElement.node());
+        var val = _this12._getDefaultValue(aNElement.node());
         // aNElement.set(val); //XXX If I use that line, the format is first correctly done, but the form reset is still not finished and will overwrite the formatting. This is why we need to use the following setTimeout line.
         setTimeout(function () {
           return aNElement.set(val);
@@ -5791,8 +5803,20 @@ var AutoNumeric = /*#__PURE__*/function () {
         this.isInputElement = true;
       } else {
         this.isInputElement = false;
-        this.isContentEditable = this.domElement.hasAttribute('contenteditable') && this.domElement.getAttribute('contenteditable') === 'true';
+        this.isContentEditable = this._isContentEditable(this.domElement);
       }
+    }
+
+    /**
+     * Returns `true` if the given DOM element is a contenteditable one (set to `true`)
+     *
+     * @param {HTMLElement} domElement
+     * @returns {boolean}
+     */
+  }, {
+    key: "_isContentEditable",
+    value: function _isContentEditable(domElement) {
+      return domElement.hasAttribute('contenteditable') && domElement.getAttribute('contenteditable') === 'true';
     }
 
     /**
@@ -5865,7 +5889,6 @@ var AutoNumeric = /*#__PURE__*/function () {
         if (currentValue === '') {
           switch (this.settings.emptyInputBehavior) {
             case AutoNumeric.options.emptyInputBehavior.focus:
-            case AutoNumeric.options.emptyInputBehavior["null"]:
             case AutoNumeric.options.emptyInputBehavior.press:
               break;
             case AutoNumeric.options.emptyInputBehavior.always:
@@ -5879,6 +5902,10 @@ var AutoNumeric = /*#__PURE__*/function () {
               break;
             case AutoNumeric.options.emptyInputBehavior.zero:
               this.set('0');
+              break;
+            // It's possible to set the `null` value as the initial value
+            case AutoNumeric.options.emptyInputBehavior["null"]:
+              this.set(null);
               break;
             // When `emptyInputBehavior` is a number or a string representing a number
             default:
@@ -6928,7 +6955,7 @@ var AutoNumeric = /*#__PURE__*/function () {
      * @returns {string}
      */
     function version() {
-      return '4.8.1';
+      return '4.10.4';
     }
   }, {
     key: "_setArgumentsValues",
@@ -7098,11 +7125,11 @@ var AutoNumeric = /*#__PURE__*/function () {
   }, {
     key: "mergeOptions",
     value: function mergeOptions(optionsArray) {
-      var _this12 = this;
+      var _this13 = this;
       // This allows the user to use multiple options (strings or objects) in an array, and overwrite the previous one with the next option element ; this is useful to tune the wanted format
       var mergedOptions = {};
       optionsArray.forEach(function (optionObjectOrPredefinedOptionString) {
-        _extends(mergedOptions, _this12._getOptionObject(optionObjectOrPredefinedOptionString));
+        _extends(mergedOptions, _this13._getOptionObject(optionObjectOrPredefinedOptionString));
       });
       return mergedOptions;
     }
@@ -7223,7 +7250,7 @@ var AutoNumeric = /*#__PURE__*/function () {
   }, {
     key: "_getChildANInputElement",
     value: function _getChildANInputElement(formNode) {
-      var _this13 = this;
+      var _this14 = this;
       //FIXME test this
       var inputList = formNode.getElementsByTagName('input');
 
@@ -7231,7 +7258,7 @@ var AutoNumeric = /*#__PURE__*/function () {
       var autoNumericInputs = [];
       var inputElements = Array.prototype.slice.call(inputList, 0);
       inputElements.forEach(function (input) {
-        if (_this13.test(input)) {
+        if (_this14.test(input)) {
           autoNumericInputs.push(input);
         }
       });
@@ -7439,8 +7466,8 @@ var AutoNumeric = /*#__PURE__*/function () {
       if (!_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isTrueOrFalseString(options.showOnlyNumbersOnFocus) && !_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isBoolean(options.showOnlyNumbersOnFocus)) {
         _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].throwError("The 'showOnlyNumbersOnFocus' option is invalid ; it should be either 'true' or 'false', [".concat(options.showOnlyNumbersOnFocus, "] given."));
       }
-      if (!_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isInArray(options.digitalGroupSpacing, [AutoNumeric.options.digitalGroupSpacing.two, AutoNumeric.options.digitalGroupSpacing.twoScaled, AutoNumeric.options.digitalGroupSpacing.three, AutoNumeric.options.digitalGroupSpacing.four]) && !(options.digitalGroupSpacing >= 2 && options.digitalGroupSpacing <= 4)) {
-        _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].throwError("The grouping separator option for thousands 'digitalGroupSpacing' is invalid ; it should be '2', '2s', '3', or '4', [".concat(options.digitalGroupSpacing, "] given."));
+      if (!_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isInArray(options.digitalGroupSpacing, [AutoNumeric.options.digitalGroupSpacing.two, AutoNumeric.options.digitalGroupSpacing.twoThree, AutoNumeric.options.digitalGroupSpacing.twoScaled, AutoNumeric.options.digitalGroupSpacing.three, AutoNumeric.options.digitalGroupSpacing.four]) && !(options.digitalGroupSpacing >= 2 && options.digitalGroupSpacing <= 4)) {
+        _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].throwError("The grouping separator option for thousands 'digitalGroupSpacing' is invalid ; it should be '2', '2t', '2s', '3', or '4', [".concat(options.digitalGroupSpacing, "] given."));
       }
       if (!_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isInArray(options.decimalCharacter, [AutoNumeric.options.decimalCharacter.comma, AutoNumeric.options.decimalCharacter.dot, AutoNumeric.options.decimalCharacter.middleDot, AutoNumeric.options.decimalCharacter.arabicDecimalSeparator, AutoNumeric.options.decimalCharacter.decimalSeparatorKeySymbol])) {
         _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].throwError("The decimal separator character option 'decimalCharacter' is invalid ; it should be '.', ',', '\xB7', '\u2396' or '\u066B', [".concat(options.decimalCharacter, "] given."));
@@ -7733,7 +7760,7 @@ var AutoNumeric = /*#__PURE__*/function () {
   }, {
     key: "_generateOptionsObjectFromOptionsArray",
     value: function _generateOptionsObjectFromOptionsArray(options) {
-      var _this14 = this;
+      var _this15 = this;
       var optionsResult;
       if (_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isUndefinedOrNullOrEmpty(options) || options.length === 0) {
         optionsResult = null;
@@ -7742,11 +7769,11 @@ var AutoNumeric = /*#__PURE__*/function () {
         if (options.length === 1 && Array.isArray(options[0])) {
           options[0].forEach(function (optionObject) {
             // Using `_getOptionObject()` allows using pre-defined names in the `options` array
-            _extends(optionsResult, _this14._getOptionObject(optionObject));
+            _extends(optionsResult, _this15._getOptionObject(optionObject));
           });
         } else if (options.length >= 1) {
           options.forEach(function (optionObject) {
-            _extends(optionsResult, _this14._getOptionObject(optionObject));
+            _extends(optionsResult, _this15._getOptionObject(optionObject));
           });
         }
       }
@@ -8554,23 +8581,6 @@ var AutoNumeric = /*#__PURE__*/function () {
         inputValue = inputValue.replace('-', ''); // At this point the `inputValue` has been normalized with a 'normal' negative sign `'-'` //TODO Check that comment validity, since `_stripAllNonNumberCharactersExceptCustomDecimalChar` *does not* convert the negative sign
       }
 
-      settings.digitalGroupSpacing = settings.digitalGroupSpacing.toString();
-      var digitalGroup;
-      switch (settings.digitalGroupSpacing) {
-        case AutoNumeric.options.digitalGroupSpacing.two:
-          digitalGroup = /(\d)((\d)(\d{2}?)+)$/;
-          break;
-        case AutoNumeric.options.digitalGroupSpacing.twoScaled:
-          digitalGroup = /(\d)((?:\d{2}){0,2}\d{3}(?:(?:\d{2}){2}\d{3})*?)$/;
-          break;
-        case AutoNumeric.options.digitalGroupSpacing.four:
-          digitalGroup = /(\d)((\d{4}?)+)$/;
-          break;
-        case AutoNumeric.options.digitalGroupSpacing.three:
-        default:
-          digitalGroup = /(\d)((\d{3}?)+)$/;
-      }
-
       // Splits the string at the decimal string
       var _inputValue$split = inputValue.split(settings.decimalCharacter),
         _inputValue$split2 = _slicedToArray(_inputValue$split, 2),
@@ -8583,6 +8593,22 @@ var AutoNumeric = /*#__PURE__*/function () {
         decimalPart = _inputValue$split4[1];
       }
       if (settings.digitGroupSeparator !== '') {
+        settings.digitalGroupSpacing = settings.digitalGroupSpacing.toString();
+        var digitalGroup;
+        switch (settings.digitalGroupSpacing) {
+          case AutoNumeric.options.digitalGroupSpacing.twoThree:
+            digitalGroup = /(\d)((\d)(\d{2}?)+)$/;
+            break;
+          case AutoNumeric.options.digitalGroupSpacing.twoScaled:
+            digitalGroup = /(\d)((?:\d{2}){0,2}\d{3}(?:(?:\d{2}){2}\d{3})*?)$/;
+            break;
+          case AutoNumeric.options.digitalGroupSpacing.two:
+          case AutoNumeric.options.digitalGroupSpacing.three:
+          case AutoNumeric.options.digitalGroupSpacing.four:
+          default:
+            digitalGroup = new RegExp("(\\d)((\\d{".concat(settings.digitalGroupSpacing, "}?)+)$"));
+        }
+
         // Re-inserts the thousand separator via a regular expression
         while (digitalGroup.test(integerPart)) {
           integerPart = integerPart.replace(digitalGroup, "$1".concat(settings.digitGroupSeparator, "$2"));
@@ -9125,42 +9151,6 @@ var AutoNumeric = /*#__PURE__*/function () {
       return _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].testMinMax(_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].parseStr(settings.maximumValue), this._cleanValueForRangeParse(value)) < 1;
     }
   }, {
-    key: "_readCookie",
-    value: function _readCookie(name) {
-      var nameEQ = name + '=';
-      var ca = document.cookie.split(';');
-      var c = '';
-      for (var i = 0; i < ca.length; i += 1) {
-        c = ca[i];
-        while (c.charAt(0) === ' ') {
-          c = c.substring(1, c.length);
-        }
-        if (c.indexOf(nameEQ) === 0) {
-          return c.substring(nameEQ.length, c.length);
-        }
-      }
-      return null;
-    }
-
-    /**
-     * Test if sessionStorage is supported.
-     * This is taken from Modernizr.
-     *
-     * @returns {boolean}
-     */
-  }, {
-    key: "_storageTest",
-    value: function _storageTest() {
-      var mod = 'modernizr';
-      try {
-        sessionStorage.setItem(mod, mod);
-        sessionStorage.removeItem(mod);
-        return true;
-      } catch (e) {
-        return false;
-      }
-    }
-  }, {
     key: "_correctNegativePositiveSignPlacementOption",
     value: function _correctNegativePositiveSignPlacementOption(settings) {
       //XXX Note; this function is static since we need to pass a `settings` object when calling the static `AutoNumeric.format()` method
@@ -9550,7 +9540,7 @@ var AutoNumeric = /*#__PURE__*/function () {
   }, {
     key: "_serialize",
     value: function _serialize(form) {
-      var _this15 = this;
+      var _this16 = this;
       var intoAnArray = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
       var formatType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'unformatted';
       var serializedSpaceCharacter = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : '+';
@@ -9576,24 +9566,24 @@ var AutoNumeric = /*#__PURE__*/function () {
               });
             } else if (['checkbox', 'radio'].indexOf(element.type) === -1 || element.checked) {
               var valueResult;
-              if (_this15.isManagedByAutoNumeric(element)) {
+              if (_this16.isManagedByAutoNumeric(element)) {
                 var anObject;
                 switch (formatType) {
                   case 'unformatted':
-                    anObject = _this15.getAutoNumericElement(element);
+                    anObject = _this16.getAutoNumericElement(element);
                     if (!_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isNull(anObject)) {
-                      valueResult = _this15.unformat(element, anObject.getSettings());
+                      valueResult = _this16.unformat(element, anObject.getSettings());
                     }
                     break;
                   case 'localized':
-                    anObject = _this15.getAutoNumericElement(element);
+                    anObject = _this16.getAutoNumericElement(element);
                     if (!_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isNull(anObject)) {
                       // Here I need to clone the setting object, otherwise I would modify it when changing the `outputFormat` option value
                       var currentSettings = _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].cloneObject(anObject.getSettings());
                       if (!_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isNull(forcedOutputFormat)) {
                         currentSettings.outputFormat = forcedOutputFormat;
                       }
-                      valueResult = _this15.localize(element, currentSettings);
+                      valueResult = _this16.localize(element, currentSettings);
                     }
                     break;
                   case 'formatted':
@@ -9862,35 +9852,6 @@ AutoNumeric.multiple = function (arg1) {
   return result;
 };
 
-/**
- * Polyfill for obsolete browsers like IE
- */
-(function () {
-  // Polyfill for `Array.from()` (Fix issue #495)
-  if (!Array.from) {
-    Array.from = function (object) {
-      return [].slice.call(object);
-    };
-  }
-
-  // Polyfill for `CustomEvent` (cf. https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent)
-  if (typeof window === 'undefined' || typeof window.CustomEvent === 'function') {
-    return false;
-  }
-  function CustomEvent(event, params) {
-    params = params || {
-      bubbles: false,
-      cancelable: false,
-      detail: void 0
-    };
-    var evt = document.createEvent('CustomEvent');
-    evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
-    return evt;
-  }
-  CustomEvent.prototype = window.Event.prototype;
-  window.CustomEvent = CustomEvent;
-})();
-
 /***/ }),
 
 /***/ "./src/AutoNumericDefaultSettings.js":
@@ -9906,9 +9867,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AutoNumeric */ "./src/AutoNumeric.js");
 /* harmony import */ var _AutoNumericOptions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AutoNumericOptions */ "./src/AutoNumericOptions.js");
 /**
- * Default settings for autoNumeric.js
+ * Default settings for AutoNumeric.js
  * @author Alexandre Bonneau <alexandre.bonneau@linuxfr.eu>
- * @copyright © 2019 Alexandre Bonneau
+ * @copyright © 2023 Alexandre Bonneau
  *
  * The MIT License (http://www.opensource.org/licenses/mit-license.php)
  *
@@ -10028,9 +9989,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /**
- * Enumerations for autoNumeric.js
+ * Enumerations for AutoNumeric.js
  * @author Alexandre Bonneau <alexandre.bonneau@linuxfr.eu>
- * @copyright © 2019 Alexandre Bonneau
+ * @copyright © 2023 Alexandre Bonneau
  *
  * The MIT License (http://www.opensource.org/licenses/mit-license.php)
  *
@@ -10068,136 +10029,6 @@ var AutoNumericEnum = {};
 AutoNumericEnum.allowedTagList = ['b', 'caption', 'cite', 'code', 'const', 'dd', 'del', 'div', 'dfn', 'dt', 'em', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'input', 'ins', 'kdb', 'label', 'li', 'option', 'output', 'p', 'q', 's', 'sample', 'span', 'strong', 'td', 'th', 'u'];
 Object.freeze(AutoNumericEnum.allowedTagList);
 Object.defineProperty(AutoNumericEnum, 'allowedTagList', {
-  configurable: false,
-  writable: false
-});
-
-/**
- * Wrapper variable that hold named keyboard keys with their respective keyCode as seen in DOM events.
- * cf. https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode
- *
- * This deprecated information is used for obsolete browsers.
- * @deprecated
- */
-AutoNumericEnum.keyCode = {
-  Backspace: 8,
-  Tab: 9,
-  // No 10, 11
-  // 12 === NumpadEqual on Windows
-  // 12 === NumLock on Mac
-  Enter: 13,
-  // 14 reserved, but not used
-  // 15 does not exists
-  Shift: 16,
-  Ctrl: 17,
-  Alt: 18,
-  Pause: 19,
-  CapsLock: 20,
-  // 21, 22, 23, 24, 25 : Asiatic key codes
-  // 26 does not exists
-  Esc: 27,
-  // 28, 29, 30, 31 : Convert, NonConvert, Accept and ModeChange keys
-  Space: 32,
-  PageUp: 33,
-  PageDown: 34,
-  End: 35,
-  Home: 36,
-  LeftArrow: 37,
-  UpArrow: 38,
-  RightArrow: 39,
-  DownArrow: 40,
-  Insert: 45,
-  Delete: 46,
-  num0: 48,
-  num1: 49,
-  num2: 50,
-  num3: 51,
-  num4: 52,
-  num5: 53,
-  num6: 54,
-  num7: 55,
-  num8: 56,
-  num9: 57,
-  a: 65,
-  b: 66,
-  c: 67,
-  d: 68,
-  e: 69,
-  f: 70,
-  g: 71,
-  h: 72,
-  i: 73,
-  j: 74,
-  k: 75,
-  l: 76,
-  m: 77,
-  n: 78,
-  o: 79,
-  p: 80,
-  q: 81,
-  r: 82,
-  s: 83,
-  t: 84,
-  u: 85,
-  v: 86,
-  w: 87,
-  x: 88,
-  y: 89,
-  z: 90,
-  OSLeft: 91,
-  OSRight: 92,
-  ContextMenu: 93,
-  numpad0: 96,
-  numpad1: 97,
-  numpad2: 98,
-  numpad3: 99,
-  numpad4: 100,
-  numpad5: 101,
-  numpad6: 102,
-  numpad7: 103,
-  numpad8: 104,
-  numpad9: 105,
-  MultiplyNumpad: 106,
-  PlusNumpad: 107,
-  MinusNumpad: 109,
-  DotNumpad: 110,
-  SlashNumpad: 111,
-  F1: 112,
-  F2: 113,
-  F3: 114,
-  F4: 115,
-  F5: 116,
-  F6: 117,
-  F7: 118,
-  F8: 119,
-  F9: 120,
-  F10: 121,
-  F11: 122,
-  F12: 123,
-  NumLock: 144,
-  ScrollLock: 145,
-  HyphenFirefox: 173,
-  // On the latest Linux and Windows OS, cf. https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode and https://bugzilla.mozilla.org/show_bug.cgi?id=787504 and https://stackoverflow.com/a/35473259/2834898
-  MyComputer: 182,
-  MyCalculator: 183,
-  Semicolon: 186,
-  Equal: 187,
-  Comma: 188,
-  Hyphen: 189,
-  Dot: 190,
-  Slash: 191,
-  Backquote: 192,
-  LeftBracket: 219,
-  Backslash: 220,
-  RightBracket: 221,
-  Quote: 222,
-  Command: 224,
-  AltGraph: 225,
-  AndroidDefault: 229 // Android Chrome returns the same keycode number 229 for all keys pressed
-};
-
-Object.freeze(AutoNumericEnum.keyCode);
-Object.defineProperty(AutoNumericEnum, 'keyCode', {
   configurable: false,
   writable: false
 });
@@ -10572,9 +10403,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AutoNumeric */ "./src/AutoNumeric.js");
 /**
- * Options for autoNumeric.js
+ * Options for AutoNumeric.js
  * @author Alexandre Bonneau <alexandre.bonneau@linuxfr.eu>
- * @copyright © 2019 Alexandre Bonneau
+ * @copyright © 2023 Alexandre Bonneau
  *
  * The MIT License (http://www.opensource.org/licenses/mit-license.php)
  *
@@ -10661,9 +10492,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
 function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 /**
- * Helper functions for autoNumeric.js
+ * Helper functions for AutoNumeric.js
  * @author Alexandre Bonneau <alexandre.bonneau@linuxfr.eu>
- * @copyright © 2019 Alexandre Bonneau
+ * @copyright © 2023 Alexandre Bonneau
  *
  * The MIT License (http://www.opensource.org/licenses/mit-license.php)
  *
@@ -10894,19 +10725,6 @@ var AutoNumericHelper = /*#__PURE__*/function () {
     }
 
     /**
-     * Return `true` if the current browser is the obsolete Internet Explorer 11 (IE11) one
-     * cf. https://stackoverflow.com/a/21825207/2834898
-     *
-     * @returns {boolean}
-     */
-  }, {
-    key: "isIE11",
-    value: function isIE11() {
-      // noinspection JSUnresolvedVariable
-      return typeof window !== 'undefined' && !!window.MSInputMethodContext && !!document.documentMode;
-    }
-
-    /**
      * Return `true` is the string `str` contains the string `needle`
      * Note: this function does not coerce the parameters types
      *
@@ -11087,7 +10905,8 @@ var AutoNumericHelper = /*#__PURE__*/function () {
         //XXX The selenium geckodriver does not understand `event.key`, hence when using it, we need to rely on the old deprecated `keyCode` attribute, cf. upstream issue https://github.com/mozilla/geckodriver/issues/440
         // Use the old deprecated keyCode property, if the new `key` one is not supported
         var keyCode = this.keyCodeNumber(event);
-        if (keyCode === _AutoNumericEnum__WEBPACK_IMPORTED_MODULE_0__["default"].keyCode.AndroidDefault) {
+        if (keyCode === 229) {
+          // Android Chrome returns the same keycode number 229 for all keys pressed
           return _AutoNumericEnum__WEBPACK_IMPORTED_MODULE_0__["default"].keyName.AndroidDefault;
         }
         var potentialResult = _AutoNumericEnum__WEBPACK_IMPORTED_MODULE_0__["default"].fromCharCodeKeyCode[keyCode];
@@ -11098,7 +10917,6 @@ var AutoNumericHelper = /*#__PURE__*/function () {
           result = String.fromCharCode(keyCode);
         }
       } else {
-        var browser;
         switch (event.key) {
           // Manages all the special cases for obsolete browsers that return the non-standard names
           case 'Add':
@@ -11119,14 +10937,7 @@ var AutoNumericHelper = /*#__PURE__*/function () {
             }
             break;
           case 'Del':
-            browser = this.browser();
-            if (browser.name === 'firefox' && browser.version <= 36 || browser.name === 'ie' && browser.version <= 9) {
-              // Special workaround for the obsolete browser IE11 which output a 'Delete' key when using the numpad 'dot' one! This fixes issue #401
-              // This workaround break the usage of the 'Delete' key for Firefox <=36, and IE9, since those browser send 'Del' instead of 'Delete', therefore we only use it for those obsolete browsers
-              result = _AutoNumericEnum__WEBPACK_IMPORTED_MODULE_0__["default"].keyName.Dot;
-            } else {
-              result = _AutoNumericEnum__WEBPACK_IMPORTED_MODULE_0__["default"].keyName.Delete;
-            }
+            result = _AutoNumericEnum__WEBPACK_IMPORTED_MODULE_0__["default"].keyName.Delete;
             break;
           case 'Divide':
             result = _AutoNumericEnum__WEBPACK_IMPORTED_MODULE_0__["default"].keyName.NumpadSlash;
@@ -11567,6 +11378,18 @@ var AutoNumericHelper = /*#__PURE__*/function () {
         this.throwError("The event passed as a parameter is not a valid wheel event, '".concat(wheelEvent.type, "' given."));
       }
       return wheelEvent.deltaY > 0;
+    }
+
+    /**
+     * Return `true` if the given event is an instance of WheelEvent and the deltaY value is equal to zero
+     *
+     * @param {WheelEvent} wheelEvent The event to test
+     * @returns {boolean} Return `true` if the event is an instance of WheelEvent and the deltaY value is equal to zero, FALSE otherwise
+     */
+  }, {
+    key: "isWheelEventWithZeroDeltaY",
+    value: function isWheelEventWithZeroDeltaY(wheelEvent) {
+      return this.isWheelEvent(wheelEvent) && !this.isUndefinedOrNullOrEmpty(wheelEvent.deltaY) && wheelEvent.deltaY === 0;
     }
 
     /**
@@ -12267,7 +12090,6 @@ var AutoNumericHelper = /*#__PURE__*/function () {
     key: "arrayUnique",
     value: function arrayUnique() {
       var _ref;
-      //FIXME à tester
       return _toConsumableArray(new Set((_ref = []).concat.apply(_ref, arguments)));
     }
 
@@ -12422,11 +12244,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AutoNumeric */ "./src/AutoNumeric.js");
-/* harmony import */ var _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AutoNumericHelper */ "./src/AutoNumericHelper.js");
 /**
- * Options for autoNumeric.js
+ * Options for AutoNumeric.js
  * @author Alexandre Bonneau <alexandre.bonneau@linuxfr.eu>
- * @copyright © 2019 Alexandre Bonneau
+ * @copyright © 2023 Alexandre Bonneau
  *
  * The MIT License (http://www.opensource.org/licenses/mit-license.php)
  *
@@ -12451,7 +12272,6 @@ __webpack_require__.r(__webpack_exports__);
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  */
-
 
 
 
@@ -12675,7 +12495,8 @@ _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__["default"].options = {
     doNotOverride: null
   },
   /* Defines how many numbers should be grouped together (usually for the thousand separator)
-   * - "2",  results in 99,99,99,999 India's lakhs
+   * - "2",  results in 99,99,99,99 Group by two
+   * - "2t", results in 99,99,99,999 India's lakhs
    * - "2s", results in 99,999,99,99,999 India's lakhs scaled
    * - "3",  results in 999,999,999 (default)
    * - "4",  results in 9999,9999,9999 used in some Asian countries
@@ -12683,6 +12504,7 @@ _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__["default"].options = {
    */
   digitalGroupSpacing: {
     two: '2',
+    twoThree: '2t',
     twoScaled: '2s',
     three: '3',
     four: '4'
@@ -13333,12 +13155,12 @@ function freezeOptions(options) {
     if (optionName === 'valuesToStrings') {
       var vsProps = Object.getOwnPropertyNames(options.valuesToStrings);
       vsProps.forEach(function (valuesToStringObjectName) {
-        if (!_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_1__["default"].isIE11() && options.valuesToStrings[valuesToStringObjectName] !== null) {
+        if (options.valuesToStrings[valuesToStringObjectName] !== null) {
           Object.freeze(options.valuesToStrings[valuesToStringObjectName]);
         }
       });
     } else if (optionName !== 'styleRules') {
-      if (!_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_1__["default"].isIE11() && options[optionName] !== null) {
+      if (options[optionName] !== null) {
         Object.freeze(options[optionName]);
       }
     }
@@ -13369,9 +13191,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AutoNumeric */ "./src/AutoNumeric.js");
 /* harmony import */ var _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AutoNumericHelper */ "./src/AutoNumericHelper.js");
 /**
- * Pre-defined options for autoNumeric.js
+ * Pre-defined options for AutoNumeric.js
  * @author Alexandre Bonneau <alexandre.bonneau@linuxfr.eu>
- * @copyright © 2019 Alexandre Bonneau
+ * @copyright © 2023 Alexandre Bonneau
  *
  * The MIT License (http://www.opensource.org/licenses/mit-license.php)
  *
@@ -14285,10 +14107,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _AutoNumericDefaultSettings__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./AutoNumericDefaultSettings */ "./src/AutoNumericDefaultSettings.js");
 /* harmony import */ var _AutoNumericPredefinedOptions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./AutoNumericPredefinedOptions */ "./src/AutoNumericPredefinedOptions.js");
 /**
- * Babel + Webpack workaround for autoNumeric
+ * Babel + Webpack workaround for AutoNumeric
  *
  * @author Alexandre Bonneau <alexandre.bonneau@linuxfr.eu>
- * @copyright © 2019 Alexandre Bonneau
+ * @copyright © 2023 Alexandre Bonneau
  *
  * The MIT License (http://www.opensource.org/licenses/mit-license.php)
  *

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,9 +23,14 @@
  */
 package org.primefaces.util;
 
+import javax.faces.application.Application;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.faces.context.FacesContextWrapper;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -38,12 +43,6 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
-
-import javax.faces.application.Application;
-import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.FacesContextWrapper;
 
 public class MessageFactory {
 
@@ -210,16 +209,6 @@ public class MessageFactory {
         return messageFormat.format(params);
     }
 
-    public static Object getLabel(FacesContext facesContext, UIComponent component) {
-        String label = (String) component.getAttributes().get("label");
-
-        if (label == null) {
-            label = component.getClientId(facesContext);
-        }
-
-        return label;
-    }
-
     private static ResourceBundle getBundle(String baseName, Locale locale, ClassLoader classLoader,
                 FacesContext facesContext) {
 
@@ -368,12 +357,9 @@ public class MessageFactory {
                     }
 
                     if (stream != null) {
-                        try {
+                        try (Reader reader = new InputStreamReader(stream, StandardCharsets.UTF_8)) {
                             // Only this line is changed to make it to read properties files as UTF-8.
-                            bundle = new PropertyResourceBundle(new InputStreamReader(stream, StandardCharsets.UTF_8));
-                        }
-                        finally {
-                            stream.close();
+                            bundle = new PropertyResourceBundle(reader);
                         }
                     }
                 }

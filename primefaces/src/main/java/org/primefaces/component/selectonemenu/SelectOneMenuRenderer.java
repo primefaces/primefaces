@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,9 +40,7 @@ import javax.faces.model.SelectItemGroup;
 import javax.faces.render.Renderer;
 
 import org.primefaces.component.column.Column;
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
-import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.*;
 
@@ -160,9 +158,10 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             writer.writeAttribute("name", focusId, null);
             writer.writeAttribute("type", "text", null);
             writer.writeAttribute("autocomplete", "off", null);
-            writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_COMBOBOX, null);
 
             //for keyboard accessibility and ScreenReader
+            writer.writeAttribute(HTML.ARIA_CONTROLS, clientId + "_panel", null);
+            renderARIACombobox(context, menu);
             renderAccessibilityAttributes(context, menu);
             renderPassThruAttributes(context, menu, HTML.TAB_INDEX);
             renderDomEvents(context, menu, HTML.BLUR_FOCUS_EVENTS);
@@ -228,6 +227,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
     protected void encodeLabel(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String tabIndex = LangUtils.isNotBlank(menu.getTabindex()) ? menu.getTabindex() : "0";
 
         if (menu.isEditable()) {
             writer.startElement("input", null);
@@ -235,11 +235,8 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             writer.writeAttribute("type", "text", null);
             writer.writeAttribute("name", menu.getClientId(context) + "_editableInput", null);
             writer.writeAttribute("class", SelectOneMenu.LABEL_CLASS, null);
+            writer.writeAttribute("tabindex", tabIndex, null);
             encodeAriaLabel(writer, menu);
-
-            if (menu.getTabindex() != null) {
-                writer.writeAttribute("tabindex", menu.getTabindex(), null);
-            }
 
             if (menu.isDisabled()) {
                 writer.writeAttribute("disabled", "disabled", null);
@@ -281,7 +278,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             writer.startElement("span", null);
             writer.writeAttribute("id", menu.getClientId(context) + "_label", null);
             writer.writeAttribute("class", SelectOneMenu.LABEL_CLASS, null);
-            writer.writeAttribute("tabindex", 0, null);
+            writer.writeAttribute("tabindex", tabIndex, null);
             if (menu.getPlaceholder() != null) {
                 writer.writeAttribute("data-placeholder", menu.getPlaceholder(), null);
             }
@@ -289,8 +286,8 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             //for keyboard accessibility and ScreenReader
             writer.writeAttribute(HTML.ARIA_CONTROLS, clientId + "_panel", null);
 
+            encodeAriaLabel(writer, menu);
             renderARIACombobox(context, menu);
-
             renderAccessibilityAttributes(context, menu);
             renderPassThruAttributes(context, menu, HTML.TAB_INDEX);
             renderDomEvents(context, menu, HTML.BLUR_FOCUS_EVENTS);
@@ -386,7 +383,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
     protected void encodePanelFooter(FacesContext context, SelectOneMenu menu) throws IOException {
         UIComponent facet = menu.getFacet("footer");
-        if (!ComponentUtils.shouldRenderFacet(facet)) {
+        if (!FacetUtils.shouldRenderFacet(facet)) {
             return;
         }
 
@@ -430,7 +427,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                 }
 
                 UIComponent headerFacet = column.getFacet("header");
-                if (ComponentUtils.shouldRenderFacet(headerFacet)) {
+                if (FacetUtils.shouldRenderFacet(headerFacet)) {
                     headerFacet.encodeAll(context);
                 }
                 else if (headerText != null) {
@@ -497,7 +494,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                         writer.writeAttribute("class", styleClass, null);
                     }
 
-                    renderChildren(context, column);
+                    encodeIndexedId(context, column, i);
                     writer.endElement("td");
                 }
             }
@@ -512,8 +509,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("SelectOneMenu", menu)
                 .attr("editable", menu.isEditable(), false)
-                .attr("appendTo", SearchExpressionFacade.resolveClientId(context, menu, menu.getAppendTo(),
-                        SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
+                .attr("appendTo", SearchExpressionUtils.resolveOptionalClientIdForClientSide(context, menu, menu.getAppendTo()))
                 .attr("syncTooltip", menu.isSyncTooltip(), false)
                 .attr("alwaysDisplayLabel", menu.isAlwaysDisplayLabel(), false)
                 .attr("label", menu.getLabel(), null)
@@ -659,7 +655,6 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
         writer.writeAttribute(HTML.ARIA_CONTROLS, menu.getClientId(context) + "_table", null);
-        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(InputRenderer.ARIA_FILTER), null);
 
         if (menu.getFilterPlaceholder() != null) {
             writer.writeAttribute("placeholder", menu.getFilterPlaceholder(), null);

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -43,7 +43,8 @@ public abstract class DashboardBase extends UIPanel implements Widget, ClientBeh
         reordering,
         style,
         styleClass,
-        responsive
+        responsive,
+        var
     }
 
     public DashboardBase() {
@@ -109,5 +110,13 @@ public abstract class DashboardBase extends UIPanel implements Widget, ClientBeh
 
     public void setResponsive(boolean responsive) {
         getStateHelper().put(PropertyKeys.responsive, responsive);
+    }
+
+    public String getVar() {
+        return (String) getStateHelper().eval(PropertyKeys.var, null);
+    }
+
+    public void setVar(String var) {
+        getStateHelper().put(PropertyKeys.var, var);
     }
 }

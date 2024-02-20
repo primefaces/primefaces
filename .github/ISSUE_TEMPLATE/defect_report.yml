@@ -1,6 +1,6 @@
 name: Defect report
 description: Create a report to help us improve PrimeFaces
-title: "Component: Title"
+title: 'Replace_With_Component_Name: Brief_Bug_Description'
 labels: ":lady_beetle: defect,:bangbang: needs-triage"
 body:
   - type: markdown

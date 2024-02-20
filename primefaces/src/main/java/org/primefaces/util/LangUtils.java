@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,10 @@ import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
-import java.lang.reflect.*;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
@@ -43,28 +46,12 @@ public class LangUtils {
     private LangUtils() {
     }
 
-    /**
-     * @deprecated Use {@link LangUtils#isEmpty(String)}} instead
-     */
-    @Deprecated
-    public static boolean isValueEmpty(String value) {
-        return isEmpty(value);
-    }
-
     public static boolean isEmpty(String value) {
         return value == null || value.isEmpty();
     }
 
     public static boolean isNotEmpty(String value) {
         return !isEmpty(value);
-    }
-
-    /**
-     * @deprecated Use {@link LangUtils#isBlank(String)} instead
-     */
-    @Deprecated
-    public static boolean isValueBlank(String str) {
-        return isBlank(str);
     }
 
     public static boolean isBlank(String str) {
@@ -283,7 +270,7 @@ public class LangUtils {
         return tryToLoadClassForName(name) != null;
     }
 
-    public static Class tryToLoadClassForName(String name) {
+    public static <T> Class<T> tryToLoadClassForName(String name) {
         try {
             return loadClassForName(name);
         }
@@ -301,12 +288,12 @@ public class LangUtils {
         }
     }
 
-    public static Class loadClassForName(String name) throws ClassNotFoundException {
+    public static <T> Class<T> loadClassForName(String name) throws ClassNotFoundException {
         try {
-            return Class.forName(name, false, LangUtils.class.getClassLoader());
+            return (Class<T>) Class.forName(name, false, LangUtils.class.getClassLoader());
         }
         catch (ClassNotFoundException e) {
-            return Class.forName(name, false, getContextClassLoader());
+            return (Class<T>) Class.forName(name, false, getContextClassLoader());
         }
     }
 
@@ -520,53 +507,5 @@ public class LangUtils {
             }
         }
         return true;
-    }
-
-    public static Field getFieldRecursive(Class<?> clazz, String name) {
-        if (clazz == null) {
-            throw new IllegalArgumentException("clazz must not be null!");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("name must not be null!");
-        }
-
-        Class<?> nextClazz = clazz;
-        String nextName = name;
-        while (nextName.contains(".")) {
-            String currentName = nextName.substring(0, nextName.indexOf("."));
-            nextName = nextName.substring(currentName.length() + 1, nextName.length());
-            Field field = getField(nextClazz, currentName);
-            nextClazz = field.getType();
-        }
-
-        return getField(nextClazz, nextName);
-    }
-
-    public static Field getField(Class<?> clazz, String name) {
-        if (clazz == null) {
-            throw new IllegalArgumentException("clazz must not be null!");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("name must not be null!");
-        }
-
-        Class<?> current = clazz;
-        while (current != null && current != Object.class) {
-            try {
-                Field field = current.getDeclaredField(name);
-                field.setAccessible(true);
-                return field;
-            }
-            catch (NoSuchFieldException e) {
-                // Try parent
-            }
-            catch (Exception e) {
-                throw new IllegalArgumentException("Cannot access field " + name + " in " + clazz.getName(), e);
-            }
-
-            current = current.getSuperclass();
-        }
-
-        throw new IllegalArgumentException("Cannot find field " + name + " in " + clazz.getName());
     }
 }

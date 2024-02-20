@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,6 +34,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
 
 import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.CSVBuilder;
 import org.primefaces.util.ComponentTraversalUtils;
@@ -107,6 +108,16 @@ public class CommandButtonRenderer extends CoreRenderer {
             writer.writeAttribute("disabled", "disabled", "disabled");
         }
 
+        if (button.isEnabledByValidateClient()) {
+            writer.writeAttribute("data-pf-validateclient-dynamic", button.isEnabledByValidateClient(), "data-pf-validateclient-dynamic");
+            writer.writeAttribute("data-pf-validateclient-source", "button", "data-pf-validateclient-source");
+            writer.writeAttribute("data-pf-validateclient-ajax", Boolean.valueOf(button.isAjax()).toString(), "data-pf-validateclient-ajax");
+            writer.writeAttribute("data-pf-validateclient-process", SearchExpressionUtils.resolveClientIdsForClientSide(context, button, button.getProcess()),
+                    "data-pf-validateclient-process");
+            writer.writeAttribute("data-pf-validateclient-update", SearchExpressionUtils.resolveClientIdsForClientSide(context, button, button.getUpdate()),
+                    "data-pf-validateclient-update");
+        }
+
         //icon
         if (!isValueBlank(icon)) {
             String defaultIconClass = button.getIconPos().equals("left") ? HTML.BUTTON_LEFT_ICON_CLASS : HTML.BUTTON_RIGHT_ICON_CLASS;
@@ -121,18 +132,7 @@ public class CommandButtonRenderer extends CoreRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
 
-        if (value == null) {
-            //For ScreenReader
-            writer.write(getIconOnlyButtonText(title, button.getAriaLabel()));
-        }
-        else {
-            if (button.isEscape()) {
-                writer.writeText(value, "value");
-            }
-            else {
-                writer.write(value.toString());
-            }
-        }
+        renderButtonValue(writer, button.isEscape(), value, title, button.getAriaLabel());
 
         writer.endElement("span");
 
@@ -170,7 +170,8 @@ public class CommandButtonRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("CommandButton", button)
             .attr("disableOnAjax", button.isDisableOnAjax(), true)
-            .attr("disabledAttr", button.isDisabled(), false);
+            .attr("disabledAttr", button.isDisabled(), false)
+            .attr("validateClientDynamic", button.isEnabledByValidateClient(), false);
 
         encodeClientBehaviors(context, button);
 

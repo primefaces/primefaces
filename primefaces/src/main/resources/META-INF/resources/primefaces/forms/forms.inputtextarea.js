@@ -155,14 +155,15 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
         this.panel = $(panelMarkup).appendTo(document.body);
 
         this.jq.on("keyup", function(e) {
-            switch(e.key) {
+            switch(e.code) {
                 case 'ArrowUp':
                 case 'ArrowDown':
                 case 'ArrowLeft':
                 case 'ArrowRight':
                 case 'Enter':
+                case 'NumpadEnter':
                 case 'Tab':
-                case ' ':
+                case 'Space':
                 case 'Shift':
                 case 'Control':
                 case 'Alt':
@@ -180,7 +181,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
                             _self.clearTimeout(_self.timeout);
                         }
 
-                        _self.timeout = setTimeout(function() {
+                        _self.timeout = PrimeFaces.queueTask(function() {
                             _self.search(query);
                         }, _self.cfg.queryDelay);
 
@@ -297,6 +298,10 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
 
         //dialog support
         this.setupDialogSupport();
+
+        if (!this.jq.hasClass('ui-state-disabled')) {
+            this.jq.data('primefaces-overlay-target', true);
+        }
     },
 
     /**
@@ -445,6 +450,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
             my: 'left top'
             ,at: 'left' + posLeft + 'px' +  ' top' + posTop + 'px'
             ,of: this.jq
+            ,collision: 'flipfit'
         });
     },
 

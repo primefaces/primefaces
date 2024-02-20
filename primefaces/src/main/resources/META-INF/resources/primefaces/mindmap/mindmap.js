@@ -322,7 +322,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
             _self.handleDblclickNode(node);
         }
         else {
-            var timeout = setTimeout(function() {
+            var timeout = PrimeFaces.queueTask(function() {
                 _self.expandNode(node);
             }, 300);
 

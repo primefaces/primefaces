@@ -19,11 +19,17 @@
     <ui:define name="implementation">
         <div class="card">
             <h:form>
+                <p:growl id="messages" showDetail="true" life="2000">
+                    <p:autoUpdate/>
+                </p:growl>
+                
                 <h5>Basic</h5>
                 <p:selectManyMenu value="#{selectManyView.selectedOptions}">
                     <f:selectItem itemLabel="Option 1" itemValue="Option 1"/>
                     <f:selectItem itemLabel="Option 2" itemValue="Option 2"/>
                     <f:selectItem itemLabel="Option 3" itemValue="Option 3"/>
+                    <p:ajax event="itemSelect" listener="#{selectManyView.onSelect}" />
+                    <p:ajax event="itemUnselect" listener="#{selectManyView.onUnselect}" />
                 </p:selectManyMenu>
 
                 <h5>Advanced</h5>

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,7 +38,7 @@ public class BarChartDataSet extends ChartDataSet {
 
     private static final long serialVersionUID = 1L;
 
-    private List<Number> data;
+    private List<Object> data;
     private String label;
     private String xaxisID;
     private String yaxisID;
@@ -47,25 +47,27 @@ public class BarChartDataSet extends ChartDataSet {
     private Object borderColor;
     private Object borderWidth;
     private String borderSkipped;
+    private Object borderRadius;
     private Object hoverBackgroundColor;
     private Object hoverBorderColor;
     private Object hoverBorderWidth;
+    private Object hoverBorderRadius;
 
     /**
-     * Gets the list of data in this dataSet
+     * Gets the list of data in this dataSet. Can either be a Number or a type of ChartJs Point.
      *
-     * @return List&#60;Number&#62; list of data
+     * @return List&#60;Object&#62; list of data
      */
-    public List<Number> getData() {
+    public List<Object> getData() {
         return data;
     }
 
     /**
-     * Sets the list of data in this dataSet
+     * Sets the list of data in this dataSet. Can either be a Number or a type of ChartJs Point.
      *
-     * @param data List&#60;Number&#62; list of data
+     * @param data List&#60;Object&#62; list of data
      */
-    public void setData(List<Number> data) {
+    public void setData(List<Object> data) {
         this.data = data;
     }
 
@@ -216,6 +218,21 @@ public class BarChartDataSet extends ChartDataSet {
     }
 
     /**
+     * Get the borderRadius attribute value, may be a number or {@link BarCorner}
+     * @return borderRadius value
+     */
+    public Object getBorderRadius() {
+        return borderRadius;
+    }
+    /**
+     * Set the borderRadius attribute value,
+     * @param  borderRadius may be an integer or {@link BarCorner}
+     */
+    public void setBorderRadius(Object borderRadius) {
+        this.borderRadius = borderRadius;
+    }
+
+    /**
      * Gets the hoverBackgroundColor
      *
      * @return hoverBackgroundColor
@@ -270,6 +287,22 @@ public class BarChartDataSet extends ChartDataSet {
     }
 
     /**
+     * Get the border radius of the bar when hovered
+     * @return the border radius, may be an integer or {@link BarCorner}
+     */
+    public Object getHoverBorderRadius() {
+        return hoverBorderRadius;
+    }
+
+    /**
+     * Get the border radius of the bar when hovered
+     * @param hoverBorderRadius the border radius, may be an integer or {@link BarCorner}
+     */
+    public void setHoverBorderRadius(Object hoverBorderRadius) {
+        this.hoverBorderRadius = hoverBorderRadius;
+    }
+
+    /**
      * Gets the type
      *
      * @return type of current chart
@@ -301,10 +334,21 @@ public class BarChartDataSet extends ChartDataSet {
             ChartUtils.writeDataValue(fsw, "borderColor", this.borderColor, true);
             ChartUtils.writeDataValue(fsw, "borderWidth", this.borderWidth, true);
             ChartUtils.writeDataValue(fsw, "borderSkipped", this.borderSkipped, true);
+            if (borderRadius instanceof BarCorner) {
+                ((BarCorner) borderRadius).encode(fsw);
+            }
+            else {
+                ChartUtils.writeDataValue(fsw, "borderRadius", this.borderRadius, true);
+            }
             ChartUtils.writeDataValue(fsw, "hoverBackgroundColor", this.hoverBackgroundColor, true);
             ChartUtils.writeDataValue(fsw, "hoverBorderColor", this.hoverBorderColor, true);
             ChartUtils.writeDataValue(fsw, "hoverBorderWidth", this.hoverBorderWidth, true);
-
+            if (hoverBorderRadius instanceof BarCorner) {
+                ((BarCorner) hoverBorderRadius).encode(fsw);
+            }
+            else {
+                ChartUtils.writeDataValue(fsw, "hoverBorderRadius", this.hoverBorderRadius, true);
+            }
             fsw.write("}");
 
             return fsw.toString();

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,6 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.component.api.Pageable;
 import org.primefaces.component.api.UIPageableData;
-import org.primefaces.util.MessageFactory;
 
 public class LastPageLinkRenderer extends PageLinkRenderer implements PaginatorElementRenderer {
 
@@ -39,9 +38,6 @@ public class LastPageLinkRenderer extends PageLinkRenderer implements PaginatorE
         int pageCount = pageable.getPageCount();
 
         boolean disabled = (currentPage == (pageCount - 1)) || (currentPage == 0 && pageCount == 0);
-
-        String ariaMessage = MessageFactory.getMessage(UIPageableData.ARIA_LAST_PAGE_LABEL);
-
-        super.render(context, pageable, UIPageableData.PAGINATOR_LAST_PAGE_LINK_CLASS, UIPageableData.PAGINATOR_LAST_PAGE_ICON_CLASS, disabled, ariaMessage);
+        super.render(context, pageable, UIPageableData.PAGINATOR_LAST_PAGE_LINK_CLASS, UIPageableData.PAGINATOR_LAST_PAGE_ICON_CLASS, disabled);
     }
 }

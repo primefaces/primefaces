@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,7 +36,6 @@ public class ScrollFeature implements DataTableFeature {
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         int scrollRows = table.getScrollRows();
-        String clientId = table.getClientId(context);
         boolean isVirtualScroll = table.isVirtualScroll();
         boolean isLazy = table.isLazy();
         int scrollOffset = 0;
@@ -68,7 +67,7 @@ public class ScrollFeature implements DataTableFeature {
 
             if (table.isRowAvailable()) {
                 int rowIndex = (isLazy && isVirtualScroll) ? scrollOffset + i : i;
-                renderer.encodeRow(context, table, clientId, rowIndex);
+                renderer.encodeRow(context, table, rowIndex);
             }
         }
     }

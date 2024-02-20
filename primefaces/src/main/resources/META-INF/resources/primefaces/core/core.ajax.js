@@ -87,6 +87,12 @@ if (!PrimeFaces.ajax) {
         },
 
         /**
+         * Minimum number of milliseconds to show inline Ajax load animations.
+         * @type {number}
+         */
+        minLoadAnimation : 500,
+
+        /**
          * This object contains utility methods for AJAX requests, primarily used internally.
          * @interface {PrimeFaces.ajax.Utils} . The class for the object with the AJAX utility methods, used for
          * handling and working with AJAX requests and updates.
@@ -172,6 +178,43 @@ if (!PrimeFaces.ajax) {
              */
             isXhrSource: function(widget, settings) {
                 return widget.id === PrimeFaces.ajax.Utils.getSourceId(settings);
+            },
+
+            /**
+             * Checks whether one of component's triggers equals the source ID from the provided settings.
+             *
+             * @param {PrimeFaces.widget.BaseWidget} widget of the component to check for being the source.
+             * @param {JQuery.AjaxSettings} settings containing source ID.
+             * @param {boolean} triggerMustExist flag to check if the trigger must exist
+             * @returns {boolean} `true` if if one of component's triggers equals the source ID from the provided settings.
+             */
+            isXhrSourceATrigger: function(widget, settings, triggerMustExist) {
+                var sourceId = PrimeFaces.ajax.Utils.getSourceId(settings);
+                if (!sourceId) {
+                    return false;
+                }
+                var cfgTrigger = widget.cfg.trigger || widget.cfg.triggers;
+                // we must evaluate it each time as the DOM might has been changed
+                var triggers = PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(widget.jq, cfgTrigger);
+
+                // if trigger is null it has been removed from DOM so we need to hide the block UI
+                if (!triggers || triggers.length === 0) {
+                    return !triggerMustExist;
+                }
+
+                return $.inArray(sourceId, triggers) !== -1;
+            },
+            
+            /**
+             * Is this script an AJAX request?
+             * @param {string} script the JS script to check
+             * @returns {boolean} `true` if this script contains an AJAX request
+             */
+            isAjaxRequest: function(script) {
+                return script.includes("PrimeFaces.ab(") || script.includes("pf.ab(")
+                    || script.includes("mojarra.ab(")
+                    || script.includes("myfaces.ab(")
+                    || script.includes("jsf.ajax.request") || script.includes("faces.ajax.request");
             },
 
             /**
@@ -333,7 +376,7 @@ if (!PrimeFaces.ajax) {
                     $this = this,
                     sourceId = (typeof(request.source) === 'string') ? request.source: $(request.source).attr('id'),
                     createTimeout = function() {
-                            return setTimeout(function() {
+                            return PrimeFaces.queueTask(function() {
                                 $this.requests.push(request);
 
                                 if($this.requests.length === 1) {
@@ -575,12 +618,13 @@ if (!PrimeFaces.ajax) {
                     sourceId = $(cfg.source).attr('id');
                 }
 
+                var $source = $(PrimeFaces.escapeClientId(sourceId));
+
                 if(cfg.formId) {
                     //Explicit form is defined
-                    form = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(cfg.formId);
+                    form = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector($source, cfg.formId);
                 }
                 else {
-                    var $source = $(PrimeFaces.escapeClientId(sourceId));
                     //look for a parent of source
                     form = $source.closest('form');
 
@@ -630,7 +674,7 @@ if (!PrimeFaces.ajax) {
                 }
 
                 //process
-                var processArray = PrimeFaces.ajax.Request.resolveComponentsForAjaxCall(cfg, 'process');
+                var processArray = PrimeFaces.ajax.Request.resolveComponentsForAjaxCall($source, cfg, 'process');
                 if(cfg.fragmentProcess) {
                     processArray.push(cfg.fragmentProcess);
                 }
@@ -642,7 +686,7 @@ if (!PrimeFaces.ajax) {
                 }
                 // fallback to @all if no process was defined by the user
                 else {
-                    var definedProcess = PrimeFaces.ajax.Request.resolveComponentsForAjaxCall(cfg, 'process');
+                    var definedProcess = PrimeFaces.ajax.Request.resolveComponentsForAjaxCall($source, cfg, 'process');
                     if (definedProcess === undefined || definedProcess.length === 0) {
                         processIds = '@all';
                     }
@@ -652,7 +696,7 @@ if (!PrimeFaces.ajax) {
                 }
 
                 //update
-                var updateArray = PrimeFaces.ajax.Request.resolveComponentsForAjaxCall(cfg, 'update');
+                var updateArray = PrimeFaces.ajax.Request.resolveComponentsForAjaxCall($source, cfg, 'update');
                 if(cfg.fragmentUpdate) {
                     updateArray.push(cfg.fragmentUpdate);
                 }
@@ -742,11 +786,16 @@ if (!PrimeFaces.ajax) {
 
                     //add form state if necessary
                     if (!formProcessed) {
+                        // Faces
                         PrimeFaces.ajax.Request.addParamFromInput(postParams, PrimeFaces.VIEW_STATE, form, parameterPrefix);
                         PrimeFaces.ajax.Request.addParamFromInput(postParams, PrimeFaces.CLIENT_WINDOW, form, parameterPrefix);
+                        // PrimeFaces
                         PrimeFaces.ajax.Request.addParamFromInput(postParams, PrimeFaces.csp.NONCE_INPUT, form, parameterPrefix);
+                        // DeltaSpike
                         PrimeFaces.ajax.Request.addParamFromInput(postParams, 'dsPostWindowId', form, parameterPrefix);
                         PrimeFaces.ajax.Request.addParamFromInput(postParams, 'dspwid', form, parameterPrefix);
+                        // Spring Security
+                        PrimeFaces.ajax.Request.addParamFromInput(postParams, '_csrf', form, parameterPrefix);
                     }
 
                 }
@@ -893,7 +942,7 @@ if (!PrimeFaces.ajax) {
                         }
 
                         if(global) {
-                            $(document).trigger('pfAjaxUpdated', [xhr, this]);
+                            $(document).trigger('pfAjaxUpdated', [xhr, this, xhr.pfArgs]);
                         }
 
                         PrimeFaces.debug('DOM is updated.');
@@ -910,7 +959,7 @@ if (!PrimeFaces.ajax) {
                         }
 
                         if(global) {
-                            $(document).trigger('pfAjaxComplete', [xhr, this]);
+                            $(document).trigger('pfAjaxComplete', [xhr, this, xhr.pfArgs]);
                         }
 
                         PrimeFaces.debug('Response completed.');
@@ -950,13 +999,15 @@ if (!PrimeFaces.ajax) {
              * Given an AJAX call configuration, resolves the components for the `process` or `update` search
              * expressions given by the configurations. Resolves the search expressions to the actual components and
              * returns a list of their IDs.
+             *
+             * @param {JQuery} source the source element.
              * @param {Partial<PrimeFaces.ajax.Configuration>} cfg An AJAX call configuration.
              * @param {"process" | "update"} type Whether to resolve the `process` or `update` expressions.
              * @return {string[]} A list of IDs with the components to which the process or update expressions refer.
              */
-            resolveComponentsForAjaxCall: function(cfg, type) {
+            resolveComponentsForAjaxCall: function(source, cfg, type) {
                 var expressions = PrimeFaces.ajax.Request.resolveExpressionsForAjaxCall(cfg, type);
-                return PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(expressions);
+                return PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(source, expressions);
             },
 
             /**
@@ -1142,11 +1193,16 @@ if (!PrimeFaces.ajax) {
                     PrimeFaces.ajax.Request.addFormData(formData, PrimeFaces.PARTIAL_UPDATE_PARAM, update, parameterPrefix);
                 }
 
+                // Faces
                 PrimeFaces.ajax.Request.addFormDataFromInput(formData, PrimeFaces.VIEW_STATE, form, parameterPrefix);
                 PrimeFaces.ajax.Request.addFormDataFromInput(formData, PrimeFaces.CLIENT_WINDOW, form, parameterPrefix);
+                // PrimeFaces
                 PrimeFaces.ajax.Request.addFormDataFromInput(formData, PrimeFaces.csp.NONCE_INPUT, form, parameterPrefix);
+                // DeltaSpike
                 PrimeFaces.ajax.Request.addFormDataFromInput(formData, 'dsPostWindowId', form, parameterPrefix);
                 PrimeFaces.ajax.Request.addFormDataFromInput(formData, 'dspwid', form, parameterPrefix);
+                // Spring Security
+                PrimeFaces.ajax.Request.addFormDataFromInput(formData, '_csrf', form, parameterPrefix);
 
                 return formData;
             }
@@ -1188,6 +1244,7 @@ if (!PrimeFaces.ajax) {
 
                     switch (currentNode.nodeName) {
                         case "redirect":
+                            xhr.pfArgs.redirect = true;
                             PrimeFaces.ajax.ResponseProcessor.doRedirect(currentNode);
                             break;
 
@@ -1477,7 +1534,8 @@ if (!PrimeFaces.ajax) {
         }
     };
 
-    $(window).on('unload', function() {
+    var unloadEvent = ("onpagehide" in window) ? "pagehide" : "unload";
+    $(window).on(unloadEvent, function() {
         PrimeFaces.ajax.Queue.abortAll();
     });
 

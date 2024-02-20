@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,11 +35,14 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.UUID;
 
 @Named
 @ViewScoped
 public class CrudView implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private List<Product> products;
 
@@ -53,6 +56,7 @@ public class CrudView implements Serializable {
     @PostConstruct
     public void init() {
         this.products = this.productService.getClonedProducts(100);
+        this.selectedProducts = new ArrayList<Product>();
     }
 
     public List<Product> getProducts() {

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,16 +24,16 @@
 package org.primefaces.component.imagecropper;
 
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.file.Files;
 import java.util.Map;
-import java.util.logging.Logger;
-
 import javax.el.ValueExpression;
-import javax.faces.application.Application;
 import javax.faces.application.Resource;
-import javax.faces.application.ResourceHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -41,15 +41,15 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
 import javax.imageio.ImageIO;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.input.BoundedInputStream;
 import org.primefaces.model.CroppedImage;
+import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.*;
 
 public class ImageCropperRenderer extends CoreRenderer {
-
-    private static final Logger LOGGER = Logger.getLogger(ImageCropperRenderer.class.getName());
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -77,7 +77,7 @@ public class ImageCropperRenderer extends CoreRenderer {
         String select = null;
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithComponentLoad("ImageCropper", widgetVar, clientId, clientId + "_image")
+        wb.initWithComponentLoad("ImageCropper", widgetVar, clientId, image)
                 .attr("image", image)
                 .attr("viewMode", cropper.getViewMode(), 0)
                 .attr("aspectRatio", cropper.getAspectRatio(), Double.MIN_VALUE)
@@ -152,8 +152,8 @@ public class ImageCropperRenderer extends CoreRenderer {
         writer.writeAttribute("alt", alt, null);
 
         String src = DynamicContentSrcBuilder.build(context, cropper,
-                cropper.getValueExpression(ImageCropper.PropertyKeys.image.name()),
-                new Lazy<>(() -> cropper.getImage()), cropper.isCache(), true);
+                cropper.getValueExpression(ImageCropperBase.PropertyKeys.image.name()),
+                new Lazy<>(cropper::getImage), cropper.isCache(), true);
         writer.writeAttribute("src", src, null);
 
         writer.writeAttribute("height", "auto", null);
@@ -182,68 +182,15 @@ public class ImageCropperRenderer extends CoreRenderer {
         }
 
         ImageCropper cropper = (ImageCropper) component;
-        Resource resource = getImageResource(context, cropper);
-        InputStream inputStream = null;
-        Object imageObject = cropper.getImage();
-        String imagePath = null;
         StreamedContent stream = null;
-        if (imageObject instanceof String) {
-            imagePath = imageObject.toString();
-        }
-        else if (imageObject instanceof StreamedContent) {
-            stream = (StreamedContent) imageObject;
-        }
-        else {
-            throw new IllegalArgumentException("'image' must be either an String relative path or a StreamedObject.");
-        }
-
-        String contentType = null;
-
         try {
+            stream = createStreamedContentForCropping(context, cropper);
+        }
+        catch (IOException e) {
+            throw new ConverterException(e);
+        }
 
-            if (resource != null && !"RES_NOT_FOUND".equals(resource.toString())) {
-                inputStream = resource.getInputStream();
-                contentType = resource.getContentType();
-            }
-            else {
-                if (imagePath != null) {
-
-                    boolean isExternal = imagePath.startsWith("http");
-
-                    if (isExternal) {
-                        URL url = new URL(imagePath);
-                        URLConnection urlConnection = url.openConnection();
-                        inputStream = urlConnection.getInputStream();
-                        contentType = urlConnection.getContentType();
-                    }
-                    else {
-                        ExternalContext externalContext = context.getExternalContext();
-                        // GitHub #3268 OWASP Path Traversal
-                        imagePath = FileUploadUtils.checkPathTraversal(imagePath);
-
-                        String webRoot = externalContext.getRealPath(Constants.EMPTY_STRING);
-                        String fileSeparator = Constants.EMPTY_STRING;
-                        if (LangUtils.isBlank(webRoot) || !(webRoot.endsWith("\\") || webRoot.endsWith("/")) &&
-                                    !(imagePath.startsWith("\\") || imagePath.startsWith("/"))) {
-                            fileSeparator = "/";
-                        }
-
-                        File file = new File(webRoot + fileSeparator + imagePath);
-                        inputStream = new FileInputStream(file);
-                    }
-                }
-                else if (stream != null) {
-                    inputStream = stream.getStream().get();
-                    contentType = stream.getContentType();
-                }
-
-            }
-
-            // wrap input stream by BoundedInputStream to prevent uncontrolled resource consumption (#3286)
-            if (cropper.getSizeLimit() != null) {
-                inputStream = new BoundedInputStream(inputStream, cropper.getSizeLimit());
-            }
-
+        try (InputStream inputStream = stream.getStream().get()) {
             BufferedImage outputImage = ImageIO.read(inputStream);
 
             // avoid java.awt.image.RasterFormatException: (x + width) is outside of Raster
@@ -255,79 +202,22 @@ public class ImageCropperRenderer extends CoreRenderer {
                 h = outputImage.getHeight() - y;
             }
 
+            String originalFileName = stream.getName();
             BufferedImage cropped = outputImage.getSubimage(x, y, w, h);
             ByteArrayOutputStream croppedOutImage = new ByteArrayOutputStream();
-            String format = guessImageFormat(contentType, imagePath);
+            String format = guessImageFormat(stream.getContentType(), originalFileName);
             ImageIO.write(cropped, format, croppedOutImage);
-
-            return new CroppedImage(cropper.getImage().toString(), croppedOutImage.toByteArray(), x, y, w, h);
+            return new CroppedImage(originalFileName, croppedOutImage.toByteArray(), x, y, w, h);
         }
         catch (IOException e) {
-            LOGGER.severe(e.getMessage());
             throw new ConverterException(e);
         }
-        finally {
-            if (inputStream != null) {
-                try {
-                    inputStream.close();
-                }
-                catch (IOException e) {
-                    LOGGER.severe(e.getMessage());
-                }
-            }
-        }
-    }
-
-    /**
-     * Attempt to obtain the resource from the server by parsing the valueExpression of the image attribute. Returns null
-     * if the valueExpression is not of the form #{resource['path/to/resource']} or #{resource['library:name']}. Otherwise
-     * returns the value obtained by ResourceHandler.createResource().
-     */
-    private Resource getImageResource(FacesContext facesContext, ImageCropper imageCropper) {
-
-        Resource resource = null;
-        ValueExpression imageValueExpression = imageCropper.getValueExpression(ImageCropper.PropertyKeys.image.toString());
-
-        if (imageValueExpression != null) {
-            String imageValueExpressionString = imageValueExpression.getExpressionString();
-
-            if (imageValueExpressionString.matches("^[#][{]resource\\['[^']+'\\][}]$")) {
-
-                imageValueExpressionString = imageValueExpressionString.replaceFirst("^[#][{]resource\\['", "");
-                imageValueExpressionString = imageValueExpressionString.replaceFirst("'\\][}]$", "");
-                String resourceLibrary = null;
-                String resourceName;
-                String[] resourceInfo = imageValueExpressionString.split(":");
-
-                if (resourceInfo.length == 2) {
-                    resourceLibrary = resourceInfo[0];
-                    resourceName = resourceInfo[1];
-                }
-                else {
-                    resourceName = resourceInfo[0];
-                }
-
-                if (resourceName != null) {
-                    Application application = facesContext.getApplication();
-                    ResourceHandler resourceHandler = application.getResourceHandler();
-
-                    if (resourceLibrary != null) {
-                        resource = resourceHandler.createResource(resourceName, resourceLibrary);
-                    }
-                    else {
-                        resource = resourceHandler.createResource(resourceName);
-                    }
-                }
-            }
-        }
-
-        return resource;
     }
 
     /**
      * Attempt to obtain the image format used to write the image from the contentType or the image's file extension.
      */
-    private String guessImageFormat(String contentType, String imagePath) throws IOException {
+    private String guessImageFormat(String contentType, String imagePath) {
 
         String format = "png";
 
@@ -336,7 +226,7 @@ public class ImageCropperRenderer extends CoreRenderer {
         }
 
         if (contentType != null) {
-            format = contentType.replaceFirst("^image/([^;]+)[;]?.*$", "$1");
+            format = contentType.replaceFirst("^image/([^;]+);?.*$", "$1");
         }
         else {
             int queryStringIndex = imagePath.indexOf('?');
@@ -355,4 +245,78 @@ public class ImageCropperRenderer extends CoreRenderer {
         return format;
     }
 
+    protected StreamedContent createStreamedContentForCropping(FacesContext context, ImageCropper cropper) throws IOException {
+        InputStream inputStream = null;
+        String contentType = null;
+        String imagePath = null;
+        String originalFileName = null;
+
+        // try to evaluate as Resource object, otherwise we would need to handle the Resource#resourcePath which would be more awkward
+        ValueExpression imageVE = cropper.getValueExpression(ImageCropperBase.PropertyKeys.image.toString());
+        Resource resource = ResourceUtils.evaluateResourceExpression(context, imageVE);
+        if (resource != null) {
+            inputStream = resource.getInputStream();
+            contentType = resource.getContentType();
+            originalFileName = resource.getResourceName();
+        }
+        else {
+            Object imageObject = cropper.getImage();
+            if (imageObject instanceof String) {
+                imagePath = (String) imageObject;
+                originalFileName = imagePath;
+
+                boolean isExternal = imagePath.startsWith("http");
+
+                if (isExternal) {
+                    URL url = new URL(imagePath);
+                    URLConnection urlConnection = url.openConnection();
+                    inputStream = urlConnection.getInputStream();
+                    contentType = urlConnection.getContentType();
+                }
+                else {
+                    ExternalContext externalContext = context.getExternalContext();
+                    String webRoot = externalContext.getRealPath(Constants.EMPTY_STRING);
+                    String fileSeparator = Constants.EMPTY_STRING;
+                    if (!(webRoot.endsWith("\\") || webRoot.endsWith("/"))
+                            && !(imagePath.startsWith("\\") || imagePath.startsWith("/"))) {
+                        fileSeparator = "/";
+                    }
+
+                    // GitHub #3268 OWASP Path Traversal
+                    String path = webRoot + fileSeparator + imagePath;
+                    File file = new File(path);
+                    FileUploadUtils.requireValidFilePath(file.getCanonicalPath(), false);
+                    inputStream = Files.newInputStream(file.toPath());
+                }
+            }
+            else if (imageObject instanceof StreamedContent) {
+                StreamedContent streamedContentTmp = (StreamedContent) imageObject;
+                inputStream = streamedContentTmp.getStream().get();
+                contentType = streamedContentTmp.getContentType();
+                originalFileName = streamedContentTmp.getName();
+            }
+            else {
+                throw new IllegalArgumentException("ImageCropper 'image' must be either a String relative path or a StreamedObject.");
+            }
+        }
+
+        // wrap input stream by BoundedInputStream to prevent uncontrolled resource consumption (#3286)
+        if (cropper.getSizeLimit() != null) {
+            inputStream = new BoundedInputStream(inputStream, cropper.getSizeLimit());
+        }
+
+        originalFileName = FilenameUtils.getName(originalFileName);
+        if (LangUtils.isBlank(originalFileName)) {
+            // most likely stream.getName was not set by user
+            String format = guessImageFormat(contentType, Constants.EMPTY_STRING);
+            originalFileName = "unknown." + format;
+        }
+
+        InputStream finalInputStream = inputStream;
+        return DefaultStreamedContent.builder()
+                .name(originalFileName)
+                .stream(() -> finalInputStream)
+                .contentType(contentType)
+                .build();
+    }
 }

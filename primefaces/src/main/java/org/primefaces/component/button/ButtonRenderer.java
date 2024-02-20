@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -50,7 +50,7 @@ public class ButtonRenderer extends OutcomeTargetRenderer {
     public void encodeMarkup(FacesContext context, Button button) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = button.getClientId(context);
-        String value = (String) button.getValue();
+        Object value = button.getValue();
         String icon = button.getIcon();
         String title = button.getTitle();
 
@@ -82,18 +82,7 @@ public class ButtonRenderer extends OutcomeTargetRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
 
-        if (value == null) {
-            //For ScreenReader
-            writer.write(getIconOnlyButtonText(title, button.getAriaLabel()));
-        }
-        else {
-            if (button.isEscape()) {
-                writer.writeText(value, "value");
-            }
-            else {
-                writer.write(value);
-            }
-        }
+        renderButtonValue(writer, button.isEscape(), value, title, button.getAriaLabel());
 
         writer.endElement("span");
 

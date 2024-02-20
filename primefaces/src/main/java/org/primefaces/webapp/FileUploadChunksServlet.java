@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,8 +35,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.primefaces.config.PrimeEnvironment;
-import org.primefaces.config.StartupPrimeEnvironment;
 import org.primefaces.util.Constants;
 import org.primefaces.util.FileUploadUtils;
 
@@ -48,12 +46,7 @@ public class FileUploadChunksServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         String uploader = getServletContext().getInitParameter(Constants.ContextParams.UPLOADER);
-        boolean usesCommonsUpload = "commons".equals(uploader);
-        if (uploader == null || "auto".equals(uploader)) {
-            PrimeEnvironment environment = new StartupPrimeEnvironment();
-            usesCommonsUpload = !environment.isAtLeastJsf22();
-        }
-        if (usesCommonsUpload) {
+        if ("commons".equals(uploader)) {
             throw new ServletException("Resuming chunked file uploads is not supported with commons uploader.");
         }
     }

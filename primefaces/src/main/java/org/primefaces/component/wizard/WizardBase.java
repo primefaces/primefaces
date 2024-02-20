@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -51,6 +51,7 @@ public abstract class WizardBase extends UIComponentBase implements Widget, Clie
         updateModelOnPrev,
         effect,
         effectDuration,
+        disableOnAjax,
     }
 
     public WizardBase() {
@@ -172,5 +173,13 @@ public abstract class WizardBase extends UIComponentBase implements Widget, Clie
 
     public void setEffectDuration(int effectDuration) {
         getStateHelper().put(PropertyKeys.effectDuration, effectDuration);
+    }
+
+    public boolean isDisableOnAjax() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.disableOnAjax, true);
+    }
+
+    public void setDisableOnAjax(boolean disableOnAjax) {
+        getStateHelper().put(PropertyKeys.disableOnAjax, disableOnAjax);
     }
 }

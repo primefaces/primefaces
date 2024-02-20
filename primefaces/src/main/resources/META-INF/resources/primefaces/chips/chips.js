@@ -95,6 +95,7 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
                     break;
 
                 case 'Enter':
+                case 'NumpadEnter':
                     $this.addItem(value, true);
                     e.preventDefault();
                     e.stopPropagation();
@@ -120,7 +121,7 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     updateFloatLabel: function() {
-        PrimeFaces.utils.updateFloatLabel(this.jq, this.input, this.hasFloatLabel);
+        PrimeFaces.utils.updateFloatLabel(this.jq, this.input.add(this.hinput), this.hasFloatLabel);
     },
 
     /**

@@ -54,7 +54,6 @@
  * @prop {string} dropZone Drop zone to use for drag and drop.
  * @prop {JQuery} cancelButton The DOM element for the button for canceling a file upload.
  * @prop {JQuery} chooseButton The DOM element for the button for selecting a file.
- * @prop {string} clearMessagesSelector Selector for the button to clear the error messages.
  * @prop {JQuery} clearMessageLink The DOM element for the button to clear the file upload messages (which inform the
  * user about whether a file was uploaded).
  * @prop {JQuery} content The DOM element for the content of this widget.
@@ -67,9 +66,7 @@
  * about whether a file was uploaded.
  * @prop {JQuery} messageList The DOM element of the UL list element with the file upload messages which inform the user
  * about whether a file was uploaded.
- * @prop {string} rowActionSelector Selector for the available actions (buttons) of a row.
  * @prop {string} rowCancelActionSelector Selector for the button for canceling a file upload.
- * @prop {string[]} sizes Suffixes for formatting files sizes.
  * @prop {JQueryFileUpload.FileUploadOptions} ucfg Options for the BlueImp jQuery file upload plugin.
  * @prop {JQuery} uploadButton The DOM element for the button for starting the file upload.
  * @prop {number} uploadedFileCount Number of currently uploaded files.
@@ -84,13 +81,8 @@
  * @prop {boolean} cfg.dnd Whether drag and drop is enabled.
  * @prop {string} cfg.dropZone Custom drop zone to use for drag and drop.
  * @prop {boolean} cfg.disabled Whether this file upload is disabled.
- * @prop {number} cfg.fileLimit Maximum number of files allowed to upload.
- * @prop {string} cfg.fileLimitMessage Message to display when file limit exceeds.
  * @prop {boolean} cfg.global Global AJAX requests are listened to by `ajaxStatus`. When `false`, `ajaxStatus` will not
  * get triggered.
- * @prop {string} cfg.invalidFileMessage Message to display when file is not accepted.
- * @prop {string} cfg.invalidSizeMessage Message to display when size limit exceeds.
- * @prop {number} cfg.maxFileSize Maximum allowed size in bytes for files.
  * @prop {string} cfg.messageTemplate Message template to use when displaying file validation errors.
  * @prop {PrimeFaces.widget.FileUpload.OnAddCallback} cfg.onAdd Callback invoked when an uploaded file is added.
  * @prop {PrimeFaces.widget.FileUpload.OnUploadCallback} cfg.onupload Callback to execute before the files are sent.
@@ -140,19 +132,17 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         this.form = this.jq.closest('form');
         this.buttonBar = this.jq.children('.ui-fileupload-buttonbar');
         this.dragoverCount = 0;
-        this.customDropZone = this.cfg.dropZone !== undefined ? PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.dropZone) : null;
+        this.customDropZone = this.cfg.dropZone !== undefined
+            ? PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.dropZone)
+            : null;
         this.dropZone = (this.cfg.dnd === false) ? null : this.customDropZone || this.jq;
         this.chooseButton = this.buttonBar.children('.ui-fileupload-choose');
         this.uploadButton = this.buttonBar.children('.ui-fileupload-upload');
         this.cancelButton = this.buttonBar.children('.ui-fileupload-cancel');
         this.content = this.jq.children('.ui-fileupload-content');
         this.filesTbody = this.content.find('> div.ui-fileupload-files > div');
-        this.sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
         this.files = [];
         this.fileAddIndex = 0;
-        this.cfg.invalidFileMessage = this.cfg.invalidFileMessage || 'Invalid file type';
-        this.cfg.invalidSizeMessage = this.cfg.invalidSizeMessage || 'Invalid file size';
-        this.cfg.fileLimitMessage = this.cfg.fileLimitMessage || 'Maximum number of files exceeded';
         this.cfg.messageTemplate = this.cfg.messageTemplate || '{name} {size}';
         this.cfg.previewWidth = this.cfg.previewWidth || 80;
         this.cfg.maxRetries = this.cfg.maxRetries || 30;
@@ -187,6 +177,12 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                 xhr.setRequestHeader('Faces-Request', 'partial/ajax');
                 xhr.pfSettings = settings;
                 xhr.pfArgs = {}; // default should be an empty object
+
+                var file = settings.files ? settings.files[0] : null;
+                if (file && file.webkitRelativePath) {
+                    settings.data.append('X-File-Webkit-Relative-Path', file.webkitRelativePath);
+                }
+
                 if($this.cfg.global) {
                     $(document).trigger('pfAjaxSend', [xhr, this]);
                 }
@@ -203,38 +199,60 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                     $this.clearMessages();
                 }
 
-                if($this.cfg.fileLimit && ($this.uploadedFileCount + $this.files.length + 1) > $this.cfg.fileLimit) {
+                // we need to fake the filelimit as the jquery-fileupload input always only contains 1 file
+                var fileLimit = data.fileInput.data('p-filelimit');
+                if (fileLimit && ($this.uploadedFileCount + $this.files.length + 1) > fileLimit) {
                     $this.clearMessages();
+
+                    var msg = PrimeFaces.validation.Utils.getMessage('primefaces.FileValidator.FILE_LIMIT', fileLimit);
                     $this.showMessage({
-                        summary: $this.cfg.fileLimitMessage
+                        summary: msg.summary
                     });
 
                     return;
                 }
 
                 var file = data.files ? data.files[0] : null;
-                if(file) {
-                    var validMsg = $this.validate(file);
+                if (file) {
+                    $this.clearMessages();
 
-                    if(validMsg) {
-                        $this.showMessage({
-                            summary: validMsg,
-                            filename: file.name,
-                            filesize: file.size
-                        });
+                    var update = $this.cfg.update
+                        ? PrimeFaces.expressions.SearchExpressionFacade.resolveComponents($this.jq, $this.cfg.update).join(' ')
+                        : null;
+
+                    // we need to pass the real invisible input, which contains the filelist
+                    var validationResult = PrimeFaces.validation.validate($this.jq, data.fileInput, update, true, true, true, true);
+                    if (!validationResult.valid) {
+                        for (let clientId in validationResult.messages) {
+                            var msgs = validationResult.messages[clientId];
+                            for (let msg of msgs) {
+                                if (!msg.rendered) {
+                                    $this.showMessage({
+                                        summary: msg.summary,
+                                        filename: file.name,
+                                        filesize: file.size
+                                    });
+                                }
+                            }
+                        }
 
                         $this.postSelectFile(data);
 
                         if ($this.cfg.onvalidationfailure) {
-                        	$this.cfg.onvalidationfailure({
-                                summary: validMsg,
-                                filename: file.name,
-                                filesize: file.size
-                            });
+                            for (let clientId in validationResult.messages) {
+                                var msgs = validationResult.messages[clientId];
+                                for (let msg of msgs) {
+                                    $this.cfg.onvalidationfailure({
+                                        summary: msg.summary,
+                                        filename: file.name,
+                                        filesize: file.size
+                                    });
+                                }
+                            }
                         }
                     }
                     else {
-                        if($this.cfg.onAdd) {
+                        if ($this.cfg.onAdd) {
                             $this.cfg.onAdd.call($this, file, function(processedFile) {
                                 file = processedFile;
                                 data.files[0] = processedFile;
@@ -344,12 +362,12 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                 PrimeFaces.ajax.Response.handle(data.result, data.textStatus, data.jqXHR, null);
                 
                 if($this.cfg.global) {
-                    $(document).trigger('pfAjaxSuccess');
+                    $(document).trigger('pfAjaxSuccess', [data.jqXHR, this]);
                 }
             },
             always: function(e, data) {
                 if($this.cfg.global) {
-                    $(document).trigger('pfAjaxComplete');
+                    $(document).trigger('pfAjaxComplete', [data.jqXHR, this, data.jqXHR.pfArgs]);
                 }
                 if($this.cfg.oncomplete) {
                     $this.cfg.oncomplete.call($this, data.jqXHR.pfArgs, data);
@@ -378,7 +396,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             row = $('<div class="ui-fileupload-row"></div>')
                 .append('<div class="ui-fileupload-preview"></td>')
                 .append('<div class="ui-fileupload-filename">' + PrimeFaces.escapeHTML(file.name) + '</div>')
-                .append('<div>' + this.formatSize(file.size) + '</div>')
+                .append('<div>' + PrimeFaces.utils.formatBytes(file.size) + '</div>')
                 .append('<div class="ui-fileupload-progress"></div>')
                 .append('<div><button class="ui-fileupload-cancel ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"><span class="ui-button-icon-left ui-icon ui-icon ui-icon-close"></span><span class="ui-button-text">ui-button</span></button></div>')
                 .appendTo(this.filesTbody);
@@ -541,9 +559,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             e.preventDefault();
         });
 
-        this.rowActionSelector = this.jqId + " .ui-fileupload-files button";
         this.rowCancelActionSelector = this.jqId + " .ui-fileupload-files .ui-fileupload-cancel";
-        this.clearMessagesSelector = this.jqId + " .ui-messages .ui-messages-close";
 
         $(document).off('mouseover.fileupload mouseout.fileupload mousedown.fileupload mouseup.fileupload focus.fileupload blur.fileupload click.fileupload ', this.rowCancelActionSelector)
                 .on('mouseover.fileupload', this.rowCancelActionSelector, null, function(e) {
@@ -631,7 +647,9 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
      * @return {PrimeFaces.ajax.RequestParameter} Parameters to post when upload the files.
      */
     createPostData: function() {
-        var process = this.cfg.process ? this.id + ' ' + PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(this.cfg.process).join(' ') : this.id;
+        var process = this.cfg.process
+            ? this.id + ' ' + PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(this.jq, this.cfg.process).join(' ')
+            : this.id;
         var params = this.form.serializeArray();
 
         var parameterPrefix = PrimeFaces.ajax.Request.extractParameterNamespace(this.form);
@@ -639,9 +657,10 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         PrimeFaces.ajax.Request.addParam(params, PrimeFaces.PARTIAL_REQUEST_PARAM, true, parameterPrefix);
         PrimeFaces.ajax.Request.addParam(params, PrimeFaces.PARTIAL_PROCESS_PARAM, process, parameterPrefix);
         PrimeFaces.ajax.Request.addParam(params, PrimeFaces.PARTIAL_SOURCE_PARAM, this.id, parameterPrefix);
+        PrimeFaces.ajax.Request.addParam(params, this.id + "_totalFilesCount", this.files.length, parameterPrefix);
 
         if (this.cfg.update) {
-            var update = PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(this.cfg.update).join(' ');
+            var update = PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(this.jq, this.cfg.update).join(' ');
             PrimeFaces.ajax.Request.addParam(params, PrimeFaces.PARTIAL_UPDATE_PARAM, update, parameterPrefix);
         }
 
@@ -657,26 +676,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
      * @return {string} An identifier for the given file.
      */
     createXFileId: function(file) {
-      return [file.name, file.lastModified, file.type, file.size].join();
-    },
-
-    /**
-     * Formats the given file size in a more human-friendly format, e.g. `1.5 MB` etc.
-     * @param {number} bytes File size in bytes to format
-     * @return {string} The given file size, formatted in a more human-friendly format.
-     */
-    formatSize: function(bytes) {
-        if(bytes === undefined)
-            return '';
-
-        if (bytes === 0)
-            return 'N/A';
-
-        var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
-        if (i === 0)
-            return bytes + ' ' + this.sizes[i];
-        else
-            return (bytes / Math.pow(1024, i)).toFixed(1) + ' ' + this.sizes[i];
+        return [file.name, file.lastModified, file.type, file.size].join();
     },
 
     /**
@@ -736,24 +736,6 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     * Validates the given file against the current validation settings
-     * @private
-     * @param {File} file Uploaded file to validate.
-     * @return {string | null} `null` if the given file is valid, or an error message otherwise.
-     */
-    validate: function(file) {
-        if (this.cfg.allowTypes && !(this.cfg.allowTypes.test(file.type) || this.cfg.allowTypes.test(file.name))) {
-            return this.cfg.invalidFileMessage;
-        }
-
-        if (this.cfg.maxFileSize && file.size > this.cfg.maxFileSize) {
-            return this.cfg.invalidSizeMessage;
-        }
-
-        return null;
-    },
-
-    /**
      * Displays the current error messages on this widget.
      * @private
      */
@@ -787,7 +769,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         detail = '';
 
         if(msg.filename && msg.filesize) {
-            detail = this.cfg.messageTemplate.replace('{name}', msg.filename).replace('{size}', this.formatSize(msg.filesize));
+            detail = this.cfg.messageTemplate.replace('{name}', msg.filename).replace('{size}', PrimeFaces.utils.formatBytes(msg.filesize));
         }
 
         this.messageList.append('<li><span class="ui-messages-error-summary">' + PrimeFaces.escapeHTML(summary) + '</span><span class="ui-messages-error-detail">' + PrimeFaces.escapeHTML(detail) + '</span></li>');

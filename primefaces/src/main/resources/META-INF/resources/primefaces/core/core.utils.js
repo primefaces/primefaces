@@ -36,7 +36,7 @@ if (!PrimeFaces.utils) {
                     }
 
                     //append to body if not already appended by user choice
-                    if(!overlay.parent().is(document.body)) {
+                    if(!widget.cfg.appendTo) {
                         widget.cfg.appendTo = "@(body)";
                         return widget.cfg.appendTo;
                     }
@@ -56,7 +56,7 @@ if (!PrimeFaces.utils) {
          */
         resolveDynamicOverlayContainer: function(widget) {
             return widget.cfg.appendTo
-                ? PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(widget.cfg.appendTo)
+                ? PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(widget.jq, widget.cfg.appendTo)
                 : $(document.body);
         },
 
@@ -141,7 +141,7 @@ if (!PrimeFaces.utils) {
                 ,'aria-live': 'polite'
             });
 
-            PrimeFaces.utils.preventTabbing(id, zIndex, tabbablesCallback);
+            PrimeFaces.utils.preventTabbing(widget, id, zIndex, tabbablesCallback);
 
             if (widget.cfg.blockScroll) {
                 PrimeFaces.utils.preventScrolling();
@@ -158,17 +158,19 @@ if (!PrimeFaces.utils) {
         /**
          * Given a modal overlay, prevents navigating via the tab key to elements outside of that modal overlay. Use
          * `PrimeFaces.utils.enableTabbing` to restore the original behavior.
+         * @param {PrimeFaces.widget.BaseWidget} widget An overlay widget instance.
          * @param {string} id ID of a modal overlay widget.
          * @param {number} zIndex The z-index of the modal overlay.
          * @param {() => JQuery} tabbablesCallback A supplier function that return a list of tabbable elements. A
          * tabbable element is an element to which the user can navigate to via the tab key.
          */
-        preventTabbing: function(id, zIndex, tabbablesCallback) {
+        preventTabbing: function(widget, id, zIndex, tabbablesCallback) {
             //Disable tabbing out of modal and stop events from targets outside of the overlay element
-            var $document = $(document);
+            var $documentInIframe = widget.cfg && widget.cfg.iframe ? widget.cfg.iframe.get(0).contentWindow.document : undefined;
+            var $document = $($documentInIframe ? [document, $documentInIframe] : document);
             $document.on('focus.' + id + ' mousedown.' + id + ' mouseup.' + id, function(event) {
                 var target = $(event.target);
-                if (!target.is(document.body) && (target.zIndex() < zIndex && target.parent().zIndex() < zIndex)) {
+                if (!target.is(document.body) && (!$documentInIframe && target.zIndex() < zIndex && target.parent().zIndex() < zIndex)) {
                     event.preventDefault();
                 }
             });
@@ -213,7 +215,7 @@ if (!PrimeFaces.utils) {
                     // #8965 allow cut, copy, paste
                     return;
                 }
-                else if (!target.is(document.body) && (target.zIndex() < zIndex && target.parent().zIndex() < zIndex)) {
+                else if (!target.is(document.body) && (!$documentInIframe && target.zIndex() < zIndex && target.parent().zIndex() < zIndex)) {
                     event.preventDefault();
                 }
             });
@@ -246,16 +248,20 @@ if (!PrimeFaces.utils) {
             if (widget.cfg.blockScroll) {
                 PrimeFaces.utils.enableScrolling();
             }
-            PrimeFaces.utils.enableTabbing(id);
+            PrimeFaces.utils.enableTabbing(widget, id);
         },
 
         /**
          * Enables navigating to an element via the tab key outside an overlay widget. Usually called when a modal
          * overlay is removed. This reverts the changes as made by `PrimeFaces.utils.preventTabbing`.
+         * @param {PrimeFaces.widget.BaseWidget} widget A modal overlay widget instance.
          * @param {string} id ID of a modal overlay, usually the widget ID.
          */
-        enableTabbing: function(id) {
-            $(document).off('focus.' + id + ' mousedown.' + id + ' mouseup.' + id + ' keydown.' + id);
+        enableTabbing: function(widget, id) {
+            var $documentInIframe = widget.cfg && widget.cfg.iframe ? widget.cfg.iframe.get(0).contentWindow.document : undefined;
+            var $document = $($documentInIframe ? [document, $documentInIframe] : document);
+
+            $document.off('focus.' + id + ' mousedown.' + id + ' mouseup.' + id + ' keydown.' + id);
         },
 
         /**
@@ -577,7 +583,14 @@ if (!PrimeFaces.utils) {
          * @return {boolean} `true` if the key is a meta key, or `false` otherwise.
          */
         isMetaKey: function(e) {
-            return PrimeFaces.env.browser.mac ? e.metaKey : e.ctrlKey;
+            if (e.originalEvent) {
+                // original event returns the metakey value at the time the event was generated
+                return PrimeFaces.env.browser.mac ? e.originalEvent.metaKey : e.originalEvent.ctrlKey;
+            }
+            else {
+                // jQuery returns the real time value of the meta key
+                return PrimeFaces.env.browser.mac ? e.metaKey  : e.ctrlKey;
+            }
         },
 
         /**
@@ -586,7 +599,7 @@ if (!PrimeFaces.utils) {
          * @return {boolean} `true` if the key is an action key, or `false` otherwise.
          */
         isActionKey: function(e) {
-            return e.key === ' ' || e.key === 'Enter';
+            return e.code === 'Space' || e.key === 'Enter';
         },
 
         /**
@@ -595,7 +608,28 @@ if (!PrimeFaces.utils) {
          * @return {boolean} `true` if the key is a printable key, or `false` otherwise.
          */
         isPrintableKey: function(e) {
-            return e.key.length === 1 || e.key === 'Unidentified';
+            return e && e.key && (e.key.length === 1 || e.key === 'Unidentified');
+        },
+        
+        /**
+         * Checks if the key pressed is cut, copy, or paste.
+         * @param {JQuery.TriggeredEvent} e The key event that occurred.
+         * @return {boolean} `true` if the key is cut/copy/paste, or `false` otherwise.
+         */
+        isClipboardKey: function(e) {
+            switch (e.key) {
+                case 'a':
+                case 'A':
+                case 'c':
+                case 'C':
+                case 'x':
+                case 'X':
+                case 'v':
+                case 'V':
+                    return PrimeFaces.utils.isMetaKey(e);
+                default:
+                    return false;
+            }
         },
 
         /**
@@ -604,12 +638,17 @@ if (!PrimeFaces.utils) {
          * @return {boolean} `true` if the one of the keys to ignore was pressed, or `false` otherwise.
          */
         ignoreFilterKey: function(e) {
-            switch (e.key) {
+            // cut copy paste allows filter to trigger
+            if (PrimeFaces.utils.isClipboardKey(e)) {
+                return false;
+            }
+            // backspace,enter,delete trigger a filter as well as printable key like 'a'
+            switch (e.code) {
                 case 'Backspace':
                 case 'Enter':
+                case 'NumpadEnter':
                 case 'Delete':
                     return false;
-                    break;
                 default:
                     return !PrimeFaces.utils.isPrintableKey(e);
             }
@@ -758,9 +797,9 @@ if (!PrimeFaces.utils) {
                                 callTransitionEvent(callbacks, 'onEnter');
 
                                 requestAnimationFrame(function() {
-                                    setTimeout(function() {
+                                    PrimeFaces.queueTask(function() {
                                         element.addClass(classNameStates.enterActive);
-                                    }, 0);
+                                    });
 
                                     element.one('transitionrun.css-transition-show', function(event) {
                                         callTransitionEvent(callbacks, 'onEntering', event);
@@ -793,9 +832,9 @@ if (!PrimeFaces.utils) {
                                 element.addClass(classNameStates.exit);
                                 callTransitionEvent(callbacks, 'onExit');
 
-                                setTimeout(function() {
+                                PrimeFaces.queueTask(function() {
                                     element.addClass(classNameStates.exitActive);
-                                }, 0);
+                                });
 
                                 element.one('transitionrun.css-transition-hide', function(event) {
                                     callTransitionEvent(callbacks, 'onExiting', event);
@@ -822,6 +861,7 @@ if (!PrimeFaces.utils) {
 
             return null;
         },
+
         /**
          * Count the bytes of the inputtext.
          * borrowed from the ckeditor wordcount plugin
@@ -838,6 +878,27 @@ if (!PrimeFaces.utils) {
             }
             return count;
         },
+
+        /**
+         * Formats the given data size in a more human-friendly format, e.g. `1.5 MB` etc.
+         * @param {number} bytes File size in bytes to format
+         * @return {string} The given file size, formatted in a more human-friendly format.
+         */
+        formatBytes: function(bytes) {
+            if (bytes === undefined)
+                return '';
+
+            if (bytes === 0)
+                return 'N/A';
+
+            var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+            var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+            if (i === 0)
+                return bytes + ' ' + sizes[i];
+            else
+                return (bytes / Math.pow(1024, i)).toFixed(1) + ' ' + sizes[i];
+        },
+
         /**
          * This method concatenates the classes into a string according to the condition of the arguments and returns it.
          * @private
@@ -904,18 +965,41 @@ if (!PrimeFaces.utils) {
          * Handles floating label CSS if wrapped in a floating label.
          * @private
          * @param {JQuery | undefined} element the to add the CSS classes to
-         * @param {JQuery | undefined} input the input to check if filled
+         * @param {JQuery | undefined} inputs the input(s) to check if filled
          * @param {boolean | undefined} hasFloatLabel true if this is wrapped in a floating label
          */
-        updateFloatLabel: function(element, input, hasFloatLabel) {
-            if (!element || !input || !hasFloatLabel) {
+        updateFloatLabel: function(element, inputs, hasFloatLabel) {
+            if (!element || !inputs || !hasFloatLabel) {
                 return;
             }
-            if (input.val() !== '' || element.find('.ui-chips-token').length !== 0) {
-                element.addClass('ui-inputwrapper-filled');
+
+            var isEmpty = true;
+            inputs.each(function() {
+                var input = $(this);
+                if (input.is('select')) {
+                    if (input.attr('multiple')) {
+                        isEmpty = input.find('option:selected').length === 0;
+                    }
+                    else {
+                        var value = input.find('option:selected').attr('value');
+                        isEmpty = value === null || value === '';
+                    }
+                }
+                else {
+                    var value = input.val();
+                    isEmpty = value === null || value === '';
+                }
+
+                if (!isEmpty) {
+                    return false;
+                }
+            });
+
+            if (isEmpty) {
+                element.removeClass('ui-inputwrapper-filled');
             }
             else {
-                element.removeClass('ui-inputwrapper-filled');
+                element.addClass('ui-inputwrapper-filled');
             }
         },
 
@@ -931,7 +1015,54 @@ if (!PrimeFaces.utils) {
                 return doc.documentElement.textContent;
             }
             return input;
-        }
+        },
+        
+        /**
+         * Queue a microtask if delay is 0 or less and setTimeout if > 0.
+         *
+         * @param {() => void} fn the function to call after the delay
+         * @param {number | undefined} delay the optional delay in milliseconds
+         * @return {number | undefined} the id associated to the timeout or undefined if no timeout used
+         */
+        queueTask: function(fn, delay) {
+            // if delay is 0 use microtask
+            if (!delay || delay <= 0) {
+                // queueMicrotask adds the function (task) into a queue and each function is executed one by one (FIFO)
+                // after the current task has completed its work and when there is no other code waiting to be run 
+                // before control of the execution context is returned to the browser's event loop.
+                window.queueMicrotask(fn);
+                return undefined;
+            }
+            // In the case of setTimeout, each task is executed from the event queue, after control is given to the event loop.
+            return window.setTimeout(fn, delay);
+        },
+
+        /**
+         * Killswitch that kills all AJAX requests, running Pollers and IdleMonitors.
+         * @see {@link https://github.com/primefaces/primefaces/issues/10299|GitHub Issue 10299}
+         */
+        killswitch: function() {
+            PrimeFaces.warn("Abort all AJAX requests!");
+            PrimeFaces.ajax.Queue.abortAll();
+
+            // stop all pollers and idle monitors
+            for (item in PrimeFaces.widgets) {
+                widget = PrimeFaces.widgets[item];
+                if (widget instanceof PrimeFaces.widget.Poll) {
+                    PrimeFaces.warn("Stopping Poll");
+                    widget.stop();
+                }
+                if (widget instanceof PrimeFaces.widget.IdleMonitor) {
+                    PrimeFaces.warn("Stopping IdleMonitor");
+                    widget.pause();
+                }
+            }
+        },
     };
 
+    // set animation state globally
+    if (PrimeFaces.env.prefersReducedMotion) {
+        PrimeFaces.utils.disableAnimations();
+        PrimeFaces.warn("Animations are disabled because OS has requested prefers-reduced-motion: reduce")
+    }
 }

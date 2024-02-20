@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,7 +36,7 @@ import org.primefaces.component.api.IterationStatus;
 import org.primefaces.model.ResponsiveOption;
 
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class GalleriaRenderer extends CoreRenderer {
@@ -74,7 +74,7 @@ public class GalleriaRenderer extends CoreRenderer {
     protected void encodeHeader(FacesContext context, Galleria galleria) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         UIComponent facet = galleria.getFacet("header");
-        boolean shouldRenderFacet = ComponentUtils.shouldRenderFacet(facet);
+        boolean shouldRenderFacet = FacetUtils.shouldRenderFacet(facet);
 
         if (shouldRenderFacet) {
             writer.startElement("div", null);
@@ -101,7 +101,7 @@ public class GalleriaRenderer extends CoreRenderer {
     protected void encodeFooter(FacesContext context, Galleria galleria) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         UIComponent facet = galleria.getFacet("footer");
-        boolean shouldRenderFacet = ComponentUtils.shouldRenderFacet(facet);
+        boolean shouldRenderFacet = FacetUtils.shouldRenderFacet(facet);
 
         if (shouldRenderFacet) {
             writer.startElement("div", null);
@@ -164,13 +164,14 @@ public class GalleriaRenderer extends CoreRenderer {
 
     public void encodeCaptions(FacesContext context, Galleria galleria) throws IOException {
         UIComponent facet = galleria.getFacet("caption");
-        boolean shouldRenderFacet = ComponentUtils.shouldRenderFacet(facet);
+        boolean shouldRenderFacet = FacetUtils.shouldRenderFacet(facet);
 
         if (galleria.isShowCaption() && shouldRenderFacet) {
             ResponseWriter writer = context.getResponseWriter();
 
             writer.startElement("ul", null);
             writer.writeAttribute("class", Galleria.CAPTION_ITEMS_CLASS, null);
+            writer.writeAttribute("style", "display: none", null); // default to hidden
 
             if (galleria.isRepeating()) {
                 for (int i = 0; i < galleria.getRowCount(); i++) {
@@ -216,7 +217,7 @@ public class GalleriaRenderer extends CoreRenderer {
 
     public void encodeIndicators(FacesContext context, Galleria galleria) throws IOException {
         UIComponent facet = galleria.getFacet("indicator");
-        boolean shouldRenderFacet = ComponentUtils.shouldRenderFacet(facet);
+        boolean shouldRenderFacet = FacetUtils.shouldRenderFacet(facet);
 
         if (galleria.isShowIndicators() && shouldRenderFacet) {
             ResponseWriter writer = context.getResponseWriter();
@@ -287,7 +288,7 @@ public class GalleriaRenderer extends CoreRenderer {
 
     public void encodeThumbnails(FacesContext context, Galleria galleria) throws IOException {
         UIComponent facet = galleria.getFacet("thumbnail");
-        boolean shouldRenderFacet = ComponentUtils.shouldRenderFacet(facet);
+        boolean shouldRenderFacet = FacetUtils.shouldRenderFacet(facet);
 
         if (galleria.isShowThumbnails() && shouldRenderFacet) {
             ResponseWriter writer = context.getResponseWriter();

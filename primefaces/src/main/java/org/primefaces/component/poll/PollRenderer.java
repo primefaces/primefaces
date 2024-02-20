@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -91,6 +91,8 @@ public class PollRenderer extends CoreRenderer {
                 .attr("frequency", convertedInterval)
                 .attr("autoStart", poll.isAutoStart())
                 .attr("intervalType", poll.getIntervalType(), "second")
+                .callback("onActivated", "function()", poll.getOnactivated())
+                .callback("onDeactivated", "function()", poll.getOndeactivated())
                 .callback("fn", "function()", request);
 
         wb.finish();

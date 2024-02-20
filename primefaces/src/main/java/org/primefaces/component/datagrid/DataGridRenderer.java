@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,6 +32,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.DataRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.GridLayoutUtils;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
@@ -126,7 +127,7 @@ public class DataGridRenderer extends DataRenderer {
 
         if (empty) {
             UIComponent emptyFacet = grid.getFacet("emptyMessage");
-            if (ComponentUtils.shouldRenderFacet(emptyFacet)) {
+            if (FacetUtils.shouldRenderFacet(emptyFacet)) {
                 emptyFacet.encodeAll(context);
             }
             else {
@@ -176,7 +177,7 @@ public class DataGridRenderer extends DataRenderer {
 
         String columnClass = getStyleClassBuilder(context)
                 .add(DataGrid.COLUMN_CLASS)
-                .add(flex, GridLayoutUtils.getColumnClass(flex, columns))
+                .add(GridLayoutUtils.getColumnClass(flex, columns))
                 .add(grid.getRowStyleClass())
                 .build();
 

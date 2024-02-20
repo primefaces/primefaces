@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,12 +32,13 @@ import javax.faces.view.facelets.MetaRuleset;
 
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.facelets.MethodRule;
+import org.primefaces.model.SortMeta;
 
 public class ColumnHandler extends ComponentHandler {
 
     private static final MetaRule SORT_FUNCTION = new MethodRule(Column.PropertyKeys.sortFunction.name(),
             Integer.class,
-            new Class<?>[]{Object.class, Object.class});
+            new Class<?>[]{Object.class, Object.class, SortMeta.class});
 
     private static final MetaRule FILTER_FUNCTION = new MethodRule(Column.PropertyKeys.filterFunction.name(),
             Integer.class,

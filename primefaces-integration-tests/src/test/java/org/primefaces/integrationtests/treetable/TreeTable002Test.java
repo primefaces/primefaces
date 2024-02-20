@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,8 +23,10 @@
  */
 package org.primefaces.integrationtests.treetable;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -38,15 +40,15 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.TreeTable;
 
-public class TreeTable002Test extends AbstractTreeTableTest {
+class TreeTable002Test extends AbstractTreeTableTest {
 
     @Test
     @Order(1)
     @DisplayName("TreeTable: multi sort, predefined sort in markup")
-    public void testMultiSortPlusPredefined(Page page) {
+    void multiSortPlusPredefined(Page page) {
         // Arrange
         TreeTable treeTable = page.treeTable;
-        Assertions.assertNotNull(treeTable);
+        assertNotNull(treeTable);
 
         // ... expand first node
         treeTable.getRow(0).toggle();
@@ -85,7 +87,7 @@ public class TreeTable002Test extends AbstractTreeTableTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("TreeTable Config = " + cfg);
-        Assertions.assertEquals("wgtTreeTable", cfg.getString("widgetVar"));
+        assertEquals("wgtTreeTable", cfg.getString("widgetVar"));
     }
 
     public static class Page extends AbstractPrimePage {

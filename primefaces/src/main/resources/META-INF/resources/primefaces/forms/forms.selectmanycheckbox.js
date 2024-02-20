@@ -85,23 +85,9 @@ PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
         })
         .on('click', function(e) {
             var checkbox = $(this),
-            input = checkbox.prev().children(':checkbox'),
-            disabled = input.is(':disabled');
+            input = checkbox.prev().children(':checkbox');
 
-            if (disabled) {
-                return;
-            }
-            
-            if (!checkbox.hasClass('ui-state-active')) {
-                $this.check(input, checkbox);
-            }
-            else {
-                $this.uncheck(input, checkbox);
-            }
-
-            $this.fireClickEvent(input, e);
-            input.trigger('change');
-            input.trigger('focus');
+            $this.toggle(input, checkbox, e);
         });
 
         this.labels.filter(':not(.ui-state-disabled)').on('click', function(e) {
@@ -131,7 +117,41 @@ PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
             checkbox = input.parent().next();
 
             checkbox.removeClass('ui-state-focus');
+        })
+        .on('keydown', function(e) {
+            if (PrimeFaces.utils.isActionKey(e)) {
+                var input = $(this),
+                checkbox = input.parent().next();
+
+                $this.toggle(input, checkbox, e);
+                e.preventDefault();
+                e.stopPropagation();
+            }
         });
+    },
+    
+    /**
+     * Toggles the given checkbox and associated input.
+     * @private
+     * @param {JQuery} input the input.
+     * @param {JQuery} checkbox the checbkox.
+     * @param {JQuery.TriggeredEvent} event  event that was triggered.
+     */
+    toggle: function(input, checkbox, event) {
+        if (input.is(':disabled')) {
+            return;
+        }
+
+        if (!checkbox.hasClass('ui-state-active')) {
+            this.check(input, checkbox);
+        }
+        else {
+            this.uncheck(input, checkbox);
+        }
+
+        this.fireClickEvent(input, event);
+        input.trigger('change');
+        input.trigger('focus');
     },
 
     /**

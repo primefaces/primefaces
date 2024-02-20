@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -175,7 +175,7 @@ public class DataView extends DataViewBase {
 
     public void reset() {
         setFirst(0);
-        //resetRows(); //TODO: do resetRows the "right" way
+        resetRows();
         setLayout(null);
     }
 

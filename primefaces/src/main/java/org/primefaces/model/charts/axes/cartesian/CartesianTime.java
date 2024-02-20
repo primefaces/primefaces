@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,7 +34,7 @@ import org.primefaces.util.FastStringWriter;
  * From ChartJs version 3.8.0
  * @see <a href="https://www.chartjs.org/docs/3.8.0/axes/cartesian/time.html#time-units">ChartJS Time</a>
  */
-public abstract class CartesianTime implements Serializable {
+public class CartesianTime implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

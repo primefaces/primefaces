@@ -128,8 +128,16 @@ PrimeFaces.widget.SelectListbox = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery} item An OPTION element to set as the selected element.
      */
     selectItem: function(item) {
-        item.addClass('ui-state-highlight').removeClass('ui-state-hover');
-        this.options.eq(item.index()).prop('selected', true);
+        item.addClass('ui-state-highlight').removeClass('ui-state-hover').attr('aria-selected', 'true');
+        var itemSelected = this.options.eq(item.index());
+        itemSelected.prop('selected', true);
+        if (this.hasBehavior('itemSelect')) {
+            var ext = {
+                params: [{ name: this.id + '_itemSelect', value: itemSelected.text() }]
+            };
+
+            this.callBehavior('itemSelect', ext);
+        }
     },
 
     /**
@@ -137,8 +145,17 @@ PrimeFaces.widget.SelectListbox = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery} item Item to unselect.
      */
     unselectItem: function(item) {
-        item.removeClass('ui-state-highlight');
+        item.removeClass('ui-state-highlight').attr('aria-selected', 'false');
         this.options.eq(item.index()).prop('selected', false);
+        var itemUnselected = this.options.eq(item.index());
+        itemUnselected.prop('selected', false);
+        if (this.hasBehavior('itemUnselect')) {
+            var ext = {
+                params: [{ name: this.id + '_itemUnselect', value: itemUnselected.text() }]
+            };
+
+            this.callBehavior('itemUnselect', ext);
+        }
     },
 
     /**

@@ -75,7 +75,9 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
         }
 
         if(this.cfg.hasMenu) {
-            $(this.jqId + '_menu').on('click.panel', function(e) {
+            var menu = $(this.jqId + '_menu');
+            menu.attr('arial-label', PrimeFaces.getLocaleLabel('choose'));
+            menu.on('click.panel', function(e) {
                 e.preventDefault();
             });
         }
@@ -112,6 +114,7 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
      * Expands this panel, if not already expanded.
      */
     expand: function() {
+        this.header.attr('aria-expanded', true);
         this.toggleState(false, 'ui-icon-plusthick', 'ui-icon-minusthick');
 
         if(this.cfg.toggleOrientation === 'vertical')
@@ -124,6 +127,7 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
      * Collapses this panel, if not already collapsed.
      */
     collapse: function() {
+        this.header.attr('aria-expanded', false);
         this.toggleState(true, 'ui-icon-minusthick', 'ui-icon-plusthick');
 
         if(this.cfg.toggleOrientation === 'vertical')
@@ -209,6 +213,7 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
         this.toggler.children('span.ui-icon').removeClass(removeIcon).addClass(addIcon);
         this.cfg.collapsed = collapsed;
         this.toggleStateHolder.val(collapsed);
+        this.toggler.attr('aria-label', collapsed ? PrimeFaces.getAriaLabel('collapseRow') : PrimeFaces.getAriaLabel('expandRow'))
 
         if (this.hasBehavior('toggle')) {
             this.callBehavior('toggle');
@@ -285,6 +290,7 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
 
         this.closer = $(this.jqId + '_closer');
+        PrimeFaces.skinCloseAction(this.closer);
         this.visibleStateHolder = $(this.jqId + "_visible");
 
         this.closer.on("click", function(e) {

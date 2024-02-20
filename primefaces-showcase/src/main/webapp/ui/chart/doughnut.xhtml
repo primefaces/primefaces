@@ -1,0 +1,27 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Charts <span class="subitem">Doughnut</span>
+    </ui:define>
+
+    <ui:define name="description">
+        DoughnutChart is created with raw JSON or using an <a href="https://github.com/xdev-software/chartjs-java-model" target="_blank" rel="noopener noreferrer">XDEV</a> model.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/chart" />
+    <ui:param name="widgetLink" value="Chart" />
+
+    <ui:define name="implementation">
+        <div class="grid">
+            <div class="col-12 lg:col-6 xl:col-4">
+                <div class="card">
+                    <p:chart value="#{chartView.donutModel}" style="width: 100%; height: 500px;"/>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+
+</ui:composition>

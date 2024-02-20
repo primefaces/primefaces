@@ -156,14 +156,14 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
             var event = 'contextmenu.' + this.id + '_contextmenu';
             $(document).off(event);
             if (PrimeFaces.env.isTouchable(this.cfg)) {
-                $(document).swipe().destroy();
+                $(document).swipe('destroy');
             }
         }
         else {
             var event = this.cfg.event + '.' + this.id + '_contextmenu';
             $(document).off(event, this.jqTargetId);
             if (PrimeFaces.env.isTouchable(this.cfg)) {
-                this.jqTarget.swipe().destroy();
+                this.jqTarget.swipe('destroy');
             }
         }
     },

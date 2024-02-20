@@ -31,8 +31,10 @@
  * @prop {PrimeFaces.UnbindCallback} [hideOverlayHandler] Unbind callback for the hide overlay handler.
  * @prop {JQuery} input The DOM element for the hidden input with the current value.
  * @prop {boolean} isDynamicLoaded Whether the contents of the overlay panel were loaded.
+ * @prop {boolean} isTabbing Whether the current process is handling the tab key.
  * @prop {JQuery} [items] The DOM elements for the available selectable options.
  * @prop {JQuery} [itemsContainer] The DOM element for the container with the available selectable options.
+ * @prop {boolean} [querying] Whether an AJAX request for the autocompletion items is currently in progress.
  * @prop {JQuery} itemsWrapper The DOM element for the wrapper with the container with the available selectable options.
  * @prop {JQuery} focusInput The hidden input that can be focused via the tab key etc. (only used with editable="true")
  * @prop {boolean} hasFloatLabel Is this component wrapped in a float label.
@@ -117,9 +119,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         this.cfg.appendTo = PrimeFaces.utils.resolveAppendTo(this, this.jq, this.panel);
         this.cfg.renderPanelContentOnClient = this.cfg.renderPanelContentOnClient === true;
         this.isDynamicLoaded = false;
-
+        this.isTabbing = false;
         this.searchValue = '';
-
+        
         //pfs metadata
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
 
@@ -327,8 +329,18 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
             $this.jq.removeClass('ui-state-hover');
             $this.menuIcon.removeClass('ui-state-hover');
-            $this.focusInput ? $this.focusInput.trigger('focus.ui-selectonemenu') : null;
+            if ($this.focusInput) {
+                $this.focusInput.trigger('focus.ui-selectonemenu')
+            }
+            else if ($(e.currentTarget).hasClass('ui-selectonemenu-trigger')) {
+                $this.keyboardTarget.trigger('focus.ui-selectonemenu');
+            }
             e.preventDefault();
+            e.stopPropagation();
+        });
+        
+        this.input.off('focus.ui-selectonemenu').on('focus.ui-selectonemenu', function() {
+            $this.keyboardTarget.trigger('focus.ui-selectonemenu');
         });
 
         this.keyboardTarget.on('focus.ui-selectonemenu', function(e) {
@@ -441,10 +453,10 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             function(e, eventTarget) {
                 if(!($this.panel.is(eventTarget) || $this.panel.has(eventTarget).length > 0)) {
                     $this.hide();
-                    setTimeout(function() {
+                    PrimeFaces.queueTask(function() {
                         $this.revert();
                         $this.changeAriaValue($this.getActiveItem());
-                    }, 2);
+                    });
                 }
             });
 
@@ -634,7 +646,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this;
 
         this.keyboardTarget.on('keydown.ui-selectonemenu', function(e) {
-            switch(e.key) {
+            switch(e.code) {
                 case 'ArrowUp':
                 case 'ArrowLeft':
                     $this.callHandleMethod($this.highlightPrev, e);
@@ -646,18 +658,19 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 break;
 
                 case 'Enter':
+                case 'NumpadEnter':
                     $this.handleEnterKey(e);
                 break;
 
                 case 'Tab':
-                    $this.handleTabKey();
+                    $this.handleTabKey(e);
                 break;
 
                 case 'Escape':
                     $this.handleEscapeKey(e);
                 break;
 
-                case ' ':
+                case 'Space':
                     $this.handleSpaceKey(e);
                 break;
             }
@@ -735,7 +748,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                     }
                 }
 
-                $this.searchTimer = setTimeout(function(){
+                $this.searchTimer = PrimeFaces.queueTask(function(){
                     $this.searchValue = '';
                     $this.focusInput ? $this.focusInput.val('') : null;
                 }, 1000);
@@ -784,7 +797,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         })
         .on('keydown.ui-selectonemenu',function(e) {
 
-            switch(e.key) {
+            switch(e.code) {
                 case 'ArrowUp':
                     $this.highlightPrev(e);
                 break;
@@ -794,18 +807,21 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 break;
 
                 case 'Enter':
-                    $this.handleEnterKey(e);
+                case 'NumpadEnter':
+                    $this.keyboardTarget.trigger("focus");
+                    $this.keyboardTarget.trigger(jQuery.Event('keydown', { key: e.key, code: e.code }));
                 break;
 
                 case 'Tab':
-                    $this.handleTabKey();
+                    $this.keyboardTarget.trigger("focus");
+                    $this.keyboardTarget.trigger(jQuery.Event('keydown', { key: e.key, code: e.code }));
                 break;
 
                 case 'Escape':
                     $this.handleEscapeKey(e);
                 break;
 
-                case ' ':
+                case 'Space':
                     $this.handleSpaceKey(e);
                 break;
 
@@ -813,9 +829,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 break;
             }
         }).on('paste.ui-selectonemenu', function() {
-            setTimeout(function(){
+            PrimeFaces.queueTask(function(){
                 $this.filter($this.filterInput.val());
-            },2);
+            });
 		});
     },
 
@@ -921,17 +937,18 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         if(this.panel.is(':visible')) {
             this.revert();
             this.hide();
+            event.preventDefault();
         }
-
-        event.preventDefault();
     },
 
     /**
      * Callback for when the tab key was pressed. Selects the next option.
      * @private
+     * @param {JQuery.TriggeredEvent} event The keyboard event for the TAB.
      */
-    handleTabKey: function() {
-        if(this.panel.is(':visible')) {
+    handleTabKey: function(event) {
+        this.isTabbing = this.panel.is(':visible');
+        if(this.isTabbing) {
             this.selectItem(this.getActiveItem());
         }
     },
@@ -1001,6 +1018,15 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 onExited: function() {
                     $this.panel.css('z-index', '');
                     $this.keyboardTarget.attr('aria-expanded', false);
+
+                    // refocus input if not tabbing and active is owned by this component
+                    if (!$this.isTabbing) {
+                        var activeElement = $(document.activeElement);
+                        if ($this.jq.has(activeElement).length || $this.panel.has(activeElement).length) {
+                            $this.keyboardTarget.trigger('focus.ui-selectonemenu');
+                        }
+                    }
+                    $this.isTabbing = false;
                 }
             });
         }
@@ -1020,7 +1046,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     focusFilter: function(timeout) {
         if(timeout) {
             var $this = this;
-            setTimeout(function() {
+            PrimeFaces.queueTask(function() {
                 $this.focusFilter();
             }, timeout);
         }
@@ -1104,15 +1130,15 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      */
     setLabel: function(value) {
         var displayedLabel = this.getLabelToDisplay(value);
-
+        var valueEmpty = value === '&nbsp;' || value === '\xa0';
         if (this.cfg.editable) {
-            if (value === '&nbsp;')
+            if (valueEmpty)
                 this.label.val('');
             else
                 this.label.val(displayedLabel);
 
             var hasPlaceholder = this.label[0].hasAttribute('placeholder');
-            this.updatePlaceholderClass((hasPlaceholder && value === '&nbsp;'));
+            this.updatePlaceholderClass((hasPlaceholder && valueEmpty));
         }
         else if (this.cfg.alwaysDisplayLabel && this.cfg.label) {
             this.label.text(this.cfg.label);
@@ -1123,11 +1149,11 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 labelText = '&nbsp;';
             }
 
-            this.updatePlaceholderClass((value === '&nbsp;' && labelText !== '&nbsp;'));
+            this.updatePlaceholderClass((valueEmpty && labelText !== '&nbsp;'));
 
-            if (value === '&nbsp;') {
+            if (valueEmpty) {
                 if (labelText != '&nbsp;') {
-                   this.label.text(labelText);
+                    this.label.text(labelText);
                 } else {
                     this.label.html(labelText);
                 }
@@ -1136,7 +1162,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 this.label.removeClass('ui-state-disabled');
 
                 var option = null;
-                if(this.items) {
+                if (this.items) {
                     var selectedItem = this.items.filter('[data-label="' + $.escapeSelector(value) + '"]');
                     option = this.options.eq(this.resolveItemIndex(selectedItem));
                 }
@@ -1149,6 +1175,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 } else {
                     this.label.text(displayedLabel);
                 }
+                this.label.attr('aria-label', displayedLabel);
             }
         }
     },
@@ -1377,8 +1404,10 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      */
     dynamicPanelLoad: function() {
-        var $this = this,
-        options = {
+        var $this = this;
+        $this.setQuerying(true);
+        
+        var options = {
             source: this.id,
             process: this.id,
             update: this.id,
@@ -1410,6 +1439,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
                 $this.initContents();
                 $this.bindItemEvents();
+                $this.setQuerying(false);
             }
         };
 
@@ -1445,6 +1475,24 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 handleMethod.call(this, event);
             }
         }
+    },
+
+    /**
+     * Sets the querying state.
+     * @param {boolean} state Querying state to set.
+     * @private
+     */
+    setQuerying: function(state) {
+        if (state && !this.querying) {
+            this.jq.addClass('ui-state-loading');
+            this.menuIcon.prepend('<span class="ui-icon-loading pi pi-spin pi-spinner"></span>');
+                
+        }
+        else if (!state && this.querying) {
+            this.jq.removeClass('ui-state-loading');
+            this.menuIcon.find('.ui-icon-loading').remove();
+        }
+        this.querying = state;
     },
 
     /**

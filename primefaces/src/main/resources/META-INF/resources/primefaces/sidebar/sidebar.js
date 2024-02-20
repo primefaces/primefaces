@@ -224,7 +224,7 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
         });
 
         if(this.cfg.showCloseIcon) {
-            this.closeIcon.attr('role', 'button');
+            PrimeFaces.skinCloseAction(this.closeIcon);
         }
     },
 

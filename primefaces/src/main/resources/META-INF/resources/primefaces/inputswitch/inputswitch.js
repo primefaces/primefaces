@@ -16,6 +16,9 @@
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.DeferredWidgetCfg} cfg
+ * @prop {boolean} cfg.showLabels Flag to show the labels or not
+ * @prop {string} cfg.onLabel Text for on label
+ * @prop {string} cfg.offLabel Text for off label
  */
 PrimeFaces.widget.InputSwitch = PrimeFaces.widget.DeferredWidget.extend({
 
@@ -62,6 +65,14 @@ PrimeFaces.widget.InputSwitch = PrimeFaces.widget.DeferredWidget.extend({
         this.jq.css({'width': containerWidth + 'px' });
         this.onLabel.width(labelWidth);
         this.offLabel.width(labelWidth);
+        
+        // labels
+        if (this.cfg.showLabels) {
+            var labelOn = this.cfg.onLabel || PrimeFaces.getAriaLabel('switch.ON');
+            this.onLabel.text(labelOn);
+            var labelOff = this.cfg.offLabel || PrimeFaces.getAriaLabel('switch.OFF');
+            this.offLabel.text(labelOff);
+        }
 
         //position
         this.offContainer.css({ width: (this.jq.width() - 5) + 'px' });

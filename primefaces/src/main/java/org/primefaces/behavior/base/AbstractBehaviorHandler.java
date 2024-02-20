@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -51,8 +51,7 @@ import org.primefaces.util.LangUtils;
 public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
         extends TagHandler implements BehaviorHolderAttachedObjectHandler {
 
-    protected static final String MOJARRA_ATTACHED_OBJECT_HANDLERS_KEY = "javax.faces.RetargetableHandlers";
-    protected static final String MOJARRA_22_ATTACHED_OBJECT_HANDLERS_KEY = "javax.faces.view.AttachedObjectHandlers";
+    protected static final String MOJARRA_ATTACHED_OBJECT_HANDLERS_KEY = "javax.faces.view.AttachedObjectHandlers";
     protected static final Method MYFACES_GET_COMPOSITION_CONTEXT_INSTANCE;
     protected static final Method MYFACES_ADD_ATTACHED_OBJECT_HANDLER;
 
@@ -225,14 +224,9 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
     }
 
     protected void addAttachedObjectHandlerToMojarra(PrimeEnvironment environment, UIComponent component) {
-
-        String key = MOJARRA_ATTACHED_OBJECT_HANDLERS_KEY;
-        if (environment.isAtLeastJsf22()) {
-            key = MOJARRA_22_ATTACHED_OBJECT_HANDLERS_KEY;
-        }
-
         Map<String, Object> attrs = component.getAttributes();
-        List<AttachedObjectHandler> result = (List<AttachedObjectHandler>) attrs.computeIfAbsent(key, k -> new ArrayList<AttachedObjectHandler>(5));
+        List<AttachedObjectHandler> result = (List<AttachedObjectHandler>) attrs.computeIfAbsent(MOJARRA_ATTACHED_OBJECT_HANDLERS_KEY,
+                k -> new ArrayList<AttachedObjectHandler>(5));
         result.add(this);
     }
 

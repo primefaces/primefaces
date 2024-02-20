@@ -328,7 +328,7 @@
             var totalShiftedItems = this.state.totalShiftedItems;
 
             if (prevState.numVisible !== this.state.numVisible || prevOptions.activeIndex !== this.options.activeIndex) {
-                if (this.options.activeIndex <= this.getMedianIndex()) {
+                if (this.options.activeIndex <= this.getMedianIndex() || this.thumbnailItems.length <= this.state.numVisible) {
                     totalShiftedItems = 0;
                 }
                 else if (this.thumbnailItems.length - this.state.numVisible + this.getMedianIndex() < this.options.activeIndex) {

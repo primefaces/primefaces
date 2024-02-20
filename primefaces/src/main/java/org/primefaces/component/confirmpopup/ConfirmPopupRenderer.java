@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,10 +29,9 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class ConfirmPopupRenderer extends CoreRenderer {
@@ -89,7 +88,7 @@ public class ConfirmPopupRenderer extends CoreRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", ConfirmPopup.MESSAGE_CLASS, null);
 
-        if (ComponentUtils.shouldRenderFacet(messageFacet)) {
+        if (FacetUtils.shouldRenderFacet(messageFacet)) {
             messageFacet.encodeAll(context);
         }
         else if (messageText != null) {
@@ -116,10 +115,9 @@ public class ConfirmPopupRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
 
         wb.init("ConfirmPopup", popup)
-                .attr("appendTo", SearchExpressionFacade.resolveClientId(context, popup, popup.getAppendTo(),
-                        SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
-                .attr("global", popup.isGlobal(), false)
-                .attr("dismissable", popup.isDismissable(), true);
+            .attr("appendTo", SearchExpressionUtils.resolveOptionalClientIdForClientSide(context, popup, popup.getAppendTo()))
+            .attr("global", popup.isGlobal(), false)
+            .attr("dismissable", popup.isDismissable(), true);
 
         wb.finish();
     }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,7 @@
 package org.primefaces.integrationtests.selectonemenu;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,8 +41,8 @@ import lombok.Data;
 public class SelectOneMenu012 implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private List<TestBean> data = Arrays.asList(new TestBean(0, "Zero"),
-                new TestBean(1, "One"), new TestBean(2, "Two"));
+    private List<TestBean> data = new ArrayList<>(Arrays.asList(new TestBean(0, "Zero"),
+                new TestBean(1, "One"), new TestBean(2, "Two")));
 
     public List<SelectItem> getSelectItems() {
         return data.stream().map(bean -> new SelectItem(bean, bean.getName())).collect(Collectors.toList());

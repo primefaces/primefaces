@@ -328,6 +328,14 @@
             if(input.is('textarea')) {
                 input.attr('aria-multiline', true);
             }
+            
+            // ARIA for filter type inputs
+            if (input.is('[class*="-filter"]')) {
+                var ariaLabel = input.attr('aria-label');
+                if (!ariaLabel) {
+                    input.attr('aria-label', PrimeFaces.getLocaleLabel('filter'));
+                }
+            }
 
             return this;
         },
@@ -360,7 +368,7 @@
             }).on("blur", function() {
                 $(this).removeClass('ui-state-focus ui-state-active');
             }).on("keydown", function(e) {
-                if(e.key === ' ' || e.key === 'Enter') {
+                if(e.code === 'Space' || e.key === 'Enter') {
                     $(this).addClass('ui-state-active');
                 }
             }).on("keyup", function() {
@@ -368,6 +376,88 @@
             });
 
             return this;
+        },
+        
+        /**
+         * There are many Close buttons in PF that should get aria-label="close" and role="button".
+         * @param {JQuery} element BUTTON or LINK element
+         * @return {JQuery} this for chaining
+         */
+        skinCloseAction : function(element) {
+            if (!element || element.length === 0) return element;
+            element.attr('aria-label', PrimeFaces.getAriaLabel('close'));
+            element.attr('role', 'button');
+            return element;
+        },
+
+        /**
+         * Applies the inline AJAX status (ui-state-loading) to the given widget / button.
+         * @param {PrimeFaces.widget.BaseWidget} [widget] the widget.
+         * @param {JQuery} [button] The button DOM element.
+         * @param {(widget: PrimeFaces.widget.BaseWidget, settings: JQuery.AjaxSettings) => boolean} [isXhrSource] Callback that checks if the widget is the source of the current AJAX request.
+         */
+        bindButtonInlineAjaxStatus: function(widget, button, isXhrSource) {
+            if (!isXhrSource) {
+                isXhrSource = function(widget, settings) {
+                    return PrimeFaces.ajax.Utils.isXhrSource(widget, settings);
+                };
+            }
+
+            widget.ajaxCount = 0;
+            $(document).on('pfAjaxSend.' + widget.id, function(e, xhr, settings) {
+                if (isXhrSource.call(this, widget, settings)) {
+                    widget.ajaxCount++;
+                    if (widget.ajaxCount > 1) {
+                        return;
+                    }
+
+                    button.addClass('ui-state-loading');
+                    widget.ajaxStart = Date.now();
+
+                    if (typeof widget.disable === 'function'
+                        && widget.cfg.disableOnAjax !== false) {
+                        widget.disable();
+                    }
+
+                    var loadIcon = $('<span class="ui-icon-loading ui-icon ui-c pi pi-spin pi-spinner"></span>');
+                    var uiIcon = button.find('.ui-icon');
+                    if (uiIcon.length) {
+                        var prefix = 'ui-button-icon-';
+                        loadIcon.addClass(prefix + uiIcon.attr('class').includes(prefix + 'left') ? 'left' : 'right');
+                    }
+                    button.prepend(loadIcon);
+                }
+            }).on('pfAjaxComplete.' + widget.id, function(e, xhr, settings, args) {
+                if (isXhrSource.call(this, widget, settings)) {
+                    widget.ajaxCount--;
+                    if (widget.ajaxCount > 0 || !args || args.redirect) {
+                        return;
+                    }
+
+                    PrimeFaces.queueTask(
+                        function(){ PrimeFaces.buttonEndAjaxDisabled(widget, button); },
+                        Math.max(PrimeFaces.ajax.minLoadAnimation + widget.ajaxStart - Date.now(), 0)
+                    );
+                    delete widget.ajaxStart;
+                }
+            });
+        },
+
+        /**
+         * Ends the AJAX disabled state.
+         * @param {PrimeFaces.widget.BaseWidget} [widget] the widget.
+         * @param {JQuery} [button] The button DOM element.
+         */
+        buttonEndAjaxDisabled: function(widget, button) {
+            button.removeClass('ui-state-loading');
+
+            if (typeof widget.enable === 'function'
+                && widget.cfg.disableOnAjax !== false
+                && !widget.cfg.disabledAttr) {
+                widget.enable();
+            }
+
+            button.find('.ui-icon-loading').remove();
         },
 
         /**
@@ -402,6 +492,9 @@
             if(this.logger) {
                 this.logger.info(log);
             }
+            if (PrimeFaces.isDevelopmentProjectStage() && window.console) {
+                console.info(log);
+            }
         },
 
         /**
@@ -411,6 +504,9 @@
         debug: function(log) {
             if(this.logger) {
                 this.logger.debug(log);
+            }
+            if (PrimeFaces.isDevelopmentProjectStage() && window.console) {
+                console.debug(log);
             }
         },
 
@@ -424,7 +520,7 @@
             }
 
             if (PrimeFaces.isDevelopmentProjectStage() && window.console) {
-                console.log(log);
+                console.warn(log);
             }
         },
 
@@ -643,7 +739,7 @@
                 }
                 //page init
                 else {
-		    var newWidget = new this.widget[widgetName](cfg);
+		            var newWidget = new this.widget[widgetName](cfg);
                     this.widgets[widgetVar] = newWidget;
                     if(this.settings.legacyWidgetNamespace) {
                         window[widgetVar] = newWidget;
@@ -700,8 +796,32 @@
          */
         focus: function(id, context) {
             var selector = ':not(:submit):not(:button):input:visible:enabled[name]';
+            
+            // if looking in container like dialog also check for first link
+            if (context) {
+                var container = $(PrimeFaces.escapeClientId(context));
+                if (container.hasClass('ui-dialog')) {
+                     selector += ', a:first';
+                }
+            }
 
             setTimeout(function() {
+                var focusFirstElement = function(elements) {
+                    if (!elements || elements.length === 0) {
+                        return;
+                    }
+                    
+                    // first element could be the dialog close button
+                    var firstElement = elements.eq(0);
+                    // loop over elements looking for an input
+                    var inputs = elements.filter(":input");
+                    if (inputs.length > 0) {
+                        firstElement = inputs.eq(0);
+                    }
+                    
+                    PrimeFaces.focusElement(firstElement);
+                };
+            
                 if(id) {
                     var jq = $(PrimeFaces.escapeClientId(id));
 
@@ -709,18 +829,14 @@
                         jq.trigger('focus');
                     }
                     else {
-                        var firstElement = jq.find(selector).eq(0);
-                        PrimeFaces.focusElement(firstElement);
+                        focusFirstElement(jq.find(selector))
                     }
                 }
                 else if(context) {
-                    var firstElement = $(PrimeFaces.escapeClientId(context)).find(selector).eq(0);
-                    PrimeFaces.focusElement(firstElement);
+                     focusFirstElement($(PrimeFaces.escapeClientId(context)).find(selector))
                 }
                 else {
-                    var elements = $(selector),
-                    firstElement = elements.eq(0);
-                    PrimeFaces.focusElement(firstElement);
+                    focusFirstElement($(selector));
                 }
             }, 50);
 
@@ -816,18 +932,20 @@
         },
 
         /**
-         *  Scrolls to a component with given client id
+         * Scrolls to a component with given client id
          * @param {string} id The ID of an element to scroll to.
+         * @param {string | number | undefined} duration string or number determining how long the animation will run. Default to 400
          */
-        scrollTo: function(id) {
+        scrollTo: function(id, duration) {
             var offset = $(PrimeFaces.escapeClientId(id)).offset();
             var scrollBehavior = 'scroll-behavior';
             var target = $('html,body');
             var sbValue = target.css(scrollBehavior);
+            var animationDuration = duration || 400;
             target.css(scrollBehavior, 'auto');
             target.animate(
                     { scrollTop: offset.top, scrollLeft: offset.left },
-                    1000,
+                    animationDuration,
                     'easeInCirc',
                     function(){ target.css(scrollBehavior, sbValue) }
             );
@@ -991,7 +1109,8 @@
          * and checking on every change (AJAX request, tab change etc.) whether any of those have become visible. A
          * widgets should extend `PrimeFaces.widget.DeferredWidget` to make use of this functionality.
          *
-         * Adds a deferred render to the global list.
+         * Adds a deferred render to the global list.  If this widdget has already been added only the last instance
+         * will be added to the stack.
          *
          * @param {string} widgetId The ID of a deferred widget.
          * @param {string} containerId ID of the container that should be visible before the widget can be rendered.
@@ -999,7 +1118,13 @@
          * return `true` when the widget was rendered, or `false` when the widget still needs to be rendered later.
          */
         addDeferredRender: function(widgetId, containerId, fn) {
-            this.deferredRenders.push({widget: widgetId, container: containerId, callback: fn});
+            // remove existing
+            this.deferredRenders = this.deferredRenders.filter(deferredRender => {
+                return !(deferredRender.widget === widgetId && deferredRender.container === containerId);
+            });
+
+            // add new
+            this.deferredRenders.push({ widget: widgetId, container: containerId, callback: fn });
         },
 
         /**
@@ -1015,13 +1140,9 @@
          * @param {string} widgetId The ID of a deferred widget.
          */
         removeDeferredRenders: function(widgetId) {
-            for(var i = (this.deferredRenders.length - 1); i >= 0; i--) {
-                var deferredRender = this.deferredRenders[i];
-
-                if(deferredRender.widget === widgetId) {
-                    this.deferredRenders.splice(i, 1);
-                }
-            }
+            this.deferredRenders = this.deferredRenders.filter(function(deferredRender) {
+                return deferredRender.widget !== widgetId;
+            });
         },
 
         /**
@@ -1104,7 +1225,18 @@
          */
         getAriaLabel: function(key) {
             var ariaLocaleSettings = this.getLocaleSettings()['aria'];
-            return (ariaLocaleSettings&&ariaLocaleSettings[key]) ? ariaLocaleSettings[key] : PrimeFaces.locales['en_US']['aria'][key];
+            var label = (ariaLocaleSettings&&ariaLocaleSettings[key]) ? ariaLocaleSettings[key] : PrimeFaces.locales['en_US']['aria'][key];
+            return label || "???"+key+"???";
+        },
+
+        /**
+         * Attempt to look up the locale key by current locale and fall back to US English if not found.
+         * @param {string} key The locale key
+         * @return {string} The translation for the given key
+         */
+        getLocaleLabel: function(key) {
+            var locale = this.getLocaleSettings();
+            return (locale&&locale[key]) ? locale[key] : PrimeFaces.locales['en_US'][key];
         },
 
         /**
@@ -1195,6 +1327,17 @@
             PrimeFaces.animationActive = false;
             PrimeFaces.customFocus = false;
             PrimeFaces.widgets = {};            
+        },
+
+        /**
+         * Queue a microtask if delay is 0 or less and setTimeout if > 0.
+         *
+         * @param {() => void} fn the function to call after the delay
+         * @param {number | undefined} delay the optional delay in milliseconds
+         * @return {number | undefined} the id associated to the timeout or undefined if no timeout used
+         */
+        queueTask: function(fn, delay) {
+            return PrimeFaces.utils.queueTask(fn, delay);
         },
 
         /**
@@ -1293,7 +1436,7 @@
          * @type {string}
          * @readonly
          */
-        RESET_VALUES_PARAM : "primefaces.resetvalues",
+        RESET_VALUES_PARAM : "javax.faces.partial.resetValues",
 
         /**
          * Name of the POST parameter that indicates whether `<p:autoUpdate>` tags should be ignored.
@@ -1383,58 +1526,213 @@
      */
     PrimeFaces.locales = {
         'en_US': {
-            closeText: 'Close',
-            prevText: 'Previous',
-            nextText: 'Next',
-            monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ],
-            monthNamesShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ],
-            dayNames: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-            dayNamesShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-            dayNamesMin: ['S', 'M', 'T', 'W ', 'T', 'F ', 'S'],
-            weekHeader: 'Week',
-            weekNumberTitle: 'W',
-            firstDay: 0,
-            isRTL: false,
-            showMonthAfterYear: false,
-            yearSuffix:'',
-            timeOnlyTitle: 'Only Time',
-            timeText: 'Time',
-            hourText: 'Hour',
-            minuteText: 'Minute',
-            secondText: 'Second',
-            millisecondText: 'Millisecond',
-            currentText: 'Current Date',
-            ampm: false,
-            year: 'Year',
-            month: 'Month',
-            week: 'Week',
-            day: 'Day',
-            list: 'Agenda',
-            allDayText: 'All Day',
-            moreLinkText: 'More...',
-            noEventsText: 'No Events',
-            clear: 'Clear',
-            aria: {
-                'paginator.PAGE': 'Page {0}',
-                'calendar.BUTTON': 'Show Calendar',
-                'datatable.sort.ASC': 'activate to sort column ascending',
-                'datatable.sort.DESC': 'activate to sort column descending',
-                'datatable.sort.NONE': 'activate to remove sorting on column',
-                'columntoggler.CLOSE': 'Close',
-                'overlaypanel.CLOSE': 'Close',
-                'colorpicker.OPEN': 'Open color picker',
-                'colorpicker.CLOSE': 'Close color picker',
-                'colorpicker.CLEAR': 'Clear the selected color',
-                'colorpicker.MARKER': 'Saturation: {s}. Brightness: {v}.',
-                'colorpicker.HUESLIDER': 'Hue slider',
-                'colorpicker.ALPHASLIDER': 'Opacity slider',
-                'colorpicker.INPUT': 'Color value field',
-                'colorpicker.FORMAT': 'Color format',
-                'colorpicker.SWATCH': 'Color swatch',
-                'colorpicker.INSTRUCTION': 'Saturation and brightness selector. Use up, down, left and right arrow keys to select.'
+            "startsWith": "Starts with",
+            "contains": "Contains",
+            "notContains": "Not contains",
+            "endsWith": "Ends with",
+            "equals": "Equals",
+            "notEquals": "Not equals",
+            "noFilter": "No Filter",
+            "filter": "Filter",
+            "lt": "Less than",
+            "lte": "Less than or equal to",
+            "gt": "Greater than",
+            "gte": "Greater than or equal to",
+            "dateIs": "Date is",
+            "dateIsNot": "Date is not",
+            "dateBefore": "Date is before",
+            "dateAfter": "Date is after",
+            "custom": "Custom",
+            "clear": "Clear",
+            "apply": "Apply",
+            "matchAll": "Match All",
+            "matchAny": "Match Any",
+            "addRule": "Add Rule",
+            "removeRule": "Remove Rule",
+            "accept": "Yes",
+            "reject": "No",
+            "choose": "Choose",
+            "upload": "Upload",
+            "cancel": "Cancel",
+            "completed": "Completed",
+            "pending": "Pending",
+            "dayNames": [
+                "Sunday",
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday",
+                "Saturday"
+            ],
+            "dayNamesShort": [
+                "Sun",
+                "Mon",
+                "Tue",
+                "Wed",
+                "Thu",
+                "Fri",
+                "Sat"
+            ],
+            "dayNamesMin": [
+                "Su",
+                "Mo",
+                "Tu",
+                "We",
+                "Th",
+                "Fr",
+                "Sa"
+            ],
+            "monthNames": [
+                "January",
+                "February",
+                "March",
+                "April",
+                "May",
+                "June",
+                "July",
+                "August",
+                "September",
+                "October",
+                "November",
+                "December"
+            ],
+            "monthNamesShort": [
+                "Jan",
+                "Feb",
+                "Mar",
+                "Apr",
+                "May",
+                "Jun",
+                "Jul",
+                "Aug",
+                "Sep",
+                "Oct",
+                "Nov",
+                "Dec"
+            ],
+            "chooseYear": "Choose Year",
+            "chooseMonth": "Choose Month",
+            "chooseDate": "Choose Date",
+            "prevDecade": "Previous Decade",
+            "nextDecade": "Next Decade",
+            "prevYear": "Previous Year",
+            "nextYear": "Next Year",
+            "prevMonth": "Previous Month",
+            "nextMonth": "Next Month",
+            "prevHour": "Previous Hour",
+            "nextHour": "Next Hour",
+            "prevMinute": "Previous Minute",
+            "nextMinute": "Next Minute",
+            "prevSecond": "Previous Second",
+            "nextSecond": "Next Second",
+            "am": "AM",
+            "pm": "PM",
+            "today": "Today",
+            "now": "Now",
+            "weekHeader": "Wk",
+            "firstDayOfWeek": 0,
+            "showMonthAfterYear": false,
+            "dateFormat": "mm/dd/yy",
+            "weak": "Weak",
+            "medium": "Medium",
+            "strong": "Strong",
+            "passwordPrompt": "Enter a password",
+            "emptyFilterMessage": "No results found",
+            "searchMessage": "{0} results are available",
+            "selectionMessage": "{0} items selected",
+            "emptySelectionMessage": "No selected item",
+            "emptySearchMessage": "No results found",
+            "emptyMessage": "No available options",
+            "weekNumberTitle": "W",
+            "isRTL": false,
+            "yearSuffix": "",
+            "timeOnlyTitle": "Only Time",
+            "timeText": "Time",
+            "hourText": "Hour",
+            "minuteText": "Minute",
+            "secondText": "Second",
+            "millisecondText": "Millisecond",
+            "year": "Year",
+            "month": "Month",
+            "week": "Week",
+            "day": "Day",
+            "list": "Agenda",
+            "allDayText": "All Day",
+            "moreLinkText": "More...",
+            "noEventsText": "No Events",
+            "aria": {
+                "trueLabel": "True",
+                "falseLabel": "False",
+                "nullLabel": "Not Selected",
+                "star": "1 star",
+                "stars": "{star} stars",
+                "selectAll": "All items selected",
+                "unselectAll": "All items unselected",
+                "close": "Close",
+                "previous": "Previous",
+                "next": "Next",
+                "navigation": "Navigation",
+                "scrollTop": "Scroll Top",
+                "moveTop": "Move Top",
+                "moveUp": "Move Up",
+                "moveDown": "Move Down",
+                "moveBottom": "Move Bottom",
+                "moveToTarget": "Move to Target",
+                "moveToSource": "Move to Source",
+                "moveAllToTarget": "Move All to Target",
+                "moveAllToSource": "Move All to Source",
+                "pageLabel": "Page {page}",
+                "firstPageLabel": "First Page",
+                "lastPageLabel": "Last Page",
+                "nextPageLabel": "Next Page",
+                "previousPageLabel": "Previous Page",
+                "rowsPerPageLabel": "Rows per page",
+                "jumpToPageDropdownLabel": "Jump to Page Dropdown",
+                "jumpToPageInputLabel": "Jump to Page Input",
+                "selectRow": "Row Selected",
+                "unselectRow": "Row Unselected",
+                "expandRow": "Row Expanded",
+                "collapseRow": "Row Collapsed",
+                "showFilterMenu": "Show Filter Menu",
+                "hideFilterMenu": "Hide Filter Menu",
+                "filterOperator": "Filter Operator",
+                "filterConstraint": "Filter Constraint",
+                "editRow": "Row Edit",
+                "saveEdit": "Save Edit",
+                "cancelEdit": "Cancel Edit",
+                "listView": "List View",
+                "gridView": "Grid View",
+                "slide": "Slide",
+                "slideNumber": "{slideNumber}",
+                "zoomImage": "Zoom Image",
+                "zoomIn": "Zoom In",
+                "zoomOut": "Zoom Out",
+                "rotateRight": "Rotate Right",
+                "rotateLeft": "Rotate Left",
+                "datatable.sort.ASC": "activate to sort column ascending",
+                "datatable.sort.DESC": "activate to sort column descending",
+                "datatable.sort.NONE": "activate to remove sorting on column",
+                "colorpicker.OPEN": "Open color picker",
+                "colorpicker.CLOSE": "Close color picker",
+                "colorpicker.CLEAR": "Clear the selected color",
+                "colorpicker.MARKER": "Saturation: {s}. Brightness: {v}.",
+                "colorpicker.HUESLIDER": "Hue slider",
+                "colorpicker.ALPHASLIDER": "Opacity slider",
+                "colorpicker.INPUT": "Color value field",
+                "colorpicker.FORMAT": "Color format",
+                "colorpicker.SWATCH": "Color swatch",
+                "colorpicker.INSTRUCTION": "Saturation and brightness selector. Use up, down, left and right arrow keys to select.",
+                "spinner.INCREASE": "Increase Value",
+                "spinner.DECREASE": "Decrease Value",
+                "switch.ON": "On",
+                "switch.OFF": "Off",
+                "messages.ERROR": "Error",
+                "messages.FATAL": "Fatal",
+                "messages.INFO": "Information",
+                "messages.WARN": "Warning"
             }
         }
-
     };
 
     PrimeFaces.locales['en'] = PrimeFaces.locales['en_US'];

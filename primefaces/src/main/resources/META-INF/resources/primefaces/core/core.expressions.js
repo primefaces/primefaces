@@ -18,10 +18,11 @@ if (!PrimeFaces.expressions) {
          * Takes a search expression that may contain multiple components, separated by commas or whitespaces. Resolves
          * each search expression to the component it refers to and returns a JQuery object with the DOM elements of
          * the resolved components.
-         * @param {string | HTMLElement | JQuery}  expressions A search expression with one or multiple components to resolve.
+         * @param {JQuery} source the source element where to start the search (e.g. required for @form).
+         * @param {string | HTMLElement | JQuery} expressions A search expression with one or multiple components to resolve.
          * @return {JQuery} A list with the resolved components.
          */
-        resolveComponentsAsSelector: function(expressions) {
+        resolveComponentsAsSelector: function(source, expressions) {
 
             if (expressions instanceof $) {
                 return expressions;
@@ -67,6 +68,15 @@ if (!PrimeFaces.expressions) {
                             elements = elements.add(
                                     $(expression.substring(2, expression.length - 1)));
                         }
+                        else if (expression == '@form') {
+                            var form = source.closest('form');
+                            if (form.length == 0) {
+                                PrimeFaces.error("Could not resolve @form for source '" + source.attr('id') + "'");
+                            }
+                            else {
+                                elements = elements.add(form[0]);
+                            }
+                        }
                     }
                 }
             }
@@ -77,10 +87,12 @@ if (!PrimeFaces.expressions) {
         /**
          * Takes a search expression that may contain multiple components, separated by commas or whitespaces. Resolves
          * each search expression to the component it refers to and returns a list of IDs of the resolved components.
+         *
+         * @param {JQuery} source the source element where to start the search (e.g. required for @form).
          * @param {string} expressions A search expression with one or multiple components to resolve.
          * @return {string[]} A list of IDs with the resolved components.
          */
-        resolveComponents: function(expressions) {
+        resolveComponents: function(source, expressions) {
             var splittedExpressions = PrimeFaces.expressions.SearchExpressionFacade.splitExpressions(expressions),
             ids = [];
 
@@ -123,6 +135,18 @@ if (!PrimeFaces.expressions) {
                                 }
                             }
                         }
+                        else if (expression == '@form') {
+                            var form = source.closest('form');
+                            if (form.length == 0) {
+                                PrimeFaces.error("Could not resolve @form for source '" + source.attr('id') + "'");
+                            }
+                            else {
+                                var clientId = form.data(PrimeFaces.CLIENT_ID_DATA) || form.attr('id');
+                                if (!PrimeFaces.inArray(ids, clientId)) {
+                                    ids.push(clientId);
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -149,6 +173,8 @@ if (!PrimeFaces.expressions) {
             var buffer = '';
 
             var parenthesesCounter = 0;
+
+            if (!expression) {return expressions;}
 
             for (var i = 0; i < expression.length; i++) {
                 var c = expression[i];

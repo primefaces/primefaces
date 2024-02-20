@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,7 +32,6 @@ import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
-
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.*;
 
@@ -63,7 +62,7 @@ public class ColorPickerRenderer extends InputRenderer {
             if (!COLOR_PATTERN.matcher(submittedValue).matches()) {
                 submittedValue = Constants.EMPTY_STRING;
             }
-            colorPicker.setSubmittedValue(ComponentUtils.getConvertedValue(context, component, submittedValue));
+            colorPicker.setSubmittedValue(submittedValue);
         }
 
         decodeBehaviors(context, component);
@@ -161,9 +160,8 @@ public class ColorPickerRenderer extends InputRenderer {
                 .attr("locale", colorPicker.calculateLocale(context).toString())
                 .attr("mode", colorPicker.getMode())
                 .attr("defaultColor", value, null)
-                .attr("theme", colorPicker.getTheme())
                 .attr("theme", colorPicker.getTheme(), "default")
-                .attr("themeMode", colorPicker.getThemeMode(), "light")
+                .attr("themeMode", colorPicker.getThemeMode(), "auto")
                 .attr("format", colorPicker.getFormat(), "hex")
                 .attr("formatToggle", colorPicker.isFormatToggle(), false)
                 .attr("clearButton", colorPicker.isClearButton(), false)

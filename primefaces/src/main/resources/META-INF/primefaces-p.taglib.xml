@@ -108,6 +108,53 @@
     </function>
 
     <tag>
+        <tag-name>validateFile</tag-name>
+        <validator>
+            <validator-id>primefaces.File</validator-id>
+        </validator>
+        <attribute>
+            <description>
+                <![CDATA[Regular expression for accepted file types, e.g. /(\.|\/)(gif|jpe?g|png)$/]]>
+            </description>
+            <name>allowTypes</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Maximum number of files to be uploaded.]]>
+            </description>
+            <name>fileLimit</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Individual file size limit in bytes. Default is unlimited.]]>
+            </description>
+            <name>sizeLimit</name>
+            <required>false</required>
+            <type>java.lang.Long</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Wheter the content type should be validated based on the accept attribute of the attached component. Default is false.]]>
+            </description>
+            <name>contentType</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether virus scan should be performed. Default is false.]]>
+            </description>
+            <name>virusScan</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+    </tag>
+
+    <tag>
         <description>AutoUpdate is a TagHandler to mark the parent component to be updated at every AJAX request.
             AutoUpdate is ignored if the trigger (p:commandButton, p:ajax...) of AJAX request has the attribute ignoreAutoUpdate set to 'true'.
         </description>
@@ -151,7 +198,7 @@
         <attribute>
             <description>Filename of the generated export file, defaults to target component id.</description>
             <name>fileName</name>
-            <required>false</required>
+            <required>true</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
@@ -169,6 +216,12 @@
         <attribute>
             <description>PostProcessor for the exported document.</description>
             <name>postProcessor</name>
+            <required>false</required>
+            <type>javax.el.MethodExpression</type>
+        </attribute>
+        <attribute>
+            <description>Row processor for the exported document.</description>
+            <name>onRowExport</name>
             <required>false</required>
             <type>javax.el.MethodExpression</type>
         </attribute>
@@ -220,33 +273,47 @@
             <required>false</required>
             <type>javax.el.MethodExpression</type>
         </attribute>
+        <attribute>
+            <description>Control how many items are fetched at a time when DataTable#lazy is enabled. Retrieve the entire underlying dataset in smaller, manageable chunks rather than all at once.</description>
+            <name>bufferSize</name>
+            <required>false</required>
+            <type>javax.el.ValueExpression</type>
+        </attribute>
     </tag>
 
     <tag>
-        <description>The legacy way to present dynamic binary data to the client is to write a servlet or a filter and stream the binary data.
-            FileDownload presents an easier way to do the same.
+        <description><![CDATA[The legacy way to present dynamic binary data to the client is to write a servlet or a filter and stream the binary data.
+            FileDownload presents an easier way to do the same.]]>
         </description>
         <tag-name>fileDownload</tag-name>
         <handler-class>
             org.primefaces.component.filedownload.FileDownloadTagHandler
         </handler-class>
         <attribute>
-            <description>A streamed content instance.</description>
+            <description><![CDATA[A streamed content instance.]]></description>
             <name>value</name>
             <required>true</required>
             <type>java.lang.Object</type>
         </attribute>
         <attribute>
-            <description>Specifies display mode (non-ajax), valid values are "attachment" (default) and "inline".</description>
+            <description><![CDATA[Specifies display mode (non-ajax), valid values are "attachment" (default) and "inline".]]></description>
             <name>contentDisposition</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description>Defines setting cookie key for monitorDownload method on client side.</description>
+            <description><![CDATA[Defines setting cookie key for monitorDownload method on client side.]]></description>
             <name>monitorKey</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Controls the 'no-store' attribute on the cache control header. Default false is to include 'no-store'.]]>
+            </description>
+            <name>store</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
     </tag>
 
@@ -465,6 +532,14 @@
             <name>escape</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Callback to execute before displaying confirmation dialog. Return false to prevent dialog from appearing.]]>
+            </description>
+            <name>beforeShow</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
     </tag>
 
@@ -744,6 +819,22 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Sets toggle animation speed in milliseconds. Default is 500.]]>
+            </description>
+            <name>toggleSpeed</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[ Should the tab scroll into view. One of start, center, end, nearest, or null if disabled. Default is null.]]>
+            </description>
+            <name>scrollIntoView</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -983,15 +1074,39 @@
         </attribute>
        <attribute>
             <description>
+                <![CDATA[When specified, helps the browser select what controls to show. The allowed values are nodownload, nofullscreen and noremoteplayback.]]>
+            </description>
+            <name>controlslist</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[This enumerated attribute indicates whether to use CORS to fetch the related audio/video file. The allowed values are anonymous and user-credentials.]]>
+            </description>
+            <name>crossorigin</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+       <attribute>
+            <description>
                 <![CDATA[Specifies that the video will start playing as soon as it is ready.)]]>
             </description>
             <name>autoplay</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+       <attribute>
+            <description>
+                <![CDATA[Used to disable the capability of remote playback in devices that are attached using wired (HDMI, DVI, etc.) and wireless technologies (Miracast, Chromecast, DLNA, AirPlay, etc.)]]>
+            </description>
+            <name>disableremoteplayback</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
         <attribute>
             <description>
-                <![CDATA[Specifies that the video will start over again, every time it is finished.)]]>
+                <![CDATA[Specifies that the audio/video will start over again, every time it is finished.)]]>
             </description>
             <name>loop</name>
             <required>false</required>
@@ -999,7 +1114,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Specifies that the audio output of the video should be muted.)]]>
+                <![CDATA[Specifies that the audio output should be muted.)]]>
             </description>
             <name>muted</name>
             <required>false</required>
@@ -1659,25 +1774,9 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Text to display when there is no data to display.]]>
-            </description>
-            <name>emptyMessage</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Appends the overlay to the element defined by search expression. Defaults to document body.]]>
             </description>
             <name>appendTo</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Hint text for screen readers to provide information about the search results. Default is "{0} results found, use arrow keys to navigate".]]>
-            </description>
-            <name>resultsMessage</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -1831,14 +1930,6 @@
                 <![CDATA[Position of the dropdown button in the tabbing order.]]>
             </description>
             <name>dropdownTabindex</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[ARIA Label for the dropdown button.]]>
-            </description>
-            <name>dropdownAriaLabel</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -4697,6 +4788,38 @@
         </component>
         <attribute>
             <description>
+                <![CDATA[Unique identifier of the component in a namingContainer.]]>
+            </description>
+            <name>id</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
+            </description>
+            <name>rendered</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
+            </description>
+            <name>binding</name>
+            <required>false</required>
+            <type>javax.faces.component.UIComponent</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Name of the client side widget.]]>
+            </description>
+            <name>widgetVar</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Datetime format.]]>
             </description>
             <name>pattern</name>
@@ -5472,14 +5595,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A collection of selectitems for filter dropdown.]]>
-            </description>
-            <name>filterOptions</name>
-            <required>false</required>
-            <type>java.lang.Object</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Match mode for filtering.]]>
             </description>
             <name>filterMatchMode</name>
@@ -5491,6 +5606,14 @@
                 <![CDATA[Location of the column filter with respect to header content. Options are 'bottom'(default) and 'top'.]]>
             </description>
             <name>filterPosition</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Placeholder for plain input text style filters.]]>
+            </description>
+            <name>filterPlaceholder</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -5528,11 +5651,11 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Enables selection mode, valid values are "single" and "multiple".]]>
+                <![CDATA[Indicates whether or not the column should contain a radiobutton or checkbox for selection]]>
             </description>
-            <name>selectionMode</name>
+            <name>selectionBox</name>
             <required>false</required>
-            <type>java.lang.String</type>
+            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -5925,14 +6048,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A collection of selectitems for filter dropdown.]]>
-            </description>
-            <name>filterOptions</name>
-            <required>false</required>
-            <type>java.lang.Object</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Match mode for filtering.]]>
             </description>
             <name>filterMatchMode</name>
@@ -5944,6 +6059,14 @@
                 <![CDATA[Location of the column filter with respect to header content. Options are 'bottom'(default) and 'top'.]]>
             </description>
             <name>filterPosition</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Placeholder for plain input text style filters.]]>
+            </description>
+            <name>filterPlaceholder</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -6061,7 +6184,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Responive priority of the column, lower values have more priority.]]>
+                <![CDATA[Responsive priority of the column, lower values have more priority.]]>
             </description>
             <name>responsivePriority</name>
             <required>false</required>
@@ -6178,6 +6301,15 @@
             <name>displayPriority</name>
             <required>false</required>
             <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[An EL expression or a literal text that defines a converter for the component. When it's an EL expression, it's resolved to a converter instance.
+    In case it's a static text, it must refer to a converter id.]]>
+            </description>
+            <name>converter</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
         </attribute>
     </tag>
     <tag>
@@ -6662,6 +6794,14 @@
                 <![CDATA[When set to true client side validation is enabled, global setting is required to be enabled as a prerequisite.]]>
             </description>
             <name>validateClient</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[When set to true this button is only enabled after successful client side validation. Used together with p:clientValidator on all relevant input-components.]]>
+            </description>
+            <name>enabledByValidateClient</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -7556,6 +7696,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Name of collection iterator which will be the value of DashboardWidget.getValue().]]>
+            </description>
+            <name>var</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -7659,14 +7807,6 @@
                 <![CDATA[Template of the rowsPerPage dropdown.]]>
             </description>
             <name>rowsPerPageTemplate</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Label for rowsPerPage dropdown.]]>
-            </description>
-            <name>rowsPerPageLabel</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -7910,14 +8050,6 @@
                 <![CDATA[Template of the rowsPerPage dropdown.]]>
             </description>
             <name>rowsPerPageTemplate</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Label for rowsPerPage dropdown.]]>
-            </description>
-            <name>rowsPerPageLabel</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -8289,14 +8421,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Label for rowsPerPage dropdown.]]>
-            </description>
-            <name>rowsPerPageLabel</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Template of the currentPageReport UI.]]>
             </description>
             <name>currentPageReportTemplate</name>
@@ -8449,7 +8573,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines sorting mode, valid values are "single" (default) and "multiple".]]>
+                <![CDATA[Defines sorting mode, valid values are "single" and "multiple" (default).]]>
             </description>
             <name>sortMode</name>
             <required>false</required>
@@ -8635,15 +8759,15 @@
             <description>
                 <![CDATA[Disables row selection when true.]]>
             </description>
-            <name>disabledSelection</name>
+            <name>selectionDisabled</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines row select mode for checkbox based selection, valid values are new (default), add none.]]>
+                <![CDATA[Defines row select mode for checkbox based selection, valid values are new (default), and none.]]>
             </description>
-            <name>rowSelectMode</name>
+            <name>selectionRowMode</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -8699,7 +8823,7 @@
             <description>
                 <![CDATA[Disables text selection on row click. Default is true.]]>
             </description>
-            <name>disabledTextSelection</name>
+            <name>selectionTextDisabled</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -8962,9 +9086,17 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Whether to show the select all checkbox inside the column's header.]]>
+                <![CDATA[Whether to show the select all checkbox inside the column's header. Default is true.]]>
             </description>
             <name>showSelectAll</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[When enabled, toggle select will only apply on filtered items]]>
+            </description>
+            <name>selectAllFilteredOnly</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -9071,14 +9203,6 @@
                 <![CDATA[Template of the rowsPerPage dropdown.]]>
             </description>
             <name>rowsPerPageTemplate</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Label for rowsPerPage dropdown.]]>
-            </description>
-            <name>rowsPerPageLabel</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -10419,7 +10543,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Sets toogle animation speed in milliseconds. Default is 500.]]>
+                <![CDATA[Sets toggle animation speed in milliseconds. Default is 500.]]>
             </description>
             <name>toggleSpeed</name>
             <required>false</required>
@@ -10727,30 +10851,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Message to display when file size validation fails.]]>
-            </description>
-            <name>invalidSizeMessage</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Message to display when file limit validation fails.]]>
-            </description>
-            <name>invalidFileMessage</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Message to display when file count validation fails.]]>
-            </description>
-            <name>fileLimitMessage</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Specifies dragdrop based file selection from filesystem, default is true and works only on supported browsers.]]>
             </description>
             <name>dragDropSupport</name>
@@ -10964,6 +11064,14 @@
             <name>dropZone</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Simple Mode: if the filename should be displayed.]]>
+            </description>
+            <name>displayFilename</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
     </tag>
     <tag>
@@ -12768,7 +12876,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Label to be shown in display mode when value isempty.]]>
+                <![CDATA[Label to be shown in display mode when value is empty.]]>
             </description>
             <name>emptyLabel</name>
             <required>false</required>
@@ -13574,7 +13682,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[DO NOT USE! To limit the number of digits...set maximumValue, minimumValue and/or decimalPlaces accordingly.]]>
+                <![CDATA[DO NOT USE! To limit the number of digits...set minValue, maxValue and/or decimalPlaces accordingly.]]>
             </description>
             <name>maxlength</name>
             <required>false</required>
@@ -14055,7 +14163,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
+            <![CDATA[Deprecated since 10.0 for removal in 15.0.0)]]>
         </description>
         <tag-name>inputSwitch</tag-name>
         <component>
@@ -17197,6 +17305,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines text direction, valid values are "ltr" (default) and "rtl".]]>
+            </description>
+            <name>dir</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -17440,6 +17556,30 @@
                 <![CDATA[Event to toggle the submenus, default is hover. Valid values are "hover" and "click".]]>
             </description>
             <name>toggleEvent</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Delay in milliseconds before displaying the submenu. Default is 0 meaning immediate.]]>
+            </description>
+            <name>showDelay</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Delay in milliseconds before hiding the submenu., if 0 not hidden until document.click(). Default is 0.]]>
+            </description>
+            <name>hideDelay</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines text direction, valid values are "ltr" (default) and "rtl".]]>
+            </description>
+            <name>dir</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -19777,7 +19917,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Displays data in a 'table' layout, 'grid' layout or 'flex' layout. The grid and flex layout are responsive layouts. Default value is 'grid'.]]>
+                <![CDATA[Displays data in a 'tabular' layout, 'grid' layout or 'flex' layout. The grid and flex layout are responsive layouts. Default value is 'grid'.]]>
             </description>
             <name>layout</name>
             <required>false</required>
@@ -20877,70 +21017,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Text of add button. Default is "Add".]]>
-            </description>
-            <name>addLabel</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Text of add all button. Default is "Add All".]]>
-            </description>
-            <name>addAllLabel</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Text of remove button. Default is "Remove".]]>
-            </description>
-            <name>removeLabel</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Text of remove all button. Default is "Remove All".]]>
-            </description>
-            <name>removeAllLabel</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Text of move up button. Default is "Move Up".]]>
-            </description>
-            <name>moveUpLabel</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Text of move top button. Default is "Move Top".]]>
-            </description>
-            <name>moveTopLabel</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Text of move down button. Default is "Move Down".]]>
-            </description>
-            <name>moveDownLabel</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Text of move bottom button. Default is "Move Down".]]>
-            </description>
-            <name>moveBottomLabel</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Specifies visibility of reorder buttons of sourcelist. Default is false.]]>
             </description>
             <name>showSourceControls</name>
@@ -21195,6 +21271,22 @@
                 <![CDATA[Javascript handler to execute when ajax request is completed.]]>
             </description>
             <name>oncomplete</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the poller is activated. Return false to prevent poller from starting.]]>
+            </description>
+            <name>onactivated</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the poller is deactivated. Return false to prevent poller from stopping.]]>
+            </description>
+            <name>ondeactivated</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -21462,6 +21554,14 @@
                 <![CDATA[Defines the mode of the progress, valid values are "determinate" and "indeterminate".]]>
             </description>
             <name>mode</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Severity type of the progressBar.]]>
+            </description>
+            <name>severity</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -22496,10 +22596,12 @@
             <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
+            <description>
+                <![CDATA[Enables selection of time ranges by clicking and dragging on the schedule, see https://fullcalendar.io/docs/select-callback. Uses the ajax-event "rangeSelect" instead of "dateSelect".]]>
+            </description>
             <name>selectable</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-            <description>Enables selection of time ranges by clicking and dragging on the schedule, see https://fullcalendar.io/docs/select-callback. Uses the ajax-event "rangeSelect" instead of "dateSelect".</description>
         </attribute>
         <attribute>
             <description>
@@ -23532,6 +23634,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Label to be shown in updateLabel mode when one or more items are selected. If not set the label is shown.]]>
+            </description>
+            <name>multipleLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Placeholder text to show when filter input is empty.]]>
             </description>
             <name>filterPlaceholder</name>
@@ -23553,6 +23663,19 @@
             <name>filterNormalize</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Optional
+                attribute that is a literal string that is the fully qualified
+                class name of a concrete class that implements
+                <code>java.util.Collection</code>, or an EL expression that
+                evaluates to either 1. such a String, or 2. the
+                <code>Class</code> object itself.]]>
+            </description>
+            <name>collectionType</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
     </tag>
     <tag>
@@ -25212,14 +25335,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Plain mode displays radiobuttons using native browser rendering instead of themes.]]>
-            </description>
-            <name>plain</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Unselectable mode when true clicking a radio again will clear the selection. Default false.]]>
             </description>
             <name>unselectable</name>
@@ -25241,6 +25356,14 @@
             <name>readonly</name>
             <required>false</required>
             <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Comma separated list of column style classes.]]>
+            </description>
+            <name>columnClasses</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
     </tag>
     <tag>
@@ -27120,6 +27243,22 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Defines if filtering would be done using normalized values (accents will be removed from characters). Default is false.]]>
+            </description>
+            <name>filterNormalize</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines if filter input should receive focus when overlay popup is displayed. Default is true.]]>
+            </description>
+            <name>filterInputAutoFocus</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[If true, unresolvable components referenced in the update/process attribute are ignored. Default is 'false' and therefore a ComponentNotFoundException will be thrown.]]>
             </description>
             <name>ignoreComponentNotFound</name>
@@ -27379,6 +27518,14 @@
             <name>styleClass</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Adds a close icon to hide the message.]]>
+            </description>
+            <name>closable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
     </tag>
     <tag>
@@ -28103,7 +28250,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Whether to focus the first tab that contains an error after form submission.]]>
+                <![CDATA[Whether to focus the first tab that contains an error after form submission. Default is false.]]>
             </description>
             <name>focusOnError</name>
             <required>false</required>
@@ -28111,7 +28258,7 @@
         </attribute>
          <attribute>
             <description>
-                <![CDATA[Whether to focus on the last active tab that a user selected.]]>
+                <![CDATA[Whether to focus on the last active tab that a user selected. Default is false.]]>
             </description>
             <name>focusOnLastActiveTab</name>
             <required>false</required>
@@ -28399,11 +28546,11 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Height of the editor. Default is min integer value.]]>
+                <![CDATA[Height of the editor.]]>
             </description>
             <name>height</name>
             <required>false</required>
-            <type>java.lang.Integer</type>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -28630,6 +28777,30 @@
                 <![CDATA[Event to toggle the submenus, default is hover. Valid values are "hover" and "click".]]>
             </description>
             <name>toggleEvent</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Delay in milliseconds before displaying the submenu. Default is 0 meaning immediate.]]>
+            </description>
+            <name>showDelay</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Delay in milliseconds before hiding the submenu., if 0 not hidden until document.click(). Default is 0.]]>
+            </description>
+            <name>hideDelay</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines text direction, valid values are "ltr" (default) and "rtl".]]>
+            </description>
+            <name>dir</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -30442,14 +30613,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Label for rowsPerPage dropdown.]]>
-            </description>
-            <name>rowsPerPageLabel</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Template of the currentPageReport UI.]]>
             </description>
             <name>currentPageReportTemplate</name>
@@ -30586,7 +30749,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines sorting mode, valid values are "single" (default) and "multiple".]]>
+                <![CDATA[Defines sorting mode, valid values are "single" and "multiple" (default).]]>
             </description>
             <name>sortMode</name>
             <required>false</required>
@@ -30884,64 +31047,6 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[Watermark displays a hint on an input field.]]>
-        </description>
-        <tag-name>watermark</tag-name>
-        <component>
-            <component-type>org.primefaces.component.Watermark</component-type>
-            <renderer-type>org.primefaces.component.WatermarkRenderer</renderer-type>
-        </component>
-        <attribute>
-            <description>
-                <![CDATA[Unique identifier of the component in a namingContainer.]]>
-            </description>
-            <name>id</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
-            </description>
-            <name>rendered</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
-            </description>
-            <name>binding</name>
-            <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Name of the client side widget.]]>
-            </description>
-            <name>widgetVar</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Text of watermark. Required.]]>
-            </description>
-            <name>value</name>
-            <required>true</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Id of the component to attach the watermark.]]>
-            </description>
-            <name>for</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-    </tag>
-    <tag>
-        <description>
             <![CDATA[Video component is used for embedding video content such as MP4, OGG, WEBM to JSF views.]]>
         </description>
         <tag-name>video</tag-name>
@@ -31021,6 +31126,22 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[When specified, helps the browser select what controls to show. The allowed values are nodownload, nofullscreen and noremoteplayback.]]>
+            </description>
+            <name>controlslist</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[This enumerated attribute indicates whether to use CORS to fetch the related audio/video file. The allowed values are anonymous and user-credentials.]]>
+            </description>
+            <name>crossorigin</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
        <attribute>
             <description>
                 <![CDATA[Specifies that the video will start playing as soon as it is ready.)]]>
@@ -31029,11 +31150,35 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+       <attribute>
+            <description>
+                <![CDATA[Used to disable the capability of remote playback in devices that are attached using wired (HDMI, DVI, etc.) and wireless technologies (Miracast, Chromecast, DLNA, AirPlay, etc.)]]>
+            </description>
+            <name>disableremoteplayback</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+       <attribute>
+            <description>
+                <![CDATA[Prevents the browser from suggesting a Picture-in-Picture context menu or to request Picture-in-Picture automatically in some cases.]]>
+            </description>
+            <name>disablepictureinpicture</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
         <attribute>
             <description>
                 <![CDATA[Specifies that the video will start over again, every time it is finished.)]]>
             </description>
             <name>loop</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Specifies that the video is to be played "inline", that is within the element's playback area. Note that the absence of this attribute does not imply that the video will always be played in fullscreen.)]]>
+            </description>
+            <name>playsinline</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -31171,6 +31316,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[If true, next and back navigation buttons will be disabled during Ajax requests triggered by them. Default is 'trie'.]]>
+            </description>
+            <name>disableOnAjax</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Javascript event handler to be invoked when flow goes back.]]>
             </description>
             <name>onback</name>
@@ -31224,6 +31377,88 @@
             <name>effectDuration</name>
             <required>false</required>
             <type>java.lang.Integer</type>
+        </attribute>
+    </tag>
+    <tag>
+        <description>
+            <![CDATA[Chart.js component using raw JSON or XDev model.]]>
+        </description>
+        <tag-name>chart</tag-name>
+        <component>
+            <component-type>org.primefaces.component.Chart</component-type>
+            <renderer-type>org.primefaces.component.ChartRenderer</renderer-type>
+        </component>
+        <attribute>
+            <description>
+                <![CDATA[Unique identifier of the component in a namingContainer.]]>
+            </description>
+            <name>id</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
+            </description>
+            <name>rendered</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
+            </description>
+            <name>binding</name>
+            <required>false</required>
+            <type>javax.faces.component.UIComponent</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Name of the client side widget.]]>
+            </description>
+            <name>widgetVar</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[JSON value of the chart.]]>
+            </description>
+            <name>value</name>
+            <required>true</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Inline style of the component.]]>
+            </description>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class of the component.]]>
+            </description>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]>
+            </description>
+            <name>ariaLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Name of javascript function to extend the options of the underlying fullcalendar plugin.]]>
+            </description>
+            <name>extender</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
     </tag>
     <tag>
@@ -32632,6 +32867,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Whether to hide the overlay on date selection is completed when selectionMode is range. Default is false.]]>
+            </description>
+            <name>hideOnRangeSelection</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Maximum number of selectable dates in multiple mode. Default is java.lang.Integer.MAX_VALUE.]]>
             </description>
             <name>maxDateCount</name>
@@ -33108,6 +33351,30 @@
             <name>visible</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Icon of the badge.]]>
+            </description>
+            <name>icon</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Position of the icon, default value is left.]]>
+            </description>
+            <name>iconPos</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the badge element clicked.]]>
+            </description>
+            <name>onclick</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
     </tag>
     <tag>
@@ -33620,6 +33887,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Step size when pressing arrow keys to resize panel. Default is 5.]]>
+            </description>
+            <name>step</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Storage identifier of a stateful Splitter.]]>
             </description>
             <name>stateKey</name>
@@ -33720,6 +33995,30 @@
                 <![CDATA[Style class of the component.]]>
             </description>
             <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Position in the tabbing order.]]>
+            </description>
+            <name>tabindex</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Splitter handle ARIA label for screenreader support.]]>
+            </description>
+            <name>ariaLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Establishes relationships between the splitter and panel label element IDs.]]>
+            </description>
+            <name>ariaLabelledBy</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>

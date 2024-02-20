@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +25,6 @@ package org.primefaces.component.panel;
 
 import java.io.IOException;
 import java.util.Map;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -33,8 +32,8 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
-import org.primefaces.util.MessageFactory;
 import org.primefaces.util.WidgetBuilder;
 
 public class PanelRenderer extends CoreRenderer {
@@ -135,10 +134,18 @@ public class PanelRenderer extends CoreRenderer {
         }
 
         writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
+        writer.writeAttribute(HTML.ARIA_ROLE, "region", null);
+
+        boolean isRenderHeader = shouldRenderHeader(context, panel);
+        if (isRenderHeader) {
+            writer.writeAttribute(HTML.ARIA_LABELLEDBY, clientId + "_header", null);
+        }
 
         renderDynamicPassThruAttributes(context, panel);
 
-        encodeHeader(context, panel, optionsMenu);
+        if (isRenderHeader) {
+            encodeHeader(context, panel, optionsMenu);
+        }
         encodeContent(context, panel);
         encodeFooter(context, panel);
 
@@ -162,20 +169,27 @@ public class PanelRenderer extends CoreRenderer {
         writer.endElement("div");
     }
 
+    protected boolean shouldRenderHeader(FacesContext context, Panel panel) throws IOException {
+        UIComponent header = panel.getFacet("header");
+        String headerText = panel.getHeader();
+        return headerText != null || FacetUtils.shouldRenderFacet(header, panel.isRenderEmptyFacets());
+    }
+
     protected void encodeHeader(FacesContext context, Panel panel, Menu optionsMenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         UIComponent header = panel.getFacet("header");
         String headerText = panel.getHeader();
         String clientId = panel.getClientId(context);
-        boolean shouldRenderFacet = ComponentUtils.shouldRenderFacet(header, panel.isRenderEmptyFacets());
-
-        if (headerText == null && !shouldRenderFacet) {
-            return;
-        }
+        boolean shouldRenderFacet = FacetUtils.shouldRenderFacet(header, panel.isRenderEmptyFacets());
 
         writer.startElement("div", null);
         writer.writeAttribute("id", panel.getClientId(context) + "_header", null);
         writer.writeAttribute("class", Panel.PANEL_TITLEBAR_CLASS, null);
+        if (panel.isToggleable()) {
+            writer.writeAttribute(HTML.ARIA_ROLE, "button", null);
+            writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(!panel.isCollapsed()), null);
+            writer.writeAttribute(HTML.ARIA_CONTROLS, clientId + "_content", null);
+        }
 
         //Title
         writer.startElement("span", null);
@@ -192,21 +206,21 @@ public class PanelRenderer extends CoreRenderer {
 
         //Options
         if (panel.isClosable()) {
-            encodeIcon(context, panel, "ui-icon-closethick", clientId + "_closer", panel.getCloseTitle(), MessageFactory.getMessage(Panel.ARIA_CLOSE));
+            encodeIcon(context, panel, "ui-icon-closethick", clientId + "_closer", panel.getCloseTitle(), null);
         }
 
         if (panel.isToggleable()) {
             String icon = panel.isCollapsed() ? "ui-icon-plusthick" : "ui-icon-minusthick";
-            encodeIcon(context, panel, icon, clientId + "_toggler", panel.getToggleTitle(), MessageFactory.getMessage(Panel.ARIA_TOGGLE));
+            encodeIcon(context, panel, icon, clientId + "_toggler", panel.getToggleTitle(), null);
         }
 
         if (optionsMenu != null) {
-            encodeIcon(context, panel, "ui-icon-gear", clientId + "_menu", panel.getMenuTitle(), MessageFactory.getMessage(Panel.ARIA_OPTIONS_MENU));
+            encodeIcon(context, panel, "ui-icon-gear", clientId + "_menu", panel.getMenuTitle(), null);
         }
 
         //Actions
         UIComponent actionsFacet = panel.getFacet("actions");
-        if (ComponentUtils.shouldRenderFacet(actionsFacet)) {
+        if (FacetUtils.shouldRenderFacet(actionsFacet)) {
             writer.startElement("div", null);
             writer.writeAttribute("class", Panel.PANEL_ACTIONS_CLASS, null);
             actionsFacet.encodeAll(context);
@@ -235,7 +249,7 @@ public class PanelRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         UIComponent footer = panel.getFacet("footer");
         String footerText = panel.getFooter();
-        boolean shouldRenderFacet = ComponentUtils.shouldRenderFacet(footer, panel.isRenderEmptyFacets());
+        boolean shouldRenderFacet = FacetUtils.shouldRenderFacet(footer, panel.isRenderEmptyFacets());
 
         if (footerText == null && !shouldRenderFacet) {
             return;

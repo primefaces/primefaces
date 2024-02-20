@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,23 +23,22 @@
  */
 package org.primefaces.component.fileupload;
 
-import java.io.IOException;
-import java.util.logging.Logger;
-
-import javax.faces.application.ProjectStage;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.convert.ConverterException;
-
 import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.StyleClassBuilder;
 import org.primefaces.util.WidgetBuilder;
+import org.primefaces.validate.FileValidator;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import javax.faces.convert.ConverterException;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.logging.Logger;
 
 public class FileUploadRenderer extends CoreRenderer {
 
@@ -47,17 +46,14 @@ public class FileUploadRenderer extends CoreRenderer {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
-        if (!context.getExternalContext().getRequestContentType().toLowerCase().startsWith("multipart/")) {
-            if (!context.isProjectStage(ProjectStage.Production)) {
-                LOGGER.fine("Decoding FileUpload requires contentType \"multipart/form-data\". Skipping... ClientId: "
-                        + component.getClientId(context));
-            }
-
-            return;
-        }
-
         FileUpload fileUpload = (FileUpload) component;
         if (!fileUpload.isDisabled()) {
+            if (!context.getExternalContext().getRequestContentType().toLowerCase().startsWith("multipart/")) {
+                LOGGER.severe(() -> "Decoding FileUpload requires contentType \"multipart/form-data\"." +
+                        " Skipping clientId: " + component.getClientId(context));
+                return;
+            }
+
             PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(context);
 
             FileUploadDecoder decoder = applicationContext.getFileUploadDecoder();
@@ -87,12 +83,6 @@ public class FileUploadRenderer extends CoreRenderer {
         if (fileUpload.getMode().equals("advanced")) {
             PrimeApplicationContext pfContext = PrimeApplicationContext.getCurrentInstance(context);
 
-            String dropZone = null;
-            if (fileUpload.getDropZone() != null) {
-                dropZone = SearchExpressionFacade.resolveClientIds(context, fileUpload, fileUpload.getDropZone(),
-                        SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE);
-            }
-
             wb.init("FileUpload", fileUpload)
                     .attr("dnd", fileUpload.isDragDropSupport(), true)
                     .attr("previewWidth", fileUpload.getPreviewWidth(), 80)
@@ -101,7 +91,7 @@ public class FileUploadRenderer extends CoreRenderer {
                     .attr("maxRetries", fileUpload.getMaxRetries(), 30)
                     .attr("retryTimeout", fileUpload.getRetryTimeout(), 1000)
                     .attr("resumeContextPath", pfContext.getFileUploadResumeUrl(), null)
-                    .attr("dropZone", dropZone, null)
+                    .attr("dropZone", SearchExpressionUtils.resolveClientIdsForClientSide(context, fileUpload, fileUpload.getDropZone()))
                     .callback("onAdd", "function(file, callback)", fileUpload.getOnAdd())
                     .callback("oncancel", "function()", fileUpload.getOncancel())
                     .callback("onupload", "function()", fileUpload.getOnupload());
@@ -109,32 +99,21 @@ public class FileUploadRenderer extends CoreRenderer {
         }
         else {
             wb.init("SimpleFileUpload", fileUpload)
-                    .attr("skinSimple", fileUpload.isSkinSimple(), false);
+                    .attr("skinSimple", fileUpload.isSkinSimple(), false)
+                    .attr("displayFilename", fileUpload.isDisplayFilename());
         }
 
         wb.attr("mode", fileUpload.getMode())
                 .attr("auto", fileUpload.isAuto(), false)
-                .attr("update", SearchExpressionFacade.resolveClientIds(context, fileUpload, update,
-                            SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
-                .attr("process", SearchExpressionFacade.resolveClientIds(context, fileUpload, process,
-                            SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
+                .attr("update", SearchExpressionUtils.resolveClientIdsForClientSide(context, fileUpload, update))
+                .attr("process", SearchExpressionUtils.resolveClientIdsForClientSide(context, fileUpload, process))
                 .attr("global", fileUpload.isGlobal(), true)
                 .attr("disabled", fileUpload.isDisabled(), false)
-                .attr("invalidSizeMessage", fileUpload.getInvalidSizeMessage(), null)
-                .attr("invalidFileMessage", fileUpload.getInvalidFileMessage(), null)
-                .attr("fileLimitMessage", fileUpload.getFileLimitMessage(), null)
                 .attr("messageTemplate", fileUpload.getMessageTemplate(), null)
-                .attr("maxFileSize", fileUpload.getSizeLimit(), Long.MAX_VALUE)
-                .attr("fileLimit", fileUpload.getFileLimit(), Integer.MAX_VALUE)
                 .callback("onstart", "function()", fileUpload.getOnstart())
                 .callback("onerror", "function()", fileUpload.getOnerror())
                 .callback("oncomplete", "function(args)", fileUpload.getOncomplete())
                 .callback("onvalidationfailure", "function(msg)", fileUpload.getOnvalidationfailure());
-
-        String allowTypes = fileUpload.getAllowTypes();
-        if (allowTypes != null) {
-            wb.append(",allowTypes:").append(allowTypes);
-        }
 
         wb.finish();
     }
@@ -336,6 +315,8 @@ public class FileUploadRenderer extends CoreRenderer {
             writer.writeAttribute("title", fileUpload.getTitle(), null);
         }
 
+        renderValidation(context, fileUpload);
+
         renderDynamicPassThruAttributes(context, fileUpload);
 
         writer.endElement("input");
@@ -368,6 +349,8 @@ public class FileUploadRenderer extends CoreRenderer {
         if (styleClass != null) {
             writer.writeAttribute("class", styleClass, "styleClass");
         }
+
+        renderValidation(context, fileUpload);
 
         renderDynamicPassThruAttributes(context, fileUpload);
 
@@ -409,6 +392,33 @@ public class FileUploadRenderer extends CoreRenderer {
         writer.endElement("span");
 
         writer.endElement("button");
+    }
+
+    protected void renderValidation(FacesContext context, FileUpload fileUpload) throws IOException {
+        boolean hasFileValidator = Arrays.stream(fileUpload.getValidators()).anyMatch(v -> v instanceof FileValidator);
+        if (hasFileValidator) {
+            renderValidationMetadata(context, fileUpload);
+        }
+        else {
+            FileValidator fileValidator = new FileValidator();
+
+            int fileLimit = fileUpload.getFileLimit();
+            if (fileLimit != Integer.MAX_VALUE) {
+                fileValidator.setFileLimit(fileLimit);
+            }
+
+            long sizeLimit = fileUpload.getSizeLimit();
+            if (sizeLimit != Long.MAX_VALUE) {
+                fileValidator.setSizeLimit(sizeLimit);
+            }
+
+            String allowTypes = fileUpload.getAllowTypes();
+            if (LangUtils.isNotBlank(allowTypes)) {
+                fileValidator.setAllowTypes(allowTypes);
+            }
+
+            renderValidationMetadata(context, fileUpload, fileValidator);
+        }
     }
 
     @Override

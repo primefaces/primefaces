@@ -49,7 +49,7 @@ PrimeFaces.widget.Log = PrimeFaces.widget.BaseWidget.extend({
         
         //z-index
         this.jq.zIndex(PrimeFaces.nextZindex());
-        this.header.mousedown(function() {
+        this.header.on("mousedown", function() {
             _self.jq.zIndex(PrimeFaces.nextZindex());
         });
 

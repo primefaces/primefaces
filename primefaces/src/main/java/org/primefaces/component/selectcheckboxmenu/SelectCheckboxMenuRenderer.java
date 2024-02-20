@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,10 +41,7 @@ import javax.faces.model.SelectItemGroup;
 import javax.faces.render.Renderer;
 
 import org.primefaces.component.column.Column;
-import org.primefaces.component.messages.Messages;
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
-import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.*;
 
@@ -339,11 +336,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         if (menu.getPanelStyleClass() != null) {
             panelStyleClass += " " + menu.getPanelStyleClass();
         }
-        // TODO: "RTLAware"!
-//        if (ComponentUtils.isRTL(context, menu)) {
-//            panelStyleClass+= " " + SelectCheckboxMenu.RTL_PANEL_CLASS;
-//        }
-//
+
         String maxScrollHeight = getMaxScrollHeight(menu);
 
         writer.startElement("div", null);
@@ -408,7 +401,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
                 });
 
         //toggler
-        encodeCheckbox(context, null, false, !notChecked, null, MessageFactory.getMessage(SelectCheckboxMenu.ARIA_TOGGLER_CHECKBOX_ALL));
+        encodeCheckbox(context, null, false, !notChecked, null, null);
 
         //filter
         if (menu.isFilter()) {
@@ -419,7 +412,6 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.startElement("a", null);
         writer.writeAttribute("class", SelectCheckboxMenu.CLOSER_CLASS, null);
         writer.writeAttribute("href", "#", null);
-        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(Messages.ARIA_CLOSE), null);
 
         writer.startElement("span", null);
         writer.writeAttribute("class", "ui-icon ui-icon-circle-close", null);
@@ -445,7 +437,6 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.writeAttribute("autocomplete", "off", null);
         writer.writeAttribute(HTML.ARIA_AUTOCOMPLETE, "list", null);
         writer.writeAttribute(HTML.ARIA_CONTROLS, menu.getClientId(context) + "_table", null);
-        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(InputRenderer.ARIA_FILTER), null);
         writer.writeAttribute("aria-disabled", false, null);
         writer.writeAttribute("aria-multiline", false, null);
         writer.writeAttribute("aria-readonly", false, null);
@@ -487,7 +478,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
 
     protected void encodePanelFooter(FacesContext context, SelectCheckboxMenu menu) throws IOException {
         UIComponent facet = menu.getFacet("footer");
-        if (!ComponentUtils.shouldRenderFacet(facet)) {
+        if (!FacetUtils.shouldRenderFacet(facet)) {
             return;
         }
 
@@ -534,7 +525,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
                 }
 
                 UIComponent headerFacet = column.getFacet("header");
-                if (ComponentUtils.shouldRenderFacet(headerFacet)) {
+                if (FacetUtils.shouldRenderFacet(headerFacet)) {
                     headerFacet.encodeAll(context);
                 }
                 else if (headerText != null) {
@@ -552,19 +543,19 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
             SelectItem selectItem = selectItems.get(i);
             if (selectItem instanceof SelectItemGroup) {
                 SelectItemGroup selectItemGroup = (SelectItemGroup) selectItem;
-                encodeTableOption(context, menu, selectItemGroup, columns);
+                encodeTableOption(context, menu, selectItemGroup, columns, i);
 
                 for (SelectItem groupSelectItem : selectItemGroup.getSelectItems()) {
-                    encodeTableOption(context, menu, groupSelectItem, columns);
+                    encodeTableOption(context, menu, groupSelectItem, columns, i);
                 }
             }
             else {
-                encodeTableOption(context, menu, selectItem, columns);
+                encodeTableOption(context, menu, selectItem, columns, i);
             }
         }
     }
 
-    protected void encodeTableOption(FacesContext context, SelectCheckboxMenu menu, SelectItem selectItem, List<Column> columns) throws IOException {
+    protected void encodeTableOption(FacesContext context, SelectCheckboxMenu menu, SelectItem selectItem, List<Column> columns, int index) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         boolean checked = false;
         String rowStyleClass;
@@ -666,7 +657,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
                     writer.writeAttribute("class", styleClass, null);
                 }
 
-                renderChildren(context, column);
+                encodeIndexedId(context, column, index);
                 writer.endElement("td");
             }
         }
@@ -685,11 +676,11 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
                 .attr("updateLabel", menu.isUpdateLabel(), false)
                 .attr("labelSeparator", menu.getLabelSeparator(), ", ")
                 .attr("emptyLabel", menu.getEmptyLabel())
+                .attr("selectedLabel", menu.getSelectedLabel(), null)
                 .attr("multiple", menu.isMultiple(), false)
                 .attr("dynamic", menu.isDynamic(), false)
                 .attr("renderPanelContentOnClient", menu.getVar() == null,  false)
-                .attr("appendTo", SearchExpressionFacade.resolveClientId(context, menu, menu.getAppendTo(),
-                        SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null);
+                .attr("appendTo", SearchExpressionUtils.resolveOptionalClientIdForClientSide(context, menu, menu.getAppendTo()));
 
         if (menu.isFilter()) {
             wb.attr("filter", true)

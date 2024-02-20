@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,6 @@
 package org.primefaces.component.api;
 
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -39,7 +38,6 @@ import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PostValidateEvent;
-import javax.faces.event.PreRenderComponentEvent;
 import javax.faces.event.PreValidateEvent;
 import javax.faces.model.*;
 import javax.faces.render.Renderer;
@@ -47,8 +45,6 @@ import javax.faces.render.Renderer;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
-import org.primefaces.model.CollectionDataModel;
-import org.primefaces.model.IterableDataModel;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.ComponentUtils;
@@ -70,7 +66,6 @@ public class UIData extends javax.faces.component.UIData {
     private Object _initialDescendantFullComponentState;
 
     private String clientId;
-    private DataModel model;
     private Boolean isNested;
     private Object oldVar;
 
@@ -497,50 +492,52 @@ public class UIData extends javax.faces.component.UIData {
     }
 
     protected void saveDescendantState(UIComponent component, FacesContext context) {
+        // Save state for this component (if it is a EditableValueHolder)
         Map<String, SavedState> saved = (Map<String, SavedState>) getStateHelper().get(PropertyKeys.saved);
-
         if (component instanceof EditableValueHolder) {
             EditableValueHolder input = (EditableValueHolder) component;
             SavedState state = null;
-            String componentClientId = component.getClientId(context);
-
+            String clientId = component.getClientId(context);
             if (saved == null) {
                 state = new SavedState();
-                getStateHelper().put(PropertyKeys.saved, componentClientId, state);
             }
-
             if (state == null) {
-                state = saved.get(componentClientId);
-
+                state = saved.get(clientId);
                 if (state == null) {
                     state = new SavedState();
-                    getStateHelper().put(PropertyKeys.saved, componentClientId, state);
                 }
             }
-
             state.setValue(input.getLocalValue());
             state.setValid(input.isValid());
             state.setSubmittedValue(input.getSubmittedValue());
             state.setLocalValueSet(input.isLocalValueSet());
+            if (state.hasDeltaState()) {
+                getStateHelper().put(PropertyKeys.saved, clientId, state);
+            }
+            else if (saved != null) {
+                getStateHelper().remove(PropertyKeys.saved, clientId);
+            }
         }
         else if (component instanceof UIForm) {
             UIForm form = (UIForm) component;
-            String componentClientId = component.getClientId(context);
+            String clientId = component.getClientId(context);
             SavedState state = null;
             if (saved == null) {
                 state = new SavedState();
-                getStateHelper().put(PropertyKeys.saved, componentClientId, state);
             }
-
             if (state == null) {
-                state = saved.get(componentClientId);
+                state = saved.get(clientId);
                 if (state == null) {
                     state = new SavedState();
-                    //saved.put(clientId, state);
-                    getStateHelper().put(PropertyKeys.saved, componentClientId, state);
                 }
             }
             state.setSubmitted(form.isSubmitted());
+            if (state.hasDeltaState()) {
+                getStateHelper().put(PropertyKeys.saved, clientId, state);
+            }
+            else if (saved != null) {
+                getStateHelper().remove(PropertyKeys.saved, clientId);
+            }
         }
 
         //save state for children
@@ -557,7 +554,6 @@ public class UIData extends javax.faces.component.UIData {
                 saveDescendantState(facet, context);
             }
         }
-
     }
 
     protected void restoreDescendantState() {
@@ -578,94 +574,54 @@ public class UIData extends javax.faces.component.UIData {
     }
 
     protected void restoreDescendantState(UIComponent component, FacesContext context) {
+        // Reset the client identifier for this component
         String id = component.getId();
-        component.setId(id); //reset the client id
+        component.setId(id); // Forces client id to be reset
         Map<String, SavedState> saved = (Map<String, SavedState>) getStateHelper().get(PropertyKeys.saved);
-
+        // Restore state for this component (if it is a EditableValueHolder)
         if (component instanceof EditableValueHolder) {
             EditableValueHolder input = (EditableValueHolder) component;
-            String componentClientId = component.getClientId(context);
+            String clientId = component.getClientId(context);
 
-            SavedState state = saved.get(componentClientId);
+            SavedState state = saved == null ? null : saved.get(clientId);
             if (state == null) {
-                state = new SavedState();
+                input.resetValue();
             }
-
-            input.setValue(state.getValue());
-            input.setValid(state.isValid());
-            input.setSubmittedValue(state.getSubmittedValue());
-            input.setLocalValueSet(state.isLocalValueSet());
+            else {
+                input.setValue(state.getValue());
+                input.setValid(state.isValid());
+                input.setSubmittedValue(state.getSubmittedValue());
+                // This *must* be set after the call to setValue(), since
+                // calling setValue() always resets "localValueSet" to true.
+                input.setLocalValueSet(state.isLocalValueSet());
+            }
         }
         else if (component instanceof UIForm) {
             UIForm form = (UIForm) component;
-            String componentClientId = component.getClientId(context);
-            SavedState state = saved.get(componentClientId);
+            String clientId = component.getClientId(context);
+            SavedState state = saved == null ? null : saved.get(clientId);
             if (state == null) {
-                state = new SavedState();
+                // submitted is transient state
+                form.setSubmitted(false);
             }
-
-            form.setSubmitted(state.getSubmitted());
-            state.setSubmitted(form.isSubmitted());
+            else {
+                form.setSubmitted(state.getSubmitted());
+            }
         }
 
-        //restore state of children
+        // Restore state for children of this component
         if (component.getChildCount() > 0) {
-            for (int i = 0; i < component.getChildCount(); i++) {
-                UIComponent kid = component.getChildren().get(i);
+            for (UIComponent kid : component.getChildren()) {
                 restoreDescendantState(kid, context);
             }
         }
 
-        //restore state of facets
+        // Restore state for facets of this component
         if (component.getFacetCount() > 0) {
             for (UIComponent facet : component.getFacets().values()) {
                 restoreDescendantState(facet, context);
             }
         }
-
-    }
-
-    @Override
-    protected DataModel getDataModel() {
-        if (model != null) {
-            return (model);
-        }
-
-        Object current = getValue();
-        if (current == null) {
-            setDataModel(new ListDataModel(Collections.emptyList()));
-        }
-        else if (current instanceof DataModel) {
-            setDataModel((DataModel) current);
-        }
-        else if (current instanceof List) {
-            setDataModel(new ListDataModel((List) current));
-        }
-        else if (Object[].class.isAssignableFrom(current.getClass())) {
-            setDataModel(new ArrayDataModel((Object[]) current));
-        }
-        else if (current instanceof ResultSet) {
-            setDataModel(new ResultSetDataModel((ResultSet) current));
-        }
-        else if (current instanceof Collection) {
-            setDataModel(new CollectionDataModel((Collection) current));
-        }
-        else if (current instanceof Iterable) {
-            setDataModel(new IterableDataModel((Iterable<?>) current));
-        }
-        else if (current instanceof Map) {
-            setDataModel(new IterableDataModel(((Map<?, ?>) current).entrySet()));
-        }
-        else {
-            setDataModel(new ScalarDataModel(current));
-        }
-
-        return model;
-    }
-
-    @Override
-    protected void setDataModel(DataModel dataModel) {
-        model = dataModel;
     }
 
     protected boolean shouldSkipChildren(FacesContext context) {
@@ -1193,7 +1149,6 @@ public class UIData extends javax.faces.component.UIData {
             _initialDescendantFullComponentState = null;
 
             clientId = null;
-            model = null;
             isNested = null;
             oldVar = null;
         }
@@ -1203,7 +1158,6 @@ public class UIData extends javax.faces.component.UIData {
             _initialDescendantFullComponentState = null;
 
             clientId = null;
-            model = null;
             isNested = null;
             oldVar = null;
         }
@@ -1281,24 +1235,6 @@ public class UIData extends javax.faces.component.UIData {
 
         preEncode(context);
 
-        if (context == null) {
-            throw new NullPointerException();
-        }
-
-        pushComponentToEL(context, null);
-
-        if (!isRendered()) {
-            return;
-        }
-
-        context.getApplication().publishEvent(context, PreRenderComponentEvent.class, this);
-
-        String rendererType = getRendererType();
-        if (rendererType != null) {
-            Renderer renderer = getRenderer(context);
-            if (renderer != null) {
-                renderer.encodeBegin(context, this);
-            }
-        }
+        super.encodeBegin(context);
     }
 }

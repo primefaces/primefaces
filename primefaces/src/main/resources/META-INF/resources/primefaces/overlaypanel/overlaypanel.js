@@ -60,8 +60,11 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
     init: function(cfg) {
-       if (cfg.target) {
-            this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(cfg.target);
+        if (cfg.target) {
+            this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, cfg.target);
+            if (this.target.hasClass('ui-splitbutton')) {
+                this.target = this.target.find('.ui-splitbutton-menubutton');
+            }
         }
         this._super(cfg, null, null, this.target);
 
@@ -80,8 +83,8 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.allowHide = true;
 
         if (this.cfg.showCloseIcon) {
-            this.closerIcon = $('<a href="#" class="ui-overlaypanel-close ui-state-default"><span class="ui-icon ui-icon-closethick"></span></a>')
-                .attr('aria-label', PrimeFaces.getAriaLabel('overlaypanel.CLOSE')).appendTo(this.jq);
+            this.closerIcon = PrimeFaces.skinCloseAction($('<a href="#" class="ui-overlaypanel-close ui-state-default"><span class="ui-icon ui-icon-closethick"></span></a>'))
+                .appendTo(this.jq);
         }
 
         this.bindCommonEvents();
@@ -322,7 +325,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
             return;
         }
         var thisPanel = this;
-        this.showTimeout = setTimeout(function() {
+        this.showTimeout = PrimeFaces.queueTask(function() {
             if (!thisPanel.loaded && thisPanel.cfg.dynamic) {
                 thisPanel.loadContents(target);
             }
@@ -402,6 +405,9 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
             allowedNegativeValuesByParentOffset = this.jq.offsetParent().offset();
 
         this.targetElement = this.getTarget(target);
+        if (this.targetElement.hasClass('ui-splitbutton-menubutton')) {
+            this.targetElement = this.targetElement.parent();
+        }
         if (this.targetElement) {
             this.targetZindex = this.targetElement.zIndex();
         }

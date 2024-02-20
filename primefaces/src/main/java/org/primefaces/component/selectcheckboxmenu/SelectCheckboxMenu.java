@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,6 +36,7 @@ import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 
 import org.primefaces.component.column.Column;
+import org.primefaces.event.SelectEvent;
 import org.primefaces.event.ToggleSelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.util.ComponentUtils;
@@ -72,12 +73,12 @@ public class SelectCheckboxMenu extends SelectCheckboxMenuBase {
     public static final String TOKEN_DISPLAY_CLASS = "ui-selectcheckboxmenu-token ui-state-active ui-corner-all";
     public static final String TOKEN_LABEL_CLASS = "ui-selectcheckboxmenu-token-label";
     public static final String TOKEN_ICON_CLASS = "ui-selectcheckboxmenu-token-icon ui-icon ui-icon-close";
-    public static final String ARIA_TOGGLER_CHECKBOX_ALL = "primefaces.datatable.aria.HEADER_CHECKBOX_ALL";
 
     private static final String DEFAULT_EVENT = "change";
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("change", null)
             .put("toggleSelect", ToggleSelectEvent.class)
+            .put("itemSelect", SelectEvent.class)
             .put("itemUnselect", UnselectEvent.class)
             .build();
 
@@ -96,6 +97,26 @@ public class SelectCheckboxMenu extends SelectCheckboxMenuBase {
     @Override
     public String getDefaultEventName() {
         return DEFAULT_EVENT;
+    }
+
+    @Override
+    public String getInputClientId() {
+        return getClientId(getFacesContext()) + "_focus";
+    }
+
+    @Override
+    public String getValidatableInputClientId() {
+        return getClientId(getFacesContext());
+    }
+
+    @Override
+    public String getLabelledBy() {
+        return (String) getStateHelper().get("labelledby");
+    }
+
+    @Override
+    public void setLabelledBy(String labelledBy) {
+        getStateHelper().put("labelledby", labelledBy);
     }
 
     public List<Column> getColumns() {
@@ -124,8 +145,13 @@ public class SelectCheckboxMenu extends SelectCheckboxMenuBase {
                 boolean checked = Boolean.parseBoolean(params.get(clientId + "_checked"));
                 ToggleSelectEvent toggleSelectEvent = new ToggleSelectEvent(this, ((AjaxBehaviorEvent) event).getBehavior(), checked);
                 toggleSelectEvent.setPhaseId(event.getPhaseId());
-
                 super.queueEvent(toggleSelectEvent);
+            }
+            else if ("itemSelect".equals(eventName)) {
+                Object selectedItemValue = ComponentUtils.getConvertedValue(context, this, params.get(getClientId(context) + "_itemSelect"));
+                SelectEvent selectEvent = new SelectEvent(this, ((AjaxBehaviorEvent) event).getBehavior(), selectedItemValue);
+                selectEvent.setPhaseId(event.getPhaseId());
+                super.queueEvent(selectEvent);
             }
             else if ("itemUnselect".equals(eventName)) {
                 Object unselectedItemValue = ComponentUtils.getConvertedValue(context, this, params.get(getClientId(context) + "_itemUnselect"));

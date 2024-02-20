@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +33,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.*;
 
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.LangUtils;
 
 /**
@@ -79,7 +78,7 @@ public class AutoUpdateListener implements ComponentSystemEventListener {
                     infos.put(clientId, null);
                 }
                 else {
-                    String[] onList = SearchExpressionFacade.split(context, on, SearchExpressionFacade.EXPRESSION_SEPARATORS);
+                    String[] onList = context.getApplication().getSearchExpressionHandler().splitExpressions(context, on);
                     infos.put(clientId, Arrays.asList(onList));
                 }
             }
@@ -127,13 +126,15 @@ public class AutoUpdateListener implements ComponentSystemEventListener {
 
     protected static void subscribe(UIComponent component, ComponentSystemEventListener listener) {
 
-        // PostAddToViewEvent should work for stateless views
-        //                  but fails for MyFaces ViewPooling
-        //                  and sometimes on postbacks as PostAddToViewEvent should actually ony be called once
-        component.subscribeToEvent(PostAddToViewEvent.class, listener);
-
-        // PreRenderComponentEvent should work for normal cases and MyFaces ViewPooling
-        //                      but likely fails for stateless view as we save the clientIds in the viewRoot
+        // PreRenderComponentEvent works for normal views (stateful) and even MyFaces ViewPooling
+        //                      but fails for stateless view as we can't save the clientIds in the viewRoot
         component.subscribeToEvent(PreRenderComponentEvent.class, listener);
+
+        // In case of stateless views, we cant access previous rendered auto-updatable components
+        // so we need to listen to PostAddToViewEvent - independent if the component is rendered or not
+        // see #11408
+        if (FacesContext.getCurrentInstance().getViewRoot().isTransient()) {
+            component.subscribeToEvent(PostAddToViewEvent.class, listener);
+        }
     }
 }

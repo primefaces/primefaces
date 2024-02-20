@@ -20,7 +20,9 @@
         <div class="card">
             <h:form>
                 <p:fileUpload listener="#{fileUploadView.handleFileUpload}" mode="advanced"
-                              update="messages" auto="true" sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>
+                              update="messages" auto="true">
+                    <p:validateFile sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+                </p:fileUpload>
 
                 <p:growl id="messages" showDetail="true"/>
             </h:form>

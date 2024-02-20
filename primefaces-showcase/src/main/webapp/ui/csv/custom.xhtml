@@ -68,14 +68,14 @@
                 <p:growl showDetail="true"/>
 
                 <h:panelGrid columns="4" cellpadding="7">
-                    <h:outputLabel for="email1" value="Email 1: (JSF Validation)"/>
+                    <p:outputLabel for="email1" value="Email 1: (JSF Validation)"/>
                     <p:inputText id="email1" value="#{customValidationView.text}">
                         <f:validator validatorId="custom.emailValidator"/>
                     </p:inputText>
                     <p:message for="email1" display="tooltip"/>
                     <h:outputText value="#{customValidationView.text}"/>
 
-                    <h:outputLabel for="email2" value="Email 2: (Bean Validation)"/>
+                    <p:outputLabel for="email2" value="Email 2: (Bean Validation)"/>
                     <p:inputText id="email2" value="#{customValidationView.email}"/>
                     <p:message for="email2" display="tooltip"/>
                     <h:outputText value="#{customValidationView.email}"/>

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,9 +23,12 @@
  */
 package org.primefaces.integrationtests.calendar;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
@@ -34,23 +37,46 @@ import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.Calendar;
 import org.primefaces.selenium.component.Messages;
 
-public class Calendar002Test extends AbstractPrimePageTest {
+class Calendar002Test extends AbstractPrimePageTest {
     @Test
     @Order(1)
     @DisplayName("Calendar: No AJAX on leaving input")
-    public void testLeaveInputWithoutChange(Page page) {
-        // Arrange
-        Calendar datePicker = page.datePicker;
-        WebElement outside = page.outside;
-        Messages messages = page.messages;
+    void leaveInputWithoutChange(Page page) {
+        assertDoesNotThrow(() -> {
+            // Arrange
+            Calendar datePicker = page.datePicker;
+            WebElement outside = page.outside;
+            Messages messages = page.messages;
 
-        // Act
-        datePicker.getInput().click();
-        outside.click(); // not guarded here as ideally no ajax should occur
-        PrimeSelenium.wait(100);
+            // Act
+            datePicker.getInput().click();
+            outside.click(); // not guarded here as ideally no ajax should occur
+            PrimeSelenium.wait(100);
 
-        // Assert
-        assertNotDisplayed(messages);
+            // Assert
+            assertNotDisplayed(messages);
+        });
+    }
+
+    @Test
+    @Order(2)
+    @DisplayName("Calendar: AJAX on leaving input after changes")
+    void leaveInputWithChange(Page page) {
+        assertDoesNotThrow(() -> {
+            // Arrange
+            Calendar datePicker = page.datePicker;
+            WebElement outside = page.outside;
+            Messages messages = page.messages;
+
+            // Act
+            datePicker.getInput().click();
+            datePicker.getInput().sendKeys(Keys.chord(PrimeSelenium.isSafari() ? Keys.COMMAND : Keys.CONTROL, "a"));
+            datePicker.getInput().sendKeys("01/01/2023");
+            PrimeSelenium.guardAjax(outside).click();
+
+            // Assert
+            assertDisplayed(messages);
+        });
     }
 
     public static class Page extends AbstractPrimePage {

@@ -29,63 +29,44 @@ exportFooter | true | Boolean | When enabled, the footer will be exported.
 options | null | ExporterOptions | Options object to customize document.
 exporter | null | Object | Custom `org.primefaces.component.export.Exporter` to be used instead of built-in exporters.
 onTableRender | null | MethodExpression | OnTableRender to be used to set the options of exported table.
+onRowExport | null | MethodExpression | Callback every time a row is being exported
 
 ## Getting Started with DataExporter
 
 DataExporter is nested in a UICommand component such as commandButton or commandLink.
-For PDF exporting **Libre OpenPDF** and for XLS exporting **Apache POI** libraries are required in the classpath. Target must
-point to a PrimeFaces Datatable. Assume the table to be exported is defined as:
+For PDF exporting **Libre OpenPDF** and for XLS exporting **Apache POI** libraries are required in the classpath. As of today, supported targets are
+PrimeFaces `Datatable` and `TreeTable`. Supported types are:
+- xls
+- pdf
+- csv
+- xml
+- xlsx
+- xlsxstream
+
+Assume the table to be exported is defined as:
 
 ```xhtml
-<p:dataTable id="tableId" ...>
+<p:dataTable id="tableId">
     //columns
 </p:dataTable>
 ```
-_Excel export (type="xls | xlsx | xlsxstream")_
+Excel export (type="xls | xlsx | xlsxstream")
 
 ```xhtml
 <p:commandButton value="Export as Excel">
     <p:dataExporter type="xls" target="tableId" fileName="cars"/>
 </p:commandButton>
 ```
-_PDF export (type="pdf")_
-
-```xhtml
-<p:commandButton value="Export as PDF">
-    <p:dataExporter type="pdf" target="tableId" fileName="cars"/>
-</p:commandButton>
-```
-_CSV export (type="csv")_
-
-```xhtml
-<p:commandButton value="Export as CSV">
-    <p:dataExporter type="csv" target="tableId" fileName="cars"/>
-</p:commandButton>
-```
-_XML export (type="xml")_
-
-```xhtml
-<p:commandButton value="Export as XML">
-    <p:dataExporter type="xml" target="tableId" fileName="cars"/>
-</p:commandLink>
-```
-_Custom export (optional type="text")_
-
-```xhtml
-<p:commandButton value="Export as Text">
-    <p:dataExporter type="text" target="tableId" fileName="cars" customExporter="#{dataExporterView.textExporter}"/>
-</p:commandLink>
-```
 
 ## PageOnly
-By default dataExporter works on whole dataset, if you’d like export only the data displayed on
-current page, set pageOnly to true.
+By default `<p:dataExporter />` works on whole dataset, if you'd like to export only the data displayed on
+current page, set `pageOnly` to true.
 
 ```xhtml
 <p:dataExporter type="pdf" target="tableId" fileName="cars" pageOnly="true"/>
 ```
 ## Excluding Columns
-In case you need one or more columns to be ignored set _exportable_ option of column to false.
+In case you need one or more columns to be ignored set `exportable` option of column to false.
 
 ```xhtml
 <p:column exportable="false">
@@ -94,17 +75,88 @@ In case you need one or more columns to be ignored set _exportable_ option of co
 ```
 
 ## AJAX downloading
-Before PrimeFaces 11, you had to disable AJAX with DataExport. As of version 11 that's no longer needed.
+Before PrimeFaces 11, you had to disable AJAX with `DataExporter`. As of version 11 that's no longer needed.
 
 ## Monitor Status
-When DataExport is used without AJAX, ajaxStatus cannot apply. See FileDownload
+When `DataExporter` is used without AJAX, ajaxStatus cannot apply. See FileDownload
 Monitor Status section to find out how monitor export process. Same solution applies to data export
 as well.
 
 ## Custom Export
-If you need to provide a custom way to retrieve the string value of a column in export, use
-exportFunction property of a column that resolves to a method expression. This method takes the
-column instance and should return a string to be included exported document.
+### Column
+
+If you need to customize column export, you can do so by using either `exportValue` or `exportFunction` from `<p:column />`,
+`exportFunction` takes the column instance and should return a `String`.
+
+### Custom format
+
+If you need to define a new exporter (e.g txt, yml etc.), register your exporter as follows:
+- implement `DataTableExporter` or `TreeTableExporter`
+- register exporter using `DataExporters#register()` specifying the type of component (e.g `DataTable` or `TreeTable`) and the type with which your exported is associated. For example:
+```java
+    DataExporters.register(DataTable.class, TextExporter.class, "txt");
+```
+
+> A good place to register your exporter could be in a `SystemEventListener` or `ServletContextListener`
+
+```java
+public class TextExporter extends DataTableExporter<PrintWriter, ExporterOptions> {
+
+    public TextExporter() {
+        super(null, Collections.emptySet(), false);
+    }
+
+    @Override
+    protected PrintWriter createDocument(FacesContext context) throws IOException {
+        try {
+            OutputStreamWriter osw = new OutputStreamWriter(os(), exportConfiguration.getEncodingType());
+            return new PrintWriter(osw);
+        }
+        catch (UnsupportedEncodingException e) {
+            throw new FacesException(e);
+        }
+    }
+
+    @Override
+    protected void exportTable(FacesContext context, DataTable table, int index) throws IOException {
+        document.append("").append(table.getId()).append("\n");
+
+        super.exportTable(context, table, index);
+
+        document.append("").append(table.getId());
+    }
+
+    @Override
+    protected void preRowExport(FacesContext context, DataTable table) {
+        (document).append("\t").append(table.getVar()).append("\n");
+    }
+
+    @Override
+    protected void exportCellValue(FacesContext context, DataTable table, UIColumn col, String text, int index) {
+        String columnTag = ExporterUtils.getColumnExportTag(context, col);
+        document.append("\t\t")
+                .append(columnTag)
+                .append(": ")
+                .append(EscapeUtils.forXml(text))
+                .append("\n");
+    }
+
+    @Override
+    public String getContentType() {
+        return "text/plain";
+    }
+
+    @Override
+    public String getFileExtension() {
+        return ".txt";
+    }
+}
+```
+
+Or, by using `DataExporter#exporter` attribute:
+
+> :warning: **DataExporter#exporter is deprecated in 13.0.0 and will be removed in 14.0.0**
+
 
 ```xhtml
 <p:commandButton value="Export as Text">
@@ -130,147 +182,6 @@ public class DataExporterView implements Serializable {
         this.textExporter = textExporter;
     }
 }    
-```
-
-```java
-public class TextExporter extends DataTableExporter {
-    @Override
-    public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly,
-                       String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
-                       MethodExpression onTableRender) throws IOException {
-
-        ExternalContext externalContext = context.getExternalContext();
-        configureResponse(externalContext, filename);
-        StringBuilder builder = new StringBuilder();
-
-        if (preProcessor != null) {
-            preProcessor.invoke(context.getELContext(), new Object[]{builder});
-        }
-
-        builder.append("" + table.getId() + "\n");
-
-        if (pageOnly) {
-            exportPageOnly(context, table, builder);
-        }
-        else if (selectionOnly) {
-            exportSelectionOnly(context, table, builder);
-        }
-        else {
-            exportAll(context, table, builder);
-        }
-
-        builder.append("" + table.getId() + "");
-
-        table.setRowIndex(-1);
-
-        if (postProcessor != null) {
-            postProcessor.invoke(context.getELContext(), new Object[]{builder});
-        }
-
-        OutputStream os = externalContext.getResponseOutputStream();
-        OutputStreamWriter osw = new OutputStreamWriter(os, encodingType);
-        PrintWriter writer = new PrintWriter(osw);
-        writer.write(builder.toString());
-        writer.flush();
-        writer.close();
-    }
-
-    @Override
-    public void export(FacesContext facesContext, List<String> clientIds, String outputFileName, boolean pageOnly, boolean selectionOnly,
-                       String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
-                       MethodExpression onTableRender) throws IOException {
-
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public void export(FacesContext facesContext, String outputFileName, List<DataTable> tables, boolean pageOnly, boolean selectionOnly,
-                       String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
-                       MethodExpression onTableRender) throws IOException {
-
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    protected void preRowExport(DataTable table, Object document) {
-        ((StringBuilder) document).append("\t" + table.getVar() + "\n");
-    }
-
-    @Override
-    protected void postRowExport(DataTable table, Object document) {
-        ((StringBuilder) document).append("\t" + table.getVar() + "\n");
-    }
-
-    @Override
-    protected void exportCells(DataTable table, Object document) {
-        StringBuilder builder = (StringBuilder) document;
-        for (UIColumn col : table.getColumns()) {
-            if (col instanceof DynamicColumn) {
-                ((DynamicColumn) col).applyStatelessModel();
-            }
-
-            if (col.isRendered() && col.isExportable()) {
-                String columnTag = getColumnTag(col);
-                try {
-                    addColumnValue(builder, col.getChildren(), columnTag, col);
-                }
-                catch (IOException ex) {
-                    throw new FacesException(ex);
-                }
-            }
-        }
-    }
-
-    protected String getColumnTag(UIColumn column) {
-        String headerText = (column.getExportHeaderValue() != null) ? column.getExportHeaderValue() : column.getHeaderText();
-        UIComponent facet = column.getFacet("header");
-        String columnTag;
-
-        if (headerText != null) {
-            columnTag = headerText.toLowerCase();
-        }
-        else if (facet != null) {
-            columnTag = exportValue(FacesContext.getCurrentInstance(), facet).toLowerCase();
-        }
-        else {
-            throw new FacesException("No suitable xml tag found for " + column);
-        }
-
-        return EscapeUtils.forXmlTag(columnTag);
-    }
-
-    protected void addColumnValue(StringBuilder builder, List<UIComponent> components, String tag, UIColumn column) throws IOException {
-        FacesContext context = FacesContext.getCurrentInstance();
-
-        builder.append("\t\t" + tag + "");
-
-        if (column.getExportFunction() != null) {
-            builder.append(EscapeUtils.forXml(exportColumnByFunction(context, column)));
-        }
-        else {
-            for (UIComponent component : components) {
-                if (component.isRendered()) {
-                    String value = exportValue(context, component);
-                    if (value != null) {
-                        builder.append(EscapeUtils.forXml(value));
-                    }
-                }
-            }
-        }
-
-        builder.append("" + tag + "\n");
-    }
-
-    protected void configureResponse(ExternalContext externalContext, String filename) {
-        String monitorKeyCookieName = ResourceUtils.getMonitorKeyCookieName(context, null);
-        externalContext.setResponseContentType("text/plain");
-        externalContext.setResponseHeader("Expires", "0");
-        externalContext.setResponseHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
-        externalContext.setResponseHeader("Pragma", "public");
-        externalContext.setResponseHeader("Content-disposition", ComponentUtils.createContentDisposition("attachment", filename + ".txt"));
-        externalContext.addResponseCookie(monitorKeyCookieName, "true", Collections.<String, Object>emptyMap());
-    }
-}
 ```
 
 ## Pre and Post Processors

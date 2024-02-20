@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,8 +41,10 @@ import javax.faces.render.Renderer;
 
 import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.GridLayoutUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class SelectManyCheckboxRenderer extends SelectManyRenderer {
@@ -67,8 +69,8 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
     protected void encodeMarkup(FacesContext context, SelectManyCheckbox checkbox) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String layout = checkbox.getLayout();
-        if (layout == null) {
-            layout = "lineDirection";
+        if (LangUtils.isEmpty(layout)) {
+            layout = FacetUtils.shouldRenderFacet(checkbox.getFacet("custom")) ? "custom" : "lineDirection";
         }
         boolean custom = ("custom".equals(layout));
 
@@ -84,7 +86,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
             encodeLegacyTabularLayout(context, checkbox, layout);
         }
         else {
-            encodeResponsiveLayout(context, checkbox);
+            encodeResponsiveLayout(context, checkbox, layout);
         }
     }
 
@@ -97,17 +99,26 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
                 .attr("custom", custom, false).finish();
     }
 
-    protected void encodeResponsiveLayout(FacesContext context, SelectManyCheckbox checkbox) throws IOException {
+    protected void encodeResponsiveLayout(FacesContext context, SelectManyCheckbox checkbox, String layout) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = checkbox.getClientId(context);
         String style = checkbox.getStyle();
         boolean flex = ComponentUtils.isFlex(context, checkbox);
+        if (flex) {
+            layout = "responsive";
+        }
+        boolean lineDirection = "lineDirection".equals(layout);
         String styleClass = getStyleClassBuilder(context)
+                .add(lineDirection, "layout-line-direction")
                 .add(SelectManyCheckbox.STYLE_CLASS)
                 .add(GridLayoutUtils.getResponsiveClass(flex))
                 .add(checkbox.getStyleClass())
                 .build();
         int columns = checkbox.getColumns();
+
+        if (lineDirection || "pageDirection".equals(layout)) {
+            columns = 1;
+        }
 
         if (columns <= 0) {
             throw new FacesException("The value of columns attribute must be greater than zero.");
@@ -140,7 +151,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
 
                 for (SelectItem childSelectItem : ((SelectItemGroup) selectItem).getSelectItems()) {
                     colMod = idx % columns;
-                    if (colMod == 0) {
+                    if (!lineDirection && colMod == 0) {
                         writer.startElement("div", null);
                         writer.writeAttribute("class", GridLayoutUtils.getFlexGridClass(flex), null);
                     }
@@ -155,7 +166,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
                     idx++;
                     colMod = idx % columns;
 
-                    if (colMod == 0) {
+                    if (!lineDirection && colMod == 0) {
                         writer.endElement("div");
                     }
                 }
@@ -168,7 +179,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
             }
             else {
                 colMod = idx % columns;
-                if (colMod == 0) {
+                if (!lineDirection && colMod == 0) {
                     writer.startElement("div", null);
                     writer.writeAttribute("class", GridLayoutUtils.getFlexGridClass(flex), null);
                 }
@@ -181,7 +192,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
                 idx++;
                 colMod = idx % columns;
 
-                if (colMod == 0) {
+                if (!lineDirection && colMod == 0) {
                     writer.endElement("div");
                 }
             }
@@ -315,7 +326,10 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeSelectItems(FacesContext context, SelectManyCheckbox checkbox, String layout) throws IOException {
+    /**
+     * @deprecated in 13.0.0 remove in 14.0.0
+     */
+    @Deprecated protected void encodeSelectItems(FacesContext context, SelectManyCheckbox checkbox, String layout) throws IOException {
         if ("lineDirection".equals(layout)) {
             encodeLineLayout(context, checkbox);
         }
@@ -330,7 +344,10 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         }
     }
 
-    protected void encodeLineLayout(FacesContext context, SelectManyCheckbox checkbox) throws IOException {
+    /**
+     * @deprecated in 13.0.0 remove in 14.0.0
+     */
+    @Deprecated protected void encodeLineLayout(FacesContext context, SelectManyCheckbox checkbox) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         List<SelectItem> selectItems = getSelectItems(context, checkbox);
         Converter converter = checkbox.getConverter();
@@ -354,7 +371,10 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         writer.endElement("tr");
     }
 
-    protected void encodePageLayout(FacesContext context, SelectManyCheckbox checkbox) throws IOException {
+    /**
+     * @deprecated in 13.0.0 remove in 14.0.0
+     */
+    @Deprecated protected void encodePageLayout(FacesContext context, SelectManyCheckbox checkbox) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         List<SelectItem> selectItems = getSelectItems(context, checkbox);
         Converter converter = checkbox.getConverter();
@@ -392,7 +412,10 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         }
     }
 
-    protected void encodeGridLayout(FacesContext context, SelectManyCheckbox checkbox) throws IOException {
+    /**
+     * @deprecated in 13.0.0 remove in 14.0.0
+     */
+    @Deprecated protected void encodeGridLayout(FacesContext context, SelectManyCheckbox checkbox) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         List<SelectItem> selectItems = getSelectItems(context, checkbox);
         Converter converter = checkbox.getConverter();

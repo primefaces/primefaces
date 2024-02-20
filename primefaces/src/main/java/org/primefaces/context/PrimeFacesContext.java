@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,7 +41,6 @@ import org.primefaces.csp.CspState;
  */
 public class PrimeFacesContext extends FacesContextWrapper {
 
-    private final FacesContext wrapped;
     private final boolean moveScriptsToBottom;
     private final boolean csp;
     private final boolean markInputAsInvalidOnErrorMsg;
@@ -50,9 +49,8 @@ public class PrimeFacesContext extends FacesContextWrapper {
     private CspState cspState;
     private PrimeExternalContext externalContext;
 
-    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public PrimeFacesContext(FacesContext wrapped) {
-        this.wrapped = wrapped;
+        super(wrapped);
 
         PrimeRequestContext requestContext = new PrimeRequestContext(wrapped);
         PrimeRequestContext.setCurrentInstance(requestContext, wrapped);
@@ -61,7 +59,7 @@ public class PrimeFacesContext extends FacesContextWrapper {
 
         moveScriptsToBottom = config.isMoveScriptsToBottom();
         if (moveScriptsToBottom) {
-            moveScriptsToBottomState = new MoveScriptsToBottomState();
+            moveScriptsToBottomState = new MoveScriptsToBottomState(config.isMoveScriptsToBottomDeferred());
         }
 
         csp = config.isCsp();
@@ -77,7 +75,7 @@ public class PrimeFacesContext extends FacesContextWrapper {
     @Override
     public ExternalContext getExternalContext() {
         if (externalContext == null) {
-            externalContext = new PrimeExternalContext(wrapped.getExternalContext());
+            externalContext = new PrimeExternalContext(getWrapped().getExternalContext());
         }
         return externalContext;
     }
@@ -116,13 +114,8 @@ public class PrimeFacesContext extends FacesContextWrapper {
     }
 
     @Override
-    public FacesContext getWrapped() {
-        return wrapped;
-    }
-
-    @Override
     public void release() {
-        PrimeRequestContext requestContext = PrimeRequestContext.getCurrentInstance(wrapped);
+        PrimeRequestContext requestContext = PrimeRequestContext.getCurrentInstance(getWrapped());
         if (requestContext != null) {
             requestContext.release();
         }

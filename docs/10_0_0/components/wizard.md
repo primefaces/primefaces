@@ -178,12 +178,12 @@ flowListener.
 ```
 ```java
 public String handleFlow(FlowEvent event) {
-    String currentStepId = event.getCurrentStep();
-    String stepToGo = event.getNextStep();
+    String currentStepId = event.getOldStep();
+    String stepToGo = event.getNewStep();
     if(skip)
         return "confirm";
     else
-        return event.getNextStep();
+        return event.getNewStep();
 }
 ```
 Steps here are simply the ids of tab, by using a flowListener you can decide which step to display

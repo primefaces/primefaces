@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +30,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.selectoneradio.SelectOneRadio;
-import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.HTML;
 import org.primefaces.util.SharedStringBuilder;
@@ -42,7 +42,7 @@ public class RadioButtonRenderer extends InputRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         RadioButton radioButton = (RadioButton) component;
-        SelectOneRadio selectOneRadio = (SelectOneRadio) SearchExpressionFacade.resolveComponent(
+        SelectOneRadio selectOneRadio = (SelectOneRadio) SearchExpressionUtils.contextlessResolveComponent(
                 context, radioButton, radioButton.getFor());
 
         encodeMarkup(context, radioButton, selectOneRadio);
@@ -56,9 +56,10 @@ public class RadioButtonRenderer extends InputRenderer {
         boolean disabled = radio.isDisabled() || selectOneRadio.isDisabled();
 
         String style = radio.getStyle();
-        String defaultStyleClass = selectOneRadio.isPlain() ? HTML.RADIOBUTTON_NATIVE_CLASS : HTML.RADIOBUTTON_CLASS;
-        String styleClass = radio.getStyleClass();
-        styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
+        String styleClass = getStyleClassBuilder(context)
+                .add(HTML.RADIOBUTTON_CLASS)
+                .add(radio.getStyleClass())
+                .build();
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,30 +23,32 @@
  */
 package org.primefaces.component.inputmask;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.regex.Pattern;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.primefaces.mock.FacesContextMock;
 
-public class InputMaskTest {
+class InputMaskTest {
 
     @Test
-    public void translatePhoneMaskIntoRegex() {
+    void translatePhoneMaskIntoRegex() {
         InputMask inputMask = new InputMask();
         inputMask.setMask("(999) 999-9999[ x99999]");
         Pattern pattern = new InputMaskRenderer().translateMaskIntoRegex(new FacesContextMock(), inputMask.getMask());
-        Assertions.assertEquals("\\([0-9][0-9][0-9]\\) [0-9][0-9][0-9]\\-[0-9][0-9][0-9][0-9] ?x?[0-9]?[0-9]?[0-9]?[0-9]?[0-9]?", pattern.pattern());
-        Assertions.assertTrue(pattern.matcher("(012) 345-6789").matches());
+        assertEquals("\\([0-9][0-9][0-9]\\) [0-9][0-9][0-9]\\-[0-9][0-9][0-9][0-9] ?x?[0-9]?[0-9]?[0-9]?[0-9]?[0-9]?", pattern.pattern());
+        assertTrue(pattern.matcher("(012) 345-6789").matches());
     }
 
     @Test
-    public void issue3566() {
+    void issue3566() {
         InputMask inputMask = new InputMask();
         inputMask.setMask("a*9");
         Pattern pattern = new InputMaskRenderer().translateMaskIntoRegex(new FacesContextMock(), inputMask.getMask());
-        Assertions.assertEquals("[A-Za-z][A-Za-z0-9][0-9]", pattern.pattern());
-        Assertions.assertTrue(pattern.matcher("aX3").matches());
+        assertEquals("[A-Za-z][A-Za-z0-9][0-9]", pattern.pattern());
+        assertTrue(pattern.matcher("aX3").matches());
     }
 
 }

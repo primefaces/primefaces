@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,11 +33,18 @@ public class MoveScriptsToBottomState implements Serializable {
     private Map<String, List<Map<String, String>>> includes;
     private Map<String, List<String>> inlines;
     private int savedInlineTags;
+    private boolean deferred;
 
     public MoveScriptsToBottomState() {
         includes = new HashMap<>(1);
         inlines = new HashMap<>(1);
         savedInlineTags = -1;
+        deferred = false;
+    }
+
+    public MoveScriptsToBottomState(boolean deferred) {
+        this();
+        this.deferred = deferred;
     }
 
     public void addInclude(String type, Map<String, String> includeAttributes) {
@@ -66,5 +73,9 @@ public class MoveScriptsToBottomState implements Serializable {
 
     public int getSavedInlineTags() {
         return savedInlineTags;
+    }
+
+    public boolean isDeferred() {
+        return deferred;
     }
 }

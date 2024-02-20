@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +30,7 @@ import org.primefaces.selenium.component.base.AbstractToggleComponent;
  *
  * @deprecated since 10.0 and removal possible anytime after that
  */
-@Deprecated
+@Deprecated(since = "10.0", forRemoval  =  true)
 public abstract class InputSwitch extends AbstractToggleComponent {
 
 }

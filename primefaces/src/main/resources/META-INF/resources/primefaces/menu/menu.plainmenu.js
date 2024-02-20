@@ -108,7 +108,7 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
         })
         .on('keydown.menu', function(e) {
             var currentLink = $this.menuitemLinks.filter('.ui-state-hover');
-            switch(e.key) {
+            switch(e.code) {
                     case 'ArrowUp':
                         var prevItem = currentLink.parent().prevAll('.ui-menuitem:first');
                         if(prevItem.length) {
@@ -130,6 +130,7 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
                     break;
 
                     case 'Enter':
+                    case 'NumpadEnter':
                         currentLink.trigger('click');
                         $this.jq.trigger("blur");
                         PrimeFaces.utils.openLink(e, currentLink);

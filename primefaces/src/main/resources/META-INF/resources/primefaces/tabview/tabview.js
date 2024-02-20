@@ -77,6 +77,8 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         this.cfg.selected = parseInt(this.stateHolder.val());
         this.focusedTabHeader = null;
         this.tabindex = this.cfg.tabindex||0;
+        this.cfg.focusOnError = this.cfg.focusOnError || false;
+        this.cfg.focusOnLastActiveTab = this.cfg.focusOnLastActiveTab || false;
 
         if(this.cfg.scrollable) {
             this.navscroller = this.jq.children('.ui-tabs-navscroller');
@@ -280,10 +282,11 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
             tabs = this.headerContainer;
 
         /* For Screen Reader and Keyboard accessibility */
-        tabs.not('.ui-state-disabled').attr('tabindex', this.tabindex);
+        tabs = tabs.not('.ui-state-disabled').find('a');
+        tabs.attr('tabindex', this.tabindex);
 
         tabs.on('focus.tabview', function(e) {
-            var focusedTab = $(this);
+            var focusedTab = $(this).parent();
 
             if(!focusedTab.hasClass('ui-state-disabled')) {
                 focusedTab.addClass('ui-tabs-outline');
@@ -299,13 +302,43 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
             }
         })
         .on('blur.tabview', function(){
-            $(this).removeClass('ui-tabs-outline');
+            $(this).parent().removeClass('ui-tabs-outline');
         })
         .on('keydown.tabview', function(e) {
-            var element = $(this);
-            if(PrimeFaces.utils.isActionKey(e) && !element.hasClass('ui-state-disabled')) {
-                $this.select(element.index());
-                e.preventDefault();
+            var element = $(this).parent();
+            switch (e.code) {
+                case 'ArrowRight':
+                    var nextTab = element.nextAll('.ui-tabs-header:not(.ui-state-disabled)');
+                    if (nextTab.length) {
+                        nextTab.first().find('a').trigger('focus.tabview');
+                    }
+                    e.preventDefault();
+                    break;
+                case 'ArrowLeft':
+                    var prevTab = element.prevAll('.ui-tabs-header:not(.ui-state-disabled)');
+                    if (prevTab.length) {
+                        prevTab.first().find('a').trigger('focus.tabview');
+                    }
+                    e.preventDefault();
+                    break;
+                case 'NumpadEnter':
+                case 'Enter':
+                case 'Space':
+                    if (!element.hasClass('ui-state-disabled')) {
+                        $this.select(element.data('index'));
+                        e.preventDefault();
+                    }
+                    break;
+                case 'Home':
+                case 'PageUp':
+                    $this.headerContainer.first().find('a').trigger('focus.tabview');
+                    e.preventDefault();
+                    break;
+                case 'End':
+                case 'PageDown':
+                    $this.headerContainer.last().find('a').trigger('focus.tabview');
+                    e.preventDefault();
+                    break;
             }
         });
 
@@ -337,7 +370,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         this.addRefreshListener(function() {
 			
             // update error highlighting and set focusIndex
-            this.headerContainer.each(function() {
+            $(this.jqId + '>ul>li.ui-tabs-header').each(function() {
                 var tabId = $('a', this).attr('href').slice(1);
                 tabId = PrimeFaces.escapeClientId(tabId);
                 if ($(tabId + ' .ui-state-error').length > 0 || $(tabId + ' .ui-message-error-detail').length > 0) {
@@ -357,7 +390,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
             }
 
             if (($this.cfg.focusOnError || $this.cfg.focusOnLastActiveTab) && focusIndex >= 0) {
-               setTimeout(function () {$this.select(focusIndex, true)}, 10);
+               PrimeFaces.queueTask(function () {$this.select(focusIndex, true)}, 10);
             }
         });
     },
@@ -521,6 +554,13 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
      * @param {JQuery} newPanel New tab to be shown.
      */
     show: function(newPanel) {
+        var oldPanel = this.panelContainer.children('.ui-tabs-panel:visible');
+        
+        // it is possible the current panel has been removed from the DOM with rendered flag
+        if (!newPanel || newPanel.length === 0) {
+            newPanel = oldPanel;
+        }
+        
         var headers = this.headerContainer,
         actionsQuery = '.ui-tabs-actions:not(.ui-tabs-actions-global)',
         oldHeader = headers.filter('.ui-state-active'),
@@ -530,7 +570,6 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         newActions = newHeader.next(actionsQuery),
         hasNewActions = newActions.length,
         globalActions = this.navContainer.children('.ui-tabs-actions.ui-tabs-actions-global'),
-        oldPanel = this.panelContainer.children('.ui-tabs-panel:visible'),
         $this = this;
 
         globalActions.hide();
@@ -542,16 +581,16 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         //aria
         oldPanel.attr('aria-hidden', true);
         oldPanel.addClass('ui-helper-hidden');
-        oldHeader.attr('aria-expanded', false);
-        oldHeader.attr('aria-selected', false);
+        oldHeader.find('a').attr('aria-expanded', false);
+        oldHeader.find('a').attr('aria-selected', false);
         if(hasOldActions) {
             oldActions.attr('aria-hidden', true);
         }
 
         newPanel.attr('aria-hidden', false);
         newPanel.removeClass('ui-helper-hidden');
-        newHeader.attr('aria-expanded', true);
-        newHeader.attr('aria-selected', true);
+        newHeader.find('a').attr('aria-expanded', true);
+        newHeader.find('a').attr('aria-selected', true);
         if(hasNewActions) {
             newActions.attr('aria-hidden', false);
         }
@@ -691,7 +730,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
      * @return {number} The number of tabs.
      */
     getLength: function() {
-        return this.navContainer.children().length;
+        return this.headerContainer.length;
     },
 
     /**
@@ -780,7 +819,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
      * @param {number} index 0-based index of the tab to disable.
      */
     disable: function(index) {
-        this.headerContainer.eq(index).addClass('ui-state-disabled').attr('tabindex', '-1');
+        this.headerContainer.eq(index).addClass('ui-state-disabled').find('a').attr('tabindex', '-1');
     },
 
     /**
@@ -788,7 +827,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
      * @param {number} index 0-based index of the tab to enable.
      */
     enable: function(index) {
-        this.headerContainer.eq(index).removeClass('ui-state-disabled').attr('tabindex', this.tabindex);
+        this.headerContainer.eq(index).removeClass('ui-state-disabled').find('a').attr('tabindex', this.tabindex);
     },
 
     /**

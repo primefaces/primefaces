@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,7 +34,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
 
 import org.primefaces.PrimeFaces;
-import org.primefaces.component.column.ColumnBase;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.datatable.DataTableState;
@@ -90,23 +89,7 @@ public class FilterFeature implements DataTableFeature {
 
     @Override
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
-        if (table.isLazy()) {
-            if (table.isLiveScroll()) {
-                table.loadLazyScrollData(0, table.getScrollRows());
-            }
-            else if (table.isVirtualScroll()) {
-                int rows = table.getRows();
-                int scrollRows = table.getScrollRows();
-                int virtualScrollRows = (scrollRows * 2);
-                scrollRows = (rows == 0) ? virtualScrollRows : Math.min(virtualScrollRows, rows);
-
-                table.loadLazyScrollData(0, scrollRows);
-            }
-            else {
-                table.loadLazyData();
-            }
-        }
-        else {
+        if (!table.loadLazyDataIfEnabled()) {
             filter(context, table);
 
             // update filtered value accordingly to take account sorting
@@ -165,16 +148,6 @@ public class FilterFeature implements DataTableFeature {
 
                 FilterConstraint constraint = filter.getConstraint();
                 Object filterValue = filter.getFilterValue();
-                if (filterValue instanceof String && column instanceof ColumnBase) {
-                    ColumnBase columnBase = (ColumnBase) column;
-                    try {
-                        filterValue = ComponentUtils.getConvertedValue(
-                                context, columnBase, columnBase.getConverter(), filterValue);
-                    }
-                    catch (Exception ex) {
-                        filterValue = null;
-                    }
-                }
 
                 localMatch.set(constraint.isMatching(context, columnValue, filterValue, filterLocale));
                 return localMatch.get();
@@ -197,7 +170,7 @@ public class FilterFeature implements DataTableFeature {
 
         //save filtered data
         table.setFilteredValue(filtered);
-        table.setValue(filtered);
+        table.setValue(DataTable.convertIntoObjectValueType(context, table, filtered));
         table.setRowIndex(-1); //reset datamodel
     }
 }

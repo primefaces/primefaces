@@ -45,7 +45,7 @@ form | null | String | Form to serialize for an ajax request. Default is the enc
 RemoteCommand is used by invoking the command from your javascript code.
 
 ```xhtml
-<p:remoteCommand name="increment" action="#{counter.increment}" out="count" />
+<p:remoteCommand name="increment" action="#{counter.increment}" update="count" />
 <h:outputText id="count" value="#{counter.count}" />
 ```
 ```js

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,10 +37,9 @@ import javax.faces.event.ActionEvent;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.menubutton.MenuButton;
-import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.component.overlaypanel.OverlayPanel;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.menu.*;
-import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.renderkit.MenuItemAwareRenderer;
 import org.primefaces.util.*;
 
@@ -63,6 +62,11 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
             if (params.containsKey(param)) {
                 component.queueEvent(new ActionEvent(component));
             }
+        }
+
+        OverlayPanel customOverlay = button.getCustomOverlay();
+        if (customOverlay != null) {
+            customOverlay.getRenderer().decode(context, customOverlay);
         }
     }
 
@@ -98,17 +102,22 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         }
 
         encodeDefaultButton(context, button, buttonId);
-        if (button.getElementsCount() > 0) {
+        OverlayPanel customOverlay = button.getCustomOverlay();
+        if (customOverlay != null || button.getElementsCount() > 0) {
             encodeMenuIcon(context, button, menuButtonId);
             encodeMenu(context, button, menuId);
         }
 
         writer.endElement("div");
+
+        if (customOverlay != null) {
+            customOverlay.setFor(clientId);
+            customOverlay.getRenderer().encodeEnd(context, customOverlay);
+        }
     }
 
     protected void encodeDefaultButton(FacesContext context, SplitButton button, String id) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String value = (String) button.getValue();
         String icon = button.getIcon();
         String onclick = buildOnclick(context, button);
 
@@ -124,7 +133,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         writer.writeAttribute("name", id, "name");
         writer.writeAttribute("class", button.resolveStyleClass(), "styleClass");
 
-        if (onclick.length() > 0) {
+        if (!onclick.isEmpty()) {
             if (button.requiresConfirmation()) {
                 writer.writeAttribute("onclick", button.getConfirmationScript(), "onclick");
                 // data-pfconfirmcommand is added to the div
@@ -157,13 +166,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
 
-        if (value == null) {
-            //For ScreenReader
-            writer.write(getIconOnlyButtonText(button.getTitle(), button.getAriaLabel()));
-        }
-        else {
-            writer.writeText(value, "value");
-        }
+        renderButtonValue(writer, true, button.getValue(), button.getTitle(), button.getAriaLabel());
 
         writer.endElement("span");
 
@@ -189,13 +192,13 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
 
         //icon
         writer.startElement("span", null);
-        writer.writeAttribute("class", "ui-button-icon-left ui-icon ui-icon-triangle-1-s", null);
+        writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " ui-icon-triangle-1-s", null);
         writer.endElement("span");
 
         //text
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
-        writer.write(getIconOnlyButtonText(button.getTitle(), button.getAriaLabel()));
+        writer.writeText(getIconOnlyButtonText(button.getTitle(), button.getAriaLabel()), null);
         writer.endElement("span");
 
         writer.endElement("button");
@@ -203,15 +206,15 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
 
     protected void encodeScript(FacesContext context, SplitButton button) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SplitButton", button);
-        wb.attr("appendTo", SearchExpressionFacade.resolveClientId(context, button, button.getAppendTo(),
-                SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null);
+        wb.init("SplitButton", button)
+            .attr("appendTo", SearchExpressionUtils.resolveOptionalClientIdForClientSide(context, button, button.getAppendTo()));
 
         if (button.isFilter()) {
             wb.attr("filter", true)
                     .attr("filterMatchMode", button.getFilterMatchMode(), null)
                     .nativeAttr("filterFunction", button.getFilterFunction(), null)
-                    .attr("filterNormalize", button.isFilterNormalize(), false);
+                    .attr("filterNormalize", button.isFilterNormalize(), false)
+                    .attr("filterInputAutoFocus", button.isFilterInputAutoFocus(), true);
         }
 
         wb.attr("disableOnAjax", button.isDisableOnAjax(), true)
@@ -407,7 +410,6 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
-        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(InputRenderer.ARIA_FILTER), null);
 
         if (button.getFilterPlaceholder() != null) {
             writer.writeAttribute("placeholder", button.getFilterPlaceholder(), null);

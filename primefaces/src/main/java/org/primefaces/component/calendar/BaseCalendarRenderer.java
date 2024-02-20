@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -114,6 +114,11 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
             disabled = uicalendar.isDisabled();
 
             writer.writeAttribute("class", inputStyleClass, null);
+            writer.writeAttribute(HTML.ARIA_ROLE, "combobox", null);
+            writer.writeAttribute(HTML.ARIA_AUTOCOMPLETE, "none", null);
+            writer.writeAttribute(HTML.ARIA_HASPOPUP, "dialog", null);
+            writer.writeAttribute(HTML.ARIA_EXPANDED, "false", null);
+            writer.writeAttribute(HTML.ARIA_CONTROLS,  uicalendar.getClientId() + "_panel", null);
 
             if (inputStyle != null) {
                 writer.writeAttribute("style", inputStyle, null);
@@ -247,7 +252,6 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
             }
         }
 
-        //TODO: implement if necessary
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, type.getName() + " not supported", null);
         throw new ConverterException(message);
     }

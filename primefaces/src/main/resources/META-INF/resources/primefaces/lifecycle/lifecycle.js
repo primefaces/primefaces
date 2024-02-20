@@ -32,7 +32,7 @@ PrimeFaces.widget.Lifecycle = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
         $(document).on('pfAjaxSuccess', function() {
             if (!$this.updating) {
-                setTimeout(function() {
+                PrimeFaces.queueTask(function() {
                     if (!$this.updating) {
                         $this.update();
                     }
@@ -44,7 +44,7 @@ PrimeFaces.widget.Lifecycle = PrimeFaces.widget.BaseWidget.extend({
             jsf.ajax.addOnEvent(function(data) {
                 if (data.status === 'success') {
                     if (!$this.updating) {
-                        setTimeout(function() {
+                        PrimeFaces.queueTask(function() {
                             if (!$this.updating) {
                                 $this.update();
                             }

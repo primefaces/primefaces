@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,12 +36,10 @@ import javax.faces.model.SelectItem;
 import javax.faces.render.Renderer;
 
 import org.primefaces.component.column.Column;
-import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
-import org.primefaces.util.MessageFactory;
 import org.primefaces.util.WidgetBuilder;
 
 public class SelectManyMenuRenderer extends SelectManyRenderer {
@@ -103,6 +101,8 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
                     .attr("filterNormalize", menu.isFilterNormalize(), false);
         }
 
+        encodeClientBehaviors(context, menu);
+
         wb.finish();
     }
 
@@ -148,6 +148,8 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         if (customContent) {
             writer.startElement("table", null);
             writer.writeAttribute("class", SelectManyMenu.LIST_CLASS, null);
+            writer.writeAttribute(HTML.ARIA_ROLE, "listbox", null);
+            writer.writeAttribute(HTML.ARIA_MULITSELECTABLE, "" + menu.isMetaKeySelection(), null);
             writer.startElement("tbody", null);
             for (int i = 0; i < selectItems.size(); i++) {
                 SelectItem selectItem = selectItems.get(i);
@@ -159,6 +161,8 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         else {
             writer.startElement("ul", null);
             writer.writeAttribute("class", SelectManyMenu.LIST_CLASS, null);
+            writer.writeAttribute(HTML.ARIA_ROLE, "listbox", null);
+            writer.writeAttribute(HTML.ARIA_MULITSELECTABLE, "" + menu.isMetaKeySelection(), null);
             for (int i = 0; i < selectItems.size(); i++) {
                 SelectItem selectItem = selectItems.get(i);
                 encodeItem(context, menu, selectItem, values, submittedValues, converter, customContent, showCheckbox);
@@ -202,6 +206,12 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
 
             writer.startElement("tr", getSelectItemComponent(option));
             writer.writeAttribute("class", itemClass, null);
+            writer.writeAttribute("tabindex", "0", null);
+            writer.writeAttribute(HTML.ARIA_ROLE, "option", null);
+            writer.writeAttribute(HTML.ARIA_LABEL, option.getLabel(), null);
+            writer.writeAttribute(HTML.ARIA_DISABLED, "" + option.isDisabled(), null);
+            writer.writeAttribute(HTML.ARIA_SELECTED, "" + selected, null);
+
             if (option.getDescription() != null) {
                 writer.writeAttribute("title", option.getDescription(), null);
             }
@@ -236,6 +246,11 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         else {
             writer.startElement("li", getSelectItemComponent(option));
             writer.writeAttribute("class", itemClass, null);
+            writer.writeAttribute("tabindex", "0", null);
+            writer.writeAttribute(HTML.ARIA_ROLE, "option", null);
+            writer.writeAttribute(HTML.ARIA_LABEL, option.getLabel(), null);
+            writer.writeAttribute(HTML.ARIA_DISABLED, "" + option.isDisabled(), null);
+            writer.writeAttribute(HTML.ARIA_SELECTED, "" + selected, null);
 
             if (showCheckbox) {
                 RendererUtils.encodeCheckbox(context, selected);
@@ -325,7 +340,6 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
-        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(InputRenderer.ARIA_FILTER), null);
 
         if (disabled) {
             writer.writeAttribute("disabled", "disabled", null);

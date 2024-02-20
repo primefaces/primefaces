@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -57,7 +57,7 @@ public class ExcelStylesManagerTest {
 
     @ParameterizedTest
     @MethodSource("testLocales")
-    public void testFormattedDecimalExcelFormatWithLocaleOnly(Locale locale) {
+    void formattedDecimalExcelFormatWithLocaleOnly(Locale locale) {
         ExcelStylesManager sut = new ExcelStylesManager(null, locale, null);
 
         assertEquals("#,##0.###", sut.getFormattedDecimalExcelFormat(), locale.toString());
@@ -65,7 +65,7 @@ public class ExcelStylesManagerTest {
 
     @ParameterizedTest
     @MethodSource("testNumberDecimalFormats")
-    public void testDecimalExcelFormatWithCustomFormat(DecimalFormat numberFormat, String expectedFormat) {
+    void decimalExcelFormatWithCustomFormat(DecimalFormat numberFormat, String expectedFormat) {
         ExcelOptions options = new ExcelOptions();
         options.setNumberFormat(numberFormat);
         ExcelStylesManager sut = new ExcelStylesManager(null, Locale.getDefault(), options);
@@ -75,7 +75,7 @@ public class ExcelStylesManagerTest {
 
     @ParameterizedTest
     @MethodSource("testLocales")
-    public void testCurrencyExcelFormatWithLocaleOnly(Locale locale) {
+    void currencyExcelFormatWithLocaleOnly(Locale locale) {
         ExcelStylesManager sut = new ExcelStylesManager(null, locale, null);
         DecimalFormatSymbols symbols = new DecimalFormatSymbols(locale);
 
@@ -84,7 +84,7 @@ public class ExcelStylesManagerTest {
 
     @ParameterizedTest
     @MethodSource("testCurrencyDecimalFormats")
-    public void testCurrencyExcelFormatWithCustomFormat(DecimalFormat currencyFormat, String expectedFormat) {
+    void currencyExcelFormatWithCustomFormat(DecimalFormat currencyFormat, String expectedFormat) {
         ExcelOptions options = new ExcelOptions();
         options.setCurrencyFormat(currencyFormat);
         ExcelStylesManager sut = new ExcelStylesManager(null, Locale.getDefault(), options);

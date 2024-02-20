@@ -18,12 +18,13 @@
 
     <ui:define name="implementation">
         <div class="card">
-            <h:form>
-                <p:fileUpload listener="#{fileUploadView.handleFileUpload}" mode="advanced" dragDropSupport="false"
-                              multiple="true" update="messages" sizeLimit="100000" fileLimit="3"
-                              allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>
+            <h:form id="frm">
+                <p:fileUpload id="upl" listener="#{fileUploadView.handleFileUpload}" mode="advanced" dragDropSupport="false"
+                              multiple="true" update="msgs">
+                    <p:validateFile sizeLimit="100000" fileLimit="3" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>
+                </p:fileUpload>
 
-                <p:growl id="messages" showDetail="true" keepAlive="true"/>
+                <p:growl id="msgs" showDetail="true" keepAlive="true"/>
             </h:form>
         </div>
     </ui:define>

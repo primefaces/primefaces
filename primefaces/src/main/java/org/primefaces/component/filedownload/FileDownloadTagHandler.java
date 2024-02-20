@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,12 +37,14 @@ public class FileDownloadTagHandler extends TagHandler {
     private final TagAttribute value;
     private final TagAttribute contentDisposition;
     private final TagAttribute monitorKey;
+    private final TagAttribute store;
 
     public FileDownloadTagHandler(TagConfig tagConfig) {
         super(tagConfig);
         value = getRequiredAttribute("value");
         contentDisposition = getAttribute("contentDisposition");
         monitorKey = getAttribute("monitorKey");
+        store = getAttribute("store");
     }
 
     @Override
@@ -54,6 +56,7 @@ public class FileDownloadTagHandler extends TagHandler {
         ValueExpression valueVE = value.getValueExpression(faceletContext, Object.class);
         ValueExpression contentDispositionVE = null;
         ValueExpression monitorKeyVE = null;
+        ValueExpression storeVE = null;
 
         if (contentDisposition != null) {
             contentDispositionVE = contentDisposition.getValueExpression(faceletContext, String.class);
@@ -61,8 +64,11 @@ public class FileDownloadTagHandler extends TagHandler {
         if (monitorKey != null) {
             monitorKeyVE = monitorKey.getValueExpression(faceletContext, String.class);
         }
+        if (store != null) {
+            storeVE = store.getValueExpression(faceletContext, Boolean.class);
+        }
 
         ActionSource actionSource = (ActionSource) parent;
-        actionSource.addActionListener(new FileDownloadActionListener(valueVE, contentDispositionVE, monitorKeyVE));
+        actionSource.addActionListener(new FileDownloadActionListener(valueVE, contentDispositionVE, monitorKeyVE, storeVE));
     }
 }

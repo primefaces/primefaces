@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,6 +39,7 @@ import org.primefaces.event.FlowEvent;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
@@ -107,7 +108,8 @@ public class WizardRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Wizard", wizard)
                 .attr("showStepStatus", wizard.isShowStepStatus())
-                .attr("showNavBar", wizard.isShowNavBar());
+                .attr("showNavBar", wizard.isShowNavBar())
+                .attr("disableOnAjax", wizard.isDisableOnAjax(), true);
 
         String effect = wizard.getEffect();
         if (effect != null) {
@@ -256,7 +258,7 @@ public class WizardRenderer extends CoreRenderer {
                     writer.writeAttribute("title", tab.getTitletip(), null);
                 }
 
-                if (ComponentUtils.shouldRenderFacet(titleFacet)) {
+                if (FacetUtils.shouldRenderFacet(titleFacet)) {
                     titleFacet.encodeAll(context);
                 }
                 else if (title != null) {

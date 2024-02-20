@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class OutputPanelRenderer extends CoreRenderer {
@@ -81,7 +81,7 @@ public class OutputPanelRenderer extends CoreRenderer {
 
         if (isDeferredNecessary(context, panel)) {
             UIComponent loadingFacet = panel.getFacet("loading");
-            if (ComponentUtils.shouldRenderFacet(loadingFacet)) {
+            if (FacetUtils.shouldRenderFacet(loadingFacet)) {
                 loadingFacet.encodeAll(context);
             }
             else {

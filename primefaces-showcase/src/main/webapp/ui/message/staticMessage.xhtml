@@ -14,10 +14,13 @@
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/staticmessage"/>
+    <ui:param name="widgetLink" value="StaticMessage"/>
 
     <ui:define name="implementation">
+        <p:growl id="growl"/>
 
         <div class="card">
+            <h5>Basic</h5>
             <div class="grid">
                 <div class="col-12 md:col-4">
                     <p:staticMessage severity="info" summary="INFO" detail="Message Content" style="width: 100%"/>
@@ -29,6 +32,13 @@
                     <p:staticMessage severity="error" summary="ERROR" detail="Message Content" style="width: 100%"/>
                 </div>
             </div>
+
+            <h5>Closable</h5>
+            <p:staticMessage severity="warn" summary="Warning" style="width: 100%"
+                             detail="This is a static message that can be closed by the user."
+                             closable="true" rendered="#{not messagesView.closed}">
+                <p:ajax event="close" listener="#{messagesView.onClose()}" update="growl"/>
+            </p:staticMessage>
         </div>
 
     </ui:define>
