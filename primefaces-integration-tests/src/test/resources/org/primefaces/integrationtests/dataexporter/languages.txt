@@ -1,32 +1,27 @@
 datatable
 	langs
-		idid
-		typetype
-		namename
-		first_appearedfirst_appeared
+		id: 1
+		type: COMPILED
+		name: Java
+		first_appeared: 1995
 	langs
+		id: 2
+		type: COMPILED
+		name: C#
+		first_appeared: 2000
 	langs
-		idid
-		typetype
-		namename
-		first_appearedfirst_appeared
+		id: 3
+		type: INTERPRETED
+		name: JavaScript
+		first_appeared: 1995
 	langs
+		id: 4
+		type: INTERPRETED
+		name: TypeScript
+		first_appeared: 2012
 	langs
-		idid
-		typetype
-		namename
-		first_appearedfirst_appeared
-	langs
-	langs
-		idid
-		typetype
-		namename
-		first_appearedfirst_appeared
-	langs
-	langs
-		idid
-		typetype
-		namename
-		first_appearedfirst_appeared
-	langs
+		id: 5
+		type: INTERPRETED
+		name: Python
+		first_appeared: 1990
 datatable

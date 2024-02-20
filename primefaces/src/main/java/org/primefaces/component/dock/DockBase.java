@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,11 +23,10 @@
  */
 package org.primefaces.component.dock;
 
-import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.component.menu.AbstractMenu;
 
-public abstract class DockBase extends AbstractMenu implements Widget, RTLAware {
+public abstract class DockBase extends AbstractMenu implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -109,14 +108,5 @@ public abstract class DockBase extends AbstractMenu implements Widget, RTLAware 
 
     public void setAnimationDuration(int animationDuration) {
         getStateHelper().put(PropertyKeys.animationDuration, animationDuration);
-    }
-
-    @Override
-    public String getDir() {
-        return (String) getStateHelper().eval(PropertyKeys.dir, "ltr");
-    }
-
-    public void setDir(String dir) {
-        getStateHelper().put(PropertyKeys.dir, dir);
     }
 }

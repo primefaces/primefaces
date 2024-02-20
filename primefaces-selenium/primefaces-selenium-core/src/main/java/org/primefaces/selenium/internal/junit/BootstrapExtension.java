@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,7 +41,9 @@ public class BootstrapExtension implements BeforeAllCallback, ExtensionContext.S
                 ConfigProvider configProvider = ConfigProvider.getInstance();
 
                 DeploymentAdapter deploymentAdapter = configProvider.getDeploymentAdapter();
-                deploymentAdapter.startup();
+                if (deploymentAdapter != null) {
+                    deploymentAdapter.startup();
+                }
 
                 // The following line registers a callback hook when the root test context is shut down
                 context.getRoot().getStore(ExtensionContext.Namespace.GLOBAL).put(BootstrapExtension.class.getName(), this);
@@ -54,7 +56,9 @@ public class BootstrapExtension implements BeforeAllCallback, ExtensionContext.S
     @Override
     public void close() throws Exception {
         DeploymentAdapter deploymentAdapter = ConfigProvider.getInstance().getDeploymentAdapter();
-        deploymentAdapter.shutdown();
+        if (deploymentAdapter != null) {
+            deploymentAdapter.shutdown();
+        }
     }
 
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,9 +25,10 @@ package org.primefaces.component.selectoneradio;
 
 import javax.faces.component.html.HtmlSelectOneRadio;
 
+import org.primefaces.component.api.FlexAware;
 import org.primefaces.component.api.Widget;
 
-public abstract class SelectOneRadioBase extends HtmlSelectOneRadio implements Widget {
+public abstract class SelectOneRadioBase extends HtmlSelectOneRadio implements Widget, FlexAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -37,8 +38,9 @@ public abstract class SelectOneRadioBase extends HtmlSelectOneRadio implements W
 
         widgetVar,
         columns,
-        plain,
-        unselectable
+        unselectable,
+        flex,
+        columnClasses
     }
 
     public SelectOneRadioBase() {
@@ -59,19 +61,11 @@ public abstract class SelectOneRadioBase extends HtmlSelectOneRadio implements W
     }
 
     public int getColumns() {
-        return (Integer) getStateHelper().eval(PropertyKeys.columns, 0);
+        return (Integer) getStateHelper().eval(PropertyKeys.columns, 12);
     }
 
     public void setColumns(int columns) {
         getStateHelper().put(PropertyKeys.columns, columns);
-    }
-
-    public boolean isPlain() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.plain, false);
-    }
-
-    public void setPlain(boolean plain) {
-        getStateHelper().put(PropertyKeys.plain, plain);
     }
 
     public boolean isUnselectable() {
@@ -80,5 +74,22 @@ public abstract class SelectOneRadioBase extends HtmlSelectOneRadio implements W
 
     public void setUnselectable(boolean unselectable) {
         getStateHelper().put(PropertyKeys.unselectable, unselectable);
+    }
+
+    @Override
+    public boolean isFlex() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.flex, false);
+    }
+
+    public void setFlex(boolean flex) {
+        getStateHelper().put(PropertyKeys.flex, flex);
+    }
+
+    public String getColumnClasses() {
+        return (String) getStateHelper().eval(PropertyKeys.columnClasses, null);
+    }
+
+    public void setColumnClasses(String columnClasses) {
+        getStateHelper().put(PropertyKeys.columnClasses, columnClasses);
     }
 }

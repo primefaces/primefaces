@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+
+    <f:metadata>
+        <f:viewAction action="#{tree007.initWithoutPreselection()}"/>
+    </f:metadata>
+
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+        <h:form id="form">
+            <p:tree id="tree"
+                    value="#{tree007.root}" var="node"
+                    selectionMode="checkbox"
+                    selection="#{tree007.selectedNodes}">
+                <p:ajax event="select" process="@this" update="@this" />
+                <p:ajax event="unselect" process="@this" update="@this" />
+                <p:ajax event="expand" process="@this" />
+                <p:treeNode>
+                    <h:outputText value="#{node}"/>
+                </p:treeNode>
+            </p:tree>
+
+            <p:messages id="msgs" showDetail="true">
+                <p:autoUpdate/>
+            </p:messages>
+        </h:form>
+    </h:body>
+</f:view>
+
+</html>

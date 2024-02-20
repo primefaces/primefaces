@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,9 +26,10 @@ package org.primefaces.component.selectmanymenu;
 import javax.faces.component.html.HtmlSelectManyMenu;
 
 import org.primefaces.component.api.InputHolder;
+import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
 
-public abstract class SelectManyMenuBase extends HtmlSelectManyMenu implements Widget, InputHolder {
+public abstract class SelectManyMenuBase extends HtmlSelectManyMenu implements Widget, InputHolder, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -44,7 +45,8 @@ public abstract class SelectManyMenuBase extends HtmlSelectManyMenu implements W
         filterFunction,
         caseSensitive,
         scrollHeight,
-        metaKeySelection;
+        metaKeySelection,
+        filterNormalize
     }
 
     public SelectManyMenuBase() {
@@ -126,5 +128,13 @@ public abstract class SelectManyMenuBase extends HtmlSelectManyMenu implements W
 
     public void setMetaKeySelection(boolean metaKeySelection) {
         getStateHelper().put(PropertyKeys.metaKeySelection, metaKeySelection);
+    }
+
+    public boolean isFilterNormalize() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.filterNormalize, false);
+    }
+
+    public void setFilterNormalize(boolean filterNormalize) {
+        getStateHelper().put(PropertyKeys.filterNormalize, filterNormalize);
     }
 }

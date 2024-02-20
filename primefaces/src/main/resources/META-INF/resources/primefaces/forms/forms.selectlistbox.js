@@ -37,6 +37,7 @@
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  * 
  * @prop {boolean} cfg.caseSensitive `true` if filtering is case-sensitive, `false` otherwise.
+ * @prop {boolean} cfg.filterNormalize Defines if filtering would be done using normalized values.
  * @prop {boolean} cfg.filter `true` if the options can be filtered, or `false` otherwise.
  * @prop {PrimeFaces.widget.SelectListbox.FilterFunction} cfg.filterFunction A custom filter function that is used when
  * `filterMatchMode` is set to `custom`.
@@ -53,7 +54,7 @@ PrimeFaces.widget.SelectListbox = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
 
-        this.input = $(this.jqId + '_input'),
+        this.input = $(this.jqId + '_input');
         this.listContainer = this.jq.children('.ui-selectlistbox-listcontainer');
         this.listElement = this.listContainer.children('.ui-selectlistbox-list');
         this.options = $(this.input).children('option');
@@ -127,8 +128,16 @@ PrimeFaces.widget.SelectListbox = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery} item An OPTION element to set as the selected element.
      */
     selectItem: function(item) {
-        item.addClass('ui-state-highlight').removeClass('ui-state-hover');
-        this.options.eq(item.index()).prop('selected', true);
+        item.addClass('ui-state-highlight').removeClass('ui-state-hover').attr('aria-selected', 'true');
+        var itemSelected = this.options.eq(item.index());
+        itemSelected.prop('selected', true);
+        if (this.hasBehavior('itemSelect')) {
+            var ext = {
+                params: [{ name: this.id + '_itemSelect', value: itemSelected.text() }]
+            };
+
+            this.callBehavior('itemSelect', ext);
+        }
     },
 
     /**
@@ -136,8 +145,17 @@ PrimeFaces.widget.SelectListbox = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery} item Item to unselect.
      */
     unselectItem: function(item) {
-        item.removeClass('ui-state-highlight');
+        item.removeClass('ui-state-highlight').attr('aria-selected', 'false');
         this.options.eq(item.index()).prop('selected', false);
+        var itemUnselected = this.options.eq(item.index());
+        itemUnselected.prop('selected', false);
+        if (this.hasBehavior('itemUnselect')) {
+            var ext = {
+                params: [{ name: this.id + '_itemUnselect', value: itemUnselected.text() }]
+            };
+
+            this.callBehavior('itemUnselect', ext);
+        }
     },
 
     /**
@@ -194,7 +212,9 @@ PrimeFaces.widget.SelectListbox = PrimeFaces.widget.BaseWidget.extend({
      * @param {string} value Current value of the filter.
      */
     filter: function(value) {
-        var filterValue = this.cfg.caseSensitive ? PrimeFaces.trim(value) : PrimeFaces.trim(value).toLowerCase();
+        var lowercase = !this.cfg.caseSensitive,
+                normalize = this.cfg.filterNormalize,
+                filterValue = PrimeFaces.toSearchable(PrimeFaces.trim(value), lowercase, normalize);
 
         if(filterValue === '') {
             this.items.filter(':hidden').show();
@@ -202,7 +222,7 @@ PrimeFaces.widget.SelectListbox = PrimeFaces.widget.BaseWidget.extend({
         else {
             for(var i = 0; i < this.options.length; i++) {
                 var option = this.options.eq(i),
-                itemLabel = this.cfg.caseSensitive ? option.text() : option.text().toLowerCase(),
+                itemLabel = PrimeFaces.toSearchable(option.text(), lowercase, normalize),
                 item = this.items.eq(i);
 
                 if(this.filterMatcher(itemLabel, filterValue))

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -81,12 +81,14 @@ public class ConfirmBehavior extends AbstractBehavior {
 
         if (component instanceof Confirmable) {
             String sourceProperty = (source == null || "this".equals(source)) ? "source:this" : "source:\"" + source + "\"";
+            String icon = getIcon();
+
             String script = "PrimeFaces.confirm({" + sourceProperty
                                                    + ",type:" + type
                                                    + ",escape:" + isEscape()
                                                    + ",header:" + headerText
                                                    + ",message:" + messageText
-                                                   + ",icon:\"" + getIcon()
+                                                   + ",icon:\"" + (icon == null ? "" : icon)
                                                    + "\",beforeShow:" + beforeShow
                                                    + "});return false;";
             ((Confirmable) component).setConfirmationScript(script);

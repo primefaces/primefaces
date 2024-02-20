@@ -6,7 +6,7 @@ StaticMessage component can be used to display a message without the use of a Fa
 
 | Name | Value |
 | --- | --- |
-| Tag | inputText
+| Tag | staticMessage
 | Component Class | org.primefaces.component.staticmessage.StaticMessage
 | Component Type | org.primefaces.component.StaticMessage
 | Component Family | org.primefaces.component |
@@ -23,6 +23,7 @@ binding | null | Object | An el expression that maps to a server side UIComponen
 summary | null | String | The message summary.
 detail | null | String | The message detail.
 severity | null | String | The severity of the message: error, info, warn, fatal.
+display | both | String | Defines the display mode.
 escape | true | Boolean | Defines whether HTML would be escaped or not.
 style | null | String | Style of main container element.
 styleClass | null | String | Style class of main container.
@@ -33,4 +34,10 @@ styleClass | null | String | Style class of main container.
 ```xhtml
 <p:staticMessage severity="info" summary="INFO!" detail="Hey, i'm a info!" />
 ```
+## Display Mode
+StaticMessage component has three different display modes;
+
+- text : Only message text is displayed.
+- icon : Only message severity is displayed and message text is visible as a tooltip.
+- both (default) : Both icon and text are displayed.
 

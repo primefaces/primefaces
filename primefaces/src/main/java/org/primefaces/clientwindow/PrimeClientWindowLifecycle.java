@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,11 +32,8 @@ import javax.faces.lifecycle.LifecycleWrapper;
 // if we would add the client-window-factory entry, pre JSF2.3 would crash
 public class PrimeClientWindowLifecycle extends LifecycleWrapper {
 
-    private final Lifecycle wrapped;
-
-    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public PrimeClientWindowLifecycle(Lifecycle wrapped) {
-        this.wrapped = wrapped;
+        super(wrapped);
     }
 
     @Override
@@ -54,10 +51,5 @@ public class PrimeClientWindowLifecycle extends LifecycleWrapper {
             facesContext.getExternalContext().setClientWindow(null);
             throw e;
         }
-    }
-
-    @Override
-    public Lifecycle getWrapped() {
-        return wrapped;
     }
 }

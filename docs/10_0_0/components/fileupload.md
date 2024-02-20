@@ -22,7 +22,7 @@ powered rich solution with graceful degradation for legacy browsers.
 | --- | --- | --- | --- |
 | id | null | String | Unique identifier of the component.
 | accept | null | String | Filters files in native file browser dialog.
-| allowTypes | null | String | Regular expression for accepted file types, e.g. /(\\.\|\\/)(gif\|jpe?g\|png)$/
+| allowTypes | null | String | Regular expression for accepted file types, e.g., /(\\.\|\\/)(gif\|jpe?g\|png)$/
 | auto | false | Boolean | When set to true, selecting a file starts the upload process implicitly.
 | binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
 | cancelButtonTitle | null | String | Native title tooltip for cancel button
@@ -317,6 +317,7 @@ exist, threshold size and temporary file upload location.
 | --- | --- |
 | thresholdSize | Maximum file size in bytes to keep uploaded files in memory. If a file exceeds this limit, it’ll be temporarily written to disk.
 | uploadDirectory | Disk repository path to keep temporary files that exceeds the threshold size. By default it is System.getProperty("java.io.tmpdir")
+| fileCountMax | Sets the maximum number of files allowed per request. Default is unlimited.
 
 An example configuration below defined thresholdSize to be 50kb and uploads to users temporary
 folder.
@@ -333,6 +334,10 @@ folder.
         <param-name>uploadDirectory</param-name>
         <param-value>/Users/primefaces/temp</param-value>
     </init-param>
+    <init-param>
+        <param-name>fileCountMax</param-name>
+        <param-value>5</param-value>
+    </init-param>
 </filter>
 ```
 **Note** that uploadDirectory is used internally, you always need to implement the logic to save the file
@@ -345,7 +350,7 @@ Chunked file upload comes with following restrictions:
 1. It is only supported for `mode="advanced"`
 
 ### Resuming chunked file uploads
-FileUpload is able to resume uploads that have been canceled (e.g user abort, lost of connection etc.) At first, you'll need to enable chunking and add this servlet:
+FileUpload is able to resume uploads that have been canceled (e.g. user abort, lost of connection etc.) At first, you'll need to enable chunking and add this servlet:
 ```xml
 <servlet>
     <servlet-name>FileUpload Resume Servlet</servlet-name>

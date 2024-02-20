@@ -259,10 +259,14 @@ if (!PrimeFaces.dialog) {
 
                             rootWindow.PrimeFaces.widgets[dialogWidgetVar] = undefined;
                         },
+                        getModalTabbables: function(){
+                            return $frame.contents().find(':tabbable');
+                        },
                         modal: cfg.options.modal,
                         blockScroll: cfg.options.blockScroll,
                         resizable: cfg.options.resizable,
                         hasIframe: true,
+                        iframe: $frame,
                         draggable: cfg.options.draggable,
                         width: cfg.options.width,
                         height: cfg.options.height,
@@ -271,7 +275,6 @@ if (!PrimeFaces.dialog) {
                         headerElement: cfg.options.headerElement,
                         responsive: cfg.options.responsive,
                         closeOnEscape: cfg.options.closeOnEscape,
-                        focus: cfg.options.focus,
                         fitViewport: cfg.options.fitViewport,
                         resizeObserver: cfg.options.resizeObserver,
                         resizeObserverCenter: cfg.options.resizeObserverCenter

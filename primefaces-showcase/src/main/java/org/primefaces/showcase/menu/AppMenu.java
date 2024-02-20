@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,13 +23,12 @@
  */
 package org.primefaces.showcase.menu;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 @Named
 @ApplicationScoped
@@ -47,14 +46,14 @@ public class AppMenu {
         //GENERAL CATEGORY START
         List<MenuItem> generalMenuItems = new ArrayList<>();
         generalMenuItems.add(new MenuItem("Get Started", "/getstarted"));
-        generalMenuItems.add(new MenuItem("Documentation", "https://primefaces.github.io/primefaces/12_0_0/#/"));
-        generalMenuItems.add(new MenuItem("Content Security", "https://primefaces.github.io/primefaces/12_0_0/#/core/contentsecuritypolicy"));
+        generalMenuItems.add(new MenuItem("Documentation", "https://primefaces.github.io/primefaces/14_0_0/#/"));
+        generalMenuItems.add(new MenuItem("Content Security", "https://primefaces.github.io/primefaces/14_0_0/#/core/contentsecuritypolicy"));
         menuCategories.add(new MenuCategory("General", generalMenuItems));
         //GENERAL CATEGORY END
 
         //SUPPORT CATEGORY START
         List<MenuItem> supportMenuItems = new ArrayList<>();
-        supportMenuItems.add(new MenuItem("Forum", "https://forum.primefaces.org"));
+        supportMenuItems.add(new MenuItem("Forum", "https://github.com/orgs/primefaces/discussions"));
         supportMenuItems.add(new MenuItem("Discord Chat", "https://discord.gg/gzKFYnpmCY"));
         supportMenuItems.add(new MenuItem("PRO Support", "/support"));
         menuCategories.add(new MenuCategory("Support", supportMenuItems));
@@ -71,10 +70,10 @@ public class AppMenu {
 
         //THEMING CATEGORY START
         List<MenuItem> themingMenuItems = new ArrayList<>();
-        themingMenuItems.add(new MenuItem("Introduction", "/theming"));
-        themingMenuItems.add(new MenuItem("Theme Designer", "https://www.primefaces.org/designer/primefaces"));
+        themingMenuItems.add(new MenuItem("Overview", "/theming"));
         themingMenuItems.add(new MenuItem("Visual Editor", "https://www.primefaces.org/designer-jsf"));
-        themingMenuItems.add(new MenuItem("SASS API", "https://www.primefaces.org/designer/api/primefaces/10.0.0/"));
+        themingMenuItems.add(new MenuItem("Colors", "/colors"));
+        themingMenuItems.add(new MenuItem("SASS API", "https://www.primefaces.org/designer/api/primefaces/13.0.0/"));
         menuCategories.add(new MenuCategory("Theming", themingMenuItems));
         //THEMING CATEGORY END
 
@@ -93,8 +92,7 @@ public class AppMenu {
         //PRIMEFLEX CATEGORY START
         List<MenuItem> primeFlexMenuItems = new ArrayList<>();
         primeFlexMenuItems.add(new MenuItem("Setup", "/primeflex/setup"));
-        primeFlexMenuItems.add(new MenuItem("PrimeFlex v3", "https://www.primefaces.org/primeflex"));
-        primeFlexMenuItems.add(new MenuItem("PrimeFlex v2", "https://github.com/primefaces/primeflex/wiki/PrimeFlex-v2"));
+        primeFlexMenuItems.add(new MenuItem("PrimeFlex Site", "https://primeflex.org/"));
         menuCategories.add(new MenuCategory("PrimeFlex", primeFlexMenuItems));
         //PRIMEFLEX CATEGORY END
 
@@ -103,7 +101,7 @@ public class AppMenu {
         primeIconsMenuItems.add(new MenuItem("Icons v6.0.1", "/icons"));
         menuCategories.add(new MenuCategory("PrimeIcons", primeIconsMenuItems));
         //PRIMEICONS CATEGORY END
-        
+
         //UIKIT CATEGORY START
         List<MenuItem> uiKitMenuItems = new ArrayList<>();
         uiKitMenuItems.add(new MenuItem("Figma", "/uikit", "New"));
@@ -139,7 +137,11 @@ public class AppMenu {
         formMenuItems.add(new MenuItem("Calendar", calendarMenuItems));*/
         formMenuItems.add(new MenuItem("CascadeSelect", "/ui/input/cascadeSelect"));
         formMenuItems.add(new MenuItem("Chips", "/ui/input/chips"));
-        formMenuItems.add(new MenuItem("ColorPicker", "/ui/input/colorPicker"));
+
+        List<MenuItem> colorPickerMenuItems = new ArrayList<>();
+        colorPickerMenuItems.add(new MenuItem("Popup", "/ui/input/colorPicker"));
+        colorPickerMenuItems.add(new MenuItem("Inline", "/ui/input/colorPickerInline"));
+        formMenuItems.add(new MenuItem("ColorPicker", colorPickerMenuItems));
 
         //DatePicker Nested MenuItem
         List<MenuItem> datePickerMenuItems = new ArrayList<>();
@@ -442,21 +444,39 @@ public class AppMenu {
         menuCategories.add(new MenuCategory("Menu", menuMenuItems));
         //MENU CATEGORY END
 
+        //CHART CATEGORY START
+        List<MenuItem> chartMenuItems = new ArrayList<>();
+
+        //Bar Nested MenuItem
+        chartMenuItems.add(new MenuItem("Bar", "/ui/chart/bar", "New"));
+        chartMenuItems.add(new MenuItem("Bubble", "/ui/chart/bubble", "New"));
+        chartMenuItems.add(new MenuItem("Doughnut", "/ui/chart/doughnut", "New"));
+        chartMenuItems.add(new MenuItem("Line", "/ui/chart/line", "New"));
+        chartMenuItems.add(new MenuItem("Pie", "/ui/chart/pie", "New"));
+        chartMenuItems.add(new MenuItem("Scatter", "/ui/chart/scatter", "New"));
+        chartMenuItems.add(new MenuItem("PolarArea", "/ui/chart/polararea", "New"));
+        chartMenuItems.add(new MenuItem("Radar", "/ui/chart/radar", "New"));
+        chartMenuItems.add(new MenuItem("Custom", "/ui/chart/custom", "New"));
+        chartMenuItems.add(new MenuItem("Facet", "/ui/chart/facet", "New"));
+        chartMenuItems.add(new MenuItem("Export", "/ui/chart/export", "New"));
+        menuCategories.add(new MenuCategory("Chart", chartMenuItems));
+        //CHARTS CATEGORY END
+
         //CHARTS CATEGORY START
         List<MenuItem> chartsMenuItems = new ArrayList<>();
 
         //Bar Nested MenuItem
-        chartsMenuItems.add(new MenuItem("Bar", "/ui/chartjs/bar/bar"));
-        chartsMenuItems.add(new MenuItem("Bubble", "/ui/chartjs/bubble"));
-        chartsMenuItems.add(new MenuItem("Donut", "/ui/chartjs/donut"));
-        chartsMenuItems.add(new MenuItem("Line", "/ui/chartjs/line"));
-        chartsMenuItems.add(new MenuItem("Pie", "/ui/chartjs/pie"));
-        chartsMenuItems.add(new MenuItem("Scatter", "/ui/chartjs/scatter"));
-        chartsMenuItems.add(new MenuItem("PolarArea", "/ui/chartjs/polararea"));
-        chartsMenuItems.add(new MenuItem("Radar", "/ui/chartjs/radar"));
-        chartsMenuItems.add(new MenuItem("Mixed", "/ui/chartjs/mixed"));
-        chartsMenuItems.add(new MenuItem("Interactive", "/ui/chartjs/interactive"));
-        chartsMenuItems.add(new MenuItem("Export", "/ui/chartjs/export"));
+        chartsMenuItems.add(new MenuItem("Bar", "/ui/chartjs/bar/bar", "Deprecated"));
+        chartsMenuItems.add(new MenuItem("Bubble", "/ui/chartjs/bubble", "Deprecated"));
+        chartsMenuItems.add(new MenuItem("Donut", "/ui/chartjs/donut", "Deprecated"));
+        chartsMenuItems.add(new MenuItem("Line", "/ui/chartjs/line", "Deprecated"));
+        chartsMenuItems.add(new MenuItem("Pie", "/ui/chartjs/pie", "Deprecated"));
+        chartsMenuItems.add(new MenuItem("Scatter", "/ui/chartjs/scatter", "Deprecated"));
+        chartsMenuItems.add(new MenuItem("PolarArea", "/ui/chartjs/polararea", "Deprecated"));
+        chartsMenuItems.add(new MenuItem("Radar", "/ui/chartjs/radar", "Deprecated"));
+        chartsMenuItems.add(new MenuItem("Mixed", "/ui/chartjs/mixed", "Deprecated"));
+        chartsMenuItems.add(new MenuItem("Interactive", "/ui/chartjs/interactive", "Deprecated"));
+        chartsMenuItems.add(new MenuItem("Export", "/ui/chartjs/export", "Deprecated"));
         menuCategories.add(new MenuCategory("Charts", chartsMenuItems));
         //CHARTS CATEGORY END
 
@@ -494,6 +514,7 @@ public class AppMenu {
         galleriaMenuItems.add(new MenuItem("FullScreen", "/ui/multimedia/galleria/fullscreen"));
         galleriaMenuItems.add(new MenuItem("AutoPlay", "/ui/multimedia/galleria/autoplay"));
         galleriaMenuItems.add(new MenuItem("Caption", "/ui/multimedia/galleria/caption"));
+        galleriaMenuItems.add(new MenuItem("Dynamic", "/ui/multimedia/galleria/dynamic"));
         multimediaMenuItems.add(new MenuItem("Galleria", galleriaMenuItems));
 
         multimediaMenuItems.add(new MenuItem("Media", "/ui/multimedia/media"));
@@ -543,6 +564,7 @@ public class AppMenu {
         clientSideValidationMenuItems.add(new MenuItem("Bean", "/ui/csv/bean"));
         clientSideValidationMenuItems.add(new MenuItem("Custom", "/ui/csv/custom"));
         clientSideValidationMenuItems.add(new MenuItem("Event", "/ui/csv/event"));
+        clientSideValidationMenuItems.add(new MenuItem("Immediate", "/ui/csv/immediate"));
         menuCategories.add(new MenuCategory("Client Side Validation", clientSideValidationMenuItems));
         //CLIENT SIDE VALIDATION CATEGORY END
 
@@ -606,19 +628,18 @@ public class AppMenu {
         terminalCommandMenuItems.add(new MenuItem("Autocomplete", "/ui/misc/terminal/autocomplete"));
         miscMenuItems.add(new MenuItem("Terminal", terminalCommandMenuItems));
 
-        miscMenuItems.add(new MenuItem("Watermark", "/ui/misc/watermark"));
         menuCategories.add(new MenuCategory("Misc", miscMenuItems));
         //MISC CATEGORY END
 
         for (MenuCategory category : menuCategories) {
             for (MenuItem menuItem : category.getMenuItems()) {
-                menuItem.setParentLabel(category.getLabel());
+                menuItem.setParent(category);
                 if (menuItem.getUrl() != null) {
                     menuItems.add(menuItem);
                 }
                 if (menuItem.getMenuItems() != null) {
                     for (MenuItem item : menuItem.getMenuItems()) {
-                        item.setParentLabel(menuItem.getLabel());
+                        item.setParent(menuItem);
                         if (item.getUrl() != null) {
                             menuItems.add(item);
                         }
@@ -632,8 +653,8 @@ public class AppMenu {
         String queryLowerCase = query.toLowerCase();
         List<MenuItem> filteredItems = new ArrayList<>();
         for (MenuItem item : menuItems) {
-            if (item.getUrl() != null && (item.getLabel().toLowerCase().contains(queryLowerCase)
-                    || item.getParentLabel().toLowerCase().contains(queryLowerCase))) {
+            if (item.getUrl() != null
+                    && (item.getLabel().toLowerCase().contains(queryLowerCase) || anyParentContainsQuery(item, queryLowerCase))) {
                 filteredItems.add(item);
             }
             else if (item.getBadge() != null) {
@@ -642,8 +663,20 @@ public class AppMenu {
                 }
             }
         }
-        filteredItems.sort(Comparator.comparing(MenuItem::getParentLabel));
+        filteredItems.sort(Comparator.comparing(m -> m.getParent().getLabel()));
         return filteredItems;
+    }
+
+    protected boolean anyParentContainsQuery(MenuItem item, String query) {
+        MenuItem parent = item.getParent();
+        while (parent != null) {
+            if (parent.getLabel().toLowerCase().contains(query)) {
+                return true;
+            }
+            parent = parent.getParent();
+        }
+
+        return false;
     }
 
     public List<MenuItem> getMenuItems() {

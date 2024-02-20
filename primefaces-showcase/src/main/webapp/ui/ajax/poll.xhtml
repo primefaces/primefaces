@@ -23,7 +23,7 @@
                     <h:outputText id="txt_count" value="#{pollView.number}"/>
                 </h1>
                 
-                <p:poll interval="2" listener="#{pollView.increment}" update="txt_count"/>
+                <p:poll interval="2" listener="#{pollView.increment}" update="txt_count" onactivated="console.log('Poll started')"/>
             </h:form>
         </div>
     </ui:define>

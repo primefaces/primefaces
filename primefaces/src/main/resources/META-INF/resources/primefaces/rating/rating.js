@@ -60,13 +60,12 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
 
         this.input.on("keydown.rating", function(e) {
             var value = $this.getValue() || 0;
-            var keyCode = $.ui.keyCode,
-            key = e.which;
+            var key = e.key;
             
-            if ((key === keyCode.LEFT || key === keyCode.DOWN) && value > 0) {
+            if ((key === 'ArrowLeft' || key === 'ArrowDown') && value > 0) {
                 $this.setValue(--value);
             }
-            else if ((key === keyCode.RIGHT || key === keyCode.UP) && $this.stars.length !== value) {
+            else if ((key === 'ArrowRight' || key === 'ArrowUp') && $this.stars.length !== value) {
                 $this.setValue(++value);
             }
             

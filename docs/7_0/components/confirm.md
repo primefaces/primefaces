@@ -18,6 +18,7 @@ Confirm is a behavior element used to integrate with global confirm dialog.
 | icon | null | String | Icon to display next to message.
 | disabled | false | Boolean | Disables confirm behavior when true.
 | escape | false | Boolean | Whether to escape the message.
+| beforeShow | null | String | Callback to execute before displaying confirmation dialog. Return false to prevent dialog from appearing.
 
 ## Getting started with Confirm
 See global confirm dialog topic in next section for details.

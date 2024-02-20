@@ -142,6 +142,17 @@
     vertical-align: top;
 }
 
+.ui-selectmanycheckbox.layout-line-direction.ui-grid-responsive > div,
+.ui-selectmanycheckbox.layout-line-direction.ui-grid-responsive > div label {
+    display: inline;
+}
+.ui-selectmanycheckbox.ui-grid-responsive > div > div {
+    display:inline-flex;
+}
+.ui-selectmanycheckbox.ui-grid-responsive > div label {
+    flex-grow: 1;
+}
+
 .ui-selectmanycheckbox label {
     vertical-align: middle;
     cursor: pointer;
@@ -160,6 +171,10 @@
     display: inline-block;
     margin: 0 16px 0 8px;
     vertical-align: middle;
+}
+
+.ui-selectoneradio.ui-grid-responsive label {
+  display: inline;
 }
 
 .ui-selectmanycheckbox.ui-widget td,
@@ -183,6 +198,11 @@
 
 .ui-selectmanycheckbox .ui-selectmanycheckbox-responsive-group {
     padding: .5em .5em .5em 0px;
+}
+
+.ui-selectoneradio.layout-line-direction > div,
+.ui-selectoneradio.layout-line-direction > div label {
+    display: inline;
 }
 
 /** RadioButton **/
@@ -213,45 +233,11 @@
     margin-left: 1px;
 }
 
-.ui-radiobutton.ui-radiobutton-native {
-    margin: 0;
-    padding: 0;
-}
-
-.ui-radiobutton.ui-radiobutton-native  .ui-helper-hidden-accessible {
-    clip: auto;
-    position: static !important;
-    width: auto;
-    height: auto;
-    overflow: visible;
-    margin: 0;
-    padding: 0;
-}
-
-.ui-radiobutton.ui-radiobutton-native  .ui-radiobutton-box {
-    display:none;
-}
-
-.ui-radiobutton.ui-radiobutton-native .ui-helper-hidden-accessible input {
-    margin: 0;
-    -webkit-transform: none; 
-    -moz-transform: none; 
-    transform: none;
-}
-
-.ui-selectoneradio-native label {
-    margin: 0;
-}
-
 /** SelectOneMenu **/
 .ui-selectonemenu {
 	display: inline-block;
 	position: relative;
 	width: auto;
-	-moz-transform: scaleX(1);
-	-o-transform: scaleX(1);
-	-webkit-transform: scaleX(1);
-	transform: scaleX(1);
 	cursor: pointer;
 	padding-right: 22px;
 	vertical-align: top;
@@ -300,6 +286,20 @@
 
 .ui-selectonemenu input.ui-selectonemenu-label  {
     cursor: default;
+}
+
+/* loading */
+.ui-selectonemenu .ui-icon-loading {
+    position: absolute;
+    top: 50%;
+    margin-top: -0.5rem;
+    margin-left: -3rem;
+    margin-right: 0;
+}
+
+.ui-selectonemenu-rtl .ui-icon-loading {
+    margin-left: 0;
+    margin-right: -3rem;
 }
 
 .ui-selectonemenu-panel {
@@ -510,7 +510,7 @@ button.ui-button::-moz-focus-inner {
     color: inherit;
 }
 
-/** SelectCheckbox Menu **/
+/** SelectCheckboxMenu **/
 .ui-selectcheckboxmenu {
     display: inline-block;
     position: relative;
@@ -572,6 +572,15 @@ button.ui-button::-moz-focus-inner {
     padding: 0.2em 0;
 }
 
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-item {
+    font-weight: normal;
+    cursor:pointer;
+}
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-item-group {
+    font-weight: bold;
+}
+
 .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list {
     border: 0 none;
 }
@@ -602,8 +611,28 @@ button.ui-button::-moz-focus-inner {
     padding-left: 2em;
 }
 
-.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-item-group {
-    font-weight: bold;
+.ui-selectcheckboxmenu-footer {
+    border:0px none;
+    margin:1px 0;
+    padding:3px 5px;
+}
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-table {
+    border-collapse:collapse;
+    width:100%;
+}
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-table th,
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-table td {
+    border-width: 1px;
+    border-style: solid;
+    border-color: var(--surface-border, inherit);
+    padding: .25rem .75rem .25rem 1rem;
+}
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-table th:first-of-type,
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-table td:first-of-type {
+    width: 3.5rem;
 }
 
 .ui-selectcheckboxmenu-header {
@@ -795,6 +824,13 @@ div.ui-button, .ui-splitbutton {
     position: absolute;
 }
 
+.ui-password-masked.ui-password > input::-ms-reveal,
+.ui-password-masked.ui-password > input::-ms-clear,
+.ui-password-unmasked.ui-password > input::-ms-reveal,
+.ui-password-unmasked.ui-password > input::-ms-clear {
+    display: none;
+}
+
 /* OutputLabel */
 .ui-outputlabel.ui-state-error {
     border:0 none;
@@ -803,6 +839,11 @@ div.ui-button, .ui-splitbutton {
 .ui-outputlabel .ui-outputlabel-rfi {
     margin-left: 0.4em;
 }
+
+.ui-outputlabel .ui-outputlabel-label {
+    overflow: hidden;
+}
+
 /* SelectOneButton */
 .ui-selectonebutton{
     display: inline-block;

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,6 +29,12 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
 
+/**
+*
+* @deprecated in 10.0 use ToggleSwitch
+*
+*/
+@Deprecated(since = "10.0", forRemoval = true)
 public abstract class InputSwitchBase extends UIInput implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
@@ -69,7 +75,7 @@ public abstract class InputSwitchBase extends UIInput implements Widget, ClientB
     }
 
     public String getOnLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.onLabel, "on");
+        return (String) getStateHelper().eval(PropertyKeys.onLabel, null);
     }
 
     public void setOnLabel(String onLabel) {
@@ -77,7 +83,7 @@ public abstract class InputSwitchBase extends UIInput implements Widget, ClientB
     }
 
     public String getOffLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.offLabel, "off");
+        return (String) getStateHelper().eval(PropertyKeys.offLabel, null);
     }
 
     public void setOffLabel(String offLabel) {

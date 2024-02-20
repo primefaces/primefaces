@@ -22,7 +22,7 @@ powered rich solution with graceful degradation for legacy browsers.
 | --- | --- | --- | --- |
 | id | null | String | Unique identifier of the component.
 | accept | null | String | Filters files in native file browser dialog.
-| allowTypes | null | String | Regular expression for accepted file types, e.g. /(\\.\|\\/)(gif\|jpe?g\|png)$/
+| allowTypes | null | String | Regular expression for accepted file types, e.g., /(\\.\|\\/)(gif\|jpe?g\|png)$/
 | auto | false | Boolean | When set to true, selecting a file starts the upload process implicitly.
 | binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
 | cancelButtonTitle | null | String | Native title tooltip for cancel button
@@ -386,7 +386,7 @@ contents yourself in your backing bean.
 FileUpload supports chunked upload using the `maxChunkSize` attribute but only in advanced mode!
 
 #### Resuming chunked file uploads
-FileUpload is able to resume uploads that have been canceled (e.g user abort, lost of connection etc.)
+FileUpload is able to resume uploads that have been canceled (e.g. user abort, lost of connection etc.)
 At first, you'll need to enable chunking and add this servlet:
 
 ```xml

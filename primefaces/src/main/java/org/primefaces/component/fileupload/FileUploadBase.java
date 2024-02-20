@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,8 +23,10 @@
  */
 package org.primefaces.component.fileupload;
 
-import javax.faces.component.UIInput;
 import org.primefaces.component.api.Widget;
+import org.primefaces.util.ComponentUtils;
+
+import javax.faces.component.UIInput;
 
 public abstract class FileUploadBase extends UIInput implements Widget {
 
@@ -44,15 +46,15 @@ public abstract class FileUploadBase extends UIInput implements Widget {
         multiple,
         auto,
         label,
+        @Deprecated
         allowTypes,
+        @Deprecated
         fileLimit,
+        @Deprecated
         sizeLimit,
         mode,
         uploadLabel,
         cancelLabel,
-        invalidSizeMessage,
-        invalidFileMessage,
-        fileLimitMessage,
         dragDropSupport,
         onstart,
         oncomplete,
@@ -82,7 +84,8 @@ public abstract class FileUploadBase extends UIInput implements Widget {
         chooseButtonStyleClass,
         uploadButtonStyleClass,
         cancelButtonStyleClass,
-        dropZone
+        dropZone,
+        displayFilename
     }
 
     public FileUploadBase() {
@@ -214,30 +217,6 @@ public abstract class FileUploadBase extends UIInput implements Widget {
         getStateHelper().put(PropertyKeys.cancelLabel, cancelLabel);
     }
 
-    public String getInvalidSizeMessage() {
-        return (String) getStateHelper().eval(PropertyKeys.invalidSizeMessage, null);
-    }
-
-    public void setInvalidSizeMessage(String invalidSizeMessage) {
-        getStateHelper().put(PropertyKeys.invalidSizeMessage, invalidSizeMessage);
-    }
-
-    public String getInvalidFileMessage() {
-        return (String) getStateHelper().eval(PropertyKeys.invalidFileMessage, null);
-    }
-
-    public void setInvalidFileMessage(String invalidFileMessage) {
-        getStateHelper().put(PropertyKeys.invalidFileMessage, invalidFileMessage);
-    }
-
-    public String getFileLimitMessage() {
-        return (String) getStateHelper().eval(PropertyKeys.fileLimitMessage, null);
-    }
-
-    public void setFileLimitMessage(String fileLimitMessage) {
-        getStateHelper().put(PropertyKeys.fileLimitMessage, fileLimitMessage);
-    }
-
     public boolean isDragDropSupport() {
         return (Boolean) getStateHelper().eval(PropertyKeys.dragDropSupport, true);
     }
@@ -271,8 +250,7 @@ public abstract class FileUploadBase extends UIInput implements Widget {
     }
 
     public String getOnvalidationfailure() {
-        Object eval = getStateHelper().eval(PropertyKeys.onvalidationfailure, null);
-        return (String) eval;
+        return (String) getStateHelper().eval(PropertyKeys.onvalidationfailure, null);
     }
 
     public void setOnvalidationfailure(String onvalidationfailure) {
@@ -344,7 +322,7 @@ public abstract class FileUploadBase extends UIInput implements Widget {
     }
 
     public String getChooseIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.chooseIcon, "ui-icon-plusthick");
+        return (String) getStateHelper().eval(PropertyKeys.chooseIcon, "pi pi-plus");
     }
 
     public void setChooseIcon(String chooseIcon) {
@@ -352,7 +330,7 @@ public abstract class FileUploadBase extends UIInput implements Widget {
     }
 
     public String getUploadIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.uploadIcon, "ui-icon-arrowreturnthick-1-n");
+        return (String) getStateHelper().eval(PropertyKeys.uploadIcon, "pi pi-upload");
     }
 
     public void setUploadIcon(String uploadIcon) {
@@ -360,7 +338,7 @@ public abstract class FileUploadBase extends UIInput implements Widget {
     }
 
     public String getCancelIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.cancelIcon, "ui-icon-cancel");
+        return (String) getStateHelper().eval(PropertyKeys.cancelIcon, "pi pi-times");
     }
 
     public void setCancelIcon(String cancelIcon) {
@@ -485,5 +463,13 @@ public abstract class FileUploadBase extends UIInput implements Widget {
 
     public void setDropZone(String dropZone) {
         getStateHelper().put(PropertyKeys.dropZone, dropZone);
+    }
+
+    public boolean isDisplayFilename() {
+        return ComponentUtils.eval(getStateHelper(), PropertyKeys.displayFilename, () -> !(getMode().equals("simple") && isAuto()));
+    }
+
+    public void setDisplayFilename(boolean displayFilename) {
+        getStateHelper().put(PropertyKeys.displayFilename, displayFilename);
     }
 }

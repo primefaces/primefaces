@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -152,13 +152,19 @@ public final class PrimeSelenium {
      * @return the URL of the page
      */
     public static String getUrl(AbstractPrimePage page) {
-        DeploymentAdapter deploymentAdapter = ConfigProvider.getInstance().getDeploymentAdapter();
-
         String baseLocation = page.getBaseLocation();
-        if (deploymentAdapter != null) {
+        if (baseLocation == null) {
             baseLocation = getBaseUrl();
         }
-
+        if (baseLocation == null) {
+            DeploymentAdapter deploymentAdapter = ConfigProvider.getInstance().getDeploymentAdapter();
+            String message = "Cannot determine base url. Please either configure " + ConfigProvider.DEPLOYMENT_BASEURL + " or " +
+                    (deploymentAdapter != null ?
+                            ("implement " + deploymentAdapter.getClass().getCanonicalName() + "#getBaseUrl") :
+                            ("define " + ConfigProvider.DEPLOYMENT_ADAPTER + " with implemented DeploymentAdapter#getBaseUrl")) +
+                    " or implement " + page.getClass().getCanonicalName() + "#getBaseLocation";
+            throw new RuntimeException(message);
+        }
         return baseLocation + page.getLocation();
     }
 
@@ -169,7 +175,16 @@ public final class PrimeSelenium {
      * @return the full URL
      */
     public static String getUrl(String url) {
-        return getBaseUrl() + url;
+        String baseUrl = getBaseUrl();
+        if (baseUrl == null) {
+            DeploymentAdapter deploymentAdapter = ConfigProvider.getInstance().getDeploymentAdapter();
+            String message = "Cannot determine base url. Please either configure " + ConfigProvider.DEPLOYMENT_BASEURL + " or " +
+                    (deploymentAdapter != null ?
+                            ("implement " + deploymentAdapter.getClass().getCanonicalName() + "#getBaseUrl") :
+                            ("define " + ConfigProvider.DEPLOYMENT_ADAPTER + " with implemented DeploymentAdapter#getBaseUrl"));
+            throw new RuntimeException(message);
+        }
+        return baseUrl + url;
     }
 
     public static String getBaseUrl() {
@@ -277,7 +292,7 @@ public final class PrimeSelenium {
     }
 
     /**
-     * Is the Element visisible in the current viewport??
+     * Is the Element visible in the current viewport??
      *
      * @param element the WebElement to check
      * @return true if visible

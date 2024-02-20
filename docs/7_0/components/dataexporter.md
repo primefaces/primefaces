@@ -15,17 +15,17 @@ such as excel, pdf, csv and xml.
 
 | Name | Default | Type | Description |
 | --- | --- | --- | --- |
-type | null | String | Export type: "xls", "xlsx", "xlsxstream", "pdf", "csv", "xml"
-target | null | String | Search expression to resolve one or multiple datatables.
-fileName | null | String | Filename of the generated export file, defaults to datatable id.
-pageOnly | false | Boolean | Exports only current page instead of whole dataset
+type | null | String | Export type: "xls", "xlsx", "xlsxstream", "pdf", "csv", "xml".
+target | null | String | Search expression to resolve one or multiple target components.
+fileName | null | String | Filename of the generated export file, defaults to target component id.
+pageOnly | false | Boolean | Exports only current page instead of whole dataset.
 preProcessor | null | MethodExpr | PreProcessor for the exported document.
 postProcessor | null | MethodExpr | PostProcessor for the exported document.
-encoding | UTF-8 | String | Character encoding to use
+encoding | UTF-8 | String | Character encoding to use.
 selectionOnly | false | Boolean | When enabled, only selection would be exported.
 repeat | false | Boolean | Set to true if target is a datatable that is rendered multiple times in a repeating component.
 options | null | ExporterOptions | Options object to customize document.
-customExporter | null | Object | Custom org.primefaces.component.export.Exporter to be used in place of default Exporter.
+exporter | null | Object | Custom `org.primefaces.component.export.Exporter` to be used instead of built-in exporters.
 onTableRender | null | MethodExpression | OnTableRender to be used to set the options of exported table.
 
 ## Getting Started with DataExporter

@@ -86,7 +86,7 @@ that last tab contains read-only data for confirmation and the submit button.
             </p:panel>
         </p:tab>
         <p:tab id="address">
-            <p:panel header="Adress Details">
+            <p:panel header="Address Details">
                 <h:messages errorClass="error"/>
                 <h:panelGrid columns="2" columnClasses="label, value">
                     <h:outputText value="Street: " />
@@ -174,12 +174,12 @@ flowListener.
 ```
 ```java
 public String handleFlow(FlowEvent event) {
-    String currentStepId = event.getCurrentStep();
-    String stepToGo = event.getNextStep();
+    String currentStepId = event.getOldStep();
+    String stepToGo = event.getNewStep();
     if(skip)
         return "confirm";
     else
-        return event.getNextStep();
+        return event.getNewStep();
 }
 ```
 Steps here are simply the ids of tab, by using a flowListener you can decide which step to display

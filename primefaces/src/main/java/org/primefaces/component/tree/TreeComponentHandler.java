@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,11 +34,13 @@ import org.primefaces.model.TreeNode;
 
 public class TreeComponentHandler extends ComponentHandler {
 
-    private static final MetaRule DROP_LISTENER
-            = new MethodRule("onDrop", Boolean.class, new Class[]{TreeDragDropInfo.class});
+    private static final MetaRule DROP_LISTENER = new MethodRule(Tree.PropertyKeys.onDrop.name(),
+            Boolean.class,
+            new Class[]{TreeDragDropInfo.class});
 
-    private static final MetaRule FILTER_FUNCTION
-            = new MethodRule("filterFunction", Boolean.class, new Class[]{TreeNode.class, Object.class, Locale.class});
+    private static final MetaRule FILTER_FUNCTION = new MethodRule(Tree.PropertyKeys.filterFunction.name(),
+            Boolean.class,
+            new Class[]{TreeNode.class, Object.class, Locale.class});
 
     public TreeComponentHandler(ComponentConfig config) {
         super(config);

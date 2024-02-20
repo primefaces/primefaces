@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,11 +38,14 @@ import org.primefaces.component.panel.Panel;
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
-import org.primefaces.util.MessageFactory;
+import org.primefaces.util.SharedStringBuilder;
 import org.primefaces.util.WidgetBuilder;
 
 public class AccordionPanelRenderer extends CoreRenderer {
+
+    private static final String SB_RESOLVE_ACTIVE_INDEX = AccordionPanelRenderer.class.getName() + "#resolveActiveIndex";
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -58,6 +61,11 @@ public class AccordionPanelRenderer extends CoreRenderer {
             }
             else {
                 acco.setActiveIndex(active);
+            }
+
+            if (acco.isMultiViewState()) {
+                AccordionState as = acco.getMultiViewState(true);
+                as.setActiveIndex(acco.getActiveIndex());
             }
         }
 
@@ -95,6 +103,10 @@ public class AccordionPanelRenderer extends CoreRenderer {
         else {
             acco.resetLoadedTabsState();
 
+            if (acco.isMultiViewState()) {
+                acco.restoreMultiViewState();
+            }
+
             encodeMarkup(context, acco);
             encodeScript(context, acco);
         }
@@ -106,6 +118,8 @@ public class AccordionPanelRenderer extends CoreRenderer {
         String widgetVar = acco.resolveWidgetVar(context);
         String styleClass = acco.getStyleClass();
         styleClass = styleClass == null ? AccordionPanel.CONTAINER_CLASS : AccordionPanel.CONTAINER_CLASS + " " + styleClass;
+
+        String activeIndex = resolveActiveIndex(context, acco);
 
         if (ComponentUtils.isRTL(context, acco)) {
             styleClass = styleClass + " ui-accordion-rtl";
@@ -124,9 +138,9 @@ public class AccordionPanelRenderer extends CoreRenderer {
 
         renderDynamicPassThruAttributes(context, acco);
 
-        encodeTabs(context, acco);
+        encodeTabs(context, acco, activeIndex);
 
-        encodeStateHolder(context, acco);
+        encodeStateHolder(context, acco, activeIndex);
 
         writer.endElement("div");
     }
@@ -142,9 +156,12 @@ public class AccordionPanelRenderer extends CoreRenderer {
         }
 
         wb.attr("multiple", multiple, false)
+                .attr("toggleSpeed", acco.getToggleSpeed())
+                .attr("scrollIntoView", acco.getScrollIntoView(), null)
                 .callback("onTabChange", "function(panel)", acco.getOnTabChange())
                 .callback("onTabShow", "function(panel)", acco.getOnTabShow())
-                .callback("onTabClose", "function(panel)", acco.getOnTabClose());
+                .callback("onTabClose", "function(panel)", acco.getOnTabClose())
+                .attr("multiViewState", acco.isMultiViewState(), false);
 
         if (acco.getTabController() != null) {
             wb.attr("controlled", true);
@@ -155,19 +172,18 @@ public class AccordionPanelRenderer extends CoreRenderer {
         wb.finish();
     }
 
-    protected void encodeStateHolder(FacesContext context, AccordionPanel accordionPanel) throws IOException {
+    protected void encodeStateHolder(FacesContext context, AccordionPanel accordionPanel, String activeIndex) throws IOException {
         String clientId = accordionPanel.getClientId(context);
         String stateHolderId = clientId + "_active";
 
-        renderHiddenInput(context, stateHolderId, accordionPanel.getActiveIndex(), false);
+        renderHiddenInput(context, stateHolderId, activeIndex, false);
     }
 
-    protected void encodeTabs(FacesContext context, AccordionPanel acco) throws IOException {
+    protected void encodeTabs(FacesContext context, AccordionPanel acco, String activeIndex) throws IOException {
         boolean dynamic = acco.isDynamic();
         boolean repeating = acco.isRepeating();
         boolean rtl = acco.getDir().equalsIgnoreCase("rtl");
 
-        String activeIndex = acco.getActiveIndex();
         List<String> activeIndexes = activeIndex == null
                                      ? Collections.<String>emptyList()
                                      : Arrays.asList(activeIndex.split(","));
@@ -252,7 +268,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
         writer.writeAttribute("class", iconStyleClass, null);
         writer.endElement("span");
 
-        if (ComponentUtils.shouldRenderFacet(titleFacet)) {
+        if (FacetUtils.shouldRenderFacet(titleFacet)) {
             titleFacet.encodeAll(context);
         }
         else if (title != null) {
@@ -264,12 +280,12 @@ public class AccordionPanelRenderer extends CoreRenderer {
 
         //options menu trigger
         if (optionsMenu != null) {
-            encodeIcon(context, tab, "ui-icon-gear", clientId + "_menu", tab.getMenuTitle(), MessageFactory.getMessage(Panel.ARIA_OPTIONS_MENU));
+            encodeIcon(context, tab, "ui-icon-gear", clientId + "_menu", tab.getMenuTitle(), null);
         }
 
         //actions
         UIComponent actionsFacet = tab.getFacet("actions");
-        if (ComponentUtils.shouldRenderFacet(actionsFacet)) {
+        if (FacetUtils.shouldRenderFacet(actionsFacet)) {
             writer.startElement("div", null);
             writer.writeAttribute("class", Panel.PANEL_ACTIONS_CLASS, null);
             writer.writeAttribute("onclick", "event.stopPropagation()", null);
@@ -350,4 +366,38 @@ public class AccordionPanelRenderer extends CoreRenderer {
         writer.endElement("a");
     }
 
+    protected String resolveActiveIndex(FacesContext context, AccordionPanel accordionPanel) {
+
+        String activeIndex = accordionPanel.getActiveIndex();
+        if ("all".equals(activeIndex)) {
+            int childCount = 0;
+
+            String var = accordionPanel.getVar();
+            if (var == null) {
+                for (UIComponent child : accordionPanel.getChildren()) {
+                    if (child.isRendered() && child instanceof Tab) {
+                        childCount++;
+                    }
+                }
+            }
+            else {
+                childCount = accordionPanel.getRowCount();
+
+                // add some puffer for dynamic added tabs
+                childCount += childCount * 2;
+            }
+
+            StringBuilder sb = SharedStringBuilder.get(context, SB_RESOLVE_ACTIVE_INDEX);
+            for (int i = 0; i < childCount; i++) {
+                if (i > 0) {
+                    sb.append(",");
+                }
+                sb.append(i);
+            }
+
+            activeIndex = sb.toString();
+        }
+
+        return activeIndex;
+    }
 }

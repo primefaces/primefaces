@@ -12,11 +12,14 @@
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  *
+ * @prop {number | null} timeout The set-timeout timer ID for the timer of the delay before the AJAX status is
+ * triggered.
  * @prop {boolean} cfg.animate When disabled, displays block without animation effect.
  * @prop {boolean} cfg.blocked Blocks the UI by default when enabled.
  * @prop {string} cfg.block Search expression for block targets.
  * @prop {string} cfg.styleClass Style class of the component.
  * @prop {string} cfg.triggers Search expression of the components to bind.
+ * @prop {number} cfg.delay Delay in milliseconds before displaying the block. Default is `0`, meaning immediate.
  * @prop {PrimeFaces.UnbindCallback} [resizeHandler] Unbind callback for the resize handler.
  */
 PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
@@ -29,7 +32,7 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
 
-        this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.block);
+        this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.block);
         this.content = this.jq;
         this.cfg.animate = (this.cfg.animate === false) ? false : true;
         this.cfg.blocked = (this.cfg.blocked === true) ? true : false;
@@ -37,7 +40,9 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         this.render();
 
         if (this.cfg.triggers) {
-            this.bindTriggers();
+            // #10970 must wait until all components have been rendered and ready
+            var $this = this;
+            PrimeFaces.queueTask(function() { $this.bindTriggers() }, 1);
         }
 
         if (this.cfg.blocked) {
@@ -75,7 +80,7 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         this.blocker.remove();
         this.jq.remove();
         this.target.attr('aria-busy', false);
-        $(document).off('pfAjaxSend.' + this.id + ' pfAjaxComplete.' + this.id);
+        $(document).off('pfAjaxSend.' + this.id + ' pfAjaxUpdated.' + this.id + ' pfAjaxComplete.' + this.id);
     },
 
     /**
@@ -86,13 +91,6 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
         this.resizeHandler = PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_resize', this.target, function() {
             $this.alignOverlay();
-        });
-
-        // subscribe to all DOM update events so we can resize even if another DOM element changed
-        $(document).on('pfAjaxUpdated', function(e, xhr, settings) {
-            if (!$this.cfg.blocked) {
-                $this.alignOverlay();
-            }
         });
     },
 
@@ -105,32 +103,23 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
 
         //listen global ajax send and complete callbacks
         $(document).on('pfAjaxSend.' + this.id, function(e, xhr, settings) {
-            if (!$this.cfg.blocked && $this.isXhrSourceATrigger(settings)) {
+            if (!$this.cfg.blocked && PrimeFaces.ajax.Utils.isXhrSourceATrigger($this, settings, true)) {
                 $this.show();
             }
+            else {
+                // subscribe to all DOM update events so we can resize even if another DOM element changed
+                PrimeFaces.queueTask(function() { $this.alignOverlay() });
+            }
         }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings) {
-            if (!$this.cfg.blocked && $this.isXhrSourceATrigger(settings)) {
+            if (!$this.cfg.blocked && PrimeFaces.ajax.Utils.isXhrSourceATrigger($this, settings, false)) {
                 $this.hide();
             }
+        }).on('pfAjaxUpdated.' + this.id, function(e, xhr, settings) {
+            // subscribe to all DOM update events so we can resize even if another DOM element changed
+            if (!$this.cfg.blocked && !PrimeFaces.ajax.Utils.isXhrSourceATrigger($this, settings, true)) {
+                PrimeFaces.queueTask(function() { $this.alignOverlay() });
+            }
         });
-    },
-
-    /**
-     * Checks whether one of component's triggers equals the source ID from the provided settings.
-     *
-     * @param {JQuery.AjaxSettings} settings containing source ID.
-     * @returns {boolean} `true` if if one of component's triggers equals the source ID from the provided settings.
-     * @private
-     */
-    isXhrSourceATrigger: function(settings) {
-        var sourceId = PrimeFaces.ajax.Utils.getSourceId(settings);
-        if (!sourceId) {
-            return false;
-        }
-        // we must evaluate it each time as the DOM might has been changed
-        var triggers = PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(this.cfg.triggers);
-
-        return $.inArray(sourceId, triggers) !== -1;
     },
 
     /**
@@ -141,25 +130,35 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
      * milliseconds, respectively.
      */
     show: function(duration) {
+        var $this = this;
         if (this.isBlocking()) {
             return;
         }
-        this.alignOverlay();
 
-        var animated = this.cfg.animate;
-        if (animated)
-            this.blocker.fadeIn(duration);
-        else
-            this.blocker.show(duration);
+        var delay = this.cfg.delay || 0;
+        this.timeout = PrimeFaces.queueTask(function() {
+            // #10484: if delayed and AJAX event already finished
+            if (($this.cfg.triggers || delay > 0) && PrimeFaces.ajax.Queue.isEmpty()) {
+                PrimeFaces.warn("BlockUI AJAX event completed before showing the block.");
+                return;
+            }
+            $this.alignOverlay();
 
-        if (this.hasContent()) {
+            var animated = $this.cfg.animate;
             if (animated)
-                this.content.fadeIn(duration);
+                $this.blocker.fadeIn(duration);
             else
-                this.content.show(duration);
-        }
+                $this.blocker.show(duration);
 
-        this.target.attr('aria-busy', true);
+            if ($this.hasContent()) {
+                if (animated)
+                    $this.content.fadeIn(duration);
+                else
+                    $this.content.show(duration);
+            }
+
+            $this.target.attr('aria-busy', true);
+        }, delay);
     },
 
     /**
@@ -173,6 +172,7 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         if (!this.isBlocking()) {
             return;
         }
+        this.deleteTimeout();
         var $this = this;
         var animated = this.cfg.animate;
         var hasContent = this.hasContent();
@@ -258,7 +258,7 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
     * @private
     */
     alignOverlay: function() {
-        this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.block);
+        this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.block);
         if (this.blocker) {
             this.blocker.css('z-index', PrimeFaces.nextZindex());
         }
@@ -290,10 +290,11 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
             var contentHeight = content.outerHeight();
             var contentWidth = content.outerWidth();
             // #9496 if display:none then we need to clone to get its dimensions
-            if (contentHeight === 0) {
+            if (content.height() <= 0) {
                 var currentWidth = this.content[i].getBoundingClientRect().width;
+                var styleWidth = currentWidth ? 'width: ' + currentWidth + 'px' : '';
                 var clone = this.content[i].cloneNode(true);
-                clone.style.cssText = 'position: fixed; top: 0; left: 0; overflow: auto; visibility: hidden; pointer-events: none; height: unset; max-height: unset; width: ' + currentWidth + 'px';
+                clone.style.cssText = 'position: fixed; top: 0; left: 0; overflow: auto; visibility: hidden; pointer-events: none; height: unset; max-height: unset;' + styleWidth;
                 document.body.append(clone);
                 var jqClone = $(clone);
                 contentHeight = jqClone.outerHeight();
@@ -333,6 +334,15 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
      */
     isBlocking: function() {
         return this.blocker.is(':visible');
+    },
+
+    /**
+     * Clears the ste-timeout timer for the delay.
+     * @private
+     */
+    deleteTimeout: function() {
+        clearTimeout(this.timeout);
+        this.timeout = null;
     }
 
 });

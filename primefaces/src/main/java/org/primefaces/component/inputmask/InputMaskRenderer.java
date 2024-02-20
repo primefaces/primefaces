@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -140,9 +140,14 @@ public class InputMaskRenderer extends InputRenderer {
         wb.init("InputMask", inputMask);
 
         if (mask != null) {
+            // autoclear must be false when using optional mask
+            boolean autoClear = inputMask.isAutoClear();
+            if (mask.contains("[") || mask.contains("]")) {
+                autoClear = false;
+            }
             wb.attr("mask", mask)
                 .attr("placeholder", inputMask.getSlotChar(), "_")
-                .attr("autoClear", inputMask.isAutoClear(), true)
+                .attr("autoClear", autoClear, true)
                 .attr("showMaskOnFocus", inputMask.isShowMaskOnFocus(), true)
                 .attr("showMaskOnHover", inputMask.isShowMaskOnHover(), true);
         }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,21 +41,20 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.FileCleanerCleanup;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FileCleaningTracker;
-import org.primefaces.config.PrimeEnvironment;
-import org.primefaces.config.StartupPrimeEnvironment;
 import org.primefaces.util.Constants;
 import org.primefaces.webapp.MultipartRequest;
 
+@Deprecated(forRemoval = true, since = "14.0.0")
 public class FileUploadFilter implements Filter {
 
     private static final Logger LOGGER = Logger.getLogger(FileUploadFilter.class.getName());
 
     private static final String THRESHOLD_SIZE_PARAM = "thresholdSize";
-
+    private static final String FILE_COUNT_MAX_PARAM = "fileCountMax";
     private static final String UPLOAD_DIRECTORY_PARAM = "uploadDirectory";
 
     private String thresholdSize;
-
+    private String fileCountMax;
     private String uploadDir;
 
     private boolean bypass;
@@ -63,23 +62,17 @@ public class FileUploadFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         String uploader = filterConfig.getServletContext().getInitParameter(Constants.ContextParams.UPLOADER);
-
-        if (uploader == null || "auto".equals(uploader)) {
-            PrimeEnvironment environment = new StartupPrimeEnvironment();
-            bypass = environment.isAtLeastJsf22();
-        }
-        else if ("native".equals(uploader)) {
-            bypass = true;
-        }
-        else if ("commons".equals(uploader)) {
-            bypass = false;
-        }
+        bypass = !"commons".equals(uploader);
 
         thresholdSize = filterConfig.getInitParameter(THRESHOLD_SIZE_PARAM);
+        fileCountMax = filterConfig.getInitParameter(FILE_COUNT_MAX_PARAM);
         uploadDir = filterConfig.getInitParameter(UPLOAD_DIRECTORY_PARAM);
 
         if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.fine("FileUploadFilter initiated successfully");
+        }
+        if (LOGGER.isLoggable(Level.WARNING)) {
+            LOGGER.warning("FileUploadFilter is deprecated. Please try native Servlet 3.0 uploading and report any issues if it does not work.");
         }
     }
 
@@ -99,6 +92,9 @@ public class FileUploadFilter implements Filter {
             }
 
             ServletFileUpload servletFileUpload = new ServletFileUpload(createFileItemFactory(httpServletRequest));
+            if (fileCountMax != null) {
+                servletFileUpload.setFileCountMax(Long.parseLong(fileCountMax));
+            }
             MultipartRequest multipartRequest = new MultipartRequest(httpServletRequest, servletFileUpload);
 
             if (LOGGER.isLoggable(Level.FINE)) {

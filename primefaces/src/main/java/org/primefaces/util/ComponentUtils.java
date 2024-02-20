@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,14 +23,13 @@
  */
 package org.primefaces.util;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.io.UncheckedIOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.*;
-import java.util.function.Supplier;
+import org.primefaces.component.api.*;
+import org.primefaces.config.PrimeConfiguration;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.csp.CspResponseWriter;
 
+import javax.el.ELException;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.FacesWrapper;
@@ -46,12 +45,19 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
+import javax.faces.convert.ConverterException;
 import javax.faces.render.Renderer;
-
-import org.primefaces.component.api.*;
-import org.primefaces.config.PrimeConfiguration;
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.context.PrimeRequestContext;
+import java.io.IOException;
+import java.io.Serializable;
+import java.io.UncheckedIOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.*;
+import java.util.function.Supplier;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.primefaces.renderkit.RendererUtils.getRenderKit;
 
@@ -60,13 +66,15 @@ public class ComponentUtils {
     public static final Set<VisitHint> VISIT_HINTS_SKIP_UNRENDERED = Collections.unmodifiableSet(
             EnumSet.of(VisitHint.SKIP_UNRENDERED));
 
-    public static final Set<VisitHint> VISIT_HINTS_SKIP_ITERATION = Collections.unmodifiableSet(
-            EnumSet.of(VisitHint.SKIP_ITERATION));
-
-    public static final String SKIP_ITERATION_HINT = "javax.faces.visit.SKIP_ITERATION";
+    public static final Lazy<Set<VisitHint>> VISIT_HINTS_SKIP_ITERATION = new Lazy<>(() ->
+            Collections.unmodifiableSet(EnumSet.of(VisitHint.SKIP_ITERATION)));
 
     // marker for a undefined value when a null check is not reliable enough
     private static final Object UNDEFINED_VALUE = new Object();
+
+    // regex for finding ID's
+    private static final Pattern ID_PATTERN = Pattern.compile("\\sid=\"(.*?)\"");
+
 
     private ComponentUtils() {
     }
@@ -218,17 +226,17 @@ public class ComponentUtils {
         return context.getApplication().createConverter(forClass);
     }
 
-    public static Converter toConverter(FacesContext context, Object object) {
-        if (object == null) {
+    public static Converter toConverter(FacesContext context, Object converter) {
+        if (converter == null) {
             return null;
         }
-        if (object instanceof Converter) {
-            return (Converter) object;
+        if (converter instanceof Converter) {
+            return (Converter) converter;
         }
-        if (object instanceof String) {
-            return context.getApplication().createConverter((String) object);
+        if (converter instanceof String) {
+            return context.getApplication().createConverter((String) converter);
         }
-        throw new FacesException("Unsupported type " + object.getClass());
+        throw new FacesException("Unsupported type: " + converter.getClass());
     }
 
     public static void decodeBehaviors(FacesContext context, UIComponent component) {
@@ -360,13 +368,7 @@ public class ComponentUtils {
     }
 
     public static boolean isSkipIteration(VisitContext visitContext, FacesContext context) {
-        if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf21()) {
-            return visitContext.getHints().contains(VisitHint.SKIP_ITERATION);
-        }
-        else {
-            Boolean skipIterationHint = (Boolean) visitContext.getFacesContext().getAttributes().get(SKIP_ITERATION_HINT);
-            return skipIterationHint != null && skipIterationHint;
-        }
+        return visitContext.getHints().contains(VisitHint.SKIP_ITERATION);
     }
 
     public static <T extends Renderer> T getUnwrappedRenderer(FacesContext context, String family, String rendererType) {
@@ -405,7 +407,7 @@ public class ComponentUtils {
     }
 
     /**
-     * Duplicate code from OmniFacew project under apache license:
+     * Duplicate code from OmniFaces project under apache license:
      * https://github.com/omnifaces/omnifaces/blob/develop/license.txt
      * <p>
      * URI-encode the given string using UTF-8. URIs (paths and filenames) have different encoding rules as compared to
@@ -474,42 +476,24 @@ public class ComponentUtils {
      * @param facet The Facet component to check
      * @param alwaysRender flag to ignore children and only check the facet itself
      * @return true if the facet should be rendered, false if not
+     *
+     * @deprecated use FacetUtils
      */
+    @Deprecated
     public static boolean shouldRenderFacet(UIComponent facet, boolean alwaysRender) {
-        // no facet declared at all or facet without any content
-        if (facet == null) {
-            return false;
-        }
-
-        // user wants to always render this facet so it can be updated
-        if (alwaysRender) {
-            return true;
-        }
-
-        // the facet contains multiple childs, so its wrapped inside a UIPanel
-        // NOTE: we need a equals check as instanceof would also catch e.g. p:dialog
-        if (facet.getClass().equals(UIPanel.class)) {
-            // For any future version of JSF where the f:facet gets a rendered attribute
-            if (!facet.isRendered()) {
-                return false;
-            }
-
-            // check all childs - if all of them are rendered=false, we skip rendering the whole facet
-            return shouldRenderChildren(facet);
-        }
-
-        // the facet contains only one child now, which means that the facet is the child component
-        // we dont want to check children, just if the component is rendered=true
-        return facet.isRendered();
+        return FacetUtils.shouldRenderFacet(facet, alwaysRender);
     }
 
     /**
      * Checks if the facet and one of the first level children is rendered.
      * @param facet The Facet component to check
      * @return true when facet and one of the first level children is rendered.
+     *
+     * @deprecated use FacetUtils
      */
+    @Deprecated
     public static boolean shouldRenderFacet(UIComponent facet) {
-        return shouldRenderFacet(facet, false);
+        return FacetUtils.shouldRenderFacet(facet);
     }
 
     /**
@@ -599,7 +583,7 @@ public class ComponentUtils {
     public static boolean isNestedWithinIterator(UIComponent component) {
         UIComponent parent = component;
         while (null != (parent = parent.getParent())) {
-            if (parent instanceof javax.faces.component.UIData || parent.getClass().getName().endsWith("UIRepeat")
+            if (parent instanceof javax.faces.component.UIData || isUIRepeat(parent)
                     || (parent instanceof UITabPanel && ((UITabPanel) parent).isRepeating())) {
                 return true;
             }
@@ -607,6 +591,51 @@ public class ComponentUtils {
 
         return false;
     }
+
+    /**
+     * GitHub #7763 Renders an in memory UIComponent and updates its ID with an index.
+     * For example id="form:test" becomes id="form:test:0".
+     *
+     * @param context the {@link FacesContext}.
+     * @param component the {@link UIComponent} to render.
+     * @param index the index number to append to the ID
+     * @throws IOException if any IO error occurs
+     */
+    public static void encodeIndexedId(FacesContext context, UIComponent component, int index) throws IOException {
+        // swap writers
+        ResponseWriter originalWriter = context.getResponseWriter();
+        FastStringWriter fsw = new FastStringWriter();
+        ResponseWriter clonedWriter = originalWriter.cloneWithWriter(fsw);
+        context.setResponseWriter(clonedWriter);
+
+        // encode the component
+        component.encodeAll(context);
+
+        // restore the original writer
+        context.setResponseWriter(originalWriter);
+
+        // append index to all id's
+        char separator = UINamingContainer.getSeparatorChar(context);
+        String encodedComponent = fsw.toString();
+
+        if (clonedWriter instanceof CspResponseWriter) {
+            CspResponseWriter cspWriter = (CspResponseWriter) clonedWriter;
+            // find all id's to replace
+            Matcher matcher = ID_PATTERN.matcher(encodedComponent);
+            while (matcher.find()) {
+                String oldId = matcher.group(1);
+                String newId = oldId + separator + index;
+                cspWriter.updateId(oldId, newId);
+            }
+        }
+
+        // replace 'id=' and 'source:' values
+        encodedComponent = encodedComponent.replaceAll("\\sid=\"(.*?)\"", " id=\"$1" + separator + index + "\"");
+        encodedComponent = encodedComponent.replaceAll("source:&quot;(.*?)&quot;", " source:&quot;$1" + separator + index + "&quot;");
+
+        originalWriter.write(encodedComponent);
+    }
+
 
     public static Object getDynamicColumnValue(UIComponent component) {
         org.primefaces.component.api.UIColumn column =
@@ -660,6 +689,11 @@ public class ComponentUtils {
     }
 
     public static <T> T executeInRequestScope(FacesContext context, String var, Object value, Supplier<T> callback) {
+        // if no var passed just execute the callback
+        if (LangUtils.isBlank(var)) {
+            return callback.get();
+        }
+
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
 
         Object oldValue = requestMap.remove(var);
@@ -687,5 +721,65 @@ public class ComponentUtils {
         }
 
         return renderedChildCount;
+    }
+
+    public static boolean isDisabledOrReadonly(UIInput component) {
+        return Boolean.parseBoolean(String.valueOf(component.getAttributes().get("disabled")))
+                || Boolean.parseBoolean(String.valueOf(component.getAttributes().get("readonly")));
+    }
+
+    public static boolean isUIRepeat(UIComponent component) {
+        return component.getClass().getName().endsWith("UIRepeat");
+    }
+
+    public static Object convertToType(Object value, Class<?> valueType, Logger logger) {
+        // skip null
+        if (value == null) {
+            return null;
+        }
+
+        // its already the same type
+        if (valueType.isAssignableFrom(value.getClass())) {
+            return value;
+        }
+
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        // primivites dont need complex conversion, try the ELContext first
+        if (BeanUtils.isPrimitiveOrPrimitiveWrapper(valueType)) {
+            try {
+                return context.getELContext().convertToType(value, valueType);
+            }
+            catch (ELException e) {
+                logger.log(Level.INFO, e, () -> "Could not convert '" + value + "' to " + valueType + " via ELContext!");
+            }
+        }
+
+        Converter targetConverter = context.getApplication().createConverter(valueType);
+        if (targetConverter == null) {
+            logger.log(Level.FINE, () -> "Skip conversion as no converter was found for " + valueType
+                    + "; Create a JSF Converter for it!");
+            return value;
+        }
+
+        Converter sourceConverter = context.getApplication().createConverter(value.getClass());
+        if (sourceConverter == null) {
+            logger.log(Level.FINE, () -> "Skip conversion as no converter was found for " + value.getClass()
+                    + "; Create a JSF Converter for it!");
+        }
+
+        // first convert the object to string
+        String stringValue = sourceConverter == null
+                ? value.toString()
+                : sourceConverter.getAsString(context, UIComponent.getCurrentComponent(context), value);
+
+        // now convert the string to the required target
+        try {
+            return targetConverter.getAsObject(context, UIComponent.getCurrentComponent(context), stringValue);
+        }
+        catch (ConverterException e) {
+            logger.log(Level.INFO, e, () -> "Could not convert '" + stringValue + "' to " + valueType + " via " + targetConverter.getClass().getName());
+            return value;
+        }
     }
 }

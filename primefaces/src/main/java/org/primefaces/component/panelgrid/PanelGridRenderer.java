@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,6 @@
 package org.primefaces.component.panelgrid;
 
 import java.io.IOException;
-
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIPanel;
@@ -36,34 +35,31 @@ import org.primefaces.component.row.Row;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.GridLayoutUtils;
 
 public class PanelGridRenderer extends CoreRenderer {
-
-    public static final String LAYOUT_TABULAR = "tabular";
-    public static final String LAYOUT_GRID = "grid";
-    public static final String LAYOUT_FLEX = "flex";
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         PanelGrid grid = (PanelGrid) component;
         String layout = grid.getLayout();
 
-        if (LAYOUT_TABULAR.equalsIgnoreCase(layout)) {
-            encodeTableLayout(context, grid);
+        if (PanelGrid.LAYOUT_TABULAR.equalsIgnoreCase(layout)) {
+            encodeLegacyTableLayout(context, grid);
         }
-        else if (LAYOUT_GRID.equalsIgnoreCase(layout) || LAYOUT_FLEX.equalsIgnoreCase(layout)) {
+        else if (PanelGrid.LAYOUT_GRID.equalsIgnoreCase(layout) || PanelGrid.LAYOUT_FLEX.equalsIgnoreCase(layout)) {
             encodeGridLayout(context, grid);
         }
         else {
             throw new FacesException("The value of 'layout' attribute of PanelGrid \"" + grid.getClientId(
-                context) + "\" must be 'grid', 'tabular' or 'flex'. Default value is 'tabular'.");
+                context) + "\" must be 'grid', 'tabular' or 'flex'. Default value is 'grid'.");
         }
     }
 
-    public void encodeTableLayout(FacesContext context, PanelGrid grid) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
+    public void encodeLegacyTableLayout(FacesContext context, PanelGrid grid) throws IOException {
         String clientId = grid.getClientId(context);
+        ResponseWriter writer = context.getResponseWriter();
         int columns = grid.getColumns();
         String style = grid.getStyle();
         String styleClass = grid.getStyleClass();
@@ -89,24 +85,26 @@ public class PanelGridRenderer extends CoreRenderer {
         String clientId = grid.getClientId(context);
         String layout = grid.getLayout();
         int columns = grid.getColumns();
-        if (columns == 0) {
-            throw new FacesException("Columns of PanelGrid \"" + grid.getClientId(context) + "\" must be greater than zero in grid layout.");
+        if (columns <= 0 || columns > 12 || 12 % columns != 0) {
+            throw new FacesException("PanelGrid \"" + clientId + "\" columns must be a number that factors into 12. For example: 1,2,3,4,6,12");
         }
 
         String style = grid.getStyle();
-        String styleClass = grid.getStyleClass();
-        styleClass = styleClass == null ? PanelGrid.CONTAINER_CLASS : PanelGrid.CONTAINER_CLASS + " " + styleClass;
+        String containerClass = getStyleClassBuilder(context)
+                .add(PanelGrid.CONTAINER_CLASS)
+                .add(grid.getStyleClass())
+                .build();
 
         writer.startElement("div", grid);
         writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("class", styleClass, "styleClass");
+        writer.writeAttribute("class", containerClass, "styleClass");
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
 
         encodeGridFacet(context, grid, columns, "header", PanelGrid.HEADER_CLASS);
 
-        if (LAYOUT_FLEX.equalsIgnoreCase(layout)) {
+        if (PanelGrid.LAYOUT_FLEX.equalsIgnoreCase(layout)) {
             encodeFlexGridBody(context, grid, columns);
         }
         else {
@@ -185,7 +183,7 @@ public class PanelGridRenderer extends CoreRenderer {
         int i = 0;
 
         for (UIComponent child : grid.getChildren()) {
-            if (child instanceof Row || child.getClass().getName().endsWith("UIRepeat")) {
+            if (child instanceof Row || ComponentUtils.isUIRepeat(child)) {
                 // #6829 count row even though its not rendered
                 // #7780 count row if a UIRepeat and assume the user knows what they are doing
                 i++;
@@ -268,8 +266,11 @@ public class PanelGridRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String columnClassesValue = grid.getColumnClasses();
         String[] columnClasses = columnClassesValue == null ? new String[0] : columnClassesValue.split(",");
-        String contentClass = grid.getContentStyleClass();
-        contentClass = contentClass == null ? PanelGrid.CONTENT_CLASS : PanelGrid.CONTENT_CLASS + " " + contentClass;
+        String contentClass = getStyleClassBuilder(context)
+                .add(PanelGrid.CONTENT_CLASS)
+                .add(GridLayoutUtils.getResponsiveClass(false))
+                .add(grid.getContentStyleClass())
+                .build();
 
         writer.startElement("div", grid);
         writer.writeAttribute("id", clientId + "_content", null);
@@ -311,8 +312,9 @@ public class PanelGridRenderer extends CoreRenderer {
             }
             else {
                 int iRow = 0;
+                int classesLength = columnClasses.length > 0 ? columnClasses.length : 1;
                 for (UIComponent rowChild : row.getChildren()) {
-                    encodeColumn(context, columns, writer, columnClasses, rowChild, iRow % columnClasses.length);
+                    encodeColumn(context, columns, writer, columnClasses, rowChild, iRow % classesLength);
                     iRow++;
                 }
             }
@@ -338,8 +340,11 @@ public class PanelGridRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String columnClassesValue = grid.getColumnClasses();
         String[] columnClasses = columnClassesValue == null ? new String[0] : columnClassesValue.split(",");
-        String contentClass = grid.getContentStyleClass();
-        contentClass = contentClass == null ? PanelGrid.FLEX_CONTENT_CLASS : PanelGrid.FLEX_CONTENT_CLASS + " " + contentClass;
+        String contentClass = getStyleClassBuilder(context)
+                .add(PanelGrid.CONTENT_CLASS)
+                .add(GridLayoutUtils.getFlexGridClass(true))
+                .add(grid.getContentStyleClass())
+                .build();
 
         writer.startElement("div", grid);
         writer.writeAttribute("id", clientId + "_content", null);
@@ -409,7 +414,7 @@ public class PanelGridRenderer extends CoreRenderer {
 
         UIComponent component = grid.getFacet(facet);
 
-        if (ComponentUtils.shouldRenderFacet(component)) {
+        if (FacetUtils.shouldRenderFacet(component)) {
             ResponseWriter writer = context.getResponseWriter();
             writer.startElement(tag, null);
             writer.writeAttribute("class", styleClass, null);
@@ -458,7 +463,7 @@ public class PanelGridRenderer extends CoreRenderer {
     public void encodeGridFacet(FacesContext context, PanelGrid grid, int columns, String facet, String styleClass) throws IOException {
         UIComponent component = grid.getFacet(facet);
 
-        if (ComponentUtils.shouldRenderFacet(component)) {
+        if (FacetUtils.shouldRenderFacet(component)) {
             ResponseWriter writer = context.getResponseWriter();
 
             writer.startElement("div", null);

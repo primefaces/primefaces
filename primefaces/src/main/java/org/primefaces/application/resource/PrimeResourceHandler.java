@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,7 +28,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
 import javax.faces.application.ResourceHandlerWrapper;
@@ -44,26 +43,18 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
 
     private final Map<String, DynamicContentHandler> handlers;
 
-    private final ResourceHandler wrapped;
-
-    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public PrimeResourceHandler(ResourceHandler wrapped) {
-        this.wrapped = wrapped;
+        super(wrapped);
         handlers = new HashMap<>();
         handlers.put(DynamicContentType.STREAMED_CONTENT.toString(), new StreamedContentHandler());
 
-        if (LangUtils.tryToLoadClassForName("org.krysalis.barcode4j.output.AbstractCanvasProvider") != null) {
+        if (LangUtils.isClassAvailable("org.krysalis.barcode4j.output.AbstractCanvasProvider")) {
             handlers.put(DynamicContentType.BARCODE.toString(), new BarcodeHandler());
         }
 
-        if (LangUtils.tryToLoadClassForName("io.nayuki.qrcodegen.QrCode") != null) {
+        if (LangUtils.isClassAvailable("io.nayuki.qrcodegen.QrCode")) {
             handlers.put(DynamicContentType.QR_CODE.toString(), new QRCodeHandler());
         }
-    }
-
-    @Override
-    public ResourceHandler getWrapped() {
-        return this.wrapped;
     }
 
     @Override

@@ -255,6 +255,7 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
             process: this.id,
             update: this.id,
             global: false,
+            ignoreAutoUpdate: true,
             params: [{name: this.id + '_load', value: true},{name: this.id + '_offset', value: this.cfg.offset}],
             onsuccess: function(responseXML, status, xhr) {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {

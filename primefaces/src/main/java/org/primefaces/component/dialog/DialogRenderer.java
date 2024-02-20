@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,12 +29,11 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
-import org.primefaces.util.MessageFactory;
 import org.primefaces.util.WidgetBuilder;
 
 public class DialogRenderer extends CoreRenderer {
@@ -70,8 +69,7 @@ public class DialogRenderer extends CoreRenderer {
                 .attr("height", dialog.getHeight(), null)
                 .attr("minWidth", dialog.getMinWidth(), Integer.MIN_VALUE)
                 .attr("minHeight", dialog.getMinHeight(), Integer.MIN_VALUE)
-                .attr("appendTo", SearchExpressionFacade.resolveClientId(context, dialog, dialog.getAppendTo(),
-                        SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
+                .attr("appendTo", SearchExpressionUtils.resolveOptionalClientIdForClientSide(context, dialog, dialog.getAppendTo()))
                 .attr("dynamic", dialog.isDynamic(), false)
                 .attr("showEffect", dialog.getShowEffect(), null)
                 .attr("hideEffect", dialog.getHideEffect(), null)
@@ -84,8 +82,7 @@ public class DialogRenderer extends CoreRenderer {
                 .callback("onHide", "function()", dialog.getOnHide())
                 .callback("onShow", "function()", dialog.getOnShow());
 
-        String focusExpressions = SearchExpressionFacade.resolveClientIds(
-                context, dialog, dialog.getFocus(), SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE);
+        String focusExpressions = SearchExpressionUtils.resolveOptionalClientIdsForClientSide(context, dialog, dialog.getFocus());
         if (focusExpressions != null) {
             wb.attr("focus", focusExpressions);
         }
@@ -99,7 +96,7 @@ public class DialogRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = dialog.getClientId(context);
         String positionType = dialog.getPositionType();
-        String style = dialog.getStyle();
+        String style = getStyleBuilder(context).add(dialog.getStyle()).add("display", "none").build();
         String styleClass = dialog.getStyleClass();
         styleClass = styleClass == null ? Dialog.CONTAINER_CLASS : Dialog.CONTAINER_CLASS + " " + styleClass;
 
@@ -143,7 +140,7 @@ public class DialogRenderer extends CoreRenderer {
         writer.writeAttribute("id", dialog.getClientId(context) + "_title", null);
         writer.writeAttribute("class", Dialog.TITLE_CLASS, null);
 
-        if (ComponentUtils.shouldRenderFacet(headerFacet)) {
+        if (FacetUtils.shouldRenderFacet(headerFacet)) {
             headerFacet.encodeAll(context);
         }
         else if (header != null) {
@@ -153,7 +150,7 @@ public class DialogRenderer extends CoreRenderer {
         writer.endElement("span");
 
         if (dialog.isClosable()) {
-            encodeIcon(context, Dialog.TITLE_BAR_CLOSE_CLASS, Dialog.CLOSE_ICON_CLASS, MessageFactory.getMessage(Dialog.ARIA_CLOSE));
+            encodeIcon(context, Dialog.TITLE_BAR_CLOSE_CLASS, Dialog.CLOSE_ICON_CLASS, null);
         }
 
         if (dialog.isMaximizable()) {
@@ -180,7 +177,7 @@ public class DialogRenderer extends CoreRenderer {
         writer.writeAttribute("class", Dialog.FOOTER_CLASS, null);
 
         writer.startElement("div", null);
-        if (ComponentUtils.shouldRenderFacet(footerFacet)) {
+        if (FacetUtils.shouldRenderFacet(footerFacet)) {
             footerFacet.encodeAll(context);
         }
         else if (footer != null) {

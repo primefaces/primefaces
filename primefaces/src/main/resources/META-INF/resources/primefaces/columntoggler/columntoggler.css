@@ -11,25 +11,33 @@
     margin: 0;
 }
 
-.ui-columntoggler .ui-columntoggler-item {
+.ui-columntoggler .ui-columntoggler-item,
+.ui-columntoggler .ui-columntoggler-all  {
     border:0px none;
     cursor:pointer;
     font-weight:normal;
-    margin:1px 0;
-    padding:3px 5px;
+    margin: 0;
+    padding:.5rem 1rem;
     text-align:left;
     white-space: nowrap;
     display: block;
     position: relative;
 }
 
-.ui-columntoggler .ui-columntoggler-item .ui-chkbox {
+.ui-columntoggler .ui-columntoggler-all  {
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+}
+
+.ui-columntoggler .ui-columntoggler-item .ui-chkbox,
+.ui-columntoggler .ui-columntoggler-all .ui-chkbox {
     position: absolute;
     top:50%;
     margin-top:-8px;
 }
 
-.ui-columntoggler .ui-columntoggler-item label {
+.ui-columntoggler .ui-columntoggler-item label,
+.ui-columntoggler .ui-columntoggler-all label {
     display: block;
     padding-left: 2.2em;
 }

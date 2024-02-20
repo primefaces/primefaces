@@ -37,7 +37,7 @@ powered rich solution with graceful degradation for legacy browsers.
 | multiple | false | Boolean | Allows choosing of multi file uploads from native file browse dialog
 | auto | false | Boolean | When set to true, selecting a file starts the upload process implicitly.
 | label | Choose | String | Label of the browse button.
-| allowTypes | null | String | Regular expression for accepted file types, e.g. /(\\.\|\\/)(gif\|jpe?g\|png)$/
+| allowTypes | null | String | Regular expression for accepted file types, e.g., /(\\.\|\\/)(gif\|jpe?g\|png)$/
 | sizeLimit | null | Integer | Individual file size limit in bytes.
 | fileLimit | null | Integer | Maximum number of files allowed to upload.
 | style | null | String | Inline style of the component.

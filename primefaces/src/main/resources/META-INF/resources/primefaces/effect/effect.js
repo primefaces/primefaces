@@ -44,7 +44,7 @@ PrimeFaces.widget.Effect = PrimeFaces.widget.BaseWidget.extend({
                 clearTimeout(_self.timeoutId);
             }
 
-            _self.timeoutId = setTimeout(_self.cfg.fn, _self.cfg.delay);
+            _self.timeoutId = PrimeFaces.queueTask(_self.cfg.fn, _self.cfg.delay);
         };
 
         if(this.cfg.event == 'load') {

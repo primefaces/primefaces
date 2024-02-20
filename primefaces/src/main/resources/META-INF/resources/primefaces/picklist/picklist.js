@@ -66,6 +66,7 @@
  * @prop {boolean} cfg.escapeValue Whether the item values are escaped for HTML.
  * @prop {number} cfg.filterDelay Delay to wait in milliseconds before sending each filter query. Default is `300`.
  * @prop {string} cfg.filterEvent Client side event to invoke picklist filtering for input fields. Default is `keyup`.
+ * @prop {boolean} cfg.filterNormalize Defines if filtering would be done using normalized values.
  * @prop {PrimeFaces.widget.PickList.FilterFunction} cfg.filterFunction A custom filter function that is used when
  * `filterMatchMode` is set to `custom`.
  * @prop {PrimeFaces.widget.PickList.FilterMatchMode} cfg.filterMatchMode Mode of the filter. When set to `custom, a
@@ -341,11 +342,11 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 $this.focusedItem = list.children('.ui-picklist-item:visible:first');
             }
 
-            setTimeout(function() {
+            PrimeFaces.queueTask(function() {
                 if ($this.focusedItem) {
                     PrimeFaces.scrollInView(list, $this.focusedItem);
                     $this.focusedItem.addClass('ui-picklist-outline');
-                    $this.ariaRegion.text($this.focusedItem.data('item-label'));
+                    $this.updateAriaRegion();
                 }
             }, 100);
         })
@@ -359,12 +360,10 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 return;
             }
 
-            var list = $(this),
-                keyCode = $.ui.keyCode,
-                key = e.which;
+            var list = $(this);
 
-            switch(key) {
-                case keyCode.UP:
+            switch(e.code) {
+                case 'ArrowUp':
                     $this.removeOutline();
 
                     if(!$this.focusedItem.hasClass('ui-state-highlight')) {
@@ -380,11 +379,11 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                             PrimeFaces.scrollInView(list, $this.focusedItem);
                         }
                     }
-                    $this.ariaRegion.text($this.focusedItem.data('item-label'));
+                    $this.updateAriaRegion();
                     e.preventDefault();
                 break;
 
-                case keyCode.DOWN:
+                case 'ArrowDown':
                     $this.removeOutline();
 
                     if(!$this.focusedItem.hasClass('ui-state-highlight')) {
@@ -400,12 +399,13 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                             PrimeFaces.scrollInView(list, $this.focusedItem);
                         }
                     }
-                    $this.ariaRegion.text($this.focusedItem.data('item-label'));
+                    $this.updateAriaRegion();
                     e.preventDefault();
                 break;
 
-                case keyCode.ENTER:
-                case keyCode.SPACE:
+                case 'Enter':
+                case 'NumpadEnter':
+                case 'Space':
                     if($this.focusedItem && $this.focusedItem.hasClass('ui-state-highlight')) {
                         $this.focusedItem.trigger('dblclick.pickList');
                         $this.focusedItem = null;
@@ -414,25 +414,25 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 break;
                 default:
                     // #3304 find first item matching the character typed
-                    var keyChar = String.fromCharCode(key).toLowerCase();
-                    list.children('.ui-picklist-item').each(function() {
-                        var item = $(this),
-                            itemLabel = item.attr('data-item-label');
-                        if (itemLabel.toLowerCase().indexOf(keyChar) === 0) {
-                            $this.removeOutline();
-                            $this.unselectAll();
-                            $this.selectItem(item);
-                            $this.focusedItem = item;
-                            PrimeFaces.scrollInView(list, $this.focusedItem);
-                            $this.ariaRegion.text($this.focusedItem.data('item-label'));
-                            e.preventDefault();
-                            return false;
-                        }
-                    });
-                break;
+                    if (PrimeFaces.utils.isPrintableKey(e)) {
+                        var keyChar = e.key.toLowerCase();
+                        list.children('.ui-picklist-item').each(function() {
+                            var item = $(this),
+                                itemLabel = item.attr('data-item-label');
+                            if (itemLabel && itemLabel.toLowerCase().indexOf(keyChar) === 0) {
+                                $this.removeOutline();
+                                $this.unselectAll();
+                                $this.selectItem(item);
+                                $this.focusedItem = item;
+                                PrimeFaces.scrollInView(list, $this.focusedItem);
+                                $this.updateAriaRegion();
+                                e.preventDefault();
+                                return false;
+                            }
+                        });
+                    }
             };
         });
-
     },
 
     /**
@@ -549,47 +549,83 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
 
         //visuals
         PrimeFaces.skinButton(this.jq.find('.ui-button'));
-
+        
         //events
-        $(this.jqId + ' .ui-picklist-button-add').on("click", function() {
+        var moveToTarget = $(this.jqId + ' .ui-picklist-button-add');
+        var moveToTargetAria = PrimeFaces.getAriaLabel('moveToTarget');
+        moveToTarget.attr('title', moveToTargetAria).find('.ui-button-text').text(moveToTargetAria);
+        moveToTarget.on("click", function() {
             $this.add();
         });
-        $(this.jqId + ' .ui-picklist-button-add-all').on("click", function() {
+
+        var moveAllToTarget = $(this.jqId + ' .ui-picklist-button-add-all');
+        var moveAllToTargetAria = PrimeFaces.getAriaLabel('moveAllToTarget');
+        moveAllToTarget.attr('title', moveAllToTargetAria).find('.ui-button-text').text(moveAllToTargetAria);
+        moveAllToTarget.on("click", function() {
             $this.addAll();
         });
-        $(this.jqId + ' .ui-picklist-button-remove').on("click", function() {
+
+        var moveToSource = $(this.jqId + ' .ui-picklist-button-remove');
+        var moveToSourceAria = PrimeFaces.getAriaLabel('moveToSource');
+        moveToSource.attr('title', moveToSourceAria).find('.ui-button-text').text(moveToSourceAria);
+        moveToSource.on("click", function() {
             $this.remove();
         });
-        $(this.jqId + ' .ui-picklist-button-remove-all').on("click", function() {
+        
+        var moveAllToSource = $(this.jqId + ' .ui-picklist-button-remove-all');
+        var moveAllToSourceAria = PrimeFaces.getAriaLabel('moveAllToSource');
+        moveAllToSource.attr('title', moveAllToSourceAria).find('.ui-button-text').text(moveAllToSourceAria);
+        moveAllToSource.on("click", function() {
             $this.removeAll();
         });
+        
+        var moveUpAria = PrimeFaces.getAriaLabel('moveUp');
+        var moveDownAria = PrimeFaces.getAriaLabel('moveDown');
+        var moveTopAria = PrimeFaces.getAriaLabel('moveTop');
+        var moveBottomAria = PrimeFaces.getAriaLabel('moveBottom');
 
         if(this.cfg.showSourceControls) {
-            $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-up').on("click", function() {
+            var moveUpSource = $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-up');
+            moveUpSource.attr('title', moveUpAria).find('.ui-button-text').text(moveUpAria);
+            moveUpSource.on("click", function() {
                 $this.moveUp($this.sourceList);
             });
-            $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-top').on("click", function() {
+            var moveTopSource = $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-top');
+            moveTopSource.attr('title', moveTopAria).find('.ui-button-text').text(moveTopAria);
+            moveTopSource.on("click", function() {
                 $this.moveTop($this.sourceList);
             });
-            $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-down').on("click", function() {
+            var moveDownSource = $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-down');
+            moveDownSource.attr('title', moveDownAria).find('.ui-button-text').text(moveDownAria);
+            moveDownSource.on("click", function() {
                 $this.moveDown($this.sourceList);
             });
-            $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-bottom').on("click", function() {
+            var moveBottomSource = $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-bottom');
+            moveBottomSource.attr('title', moveBottomAria).find('.ui-button-text').text(moveBottomAria);
+            moveBottomSource.on("click", function() {
                 $this.moveBottom($this.sourceList);
             });
         }
 
         if(this.cfg.showTargetControls) {
-            $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-up').on("click", function() {
+            var moveUpTarget = $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-up');
+            moveUpTarget.attr('title', moveUpAria).find('.ui-button-text').text(moveUpAria);
+            moveUpTarget.on("click", function() {
                 $this.moveUp($this.targetList);
             });
-            $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-top').on("click", function() {
+            var moveTopTarget = $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-top');
+            moveTopTarget.attr('title', moveTopAria).find('.ui-button-text').text(moveTopAria);
+            moveTopTarget.on("click", function() {
                 $this.moveTop($this.targetList);
             });
-            $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-down').on("click", function() {
+            var moveDownTarget = $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-down');
+            moveDownTarget.attr('title', moveDownAria).find('.ui-button-text').text(moveDownAria);
+            moveDownTarget.on("click", function() {
                 $this.moveDown($this.targetList);
             });
-            $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-bottom').on("click", function() {
+            var moveBottomTarget = $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-bottom');
+            moveBottomTarget.attr('title', moveBottomAria).find('.ui-button-text').text(moveBottomAria);
+            moveBottomTarget.on("click", function() {
                 $this.moveBottom($this.targetList);
             });
         }
@@ -640,10 +676,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         filter
             .on('keydown', PrimeFaces.utils.blockEnterKey)
             .on('keyup', function(e) {
-                var key = e.which,
-                keyCode = $.ui.keyCode;
-
-                if((key === keyCode.ENTER)) {
+                if(e.key === 'Enter') {
                     $this.filter(this.value, $this.getFilteredList($(this)));
 
                     e.preventDefault();
@@ -671,7 +704,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 clearTimeout($this.filterTimeout);
             }
 
-            $this.filterTimeout = setTimeout(function() {
+            $this.filterTimeout = PrimeFaces.queueTask(function() {
                 $this.filter(input.val(), $this.getFilteredList(input));
                 $this.filterTimeout = null;
             },
@@ -703,9 +736,10 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
      * @param {boolean} [animate] If it should be animated.
      */
     filter: function(value, list, animate) {
-        var filterValue = PrimeFaces.trim(value).toLowerCase(),
-        items = list.children('li.ui-picklist-item'),
-        animated = animate || this.isAnimated();
+        var normalize = this.cfg.filterNormalize,
+            filterValue = PrimeFaces.toSearchable(PrimeFaces.trim(value), true, normalize),
+            items = list.children('li.ui-picklist-item'),
+            animated = animate || this.isAnimated();
 
         list.removeAttr('role');
 
@@ -716,7 +750,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         else {
             for(var i = 0; i < items.length; i++) {
                 var item = items.eq(i),
-                itemLabel = item.attr('data-item-label'),
+                itemLabel = PrimeFaces.toSearchable(item.attr('data-item-label'), false, normalize),
                 matches = this.filterMatcher(itemLabel, filterValue);
 
                 if(matches) {
@@ -1321,6 +1355,16 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
     updateListRole: function() {
         this.sourceList.children('li:visible').length > 0 ? this.sourceList.attr('role', 'menu') : this.sourceList.removeAttr('role');
         this.targetList.children('li:visible').length > 0 ? this.targetList.attr('role', 'menu') : this.targetList.removeAttr('role');
+    },
+    
+    /**
+     * Updates the `aria-grion` with the focused label text.
+     * @private
+     */
+    updateAriaRegion: function() {
+        var labelText = this.focusedItem.data('item-label');
+        this.ariaRegion.attr('aria-label', labelText)
+        this.ariaRegion.text(labelText);
     }
 
 });

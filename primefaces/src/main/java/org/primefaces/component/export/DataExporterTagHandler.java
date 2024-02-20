@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -46,6 +46,8 @@ public class DataExporterTagHandler extends TagHandler {
     private final TagAttribute options;
     private final TagAttribute onTableRender;
     private final TagAttribute exporter;
+    private final TagAttribute onRowExport;
+    private final TagAttribute bufferSize;
 
     public DataExporterTagHandler(TagConfig tagConfig) {
         super(tagConfig);
@@ -63,6 +65,8 @@ public class DataExporterTagHandler extends TagHandler {
         options = getAttribute("options");
         onTableRender = getAttribute("onTableRender");
         exporter = getAttribute("exporter");
+        onRowExport = getAttribute("onRowExport");
+        bufferSize = getAttribute("bufferSize");
     }
 
     @Override
@@ -85,6 +89,8 @@ public class DataExporterTagHandler extends TagHandler {
         ValueExpression optionsVE = null;
         MethodExpression onTableRenderME = null;
         ValueExpression exporterVE = null;
+        MethodExpression onRowExportME = null;
+        ValueExpression bufferSizeVE = null;
 
         if (encoding != null) {
             encodingVE = encoding.getValueExpression(faceletContext, Object.class);
@@ -119,6 +125,12 @@ public class DataExporterTagHandler extends TagHandler {
         if (exporter != null) {
             exporterVE = exporter.getValueExpression(faceletContext, Object.class);
         }
+        if (onRowExport != null) {
+            onRowExportME = onRowExport.getMethodExpression(faceletContext, null, new Class[]{Object.class});
+        }
+        if (bufferSize != null) {
+            bufferSizeVE = bufferSize.getValueExpression(faceletContext, Integer.class);
+        }
         ActionSource actionSource = (ActionSource) parent;
         DataExporter dataExporter = DataExporter.builder()
                     .target(targetVE)
@@ -135,6 +147,8 @@ public class DataExporterTagHandler extends TagHandler {
                     .preProcessor(preProcessorME)
                     .selectionOnly(selectionOnlyVE)
                     .visibleOnly(visibleOnlyVE)
+                    .onRowExport(onRowExportME)
+                    .bufferSize(bufferSizeVE)
                     .build();
         actionSource.addActionListener(dataExporter);
     }

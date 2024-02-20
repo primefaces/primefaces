@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,31 +38,32 @@ public abstract class TreeBase extends UITree implements Widget, RTLAware, Clien
 
     public enum PropertyKeys {
 
-        widgetVar,
-        dynamic,
+        animate,
         cache,
+        datakey,
+        dir,
+        disabled,
+        dragMode,
+        dragdropScope,
+        draggable,
+        dropCopyNode,
+        dropMode,
+        dropRestrict,
+        droppable,
+        dynamic,
+        filterBy,
+        filterFunction,
+        filterMatchMode,
+        filterMode,
+        highlight,
+        multipleDrag,
+        onDrop,
         onNodeClick,
+        orientation,
         style,
         styleClass,
-        highlight,
-        datakey,
-        animate,
-        orientation,
-        dir,
-        draggable,
-        droppable,
-        dragdropScope,
-        dragMode,
-        dropRestrict,
         tabindex,
-        filterBy,
-        filterMatchMode,
-        disabled,
-        multipleDrag,
-        dropCopyNode,
-        onDrop,
-        filterMode,
-        filterFunction
+        widgetVar
     }
 
     public TreeBase() {
@@ -154,6 +155,7 @@ public abstract class TreeBase extends UITree implements Widget, RTLAware, Clien
         getStateHelper().put(PropertyKeys.orientation, orientation);
     }
 
+    @Override
     public String getDir() {
         return (String) getStateHelper().eval(PropertyKeys.dir, "ltr");
     }
@@ -200,6 +202,14 @@ public abstract class TreeBase extends UITree implements Widget, RTLAware, Clien
 
     public void setDropRestrict(String dropRestrict) {
         getStateHelper().put(PropertyKeys.dropRestrict, dropRestrict);
+    }
+
+    public String getDropMode() {
+        return (String) getStateHelper().eval(PropertyKeys.dropMode, "move");
+    }
+
+    public void setDropMode(String dropMode) {
+        getStateHelper().put(PropertyKeys.dropMode, dropMode);
     }
 
     public int getTabindex() {

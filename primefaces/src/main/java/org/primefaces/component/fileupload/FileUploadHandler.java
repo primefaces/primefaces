@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,8 +33,9 @@ import javax.faces.view.facelets.MetaRuleset;
 
 public class FileUploadHandler extends ComponentHandler {
 
-    private static final MetaRule FILE_UPLOAD_LISTENER
-            = new MethodRule("listener", null, new Class<?>[]{FileUploadEvent.class});
+    private static final MetaRule FILE_UPLOAD_LISTENER = new MethodRule(FileUpload.PropertyKeys.listener.name(),
+            null,
+            new Class<?>[]{FileUploadEvent.class});
 
     public FileUploadHandler(ComponentConfig config) {
         super(config);

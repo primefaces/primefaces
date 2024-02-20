@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,7 +28,6 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.component.behavior.ClientBehavior;
@@ -41,11 +40,13 @@ import javax.faces.event.PhaseId;
 import org.primefaces.behavior.confirm.ConfirmBehavior;
 import org.primefaces.component.api.*;
 import org.primefaces.component.divider.Divider;
+import org.primefaces.component.menuitem.UIMenuItem;
 import org.primefaces.event.MenuActionEvent;
 import org.primefaces.model.menu.*;
 import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 
 public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
 
@@ -56,14 +57,40 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
         decodeDynamicMenuItem(context, component);
     }
 
+    protected boolean isMenuItemLink(FacesContext context, UIComponent source, MenuItem menuitem) {
+        return LangUtils.isNotBlank(menuitem.getUrl()) || LangUtils.isNotBlank(menuitem.getOutcome());
+    }
+
+    protected boolean isMenuItemSubmitting(FacesContext context, UIComponent source, MenuItem menuitem) {
+        boolean submitting;
+
+        // #1 first check for assigned server side callbacks
+        submitting = menuitem.getFunction() != null || LangUtils.isNotBlank(menuitem.getCommand());
+        if (!submitting && menuitem instanceof UIMenuItem) {
+            submitting = ((UIMenuItem) menuitem).getActionExpression() != null
+                    || ((UIMenuItem) menuitem).getActionListeners().length > 0;
+        }
+
+        // 2# AJAX
+        if (!submitting && menuitem.isAjax()) {
+            submitting = menuitem.isResetValues()
+                    || LangUtils.isNotBlank(menuitem.getUpdate())
+                    || LangUtils.isNotBlank(menuitem.getProcess());
+        }
+
+        return submitting;
+    }
+
     protected void encodeOnClick(FacesContext context, UIComponent source, MenuItem menuitem) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         setConfirmationScript(context, menuitem);
 
         String onclick = menuitem.getOnclick();
+        boolean isLink = isMenuItemLink(context, source, menuitem);
+        boolean isSubmitting = isMenuItemSubmitting(context, source, menuitem);
 
         //GET
-        if (menuitem.getUrl() != null || menuitem.getOutcome() != null) {
+        if (isLink) {
             String targetURL = getTargetURL(context, (UIOutcomeTarget) menuitem);
             writer.writeAttribute("href", targetURL, null);
 
@@ -74,11 +101,13 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
         //POST
         else {
             writer.writeAttribute("href", "#", null);
-            String menuClientId = source.getClientId(context);
+        }
 
-            UIForm form = ComponentTraversalUtils.closestForm(context, source);
+        if (isSubmitting) {
+            String menuClientId = source.getClientId(context);
+            UIForm form = ComponentTraversalUtils.closestForm(source);
             if (form == null) {
-                LOGGER.log(Level.FINE, "Menu '" + menuClientId
+                LOGGER.log(Level.FINE, () -> "Menu '" + menuClientId
                             + "' should be inside a form or should reference a form via its form attribute."
                             + " We will try to find a fallback form on the client side.");
             }
@@ -102,6 +131,10 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
                         : buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
             }
 
+            if (isLink) {
+                // allow CTRL+CLICK link to open new tab
+                command = "if(PF.metaKey(event)){return true};" + command;
+            }
             onclick = (onclick == null) ? command : onclick + ";" + command;
         }
 

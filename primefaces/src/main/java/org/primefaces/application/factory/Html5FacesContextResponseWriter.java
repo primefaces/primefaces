@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,6 +29,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.ResponseWriter;
 import javax.faces.context.ResponseWriterWrapper;
 
+import org.primefaces.renderkit.RendererUtils;
+
 /**
  * JSF generates all script tags with 'type="text/javascript"' which throws HTML5 validation warnings.
  * NOTE: Not necessary for Faces 4.0+.
@@ -38,7 +40,6 @@ import javax.faces.context.ResponseWriterWrapper;
 public class Html5FacesContextResponseWriter extends ResponseWriterWrapper {
 
     private static final String SCRIPT = "script";
-    private static final String TYPE = "text/javascript";
     private boolean inScriptStartTag;
 
     public Html5FacesContextResponseWriter(ResponseWriter wrapped) {
@@ -61,7 +62,7 @@ public class Html5FacesContextResponseWriter extends ResponseWriterWrapper {
 
     @Override
     public void writeAttribute(String name, Object value, String property) throws IOException {
-        if (inScriptStartTag && TYPE.equals(value)) {
+        if (inScriptStartTag && RendererUtils.SCRIPT_TYPE.equals(value)) {
             return;
         }
         super.writeAttribute(name, value, property);

@@ -1,5 +1,5 @@
 /* http://keith-wood.name/keypad.html
-   Keypad field entry extension for jQuery v2.1.0.
+   Keypad field entry extension for jQuery v2.1.1.
    Written by Keith Wood (kbwood{at}iinet.com.au) August 2008.
    Available under the MIT (http://keith-wood.name/licence.html) license.
    Please attribute the author if you use it. */
@@ -489,7 +489,7 @@ $('selector').tabs(); // And instantiate it */
 			@property {string} [showAnim='show'] Name of jQuery animation for popup.
 			@property {object} [showOptions=null] Options for enhanced animations.
 			@property {string|number} [duration='normal'] Duration of display/closure as a named speed or in milliseconds.
-			@property {string} [appendText=''] Display text following the text field, e.g. showing the format.
+			@property {string} [appendText=''] Display text following the text field, e.g., showing the format.
 			@property {boolean} [useThemeRoller=false] <code>true</code> to add ThemeRoller classes.
 			@property {string} [keypadClass=''] Additional CSS class for the keypad for an instance.
 			@property {string} [prompt=''] Display text at the top of the keypad.
@@ -994,6 +994,7 @@ $('selector').tabs(); // And instantiate it */
 		_clearValue: function(inst) {
 			this._setValue(inst, '', 0);
 			this._notifyKeypress(inst, plugin.DEL);
+			inst._input.trigger('focus'); // for further typing
 		},
 
 		/** Erase the last character.
@@ -1009,6 +1010,7 @@ $('selector').tabs(); // And instantiate it */
 			this._setValue(inst, (value.length === 0 ? '' :
 				value.substr(0, range[0] - 1) + value.substr(range[1])), range[0] - 1);
 			this._notifyKeypress(inst, plugin.BS);
+			inst._input.trigger('focus'); // for further typing
 		},
 
 		/** Update the text field with the selected value.

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<profiles version="2">
+   <profile kind="CleanUpProfile"
+             name="PrimeFaces CheckStyle Cleanup"
+             version="2">
+      <setting id="cleanup.use_blocks" value="true"/>
+      <setting id="cleanup.never_use_blocks" value="false"/>
+      <setting id="cleanup.add_missing_annotations" value="true"/>
+      <setting id="cleanup.always_use_blocks" value="true"/>
+      <setting id="cleanup.organize_imports" value="true"/>
+      <setting id="cleanup.remove_unused_imports" value="true"/>
+      <setting id="cleanup.add_missing_override_annotations" value="true"/>
+      <setting id="cleanup.use_blocks_only_for_return_and_throw" value="false"/>
+   </profile>
+</profiles>

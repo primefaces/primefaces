@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,32 +23,37 @@
  */
 package org.primefaces.component.api;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import org.primefaces.component.celleditor.CellEditor;
+import org.primefaces.model.MatchMode;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.LangUtils;
 
 import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
+import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
-
-import org.primefaces.component.celleditor.CellEditor;
-import org.primefaces.util.LangUtils;
+import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public interface UIColumn {
 
+    MatchMode DEFAULT_FILTER_MATCH_MODE = MatchMode.STARTS_WITH;
+
     /**
      * Used to extract bean's property from a value expression in dynamic columns
-     * (e.g #{car[column.property]} = name)
+     * (e.g. #{car[column.property]} = name)
      */
     Pattern DYNAMIC_FIELD_VE_LEGACY_PATTERN = Pattern.compile("^#\\{\\w+\\[([\\w.]+)]}$");
 
     /**
-     * Used to extract bean's property from a value expression in static columns (e.g "#{car.year}" = year)
+     * Used to extract bean's property from a value expression in static columns (e.g. "#{car.year}" = year)
      */
     Pattern STATIC_FIELD_VE_LEGACY_PATTERN = Pattern.compile("^#\\{\\w+\\.([\\w.]+)}$");
 
@@ -138,7 +143,7 @@ public interface UIColumn {
 
     String getClientId(FacesContext context);
 
-    String getSelectionMode();
+    boolean isSelectionBox();
 
     boolean isResizable();
 
@@ -153,6 +158,8 @@ public interface UIColumn {
     int getColspan();
 
     String getFilterPosition();
+
+    String getFilterPlaceholder();
 
     UIComponent getFacet(String facet);
 
@@ -171,8 +178,6 @@ public interface UIColumn {
     String getFilterMatchMode();
 
     int getFilterMaxLength();
-
-    Object getFilterOptions();
 
     CellEditor getCellEditor();
 
@@ -216,7 +221,7 @@ public interface UIColumn {
 
     MethodExpression getExportFunction();
 
-    String getExportValue();
+    Object getExportValue();
 
     int getExportRowspan();
 
@@ -224,9 +229,11 @@ public interface UIColumn {
 
     boolean isGroupRow();
 
-    String getExportHeaderValue();
+    Object getExportHeaderValue();
 
-    String getExportFooterValue();
+    Object getExportFooterValue();
+
+    String getExportTag();
 
     String getSortOrder();
 
@@ -237,4 +244,35 @@ public interface UIColumn {
     boolean isCaseSensitiveSort();
 
     int getDisplayPriority();
+
+    Object getConverter();
+
+    default Object getFilterValueFromValueHolder() {
+        UIComponent filterFacet = getFacet("filter");
+        if (filterFacet == null) {
+            return null;
+        }
+        AtomicReference<Object> filterValue = new AtomicReference<>(null);
+
+        FacetUtils.invokeOnEditableValueHolder(FacesContext.getCurrentInstance(), filterFacet, (ctx, component) -> {
+            filterValue.set(((EditableValueHolder) component).getValue());
+        });
+
+        return filterValue.get();
+    }
+
+    default void setFilterValueToValueHolder(Object value) {
+        UIComponent filterFacet = getFacet("filter");
+
+        FacetUtils.invokeOnEditableValueHolder(FacesContext.getCurrentInstance(), filterFacet, (ctx, component) -> {
+            ((EditableValueHolder) component).setValue(value);
+        });
+    }
+
+    default UIComponent asUIComponent() {
+        if (this instanceof UIComponent) {
+            return (UIComponent) this;
+        }
+        throw new UnsupportedOperationException(getClass().getName() + "#asUIComponent is not implemented");
+    }
 }

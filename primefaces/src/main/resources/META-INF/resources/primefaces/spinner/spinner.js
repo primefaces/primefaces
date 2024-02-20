@@ -3,8 +3,6 @@
  *
  * Spinner is an input component to provide a numerical input via increment and decrement buttons.
  *
- * @prop {number} cursorOffset Index where the number starts in the input field's string value, i.e. after the
- * {@link SpinnerCfg.prefix}.
  * @prop {JQuery} downButton The DOM element for the button that decrements this spinner's value.
  * @prop {JQuery} input The DOM element for the input with the current value.
  * @prop {number} timer The set-timeout ID for the timer for incrementing or decrementing this spinner when an arrow key
@@ -43,8 +41,8 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
         this._super(cfg);
 
         this.input = this.jq.children('.ui-spinner-input');
-        this.upButton = this.jq.children('a.ui-spinner-up');
-        this.downButton = this.jq.children('a.ui-spinner-down');
+        this.upButton = this.jq.children('button.ui-spinner-up');
+        this.downButton = this.jq.children('button.ui-spinner-down');
         this.cfg.step = this.cfg.step || 1;
         if (this.cfg.thousandSeparator == undefined) {
           this.cfg.thousandSeparator = '';
@@ -52,7 +50,6 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
         if (this.cfg.decimalSeparator == undefined) {
           this.cfg.decimalSeparator = '.';
         }
-        this.cursorOffset = this.cfg.prefix ? this.cfg.prefix.length: 0;
         this.cfg.modifyValueOnWheel = this.cfg.modifyValueOnWheel !== false;
 
         var inputValue = this.input.val();
@@ -112,7 +109,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
             })
             .on('mousedown.spinner', function(e) {
                 // only act on left click
-                if (e.which !== 1) {
+                if (e.button !== 0) {
                     return;
                 }
                 var element = $(this),
@@ -131,21 +128,24 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
         });
 
         this.input.on('keydown.spinner', function (e) {
-            var keyCode = $.ui.keyCode;
-
-            switch(e.which) {
-                case keyCode.UP:
+            switch(e.key) {
+                case 'ArrowUp':
                     $this.spin(1);
                 break;
 
-                case keyCode.DOWN:
+                case 'ArrowDown':
                     $this.spin(-1);
                 break;
 
-                case keyCode.ENTER:
+                case 'Enter':
+                case 'NumpadEnter':
                     $this.updateValue();
                     $this.format();
                 break;
+                
+                case 'Backspace':
+                case 'Delete':
+                    return;
 
                 default:
                     //do nothing
@@ -153,8 +153,11 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
             }
 
             // #8958 allow TAB, F1, F12 etc
-            var isPrintableKey = e.key.length === 1 || e.key === 'Unidentified';
-            if (!isPrintableKey) {
+            if (!PrimeFaces.utils.isPrintableKey(e)) {
+                return;
+            }
+            // #10714 allow clipboard events
+            if (PrimeFaces.utils.isClipboardKey(e)) {
                 return;
             }
 
@@ -191,9 +194,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
         .on('keyup.spinner', function (e) {
             $this.updateValue();
 
-            var keyCode = $.ui.keyCode;
-
-            if(e.which === keyCode.UP||e.which === keyCode.DOWN) {
+            if(e.key === 'ArrowUp' || e.key === 'ArrowDown') {
                 $this.input.trigger('change');
                 $this.format();
             }
@@ -228,7 +229,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
         i = interval||500;
 
         clearTimeout(this.timer);
-        this.timer = setTimeout(function() {
+        this.timer = PrimeFaces.queueTask(function() {
             $this.repeat(40, dir);
         }, i);
 
@@ -296,6 +297,9 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
      */
     parseValue: function(value) {
         var parsedValue;
+        if(this.cfg.prefix && value && isNaN(value) && value.indexOf(this.cfg.prefix) === 0) {
+            value = value.substring(this.cfg.prefix.length, value.length);
+        }
         if(this.cfg.precision) {
             parsedValue = parseFloat(value);
         } else {
@@ -387,6 +391,9 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
 
         if(this.input.prop('readonly'))
             this.input.attr('aria-readonly', true);
+        
+        this.upButton.attr('aria-label', PrimeFaces.getAriaLabel('spinner.INCREASE'));
+        this.downButton.attr('aria-label', PrimeFaces.getAriaLabel('spinner.DECREASE'));
     },
 
     /**

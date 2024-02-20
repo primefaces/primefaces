@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -174,7 +174,7 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
                             sb.append(timelineRenderer.encodeGroup(context, fsw, fswHtml, timeline, groupFacet, groupsContent, foundGroup, orderGroup));
                         }
                         catch (IOException e) {
-                            LOGGER.log(Level.WARNING, "Timeline with id " + id + " could not be updated, at least one CRUD operation failed", e);
+                            LOGGER.log(Level.WARNING, e, () -> "Timeline with id " + id + " could not be updated, at least one CRUD operation failed");
                         }
                         sb.append(")");
                     }
@@ -245,7 +245,7 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
             PrimeFaces.current().executeScript(sb.toString());
         }
         catch (IOException e) {
-            LOGGER.log(Level.WARNING, "Timeline with id " + id + " could not be updated, at least one CRUD operation failed", e);
+            LOGGER.log(Level.WARNING, e, () -> "Timeline with id " + id + " could not be updated, at least one CRUD operation failed");
         }
     }
 

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -43,7 +43,8 @@ public abstract class SplitterBase extends UIComponentBase implements Widget, Cl
         stateStorage,
         onResizeEnd,
         style,
-        styleClass
+        styleClass,
+        step
     }
 
     public SplitterBase() {
@@ -109,5 +110,13 @@ public abstract class SplitterBase extends UIComponentBase implements Widget, Cl
 
     public void setStyleClass(String styleClass) {
         getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+    public int getStep() {
+        return (Integer) getStateHelper().eval(PropertyKeys.step, 5);
+    }
+
+    public void setStep(int step) {
+        getStateHelper().put(PropertyKeys.step, step);
     }
 }

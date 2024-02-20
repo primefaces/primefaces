@@ -25,6 +25,7 @@ CommandButton is an extended version of standard commandButton with ajax and the
 | value | null | String | Label for the button
 | action | null | MethodExpr/String | A method expression or a String outcome that’d be processed when button is clicked.
 | actionListener | null | MethodExpr | An actionlistener that’d be processed when button is clicked.
+| ariaLabel | title | String | The aria-label attribute is used to define a string that labels the current element for accessibility.
 | immediate | false | Boolean | Boolean value that determines the phaseId, when true actions are processed at apply_request_values, when false at invoke_application  phase.
 | type | submit | String | Sets the behavior of the button.
 | ajax | true | Boolean | Specifies the submit mode, when set to true(default), submit would be made with Ajax.

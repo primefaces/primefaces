@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -97,7 +97,8 @@ public abstract class AbstractComponent extends AbstractPrimePageFragment {
         // now check for CSP events
         String id = element.getAttribute("id");
         String cspScript = String.format(CSP_SCRIPT, id, event);
-        return PrimeSelenium.executeScript(cspScript);
+        Boolean csp = PrimeSelenium.executeScript(cspScript);
+        return csp != null && csp;
     }
 
     /**

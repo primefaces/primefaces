@@ -328,7 +328,7 @@
             var totalShiftedItems = this.state.totalShiftedItems;
 
             if (prevState.numVisible !== this.state.numVisible || prevOptions.activeIndex !== this.options.activeIndex) {
-                if (this.options.activeIndex <= this.getMedianIndex()) {
+                if (this.options.activeIndex <= this.getMedianIndex() || this.thumbnailItems.length <= this.state.numVisible) {
                     totalShiftedItems = 0;
                 }
                 else if (this.thumbnailItems.length - this.state.numVisible + this.getMedianIndex() < this.options.activeIndex) {
@@ -437,7 +437,7 @@
             this.container.children().off('click.galleria-thumbnail-item keydown.galleria-thumbnail-item')
                 .on('click.galleria-thumbnail-item', this.onItemClick.bind($this))
                 .on('keydown.galleria-thumbnail-item', function (e) {
-                    if (e.which === 13) {
+                    if (e.key === 'Enter') {
                         $this.onItemClick(e);
                     }
                 });

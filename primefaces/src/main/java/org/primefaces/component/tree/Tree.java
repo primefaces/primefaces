@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,16 +23,7 @@
  */
 package org.primefaces.component.tree;
 
-import org.primefaces.PrimeFaces;
-import org.primefaces.event.*;
-import org.primefaces.model.CheckboxTreeNode;
-import org.primefaces.model.DefaultTreeNode;
-import org.primefaces.model.MatchMode;
-import org.primefaces.model.TreeNode;
-import org.primefaces.model.filter.*;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
+import java.util.*;
 
 import javax.el.MethodExpression;
 import javax.faces.FacesException;
@@ -43,7 +34,15 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
-import java.util.*;
+
+import org.primefaces.PrimeFaces;
+import org.primefaces.event.*;
+import org.primefaces.model.CheckboxTreeNode;
+import org.primefaces.model.DefaultTreeNode;
+import org.primefaces.model.TreeNode;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.MapBuilder;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -59,6 +58,7 @@ public class Tree extends TreeBase {
     public static final String CONTAINER_CLASS = "ui-tree ui-widget ui-widget-content ui-corner-all";
     public static final String CONTAINER_RTL_CLASS = "ui-tree ui-tree-rtl ui-widget ui-widget-content ui-corner-all";
     public static final String HORIZONTAL_CONTAINER_CLASS = "ui-tree ui-tree-horizontal ui-widget ui-widget-content ui-corner-all";
+    public static final String HORIZONTAL_CONTAINER_RTL_CLASS = "ui-tree ui-tree-horizontal ui-tree-rtl ui-widget ui-widget-content ui-corner-all";
     public static final String ROOT_NODES_CLASS = "ui-tree-container";
     public static final String PARENT_NODE_CLASS = "ui-treenode ui-treenode-parent";
     public static final String LEAF_NODE_CLASS = "ui-treenode ui-treenode-leaf";
@@ -75,28 +75,6 @@ public class Tree extends TreeBase {
     public static final String LEAF_ICON_CLASS = "ui-treenode-leaf-icon";
     public static final String NODE_ICON_CLASS = "ui-treenode-icon ui-icon";
     public static final String NODE_LABEL_CLASS = "ui-treenode-label ui-corner-all";
-
-    static final Map<MatchMode, FilterConstraint> FILTER_CONSTRAINTS = MapBuilder.<MatchMode, FilterConstraint>builder()
-            .put(MatchMode.STARTS_WITH, new StartsWithFilterConstraint())
-            .put(MatchMode.NOT_STARTS_WITH, new NegationFilterConstraintWrapper(new StartsWithFilterConstraint()))
-            .put(MatchMode.ENDS_WITH, new EndsWithFilterConstraint())
-            .put(MatchMode.NOT_ENDS_WITH, new NegationFilterConstraintWrapper(new EndsWithFilterConstraint()))
-            .put(MatchMode.CONTAINS, new ContainsFilterConstraint())
-            .put(MatchMode.NOT_CONTAINS, new NegationFilterConstraintWrapper(new ContainsFilterConstraint()))
-            .put(MatchMode.EXACT, new ExactFilterConstraint())
-            .put(MatchMode.NOT_EXACT, new NegationFilterConstraintWrapper(new ExactFilterConstraint()))
-            .put(MatchMode.LESS_THAN, new LessThanFilterConstraint())
-            .put(MatchMode.LESS_THAN_EQUALS, new LessThanEqualsFilterConstraint())
-            .put(MatchMode.GREATER_THAN, new GreaterThanFilterConstraint())
-            .put(MatchMode.GREATER_THAN_EQUALS, new GreaterThanEqualsFilterConstraint())
-            .put(MatchMode.EQUALS, new EqualsFilterConstraint())
-            .put(MatchMode.NOT_EQUALS, new NegationFilterConstraintWrapper(new EqualsFilterConstraint()))
-            .put(MatchMode.IN, new InFilterConstraint())
-            .put(MatchMode.NOT_IN, new NegationFilterConstraintWrapper(new InFilterConstraint()))
-            .put(MatchMode.GLOBAL, new GlobalFilterConstraint())
-            .put(MatchMode.BETWEEN, new BetweenFilterConstraint())
-            .put(MatchMode.NOT_BETWEEN, new NegationFilterConstraintWrapper(new BetweenFilterConstraint()))
-            .build();
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("select", NodeSelectEvent.class)

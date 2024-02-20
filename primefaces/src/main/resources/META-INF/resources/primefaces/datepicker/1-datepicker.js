@@ -69,6 +69,9 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         // auto detect touch interface for mobile
         this.cfg.autoDetectDisplay = (this.cfg.autoDetectDisplay === undefined) ? true : this.cfg.autoDetectDisplay;
         this.cfg.responsiveBreakpoint = this.cfg.responsiveBreakpoint || 576;
+        
+        // default date should be input value before widget value
+        this.cfg.defaultDate = this.input.val() || this.cfg.defaultDate;
 
         //i18n and l7n
         this.configureLocale();
@@ -161,7 +164,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         //extensions
         if(!this.cfg.inline && this.cfg.showIcon) {
             this.triggerButton = this.jqEl.siblings('.ui-datepicker-trigger:button');
-            this.triggerButton.attr('aria-label',PrimeFaces.getAriaLabel('calendar.BUTTON')).attr('aria-haspopup', true);
+            this.triggerButton.attr('aria-label',PrimeFaces.getLocaleLabel('chooseDate')).attr('aria-haspopup', true);
 
             var title = this.jqEl.attr('title');
             if(title) {
@@ -224,16 +227,15 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
 
         if(localeSettings) {
             var locale = {};
+            for(var setting in localeSettings) {
+                locale[setting] = localeSettings[setting];
+            }
             if (this.cfg.localeAm) {
                 locale["am"] = this.cfg.localeAm;
             }
             if (this.cfg.localePm) {
                 locale["pm"] = this.cfg.localePm;
             }
-            for(var setting in localeSettings) {
-                locale[setting] = localeSettings[setting];
-            }
-
             this.cfg.userLocale = locale;
         }
     },
@@ -258,7 +260,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
                 onBeforePaste: function (pastedValue, opts) {
                     // GitHub #8319 issue with pasting mask
                     // TODO: Remove if InputMask 5.0.8+ fixes the issue
-                    setTimeout(function(){ $this.input.trigger("input")}, 20);
+                    PrimeFaces.queueTask(function(){ $this.input.trigger("input")}, 20);
                     return pastedValue;
                 }
             };
@@ -271,7 +273,6 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
                 maskCfg.mask = this.cfg.mask;
             }
             this.input.inputmask('remove').inputmask(maskCfg);
-            this.input.off("blur.inputmask"); // GitHub #9259
         }
     },
 
@@ -289,7 +290,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
             if ($this.cfg.inline) {
                 $this.panel.css('position', '');
             }
-            this.options.appendTo = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector($this.cfg.appendTo);
+            this.options.appendTo = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector($this.jq, $this.cfg.appendTo);
         };
     },
 
@@ -316,7 +317,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
                     });
                 }
 
-                setTimeout(function() {
+                PrimeFaces.queueTask(function() {
                     $this.refocusInput = false;
                 }, 10);
             }
@@ -384,11 +385,15 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
                         var dateMetadata = JSON.parse(content).dateMetadata;
                         var pdp = $this.jq.data().primeDatePicker;
                         var disabledDates = [];
+                        var enabledDates = [];
                         var dateStyleClasses = {};
                         for (date in dateMetadata) {
                             var parsedDate = pdp.parseOptionValue(date);
                             if (dateMetadata[date].disabled) {
                                 disabledDates.push(parsedDate);
+                            }
+                            if (dateMetadata[date].enabled) {
+                                enabledDates.push(parsedDate);
                             }
                             if (dateMetadata[date].styleClass) {
                                 dateStyleClasses[pdp.toISODateString(parsedDate)] = dateMetadata[date].styleClass;
@@ -396,6 +401,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
                         }
                         pdp.options.dateStyleClasses = dateStyleClasses;
                         $this.setDisabledDates(disabledDates);
+                        $this.setEnabledDates(enabledDates);
                     }
                 });
                 return true;
@@ -462,6 +468,14 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
+     * Checks whether a date is selected.
+     * @returns {boolean} true if a date is selected.
+     */
+    hasDate: function() {
+        return (this.getDate() instanceof Date);
+    },
+
+    /**
      * Sets the displayed visible calendar date. This refers to the currently displayed month page.
      * @param {string | Date | Date[]} date The date to be shown in the calendar.
      */
@@ -488,6 +502,24 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         if (pdp.options.disabledDates) {
             for (var i = 0; i < pdp.options.disabledDates.length; i++) {
                 pdp.options.disabledDates[i] = pdp.parseOptionValue(pdp.options.disabledDates[i]);
+            }
+        }
+        this.updatePanel();
+    },
+
+    /**
+     * Sets the enabled dates.
+     * @param {string[] | Date[]} enabledDates The dates to enable.
+     */
+    setEnabledDates: function(enabledDates) {
+        var pdp = this.jq.data().primeDatePicker;
+
+        if (enabledDates != null && enabledDates.length > 0) {
+            pdp.options.enabledDates = enabledDates;
+            if (pdp.options.enabledDates) {
+                for (var i = 0; i < pdp.options.enabledDates.length; i++) {
+                    pdp.options.enabledDates[i] = pdp.parseOptionValue(pdp.options.enabledDates[i]);
+                }
             }
         }
         this.updatePanel();

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,11 @@
  */
 package org.primefaces.util;
 
-import javax.faces.component.*;
+import javax.faces.component.ContextCallback;
+import javax.faces.component.NamingContainer;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIForm;
+import javax.faces.component.UniqueIdVendor;
 import javax.faces.context.FacesContext;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -60,7 +64,7 @@ public class ComponentTraversalUtils {
         T result = null;
 
         Iterator<UIComponent> kids = base.getFacetsAndChildren();
-        while (kids.hasNext() && (result == null)) {
+        while (kids.hasNext()) {
             UIComponent kid = kids.next();
             if (type.isAssignableFrom(kid.getClass())) {
                 result = (T) kid;
@@ -126,7 +130,7 @@ public class ComponentTraversalUtils {
         UIComponent result = null;
 
         Iterator<UIComponent> kids = base.getFacetsAndChildren();
-        while (kids.hasNext() && (result == null)) {
+        while (kids.hasNext()) {
             UIComponent kid = kids.next();
             if (id.equals(kid.getId())) {
                 result = kid;
@@ -170,7 +174,15 @@ public class ComponentTraversalUtils {
         }
     }
 
+    /**
+     * @deprecated use closestForm(UIComponent component)
+     */
+    @Deprecated
     public static UIForm closestForm(FacesContext context, UIComponent component) {
+        return closest(UIForm.class, component);
+    }
+
+    public static UIForm closestForm(UIComponent component) {
         return closest(UIForm.class, component);
     }
 
@@ -180,5 +192,20 @@ public class ComponentTraversalUtils {
 
     public static UIComponent closestNamingContainer(UIComponent component) {
         return (UIComponent) closest(NamingContainer.class, component);
+    }
+
+    public static <T> T firstChildRendered(Class<T> childType, UIComponent base) {
+        if (base == null || !base.isRendered()) {
+            return null;
+        }
+
+        for (int i = 0; i < base.getChildCount(); i++) {
+            UIComponent child = base.getChildren().get(i);
+            if (childType.isInstance(child) && child.isRendered() ) {
+                return (T) child;
+            }
+        }
+
+        return null;
     }
 }

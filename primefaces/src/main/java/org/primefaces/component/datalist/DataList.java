@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,6 +30,7 @@ import org.primefaces.event.data.PageEvent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.MapBuilder;
 
 import javax.faces.FacesException;
@@ -197,7 +198,7 @@ public class DataList extends DataListBase {
                 }
             }
 
-            if (definition && ComponentUtils.shouldRenderFacet(descriptionFacet)) {
+            if (definition && FacetUtils.shouldRenderFacet(descriptionFacet)) {
                 process(context, descriptionFacet, phaseId);
             }
         });

@@ -63,10 +63,7 @@ PrimeFaces.widget.Fieldset = PrimeFaces.widget.BaseWidget.extend({
                 $this.legend.toggleClass('ui-state-focus');
             })
             .on('keydown', function(e) {
-                var key = e.which,
-                keyCode = $.ui.keyCode;
-
-                if((key === keyCode.ENTER)) {
+                if(e.key === 'Enter') {
                     $this.toggle(e);
                     e.preventDefault();
                 }
@@ -135,6 +132,7 @@ PrimeFaces.widget.Fieldset = PrimeFaces.widget.BaseWidget.extend({
             source: this.id,
             process: this.id,
             update: this.id,
+            ignoreAutoUpdate: true,
             params: [
                 {name: this.id + '_contentLoad', value: true}
             ],

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
@@ -48,13 +47,12 @@ public class BlockUIRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("BlockUI", blockUI);
 
-        wb.attr("block", SearchExpressionFacade.resolveClientIds(context, blockUI, blockUI.getBlock(),
-                SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE));
-        wb.attr("triggers", SearchExpressionFacade.resolveClientIds(context, blockUI, blockUI.getTrigger(),
-                SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null);
-        wb.attr("blocked", blockUI.isBlocked(), false);
-        wb.attr("animate", blockUI.isAnimate(), true);
-        wb.attr("styleClass", blockUI.getStyleClass(), null);
+        wb.attr("block", SearchExpressionUtils.resolveClientIdsForClientSide(context, blockUI, blockUI.getBlock()))
+            .attr("triggers", SearchExpressionUtils.resolveClientIdsForClientSide(context, blockUI, blockUI.getTrigger()))
+            .attr("blocked", blockUI.isBlocked(), false)
+            .attr("animate", blockUI.isAnimate(), true)
+            .attr("styleClass", blockUI.getStyleClass(), null)
+            .attr("delay", blockUI.getDelay(), 0);
 
         wb.finish();
     }

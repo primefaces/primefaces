@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,6 +30,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
+import org.primefaces.component.api.UIChart;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.model.charts.ChartData;
 import org.primefaces.model.charts.ChartDataSet;
@@ -44,8 +45,15 @@ import org.primefaces.model.charts.optionconfig.legend.Legend;
 import org.primefaces.model.charts.optionconfig.title.Title;
 import org.primefaces.model.charts.optionconfig.tooltip.Tooltip;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ChartUtils;
 import org.primefaces.util.EscapeUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 
+/**
+ * @deprecated please use new p:chart component
+ */
+@Deprecated(since = "14.0.0", forRemoval = true)
 public class ChartRenderer extends CoreRenderer {
 
     @Override
@@ -53,8 +61,11 @@ public class ChartRenderer extends CoreRenderer {
         super.decodeBehaviors(context, component);
     }
 
-    protected void encodeMarkup(FacesContext context, String clientId, String style, String styleClass) throws IOException {
+    protected void encodeMarkup(FacesContext context, UIChart chart) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String clientId = chart.getClientId(context);
+        String style = chart.getStyle();
+        String styleClass = chart.getStyleClass();
         styleClass = (styleClass != null) ? "ui-chart " + styleClass : "ui-chart";
 
         writer.startElement("div", null);
@@ -63,6 +74,18 @@ public class ChartRenderer extends CoreRenderer {
 
         writer.startElement("canvas", null);
         writer.writeAttribute("id", clientId + "_canvas", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, "img", null);
+        String ariaLabel = chart.getAriaLabel();
+        if (LangUtils.isBlank(ariaLabel)) {
+            ChartOptions options = (ChartOptions) chart.getModel().getOptions();
+            if (options != null) {
+                Title title = options.getTitle();
+                if (title != null) {
+                    ariaLabel = String.valueOf(title.getText());
+                }
+            }
+        }
+        writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
         if (style != null) writer.writeAttribute("style", style, "style");
         writer.endElement("canvas");
 
@@ -129,7 +152,7 @@ public class ChartRenderer extends CoreRenderer {
 
         if (isList) {
             ResponseWriter writer = context.getResponseWriter();
-            List labelList = (List) labels;
+            List<?> labelList = (List<?>) labels;
 
             writer.write("[");
             for (int i = 0; i < labelList.size(); i++) {
@@ -249,6 +272,18 @@ public class ChartRenderer extends CoreRenderer {
         }
     }
 
+    protected void encodeResponsive(FacesContext context, ChartOptions options, boolean hasComma) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        if (hasComma) {
+            writer.write(",");
+        }
+
+        ChartUtils.writeDataValue(writer, "responsive", options.isResponsive(), false);
+        ChartUtils.writeDataValue(writer, "maintainAspectRatio", options.isMaintainAspectRatio(), true);
+        ChartUtils.writeDataValue(writer, "aspectRatio", options.getAspectRatio(), true);
+    }
+
     protected void encodePlugins(FacesContext context, ChartOptions options, boolean hasComma) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
@@ -258,16 +293,18 @@ public class ChartRenderer extends CoreRenderer {
 
         writer.write("\"plugins\":{");
         Title title = options.getTitle();
+        Title subtitle = options.getSubtitle();
         Tooltip tooltip = options.getTooltip();
         Legend legend = options.getLegend();
 
-        encodeTitle(context, title, false);
-        encodeTooltip(context, tooltip, title != null);
-        encodeLegend(context, legend, title != null || tooltip != null);
+        encodeTitle(context, title, "title", false);
+        encodeTitle(context, subtitle, "subtitle", title != null);
+        encodeTooltip(context, tooltip, title != null || subtitle != null);
+        encodeLegend(context, legend, title != null || subtitle != null || tooltip != null);
         writer.write("}");
     }
 
-    protected void encodeTitle(FacesContext context, Title title, boolean hasComma) throws IOException {
+    protected void encodeTitle(FacesContext context, Title title, String element, boolean hasComma) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         if (title != null) {
@@ -275,7 +312,7 @@ public class ChartRenderer extends CoreRenderer {
                 writer.write(",");
             }
 
-            writer.write("\"title\":{");
+            writer.write(String.format("\"%s\":{", element));
             writer.write(title.encode());
             writer.write("}");
         }

@@ -429,10 +429,11 @@ declare namespace PrimeFaces {
     }
 
     /**
-     * A faces message with a short summary message and a more detailed message. Used by the client-side validation
-     * framework.
+     * A 'FacesMessage' with a short summary message and a more detailed message, as well as a severity level that
+     * indicates the type of this message. Used by the client-side validation framework and some widgets such as the
+     * growl widget.
      */
-    export interface FacesMessageBase {
+    export interface FacesMessage {
         /**
          * A short summary of the message.
          */
@@ -442,14 +443,7 @@ declare namespace PrimeFaces {
          * In-depth details of the message.
          */
         detail: string;
-    }
 
-    /**
-     * A faces message with a short summary message and a more detailed message, as well as a severity level that
-     * indicates the type of this message. Used by the client-side validation framework and some widgets such as the
-     * growl widget.
-     */
-    export interface FacesMessage extends FacesMessageBase {
         /**
          * The severity of this message, i.e. whether it is an information message, a warning message, or an error
          * message.
@@ -460,6 +454,11 @@ declare namespace PrimeFaces {
          * The severity in I18N human readable text for ARIA screen readers.
          */
         severityText?: string;
+
+        /**
+         * If the message was successfully rendered by a message/growl component.
+         */
+        rendered: boolean;
     }
 
     /*
@@ -1104,6 +1103,28 @@ declare namespace PrimeFaces.ajax {
 declare namespace PrimeFaces.validation {
 
     /**
+     * The validation result.
+     */
+    export interface ValidationResult {
+
+        /**
+         * A map between the client ID of an element and a list of faces message for that element.
+         * @type {Record<string, PrimeFaces.FacesMessage[]>}
+         */
+        messages: Record<string, PrimeFaces.FacesMessage[]>,
+
+        /**
+         * If the result is valid / if it has any validation errors.
+         */
+        valid: boolean;
+
+        /**
+         * If the result has any unrendered message.
+         */
+        hasUnrenderedMessage: boolean;
+    }
+
+    /**
      * When an element is invalid due to a validation error, the user needs to be informed. A highlight handler is
      * responsible for changing the visual state of an element so that the user notices the invalid element. A highlight
      * handler is usually registered for a particular type of element or widget.
@@ -1126,7 +1147,7 @@ declare namespace PrimeFaces.validation {
 
     /**
       * The options that can be passed to the Validation method. Note that you do not have to provide a value
-      * for all these property. Most methods methods such as `PrimeFaces.vb` have got sensible defaults in case you
+      * for all these property. Most methods such as `PrimeFaces.vb` have got sensible defaults in case you
       * do not.
       */
     export interface Configuration {

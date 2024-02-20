@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,11 +38,7 @@ public class LineChartRenderer extends ChartRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         LineChart chart = (LineChart) component;
-        String clientId = chart.getClientId(context);
-        String style = chart.getStyle();
-        String styleClass = chart.getStyleClass();
-
-        encodeMarkup(context, clientId, style, styleClass);
+        encodeMarkup(context, chart);
         encodeScript(context, chart);
     }
 
@@ -67,7 +63,8 @@ public class LineChartRenderer extends ChartRenderer {
         LineChartOptions lineOptions = (LineChartOptions) options;
 
         writer.write(",\"options\":{");
-        writer.write("\"showLine\":" + lineOptions.isShowLines());
+        encodeResponsive(context, lineOptions, false);
+        writer.write(",\"showLine\":" + lineOptions.isShowLines());
         writer.write(",\"spanGaps\":" + lineOptions.isSpanGaps());
 
         encodeScales(context, type, lineOptions.getScales(), true);

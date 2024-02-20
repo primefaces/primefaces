@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,11 +23,13 @@
  */
 package org.primefaces.integrationtests.selectonemenu;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 import java.util.List;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -39,21 +41,22 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.SelectOneMenu;
 
-public class SelectOneMenu012Test extends AbstractPrimePageTest {
+class SelectOneMenu012Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("SelectOneMenu: GitHub #8765 menu is generating duplicate IDs")
-    public void testBasic(Page page) {
-        // Arrange
-        SelectOneMenu menu = page.selectOneMenu;
+    void basic(Page page) {
+        assertDoesNotThrow(() -> {
+            // Arrange
+            SelectOneMenu menu = page.selectOneMenu;
 
-        // Act (do nothing)
-        menu.show();
+            // Act (do nothing)
+            menu.show();
 
-        // Assert (when fixed there should no longer be JS error)
-        assertJavascriptErrors();
-        // assertNoJavascriptErrors(); uncomment when fixed
+            // Assert (when fixed there should no longer be JS errors about duplicate ids)
+            assertNoJavascriptErrors();
+        });
     }
 
    /**
@@ -68,7 +71,7 @@ public class SelectOneMenu012Test extends AbstractPrimePageTest {
         List<LogEntry> severe = logEntries.getAll().stream()
                     .filter(l -> l.getLevel() == Level.SEVERE)
                     .collect(Collectors.toList());
-        Assertions.assertFalse(severe.isEmpty(), "No Javascript errors were found but they were expected. Was bug #8765 fixed???.\r\n" + severe.toString());
+        assertFalse(severe.isEmpty(), "No Javascript errors were found but they were expected. Was bug #8765 fixed???.\r\n" + severe.toString());
     }
 
     public static class Page extends AbstractPrimePage {

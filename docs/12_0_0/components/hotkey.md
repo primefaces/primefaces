@@ -138,4 +138,4 @@ Following form can be submitted with the `ctrl+shift+s` combination.
 </h:form>
 ```
 
-Note that hotkey will not be triggered if there is a focused input on page.
+> :warning: Hotkey will not be triggered if there is a focused input on page.

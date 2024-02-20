@@ -15,7 +15,7 @@
             <p:messages id="msgs" showDetail="true"/>
 
             <p:dataTable id="datatable" widgetVar="wgtTable" value="#{dataTable007.progLanguages}" var="lang" editable="true"
-                         filteredValue="#{dataTable007.filteredProgLanguages}">
+                         editMode="row" filteredValue="#{dataTable007.filteredProgLanguages}">
                 <p:ajax event="rowEdit" listener="#{dataTable007.onRowEdit}" update="form:msgs"/>
                 <p:ajax event="rowEditCancel" listener="#{dataTable007.onRowCancel}" update="form:msgs"/>
 

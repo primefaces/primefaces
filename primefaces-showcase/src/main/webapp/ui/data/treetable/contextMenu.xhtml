@@ -37,7 +37,7 @@
 
                 <p:contextMenu for="docs">
                     <p:menuitem value="View" update="documentPanel" icon="pi pi-search"
-                                oncomplete="PF('documentDialog').show()"/>
+                                oncomplete="PF('documentDialog').show()" actionListener="#{ttContextMenuView.viewNode}"/>/>
                     <p:menuitem value="Delete" action="#{ttContextMenuView.deleteNode}" update="docs"
                                 icon="pi pi-times"/>
                 </p:contextMenu>

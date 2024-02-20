@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,18 +23,23 @@
  */
 package org.primefaces.context;
 
-import org.primefaces.cache.CacheProvider;
-import org.primefaces.cache.DefaultCacheProvider;
-import org.primefaces.component.fileupload.FileUploadDecoder;
-import org.primefaces.config.PrimeConfiguration;
-import org.primefaces.config.PrimeEnvironment;
-import org.primefaces.util.Constants;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.Lazy;
-import org.primefaces.virusscan.VirusScannerService;
-import org.primefaces.webapp.FileUploadChunksServlet;
-
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.spi.FileTypeDetector;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.ServiceLoader;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
@@ -42,18 +47,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.spi.FileTypeDetector;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
+
+import org.primefaces.cache.CacheProvider;
+import org.primefaces.cache.DefaultCacheProvider;
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.datatable.export.*;
+import org.primefaces.component.export.Exporter;
+import org.primefaces.component.fileupload.FileUploadDecoder;
+import org.primefaces.component.treetable.TreeTable;
+import org.primefaces.component.treetable.export.*;
+import org.primefaces.config.PrimeConfiguration;
+import org.primefaces.config.PrimeEnvironment;
+import org.primefaces.metadata.transformer.MetadataTransformer;
+import org.primefaces.util.*;
+import org.primefaces.validate.bean.ClientValidationConstraint;
+import org.primefaces.virusscan.VirusScannerService;
+import org.primefaces.webapp.FileUploadChunksServlet;
 
 /**
  * A {@link PrimeApplicationContext} is a contextual store for the current application.
@@ -74,6 +83,9 @@ public class PrimeApplicationContext {
     private final ClassLoader applicationClassLoader;
     private final Map<Class<?>, Map<String, Object>> enumCacheMap;
     private final Map<Class<?>, Map<String, Object>> constantsCacheMap;
+    private final Map<Class<? extends UIComponent>, Map<String, Class<? extends Exporter<?>>>> exporters;
+    private final Map<String, ClientValidationConstraint> beanValidationClientConstraintMapping;
+    private final List<MetadataTransformer> metadataTransformers;
 
     private final Lazy<ValidatorFactory> validatorFactory;
     private final Lazy<Validator> validator;
@@ -82,6 +94,7 @@ public class PrimeApplicationContext {
     private FileTypeDetector fileTypeDetector;
     private FileUploadDecoder fileUploadDecoder;
     private String fileUploadResumeUrl;
+    private PropertyDescriptorResolver propertyDescriptorResolver;
 
     public PrimeApplicationContext(FacesContext facesContext) {
         environment = new PrimeEnvironment(facesContext);
@@ -89,6 +102,9 @@ public class PrimeApplicationContext {
 
         enumCacheMap = new ConcurrentHashMap<>();
         constantsCacheMap = new ConcurrentHashMap<>();
+        exporters = new ConcurrentHashMap<>();
+        beanValidationClientConstraintMapping = new ConcurrentHashMap<>();
+        metadataTransformers = new CopyOnWriteArrayList<>();
 
         ClassLoader classLoader = null;
         Object context = facesContext.getExternalContext().getContext();
@@ -97,14 +113,11 @@ public class PrimeApplicationContext {
                 // Reflectively call getClassLoader() on the context in order to be compatible with both the Portlet 3.0
                 // API and the Servlet API without depending on the Portlet API directly.
                 Method getClassLoaderMethod = context.getClass().getMethod("getClassLoader");
-
-                if (getClassLoaderMethod != null) {
-                    classLoader = (ClassLoader) getClassLoaderMethod.invoke(context);
-                }
+                classLoader = (ClassLoader) getClassLoaderMethod.invoke(context);
             }
-            catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | AbstractMethodError |
-                NoSuchMethodError | UnsupportedOperationException e) {
-                // Do nothing.
+            catch (ReflectiveOperationException | AbstractMethodError
+                   | NoSuchMethodError | UnsupportedOperationException e) {
+                // NOOP
             }
             catch (Throwable t) {
                 LOGGER.log(Level.WARNING, "An unexpected Exception or Error was thrown when calling " +
@@ -144,8 +157,7 @@ public class PrimeApplicationContext {
                     Class<? extends CacheProvider> cacheProviderClazz = LangUtils.loadClassForName(cacheProviderConfigValue);
                     return cacheProviderClazz.getConstructor().newInstance();
                 }
-                catch (NoSuchMethodException | ClassNotFoundException | InstantiationException
-                        | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+                catch (ReflectiveOperationException | IllegalArgumentException ex) {
                     throw new FacesException(ex);
                 }
             }
@@ -156,16 +168,37 @@ public class PrimeApplicationContext {
         resolveFileUploadResumeUrl(facesContext);
 
         resolveFileTypeDetector();
+
+        registerDefaultExporters();
+
+        resolvePropertyDescriptorResolver();
+    }
+
+    private void registerDefaultExporters() {
+        MapBuilder.builder(exporters)
+                .put(DataTable.class, MapBuilder.<String, Class<? extends Exporter<?>>>builder()
+                        .put("xls", DataTableExcelExporter.class)
+                        .put("pdf", DataTablePDFExporter.class)
+                        .put("csv", DataTableCSVExporter.class)
+                        .put("xml", DataTableXMLExporter.class)
+                        .put("xlsx", DataTableExcelXExporter.class)
+                        .put("xlsxstream", DataTableExcelXStreamExporter.class)
+                        .build())
+                .put(TreeTable.class, MapBuilder.<String, Class<? extends Exporter<?>>>builder()
+                        .put("xls", TreeTableExcelExporter.class)
+                        .put("pdf", TreeTablePDFExporter.class)
+                        .put("csv", TreeTableCSVExporter.class)
+                        .put("xml", TreeTableXMLExporter.class)
+                        .put("xlsx", TreeTableExcelXExporter.class)
+                        .put("xlsxstream", TreeTableExcelXStreamExporter.class)
+                        .build());
     }
 
     private void resolveFileTypeDetector() {
-        ServiceLoader<FileTypeDetector> loader = ServiceLoader.load(FileTypeDetector.class, applicationClassLoader);
-
         // collect all first to avoid concurrency issues #8797
-        List<FileTypeDetector> detectors = new ArrayList<>();
-        for (FileTypeDetector detector : loader) {
-            detectors.add(detector);
-        }
+        List<FileTypeDetector> detectors = ServiceLoader.load(FileTypeDetector.class, applicationClassLoader).stream()
+                .map(ServiceLoader.Provider::get)
+                .collect(Collectors.toList());
 
         fileTypeDetector = new FileTypeDetector() {
 
@@ -185,10 +218,6 @@ public class PrimeApplicationContext {
     }
 
     private void resolveFileUploadResumeUrl(FacesContext facesContext) {
-        if (!getEnvironment().isAtLeastServlet30()) {
-            return;
-        }
-
         Object request = facesContext.getExternalContext().getRequest();
         if (request instanceof HttpServletRequest) {
             ServletContext servletContext = ((HttpServletRequest) request).getServletContext();
@@ -214,14 +243,22 @@ public class PrimeApplicationContext {
     private void resolveFileUploadDecoder() {
         String uploader = config.getUploader();
         if ("auto".equals(uploader)) {
-            uploader = environment.isAtLeastJsf22() ? "native" : "commons";
+            uploader = "native"; // default since JSF 2.2+
         }
 
         String finalUploader = uploader;
-        fileUploadDecoder = StreamSupport.stream(ServiceLoader.load(FileUploadDecoder.class, applicationClassLoader).spliterator(), false)
+        fileUploadDecoder = ServiceLoader.load(FileUploadDecoder.class, applicationClassLoader).stream()
+                .map(ServiceLoader.Provider::get)
                 .filter(d -> d.getName().equals(finalUploader))
                 .findFirst()
                 .orElseThrow(() -> new FacesException("FileUploaderDecoder '" + finalUploader + "' not found"));
+    }
+
+    private void resolvePropertyDescriptorResolver() {
+        propertyDescriptorResolver = ServiceLoader.load(PropertyDescriptorResolver.class, applicationClassLoader).stream()
+                .findFirst()
+                .map(ServiceLoader.Provider::get)
+                .orElseThrow(() -> new FacesException("No PropertyDescriptorResolver SPI service found"));
     }
 
     public static PrimeApplicationContext getCurrentInstance(FacesContext facesContext) {
@@ -293,7 +330,7 @@ public class PrimeApplicationContext {
     }
 
     public void release() {
-        if (environment != null && environment.isAtLeastBv11()) {
+        if (environment != null) {
             if (validatorFactory != null && validatorFactory.isInitialized() && validatorFactory.get() != null) {
                 validatorFactory.get().close();
             }
@@ -306,5 +343,21 @@ public class PrimeApplicationContext {
 
     public String getFileUploadResumeUrl() {
         return fileUploadResumeUrl;
+    }
+
+    public Map<Class<? extends UIComponent>, Map<String, Class<? extends Exporter<?>>>> getExporters() {
+        return exporters;
+    }
+
+    public Map<String, ClientValidationConstraint> getBeanValidationClientConstraintMapping() {
+        return beanValidationClientConstraintMapping;
+    }
+
+    public List<MetadataTransformer> getMetadataTransformers() {
+        return metadataTransformers;
+    }
+
+    public PropertyDescriptorResolver getPropertyDescriptorResolver() {
+        return propertyDescriptorResolver;
     }
 }

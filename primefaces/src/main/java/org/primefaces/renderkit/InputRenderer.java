@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,7 +39,6 @@ import org.primefaces.util.*;
 
 public abstract class InputRenderer extends CoreRenderer {
 
-    public static final String ARIA_FILTER = "primefaces.input.aria.filter";
     private static final String SB_STYLECLASS = InputRenderer.class.getName() + "#createStyleClass";
 
     @Override

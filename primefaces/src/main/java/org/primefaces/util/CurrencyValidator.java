@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,8 @@
 package org.primefaces.util;
 
 import java.text.DecimalFormat;
+import java.math.BigDecimal;
+import java.util.Locale;
 
 /**
  * <p>
@@ -56,6 +58,66 @@ public class CurrencyValidator extends BigDecimalValidator {
     public static CurrencyValidator getInstance() {
         return VALIDATOR;
     }
+
+    /**
+     * <p>
+     * Validate/convert a <code>BigDecimal</code> using the specified <code>Locale</code>.
+     *
+     * @param value The value validation is being performed on.
+     * @param locale The locale to use for the number format, system default if null.
+     * @return The parsed <code>BigDecimal</code> if valid or <code>null</code> if invalid.
+     */
+    public BigDecimal validate(String value, Locale locale) {
+        return (BigDecimal) parse(value, locale);
+    }
+
+    /**
+     * <p>
+     * Returns a <code>String</code> representing the Excel pattern for this currency.
+     * </p>
+     *
+     * @param locale The locale a <code>NumberFormat</code> is required for, system default if null.
+     * @return The <code>String</code> pattern for using in Excel format.
+     */
+    public String getExcelPattern(Locale locale) {
+        DecimalFormat format = (DecimalFormat) DecimalFormat.getCurrencyInstance(locale);
+        String pattern = format.toLocalizedPattern();
+        pattern =  pattern.replace(CURRENCY_SYMBOL_STR, "\"" + format.getDecimalFormatSymbols().getCurrencySymbol() + "\"");
+        String[] patterns = pattern.split(";");
+        return patterns[0];
+    }
+
+    /**
+     * <p>
+     * Parse the value using the specified pattern.
+     * </p>
+     *
+     * @param value The value validation is being performed on.
+     * @param locale The locale to use for the date format, system default if null.
+     * @return The parsed value if valid or <code>null</code> if invalid.
+     */
+    protected Object parse(String value, Locale locale) {
+        value = (value == null ? null : value.trim());
+        if (value == null || value.isEmpty()) {
+            return null;
+        }
+        DecimalFormat formatter = getFormat(locale);
+        return parse(value, formatter);
+
+    }
+
+    /**
+     * <p>
+     * Returns a <code>NumberFormat</code> for the specified Locale.
+     * </p>
+     *
+     * @param locale The locale a <code>NumberFormat</code> is required for, system default if null.
+     * @return The <code>NumberFormat</code> to created.
+     */
+    public DecimalFormat getFormat(Locale locale) {
+        return (DecimalFormat) DecimalFormat.getCurrencyInstance(locale);
+    }
+
 
     /**
      * <p>

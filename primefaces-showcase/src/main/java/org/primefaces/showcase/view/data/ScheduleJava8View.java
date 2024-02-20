@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -85,7 +85,7 @@ public class ScheduleJava8View implements Serializable {
     private String timeFormat;
     private String slotDuration = "00:30:00";
     private String slotLabelInterval;
-    private String slotLabelFormat;
+    private String slotLabelFormat = "HH:mm";
     private String scrollTime = "06:00:00";
     private String minTime = "04:00:00";
     private String maxTime = "20:00:00";

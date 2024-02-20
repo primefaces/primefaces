@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,7 +28,6 @@ import javax.faces.component.UIColumn;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.menu.MenuColumn;
 
-
 public abstract class ColumnBase extends UIColumn implements org.primefaces.component.api.UIColumn, MenuColumn {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
@@ -50,13 +49,14 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
         exportColspan,
         exportRowspan,
         exportable,
+        exportTag,
         field,
         filterBy,
         filterFunction,
         filterMatchMode,
         filterMaxLength,
-        filterOptions,
         filterPosition,
+        filterPlaceholder,
         filterStyle,
         filterStyleClass,
         filterValue,
@@ -69,7 +69,7 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
         responsivePriority,
         rowspan,
         selectRow,
-        selectionMode,
+        selectionBox,
         sortBy,
         sortFunction,
         sortOrder,
@@ -156,17 +156,8 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
     }
 
     @Override
-    public Object getFilterOptions() {
-        return getStateHelper().eval(PropertyKeys.filterOptions, null);
-    }
-
-    public void setFilterOptions(Object filterOptions) {
-        getStateHelper().put(PropertyKeys.filterOptions, filterOptions);
-    }
-
-    @Override
     public String getFilterMatchMode() {
-        return (String) getStateHelper().eval(PropertyKeys.filterMatchMode, "startsWith");
+        return (String) getStateHelper().eval(PropertyKeys.filterMatchMode, DEFAULT_FILTER_MATCH_MODE.operator());
     }
 
     public void setFilterMatchMode(String filterMatchMode) {
@@ -176,6 +167,15 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
     @Override
     public String getFilterPosition() {
         return (String) getStateHelper().eval(PropertyKeys.filterPosition, "bottom");
+    }
+
+    @Override
+    public String getFilterPlaceholder() {
+        return (String) getStateHelper().eval(PropertyKeys.filterPlaceholder, null);
+    }
+
+    public void setFilterPlaceholder(String filterPlaceholder) {
+        getStateHelper().put(PropertyKeys.filterPlaceholder, filterPlaceholder);
     }
 
     public void setFilterPosition(String filterPosition) {
@@ -200,6 +200,7 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
         getStateHelper().put(PropertyKeys.colspan, colspan);
     }
 
+    @Override
     public Object getConverter() {
         return getStateHelper().eval(PropertyKeys.converter, null);
     }
@@ -227,12 +228,12 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
     }
 
     @Override
-    public String getSelectionMode() {
-        return (String) getStateHelper().eval(PropertyKeys.selectionMode, null);
+    public boolean isSelectionBox() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.selectionBox, false);
     }
 
-    public void setSelectionMode(String selectionMode) {
-        getStateHelper().put(PropertyKeys.selectionMode, selectionMode);
+    public void setSelectionBox(boolean selectionBox) {
+        getStateHelper().put(PropertyKeys.selectionBox, selectionBox);
     }
 
     @Override
@@ -389,11 +390,11 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
     }
 
     @Override
-    public String getExportValue() {
-        return (String) getStateHelper().eval(PropertyKeys.exportValue, null);
+    public Object getExportValue() {
+        return getStateHelper().eval(PropertyKeys.exportValue, null);
     }
 
-    public void setExportValue(String exportValue) {
+    public void setExportValue(Object exportValue) {
         getStateHelper().put(PropertyKeys.exportValue, exportValue);
     }
 
@@ -416,20 +417,20 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
     }
 
     @Override
-    public String getExportHeaderValue() {
-        return (String) getStateHelper().eval(PropertyKeys.exportHeaderValue, null);
+    public Object getExportHeaderValue() {
+        return getStateHelper().eval(PropertyKeys.exportHeaderValue, null);
     }
 
-    public void setExportHeaderValue(String exportHeaderValue) {
+    public void setExportHeaderValue(Object exportHeaderValue) {
         getStateHelper().put(PropertyKeys.exportHeaderValue, exportHeaderValue);
     }
 
     @Override
-    public String getExportFooterValue() {
-        return (String) getStateHelper().eval(PropertyKeys.exportFooterValue, null);
+    public Object getExportFooterValue() {
+        return getStateHelper().eval(PropertyKeys.exportFooterValue, null);
     }
 
-    public void setExportFooterValue(String exportFooterValue) {
+    public void setExportFooterValue(Object exportFooterValue) {
         getStateHelper().put(PropertyKeys.exportFooterValue, exportFooterValue);
     }
 
@@ -485,5 +486,14 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
 
     public void setTitle(String title) {
         getStateHelper().put(PropertyKeys.title, title);
+    }
+
+    @Override
+    public String getExportTag() {
+        return (String) getStateHelper().eval(PropertyKeys.exportTag, null);
+    }
+
+    public void setExportTag(String exportTag) {
+        getStateHelper().put(PropertyKeys.exportTag, exportTag);
     }
 }

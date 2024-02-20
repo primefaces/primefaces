@@ -6,7 +6,7 @@
  * @typedef {"load" | "visible"} PrimeFaces.widget.OutputPanel.DeferredMode Mode that indicates how the content of an
  * output panel is loaded:
  * - `load`: Loads the content directly after the page was loaded.
- * - `visible`: Loads the panel once it is visible, e.g. once the user scrolled down.
+ * - `visible`: Loads the panel once it is visible, e.g., once the user scrolled down.
  * 
  * @interface {PrimeFaces.widget.OutputPanelCfg} cfg The configuration for the {@link  OutputPanel| OutputPanel widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this

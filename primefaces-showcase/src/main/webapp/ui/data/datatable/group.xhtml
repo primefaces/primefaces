@@ -109,9 +109,7 @@
                             <p:column colspan="#{dtGroupView.yearCount}" headerText="Goals"/>
                         </p:row>
                         <p:row>
-                            <ui:repeat value="#{dtGroupView.years}" var="year">
-                                <p:column headerText="#{year}"/>
-                            </ui:repeat>
+                            <p:columns var="year" value="#{dtGroupView.years}" sortBy="#{player.getGoals(year)}" filterBy="#{player.getGoals(year)}" headerText="#{year}"/>
                         </p:row>
                     </p:columnGroup>
 

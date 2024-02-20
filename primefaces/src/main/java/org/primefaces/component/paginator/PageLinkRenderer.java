@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,11 +29,10 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.api.Pageable;
-import org.primefaces.util.HTML;
 
 public class PageLinkRenderer {
 
-    public void render(FacesContext context, Pageable pageable, String linkClass, String iconClass, boolean disabled, String ariaLabel) throws IOException {
+    public void render(FacesContext context, Pageable pageable, String linkClass, String iconClass, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = disabled ? linkClass + " ui-state-disabled" : linkClass;
         int textIndex = iconClass.indexOf("seek-");
@@ -43,7 +42,6 @@ public class PageLinkRenderer {
         writer.startElement("a", null);
         writer.writeAttribute("href", "#", null);
         writer.writeAttribute("class", styleClass, null);
-        writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
         writer.writeAttribute("tabindex", tabindex, null);
 
         writer.startElement("span", null);

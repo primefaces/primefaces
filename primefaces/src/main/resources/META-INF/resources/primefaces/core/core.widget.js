@@ -214,7 +214,7 @@ if (!PrimeFaces.widget) {
      * @param {BaseWidget} PrimeFaces.widget.PostRefreshCallback.widget The widget that was refreshed.
      * 
      * @typedef PrimeFaces.widget.PreDestroyCallback An optional callback that is invoked before a widget is about to be
-     * destroyed, e.g. when the component was removed at the end of an AJAX update. This is called at the beginning
+     * destroyed, e.g., when the component was removed at the end of an AJAX update. This is called at the beginning
      * of the {@link BaseWidget.destroy | destroy} method. This is usually specified via the `widgetPreDestroy`
      * attribute on the JSF component.
      * @this {BaseWidget} PrimeFaces.widget.PreDestroyCallback
@@ -276,7 +276,7 @@ if (!PrimeFaces.widget) {
      * this widget was refreshed after an AJAX update, at the end of the {@link BaseWidget.refresh | refresh} method.
      * This is usually specified via the `widgetPostRefresh` attribute on the JSF component.
      * @prop {PrimeFaces.widget.PreDestroyCallback} cfg.preDestroy An optional callback that is invoked before
-     * this widget is about to be destroyed, e.g. when the component was removed at the end of an AJAX update. This is
+     * this widget is about to be destroyed, e.g., when the component was removed at the end of an AJAX update. This is
      * called at the beginning of the {@link BaseWidget.destroy | destroy} method. This is usually specified via the
      * `widgetPreDestroy` attribute on the JSF component.
      * @prop {string} cfg.widgetVar The name of the widget variables of this widget. The widget variable can be used to

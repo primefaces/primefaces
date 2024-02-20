@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +25,6 @@ package org.primefaces.component.menubutton;
 
 import java.io.IOException;
 import java.util.List;
-
 import javax.faces.FacesException;
 import javax.faces.component.UIForm;
 import javax.faces.context.FacesContext;
@@ -34,7 +33,6 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.tieredmenu.TieredMenuRenderer;
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.util.ComponentTraversalUtils;
@@ -108,12 +106,7 @@ public class MenuButtonRenderer extends TieredMenuRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
 
-        if (isValueBlank(value)) {
-            writer.write("ui-button");
-        }
-        else {
-            writer.writeText(value, "value");
-        }
+        renderButtonValue(writer, true, button.getValue(), button.getTitle(), button.getAriaLabel());
 
         writer.endElement("span");
 
@@ -155,15 +148,14 @@ public class MenuButtonRenderer extends TieredMenuRenderer {
         MenuButton button = (MenuButton) abstractMenu;
         String clientId = button.getClientId(context);
 
-        UIForm form = ComponentTraversalUtils.closestForm(context, button);
+        UIForm form = ComponentTraversalUtils.closestForm(button);
         if (form == null) {
             throw new FacesException("MenuButton : \"" + clientId + "\" must be inside a form element");
         }
 
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("MenuButton", button)
-            .attr("appendTo", SearchExpressionFacade.resolveClientId(context, button, button.getAppendTo(),
-                  SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
+            .attr("appendTo", SearchExpressionUtils.resolveOptionalClientIdForClientSide(context, button, button.getAppendTo()))
             .attr("collision", button.getCollision())
             .attr("autoDisplay", button.isAutoDisplay())
             .attr("toggleEvent", button.getToggleEvent(), null)

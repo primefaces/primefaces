@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -55,7 +55,7 @@ import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.csp.CspPhaseListener;
-import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.EscapeUtils;
@@ -66,18 +66,11 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
     private static final Logger LOGGER = Logger.getLogger(PrimeExceptionHandler.class.getName());
     private static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
-    private final ExceptionHandler wrapped;
     private final Lazy<PrimeConfiguration> config;
 
-    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public PrimeExceptionHandler(ExceptionHandler wrapped) {
-        this.wrapped = wrapped;
+        super(wrapped);
         this.config = new Lazy(() -> PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConfig());
-    }
-
-    @Override
-    public ExceptionHandler getWrapped() {
-        return wrapped;
     }
 
     @Override
@@ -241,7 +234,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
             }
 
             if (LangUtils.isNotBlank(handlerComponent.getUpdate())) {
-                List<UIComponent> updates = SearchExpressionFacade.resolveComponents(context, handlerComponent, handlerComponent.getUpdate());
+                List<UIComponent> updates = SearchExpressionUtils.contextlessResolveComponents(context, handlerComponent, handlerComponent.getUpdate());
 
                 if (updates != null && !updates.isEmpty()) {
                     context.setResponseWriter(writer);
@@ -293,7 +286,8 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
     protected AjaxExceptionHandler findHandlerComponent(FacesContext context, Throwable rootCause) {
         AjaxExceptionHandlerVisitCallback visitCallback = new AjaxExceptionHandlerVisitCallback(rootCause);
 
-        context.getViewRoot().visitTree(VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_ITERATION), visitCallback);
+        context.getViewRoot().visitTree(
+                VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_ITERATION.get()), visitCallback);
 
         Map<String, AjaxExceptionHandler> handlers = visitCallback.getHandlers();
 

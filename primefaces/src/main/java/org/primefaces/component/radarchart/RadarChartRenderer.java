@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,11 +38,7 @@ public class RadarChartRenderer extends ChartRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         RadarChart chart = (RadarChart) component;
-        String clientId = chart.getClientId(context);
-        String style = chart.getStyle();
-        String styleClass = chart.getStyleClass();
-
-        encodeMarkup(context, clientId, style, styleClass);
+        encodeMarkup(context, chart);
         encodeScript(context, chart);
     }
 
@@ -67,13 +63,11 @@ public class RadarChartRenderer extends ChartRenderer {
         RadarChartOptions radarOptions = (RadarChartOptions) options;
 
         writer.write(",\"options\":{");
-
-        encodeScales(context, type, radarOptions.getScales(), false);
-        encodeElements(context, radarOptions.getElements(), radarOptions.getScales() != null);
-        encodeAnimation(context, radarOptions.getAnimation(), radarOptions.getScales() != null
-                    || radarOptions.getElements() != null);
-        encodePlugins(context, radarOptions, radarOptions.getScales() != null
-                    || radarOptions.getElements() != null || radarOptions.getAnimation() != null);
+        encodeResponsive(context, radarOptions, false);
+        encodeScales(context, type, radarOptions.getScales(), true);
+        encodeElements(context, radarOptions.getElements(), true);
+        encodeAnimation(context, radarOptions.getAnimation(), true);
+        encodePlugins(context, radarOptions, true);
 
         writer.write("}");
     }

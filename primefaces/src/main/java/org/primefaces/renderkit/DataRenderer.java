@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -92,22 +92,19 @@ public class DataRenderer extends CoreRenderer {
             styleClass = styleClass + " ui-corner-top";
         }
 
-        String ariaMessage = MessageFactory.getMessage(UIPageableData.ARIA_HEADER_LABEL);
-
         writer.startElement("div", null);
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute("role", "navigation", null);
-        writer.writeAttribute(HTML.ARIA_LABEL, ariaMessage, null);
 
-        if (isTop && ComponentUtils.shouldRenderFacet(leftTopContent)) {
+        if (isTop && FacetUtils.shouldRenderFacet(leftTopContent)) {
             writer.startElement("div", null);
             writer.writeAttribute("class", UIPageableData.PAGINATOR_TOP_LEFT_CONTENT_CLASS, null);
             renderChild(context, leftTopContent);
             writer.endElement("div");
         }
 
-        if (isTop && ComponentUtils.shouldRenderFacet(rightTopContent)) {
+        if (isTop && FacetUtils.shouldRenderFacet(rightTopContent)) {
             writer.startElement("div", null);
             writer.writeAttribute("class", UIPageableData.PAGINATOR_TOP_RIGHT_CONTENT_CLASS, null);
             renderChild(context, rightTopContent);
@@ -132,13 +129,13 @@ public class DataRenderer extends CoreRenderer {
                 }
             }
         }
-        if (!isTop && ComponentUtils.shouldRenderFacet(leftBottomContent)) {
+        if (!isTop && FacetUtils.shouldRenderFacet(leftBottomContent)) {
             writer.startElement("div", null);
             writer.writeAttribute("class", UIPageableData.PAGINATOR_BOTTOM_LEFT_CONTENT_CLASS, null);
             renderChild(context, leftBottomContent);
             writer.endElement("div");
         }
-        if (!isTop && ComponentUtils.shouldRenderFacet(rightBottomContent)) {
+        if (!isTop && FacetUtils.shouldRenderFacet(rightBottomContent)) {
             writer.startElement("div", null);
             writer.writeAttribute("class", UIPageableData.PAGINATOR_BOTTOM_RIGHT_CONTENT_CLASS, null);
             renderChild(context, rightBottomContent);
@@ -158,7 +155,7 @@ public class DataRenderer extends CoreRenderer {
             paginatorContainers = "'" + clientId + "_paginator_top','" + clientId + "_paginator_bottom'";
         }
         else {
-            paginatorContainers = "'" + clientId + "_paginator_" + paginatorPosition + "'";
+            paginatorContainers = "'" + clientId + "_paginator_" + paginatorPosition.toLowerCase() + "'";
         }
 
         wb.append(",paginator:{")
@@ -187,7 +184,7 @@ public class DataRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         UIComponent component = data.getFacet(facet);
 
-        if (ComponentUtils.shouldRenderFacet(component)) {
+        if (FacetUtils.shouldRenderFacet(component)) {
             writer.startElement("div", null);
             writer.writeAttribute("class", styleClass, null);
             component.encodeAll(context);
@@ -207,7 +204,7 @@ public class DataRenderer extends CoreRenderer {
         // for header facet
         if (ariaHeaderText == null) {
             UIComponent header = column.getFacet("header");
-            if (ComponentUtils.shouldRenderFacet(header)) {
+            if (FacetUtils.shouldRenderFacet(header)) {
                 if (header instanceof UIPanel) {
                     for (UIComponent child : header.getChildren()) {
                         if (child.isRendered()) {

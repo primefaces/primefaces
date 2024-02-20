@@ -23,12 +23,12 @@
                          paginator="true"
                          rows="4"
                          multiViewState="true"
-                         disabledSelection="#{!lang.selectable}">
+                         selectionDisabled="#{!lang.selectable}">
 
                 <p:ajax event="rowSelect" listener="#{dataTable032.onRowSelect}" />
                 <p:ajax event="rowSelectRadio" listener="#{dataTable032.onRowSelect}" />
 
-                <p:column headerText="" selectionMode="single" />
+                <p:column headerText="" selectionBox="true" />
                 
                 <p:column headerText="ID" sortBy="#{lang.id}">
                     <h:outputText value="#{lang.id}"/>

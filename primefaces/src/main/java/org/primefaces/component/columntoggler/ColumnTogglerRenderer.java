@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,6 @@
 package org.primefaces.component.columntoggler;
 
 import org.primefaces.component.api.UITable;
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
@@ -70,10 +69,8 @@ public class ColumnTogglerRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
 
         wb.init("ColumnToggler", columnToggler);
-        wb.attr("trigger", SearchExpressionFacade.resolveClientIds(context, columnToggler, columnToggler.getTrigger(),
-                SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE));
-        wb.attr("datasource", SearchExpressionFacade.resolveClientIds(context, columnToggler, columnToggler.getDatasource(),
-                SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE));
+        wb.attr("trigger", SearchExpressionUtils.resolveOptionalClientIdsForClientSide(context, columnToggler, columnToggler.getTrigger()));
+        wb.attr("datasource", SearchExpressionUtils.resolveOptionalClientIdsForClientSide(context, columnToggler, columnToggler.getDatasource()));
 
         encodeClientBehaviors(context, columnToggler);
 

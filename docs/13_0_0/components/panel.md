@@ -39,6 +39,7 @@ renderEmptyFacets | false | Boolean | Render facets even if their children are n
 toggleOrientation | vertical | String | Defines the orientation of the toggling, valid values are vertical and horizontal.
 widgetVar | null | String | Name of the client side widget
 toggleableHeader | false | Boolean | Defines if the panel is toggleable by clicking on the whole panel header.
+multiViewState | false | Boolean | Whether to keep Panel state across views, defaults to false.
 
 ## Getting started with Panel
 Panel encapsulates other components.

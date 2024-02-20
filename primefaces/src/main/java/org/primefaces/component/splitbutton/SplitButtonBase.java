@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,8 +27,8 @@ import javax.faces.component.html.HtmlCommandButton;
 
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.Confirmable;
-import org.primefaces.component.api.Widget;
 import org.primefaces.component.api.MenuItemAware;
+import org.primefaces.component.api.Widget;
 import org.primefaces.model.menu.MenuModel;
 
 public abstract class SplitButtonBase extends HtmlCommandButton implements AjaxSource, Confirmable, Widget, MenuItemAware {
@@ -67,7 +67,10 @@ public abstract class SplitButtonBase extends HtmlCommandButton implements AjaxS
         filterFunction,
         filterPlaceholder,
         ignoreComponentNotFound,
-        disableOnAjax
+        disableOnAjax,
+        filterNormalize,
+        filterInputAutoFocus,
+        ariaLabel
     }
 
     public SplitButtonBase() {
@@ -325,5 +328,29 @@ public abstract class SplitButtonBase extends HtmlCommandButton implements AjaxS
 
     public void setDisableOnAjax(boolean disableOnAjax) {
         getStateHelper().put(PropertyKeys.disableOnAjax, disableOnAjax);
+    }
+
+    public boolean isFilterNormalize() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.filterNormalize, false);
+    }
+
+    public void setFilterNormalize(boolean filterNormalize) {
+        getStateHelper().put(PropertyKeys.filterNormalize, filterNormalize);
+    }
+
+    public boolean isFilterInputAutoFocus() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.filterInputAutoFocus, true);
+    }
+
+    public void setFilterInputAutoFocus(boolean filterInputAutoFocus) {
+        getStateHelper().put(PropertyKeys.filterInputAutoFocus, filterInputAutoFocus);
+    }
+
+    public String getAriaLabel() {
+        return (String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
+    }
+
+    public void setAriaLabel(String ariaLabel) {
+        getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
     }
 }

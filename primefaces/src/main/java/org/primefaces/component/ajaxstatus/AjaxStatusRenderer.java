@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +30,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class AjaxStatusRenderer extends CoreRenderer {
@@ -48,10 +48,10 @@ public class AjaxStatusRenderer extends CoreRenderer {
         wb.init("AjaxStatus", status);
         wb.attr("delay", status.getDelay());
 
-        wb.callback(AjaxStatus.START, AjaxStatus.CALLBACK_SIGNATURE, status.getOnstart())
-                .callback(AjaxStatus.ERROR, AjaxStatus.CALLBACK_SIGNATURE, status.getOnerror())
-                .callback(AjaxStatus.SUCCESS, AjaxStatus.CALLBACK_SIGNATURE, status.getOnsuccess())
-                .callback(AjaxStatus.COMPLETE, AjaxStatus.CALLBACK_SIGNATURE, status.getOncomplete());
+        wb.callback(AjaxStatus.START, "function()", status.getOnstart())
+                .callback(AjaxStatus.ERROR, "function(xhr,settings,error)", status.getOnerror())
+                .callback(AjaxStatus.SUCCESS, "function(xhr,settings)", status.getOnsuccess())
+                .callback(AjaxStatus.COMPLETE, "function(xhr,settings,args)", status.getOncomplete());
 
         wb.finish();
     }
@@ -74,13 +74,13 @@ public class AjaxStatusRenderer extends CoreRenderer {
             String event = AjaxStatus.EVENTS.get(i);
             UIComponent facet = status.getFacet(event);
 
-            if (ComponentUtils.shouldRenderFacet(facet)) {
+            if (FacetUtils.shouldRenderFacet(facet)) {
                 encodeFacet(context, clientId, facet, event, true);
             }
         }
 
         UIComponent defaultFacet = status.getFacet(AjaxStatus.DEFAULT);
-        if (ComponentUtils.shouldRenderFacet(defaultFacet)) {
+        if (FacetUtils.shouldRenderFacet(defaultFacet)) {
             encodeFacet(context, clientId, defaultFacet, AjaxStatus.DEFAULT, false);
         }
 

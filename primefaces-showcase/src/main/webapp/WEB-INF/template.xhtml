@@ -21,14 +21,13 @@
             </ui:fragment>
             <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0"/>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0"/>
             <meta name="apple-mobile-web-app-capable" content="yes"/>
             <link href="#{resource['showcase/images/favicon-32x32.png']}" rel="icon" type="image/png" sizes="32x32"/>
             <link href="#{resource['showcase/images/favicon-16x16.png']}" rel="icon" type="image/png" sizes="16x16"/>
         </f:facet>
         <title>PrimeFaces Showcase</title>
 
-        <h:outputStylesheet name="css/primeflex2.css" library="showcase"/><!-- classic PrimeFlex 2 for backward-compatibility -->
         <h:outputStylesheet name="css/primeflex3.css" library="showcase"/><!-- latest primeflex -->
         <h:outputStylesheet name="css/flags/flags.css" library="showcase"/>
 
@@ -72,7 +71,7 @@
                         </div>
                         <div class="feature-documentation">
                             <ui:fragment rendered="#{not empty documentationLink}">
-                                <a class="documentation-link" href="https://primefaces.github.io/primefaces/12_0_0/##{documentationLink}" target="_blank">
+                                <a class="documentation-link" href="https://primefaces.github.io/primefaces/14_0_0/##{documentationLink}" target="_blank">
                                     <i class="pi pi-external-link"></i> 
                                     <span>SERVER API</span>
                                 </a>

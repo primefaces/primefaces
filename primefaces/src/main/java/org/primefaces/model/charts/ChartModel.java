@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,10 @@ package org.primefaces.model.charts;
 
 import java.io.Serializable;
 
+/**
+ * @deprecated please use new p:chart component
+ */
+@Deprecated(since = "14.0.0", forRemoval = true)
 public abstract class ChartModel implements Serializable {
 
     private static final long serialVersionUID = 1L;

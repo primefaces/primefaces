@@ -7,7 +7,7 @@ if (window.PrimeFaces) {
      * A shortcut for `PrimeFaces.validation.validate` used by server-side renderers.
      * If the `ajax` attribute is set to `true` (the default is `false`), all inputs configured by the `process` attribute are validated
      * and all messages for the inputs configured by the `update` attribute are rendered.
-     * Otherwise, if the `ajax` attribute is set to the `false`, all inputs of the the parent form, of the `source` attribute, are processed and updated.
+     * Otherwise, if the `ajax` attribute is set to the `false`, all inputs of the parent form, of the `source` attribute, are processed and updated.
      * @function
      * @param {Partial<PrimeFaces.validation.ShorthandConfiguration>} cfg An configuration.
      * @return {boolean} `true` if the request would not result in validation errors, or `false` otherwise.
@@ -24,29 +24,19 @@ if (window.PrimeFaces) {
                 delete cfg[option];
             }
         }
-        
+
         var highlight = cfg.highlight || true;
         var focus = cfg.focus || true;
         var renderMessages = cfg.renderMessages || true;
         var validateInvisibleElements = cfg.validateInvisibleElements || false;
 
-        var process;
-        if (cfg.ajax && cfg.process) {
-            process = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(cfg.process);
-        }
-        else {
-            process = $(cfg.source).closest('form');
-        }
+        var $source = $(cfg.source);
 
-        var update;
-        if (cfg.ajax && cfg.update) {
-            update = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(cfg.update);
-        }
-        else {
-            update = $(cfg.source).closest('form');
-        }
+        var process = PrimeFaces.validation.Utils.resolveProcess(cfg, $source);
+        var update = PrimeFaces.validation.Utils.resolveUpdate(cfg, $source);
 
-        return PrimeFaces.validation.validate(process, update, highlight, focus, renderMessages, validateInvisibleElements);
+        var result = PrimeFaces.validation.validate($source, process, update, highlight, focus, renderMessages, validateInvisibleElements);
+        return result.valid;
     };
 
     /**
@@ -60,7 +50,7 @@ if (window.PrimeFaces) {
     PrimeFaces.vi = function(element, highlight, renderMessages) {
         return PrimeFaces.validation.validateInstant(element, highlight, renderMessages);
     };
-    
+
     /**
      * PrimeFaces Client Side Validation Framework
      */
@@ -143,6 +133,13 @@ if (window.PrimeFaces) {
     PrimeFaces.validation = {
 
         /**
+         * Is the Ajax-complete-handler bound?
+         * @type {boolean}
+         * @private
+         */
+        ajaxCompleteBound: false,
+
+        /**
          * Parameter shortcut mapping for the method `PrimeFaces.vb`.
          * @type {Record<string, string>}
          */
@@ -160,18 +157,19 @@ if (window.PrimeFaces) {
         /**
          * Triggers client-side-validation of single or multiple containers (complex validation or simple inputs).
          * @function
+         * @param {JQuery} source The source element.
          * @param {string | HTMLElement | JQuery} process The elements to be processed.
          * @param {string | HTMLElement | JQuery} update The elements to be updated.
          * @param {boolean} highlight If invalid elements should be highlighted.
          * @param {boolean} focus If the first invalid element should be focused.
          * @param {boolean} renderMessages If messages should be rendered.
          * @param {boolean} validateInvisibleElements If invisible elements should be validated.
-         * @return {boolean} `true` if the request would not result in validation errors, or `false` otherwise.
+         * @return {PrimeFaces.validation.ValidationResult} The validation result.
          */
-        validate : function(process, update, highlight, focus, renderMessages, validateInvisibleElements) {
+        validate : function(source, process, update, highlight, focus, renderMessages, validateInvisibleElements) {
             var vc = PrimeFaces.validation.ValidationContext;
 
-            process = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(process);
+            process = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(source, process);
 
             // validate all inputs first
             var inputs = $();
@@ -188,10 +186,10 @@ if (window.PrimeFaces) {
                 inputs = inputs.filter(':visible');
             }
             for (var i = 0; i < inputs.length; i++) {
-                PrimeFaces.validation.validateInput(inputs.eq(i), highlight);
+                PrimeFaces.validation.validateInput(source, inputs.eq(i), highlight);
             }
 
-            // validate complex validations, which cann be applied to any container element
+            // validate complex validations, which can be applied to any container element
             var nonInputs = $();
             for (var i = 0; i < process.length; i++) {
                 var component = process.eq(i);
@@ -205,17 +203,17 @@ if (window.PrimeFaces) {
                 nonInputs = nonInputs.filter(':visible');
             }
             for (var i = 0; i < nonInputs.length; i++) {
-                PrimeFaces.validation.validateComplex(nonInputs.eq(i), highlight);
+                PrimeFaces.validation.validateComplex(source, nonInputs.eq(i), highlight);
             }
 
-            // early exit - we dont need to render messages
+            // early exit - we don't need to render messages
             if (vc.isEmpty()) {
-                return true;
+                return { valid: true, messages: {}, hasUnrenderedMessage: false };
             }
 
             // render messages
             if (renderMessages === true) {
-                update = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(update);
+                update = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(source, update);
                 for (var i = 0; i < update.length; i++) {
                     var component = update.eq(i);
                     PrimeFaces.validation.Utils.renderMessages(vc.messages, component);
@@ -238,9 +236,82 @@ if (window.PrimeFaces) {
                 }
             }
 
+            var result = {
+                valid: vc.isEmpty(),
+                messages : vc.messages,
+                hasUnrenderedMessage: false
+            };
+
+            for (let clientId in vc.messages) {
+                var msgs = vc.messages[clientId];
+                for (let msg of msgs) {
+                    if (!msg.rendered) {
+                        result.hasUnrenderedMessage = true;
+                    }
+                }
+            }
+
+            if (result.hasUnrenderedMessage) {
+                PrimeFaces.warn("There are some unhandled FacesMessages, this means not every FacesMessage had a chance to be rendered. These unhandled FacesMessages are:");
+
+                for (let clientId in vc.messages) {
+                    var msgs = vc.messages[clientId];
+                    for (let msg of msgs) {
+                        if (!msg.rendered) {
+                            PrimeFaces.warn(msg.detail);
+                        }
+                    }
+                }
+            }
+
             vc.clear();
 
-            return false;
+            return result;
+        },
+
+
+        /**
+         * Searches for all CommandButtons with turned on dynamic CSV and triggers CSV.
+         * @function
+         */
+        validateButtonsCsvRequirements: function () {
+            $('[data-pf-validateclient-dynamic]').each((index, btn) => {
+                this.validateButtonCsvRequirements(btn);
+            });
+        },
+
+        /**
+         * Validates the CSV-requirements of a CommandButton.
+         * @function
+         * @param {HTMLButtonElement} btn CommandButton which´s CSV-requirements should be validated.
+         */
+        validateButtonCsvRequirements: function (btn) {
+            const $source = $(btn);
+            const cfg = {
+                ajax: btn.dataset.pfValidateclientAjax,
+                process: btn.dataset.pfValidateclientProcess,
+                update: btn.dataset.pfValidateclientUpdate
+            };
+            const process = PrimeFaces.validation.Utils.resolveProcess(cfg, $source);
+            const update = PrimeFaces.validation.Utils.resolveUpdate(cfg, $source);
+
+            const widget = PrimeFaces.getWidgetById(btn.id);
+
+            if (widget) {
+                if (PrimeFaces.validation.validate($source, process, update, false, false, false, false).valid) {
+                    widget.jq.addClass('ui-state-csv-valid');
+                    widget.jq.removeClass('ui-state-csv-invalid');
+                    widget.enable();
+                } else {
+                    widget.jq.addClass('ui-state-csv-invalid');
+                    widget.jq.removeClass('ui-state-csv-valid');
+                    widget.disable();
+                }
+            } else {
+                console.warn('No widget found for ID ' + btn.id);
+            }
+
+            PrimeFaces.validation.ValidationContext.clear();
         },
 
         /**
@@ -287,7 +358,9 @@ if (window.PrimeFaces) {
                 }
             }
 
-            PrimeFaces.validation.validateInput(element, highlight);
+            this.validateButtonsCsvRequirements();
+
+            PrimeFaces.validation.validateInput(element, element, highlight);
 
             if (!vc.isEmpty()) {
                 if (uiMessage) {
@@ -305,16 +378,17 @@ if (window.PrimeFaces) {
 
         /**
          * __NOTE__: This is a internal method and should only by used by `PrimeFaces.validation.validate`.
-         * 
+         *
          * Performs a client-side validation of (the value of) the given input element. If the element is valid, removes old
          * messages from the element. If the value of the element is invalid, adds the appropriate validation failure
          * messages.
          * @function
          * @internal
+         * @param {JQuery} source The source element.
          * @param {JQuery} element A JQuery instance with a single input element to validate.
          * @param {boolean} highlight If the invalid element should be highlighted.
          */
-        validateInput : function(element, highlight) {
+        validateInput : function(source, element, highlight) {
             var vc = PrimeFaces.validation.ValidationContext;
 
             if (element.is(':checkbox,:radio') && element.data('p-grouped')) {
@@ -332,8 +406,8 @@ if (window.PrimeFaces) {
             }
 
             var submittedValue = PrimeFaces.validation.Utils.getSubmittedValue(element),
-            valid = true,
-            converterId = element.data('p-con');
+                valid = true,
+                converterId = element.data('p-con');
 
             if (PrimeFaces.settings.considerEmptyStringNull && ((!submittedValue) || submittedValue.length === 0)) {
                 submittedValue = null;
@@ -346,7 +420,7 @@ if (window.PrimeFaces) {
                 }
                 catch (ce) {
                     var converterMessageStr = element.data('p-cmsg'),
-                    converterMsg = (converterMessageStr) ? {summary:converterMessageStr,detail:converterMessageStr} : ce;
+                        converterMsg = (converterMessageStr) ? {summary:converterMessageStr,detail:converterMessageStr} : ce;
                     valid = false;
                     vc.addMessage(element, converterMsg);
                 }
@@ -371,15 +445,15 @@ if (window.PrimeFaces) {
                 valid = false;
             }
 
-            if (valid 
-                    && ((submittedValue !== null && PrimeFaces.trim(submittedValue).length > 0) || PrimeFaces.settings.validateEmptyFields)) {
+            if (valid
+                && ((submittedValue !== null && PrimeFaces.trim(submittedValue).length > 0) || PrimeFaces.settings.validateEmptyFields)) {
                 var validatorIds = element.data('p-val');
                 if (validatorIds) {
                     validatorIds = validatorIds.split(',');
 
                     for (var j = 0; j < validatorIds.length; j++) {
                         var validatorId = validatorIds[j],
-                        validator = PrimeFaces.validator[validatorId];
+                            validator = PrimeFaces.validator[validatorId];
 
                         if (validator) {
                             try {
@@ -401,7 +475,7 @@ if (window.PrimeFaces) {
             }
 
             var highlighterType = element.data('p-hl') || 'default',
-            highlighter = PrimeFaces.validator.Highlighter.types[highlighterType];
+                highlighter = PrimeFaces.validator.Highlighter.types[highlighterType];
 
             if (valid) {
                 highlighter.unhighlight(element);
@@ -416,18 +490,19 @@ if (window.PrimeFaces) {
         },
 
         /**
-         * __NOTE__: This is a internal method and should only by used by `PrimeFaces.validation.validate`.
+         * __NOTE__: This is an internal method and should only be used by `PrimeFaces.validation.validate`.
          *
          * Performs a client-side validation of (the value of) the given container element. If the element is valid,
          * removes old messages from the element. If the value of the element is invalid, adds the appropriate
          * validation failure messages.
          * @function
          * @internal
+         * @param {JQuery} source the source element.
          * @param {JQuery} element A JQuery instance with a single input element to validate.
          * @param {boolean} highlight If the invalid element should be highlighted.
          * @returns {boolean} `true` if the value of the element is valid, `false` otherwise.
          */
-        validateComplex : function(element, highlight) {
+        validateComplex : function(source, element, highlight) {
             var vc = PrimeFaces.validation.ValidationContext;
             var valid = true;
 
@@ -437,11 +512,11 @@ if (window.PrimeFaces) {
 
                 for (var j = 0; j < validatorIds.length; j++) {
                     var validatorId = validatorIds[j],
-                    validator = PrimeFaces.validator[validatorId];
+                        validator = PrimeFaces.validator[validatorId];
 
                     if (validator) {
                         try {
-                            validator.validate(element);
+                            validator.validate(source, element);
                         }
                         catch (ve) {
                             var validatorMessageStr = element.data('p-vmsg');
@@ -477,6 +552,35 @@ if (window.PrimeFaces) {
             }
 
             return valid;
+        },
+
+
+        /**
+         * __NOTE__: This is an internal method and should only be used by PrimeFaces itself.
+         *
+         * Bind to Ajax-Complete-events to update CSV-state after an Ajax-call may have changed state.
+         * @internal
+         */
+        bindAjaxComplete: function() {
+            if (this.ajaxCompleteBound) return;
+
+            var $this = this;
+
+            $(document).on('pfAjaxComplete', function(e, xhr, settings, args) {
+                $this.validateButtonsCsvRequirements();
+            });
+
+            // also bind to JSF (f:ajax) events
+            // NOTE: PF always fires "complete" as last event, whereas JSF last events are either "success" or "error"
+            if (window.jsf && jsf.ajax) {
+                jsf.ajax.addOnEvent(function(data) {
+                    if(data.status === 'success' || data.status === 'error') {
+                        $this.validateButtonsCsvRequirements();
+                    }
+                });
+            }
+
+            this.ajaxCompleteBound = true;
         }
     };
 
@@ -489,7 +593,7 @@ if (window.PrimeFaces) {
 
         /**
          * A map between the client ID of an element and a list of faces message for that element.
-         * @type {Record<string, PrimeFaces.FacesMessageBase[]>}
+         * @type {Record<string, PrimeFaces.FacesMessage[]>}
          */
         messages: {},
 
@@ -503,7 +607,7 @@ if (window.PrimeFaces) {
         /**
          * Adds a faces message to the given element.
          * @param {JQuery} element Element to which to add the message.
-         * @param {PrimeFaces.FacesMessageBase} msg Message to add to the given message. 
+         * @param {PrimeFaces.FacesMessage} msg Message to add to the given message.
          */
         addMessage: function(element, msg) {
             var clientId = element.data(PrimeFaces.CLIENT_ID_DATA)||element.attr('id');
@@ -511,6 +615,20 @@ if (window.PrimeFaces) {
             if(!this.messages[clientId]) {
                 this.messages[clientId] = [];
             }
+
+            // in case of a exception -> lets wrap it into a 'unexcepted error'
+            if (!msg.hasOwnProperty('summary') && !msg.hasOwnProperty('detail')) {
+                msg = {
+                    summary : PrimeFaces.getLocaleSettings()['unexpectedError'],
+                    detail : msg.toString()
+                };
+            }
+
+            if (!msg.severity) {
+                msg.severity = "error";
+            }
+
+            msg.rendered = false;
 
             this.messages[clientId].push(msg);
         },
@@ -552,7 +670,7 @@ if (window.PrimeFaces) {
          * Shortcut for PrimeFaces.validation.Utils.getMessage.
          * @param {string} key The i18n key of a message, such as `javax.faces.component.UIInput.REQUIRED` or
          * `javax.faces.validator.LengthValidator.MINIMUM`.
-         * @return {PrimeFaces.FacesMessageBase | null} The localized faces message for the given key, or `null` if no
+         * @return {PrimeFaces.FacesMessage | null} The localized faces message for the given key, or `null` if no
          * translation was found for the key.
          */
         getMessage: function(key) {
@@ -571,7 +689,7 @@ if (window.PrimeFaces) {
         /**
          * Checks whether the given element group is in the list of groups to be validated. An element group is often
          * just the name of a single INPUT, TEXTAREA or SELECT element, but may also consist of multiple DOM elements,
-         * such as in the case of a select list of checkboxes. 
+         * such as in the case of a select list of checkboxes.
          * @param {string} name Name of an element group to check.
          * @return {boolean} `true` if the given group is to be validated, or `false` otherwise.
          */
@@ -587,19 +705,13 @@ if (window.PrimeFaces) {
         /**
          * Adds a group to the list of element groups to validate. An element group is often just the name of a single
          * INPUT, TEXTAREA or SELECT element, but may also consist of multiple DOM elements, such as in the case of
-         * select list of checkboxes. 
+         * select list of checkboxes.
          * @param {string} name Name of an element group to add.
          */
         addElementGroup: function(name) {
             this.elementGroups.push(name);
         }
     };
-
-    /**
-     * @deprecated Backward compatibility, remove later
-     * @namespace
-     */
-    PrimeFaces.util.ValidationContext = PrimeFaces.validation.ValidationContext;
 
     /**
      * Mostly internal utility methods used to validate data on the client.
@@ -610,7 +722,7 @@ if (window.PrimeFaces) {
         /**
          * Given the container element of a ui message, renders the given message to that element.
          * @param {JQuery} uiMessage The container element of the message, usually with the class `ui-message`.
-         * @param {PrimeFaces.FacesMessageBase} msg Message to render to the given element. 
+         * @param {PrimeFaces.FacesMessage} msg Message to render to the given element.
          */
         renderUIMessage: function(uiMessage, msg) {
             var display = uiMessage.data('display');
@@ -626,7 +738,7 @@ if (window.PrimeFaces) {
                 }
                 else if (display === 'icon') {
                     uiMessage.addClass('ui-message-icon-only')
-                            .append('<span class="ui-message-error-icon" title="' + PrimeFaces.escapeHTML(msg.detail) + '"></span>');
+                        .append('<span class="ui-message-error-icon" title="' + PrimeFaces.escapeHTML(msg.detail) + '"></span>');
                 }
             }
             else {
@@ -642,7 +754,7 @@ if (window.PrimeFaces) {
          * `javax.faces.validator.LengthValidator.MINIMUM`.
          * @param {string[]} params A list of parameters for the placeholders. The first item is ignored. The item at
          * index `i` corresponds to the placeholder `{i-1}`.
-         * @return {PrimeFaces.FacesMessageBase | null} The localized faces message for the given key, or `null` if no
+         * @return {PrimeFaces.FacesMessage | null} The localized faces message for the given key, or `null` if no
          * translation was found for the key.
          */
         getMessage: function(key, params) {
@@ -650,20 +762,22 @@ if (window.PrimeFaces) {
             var bundle = (locale.messages && locale.messages[key]) ? locale : PrimeFaces.locales['en_US'];
 
             var summary = bundle.messages[key];
-            if (summary) {
-                summary = PrimeFaces.validation.Utils.format(summary, params);
-                
-                var detail = bundle.messages[key + '_detail'];
-                detail = (detail) ? PrimeFaces.validation.Utils.format(detail, params) : summary;
-
+            if (!summary) {
                 return {
-                    summary: summary,
-                    detail: detail
+                    summary: "### Message '" + key + "' not found ###",
+                    detail: "### Message '" + key + "' not found ###"
                 };
             }
- 
-            return null;
-   
+
+            summary = PrimeFaces.validation.Utils.format(summary, params);
+
+            var detail = bundle.messages[key + '_detail'];
+            detail = (detail) ? PrimeFaces.validation.Utils.format(detail, params) : summary;
+
+            return {
+                summary: summary,
+                detail: detail
+            };
         },
 
         /**
@@ -713,6 +827,9 @@ if (window.PrimeFaces) {
             else if (element.is(':checkbox')) {
                 value = element.data('p-grouped') ? $('input:checkbox[name="' + $.escapeSelector(element.attr('name')) + '"]:checked').val(): element.prop('checked').toString();
             }
+            else if (element.is(':file')) {
+                value = element[0].files;
+            }
             else {
                 value = element.val();
             }
@@ -725,7 +842,7 @@ if (window.PrimeFaces) {
          * @param {string} clientId ID of a component for which to find the ui message.
          * @param {JQuery} uiMessageCollection A JQuery instance with a list of `ui-message`s, or `null` if no
          * such element exists.
-         * @return {JQuery | null} The DOM element with the messages for the given component, or `null` when no such 
+         * @return {JQuery | null} The DOM element with the messages for the given component, or `null` when no such
          * element could be found.
          */
         findUIMessage: function(clientId, uiMessageCollection) {
@@ -738,11 +855,11 @@ if (window.PrimeFaces) {
 
             return null;
         },
-        
+
 
         /**
          * Renders all given messages in the given container.
-         * @param {Record<string, PrimeFaces.FacesMessageBase[]>} messages The messages to render.
+         * @param {Record<string, PrimeFaces.FacesMessage[]>} messages The messages to render.
          * @param {JQuery} container The container for the messages. Either the element with the class `ui-messages`, or
          * a parent of such an element.
          */
@@ -757,10 +874,10 @@ if (window.PrimeFaces) {
 
             for (var i = 0; i < uiMessages.length; i++) {
                 var uiMessagesComponent = uiMessages.eq(i),
-                globalOnly = uiMessagesComponent.data('global'),
-                redisplay = uiMessagesComponent.data('redisplay'),
-                showSummary = uiMessagesComponent.data('summary'),
-                showDetail = uiMessagesComponent.data('detail');
+                    globalOnly = uiMessagesComponent.data('global'),
+                    redisplay = uiMessagesComponent.data('redisplay'),
+                    showSummary = uiMessagesComponent.data('summary'),
+                    showDetail = uiMessagesComponent.data('detail');
 
                 uiMessagesComponent.html('');
 
@@ -796,11 +913,11 @@ if (window.PrimeFaces) {
 
             for (var i = 0; i < growlComponents.length; i++) {
                 var growl = growlComponents.eq(i),
-                redisplay = growl.data('redisplay'),
-                globalOnly = growl.data('global'),
-                showSummary = growl.data('summary'),
-                showDetail = growl.data('detail'),
-                growlWidget = PF(growl.data('widget'));
+                    redisplay = growl.data('redisplay'),
+                    globalOnly = growl.data('global'),
+                    showSummary = growl.data('summary'),
+                    showDetail = growl.data('detail'),
+                    growlWidget = PF(growl.data('widget'));
 
                 growlWidget.removeAll();
 
@@ -830,8 +947,8 @@ if (window.PrimeFaces) {
 
             for(var i = 0; i < uiMessageCollection.length; i++) {
                 var uiMessage = uiMessageCollection.eq(i),
-                target = uiMessage.data('target'),
-                redisplay = uiMessage.data('redisplay');
+                    target = uiMessage.data('target'),
+                    redisplay = uiMessage.data('redisplay');
 
                 for (var clientId in messages) {
                     if (target === clientId) {
@@ -848,6 +965,34 @@ if (window.PrimeFaces) {
                         }
                     }
                 }
+            }
+        },
+
+        /**
+         * Resolves process-attribute of a PrimeFaces-component. (e.g. CommandButton)
+         * @param {PrimeFaces.validation.Configuration} cfg Configuration of the PrimeFaces-component.
+         * @param {JQuery} source The source element.
+         * @returns {JQuery} Resolved jQuery-element.
+         */
+        resolveProcess: function(cfg, source) {
+            if (cfg.ajax && cfg.process) {
+                return PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(source, cfg.process);
+            } else {
+                return source.closest('form');
+            }
+        },
+
+        /**
+         * Resolves update-attribute of a PrimeFaces-component. (e.g. CommandButton)
+         * @param {PrimeFaces.validation.Configuration} cfg Configuration of the PrimeFaces-component.
+         * @param {JQuery} source The source element.
+         * @returns {JQuery} Resolved jQuery-element.
+         */
+        resolveUpdate: function(cfg, source) {
+            if (cfg.ajax && cfg.update) {
+                return PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(source, cfg.update);
+            } else {
+                return source.closest('form');
             }
         }
     };

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,14 +30,11 @@ import java.time.format.FormatStyle;
 import java.util.List;
 import java.util.Locale;
 
-import org.primefaces.component.api.InputHolder;
-import org.primefaces.component.api.MixedClientBehaviorHolder;
-import org.primefaces.component.api.UICalendar;
-import org.primefaces.component.api.Widget;
+import org.primefaces.component.api.*;
 import org.primefaces.model.datepicker.DateMetadataModel;
 import org.primefaces.util.CalendarUtils;
 
-public abstract class DatePickerBase extends UICalendar implements Widget, InputHolder, MixedClientBehaviorHolder {
+public abstract class DatePickerBase extends UICalendar implements Widget, InputHolder, MixedClientBehaviorHolder, FlexAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -82,6 +79,7 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         panelStyle,
         keepInvalid,
         hideOnDateTimeSelect,
+        hideOnRangeSelection,
         maxDateCount,
         numberOfMonths,
         view,
@@ -92,6 +90,7 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         appendTo,
         triggerButtonIcon,
         disabledDates,
+        enabledDates,
         disabledDays,
         onMonthChange,
         onYearChange,
@@ -100,7 +99,8 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         weekCalculator,
         showMinMaxRange,
         autoMonthFormat,
-        model
+        model,
+        flex
     }
 
     public DatePickerBase() {
@@ -349,6 +349,14 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         getStateHelper().put(PropertyKeys.hideOnDateTimeSelect, hideOnDateTimeSelect);
     }
 
+    public boolean isHideOnRangeSelection() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.hideOnRangeSelection, false);
+    }
+
+    public void setHideOnRangeSelection(boolean hideOnRangeSelection) {
+        getStateHelper().put(PropertyKeys.hideOnRangeSelection, hideOnRangeSelection);
+    }
+
     public int getMaxDateCount() {
         return (Integer) getStateHelper().eval(PropertyKeys.maxDateCount, Integer.MAX_VALUE);
     }
@@ -419,6 +427,14 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
 
     public void setDisabledDates(List disabledDates) {
         getStateHelper().put(PropertyKeys.disabledDates, disabledDates);
+    }
+
+    public List getEnabledDates() {
+        return (List) getStateHelper().eval(PropertyKeys.enabledDates, null);
+    }
+
+    public void setEnabledDates(List enabledDates) {
+        getStateHelper().put(PropertyKeys.enabledDates, enabledDates);
     }
 
     public List<Integer> getDisabledDays() {
@@ -499,6 +515,15 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
 
     public void setAutoMonthFormat(boolean autoMonthFormat) {
         getStateHelper().put(PropertyKeys.autoMonthFormat, autoMonthFormat);
+    }
+
+    @Override
+    public boolean isFlex() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.flex, false);
+    }
+
+    public void setFlex(boolean flex) {
+        getStateHelper().put(PropertyKeys.flex, flex);
     }
 
     @Override

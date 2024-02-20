@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,26 +23,21 @@
  */
 package org.primefaces.util;
 
-import java.util.Collections;
-import java.util.EnumSet;
+import java.util.*;
+import java.util.logging.Logger;
+import javax.faces.application.ProjectStage;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIForm;
+import javax.faces.component.UIParameter;
+import javax.faces.component.search.SearchExpressionHint;
+import javax.faces.context.FacesContext;
+import javax.faces.view.facelets.FaceletException;
+
+import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.ClientBehaviorRenderingMode;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.expression.SearchExpressionHint;
-
-import javax.faces.application.ProjectStage;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIParameter;
-import javax.faces.context.FacesContext;
-import javax.faces.view.facelets.FaceletException;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.logging.Logger;
-import javax.faces.component.UIForm;
-import org.primefaces.component.api.AjaxSource;
+import org.primefaces.expression.SearchExpressionUtils;
 
 /**
  * Helper to generate javascript code of an ajax call
@@ -52,12 +47,8 @@ public class AjaxRequestBuilder {
     private static final Logger LOG = Logger.getLogger(AjaxRequestBuilder.class.getName());
 
     private static final Set<SearchExpressionHint> HINTS_UPDATE = Collections.unmodifiableSet(EnumSet.of(
-            SearchExpressionHint.VALIDATE_RENDERER,
-            SearchExpressionHint.SKIP_UNRENDERED,
             SearchExpressionHint.RESOLVE_CLIENT_SIDE));
     private static final Set<SearchExpressionHint> HINTS_UPDATE_IGNORE_NO_RESULT = Collections.unmodifiableSet(EnumSet.of(
-            SearchExpressionHint.VALIDATE_RENDERER,
-            SearchExpressionHint.SKIP_UNRENDERED,
             SearchExpressionHint.RESOLVE_CLIENT_SIDE,
             SearchExpressionHint.IGNORE_NO_RESULT));
 
@@ -100,7 +91,7 @@ public class AjaxRequestBuilder {
         String form = source.getForm();
         if (LangUtils.isBlank(form)) {
             if (formComponent == null) {
-                formComponent = ComponentTraversalUtils.closestForm(context, component);
+                formComponent = ComponentTraversalUtils.closestForm(component);
             }
 
             if (formComponent == null) {
@@ -116,7 +107,7 @@ public class AjaxRequestBuilder {
             }
         }
         else {
-            result = SearchExpressionFacade.resolveClientId(context, component, source.getForm());
+            result = SearchExpressionUtils.resolveClientId(context, component, source.getForm());
         }
 
         if (result != null) {
@@ -144,7 +135,7 @@ public class AjaxRequestBuilder {
     }
 
     public AjaxRequestBuilder process(UIComponent component, String expressions, boolean ignoreNoResult) {
-        addExpressions(component, expressions, "p", ignoreNoResult ? HINTS_PROCESS_IGNORE_NO_RESULT : HINTS_PROCESS);
+        addExpressions(component, expressions, "p", ignoreNoResult ? HINTS_PROCESS_IGNORE_NO_RESULT : HINTS_PROCESS, false);
 
         return this;
     }
@@ -154,14 +145,16 @@ public class AjaxRequestBuilder {
     }
 
     public AjaxRequestBuilder update(UIComponent component, String expressions, boolean ignoreNoResult) {
-        addExpressions(component, expressions, "u", ignoreNoResult ? HINTS_UPDATE_IGNORE_NO_RESULT : HINTS_UPDATE);
+        addExpressions(component, expressions, "u", ignoreNoResult ? HINTS_UPDATE_IGNORE_NO_RESULT : HINTS_UPDATE, true);
 
         return this;
     }
 
-    private AjaxRequestBuilder addExpressions(UIComponent component, String expressions, String key, Set<SearchExpressionHint> hints) {
+    private AjaxRequestBuilder addExpressions(UIComponent component, String expressions, String key, Set<SearchExpressionHint> hints,
+            boolean skipUnredered) {
         if (LangUtils.isNotBlank(expressions)) {
-            String resolvedExpressions = SearchExpressionFacade.resolveClientIds(context, component, expressions, hints);
+            String resolvedExpressions = SearchExpressionUtils.resolveClientIdsAsString(context, component, expressions, hints,
+                    skipUnredered ? ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED : null);
             buffer.append(",").append(key).append(":\"").append(resolvedExpressions).append("\"");
         }
 

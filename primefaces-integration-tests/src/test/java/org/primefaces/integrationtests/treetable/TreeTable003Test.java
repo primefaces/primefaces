@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,8 +23,9 @@
  */
 package org.primefaces.integrationtests.treetable;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -34,15 +35,15 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.TreeTable;
 
-public class TreeTable003Test extends AbstractTreeTableTest {
+class TreeTable003Test extends AbstractTreeTableTest {
 
     @Test
     @Order(1)
     @DisplayName("TreeTable: paginator")
-    public void testPaginator(Page page) {
+    void paginator(Page page) {
         // Arrange
         TreeTable treeTable = page.treeTable;
-        Assertions.assertNotNull(treeTable);
+        assertNotNull(treeTable);
         treeTable.selectPage(1);
 
         // Assert
@@ -50,7 +51,7 @@ public class TreeTable003Test extends AbstractTreeTableTest {
         if (root.getChildren().size() % 3 > 0) {
             pages++;
         }
-        Assertions.assertEquals(pages, treeTable.getPaginator().getPages().size());
+        assertEquals(pages, treeTable.getPaginator().getPages().size());
 
         DefaultTreeNode<Document> rootPage1 = new DefaultTreeNode<>(root.getData());
         rootPage1.setChildren(root.getChildren().subList(0, 3));
@@ -70,8 +71,8 @@ public class TreeTable003Test extends AbstractTreeTableTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("TreeTable Config = " + cfg);
-        Assertions.assertTrue(cfg.has("paginator"));
-        Assertions.assertEquals("wgtTreeTable", cfg.getString("widgetVar"));
+        assertTrue(cfg.has("paginator"));
+        assertEquals("wgtTreeTable", cfg.getString("widgetVar"));
     }
 
     public static class Page extends AbstractPrimePage {

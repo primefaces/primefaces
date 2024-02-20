@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,8 +31,9 @@ import org.primefaces.facelets.MethodRule;
 
 public class TerminalHandler extends ComponentHandler {
 
-    private static final MethodRule COMMAND_HANDLER =
-            new MethodRule("commandHandler", String.class, new Class[]{String.class, String[].class});
+    private static final MethodRule COMMAND_HANDLER = new MethodRule(Terminal.PropertyKeys.commandHandler.name(),
+            String.class,
+            new Class[]{String.class, String[].class});
 
     public TerminalHandler(ComponentConfig config) {
         super(config);

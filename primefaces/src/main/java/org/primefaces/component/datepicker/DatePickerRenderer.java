@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,7 +41,6 @@ import javax.faces.convert.ConverterException;
 import org.json.JSONObject;
 import org.primefaces.component.api.UICalendar;
 import org.primefaces.component.calendar.BaseCalendarRenderer;
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.datepicker.DateMetadata;
 import org.primefaces.model.datepicker.DateMetadataModel;
@@ -116,6 +115,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             DateMetadata metadata = entry.getValue();
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("disabled", metadata.isDisabled());
+            jsonObject.put("enabled", metadata.isEnabled());
             jsonObject.put("styleClass", metadata.getStyleClass());
             jsonDateMetadata.put(date, jsonObject);
         }
@@ -165,7 +165,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
 
         if (datePicker.isConversionFailed()) {
             Class<?> dateType = resolveDateType(context, datePicker);
-            defaultDate = CalendarUtils.getValueAsString(context, datePicker, CalendarUtils.now(uicalendar, dateType));
+            defaultDate = CalendarUtils.getValueAsString(context, datePicker, CalendarUtils.now(uicalendar, dateType), true);
         }
         else if (!isValueBlank(value)) {
             defaultDate = value;
@@ -175,9 +175,12 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
         DateFormatSymbols symbols = new DateFormatSymbols(locale);
         String[] ampm = symbols.getAmPmStrings();
 
+        String selectionMode = datePicker.getSelectionMode();
+
         wb.attr("defaultDate", defaultDate, null)
             .attr("inline", datePicker.isInline())
             .attr("userLocale", locale.toString())
+            .attr("flex", ComponentUtils.isFlex(context, datePicker), false)
             .attr("localeAm", ampm[0], "AM")
             .attr("localePm", ampm[1], "PM")
             .attr("dateFormat", CalendarUtils.convertPattern(pattern))
@@ -189,7 +192,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             .attr("yearRange", datePicker.getYearRange(), null)
             .attr("minDate", getMinMaxDate(context, datePicker, datePicker.getMindate(), false), null)
             .attr("maxDate", getMinMaxDate(context, datePicker, datePicker.getMaxdate(), true), null)
-            .attr("selectionMode", datePicker.getSelectionMode(), null)
+            .attr("selectionMode", selectionMode, null)
             .attr("showOnFocus", datePicker.isShowOnFocus())
             .attr("shortYearCutoff", datePicker.getShortYearCutoff(), null)
             .attr("monthNavigator", datePicker.isMonthNavigator(), false)
@@ -207,8 +210,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             .attr("responsiveBreakpoint", datePicker.getResponsiveBreakpoint(), DatePicker.RESPONSIVE_BREAKPOINT_SMALL)
             .attr("touchUI", datePicker.isTouchUI(), false)
             .attr("showWeek", datePicker.isShowWeek(), false)
-            .attr("appendTo", SearchExpressionFacade.resolveClientId(context, datePicker, datePicker.getAppendTo(),
-                            SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
+            .attr("appendTo", SearchExpressionUtils.resolveOptionalClientIdForClientSide(context, datePicker, datePicker.getAppendTo()))
             .attr("icon", datePicker.getTriggerButtonIcon(), null)
             .attr("rangeSeparator", datePicker.getRangeSeparator(), "-")
             .attr("timeSeparator", datePicker.getTimeSeparator(), ":")
@@ -225,6 +227,11 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
         List<Object> disabledDates = datePicker.getInitialDisabledDates(context);
         if (disabledDates != null) {
             CalendarUtils.encodeListValue(context, datePicker, "disabledDates", disabledDates, pattern);
+        }
+
+        List enabledDates = datePicker.getInitialEnabledDates(context);
+        if (enabledDates != null && !enabledDates.isEmpty()) {
+            CalendarUtils.encodeListValue(context, datePicker, "enabledDates", enabledDates, pattern);
         }
         encodeScriptDateStyleClasses(wb, datePicker);
 
@@ -268,6 +275,10 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
                 .attr("stepSecond", datePicker.getStepSecond(), 1)
                 .attr("stepMillisecond", datePicker.getStepSecond(), 1)
                 .attr("hideOnDateTimeSelect", datePicker.isHideOnDateTimeSelect(), false);
+        }
+
+        if ("range".equalsIgnoreCase(selectionMode)) {
+            wb.attr("hideOnRangeSelection", datePicker.isHideOnRangeSelection(), false);
         }
 
         String mask = datePicker.getMask();

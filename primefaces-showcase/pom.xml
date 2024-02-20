@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.primefaces</groupId>
         <artifactId>primefaces-parent</artifactId>
-        <version>13.0.0-SNAPSHOT</version>
+        <version>14.0.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -19,11 +19,11 @@
     <properties>
         <owb.version>2.0.27</owb.version>
         <hibernate-validator.version>6.2.4.Final</hibernate-validator.version>
-        <mojarra.version>2.3.18</mojarra.version>
+        <mojarra.version>2.3.21</mojarra.version>
         <myfaces.version>2.3.10</myfaces.version>
-        <myfaces-next.version>2.3-next-M6</myfaces-next.version>
-        <resteasy.version>5.0.5.Final</resteasy.version>
-        <jetty.version>9.4.50.v20221201</jetty.version>
+        <myfaces-next.version>2.3-next-M8</myfaces-next.version>
+        <resteasy.version>5.0.9.Final</resteasy.version>
+        <jetty.version>9.4.54.v20240208</jetty.version>
         <jsf.project.stage>Production</jsf.project.stage>
     </properties>
 
@@ -106,30 +106,24 @@
             <artifactId>mime-types</artifactId>
         </dependency>
 
-        <!-- Twitter API -->
-        <dependency>
-            <groupId>org.twitter4j</groupId>
-            <artifactId>twitter4j-core</artifactId>
-            <version>3.0.6</version>
-        </dependency>
-
         <!-- Logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
-            <version>2.0.6</version>
+            <version>2.0.12</version>
         </dependency>
 
         <!-- GraphicImage -->
         <dependency>
-            <groupId>net.sourceforge.barbecue</groupId>
-            <artifactId>barbecue</artifactId>
-            <version>1.5-beta1</version>
-        </dependency>
-        <dependency>
             <groupId>jfree</groupId>
             <artifactId>jfreechart</artifactId>
             <version>1.0.1</version>
+            <exclusions>
+                 <exclusion>
+                      <groupId>junit</groupId>
+                      <artifactId>junit</artifactId>
+                  </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- Barcode -->
@@ -138,9 +132,22 @@
             <artifactId>qrcodegen</artifactId>
         </dependency>
         <dependency>
-            <groupId>net.sf.barcode4j</groupId>
+            <groupId>org.primefaces.extensions</groupId>
             <artifactId>barcode4j-light</artifactId>
-            <version>2.1</version>
+        </dependency>
+
+        <!-- ChartJS model -->
+        <dependency>
+           <groupId>software.xdev</groupId>
+           <artifactId>chartjs-java-model</artifactId>
+           <version>1.1.3</version>
+        </dependency>
+
+        <!-- Conflict with resteasy-jackson2-provider -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.16.1</version>
         </dependency>
 
         <!-- Cache -->
@@ -202,7 +209,11 @@
                 <groupId>com.mycila</groupId>
                 <artifactId>license-maven-plugin</artifactId>
                 <configuration>
-                    <header>../conf/header.txt</header>
+                    <licenseSets>
+                        <licenseSet>
+                            <header>../conf/header.txt</header>
+                        </licenseSet>
+                    </licenseSets>
                 </configuration>
             </plugin>
             <plugin>
@@ -225,7 +236,7 @@
             <plugin>
                 <groupId>io.github.cleydyr</groupId>
                 <artifactId>dart-sass-maven-plugin</artifactId>
-                <version>0.3.0</version>
+                <version>1.2.0</version>
                 <executions>
                     <execution>
                         <id>generate-css-using-sass</id>
@@ -242,6 +253,7 @@
                     <noSourceMap>true</noSourceMap>
                     <style>COMPRESSED</style>
                     <quiet>false</quiet>
+                    <version>1.68.0</version>
                 </configuration>
             </plugin>
             <plugin>
@@ -312,6 +324,9 @@
             <properties>
                 <jsf.project.stage>Development</jsf.project.stage>
             </properties>
+            <build>
+                <defaultGoal>clean jetty:run</defaultGoal>
+            </build>
         </profile>
 
         <profile>
@@ -463,6 +478,105 @@
             </dependencies>
             <build>
                 <filters>
+                    <filter>${basedir}/src/main/resources/filters/non-ee.properties</filter>
+                </filters>
+            </build>
+        </profile>
+        <profile>
+            <id>release</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.apache.myfaces.core</groupId>
+                    <artifactId>myfaces-api</artifactId>
+                    <version>${myfaces-next.version}</version>
+                    <scope>compile</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.apache.myfaces.core</groupId>
+                    <artifactId>myfaces-impl</artifactId>
+                    <version>${myfaces-next.version}</version>
+                    <scope>compile</scope>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.hibernate.validator</groupId>
+                    <artifactId>hibernate-validator</artifactId>
+                    <version>${hibernate-validator.version}</version>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.jboss.resteasy</groupId>
+                    <artifactId>resteasy-core</artifactId>
+                    <version>${resteasy.version}</version>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>org.jboss.spec.javax.xml.bind</groupId>
+                            <artifactId>jboss-jaxb-api_2.3_spec</artifactId>
+                        </exclusion>
+                        <exclusion>
+                            <groupId>jakarta.activation</groupId>
+                            <artifactId>jakarta.activation-api</artifactId>
+                        </exclusion>
+                    </exclusions>
+                </dependency>
+                <dependency>
+                    <groupId>org.jboss.resteasy</groupId>
+                    <artifactId>resteasy-servlet-initializer</artifactId>
+                    <version>${resteasy.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.jboss.resteasy</groupId>
+                    <artifactId>resteasy-cdi</artifactId>
+                    <version>${resteasy.version}</version>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>org.jboss.weld</groupId>
+                            <artifactId>weld-api</artifactId>
+                        </exclusion>
+                    </exclusions>
+                </dependency>
+                <dependency>
+                    <groupId>org.jboss.resteasy</groupId>
+                    <artifactId>resteasy-jackson2-provider</artifactId>
+                    <version>${resteasy.version}</version>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>jakarta.activation</groupId>
+                            <artifactId>jakarta.activation-api</artifactId>
+                        </exclusion>
+                    </exclusions>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.apache.geronimo.specs</groupId>
+                    <artifactId>geronimo-atinject_1.0_spec</artifactId>
+                    <version>1.2</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.apache.geronimo.specs</groupId>
+                    <artifactId>geronimo-jcdi_2.0_spec</artifactId>
+                    <version>1.3</version>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.apache.openwebbeans</groupId>
+                    <artifactId>openwebbeans-impl</artifactId>
+                    <version>${owb.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.apache.openwebbeans</groupId>
+                    <artifactId>openwebbeans-web</artifactId>
+                    <version>${owb.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.apache.openwebbeans</groupId>
+                    <artifactId>openwebbeans-jsf</artifactId>
+                    <version>${owb.version}</version>
+                </dependency>
+            </dependencies>
+            <build>
+                <filters>
+                    <filter>${basedir}/src/main/resources/filters/myfaces.properties</filter>
                     <filter>${basedir}/src/main/resources/filters/non-ee.properties</filter>
                 </filters>
             </build>

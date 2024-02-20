@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,56 +26,74 @@ package org.primefaces.component.datatable.export;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.util.List;
-
+import java.io.UnsupportedEncodingException;
+import java.util.Collections;
 import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
-import org.primefaces.component.export.ExportConfiguration;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.component.export.ColumnValue;
+import org.primefaces.component.export.ExporterOptions;
+import org.primefaces.component.export.ExporterUtils;
 import org.primefaces.util.EscapeUtils;
 
-public class DataTableXMLExporter extends DataTableExporter {
+public class DataTableXMLExporter extends DataTableExporter<PrintWriter, ExporterOptions> {
+
+    public DataTableXMLExporter() {
+        super(null, Collections.emptySet(), false);
+    }
 
     @Override
-    public void doExport(FacesContext context, DataTable table, ExportConfiguration exportConfiguration, int index) throws IOException {
-
-        try (OutputStreamWriter osw = new OutputStreamWriter(getOutputStream(), exportConfiguration.getEncodingType());
-            PrintWriter writer = new PrintWriter(osw);) {
-
-            if (exportConfiguration.getPreProcessor() != null) {
-                // PF 9 - attention: breaking change to PreProcessor (PrintWriter instead of writer)
-                exportConfiguration.getPreProcessor().invoke(context.getELContext(), new Object[]{writer});
-            }
-
-            writer.append("<?xml version=\"1.0\"?>\n");
-            writer.append("<" + table.getId() + ">\n");
-
-            if (exportConfiguration.isPageOnly()) {
-                exportPageOnly(context, table, writer);
-            }
-            else if (exportConfiguration.isSelectionOnly()) {
-                exportSelectionOnly(context, table, writer);
-            }
-            else {
-                exportAll(context, table, writer);
-            }
-
-            writer.append("</" + table.getId() + ">");
-
-            table.setRowIndex(-1);
-
-            if (exportConfiguration.getPostProcessor() != null) {
-                // PF 9 - attention: breaking change to PostProcessor (PrintWriter instead of writer)
-                exportConfiguration.getPostProcessor().invoke(context.getELContext(), new Object[]{writer});
-            }
-
-            writer.flush();
+    protected PrintWriter createDocument(FacesContext context) throws IOException {
+        try {
+            OutputStreamWriter osw = new OutputStreamWriter(os(), exportConfiguration.getEncodingType());
+            return new PrintWriter(osw);
         }
+        catch (UnsupportedEncodingException e) {
+            throw new FacesException(e);
+        }
+    }
+
+    @Override
+    protected void exportTable(FacesContext context, DataTable table, int index) throws IOException {
+        String doctag = table.getExportTag() != null ? table.getExportTag() : table.getId();
+        document.append("<?xml version=\"1.0\"?>\n").append("<").append(doctag).append(">\n");
+
+        super.exportTable(context, table, index);
+
+        document.append("</").append(doctag).append(">");
+    }
+
+    @Override
+    protected void preRowExport(FacesContext context, DataTable table) {
+        String rowtag = table.getExportRowTag() != null ? table.getExportRowTag() : table.getVar();
+        document.append("\t<").append(rowtag).append(">\n");
+    }
+
+    @Override
+    protected void postRowExport(FacesContext context, DataTable table) {
+        String rowtag = table.getExportRowTag() != null ? table.getExportRowTag() : table.getVar();
+        document.append("\t</").append(rowtag).append(">\n");
+
+        super.postRowExport(context, table);
+    }
+
+    @Override
+    protected void postExport(FacesContext context) throws IOException {
+        super.postExport(context);
+
+        if (document != null) {
+            document.flush();
+        }
+    }
+
+    @Override
+    protected void exportCellValue(FacesContext context, DataTable table, UIColumn col, ColumnValue columnValue, int index) {
+        String tag = ExporterUtils.getColumnExportTag(context, col);
+        document.append("\t\t<").append(tag).append(">")
+                .append(EscapeUtils.forXml(columnValue.toString()))
+                .append("</").append(tag).append(">\n");
     }
 
     @Override
@@ -86,63 +104,5 @@ public class DataTableXMLExporter extends DataTableExporter {
     @Override
     public String getFileExtension() {
         return ".xml";
-    }
-
-    @Override
-    protected void preRowExport(DataTable table, Object document) {
-        ((PrintWriter) document).append("\t<" + table.getVar() + ">\n");
-    }
-
-    @Override
-    protected void postRowExport(DataTable table, Object document) {
-        ((PrintWriter) document).append("\t</" + table.getVar() + ">\n");
-    }
-
-    @Override
-    protected void exportCells(DataTable table, Object document) {
-        PrintWriter writer = (PrintWriter) document;
-        for (UIColumn col : getExportableColumns(table)) {
-            if (col instanceof DynamicColumn) {
-                ((DynamicColumn) col).applyStatelessModel();
-            }
-
-            String columnTag = getColumnTag(col);
-            try {
-                addColumnValue(writer, table, col.getChildren(), columnTag, col);
-            }
-            catch (IOException ex) {
-                throw new FacesException(ex);
-            }
-        }
-    }
-
-    protected String getColumnTag(UIColumn column) {
-        String headerText = (column.getExportHeaderValue() != null) ? column.getExportHeaderValue() : column.getHeaderText();
-        UIComponent facet = column.getFacet("header");
-        String columnTag;
-
-        if (headerText != null) {
-            columnTag = headerText.toLowerCase();
-        }
-        else if (ComponentUtils.shouldRenderFacet(facet)) {
-            columnTag = exportValue(FacesContext.getCurrentInstance(), facet).toLowerCase();
-        }
-        else {
-            throw new FacesException("No suitable xml tag found for " + column);
-        }
-
-        return EscapeUtils.forXmlTag(columnTag);
-    }
-
-    protected void addColumnValue(PrintWriter writer, DataTable table, List<UIComponent> components, String tag, UIColumn column)
-            throws IOException {
-
-        FacesContext context = FacesContext.getCurrentInstance();
-
-        writer.append("\t\t<" + tag + ">");
-
-        exportColumn(context, table, column, components, false, (s) -> writer.append(EscapeUtils.forXml(s)));
-
-        writer.append("</" + tag + ">\n");
     }
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,11 +39,7 @@ public class DonutChartRenderer extends ChartRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         DonutChart chart = (DonutChart) component;
-        String clientId = chart.getClientId(context);
-        String style = chart.getStyle();
-        String styleClass = chart.getStyleClass();
-
-        encodeMarkup(context, clientId, style, styleClass);
+        encodeMarkup(context, chart);
         encodeScript(context, chart);
     }
 
@@ -68,8 +64,8 @@ public class DonutChartRenderer extends ChartRenderer {
         DonutChartOptions donutOptions = (DonutChartOptions) options;
 
         writer.write(",options:{");
-
-        writer.write("animation:{");
+        encodeResponsive(context, donutOptions, false);
+        writer.write(",animation:{");
         writer.write("animateRotate:" + donutOptions.isAnimateRotate());
         writer.write(",animateScale:" + donutOptions.isAnimateScale());
         writer.write("}");

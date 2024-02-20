@@ -55,8 +55,11 @@ label | null | String | A localized user presentable name.
 itemDisabled | false | Boolean | Specified if an item can be picked or not.
 showSourceFilter | false | Boolean | Displays and input filter for source list.
 showTargetFilter | false | Boolean | Displays and input filter for target list.
+sourceFilterPlaceholder | null | String | Placeholder for the source filter input element.
+targetFilterPlaceholder | null | String | Placeholder for the target filter input element.
 filterMatchMode | startsWith | String | Match mode for filtering, valid values are startsWith, contains, endsWith and custom.
 filterFunction | null | String | Name of the javascript function for custom filtering.
+filterNormalize | false | Boolean | Defines if filtering would be done using normalized values (accents will be removed from characters).
 showCheckbox | false | Boolean | When true, a checkbox is displayed next to each item.
 labelDisplay | tooltip | String | Defines how the button labels displayed, valid values are "tooltip" (default) and "inline".
 orientation | horizontal | String | Defines layout orientation, valid values are "vertical" and "horizontal".
@@ -154,12 +157,12 @@ Caption texts for lists are defined with facets named _sourceCaption_ and _targe
 ```
 ## Filtering
 PickList provides built-in client side filtering. Filtering is enabled by setting the corresponding
-filtering attribute of a list. For source list this is _showSourceFilter_ and for target list it is
-_showTargetFilter_. Default match mode is startsWith and contains, endsWith are also available
+filtering attribute of a list. For source list this is `showSourceFilter` and for target list it is
+`showTargetFilter`. Default match mode is `startsWith` and `contains`, `endsWith` are also available
 options.
 
-When you need to a custom match mode set _filterMatchMode_ to custom and write a javascript
-function that takes itemLabel and filterValue as parameters. Return false to hide an item and true to
+When you need to a custom match mode set `filterMatchMode` to custom and write a javascript
+function that takes `itemLabel` and `filterValue` as parameters. Return false to hide an item and true to
 display.
 
 ```xhtml

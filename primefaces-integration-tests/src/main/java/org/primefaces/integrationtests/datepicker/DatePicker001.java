@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,9 +40,11 @@ public class DatePicker001 implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private LocalDate localDate;
+    private LocalDate localDateEditable;
 
     @PostConstruct
     public void init() {
         localDate = LocalDate.now();
+        localDateEditable = LocalDate.now();
     }
 }

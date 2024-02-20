@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,16 +29,8 @@ import javax.faces.context.FacesContext;
 
 public class PrimeExternalContext extends ExternalContextWrapper {
 
-    private ExternalContext wrapped;
-
-    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public PrimeExternalContext(ExternalContext wrapped) {
-        this.wrapped = wrapped;
-    }
-
-    @Override
-    public ExternalContext getWrapped() {
-        return wrapped;
+        super(wrapped);
     }
 
     public static PrimeExternalContext getCurrentInstance(FacesContext facesContext) {

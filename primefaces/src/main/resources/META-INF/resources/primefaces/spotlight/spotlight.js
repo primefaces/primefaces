@@ -23,7 +23,7 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
      */
     init: function(cfg) {
         this._super(cfg);
-        this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.target);
+        this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.target);
 
         if(!$(document.body).children('.ui-spotlight').length) {
             this.createMasks();
@@ -116,7 +116,7 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
         if (this.cfg.blockScroll) {
             PrimeFaces.utils.preventScrolling();
         }
-        PrimeFaces.utils.preventTabbing(this.id, $this.target.zIndex(), function() {
+        PrimeFaces.utils.preventTabbing(this, this.id, $this.target.zIndex(), function() {
             return $this.target.find(':tabbable');
         });
 
@@ -130,7 +130,7 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     unbindEvents: function() {
-        PrimeFaces.utils.enableTabbing(this.id);
+        PrimeFaces.utils.enableTabbing(this, this.id);
         if (this.cfg.blockScroll) {
             PrimeFaces.utils.enableScrolling();
         }

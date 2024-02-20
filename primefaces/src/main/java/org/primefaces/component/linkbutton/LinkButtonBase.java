@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -42,7 +42,8 @@ public abstract class LinkButtonBase extends HtmlOutcomeTargetLink implements UI
         href,
         escape,
         icon,
-        iconPos
+        iconPos,
+        ariaLabel
     }
 
     public LinkButtonBase() {
@@ -112,5 +113,13 @@ public abstract class LinkButtonBase extends HtmlOutcomeTargetLink implements UI
 
     public void setIconPos(String iconPos) {
         getStateHelper().put(PropertyKeys.iconPos, iconPos);
+    }
+
+    public String getAriaLabel() {
+        return (String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
+    }
+
+    public void setAriaLabel(String ariaLabel) {
+        getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
     }
 }

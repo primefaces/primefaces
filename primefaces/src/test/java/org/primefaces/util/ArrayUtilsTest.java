@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,10 +27,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-public class ArrayUtilsTest {
+class ArrayUtilsTest {
 
     @Test
-    public void shouldConcatTwoArrays() {
+    void shouldConcatTwoArrays() {
         String[] arr1 = new String[]{"a", "b", "c"};
         String[] arr2 = new String[]{"d", "e", "f"};
 

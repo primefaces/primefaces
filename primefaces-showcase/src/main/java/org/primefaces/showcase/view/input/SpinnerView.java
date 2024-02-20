@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +33,7 @@ public class SpinnerView {
     private int number1;
     private double number2;
     private int number3;
-    private int number4;
+    private int number4 = 15;
     private int number5;
     private int number6;
     private int number7;

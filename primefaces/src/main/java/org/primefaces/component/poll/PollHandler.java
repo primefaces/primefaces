@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,8 +32,9 @@ import org.primefaces.facelets.MethodRule;
 
 public class PollHandler extends ComponentHandler {
 
-    private static final MetaRule LISTENER
-            = new MethodRule("listener", null, new Class[0]);
+    private static final MetaRule LISTENER = new MethodRule(Poll.PropertyKeys.listener.name(),
+            null,
+            new Class[0]);
 
     public PollHandler(ComponentConfig config) {
         super(config);

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -56,26 +56,10 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         SelectBooleanButton button = (SelectBooleanButton) component;
 
-        calculateLabels(context, button);
         encodeMarkup(context, button);
         encodeScript(context, button);
     }
 
-    /**
-     * Determine if not iconOnly and no labels provided set the default labels.
-     */
-    private void calculateLabels(FacesContext context, SelectBooleanButton button) {
-        boolean hasLabel = LangUtils.isNotBlank(button.getOnLabel()) || LangUtils.isNotBlank(button.getOffLabel());
-        if (hasLabel) {
-            return;
-        }
-        boolean hasIcon = LangUtils.isNotBlank(button.getOnIcon()) || LangUtils.isNotBlank(button.getOffIcon());
-        if (!hasIcon) {
-            // no icon or label use defaults
-            button.setOnLabel(MessageFactory.getMessage(SelectBooleanButtonBase.LABEL_ON));
-            button.setOffLabel(MessageFactory.getMessage(SelectBooleanButtonBase.LABEL_OFF));
-        }
-    }
 
     protected void encodeMarkup(FacesContext context, SelectBooleanButton button) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
@@ -136,12 +120,7 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
 
-        if (isValueBlank(label)) {
-            writer.write("ui-button");
-        }
-        else {
-            writer.writeText(label, "value");
-        }
+        renderButtonValue(writer, true, label, button.getTitle(), button.getAriaLabel());
 
         writer.endElement("span");
 
@@ -149,14 +128,10 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
     }
 
     protected void encodeScript(FacesContext context, SelectBooleanButton button) throws IOException {
-
-        String onLabel = button.getOnLabel();
-        String offLabel = button.getOffLabel();
-
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("SelectBooleanButton", button)
-                    .attr("onLabel", isValueBlank(onLabel) ? "ui-button" : onLabel)
-                    .attr("offLabel", isValueBlank(offLabel) ? "ui-button" : offLabel)
+                    .attr("onLabel", button.getOnLabel(), null)
+                    .attr("offLabel", button.getOffLabel())
                     .attr("onIcon", button.getOnIcon(), null)
                     .attr("offIcon", button.getOffIcon(), null);
 

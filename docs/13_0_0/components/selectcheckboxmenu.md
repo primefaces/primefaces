@@ -37,13 +37,14 @@ label | null | String | User presentable name.
 onchange | null | String | Callback to execute on value change.
 style | null | String | Inline style of the component.
 styleClass | null | String | Style class of the container.
-scrollHeight | null | Integer | Height of the overlay.
+scrollHeight | null | String | Maximum height of the overlay, e.g., "200vh" or "200%". Default is "200px".
 onShow | null | String | Client side callback to execute when overlay is displayed.
 onHide | null | String | Client side callback to execute when overlay is hidden.
 filter | false | Boolean | Renders an input field as a filter.
 filterMatchMode | startsWith | String | Match mode for filtering, valid values are startsWith, contains, endsWith and custom.
 filterFunction | null | String | Client side function to use in custom filtering.
 caseSensitive | false | Boolean | Defines if filtering would be case sensitive.
+filterNormalize | false | Boolean | Defines if filtering would be done using normalized values (accents will be removed from characters).
 panelStyle | null | String | Inline style of the overlay.
 panelStyleClass | null | String | Style class of the overlay.
 appendTo | null | String | Appends the overlay to the element defined by search expression. Defaults to document body.
@@ -57,7 +58,8 @@ labelSeparator | , | String | Separator for joining item lables if updateLabel i
 emptyLabel | null | String | Label to be shown in updateLabel mode when no item is selected. If not set the label is shown.
 filterPlaceholder | null | String  | Placeholder text to show when filter input is empty.
 hideNoSelectionOption | false | boolean  | Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.
-
+var | null | String | Name of iterator to be used in custom content display.
+collectionType | null | String | Optional attribute that is a literal string that is the fully qualified class name of a concrete class that implements `java.util.Collection` or an EL expression that evaluates to either 1. such a String, or 2. the `Class` object itself.
 
 ## Getting started with SelectCheckboxMenu
 SelectCheckboxMenu usage is same as the standard selectManyCheckbox or PrimeFaces
@@ -74,9 +76,9 @@ displays item as a comma separated list and for an advanced display use _multipl
 which renders the items as separate tokens similar to the chips component.
 
 ## Filtering
-When filtering is enabled with setting _filter_ on, an input field is rendered at overlay header and on
-keyup event filtering is executed on client side using _filterMatchMode_. Default modes of
-filterMatchMode are startsWith, contains, endsWith and custom. Custom mode requires a javascript
+When filtering is enabled with setting `filter` on, an input field is rendered at overlay header and on
+keyup event filtering is executed on client side using `filterMatchMode`. Default modes of
+filterMatchMode are `startsWith`, `contains`, `endsWith` and `custom`. Custom mode requires a javascript
 function to do the filtering.
 
 ```xhtml
@@ -88,6 +90,44 @@ function to do the filtering.
 function customFilter(itemLabel, filterValue) {
     //return true to accept and false to reject
 }
+```
+
+## Custom Content
+SelectCheckboxMenu can display custom content in overlay panel by using column component and the
+var option to refer to each item. Facets for column `header` and overall `footer` may also be used.
+
+```java
+public class MenuBean {
+    private List<Player> players;
+    private List<Player> selectedPlayers;
+
+    public OrderListBean() {
+        players = new ArrayList<Player>();
+        players.add(new Player("Messi", 10, "messi.jpg"));
+        //more players
+    }
+    //getters and setters
+}
+```
+```xhtml
+<p:selectCheckboxMenu value="#{menuBean.selectedPlayers}" converter="player" var="p">
+    <f:selectItems value="#{menuBean.players}" var="player" itemLabel="#{player.name}" itemValue="#{player}"/>
+    <p:column>
+        <p:graphicImage value="/images/barca/#{p.photo}" width="40" height="50"/>
+    </p:column>
+    <p:column>
+        #{p.name} - #{p.number}
+        <f:facet name="header">
+             <h:outputText value="Player"/>
+         </f:facet>
+    </p:column>
+
+    <f:facet name="footer">
+         <p:divider />
+         <h:outputText value="#{menuBean.players.size()} available players"
+                       style="font-weight: bold"/>
+    </f:facet>
+</p:selectCheckboxMenu>
 ```
 
 ## Ajax Behavior Events
@@ -131,9 +171,15 @@ the list of structural style classes;
 .ui-selectcheckboxmenu-label | Label.
 .ui-selectcheckboxmenu-trigger | Dropdown icon.
 .ui-selectcheckboxmenu-panel | Overlay panel.
+.ui-selectcheckboxmenu-header | Header in overlay panel.
+.ui-selectcheckboxmenu-footer | Footer in overlay panel.
+.ui-selectcheckboxmenu-filter-container | Container for filter in overlay panel header.
+.ui-selectcheckboxmenu-filter | Filter in overlay panel header.
+.ui-selectcheckboxmenu-close | Closer in overlay panel header.
+.ui-selectcheckboxmenu-items-wrapper | Wrapper for option list container.
 .ui-selectcheckboxmenu-items | Option list container.
+.ui-selectcheckboxmenu-item-group | Each option group in the collection.
 .ui-selectcheckboxmenu-item | Each options in the collection.
 .ui-chkbox | Container of a checkbox.
 .ui-chkbox-box | Container of checkbox icon.
 .ui-chkbox-icon | Checkbox icon.
-

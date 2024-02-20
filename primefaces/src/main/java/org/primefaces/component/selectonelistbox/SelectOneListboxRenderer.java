@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,11 +36,9 @@ import javax.faces.model.SelectItem;
 import javax.faces.render.Renderer;
 
 import org.primefaces.component.column.Column;
-import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
-import org.primefaces.util.MessageFactory;
 import org.primefaces.util.WidgetBuilder;
 
 public class SelectOneListboxRenderer extends SelectOneRenderer {
@@ -96,8 +94,11 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
             wb.attr("filter", true)
                     .attr("filterMatchMode", listbox.getFilterMatchMode(), null)
                     .nativeAttr("filterFunction", listbox.getFilterFunction(), null)
-                    .attr("caseSensitive", listbox.isCaseSensitive(), false);
+                    .attr("caseSensitive", listbox.isCaseSensitive(), false)
+                    .attr("filterNormalize", listbox.isFilterNormalize(), false);
         }
+
+        encodeClientBehaviors(context, listbox);
 
         wb.finish();
     }
@@ -142,6 +143,8 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         if (customContent) {
             writer.startElement("table", null);
             writer.writeAttribute("class", SelectOneListbox.LIST_CLASS, null);
+            writer.writeAttribute(HTML.ARIA_ROLE, "listbox", null);
+            writer.writeAttribute(HTML.ARIA_MULITSELECTABLE, "false", null);
             writer.startElement("tbody", null);
             for (int i = 0; i < selectItems.size(); i++) {
                 SelectItem selectItem = selectItems.get(i);
@@ -153,6 +156,8 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         else {
             writer.startElement("ul", null);
             writer.writeAttribute("class", SelectOneListbox.LIST_CLASS, null);
+            writer.writeAttribute(HTML.ARIA_ROLE, "listbox", null);
+            writer.writeAttribute(HTML.ARIA_MULITSELECTABLE, "false", null);
             for (int i = 0; i < selectItems.size(); i++) {
                 SelectItem selectItem = selectItems.get(i);
                 encodeItem(context, listbox, selectItem, values, submittedValues, converter, customContent);
@@ -197,6 +202,11 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
 
             writer.startElement("tr", null);
             writer.writeAttribute("class", itemClass, null);
+            writer.writeAttribute(HTML.ARIA_ROLE, "option", null);
+            writer.writeAttribute(HTML.ARIA_LABEL, option.getLabel(), null);
+            writer.writeAttribute(HTML.ARIA_DISABLED, "" + option.isDisabled(), null);
+            writer.writeAttribute(HTML.ARIA_SELECTED, "" + selected, null);
+
             if (option.getDescription() != null) {
                 writer.writeAttribute("title", option.getDescription(), null);
             }
@@ -218,6 +228,10 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         else {
             writer.startElement("li", null);
             writer.writeAttribute("class", itemClass, null);
+            writer.writeAttribute(HTML.ARIA_ROLE, "option", null);
+            writer.writeAttribute(HTML.ARIA_LABEL, option.getLabel(), null);
+            writer.writeAttribute(HTML.ARIA_DISABLED, "" + option.isDisabled(), null);
+            writer.writeAttribute(HTML.ARIA_SELECTED, "" + selected, null);
 
             writer.startElement("span", null);
             if (option.isEscape()) {
@@ -305,7 +319,6 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
-        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(InputRenderer.ARIA_FILTER), null);
         if (disabled) {
             writer.writeAttribute("disabled", "disabled", null);
         }

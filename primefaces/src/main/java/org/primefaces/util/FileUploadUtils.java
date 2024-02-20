@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,36 +23,42 @@
  */
 package org.primefaces.util;
 
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import org.apache.commons.io.FilenameUtils;
+import org.primefaces.component.fileupload.FileUploadChunkDecoder;
+import org.primefaces.component.fileupload.FileUploadDecoder;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.model.file.UploadedFile;
+import org.primefaces.virusscan.VirusException;
 
 import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.io.FilenameUtils;
-import org.primefaces.component.fileupload.FileUpload;
-import org.primefaces.component.fileupload.FileUploadChunkDecoder;
-import org.primefaces.component.fileupload.FileUploadDecoder;
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.model.file.UploadedFile;
-import org.primefaces.shaded.owasp.SafeFile;
-import org.primefaces.shaded.owasp.ValidationException;
-import org.primefaces.virusscan.VirusException;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PushbackInputStream;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Utilities for FileUpload components.
@@ -61,93 +67,144 @@ public class FileUploadUtils {
 
     private static final Logger LOGGER = Logger.getLogger(FileUploadUtils.class.getName());
 
-    private static final Pattern INVALID_FILENAME_PATTERN = Pattern.compile("([\\/:*?\"<>|])");
+    // https://owasp.org/www-community/OWASP_Validation_Regex_Repository
+    private static final Pattern INVALID_FILENAME_WINDOWS =
+            Pattern.compile("^(?!^(PRN|AUX|CLOCK\\$|NUL|CON|COM\\d|LPT\\d|\\..*)(\\..+)?$)[^\\x00-\\x1f\\\\?*:\\\";|/<>]+$");
+    private static final Pattern INVALID_FILENAME_LINUX = Pattern.compile(".*[/\0:*?\\\"<>|].*");
+    private static final Pattern ENCODED_CHARS_PAT = Pattern.compile("(%)([0-9a-fA-F])([0-9a-fA-F])");
 
     private FileUploadUtils() {
+        // private constructor to prevent instantiation
     }
 
-    public static String getValidFilename(String filename) {
+    /**
+     * Checks file name for validity based on Windows or Linux rules.
+     * @param filename the name of the file to check
+     * @return the extracted file name
+     */
+    public static String requireValidFilename(String filename) {
         if (LangUtils.isBlank(filename)) {
-            return null;
+            throw validationError("Filename cannot be empty or null");
         }
 
+        // use java.nio Paths to detect a bad character
+        Character ch = containsInvalidCharacters(filename);
+        if (ch != null) {
+            throw validationError("Invalid filename: (" + filename + ") contains invalid character: " + ch);
+        }
+
+        // Windows and Linux have different allowed characters
         if (isSystemWindows()) {
-            if (!filename.contains("\\\\")) {
-                int length = FilenameUtils.getPrefixLength(filename);
-                String prefix = LangUtils.substring(filename, 0, length);
-                String[] parts = prefix.split(Pattern.quote(File.separator));
-                for (String part : parts) {
-                    if (INVALID_FILENAME_PATTERN.matcher(part).find()) {
-                        throw new FacesException("Invalid filename: " + filename);
-                    }
-                }
-            }
-            else {
-                throw new FacesException("Invalid filename: " + filename);
+            if (!INVALID_FILENAME_WINDOWS.matcher(filename).find()) {
+                throw validationError("Invalid Windows filename: " + filename);
             }
         }
-
-        String name = FilenameUtils.getName(filename);
-        String extension = FilenameUtils.getExtension(filename);
-        if (name.isEmpty() && extension.isEmpty()) {
-            throw new FacesException("Filename can not be the empty string");
+        else if (INVALID_FILENAME_LINUX.matcher(filename).find()) {
+            throw validationError("Invalid Linux filename: " + filename);
         }
 
-        return name;
+        // URL encoded characters like %20 are invalid
+        Matcher encodedMatcher = ENCODED_CHARS_PAT.matcher(filename);
+        if (encodedMatcher.find() ) {
+            throw validationError( "Invalid filename: (" + filename + ") contains invalid character: " + encodedMatcher.group());
+        }
+
+        return FilenameUtils.getName(filename);
     }
 
-    public static String getValidFilePath(String filePath) throws ValidationException {
+    /**
+     * Check the file path to ensure its valid and prevent directory traversal security issues.
+     *
+     * @param filePath the file path to test
+     * @param mustExist true if the directory must exist on disk, false if not
+     * @return the updated file path
+     */
+    public static String requireValidFilePath(String filePath, boolean mustExist) {
         if (LangUtils.isBlank(filePath)) {
-            throw new FacesException("Path can not be the empty string or null");
+            throw validationError("Path can not be the empty string or null");
+        }
+
+        Character ch = containsInvalidCharacters(filePath);
+        if (ch != null) {
+            throw validationError("Invalid path: (" + filePath + ") contains invalid character: " + ch);
+        }
+
+        filePath = URLDecoder.decode(filePath, StandardCharsets.UTF_8);
+
+        // standardize Windows paths from d:/test to d:\\test
+        if (isSystemWindows()) {
+            filePath = filePath.replace("/", "\\");
         }
 
         try {
-            SafeFile file = new SafeFile(filePath);
+            File file = new File(filePath);
             File parentFile = file.getParentFile();
 
-            if (!file.exists()) {
-                throw new ValidationException("Invalid directory", "Invalid directory, \"" + file + "\" does not exist.");
+            if (file == null || parentFile == null) {
+                throw validationError("Invalid directory, \"" + filePath + "\" is not valid.");
             }
-            if (!parentFile.exists()) {
-                throw new ValidationException("Invalid directory", "Invalid directory, specified parent does not exist.");
+            if (mustExist && !file.exists()) {
+                throw validationError("Invalid file, \"" + file + "\" does not exist.");
             }
-            if (!parentFile.isDirectory()) {
-                throw new ValidationException("Invalid directory", "Invalid directory, specified parent is not a directory.");
+            if (mustExist && !parentFile.exists()) {
+                throw validationError("Invalid directory, file parent directory does not exist.");
             }
+            if (mustExist && !parentFile.isDirectory()) {
+                throw validationError("Invalid directory, file parent is not a directory.");
+            }
+            // CVE-2022-31159 Partial Path Traversal Vulnerability
             if (!file.getCanonicalFile().toPath().startsWith(parentFile.getCanonicalFile().toPath())) {
-                throw new ValidationException("Invalid directory", "Invalid directory, \"" + file + "\" does not reside inside specified parent.");
+                throw validationError("Invalid directory, \"" + file + "\" does not reside inside specified parent.");
             }
-
+            // SONATYPE-2018-0608 prevent path traversal like "..\..\test"
             if (!file.getCanonicalPath().equals(filePath)) {
-                throw new ValidationException("Invalid directory", "Invalid directory name does not match the canonical path");
+                throw validationError("Invalid directory, name does not match the canonical path." );
             }
         }
         catch (IOException ex) {
-            throw new ValidationException("Invalid directory", "Failure to validate directory path");
+            throw validationError("Failure to validate directory path: " + ex.getMessage());
         }
 
         return filePath;
     }
 
-    public static boolean isSystemWindows() {
+    public static ValidatorException validationError(String message) {
+        return new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "File Error", message));
+    }
+
+    static boolean isSystemWindows() {
         return File.separatorChar == '\\';
     }
 
+    public static Character containsInvalidCharacters(String s) {
+        try {
+            Paths.get(s);
+        }
+        catch (InvalidPathException e) {
+            if (e.getInput() != null && e.getInput().length() > 0 && e.getIndex() >= 0) {
+                return s.toCharArray()[e.getIndex()];
+            }
+        }
+        return null;
+    }
+
     /**
-     * Check if an uploaded file meets all specifications regarding its filename and content type. It evaluates {@link FileUpload#getAllowTypes}
-     * as well as {@link FileUpload#getAccept} and uses the installed {@link java.nio.file.spi.FileTypeDetector} implementation.
+     * Check if an uploaded file meets all specifications regarding its filename and content type.
+     * It evaluates allowTypes as well as accept and uses the installed {@link java.nio.file.spi.FileTypeDetector} implementation.
      * For most reliable content type checking it's recommended to plug in Apache Tika as an implementation.
      *
      * @param context the {@link PrimeApplicationContext}
-     * @param fileUpload the {@link FileUpload} component
      * @param uploadedFile the details of the uploaded file
+     * @param allowTypes the Javascript regex
+     * @param accept the accept types
      * @return <code>true</code>, if all validations regarding filename and content type passed, <code>false</code> else
      */
-    public static boolean isValidType(PrimeApplicationContext context, FileUpload fileUpload, UploadedFile uploadedFile) {
+    public static boolean isValidType(PrimeApplicationContext context,
+                                      UploadedFile uploadedFile, String allowTypes, String accept) {
         String fileName = uploadedFile.getFileName();
         try (InputStream input = uploadedFile.getInputStream()) {
-            boolean validType = isValidFileName(fileUpload, uploadedFile)
-                        && isValidFileContent(context, fileUpload, fileName, input);
+            boolean validType = isValidFileName(uploadedFile, allowTypes)
+                        && isValidFileContent(context, accept, fileName, input);
             if (validType) {
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine(String.format("The uploaded file %s meets the filename and content type specifications", fileName));
@@ -163,8 +220,7 @@ public class FileUploadUtils {
         }
     }
 
-    private static boolean isValidFileName(FileUpload fileUpload, UploadedFile uploadedFile) {
-        String javascriptRegex = fileUpload.getAllowTypes();
+    private static boolean isValidFileName(UploadedFile uploadedFile, String javascriptRegex) {
         if (LangUtils.isBlank(javascriptRegex)) {
             return true;
         }
@@ -204,172 +260,108 @@ public class FileUploadUtils {
             start = 1;
         }
         char endChar = jsRegex.charAt(end);
-        if (endChar != '/' && endChar == 'i' || endChar == 'g') {
+        if (endChar == 'i' || endChar == 'g') {
             end = end - 1;
         }
         return LangUtils.substring(jsRegex, start, end);
     }
 
-    private static boolean isValidFileContent(PrimeApplicationContext context, FileUpload fileUpload, String fileName, InputStream stream) throws IOException {
-        if (!fileUpload.isValidateContentType()) {
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("Content type checking is disabled");
-            }
-            return true;
-        }
-        if (LangUtils.isBlank(fileUpload.getAccept())) {
-            //Short circuit
+    private static boolean isValidFileContent(PrimeApplicationContext primeAppContext, String allowedContentTypes,
+                                              String fileName, InputStream stream) throws IOException {
+        if (LangUtils.isBlank(allowedContentTypes)) {
             return true;
         }
 
-        String tempFilePrefix = UUID.randomUUID().toString();
-        Path tempFile = Files.createTempFile(tempFilePrefix, null);
+        String prefix = FilenameUtils.removeExtension(fileName);
+        Path tempFile = Files.createTempFile(prefix, Constants.EMPTY_STRING);
+        String contentType;
 
-        try {
-            try (InputStream in = new PushbackInputStream(new BufferedInputStream(stream))) {
-                try (OutputStream out = new FileOutputStream(tempFile.toFile())) {
-                    IOUtils.copyLarge(in, out);
-                }
-            }
+        try (InputStream in = new PushbackInputStream(new BufferedInputStream(stream));
+             OutputStream out = Files.newOutputStream(tempFile)) {
+            IOUtils.copyLarge(in, out);
 
-            String contentType = context.getFileTypeDetector().probeContentType(tempFile);
+            contentType = primeAppContext.getFileTypeDetector().probeContentType(tempFile);
 
+            // We want to force the FileTypeDetector impl to try to detect the file type by its content,
+            // this is why we intentionally hide the original file name/extension at first because both
+            // tika and mime-types go the easy way of looking up the file extension if possible.
+            // If this first attempt failed we try again, but now while preserving the original file name/extension
+            // to e.g. make the JDK default FileTypeDetector work
             if (contentType == null) {
-                if (LOGGER.isLoggable(Level.WARNING)) {
-                    LOGGER.warning(String.format("Could not determine content type of uploaded file %s, consider plugging in an adequate " +
-                            "FileTypeDetector implementation", fileName));
+                String extension = FilenameUtils.getExtension(fileName);
+                if (!extension.isEmpty()) {
+                    String newFileName = tempFile.getFileName().toString() + "." + extension;
+                    tempFile = Files.move(tempFile, tempFile.resolveSibling(newFileName));
+                    contentType = primeAppContext.getFileTypeDetector().probeContentType(tempFile);
                 }
-                return false;
-            }
-
-            //Comma-separated values: file_extension|audio/*|video/*|image/*|media_type (see https://www.w3schools.com/tags/att_input_accept.asp)
-            String[] accepts = fileUpload.getAccept().split(",");
-            boolean accepted = false;
-            for (String accept : accepts) {
-                accept = accept.trim().toLowerCase();
-                if (accept.startsWith(".") && fileName.toLowerCase().endsWith(accept)) {
-                    accepted = true;
-                    if (LOGGER.isLoggable(Level.FINE)) {
-                        LOGGER.fine(String.format("The file extension %s of the uploaded file %s is accepted", accept, fileName));
-                    }
-                    break;
-                }
-                //Now we have a media type that may contain wildcards
-                if (FilenameUtils.wildcardMatch(contentType.toLowerCase(), accept)) {
-                    accepted = true;
-                    if (LOGGER.isLoggable(Level.FINE)) {
-                        LOGGER.fine(String.format("The content type %s of the uploaded file %s is accepted by %s", contentType, fileName, accept));
-                    }
-                    break;
-                }
-            }
-            if (!accepted) {
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine(String.format("The uploaded file %s with content type %s does not match the accept specification %s", fileName, contentType,
-                            fileUpload.getAccept()));
-                }
-                return false;
             }
         }
         finally {
+            deleteFile(tempFile);
+        }
+
+        if (contentType == null) {
+            LOGGER.log(Level.WARNING, () -> String.format("Could not determine content type of uploaded file %s", fileName));
+            return false;
+        }
+
+        //Comma-separated values: file_extension|audio/*|video/*|image/*|media_type (see https://www.w3schools.com/tags/att_input_accept.asp)
+        final String filenameLC = fileName.toLowerCase();
+        final String contentTypeLC = contentType.toLowerCase();
+
+        boolean accepted = Stream.of(allowedContentTypes.split(","))
+                .map(String::trim)
+                .anyMatch(allowedContentType -> {
+                    // try with extension first
+                    if (allowedContentType.startsWith(".") && filenameLC.endsWith(allowedContentType)) {
+                        LOGGER.log(Level.FINE, () -> String.format("File extension %s of the uploaded file %s is accepted", allowedContentType, fileName));
+                        return true;
+                    }
+                    // or try with IANA media types
+                    if (FilenameUtils.wildcardMatch(contentTypeLC, allowedContentType)) {
+                        LOGGER.log(Level.FINE,
+                                () -> String.format("Content type %s of the uploaded file %s is accepted by %s", contentTypeLC, fileName, allowedContentType));
+                        return true;
+                    }
+
+                    return false;
+                });
+
+        if (!accepted) {
+            LOGGER.log(Level.FINE,
+                    () -> String.format("Uploaded file %s with content type %s does not match the accept specification %s",
+                            fileName, contentTypeLC, allowedContentTypes));
+            return false;
+        }
+
+        return true;
+    }
+
+    private static void deleteFile(Path tempFile) {
+        try {
+            Files.delete(tempFile);
+        }
+        catch (Exception ex) {
+            LOGGER.log(Level.WARNING, ex,
+                    () -> String.format("Could not delete temporary file %s, will try to delete on JVM exit", tempFile.toAbsolutePath()));
             try {
-                Files.delete(tempFile);
+                tempFile.toFile().deleteOnExit();
             }
-            catch (Exception ex) {
-                if (LOGGER.isLoggable(Level.WARNING)) {
-                    LOGGER.log(Level.WARNING, String.format("Could not delete temporary file %s, will try to delete on JVM exit",
-                            tempFile.toAbsolutePath()), ex);
-                    try {
-                        tempFile.toFile().deleteOnExit();
-                    }
-                    catch (Exception ex1) {
-                        if (LOGGER.isLoggable(Level.WARNING)) {
-                            LOGGER.log(Level.WARNING, String.format("Could not register temporary file %s for deletion on JVM exit",
-                                    tempFile.toAbsolutePath()), ex1);
-                        }
-                    }
-                }
+            catch (Exception ex1) {
+                LOGGER.log(Level.WARNING, ex1,
+                        () -> String.format("Could not register temporary file %s for deletion on JVM exit", tempFile.toAbsolutePath()));
             }
         }
-        return true;
     }
 
     public static void performVirusScan(FacesContext facesContext, UploadedFile file) throws VirusException {
         PrimeApplicationContext.getCurrentInstance(facesContext).getVirusScannerService().performVirusScan(file);
     }
 
-    public static void tryValidateFile(FacesContext context, FileUpload fileUpload, UploadedFile uploadedFile) throws ValidatorException {
-        Long sizeLimit = fileUpload.getSizeLimit();
-        PrimeApplicationContext appContext = PrimeApplicationContext.getCurrentInstance(context);
-
-        if (sizeLimit != null && uploadedFile.getSize() > sizeLimit) {
-            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, fileUpload.getInvalidSizeMessage(), ""));
-        }
-
-        if (!isValidType(appContext, fileUpload, uploadedFile)) {
-            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, fileUpload.getInvalidFileMessage(), ""));
-        }
-
-        if (fileUpload.isVirusScan()) {
-            performVirusScan(context, uploadedFile);
-        }
-    }
-
-    public static void tryValidateFiles(FacesContext context, FileUpload fileUpload, List<UploadedFile> files) {
-        long totalPartSize = 0;
-        Long sizeLimit = fileUpload.getSizeLimit();
-        for (UploadedFile file : files) {
-            totalPartSize += file.getSize();
-            tryValidateFile(context, fileUpload, file);
-        }
-
-        if (sizeLimit != null && totalPartSize > sizeLimit) {
-            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, fileUpload.getInvalidFileMessage(), ""));
-        }
-    }
-
-    /**
-     * OWASP prevent directory path traversal of "../../image.png".
-     *
-     * @see <a href="https://owasp.org/www-community/attacks/Path_Traversal">https://owasp.org/www-community/attacks/Path_Traversal</a>
-     * @param relativePath the relative path to check for path traversal
-     * @return the relative path
-     * @throws FacesException if any error is detected
-     */
-    public static String checkPathTraversal(String relativePath) {
-        // Unix systems can start with / but Windows cannot
-        String os = System.getProperty("os.name").toLowerCase();
-        if (!os.contains("win")) {
-            relativePath = relativePath.startsWith("/") ? relativePath.substring(1) : relativePath;
-        }
-
-        File file = new File(relativePath);
-
-        if (file.isAbsolute()) {
-            throw new FacesException("Path traversal attempt - absolute path not allowed.");
-        }
-
-        try  {
-            String pathUsingCanonical = file.getCanonicalPath();
-            String pathUsingAbsolute = file.getAbsolutePath();
-
-            // Require the absolute path and canonicalized path match.
-            // This is done to avoid directory traversal
-            // attacks, e.g. "1/../2/"
-            if (!pathUsingCanonical.equals(pathUsingAbsolute))  {
-                throw new FacesException("Path traversal attempt for path " + relativePath);
-            }
-        }
-        catch (IOException ex) {
-            throw new FacesException("Path traversal - unexpected exception.", ex);
-        }
-        return relativePath;
-    }
-
     public static List<Path> listChunks(Path path) {
         try (Stream<Path> walk = Files.walk(path)) {
             return walk
-                    .filter(p -> Files.isRegularFile(p) && p.getFileName().toString().matches("\\d+"))
+                    .filter(p -> p.toFile().isFile() && p.getFileName().toString().matches("\\d+"))
                     .sorted(Comparator.comparing(p -> Long.parseLong(p.getFileName().toString())))
                     .collect(Collectors.toList());
         }
@@ -380,7 +372,7 @@ public class FileUploadUtils {
 
     public static <T extends HttpServletRequest> List<Path> listChunks(T request) {
         Path chunkDir = getChunkDir(request);
-        if (!Files.exists(chunkDir)) {
+        if (!chunkDir.toFile().exists()) {
             return Collections.emptyList();
         }
 
@@ -401,5 +393,29 @@ public class FileUploadUtils {
         FileUploadChunkDecoder<T> chunkDecoder = getFileUploadChunkDecoder(request);
         String fileKey = chunkDecoder.generateFileInfoKey(request);
         return Paths.get(chunkDecoder.getUploadDirectory(request), fileKey);
+    }
+
+    public static <T extends HttpServletRequest> String getWebkitRelativePath(T request) {
+        return request.getParameter("X-File-Webkit-Relative-Path");
+    }
+
+    public static String formatBytes(Long bytes, Locale locale) {
+        if (bytes == null) {
+            return "";
+        }
+
+        if (bytes == 0) {
+            return "N/A";
+        }
+
+        String[] sizes = new String[] {"Bytes", "KB", "MB", "GB", "TB"};
+        int i = (int) Math.floor(Math.log(bytes) / Math.log(1024));
+        if (i == 0) {
+            return bytes + " " + sizes[i];
+        }
+        else {
+            DecimalFormat decimalFormat = new DecimalFormat("0.0", DecimalFormatSymbols.getInstance(locale));
+            return decimalFormat.format((bytes / Math.pow(1024, i))) + " " + sizes[i];
+        }
     }
 }

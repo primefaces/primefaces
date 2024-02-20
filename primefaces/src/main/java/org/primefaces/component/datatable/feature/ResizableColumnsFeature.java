@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,33 +23,15 @@
  */
 package org.primefaces.component.datatable.feature;
 
-import java.io.IOException;
-import javax.faces.FacesException;
-
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.datatable.DataTable;
-import org.primefaces.component.datatable.DataTableRenderer;
 
 public class ResizableColumnsFeature implements DataTableFeature {
-
-    private static final ResizableColumnsFeature INSTANCE = new ResizableColumnsFeature();
-
-    private ResizableColumnsFeature() {
-    }
-
-    public static ResizableColumnsFeature getInstance() {
-        return INSTANCE;
-    }
 
     @Override
     public void decode(FacesContext context, DataTable table) {
         table.decodeColumnResizeState(context);
-    }
-
-    @Override
-    public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
-        throw new FacesException("ResizableColumnsFeature should not encode.");
     }
 
     @Override

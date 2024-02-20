@@ -45,6 +45,7 @@ var | null | String | Name of iterator to be used in custom content display.
 filter | false | Boolean | Displays an input filter for the list.
 filterMatchMode | null | String | Match mode for filtering, valid values are startsWith (default), contains, endsWith and custom.
 filterFunction | null | String | Client side function to use in custom filterMatchMode.
+filterNormalize | false | Boolean | Defines if filtering would be done using normalized values (accents will be removed from characters).
 caseSensitive | false | Boolean | Defines if filtering would be case sensitive.
 scrollHeight | null | Integer | Defines the height of the scrollable area.
 hideNoSelectionOption | false | boolean  | Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.
@@ -67,8 +68,8 @@ Custom content can be displayed for each item using column components.
 </p:selectOneListbox>
 ```
 ## Filtering
-Filtering is enabled by setting filter attribute to true. There are four filter modes; _startsWith_ ,
-_contains_ , _endsWith_ and _custom_. In custom mode, _filterFunction_ must be defined as the name of the
+Filtering is enabled by setting filter attribute to true. There are four filter modes; `startsWith` ,
+`contains`, `endsWith` and `custom`. In custom mode, `filterFunction` must be defined as the name of the
 javascript function that takes the item value and filter as parameters to return a boolean to accept or
 reject a value. To add a filter to previous example;
 

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -139,8 +139,7 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
             externalContext.setResponseContentType(streamedContent.getContentType());
         }
         if (streamedContent.getContentLength() != null) {
-            // GitHub #9485 Faces 4 will switch from int to long contentLength
-            // externalContext.setResponseContentLength(streamedContent.getContentLength());
+            // we can't use externalContext.setResponseContentLength as our contentLength is a long
             externalContext.setResponseHeader("Content-Length", String.valueOf(streamedContent.getContentLength()));
         }
         if (streamedContent.getContentEncoding() != null) {

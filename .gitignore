@@ -4,6 +4,7 @@
 nbactions.xml
 .DS_STORE
 .idea/
+!.idea/codeStyles/*
 *.iml
 **/pom.xml.versionsBackup
 *~
@@ -55,3 +56,8 @@ node_modules/
 /primefaces-showcase/target/
 /primefaces-cli/target/
 /primefaces/target/
+/primefaces-selenium/target/
+/primefaces-selenium/primefaces-selenium-core/target/
+/primefaces-selenium/primefaces-selenium-components/target/
+/primefaces-integration-tests/target/
+/primefaces-integration-tests-jakarta/target/

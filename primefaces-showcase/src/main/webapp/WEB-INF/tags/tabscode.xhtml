@@ -7,8 +7,7 @@
 
     <p:tabView var="entry" value="#{value}">
         <p:tab title="#{entry.title}" >
-            <p:cache region="sources" key="#{entry}"
-                     disabled="#{facesContext.application.projectStage eq 'Development'}">
+            <p:cache region="sources" key="#{entry}">
 <pre class="line-numbers"><code class="language-#{entry.type}">
 #{entry.value}
 

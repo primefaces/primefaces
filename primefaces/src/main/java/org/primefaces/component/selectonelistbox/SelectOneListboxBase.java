@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,9 +26,10 @@ package org.primefaces.component.selectonelistbox;
 import javax.faces.component.html.HtmlSelectOneListbox;
 
 import org.primefaces.component.api.InputHolder;
+import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
 
-public abstract class SelectOneListboxBase extends HtmlSelectOneListbox implements Widget, InputHolder {
+public abstract class SelectOneListboxBase extends HtmlSelectOneListbox implements Widget, InputHolder, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -42,7 +43,8 @@ public abstract class SelectOneListboxBase extends HtmlSelectOneListbox implemen
         filterMatchMode,
         filterFunction,
         caseSensitive,
-        scrollHeight
+        scrollHeight,
+        filterNormalize
     }
 
     public SelectOneListboxBase() {
@@ -108,5 +110,13 @@ public abstract class SelectOneListboxBase extends HtmlSelectOneListbox implemen
 
     public void setScrollHeight(int scrollHeight) {
         getStateHelper().put(PropertyKeys.scrollHeight, scrollHeight);
+    }
+
+    public boolean isFilterNormalize() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.filterNormalize, false);
+    }
+
+    public void setFilterNormalize(boolean filterNormalize) {
+        getStateHelper().put(PropertyKeys.filterNormalize, filterNormalize);
     }
 }

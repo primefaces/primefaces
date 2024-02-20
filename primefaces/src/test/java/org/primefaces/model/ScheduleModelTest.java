@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,10 +29,10 @@ import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Test;
 
-public class ScheduleModelTest {
+class ScheduleModelTest {
 
     @Test
-    public void addEvents() {
+    void addEvents() {
         ScheduleModel model = new DefaultScheduleModel();
         model.addEvent(DefaultScheduleEvent.builder()
                 .title("Entry 1")
@@ -49,7 +49,7 @@ public class ScheduleModelTest {
     }
 
     @Test
-    public void deleteEvent() {
+    void deleteEvent() {
         ScheduleModel model = new DefaultScheduleModel();
         ScheduleEvent event1 = DefaultScheduleEvent.builder().title("Entry 1")
                 .startDate(LocalDateTime.now())
@@ -70,7 +70,7 @@ public class ScheduleModelTest {
     }
 
     @Test
-    public void findEventById() {
+    void findEventById() {
         ScheduleModel model = new DefaultScheduleModel();
         model.addEvent(DefaultScheduleEvent.builder().title("Entry 1")
                 .startDate(LocalDateTime.now())

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,7 @@ package org.primefaces.component.radiobutton;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
-import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -39,7 +39,7 @@ public class RadioButton extends RadioButtonBase {
     @Override
     public String getInputClientId() {
         FacesContext context = FacesContext.getCurrentInstance();
-        return SearchExpressionFacade.resolveComponent(context, this, getFor()).getClientId(context)
+        return SearchExpressionUtils.contextlessResolveComponent(context, this, getFor()).getClientId(context)
                 + UINamingContainer.getSeparatorChar(context) + getItemIndex() + "_clone";
     }
 

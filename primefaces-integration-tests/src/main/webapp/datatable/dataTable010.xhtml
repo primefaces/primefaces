@@ -16,7 +16,7 @@
                 <p:autoUpdate/>
             </p:messages>
 
-            <p:dataTable id="datatable" value="#{dataTable010.progLanguages}" var="lang" paginator="true" rows="3" selectionMode="multiple"
+            <p:dataTable id="datatable" value="#{dataTable010.progLanguages}" var="lang" paginator="true" rows="3"
                          selection="#{dataTable010.selectedProgLanguages}" rowKey="#{lang.id}" filterEvent="enter">
                 <p:column headerText="ID" sortBy="#{lang.id}">
                     <h:outputText value="#{lang.id}"/>

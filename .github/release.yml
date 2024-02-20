@@ -1,0 +1,24 @@
+changelog:
+  categories:
+    - title: Breaking Changes 💥
+      labels:
+        - breaking-change
+    - title: Security 🔒
+      labels:
+        - ":lock: security"
+    - title: Performance⚡
+      labels:
+        - ":zap: performance"
+    - title: New Features & Enhancements 🎉
+      labels:
+        - "new feature"
+        - enhancement
+    - title: Accessibility ♿
+      labels:
+        - accessibility
+    - title: Defects 🐞
+      labels:
+        - ":lady_beetle: defect"
+    - title: Dependencies 👒 
+      labels:
+        - dependencies

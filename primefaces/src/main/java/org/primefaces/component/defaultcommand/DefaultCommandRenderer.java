@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,7 +28,7 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -38,7 +38,7 @@ public class DefaultCommandRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         DefaultCommand command = (DefaultCommand) component;
 
-        UIComponent target = SearchExpressionFacade.resolveComponent(context, command, command.getTarget());
+        UIComponent target = SearchExpressionUtils.contextlessResolveComponent(context, command, command.getTarget());
 
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("DefaultCommand", command)
@@ -46,7 +46,7 @@ public class DefaultCommandRenderer extends CoreRenderer {
 
         String scope = command.getScope();
         if (scope != null) {
-            UIComponent scopeComponent = SearchExpressionFacade.resolveComponent(context, command, scope);
+            UIComponent scopeComponent = SearchExpressionUtils.contextlessResolveComponent(context, command, scope);
             wb.attr("scope", scopeComponent.getClientId(context));
         }
 

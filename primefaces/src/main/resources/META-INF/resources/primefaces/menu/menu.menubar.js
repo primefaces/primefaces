@@ -26,16 +26,16 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
 
         if(menuitem.parent().hasClass('ui-menu-child')) {
             pos = {
-                my: 'left top',
-                at: 'right top',
+                my: this.isRTL ? 'right top' : 'left top',
+                at: this.isRTL ? 'left top' : 'right top',
                 of: menuitem,
                 collision: 'flipfit'
             };
         }
         else {
             pos = {
-                my: 'left top',
-                at: 'left bottom',
+                my: this.isRTL ? 'right top' : 'left top',
+                at: this.isRTL ? 'right bottom' : 'left bottom',
                 of: menuitem,
                 collision: 'flipfit'
             };
@@ -46,18 +46,11 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
             clearTimeout(this.timeoutId);
         }
 
-        //avoid using timeout if delay is 0
-        if(this.cfg.delay && this.cfg.delay > 0) {
-            this.timeoutId = setTimeout(function () {
-               submenu.css('z-index', PrimeFaces.nextZindex())
-                      .show()
-                      .position(pos);
-            }, this.cfg.delay);
-        } else {
+        this.timeoutId = PrimeFaces.queueTask(function() {
             submenu.css('z-index', PrimeFaces.nextZindex())
-                   .show()
-                   .position(pos);
-        }
+                .show()
+                .position(pos);
+        }, this.cfg.showDelay);
     },
 
     /**
@@ -80,11 +73,10 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
                 return;
             }
 
-            var isRootLink = !currentitem.closest('ul').hasClass('ui-menu-child'),
-            keyCode = $.ui.keyCode;
+            var isRootLink = !currentitem.closest('ul').hasClass('ui-menu-child');
 
-            switch(e.which) {
-                    case keyCode.LEFT:
+            switch(e.key) {
+                    case 'ArrowLeft':
                         if(isRootLink) {
                             var prevItem = currentitem.prevAll('.ui-menuitem:not(.ui-menubar-options):first');
                             if(prevItem.length) {
@@ -108,7 +100,7 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
                         }
                     break;
 
-                    case keyCode.RIGHT:
+                    case 'ArrowRight':
                         if(isRootLink) {
                             var nextItem = currentitem.nextAll('.ui-menuitem:not(.ui-menubar-options):first');
                             if(nextItem.length) {
@@ -130,7 +122,7 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
                         }
                     break;
 
-                    case keyCode.UP:
+                    case 'ArrowUp':
                         if(!isRootLink) {
                             var prevItem = currentitem.prev('.ui-menuitem');
                             if(prevItem.length) {
@@ -142,7 +134,7 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
                         e.preventDefault();
                     break;
 
-                    case keyCode.DOWN:
+                    case 'ArrowDown':
                         if(isRootLink) {
                             var submenu = currentitem.children('ul.ui-menu-child');
                             if(submenu.is(':visible'))
@@ -161,7 +153,8 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
                         e.preventDefault();
                     break;
 
-                    case keyCode.ENTER:
+                    case 'Enter':
+                    case 'NumpadEnter':
                         var currentLink = currentitem.children('.ui-menuitem-link');
                         currentLink.trigger('click');
                         $this.jq.trigger("blur");

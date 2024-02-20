@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -155,7 +155,7 @@ public abstract class DatePicker extends AbstractInputComponent {
     }
 
     public LocalDateTime getValue() {
-        if (getWidgetDate() == null) {
+        if (hasDate() == false) {
             return null;
         }
 
@@ -166,7 +166,7 @@ public abstract class DatePicker extends AbstractInputComponent {
     }
 
     public LocalDate getValueAsLocalDate() {
-        if (getWidgetDate() == null) {
+        if (hasDate() == false) {
             return null;
         }
         Long dayOfMonth = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate().getDate();");
@@ -219,6 +219,15 @@ public abstract class DatePicker extends AbstractInputComponent {
      */
     public String getWidgetDate() {
         return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate();");
+    }
+
+    /**
+     * Checks whether a date is selected
+     *
+     * @return true if a date is selected.
+     */
+    public boolean hasDate() {
+        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".hasDate();");
     }
 
     /**
@@ -297,21 +306,13 @@ public abstract class DatePicker extends AbstractInputComponent {
     }
 
     /**
-     * Open the year select dropdown.
-     */
-    public void toggleYearDropdown() {
-        WebElement yearDropDown = showPanel().findElement(By.cssSelector("select.ui-datepicker-year"));
-        yearDropDown.click();
-    }
-
-    /**
-     * Select a year from the drodown.
+     * Select a year.
      *
      * @param year the year to select
      */
-    public void selectYearDropdown(int year) {
-        Select yearDropDown = new Select(showPanel().findElement(By.cssSelector("select.ui-datepicker-year")));
-        yearDropDown.selectByValue(Integer.toString(year));
+    public void selectYear(int year) {
+        WebElement yearInput = showPanel().findElement(By.cssSelector("input.ui-datepicker-year"));
+        yearInput.sendKeys(Integer.toString(year));
     }
 
 }

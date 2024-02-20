@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+        <h:outputScript name="locales/locale-nl.js" library="primefaces"/>
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true"/>
+
+            <p:colorPicker id="colorpicker" value="#{colorPicker001.color}" theme="pill"
+                            formatToggle="true" clearButton="true" closeButton="true"
+                            alpha="true" locale="nl"/>
+
+            <p:commandButton id="button" value="Submit" update="@form" actionListener="#{colorPicker001.submit}"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

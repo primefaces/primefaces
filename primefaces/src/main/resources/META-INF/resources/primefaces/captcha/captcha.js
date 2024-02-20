@@ -18,6 +18,7 @@
  * @prop {string} cfg.language Language in which information about this captcha is shown.
  * @prop {string} cfg.sitekey Public recaptcha key for a specific domain (deprecated).
  * @prop {string} cfg.size Size of the recaptcha.
+ * @prop {string} cfg.sourceUrl URL for the ReCaptcha JavaScript file. Some countries do not have access to Google.
  * @prop {number} cfg.tabindex Position of the input element in the tabbing order.
  * @prop {PrimeFaces.widget.Captcha.Theme} cfg.theme Theme of the captcha.
  */
@@ -39,14 +40,21 @@ PrimeFaces.widget.Captcha = PrimeFaces.widget.BaseWidget.extend({
             $this.render();
         };
 
+        this.appendScript();
+    },
+    
+    /**
+     * Appends the script to the document body.
+     * @private
+     */
+    appendScript : function() {
         var nonce = '';
         if (PrimeFaces.csp.NONCE_VALUE) {
             nonce = 'nonce="'+PrimeFaces.csp.NONCE_VALUE+'"';
         }
-
-        $(document.body).append('<script src="https://www.google.com/recaptcha/api.js?onload=' + this.getInitCallbackName() + '&render=explicit&hl='
+        var sourceUrl = this.cfg.sourceUrl || 'https://www.google.com/recaptcha/api.js';
+        $(document.body).append('<script src="'+sourceUrl+'?onload=' + this.getInitCallbackName() + '&render=explicit&hl='
                             + this.cfg.language +'" async defer ' + nonce + '>');
-
     },
 
     /**

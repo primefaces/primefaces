@@ -90,10 +90,7 @@ PrimeFaces.widget.DataView = PrimeFaces.widget.BaseWidget.extend({
             button.removeClass('ui-state-focus');
         })
         .on('keydown.dataview-button', function(e) {
-            var keyCode = $.ui.keyCode,
-            key = e.which;
-
-            if(key === keyCode.SPACE || key === keyCode.ENTER) {
+            if (PrimeFaces.utils.isActionKey(e)) {
                 var button = $(this),
                 radio = button.children(':radio');
 

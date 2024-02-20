@@ -32,13 +32,13 @@ treetable and more.
 | exportValue | null | String | Defines the value of the cell to be exported if you want something other than the cell contents or exportFunction.
 | exportRowspan | 0 | Integer | Defines the number of rows the column spans to be exported.
 | exportColspan | 0 | Integer | Defines the number of columns the column spans to be exported.
+| exportTag | null | String | If XML data exporter in use, this allows customization of the column tag in the XML.
 | field | null | String | Name of the field associated to bean "var". If not specified, filterBy-sortBy values are used to identify the field name.
 | filterable | true | Boolean | Boolean value to mark column as filterable.
 | filterBy | null | ValueExpr | ValueExpression to be used for filtering.
 | filterFunction | null | MethodExpr | Custom implementation to filter a value against a constraint.
 | filterMatchMode | startsWith | String | Match mode for filtering.
 | filterMaxLength | null | Integer | Maximum number of characters for an input filter.
-| filterOptions | null | Object | A collection of selectitems for filter dropdown.
 | filterPosition | bottom | String | Location of the column filter with respect to header content. Options are 'bottom'(default) and 'top'.
 | filterStyle | null | String | Inline style of the filter element
 | filterStyleClass | null | String | Style class of the filter element

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,11 +38,7 @@ public class PolarAreaChartRenderer extends ChartRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         PolarAreaChart chart = (PolarAreaChart) component;
-        String clientId = chart.getClientId(context);
-        String style = chart.getStyle();
-        String styleClass = chart.getStyleClass();
-
-        encodeMarkup(context, clientId, style, styleClass);
+        encodeMarkup(context, chart);
         encodeScript(context, chart);
     }
 
@@ -67,8 +63,8 @@ public class PolarAreaChartRenderer extends ChartRenderer {
         PolarAreaChartOptions polarOptions = (PolarAreaChartOptions) options;
 
         writer.write(",\"options\":{");
-
-        writer.write("\"animation\":{");
+        encodeResponsive(context, polarOptions, false);
+        writer.write(",\"animation\":{");
         writer.write("\"animateRotate\":" + polarOptions.isAnimateRotate());
         writer.write(",\"animateScale\":" + polarOptions.isAnimateScale());
         writer.write("}");

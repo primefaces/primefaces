@@ -24,7 +24,7 @@ AccordionPanel is a container component that displays content in stacked format.
 | value         | null    | List       | List to iterate to display dynamic number of tabs.
 | var           | null    | String     | Name of iterator to use in a dynamic number of tabs.
 | varStatus     | null    | String     | Name of the exported request scoped variable to represent state of the iteration same as in ui:repeat varStatus.
-| activeIndex   | false   | String     | Index of the active tab or a comma separated string of indexes when multiple mode is on.
+| activeIndex   | 0       | String     | Index of the active tab or a comma separated string of indexes when multiple mode is on. Alternative: all.
 | cache         | true    | Boolean    | Defines if activating a dynamic tab should load the contents from server again.
 | dir           | ltr     | String     | Defines text direction, valid values are ltr and rtl.
 | dynamic       | false   | Boolean    | Defines the toggle mode.
@@ -39,6 +39,7 @@ AccordionPanel is a container component that displays content in stacked format.
 | tabController | null    | MethodExpr | Server side listener to decide whether a tab change or tab close should be allowed.
 | tabindex      | 0       | String     | Position of the headers in the tabbing order.
 | widgetVar     | null    | String     | Name of the client side widget.
+| multiViewState| false   | Boolean    | Whether to keep Panel state across views, defaults to false.
 
 ## Getting Started with Accordion Panel
 Accordion panel consists of one or more tabs and each tab can group any content. Titles can also be

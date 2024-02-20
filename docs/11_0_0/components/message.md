@@ -32,7 +32,7 @@ escape | true | Boolean | Defines whether HTML would be escaped or not.
 severity | null | String | Comma separated list of severities to display only.
 style | null | String | Inline style of the component.
 styleClass | null | String | Style class of the component.
-skipDetailIfEqualsSummary | false | Boolean | Defines if rendering of the detail text should be skipped, if the detail and summaray are equals.
+skipDetailIfEqualsSummary | false | Boolean | Defines if rendering of the detail text should be skipped, if the detail and summary are equals.
 
 ## Getting started with Message
 Message usage is exactly same as standard message.
@@ -42,11 +42,12 @@ Message usage is exactly same as standard message.
 <p:message for="txt" />
 ```
 ## Display Mode
-Message component has three different display modes;
+Message component has four different display modes;
 
 - text : Only message text is displayed.
 - icon : Only message severity is displayed and message text is visible as a tooltip.
 - both (default) : Both icon and text are displayed.
+- tooltip : Message text is visible as a tooltip of the target component.
 
 ## Severity Levels
 Using severity attribute, you can define which severities can be displayed by the component. For
@@ -70,6 +71,7 @@ Full list of CSS selectors of message is as follows;
 ui-message-{severity} | Container element of the message
 ui-message-{severity}-summary | Summary text
 ui-message-{severity}-detail | Detail text
+ui-message-{severity}-icon | Icon of the message
 
-{severity} can be ‘info’, ‘error’, ‘warn’ and error.
+{severity} can be `info`, `warn`, `error` and `fatal`.
 

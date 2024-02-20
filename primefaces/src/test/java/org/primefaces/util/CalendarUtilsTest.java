@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,9 +23,7 @@
  */
 package org.primefaces.util;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -42,12 +40,11 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.primefaces.component.datepicker.DatePicker;
 
-public class CalendarUtilsTest {
+class CalendarUtilsTest {
 
     private DatePicker datePicker;
     private FacesContext context;
@@ -55,7 +52,7 @@ public class CalendarUtilsTest {
     private ELContext elContext;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         datePicker = mock(DatePicker.class);
         when(datePicker.getSelectionMode()).thenReturn("single");
 
@@ -67,7 +64,7 @@ public class CalendarUtilsTest {
     }
 
     @AfterEach
-    public void teardown() {
+    void teardown() {
         datePicker = null;
         context = null;
         externalContext = null;
@@ -84,7 +81,7 @@ public class CalendarUtilsTest {
     }
 
     @Test
-    public void getValueAsString_LocalDate() {
+    void getValueAsString_LocalDate() {
         LocalDate localDate = LocalDate.of(2019, 7, 23);
         setupValues(localDate, Locale.ENGLISH);
 
@@ -93,7 +90,7 @@ public class CalendarUtilsTest {
     }
 
     @Test
-    public void getValueAsString_LocalDate_German() {
+    void getValueAsString_LocalDate_German() {
         LocalDate localDate = LocalDate.of(2019, 7, 23);
         setupValues(localDate, Locale.GERMAN);
 
@@ -102,7 +99,7 @@ public class CalendarUtilsTest {
     }
 
     @Test
-    public void getValueAsString_Date() {
+    void getValueAsString_Date() {
         Calendar cal = new GregorianCalendar();
         cal.set(2019, 6, 23);
         Date date = cal.getTime();
@@ -113,7 +110,7 @@ public class CalendarUtilsTest {
     }
 
     @Test
-    public void getValueAsString_Date_German() {
+    void getValueAsString_Date_German() {
         Calendar cal = new GregorianCalendar();
         cal.set(2019, 6, 23);
         Date date = cal.getTime();
@@ -124,47 +121,47 @@ public class CalendarUtilsTest {
     }
 
     @Test
-    public void calculateZoneId_String() {
+    void calculateZoneId_String() {
         String timeZone = "GMT+2";
         ZoneId calculateZoneId = CalendarUtils.calculateZoneId(timeZone);
         assertEquals(ZoneId.of("GMT+2"), calculateZoneId);
     }
 
     @Test
-    public void calculateZoneId_ZoneId() {
+    void calculateZoneId_ZoneId() {
         ZoneId zoneId = ZoneId.of("GMT+2");
         ZoneId calculateZoneId = CalendarUtils.calculateZoneId(zoneId);
         assertEquals(ZoneId.of("GMT+2"), calculateZoneId);
     }
 
     @Test
-    public void calculateZoneId_TimeZone() {
+    void calculateZoneId_TimeZone() {
         TimeZone timeZone = TimeZone.getTimeZone("GMT+2");
         ZoneId calculateZoneId = CalendarUtils.calculateZoneId(timeZone);
         assertEquals(ZoneId.of("GMT+2"), calculateZoneId);
     }
 
     @Test
-    public void removeTime() {
+    void removeTime() {
         String pattern = "dd/MM/yy";
         String cleanedPattern = CalendarUtils.removeTime(pattern);
-        assertEquals(cleanedPattern, pattern);
+        assertEquals(pattern, cleanedPattern);
         pattern = "MM/dd/yy HH:mm";
         cleanedPattern = CalendarUtils.removeTime(pattern);
-        assertEquals(cleanedPattern, "MM/dd/yy");
+        assertEquals("MM/dd/yy", cleanedPattern);
         pattern = "dd.MM.yyyy KK:mm a";
         cleanedPattern = CalendarUtils.removeTime(pattern);
-        assertEquals(cleanedPattern, "dd.MM.yyyy");
+        assertEquals("dd.MM.yyyy", cleanedPattern);
         pattern = "HH:mm:ss";
         cleanedPattern = CalendarUtils.removeTime(pattern);
-        assertEquals(cleanedPattern, "");
+        assertEquals("", cleanedPattern);
         pattern = "HH:mm:ss dd/MM/yyyy";
         cleanedPattern = CalendarUtils.removeTime(pattern);
-        assertEquals(cleanedPattern, "");
+        assertEquals("", cleanedPattern);
     }
 
     @Test
-    public void now_LocalDate() {
+    void now_LocalDate() {
         when(datePicker.hasTime()).thenReturn(false);
         when(datePicker.getTimeZone()).thenReturn(ZoneId.systemDefault());
         Temporal now = CalendarUtils.now(datePicker);
@@ -172,7 +169,7 @@ public class CalendarUtilsTest {
     }
 
     @Test
-    public void now_LocalDateTime() {
+    void now_LocalDateTime() {
         when(datePicker.hasTime()).thenReturn(true);
         when(datePicker.getTimeZone()).thenReturn(ZoneId.systemDefault());
         LocalDateTime now = (LocalDateTime) CalendarUtils.now(datePicker);
@@ -180,7 +177,7 @@ public class CalendarUtilsTest {
     }
 
     @Test
-    public void now_DateTime() {
+    void now_DateTime() {
         when(datePicker.hasTime()).thenReturn(true);
         when(datePicker.getTimeZone()).thenReturn(ZoneId.systemDefault());
         Date now = (Date) CalendarUtils.now(datePicker, java.util.Date.class);
@@ -188,7 +185,7 @@ public class CalendarUtilsTest {
     }
 
     @Test
-    public void now_Date() {
+    void now_Date() {
         when(datePicker.hasTime()).thenReturn(false);
         when(datePicker.getTimeZone()).thenReturn(ZoneId.systemDefault());
         Date now = (Date) CalendarUtils.now(datePicker, java.util.Date.class);
@@ -196,7 +193,7 @@ public class CalendarUtilsTest {
     }
 
     @Test
-    public void now_Time() {
+    void now_Time() {
         when(datePicker.hasTime()).thenReturn(true);
         when(datePicker.isTimeOnly()).thenReturn(true);
         when(datePicker.getTimeZone()).thenReturn(ZoneId.systemDefault());
@@ -205,7 +202,7 @@ public class CalendarUtilsTest {
     }
 
     @Test
-    public void convertPattern() {
+    void convertPattern() {
         assertNull(CalendarUtils.convertPattern(null));
         assertEquals("", CalendarUtils.convertPattern(""));
         assertEquals("mm/dd/yy HH:mm:ss", CalendarUtils.convertPattern("MM/dd/yyyy HH:mm:ss"));
@@ -213,7 +210,7 @@ public class CalendarUtilsTest {
     }
 
     @Test
-    public void splitRange() {
+    void splitRange() {
         List<String> splitRange = CalendarUtils.splitRange("2021-03-01 - 2021-03-31", "yyyy-MM-dd", "-");
         assertEquals(2, splitRange.size());
         assertEquals("2021-03-01", splitRange.get(0));
@@ -223,7 +220,7 @@ public class CalendarUtilsTest {
         splitRange = CalendarUtils.splitRange("", "yyyy-MM-dd", "-");
         assertTrue(splitRange.isEmpty());
 
-        Assertions.assertThrows(FacesException.class, () -> {
+        assertThrows(FacesException.class, () -> {
             CalendarUtils.splitRange("2021 - 03 - 01 - 2021 - 03 - 31", "yyyy - MM - dd", "-");
         });
     }

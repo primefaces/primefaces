@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -65,7 +65,10 @@ public final class ComponentUtils {
             return false;
         }
 
-        return script.contains("PrimeFaces.ab(") || script.contains("pf.ab(") || script.contains("mojarra.ab(") || script.contains("jsf.ajax.request");
+        return script.contains("PrimeFaces.ab(") || script.contains("pf.ab(")
+                || script.contains("mojarra.ab(")
+                || script.contains("myfaces.ab(")
+                || script.contains("jsf.ajax.request") || script.contains("faces.ajax.request");
     }
 
     public static String getWidgetConfiguration(WebElement element) {

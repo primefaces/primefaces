@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,13 +28,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.primefaces.model.dashboard.DashboardModel;
+import org.primefaces.model.dashboard.DashboardWidget;
+import org.primefaces.model.dashboard.DefaultDashboardColumn;
+import org.primefaces.model.dashboard.DefaultDashboardModel;
 
-public class DefaultDashboardModelTest {
+class DefaultDashboardModelTest {
 
     private DashboardModel model;
 
     @Test
-    public void columnsHaveWidgets() {
+    void columnsHaveWidgets() {
         assertEquals(2, model.getColumn(0).getWidgetCount());
         assertEquals(3, model.getColumn(1).getWidgetCount());
         assertEquals(1, model.getColumn(2).getWidgetCount());
@@ -43,16 +47,16 @@ public class DefaultDashboardModelTest {
     }
 
     @Test
-    public void reorderWidgetInSameColumn() {
+    void reorderWidgetInSameColumn() {
         //Move widget2 on top of widget1
-        DashboardColumn column1 = model.getColumn(0);
+        DashboardWidget column1 = model.getColumn(0);
         column1.reorderWidget(0, "widget2");
 
         assertEquals("widget2", column1.getWidget(0));
         assertEquals("widget1", column1.getWidget(1));
         assertEquals(2, column1.getWidgetCount());
 
-        DashboardColumn column2 = model.getColumn(1);
+        DashboardWidget column2 = model.getColumn(1);
         column2.reorderWidget(0, "widget5");
 
         assertEquals("widget5", column2.getWidget(0));
@@ -62,13 +66,13 @@ public class DefaultDashboardModelTest {
     }
 
     @Test
-    public void transferWidgets() {
+    void transferWidgets() {
         //Move widget3 and widget5 from column2 to column3
-        DashboardColumn column2 = model.getColumn(1);
-        DashboardColumn column3 = model.getColumn(2);
+        DashboardWidget column2 = model.getColumn(1);
+        DashboardWidget column3 = model.getColumn(2);
 
-        model.transferWidget(column2, column3, "widget3", 0);
-        model.transferWidget(column2, column3, "widget5", 2);
+        model.transferWidget(column2, column3, "widget3", 0, false);
+        model.transferWidget(column2, column3, "widget5", 2, false);
         assertEquals("widget4", column2.getWidget(0));
         assertEquals(1, column2.getWidgetCount());
 
@@ -79,7 +83,7 @@ public class DefaultDashboardModelTest {
     }
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         model = new DefaultDashboardModel();
         DefaultDashboardColumn column1 = new DefaultDashboardColumn();
         column1.addWidget("widget1");
@@ -99,7 +103,7 @@ public class DefaultDashboardModelTest {
     }
 
     @AfterEach
-    public void teardown() {
+    void teardown() {
         model = null;
     }
 }

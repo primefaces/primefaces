@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,31 +31,33 @@ public class Constants {
         public static final String INTERPRET_EMPTY_STRING_AS_NULL = "javax.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL";
 
         // PF context params
-        public static final String THEME = "primefaces.THEME";
-        public static final String SUBMIT = "primefaces.SUBMIT";
-        public static final String DIRECTION = "primefaces.DIR";
-        public static final String TOUCHABLE = "primefaces.TOUCHABLE";
-        public static final String RESET_VALUES = "primefaces.RESET_VALUES";
-        public static final String CSV = "primefaces.CLIENT_SIDE_VALIDATION";
-        public static final String UPLOADER = "primefaces.UPLOADER";
-        public static final String CACHE_PROVIDER = "primefaces.CACHE_PROVIDER";
-        public static final String TRANSFORM_METADATA = "primefaces.TRANSFORM_METADATA";
-        public static final String LEGACY_WIDGET_NAMESPACE = "primefaces.LEGACY_WIDGET_NAMESPACE";
         public static final String BEAN_VALIDATION_DISABLED = "javax.faces.validator.DISABLE_DEFAULT_BEAN_VALIDATOR";
-        public static final String INTERPOLATE_CLIENT_SIDE_VALIDATION_MESSAGES = "primefaces.INTERPOLATE_CLIENT_SIDE_VALIDATION_MESSAGES";
-        public static final String EARLY_POST_PARAM_EVALUATION = "primefaces.EARLY_POST_PARAM_EVALUATION";
-        public static final String MOVE_SCRIPTS_TO_BOTTOM = "primefaces.MOVE_SCRIPTS_TO_BOTTOM";
+        public static final String CACHE_PROVIDER = "primefaces.CACHE_PROVIDER";
+        public static final String CLIENT_SIDE_LOCALISATION = "primefaces.CLIENT_SIDE_LOCALISATION";
+        public static final String COOKIES_SAME_SITE = "primefaces.COOKIES_SAME_SITE";
         public static final String CSP = "primefaces.CSP";
         public static final String CSP_POLICY = "primefaces.CSP_POLICY";
         public static final String CSP_REPORT_ONLY_POLICY = "primefaces.CSP_REPORT_ONLY_POLICY";
+        public static final String CSV = "primefaces.CLIENT_SIDE_VALIDATION";
+        public static final String DIRECTION = "primefaces.DIR";
+        public static final String EARLY_POST_PARAM_EVALUATION = "primefaces.EARLY_POST_PARAM_EVALUATION";
         public static final String EXCEPTION_TYPES_TO_IGNORE_IN_LOGGING = "primefaces.EXCEPTION_TYPES_TO_IGNORE_IN_LOGGING";
-        public static final String MULTI_VIEW_STATE_STORE = "primefaces.MULTI_VIEW_STATE_STORE";
-        public static final String MARK_INPUT_AS_INVALID_ON_ERROR_MSG = "primefaces.MARK_INPUT_AS_INVALID_ON_ERROR_MSG";
-        public static final String COOKIES_SAME_SITE = "primefaces.COOKIES_SAME_SITE";
         public static final String FLEX = "primefaces.FLEX";
-        public static final String PRIME_ICONS = "primefaces.PRIME_ICONS";
-        public static final String CLIENT_SIDE_LOCALISATION = "primefaces.CLIENT_SIDE_LOCALISATION";
         public static final String HIDE_RESOURCE_VERSION = "primefaces.HIDE_RESOURCE_VERSION";
+        public static final String HTML5_COMPLIANCE = "primefaces.HTML5_COMPLIANCE";
+        public static final String INTERPOLATE_CLIENT_SIDE_VALIDATION_MESSAGES = "primefaces.INTERPOLATE_CLIENT_SIDE_VALIDATION_MESSAGES";
+        public static final String LEGACY_WIDGET_NAMESPACE = "primefaces.LEGACY_WIDGET_NAMESPACE";
+        public static final String MARK_INPUT_AS_INVALID_ON_ERROR_MSG = "primefaces.MARK_INPUT_AS_INVALID_ON_ERROR_MSG";
+        public static final String MOVE_SCRIPTS_TO_BOTTOM = "primefaces.MOVE_SCRIPTS_TO_BOTTOM";
+        public static final String MULTI_VIEW_STATE_STORE = "primefaces.MULTI_VIEW_STATE_STORE";
+        public static final String PRIME_ICONS = "primefaces.PRIME_ICONS";
+        public static final String RESET_VALUES = "primefaces.RESET_VALUES";
+        public static final String SUBMIT = "primefaces.SUBMIT";
+        public static final String THEME = "primefaces.THEME";
+        public static final String TOUCHABLE = "primefaces.TOUCHABLE";
+        public static final String TRANSFORM_METADATA = "primefaces.TRANSFORM_METADATA";
+        @Deprecated(forRemoval = true, since = "14.0.0")
+        public static final String UPLOADER = "primefaces.UPLOADER";
 
         private ContextParams() {
 
@@ -70,9 +72,9 @@ public class Constants {
         public static final String PARTIAL_PROCESS_PARAM = "javax.faces.partial.execute";
         public static final String PARTIAL_SOURCE_PARAM = "javax.faces.source";
         public static final String PARTIAL_BEHAVIOR_EVENT_PARAM = "javax.faces.behavior.event";
+        public static final String RESET_VALUES_PARAM = "javax.faces.partial.resetValues";
 
         // PF request params
-        public static final String RESET_VALUES_PARAM = "primefaces.resetvalues";
         public static final String IGNORE_AUTO_UPDATE_PARAM = "primefaces.ignoreautoupdate";
         public static final String SKIP_CHILDREN_PARAM = "primefaces.skipchildren";
         public static final String NONCE_PARAM = "primefaces.nonce";

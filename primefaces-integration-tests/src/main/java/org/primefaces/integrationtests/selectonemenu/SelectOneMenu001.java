@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -52,11 +52,14 @@ public class SelectOneMenu001 implements Serializable {
 
     private int value2;
 
+    private boolean alwaysDisplayLabel;
+
     @PostConstruct
     public void init() {
         drivers = driverService.getDrivers();
         value = 1;
         value2 = 1;
+        alwaysDisplayLabel = false;
     }
 
     public void onAjaxItemSelect() {

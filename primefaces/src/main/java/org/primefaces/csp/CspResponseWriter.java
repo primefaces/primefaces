@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -58,8 +58,6 @@ public class CspResponseWriter extends ResponseWriterWrapper {
                     "onselect", "onshow", "onstalled", "onstorage", "onsubmit", "onsuspend", "ontimeupdate", "ontoggle", "ontouchcancel",
                     "ontouchend", "ontouchmove", "ontouchstart", "ontransitionend", "onunload", "onvolumechange", "onwaiting", "onwheel"));
 
-    private ResponseWriter wrapped;
-
     private CspState cspState;
 
     private String lastElement;
@@ -69,9 +67,8 @@ public class CspResponseWriter extends ResponseWriterWrapper {
 
     private Lazy<Boolean> policyProvided;
 
-    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public CspResponseWriter(ResponseWriter wrapped, CspState cspState) {
-        this.wrapped = wrapped;
+        super(wrapped);
         this.cspState = cspState;
 
         policyProvided = new Lazy<>(() ->
@@ -259,11 +256,27 @@ public class CspResponseWriter extends ResponseWriterWrapper {
 
     @Override
     public ResponseWriter cloneWithWriter(Writer writer) {
-        return getWrapped().cloneWithWriter(writer);
+        return new CspResponseWriter(getWrapped().cloneWithWriter(writer), this.cspState);
     }
 
-    @Override
-    public ResponseWriter getWrapped() {
-        return wrapped;
+    /**
+     * Special scenario where for indexed id's we need to replace the old id with new one.
+     *
+     * @param oldId the old id
+     * @param newId the new id
+     */
+    public void updateId(String oldId, String newId) {
+        Map<String, String> events = cspState.getEventHandlers().remove(oldId);
+        if (events != null && !events.isEmpty()) {
+            for (Map.Entry<String, String> entry : events.entrySet()) {
+                String oldValue = entry.getValue();
+                // replace 'id=' and 'source:' values
+                String newValue = oldValue.replaceAll("\\sid=\"" + oldId + "\"", " id=\"" + newId + "\"");
+                newValue = newValue.replaceAll("source:\"" + oldId + "\"", " source:\"" + newId + "\"");
+                entry.setValue(newValue);
+            }
+            CspState cspState = this.cspState;
+            cspState.getEventHandlers().put(newId, events);
+        }
     }
 }

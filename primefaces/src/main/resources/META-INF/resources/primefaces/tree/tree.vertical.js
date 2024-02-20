@@ -129,7 +129,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     clearTimeout($this.filterTimeout);
                 }
 
-                $this.filterTimeout = setTimeout(function() {
+                $this.filterTimeout = PrimeFaces.queueTask(function() {
                     $this.filter();
                     $this.filterTimeout = null;
                 }, 300);
@@ -167,11 +167,10 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 return;
             }
 
-            var searchRowkey = "",
-            keyCode = $.ui.keyCode;
+            var searchRowkey = "";
 
-            switch(e.which) {
-                case keyCode.LEFT:
+            switch(e.code) {
+                case 'ArrowLeft':
                     var rowkey = $this.focusedNode.data('rowkey').toString(),
                     keyLength = rowkey.length;
 
@@ -193,7 +192,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     e.preventDefault();
                 break;
 
-                case keyCode.RIGHT:
+                case 'ArrowRight':
                     if(!$this.focusedNode.hasClass('ui-treenode-leaf')) {
                         var rowkey = $this.focusedNode.data('rowkey').toString(),
                         keyLength = rowkey.length;
@@ -215,7 +214,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     e.preventDefault();
                 break;
 
-                case keyCode.UP:
+                case 'ArrowUp':
                     var nodeToFocus = null,
                     prevNode = $this.previousNode($this.focusedNode);
 
@@ -236,7 +235,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     e.preventDefault();
                 break;
 
-                case keyCode.DOWN:
+                case 'ArrowDown':
                     var nodeToFocus = null,
                     firstVisibleChildNode = $this.focusedNode.find("> ul > li:visible:not(.ui-tree-droppoint)").first();
 
@@ -261,8 +260,9 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     e.preventDefault();
                 break;
 
-                case keyCode.ENTER:
-                case keyCode.SPACE:
+                case 'Enter':
+                case 'NumpadEnter':
+                case 'Space':
                     if($this.cfg.selectionMode) {
                         var selectable = $this.focusedNode.children('.ui-treenode-content').hasClass('ui-tree-selectable');
 
@@ -298,12 +298,12 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     e.preventDefault();
                 break;
 
-                case keyCode.TAB:
+                case 'Tab':
                     pressTab = true;
                     $this.container.trigger('focus');
-                    setTimeout(function() {
+                    PrimeFaces.queueTask(function() {
                         pressTab = false;
-                    }, 2);
+                    });
 
                 break;
             }
@@ -655,7 +655,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     source = PF($(element.data('dragsourceid')).data('widget')),
                     height = 20;
 
-                    if(source.cfg.multipleDrag && element.find('.ui-treenode-content').hasClass('ui-state-highlight')) {
+                    if(source.cfg.multipleDrag && element.hasClass('ui-treenode-content') && element.hasClass('ui-state-highlight')) {
                         source.draggedSourceKeys = $this.findSelectedParentKeys(source.selections.slice());
                         height = 20 * (source.draggedSourceKeys.length || 1);
                     }
@@ -702,7 +702,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 dropNodeKey = $this.getRowKey(dropNode),
                 transfer = (dragSource.id !== dropSource.id),
                 draggedSourceKeys = dragSource.draggedSourceKeys,
-                isDroppedNodeCopy = ($this.cfg.dropCopyNode && $this.shiftKey),
+                isDroppedNodeCopy = $this.cfg.dropMode === 'copy' || ($this.cfg.dropCopyNode && $this.shiftKey),
                 draggedNodes,
                 dragNodeKey;
 
@@ -728,7 +728,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
 
                     dragNodeKey = $this.getRowKey(targetDragNode);
 
-                    if(!transfer && dropNodeKey && dropNodeKey.indexOf(dragNodeKey) === 0) {
+                    if(!transfer && dropNodeKey && dropNodeKey.indexOf(dragNodeKey + '_') === 0) {
                         return;
                     }
 
@@ -892,7 +892,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
 
                     dragNodeKey = $this.getRowKey(targetDragNode);
 
-                    if(!transfer && dropNodeKey && dropNodeKey.indexOf(dragNodeKey) === 0) {
+                    if(!transfer && dropNodeKey && dropNodeKey.indexOf(dragNodeKey + '_') === 0) {
                         return;
                     }
 
@@ -1015,7 +1015,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
             var key = arr[i];
             for(var j = 0; j < arr.length && key !== -1; j++) {
                 var tempKey = arr[j];
-                if(tempKey !== -1 && key.length > tempKey.length && key.indexOf(tempKey) === 0) {
+                if(tempKey !== -1 && key.length > tempKey.length && key.indexOf(tempKey + '_') === 0) {
                     arr[i] = -1;
                 }
             }
@@ -1240,7 +1240,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
      */
     makeParent: function(node) {
         node.removeClass('ui-treenode-leaf').addClass('ui-treenode-parent');
-        node.find('> .ui-treenode-content > span.ui-treenode-leaf-icon').removeClass('ui-treenode-leaf-icon').addClass('ui-tree-toggler ui-icon ui-icon-triangle-1-e');
+        node.find('> .ui-treenode-content > span.ui-treenode-leaf-icon').removeClass('ui-treenode-leaf-icon').addClass('ui-tree-toggler ui-icon ' + this.cfg.collapsedIcon);
         node.children('.ui-treenode-children').append('<li class="ui-tree-droppoint ui-droppable"></li>');
 
         this.makeDropPoints(node.find('> ul.ui-treenode-children > li.ui-tree-droppoint'));
@@ -1449,9 +1449,17 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
 
                         if(hasChildNodes) {
                             node.removeClass('ui-treenode-parent').addClass('ui-treenode-leaf')
-                                .find('> .ui-treenode-content > .ui-tree-toggler').removeClass('ui-tree-toggler ui-icon ui-icon-triangle-1-e').addClass('ui-treenode-leaf-icon');
+                                .find('> .ui-treenode-content > .ui-tree-toggler').removeClass('ui-tree-toggler ui-icon ' + this.cfg.collapsedIcon).addClass('ui-treenode-leaf-icon');
                         }
                     }
+                }
+
+                if ($this.cfg.draggable) {
+                    $this.initDraggable();
+                }
+
+                if ($this.cfg.droppable) {
+                    $this.initDroppable();
                 }
             }
         };

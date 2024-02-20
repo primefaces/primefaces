@@ -33,7 +33,7 @@ closable | false | Boolean | Adds a close icon to hide the messages.
 style | null | String | Inline style of the component.
 styleClass | null | String | Style class of the component.
 showIcon | true | Boolean | Defines if severity icons would be displayed.
-skipDetailIfEqualsSummary | false | Boolean | Defines if rendering of the detail text should be skipped, if the detail and summaray are equals.
+skipDetailIfEqualsSummary | false | Boolean | Defines if rendering of the detail text should be skipped, if the detail and summary are equals.
 
 ## Getting started with Messages
 Message usage is exactly same as standard messages.
@@ -85,5 +85,5 @@ ui-messages-{severity}-summary | Summary text
 ui-messages-{severity}-detail | Detail text
 ui-messages-{severity}-icon | Icon of the message.
 
-* {severity} can be ‘info’, ‘error’, ‘warn’ and error.
+* {severity} can be `info`, `warn`, `error` and `fatal`.
 

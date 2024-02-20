@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -38,10 +37,7 @@ import org.primefaces.component.column.Column;
 import org.primefaces.model.DualListModel;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.renderkit.RendererUtils;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.MessageFactory;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.*;
 
 public class PickListRenderer extends InputRenderer {
 
@@ -111,16 +107,16 @@ public class PickListRenderer extends InputRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", PickList.BUTTONS_CELL_CLASS, null);
         if (vertical) {
-            encodeButton(context, pickList.getAddLabel(), PickList.ADD_BUTTON_CLASS, PickList.VERTICAL_ADD_BUTTON_ICON_CLASS, labelDisplay);
-            encodeButton(context, pickList.getAddAllLabel(), PickList.ADD_ALL_BUTTON_CLASS, PickList.VERTICAL_ADD_ALL_BUTTON_ICON_CLASS, labelDisplay);
-            encodeButton(context, pickList.getRemoveLabel(), PickList.REMOVE_BUTTON_CLASS, PickList.VERTICAL_REMOVE_BUTTON_ICON_CLASS, labelDisplay);
-            encodeButton(context, pickList.getRemoveAllLabel(), PickList.REMOVE_ALL_BUTTON_CLASS, PickList.VERTICAL_REMOVE_ALL_BUTTON_ICON_CLASS, labelDisplay);
+            encodeButton(context, PickList.ADD_BUTTON_CLASS, PickList.VERTICAL_ADD_BUTTON_ICON_CLASS, labelDisplay);
+            encodeButton(context, PickList.ADD_ALL_BUTTON_CLASS, PickList.VERTICAL_ADD_ALL_BUTTON_ICON_CLASS, labelDisplay);
+            encodeButton(context, PickList.REMOVE_BUTTON_CLASS, PickList.VERTICAL_REMOVE_BUTTON_ICON_CLASS, labelDisplay);
+            encodeButton(context, PickList.REMOVE_ALL_BUTTON_CLASS, PickList.VERTICAL_REMOVE_ALL_BUTTON_ICON_CLASS, labelDisplay);
         }
         else {
-            encodeButton(context, pickList.getAddLabel(), PickList.ADD_BUTTON_CLASS, PickList.ADD_BUTTON_ICON_CLASS, labelDisplay);
-            encodeButton(context, pickList.getAddAllLabel(), PickList.ADD_ALL_BUTTON_CLASS, PickList.ADD_ALL_BUTTON_ICON_CLASS, labelDisplay);
-            encodeButton(context, pickList.getRemoveLabel(), PickList.REMOVE_BUTTON_CLASS, PickList.REMOVE_BUTTON_ICON_CLASS, labelDisplay);
-            encodeButton(context, pickList.getRemoveAllLabel(), PickList.REMOVE_ALL_BUTTON_CLASS, PickList.REMOVE_ALL_BUTTON_ICON_CLASS, labelDisplay);
+            encodeButton(context, PickList.ADD_BUTTON_CLASS, PickList.ADD_BUTTON_ICON_CLASS, labelDisplay);
+            encodeButton(context, PickList.ADD_ALL_BUTTON_CLASS, PickList.ADD_ALL_BUTTON_ICON_CLASS, labelDisplay);
+            encodeButton(context, PickList.REMOVE_BUTTON_CLASS, PickList.REMOVE_BUTTON_ICON_CLASS, labelDisplay);
+            encodeButton(context, PickList.REMOVE_ALL_BUTTON_CLASS, PickList.REMOVE_ALL_BUTTON_ICON_CLASS, labelDisplay);
         }
         writer.endElement("div");
         writer.endElement("div");
@@ -152,6 +148,7 @@ public class PickListRenderer extends InputRenderer {
                 .attr("filterEvent", pickList.getFilterEvent(), null)
                 .attr("filterDelay", pickList.getFilterDelay(), Integer.MAX_VALUE)
                 .attr("filterMatchMode", pickList.getFilterMatchMode(), null)
+                .attr("filterNormalize", pickList.isFilterNormalize(), false)
                 .nativeAttr("filterFunction", pickList.getFilterFunction(), null)
                 .attr("showCheckbox", pickList.isShowCheckbox(), false)
                 .callback("onTransfer", "function(e)", pickList.getOnTransfer())
@@ -172,10 +169,10 @@ public class PickListRenderer extends InputRenderer {
         writer.writeAttribute("class", styleClass, null);
         writer.startElement("div", null);
         writer.writeAttribute("class", PickList.BUTTONS_CELL_CLASS, null);
-        encodeButton(context, pickList.getMoveUpLabel(), PickList.MOVE_UP_BUTTON_CLASS, PickList.MOVE_UP_BUTTON_ICON_CLASS, labelDisplay);
-        encodeButton(context, pickList.getMoveTopLabel(), PickList.MOVE_TOP_BUTTON_CLASS, PickList.MOVE_TOP_BUTTON_ICON_CLASS, labelDisplay);
-        encodeButton(context, pickList.getMoveDownLabel(), PickList.MOVE_DOWN_BUTTON_CLASS, PickList.MOVE_DOWN_BUTTON_ICON_CLASS, labelDisplay);
-        encodeButton(context, pickList.getMoveBottomLabel(), PickList.MOVE_BOTTOM_BUTTON_CLASS, PickList.MOVE_BOTTOM_BUTTON_ICON_CLASS, labelDisplay);
+        encodeButton(context, PickList.MOVE_UP_BUTTON_CLASS, PickList.MOVE_UP_BUTTON_ICON_CLASS, labelDisplay);
+        encodeButton(context, PickList.MOVE_TOP_BUTTON_CLASS, PickList.MOVE_TOP_BUTTON_ICON_CLASS, labelDisplay);
+        encodeButton(context, PickList.MOVE_DOWN_BUTTON_CLASS, PickList.MOVE_DOWN_BUTTON_ICON_CLASS, labelDisplay);
+        encodeButton(context, PickList.MOVE_BOTTOM_BUTTON_CLASS, PickList.MOVE_BOTTOM_BUTTON_ICON_CLASS, labelDisplay);
         writer.endElement("div");
         writer.endElement("div");
     }
@@ -189,7 +186,7 @@ public class PickListRenderer extends InputRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeButton(FacesContext context, String title, String styleClass, String icon, String labelDisplay) throws IOException {
+    protected void encodeButton(FacesContext context, String styleClass, String icon, String labelDisplay) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         boolean tooltip = "tooltip".equals(labelDisplay);
         String buttonClass = tooltip ? HTML.BUTTON_ICON_ONLY_BUTTON_CLASS : HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS;
@@ -197,10 +194,6 @@ public class PickListRenderer extends InputRenderer {
         writer.startElement("button", null);
         writer.writeAttribute("type", "button", null);
         writer.writeAttribute("class", buttonClass + " " + styleClass, null);
-
-        if (tooltip) {
-            writer.writeAttribute("title", title, null);
-        }
 
         //icon
         writer.startElement("span", null);
@@ -210,7 +203,6 @@ public class PickListRenderer extends InputRenderer {
         //text
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
-        writer.writeText(title, null);
         writer.endElement("span");
 
         writer.endElement("button");
@@ -233,7 +225,7 @@ public class PickListRenderer extends InputRenderer {
             encodeFilter(context, pickList, listId + "_filter", isSource);
         }
 
-        if (ComponentUtils.shouldRenderFacet(caption)) {
+        if (FacetUtils.shouldRenderFacet(caption)) {
             encodeCaption(context, caption);
             styleClass += " ui-corner-bottom";
         }
@@ -273,7 +265,7 @@ public class PickListRenderer extends InputRenderer {
         String var = pickList.getVar();
         Converter converter = pickList.getConverter();
         boolean showCheckbox = pickList.isShowCheckbox();
-        boolean checkboxChecked = pickList.isTransferOnCheckboxClick() ? !isSource : false;
+        boolean checkboxChecked = pickList.isTransferOnCheckboxClick() && !isSource;
 
         for (Iterator it = model.iterator(); it.hasNext(); ) {
             Object item = it.next();
@@ -362,10 +354,12 @@ public class PickListRenderer extends InputRenderer {
         }
     }
 
-    protected void encodeFilter(FacesContext context, PickList pickList, String name, boolean isSource) throws IOException {
+    protected void encodeFilter(FacesContext context, PickList picklist, String name, boolean isSource) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         String styleClass = PickList.FILTER_CLASS + (isSource ? " ui-source-filter-input" : " ui-target-filter-input");
+        String placeholder = isSource ? picklist.getSourceFilterPlaceholder() : picklist.getTargetFilterPlaceholder();
+        String ariaLabel = LangUtils.isNotBlank(placeholder) ? placeholder : null;
 
         writer.startElement("div", null);
         writer.writeAttribute("class", PickList.FILTER_CONTAINER, null);
@@ -376,7 +370,13 @@ public class PickListRenderer extends InputRenderer {
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
         writer.writeAttribute("class", styleClass, null);
-        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(InputRenderer.ARIA_FILTER), null);
+        if (LangUtils.isNotBlank(ariaLabel)) {
+            writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
+        }
+
+        if (LangUtils.isNotBlank(placeholder)) {
+            writer.writeAttribute("placeholder", placeholder, null);
+        }
         writer.endElement("input");
 
         writer.startElement("span", null);

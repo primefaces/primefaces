@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -133,7 +133,7 @@ public class ChipsRenderer extends InputRenderer {
         if (values != null && !values.isEmpty()) {
             Converter converter = ComponentUtils.getConverter(context, chips);
 
-            Collection<Object> items = chips.isUnique() ? new HashSet<>(values) : values;
+            Collection<Object> items = chips.isUnique() ? new LinkedHashSet<>(values) : values;
             for (Object value : items) {
                 String tokenValue = converter != null ? converter.getAsString(context, chips, value) : String.valueOf(value);
 
@@ -210,7 +210,7 @@ public class ChipsRenderer extends InputRenderer {
                 .attr("addOnBlur", chips.isAddOnBlur(), false)
                 .attr("addOnPaste", chips.isAddOnPaste(), false)
                 .attr("unique", chips.isUnique(), false)
-                .attr("separator", chips.getSeparator(), ",");
+                .attr("separator", chips.getSeparator());
 
         encodeClientBehaviors(context, chips);
 

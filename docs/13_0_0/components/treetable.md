@@ -33,6 +33,8 @@ editInitEvent | null | String | Defines a client side event to open cell on edit
 editMode | row | String | Defines edit mode, valid values are "row" (default) and "cell".
 emptyMessage | No records found | String | Text to display when there is no data to display.
 expandMode | children | String | Updates children only when set to “children” or the node itself with children when set to “self” on node expand.
+exportTag | null | String | If XML data exporter in use, this allows customization of the document tag in the XML.
+exportRowTag | null | String | If XML data exporter in use, this allows customization of the row tag in the XML.
 filterBy | null | SortMeta / Collection<SortMeta> | Property to be used for default sorting. Expects a single or a collection of SortMeta.
 filterDelay | 300 | Integer | Delay in milliseconds before sending an ajax filter query.
 filterEvent | keyup | String | Event triggering filter for input filters.

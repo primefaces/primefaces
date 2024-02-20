@@ -13,7 +13,7 @@ if (window.PrimeFaces) {
         /**
          * When an element is invalid due to a validation error, the user needs to be informed. This method highlights
          * the label for the given element by adding an appropriate CSS class.
-         * @param {string} forElement ID of an element with a label to highlight.
+         * @param {JQuery} forElement Element with a label to highlight.
          */
         highlightLabel: function(forElement) {
             var label = $("label[for='" + forElement.attr('id') + "']");
@@ -25,12 +25,28 @@ if (window.PrimeFaces) {
         /**
          * When an element is invalid due to a validation error, the user needs to be informed. This method removes the
          * highlighting on a label for the given element by removing the appropriate CSS class.
-         * @param {string} forElement ID of an element with a label to unhighlight.
+         * @param {JQuery} forElement Element with a label to unhighlight.
          */
         unhighlightLabel: function(forElement) {
             var label = $("label[for='" + forElement.attr('id') + "']");
             if (label.hasClass('ui-outputlabel')) {
                 label.removeClass('ui-state-error');
+            }
+        },
+
+        /**
+         * Applies ui-state-XXX - css-classes to an element (component).
+         * @param {JQuery} element Element to which apply the css-classes.
+         * @param {boolean} valid Is the input of the element valid?
+         */
+        applyStateCssClasses: function(element, valid) {
+            if (valid) {
+                element.removeClass('ui-state-error');
+                element.removeClass('ui-state-csv-invalid').addClass('ui-state-csv-valid');
+            }
+            else {
+                element.addClass('ui-state-error');
+                element.addClass('ui-state-csv-invalid').removeClass('ui-state-csv-valid');
             }
         },
 
@@ -43,26 +59,26 @@ if (window.PrimeFaces) {
             'default': {
 
                 highlight: function(element) {
-                    element.addClass('ui-state-error');
                     PrimeFaces.validator.Highlighter.highlightLabel(element);
+                    PrimeFaces.validator.Highlighter.applyStateCssClasses(element, false);
                 },
 
                 unhighlight: function(element) {
-                    element.removeClass('ui-state-error');
                     PrimeFaces.validator.Highlighter.unhighlightLabel(element);
+                    PrimeFaces.validator.Highlighter.applyStateCssClasses(element, true);
                 }
             },
 
             'booleanchkbox': {
 
                 highlight: function(element) {
-                    element.parent().next().addClass('ui-state-error');
                     PrimeFaces.validator.Highlighter.highlightLabel(element);
+                    PrimeFaces.validator.Highlighter.applyStateCssClasses(element.parent().next(), false);
                 },
 
                 unhighlight: function(element) {
-                    element.parent().next().removeClass('ui-state-error');
                     PrimeFaces.validator.Highlighter.unhighlightLabel(element);
+                    PrimeFaces.validator.Highlighter.applyStateCssClasses(element.parent().next(), true);
                 }
 
             },
@@ -83,7 +99,7 @@ if (window.PrimeFaces) {
                     }
 
                     for(var i = 0; i < chkboxes.length; i++) {
-                        chkboxes.eq(i).addClass('ui-state-error');
+                        PrimeFaces.validator.Highlighter.applyStateCssClasses(chkboxes.eq(i), false);
                     }
                 },
 
@@ -101,7 +117,7 @@ if (window.PrimeFaces) {
                     }
 
                     for(var i = 0; i < chkboxes.length; i++) {
-                        chkboxes.eq(i).removeClass('ui-state-error');
+                        PrimeFaces.validator.Highlighter.applyStateCssClasses(chkboxes.eq(i), true);
                     }
                 }
 
@@ -110,12 +126,12 @@ if (window.PrimeFaces) {
             'listbox': {
 
                 highlight: function(element) {
-                    element.closest('.ui-inputfield').addClass('ui-state-error');
+                    PrimeFaces.validator.Highlighter.applyStateCssClasses(element.closest('.ui-inputfield'), false);
                     PrimeFaces.validator.Highlighter.highlightLabel(element.closest('.ui-inputfield'));
                 },
 
                 unhighlight: function(element) {
-                    element.closest('.ui-inputfield').removeClass('ui-state-error');
+                    PrimeFaces.validator.Highlighter.applyStateCssClasses(element.closest('.ui-inputfield'), true);
                     PrimeFaces.validator.Highlighter.unhighlightLabel(element.closest('.ui-inputfield'));
                 }
 
@@ -124,12 +140,16 @@ if (window.PrimeFaces) {
             'onemenu': {
 
                 highlight: function(element) {
-                    element.parent().siblings('.ui-selectonemenu-trigger').addClass('ui-state-error').parent().addClass('ui-state-error');
+                    var siblings = element.parent().siblings('.ui-selectonemenu-trigger');
+                    PrimeFaces.validator.Highlighter.applyStateCssClasses(siblings, false);
+                    PrimeFaces.validator.Highlighter.applyStateCssClasses(siblings.parent(), false);
                     PrimeFaces.validator.Highlighter.highlightLabel(this.getFocusElement(element));
                 },
 
                 unhighlight: function(element) {
-                    element.parent().siblings('.ui-selectonemenu-trigger').removeClass('ui-state-error').parent().removeClass('ui-state-error');
+                    var siblings = element.parent().siblings('.ui-selectonemenu-trigger');
+                    PrimeFaces.validator.Highlighter.applyStateCssClasses(siblings, true);
+                    PrimeFaces.validator.Highlighter.applyStateCssClasses(siblings.parent(), true);
                     PrimeFaces.validator.Highlighter.unhighlightLabel(this.getFocusElement(element));
                 },
 
@@ -141,12 +161,12 @@ if (window.PrimeFaces) {
             'spinner': {
 
                 highlight: function(element) {
-                    element.parent().addClass('ui-state-error');
+                    PrimeFaces.validator.Highlighter.applyStateCssClasses(element.parent(), false);
                     PrimeFaces.validator.Highlighter.highlightLabel(element.parent());
                 },
 
                 unhighlight: function(element) {
-                    element.parent().removeClass('ui-state-error');
+                    PrimeFaces.validator.Highlighter.applyStateCssClasses(element.parent(), true);
                     PrimeFaces.validator.Highlighter.unhighlightLabel(element.parent());
                 }
 
@@ -159,7 +179,7 @@ if (window.PrimeFaces) {
                     radios = container.find('div.ui-radiobutton-box');
 
                     for(var i = 0; i < radios.length; i++) {
-                        radios.eq(i).addClass('ui-state-error');
+                        PrimeFaces.validator.Highlighter.applyStateCssClasses(radios.eq(i), false);
                     }
                     PrimeFaces.validator.Highlighter.highlightLabel(container);
                 },
@@ -169,7 +189,7 @@ if (window.PrimeFaces) {
                     radios = container.find('div.ui-radiobutton-box');
 
                     for(var i = 0; i < radios.length; i++) {
-                        radios.eq(i).removeClass('ui-state-error');
+                        PrimeFaces.validator.Highlighter.applyStateCssClasses(radios.eq(i), true);
                     }
                     PrimeFaces.validator.Highlighter.unhighlightLabel(container);
                 }
@@ -179,11 +199,11 @@ if (window.PrimeFaces) {
             'booleanbutton': {
 
                 highlight: function(element) {
-                    element.parent().parent().addClass('ui-state-error');
+                    PrimeFaces.validator.Highlighter.applyStateCssClasses(element.parent().parent(), false);
                 },
 
                 unhighlight: function(element) {
-                    element.parent().parent().removeClass('ui-state-error');
+                    PrimeFaces.validator.Highlighter.applyStateCssClasses(element.parent().parent(), true);
                 }
 
             },
@@ -191,11 +211,11 @@ if (window.PrimeFaces) {
             'toggleswitch': {
 
                 highlight: function(element) {
-                    element.parent().next().addClass('ui-state-error');
+                    PrimeFaces.validator.Highlighter.applyStateCssClasses(element.parent().next(), false);
                 },
 
                 unhighlight: function(element) {
-                    element.parent().next().removeClass('ui-state-error');
+                    PrimeFaces.validator.Highlighter.applyStateCssClasses(element.parent().next(), true);
                 }
 
             },
@@ -204,20 +224,22 @@ if (window.PrimeFaces) {
 
                 highlight: function(element) {
                     var orginalInput = element.prev('input');
-                    orginalInput.addClass('ui-state-error');
-                    PrimeFaces.validator.Highlighter.highlightLabel(orginalInput);
+                        PrimeFaces.validator.Highlighter.highlightLabel(orginalInput);
 
-                    // see #3706
-                    orginalInput.parent().addClass('ui-state-error');
+                        // see #3706
+                        orginalInput.parent().addClass('ui-state-error');
+                    PrimeFaces.validator.Highlighter.applyStateCssClasses(orginalInput, false);
+                    // orginalInput.parent().addClass('ui-state-csv-invalid').removeClass('ui-state-csv-valid'); // makes visual no sense
                 },
 
                 unhighlight: function(element) {
                     var orginalInput = element.prev('input');
-                    orginalInput.removeClass('ui-state-error');
                     PrimeFaces.validator.Highlighter.unhighlightLabel(orginalInput);
 
                     // see #3706
                     orginalInput.parent().removeClass('ui-state-error');
+                    PrimeFaces.validator.Highlighter.applyStateCssClasses(orginalInput, true);
+                    // orginalInput.parent().removeClass('ui-state-csv-invalid').addClass('ui-state-csv-valid'); // makes visual no sense
                 }
 
             }

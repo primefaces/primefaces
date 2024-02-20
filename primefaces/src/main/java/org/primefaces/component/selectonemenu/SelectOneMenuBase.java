@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -60,7 +60,8 @@ public abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Wid
         autoWidth,
         dynamic,
         dir,
-        touchable
+        touchable,
+        filterNormalize
     }
 
     public SelectOneMenuBase() {
@@ -228,11 +229,11 @@ public abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Wid
         getStateHelper().put(PropertyKeys.placeholder, placeholder);
     }
 
-    public boolean isAutoWidth() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.autoWidth, true);
+    public String getAutoWidth() {
+        return (String) getStateHelper().eval(PropertyKeys.autoWidth, "auto");
     }
 
-    public void setAutoWidth(boolean autoWidth) {
+    public void setAutoWidth(String autoWidth) {
         getStateHelper().put(PropertyKeys.autoWidth, autoWidth);
     }
 
@@ -262,5 +263,13 @@ public abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Wid
     @Override
     public void setTouchable(Boolean touchable) {
         getStateHelper().put(PropertyKeys.touchable, touchable);
+    }
+
+    public boolean isFilterNormalize() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.filterNormalize, false);
+    }
+
+    public void setFilterNormalize(boolean filterNormalize) {
+        getStateHelper().put(PropertyKeys.filterNormalize, filterNormalize);
     }
 }

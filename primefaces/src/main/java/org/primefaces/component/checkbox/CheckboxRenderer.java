@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,7 +31,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.radiobutton.RadioButtonRenderer;
 import org.primefaces.component.selectmanycheckbox.SelectManyCheckbox;
-import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.HTML;
 import org.primefaces.util.SharedStringBuilder;
@@ -43,7 +43,7 @@ public class CheckboxRenderer extends InputRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Checkbox checkbox = (Checkbox) component;
-        SelectManyCheckbox selectManyCheckbox = (SelectManyCheckbox) SearchExpressionFacade.resolveComponent(
+        SelectManyCheckbox selectManyCheckbox = (SelectManyCheckbox) SearchExpressionUtils.contextlessResolveComponent(
                 context, checkbox, checkbox.getFor());
 
         encodeMarkup(context, checkbox, selectManyCheckbox);

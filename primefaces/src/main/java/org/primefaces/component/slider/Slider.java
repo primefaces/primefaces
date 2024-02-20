@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,7 +37,7 @@ import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 
 import org.primefaces.event.SlideEndEvent;
-import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
@@ -108,8 +108,8 @@ public class Slider extends SliderBase {
 
         if ("true".equals(getRange())) {
             String[] inputIds = getFor().split(",");
-            UIInput inputFrom = (UIInput) SearchExpressionFacade.resolveComponent(context, this, inputIds[0]);
-            UIInput inputTo = (UIInput) SearchExpressionFacade.resolveComponent(context, this, inputIds[1]);
+            UIInput inputFrom = (UIInput) SearchExpressionUtils.contextlessResolveComponent(context, this, inputIds[0]);
+            UIInput inputTo = (UIInput) SearchExpressionUtils.contextlessResolveComponent(context, this, inputIds[1]);
             String valueFromStr = getValueAsStringOfAttachedInput(context, inputFrom);
             String valueToStr = getValueAsStringOfAttachedInput(context, inputTo);
             if (LangUtils.isBlank(valueFromStr) || LangUtils.isBlank(valueToStr)) {
@@ -135,7 +135,7 @@ public class Slider extends SliderBase {
             }
         }
         else {
-            UIInput input = (UIInput) SearchExpressionFacade.resolveComponent(context, this, getFor());
+            UIInput input = (UIInput) SearchExpressionUtils.contextlessResolveComponent(context, this, getFor());
             String value = getValueAsStringOfAttachedInput(context, input);
             if (LangUtils.isBlank(value)) {
                 return;
@@ -184,6 +184,10 @@ public class Slider extends SliderBase {
             Object value = input.getValue();
 
             if (value != null) {
+                if (value instanceof String) {
+                    return (String) value;
+                }
+
                 Converter converter = ComponentUtils.getConverter(context, input);
                 if (converter != null) {
                     return converter.getAsString(context, this, value);

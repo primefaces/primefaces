@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,11 +23,8 @@
  */
 package org.primefaces.component.tree;
 
-import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
-
 import java.io.IOException;
 import java.util.*;
-
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -37,15 +34,15 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.UITree;
-import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.model.MatchMode;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.TreeNode;
 import org.primefaces.model.filter.FilterConstraint;
+import org.primefaces.model.filter.FilterConstraints;
 import org.primefaces.model.filter.FunctionFilterConstraint;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.util.*;
+import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
 
 public class TreeRenderer extends CoreRenderer {
 
@@ -78,8 +75,10 @@ public class TreeRenderer extends CoreRenderer {
     public void decodeSelection(FacesContext context, Tree tree, TreeNode root) {
         boolean multiple = tree.isMultipleSelectionMode();
         Class<?> selectionType = tree.getSelectionType();
+        boolean hasSelectionType = selectionType != null;
 
-        if (multiple && !selectionType.isArray() && !List.class.isAssignableFrom(selectionType)) {
+        if ((multiple && !hasSelectionType) ||
+                (multiple && hasSelectionType && !selectionType.isArray()) && !List.class.isAssignableFrom(selectionType)) {
             throw new FacesException("Multiple selection reference must be an Array or a List for Tree " + tree.getClientId());
         }
 
@@ -137,7 +136,6 @@ public class TreeRenderer extends CoreRenderer {
 
             PrimeFaces.current().ajax().addCallbackParam("descendantRowKeys", sb.toString());
             sb.setLength(0);
-            descendantRowKeys = null;
         }
     }
 
@@ -159,7 +157,7 @@ public class TreeRenderer extends CoreRenderer {
                 dragNodeList.add(tree.getRowNode());
             }
             else {
-                Tree otherTree = (Tree) SearchExpressionFacade.resolveComponent(context, context.getViewRoot(), dragSource);
+                Tree otherTree = (Tree) SearchExpressionUtils.contextlessResolveComponent(context, context.getViewRoot(), dragSource);
                 otherTree.setRowKey(otherTree.getValue(), rowKey);
                 dragNodeList.add(otherTree.getRowNode());
             }
@@ -214,6 +212,11 @@ public class TreeRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Tree tree = (Tree) component;
         TreeNode root = tree.getValue();
+
+        //enable RTL
+        if (ComponentUtils.isRTL(context, tree)) {
+            tree.setRTLRendering(true);
+        }
 
         if (tree.isNodeExpandRequest(context)) {
             boolean vertical = tree.getOrientation().equals("vertical");
@@ -319,6 +322,7 @@ public class TreeRenderer extends CoreRenderer {
         if (tree.isDraggable()) {
             wb.attr("draggable", true)
                     .attr("dragMode", tree.getDragMode())
+                    .attr("dropMode", tree.getDropMode())
                     .attr("dropRestrict", tree.getDropRestrict())
                     .attr("multipleDrag", tree.isMultipleDrag())
                     .attr("dropCopyNode", tree.isDropCopyNode());
@@ -373,20 +377,13 @@ public class TreeRenderer extends CoreRenderer {
             tree.initPreselection();
         }
 
-        //enable RTL
-        if (ComponentUtils.isRTL(context, tree)) {
-            tree.setRTLRendering(true);
-        }
-
         //container class
-        String containerClass = tree.isRTLRendering() ? Tree.CONTAINER_RTL_CLASS : Tree.CONTAINER_CLASS;
-        containerClass = isDisabled ? containerClass + " ui-state-disabled" : containerClass;
-        if (tree.getStyleClass() != null) {
-            containerClass = containerClass + " " + tree.getStyleClass();
-        }
-        if (tree.isShowUnselectableCheckbox()) {
-            containerClass = containerClass + " ui-tree-checkbox-all";
-        }
+        String containerClass = getStyleClassBuilder(context)
+                .add(tree.isRTLRendering(), Tree.CONTAINER_RTL_CLASS, Tree.CONTAINER_CLASS)
+                .add(tree.getStyleClass())
+                .add(tree.isDisabled(), "ui-state-disabled")
+                .add(tree.isShowUnselectableCheckbox(), "ui-tree-checkbox-all")
+                .build();
 
         writer.startElement("div", tree);
         writer.writeAttribute("id", clientId, null);
@@ -435,7 +432,6 @@ public class TreeRenderer extends CoreRenderer {
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
         writer.writeAttribute("class", Tree.FILTER_CLASS, null);
-        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(InputRenderer.ARIA_FILTER), null);
         writer.endElement("input");
 
         writer.startElement("span", null);
@@ -451,13 +447,13 @@ public class TreeRenderer extends CoreRenderer {
         boolean dynamic = tree.isDynamic();
         boolean checkboxSelectionMode = tree.isCheckboxSelectionMode();
 
-        String containerClass = tree.getStyleClass() == null
-                                ? Tree.HORIZONTAL_CONTAINER_CLASS
-                                : Tree.HORIZONTAL_CONTAINER_CLASS + " " + tree.getStyleClass();
-        containerClass = tree.isDisabled() ? containerClass + " ui-state-disabled" : containerClass;
-        if (tree.isShowUnselectableCheckbox()) {
-            containerClass = containerClass + " ui-tree-checkbox-all";
-        }
+        //container class
+        String containerClass = getStyleClassBuilder(context)
+                .add(tree.isRTLRendering(), Tree.HORIZONTAL_CONTAINER_RTL_CLASS, Tree.HORIZONTAL_CONTAINER_CLASS)
+                .add(tree.getStyleClass())
+                .add(tree.isDisabled(), "ui-state-disabled")
+                .add(tree.isShowUnselectableCheckbox(), "ui-tree-checkbox-all")
+                .build();
 
         writer.startElement("div", tree);
         writer.writeAttribute("id", clientId, null);
@@ -485,25 +481,14 @@ public class TreeRenderer extends CoreRenderer {
         boolean selectable = node.isSelectable();
         boolean partialSelected = node.isPartialSelected();
         boolean selected = node.isSelected();
-
-        String nodeClass;
-        if (leaf) {
-            nodeClass = Tree.LEAF_NODE_CLASS;
-        }
-        else {
-            nodeClass = Tree.PARENT_NODE_CLASS;
-            nodeClass = expanded ? nodeClass + " ui-treenode-expanded" : nodeClass + " ui-treenode-collapsed";
-        }
-
-        if (selected) {
-            nodeClass += " ui-treenode-selected";
-        }
-        else if (partialSelected) {
-            nodeClass += " ui-treenode-hasselected";
-        }
-        else {
-            nodeClass += " ui-treenode-unselected";
-        }
+        String nodeClass = getStyleClassBuilder(context)
+                .add(leaf, Tree.LEAF_NODE_CLASS, Tree.PARENT_NODE_CLASS)
+                .add(!leaf && expanded, "ui-treenode-expanded", "ui-treenode-collapsed")
+                .add(selected, "ui-treenode-selected")
+                .add(!selected && partialSelected, "ui-treenode-hasselected")
+                .add(!selected && !partialSelected, "ui-treenode-unselected")
+                .add(uiTreeNode.getStyleClass())
+                .build();
 
         writer.startElement("table", tree);
         writer.startElement("tbody", null);
@@ -527,13 +512,12 @@ public class TreeRenderer extends CoreRenderer {
             writer.writeAttribute("data-rowkey", ROOT_ROW_KEY, null);
         }
 
-        nodeClass = uiTreeNode.getStyleClass() == null ? nodeClass : nodeClass + " " + uiTreeNode.getStyleClass();
         writer.writeAttribute("class", nodeClass, null);
 
-        String nodeContentClass = (tree.isSelectionEnabled() && node.isSelectable()) ? Tree.SELECTABLE_NODE_CONTENT_CLASS_H : Tree.NODE_CONTENT_CLASS_H;
-        if (selected) {
-            nodeContentClass += " ui-state-highlight";
-        }
+        String nodeContentClass = getStyleClassBuilder(context)
+                .add(tree.isSelectionEnabled() && node.isSelectable(), Tree.SELECTABLE_NODE_CONTENT_CLASS_H, Tree.NODE_CONTENT_CLASS_H)
+                .add(selected, "ui-state-highlight")
+                .build();
         writer.startElement("div", null);
         writer.writeAttribute("class", nodeContentClass, null);
 
@@ -882,24 +866,10 @@ public class TreeRenderer extends CoreRenderer {
     }
 
     public FilterConstraint getFilterConstraint(Tree tree) {
-        String filterMatchMode = tree.getFilterMatchMode();
-
-        MatchMode matchMode = MatchMode.of(filterMatchMode);
-        if (matchMode == null) {
-            throw new FacesException("Illegal filter match mode:" + filterMatchMode);
-        }
-
-        FilterConstraint filterConstraint;
         if (tree.getFilterFunction() != null) {
-            filterConstraint = new FunctionFilterConstraint(tree.getFilterFunction());
-        }
-        else {
-            filterConstraint = Tree.FILTER_CONSTRAINTS.get(matchMode);
-            if (filterConstraint == null) {
-                throw new FacesException("Illegal filter match mode:" + filterMatchMode);
-            }
+            return new FunctionFilterConstraint(tree.getFilterFunction());
         }
 
-        return filterConstraint;
+        return FilterConstraints.of(tree.getFilterMatchMode());
     }
 }

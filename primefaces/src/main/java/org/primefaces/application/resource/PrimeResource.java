@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,23 +34,15 @@ import org.primefaces.context.PrimeRequestContext;
  */
 public class PrimeResource extends ResourceWrapper {
 
-    private Resource wrapped;
     private String version;
 
-    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
-    public PrimeResource(final Resource resource) {
-        super();
-        wrapped = resource;
+    public PrimeResource(Resource wrapped) {
+        super(wrapped);
 
         FacesContext context = FacesContext.getCurrentInstance();
         version = PrimeRequestContext.getCurrentInstance(context).isHideResourceVersion()
                 ? null
                 : "&v=" + PrimeApplicationContext.getCurrentInstance(context).getEnvironment().getBuildVersion();
-    }
-
-    @Override
-    public Resource getWrapped() {
-        return wrapped;
     }
 
     @Override

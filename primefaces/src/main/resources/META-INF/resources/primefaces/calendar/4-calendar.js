@@ -218,7 +218,7 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
         //extensions
         if(this.cfg.popup && this.cfg.showOn) {
             var triggerButton = this.jqEl.siblings('.ui-datepicker-trigger:button');
-            triggerButton.attr('aria-label',PrimeFaces.getAriaLabel('calendar.BUTTON')).attr('aria-haspopup', true).html('').addClass('ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only')
+            triggerButton.attr('aria-label',PrimeFaces.getLocaleLabel('chooseDate')).attr('aria-haspopup', true).html('').addClass('ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only')
                         .append('<span class="ui-button-icon-left ui-icon ui-icon-calendar"></span><span class="ui-button-text">ui-button</span>');
 
             var title = this.jqEl.attr('title');
@@ -334,6 +334,11 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
             for(var setting in localeSettings) {
                 this.cfg[setting] = localeSettings[setting];
             }
+            this.cfg.firstDay = localeSettings.firstDayOfWeek;
+            this.cfg.closeText = localeSettings.aria.close;
+            this.cfg.prevText = localeSettings.aria.previous;
+            this.cfg.nextText = localeSettings.aria.next;
+            this.cfg.currentText = localeSettings.today;
         }
     },
 

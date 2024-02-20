@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,6 @@
 package org.primefaces.component.datatable.feature;
 
 import java.io.IOException;
-
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.datatable.DataTable;
@@ -36,7 +35,15 @@ public interface DataTableFeature {
 
     boolean shouldEncode(FacesContext context, DataTable table);
 
-    void decode(FacesContext context, DataTable table);
+    default void decode(FacesContext context, DataTable table) {
+        if (!shouldDecode(context, table)) {
+            throw new UnsupportedOperationException(getClass().getSimpleName() + " should not decode.");
+        }
+    }
 
-    void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException;
+    default void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
+        if (!shouldEncode(context, table)) {
+            throw new UnsupportedOperationException(getClass().getSimpleName() + " should not encode.");
+        }
+    }
 }

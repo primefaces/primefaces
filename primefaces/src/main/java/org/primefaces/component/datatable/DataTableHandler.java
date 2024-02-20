@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,11 +33,12 @@ import org.primefaces.facelets.MethodRule;
 
 public class DataTableHandler extends ComponentHandler {
 
-    private static final MetaRule DRAGGABLE_ROWS_FUNCTION
-            = new MethodRule("draggableRowsFunction", null, new Class[]{UIData.class});
-
-    private static final MetaRule GLOBAL_FILTER_FUNCTION
-            = new MethodRule("globalFilterFunction", Boolean.class, new Class[]{Object.class, Object.class, Locale.class});
+    private static final MetaRule DRAGGABLE_ROWS_FUNCTION = new MethodRule(DataTable.PropertyKeys.draggableRowsFunction.name(),
+            null,
+            new Class[]{UIData.class});
+    private static final MetaRule GLOBAL_FILTER_FUNCTION = new MethodRule(DataTable.PropertyKeys.globalFilterFunction.name(),
+            Boolean.class,
+            new Class[]{Object.class, Object.class, Locale.class});
 
     public DataTableHandler(ComponentConfig config) {
         super(config);

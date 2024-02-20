@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -56,13 +56,12 @@ public class InplaceRenderer extends CoreRenderer {
         boolean disabled = inplace.isDisabled();
         boolean validationFailed = context.isValidationFailed() && !inplace.isValid();
         UIComponent outputFacet = inplace.getFacet("output");
-        boolean shouldRenderFacet = ComponentUtils.shouldRenderFacet(outputFacet);
+        boolean shouldRenderFacet = FacetUtils.shouldRenderFacet(outputFacet);
         boolean withPassword = !shouldRenderFacet && isPassword(inplace.getChildren().get(0));
         String styleClass = getStyleClassBuilder(context)
                 .add(Inplace.CONTAINER_CLASS, inplace.getStyleClass())
                 .add(withPassword, "p-password")
                 .build();
-        String displayClass = disabled ? Inplace.DISABLED_DISPLAY_CLASS : Inplace.DISPLAY_CLASS;
         String mode = inplace.getMode();
 
         //container
@@ -76,14 +75,17 @@ public class InplaceRenderer extends CoreRenderer {
         writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
 
         //output
-        String outputStyle = validationFailed
-                ? Inplace.DISPLAY_NONE
-                : (Inplace.MODE_OUTPUT.equals(mode) ? Inplace.DISPLAY_INLINE : Inplace.DISPLAY_NONE);
+        String outputStyleClass = disabled ? Inplace.DISABLED_DISPLAY_CLASS : Inplace.DISPLAY_CLASS;
+        String outputStyle = getStyleBuilder(context)
+                .add(validationFailed, "display", Inplace.DISPLAY_NONE)
+                .add(!validationFailed && Inplace.MODE_OUTPUT.equals(mode), "display", Inplace.DISPLAY_INLINE)
+                .add(!validationFailed && Inplace.MODE_INPUT.equals(mode), "display", Inplace.DISPLAY_NONE)
+                .build();
 
         writer.startElement("span", null);
         writer.writeAttribute("id", clientId + "_display", "id");
-        writer.writeAttribute("class", displayClass, null);
-        writer.writeAttribute("style", "display:" + outputStyle, null);
+        writer.writeAttribute("class", outputStyleClass, null);
+        writer.writeAttribute("style", outputStyle, null);
         if (inplace.getTabindex() != null) {
             writer.writeAttribute("tabindex", inplace.getTabindex(), null);
             writer.writeAttribute("role", "button", null);
@@ -100,18 +102,20 @@ public class InplaceRenderer extends CoreRenderer {
 
 
         //input
-        String inputStyle = validationFailed
-                ? Inplace.DISPLAY_INLINE
-                : (Inplace.MODE_OUTPUT.equals(mode) ? Inplace.DISPLAY_NONE : Inplace.DISPLAY_INLINE);
+        String inputStyle = getStyleBuilder(context)
+                .add(validationFailed, "display", Inplace.DISPLAY_INLINE)
+                .add(!validationFailed && Inplace.MODE_OUTPUT.equals(mode), "display", Inplace.DISPLAY_NONE)
+                .add(!validationFailed && Inplace.MODE_INPUT.equals(mode), "display", Inplace.DISPLAY_INLINE)
+                .build();
         UIComponent inputFacet = inplace.getFacet("input");
 
         if (!inplace.isDisabled()) {
             writer.startElement("span", null);
             writer.writeAttribute("id", clientId + "_content", "id");
             writer.writeAttribute("class", Inplace.CONTENT_CLASS, null);
-            writer.writeAttribute("style", "display:" + inputStyle, null);
+            writer.writeAttribute("style", inputStyle, null);
 
-            if (ComponentUtils.shouldRenderFacet(inputFacet)) {
+            if (FacetUtils.shouldRenderFacet(inputFacet)) {
                 inputFacet.encodeAll(context);
             }
             else {

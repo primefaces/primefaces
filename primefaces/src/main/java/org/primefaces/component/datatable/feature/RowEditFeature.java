@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,8 +25,6 @@ package org.primefaces.component.datatable.feature;
 
 import java.io.IOException;
 import java.util.Map;
-
-import javax.faces.FacesException;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.visit.VisitContext;
@@ -41,24 +39,10 @@ import org.primefaces.visit.ResetInputVisitCallback;
 
 public class RowEditFeature implements DataTableFeature {
 
-    private static final RowEditFeature INSTANCE = new RowEditFeature();
-
-    private RowEditFeature() {
-    }
-
-    public static RowEditFeature getInstance() {
-        return INSTANCE;
-    }
-
-    @Override
-    public void decode(FacesContext context, DataTable table) {
-        throw new FacesException("RowEditFeature should not decode.");
-    }
-
     @Override
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         if (table.isSelectionEnabled()) {
-            SelectionFeature.getInstance().decodeSelectionRowKeys(context, table);
+            DataTableFeatures.selectionFeature().decodeSelectionRowKeys(context, table);
         }
 
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
@@ -93,7 +77,7 @@ public class RowEditFeature implements DataTableFeature {
         }
 
         if (table.isRowAvailable()) {
-            renderer.encodeRow(context, table, clientId, editedRowId);
+            renderer.encodeRow(context, table, editedRowId);
         }
     }
 

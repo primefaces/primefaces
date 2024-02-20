@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,6 @@
  */
 package org.primefaces.selenium.spi;
 
-import java.util.ArrayList;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
@@ -33,6 +32,8 @@ import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.internal.ConfigProvider;
 import org.primefaces.selenium.internal.OnloadScriptsEventListener;
 import org.primefaces.selenium.internal.ScrollElementIntoViewClickListener;
+
+import java.util.ArrayList;
 
 public class WebDriverProvider {
 

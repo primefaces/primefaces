@@ -237,7 +237,7 @@ var Storage = {
         var now = new Date();
 
         if (now.getTime() > item.expiry) {
-            localStorage.removeItem(key);
+            localStorage.removeItem(this.storageKey);
             return true;
         }
 

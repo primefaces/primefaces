@@ -37,6 +37,7 @@
  * @prop {JQuery} maximizeIcon DOM element of the icon for maximizing this dialog, when this dialog can be maximized.
  * @prop {boolean} [minimized] Whether the dialog is currently minimized.
  * @prop {JQuery} minimizeIcon DOM element of the icon for minimizing this dialog, when this dialog can be minimized.
+ * @prop {JQuery} minimizeClone DOM element clone of the JQ to be used for minimizing.
  * @prop {JQuery} parent The DOM element of the parent that contains this dialog, i.e the element to which the dialog
  * was appended.
  * @prop {boolean} positionInitialized Whether the position of the dialog was already set. If not, it must be set the
@@ -46,6 +47,7 @@
  * @prop {PrimeFaces.widget.Dialog.ClientState} [state] The client-side state of the dialog such as its width
  * and height. The client-side state can be preserved during AJAX updates by sending it to the server.
  * @prop {JQuery} titlebar DOM element of the title bar container of this dialog.
+ * @prop {HTMLElement} focusedElementBeforeDialogOpened Element that was focused before the dialog was opened.
  * 
  * @interface {PrimeFaces.widget.DialogCfg} cfg The configuration for the {@link  Dialog| Dialog widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
@@ -55,7 +57,7 @@
  * body.
  * @prop {boolean} cfg.absolutePositioned Whether the dialog is positioned absolutely.
  * @prop {boolean} cfg.blockScroll Whether to prevent the document from scrolling when the dialog is visible.
- * @prop {boolean} cfg.cache Only relevant for dynamic="true": Defines if activating the dialog should load the contents from server again. For cache="true" (default) the dialog content is only loaded once..
+ * @prop {boolean} cfg.cache Only relevant for dynamic="true": Defines if activating the dialog should load the contents from server again. For cache="true" (default) the dialog content is only loaded once.
  * @prop {boolean} cfg.closeOnEscape Whether the dialog is closed when the user presses the escape button.
  * @prop {boolean} cfg.closable Whether the dialog can be closed by the user.
  * @prop {boolean} cfg.draggable Whether the dialog is draggable.
@@ -119,6 +121,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.cfg.cache = this.cfg.cache === false ? false : true;
         this.cfg.responsive = this.cfg.responsive === false ? false : true;
         this.parent = this.jq.parent();
+        this.focusedElementBeforeDialogOpened = null;
 
         this.initSize();
         
@@ -220,8 +223,10 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
      * @inheritdoc
      * @return {JQuery} The DOM elements which are allowed to be focused via tabbing.
      */
-    getModalTabbables: function(){
-        return this.jq.find(':tabbable').add(this.footer.find(':tabbable'));
+    getModalTabbables: function() {
+        var tabbablesInIframe = this.cfg.getModalTabbables ? this.cfg.getModalTabbables() : undefined;
+        
+        return this.jq.find(':tabbable').add(tabbablesInIframe).add(this.footer.find(':tabbable'));
     },
 
     /**
@@ -237,6 +242,10 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         if(this.isVisible()) {
             return;
         }
+        
+        // Remember the focused element before we opened the dialog
+        // so we can return focus to it once we close the dialog.
+        this.focusedElementBeforeDialogOpened = document.activeElement;
 
         if(!this.loaded && this.cfg.dynamic) {
             this.loadContents();
@@ -361,10 +370,21 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
      * @protected
      */
     applyFocus: function() {
-        if(this.cfg.focus)
-        	PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.focus).trigger('focus');
+        if (this.cfg.focus)
+            PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.focus).trigger('focus');
         else
             PrimeFaces.focus(null, this.id);
+    },
+    
+    /**
+     * Puts focus on the element that opened this dialog.
+     * @protected
+     */
+    returnFocus: function() {
+        var el = this.focusedElementBeforeDialogOpened;
+        if (el) {
+            PrimeFaces.queueTask(function() { el.focus({ preventScroll: true }) }, 100);
+        }
     },
 
     /**
@@ -391,6 +411,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             $(this).removeClass('ui-state-focus');
         });
 
+        PrimeFaces.skinCloseAction(this.closeIcon);
         this.closeIcon.on('click', function(e) {
             $this.hide();
             e.preventDefault();
@@ -423,12 +444,16 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
         if(this.cfg.closeOnEscape) {
             $(document).on('keydown.dialog_' + this.id, function(e) {
-                var keyCode = $.ui.keyCode;
-                if(e.which === keyCode.ESCAPE && $this.isVisible()) {
+                if(!e.isDefaultPrevented() && e.key === 'Escape' && $this.isVisible()) {
                     // GitHub #6677 if multiple dialogs check if this is the topmost active dialog to close
-                    var active = parseInt($this.jq.css('z-index')) === parseInt($('.ui-dialog:visible').last().css('z-index'));
-                    if(active) {
-                         $this.hide();
+                    var currentZIndex = parseInt($this.jq.css('z-index'));
+                    var highestZIndex = Math.max(...$('.ui-dialog:visible').map(function() {
+                        return parseInt($(this).css('z-index')) || 0;
+                    }).get());
+                    if (currentZIndex === highestZIndex) {
+                        $this.hide();
+                        e.preventDefault();
+                        e.stopPropagation();
                     }
                 };
             });
@@ -588,6 +613,9 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         if(this.cfg.onHide) {
             this.cfg.onHide.call(this, event, ui);
         }
+        
+        // return focus to where it was before we opened the dialog
+        this.returnFocus();
     },
 
     /**
@@ -664,6 +692,17 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         }
         else {
             this.saveState();
+            
+            // create a minimize clone which is just the titlebar
+            this.minimizeClone = this.jq.clone(true);
+            this.minimizeClone.attr('id', this.jq.attr('id') + '_clone')
+            this.minimizeClone.addClass('ui-dialog-minimized');
+            this.minimizeClone.children('.ui-dialog-content').remove();
+            this.minimizeClone.find('.ui-dialog-footer').remove();
+
+            if (this.cfg.resizable) {
+                this.minimizeClone.children('.ui-resizable-handle').remove();
+            }
 
             if(animate) {
                 this.jq.effect('transfer', {
@@ -672,14 +711,23 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
                                 }, 500,
                                 function() {
                                     $this.dock(dockingZone);
-                                    $this.jq.addClass('ui-dialog-minimized');
                                 });
             }
             else {
                 this.dock(dockingZone);
-                this.jq.addClass('ui-dialog-minimized');
             }
         }
+    },
+
+    /**
+     * Called when this dialog is minimized. Restores the original position of this dialog.
+     * @protected
+     */
+    removeMinimize: function() {
+        this.minimizeClone.remove();
+        this.jq.show();
+        this.restoreState();
+        this.minimized = false;
     },
 
     /**
@@ -690,17 +738,12 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
      */
     dock: function(zone) {
         zone.css('z-index', this.jq.css('z-index'));
-        this.jq.appendTo(zone).css('position', 'static');
-        this.jq.css({'height':'auto', 'width':'auto', 'float': 'left'});
-        this.content.hide();
-        this.footer.hide();
-        this.minimizeIcon.removeClass('ui-state-hover').children('.ui-icon').removeClass('ui-icon-minus').addClass('ui-icon-plus');
+        this.jq.hide();
+        this.minimizeClone.appendTo(zone).css({'position':'static', 'height':'auto', 'width':'auto', 'float': 'left'});
+        var titlebar = this.minimizeClone.children('.ui-dialog-titlebar');
+        var minimizeIcon = titlebar.children('.ui-dialog-titlebar-minimize');
+        minimizeIcon.removeClass('ui-state-hover').children('.ui-icon').removeClass('ui-icon-minus').addClass('ui-icon-plus');
         this.minimized = true;
-
-        if(this.cfg.resizable) {
-            this.resizers.hide();
-        }
-
         this.callBehavior('minimize');
     },
 
@@ -713,7 +756,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.state = {
             width: this.jq.width(),
             height: this.jq.height(),
-            contentWidth: this.content.width(),
+            contentWidth: parseInt(this.content[0].style.width) || this.content.width(),
             contentHeight: this.content.height()
         };
 
@@ -749,6 +792,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             source: this.id,
             process: this.id,
             update: this.id,
+            ignoreAutoUpdate: true,
             params: [
                 {name: this.id + '_contentLoad', value: true}
             ],
@@ -804,7 +848,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
      * @return {boolean} `true` if this dialog is currently being shown, `false` otherwise.
      */
     isVisible: function() {
-        return this.jq.is(':visible');
+        return this.jq.is(':visible') || this.minimized === true;
     },
 
     /**
@@ -819,7 +863,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 $this.fitViewport();
             }
 
-            if ($this.isVisible()) {
+            if ($this.isVisible() && !$this.cfg.absolutePositioned) {
                 // instant reinit position
                 $this.initPosition();
             }
@@ -829,7 +873,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             }
         });
         PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id + '_align', function() {
-            if ($this.isVisible()) {
+            if ($this.isVisible() && !$this.cfg.absolutePositioned) {
                 // instant reinit position
                 $this.initPosition();
             }
@@ -838,23 +882,6 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 $this.positionInitialized = false;
             }
         });
-    },
-
-    /**
-     * Called when this dialog is minimized. Restores the original position of this dialog.
-     * @protected
-     */
-    removeMinimize: function() {
-        this.jq.appendTo(this.parent).removeClass('ui-dialog-minimized').css({'position':'fixed', 'float':'none'});
-        this.restoreState();
-        this.content.show();
-        this.footer.show();
-        this.minimizeIcon.removeClass('ui-state-hover').children('.ui-icon').removeClass('ui-icon-plus').addClass('ui-icon-minus');
-        this.minimized = false;
-
-        if(this.cfg.resizable) {
-            this.resizers.show();
-        }
     }
 
 });
@@ -917,8 +944,23 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
                 if(el.hasClass('ui-confirmdialog-yes') && PrimeFaces.confirmSource) {
                     var id = PrimeFaces.confirmSource.get(0);
                     var js = PrimeFaces.confirmSource.data('pfconfirmcommand');
-
-                    PrimeFaces.csp.executeEvent(id, js, e);
+                    var command = $(id);
+                    
+                    // Test if the function matches the pattern
+                    if (PrimeFaces.ajax.Utils.isAjaxRequest(js) || command.is('a')) {
+                        // command is ajax=true
+                        PrimeFaces.csp.executeEvent(id, js, e);
+                    }
+                    else {
+                        // command is ajax=false
+                        if (command.prop('onclick')) {
+                            command.removeAttr("onclick");
+                        }
+                        else {
+                            command.off("click");
+                        }
+                        command.removeAttr("data-pfconfirmcommand").click();
+                    }
 
                     PrimeFaces.confirmDialog.hide();
                     PrimeFaces.confirmSource = null;
@@ -951,8 +993,13 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
             PrimeFaces.csp.eval(msg.beforeShow);
         }
 
-        var icon = (msg.icon === 'null') ? 'ui-icon-alert' : msg.icon;
-        this.icon.removeClass().addClass('ui-icon ui-confirm-dialog-severity ' + icon);
+        if (msg.icon) {
+            this.icon.removeClass().addClass('ui-icon ui-confirm-dialog-severity ' + msg.icon);
+            this.icon.show();
+        }
+        else {
+            this.icon.hide();
+        }
 
         if(msg.header)
             this.title.text(msg.header);

@@ -30,7 +30,6 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
      */
     init: function(cfg) {
         this._super(cfg);
-        this.cfg.separator = this.cfg.separator || ',';
 
         this.input = $(this.jqId + '_input');
         this.hinput = $(this.jqId + '_hinput');
@@ -84,11 +83,10 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
                 e.stopPropagation();
             }
         }).on('keydown.chips', function(e) {
-            var keyCode = $.ui.keyCode;
             var value = $(this).val();
 
-            switch (e.which) {
-                case keyCode.BACKSPACE:
+            switch (e.key) {
+                case 'Backspace':
                     if (value.length === 0 && $this.hinput.children('option') && $this.hinput.children('option').length > 0) {
                         var lastOption = $this.hinput.children('option:last'),
                             index = lastOption.index();
@@ -96,7 +94,8 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
                     }
                     break;
 
-                case keyCode.ENTER:
+                case 'Enter':
+                case 'NumpadEnter':
                     $this.addItem(value, true);
                     e.preventDefault();
                     e.stopPropagation();
@@ -122,7 +121,7 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     updateFloatLabel: function() {
-        PrimeFaces.utils.updateFloatLabel(this.jq, this.input, this.hasFloatLabel);
+        PrimeFaces.utils.updateFloatLabel(this.jq, this.input.add(this.hinput), this.hasFloatLabel);
     },
 
     /**
@@ -231,7 +230,7 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
             tokens.each(function() {
                 var token = $(this),
                     tokenValue = token.find('span.ui-chips-token-label').html();
-                editor = editor + tokenValue + $this.cfg.separator;
+                editor = editor + tokenValue + ($this.cfg.separator !== undefined ? $this.cfg.separator : '');
                 $this.removeItem(token, true);
             });
 

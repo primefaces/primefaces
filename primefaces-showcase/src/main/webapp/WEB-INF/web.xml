@@ -51,10 +51,6 @@
         <param-value>true</param-value>
     </context-param>
     <context-param>
-        <param-name>primefaces.FONT_AWESOME</param-name>
-        <param-value>true</param-value>
-    </context-param>
-    <context-param>
         <param-name>primefaces.THEME</param-name>
         <param-value>#{app.theme}</param-value>
     </context-param>
@@ -82,20 +78,18 @@
         <param-name>primefaces.CACHE_PROVIDER</param-name>
         <param-value>org.primefaces.showcase.util.EHCache3Provider</param-value>
     </context-param>
-    <!--
     <context-param>
         <param-name>primefaces.FLEX</param-name>
-        <param-value>true</param-value>
+        <param-value>false</param-value>
     </context-param>
-    -->
 
     <context-param>
         <param-name>com.sun.faces.numberOfViewsInSession</param-name>
         <param-value>5</param-value>
     </context-param>
     <context-param>
-    	<param-name>com.sun.faces.serializeServerState</param-name>
-    	<param-value>false</param-value>
+        <param-name>com.sun.faces.serializeServerState</param-name>
+        <param-value>false</param-value>
     </context-param>
 
     <context-param>

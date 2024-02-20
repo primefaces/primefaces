@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,8 @@ package org.primefaces.renderkit;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
@@ -33,7 +35,6 @@ import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.ProjectStage;
 import javax.faces.application.Resource;
-
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
@@ -43,11 +44,12 @@ import javax.faces.lifecycle.ClientWindow;
 import javax.faces.render.Renderer;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-import org.primefaces.clientwindow.PrimeClientWindowUtils;
+
 import org.primefaces.clientwindow.PrimeClientWindow;
+import org.primefaces.clientwindow.PrimeClientWindowUtils;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.LocaleUtils;
 
 /**
@@ -58,6 +60,7 @@ import org.primefaces.util.LocaleUtils;
  * - Middle Facet
  * - Registered Resources
  * - Client Validation Scripts
+ * - Locales
  * - PF Client Side Settings
  * - PF Initialization Scripts
  * - Head Content
@@ -65,6 +68,7 @@ import org.primefaces.util.LocaleUtils;
  */
 public class HeadRenderer extends Renderer {
 
+    private static final Logger LOGGER = Logger.getLogger(HeadRenderer.class.getName());
     private static final String LIBRARY = "primefaces";
 
     @Override
@@ -72,14 +76,13 @@ public class HeadRenderer extends Renderer {
         ResponseWriter writer = context.getResponseWriter();
         PrimeRequestContext requestContext = PrimeRequestContext.getCurrentInstance(context);
         PrimeApplicationContext applicationContext = requestContext.getApplicationContext();
-        boolean csvEnabled = applicationContext.getConfig().isClientSideValidationEnabled();
 
         writer.startElement("head", component);
         writer.writeAttribute("id", component.getClientId(context), "id");
 
         //First facet
         UIComponent first = component.getFacet("first");
-        if (ComponentUtils.shouldRenderFacet(first)) {
+        if (FacetUtils.shouldRenderFacet(first)) {
             first.encodeAll(context);
         }
 
@@ -109,7 +112,7 @@ public class HeadRenderer extends Renderer {
 
         //Middle facet
         UIComponent middle = component.getFacet("middle");
-        if (ComponentUtils.shouldRenderFacet(middle)) {
+        if (FacetUtils.shouldRenderFacet(middle)) {
             middle.encodeAll(context);
         }
 
@@ -121,19 +124,31 @@ public class HeadRenderer extends Renderer {
             resource.encodeAll(context);
         }
 
-        if (csvEnabled) {
-            encodeValidationResources(context, applicationContext.getConfig().isBeanValidationEnabled());
+        // normal CSV is a required dependency for some special components like fileupload
+        encodeJS(context, LIBRARY, "validation/validation.js");
+        // BV CSV is optional and must be enabled by config
+        if (applicationContext.getConfig().isClientSideValidationEnabled()
+                && applicationContext.getConfig().isBeanValidationEnabled()) {
+            encodeJS(context, LIBRARY, "validation/validation.bv.js");
         }
 
         if (applicationContext.getConfig().isClientSideLocalizationEnabled()) {
-            Locale locale = LocaleUtils.getCurrentLocale(context);
-            encodeJS(context, LIBRARY, "locales/locale-" + locale.getLanguage() + ".js");
+            try {
+                Locale locale = LocaleUtils.getCurrentLocale(context);
+                encodeJS(context, LIBRARY, "locales/locale-" + locale.getLanguage() + ".js");
+            }
+            catch (FacesException e) {
+                if (context.isProjectStage(ProjectStage.Development)) {
+                    LOGGER.log(Level.WARNING,
+                            "Failed to load client side locale.js. {0}", e.getMessage());
+                }
+            }
         }
 
-        encodeSettingScripts(context, applicationContext, requestContext, writer, csvEnabled);
+        encodeSettingScripts(context, applicationContext, requestContext, writer);
 
         // encode initialization scripts
-        encodeInitScripts(writer);
+        encodeInitScripts(context, writer);
     }
 
     @Override
@@ -142,7 +157,7 @@ public class HeadRenderer extends Renderer {
 
         //Last facet
         UIComponent last = component.getFacet("last");
-        if (ComponentUtils.shouldRenderFacet(last)) {
+        if (FacetUtils.shouldRenderFacet(last)) {
             last.encodeAll(context);
         }
 
@@ -181,21 +196,13 @@ public class HeadRenderer extends Renderer {
         }
     }
 
-    protected void encodeValidationResources(FacesContext context, boolean beanValidationEnabled) throws IOException {
-        encodeJS(context, LIBRARY, "validation/validation.js");
-
-        if (beanValidationEnabled) {
-            encodeJS(context, LIBRARY, "validation/validation.bv.js");
-        }
-    }
-
     protected void encodeSettingScripts(FacesContext context, PrimeApplicationContext applicationContext, PrimeRequestContext requestContext,
-            ResponseWriter writer, boolean csvEnabled) throws IOException {
+            ResponseWriter writer) throws IOException {
 
         ProjectStage projectStage = context.getApplication().getProjectStage();
 
         writer.startElement("script", null);
-        writer.writeAttribute("type", "text/javascript", null);
+        RendererUtils.encodeScriptTypeIfNecessary(context);
         writer.write("if(window.PrimeFaces){");
 
         writer.write("PrimeFaces.settings.locale='" + LocaleUtils.getCurrentLocale(context) + "';");
@@ -207,10 +214,8 @@ public class HeadRenderer extends Renderer {
             writer.write("PrimeFaces.settings.cookiesSameSite='" + applicationContext.getConfig().getCookiesSameSite() + "';");
         }
 
-        if (csvEnabled) {
-            writer.write("PrimeFaces.settings.validateEmptyFields=" + applicationContext.getConfig().isValidateEmptyFields() + ";");
-            writer.write("PrimeFaces.settings.considerEmptyStringNull=" + applicationContext.getConfig().isInterpretEmptyStringAsNull() + ";");
-        }
+        writer.write("PrimeFaces.settings.validateEmptyFields=" + applicationContext.getConfig().isValidateEmptyFields() + ";");
+        writer.write("PrimeFaces.settings.considerEmptyStringNull=" + applicationContext.getConfig().isInterpretEmptyStringAsNull() + ";");
 
         if (applicationContext.getConfig().isLegacyWidgetNamespace()) {
             writer.write("PrimeFaces.settings.legacyWidgetNamespace=true;");
@@ -228,27 +233,25 @@ public class HeadRenderer extends Renderer {
             writer.write("PrimeFaces.settings.projectStage='" + projectStage.toString() + "';");
         }
 
-        if (applicationContext.getEnvironment().isAtLeastJsf22()) {
-            if (context.getExternalContext().getClientWindow() != null) {
-                ClientWindow clientWindow = context.getExternalContext().getClientWindow();
-                if (clientWindow instanceof PrimeClientWindow) {
+        if (context.getExternalContext().getClientWindow() != null) {
+            ClientWindow clientWindow = context.getExternalContext().getClientWindow();
+            if (clientWindow instanceof PrimeClientWindow) {
 
-                    boolean initialRedirect = false;
+                boolean initialRedirect = false;
 
-                    Object cookie = PrimeClientWindowUtils.getInitialRedirectCookie(context, clientWindow.getId());
-                    if (cookie instanceof Cookie) {
-                        Cookie servletCookie = (Cookie) cookie;
-                        initialRedirect = true;
+                Object cookie = PrimeClientWindowUtils.getInitialRedirectCookie(context, clientWindow.getId());
+                if (cookie instanceof Cookie) {
+                    Cookie servletCookie = (Cookie) cookie;
+                    initialRedirect = true;
 
-                        // expire/remove cookie
-                        servletCookie.setMaxAge(0);
-                        ((HttpServletResponse) context.getExternalContext().getResponse()).addCookie(servletCookie);
-                    }
-                    writer.write(
-                            String.format("PrimeFaces.clientwindow.init('%s', %s);",
-                                    PrimeClientWindowUtils.secureWindowId(clientWindow.getId()),
-                                    initialRedirect));
+                    // expire/remove cookie
+                    servletCookie.setMaxAge(0);
+                    ((HttpServletResponse) context.getExternalContext().getResponse()).addCookie(servletCookie);
                 }
+                writer.write(
+                        String.format("PrimeFaces.clientwindow.init('%s', %s);",
+                                PrimeClientWindowUtils.secureWindowId(clientWindow.getId()),
+                                initialRedirect));
             }
         }
 
@@ -256,12 +259,12 @@ public class HeadRenderer extends Renderer {
         writer.endElement("script");
     }
 
-    protected void encodeInitScripts(ResponseWriter writer) throws IOException {
+    protected void encodeInitScripts(FacesContext context, ResponseWriter writer) throws IOException {
         List<String> scripts = PrimeRequestContext.getCurrentInstance().getInitScriptsToExecute();
 
         if (!scripts.isEmpty()) {
             writer.startElement("script", null);
-            writer.writeAttribute("type", "text/javascript", null);
+            RendererUtils.encodeScriptTypeIfNecessary(context);
 
             boolean moveScriptsToBottom = PrimeRequestContext.getCurrentInstance().getApplicationContext().getConfig().isMoveScriptsToBottom();
 

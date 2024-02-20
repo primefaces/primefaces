@@ -29,7 +29,7 @@ stream, second is the mimeType and the third parameter is the name of the file.
 public class FileBean {
     private StreamedContent file;
 
-    public FileDownloadController() {
+    public FileBean() {
         file = DefaultStreamedContent.builder()
                     .contentType("application/pdf")
                     .name("downloaded_file.pdf")

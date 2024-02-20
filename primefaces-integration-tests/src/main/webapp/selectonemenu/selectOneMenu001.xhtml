@@ -16,6 +16,7 @@
                 <p:autoUpdate/>
             </p:messages>
 
+            <p:outputLabel for="@next" value="SelectOneMenu"/>
             <p:selectOneMenu id="selectonemenu" value="#{selectOneMenu001.value}">
                 <f:selectItem itemLabel="Select a driver" itemValue="" noSelectionOption="true"/>
                 <f:selectItems value="#{selectOneMenu001.drivers}" var="driver" itemLabel="#{driver.name}" itemValue="#{driver.id}"/>
@@ -26,11 +27,17 @@
 
             <hr/>
 
-            <p:selectOneMenu id="selectonemenu2" value="#{selectOneMenu001.value2}">
+            <p:selectOneMenu id="selectonemenu2" value="#{selectOneMenu001.value2}" label="Select a driver" alwaysDisplayLabel="#{selectOneMenu001.alwaysDisplayLabel}">
                 <f:selectItem itemLabel="Select a driver" itemValue="" noSelectionOption="true"/>
                 <f:selectItems value="#{selectOneMenu001.drivers}" var="driver" itemLabel="#{driver.name}" itemValue="#{driver.id}"/>
                 <p:ajax event="change" process="@this" listener="#{selectOneMenu001.onAjaxChange()}"/>
             </p:selectOneMenu>
+
+            <hr/>
+
+            <p:selectBooleanCheckbox id="alwaysDisplayLabel" value="#{selectOneMenu001.alwaysDisplayLabel}" itemLabel="alwaysDisplayLabel">
+                <p:ajax update="@form" process="@form" />
+            </p:selectBooleanCheckbox>
 
         </h:form>
 

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,10 +26,9 @@ package org.primefaces.component.tieredmenu;
 import java.io.IOException;
 import java.util.List;
 
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
+import org.primefaces.component.badge.BadgeRenderer;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
@@ -50,6 +49,8 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("TieredMenu", menu)
                 .attr("autoDisplay", menu.isAutoDisplay())
+                .attr("showDelay", menu.getShowDelay(), 0)
+                .attr("hideDelay", menu.getHideDelay(), 0)
                 .attr("toggleEvent", menu.getToggleEvent(), null);
 
         if (menu.isOverlay()) {
@@ -63,16 +64,17 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
     protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         TieredMenu menu = (TieredMenu) abstractMenu;
         String style = menu.getStyle();
-        String styleClass = menu.getStyleClass();
-        String defaultStyleClass = menu.isOverlay() ? TieredMenu.DYNAMIC_CONTAINER_CLASS : TieredMenu.STATIC_CONTAINER_CLASS;
-        styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
+        String styleClass = getStyleClassBuilder(context)
+                .add(menu.getStyleClass())
+                .add(menu.isOverlay(), TieredMenu.DYNAMIC_CONTAINER_CLASS, TieredMenu.STATIC_CONTAINER_CLASS)
+                .add(ComponentUtils.isRTL(context, abstractMenu), AbstractMenu.MENU_RTL_CLASS)
+                .build();
 
         encodeMenu(context, menu, style, styleClass, HTML.ARIA_ROLE_MENU);
     }
 
     protected void encodeMenu(FacesContext context, AbstractMenu menu, String style, String styleClass, String role) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        UIComponent optionsFacet = menu.getFacet("options");
 
         writer.startElement("div", menu);
         writer.writeAttribute("id", menu.getClientId(context), "id");
@@ -87,22 +89,21 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
         writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUBAR, null);
         writer.writeAttribute("class", Menu.LIST_CLASS, null);
 
+        encodeFacet(context, menu, "start", Menu.START_CLASS);
+
         if (menu.getElementsCount() > 0) {
             encodeElements(context, menu, menu.getElements());
         }
 
-        if (ComponentUtils.shouldRenderFacet(optionsFacet)) {
-            writer.startElement("li", null);
-            writer.writeAttribute("class", Menu.OPTIONS_CLASS, null);
-            writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
-            optionsFacet.encodeAll(context);
-            writer.endElement("li");
-        }
+        encodeFacet(context, menu, "options", Menu.OPTIONS_CLASS);
+        encodeFacet(context, menu, "end", Menu.END_CLASS);
 
         writer.endElement("ul");
 
         writer.endElement("div");
     }
+
+
 
     protected void encodeElements(FacesContext context, AbstractMenu menu, List<MenuElement> elements) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
@@ -112,14 +113,20 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
                 if (element instanceof MenuItem) {
                     MenuItem menuItem = (MenuItem) element;
                     String containerStyle = menuItem.getContainerStyle();
-                    String containerStyleClass = menuItem.getContainerStyleClass();
-                    containerStyleClass = (containerStyleClass == null) ? Menu.MENUITEM_CLASS : Menu.MENUITEM_CLASS + " " + containerStyleClass;
+                    String containerStyleClass = getStyleClassBuilder(context)
+                            .add(Menu.MENUITEM_CLASS)
+                            .add(menuItem.getContainerStyleClass())
+                            .add(menuItem.getBadge() != null, "ui-overlay-badge")
+                            .build();
 
                     writer.startElement("li", null);
                     writer.writeAttribute("class", containerStyleClass, null);
                     writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
                     if (containerStyle != null) {
                         writer.writeAttribute("style", containerStyle, null);
+                    }
+                    if (menuItem.getBadge() != null) {
+                        BadgeRenderer.encode(context, menuItem.getBadge());
                     }
                     encodeMenuItem(context, menu, menuItem, "-1");
                     writer.endElement("li");
@@ -151,9 +158,8 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
 
     protected void encodeSubmenu(FacesContext context, AbstractMenu menu, Submenu submenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String icon = submenu.getIcon();
-        String label = submenu.getLabel();
         boolean disabled = submenu.isDisabled();
+        boolean isRtl = ComponentUtils.isRTL(context, menu);
 
         //title
         writer.startElement("a", null);
@@ -172,21 +178,16 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
             writer.writeAttribute("onclick", "return false;", null);
         }
 
-        if (icon != null) {
-            writer.startElement("span", null);
-            writer.writeAttribute("class", Menu.MENUITEM_ICON_CLASS + " " + icon, null);
-            writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
-            writer.endElement("span");
+        if (isRtl) {
+            encodeSubmenuIcon(context, submenu, isRtl, true);
+            encodeMenuLabel(context, submenu);
+            encodeMenuIcon(context, submenu);
         }
-
-        if (label != null) {
-            writer.startElement("span", null);
-            writer.writeAttribute("class", Menu.MENUITEM_TEXT_CLASS, null);
-            writer.writeText(submenu.getLabel(), "value");
-            writer.endElement("span");
+        else {
+            encodeMenuIcon(context, submenu);
+            encodeMenuLabel(context, submenu);
+            encodeSubmenuIcon(context, submenu, isRtl, true);
         }
-
-        encodeSubmenuIcon(context, submenu);
 
         writer.endElement("a");
 
@@ -200,13 +201,5 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
                 writer.endElement("ul");
             }
         }
-    }
-
-    protected void encodeSubmenuIcon(FacesContext context, Submenu submenu) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-
-        writer.startElement("span", null);
-        writer.writeAttribute("class", Menu.SUBMENU_RIGHT_ICON_CLASS, null);
-        writer.endElement("span");
     }
 }

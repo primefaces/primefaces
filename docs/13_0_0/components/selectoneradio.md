@@ -35,13 +35,14 @@ widgetVar | null | String | Name of the client side widget.
 disabled | false | Boolean | Disables the component.
 label | null | String | User presentable name. 
 layout | lineDirection | String | Layout of the radiobuttons, valid values are lineDirection , pageDirection , custom, responsive and grid.
-columns | 0 | Integer | Number of columns in grid layout.
+flex | false | Boolean | Use modern PrimeFlex-Grid in responsive mode instead of classic Grid CSS. (primeflex.css must be included into the template.xhtml)
+columns | 12 | Integer | Number of columns in responsive layout.
 onchange | null | String | Callback to execute on value change.
 onclick | null | String | Callback to execute on click of a radio.
 style | null | String | Inline style of the component.
 styleClass | null | String | Style class of the container.
 tabindex | null | String | Specifies the tab order of element in tab navigation.
-plain | false | Boolean | Plain mode displays radiobuttons using native browser rendering instead of themes.
+plain | false | Boolean | Plain mode displays radiobuttons using native browser rendering instead of themes. Deprecated.
 unselectable | false | Boolean | Unselectable mode when true clicking a radio again will clear the selection. Default false.
 hideNoSelectionOption | false | Boolean  | Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.
 readonly | false | Boolean | Flag indicating that this input element will prevent changes by the user.

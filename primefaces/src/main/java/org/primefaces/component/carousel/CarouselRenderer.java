@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,6 +33,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.model.ResponsiveOption;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class CarouselRenderer extends CoreRenderer {
@@ -240,7 +241,7 @@ public class CarouselRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String headerText = carousel.getHeaderText();
         UIComponent facet = carousel.getFacet("header");
-        boolean shouldRenderFacet = ComponentUtils.shouldRenderFacet(facet);
+        boolean shouldRenderFacet = FacetUtils.shouldRenderFacet(facet);
 
         if (headerText == null && !shouldRenderFacet) {
             return;
@@ -263,7 +264,7 @@ public class CarouselRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String footerText = carousel.getFooterText();
         UIComponent facet = carousel.getFacet("footer");
-        boolean shouldRenderFacet = ComponentUtils.shouldRenderFacet(facet);
+        boolean shouldRenderFacet = FacetUtils.shouldRenderFacet(facet);
 
         if (footerText == null && !shouldRenderFacet) {
             return;

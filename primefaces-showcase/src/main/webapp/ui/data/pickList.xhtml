@@ -38,8 +38,10 @@
                 <p:pickList id="pojoPickList" value="#{pickListView.countries}" var="country"
                             itemValue="#{country}" itemLabel="#{country.name}" showSourceControls="true"
                             showTargetControls="true" showCheckbox="true"
-                            showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains"
-                            converter="#{countryConverter}" responsive="true">
+                            showSourceFilter="true" showTargetFilter="true" 
+                            sourceFilterPlaceholder="Filter available countries"
+                            targetFilterPlaceholder="Filter starting countries"
+                            filterMatchMode="contains" converter="#{countryConverter}" responsive="true">
 
                     <f:facet name="sourceCaption">Available</f:facet>
                     <f:facet name="targetCaption">Starting</f:facet>

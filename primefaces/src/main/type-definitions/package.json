@@ -90,6 +90,7 @@
     "@fullcalendar/list": "^5.11.0",
     "@fullcalendar/moment": "^5.11.0",
     "@fullcalendar/timegrid": "^5.11.0",
+    "@melloware/coloris": "^0.18.0",
     "@types/chart.js": "^2.9.37",
     "@types/downloadjs": "^1.4.3",
     "@types/google.maps": "^3.49.2",
@@ -106,8 +107,8 @@
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.34",
     "print-js": "^1.6.0",
-    "vis-data": "^7.1.4",
-    "vis-timeline": "^7.5.1",
+    "vis-data": "^7.1.6",
+    "vis-timeline": "^7.7.2",
     "vis-util": "^5.0.3",
     "xss": "^1.0.13"
   },

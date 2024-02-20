@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,6 +37,7 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
         ariaHeaderText,
         caseSensitiveSort,
         colspan,
+        converter,
         displayPriority,
         draggable,
         exportFooterValue,
@@ -46,13 +47,14 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
         exportColspan,
         exportRowspan,
         exportable,
+        exportTag,
         field,
         filterBy,
         filterFunction,
         filterMatchMode,
         filterMaxLength,
-        filterOptions,
         filterPosition,
+        filterPlaceholder,
         filterStyle,
         filterStyleClass,
         filterValue,
@@ -65,6 +67,7 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
         responsivePriority,
         rowspan,
         selectRow,
+        selectionBox,
         sortBy,
         sortFunction,
         sortOrder,
@@ -151,17 +154,8 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
     }
 
     @Override
-    public Object getFilterOptions() {
-        return getStateHelper().eval(PropertyKeys.filterOptions, null);
-    }
-
-    public void setFilterOptions(Object filterOptions) {
-        getStateHelper().put(PropertyKeys.filterOptions, filterOptions);
-    }
-
-    @Override
     public String getFilterMatchMode() {
-        return (String) getStateHelper().eval(PropertyKeys.filterMatchMode, "startsWith");
+        return (String) getStateHelper().eval(PropertyKeys.filterMatchMode, DEFAULT_FILTER_MATCH_MODE.operator());
     }
 
     public void setFilterMatchMode(String filterMatchMode) {
@@ -175,6 +169,15 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
 
     public void setFilterPosition(String filterPosition) {
         getStateHelper().put(PropertyKeys.filterPosition, filterPosition);
+    }
+
+    @Override
+    public String getFilterPlaceholder() {
+        return (String) getStateHelper().eval(PropertyKeys.filterPlaceholder, null);
+    }
+
+    public void setFilterPlaceholder(String filterPlaceholder) {
+        getStateHelper().put(PropertyKeys.filterPlaceholder, filterPlaceholder);
     }
 
     @Override
@@ -367,12 +370,21 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
     }
 
     @Override
-    public String getExportValue() {
-        return (String) getStateHelper().eval(PropertyKeys.exportValue, null);
+    public Object getExportValue() {
+        return getStateHelper().eval(PropertyKeys.exportValue, null);
     }
 
-    public void setExportValue(String exportValue) {
+    public void setExportValue(Object exportValue) {
         getStateHelper().put(PropertyKeys.exportValue, exportValue);
+    }
+
+    @Override
+    public String getExportTag() {
+        return (String) getStateHelper().eval(PropertyKeys.exportTag, null);
+    }
+
+    public void setExportTag(String exportTag) {
+        getStateHelper().put(PropertyKeys.exportTag, exportTag);
     }
 
     @Override
@@ -394,20 +406,20 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
     }
 
     @Override
-    public String getExportHeaderValue() {
-        return (String) getStateHelper().eval(PropertyKeys.exportHeaderValue, null);
+    public Object getExportHeaderValue() {
+        return getStateHelper().eval(PropertyKeys.exportHeaderValue, null);
     }
 
-    public void setExportHeaderValue(String exportHeaderValue) {
+    public void setExportHeaderValue(Object exportHeaderValue) {
         getStateHelper().put(PropertyKeys.exportHeaderValue, exportHeaderValue);
     }
 
     @Override
-    public String getExportFooterValue() {
-        return (String) getStateHelper().eval(PropertyKeys.exportFooterValue, null);
+    public Object getExportFooterValue() {
+        return getStateHelper().eval(PropertyKeys.exportFooterValue, null);
     }
 
-    public void setExportFooterValue(String exportFooterValue) {
+    public void setExportFooterValue(Object exportFooterValue) {
         getStateHelper().put(PropertyKeys.exportFooterValue, exportFooterValue);
     }
 
@@ -465,4 +477,20 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
         getStateHelper().put(PropertyKeys.title, title);
     }
 
+    public boolean isSelectionBox() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.selectionBox, false);
+    }
+
+    public void setSelectionBox(boolean selectionBox) {
+        getStateHelper().put(PropertyKeys.selectionBox, selectionBox);
+    }
+
+    @Override
+    public Object getConverter() {
+        return getStateHelper().eval(PropertyKeys.converter, null);
+    }
+
+    public void setConverter(Object converter) {
+        getStateHelper().put(PropertyKeys.converter, converter);
+    }
 }

@@ -10,6 +10,7 @@
  * @prop {JQuery} rootList The DOM elements for the root level menu items with the class `.ui-menu-list`.
  * @prop {JQuery} subLinks The DOM elements for all menu links not a the root level, with the class `.ui-menuitem-link`.
  * @prop {number} [timeoutId] Timeout ID, used for the animation when the menu is shown.
+ * @prop {boolean} isRTL Whether the writing direction is set to right-to-left.
  *
  * @interface {PrimeFaces.widget.MegaMenuCfg} cfg The configuration for the {@link  MegaMenu| MegaMenu widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
@@ -38,6 +39,7 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
         this.rootLinks = this.rootList.find('> li.ui-menuitem > a.ui-menuitem-link:not(.ui-state-disabled)');
         this.subLinks = this.jq.find('.ui-menu-child a.ui-menuitem-link:not(.ui-state-disabled)');
         this.keyboardTarget = this.jq.children('.ui-helper-hidden-accessible');
+        this.isRTL = this.jq.hasClass('ui-menu-rtl');
 
         if(this.cfg.activeIndex !== undefined) {
             this.rootLinks.eq(this.cfg.activeIndex).addClass('ui-state-hover').closest('li.ui-menuitem').addClass('ui-menuitem-active');
@@ -161,11 +163,10 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
                 return;
             }
 
-            var isRootLink = $this.isRootLink(currentitem),
-            keyCode = $.ui.keyCode;
+            var isRootLink = $this.isRootLink(currentitem);
 
-            switch(e.which) {
-                    case keyCode.LEFT:
+            switch(e.key) {
+                    case 'ArrowLeft':
                         if(isRootLink && !$this.cfg.vertical) {
                             var prevItem = currentitem.prevAll('.ui-menuitem:first');
                             if(prevItem.length) {
@@ -191,7 +192,7 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
                         }
                     break;
 
-                    case keyCode.RIGHT:
+                    case 'ArrowRight':
                         if(isRootLink && !$this.cfg.vertical) {
                             var nextItem = currentitem.nextAll('.ui-menuitem:visible:first');
                             if(nextItem.length) {
@@ -215,7 +216,7 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
                         }
                     break;
 
-                    case keyCode.UP:
+                    case 'ArrowUp':
                         if(!isRootLink || $this.cfg.vertical) {
                             var prevItem = $this.findPrevItem(currentitem);
                             if(prevItem.length) {
@@ -227,7 +228,7 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
                         e.preventDefault();
                     break;
 
-                    case keyCode.DOWN:
+                    case 'ArrowDown':
                         if(isRootLink && !$this.cfg.vertical) {
                             var submenu = currentitem.children('ul.ui-menu-child');
                             if(submenu.is(':visible')) {
@@ -249,7 +250,8 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
                         e.preventDefault();
                     break;
 
-                    case keyCode.ENTER:
+                    case 'Enter':
+                    case 'NumpadEnter':
                         var currentLink = currentitem.children('.ui-menuitem-link');
                         currentLink.trigger('click');
                         $this.jq.trigger("blur");
@@ -261,7 +263,7 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
                         e.preventDefault();
                     break;
 
-                    case keyCode.ESCAPE:
+                    case 'Escape':
                         if(currentitem.hasClass('ui-menu-parent')) {
                             var submenu = currentitem.children('ul.ui-menu-list:visible');
                             if(submenu.length > 0) {
@@ -415,16 +417,16 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
 
         if(this.cfg.vertical) {
             pos = {
-                my: 'left top',
-                at: 'right top',
+                my: this.isRTL ? 'right bottom' : 'left top',
+                at: this.isRTL ? 'left bottom' : 'right top',
                 of: menuitem,
                 collision: 'flipfit'
             };
         }
         else {
             pos = {
-                my: 'left top',
-                at: 'left bottom',
+                my: this.isRTL ? 'right top' : 'left top',
+                at: this.isRTL ? 'right bottom' : 'left bottom',
                 of: menuitem,
                 collision: 'flipfit'
             };
@@ -435,7 +437,7 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
             clearTimeout(this.timeoutId);
         }
 
-        this.timeoutId = setTimeout(function () {
+        this.timeoutId = PrimeFaces.queueTask(function () {
            submenu.css('z-index', PrimeFaces.nextZindex())
                   .show()
                   .position(pos)

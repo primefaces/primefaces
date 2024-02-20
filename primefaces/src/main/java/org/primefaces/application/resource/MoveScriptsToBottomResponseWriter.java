@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,11 +31,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.context.ResponseWriterWrapper;
 
+import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.util.AgentUtils;
 import org.primefaces.util.LangUtils;
 
@@ -44,10 +46,8 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
     private static final String SCRIPT_TAG = "script";
     private static final String BODY_TAG = "body";
     private static final String HTML_TAG = "html";
-    private static final String SCRIPT_TYPE = "text/javascript";
     private static final String TYPE_ATTRIBUTE = "type";
 
-    private final ResponseWriter wrapped;
     private final MoveScriptsToBottomState state;
 
     private boolean inScript;
@@ -56,24 +56,23 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
     private StringBuilder inline;
     private boolean scriptsRendered;
 
+    private boolean foundHtmlElement;
+    private boolean foundBodyElement;
     private boolean writeFouc;
+    private int counter = 0; // used to track non-JS files
 
-    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public MoveScriptsToBottomResponseWriter(ResponseWriter wrapped, MoveScriptsToBottomState state) {
-        this.wrapped = wrapped;
+        super(wrapped);
         this.state = state;
 
         inScript = false;
         scriptsRendered = false;
         writeFouc = false;
+        foundHtmlElement = false;
+        foundBodyElement = false;
 
         includeAttributes = new LinkedHashMap<>(6);
         inline = new StringBuilder(75);
-    }
-
-    @Override
-    public ResponseWriter getWrapped() {
-        return wrapped;
     }
 
     @Override
@@ -170,16 +169,31 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
     public void startElement(String name, UIComponent component) throws IOException {
         if (SCRIPT_TAG.equalsIgnoreCase(name)) {
             inScript = true;
-            scriptType = SCRIPT_TYPE;
+            scriptType = RendererUtils.SCRIPT_TYPE;
         }
         else {
             writeFouc();
 
             getWrapped().startElement(name, component);
 
-            if (BODY_TAG.equalsIgnoreCase(name) && isFirefox()) {
-                writeFouc = true;
+            if (BODY_TAG.equalsIgnoreCase(name)) {
+                if (foundBodyElement) {
+                    throw new FacesException("Duplicate <body> elements were found in the response.");
+                }
+                foundBodyElement = true;
+
+                if (isFirefox()) {
+                    writeFouc = true;
+                }
             }
+
+            if (HTML_TAG.equalsIgnoreCase(name)) {
+                if (foundHtmlElement) {
+                    throw new FacesException("Duplicate <html> elements were found in the response.");
+                }
+                foundHtmlElement = true;
+            }
+
         }
     }
 
@@ -214,19 +228,24 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
                             getWrapped().writeAttribute(attributeName, attributeValue, null);
                         }
                     }
+                    if (state.isDeferred()) {
+                        getWrapped().writeAttribute("defer", "defer", null);
+                    }
                     getWrapped().endElement(SCRIPT_TAG);
                 }
             }
 
             // write inline scripts
             for (Map.Entry<String, List<String>> entry : state.getInlines().entrySet()) {
-                String type = entry.getKey();
+                // strip tracking _0, _1, _2 etc off the end of the string
+                String type = entry.getKey().replaceAll("_\\d+$", "");
                 List<String> inlines = entry.getValue();
 
                 String id = UUID.randomUUID().toString();
-                String merged = mergeAndMinimizeInlineScripts(id, type, inlines);
+                String merged = mergeAndMinimizeInlineScripts(id, type, inlines, state.isDeferred());
 
                 if (LangUtils.isNotBlank(merged)) {
+
                     getWrapped().startElement(SCRIPT_TAG, null);
                     getWrapped().writeAttribute("id", id, null);
                     getWrapped().writeAttribute(TYPE_ATTRIBUTE, type, null);
@@ -253,20 +272,24 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
         }
     }
 
-    protected String mergeAndMinimizeInlineScripts(String id, String type, List<String> inlines) {
+    protected String mergeAndMinimizeInlineScripts(String id, String type, List<String> inlines, boolean deferred) {
         StringBuilder script = new StringBuilder(inlines.size() * 100);
         for (int i = 0; i < inlines.size(); i++) {
             if (i > 0) {
                 script.append("\n");
             }
             script.append(inlines.get(i));
-            script.append(";");
+
+            // append ; only if this is JS code
+            if (RendererUtils.SCRIPT_TYPE.equalsIgnoreCase(type)) {
+                script.append(";");
+            }
         }
 
         String minimized = script.toString();
 
         if (LangUtils.isNotBlank(minimized)) {
-            if (SCRIPT_TYPE.equalsIgnoreCase(type)) {
+            if (RendererUtils.SCRIPT_TYPE.equalsIgnoreCase(type)) {
                 minimized = minimized.replace(";;", ";");
 
                 if (minimized.contains("PrimeFaces")) {
@@ -282,6 +305,11 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
                     minimized += ";";
                 }
                 minimized += "document.getElementById('" + id + "').remove();";
+
+                // deferred scripts have to wait until scripts are loaded before it can execute inline
+                if (deferred) {
+                    minimized = String.format("document.addEventListener(\"DOMContentLoaded\", function() {%s});", minimized);
+                }
             }
         }
 
@@ -296,10 +324,9 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
     protected void updateAttributes(String name, String value) {
         includeAttributes.put(name, value);
 
-        if (TYPE_ATTRIBUTE.equalsIgnoreCase(name)) {
-            if (LangUtils.isNotBlank(value)) {
-                scriptType = value;
-            }
+        // #10845 look for type attribute NOT equal to text/javascript
+        if (TYPE_ATTRIBUTE.equalsIgnoreCase(name) && !RendererUtils.SCRIPT_TYPE.equalsIgnoreCase(value)) {
+            scriptType = value + "_" + counter++;
         }
     }
 

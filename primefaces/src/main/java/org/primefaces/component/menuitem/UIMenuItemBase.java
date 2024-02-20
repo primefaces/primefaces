@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -75,7 +75,8 @@ public abstract class UIMenuItemBase extends UICommand implements AjaxSource, UI
         escape,
         rel,
         ignoreComponentNotFound,
-        ariaLabel
+        ariaLabel,
+        badge
     }
 
     public UIMenuItemBase() {
@@ -406,5 +407,13 @@ public abstract class UIMenuItemBase extends UICommand implements AjaxSource, UI
 
     public void setAriaLabel(String ariaLabel) {
         getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
+    }
+
+    public Object getBadge() {
+        return getStateHelper().eval(PropertyKeys.badge, null);
+    }
+
+    public void setBadge(Object badge) {
+        getStateHelper().put(PropertyKeys.badge, badge);
     }
 }

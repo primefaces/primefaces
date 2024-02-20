@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -54,6 +54,7 @@ public class MenuView implements Serializable {
         //First submenu
         DefaultSubMenu firstSubmenu = DefaultSubMenu.builder()
                 .label("Options")
+                .expanded(true)
                 .build();
 
         DefaultMenuItem item = DefaultMenuItem.builder()
@@ -77,6 +78,7 @@ public class MenuView implements Serializable {
                 .value("Delete")
                 .icon("pi pi-times")
                 .command("#{menuView.delete}")
+                .update("messages")
                 .build();
         firstSubmenu.getElements().add(item);
 
@@ -85,6 +87,7 @@ public class MenuView implements Serializable {
         //Second submenu
         DefaultSubMenu secondSubmenu = DefaultSubMenu.builder()
                 .label("Navigations")
+                .expanded(false)
                 .build();
 
         item = DefaultMenuItem.builder()

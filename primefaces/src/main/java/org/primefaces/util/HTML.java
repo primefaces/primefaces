@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -196,13 +196,17 @@ public class HTML {
     public static final List<String> MEDIA_ATTRS = LangUtils.unmodifiableList(
         "autoplay",
         "controls",
-        "crossOrigin",
+        "controlslist",
+        "crossorigin",
         "currentTime",
         "defaultMuted",
         "defaultPlaybackRate",
+        "disableremoteplayback",
+        "disablepictureinpicture",
         "loop",
         "muted",
         "playbackRate",
+        "playsinline",
         "preload",
         "volume"
     );
@@ -287,12 +291,20 @@ public class HTML {
     public static final String ARIA_READONLY = "aria-readonly";
     public static final String ARIA_REQUIRED = "aria-required";
     public static final String ARIA_SELECTED = "aria-selected";
+    public static final String ARIA_ORIENTATION = "aria-orientation";
+    public static final String ARIA_ORIENTATION_HORIZONTAL = "horizontal";
+    public static final String ARIA_VALUE_NOW = "aria-valuenow";
+    public static final String ARIA_VALUE_TEXT = "aria-valuetext";
+    public static final String ARIA_VALUE_MIN = "aria-valuemin";
+    public static final String ARIA_VALUE_MAX = "aria-valuemax";
     public static final String ARIA_ROLE = "role";
     public static final String ARIA_ROLE_NONE = "none";
     public static final String ARIA_ROLE_COMBOBOX = "combobox";
+    public static final String ARIA_ROLE_LISTBOX = "listbox";
     public static final String ARIA_ROLE_MENU = "menu";
     public static final String ARIA_ROLE_MENUITEM = "menuitem";
     public static final String ARIA_ROLE_MENUBAR = "menubar";
+    public static final String ARIA_ROLE_OPTION = "option";
     public static final String ARIA_ROLE_SEPARATOR = "separator";
 
     public static final String BUTTON_TEXT_ONLY_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only";
@@ -314,7 +326,6 @@ public class HTML {
     public static final String CHECKBOX_LABEL_CLASS = "ui-chkbox-label";
 
     public static final String RADIOBUTTON_CLASS = "ui-radiobutton ui-widget";
-    public static final String RADIOBUTTON_NATIVE_CLASS = "ui-radiobutton ui-radiobutton-native ui-widget";
     public static final String RADIOBUTTON_BOX_CLASS = "ui-radiobutton-box ui-widget ui-corner-all ui-state-default";
     public static final String RADIOBUTTON_INPUT_WRAPPER_CLASS = "ui-helper-hidden";
     public static final String RADIOBUTTON_UNCHECKED_ICON_CLASS = "ui-radiobutton-icon ui-icon ui-icon-blank ui-c";

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +33,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.DataRenderer;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class DataListRenderer extends DataRenderer {
@@ -78,7 +78,7 @@ public class DataListRenderer extends DataRenderer {
             encodeScript(context, list);
 
             if (list.isPaginator() && list.getRows() == 0) {
-                LOGGER.log(Level.WARNING, "DataList with paginator=true should also set the rows attribute. ClientId: " + list.getClientId());
+                LOGGER.log(Level.WARNING, "DataList with paginator=true should also set the rows attribute. ClientId: {0}", list.getClientId());
             }
         }
     }
@@ -168,7 +168,7 @@ public class DataListRenderer extends DataRenderer {
         String clientId = list.getClientId(context);
         boolean isDefinition = list.isDefinition();
         UIComponent definitionFacet = list.getFacet("description");
-        boolean renderDefinition = isDefinition && ComponentUtils.shouldRenderFacet(definitionFacet);
+        boolean renderDefinition = isDefinition && FacetUtils.shouldRenderFacet(definitionFacet);
         String itemType = list.getItemType();
         String listClass = DataList.LIST_CLASS;
         if ("none".equals(itemType)) {

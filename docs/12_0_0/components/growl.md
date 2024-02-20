@@ -33,7 +33,7 @@ for | null | String | The clientId or name of associated key, takes precedence w
 escape | true | Boolean | Defines whether HTML would be escaped or not.
 severity | null | String | Comma separated list of severities to display only.
 keepAlive | false | Boolean | Defines if previous messages should be kept on a new message is shown.
-skipDetailIfEqualsSummary | false | Boolean | Defines if rendering of the detail text should be skipped, if the detail and summaray are equals.
+skipDetailIfEqualsSummary | false | Boolean | Defines if rendering of the detail text should be skipped, if the detail and summary are equals.
 
 ## Getting Started with Growl
 Growl usage is similar to standard h:messages component. Simply place growl anywhere on your

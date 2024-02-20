@@ -13,7 +13,7 @@
             <p:dataTable id="datatable" value="#{dataTable035.cars}" var="car"
                          multiViewState="true" rows="4" paginator="true"
                          rowKey="#{car.number}" selection="#{dataTable035.selectedCar}"
-                         selectionMode="single" lazy="false">
+                         lazy="false">
 
                 <p:ajax event="rowSelect" process="@this" />
                 

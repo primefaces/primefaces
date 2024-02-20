@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,7 @@ package org.primefaces.component.fileupload;
 import org.primefaces.model.file.UploadedFile;
 
 import javax.faces.FacesException;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
@@ -44,8 +45,7 @@ public interface FileUploadChunkDecoder<T extends HttpServletRequest> {
     }
 
     default String getUploadDirectory(T request) {
-        // Servlet 2.5 compatibility, equivalent to ServletContext.TMP_DIR
-        File tmpDir = (File) request.getServletContext().getAttribute("javax.servlet.context.tempdir");
+        File tmpDir = (File) request.getServletContext().getAttribute(ServletContext.TEMPDIR);
         if (tmpDir == null) {
             tmpDir = new File(System.getenv("java.io.tmpdir"));
         }

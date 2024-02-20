@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,18 +24,20 @@
 package org.primefaces.csp;
 
 import java.io.IOException;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialResponseWriter;
+import javax.faces.context.ResponseWriter;
 
-import org.primefaces.context.PartialResponseWriterWrapper;
+import org.primefaces.context.PrimePartialResponseWriter;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.util.EscapeUtils;
 
-public class CspPartialResponseWriter extends PartialResponseWriterWrapper {
+public class CspPartialResponseWriter extends PrimePartialResponseWriter {
 
     private CspResponseWriter cspResponseWriter;
     private PrimeRequestContext requestContext;
@@ -163,6 +165,11 @@ public class CspPartialResponseWriter extends PartialResponseWriterWrapper {
     @Override
     public void close() throws IOException {
         cspResponseWriter.close();
+    }
+
+    @Override
+    public ResponseWriter cloneWithWriter(Writer writer) {
+        return new CspResponseWriter(getWrapped().cloneWithWriter(writer), this.cspState);
     }
 
     @Override

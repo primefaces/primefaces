@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,10 +25,11 @@ package org.primefaces.component.selectcheckboxmenu;
 
 import javax.faces.component.html.HtmlSelectManyCheckbox;
 
+import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
 
-public abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox implements Widget, PrimeClientBehaviorHolder {
+public abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox implements Widget, InputHolder, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -47,6 +48,7 @@ public abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox impl
         caseSensitive,
         panelStyle,
         panelStyleClass,
+        var,
         appendTo,
         tabindex,
         title,
@@ -55,7 +57,9 @@ public abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox impl
         multiple,
         dynamic,
         labelSeparator,
-        emptyLabel
+        emptyLabel,
+        selectedLabel,
+        filterNormalize
     }
 
     public SelectCheckboxMenuBase() {
@@ -75,11 +79,11 @@ public abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox impl
         getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public int getScrollHeight() {
-        return (Integer) getStateHelper().eval(PropertyKeys.scrollHeight, Integer.MAX_VALUE);
+    public String getScrollHeight() {
+        return (String) getStateHelper().eval(PropertyKeys.scrollHeight, "200");
     }
 
-    public void setScrollHeight(int scrollHeight) {
+    public void setScrollHeight(String scrollHeight) {
         getStateHelper().put(PropertyKeys.scrollHeight, scrollHeight);
     }
 
@@ -145,6 +149,14 @@ public abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox impl
 
     public void setPanelStyle(String panelStyle) {
         getStateHelper().put(PropertyKeys.panelStyle, panelStyle);
+    }
+
+    public String getVar() {
+        return (String) getStateHelper().eval(SelectCheckboxMenuBase.PropertyKeys.var, null);
+    }
+
+    public void setVar(String var) {
+        getStateHelper().put(SelectCheckboxMenuBase.PropertyKeys.var, var);
     }
 
     public String getPanelStyleClass() {
@@ -229,5 +241,21 @@ public abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox impl
 
     public void setEmptyLabel(String emptyLabel) {
         getStateHelper().put(PropertyKeys.emptyLabel, emptyLabel);
+    }
+
+    public String getSelectedLabel() {
+        return (String) getStateHelper().eval(PropertyKeys.selectedLabel, null);
+    }
+
+    public void setSelectedLabel(String selectedLabel) {
+        getStateHelper().put(PropertyKeys.selectedLabel, selectedLabel);
+    }
+
+    public boolean isFilterNormalize() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.filterNormalize, false);
+    }
+
+    public void setFilterNormalize(boolean filterNormalize) {
+        getStateHelper().put(PropertyKeys.filterNormalize, filterNormalize);
     }
 }
