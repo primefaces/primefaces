@@ -141,7 +141,8 @@ public class FileUpload extends FileUploadBase {
         String accept = isValidateContentType() ? getAccept() : null;
         if (!FileUploadUtils.isValidType(appContext, uploadedFile, getAllowTypes(), accept)) {
             throw new ValidatorException(
-                    MessageFactory.getFacesMessage(FileValidator.ALLOW_TYPES_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, uploadedFile.getFileName()), getAllowTypes());
+                    MessageFactory.getFacesMessage(FileValidator.ALLOW_TYPES_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, uploadedFile.getFileName()
+                            , getAllowTypes()));
         }
 
         if (isVirusScan()) {
