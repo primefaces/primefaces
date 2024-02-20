@@ -55,7 +55,7 @@ Authorization function use HttpServletRequest API for the backend information.
 ifGranted(String role) | Returns true if user has the given role, else false.
 ifAllGranted(String roles) | Returns true if user has all of the given roles, else false.
 ifAnyGranted(String roles) | Returns true if user has any of the given roles, else false.
-ifNoneGranted(String roles) | Returns true if user has none of the given roles, else false. e.g `p:ifNoneGranted('ROLE_ADMIN,ROLE_OPERATOR')`
+ifNoneGranted(String roles) | Returns true if user has none of the given roles, else false. e.g. `p:ifNoneGranted('ROLE_ADMIN,ROLE_OPERATOR')`
 remoteUser() | Returns the name of the logged in user.
 userPrincipal() | Returns the principal instance of the logged in user.
 

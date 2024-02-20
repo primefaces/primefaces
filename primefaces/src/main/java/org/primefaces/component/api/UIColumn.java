@@ -48,12 +48,12 @@ public interface UIColumn {
 
     /**
      * Used to extract bean's property from a value expression in dynamic columns
-     * (e.g #{car[column.property]} = name)
+     * (e.g. #{car[column.property]} = name)
      */
     Pattern DYNAMIC_FIELD_VE_LEGACY_PATTERN = Pattern.compile("^#\\{\\w+\\[([\\w.]+)]}$");
 
     /**
-     * Used to extract bean's property from a value expression in static columns (e.g "#{car.year}" = year)
+     * Used to extract bean's property from a value expression in static columns (e.g. "#{car.year}" = year)
      */
     Pattern STATIC_FIELD_VE_LEGACY_PATTERN = Pattern.compile("^#\\{\\w+\\.([\\w.]+)}$");
 

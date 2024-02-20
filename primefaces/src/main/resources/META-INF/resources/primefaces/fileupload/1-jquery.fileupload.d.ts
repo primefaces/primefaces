@@ -220,7 +220,7 @@ declare namespace JQueryFileUpload {
          * If set, this value is sent as part of the form data to the upload server.
          * 
          * The upload server is supposed to redirect the browser to this URL after the upload completes and append the
-         * upload information as URL encoded JSON string to the redirect URL, e.g. by replacing the `%s` character
+         * upload information as URL encoded JSON string to the redirect URL, e.g., by replacing the `%s` character
          * sequence.
          */
         redirect: string;
@@ -948,12 +948,12 @@ declare namespace JQueryFileUpload {
         url: string;
 
         /**
-         * Deletion request type, e.g. `DELETE`.
+         * Deletion request type, e.g., `DELETE`.
          */
         type: HttpMethod;
 
         /**
-         * Deletion response type, e.g. `json`.
+         * Deletion response type, e.g., `json`.
          */
         dataType: string;
     }

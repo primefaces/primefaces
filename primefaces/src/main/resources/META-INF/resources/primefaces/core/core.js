@@ -92,7 +92,7 @@
          * Finds all widgets in the current page that are of the given type.
          * @template {new(...args: never[]) => unknown} TWidget Type of the widgets of interest, e.g.
          * `PrimeFaces.widget.DataTable`.
-         * @param {TWidget} type The (proto)type of the widgets of interest, e.g. `PrimeFaces.widget.DataTable`.
+         * @param {TWidget} type The (proto)type of the widgets of interest, e.g., `PrimeFaces.widget.DataTable`.
          * @return  {InstanceType<TWidget>[]} An array of widgets that are of the requested type. If no suitable widgets
          * are found on the current page, an empty array will be returned.
          */

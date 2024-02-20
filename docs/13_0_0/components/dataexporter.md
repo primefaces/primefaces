@@ -90,9 +90,9 @@ If you need to customize column export, you can do so by using either `exportVal
 
 ### Custom format
 
-If you need to define a new exporter (e.g txt, yml etc.), register your exporter as follows:
+If you need to define a new exporter (e.g. txt, yml etc.), register your exporter as follows:
 - implement `DataTableExporter` or `TreeTableExporter`
-- register exporter using `DataExporters#register()` specifying the type of component (e.g `DataTable` or `TreeTable`) and the type with which your exported is associated. For example:
+- register exporter using `DataExporters#register()` specifying the type of component (e.g. `DataTable` or `TreeTable`) and the type with which your exported is associated. For example:
 ```java
     DataExporters.register(DataTable.class, TextExporter.class, "txt");
 ```

@@ -812,9 +812,9 @@ for the widget configuration - use the `@interface` tag:
  * the knob, consisting of the color for the filled and unfilled part of the
  * knob.
  * @prop {string} ColorTheme.fgColor The foreground color, i.e. the color of the
- * filled part of the knob. Must be a CSS color, e.g. `#ff0000`.
+ * filled part of the knob. Must be a CSS color, e.g., `#ff0000`.
  * @prop {string} ColorTheme.bgColor The background color, i.e. the color of the
- * unfilled part of the knob. Must be a CSS color, e.g. `#ff0000`.
+ * unfilled part of the knob. Must be a CSS color, e.g., `#ff0000`.
  */
 ```
 
@@ -831,13 +831,13 @@ declare namespace PrimeFaces.widget.Knob {
   export interface ColorTheme {
     /**
      * The background color, i.e. the color of the unfilled part of the knob.
-     * Must be a CSS color, e.g. `#ff0000`.
+     * Must be a CSS color, e.g., `#ff0000`.
      */
     bgColor: string;
     
     /**
      * The foreground color, i.e. the color of the filled part of the knob. Must
-     * be a CSS color, e.g. `#ff0000`.
+     * be a CSS color, e.g., `#ff0000`.
      */
     fgColor: string;
   }
