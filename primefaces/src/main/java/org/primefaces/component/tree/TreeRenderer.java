@@ -322,6 +322,7 @@ public class TreeRenderer extends CoreRenderer {
         if (tree.isDraggable()) {
             wb.attr("draggable", true)
                     .attr("dragMode", tree.getDragMode())
+                    .attr("dropMode", tree.getDropMode())
                     .attr("dropRestrict", tree.getDropRestrict())
                     .attr("multipleDrag", tree.isMultipleDrag())
                     .attr("dropCopyNode", tree.isDropCopyNode());
