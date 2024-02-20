@@ -45,8 +45,8 @@ public final class DataExporters {
     public static <T extends UIComponent> Exporter<T> get(Class<T> targetClass, String type) {
         PrimeApplicationContext primeAppContext = PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance());
 
-        // since users might defined their own impl of components (e.g MyDataTable, MyTreeTable etc.)
-        // retrieve the most eligible built-in component class first (e.g DataTable, TreeTable) to get corresponding exporters
+        // since users might defined their own impl of components (e.g. MyDataTable, MyTreeTable etc.)
+        // retrieve the most eligible built-in component class first (e.g. DataTable, TreeTable) to get corresponding exporters
         Class<? extends UIComponent> resolvedTargetClass = primeAppContext.getExporters().keySet().stream()
                 .filter(k -> k.isAssignableFrom(targetClass))
                 .findFirst()

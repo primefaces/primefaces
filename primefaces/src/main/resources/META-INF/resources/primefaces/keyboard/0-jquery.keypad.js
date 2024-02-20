@@ -489,7 +489,7 @@ $('selector').tabs(); // And instantiate it */
 			@property {string} [showAnim='show'] Name of jQuery animation for popup.
 			@property {object} [showOptions=null] Options for enhanced animations.
 			@property {string|number} [duration='normal'] Duration of display/closure as a named speed or in milliseconds.
-			@property {string} [appendText=''] Display text following the text field, e.g. showing the format.
+			@property {string} [appendText=''] Display text following the text field, e.g., showing the format.
 			@property {boolean} [useThemeRoller=false] <code>true</code> to add ThemeRoller classes.
 			@property {string} [keypadClass=''] Additional CSS class for the keypad for an instance.
 			@property {string} [prompt=''] Display text at the top of the keypad.

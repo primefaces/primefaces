@@ -480,7 +480,7 @@ public void init() {
 }
 ```
 
-In case of custom filters (e.g `SelectOneMenu`), you have the possibilites to use either `Column#filterValue` or custom filter value attribute (e.g `SelectOneMenu#value`)
+In case of custom filters (e.g. `SelectOneMenu`), you have the possibilites to use either `Column#filterValue` or custom filter value attribute (e.g. `SelectOneMenu#value`)
 
 ## Row Selection
 There are several ways to select row(s) from datatable. Let’s begin by adding a Car reference for

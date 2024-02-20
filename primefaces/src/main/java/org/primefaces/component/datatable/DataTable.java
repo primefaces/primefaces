@@ -740,12 +740,12 @@ public class DataTable extends DataTableBase {
                                             }
                                         }
                                         else {
-                                            process(context, rowChild, phaseId);        //e.g ui:repeat
+                                            process(context, rowChild, phaseId);        //e.g. ui:repeat
                                         }
                                     }
                                 }
                                 else {
-                                    process(context, columnGroupChild, phaseId);        //e.g ui:repeat
+                                    process(context, columnGroupChild, phaseId);        //e.g. ui:repeat
                                 }
                             }
                         }

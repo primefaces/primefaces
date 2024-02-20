@@ -54,7 +54,7 @@ public class ResourceUtils {
     public static final String RES_NOT_FOUND = "RES_NOT_FOUND";
 
     /**
-     * Used to extract resource name (e.g "#{resource['picture.png'}")
+     * Used to extract resource name (e.g. "#{resource['picture.png'}")
      */
     private static final Pattern RESOURCE_PATTERN = Pattern.compile("^#\\{resource\\['(.+)']}$");
 
