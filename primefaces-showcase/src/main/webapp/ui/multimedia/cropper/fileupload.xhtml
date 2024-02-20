@@ -23,11 +23,11 @@
 
                 <p:fileUpload mode="advanced"
                               multiple="false"
-                              sizeLimit="102400" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
-                              invalidSizeMessage="Maximum file size allowed is 100 KB"
-                              invalidFileMessage="only gif | jpg | jpeg | png is allowed"
                               update="messages cropperPanel"
-                              listener="#{cropUploaderBean.handleFileUpload}"/>
+                              listener="#{cropUploaderBean.handleFileUpload}">
+                    <p:validateFile sizeLimit="102400"
+                                    allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>
+                </p:fileUpload>
 
                 <p:outputPanel id="cropperPanel">
 
