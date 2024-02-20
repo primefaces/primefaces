@@ -132,7 +132,7 @@ if (window.PrimeFaces) {
 
                 for (var file of value) {
                     if (allowtypesRegExp && (!allowtypesRegExp.test(file.type) && !allowtypesRegExp.test(file.name)))  {
-                        throw vc.getMessage(this.ALLOW_TYPES_MESSAGE_ID, file.name, allowtypesRegExp);
+                        throw vc.getMessage(this.ALLOW_TYPES_MESSAGE_ID, file.name, allowtypesRegExp.source);
                     }
 
                     if (sizelimit && file.size > sizelimit) {
