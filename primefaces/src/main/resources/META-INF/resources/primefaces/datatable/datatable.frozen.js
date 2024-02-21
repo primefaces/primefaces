@@ -71,8 +71,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         this.frozenThead.find('> tr > th').addClass('ui-frozen-column');
 
         var $this = this,
-        scrollBarWidth = this.getScrollbarWidth() + 'px',
-        hScrollWidth = this.scrollBody[0].scrollWidth;
+        scrollBarWidth = this.getScrollbarWidth() + 'px';
 
         if(this.cfg.scrollHeight) {
             if(this.percentageScrollHeight) {
@@ -137,12 +136,16 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         }
 
         this.scrollBody.on('scroll.datatable', function() {
-            var scrollShift = $this.getScrollbarWidth(),
-            scrollTop = $this.scrollBody.scrollTop();
+           var scrollShift = $this.scrollBody.scrollLeft();
 
-            var marginProperty = $this.isRTL ? 'margin-left' : 'margin-right';
-            $this.scrollHeaderBox.css(marginProperty, scrollShift + 'px');
-            $this.scrollFooterBox.css(marginProperty, scrollShift + 'px');
+            if ($this.isRTL) {
+                $this.scrollHeaderBox.css('margin-right', scrollShift + 'px');
+                $this.scrollFooterBox.css('margin-right', scrollShift + 'px');
+            }
+            else {
+                $this.scrollHeaderBox.css('margin-left', -scrollShift + 'px');
+                $this.scrollFooterBox.css('margin-left', -scrollShift + 'px');
+            }
 
             $this.frozenBody.scrollTop(scrollTop);
 
