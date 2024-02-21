@@ -1011,6 +1011,13 @@ public class DataTableRenderer extends DataRenderer {
         int first = table.isClientCacheRequest(context) ? Integer.parseInt(params.get(clientId + "_first")) + rows : table.getFirst();
         int rowCount = table.getRowCount();
 
+        // #5649 check for invalid first value
+        if (LOGGER.isLoggable(Level.WARNING)) {
+            if (first % rows != 0) {
+                logDevelopmentWarning(context, String.format("%s Invalid 'first' value %d is not divisible evenly by 'rows' %d", clientId, first, rows));
+            }
+        }
+
         int rowCountToRender;
         if (table.isVirtualScroll()) {
             rowCountToRender = Math.min(table.getScrollRows() * 2, rowCount);
