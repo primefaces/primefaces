@@ -52,7 +52,6 @@ import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
-import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
@@ -1012,13 +1011,6 @@ public class DataTableRenderer extends DataRenderer {
         int first = table.isClientCacheRequest(context) ? Integer.parseInt(params.get(clientId + "_first")) + rows : table.getFirst();
         int rowCount = table.getRowCount();
 
-        // #5649 check for invalid first value
-        if (context.isProjectStage(ProjectStage.Development)) {
-            if (first % rows != 0 && !table.isVirtualScroll() && !table.isVirtualScroll()) {
-                logDevelopmentWarning(context, String.format("%s Invalid 'first' value %d is not divisible evenly by 'rows' %d", clientId, first, rows));
-            }
-        }
-
         int rowCountToRender;
         if (table.isVirtualScroll()) {
             rowCountToRender = Math.min(table.getScrollRows() * 2, rowCount);
@@ -1028,6 +1020,11 @@ public class DataTableRenderer extends DataRenderer {
         }
         else {
             rowCountToRender = rows == 0 ? rowCount : rows;
+
+            // #5649 check for invalid first value
+            if (first % rows != 0) {
+                logDevelopmentWarning(context, String.format("%s Invalid 'first' value %d is not divisible evenly by 'rows' %d", clientId, first, rows));
+            }
         }
 
         int frozenRows = table.getFrozenRows();
