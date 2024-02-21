@@ -248,8 +248,8 @@ public class FileUploadUtils {
     }
 
     /**
-     * Converts a JavaScript regular expression like '/(\.|\/)(gif|jpe?g|png)$/i'
-     * to the Java usable format '(\\.|\\/)(gif|jpe?g|png)$'
+     * Converts a JavaScript regular expression like '/(\.|\/)(gif|jpeg|jpg|png)$/i'
+     * to the Java usable format '(\\.|\\/)(gif|jpeg|jpg|png)$'
      * @param jsRegex the client side JavaScript regex
      * @return the Java converted version of the regex
      */

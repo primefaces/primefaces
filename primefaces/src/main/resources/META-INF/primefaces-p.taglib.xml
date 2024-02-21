@@ -114,7 +114,7 @@
         </validator>
         <attribute>
             <description>
-                <![CDATA[Regular expression for accepted file types, e.g., /(\.|\/)(gif|jpe?g|png)$/]]>
+                <![CDATA[Regular expression for accepted file types, e.g., /(\.|\/)(gif|jpeg|jpg|png)$/]]>
             </description>
             <name>allowTypes</name>
             <required>false</required>
@@ -10779,7 +10779,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Regular expression for accepted file types, e.g., /(\.|\/)(gif|jpe?g|png)$/]]>
+                <![CDATA[Regular expression for accepted file types, e.g., /(\.|\/)(gif|jpeg|jpg|png)$/]]>
             </description>
             <name>allowTypes</name>
             <required>false</required>

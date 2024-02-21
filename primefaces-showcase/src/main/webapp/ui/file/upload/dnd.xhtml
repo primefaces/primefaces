@@ -32,7 +32,7 @@
                 <h5>Basic</h5>
                 <p:fileUpload listener="#{fileUploadView.handleFileUpload}" mode="advanced" dragDropSupport="true"
                               update="messages">
-                        <p:validateFile sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+                        <p:validateFile sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpeg|jpg|png)$/" />
                 </p:fileUpload>
 
                 <h5>Drop Zone</h5>
@@ -47,7 +47,7 @@
                     </div>
                 </div>
                 <p:fileUpload widgetVar="uploadDnd" listener="#{fileUploadView.handleFileUploadTextarea}"
-                              sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" dropZone="customDropZone"
+                              sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpeg|jpg|png)$/" dropZone="customDropZone"
                               style="display: none"/>
             </h:form>
         </div>
