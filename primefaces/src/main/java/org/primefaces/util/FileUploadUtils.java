@@ -399,6 +399,10 @@ public class FileUploadUtils {
         return request.getParameter("X-File-Webkit-Relative-Path");
     }
 
+    public static String formatAllowTypes(String message) {
+        return message != null ? message.replace("/(\\.|\\/)(", "").replace(")$/", "") : null;
+    }
+
     public static String formatBytes(Long bytes, Locale locale) {
         if (bytes == null) {
             return "";

@@ -880,6 +880,13 @@ if (!PrimeFaces.utils) {
         },
 
         /**
+         * Formats the allowType regex pattern in a more human-friendly format.
+         */
+        formatAllowTypes: function(allowTypes) {
+            return allowTypes === undefined ? '' : allowTypes.replace("/(\\.|\\/)(", "").replace(")$/", "");
+        },
+
+        /**
          * Formats the given data size in a more human-friendly format, e.g., `1.5 MB` etc.
          * @param {number} bytes File size in bytes to format
          * @return {string} The given file size, formatted in a more human-friendly format.
