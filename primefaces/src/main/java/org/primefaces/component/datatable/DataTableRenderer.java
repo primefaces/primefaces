@@ -1022,7 +1022,7 @@ public class DataTableRenderer extends DataRenderer {
             rowCountToRender = rows == 0 ? rowCount : rows;
 
             // #5649 check for invalid first value
-            if (first % rows != 0) {
+            if (rows > 0 && first % rows != 0) {
                 logDevelopmentWarning(context, String.format("%s Invalid 'first' value %d is not divisible evenly by 'rows' %d", clientId, first, rows));
             }
         }
