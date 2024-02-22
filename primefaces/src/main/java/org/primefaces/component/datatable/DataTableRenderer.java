@@ -377,10 +377,10 @@ public class DataTableRenderer extends DataRenderer {
 
         writer.startElement("table", null);
         writer.writeAttribute("role", "grid", null);
-        if (tableStyle != null) {
+        if (LangUtils.isNotBlank(tableStyle)) {
             writer.writeAttribute("style", tableStyle, null);
         }
-        if (table.getTableStyleClass() != null) {
+        if (LangUtils.isNotBlank(table.getTableStyleClass())) {
             writer.writeAttribute("class", table.getTableStyleClass(), null);
         }
 
@@ -518,10 +518,10 @@ public class DataTableRenderer extends DataRenderer {
 
         writer.startElement("table", null);
         writer.writeAttribute("role", "grid", null);
-        if (tableStyle != null) {
+        if (LangUtils.isNotBlank(tableStyle)) {
             writer.writeAttribute("style", tableStyle, null);
         }
-        if (tableStyleClass != null) {
+        if (LangUtils.isNotBlank(tableStyleClass)) {
             writer.writeAttribute("class", tableStyleClass, null);
         }
     }
@@ -555,10 +555,10 @@ public class DataTableRenderer extends DataRenderer {
         writer.startElement("table", null);
         writer.writeAttribute("role", "grid", null);
 
-        if (tableStyle != null) {
+        if (LangUtils.isNotBlank(tableStyle)) {
             writer.writeAttribute("style", tableStyle, null);
         }
-        if (table.getTableStyleClass() != null) {
+        if (LangUtils.isNotBlank(tableStyleClass)) {
             writer.writeAttribute("class", tableStyleClass, null);
         }
 
@@ -587,9 +587,10 @@ public class DataTableRenderer extends DataRenderer {
 
         writer.startElement("table", null);
         writer.writeAttribute("role", "grid", null);
-        writer.writeAttribute("class", tableStyleClass, null);
-
-        if (tableStyle != null) {
+        if (LangUtils.isNotBlank(tableStyleClass)) {
+            writer.writeAttribute("class", tableStyleClass, null);
+        }
+        if (LangUtils.isNotBlank(tableStyle)) {
             writer.writeAttribute("style", tableStyle, null);
         }
 
@@ -886,9 +887,10 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         writer.startElement("td", null);
-        writer.writeAttribute("class", styleClass, null);
-
-        if (style != null) {
+        if (LangUtils.isNotBlank(styleClass)) {
+            writer.writeAttribute("class", styleClass, null);
+        }
+        if (LangUtils.isNotBlank(style)) {
             writer.writeAttribute("style", style, null);
         }
         if (column.getRowspan() != 1) {
@@ -1187,7 +1189,9 @@ public class DataTableRenderer extends DataRenderer {
         if (rowKey != null) {
             writer.writeAttribute("data-rk", rowKey, null);
         }
-        writer.writeAttribute("class", rowStyleClass, null);
+        if (LangUtils.isNotBlank(rowStyleClass)) {
+            writer.writeAttribute("class", rowStyleClass, null);
+        }
         writer.writeAttribute("title", table.getRowTitle(), null);
         if (selectionEnabled) {
             writer.writeAttribute(HTML.ARIA_SELECTED, String.valueOf(selected), null);
@@ -1263,13 +1267,13 @@ public class DataTableRenderer extends DataRenderer {
         if (rowspan != 1) {
             writer.writeAttribute("rowspan", rowspan, null);
         }
-        if (style != null) {
+        if (LangUtils.isNotBlank(style)) {
             writer.writeAttribute("style", style, null);
         }
-        if (styleClass != null) {
+        if (LangUtils.isNotBlank(styleClass)) {
             writer.writeAttribute("class", styleClass, null);
         }
-        if (title != null) {
+        if (LangUtils.isNotBlank(title)) {
             writer.writeAttribute("title", title, null);
         }
         UIComponent component = (column instanceof UIComponent) ? (UIComponent) column : null;
@@ -1405,7 +1409,9 @@ public class DataTableRenderer extends DataRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", styleClass, null);
+        if (LangUtils.isNotBlank(styleClass)) {
+            writer.writeAttribute("class", styleClass, null);
+        }
 
         facet.encodeAll(context);
 
