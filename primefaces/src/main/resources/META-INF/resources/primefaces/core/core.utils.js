@@ -881,7 +881,8 @@ if (!PrimeFaces.utils) {
 
         /**
          * Formats the allowType regex pattern in a more human-friendly format.
-         @return {string} The allowTypes formatted in a more human-friendly format.         */
+         * @return {string} The allowTypes formatted in a more human-friendly format.
+         */
         formatAllowTypes: function(allowTypes) {
             return allowTypes === undefined ? '' : allowTypes.replace("/(\\.|\\/)(", "").replace(")$/", "");
         },
