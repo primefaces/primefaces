@@ -81,7 +81,9 @@ public class BasicView implements Serializable {
     }
 
     public void handleKeyEvent() {
-        text5 = text5.toUpperCase();
+        if (text5 != null) {
+            text5 = text5.toUpperCase();
+        }
     }
 
     public String getText1() {
