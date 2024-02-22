@@ -33,6 +33,7 @@ locales/locale-ka.js
 locales/locale-km.js
 locales/locale-ko.js
 locales/locale-ky.js
+locales/locale-kk.js
 locales/locale-lt.js
 locales/locale-lv.js
 locales/locale-ms.js
