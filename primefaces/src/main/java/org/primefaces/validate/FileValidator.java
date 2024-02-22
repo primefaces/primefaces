@@ -146,6 +146,7 @@ public class FileValidator implements Validator, PartialStateHolder, ClientValid
             catch (VirusException e) {
                 throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), ""), e);
             }
+
         }
     }
 
