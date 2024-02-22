@@ -112,8 +112,7 @@ class FileUpload001Test extends AbstractFileUploadTest {
 
         // Assert
         assertFalse(page.messages.getAllMessages().isEmpty());
-        assertEquals("Invalid file size.",
-                page.messages.getMessage(0).getSummary());
+        assertEquals("Invalid file size.", page.messages.getMessage(0).getSummary());
         assertNoJavascriptErrors();
         // Primefaces sends "empty" request if mode=simple skinSimple=true
         assertUploadedFiles(page.uploadedFiles);
@@ -136,8 +135,7 @@ class FileUpload001Test extends AbstractFileUploadTest {
         // Assert
         assertNoJavascriptErrors();
         assertFalse(page.messages.getAllMessages().isEmpty());
-        assertEquals("Invalid file type.",
-                page.messages.getMessage(0).getSummary());
+        assertEquals("Invalid file type.", page.messages.getMessage(0).getSummary());
         // Primefaces sends "empty" request if mode=simple skinSimple=true
         assertUploadedFiles(page.uploadedFiles);
         assertConfiguration(fileUpload);
