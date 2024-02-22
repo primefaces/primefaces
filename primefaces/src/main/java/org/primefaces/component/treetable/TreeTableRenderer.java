@@ -270,7 +270,7 @@ public class TreeTableRenderer extends DataRenderer {
             writer.writeAttribute("style", "height:" + scrollHeight + "px", null);
         }
         writer.startElement("table", null);
-        writer.writeAttribute("role", "grid", null);
+        writer.writeAttribute("data-role", "grid", null);
 
         if (tableStyle != null) {
             writer.writeAttribute("style", tableStyle, null);
@@ -299,7 +299,7 @@ public class TreeTableRenderer extends DataRenderer {
         writer.writeAttribute("class", containerBoxClass, null);
 
         writer.startElement("table", null);
-        writer.writeAttribute("role", "grid", null);
+        writer.writeAttribute("data-role", "grid", null);
         if (tableStyle != null) {
             writer.writeAttribute("style", tableStyle, null);
         }
@@ -559,7 +559,7 @@ public class TreeTableRenderer extends DataRenderer {
                 }
 
                 writer.startElement("td", null);
-                writer.writeAttribute("role", "gridcell", null);
+                writer.writeAttribute("data-role", "gridcell", null);
                 if (columnStyle != null) {
                     writer.writeAttribute("style", columnStyle, null);
                 }

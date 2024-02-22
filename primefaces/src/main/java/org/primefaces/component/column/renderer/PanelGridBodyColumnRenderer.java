@@ -42,7 +42,6 @@ public class PanelGridBodyColumnRenderer extends CoreRenderer implements HelperC
         styleClass = (styleClass == null) ? PanelGrid.CELL_CLASS : PanelGrid.CELL_CLASS + " " + styleClass;
 
         writer.startElement("td", null);
-        writer.writeAttribute("role", "gridcell", null);
         writer.writeAttribute("class", styleClass, null);
 
         if (style != null) {

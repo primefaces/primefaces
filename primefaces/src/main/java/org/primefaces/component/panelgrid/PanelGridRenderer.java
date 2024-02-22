@@ -37,6 +37,7 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.GridLayoutUtils;
+import org.primefaces.util.LangUtils;
 
 public class PanelGridRenderer extends CoreRenderer {
 
@@ -157,7 +158,7 @@ public class PanelGridRenderer extends CoreRenderer {
                                  ? PanelGrid.CELL_CLASS + " " + columnClasses[colMod].trim()
                                  : PanelGrid.CELL_CLASS;
             writer.startElement("td", null);
-            writer.writeAttribute("role", "gridcell", null);
+            writer.writeAttribute("data-role", "gridcell", null);
             writer.writeAttribute("class", columnClass, null);
             child.encodeAll(context);
             writer.endElement("td");
@@ -193,7 +194,7 @@ public class PanelGridRenderer extends CoreRenderer {
                     String rowStyleClass = i % 2 == 0
                                            ? PanelGrid.TABLE_ROW_CLASS + " " + PanelGrid.EVEN_ROW_CLASS
                                            : PanelGrid.TABLE_ROW_CLASS + " " + PanelGrid.ODD_ROW_CLASS;
-                    encodeRow(context, (Row) child, "gridcell", rowStyleClass, PanelGrid.CELL_CLASS);
+                    encodeRow(context, (Row) child, "", rowStyleClass, PanelGrid.CELL_CLASS);
                 }
                 else {
                     child.encodeAll(context);
@@ -236,10 +237,13 @@ public class PanelGridRenderer extends CoreRenderer {
                 if (shouldWriteId(column)) {
                     writer.writeAttribute("id", column.getClientId(context), null);
                 }
-                writer.writeAttribute("role", columnRole, null);
-                writer.writeAttribute("class", styleClass, null);
-
-                if (column.getStyle() != null) {
+                if (LangUtils.isNotBlank(columnRole)) {
+                    writer.writeAttribute("role", columnRole, null);
+                }
+                if (LangUtils.isNotBlank(styleClass)) {
+                    writer.writeAttribute("class", styleClass, null);
+                }
+                if (LangUtils.isNotBlank(column.getStyle())) {
                     writer.writeAttribute("style", column.getStyle(), null);
                 }
                 if (column.getColspan() > 1) {

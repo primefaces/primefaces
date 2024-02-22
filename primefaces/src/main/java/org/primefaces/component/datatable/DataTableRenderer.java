@@ -376,7 +376,7 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         writer.startElement("table", null);
-        writer.writeAttribute("role", "grid", null);
+        writer.writeAttribute("data-role", "grid", null);
         if (tableStyle != null) {
             writer.writeAttribute("style", tableStyle, null);
         }
@@ -517,7 +517,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.writeAttribute("class", containerBoxClass, null);
 
         writer.startElement("table", null);
-        writer.writeAttribute("role", "grid", null);
+        writer.writeAttribute("data-role", "grid", null);
         if (tableStyle != null) {
             writer.writeAttribute("style", tableStyle, null);
         }
@@ -553,7 +553,7 @@ public class DataTableRenderer extends DataRenderer {
             }
         }
         writer.startElement("table", null);
-        writer.writeAttribute("role", "grid", null);
+        writer.writeAttribute("data-role", "grid", null);
 
         if (tableStyle != null) {
             writer.writeAttribute("style", tableStyle, null);
@@ -586,7 +586,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.writeAttribute("class", DataTable.VIRTUALSCROLL_WRAPPER_CLASS, null);
 
         writer.startElement("table", null);
-        writer.writeAttribute("role", "grid", null);
+        writer.writeAttribute("data-role", "grid", null);
         writer.writeAttribute("class", tableStyleClass, null);
 
         if (tableStyle != null) {
@@ -1256,20 +1256,20 @@ public class DataTableRenderer extends DataRenderer {
         int rowspan = column.getRowspan();
 
         writer.startElement("td", null);
-        writer.writeAttribute("role", "gridcell", null);
+        writer.writeAttribute("data-role", "gridcell", null);
         if (colspan != 1) {
             writer.writeAttribute("colspan", colspan, null);
         }
         if (rowspan != 1) {
             writer.writeAttribute("rowspan", rowspan, null);
         }
-        if (style != null) {
+        if (LangUtils.isNotBlank(style)) {
             writer.writeAttribute("style", style, null);
         }
-        if (styleClass != null) {
+        if (LangUtils.isNotBlank(styleClass)) {
             writer.writeAttribute("class", styleClass, null);
         }
-        if (title != null) {
+        if (LangUtils.isNotBlank(title)) {
             writer.writeAttribute("title", title, null);
         }
         UIComponent component = (column instanceof UIComponent) ? (UIComponent) column : null;
