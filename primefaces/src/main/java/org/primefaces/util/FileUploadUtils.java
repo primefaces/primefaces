@@ -399,8 +399,13 @@ public class FileUploadUtils {
         return request.getParameter("X-File-Webkit-Relative-Path");
     }
 
-    public static String formatAllowTypes(String message) {
-        return message != null ? message.replace("/(\\.|\\/)(", "").replace(")$/", "") : null;
+    /**
+     * Formats the allowTypes regex pattern in a more human-friendly format.
+     * @param allowTypes The allowTypes regex pattern to format
+     * @return The allowTypes formatted in a more human-friendly format.
+     */
+    public static String formatAllowTypes(String allowTypes) {
+        return allowTypes != null ? allowTypes.replace("/(\\.|\\/)(", "").replace(")$/", "") : null;
     }
 
     public static String formatBytes(Long bytes, Locale locale) {
