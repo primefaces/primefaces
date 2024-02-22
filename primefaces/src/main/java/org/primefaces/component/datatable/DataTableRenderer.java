@@ -1192,7 +1192,9 @@ public class DataTableRenderer extends DataRenderer {
         if (LangUtils.isNotBlank(rowStyleClass)) {
             writer.writeAttribute("class", rowStyleClass, null);
         }
-        writer.writeAttribute("title", table.getRowTitle(), null);
+        if (LangUtils.isNotBlank(table.getRowTitle())) {
+            writer.writeAttribute("title", table.getRowTitle(), null);
+        }
         if (selectionEnabled) {
             writer.writeAttribute(HTML.ARIA_SELECTED, String.valueOf(selected), null);
         }
