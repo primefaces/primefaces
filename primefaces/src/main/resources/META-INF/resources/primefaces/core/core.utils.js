@@ -880,7 +880,8 @@ if (!PrimeFaces.utils) {
         },
 
         /**
-         * Formats the allowType regex pattern in a more human-friendly format.
+         * Formats the allowTypes regex pattern in a more human-friendly format.
+         * @param {allowTypes} allowTypes The allowTypes regex pattern to format
          * @return {string} The allowTypes formatted in a more human-friendly format.
          */
         formatAllowTypes: function(allowTypes) {
