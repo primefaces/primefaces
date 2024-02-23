@@ -509,7 +509,7 @@ public class DataTable extends DataTableBase {
 
         List<?> data = model.load(offset, rows, getActiveSortMeta(), getActiveFilterMeta());
         if (data.size() < getRows() && getFirst() == 0) {
-            setRows(data.size());
+            model.setRowCount(data.size());
         }
         else if (getFirst() == 0) {
             model.setRowCount(model.count(filterBy));
