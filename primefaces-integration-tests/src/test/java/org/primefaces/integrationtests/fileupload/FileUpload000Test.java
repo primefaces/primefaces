@@ -112,7 +112,8 @@ class FileUpload000Test extends AbstractFileUploadTest {
 
         // Assert
         assertFalse(page.messages.getAllMessages().isEmpty());
-        assertEquals("Invalid file size.", page.messages.getMessage(0).getSummary());
+        assertEquals("Invalid file size.",
+                page.messages.getMessage(0).getSummary());
         assertNoJavascriptErrors();
         assertConfiguration(fileUpload);
     }
@@ -132,7 +133,8 @@ class FileUpload000Test extends AbstractFileUploadTest {
 
         // Assert
         assertFalse(page.messages.getAllMessages().isEmpty());
-        assertEquals("Invalid file type.", page.messages.getMessage(0).getSummary());
+        assertEquals("Invalid file type.",
+                page.messages.getMessage(0).getSummary());
         assertNoJavascriptErrors();
         assertConfiguration(fileUpload);
     }

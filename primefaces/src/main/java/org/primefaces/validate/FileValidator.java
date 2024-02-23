@@ -174,6 +174,8 @@ public class FileValidator implements Validator, PartialStateHolder, ClientValid
         return VALIDATOR_ID;
     }
 
+
+
     @Override
     public void clearInitialState() {
         initialStateMarked = false;
@@ -233,6 +235,8 @@ public class FileValidator implements Validator, PartialStateHolder, ClientValid
         this.isTransient = isTransient;
     }
 
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -253,6 +257,8 @@ public class FileValidator implements Validator, PartialStateHolder, ClientValid
     public int hashCode() {
         return Objects.hash(fileLimit, sizeLimit, allowTypes, contentType, virusScan);
     }
+
+
 
     public Integer getFileLimit() {
         return fileLimit;
