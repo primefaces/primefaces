@@ -10779,7 +10779,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Regular expression for accepted file types, e.g., /(\.|\/)(gif|jpeg|jpg|png)$/ Deprecated please attach 'p:validateFile'.]]>
+                <![CDATA[Regular expression for accepted file types, e.g., /(\.|\/)(gif|jpeg|jpg|png)$/]]>
             </description>
             <name>allowTypes</name>
             <required>false</required>
