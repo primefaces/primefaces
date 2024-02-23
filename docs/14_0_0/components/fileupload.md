@@ -22,7 +22,7 @@ powered rich solution with graceful degradation for legacy browsers.
 | --- |----------------------------------------------| --- | --- |
 | id | null                                         | String | Unique identifier of the component.
 | accept | null                                         | String | Filters files in native file browser dialog.
-| ~~allowTypes~~ | null                                         | String | ~~Regular expression for accepted file types, e.g., /(\\.\|\\/)(gif\|jpeg|jpg\|png)$/ Deprecated please attach `p:validateFile` to the `p:fileUpload` component.~~
+| ~~allowTypes~~ | null                                         | String | ~~Regular expression for accepted file types. Deprecated please attach `p:validateFile` to the `p:fileUpload` component.~~
 | auto | false                                        | Boolean | When set to true, selecting a file starts the upload process implicitly.
 | binding | null                                         | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
 | cancelButtonTitle | null                                         | String | Native title tooltip for cancel button
