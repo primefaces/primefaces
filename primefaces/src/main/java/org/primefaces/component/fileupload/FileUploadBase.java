@@ -169,26 +169,32 @@ public abstract class FileUploadBase extends UIInput implements Widget {
         getStateHelper().put(PropertyKeys.label, label);
     }
 
+    @Deprecated
     public String getAllowTypes() {
         return (String) getStateHelper().eval(PropertyKeys.allowTypes, null);
     }
 
+    @Deprecated
     public void setAllowTypes(String allowTypes) {
         getStateHelper().put(PropertyKeys.allowTypes, allowTypes);
     }
 
+    @Deprecated
     public int getFileLimit() {
         return (Integer) getStateHelper().eval(PropertyKeys.fileLimit, Integer.MAX_VALUE);
     }
 
+    @Deprecated
     public void setFileLimit(int fileLimit) {
         getStateHelper().put(PropertyKeys.fileLimit, fileLimit);
     }
 
+    @Deprecated
     public Long getSizeLimit() {
         return (Long) getStateHelper().eval(PropertyKeys.sizeLimit, Long.MAX_VALUE);
     }
 
+    @Deprecated
     public void setSizeLimit(Long sizeLimit) {
         getStateHelper().put(PropertyKeys.sizeLimit, sizeLimit);
     }

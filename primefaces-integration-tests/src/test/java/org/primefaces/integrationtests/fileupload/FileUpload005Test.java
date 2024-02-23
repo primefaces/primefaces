@@ -149,7 +149,7 @@ class FileUpload005Test extends AbstractFileUploadTest {
         assertUploadedFiles(page.uploadedFiles, file1, file2);
 
         // Act
-        File file3 = locateClientSideFile("file1.csv");
+        File file3 = locateClientSideFile("file3.csv");
         fileUpload.setValue(file3);
 
         // Assert

@@ -114,7 +114,7 @@
         </validator>
         <attribute>
             <description>
-                <![CDATA[Regular expression for accepted file types, e.g., /(\.|\/)(gif|jpe?g|png)$/]]>
+                <![CDATA[Regular expression for accepted file types, e.g., /(\.|\/)(gif|jpeg|jpg|png)$/]]>
             </description>
             <name>allowTypes</name>
             <required>false</required>
@@ -10779,7 +10779,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Regular expression for accepted file types, e.g., /(\.|\/)(gif|jpe?g|png)$/]]>
+                <![CDATA[Regular expression for accepted file types, e.g., /(\.|\/)(gif|jpeg|jpg|png)$/ Deprecated please attach 'p:validateFile'.]]>
             </description>
             <name>allowTypes</name>
             <required>false</required>
@@ -10787,7 +10787,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Maximum number of files to be uploaded.]]>
+                <![CDATA[Maximum number of files to be uploaded. Deprecated please attach 'p:validateFile'.]]>
             </description>
             <name>fileLimit</name>
             <required>false</required>
@@ -10795,7 +10795,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Individual file size limit in bytes. Default is unlimited.]]>
+                <![CDATA[Individual file size limit in bytes. Default is unlimited. Deprecated please attach 'p:validateFile'.]]>
             </description>
             <name>sizeLimit</name>
             <required>false</required>
@@ -10915,7 +10915,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Message template to use when displaying file validation errors. Default is "{name} {size}".]]>
+                <![CDATA[Message template to use when displaying file in simple upload mode and some client side validation messages in advanced mode. Default is "{name} {size}".]]>
             </description>
             <name>messageTemplate</name>
             <required>false</required>
