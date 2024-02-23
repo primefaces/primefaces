@@ -26,7 +26,7 @@
                               update="messages cropperPanel"
                               listener="#{cropUploaderBean.handleFileUpload}">
                     <p:validateFile sizeLimit="102400"
-                                    allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>
+                                    allowTypes="/(\.|\/)(gif|jpeg|jpg|png)$/"/>
                 </p:fileUpload>
 
                 <p:outputPanel id="cropperPanel">
@@ -39,12 +39,11 @@
 
                         <h:panelGrid columns="2" cellpadding="7">
 
-                            <p:imageCropper
-                                    value="#{cropUploaderBean.croppedImage}"
-                                    id="imageCropper" cache="false"
-                                    image="#{cropUploaderBean.image}"
-                                    initialCoords="50,50,150,100"
-                                    minSize="50,50" maxSize="350,350"/>
+                            <p:imageCropper value="#{cropUploaderBean.croppedImage}"
+                                            id="imageCropper" cache="false"
+                                            image="#{cropUploaderBean.image}"
+                                            initialCoords="50,50,150,100"
+                                            minSize="50,50" maxSize="350,350"/>
 
                             <p:outputPanel id="cropped">
                                 <p:graphicImage cache="false"
@@ -54,7 +53,6 @@
 
                         </h:panelGrid>
 
-                        
                     </h:panelGrid>
                 </p:outputPanel>
             </h:form>

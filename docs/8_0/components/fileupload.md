@@ -37,7 +37,7 @@ powered rich solution with graceful degradation for legacy browsers.
 | multiple | false | Boolean | Allows choosing of multi file uploads from native file browse dialog
 | auto | false | Boolean | When set to true, selecting a file starts the upload process implicitly.
 | label | Choose | String | Label of the browse button.
-| allowTypes | null | String | Regular expression for accepted file types, e.g., /(\\.\|\\/)(gif\|jpe?g\|png)$/
+| allowTypes | null | String | Regular expression for accepted file types, e.g., /(\\.\|\\/)(gif\|jpeg|jpg\|png)$/
 | sizeLimit | null | Integer | Individual file size limit in bytes.
 | fileLimit | null | Integer | Maximum number of files allowed to upload.
 | style | null | String | Inline style of the component.
@@ -210,7 +210,7 @@ Users can be restricted to only select the file types you’ve configured, examp
 how to accept images only.
 
 ```xhtml
-<p:fileUpload listener="#{fileBean.handleFileUpload}" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>
+<p:fileUpload listener="#{fileBean.handleFileUpload}" allowTypes="/(\.|\/)(gif|jpeg|jpg|png)$/"/>
 ```
 ## Size Limit
 Most of the time you might need to restrict the file upload size for a file, this is as simple as setting
@@ -295,7 +295,7 @@ File uploads per se introduce some security risks, for best practices you should
 
 Here are some measures that can be taken into account when using PrimeFaces's `fileUpload` component:
 1. Consider **limiting the size** of uploaded files. As of PrimeFaces 6.2 this will be double-checked at server side as well: `p:fileUpload sizeLimit="1024"`. See https://github.com/primefaces/primefaces/issues/3290.
-2. Consider **restricting file names** of uploaded files. As of PrimeFaces 7.0 this will be double-checked at server side as well: `p:fileUpload allowTypes="/(\.|\/)(gif|jpe?g|png)$/"`. See https://github.com/primefaces/primefaces/issues/2791.
+2. Consider **restricting file names** of uploaded files. As of PrimeFaces 7.0 this will be double-checked at server side as well: `p:fileUpload allowTypes="/(\.|\/)(gif|jpeg|jpg|png)$/"`. See https://github.com/primefaces/primefaces/issues/2791.
 3. Consider **enabling content type validation**. This feature has been introduced with PrimeFaces 7.0 and can be used by combining the `accept` and `validateContentType` attributes: `p:fileUpload accept="image/*" validateContentType="true"`. For reliable content type validation we recommend to use Apache Tika, which will be picked up automatically if available in classpath. See https://github.com/primefaces/primefaces/issues/4244.
 4. Consider **enabling virus scanning**. This feature has been introduced with PrimeFaces 7.0 and can be enabled with `p:fileUpload performVirusScan="true"`. See https://github.com/primefaces/primefaces/issues/4256.
    * **Built-in implementation**: You may either make use of PrimeFaces' basic built-in implementation, that just searches for the file's hash at VirusTotal. Therefore you have to configure accordingly the context param `primefaces.virusscan.VIRUSTOTAL_KEY` in `web.xml`; a key can be obtained for free at [VirusTotal](https://www.virustotal.com/#/join-us). 

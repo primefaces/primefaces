@@ -115,7 +115,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
      * Regular expression that matches image files for which a preview can be shown.
      * @type {RegExp}
      */
-    IMAGE_TYPES: /(\.|\/)(gif|jpe?g|png)$/i,
+    IMAGE_TYPES: /(\.|\/)(gif|jpeg|jpg|png)$/i,
 
     /**
      * @override
