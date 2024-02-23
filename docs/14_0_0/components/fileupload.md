@@ -22,7 +22,7 @@ powered rich solution with graceful degradation for legacy browsers.
 | --- |----------------------------------------------| --- | --- |
 | id | null                                         | String | Unique identifier of the component.
 | accept | null                                         | String | Filters files in native file browser dialog.
-| allowTypes | null                                         | String | Regular expression for accepted file types, e.g., /(\\.\|\\/)(gif\|jpeg|jpg\|png)$/
+| ~~allowTypes~~ | null                                         | String | ~~Regular expression for accepted file types, e.g., /(\\.\|\\/)(gif\|jpeg|jpg\|png)$/ Deprecated please attach `p:validateFile` to the `p:fileUpload` component.~~
 | auto | false                                        | Boolean | When set to true, selecting a file starts the upload process implicitly.
 | binding | null                                         | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
 | cancelButtonTitle | null                                         | String | Native title tooltip for cancel button
@@ -38,14 +38,14 @@ powered rich solution with graceful degradation for legacy browsers.
 | displayFilename | true, false when mode='simple' && auto='true' | Boolean | Simple Mode: if the filename should be displayed. 
 | dragDropSupport | true                                         | Boolean | Specifies dragdrop based file selection from filesystem, default is true and works only on supported browsers.
 | dropZone | null                                         | String | Component that should be used as custom drop zone.
-| fileLimit | null                                         | Integer | Maximum number of files allowed to upload.
+| ~~fileLimit~~ | null                                         | Integer | ~~Maximum number of files allowed to upload. Deprecated please attach `p:validateFile` to the `p:fileUpload` component.~~
 | global | true                                         | Boolean | Global AJAX requests are listened by ajaxStatus component, setting global to false will not trigger ajaxStatus. Default is false.
 | immediate | false                                        | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
 | label | Choose                                       | String | Label of the browse button.
 | listener | null                                         | MethodExpr | Method to invoke when a file is uploaded.
 | maxChunkSize | 0                                            | Long | To upload large files in smaller chunks, set this option to a preferred maximum chunk size. If set to 0 (default), null or undefined, or the browser does not support the required Blob API, files will be uploaded as a whole. Only works in "advanced" mode.
 | maxRetries | 30                                           | Integer | Only for chunked file upload: Amount of retries when upload get´s interrupted due to e.g. unstable network connection.
-| messageTemplate | {name} {size}                                | String | Message template to use when displaying file validation errors.
+| messageTemplate | {name} {size}                                | String | Message template to use when displaying file in simple upload mode and some client side validation messages in advanced mode.
 | mode | advanced                                     | String | Mode of the fileupload, can be _simple_ or _advanced_.
 | multiple | false                                        | Boolean | Allows choosing of multi file uploads from native file browse dialog
 | onAdd | null                                         | String | Advanced Mode Only. Callback to execute before adding a file.
@@ -62,7 +62,7 @@ powered rich solution with graceful degradation for legacy browsers.
 | requiredMessage | null                                         | String | Message to be displayed when required field validation fails.
 | retryTimeout | 1000                                         | Integer | Only for chunked file upload: (Base-)Timeout in milliseconds to wait until the next retry. It is multiplied with the retry count. (first retry: retryTimeout * 1, second retry: retryTimeout *2, ...)
 | sequential | false                                        | Boolean | Uploads are concurrent by default, set this option to true for sequential uploads.
-| sizeLimit | null                                         | Long | Individual file size limit in bytes.
+| ~~sizeLimit~~ | null                                         | Long | ~~Individual file size limit in bytes. Deprecated please attach `p:validateFile` to the `p:fileUpload` component.~~
 | skinSimple | false                                        | Boolean | Applies theming to simple uploader.
 | style | null                                         | String | Inline style of the component.
 | styleClass | null                                         | String | Style class of the component.
@@ -294,7 +294,9 @@ Users can be restricted to only select the file types you’ve configured, examp
 how to accept images only.
 
 ```xhtml
-<p:fileUpload listener="#{fileBean.handleFileUpload}" allowTypes="/(\.|\/)(gif|jpeg|jpg|png)$/"/>
+<p:fileUpload listener="#{fileBean.handleFileUpload}" >
+   <p:validateFile allowTypes="/(\.|\/)(gif|jpeg|jpg|png)$/"/>
+</p:fileUpload>
 ```
 
 
@@ -302,14 +304,11 @@ how to accept images only.
 FileLimit restricts the number of maximum files that can be uploaded.
 
 ```xhtml
-<p:fileUpload listener="#{fileBean.handleFileUpload}" fileLimit="3" />
+<p:fileUpload listener="#{fileBean.handleFileUpload}">
+   <p:validateFile fileLimit="2" sizeLimit="100" virusScan="true" allowTypes="/(\.|\/)(csv)$/"/>
+</p:fileUpload>
 ```
 
-
-## Messages
-Similar to the FacesMessage message API, these message define
-the summary part, the detail part is retrieved from the `messageTemplate` option where default value
-is `{name} {size}`.
 
 ## Custom Drop Zone
 With the `dropZone` attribute your can specify which component should be used as the drop zone for the
@@ -322,7 +321,9 @@ Most of the time you might need to restrict the file upload size for a file, thi
 the sizeLimit configuration. Following fileUpload limits the size to 1000 bytes for each file.
 
 ```xhtml
-<p:fileUpload listener="#{fileBean.handleFileUpload}" sizeLimit="1000" />
+<p:fileUpload listener="#{fileBean.handleFileUpload}" >
+   <p:validateFile  sizeLimit="1000" />
+</p:fileUpload>
 ```
 
 
