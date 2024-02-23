@@ -295,7 +295,7 @@ how to accept images only.
 
 ```xhtml
 <p:fileUpload listener="#{fileBean.handleFileUpload}" >
-   <p:validateFile allowTypes="/(\.|\/)(csv)$/"/>
+   <p:validateFile allowTypes="/(\.|\/)(gif|jpeg|jpg|png)$/"/>
 </p:fileUpload>
 ```
 
