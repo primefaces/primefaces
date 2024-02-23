@@ -22,7 +22,7 @@
                 <p:fileUpload listener="#{fileUploadView.handleFileUpload}" mode="advanced" dragDropSupport="false"
                               update="messages" accept=".gif,.jpg,.jpeg,.png"
                               onupload="return confirm('Are you sure?')">
-                        <p:validateFile sizeLimit="100000" fileLimit="3" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" contentType="true" />
+                        <p:validateFile sizeLimit="100000" fileLimit="3" allowTypes="/(\.|\/)(gif|jpeg|jpg|png)$/" contentType="true" />
                 </p:fileUpload>
 
                 <p:growl id="messages" showDetail="true"/>
