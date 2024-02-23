@@ -753,6 +753,15 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 draggedSourceKeys = draggedSourceKeys.filter(function(key) {
                     return $.inArray(key, $this.invalidSourceKeys) === -1;
                 });
+                
+                // #11513 dndIndex is based on whether you are dragging up or down
+                var dndIndex = dropPoint.prevAll('li.ui-treenode').length;
+                if (parseInt(dragNodeKey) < dndIndex) {
+                    var nextDndIndex = dropPoint.nextAll('li.ui-treenode').length;
+                    if (nextDndIndex > 0) {
+                        dndIndex = nextDndIndex;
+                    }
+                }
 
                 if (draggedSourceKeys && draggedSourceKeys.length) {
                     draggedSourceKeys = draggedSourceKeys.reverse().join(',');
@@ -760,7 +769,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                         'dragNodeKey': draggedSourceKeys,
                         'dropNodeKey': dropNodeKey,
                         'dragSource': dragSource.id,
-                        'dndIndex': dropPoint.prevAll('li.ui-treenode').length,
+                        'dndIndex': dndIndex,
                         'transfer': transfer,
                         'isDroppedNodeCopy': isDroppedNodeCopy
                     });
