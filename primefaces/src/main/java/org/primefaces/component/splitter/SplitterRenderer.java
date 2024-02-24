@@ -81,7 +81,6 @@ public class SplitterRenderer extends CoreRenderer {
                 if (i != childCount - 1) {
                     writer.startElement("div", null);
                     writer.writeAttribute("class", Splitter.GUTTER_CLASS, null);
-                    writer.writeAttribute(HTML.ARIA_ROLE, "separator", null);
                     if ("horizontal".equals(layout)) {
                         writer.writeAttribute("style", "width: " + splitter.getGutterSize() + "px", null);
                     }
@@ -92,6 +91,7 @@ public class SplitterRenderer extends CoreRenderer {
                     writer.startElement("div", splitter);
                     writer.writeAttribute("class", Splitter.GUTTER_HANDLE_CLASS, null);
                     writer.writeAttribute("tabindex", Objects.toString(panel.getTabindex(), "0"), null);
+                    writer.writeAttribute(HTML.ARIA_ROLE, "separator", null);
                     writer.writeAttribute(HTML.ARIA_CONTROLS, panelId, null);
                     writer.writeAttribute(HTML.ARIA_ORIENTATION, isVertical ? "horizontal" : "vertical", null);
                     writer.writeAttribute(HTML.ARIA_CONTROLS, panelId, null);
