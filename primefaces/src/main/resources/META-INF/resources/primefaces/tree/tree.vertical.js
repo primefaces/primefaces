@@ -754,19 +754,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     return $.inArray(key, $this.invalidSourceKeys) === -1;
                 });
                 
-                // #11513 dndIndex is based on whether you are dragging up or down
                 var dndIndex = dropPoint.prevAll('li.ui-treenode').length;
-                var draggedIndex = parseInt(dragNodeKey);
-                
-                if (draggedIndex === dndIndex || (draggedIndex < dndIndex && dndIndex <= 1)) {
-                    draggedSourceKeys = null; // do nothing
-                } else if (draggedIndex < dndIndex) {
-                    var nextDndIndex = dropPoint.nextAll('li.ui-treenode').length;
-                    if (nextDndIndex > 0) {
-                        dndIndex = nextDndIndex;
-                    }
-                }
-
                 if (draggedSourceKeys && draggedSourceKeys.length) {
                     draggedSourceKeys = draggedSourceKeys.reverse().join(',');
                     $this.fireDragDropEvent({
