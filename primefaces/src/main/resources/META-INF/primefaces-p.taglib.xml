@@ -31433,7 +31433,7 @@
                 <![CDATA[JSON value of the chart.]]>
             </description>
             <name>value</name>
-            <required>true</required>
+            <required>false</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
@@ -31462,7 +31462,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Name of javascript function to extend the options of the underlying fullcalendar plugin.]]>
+                <![CDATA[Name of javascript function to extend the options of the underlying Chart.js plugin.]]>
             </description>
             <name>extender</name>
             <required>false</required>

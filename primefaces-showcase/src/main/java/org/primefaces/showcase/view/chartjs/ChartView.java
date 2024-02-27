@@ -502,7 +502,9 @@ public class ChartView implements Serializable {
 
     public void itemSelect(ItemSelectEvent event) {
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Item selected",
-                "Item Index: " + event.getItemIndex() + ", DataSet Index:" + event.getDataSetIndex());
+                "Value: " + event.getData()
+                + ", Item Index: " + event.getItemIndex()
+                + ", DataSet Index:" + event.getDataSetIndex());
 
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
