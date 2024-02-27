@@ -346,10 +346,12 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
                     for(var i = 0; i < data.files.length; i++) {
                         var file = data.files[i];
-                        if(file.row) {
-                            file.row.children('.ui-fileupload-progress').find('> .ui-progressbar > .ui-progressbar-value').css({
-                                width: progress + '%',
-                                display: 'block'
+                        if (file.row) {
+                            var fileuploadProgress = file.row.children(".ui-fileupload-progress").find("> .ui-progressbar");
+                            fileuploadProgress.attr("aria-valuenow", progress);
+                            fileuploadProgress.find("> .ui-progressbar-value").css({
+                                width: progress + "%",
+                                display: "block"
                             });
                         }
                     }
