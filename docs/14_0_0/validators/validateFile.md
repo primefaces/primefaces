@@ -14,7 +14,7 @@
 
 | Name           | Default | Type    | Description     |
 |----------------| ------- |---------| ----------------- |
-| allowTypes     | null    | String  | Javascript regular expression for accepted file types, e.g. /(\.|\/)(gif|jpe?g|png)$/
+| allowTypes     | null    | String  | Javascript regular expression for accepted file types, e.g., /(\.|\/)(gif|jpeg|jpg|png)$/
 | fileLimit      | null    | Integer | Maximum number of files to be uploaded.
 | sizeLimit      | null    | Long    | Individual file size limit in bytes. Default is unlimited.
 | contentType    | null    | Boolean | Whether the contentType should be validated based on the accept attribute of the attached component. Default is false.

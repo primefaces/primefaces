@@ -542,11 +542,11 @@ public void init() {
 }
 ```
 
-In case of custom filters (e.g `SelectOneMenu`), you have the possibilites to use either `Column#filterValue` or custom filter value attribute (e.g `SelectOneMenu#value`)
+In case of custom filters (e.g. `SelectOneMenu`), you have the possibilites to use either `Column#filterValue` or custom filter value attribute (e.g. `SelectOneMenu#value`)
 
 ## Row Selection
 
-At first, you could implement selection by yourself by simply defining a column with a command component (e.g commandLink/commandButton). 
+At first, you could implement selection by yourself by simply defining a column with a command component (e.g. commandLink/commandButton). 
 Selected row(s) can be set to a server side instance by passing as a parameter or using `<f:setPropertyActionListener />`.
 
 ```xhtml
@@ -573,13 +573,13 @@ Depending `selection` value-binding, multiple selection will be used if bound to
 </p:dataTable>
 ```
 
-In this example, `selectedCar` property is a single `Car` therefore single selection will be used (e.g `selectionMode` will be set to `single`)
+In this example, `selectedCar` property is a single `Car` therefore single selection will be used (e.g. `selectionMode` will be set to `single`)
 
 ### Selection with RadioButtons or Checkboxes
 Selecting a row with a radio button or a checkbox placed on each row is a common case, datatable has built-in
 support for this so that you don't need to deal with low level bits. 
 
-As explained before, `DataTable` component already knows what kind of selection should be used (e.g single or multiple). 
+As explained before, `DataTable` component already knows what kind of selection should be used (e.g. single or multiple). 
 If single selection, you might want to render radiobuttons, else checkboxes will best fit multiple selection. 
 At this point, the only thing left is to create the "selection column" using `selectionBox` property:   
 

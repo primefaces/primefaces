@@ -10,9 +10,9 @@
  * @interface {PrimeFaces.widget.Knob.ColorTheme} ColorTheme A color theme for the knob, consisting of the color for the
  * filled and unfilled part of the knob.
  * @prop {string} ColorTheme.fgColor The foreground color, i.e. the color of the filled part of the knob. Must be a CSS
- * color, e.g. `#ff0000`.
+ * color, e.g., `#ff0000`.
  * @prop {string} ColorTheme.bgColor The background color, i.e. the color of the unfilled part of the knob. Must be a
- * CSS color, e.g. `#ff0000`.
+ * CSS color, e.g., `#ff0000`.
  * 
  * @prop {string} colorTheme Name of the color theme to use. You can use on of the keys defined in
  * `PrimeFaces.widget.Knob.ColorThemes`.

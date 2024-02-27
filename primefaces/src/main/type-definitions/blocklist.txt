@@ -33,6 +33,7 @@ locales/locale-ka.js
 locales/locale-km.js
 locales/locale-ko.js
 locales/locale-ky.js
+locales/locale-kk.js
 locales/locale-lt.js
 locales/locale-lv.js
 locales/locale-ms.js
@@ -46,6 +47,7 @@ locales/locale-sk.js
 locales/locale-sl.js
 locales/locale-sr.js
 locales/locale-sv.js
+locales/locale-th.js
 locales/locale-tr.js
 locales/locale-uk.js
 locales/locale-vi.js

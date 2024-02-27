@@ -81,9 +81,7 @@ public class LazyCustomerDataModel extends LazyDataModel<Customer> {
     public List<Customer> load(int offset, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
         // apply offset & filters
         List<Customer> customers = datasource.stream()
-                .skip(offset)
                 .filter(o -> filter(FacesContext.getCurrentInstance(), filterBy.values(), o))
-                .limit(pageSize)
                 .collect(Collectors.toList());
 
         // sort
@@ -95,7 +93,7 @@ public class LazyCustomerDataModel extends LazyDataModel<Customer> {
             customers.sort(cp);
         }
 
-        return customers;
+        return customers.subList(offset, Math.min(offset + pageSize, customers.size()));
     }
 
     private boolean filter(FacesContext context, Collection<FilterMeta> filterBy, Object o) {

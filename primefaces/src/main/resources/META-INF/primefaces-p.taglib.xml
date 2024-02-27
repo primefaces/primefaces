@@ -114,7 +114,7 @@
         </validator>
         <attribute>
             <description>
-                <![CDATA[Regular expression for accepted file types, e.g. /(\.|\/)(gif|jpe?g|png)$/]]>
+                <![CDATA[Regular expression for accepted file types, e.g., /(\.|\/)(gif|jpeg|jpg|png)$/]]>
             </description>
             <name>allowTypes</name>
             <required>false</required>
@@ -7696,6 +7696,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Name of collection iterator which will be the value of DashboardWidget.getValue().]]>
+            </description>
+            <name>var</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -10771,7 +10779,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Regular expression for accepted file types, e.g. /(\.|\/)(gif|jpe?g|png)$/]]>
+                <![CDATA[Regular expression for accepted file types, e.g., /(\.|\/)(gif|jpeg|jpg|png)$/]]>
             </description>
             <name>allowTypes</name>
             <required>false</required>
@@ -10779,7 +10787,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Maximum number of files to be uploaded.]]>
+                <![CDATA[Maximum number of files to be uploaded. Deprecated please attach 'p:validateFile'.]]>
             </description>
             <name>fileLimit</name>
             <required>false</required>
@@ -10787,7 +10795,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Individual file size limit in bytes. Default is unlimited.]]>
+                <![CDATA[Individual file size limit in bytes. Default is unlimited. Deprecated please attach 'p:validateFile'.]]>
             </description>
             <name>sizeLimit</name>
             <required>false</required>
@@ -10907,7 +10915,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Message template to use when displaying file validation errors. Default is "{name} {size}".]]>
+                <![CDATA[Message template to use when displaying file in simple upload mode and some client side validation messages in advanced mode. Default is "{name} {size}".]]>
             </description>
             <name>messageTemplate</name>
             <required>false</required>
@@ -30169,11 +30177,19 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[When enabled, the copy of the selected nodes can be dropped from a tree to another tree using Shift key.]]>
+                <![CDATA[When enabled and dropMode='move', the copy of the selected nodes can be dropped from a tree to another tree using Shift key.]]>
             </description>
             <name>dropCopyNode</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether to 'move' or 'copy' the node on drop. Default is 'move'.]]>
+            </description>
+            <name>dropMode</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -31417,7 +31433,7 @@
                 <![CDATA[JSON value of the chart.]]>
             </description>
             <name>value</name>
-            <required>true</required>
+            <required>false</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
@@ -31446,7 +31462,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Name of javascript function to extend the options of the underlying fullcalendar plugin.]]>
+                <![CDATA[Name of javascript function to extend the options of the underlying Chart.js plugin.]]>
             </description>
             <name>extender</name>
             <required>false</required>

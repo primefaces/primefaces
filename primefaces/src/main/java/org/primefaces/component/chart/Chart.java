@@ -70,10 +70,14 @@ public class Chart extends ChartBase {
             Map<String, String> map = getFacesContext().getExternalContext().getRequestParameterMap();
             int itemIndex = Integer.parseInt(map.get("itemIndex"));
             int dataSetIndex = Integer.parseInt(map.get("dataSetIndex"));
+            String data = map.get("data");
 
-            ItemSelectEvent itemSelectEvent = new ItemSelectEvent(this, behaviorEvent.getBehavior(), itemIndex, dataSetIndex);
+            ItemSelectEvent itemSelectEvent = new ItemSelectEvent(this, behaviorEvent.getBehavior(), itemIndex, dataSetIndex, data);
 
             super.queueEvent(itemSelectEvent);
+        }
+        else {
+            super.queueEvent(event);
         }
     }
 }

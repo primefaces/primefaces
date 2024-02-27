@@ -83,7 +83,7 @@ public class CommonsFileUploadDecoder extends AbstractFileUploadDecoder<Multipar
         if (multipartRequest == null) {
             throw new FacesException("HTTP request is no " + MultipartRequest.class.getName() + ". "
                     + "Uploader 'commons' requires configuration of servlet filter 'org.primefaces.webapp.filter.FileUploadFilter'. "
-                    + "Also make sure to enable multi part by setting enctype to your form (e.g <h:form enctype=\"multipart/form-data\">... </h:form>");
+                    + "Also make sure to enable multi part by setting enctype to your form (e.g. <h:form enctype=\"multipart/form-data\">... </h:form>");
         }
         return multipartRequest;
     }

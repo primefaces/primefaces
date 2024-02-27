@@ -702,7 +702,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 dropNodeKey = $this.getRowKey(dropNode),
                 transfer = (dragSource.id !== dropSource.id),
                 draggedSourceKeys = dragSource.draggedSourceKeys,
-                isDroppedNodeCopy = ($this.cfg.dropCopyNode && $this.shiftKey),
+                isDroppedNodeCopy = $this.cfg.dropMode === 'copy' || ($this.cfg.dropCopyNode && $this.shiftKey),
                 draggedNodes,
                 dragNodeKey;
 
@@ -754,14 +754,15 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 draggedSourceKeys = draggedSourceKeys.filter(function(key) {
                     return $.inArray(key, $this.invalidSourceKeys) === -1;
                 });
-
+                
+                var dndIndex = dropPoint.prevAll('li.ui-treenode').length;
                 if (draggedSourceKeys && draggedSourceKeys.length) {
                     draggedSourceKeys = draggedSourceKeys.reverse().join(',');
                     $this.fireDragDropEvent({
                         'dragNodeKey': draggedSourceKeys,
                         'dropNodeKey': dropNodeKey,
                         'dragSource': dragSource.id,
-                        'dndIndex': dropPoint.prevAll('li.ui-treenode').length,
+                        'dndIndex': dndIndex,
                         'transfer': transfer,
                         'isDroppedNodeCopy': isDroppedNodeCopy
                     });
@@ -1452,6 +1453,14 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                                 .find('> .ui-treenode-content > .ui-tree-toggler').removeClass('ui-tree-toggler ui-icon ' + this.cfg.collapsedIcon).addClass('ui-treenode-leaf-icon');
                         }
                     }
+                }
+
+                if ($this.cfg.draggable) {
+                    $this.initDraggable();
+                }
+
+                if ($this.cfg.droppable) {
+                    $this.initDroppable();
                 }
             }
         };

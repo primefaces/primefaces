@@ -689,6 +689,11 @@ public class ComponentUtils {
     }
 
     public static <T> T executeInRequestScope(FacesContext context, String var, Object value, Supplier<T> callback) {
+        // if no var passed just execute the callback
+        if (LangUtils.isBlank(var)) {
+            return callback.get();
+        }
+
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
 
         Object oldValue = requestMap.remove(var);

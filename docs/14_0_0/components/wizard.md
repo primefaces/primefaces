@@ -91,7 +91,7 @@ that last tab contains read-only data for confirmation and the submit button.
             </p:panel>
         </p:tab>
         <p:tab id="address">
-            <p:panel header="Adress Details">
+            <p:panel header="Address Details">
                 <h:messages errorClass="error"/>
                 <h:panelGrid columns="2" columnClasses="label, value">
                     <h:outputText value="Street: " />

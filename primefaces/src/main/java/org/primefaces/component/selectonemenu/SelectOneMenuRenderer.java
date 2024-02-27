@@ -158,9 +158,10 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             writer.writeAttribute("name", focusId, null);
             writer.writeAttribute("type", "text", null);
             writer.writeAttribute("autocomplete", "off", null);
-            writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_COMBOBOX, null);
 
             //for keyboard accessibility and ScreenReader
+            writer.writeAttribute(HTML.ARIA_CONTROLS, clientId + "_panel", null);
+            renderARIACombobox(context, menu);
             renderAccessibilityAttributes(context, menu);
             renderPassThruAttributes(context, menu, HTML.TAB_INDEX);
             renderDomEvents(context, menu, HTML.BLUR_FOCUS_EVENTS);
@@ -285,8 +286,8 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             //for keyboard accessibility and ScreenReader
             writer.writeAttribute(HTML.ARIA_CONTROLS, clientId + "_panel", null);
 
+            encodeAriaLabel(writer, menu);
             renderARIACombobox(context, menu);
-
             renderAccessibilityAttributes(context, menu);
             renderPassThruAttributes(context, menu, HTML.TAB_INDEX);
             renderDomEvents(context, menu, HTML.BLUR_FOCUS_EVENTS);

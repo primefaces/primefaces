@@ -36,7 +36,7 @@ declare namespace JQueryHotkey {
         specialKeys: Record<number, string>;
         /**
          * A map between the character a key produces normally and the character it produces while the shift key is
-         * pressed. Both the map key and the mapped value is the name of the key, e.g. `;` or `3`.
+         * pressed. Both the map key and the mapped value is the name of the key, e.g., `;` or `3`.
          */
         shiftNums: Record<string, string>;
         /**

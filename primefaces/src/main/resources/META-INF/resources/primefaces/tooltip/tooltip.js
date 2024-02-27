@@ -444,14 +444,11 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
      */
     hide: function() {
         var $this = this;
+        this.clearTimeout();
 
-        if (this.cfg.hideDelay > 0) {
-            PrimeFaces.queueTask(function() {
-                $this._hide();
-            }, this.cfg.hideDelay);
-        } else {
+        this.timeout = PrimeFaces.queueTask(function() {
             $this._hide();
-        }
+        }, this.cfg.hideDelay);
     },
 
     /**

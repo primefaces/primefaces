@@ -248,8 +248,8 @@ public class FileUploadUtils {
     }
 
     /**
-     * Converts a JavaScript regular expression like '/(\.|\/)(gif|jpe?g|png)$/i'
-     * to the Java usable format '(\\.|\\/)(gif|jpe?g|png)$'
+     * Converts a JavaScript regular expression like '/(\.|\/)(gif|jpeg|jpg|png)$/i'
+     * to the Java usable format '(\\.|\\/)(gif|jpeg|jpg|png)$'
      * @param jsRegex the client side JavaScript regex
      * @return the Java converted version of the regex
      */
@@ -397,6 +397,15 @@ public class FileUploadUtils {
 
     public static <T extends HttpServletRequest> String getWebkitRelativePath(T request) {
         return request.getParameter("X-File-Webkit-Relative-Path");
+    }
+
+    /**
+     * Formats the allowTypes regex pattern in a more human-friendly format.
+     * @param allowTypes The allowTypes regex pattern to format
+     * @return The allowTypes formatted in a more human-friendly format.
+     */
+    public static String formatAllowTypes(String allowTypes) {
+        return allowTypes != null ? allowTypes.replace("/(\\.|\\/)(", "").replace(")$/", "") : null;
     }
 
     public static String formatBytes(Long bytes, Locale locale) {

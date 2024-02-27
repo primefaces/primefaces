@@ -377,10 +377,10 @@ public class DataTableRenderer extends DataRenderer {
 
         writer.startElement("table", null);
         writer.writeAttribute("role", "grid", null);
-        if (tableStyle != null) {
+        if (LangUtils.isNotBlank(tableStyle)) {
             writer.writeAttribute("style", tableStyle, null);
         }
-        if (table.getTableStyleClass() != null) {
+        if (LangUtils.isNotBlank(table.getTableStyleClass())) {
             writer.writeAttribute("class", table.getTableStyleClass(), null);
         }
 
@@ -518,10 +518,10 @@ public class DataTableRenderer extends DataRenderer {
 
         writer.startElement("table", null);
         writer.writeAttribute("role", "grid", null);
-        if (tableStyle != null) {
+        if (LangUtils.isNotBlank(tableStyle)) {
             writer.writeAttribute("style", tableStyle, null);
         }
-        if (tableStyleClass != null) {
+        if (LangUtils.isNotBlank(tableStyleClass)) {
             writer.writeAttribute("class", tableStyleClass, null);
         }
     }
@@ -555,10 +555,10 @@ public class DataTableRenderer extends DataRenderer {
         writer.startElement("table", null);
         writer.writeAttribute("role", "grid", null);
 
-        if (tableStyle != null) {
+        if (LangUtils.isNotBlank(tableStyle)) {
             writer.writeAttribute("style", tableStyle, null);
         }
-        if (table.getTableStyleClass() != null) {
+        if (LangUtils.isNotBlank(tableStyleClass)) {
             writer.writeAttribute("class", tableStyleClass, null);
         }
 
@@ -587,9 +587,10 @@ public class DataTableRenderer extends DataRenderer {
 
         writer.startElement("table", null);
         writer.writeAttribute("role", "grid", null);
-        writer.writeAttribute("class", tableStyleClass, null);
-
-        if (tableStyle != null) {
+        if (LangUtils.isNotBlank(tableStyleClass)) {
+            writer.writeAttribute("class", tableStyleClass, null);
+        }
+        if (LangUtils.isNotBlank(tableStyle)) {
             writer.writeAttribute("style", tableStyle, null);
         }
 
@@ -886,9 +887,10 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         writer.startElement("td", null);
-        writer.writeAttribute("class", styleClass, null);
-
-        if (style != null) {
+        if (LangUtils.isNotBlank(styleClass)) {
+            writer.writeAttribute("class", styleClass, null);
+        }
+        if (LangUtils.isNotBlank(style)) {
             writer.writeAttribute("style", style, null);
         }
         if (column.getRowspan() != 1) {
@@ -1020,6 +1022,11 @@ public class DataTableRenderer extends DataRenderer {
         }
         else {
             rowCountToRender = rows == 0 ? rowCount : rows;
+
+            // #5649 check for invalid first value
+            if (rows > 0 && first % rows != 0) {
+                logDevelopmentWarning(context, String.format("%s Invalid 'first' value %d is not divisible evenly by 'rows' %d", clientId, first, rows));
+            }
         }
 
         int frozenRows = table.getFrozenRows();
@@ -1085,7 +1092,6 @@ public class DataTableRenderer extends DataRenderer {
     protected void encodeRows(FacesContext context, DataTable table, int first, int last, int columnStart, int columnEnd) throws IOException {
         List<SummaryRow> summaryRows = table.getSummaryRows();
         HeaderRow headerRow = table.getHeaderRow();
-        ELContext elContext = context.getELContext();
 
         SortMeta sort = table.getHighestPriorityActiveSortMeta();
         boolean encodeHeaderRow = headerRow != null && headerRow.isEnabled() && sort != null;
@@ -1097,13 +1103,13 @@ public class DataTableRenderer extends DataRenderer {
                 break;
             }
 
-            if (encodeHeaderRow && (i == first || !isInSameGroup(context, table, i, -1, sort.getSortBy(), elContext))) {
+            if (encodeHeaderRow && (i == first || !isInSameGroup(context, table, i, -1, sort.getSortBy(), false))) {
                 encodeHeaderRow(context, table, headerRow);
             }
 
             encodeRow(context, table, i, columnStart, columnEnd);
 
-            if (encodeSummaryRow && !isInSameGroup(context, table, i, 1, sort.getSortBy(), elContext)) {
+            if (encodeSummaryRow && !isInSameGroup(context, table, i, 1, sort.getSortBy(), i == last - 1)) {
                 encodeSummaryRow(context, summaryRows, sort);
             }
         }
@@ -1183,8 +1189,12 @@ public class DataTableRenderer extends DataRenderer {
         if (rowKey != null) {
             writer.writeAttribute("data-rk", rowKey, null);
         }
-        writer.writeAttribute("class", rowStyleClass, null);
-        writer.writeAttribute("title", table.getRowTitle(), null);
+        if (LangUtils.isNotBlank(rowStyleClass)) {
+            writer.writeAttribute("class", rowStyleClass, null);
+        }
+        if (LangUtils.isNotBlank(table.getRowTitle())) {
+            writer.writeAttribute("title", table.getRowTitle(), null);
+        }
         if (selectionEnabled) {
             writer.writeAttribute(HTML.ARIA_SELECTED, String.valueOf(selected), null);
         }
@@ -1259,13 +1269,13 @@ public class DataTableRenderer extends DataRenderer {
         if (rowspan != 1) {
             writer.writeAttribute("rowspan", rowspan, null);
         }
-        if (style != null) {
+        if (LangUtils.isNotBlank(style)) {
             writer.writeAttribute("style", style, null);
         }
-        if (styleClass != null) {
+        if (LangUtils.isNotBlank(styleClass)) {
             writer.writeAttribute("class", styleClass, null);
         }
-        if (title != null) {
+        if (LangUtils.isNotBlank(title)) {
             writer.writeAttribute("title", title, null);
         }
         UIComponent component = (column instanceof UIComponent) ? (UIComponent) column : null;
@@ -1401,7 +1411,9 @@ public class DataTableRenderer extends DataRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", styleClass, null);
+        if (LangUtils.isNotBlank(styleClass)) {
+            writer.writeAttribute("class", styleClass, null);
+        }
 
         facet.encodeAll(context);
 
@@ -1571,18 +1583,17 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected boolean isInSameGroup(FacesContext context, DataTable table, int currentRowIndex, int step, ValueExpression groupByVE,
-                                    ELContext elContext) {
-
+                                    boolean loadFirstRowOfNextPage) {
+        ELContext elContext = context.getELContext();
         Object currentGroupByData = groupByVE.getValue(elContext);
         int nextRowIndex = currentRowIndex + step;
         Object nextGroupByData;
 
-        // in case of a lazy DataTable, the LazyDataModel currently only loads rows inside the current page; we need a small hack here
-        // 1) get the rowData manually for the next row
-        // 2) put it into request-scope
-        // 3) invoke the groupBy ValueExpression
-        if (table.isLazy()) {
-            Object nextRowData = table.getLazyDataModel().getRowData(nextRowIndex, table.getActiveSortMeta(), table.getActiveFilterMeta());
+        // An additional check is required to ensure summaryRow will be rendered in case
+        // number of rows of the current page is equals to the number of items in the current group (otherwise, it'll never be rendered)
+        // see #9077
+        if (loadFirstRowOfNextPage && table.isLazy()) {
+            Object nextRowData = table.getLazyDataModel().loadOne(nextRowIndex, table.getActiveSortMeta(), table.getActiveFilterMeta());
             if (nextRowData == null) {
                 return false;
             }

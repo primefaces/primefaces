@@ -202,24 +202,24 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
             }
 
             case 'Home': {
-                this.resizePanel(100, minSize);
+                this.resizePanel(100 - minSize, minSize);
 
                 event.preventDefault();
                 break;
             }
 
             case 'End': {
-                this.resizePanel(minSize, 100);
+                this.resizePanel(minSize, 100 - minSize);
 
                 event.preventDefault();
                 break;
             }
 
             case 'Enter': {
-                if (this.prevPanelSize > (100 - (minSize || 5))) {
-                    this.resizePanel(minSize, 100);
+                if (this.prevPanelSize >= (100 - (minSize || 5))) {
+                    this.resizePanel(minSize, 100 - minSize);
                 } else {
-                    this.resizePanel(100, minSize);
+                    this.resizePanel(100 - minSize, minSize);
                 }
 
                 event.preventDefault();

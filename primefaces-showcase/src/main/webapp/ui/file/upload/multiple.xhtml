@@ -21,7 +21,7 @@
             <h:form id="frm">
                 <p:fileUpload id="upl" listener="#{fileUploadView.handleFileUpload}" mode="advanced" dragDropSupport="false"
                               multiple="true" update="msgs">
-                    <p:validateFile sizeLimit="100000" fileLimit="3" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>
+                    <p:validateFile sizeLimit="100000" fileLimit="3" allowTypes="/(\.|\/)(gif|jpeg|jpg|png)$/"/>
                 </p:fileUpload>
 
                 <p:growl id="msgs" showDetail="true" keepAlive="true"/>

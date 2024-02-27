@@ -20,44 +20,45 @@ Tree is used for displaying hierarchical data and creating site navigations.
 | Name | Default | Type | Description |
 | --- | --- | --- | --- |
 id | null | String | Unique identifier of the component
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-widgetVar | null | String | Name of the client side widget.
-value | null | Object | A TreeNode instance as the backing model.
-var | null | String | Name of the request-scoped variable that'll be used to refer each treenode data.
-dynamic | false | Boolean | Specifies the ajax/client toggleMode
-cache | true | Boolean | Specifies caching on dynamically loaded nodes. When set to true expanded nodes will be kept in memory.
-onNodeClick | null | String | Javascript event to process when a tree node is clicked.
-selection | null | Object | TreeNode array to reference the selections.
-style | null | String | Style of the main container element of tree
-styleClass | null | String | Style class of the main container element of tree
-selectionMode | null | String | Defines the selectionMode
-highlight | true | Boolean | Highlights nodes on hover when selection is enabled.
-datakey | null | Object | Unique key of the data presented by nodes.
 animate | false | Boolean | When enabled, displays slide effect on toggle.
-orientation | vertical | String | Orientation of layout, _vertical_ or _horizontal_.
-propagateSelectionUp | true | Boolean | Defines upwards selection propagation for checkbox mode.
-propagateSelectionDown | true | Boolean | Defines downwards selection propagation for checkbox mode.
+binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
+cache | true | Boolean | Specifies caching on dynamically loaded nodes. When set to true expanded nodes will be kept in memory.
+datakey | null | Object | Unique key of the data presented by nodes.
 dir | ltr | String | Defines text direction, valid values are _ltr_ and _rtl_.
-draggable | false | Boolean | Makes tree nodes draggable.
-droppable | false | Boolean | Makes tree droppable.
-dragdropScope | null | String | Scope key to group a set of tree components for transferring nodes using drag and drop.
+disabled | false | Boolean | Disables tree.
 dragMode | self | String | Defines parent-child relationship when a node is dragged, valid values are self (default), parent and ancestor.
+dragdropScope | null | String | Scope key to group a set of tree components for transferring nodes using drag and drop.
+draggable | false | Boolean | Makes tree nodes draggable.
+dropCopyNode | false | Boolean | When enabled and dropMode='move', the copy of the selected nodes can be dropped from a tree to another tree using <kbd>Shift</kbd> key.
+dropMode | move | String | Whether to 'move' or 'copy' the node on drop. Default is 'move'.
 dropRestrict | none | String | Defines parent-child restrictions when a node is dropped valid values are none (default) and sibling.
+droppable | false | Boolean | Makes tree droppable.
+dynamic | false | Boolean | Specifies the ajax/client toggleMode
+filterBy | null | Object | Value expression to be used in filtering.
+filterFunction | null | MethodExpression | Custom implementation to filter TreeNodes against a constraint.
+filterMatchMode | startsWith | String | Match mode for filtering.
+filterMode | lenient | String | Mode for filtering valid values are lenient and strict. Default is lenient.
+highlight | true | Boolean | Highlights nodes on hover when selection is enabled.
+multipleDrag | false | Boolean | When enabled, the selected multiple nodes can be dragged from a tree to another tree.
+nodeVar | null | String | Name of the request-scoped variable that'll be used to refer current treenode using EL.
+onDrop | null | MethodExpression | Method returning whether the dragged node(s) can be dropped on the dropped node.
+onNodeClick | null | String | Javascript event to process when a tree node is clicked.
+orientation | vertical | String | Orientation of layout, _vertical_ or _horizontal_.
+propagateSelectionDown | true | Boolean | Defines downwards selection propagation for checkbox mode.
+propagateSelectionUp | true | Boolean | Defines upwards selection propagation for checkbox mode.
+rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 required | false | Boolean | Validation constraint for selection.
 requiredMessage | null | String | Message for required selection validation.
-skipChildren | false | Boolean | Ignores processing of children during lifecycle, improves performance if table only has output components.
+selection | null | Object | TreeNode array to reference the selections.
+selectionMode | null | String | Defines the selectionMode
 showUnselectableCheckbox | false | Boolean | Defines if in checkbox selection mode, a readonly checkbox should be displayed for an unselectable node.
+skipChildren | false | Boolean | Ignores processing of children during lifecycle, improves performance if table only has output components.
+style | null | String | Style of the main container element of tree
+styleClass | null | String | Style class of the main container element of tree
 tabindex | 0 | Integer | Position of the element in the tabbing order.
-nodeVar | null | String | Name of the request-scoped variable that'll be used to refer current treenode using EL.
-filterBy | null | Object | Value expression to be used in filtering.
-filterMatchMode | startsWith | String | Match mode for filtering.
-disabled | false | Boolean | Disables tree.
-multipleDrag | false | Boolean | When enabled, the selected multiple nodes can be dragged from a tree to another tree.
-dropCopyNode | false | Boolean | When enabled, the copy of the selected nodes can be dropped from a tree to another tree using Shift key.
-onDrop | null | MethodExpression | Method returning whether the dragged node(s) can be dropped on the dropped node.
-filterMode | lenient | String | Mode for filtering valid values are lenient and strict. Default is lenient.
-filterFunction | null | MethodExpression | Custom implementation to filter TreeNodes against a constraint.
+value | null | Object | A TreeNode instance as the backing model.
+var | null | String | Name of the request-scoped variable that'll be used to refer each treenode data.
+widgetVar | null | String | Name of the client side widget.
 
 ## Getting started with the Tree
 Tree is populated with a _org.primefaces.model.TreeNode_ instance which corresponds to the root.

@@ -44,6 +44,9 @@ Look into [migration guide](https://primefaces.github.io/primefaces/14_0_0/#/../
     * Added `filterPlaceholder` for `Column` and `Columns`
     * Added `rowData` to `CellEditEvent` which contains the entire row from the cell being edited.
 
+* Dashboard
+    * Added `var` to allow dynamic panels in `DashboardWidget.setValue(obj)` per panel
+    
 * Messages
     * Added `clearMessages` widget method to clear all current messages.
     
@@ -67,7 +70,7 @@ Look into [migration guide](https://primefaces.github.io/primefaces/14_0_0/#/../
     * Added `selectedLabel` to display a label when items selected similar to `emptyMessage`.
 
 * Splitter
-    * Addded full ARIA and keyboard accessibility.
+    * Added full ARIA and keyboard accessibility.
         
 * StaticMessage
     * Added `closable` to add a close icon to hide the message similar to `Messages`.
@@ -77,7 +80,10 @@ Look into [migration guide](https://primefaces.github.io/primefaces/14_0_0/#/../
     * Added `hideDelay` delay in milliseconds before hiding the submenu., if 0 not hidden until document.click(). Default is 0.
     * Added `dir` for right-to-left support. Default is ltr.
     * Added `start` and `end` facets.
-    
+
+* Tree
+    * Added `dropMode` with values `move` or `copy` if you want nodes to be copied by default.
+        
 * TreeTable
     * Added `filterPlaceholder` for `Column` and `Columns`.
     
@@ -87,3 +93,5 @@ Look into [migration guide](https://primefaces.github.io/primefaces/14_0_0/#/../
 ### PrimeFaces Selenium 
 
 * Added 'StaticMessage` component
+* Added support for `jakarta.inject.Inject`
+* Removed `javax.inject:javax.inject:1` dependency

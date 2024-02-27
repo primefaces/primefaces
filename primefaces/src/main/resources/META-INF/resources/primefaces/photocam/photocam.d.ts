@@ -61,7 +61,7 @@ declare namespace Webcam {
          * 
          *   Webcam.on("uploadComplete", (code, text) => {
          *     // Upload complete!
-         *     // "code" will be the HTTP response code from the server, e.g. 200
+         *     // "code" will be the HTTP response code from the server, e.g., 200
          *     // "text" will be the raw response content
          *   });
          * 
@@ -333,7 +333,7 @@ declare namespace Webcam {
      *   // snap complete, image data is in "data_uri"
      *   Webcam.upload(data_uri, "myScript.php", (code, text) => {
      *     // Upload complete!
-     *     // "code" will be the HTTP response code from the server, e.g. 200
+     *     // "code" will be the HTTP response code from the server, e.g., 200
      *     // 'text' will be the raw response content
      *   });
      * });

@@ -29,6 +29,7 @@ Dashboard provides a portal like layout with drag&drop based reorder capabilitie
 | responsive | false | Boolean | In responsive mode, allows use of PrimeFlex CSS to control widget sizes and responsiveness.
 | style | null | String | Inline style of the dashboard container
 | styleClass | null | String | Style class of the dashboard container
+| var | null | String | Name of collection iterator which will be the value of DashboardWidget.getValue().
 
 ## Getting started with Dashboard
 Dashboard is backed by a DashboardModel and consists of panel components.
@@ -84,7 +85,36 @@ public class Bean {
     public Bean() {
         responsiveModel = new DefaultDashboardModel();
         responsiveModel.addWidget(new DefaultDashboardWidget("bar", "col-12 lg:col-6 xl:col-4"));
-        responsiveModel.addColumn(new DefaultDashboardWidget("stacked", "col-12 lg:col-6 xl:col-8"));
+        responsiveModel.addWidget(new DefaultDashboardWidget("stacked", "col-12 lg:col-6 xl:col-8"));
+    }
+}
+```
+
+## Dynamic
+Dashboard can be dynamic using `var="widget"` mode to allow dynamic panels.  The `value` must be set in your
+DashboardWidget model.
+
+```xhtml
+<p:dashboard model="#{bean.model}" var="dash">
+    <p:panel id="bar" rendered="#{dash.visible}">
+        #{dash.name} 
+    </p:panel>
+    <p:panel id="stacked" rendered="#{dash.visible}">
+        #{dash.name} 
+    </p:panel>
+    //more panels like lifestyle, weather, politics...
+</p:dashboard>
+```
+Dashboard model in this mode wants `one` widget per column and you can pass an `Object` value to put put in the `var` context.
+
+```java
+public class Bean {
+    private DashboardModel model;
+
+    public Bean() {
+        responsiveModel = new DefaultDashboardModel();
+        responsiveModel.addWidget(new DefaultDashboardWidget("bar", "col-12 lg:col-6 xl:col-4", yourObject1));
+        responsiveModel.addWidget(new DefaultDashboardWidget("stacked", "col-12 lg:col-6 xl:col-8", yourObject2));
     }
 }
 ```

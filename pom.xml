@@ -268,7 +268,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.5.1</version>
+                <version>3.5.2</version>
             </plugin>
         </plugins>
     </build>
@@ -358,7 +358,7 @@
             <dependency>
                 <groupId>com.github.librepdf</groupId>
                 <artifactId>openpdf</artifactId>
-                <version>1.3.40</version>
+                <version>1.4.1</version>
             </dependency>
 
             <!-- File Upload -->

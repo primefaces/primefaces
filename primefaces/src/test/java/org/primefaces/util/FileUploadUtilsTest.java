@@ -90,11 +90,11 @@ class FileUploadUtilsTest {
                 createFile("test.png", "image/png", inputStream), null, null));
 
         assertTrue(FileUploadUtils.isValidType(appContext,
-                createFile("test.PNG", "image/png", inputStream), "/\\.(gif|png|jpe?g)$/i", null));
+                createFile("test.PNG", "image/png", inputStream), "/\\.(gif|png|jpeg|jpg)$/i", null));
         assertTrue(FileUploadUtils.isValidType(appContext,
-                createFile("test.jpeg", "image/jpeg", inputStream), "/\\.(gif|png|jpe?g)$/i", null));
+                createFile("test.jpeg", "image/jpeg", inputStream), "/\\.(gif|png|jpeg|jpg)$/i", null));
         assertFalse(FileUploadUtils.isValidType(appContext,
-                createFile("test.bmp", "image/bitmap", inputStream), "/\\.(gif|png|jpe?g)$/i", null));
+                createFile("test.bmp", "image/bitmap", inputStream), "/\\.(gif|png|jpeg|jpg)$/i", null));
     }
 
     @Test
@@ -256,25 +256,25 @@ class FileUploadUtilsTest {
     @Test
     void convertJavaScriptRegex_Normal() {
         // Arrange
-        String jsRegex = "/(\\.|\\/)(gif|jpe?g|png)$/";
+        String jsRegex = "/(\\.|\\/)(gif|jpeg|jpg|png)$/";
 
         // Act
         String result = FileUploadUtils.convertJavaScriptRegex(jsRegex);
 
         // Assert
-        assertEquals("(\\.|\\/)(gif|jpe?g|png)$", result);
+        assertEquals("(\\.|\\/)(gif|jpeg|jpg|png)$", result);
     }
 
     @Test
     void convertJavaScriptRegex_CaseInsensitive() {
         // Arrange
-        String jsRegex = "/\\.(gif|png|jpe?g)$/i";
+        String jsRegex = "/\\.(gif|png|jpeg|jpg)$/i";
 
         // Act
         String result = FileUploadUtils.convertJavaScriptRegex(jsRegex);
 
         // Assert
-        assertEquals("\\.(gif|png|jpe?g)$", result);
+        assertEquals("\\.(gif|png|jpeg|jpg)$", result);
     }
 
     @Test

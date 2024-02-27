@@ -98,6 +98,7 @@ public class CountryService {
         locales.add(CountryService.toCountry(new Locale("ckb", "IQ"), true));
         locales.add(CountryService.toCountry(new Locale("km", "KH")));
         locales.add(CountryService.toCountry(new Locale("ky", "KG")));
+        locales.add(CountryService.toCountry(new Locale("kk", "KZ")));
         locales.add(CountryService.toCountry(new Locale("lt", "LT")));
         locales.add(CountryService.toCountry(new Locale("lv", "LV")));
         locales.add(CountryService.toCountry(new Locale("ms", "MY")));
@@ -109,6 +110,7 @@ public class CountryService {
         locales.add(CountryService.toCountry(new Locale("sl", "SI")));
         locales.add(CountryService.toCountry(new Locale("sr", "RS")));
         locales.add(CountryService.toCountry(new Locale("sv", "SE")));
+        locales.add(CountryService.toCountry(new Locale("th", "TH")));
         locales.add(CountryService.toCountry(new Locale("tr", "TR")));
         locales.add(CountryService.toCountry(new Locale("uk", "UA")));
         locales.add(CountryService.toCountry(new Locale("vi", "VN")));

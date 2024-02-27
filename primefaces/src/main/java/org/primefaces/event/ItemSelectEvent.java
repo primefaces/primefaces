@@ -33,12 +33,23 @@ public class ItemSelectEvent extends AbstractAjaxBehaviorEvent {
     private int itemIndex;
     private int seriesIndex;
     private int dataSetIndex;
+    private String data;
 
+    public ItemSelectEvent(UIComponent source, Behavior behavior, int itemIndex, int index, String data) {
+        super(source, behavior);
+        this.itemIndex = itemIndex;
+        this.dataSetIndex = index;
+        this.seriesIndex = index;
+        this.data = data;
+    }
+
+    @Deprecated
     public ItemSelectEvent(UIComponent source, Behavior behavior, int itemIndex, int index) {
         super(source, behavior);
         this.itemIndex = itemIndex;
         this.dataSetIndex = index;
         this.seriesIndex = index;
+        this.data = null;
     }
 
     public int getItemIndex() {
@@ -61,5 +72,14 @@ public class ItemSelectEvent extends AbstractAjaxBehaviorEvent {
      */
     public int getDataSetIndex() {
         return dataSetIndex;
+    }
+
+    /**
+     * Gets the raw data value associated with this chart point.
+     *
+     * @return the raw data value
+     */
+    public String getData() {
+        return data;
     }
 }

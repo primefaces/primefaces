@@ -1175,6 +1175,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 } else {
                     this.label.text(displayedLabel);
                 }
+                this.label.attr('aria-label', displayedLabel);
             }
         }
     },

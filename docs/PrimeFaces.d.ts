@@ -7104,7 +7104,7 @@ declare namespace PrimeFaces {
      * Finds all widgets in the current page that are of the given type.
      * @typeparam TWidget Type of the widgets of interest, e.g.
      * `PrimeFaces.widget.DataTable`.
-     * @param type The (proto)type of the widgets of interest, e.g. `PrimeFaces.widget.DataTable`.
+     * @param type The (proto)type of the widgets of interest, e.g., `PrimeFaces.widget.DataTable`.
      * @return An array of widgets that are of the requested type. If no suitable widgets
      * are found on the current page, an empty array will be returned.
      */
@@ -7869,7 +7869,7 @@ declare namespace PrimeFaces.widget {
 declare namespace PrimeFaces.widget {
     /**
      * An optional callback that is invoked before a widget is about to be
-     * destroyed, e.g. when the component was removed at the end of an AJAX update. This is called at the beginning
+     * destroyed, e.g., when the component was removed at the end of an AJAX update. This is called at the beginning
      * of the {@link BaseWidget.destroy | destroy} method. This is usually specified via the `widgetPreDestroy`
      * attribute on the JSF component.
      */
@@ -8199,7 +8199,7 @@ declare namespace PrimeFaces.widget {
         postRefresh: PrimeFaces.widget.PostRefreshCallback;
         /**
          * An optional callback that is invoked before
-         * this widget is about to be destroyed, e.g. when the component was removed at the end of an AJAX update. This is
+         * this widget is about to be destroyed, e.g., when the component was removed at the end of an AJAX update. This is
          * called at the beginning of the {@link BaseWidget.destroy | destroy} method. This is usually specified via the
          * `widgetPreDestroy` attribute on the JSF component.
          */
@@ -13975,7 +13975,7 @@ declare namespace JQueryFileUpload {
          * If set, this value is sent as part of the form data to the upload server.
          *
          * The upload server is supposed to redirect the browser to this URL after the upload completes and append the
-         * upload information as URL encoded JSON string to the redirect URL, e.g. by replacing the `%s` character
+         * upload information as URL encoded JSON string to the redirect URL, e.g., by replacing the `%s` character
          * sequence.
          */
         redirect: string;
@@ -14578,11 +14578,11 @@ declare namespace JQueryFileUpload {
          */
         url: string;
         /**
-         * Deletion request type, e.g. `DELETE`.
+         * Deletion request type, e.g., `DELETE`.
          */
         type: HttpMethod;
         /**
-         * Deletion response type, e.g. `json`.
+         * Deletion response type, e.g., `json`.
          */
         dataType: string;
     }
@@ -15503,7 +15503,7 @@ declare namespace PrimeFaces.widget {
          */
         private enableButton(btn: JQuery): void;
         /**
-         * Formats the given file size in a more human-friendly format, e.g. `1.5 MB` etc.
+         * Formats the given file size in a more human-friendly format, e.g., `1.5 MB` etc.
          * @param bytes File size in bytes to format
          * @return The given file size, formatted in a more human-friendly format.
          */
@@ -15770,7 +15770,7 @@ declare namespace PrimeFaces.widget {
          */
         clear(): void;
         /**
-         * Formats the given file size in a more human-friendly format, e.g. `1.5 MB` etc.
+         * Formats the given file size in a more human-friendly format, e.g., `1.5 MB` etc.
          * @param bytes File size in bytes to format
          * @return The given file size, formatted in a more human-friendly format.
          */
@@ -19803,7 +19803,7 @@ declare namespace JQueryHotkey {
         specialKeys: Record<number, string>;
         /**
          * A map between the character a key produces normally and the character it produces while the shift key is
-         * pressed. Both the map key and the mapped value is the name of the key, e.g. `;` or `3`.
+         * pressed. Both the map key and the mapped value is the name of the key, e.g., `;` or `3`.
          */
         shiftNums: Record<string, string>;
         /**
@@ -23456,12 +23456,12 @@ declare namespace PrimeFaces.widget.Knob {
     export interface ColorTheme {
         /**
          * The background color, i.e. the color of the unfilled part of the knob. Must be a
-         * CSS color, e.g. `#ff0000`.
+         * CSS color, e.g., `#ff0000`.
          */
         bgColor: string;
         /**
          * The foreground color, i.e. the color of the filled part of the knob. Must be a CSS
-         * color, e.g. `#ff0000`.
+         * color, e.g., `#ff0000`.
          */
         fgColor: string;
     }
@@ -25882,7 +25882,7 @@ declare namespace PrimeFaces.widget.OutputPanel {
      * Mode that indicates how the content of an
      * output panel is loaded:
      * - `load`: Loads the content directly after the page was loaded.
-     * - `visible`: Loads the panel once it is visible, e.g. once the user scrolled down.
+     * - `visible`: Loads the panel once it is visible, e.g., once the user scrolled down.
      */
     export type DeferredMode = "load" | "visible";
 }
@@ -26767,7 +26767,7 @@ declare namespace Webcam {
          *
          *   Webcam.on("uploadComplete", (code, text) => {
          *     // Upload complete!
-         *     // "code" will be the HTTP response code from the server, e.g. 200
+         *     // "code" will be the HTTP response code from the server, e.g., 200
          *     // "text" will be the raw response content
          *   });
          *
@@ -27006,7 +27006,7 @@ declare namespace Webcam {
      *   // snap complete, image data is in "data_uri"
      *   Webcam.upload(data_uri, "myScript.php", (code, text) => {
      *     // Upload complete!
-     *     // "code" will be the HTTP response code from the server, e.g. 200
+     *     // "code" will be the HTTP response code from the server, e.g., 200
      *     // 'text' will be the raw response content
      *   });
      * });
