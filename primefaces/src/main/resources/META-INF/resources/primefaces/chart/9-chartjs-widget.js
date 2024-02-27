@@ -128,5 +128,18 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
         var img = new Image();
         img.src = this.chart.toBase64Image();
         return img;
+    },
+
+    /**
+     * Send this chart to the printer.
+     */
+    print: function() {
+        // Create a new image element
+        var img = `<html><head><script>function s1(){setTimeout('s2()',10);}function s2(){window.print();window.close()}</script></head><body onload='s1()'><img src='${this.chart.toBase64Image()}'/></body></html>`;
+
+        var pwa = window.open("about:blank", "_new");
+        pwa.document.open();
+        pwa.document.write(img);
+        pwa.document.close();
     }
 });
