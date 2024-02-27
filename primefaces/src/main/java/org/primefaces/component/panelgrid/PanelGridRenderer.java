@@ -36,6 +36,7 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.GridLayoutUtils;
+import org.primefaces.util.LangUtils;
 
 public class PanelGridRenderer extends CoreRenderer {
 
@@ -66,11 +67,15 @@ public class PanelGridRenderer extends CoreRenderer {
 
         writer.startElement("table", grid);
         writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("class", styleClass, "styleClass");
-        if (style != null) {
+        if (LangUtils.isNotBlank(style)) {
             writer.writeAttribute("style", style, "style");
         }
-        writer.writeAttribute("role", grid.getRole(), null);
+        if (LangUtils.isNotBlank(styleClass)) {
+            writer.writeAttribute("class", styleClass, "styleClass");
+        }
+        if (LangUtils.isNotBlank(grid.getRole())) {
+            writer.writeAttribute("role", grid.getRole(), null);
+        }
 
         encodeTableFacet(context, grid, columns, "header", "thead", PanelGrid.HEADER_CLASS);
         encodeTableFacet(context, grid, columns, "footer", "tfoot", PanelGrid.FOOTER_CLASS);
@@ -97,7 +102,7 @@ public class PanelGridRenderer extends CoreRenderer {
         writer.startElement("div", grid);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", containerClass, "styleClass");
-        if (style != null) {
+        if (LangUtils.isNotBlank(style)) {
             writer.writeAttribute("style", style, "style");
         }
 
@@ -216,10 +221,10 @@ public class PanelGridRenderer extends CoreRenderer {
         if (shouldWriteId(row)) {
             writer.writeAttribute("id", row.getClientId(context), null);
         }
-        if (row.getStyleClass() != null) {
+        if (LangUtils.isNotBlank(row.getStyleClass())) {
             rowClass += " " + row.getStyleClass();
         }
-        if (style != null) {
+        if (LangUtils.isNotBlank(style)) {
             writer.writeAttribute("style", style, null);
         }
 
@@ -236,9 +241,10 @@ public class PanelGridRenderer extends CoreRenderer {
                     writer.writeAttribute("id", column.getClientId(context), null);
                 }
                 writer.writeAttribute("role", columnRole, null);
-                writer.writeAttribute("class", styleClass, null);
-
-                if (column.getStyle() != null) {
+                if (LangUtils.isNotBlank(styleClass)) {
+                    writer.writeAttribute("class", styleClass, null);
+                }
+                if (LangUtils.isNotBlank(column.getStyle())) {
                     writer.writeAttribute("style", column.getStyle(), null);
                 }
                 if (column.getColspan() > 1) {
@@ -275,7 +281,7 @@ public class PanelGridRenderer extends CoreRenderer {
         writer.writeAttribute("id", clientId + "_content", null);
         writer.writeAttribute("class", contentClass, null);
 
-        if (grid.getContentStyle() != null) {
+        if (LangUtils.isNotBlank(grid.getContentStyle())) {
             writer.writeAttribute("style", grid.getContentStyle(), null);
         }
 
