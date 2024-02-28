@@ -232,7 +232,7 @@ public class UIPageableData extends UIData implements Pageable, TouchAware {
             int first = getFirst();
             int rowCount = getRowCount();
 
-            if (first >= rowCount) {
+            if (rowCount > 0 && first >= rowCount) {
                 int numberOfPages = (int) Math.ceil(rowCount * 1d / rows);
                 int newFirst = Math.max((numberOfPages - 1) * rows, 0);
 
