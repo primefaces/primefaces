@@ -265,8 +265,8 @@
                     <version>1.15.0</version>
                     <configuration>
                         <installDirectory>${project.build.directory}</installDirectory>
-                        <nodeVersion>v18.8.0</nodeVersion>
-                        <npmVersion>8.19.1</npmVersion>
+                        <nodeVersion>v20.11.1</nodeVersion>
+                        <npmVersion>10.1.0</npmVersion>
                         <workingDirectory>${basedir}/src/main/type-definitions</workingDirectory>
                     </configuration>
                     <executions>
