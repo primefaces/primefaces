@@ -720,13 +720,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     bindEnterKeyFilter: function(filter) {
         var $this = this;
 
-        filter.off('keydown keyup')
-        .on('keydown', PrimeFaces.utils.blockEnterKey)
-        .on('keyup', function(e) {
+        filter.off('keydown').on('keydown', function(e) {
             if(e.key === 'Enter') {
                 $this.filter();
 
                 e.preventDefault();
+                e.stopPropagation();
             }
         });
     },

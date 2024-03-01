@@ -326,12 +326,12 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     bindEnterKeyFilter: function(filter) {
         var $this = this;
 
-        filter.on('keydown', PrimeFaces.utils.blockEnterKey)
-        .on('keyup', function(e) {
+        filter.off('keydown').on('keydown', function(e) {
             if(e.key === 'Enter') {
                 $this.filter();
 
                 e.preventDefault();
+                e.stopPropagation();
             }
         });
     },
