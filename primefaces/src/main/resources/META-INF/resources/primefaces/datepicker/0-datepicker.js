@@ -1775,7 +1775,7 @@
 
             var timeSelector = '.ui-hour-picker > a,  .ui-minute-picker > a, .ui-second-picker > a, .ui-millisecond-picker > a',
                 ampmSelector = '.ui-ampm-picker > a';
-            this.panel.off('mousedown.datePicker-time mouseup.datePicker-time mouseleave.datePicker-time', timeSelector).off('click.datePicker-ampm', ampmSelector)
+            this.panel.off('mousedown.datePicker-time mouseup.datePicker-time mouseout.datePicker-time', timeSelector).off('click.datePicker-ampm', ampmSelector)
                 .on('mousedown.datePicker-time', timeSelector, null, function (event) {
                     var button = $(this),
                         parentEl = button.parent();
@@ -1785,7 +1785,7 @@
                 .on('mouseup.datePicker-time', timeSelector, null, function (event) {
                     $this.onTimePickerElementMouseUp(event);
                 })
-                .on('mouseleave.datePicker-time', timeSelector, null, function (event) {
+                .on('mouseout.datePicker-time', timeSelector, null, function (event) {
                     if ($this.timePickerTimer) {
                         $this.onTimePickerElementMouseUp(event);
                     }
