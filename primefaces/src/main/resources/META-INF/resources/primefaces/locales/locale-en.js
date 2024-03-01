@@ -121,7 +121,7 @@ if (window.PrimeFaces) {
     },
   };
 
-// custom PF labels
+  // custom PF labels
   PrimeFaces.locales["en"] = $.extend(true, {}, PrimeFaces.locales["en"], {
     weekNumberTitle: "W",
     isRTL: false,
@@ -235,7 +235,7 @@ if (window.PrimeFaces) {
       "javax.validation.constraints.NotNull.message": "may not be null.",
       "javax.validation.constraints.Null.message": "must be null.",
       "javax.validation.constraints.Past.message": "must be in the past.",
-      "javax.validation.constraints.Pattern.message": 'must match "{0}".',
+      "javax.validation.constraints.Pattern.message": "must match '{0}'.",
       "javax.validation.constraints.Size.message": "size must be between {0} and {1}.",
     },
   });

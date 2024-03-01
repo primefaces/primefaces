@@ -83,6 +83,7 @@ public class CountryService {
         locales.add(CountryService.toCountry(new Locale("pt", "BR")));
         locales.add(CountryService.toCountry(new Locale("pt", "PT")));
         locales.add(CountryService.toCountry(new Locale("ar", "SA"), true));
+        locales.add(CountryService.toCountry(new Locale("bg", "BG")));
         locales.add(CountryService.toCountry(new Locale("cs", "CZ")));
         locales.add(CountryService.toCountry(new Locale("el", "GR")));
         locales.add(CountryService.toCountry(new Locale("fa", "IR"), true));
