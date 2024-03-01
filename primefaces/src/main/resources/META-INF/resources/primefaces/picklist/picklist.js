@@ -1171,7 +1171,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
 
         // #11540: trigger change events on inputs for form handling
         this.targetInput.trigger("change");
-        this.sourceInput.trigger("change")?
+        this.sourceInput.trigger("change");
     },
 
     /**
