@@ -80,7 +80,7 @@ public class TabViewRenderer extends CoreRenderer {
                 tabView.setIndex(-1);
             }
             else {
-                String tabClientId = params.get(clientId + "_newTab");
+                String tabClientId = params.get(clientId + "_currentTab");
                 Tab tabToLoad = tabView.findTab(tabClientId);
                 tabToLoad.encodeAll(context);
 

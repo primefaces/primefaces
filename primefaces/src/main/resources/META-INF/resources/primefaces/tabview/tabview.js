@@ -643,7 +643,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
             ignoreAutoUpdate: true,
             params: [
                 {name: this.id + '_contentLoad', value: true},
-                {name: this.id + '_newTab', value: newPanel.attr('id')},
+                {name: this.id + '_currentTab', value: newPanel.attr('id')},
                 {name: this.id + '_tabindex', value: tabIndex}
             ],
             onsuccess: function(responseXML, status, xhr) {
@@ -749,7 +749,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
     fireTabChangeEvent: function(panel) {
         var ext = {
             params: [
-                {name: this.id + '_newTab', value: panel.attr('id')},
+                {name: this.id + '_currentTab', value: panel.attr('id')},
                 {name: this.id + '_tabindex', value: panel.data('index')}
             ]
         };
@@ -767,7 +767,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         if(this.hasBehavior('tabClose')) {
             var ext = {
                 params: [
-                    {name: this.id + '_closeTab', value: id},
+                    {name: this.id + '_currentTab', value: id},
                     {name: this.id + '_tabindex', value: index}
                 ]
             };

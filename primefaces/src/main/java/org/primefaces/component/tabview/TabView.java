@@ -28,6 +28,7 @@ import java.util.Map;
 import javax.el.ELContext;
 
 import javax.el.ValueExpression;
+import javax.faces.FacesException;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -39,6 +40,7 @@ import org.primefaces.PrimeFaces;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.event.TabChangeEvent;
 import org.primefaces.event.TabCloseEvent;
+import org.primefaces.event.TabEvent;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.ConsumerThree;
@@ -111,43 +113,33 @@ public class TabView extends TabViewBase {
             boolean repeating = isRepeating();
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
+            String tabClientId = params.get(clientId + "_currentTab");
+            int tabindex = Integer.parseInt(params.get(clientId + "_tabindex"));
+
+            if (repeating) {
+                setIndex(tabindex);
+            }
+
+            Object data = repeating ? getIndexData() : null;
+            Tab tab = repeating ? getDynamicTab() : findTab(tabClientId);
+
+            TabEvent<?> changeEvent;
             if ("tabChange".equals(eventName)) {
-                String tabClientId = params.get(clientId + "_newTab");
-                TabChangeEvent changeEvent = new TabChangeEvent(this, behaviorEvent.getBehavior(), findTab(tabClientId));
-
-                if (repeating) {
-                    int tabindex = Integer.parseInt(params.get(clientId + "_tabindex"));
-                    setIndex(tabindex);
-                    changeEvent.setData(getIndexData());
-                    changeEvent.setTab(getDynamicTab());
-                }
-
-                changeEvent.setPhaseId(behaviorEvent.getPhaseId());
-
-                super.queueEvent(changeEvent);
-
-                if (repeating) {
-                    setIndex(-1);
-                }
+                changeEvent = new TabChangeEvent<>(this, behaviorEvent.getBehavior(), tab, data, eventName, tabindex);
             }
             else if ("tabClose".equals(eventName)) {
-                String tabClientId = params.get(clientId + "_closeTab");
-                TabCloseEvent closeEvent = new TabCloseEvent(this, behaviorEvent.getBehavior(), findTab(tabClientId));
+                changeEvent  = new TabCloseEvent<>(this, behaviorEvent.getBehavior(), tab, data, eventName, tabindex);
+            }
+            else {
+                throw new FacesException("Unsupported event: " + eventName);
+            }
 
-                if (repeating) {
-                    int tabindex = Integer.parseInt(params.get(clientId + "_tabindex"));
-                    setIndex(tabindex);
-                    closeEvent.setData(getIndexData());
-                    closeEvent.setTab(getDynamicTab());
-                }
+            changeEvent.setPhaseId(behaviorEvent.getPhaseId());
 
-                closeEvent.setPhaseId(behaviorEvent.getPhaseId());
+            super.queueEvent(changeEvent);
 
-                super.queueEvent(closeEvent);
-
-                if (repeating) {
-                    setIndex(-1);
-                }
+            if (repeating) {
+                setIndex(-1);
             }
         }
         else {
