@@ -3727,7 +3727,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[Captcha is a form validation component based on Recaptcha API.]]>
+            <![CDATA[Captcha is a form validation component based on Recaptcha/hCaptcha API.]]>
         </description>
         <tag-name>captcha</tag-name>
         <component>
@@ -3833,6 +3833,22 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Which captcha to use, either 'g-recaptcha' for Google reCaptcha or 'h-captcha` for hCaptcha. Default is 'g-recaptcha'.]]>
+            </description>
+            <name>type</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[JavaScript global executor for the captcha. Default is 'grecaptcha'.]]>
+            </description>
+            <name>executor</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Theme of the captcha either 'light', 'dark', or 'auto'. Default is auto.]]>
             </description>
             <name>theme</name>
@@ -3892,6 +3908,14 @@
                 <![CDATA[URL for the ReCaptcha JavaScript file. Some countries do not have access to Google.]]>
             </description>
             <name>sourceUrl</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[URL for the verification of the captcha.]]>
+            </description>
+            <name>verifyUrl</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>

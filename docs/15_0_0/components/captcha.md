@@ -43,8 +43,8 @@ Captcha is a form validation component based on Recaptcha API V2.
 
 ## Getting Started with Captcha
 Catpcha is implemented as an input component with a built-in validator that is integrated with
-reCaptcha. First thing to do is to sign up to reCaptcha to get public&private keys. Once you have
-the keys for your domain, add them to web.xml as follows;
+reCaptcha or hCaptcha. First thing to do is to sign up to reCaptcha/hCaptcha to get public&private keys. Once you have
+the keys for your domain, add them to `web.xml` as follows;
 
 ```xml
 <context-param>
@@ -58,21 +58,28 @@ the keys for your domain, add them to web.xml as follows;
 ```
 That is it, now you can use captcha as follows;
 
+**Google**
 ```xhtml
-<p:captcha />
+<p:captcha  type="g-recaptcha" />
 ```
+
+**hCaptcha**
+```xhtml
+<p:captcha type="h-captcha" />
+```
+
 ## Themes
 Captcha features light and dark modes for theme, light is the default one.
 
 ```xhtml
-<p:captcha theme="dark"/>
+<p:captcha theme="dark" type="g-recaptcha"/>
 ```
 ## Languages
 Text instructions displayed on captcha is customized with the _language_ attribute. Below is a captcha
 with Turkish text.
 
 ```xhtml
-<p:captcha language="tr"/>
+<p:captcha language="tr"  type="g-recaptcha"/>
 ```
 ## Overriding Validation Messages
 By default captcha displays it’s own validation messages, this can be easily overridden by the JSF
