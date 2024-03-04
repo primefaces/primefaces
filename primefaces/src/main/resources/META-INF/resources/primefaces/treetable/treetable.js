@@ -344,11 +344,16 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     bindFilterEvent: function(filter) {
         var $this = this;
 
-        //prevent form submit on enter key
-        filter.on('keydown.treeTable-blockenter', PrimeFaces.utils.blockEnterKey)
-        .on(this.cfg.filterEvent + '.treeTable', function(e) {
+        filter.on(this.cfg.filterEvent + '.treeTable', function(e) {
             if($this.filterTimeout) {
                 clearTimeout($this.filterTimeout);
+            }
+
+            //prevent form submit on enter key
+            if(e.key === 'Enter') {
+                e.preventDefault();
+                e.stopPropagation();
+                return;
             }
 
             $this.filterTimeout = setTimeout(function() {
