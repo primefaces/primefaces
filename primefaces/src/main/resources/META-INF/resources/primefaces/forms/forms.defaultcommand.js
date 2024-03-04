@@ -53,8 +53,6 @@ PrimeFaces.widget.DefaultCommand = PrimeFaces.widget.BaseWidget.extend({
                 if (!$this.jqTarget.is(':disabled, .ui-state-disabled')) {
                     // focus default command button and click it
                     $this.jqTarget.trigger('focus').trigger(PrimeFaces.csp.clickEvent($this.jqTarget));
-                    // re-focus the original input that pressed ENTER
-                    eventTarget.trigger('focus');
                 }
                 e.preventDefault();
                 e.stopImmediatePropagation();
