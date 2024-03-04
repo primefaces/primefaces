@@ -147,7 +147,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
                 $this.scrollFooterBox.css('margin-left', -scrollShift + 'px');
             }
 
-            $this.frozenBody.scrollTop(scrollTop);
+            $this.frozenBody.scrollTop($this.scrollBody.scrollTop());
 
             if($this.cfg.virtualScroll) {
                 var virtualScrollBody = this;
