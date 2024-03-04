@@ -1163,6 +1163,8 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             $($this.jqId + ' ul').sortable('enable');
             $this.updateButtonsState();
         }
+
+        this.fireInputChanged();
     },
 
     /**
@@ -1224,6 +1226,17 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
      */
     fireReorderEvent: function() {
         this.callBehavior('reorder');
+        this.fireInputChanged();
+    },
+    
+    /**
+     * Triggers change events on the input fields.
+     * @private
+     */
+    fireInputChanged: function() {
+        // #11540: trigger change events on inputs for form handling
+        this.targetInput.trigger("change");
+        this.sourceInput.trigger("change");
     },
 
     /**
