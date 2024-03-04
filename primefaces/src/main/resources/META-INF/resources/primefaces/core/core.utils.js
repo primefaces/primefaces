@@ -572,11 +572,15 @@ if (!PrimeFaces.utils) {
          * Blocks the enter key for an event like `keyup` or `keydown`. Useful in filter input events in many
          * components.
          * @param {JQuery.TriggeredEvent} e The key event that occurred.
+         * @return {boolean} `true` if ENTER key was blocked, false if not.
          */
         blockEnterKey: function(e) {
             if(e.key === 'Enter') {
                 e.preventDefault();
+                e.stopPropagation();
+                return true;
             }
+            return false;
         },
         
         /**

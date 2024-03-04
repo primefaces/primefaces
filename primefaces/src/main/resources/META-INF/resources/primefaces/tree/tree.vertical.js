@@ -119,9 +119,8 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
             this.filterInput = this.jq.find('.ui-tree-filter');
             PrimeFaces.skinInput(this.filterInput);
 
-            this.filterInput.on('keydown.tree-filter', PrimeFaces.utils.blockEnterKey)
-            .on('keyup.tree-filter', function(e) {
-                if (PrimeFaces.utils.ignoreFilterKey(e)) {
+            this.filterInput.on('keyup.tree-filter', function(e) {
+                if (PrimeFaces.utils.ignoreFilterKey(e) || PrimeFaces.utils.blockEnterKey(e)) {
                     return;
                 }
 

@@ -327,11 +327,8 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this;
 
         filter.off('keydown').on('keydown', function(e) {
-            if(e.key === 'Enter') {
+            if(PrimeFaces.utils.blockEnterKey(e)) {
                 $this.filter();
-
-                e.preventDefault();
-                e.stopPropagation();
             }
         });
     },
@@ -345,6 +342,10 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this;
 
         filter.on(this.cfg.filterEvent + '.treeTable', function(e) {
+            //prevent form submit on enter key
+            if (e.key && (PrimeFaces.utils.ignoreFilterKey(e) || PrimeFaces.utils.blockEnterKey(e))) {
+                return;
+            }
             if($this.filterTimeout) {
                 clearTimeout($this.filterTimeout);
             }

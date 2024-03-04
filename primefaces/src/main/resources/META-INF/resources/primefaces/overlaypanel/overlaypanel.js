@@ -181,14 +181,11 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
             });
         }
 
-        $this.target.off('keydown.ui-overlaypanel keyup.ui-overlaypanel')
-            .on('keydown.ui-overlaypanel', PrimeFaces.utils.blockEnterKey)
-            .on('keyup.ui-overlaypanel', function(e) {
-                if (e.key === 'Enter') {
-                    $this.toggle();
-                    e.preventDefault();
-                }
-            });
+        $this.target.off('keyup.ui-overlaypanel').on('keyup.ui-overlaypanel', function(e) {
+            if (PrimeFaces.utils.blockEnterKey(e)) {
+                $this.toggle();
+            }
+        });
 
         this.bindAutoHide();
     },

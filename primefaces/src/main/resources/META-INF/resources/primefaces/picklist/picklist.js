@@ -645,15 +645,11 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
     bindEnterKeyFilter: function(filter) {
         var $this = this;
 
-        filter
-            .on('keydown', PrimeFaces.utils.blockEnterKey)
-            .on('keyup', function(e) {
-                if(e.key === 'Enter') {
-                    $this.filter(this.value, $this.getFilteredList($(this)));
-
-                    e.preventDefault();
-                }
-            });
+        filter.on('keyup', function(e) {
+            if (PrimeFaces.utils.blockEnterKey(e)) {
+                $this.filter(this.value, $this.getFilteredList($(this)));
+            }
+        });
     },
 
     /**
@@ -666,7 +662,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
 
         //prevent form submit on enter key
         filter.on(this.cfg.filterEvent, function(e) {
-            if (PrimeFaces.utils.ignoreFilterKey(e)) {
+            if (PrimeFaces.utils.ignoreFilterKey(e) || PrimeFaces.utils.blockEnterKey(e)) {
                 return;
             }
 
@@ -681,8 +677,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 $this.filterTimeout = null;
             },
             $this.cfg.filterDelay);
-        })
-        .on('keydown', PrimeFaces.utils.blockEnterKey);
+        });
     },
 
     /**

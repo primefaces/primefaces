@@ -721,11 +721,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this;
 
         filter.off('keydown').on('keydown', function(e) {
-            if(e.key === 'Enter') {
+            if(PrimeFaces.utils.blockEnterKey(e)) {
                 $this.filter();
-
-                e.preventDefault();
-                e.stopPropagation();
             }
         });
     },
@@ -739,9 +736,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this;
         var filterEventName = this.cfg.filterEvent + '.dataTable';
 
-        
         filter.on(filterEventName, function(e) {
-            if (e.key && PrimeFaces.utils.ignoreFilterKey(e)) {
+            //prevent form submit on enter key
+            if (e.key && (PrimeFaces.utils.ignoreFilterKey(e) || PrimeFaces.utils.blockEnterKey(e))) {
                 return;
             }
 
@@ -3196,7 +3193,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                                     break;
                 }
             });
-            
+
         }
         else if(this.cfg.editMode === 'cell') {
             var originalCellSelector = '> tr > td.ui-editable-column',
@@ -4840,7 +4837,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         //filter support
         this.clone.find('.ui-column-filter').prop('disabled', true);
-        
+
         this.addDestroyListener(function() {
             $this.clone.off().remove();
             $this.stickyContainer.off().remove();
