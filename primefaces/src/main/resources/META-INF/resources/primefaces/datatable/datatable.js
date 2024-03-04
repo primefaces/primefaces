@@ -736,11 +736,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this;
 
         filter.off('keydown').on('keydown', function(e) {
-            if(e.key === 'Enter') {
+            if(PrimeFaces.utils.blockEnterKey(e)) {
                 $this.filter();
-
-                e.preventDefault();
-                e.stopPropagation();
             }
         });
     },
@@ -769,12 +766,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     bindFilterEvent: function(filter) {
         var $this = this;
         var filterEventName = this.cfg.filterEvent + '.dataTable';
-
-        //prevent form submit on enter key
-        filter.off('keydown.dataTable-blockenter ' + filterEventName)
-        .on('keydown.dataTable-blockenter', PrimeFaces.utils.blockEnterKey)
-        .on(filterEventName, function(e) {
-            if (e.key && PrimeFaces.utils.ignoreFilterKey(e)) {
+        
+        filter.on(filterEventName, function(e) {
+            //prevent form submit on enter key
+            if (e.key && (PrimeFaces.utils.ignoreFilterKey(e) || PrimeFaces.utils.blockEnterKey(e))) {
                 return;
             }
 
