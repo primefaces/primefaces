@@ -23,9 +23,9 @@
  */
 package org.primefaces.component.chronoline;
 
-import org.primefaces.component.api.UITabPanel;
+import org.primefaces.component.api.UIData;
 
-public abstract class ChronolineBase extends UITabPanel {
+public abstract class ChronolineBase extends UIData {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

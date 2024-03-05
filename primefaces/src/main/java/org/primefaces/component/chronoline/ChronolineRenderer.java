@@ -72,7 +72,7 @@ public class ChronolineRenderer extends CoreRenderer {
         if (value != null) {
             int rowCount = chronoline.getRowCount();
             for (int i = 0; i < rowCount; i++) {
-                chronoline.setIndex(i);
+                chronoline.setRowIndex(i);
 
                 writer.startElement("div", null);
                 writer.writeAttribute("class", Chronoline.EVENT_CLASS, null);
@@ -84,7 +84,7 @@ public class ChronolineRenderer extends CoreRenderer {
                 writer.endElement("div");
             }
 
-            chronoline.setIndex(-1);
+            chronoline.setRowIndex(-1);
         }
     }
 
