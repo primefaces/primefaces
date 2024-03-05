@@ -22,7 +22,7 @@ are many other third party libraries and plugins used to support features.
 | [jQuery Knob](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#knob) | 1.2.13 | https://github.com/aterrien/jQuery-Knob |
 | [jQuery MouseWheel](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#mousewheel) | 3.1.13 | https://github.com/jquery/jquery-mousewheel |
 | [jQuery.print](../jsdocs/modules/src_PrimeFaces.html#printJS) | 1.6.2 | https://github.com/DoersGuild/jQuery.print |
-| [jQuery Rangy](../jsdocs/modules/src_PrimeFaces.JQueryRangy.html) | 0.1.205 | https://github.com/timdown/rangy |
+| [jQuery Rangy](../jsdocs/modules/src_PrimeFaces.JQueryRangy.html) | 1.2.0 | https://github.com/timdown/rangyinputs |
 | [jQuery Timepicker Addon](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#timepicker) | 1.6.3 | http://trentrichardson.com/examples/timepicker |
 | jQuery UI Touch Punch | 1.0.9 | https://github.com/RWAP/jquery-ui-touch-punch |
 | [jQuery UI](../jsdocs/modules/node_modules__types_jqueryui.html) | 1.13.2 | https://github.com/jquery/jquery-ui |
