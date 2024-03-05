@@ -56,10 +56,18 @@
 
     <ui:define name="implementation">
         <div class="card">
-            <h5>Left Align</h5>
-            <p:chronoline value="#{chronolineView.events}" var="event">
-                #{event.status}
-            </p:chronoline>
+            <h:form>
+                <p:messages showDetail="true">
+                    <p:autoUpdate/>
+                </p:messages>
+
+                <h5>Left Align</h5>
+                <p:chronoline value="#{chronolineView.events}" var="event">
+                    <p:commandLink action="#{chronolineView.clickOnEvent(event)}" process="@this">
+                        <h6 class="mb-0">#{event.status}</h6>
+                    </p:commandLink>
+                </p:chronoline>
+            </h:form>
         </div>
 
         <div class="card">
@@ -89,28 +97,31 @@
 
         <div class="card">
             <h:form>
-            <h5>Customized</h5>
-            <p:chronoline value="#{chronolineView.events}" var="event" align="alternate" styleClass="customized-chronoline">
+                <h5>Customized</h5>
+                <p:chronoline value="#{chronolineView.events}" var="event" align="alternate"
+                              styleClass="customized-chronoline">
 
-                <p:card>
-                    <f:facet name="title">
-                        #{event.status}
+                    <p:card>
+                        <f:facet name="title">
+                            #{event.status}
+                        </f:facet>
+                        <f:facet name="subtitle">
+                            #{event.date}
+                        </f:facet>
+
+                        <p:graphicImage rendered="#{not empty event.image}" width="200" styleClass="shadow-1"
+                                        value="../../resources/demo/images/product/#{event.image}"
+                                        alt="#{event.image}"/>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt
+                            quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque quas!</p>
+                        <p:commandButton value="Read more" styleClass="ui-button-flat"/>
+                    </p:card>
+
+                    <f:facet name="marker">
+                            <span class="custom-marker shadow-1" style="background-color: #{event.color}"><i
+                                    class="#{event.icon}"/></span>
                     </f:facet>
-                    <f:facet name="subtitle">
-                        #{event.date}
-                    </f:facet>
-
-                    <p:graphicImage rendered="#{not empty event.image}" width="200" styleClass="shadow-1"
-                                    value="../../resources/demo/images/product/#{event.image}" alt="#{event.image}"/>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt
-                        quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque quas!</p>
-                    <p:commandButton value="Read more" styleClass="ui-button-flat" />
-                </p:card>
-
-                <f:facet name="marker">
-                    <span class="custom-marker shadow-1" style="background-color: #{event.color}"><i class="#{event.icon}"/></span>
-                </f:facet>
-            </p:chronoline>
+                </p:chronoline>
 
             </h:form>
         </div>
@@ -132,7 +143,6 @@
                 #{event}
             </p:chronoline>
         </div>
-
     </ui:define>
 
 </ui:composition>
