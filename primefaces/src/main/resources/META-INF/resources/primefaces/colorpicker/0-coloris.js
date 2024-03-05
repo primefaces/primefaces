@@ -2,7 +2,7 @@
  * Copyright (c) 2021-2023 Momo Bassit.
  * Licensed under the MIT License (MIT)
  * https://github.com/mdbassit/Coloris
- * Version: 0.21.1
+ * Version: 0.23.0
  * NPM: https://github.com/melloware/coloris-npm
  */
 
@@ -850,9 +850,6 @@ window.Coloris = ((window, document, Math, undefined) => {
         b: match[5] * 1,
         a: match[6] * 1
       };
-
-      // Workaround to mitigate a Chromium bug where the alpha value is rounded incorrectly
-      rgba.a = +rgba.a.toFixed(2);
 
     } else {
       match = ctx.fillStyle.replace('#', '').match(/.{2}/g).map(h => parseInt(h, 16));
