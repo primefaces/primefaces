@@ -98,6 +98,7 @@ if (window.PrimeFaces) {
       next: "Sonraki",
       nextPageLabel: "Sonraki Sayfa",
       nullLabel: "Seçilmedi",
+      otpLabel: "Lütfen tek kullanımlık şifre karakteri {0} girin",
       pageLabel: "Sayfa {page}",
       passwordHide: "Şifreyi gizle",
       passwordShow: "Şifreyi göster",

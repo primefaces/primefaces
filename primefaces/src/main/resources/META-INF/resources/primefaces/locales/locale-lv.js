@@ -98,6 +98,7 @@ if (window.PrimeFaces) {
       next: "Nākamais",
       nextPageLabel: "Nākamā lapa",
       nullLabel: "Nav atlasīts",
+      otpLabel: "Lūdzu, ievadiet vienreizēju paroles rakstzīmi {0}",
       pageLabel: "Lapa {page}",
       passwordHide: "Slēpt paroli",
       passwordShow: "Rādīt paroli",

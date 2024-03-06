@@ -98,6 +98,7 @@ if (window.PrimeFaces) {
       next: "دواتر",
       nextPageLabel: "لاپەڕەی دواتر",
       nullLabel: "هەڵنەبژێردراوە",
+      otpLabel: "تکایە پیتی وشەی نهێنی یەک جار دابنێ {0}",
       pageLabel: "لاپەڕە {page}",
       passwordHide: "شاردنەوەی پاسۆرد",
       passwordShow: "وشەی نهێنیەکەم پیشان ده",

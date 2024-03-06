@@ -98,6 +98,7 @@ if (window.PrimeFaces) {
       next: "بعدی",
       nextPageLabel: "صفحه بعد",
       nullLabel: "انتخاب نشده",
+      otpLabel: "لطفاً نویسه رمز یکبار مصرف {0} را وارد کنید",
       pageLabel: "{page}",
       passwordHide: "پنهان کردن رمز عبور",
       passwordShow: "نمایش رمز عبور",

@@ -98,6 +98,7 @@ if (window.PrimeFaces) {
       next: "Наступний",
       nextPageLabel: "Наступна сторінка",
       nullLabel: "Не вибраний",
+      otpLabel: "Введіть символ одноразового пароля {0}",
       pageLabel: "{page}",
       passwordHide: "Приховати пароль",
       passwordShow: "Показати пароль",

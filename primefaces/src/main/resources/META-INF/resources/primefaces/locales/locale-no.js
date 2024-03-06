@@ -98,6 +98,7 @@ if (window.PrimeFaces) {
       next: "Neste",
       nextPageLabel: "Neste side",
       nullLabel: "Ikke valgt",
+      otpLabel: "Skriv inn engangspassordtegnet {0}",
       pageLabel: "Side {page}",
       passwordHide: "Skjul passord",
       passwordShow: "Vis passord",

@@ -98,6 +98,7 @@ if (window.PrimeFaces) {
       next: "ถัดไป",
       nextPageLabel: "หน้าถัดไป",
       nullLabel: "ไม่ได้เลือก",
+      otpLabel: "โปรดป้อนอักขระรหัสผ่านครั้งเดียว {0}",
       pageLabel: "หน้า {page}",
       passwordHide: "ซ่อนรหัสผ่าน",
       passwordShow: "แสดงรหัสผ่าน",

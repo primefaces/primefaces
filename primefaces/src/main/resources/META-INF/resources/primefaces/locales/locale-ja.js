@@ -98,6 +98,7 @@ if (window.PrimeFaces) {
       next: "次",
       nextPageLabel: "次のページ",
       nullLabel: "未選択",
+      otpLabel: "ワンタイム パスワードの文字 {0} を入力してください",
       pageLabel: "{page}ページ",
       passwordHide: "パスワードを隠す",
       passwordShow: "パスワードを表示",

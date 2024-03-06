@@ -99,6 +99,7 @@ if (window.PrimeFaces) {
       next: "បន្ទាប់",
       nextPageLabel: "ទំព័របន្ទាប់",
       nullLabel: "មិនបានជ្រើសរើស",
+      otpLabel: "សូមបញ្ចូលតួអក្សរពាក្យសម្ងាត់ម្តង {0}",
       pageLabel: "ទំព័រ {page}",
       passwordHide: "លាក់ពាក្យសម្ងាត់",
       passwordShow: "បង្ហាញពាក្យសម្ងាត់",

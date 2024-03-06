@@ -100,6 +100,7 @@ if (window.PrimeFaces) {
       next: "Następny",
       nextPageLabel: "Następna strona",
       nullLabel: "Nie zaznaczone",
+      otpLabel: "Proszę wprowadzić znak hasła jednorazowego {0}",
       pageLabel: "Strona {page}",
       passwordHide: "Ukryj hasło",
       passwordShow: "Pokaż hasło",

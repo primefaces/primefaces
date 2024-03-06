@@ -98,6 +98,7 @@ if (window.PrimeFaces) {
       next: "הבא",
       nextPageLabel: "עמוד הבא",
       nullLabel: "לא נבחר",
+      otpLabel: "אנא הזן תו סיסמה חד פעמית {0}",
       pageLabel: "עמוד {page}",
       passwordHide: "הסתר סיסמא",
       passwordShow: "הראה סיסמה",

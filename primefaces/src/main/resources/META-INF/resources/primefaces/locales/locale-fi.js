@@ -98,6 +98,7 @@ if (window.PrimeFaces) {
       next: "Seuraava",
       nextPageLabel: "Seuraava sivu",
       nullLabel: "Ei valittu",
+      otpLabel: "Kirjoita salasanan kerran merkki {0}",
       pageLabel: "Sivu {page}",
       passwordHide: "Piilota salasana",
       passwordShow: "Näytä salasana",

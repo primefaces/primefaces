@@ -98,6 +98,7 @@ if (window.PrimeFaces) {
       next: "التالي",
       nextPageLabel: "الصفحة التالية",
       nullLabel: "لا يوجد اختيار",
+      otpLabel: "الرجاء إدخال حرف كلمة المرور لمرة واحدة {0}",
       pageLabel: "صفحة {page}",
       passwordHide: "اخفاء كلمة المرور",
       passwordShow: "عرض كلمة المرور",

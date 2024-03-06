@@ -98,6 +98,7 @@ if (window.PrimeFaces) {
       next: "Kế tiếp",
       nextPageLabel: "Trang tiếp theo",
       nullLabel: "Không được chọn",
+      otpLabel: "Vui lòng nhập ký tự mật khẩu một lần {0}",
       pageLabel: "Trang {trang}",
       passwordHide: "Ẩn mật khẩu",
       passwordShow: "Hiển thị mật khẩu",

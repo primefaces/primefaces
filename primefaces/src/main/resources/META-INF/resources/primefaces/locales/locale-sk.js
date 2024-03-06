@@ -98,6 +98,7 @@ if (window.PrimeFaces) {
       next: "Ďalší",
       nextPageLabel: "Dalšia strana",
       nullLabel: "Nevybrané",
+      otpLabel: "Zadajte jednorazový znak hesla {0}",
       pageLabel: "{page}",
       passwordHide: "Skryť heslo",
       passwordShow: "Ukázať heslo",

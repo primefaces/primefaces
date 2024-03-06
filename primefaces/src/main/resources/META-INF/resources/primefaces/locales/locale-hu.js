@@ -98,6 +98,7 @@ if (window.PrimeFaces) {
       next: "Következő",
       nextPageLabel: "Következő oldal",
       nullLabel: "Nincs kijelölve",
+      otpLabel: "Kérjük, írjon be egyszeri jelszó karaktert: {0}",
       pageLabel: "{page}. oldal",
       passwordHide: "Jelszó elrejtése",
       passwordShow: "Mutasd a jelszót",

@@ -98,6 +98,7 @@ if (window.PrimeFaces) {
       next: "Següent",
       nextPageLabel: "Pàgina següent",
       nullLabel: "No seleccionat",
+      otpLabel: "Introduïu el caràcter de contrasenya única {0}",
       pageLabel: "Pàgina {page}",
       passwordHide: "Amaga la contrasenya",
       passwordShow: "Ensenya la contrasenya",
