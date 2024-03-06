@@ -98,6 +98,7 @@ if (window.PrimeFaces) {
       next: "Кийинки",
       nextPageLabel: "Кийинки барак",
       nullLabel: "Тандалган жок",
+      otpLabel: "Сураныч, бир жолку сырсөз символун киргизиңиз {0}",
       pageLabel: "{page} барак",
       passwordHide: "Сырсөздү жашыруу",
       passwordShow: "Сыр сөздү көрсөтүү",

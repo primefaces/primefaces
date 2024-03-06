@@ -98,6 +98,7 @@ if (window.PrimeFaces) {
       next: "Следващия",
       nextPageLabel: "Следваща страница",
       nullLabel: "Не е избрано",
+      otpLabel: "Моля, въведете еднократна парола {0}",
       pageLabel: "Страница {страница}",
       passwordHide: "Скриване на паролата",
       passwordShow: "Покажи парола",

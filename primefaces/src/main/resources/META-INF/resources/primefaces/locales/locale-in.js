@@ -100,6 +100,7 @@ if (window.PrimeFaces) {
       next: "Selanjutnya",
       nextPageLabel: "Halaman Selanjutnya",
       nullLabel: "Tidak dipilih",
+      otpLabel: "Silakan masukkan karakter sandi satu kali {0}",
       pageLabel: "Halaman {page}",
       passwordHide: "Sembunyikan Kata Sandi",
       passwordShow: "Tampilkan Kata Sandi",

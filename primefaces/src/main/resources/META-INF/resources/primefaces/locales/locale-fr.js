@@ -98,6 +98,7 @@ if (window.PrimeFaces) {
       next: "Suivant",
       nextPageLabel: "Page Suivante",
       nullLabel: "Aucune sélection",
+      otpLabel: "Veuillez saisir le caractère de mot de passe à usage unique {0}",
       pageLabel: "Page {page}",
       passwordHide: "Masquer le mot de passe",
       passwordShow: "Montrer le mot de passe",

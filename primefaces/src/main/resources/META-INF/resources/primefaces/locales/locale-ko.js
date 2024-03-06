@@ -98,6 +98,7 @@ if (window.PrimeFaces) {
       next: "다음",
       nextPageLabel: "다음 페이지",
       nullLabel: "선택되지 않음",
+      otpLabel: "일회용 비밀번호 문자 {0}을(를) 입력하십시오",
       pageLabel: "페이지 {page}",
       passwordHide: "비밀번호 숨기기",
       passwordShow: "비밀번호 표시",

@@ -98,6 +98,7 @@ if (window.PrimeFaces) {
       next: "अगला",
       nextPageLabel: "अगला पृष्ठ",
       nullLabel: "चयन नहीं किया गया",
+      otpLabel: "कृपया वन टाइम पासवर्ड वर्ण {0} दर्ज करें",
       pageLabel: "पृष्ठ {page}",
       passwordHide: "पासवर्ड छिपाएं",
       passwordShow: "पासवर्ड दिखाए",

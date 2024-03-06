@@ -98,6 +98,7 @@ if (window.PrimeFaces) {
       next: "Επόμενο",
       nextPageLabel: "Επόμενη Σελίδα",
       nullLabel: "Κενή ετικέτα",
+      otpLabel: "Εισαγάγετε έναν χαρακτήρα κωδικού πρόσβασης {0}",
       pageLabel: "Σελίδα {page}",
       passwordHide: "Απόκρυψη κωδικού πρόσβασης",
       passwordShow: "Δείξε τον κωδικό",

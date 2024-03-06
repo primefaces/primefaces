@@ -98,6 +98,7 @@ if (window.PrimeFaces) {
       next: "Nächste",
       nextPageLabel: "Nächste Seite",
       nullLabel: "Nicht ausgewählt",
+      otpLabel: "Bitte geben Sie das Einmalkennwortzeichen {0} ein.",
       pageLabel: "Seite {page}",
       passwordHide: "Passwort verbergen",
       passwordShow: "Passwort anzeigen",

@@ -98,6 +98,7 @@ if (window.PrimeFaces) {
       next: "Seterusnya",
       nextPageLabel: "Muka Seterusnya",
       nullLabel: "Tidak Dipilih",
+      otpLabel: "Sila masukkan aksara kata laluan sekali {0}",
       pageLabel: "Muka {page}",
       passwordHide: "Sembunyikan Kata Laluan",
       passwordShow: "Tunjukkan Kata Laluan",

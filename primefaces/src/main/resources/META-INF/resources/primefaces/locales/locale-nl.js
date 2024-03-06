@@ -98,6 +98,7 @@ if (window.PrimeFaces) {
       next: "Volgende",
       nextPageLabel: "Volgende pagina",
       nullLabel: "Niet geselecteerd",
+      otpLabel: "Voer een eenmalig wachtwoordteken {0} in",
       pageLabel: "Pagina {page}",
       passwordHide: "Verberg wachtwoord",
       passwordShow: "Laat wachtwoord zien",

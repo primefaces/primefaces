@@ -101,6 +101,7 @@ if (window.PrimeFaces) {
       next: "Nästa",
       nextPageLabel: "Nästa sida",
       nullLabel: "Ej vald",
+      otpLabel: "Vänligen ange tecken för engångslösenord {0}",
       pageLabel: "Sida {page}",
       passwordHide: "Dölj lösenord",
       passwordShow: "Visa lösenord",

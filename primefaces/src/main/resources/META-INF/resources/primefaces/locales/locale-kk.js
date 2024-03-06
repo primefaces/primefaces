@@ -98,6 +98,7 @@ if (window.PrimeFaces) {
       next: "Келесі",
       nextPageLabel: "Келесі бет",
       nullLabel: "Таңдалынбады",
+      otpLabel: "Бір реттік құпия сөз таңбасын енгізіңіз {0}",
       pageLabel: "{page} бет",
       passwordHide: "Құпия сөзді жасыру",
       passwordShow: "Құпия сөзді көрсету",

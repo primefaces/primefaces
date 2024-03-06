@@ -98,6 +98,7 @@ if (window.PrimeFaces) {
       next: "Următor",
       nextPageLabel: "Pagina următoare",
       nullLabel: "Neselectat",
+      otpLabel: "Vă rugăm să introduceți caracterul de parolă unică {0}",
       pageLabel: "Pagina {page}",
       passwordHide: "Ascundeți parola",
       passwordShow: "Arata parola",

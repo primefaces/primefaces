@@ -100,6 +100,7 @@ if (window.PrimeFaces) {
       next: "Successivo",
       nextPageLabel: "Pagina successiva",
       nullLabel: "Non selezionato",
+      otpLabel: "Inserisci il carattere della password monouso {0}",
       pageLabel: "Pagina {page}",
       passwordHide: "Nascondi password",
       passwordShow: "Mostra password",

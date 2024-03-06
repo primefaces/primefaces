@@ -98,6 +98,7 @@ if (window.PrimeFaces) {
       next: "Naslednji",
       nextPageLabel: "Naslednja stran",
       nullLabel: "Ni izbran",
+      otpLabel: "Vnesite znak za enkratno geslo {0}",
       pageLabel: "Stran {page}",
       passwordHide: "Skrij geslo",
       passwordShow: "Pokaži geslo",
