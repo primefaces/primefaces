@@ -98,8 +98,7 @@
         <div class="card">
             <h:form>
                 <h5>Customized</h5>
-                <p:chronoline value="#{chronolineView.events}" var="event" align="alternate"
-                              styleClass="customized-chronoline">
+                <p:chronoline value="#{chronolineView.events}" var="event" align="alternate" styleClass="customized-chronoline">
 
                     <p:card>
                         <f:facet name="title">
@@ -110,16 +109,14 @@
                         </f:facet>
 
                         <p:graphicImage rendered="#{not empty event.image}" width="200" styleClass="shadow-1"
-                                        value="../../resources/demo/images/product/#{event.image}"
-                                        alt="#{event.image}"/>
+                                    value="../../resources/demo/images/product/#{event.image}" alt="#{event.image}"/>
                         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt
                             quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque quas!</p>
                         <p:commandButton value="Read more" styleClass="ui-button-flat"/>
                     </p:card>
 
                     <f:facet name="marker">
-                            <span class="custom-marker shadow-1" style="background-color: #{event.color}"><i
-                                    class="#{event.icon}"/></span>
+                    <span class="custom-marker shadow-1" style="background-color: #{event.color}"><i class="#{event.icon}"/></span>
                     </f:facet>
                 </p:chronoline>
 
@@ -143,6 +140,7 @@
                 #{event}
             </p:chronoline>
         </div>
+
     </ui:define>
 
 </ui:composition>
