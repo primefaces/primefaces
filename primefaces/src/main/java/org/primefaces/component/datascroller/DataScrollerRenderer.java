@@ -141,6 +141,10 @@ public class DataScrollerRenderer extends CoreRenderer {
 
             encodeList(context, ds, start, chunkSize);
 
+            if (ds.isLazy()) {
+                rowCount = ds.getRowCount();
+            }
+
             writer.startElement("div", null);
             writer.writeAttribute("class", DataScroller.LOADER_CLASS, null);
             if (rowCount > chunkSize && ComponentUtils.shouldRenderFacet(loader)) {
