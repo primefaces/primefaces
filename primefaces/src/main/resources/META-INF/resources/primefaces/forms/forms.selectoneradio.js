@@ -130,7 +130,8 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
 
         if (!this.cfg.readonly) {
-            this.outputs.filter(':not(.ui-state-disabled)').on('mouseenter.selectOneRadio', function() {
+            this.outputs.filter(':not(.ui-state-disabled)').off('mouseenter.selectOneRadio mouseleave.selectOneRadio click.selectOneRadio')
+            .on('mouseenter.selectOneRadio', function() {
                 $(this).addClass('ui-state-hover');
             })
             .on('mouseleave.selectOneRadio', function() {
@@ -161,7 +162,8 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
                 e.preventDefault();
             });
 
-            this.labels.filter(':not(.ui-state-disabled)').on('click.selectOneRadio', function(e) {
+            this.labels.filter(':not(.ui-state-disabled)').off('click.selectOneRadio')
+            .on('click.selectOneRadio', function(e) {
                 var target = $(PrimeFaces.escapeClientId($(this).attr('for'))),
                 radio = null;
 
@@ -177,7 +179,8 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
             });
         }
 
-        this.enabledInputs.on('focus.selectOneRadio', function() {
+        this.enabledInputs.off('focus.selectOneRadio blur.selectOneRadio keydown.selectOneRadio')
+        .on('focus.selectOneRadio', function() {
             var input = $(this),
             radio = input.parent().next();
 
