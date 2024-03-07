@@ -29,7 +29,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.util.Constants;
@@ -79,18 +78,18 @@ public class CspState {
      * Currently the script nonce is user-supplied input, so we have to validate it to prevent header/XSS injections.
      *
      * @param nonce the nonce to validate
-     * @throws FacesException if any errors validating the nonce
+     * @throws CspException if any errors validating the nonce
      */
-    private void validate(String nonce) throws FacesException {
+    private void validate(String nonce) throws CspException {
         if (LangUtils.isEmpty(nonce)) {
-            throw new FacesException("Missing CSP nonce");
+            throw new CspException("Missing CSP nonce");
         }
         try {
             String decodedNonce = new String(Base64.getDecoder().decode(nonce), StandardCharsets.UTF_8);
             UUID.fromString(decodedNonce);
         }
         catch (Exception e) {
-            throw new FacesException("Invalid CSP nonce", e);
+            throw new CspException("Invalid CSP nonce", e);
         }
     }
 
