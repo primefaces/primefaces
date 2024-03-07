@@ -87,23 +87,31 @@ public class InputMaskRenderer extends InputRenderer {
 
     protected Pattern translateMaskIntoRegex(StringBuilder regex, String mask) {
         boolean optionalFound = false;
+        boolean escapeFound = false;
 
         for (char c : mask.toCharArray()) {
             if (c == '[' || c == ']') {
                 optionalFound = true;
             }
+            else if (c == '\\') {
+                escapeFound = true;
+            }
             else {
-                regex.append(translateMaskCharIntoRegex(c, optionalFound));
+                regex.append(translateMaskCharIntoRegex(c, optionalFound, escapeFound));
+                escapeFound = false;
             }
         }
         return Pattern.compile(regex.toString());
     }
 
-    protected String translateMaskCharIntoRegex(char c, boolean optional) {
+    protected String translateMaskCharIntoRegex(char c, boolean optional, boolean escapeFound) {
         String translated;
 
-        if (c == '[' || c == ']') {
-            return ""; //should be ignored
+        if (escapeFound) {
+            return String.valueOf(c);
+        }
+        else if (c == '[' || c == ']') {
+            return Constants.EMPTY_STRING; //should be ignored
         }
         else if (c == '9') {
             translated = "[0-9]";
