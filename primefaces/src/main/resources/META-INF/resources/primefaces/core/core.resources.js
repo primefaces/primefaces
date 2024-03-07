@@ -112,16 +112,26 @@ if (!PrimeFaces.resources) {
            * @return {string} The first JavasScript resource URI.
            */
           getResourceScriptURI : function() {
-             if (!PrimeFaces.resources.SCRIPT_URI) {
-                PrimeFaces.resources.SCRIPT_URI =
-                   $('script[src*="/' + PrimeFaces.RESOURCE_IDENTIFIER + '/"]').first().attr('src');
+              if (!PrimeFaces.resources.SCRIPT_URI) {
+                  function findScriptWithVersionParam(scripts) {
+                      scripts.each(function() {
+                          var src = $(this).attr('src');
+                          if (src && src.indexOf('v=') !== -1) {
+                              PrimeFaces.resources.SCRIPT_URI = src;
+                              return false; // Exit the loop early
+                          }
+                      });
+                  }
 
-                // portlet
-                if (!PrimeFaces.resources.SCRIPT_URI) {
-                   PrimeFaces.resources.SCRIPT_URI = $('script[src*="' + PrimeFaces.RESOURCE_IDENTIFIER + '="]').first().attr('src');
-                }
-             }
-             return PrimeFaces.resources.SCRIPT_URI;
+                  // normal '/showcase/javax.faces.resource/jquery/jquery.js.xhtml?ln=primefaces&v=13.0.5'
+                  findScriptWithVersionParam($('script[src*="/' + PrimeFaces.RESOURCE_IDENTIFIER + '/"]'));
+
+                  // portlet 'javax.faces.resource=jquery/jquery.js.xhtml?ln=primefaces&v=13.0.5'
+                  if (!PrimeFaces.resources.SCRIPT_URI) {
+                      findScriptWithVersionParam($('script[src*="' + PrimeFaces.RESOURCE_IDENTIFIER + '="]'));
+                  }
+              }
+              return PrimeFaces.resources.SCRIPT_URI;
           }
     };
 
