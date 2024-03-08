@@ -1,5 +1,5 @@
 /*!
- * jQuery UI Touch Punch 1.1.1 as modified by RWAP Software
+ * jQuery UI Touch Punch 1.1.3 as modified by RWAP Software
  * based on original touchpunch v0.2.3 which has not been updated since 2014
  *
  * Updates by RWAP Software to take account of various suggested changes on the original code issues
@@ -194,6 +194,10 @@
     touchHandled = false;
   };
 
+  let _touchStartBound = mouseProto._touchStart.bind(mouseProto),
+      _touchMoveBound = mouseProto._touchMove.bind(mouseProto),
+      _touchEndBound = mouseProto._touchEnd.bind(mouseProto);
+
   /**
    * A duck punch of the $.ui.mouse _mouseInit method to support touch events.
    * This method extends the widget with bound touch event handlers that
@@ -210,11 +214,11 @@
     }	  
 
     // Delegate the touch handlers to the widget's element
-    self.element.bind(
-      {'touchstart': mouseProto._touchStart},
-      {'touchmove': mouseProto._touchMove},
-      {'touchend': mouseProto._touchEnd}
-    );
+    self.element.on({
+      touchstart: _touchStartBound,
+      touchmove: _touchMoveBound,
+      touchend: _touchEndBound
+    });
 
     // Call the original $.ui.mouse init method
     _mouseInit.call(self);
@@ -228,11 +232,11 @@
     let self = this;
 
     // Delegate the touch handlers to the widget's element
-    self.element.unbind(
-      {'touchstart': mouseProto._touchStart},
-      {'touchmove': mouseProto._touchMove},
-      {'touchend': mouseProto._touchEnd}
-    );
+    self.element.off({
+      touchstart: _touchStartBound,
+      touchmove: _touchMoveBound,
+      touchend: _touchEndBound
+    });
 
     // Call the original $.ui.mouse destroy method
     _mouseDestroy.call(self);
