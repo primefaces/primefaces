@@ -1284,7 +1284,7 @@
          * Increment and return the next `z-index` for CSS as a string.
          * Note that jQuery will no longer accept numeric values in {@link JQuery.css | $.fn.css} as of version 4.0.
          *
-         *  @return {string} the next `z-index` as a string.
+         * @return {string} the next `z-index` as a string.
          */
         nextZindex: function() {
             return String(++PrimeFaces.zindex);

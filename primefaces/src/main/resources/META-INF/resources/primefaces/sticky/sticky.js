@@ -88,20 +88,10 @@ PrimeFaces.widget.Sticky = PrimeFaces.widget.BaseWidget.extend({
             var win = $(window),
                 winScrollTop = win.scrollTop();
 
-            // GitHub #9295 look for overlays and make sure sticky is not higher
-            var overlays = $('.ui-widget-overlay');
-            var zIndex = PrimeFaces.nextZindex();
-            if (overlays.length) {
-                overlays.each(function() {
-                    var currentZIndex = $(this).zIndex() - 1;
-                    zIndex = currentZIndex < zIndex ? currentZIndex : zIndex;
-                });
-            }
-
             this.target.css({
                 'position': 'fixed',
                 'top': this.cfg.margin + 'px',
-                'z-index': zIndex
+                'z-index': PrimeFaces.utils.nextStickyZindex()
             })
             .addClass('ui-shadow ui-sticky');
 

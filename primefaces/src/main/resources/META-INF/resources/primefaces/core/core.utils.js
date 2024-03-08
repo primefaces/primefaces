@@ -1071,6 +1071,33 @@ if (!PrimeFaces.utils) {
                 }
             }
         },
+
+        /**
+         * Retrieves the subsequent z-index for a sticky element. Typically, a sticky element requires a 
+         * z-index higher than the current one, but certain scenarios arise, such as when an overlay mask 
+         * is present or when there are multiple sticky elements on the page, necessitating a z-index 
+         * one lower than the highest among them.
+         *
+         * @return {string} the next `z-index` as a string.
+         * @see {@link https://github.com/primefaces/primefaces/issues/10299|GitHub Issue 10299}
+         * @see {@link https://github.com/primefaces/primefaces/issues/9259|GitHub Issue 9259}
+         */
+        nextStickyZindex: function() {
+            // Get the z-index of the highest visible sticky, or use PrimeFaces.nextZindex() + 1 if none found
+            var zIndex = $('.ui-sticky:visible').last().zIndex() || PrimeFaces.nextZindex() + 1;
+
+            // GitHub #9295 Adjust z-index based on overlays
+            var overlays = $('.ui-widget-overlay:visible');
+            if (overlays.length) {
+                overlays.each(function() {
+                    var currentZIndex = $(this).zIndex() - 1;
+                    zIndex = Math.min(currentZIndex, zIndex);
+                });
+            }
+
+            // Decrease zIndex by 1 and return
+            return zIndex - 1;
+        },
     };
 
     // set animation state globally
