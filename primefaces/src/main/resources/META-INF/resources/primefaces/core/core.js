@@ -1239,6 +1239,35 @@
             var locale = this.getLocaleSettings();
             return (locale&&locale[key]) ? locale[key] : PrimeFaces.locales['en_US'][key];
         },
+        
+        /**
+         * Loop over all locales and set the label to the new value in all locales.
+         * @param {string} localeKey The locale key
+         * @param {string} localeValue The locale value
+         */
+        setGlobalLocaleValue: function(localeKey, localeValue) {
+            // Recursive function to iterate over nested objects
+            function iterateLocale(locale, lkey, lvalue) {
+                for (var key in locale) {
+                    if (typeof locale[key] === 'object') {
+                        // If the value is an object, call the function recursively
+                        iterateLocale(locale[key], lkey, lvalue);
+                    } else {
+                        // Otherwise, set the new value if found
+                        if (key === lkey) {
+                            locale[key] = lvalue;
+                        }
+                    }
+                }
+            }
+
+            // iterate over all locales and try and set the key in each locale
+            for (var lang in PrimeFaces.locales) {
+                if (typeof PrimeFaces.locales[lang] === 'object') {
+                    iterateLocale(PrimeFaces.locales[lang], localeKey, localeValue)
+                }
+            }
+        },
 
         /**
          * For 4.0 jQuery deprecated $.trim in favor of PrimeFaces.trim however that does not handle

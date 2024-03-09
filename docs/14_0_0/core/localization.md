@@ -316,6 +316,15 @@ if (window.PrimeFaces) {
 
 ```
 
+### Overwrite Global Value
+
+In certain situations, you might find it necessary to unify all locales to a single value. For instance, if you wish to establish `firstDayOfWeek=1` uniformly across all locales. 
+The function `setGlobalLocaleValue` is available for precisely this purpose, ensuring consistency by applying the same value across all locales. Example usage:
+
+```js
+PrimeFaces.setGlobalLocaleValue('firstDayOfWeek', 1);
+```
+
 ### Usage
 
 To add another locale to the API, first create the locale object first with settings and assign it as a
