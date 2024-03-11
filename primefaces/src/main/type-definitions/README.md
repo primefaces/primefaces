@@ -179,18 +179,19 @@ npm run npm-publish -- --help
 # Don't publish, just write the tarball that would
 # be published to "/tmp/package.tgz"
 npm run npm-publish -- \
-  --major 9 \
+  --major 14 \
   --minor 0 \
-  --extrafiles LICENSE \
+  --extrafiles src/main/type-definitions/LICENSE \
   --readme src/main/type-definitions/NPM.md \
-  --dryrun /tmp/package.tgz
+  --dryrun /temp/package.tgz
 
 # Publish to npm using the given version
 # Prompts for the credentials
 npm run npm-publish -- \
-  --major 9 \
+  --major 14 \
   --minor 0 \
   --extrafiles ../LICENSE \
+  --extrafiles src/main/type-definitions/LICENSE \
   --readme src/main/type-definitions/NPM.md
 ```
 

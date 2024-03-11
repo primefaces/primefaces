@@ -47,29 +47,14 @@
       "githubUsername": "cagataycivici"
     },
     {
-      "name": "Thomas Andraschko",
-      "url": "https://github.com/tandraschko",
-      "githubUsername": "tandraschko"
-    },
-    {
-      "name": "Jeanfrancois Arcand",
-      "url": "https://github.com/jfarcand",
-      "githubUsername": "jfarcand"
-    },
-    {
-      "name": "Rudy De Busscher",
-      "url": "https://github.com/rdebusscher",
-      "githubUsername": "rdebusscher"
-    },
-    {
       "name": "Mert Sincan",
       "url": "https://github.com/mertsincan",
       "githubUsername": "mertsincan"
     },
     {
-      "name": "Sudheer Jonna",
-      "url": "https://github.com/sudheerj",
-      "githubUsername": "sudheerj"
+      "name": "Thomas Andraschko",
+      "url": "https://github.com/tandraschko",
+      "githubUsername": "tandraschko"
     },
     {
       "name": "Sébastien Lepage",
@@ -80,6 +65,16 @@
       "name": "Emil Lefkof",
       "url": "https://github.com/melloware",
       "githubUsername": "melloware"
+    },
+    {
+      "name": "Christoph Straßer",
+      "url": "https://github.com/christophs78",
+      "githubUsername": "christophs78"
+    },
+    {
+      "name": "Jasper de Vries",
+      "url": "https://github.com/jepsar",
+      "githubUsername": "jepsar"
     }
   ],
   "dependencies": {
