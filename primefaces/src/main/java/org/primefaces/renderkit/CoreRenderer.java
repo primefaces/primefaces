@@ -44,6 +44,7 @@ import javax.faces.validator.Validator;
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.ClientBehaviorRenderingMode;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
+import org.primefaces.component.api.RTLAware;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.convert.ClientConverter;
@@ -294,6 +295,12 @@ public abstract class CoreRenderer extends Renderer {
             writer.writeAttribute("value", value, null);
         }
         writer.endElement("input");
+    }
+
+    public <T extends UIComponent & RTLAware> void renderRTLDirection(FacesContext context, T component) throws IOException {
+        if (ComponentUtils.isRTL(context, component)) {
+            context.getResponseWriter().writeAttribute("dir", "rtl", null);
+        }
     }
 
     protected String buildDomEvent(FacesContext context, UIComponent component, String domEvent, String behaviorEvent,
