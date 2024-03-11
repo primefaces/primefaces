@@ -115,9 +115,9 @@
 
         <!-- GraphicImage -->
         <dependency>
-            <groupId>jfree</groupId>
+            <groupId>org.jfree</groupId>
             <artifactId>jfreechart</artifactId>
-            <version>1.0.1</version>
+            <version>1.5.4</version>
             <exclusions>
                  <exclusion>
                       <groupId>junit</groupId>
