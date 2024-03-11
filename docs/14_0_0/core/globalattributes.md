@@ -46,7 +46,8 @@ public class DemoApplication extends ApplicationWrapper {
         }
 
         // on all InputNumber turn off mouse wheel behavior
-        if (component instanceof InputNumber inputNumber) {
+        if (component instanceof InputNumber) {
+            InputNumber inputNumber = (InputNumber) component;
             inputNumber.setModifyValueOnWheel(false);
         }
 
