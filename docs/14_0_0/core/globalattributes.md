@@ -45,6 +45,11 @@ public class DemoApplication extends ApplicationWrapper {
             calendar.setPattern("dd-MMM-yyyy");
         }
 
+        // on all InputNumber turn off mouse wheel behavior
+        if (component instanceof InputNumber inputNumber) {
+            inputNumber.setModifyValueOnWheel(false);
+        }
+
         return component;
     }
 }
