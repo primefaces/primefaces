@@ -319,7 +319,7 @@
             <dependency>
                 <groupId>org.glassfish</groupId>
                 <artifactId>jakarta.faces</artifactId>
-                <version>4.0.6</version>
+                <version>2.3.21</version>
             </dependency>
 
             <dependency>
