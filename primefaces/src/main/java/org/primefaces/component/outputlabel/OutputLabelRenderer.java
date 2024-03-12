@@ -64,6 +64,7 @@ public class OutputLabelRenderer extends CoreRenderer {
 
         final StyleClassBuilder styleClassBuilder = getStyleClassBuilder(context)
                 .add(OutputLabel.STYLE_CLASS)
+                .add(ComponentUtils.isRTL(context, label), OutputLabel.RTL_CLASS)
                 .add(label.getStyleClass());
 
         final EditableValueHolderState state = new EditableValueHolderState();
@@ -158,6 +159,7 @@ public class OutputLabelRenderer extends CoreRenderer {
         writer.writeAttribute("class", styleClassBuilder.build(), "styleClass");
         renderPassThruAttributes(context, label, HTML.LABEL_ATTRS);
         renderDomEvents(context, label, HTML.LABEL_EVENTS);
+        renderRTLDirection(context, label);
 
         if (!isValueBlank(_for)) {
             writer.writeAttribute("for", state.getClientId(), "for");
