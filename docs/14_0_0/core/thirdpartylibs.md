@@ -24,7 +24,7 @@ are many other third party libraries and plugins used to support features.
 | [jQuery.print](../jsdocs/modules/src_PrimeFaces.html#printJS) | 1.6.2 | https://github.com/DoersGuild/jQuery.print |
 | [jQuery Rangy](../jsdocs/modules/src_PrimeFaces.JQueryRangy.html) | 1.2.0 | https://github.com/timdown/rangyinputs |
 | [jQuery Timepicker Addon](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#timepicker) | 1.6.3 | http://trentrichardson.com/examples/timepicker |
-| [jQuery UI Touch Punch](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#touchpunch) | 1.1.3 | https://github.com/RWAP/jquery-ui-touch-punch |
+| [jQuery UI Touch Punch](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#touchpunch) | 1.1.4 | https://github.com/RWAP/jquery-ui-touch-punch |
 | [jQuery UI](../jsdocs/modules/node_modules__types_jqueryui.html) | 1.13.2 | https://github.com/jquery/jquery-ui |
 | [jQuery](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html) | 3.7.1 | https://jquery.com/ |
 | [jScrollPane](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#jScrollPane) | 2.2.3 | https://github.com/vitch/jScrollPane |
