@@ -7828,7 +7828,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Position of the paginator. Default is both.]]>
+                <![CDATA[Paginator can be positioned at the "top," "bottom," or "both." Default setting is "both."]]>
             </description>
             <name>paginatorPosition</name>
             <required>false</required>
