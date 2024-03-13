@@ -23,7 +23,9 @@
  */
 package org.primefaces.component.export;
 
-public interface ExporterOptions {
+import java.io.Serializable;
+
+public interface ExporterOptions extends Serializable {
 
     String getFacetFontStyle();
 
