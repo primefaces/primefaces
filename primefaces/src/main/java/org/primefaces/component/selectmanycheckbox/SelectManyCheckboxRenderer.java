@@ -138,11 +138,16 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
                 encodeGroupLabel(context, checkbox, (SelectItemGroup) selectItem);
                 writer.endElement("div");
 
+                if (flex) {
+                    writer.startElement("div", null);
+                    writer.writeAttribute("class", GridLayoutUtils.getFlexGridClass(true), null);
+                }
+
                 for (SelectItem childSelectItem : ((SelectItemGroup) selectItem).getSelectItems()) {
                     colMod = idx % columns;
-                    if (colMod == 0) {
+                    if (!flex && colMod == 0) {
                         writer.startElement("div", null);
-                        writer.writeAttribute("class", GridLayoutUtils.getFlexGridClass(flex), null);
+                        writer.writeAttribute("class", GridLayoutUtils.getFlexGridClass(false), null);
                     }
 
                     groupIdx++;
@@ -155,12 +160,12 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
                     idx++;
                     colMod = idx % columns;
 
-                    if (colMod == 0) {
+                    if (!flex && colMod == 0) {
                         writer.endElement("div");
                     }
                 }
 
-                if (idx != 0 && (idx % columns) != 0) {
+                if (flex || (!flex && idx != 0 && (idx % columns) != 0)) {
                     writer.endElement("div");
                 }
 
@@ -168,7 +173,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
             }
             else {
                 colMod = idx % columns;
-                if (colMod == 0) {
+                if ((flex && idx == 0) || (!flex && colMod == 0)) {
                     writer.startElement("div", null);
                     writer.writeAttribute("class", GridLayoutUtils.getFlexGridClass(flex), null);
                 }
@@ -181,13 +186,13 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
                 idx++;
                 colMod = idx % columns;
 
-                if (colMod == 0) {
+                if (!flex && colMod == 0) {
                     writer.endElement("div");
                 }
             }
         }
 
-        if (idx != 0 && (idx % columns) != 0) {
+        if (idx != 0 && (flex || (!flex && (idx % columns) != 0))) {
             writer.endElement("div");
         }
 

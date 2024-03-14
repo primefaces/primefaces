@@ -138,15 +138,20 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
             int idx = 0;
             int colMod;
 
+            if (flex) {
+                writer.startElement("div", null);
+                writer.writeAttribute("class", GridLayoutUtils.getFlexGridClass(true), null);
+            }
+
             for (int i = 0; i < selectItems.size(); i++) {
                 SelectItem selectItem = selectItems.get(i);
                 boolean disabled = selectItem.isDisabled() || radio.isDisabled();
                 String id = name + UINamingContainer.getSeparatorChar(context) + idx;
                 boolean selected = isSelected(context, radio, selectItem, currentValue);
                 colMod = idx % columns;
-                if (!lineDirection && colMod == 0) {
+                if (!flex && !lineDirection && colMod == 0) {
                     writer.startElement("div", null);
-                    writer.writeAttribute("class", GridLayoutUtils.getFlexGridClass(flex), null);
+                    writer.writeAttribute("class", GridLayoutUtils.getFlexGridClass(false), null);
                 }
 
                 String columnClass = (colMod < columnClasses.length) ? columnClasses[colMod].trim() : "";
@@ -164,12 +169,12 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
                 idx++;
                 colMod = idx % columns;
 
-                if (!lineDirection && colMod == 0) {
+                if (!flex && !lineDirection && colMod == 0) {
                     writer.endElement("div");
                 }
             }
 
-            if (idx != 0 && (idx % columns) != 0) {
+            if (flex || (!flex && idx != 0 && (idx % columns) != 0)) {
                 writer.endElement("div");
             }
         }
