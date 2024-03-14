@@ -23,31 +23,31 @@ GMap is a map component integrated with Google Maps API V3.
 | rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 | binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
 | widgetVar | null | String | Name of the client side widget.
+| center | null | String | Center point of the map.
+| disableDefaultUI | false | Boolean | Disables default UI controls
+| disabledDoubleClickZoom | false | Boolean | Disables zooming on mouse double click.
+| draggable | true | Boolean | Defines draggability of map.
+| fitBounds | true | Boolean | Defines if center and zoom should be calculated automatically to contain all markers on the map.
+| mapTypeControl | true | Boolean | Defines visibility of map type control.
 | model | null | MapModel | An org.primefaces.model.MapModel instance.
+| navigationControl | true | Boolean | Defines visibility of navigation control.
+| onPointClick | null | String | Javascript callback to execute when a point on map is clicked.
+| scrollWheel | false | Boolean | Controls scrollwheel zooming on the map.
+| streetView | false | Boolean | Controls street view support.
 | style | null | String | Inline style of the map container.
 | styleClass | null | String | Style class of the map container.
-| type | null | String | Type of the map.
-| center | null | String | Center point of the map.
+| type | null | String | There are four types of maps available: roadmap, satellite, hybrid, and terrain.
 | zoom | 8 | Integer | Defines the initial zoom level.
-| streetView | false | Boolean | Controls street view support.
-| disableDefaultUI | false | Boolean | Disables default UI controls
-| navigationControl | true | Boolean | Defines visibility of navigation control.
-| mapTypeControl | true | Boolean | Defines visibility of map type control.
-| draggable | true | Boolean | Defines draggability of map.
-| disabledDoubleClickZoom | false | Boolean | Disables zooming on mouse double click.
-| onPointClick | null | String | Javascript callback to execute when a point on map is clicked.
-| fitBounds | true | Boolean | Defines if center and zoom should be calculated automatically to contain all markers on the map.
-| scrollWheel | false | Boolean | Controls scrollwheel zooming on the map.
 
 ## Getting started with GMap
 First thing to do is placing V3 of the Google Maps API that the GMap is based on. Make sure to
-register a key for your map.
+register an API key for your map and replace `YOUR_API_KEY` in the script.
 
 ```js
-<script src="https://maps.googleapis.com/maps/api/js? key=YOUR_API_KEY&callback=initMap" async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
 ```
-As Google Maps api states, mandatory sensor parameter is used to specify if your application
-requires a sensor like GPS locator. Four options are required to place a gmap on a page, these are
+As Google Maps API states, mandatory sensor parameter is used to specify if your application
+requires a sensor like GPS locator. Four options are required to place a `GMap` on a page, these are
 center, zoom, type and style.
 
 ```xhtml
@@ -61,8 +61,8 @@ _style_ : Dimensions of the map.
 
 ## MapModel
 GMap is backed by an _org.primefaces.model.map.MapModel_ instance, PrimeFaces provides
-_org.primefaces.model.map.DefaultMapModel_ as the default implementation. API Docs of all GMap
-related model classes are available at the end of GMap section and also at javadocs of PrimeFaces.
+_org.primefaces.model.map.DefaultMapModel_ as the default implementation. API documents of all GMap
+related model classes are available at the end of `GMap` section and also at Javadocs of PrimeFaces.
 
 ## Markers
 A marker is represented by _org.primefaces.model.map.Marker._
@@ -175,7 +175,7 @@ public class MapBean {
 }
 ```
 ## GeoCoding
-Geocoding support is provided by client side api. Results are then passed to the backing bean using
+Geocoding support is provided by client side API. Results are then passed to the backing bean using
 _GeocodeEvent_ and _ReverseGeocodeEvent_ instances via ajax behavior callbacks.
 
 ```xhtml
@@ -193,19 +193,19 @@ public void onGeocode(GeocodeEvent event) {
 }
 ```
 
-## Ajax Behavior Events
-GMap provides many custom ajax behavior events for you to hook-in to various features.
+## AJAX Behavior Events
+GMap provides many custom AJAX behavior events for you to hook-in to various features.
 
 | Event | Listener Parameter | Fired |
 | --- | --- | --- |
-| overlaySelect | org.primefaces.event.map.OverlaySelectEvent | When an overlay is selected.
-| overlayDblSelect | org.primefaces.event.map.OverlaySelectEvent | When an overlay is double clicked.
-| stateChange | org.primefaces.event.map.StateChangeEvent | When map state changes.
-| pointSelect | org.primefaces.event.map.PointSelectEvent | When an empty point is selected.
-| pointDblSelect | org.primefaces.event.map.PointSelectEvent | When an empty point is double clicked.
-| markerDrag | org.primefaces.event.map.MarkerDragEvent | When a marker is dragged.
 | geocode | org.primefaces.event.map.GeocodeEvent | When the map is geocoded
+| markerDrag | org.primefaces.event.map.MarkerDragEvent | When a marker is dragged.
+| overlayDblSelect | org.primefaces.event.map.OverlaySelectEvent | When an overlay is double clicked.
+| overlaySelect | org.primefaces.event.map.OverlaySelectEvent | When an overlay is selected.
+| pointDblSelect | org.primefaces.event.map.PointSelectEvent | When an empty point is double clicked.
+| pointSelect | org.primefaces.event.map.PointSelectEvent | When an empty point is selected.
 | reverseGeocode | org.primefaces.event.map.ReverseGeocodeEvent | When a geocode is reversed.
+| stateChange | org.primefaces.event.map.StateChangeEvent | When map state changes.
 
 Following example displays a FacesMessage about the selected marker with growl component.
 
@@ -286,13 +286,13 @@ Alternatively setting _disableDefaultUI_ to true will remove all controls at onc
     mapTypeControl="false" navigationControl="false" />
 ```
 ## Native Google Maps API
-In case you need to access native google maps api with javascript, use provided _getMap()_ method.
+In case you need to access native google maps API with javascript, use provided _getMap()_ method.
 
 ```js
 var gmap = PF('yourWidgetVar').getMap();
 //gmap is a google.maps.Map instance
 ```
-Full map api is provided at;
+Full map API is provided at;
 
 http://code.google.com/apis/maps/documentation/javascript/reference.html
 
@@ -303,13 +303,13 @@ implementation)
 
 | Method | Description |
 | --- | --- |
-| addOverlay(Overlay overlay) |  Adds an overlay to map
-| List<Marker> getMarkers() | Returns the list of markers
-| List<Polyline> getPolylines() | Returns the list of polylines
-| List<Polygon> getPolygons() | Returns the list of polygons
 | List<Circle> getCircles() | Returns the list of circles
+| List<Marker> getMarkers() | Returns the list of markers
+| List<Polygon> getPolygons() | Returns the list of polygons
+| List<Polyline> getPolylines() | Returns the list of polylines
 | List<Rectangle> getRectangles() | Returns the list of rectangles.
 | Overlay findOverlay(String id) | Finds an overlay by it’s unique id
+| void addOverlay(Overlay overlay) |  Adds an overlay to map
 
 
 _org.primefaces.model.map.Overlay_
@@ -324,15 +324,15 @@ _org.primefaces.model.map.Marker_ extends _org.primefaces.model.map.Overlay_
 
 | Property | Default | Type | Description
 | --- | --- | --- | --- |
-| title | null | String | Text to display on rollover
-| latlng | null | LatLng | Location of the marker
-| icon | null | String | Icon of the foreground
-| shadow | null | String | Shadow image of the marker
+| animation | null | Animation | Enumeration of either DROP or BOUNCE
+| clickable | 1 | Boolean | Defines if marker can be dragged
 | cursor | pointer | String | Cursor to display on rollover
 | draggable | 0 | Boolean | Defines if marker can be dragged
-| clickable | 1 | Boolean | Defines if marker can be dragged
 | flat | 0 | Boolean | If enabled, shadow image is not displayed
-| animation | null | Animation | Enumeration of either DROP or BOUNCE
+| icon | null | String | Icon of the foreground
+| latlng | null | LatLng | Location of the marker
+| shadow | null | String | Shadow image of the marker
+| title | null | String | Text to display on rollover
 | visible | 1 | Boolean | Defines visibility of the marker
 
 _org.primefaces.model.map.Polyline_ extends _org.primefaces.model.map.Overlay_
@@ -348,35 +348,35 @@ _org.primefaces.model.map.Polygon_ extends _org.primefaces.model.map.Overlay_
 
 | Property | Default | Type | Description
 | --- | --- | --- | --- |
+fillColor | null | String | Background color of the polygon
+fillOpacity | 1 | Double | Opacity of the polygon
 paths | null | List | List of coordinates
 strokeColor | null | String | Color of a line
 strokeOpacity | 1 | Double | Opacity of a line
 strokeWeight | 1 | Integer | Weight of a line
-fillColor | null | String | Background color of the polygon
-fillOpacity | 1 | Double | Opacity of the polygon
 
 _org.primefaces.model.map.Circle_ extends _org.primefaces.model.map.Overlay_
 
 | Property | Default | Type | Description
 | --- | --- | --- | --- |
 center | null | LatLng | Center of the circle
+fillColor | null | String | Background color of the circle.
+fillOpacity | 1 | Double | Opacity of the circle.
 radius | null | Double | Radius of the circle.
 strokeColor | null | String | Stroke color of the circle.
 strokeOpacity | 1 | Double | Stroke opacity of circle.
 strokeWeight | 1 | Integer | Stroke weight of the circle.
-fillColor | null | String | Background color of the circle.
-fillOpacity | 1 | Double | Opacity of the circle.
 
 _org.primefaces.model.map.Rectangle_ extends _org.primefaces.model.map.Overlay_
 
 | Property | Default | Type | Description
 | --- | --- | --- | --- |
 bounds | null | LatLngBounds | Boundaries of the rectangle.
+fillColor | null | String | Background color of the rectangle.
+fillOpacity | 1 | Double | Opacity of the rectangle.
 strokeColor | null | String | Stroke color of the rectangle.
 strokeOpacity | 1 | Double | Stroke opacity of rectangle.
 strokeWeight | 1 | Integer | Stroke weight of the rectangle.
-fillColor | null | String | Background color of the rectangle.
-fillOpacity | 1 | Double | Opacity of the rectangle.
 
 _org.primefaces.model.map.LatLng_
 
@@ -401,7 +401,7 @@ address | null | String | String representation of the address.
 latLng | null | LatLng | Coordinates of the address.
 
 ## GMap Event API
-All classes in event api extends from _javax.faces.event.FacesEvent_.
+All classes in event API extends from _javax.faces.event.FacesEvent_.
 
 _org.primefaces.event.map.MarkerDragEvent_
 
