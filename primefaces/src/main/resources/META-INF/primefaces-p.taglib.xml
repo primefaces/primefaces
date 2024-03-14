@@ -11491,7 +11491,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Type of the map. Required.]]>
+                <![CDATA[There are four types of maps available: roadmap, satellite, hybrid, and terrain. Required.]]>
             </description>
             <name>type</name>
             <required>true</required>
