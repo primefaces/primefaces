@@ -694,7 +694,7 @@ if (!PrimeFaces.utils) {
          * Enables a widget for editing and sets it style as enabled.
          *
          * @param {JQuery} jq a required jQuery element to enable
-         * @param {JQuery | undefined | null} input an optional jQuery input to enable (will use jq if null)
+         * @param {JQuery | undefined | null} [input] an optional jQuery input to enable (will use jq if null)
          */
         enableInputWidget: function(jq, input) {
             if(!input) {
@@ -710,7 +710,7 @@ if (!PrimeFaces.utils) {
          * Disables a widget from editing and sets it style as disabled.
          *
          * @param {JQuery} jq a required jQuery element to disable
-         * @param {JQuery | undefined | null} input an optional jQuery input to disable (will use jq if null)
+         * @param {JQuery | undefined | null} [input] an optional jQuery input to disable (will use jq if null)
          */
         disableInputWidget: function(jq, input) {
             if(!input) {
@@ -1034,7 +1034,7 @@ if (!PrimeFaces.utils) {
          * Queue a microtask if delay is 0 or less and setTimeout if > 0.
          *
          * @param {() => void} fn the function to call after the delay
-         * @param {number | undefined} delay the optional delay in milliseconds
+         * @param {number | undefined} [delay] the optional delay in milliseconds
          * @return {number | undefined} the id associated to the timeout or undefined if no timeout used
          */
         queueTask: function(fn, delay) {
