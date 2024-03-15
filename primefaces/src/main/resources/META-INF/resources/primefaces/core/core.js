@@ -1221,7 +1221,7 @@
          * Some ARIA attributes have a value that depends on the current locale. This returns the localized version for
          * the given aria key.
          * @param {string} key An aria key
-         * @param {string} defaultValue Optional default if key is not found
+         * @param {string} [defaultValue] Optional default if key is not found
          * @return {string} The translation for the given aria key
          */
         getAriaLabel: function(key, defaultValue) {
