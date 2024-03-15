@@ -24,6 +24,7 @@
 package org.primefaces.component.captcha;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -34,25 +35,26 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class CaptchaRenderer extends CoreRenderer {
 
     private static final Logger LOGGER = Logger.getLogger(CaptchaRenderer.class.getName());
-    private static final String RESPONSE_FIELD = "g-recaptcha-response";
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
         Captcha captcha = (Captcha) component;
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
-        String answer = params.get(RESPONSE_FIELD);
+        String answer = params.get(String.format("%s-response", captcha.getType()));
 
         if (answer != null) {
             captcha.setSubmittedValue(answer);
         }
         else {
-            captcha.setSubmittedValue("");
+            captcha.setSubmittedValue(Constants.EMPTY_STRING);
         }
     }
 
@@ -63,6 +65,33 @@ public class CaptchaRenderer extends CoreRenderer {
 
         if (publicKey == null) {
             throw new FacesException("Cannot find public key for catpcha, use " + Captcha.PUBLIC_KEY + " context-param to define one");
+        }
+
+        switch (captcha.getType()) {
+            case Captcha.RECAPTCHA:
+                if (LangUtils.isBlank(captcha.getSourceUrl())) {
+                    captcha.setSourceUrl("https://www.google.com/recaptcha/api.js");
+                }
+                if (LangUtils.isBlank(captcha.getVerifyUrl())) {
+                    captcha.setVerifyUrl("https://www.google.com/recaptcha/api/siteverify");
+                }
+                if (LangUtils.isBlank(captcha.getExecutor())) {
+                    captcha.setExecutor("grecaptcha");
+                }
+                break;
+            case Captcha.HCAPTCHA:
+                if (LangUtils.isBlank(captcha.getSourceUrl())) {
+                    captcha.setSourceUrl("https://js.hcaptcha.com/1/api.js");
+                }
+                if (LangUtils.isBlank(captcha.getVerifyUrl())) {
+                    captcha.setVerifyUrl("https://api.hcaptcha.com/siteverify");
+                }
+                if (LangUtils.isBlank(captcha.getExecutor())) {
+                    captcha.setExecutor("hcaptcha");
+                }
+                break;
+            default:
+                throw new FacesException(String.format("Captcha type must be one of %s", List.of(Captcha.RECAPTCHA, Captcha.HCAPTCHA)));
         }
 
         encodeMarkup(context, captcha, publicKey);
@@ -77,7 +106,7 @@ public class CaptchaRenderer extends CoreRenderer {
         writer.writeAttribute("id", clientId, "id");
 
         if (captcha.getSize() != null && "invisible".equals(captcha.getSize())) {
-            writer.writeAttribute("class", "g-recaptcha", null);
+            writer.writeAttribute("class", captcha.getType(), null);
             writer.writeAttribute("data-sitekey", publicKey, null);
             writer.writeAttribute("data-size", "invisible", null);
         }
@@ -98,6 +127,7 @@ public class CaptchaRenderer extends CoreRenderer {
                 .attr("callback", captcha.getCallback(), null)
                 .attr("expired", captcha.getExpired(), null)
                 .attr("size", captcha.getSize(), null)
+                .attr("executor", captcha.getExecutor(), null)
                 .attr("sourceUrl", captcha.getSourceUrl(), null);
 
         wb.finish();

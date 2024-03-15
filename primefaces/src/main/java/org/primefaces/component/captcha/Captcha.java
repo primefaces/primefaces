@@ -30,6 +30,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
 
 import javax.el.ELException;
@@ -41,6 +42,7 @@ import javax.faces.context.FacesContext;
 import org.primefaces.PrimeFaces;
 import org.json.JSONObject;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
 import org.primefaces.util.MessageFactory;
 
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -54,6 +56,8 @@ public class Captcha extends CaptchaBase {
     public static final String PUBLIC_KEY = "primefaces.PUBLIC_CAPTCHA_KEY";
     public static final String PRIVATE_KEY = "primefaces.PRIVATE_CAPTCHA_KEY";
     public static final String INVALID_MESSAGE_ID = "primefaces.captcha.INVALID";
+    public static final String RECAPTCHA = "g-recaptcha";
+    public static final String HCAPTCHA = "h-captcha";
 
     private static final Logger LOGGER = Logger.getLogger(Captcha.class.getName());
 
@@ -66,7 +70,7 @@ public class Captcha extends CaptchaBase {
             boolean result = false;
 
             try {
-                URL url = new URL("https://www.google.com/recaptcha/api/siteverify");
+                URL url = new URL(getVerifyUrl());
                 URLConnection conn = url.openConnection();
                 conn.setDoInput(true);
                 conn.setDoOutput(true);
@@ -97,8 +101,9 @@ public class Captcha extends CaptchaBase {
             finally {
                 // the captcha token is valid for only one request, in case of an ajax request we have to get a new one
                 if (context.getPartialViewContext().isAjaxRequest()) {
-                    PrimeFaces.current().executeScript("if (document.getElementById('g-recaptcha-response')) { "
-                            + "try { grecaptcha.reset(); } catch (error) { PrimeFaces.error(error); } }");
+                    String script = String.format("if (document.getElementById('%s-response')) {try {%s.reset();} catch (error) {PrimeFaces.error(error);}}",
+                            getType(), getExecutor());
+                    PrimeFaces.current().executeScript(script);
                 }
             }
 
@@ -140,8 +145,8 @@ public class Captcha extends CaptchaBase {
         }
 
         StringBuilder postParams = new StringBuilder();
-        postParams.append("secret=").append(URLEncoder.encode(privateKey, "UTF-8"));
-        postParams.append("&response=").append(value == null ? "" : URLEncoder.encode((String) value, "UTF-8"));
+        postParams.append("secret=").append(URLEncoder.encode(privateKey, StandardCharsets.UTF_8));
+        postParams.append("&response=").append(value == null ? Constants.EMPTY_STRING : URLEncoder.encode((String) value, StandardCharsets.UTF_8));
 
         String params = postParams.toString();
         postParams.setLength(0);

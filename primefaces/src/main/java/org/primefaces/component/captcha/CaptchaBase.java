@@ -35,6 +35,7 @@ public abstract class CaptchaBase extends UIInput implements Widget {
 
     public enum PropertyKeys {
 
+        type,
         theme,
         language,
         tabindex,
@@ -42,7 +43,9 @@ public abstract class CaptchaBase extends UIInput implements Widget {
         callback,
         expired,
         size,
-        sourceUrl
+        executor,
+        sourceUrl,
+        verifyUrl
     }
 
     public CaptchaBase() {
@@ -110,11 +113,35 @@ public abstract class CaptchaBase extends UIInput implements Widget {
         getStateHelper().put(PropertyKeys.size, size);
     }
 
+    public String getType() {
+        return (String) getStateHelper().eval(PropertyKeys.type, Captcha.RECAPTCHA);
+    }
+
+    public void setType(String type) {
+        getStateHelper().put(PropertyKeys.type, type);
+    }
+
+    public String getExecutor() {
+        return (String) getStateHelper().eval(PropertyKeys.executor, null);
+    }
+
+    public void setExecutor(String executor) {
+        getStateHelper().put(PropertyKeys.executor, executor);
+    }
+
     public String getSourceUrl() {
-        return (String) getStateHelper().eval(PropertyKeys.sourceUrl, "https://www.google.com/recaptcha/api.js");
+        return (String) getStateHelper().eval(PropertyKeys.sourceUrl, null);
     }
 
     public void setSourceUrl(String sourceUrl) {
         getStateHelper().put(PropertyKeys.sourceUrl, sourceUrl);
+    }
+
+    public String getVerifyUrl() {
+        return (String) getStateHelper().eval(PropertyKeys.verifyUrl, null);
+    }
+
+    public void setVerifyUrl(String verifyUrl) {
+        getStateHelper().put(PropertyKeys.verifyUrl, verifyUrl);
     }
 }
