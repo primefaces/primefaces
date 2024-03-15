@@ -1363,7 +1363,7 @@
          * Queue a microtask if delay is 0 or less and setTimeout if > 0.
          *
          * @param {() => void} fn the function to call after the delay
-         * @param {number | undefined} delay the optional delay in milliseconds
+         * @param {number | undefined} [delay] the optional delay in milliseconds
          * @return {number | undefined} the id associated to the timeout or undefined if no timeout used
          */
         queueTask: function(fn, delay) {
