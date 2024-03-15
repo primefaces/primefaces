@@ -48,6 +48,9 @@ Look into [migration guide](https://primefaces.github.io/primefaces/14_0_0/#/../
 * Dashboard
     * Added `var` to allow dynamic panels in `DashboardWidget.setValue(obj)` per panel
     
+* Galleria
+    * Widget `show` method now accepts an optional `index` of which item to show.
+    
 * Messages
     * Added `clearMessages` widget method to clear all current messages.
     
