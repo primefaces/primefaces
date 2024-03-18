@@ -47,7 +47,7 @@
                     </p:datePicker>
 
                     <p:outputLabel for="lazyEvent" value="Lazy and Event"/>
-                    <p:datePicker pattern="yyyy-MM-dd" id="lazyEvent" value="#{datePickerMetadataView.date4}"
+                    <p:datePicker inline="true" id="lazyEvent" value="#{datePickerMetadataView.date4}"
                                   model="#{datePickerMetadataView.modelLazy}">
                         <p:ajax event="viewChange" listener="#{datePickerMetadataView.onViewChange}" update="growl"/>
                     </p:datePicker>

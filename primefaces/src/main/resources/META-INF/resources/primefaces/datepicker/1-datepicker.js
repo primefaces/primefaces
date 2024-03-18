@@ -133,7 +133,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
 
                 // #7457 trigger view change if lazy model is used
                 if ($this.cfg.lazyModel) {
-                    $this.fireViewChangeEvent($this.getViewDate());
+                    $this.updateLazyModel();
                 }
             };
         }
@@ -189,6 +189,11 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
 
         //pfs metadata
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
+
+        // #11645 trigger view change if lazy model is used
+        if (this.cfg.inline && this.cfg.lazyModel) {
+            this.updateLazyModel();
+        }
     },
 
     /**
@@ -417,6 +422,15 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
             options.update = this.id;
             options.formId = this.getParentFormId();
             PrimeFaces.ajax.Request.handle(options);
+        }
+    },
+
+    /**
+     * Triggers a viewChange event which updates the lazy model through an Ajax request using the current date.
+     */
+    updateLazyModel: function() {
+        if (this.cfg.lazyModel) {
+            this.fireViewChangeEvent(this.getViewDate());
         }
     },
 
