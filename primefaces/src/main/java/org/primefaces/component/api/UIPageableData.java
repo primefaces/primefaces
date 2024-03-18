@@ -35,7 +35,7 @@ import org.primefaces.util.MessageFactory;
 /**
  * UIData for pageable components
  */
-public class UIPageableData extends UIData implements Pageable, TouchAware {
+public class UIPageableData extends PrimeUIData implements Pageable, TouchAware {
 
     public static final String PAGINATOR_TOP_CONTAINER_CLASS = "ui-paginator ui-paginator-top ui-widget-header";
     public static final String PAGINATOR_BOTTOM_CONTAINER_CLASS = "ui-paginator ui-paginator-bottom ui-widget-header";

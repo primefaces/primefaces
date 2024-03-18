@@ -34,7 +34,7 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.api.UIData;
+import org.primefaces.component.api.PrimeUIData;
 import org.primefaces.component.api.UITree;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.datatable.DataTable;
@@ -125,7 +125,7 @@ public class CellEditEvent<T> extends AbstractAjaxBehaviorEvent {
     }
 
     private Object resolveRowData() {
-        if (source instanceof UIData) {
+        if (source instanceof PrimeUIData) {
             DataTable data = (DataTable) source;
             data.setRowModel(rowIndex);
             return data.getRowData();
@@ -139,7 +139,7 @@ public class CellEditEvent<T> extends AbstractAjaxBehaviorEvent {
     }
 
     private T resolveValue() {
-        if (source instanceof UIData) {
+        if (source instanceof PrimeUIData) {
             DataTable data = (DataTable) source;
             data.setRowModel(rowIndex);
         }
