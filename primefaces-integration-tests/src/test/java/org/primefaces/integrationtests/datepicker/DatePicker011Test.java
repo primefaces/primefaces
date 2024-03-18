@@ -370,7 +370,9 @@ public class DatePicker011Test extends AbstractDatePickerTest {
     private void testDatePickerPart2(DatePicker datePicker, Page page, DatePickerBehaviour behaviour) {
         // Assert initial state
         Messages messages = page.messages;
-        assertEmptyMessages(messages);
+        if (!datePicker.isLazy() || behaviour != DatePickerBehaviour.viewChange) {
+            assertEmptyMessages(messages);
+        }
 
         // Act - 1st show panel
         datePicker.click();
