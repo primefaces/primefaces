@@ -203,9 +203,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
     private void testDatePickerPart1(DatePicker datePicker, Page page, DatePickerBehaviour behaviour) {
         // Assert initial state
         Messages messages = page.messages;
-        if (!datePicker.isLazy() || behaviour != DatePickerBehaviour.viewChange) {
-            assertEmptyMessages(messages);
-        }
+        assertEmptyMessages(messages);
 
         // Act - 1st show panel
         datePicker.showPanel();
@@ -372,9 +370,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
     private void testDatePickerPart2(DatePicker datePicker, Page page, DatePickerBehaviour behaviour) {
         // Assert initial state
         Messages messages = page.messages;
-        if (!datePicker.isLazy() || behaviour != DatePickerBehaviour.viewChange) {
-            assertEmptyMessages(messages);
-        }
+        assertEmptyMessages(messages);
 
         // Act - 1st show panel
         datePicker.click();
@@ -429,9 +425,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
     private void testDatePickerPart3(DatePicker datePicker, Page page, DatePickerBehaviour behaviour) {
         // Assert initial state
         Messages messages = page.messages;
-        if (!datePicker.isLazy() || behaviour != DatePickerBehaviour.viewChange) {
-            assertEmptyMessages(messages);
-        }
+        assertEmptyMessages(messages);
 
         // Act - 1st show panel
         datePicker.showPanel();
