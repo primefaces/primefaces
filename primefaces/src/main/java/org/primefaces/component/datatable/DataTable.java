@@ -28,6 +28,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
 import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -1129,6 +1130,6 @@ public class DataTable extends DataTableBase {
         // do not cache if nested in iterator component and contains dynamic columns since number of columns may vary per iteration
         // see https://github.com/primefaces/primefaces/issues/2154
         return getFacesContext().getCurrentPhaseId() == PhaseId.RENDER_RESPONSE
-                && (!isNestedWithinIterator() || columns.stream().noneMatch(DynamicColumn.class::isInstance));
+                && (!isNestedWithinIterator(getFacesContext()) || columns.stream().noneMatch(DynamicColumn.class::isInstance));
     }
 }
