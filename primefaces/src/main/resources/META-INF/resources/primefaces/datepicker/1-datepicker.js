@@ -133,7 +133,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
 
                 // #7457 trigger view change if lazy model is used
                 if ($this.cfg.lazyModel) {
-                    $this.fireViewChangeEvent($this.getViewDate());
+                    $this.updateLazyModel();
                 }
             };
         }
