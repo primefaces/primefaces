@@ -383,6 +383,9 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
             ]
         }
         if (lazy) {
+            if (!this.panel.parent().is("div.ui-state-disabled")) {
+                this.panel.wrap("<div class='ui-state-disabled ui-datepicker-disabled'/>");
+            }
             options.onsuccess = function(responseXML, status, xhr) {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                     widget: $this,
@@ -407,6 +410,9 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
                         pdp.options.dateStyleClasses = dateStyleClasses;
                         $this.setDisabledDates(disabledDates);
                         $this.setEnabledDates(enabledDates);
+                        if ($this.panel.parent().is("div.ui-state-disabled")) {
+                            $this.panel.unwrap();
+                        }
                     }
                 });
                 return true;
