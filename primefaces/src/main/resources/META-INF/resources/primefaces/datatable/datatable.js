@@ -4594,7 +4594,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 //drop right
                 if(dropLocation > 0) {
                     if($this.cfg.resizableColumns) {
-                        if(droppedColumnHeader.next().length) {
+                        if(droppedColumnHeader.next().length === 0) {
                             droppedColumnHeader.children('span.ui-column-resizer').show();
                             draggedColumnHeader.children('span.ui-column-resizer').hide();
                         }
