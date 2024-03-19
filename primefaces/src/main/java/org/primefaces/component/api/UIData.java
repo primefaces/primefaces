@@ -365,7 +365,7 @@ public class UIData extends UIDataMojarraImpl {
 
     @Override
     public boolean visitTree(VisitContext context, VisitCallback callback) {
-        return super.visitTree(VisitContextImpl.getOrCreate(context), callback);
+        return super.visitTree(new VisitContextImpl(context), callback);
     }
 
     @Override
@@ -598,35 +598,26 @@ public class UIData extends UIDataMojarraImpl {
     // #9171
     private static class VisitContextImpl extends VisitContextWrapper {
 
-        public static final String INSTANCE_KEY = VisitContextImpl.class.getName();
+        private Set<UIComponent> rejectedChildren;
 
-        private final Set<UIComponent> rejectedChildren = new HashSet<>();
-
-        private VisitContextImpl(VisitContext wrapped) {
+        public VisitContextImpl(VisitContext wrapped) {
             super(wrapped);
-        }
-
-        public static VisitContext getOrCreate(VisitContext visitContext) {
-            return (VisitContextImpl) visitContext.getFacesContext().getAttributes().compute(INSTANCE_KEY, (k , v) -> {
-                if (v != null) {
-                    ((VisitContextImpl) v).rejectedChildren.clear();
-                    return v;
-                }
-                return new VisitContextImpl(visitContext);
-            });
         }
 
         @Override
         public VisitResult invokeVisitCallback(UIComponent component, VisitCallback callback) {
             VisitResult result = super.invokeVisitCallback(component, callback);
             if (result == VisitResult.REJECT) {
+                if (rejectedChildren == null) {
+                    rejectedChildren = new HashSet<>();
+                }
                 rejectedChildren.add(component);
             }
             return result;
         }
 
         public boolean isRejected(UIComponent component) {
-            return rejectedChildren.contains(component);
+            return rejectedChildren != null && rejectedChildren.contains(component);
         }
     }
 }
