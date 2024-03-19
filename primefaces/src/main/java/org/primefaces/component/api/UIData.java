@@ -33,6 +33,7 @@ import javax.faces.FacesException;
 import javax.faces.component.*;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
+import javax.faces.component.visit.VisitContextWrapper;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
@@ -364,56 +365,15 @@ public class UIData extends UIDataMojarraImpl {
 
     @Override
     public boolean visitTree(VisitContext context, VisitCallback callback) {
-        if (!isVisitable(context)) {
+        return super.visitTree(VisitContextImpl.getOrCreate(context), callback);
+    }
+
+    @Override
+    protected boolean visitColumnsAndColumnFacets(VisitContext context, VisitCallback callback, boolean visitRows) {
+        if (!requiresColumns()) {
             return false;
         }
 
-        FacesContext facesContext = context.getFacesContext();
-        boolean visitRows = requiresRowIteration(context);
-
-        int rowIndex = -1;
-        if (visitRows) {
-            rowIndex = getRowIndex();
-            setRowIndex(-1);
-        }
-
-        pushComponentToEL(facesContext, null);
-
-        try {
-            VisitResult result = context.invokeVisitCallback(this, callback);
-
-            if (result == VisitResult.COMPLETE) {
-                return true;
-            }
-
-            if ((result == VisitResult.ACCEPT) && doVisitChildren(context, visitRows)) {
-                if (visitFacets(context, callback, visitRows)) {
-                    return true;
-                }
-
-                Set<UIComponent> rejectedChildren = new HashSet<>();
-                if (requiresColumns() && visitColumnsAndColumnFacets(context, callback, visitRows, rejectedChildren)) {
-                    return true;
-                }
-
-                if (visitRows(context, callback, visitRows, rejectedChildren)) {
-                    return true;
-                }
-
-            }
-        }
-        finally {
-            popComponentFromEL(facesContext);
-
-            if (visitRows) {
-                setRowIndex(rowIndex);
-            }
-        }
-
-        return false;
-    }
-
-    protected boolean visitColumnsAndColumnFacets(VisitContext context, VisitCallback callback, boolean visitRows, Set<UIComponent> rejectedChildren) {
         if (visitRows) {
             setRowIndex(-1);
         }
@@ -426,7 +386,6 @@ public class UIData extends UIDataMojarraImpl {
                     return true;
                 }
                 else if (result == VisitResult.REJECT) {
-                    rejectedChildren.add(child);
                     continue;
                 }
 
@@ -510,7 +469,12 @@ public class UIData extends UIDataMojarraImpl {
         return false;
     }
 
-    protected boolean visitRows(VisitContext context, VisitCallback callback, boolean visitRows, Set<UIComponent> rejectedChildren) {
+    @Override
+    protected boolean visitRows(VisitContext context, VisitCallback callback, boolean visitRows) {
+        if (!(context instanceof VisitContextImpl)) {
+            throw new FacesException();
+        }
+
         boolean requiresColumns = requiresColumns();
         int processed = 0;
         int rowIndex = 0;
@@ -535,7 +499,7 @@ public class UIData extends UIDataMojarraImpl {
             if (getChildCount() > 0) {
                 for (int i = 0; i < getChildCount(); i++) {
                     UIComponent kid = getChildren().get(i);
-                    if (!rejectedChildren.contains(kid)) {
+                    if (!((VisitContextImpl) context).isRejected(kid)) {
                         if (requiresColumns) {
                             if (kid instanceof Columns) {
                                 Columns columns = (Columns) kid;
@@ -629,5 +593,40 @@ public class UIData extends UIDataMojarraImpl {
         }
 
         return isNested;
+    }
+
+    // #9171
+    private static class VisitContextImpl extends VisitContextWrapper {
+
+        public static final String INSTANCE_KEY = VisitContextImpl.class.getName();
+
+        private final Set<UIComponent> rejectedChildren = new HashSet<>();
+
+        private VisitContextImpl(VisitContext wrapped) {
+            super(wrapped);
+        }
+
+        public static VisitContext getOrCreate(VisitContext visitContext) {
+            return (VisitContextImpl) visitContext.getFacesContext().getAttributes().compute(INSTANCE_KEY, (k , v) -> {
+                if (v != null) {
+                    ((VisitContextImpl) v).rejectedChildren.clear();
+                    return v;
+                }
+                return new VisitContextImpl(visitContext);
+            });
+        }
+
+        @Override
+        public VisitResult invokeVisitCallback(UIComponent component, VisitCallback callback) {
+            VisitResult result = super.invokeVisitCallback(component, callback);
+            if (result == VisitResult.REJECT) {
+                rejectedChildren.add(component);
+            }
+            return result;
+        }
+
+        public boolean isRejected(UIComponent component) {
+            return rejectedChildren.contains(component);
+        }
     }
 }
