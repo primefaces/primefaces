@@ -314,7 +314,12 @@ public class UIData extends UIDataMojarraImpl {
     protected void saveDescendantState() {
         FacesContext context = getFacesContext();
 
-        super.saveDescendantState();
+        if (getChildCount() > 0) {
+            for (int i = 0; i < getChildCount(); i++) {
+                UIComponent kid = getChildren().get(i);
+                saveDescendantState(kid, context);
+            }
+        }
 
         if (getFacetCount() > 0) {
             for (UIComponent facet : getFacets().values()) {
@@ -327,7 +332,12 @@ public class UIData extends UIDataMojarraImpl {
     protected void restoreDescendantState() {
         FacesContext context = getFacesContext();
 
-        super.restoreDescendantState();
+        if (getChildCount() > 0) {
+            for (int i = 0; i < getChildCount(); i++) {
+                UIComponent kid = getChildren().get(i);
+                restoreDescendantState(kid, context);
+            }
+        }
 
         if (getFacetCount() > 0) {
             for (UIComponent facet : getFacets().values()) {
