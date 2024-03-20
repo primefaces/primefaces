@@ -368,7 +368,8 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
         if (!this.cfg.round) {
             return value;
         }
-        return (Math.ceil(value / this.cfg.step) * this.cfg.step).toFixed(this.cfg.precision);
+        var numericValue = parseFloat(typeof value === 'string' ? value.replace(this.cfg.thousandSeparator, '') : value);
+        return +(Math.ceil(numericValue / this.cfg.step) * this.cfg.step).toFixed(this.cfg.precision);
     },
 
     /**
