@@ -1293,7 +1293,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             var row = toggler.closest('tr');
             var rowMeta = this.getRowMeta(row);
             var expanded = toggler.attr('aria-expanded') === "true";
-            var ariaLabel = expanded ? PrimeFaces.getAriaLabel('expandRow') : PrimeFaces.getAriaLabel('collapseRow');
+            var ariaLabel = expanded ? PrimeFaces.getAriaLabel('collapseLabel') : PrimeFaces.getAriaLabel('expandLabel');
             if (rowMeta && rowMeta.key) {
                 ariaLabel += " " + rowMeta.key;
             }
@@ -2675,7 +2675,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             if (jq) {
                 var rowMeta = this.getRowMeta(row);
                 var checked = row.attr('aria-selected') === "true"
-                var ariaLabel = checked ? PrimeFaces.getAriaLabel('selectRow') : PrimeFaces.getAriaLabel('unselectRow');
+                var ariaLabel = checked ? PrimeFaces.getAriaLabel('unselectLabel') : PrimeFaces.getAriaLabel('selectLabel');
                 ariaLabel += " " + rowMeta.key;
                 jq.attr('aria-label', ariaLabel);
             }
@@ -5228,12 +5228,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
            parentRow = link.closest('tr.ui-rowgroup-header');
 
            if(togglerIcon.hasClass('ui-icon-circle-triangle-s')) {
-               link.attr('aria-expanded', false).attr('aria-label', PrimeFaces.getAriaLabel('collapseRow'));
+               link.attr('aria-expanded', false).attr('aria-label', PrimeFaces.getAriaLabel('expandLabel'));
                togglerIcon.addClass('ui-icon-circle-triangle-e').removeClass('ui-icon-circle-triangle-s');
                parentRow.nextUntil('tr.ui-rowgroup-header').hide();
            }
            else {
-               link.attr('aria-expanded', true).attr('aria-label', PrimeFaces.getAriaLabel('expandRow'));
+               link.attr('aria-expanded', true).attr('aria-label', PrimeFaces.getAriaLabel('collapseLabel'));
                togglerIcon.addClass('ui-icon-circle-triangle-s').removeClass('ui-icon-circle-triangle-e');
                parentRow.nextUntil('tr.ui-rowgroup-header').show();
            }
