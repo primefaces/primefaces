@@ -55,13 +55,12 @@ import org.primefaces.util.SharedStringBuilder;
 // Private class to represent saved state information
 
 /**
- * {@code UIDataMojarraImpl} is largely a copy of Mojarra 2.3.1's {@code UIData} and few bits from MyFaces
+ * {@link UIDataPatchImpl} is largely a copy of Mojarra 2.3.1's {@code UIData} and few bits from MyFaces
  * The idea is to make a clear distinction between what belongs to the JSF implementation
  * and PrimeFaces. The code replicates exactly the code of the original class with a few exceptions:
  * <ul>
  *   <li>All members become protected, so that it's possible for PrimeFaces to override methods if necessary.</li>
- *   <li>Few methods are not copied since these implementations are tightly coupled with Mojarra.</li>
- *   <li>The method {@code isNestedWithinIterator} is abstract.</li>
+ *   <li>Few methods are either copied or become abstract as they are tightly coupled with Mojarra.</li>
  *   <li>{@link UIDataPatchImpl#getClientId(FacesContext)} and {@link UIDataPatchImpl#getContainerClientId(FacesContext)} copied from MyFaces (see MYFACES-2744)</li>
  *   <li>Support of MyFaces view pooling in {@link UIDataPatchImpl#saveState(FacesContext)}</li>
  * </ul>
