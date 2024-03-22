@@ -386,7 +386,7 @@ public class AppMenu {
         panelMenuItems.add(new MenuItem("Divider", "/ui/panel/divider"));
         panelMenuItems.add(new MenuItem("Fieldset", "/ui/panel/fieldset"));
         //panelMenuItems.add(new MenuItem("Grid CSS", "/ui/panel/grid"));
-        //panelMenuItems.add(new MenuItem("NotificationBar", "/ui/panel/notificationBar"));
+        panelMenuItems.add(new MenuItem("NotificationBar", "/ui/panel/notificationBar"));
         panelMenuItems.add(new MenuItem("OutputPanel", "/ui/panel/outputPanel"));
         //panelMenuItems.add(new MenuItem("FlexGrid", "/ui/panel/flexGrid"));
         panelMenuItems.add(new MenuItem("Panel", "/ui/panel/panel"));
