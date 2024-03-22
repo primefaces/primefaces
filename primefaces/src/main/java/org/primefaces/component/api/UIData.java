@@ -485,31 +485,6 @@ public class UIData extends UIDataPatchImpl {
     }
 
     @Override
-    public Object saveState(FacesContext context) {
-        // See MyFaces UIData
-        ComponentUtils.ViewPoolingResetMode viewPoolingResetMode = ComponentUtils.isViewPooling(context);
-        if (viewPoolingResetMode == ComponentUtils.ViewPoolingResetMode.SOFT) {
-            _rowTransientStates.clear();
-            _initialDescendantFullComponentState = null;
-
-            baseClientId = null;
-            isNested = null;
-            oldVar = null;
-        }
-        else if (viewPoolingResetMode == ComponentUtils.ViewPoolingResetMode.HARD) {
-            _rowTransientStates.clear();
-            _rowDeltaStates.clear();
-            _initialDescendantFullComponentState = null;
-
-            baseClientId = null;
-            isNested = null;
-            oldVar = null;
-        }
-
-        return super.saveState(context);
-    }
-
-    @Override
     protected Boolean isNestedWithinIterator(FacesContext context) {
         if (isNested == null) {
             isNested = ComponentUtils.isNestedWithinIterator(this);

@@ -48,6 +48,7 @@ import javax.faces.model.DataModel;
 import javax.faces.render.Renderer;
 
 import org.primefaces.util.ComponentTraversalUtils;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.SharedStringBuilder;
 
 // ------------------------------------------------------------- Private Classes
@@ -59,11 +60,10 @@ import org.primefaces.util.SharedStringBuilder;
  * and PrimeFaces. The code replicates exactly the code of the original class with a few exceptions:
  * <ul>
  *   <li>All members become protected, so that it's possible for PrimeFaces to override methods if necessary.</li>
- *   <li>The methods {@code invokeOnComponent}, {@code getDataModel}, {@code setDataModel},
- *       {@code createDataModel}, and {@code setValueExpression} are not copied since these implementations
- *       are tightly coupled with Mojarra.</li>
+ *   <li>Few methods are not copied since these implementations are tightly coupled with Mojarra.</li>
  *   <li>The method {@code isNestedWithinIterator} is abstract.</li>
- *   <li>{@code getContainerClientId} copied from MyFaces (see MYFACES-2744)</li>
+ *   <li>{@link UIDataPatchImpl#getClientId(FacesContext)} and {@link UIDataPatchImpl#getContainerClientId(FacesContext)} copied from MyFaces (see MYFACES-2744)</li>
+ *   <li>Support of MyFaces view pooling in {@link UIDataPatchImpl#saveState(FacesContext)}</li>
  * </ul>
  *
  * <p><strong class="changed_modified_2_0_rev_a
@@ -1221,6 +1221,27 @@ public abstract class UIDataPatchImpl extends UIData {
     @Override
     public Object saveState(FacesContext context)
     {
+        // -- From MyFaces UIData#saveState
+        ComponentUtils.ViewPoolingResetMode viewPoolingResetMode = ComponentUtils.isViewPooling(context);
+        if (viewPoolingResetMode == ComponentUtils.ViewPoolingResetMode.SOFT) {
+            _rowTransientStates.clear();
+            _initialDescendantFullComponentState = null;
+
+            baseClientId = null;
+            isNested = null;
+            oldVar = null;
+        }
+        else if (viewPoolingResetMode == ComponentUtils.ViewPoolingResetMode.HARD) {
+            _rowTransientStates.clear();
+            _rowDeltaStates.clear();
+            _initialDescendantFullComponentState = null;
+
+            baseClientId = null;
+            isNested = null;
+            oldVar = null;
+        }
+        // -- End MyFaces UIData#saveState
+
         resetClientIds(this);
         
         if (initialStateMarked()) {
