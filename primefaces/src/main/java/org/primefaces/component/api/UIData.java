@@ -37,25 +37,21 @@ import javax.faces.component.visit.VisitContextWrapper;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
-import javax.faces.render.Renderer;
 
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.model.LazyDataModel;
-import org.primefaces.shaded.faces.UIDataMojarraImpl;
-import org.primefaces.util.ComponentTraversalUtils;
+import org.primefaces.shaded.faces.UIDataPatchImpl;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.ELUtils;
-import org.primefaces.util.SharedStringBuilder;
 
 /**
  * Enhanced version of the JSF UIData.
  */
-public class UIData extends UIDataMojarraImpl {
+public class UIData extends UIDataPatchImpl {
 
     private static final Logger LOGGER = Logger.getLogger(UIData.class.getName());
-    private static final String SB_ID = UIData.class.getName() + "#id";
 
     public enum PropertyKeys {
         rowIndexVar,
@@ -71,7 +67,7 @@ public class UIData extends UIDataMojarraImpl {
             if (type == null) {
                 LOGGER.warning("Unable to automatically determine the `lazy` attribute, fallback to false. "
                         + "Either define the `lazy` attribute on the component or make sure the `value` attribute doesn't resolve to `null`. "
-                        + "clientId: " + this.getClientId());
+                        + "clientId: " + getClientId());
             }
             else {
                 lazy = LazyDataModel.class.isAssignableFrom(type);
@@ -187,79 +183,6 @@ public class UIData extends UIDataMojarraImpl {
     }
 
     @Override
-    public String getClientId(FacesContext context) {
-        if (baseClientId != null) {
-            return baseClientId;
-        }
-
-        String id = getId();
-        if (id == null) {
-            UniqueIdVendor parentUniqueIdVendor = ComponentTraversalUtils.closestUniqueIdVendor(this);
-
-            if (parentUniqueIdVendor == null) {
-                UIViewRoot viewRoot = context.getViewRoot();
-
-                if (viewRoot != null) {
-                    id = viewRoot.createUniqueId();
-                }
-                else {
-                    throw new FacesException("Cannot create clientId for " + getClass().getCanonicalName());
-                }
-            }
-            else {
-                id = parentUniqueIdVendor.createUniqueId(context, null);
-            }
-
-            setId(id);
-        }
-
-        UIComponent namingContainer = ComponentTraversalUtils.closestNamingContainer(this);
-        if (namingContainer != null) {
-            String containerClientId = namingContainer.getContainerClientId(context);
-
-            if (containerClientId != null) {
-                StringBuilder sb = SharedStringBuilder.get(context, SB_ID, containerClientId.length() + 10);
-                baseClientId = sb.append(containerClientId).append(UINamingContainer.getSeparatorChar(context)).append(id).toString();
-            }
-            else {
-                baseClientId = id;
-            }
-        }
-        else {
-            baseClientId = id;
-        }
-
-        Renderer renderer = getRenderer(context);
-        if (renderer != null) {
-            baseClientId = renderer.convertClientId(context, baseClientId);
-        }
-
-        return baseClientId;
-    }
-
-    @Override
-    public String getContainerClientId(FacesContext context) {
-        //clientId is without rowIndex
-        String componentClientId = getClientId(context);
-
-        int rowIndex = getRowIndex();
-        if (rowIndex == -1) {
-            return componentClientId;
-        }
-
-        StringBuilder sb = SharedStringBuilder.get(context, SB_ID, componentClientId.length() + 4);
-        return sb.append(componentClientId).append(UINamingContainer.getSeparatorChar(context)).append(rowIndex).toString();
-    }
-
-    @Override
-    public void setId(String id) {
-        super.setId(id);
-
-        //clear
-        baseClientId = null;
-    }
-
-    @Override
     protected void setRowIndexWithoutRowStatePreserved(int rowIndex) {
         saveDescendantState();
         setRowModel(rowIndex);
@@ -268,7 +191,7 @@ public class UIData extends UIDataMojarraImpl {
 
     public void setRowModel(int rowIndex) {
         //update rowIndex
-        getStateHelper().put(UIDataMojarraImpl.PropertyKeys.rowIndex, rowIndex);
+        getStateHelper().put(UIDataPatchImpl.PropertyKeys.rowIndex, rowIndex);
         getDataModel().setRowIndex(rowIndex);
 
         //clear datamodel
