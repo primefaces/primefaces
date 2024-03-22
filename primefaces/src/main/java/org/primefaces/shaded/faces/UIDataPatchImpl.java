@@ -38,7 +38,6 @@ import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitHint;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
-import javax.faces.el.ValueBinding;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.FacesListener;
@@ -46,13 +45,16 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.PostValidateEvent;
 import javax.faces.event.PreValidateEvent;
 import javax.faces.model.DataModel;
-import javax.faces.model.ScalarDataModel;
+import javax.faces.render.Renderer;
+
+import org.primefaces.util.ComponentTraversalUtils;
+import org.primefaces.util.SharedStringBuilder;
 
 // ------------------------------------------------------------- Private Classes
 // Private class to represent saved state information
 
 /**
- * {@code UIDataMojarraImpl} is largely a copy of Mojarra 2.3.1's {@code UIData}.
+ * {@code UIDataMojarraImpl} is largely a copy of Mojarra 2.3.1's {@code UIData} and few bits from MyFaces
  * The idea is to make a clear distinction between what belongs to the JSF implementation
  * and PrimeFaces. The code replicates exactly the code of the original class with a few exceptions:
  * <ul>
@@ -61,6 +63,7 @@ import javax.faces.model.ScalarDataModel;
  *       {@code createDataModel}, and {@code setValueExpression} are not copied since these implementations
  *       are tightly coupled with Mojarra.</li>
  *   <li>The method {@code isNestedWithinIterator} is abstract.</li>
+ *   <li>{@code getContainerClientId} copied from MyFaces (see MYFACES-2744)</li>
  * </ul>
  *
  * <p><strong class="changed_modified_2_0_rev_a
@@ -78,33 +81,9 @@ import javax.faces.model.ScalarDataModel;
  * the <code>setRendererType()</code> method.</p>
  */
 
-public abstract class UIDataMojarraImpl extends UIData {
+public abstract class UIDataPatchImpl extends UIData {
 
-    // ------------------------------------------------------ Manifest Constants
-
-    /**
-     * <p>The standard component type for this component.</p>
-     */
-    public static final String COMPONENT_TYPE = "javax.faces.Data";
-
-
-    /**
-     * <p>The standard component family for this component.</p>
-     */
-    public static final String COMPONENT_FAMILY = "javax.faces.Data";
-
-    // ------------------------------------------------------------ Constructors
-
-    /**
-     * <p>Create a new {@link UIDataMojarraImpl} instance with default property
-     * values.</p>
-     */
-    public UIDataMojarraImpl() {
-
-        super();
-        setRendererType("javax.faces.Table");
-
-    }
+    protected static final String SB_ID = UIDataPatchImpl.class.getName() + "#id";
 
     // ------------------------------------------------------ Instance Variables
 
@@ -114,21 +93,10 @@ public abstract class UIDataMojarraImpl extends UIData {
      */
     protected enum PropertyKeys {
         /**
-         * <p>The first row number (zero-relative) to be displayed.</p>
-         */
-        first,
-
-        /**
          * <p>The zero-relative index of the current row number, or -1 for no
          * current row association.</p>
          */
         rowIndex,
-
-        /**
-         * <p>The number of rows to display, or zero for all remaining rows in the
-         * table.</p>
-         */
-        rows,
 
         /**
          * <p>This map contains <code>SavedState</code> instances for each
@@ -140,25 +108,10 @@ public abstract class UIDataMojarraImpl extends UIData {
         saved,
 
         /**
-         * <p>The local value of this {@link UIComponent}.</p>
-         */
-        value,
-
-        /**
          * <p>The request scope attribute under which the data object for the
          * current row will be exposed when iterating.</p>
          */
         var,
-
-        /**
-         * <p>Last id vended by {@link UIData#createUniqueId(javax.faces.context.FacesContext, String)}.</p>
-         */
-        lastId,
-     
-        /**
-         * 
-         */
-        rowStatePreserved
     }
 
     /**
@@ -177,24 +130,6 @@ public abstract class UIDataMojarraImpl extends UIData {
      */
     protected String baseClientId = null;
 
-
-    /**
-     * <p> Length of the cached <code>baseClientId</code> plus one for
-     * the {@link UINamingContainer#getSeparatorChar}. </p>
-     *
-     * <p>This is not part of the component state.</p>
-     */
-    protected int baseClientIdLength;
-
-
-    /**
-     * <p>StringBuilder used to build per-row client IDs.</p>
-     *
-     * <p>This is not part of the component state.</p>
-     */
-    protected StringBuilder clientIdBuilder = null;
-
-
     /**
      * <p>Flag indicating whether or not this UIData instance is nested
      * within another UIData instance</p>
@@ -209,149 +144,6 @@ public abstract class UIDataMojarraImpl extends UIData {
     protected Object _initialDescendantFullComponentState = null;
 
     // -------------------------------------------------------------- Properties
-
-
-    @Override
-    public String getFamily() {
-
-        return (COMPONENT_FAMILY);
-
-    }
-
-
-    /**
-     * <p>Return the zero-relative row number of the first row to be
-     * displayed.</p>
-     * 
-     * @return the row number.
-     */
-    public int getFirst() {
-
-        return (Integer) getStateHelper().eval(PropertyKeys.first, 0);
-
-    }
-
-
-    /**
-     * <p>Set the zero-relative row number of the first row to be
-     * displayed.</p>
-     *
-     * @param first New first row number
-     *
-     * @throws IllegalArgumentException if <code>first</code> is negative
-     */
-    public void setFirst(int first) {
-
-        if (first < 0) {
-            throw new IllegalArgumentException(String.valueOf(first));
-        }
-        getStateHelper().put(PropertyKeys.first, first);
-
-    }
-
-
-    /**
-     * <p>Return the footer facet of this component (if any).  A convenience
-     * method for <code>getFacet("footer")</code>.</p>
-     * 
-     * @return the footer facet.
-     */
-    public UIComponent getFooter() {
-
-        return getFacet("footer");
-
-    }
-
-
-    /**
-     * <p>Set the footer facet of this component.  A convenience method for
-     * <code>getFacets().put("footer", footer)</code>.</p>
-     *
-     * @param footer the new footer facet
-     *
-     * @throws NullPointerException if <code>footer</code> is <code>null</code>
-     */
-    public void setFooter(UIComponent footer) {
-
-        getFacets().put("footer", footer);
-
-    }
-
-
-    /**
-     * <p>Return the header facet of this component (if any).  A convenience
-     * method for <code>getFacet("header")</code>.</p>
-     * 
-     * @return the header facet.
-     */
-    public UIComponent getHeader() {
-
-        return getFacet("header");
-
-    }
-
-
-    /**
-     * <p>Set the header facet of this component.  A convenience method for
-     * <code>getFacets().put("header", header)</code>.</p>
-     *
-     * @param header the new header facet
-     *
-     * @throws NullPointerException if <code>header</code> is <code>null</code>
-     */
-    public void setHeader(UIComponent header) {
-
-        getFacets().put("header", header);
-
-    }
-
-
-    /**
-     * <p>Return a flag indicating whether there is <code>rowData</code>
-     * available at the current <code>rowIndex</code>.  If no
-     * <code>wrappedData</code> is available, return <code>false</code>.</p>
-     *
-     * @return whether the row is available.
-     * 
-     * @throws FacesException if an error occurs getting the row availability
-     */
-    public boolean isRowAvailable() {
-
-        return (getDataModel().isRowAvailable());
-
-    }
-
-
-    /**
-     * <p>Return the number of rows in the underlying data model.  If the number
-     * of available rows is unknown, return -1.</p>
-     *
-     * @return the row count.
-     * @throws FacesException if an error occurs getting the row count
-     */
-    public int getRowCount() {
-
-        return (getDataModel().getRowCount());
-
-    }
-
-
-    /**
-     * <p>Return the data object representing the data for the currently
-     * selected row index, if any.</p>
-     *
-     * @return the row data.
-     * 
-     * @throws FacesException           if an error occurs getting the row data
-     * @throws IllegalArgumentException if now row data is available at the
-     *                                  currently specified row index
-     */
-    public Object getRowData() {
-
-        return (getDataModel().getRowData());
-
-    }
-
 
     /**
      * <p>Return the zero-relative index of the currently selected row.  If we
@@ -583,37 +375,6 @@ public abstract class UIDataMojarraImpl extends UIData {
         }
     }
 
-    /**
-     * <p>Return the number of rows to be displayed, or zero for all remaining
-     * rows in the table.  The default value of this property is zero.</p>
-     * 
-     * @return the number of rows.
-     */
-    public int getRows() {
-
-
-        return (Integer) getStateHelper().eval(PropertyKeys.rows, 0);
-
-    }
-
-
-    /**
-     * <p>Set the number of rows to be displayed, or zero for all remaining rows
-     * in the table.</p>
-     *
-     * @param rows New number of rows
-     *
-     * @throws IllegalArgumentException if <code>rows</code> is negative
-     */
-    public void setRows(int rows) {
-
-        if (rows < 0) {
-            throw new IllegalArgumentException(String.valueOf(rows));
-        }
-        getStateHelper().put(PropertyKeys.rows, rows);
-
-    }
-
 
     /**
      * <p>Return the request-scope attribute under which the data object for the
@@ -628,7 +389,6 @@ public abstract class UIDataMojarraImpl extends UIData {
 
     }
 
-
     /**
      * <p>Set the request-scope attribute under which the data object for the
      * current row wil be exposed when iterating.</p>
@@ -641,213 +401,86 @@ public abstract class UIDataMojarraImpl extends UIData {
 
     }
     
-    /**
-     * <p class="changed_added_2_1">Return the value of the
-     * <code>rowStatePreserved</code> JavaBeans property. See
-     * {@link #setRowStatePreserved}.</p>
-     *
-     * @return the value of the  <code>rowStatePreserved</code>.
-     * 
-     * @since 2.1
-     */
-
-    public boolean isRowStatePreserved()
-    {
-        Boolean b = (Boolean) getStateHelper().get(PropertyKeys.rowStatePreserved);
-        return b != null && b;
-    }
-
-    /**
-     * <p class="changed_added_2_1">If this property is set to
-     * <code>true</code>, the <code>UIData</code> must take steps to
-     * ensure that modifications to its iterated children will be
-     * preserved on a per-row basis.  This allows applications to modify
-     * component properties, such as the style-class, for a specific
-     * row, rather than having such modifications apply to all rows.</p>
-
-     * <div class="changed_added_2_1">
-
-     * <p>To accomplish this, <code>UIData</code> must call {@link
-     * StateHolder#saveState} and {@link
-     * TransientStateHolder#saveTransientState} on its children to
-     * capture their state on exiting each row.  When re-entering the
-     * row, {@link StateHolder#restoreState} and {@link
-     * TransientStateHolder#restoreTransientState} must be called in
-     * order to reinitialize the children to the correct state for the
-     * new row.  All of this action must take place during the
-     * processing of {@link #setRowIndex}.</p>
-
-     * <p>Users should consider enabling this feature for cases where
-     * it is necessary to modify properties of <code>UIData</code>'s
-     * children in a row-specific way.  Note, however, that row-level
-     * state saving/restoring does add overhead.  As such, this feature
-     * should be used judiciously.</p>
-
-     * </div>
-     *
-     * @param preserveComponentState the flag if the state should be preserved. 
-     *
-     * @since 2.1
-     */
-    
-    public void setRowStatePreserved(boolean preserveComponentState)
-    {
-        getStateHelper().put(PropertyKeys.rowStatePreserved, preserveComponentState);
-    }
-
-
-    // ----------------------------------------------------- StateHolder Methods
-
-
-
-
-    /**
-     * <p><span class="changed_modified_2_2">Return</span> the value of the UIData.  This value must either be
-     * be of type {@link DataModel}, or a type that can be adapted
-     * into a {@link DataModel}.  <code>UIData</code> will automatically
-     * adapt the following types:</p>
-     * <ul>
-     * <li>Arrays</li>
-     * <li><code>java.util.List</code></li>
-     * <li><code>java.sql.ResultSet</code></li>
-     * <li><code>javax.servlet.jsp.jstl.sql.Result</code>
-     * <li class="changed_added_2_2"><code>java.util.Collection</code></li>
-     * </ul>
-     * <p>All other types will be adapted using the {@link ScalarDataModel}
-     * class, which will treat the object as a single row of data.</p>
-     * 
-     *  @return the object for the value.
-     */
-    public Object getValue() {
-
-        return getStateHelper().eval(PropertyKeys.value);
-
-    }
-
-
-    /**
-     * <p>Set the value of the <code>UIData</code>.  This value must either be
-     * be of type {@link DataModel}, or a type that can be adapted into a {@link
-     * DataModel}.</p>
-     *
-     * @param value the new value
-     */
-    public void setValue(Object value) {
-        setDataModel(null);
-        getStateHelper().put(PropertyKeys.value, value);
-
-    }
-
     // ----------------------------------------------------- UIComponent Methods
 
-
     /**
-     * <p>If "name" is something other than "value", "var", or "rowIndex", rely
-     * on the superclass conversion from <code>ValueBinding</code> to
-     * <code>ValueExpression</code>.</p>
-     *
-     * @param name    Name of the attribute or property for which to set a
-     *                {@link ValueBinding}
-     * @param binding The {@link ValueBinding} to set, or <code>null</code> to
-     *                remove any currently set {@link ValueBinding}
-     *
-     * @throws IllegalArgumentException if <code>name</code> is one of
-     *                                  <code>id</code>, <code>parent</code>,
-     *                                  <code>var</code>, or <code>rowIndex</code>
-     * @throws NullPointerException     if <code>name</code> is <code>null</code>
-     * @deprecated This has been replaced by {@link #setValueExpression(java.lang.String,
-     *javax.el.ValueExpression)}.
-     */
-    @Override
-    public void setValueBinding(String name, ValueBinding binding) {
-
-        if (null != name) {
-            switch (name) {
-                case "value":
-                    setDataModel(null);
-                    break;
-                case "var":
-                case "rowIndex":
-                    throw new IllegalArgumentException();
-            }
-        }
-        super.setValueBinding(name, binding);
-
-    }
-
-    /**
-     * <p>Return a client identifier for this component that includes the
-     * current value of the <code>rowIndex</code> property, if it is not set to
-     * -1.  This implies that multiple calls to <code>getClientId()</code> may
-     * return different results, but ensures that child components can
-     * themselves generate row-specific client identifiers (since {@link UIData}
-     * is a {@link NamingContainer}).</p>
-     *
-     * @throws NullPointerException if <code>context</code> is <code>null</code>
+     * Bypass Mojarra {@link UIData#getClientId(FacesContext)} impl
+     * see MYFACES-2744 (same as {@link UIComponentBase#getClientId(FacesContext)}
      */
     @Override
     public String getClientId(FacesContext context) {
-
-        if (context == null) {
-            throw new NullPointerException();
+        if (baseClientId != null) {
+            return baseClientId;
         }
 
-        // If baseClientId and clientIdBuilder are both null, this is the
-        // first time that getClientId() has been called.
-        // If we're not nested within another UIData, then:
-        //   - create a new StringBuilder assigned to clientIdBuilder containing
-        //   our client ID.
-        //   - toString() the builder - this result will be our baseClientId
-        //     for the duration of the component
-        //   - append UINamingContainer.getSeparatorChar() to the builder
-        //  If we are nested within another UIData, then:
-        //   - create an empty StringBuilder that will be used to build
-        //     this instance's ID
-        if (baseClientId == null && clientIdBuilder == null) {
-            if (!isNestedWithinIterator(context)) {
-                clientIdBuilder = new StringBuilder(super.getClientId(context));
-                baseClientId = clientIdBuilder.toString();
-                baseClientIdLength = (baseClientId.length() + 1);
-                clientIdBuilder.append(UINamingContainer.getSeparatorChar(context));
-                clientIdBuilder.setLength(baseClientIdLength);
-            } else {
-                clientIdBuilder = new StringBuilder();
+        String id = getId();
+        if (id == null) {
+            UniqueIdVendor parentUniqueIdVendor = ComponentTraversalUtils.closestUniqueIdVendor(this);
+
+            if (parentUniqueIdVendor == null) {
+                UIViewRoot viewRoot = context.getViewRoot();
+
+                if (viewRoot != null) {
+                    id = viewRoot.createUniqueId();
+                }
+                else {
+                    throw new FacesException("Cannot create clientId for " + getClass().getCanonicalName());
+                }
+            }
+            else {
+                id = parentUniqueIdVendor.createUniqueId(context, null);
+            }
+
+            setId(id);
+        }
+
+        UIComponent namingContainer = ComponentTraversalUtils.closestNamingContainer(this);
+        if (namingContainer != null) {
+            String containerClientId = namingContainer.getContainerClientId(context);
+
+            if (containerClientId != null) {
+                StringBuilder sb = SharedStringBuilder.get(context, SB_ID, containerClientId.length() + 10);
+                baseClientId = sb.append(containerClientId).append(UINamingContainer.getSeparatorChar(context)).append(id).toString();
+            }
+            else {
+                baseClientId = id;
             }
         }
+        else {
+            baseClientId = id;
+        }
+
+        Renderer renderer = getRenderer(context);
+        if (renderer != null) {
+            baseClientId = renderer.convertClientId(context, baseClientId);
+        }
+
+        return baseClientId;
+    }
+
+    /**
+     * From MyFaces, see MYFACES-2744
+     */
+    @Override
+    public String getContainerClientId(FacesContext context) {
+        //MYFACES-2744 UIData.getClientId() should not append rowIndex, instead use UIData.getContainerClientId()
+        String clientId = getClientId(context);
+
         int rowIndex = getRowIndex();
-        if (rowIndex >= 0) {
-            String cid;
-            if (!isNestedWithinIterator(context)) {
-                // we're not nested, so the clientIdBuilder is already
-                // primed with clientID +
-                // UINamingContainer.getSeparatorChar().  Append the
-                // current rowIndex, and toString() the builder.  reset
-                // the builder to it's primed state.
-                cid = clientIdBuilder.append(rowIndex).toString();
-                clientIdBuilder.setLength(baseClientIdLength);
-            } else {
-                // we're nested, so we have to build the ID from scratch
-                // each time.  Reuse the same clientIdBuilder instance
-                // for each call by resetting the length to 0 after
-                // the ID has been computed.
-                cid = clientIdBuilder.append(super.getClientId(context))
-                      .append(UINamingContainer.getSeparatorChar(context)).append(rowIndex)
-                      .toString();
-                clientIdBuilder.setLength(0);
-            }
-            return (cid);
-        } else {
-            if (!isNestedWithinIterator(context)) {
-                // Not nested and no row available, so just return our baseClientId
-                return (baseClientId);
-            } else {
-                // nested and no row available, return the result of getClientId().
-                // this is necessary as the client ID will reflect the row that
-                // this table represents
-                return super.getClientId(context);
-            }
+        if (rowIndex == -1) {
+            return clientId;
         }
 
+        StringBuilder sb = SharedStringBuilder.get(context, SB_ID, clientId.length() + 4);
+        return sb.append(clientId).append(context.getNamingContainerSeparatorChar()).append(rowIndex).toString();
+    }
+
+    @Override
+    public void setId(String id) {
+        super.setId(id);
+
+        //clear
+        baseClientId = null;
     }
 
     /**
@@ -1090,14 +723,6 @@ public abstract class UIDataMojarraImpl extends UIData {
         popComponentFromEL(context);
         // This is not a EditableValueHolder, so no further processing is required
 
-    }
-
-    @Override
-    public String createUniqueId(FacesContext context, String seed) {
-        Integer i = (Integer) getStateHelper().get(PropertyKeys.lastId);
-        int lastId = ((i != null) ? i : 0);
-        getStateHelper().put(PropertyKeys.lastId,  ++lastId);
-        return UIViewRoot.UNIQUE_ID_PREFIX + (seed == null ? lastId : seed);
     }
 
     /**
@@ -1648,7 +1273,7 @@ public abstract class UIDataMojarraImpl extends UIData {
     protected void preDecode(FacesContext context) {
         setDataModel(null); // Re-evaluate even with server-side state saving
         Map<String, SavedState> saved =
-                (Map<String, SavedState>) getStateHelper().get(PropertyKeys.saved);
+              (Map<String, SavedState>) getStateHelper().get(PropertyKeys.saved);
         if (null == saved || !keepSaved(context)) {
             //noinspection CollectionWithoutInitialCapacity
             getStateHelper().remove(PropertyKeys.saved);
