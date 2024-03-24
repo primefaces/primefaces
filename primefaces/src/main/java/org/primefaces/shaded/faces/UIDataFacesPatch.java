@@ -55,14 +55,14 @@ import org.primefaces.util.SharedStringBuilder;
 // Private class to represent saved state information
 
 /**
- * {@link UIDataPatchImpl} is largely a copy of Mojarra 2.3.1's {@code UIData} and few bits from MyFaces
+ * {@link UIDataFacesPatch} is largely a copy of Mojarra 2.3.1's {@code UIData} and few bits from MyFaces
  * The idea is to make a clear distinction between what belongs to the JSF implementation
  * and PrimeFaces. The code replicates exactly the code of the original class with a few exceptions:
  * <ul>
  *   <li>All members become protected, so that it's possible for PrimeFaces to override methods if necessary.</li>
  *   <li>Few methods are either copied or become abstract as they are tightly coupled with Mojarra.</li>
- *   <li>{@link UIDataPatchImpl#getClientId(FacesContext)} and {@link UIDataPatchImpl#getContainerClientId(FacesContext)} copied from MyFaces (see MYFACES-2744)</li>
- *   <li>Support of MyFaces view pooling in {@link UIDataPatchImpl#saveState(FacesContext)}</li>
+ *   <li>{@link UIDataFacesPatch#getClientId(FacesContext)} and {@link UIDataFacesPatch#getContainerClientId(FacesContext)} copied from MyFaces (see MYFACES-2744)</li>
+ *   <li>Support of MyFaces view pooling in {@link UIDataFacesPatch#saveState(FacesContext)}</li>
  * </ul>
  *
  * <p><strong class="changed_modified_2_0_rev_a
@@ -80,9 +80,9 @@ import org.primefaces.util.SharedStringBuilder;
  * the <code>setRendererType()</code> method.</p>
  */
 
-public abstract class UIDataPatchImpl extends UIData {
+public abstract class UIDataFacesPatch extends UIData {
 
-    protected static final String SB_ID = UIDataPatchImpl.class.getName() + "#id";
+    protected static final String SB_ID = UIDataFacesPatch.class.getName() + "#id";
 
     // ------------------------------------------------------ Instance Variables
 

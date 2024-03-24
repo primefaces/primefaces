@@ -42,14 +42,14 @@ import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.model.LazyDataModel;
-import org.primefaces.shaded.faces.UIDataPatchImpl;
+import org.primefaces.shaded.faces.UIDataFacesPatch;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.ELUtils;
 
 /**
  * Enhanced version of the JSF UIData.
  */
-public class UIData extends UIDataPatchImpl {
+public class UIData extends UIDataFacesPatch {
 
     private static final Logger LOGGER = Logger.getLogger(UIData.class.getName());
 
@@ -191,7 +191,7 @@ public class UIData extends UIDataPatchImpl {
 
     public void setRowModel(int rowIndex) {
         //update rowIndex
-        getStateHelper().put(UIDataPatchImpl.PropertyKeys.rowIndex, rowIndex);
+        getStateHelper().put(UIDataFacesPatch.PropertyKeys.rowIndex, rowIndex);
         getDataModel().setRowIndex(rowIndex);
 
         //clear datamodel
