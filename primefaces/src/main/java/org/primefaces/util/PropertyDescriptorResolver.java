@@ -50,15 +50,18 @@ public interface PropertyDescriptorResolver {
 
         @Override
         public PropertyDescriptor get(Class<?> klazz, String expression) {
-            PropertyDescriptor pd = null;
-            Class<?> parent = klazz;
+            String cacheKey = klazz.getName();
+            return pdCache.computeIfAbsent(cacheKey, ck -> new ConcurrentHashMap<>()).computeIfAbsent(expression, exp -> {
+                PropertyDescriptor pd = null;
+                Class<?> parent = klazz;
 
-            for (String field : NESTED_EXPRESSION_PATTERN.split(expression)) {
-                pd = getSimpleProperty(parent, field);
-                parent = pd.getPropertyType();
-            }
+                for (String field : NESTED_EXPRESSION_PATTERN.split(exp)) {
+                    pd = getSimpleProperty(parent, field);
+                    parent = pd.getPropertyType();
+                }
 
-            return Objects.requireNonNull(pd);
+                return Objects.requireNonNull(pd);
+            });
         }
 
         @Override
@@ -85,8 +88,7 @@ public interface PropertyDescriptorResolver {
 
         private PropertyDescriptor getSimpleProperty(Class<?> klazz, String field) {
             String cacheKey = klazz.getName();
-            Map<String, PropertyDescriptor> classCache = pdCache.computeIfAbsent(cacheKey, k -> new ConcurrentHashMap<>());
-            return classCache.computeIfAbsent(field, k -> {
+            return pdCache.computeIfAbsent(cacheKey, k -> new ConcurrentHashMap<>()).computeIfAbsent(field, k -> {
                 try {
                     return new PropertyDescriptor(k, klazz);
                 }
