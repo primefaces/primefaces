@@ -27,6 +27,7 @@ import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 import javax.faces.FacesException;
@@ -51,19 +52,17 @@ public interface PropertyDescriptorResolver {
         @Override
         public PropertyDescriptor get(Class<?> klazz, String expression) {
             String cacheKey = klazz.getName();
-            if (pdCache.containsKey(cacheKey) && pdCache.get(cacheKey).containsKey(expression)) {
-                return pdCache.get(cacheKey).get(expression);
-            }
+            return Optional.ofNullable(pdCache.get(cacheKey)).map(c -> c.get(expression)).orElseGet(() -> {
+                PropertyDescriptor pd = null;
+                Class<?> parent = klazz;
 
-            PropertyDescriptor pd = null;
-            Class<?> parent = klazz;
+                for (String field : NESTED_EXPRESSION_PATTERN.split(expression)) {
+                    pd = getSimpleProperty(parent, field);
+                    parent = pd.getPropertyType();
+                }
 
-            for (String field : NESTED_EXPRESSION_PATTERN.split(expression)) {
-                pd = getSimpleProperty(parent, field);
-                parent = pd.getPropertyType();
-            }
-
-            return Objects.requireNonNull(pd);
+                return Objects.requireNonNull(pd);
+            });
         }
 
         @Override
