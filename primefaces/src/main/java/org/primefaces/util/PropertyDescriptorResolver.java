@@ -51,17 +51,19 @@ public interface PropertyDescriptorResolver {
         @Override
         public PropertyDescriptor get(Class<?> klazz, String expression) {
             String cacheKey = klazz.getName();
-            return pdCache.computeIfAbsent(cacheKey, ck -> new ConcurrentHashMap<>()).computeIfAbsent(expression, exp -> {
-                PropertyDescriptor pd = null;
-                Class<?> parent = klazz;
+            if (pdCache.containsKey(cacheKey) && pdCache.get(cacheKey).containsKey(expression)) {
+                return pdCache.get(cacheKey).get(expression);
+            }
 
-                for (String field : NESTED_EXPRESSION_PATTERN.split(exp)) {
-                    pd = getSimpleProperty(parent, field);
-                    parent = pd.getPropertyType();
-                }
+            PropertyDescriptor pd = null;
+            Class<?> parent = klazz;
 
-                return Objects.requireNonNull(pd);
-            });
+            for (String field : NESTED_EXPRESSION_PATTERN.split(expression)) {
+                pd = getSimpleProperty(parent, field);
+                parent = pd.getPropertyType();
+            }
+
+            return Objects.requireNonNull(pd);
         }
 
         @Override
