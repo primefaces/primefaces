@@ -68,6 +68,10 @@ public class DefaultLazyDataModel<T> extends LazyDataModel<T> {
 
         sort(filteredValues);
 
+        if (pageSize == 0) {
+            return filteredValues;
+        }
+
         return filteredValues.stream().skip(first).limit(pageSize).collect(Collectors.toList());
     }
 
