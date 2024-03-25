@@ -72,15 +72,7 @@ public class DefaultLazyDataModel<T> extends LazyDataModel<T> {
             return filteredValues;
         }
 
-        int last = first + pageSize;
-        if (last > filteredValues.size()) {
-            last = filteredValues.size();
-        }
-        if (first > last) {
-            first = 0;
-        }
-        // new ArrayList as #subList is not serializable
-        return new ArrayList<>(filteredValues.subList(first, last));
+        return filteredValues.stream().skip(first).limit(pageSize).collect(Collectors.toList());
     }
 
     protected void sort(List<T> values) {
@@ -89,7 +81,10 @@ public class DefaultLazyDataModel<T> extends LazyDataModel<T> {
         }
 
         FacesContext context = FacesContext.getCurrentInstance();
-        values.sort(SortTableComparator.comparingField(context, (UITable) UIComponent.getCurrentComponent(context)));
+        UIComponent source = UIComponent.getCurrentComponent(context);
+        if (source instanceof UITable) {
+            values.sort(SortTableComparator.comparingField(context, (UITable<?>) source));
+        }
 
         if (sorter != null) {
             values.sort(sorter);
