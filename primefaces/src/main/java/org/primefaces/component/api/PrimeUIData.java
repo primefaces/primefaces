@@ -49,9 +49,9 @@ import org.primefaces.util.ELUtils;
 /**
  * Enhanced version of the JSF UIData.
  */
-public class UIData extends UIDataFacesPatch {
+public class PrimeUIData extends UIDataFacesPatch {
 
-    private static final Logger LOGGER = Logger.getLogger(UIData.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PrimeUIData.class.getName());
 
     public enum PropertyKeys {
         rowIndexVar,
