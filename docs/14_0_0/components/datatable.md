@@ -43,7 +43,7 @@ DataTable displays data in tabular format.
 | exportRowTag              | null               | String           | If XML data exporter in use, this allows customization of the row tag in the XML.
 | filterBy                  | null               | FilterMeta / Collection<FilterMeta> | Property to be used for default filtering. Expects a single or a collection of FilterMeta.
 | filterDelay               | 300                | Integer          | Delay in milliseconds before sending an ajax filter query.
-| filterEvent               | keyup              | String           | Event triggering filter for input filters.
+| filterEvent               | keyup              | String           | Event triggering filter for input filters. If "enter" it will only filter after ENTER key is pressed.
 | filteredValue             | null               | List             | List to keep filtered data.
 | first                     | 0                  | Integer          | Index of the first row to be displayed
 | frozenColumns             | 0                  | Integer          | Number of columns to freeze from start index 0.

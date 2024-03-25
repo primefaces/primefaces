@@ -8605,7 +8605,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Client side event to invoke datatable filtering for input fields. Default is keyup.]]>
+                <![CDATA[Client side event to invoke filtering. If "enter" it will only filter after ENTER key is pressed. Default is keyup.]]>
             </description>
             <name>filterEvent</name>
             <required>false</required>
@@ -21145,7 +21145,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Client side event to invoke picklist filtering for input fields. Default is keyup.]]>
+                <![CDATA[Client side event to invoke filtering. If "enter" it will only filter after ENTER key is pressed. Default is keyup.]]>
             </description>
             <name>filterEvent</name>
             <required>false</required>
@@ -30161,6 +30161,22 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Client side event to invoke filtering. If "enter" it will only filter after ENTER key is pressed. Default is keyup.]]>
+            </description>
+            <name>filterEvent</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Delay to wait in milliseconds before sending each filter query. Default is 300.]]>
+            </description>
+            <name>filterDelay</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Disables tree.]]>
             </description>
             <name>disabled</name>
@@ -30677,7 +30693,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Client side event to invoke treetable filtering for input fields. Default is keyup.]]>
+                <![CDATA[Client side event to invoke filtering. If "enter" it will only filter after ENTER key is pressed. Default is keyup.]]>
             </description>
             <name>filterEvent</name>
             <required>false</required>

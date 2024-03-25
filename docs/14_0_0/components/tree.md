@@ -35,6 +35,8 @@ dropRestrict | none | String | Defines parent-child restrictions when a node is 
 droppable | false | Boolean | Makes tree droppable.
 dynamic | false | Boolean | Specifies the ajax/client toggleMode
 filterBy | null | Object | Value expression to be used in filtering.
+filterDelay | 300  | Integer | Delay in milliseconds before sending an ajax filter query.
+filterEvent | keyup | String | Event triggering filter for input filter. If "enter" it will only filter after ENTER key is pressed.
 filterFunction | null | MethodExpression | Custom implementation to filter TreeNodes against a constraint.
 filterMatchMode | startsWith | String | Match mode for filtering.
 filterMode | lenient | String | Mode for filtering valid values are lenient and strict. Default is lenient.

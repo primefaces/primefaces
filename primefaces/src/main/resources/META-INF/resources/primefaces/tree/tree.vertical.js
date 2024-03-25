@@ -38,6 +38,8 @@
  * @prop {PrimeFaces.widget.VerticalTree.DropRestrictMode} cfg.dropRestrict Defines parent-child restrictions when a node is
  * dropped.
  * @prop {boolean} cfg.rtl `true` if text direction is right-to-left, or `false` otherwise.
+ * @prop {string} cfg.filterEvent Client side event to invoke filtering. Default is keyup.
+ * @prop {number} cfg.filterDelay Delay to wait in milliseconds before sending each filter query. Default is 300.
  */
 PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
 
@@ -116,22 +118,33 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                         });
 
         if(this.cfg.filter) {
+            this.cfg.filterDelay = this.cfg.filterDelay || 300;
+            this.cfg.filterEvent = this.cfg.filterEvent || 'keyup';
+            var isEnterKeyFilter = this.cfg.filterEvent === 'enter';
+            if (isEnterKeyFilter) {
+                this.cfg.filterEvent = 'keydown';
+            }
+            var filterEventName = this.cfg.filterEvent + '.tree-filter';
+            
             this.filterInput = this.jq.find('.ui-tree-filter');
             PrimeFaces.skinInput(this.filterInput);
 
-            this.filterInput.on('keyup.tree-filter', function(e) {
-                if (PrimeFaces.utils.ignoreFilterKey(e) || PrimeFaces.utils.blockEnterKey(e)) {
+            this.filterInput.on(filterEventName, function(e) {
+                if (PrimeFaces.utils.ignoreFilterKey(e) || PrimeFaces.utils.blockEnterKey(e) !== isEnterKeyFilter) {
                     return;
                 }
 
-                if($this.filterTimeout) {
-                    clearTimeout($this.filterTimeout);
-                }
-
-                $this.filterTimeout = PrimeFaces.queueTask(function() {
+                if (isEnterKeyFilter) {
                     $this.filter();
-                    $this.filterTimeout = null;
-                }, 300);
+                } else {
+                    if ($this.filterTimeout) {
+                        clearTimeout($this.filterTimeout);
+                    }
+                    $this.filterTimeout = PrimeFaces.queueTask(function() {
+                        $this.filter();
+                        $this.filterTimeout = null;
+                    }, $this.cfg.filterDelay);
+                }
             });
         }
 
