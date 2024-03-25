@@ -23,11 +23,49 @@
  */
 package org.primefaces.event;
 
+import javax.faces.component.UIComponent;
+import javax.faces.component.behavior.Behavior;
+
 import org.primefaces.component.tabview.Tab;
 
-public interface TabEvent<T> {
+public class TabEvent<T> extends AbstractAjaxBehaviorEvent {
 
-    Tab getTab();
+    private transient Tab tab;
+    private T data;
+    private String type;
+    private int index;
 
-    T getData();
+    public TabEvent(UIComponent component, Behavior behavior, Tab tab, T data, String type, int index) {
+        super(component, behavior);
+        this.tab = tab;
+        this.data = data;
+        this.type = type;
+        this.index = index;
+    }
+
+    public Tab getTab() {
+        return tab;
+    }
+
+    @Deprecated
+    public void setTab(Tab tab) {
+        this.tab = tab;
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    @Deprecated
+    public void setData(T data) {
+        this.data = data;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public String getType() {
+        return type;
+    }
 }
