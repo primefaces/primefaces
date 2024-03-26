@@ -87,6 +87,7 @@ Look into [migration guide](https://primefaces.github.io/primefaces/14_0_0/#/../
 
 * Tree
     * Added `dropMode` with values `move` or `copy` if you want nodes to be copied by default.
+    * Added `filterEvent` and `filterDelay` attributes for more control over filtering.
         
 * TreeTable
     * Added `filterPlaceholder` for `Column` and `Columns`.

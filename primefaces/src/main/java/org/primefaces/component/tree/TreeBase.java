@@ -37,7 +37,6 @@ public abstract class TreeBase extends UITree implements Widget, RTLAware, Clien
     public static final String DEFAULT_RENDERER = "org.primefaces.component.TreeRenderer";
 
     public enum PropertyKeys {
-
         animate,
         cache,
         datakey,
@@ -52,6 +51,8 @@ public abstract class TreeBase extends UITree implements Widget, RTLAware, Clien
         droppable,
         dynamic,
         filterBy,
+        filterDelay,
+        filterEvent,
         filterFunction,
         filterMatchMode,
         filterMode,
@@ -282,5 +283,21 @@ public abstract class TreeBase extends UITree implements Widget, RTLAware, Clien
 
     public void setFilterFunction(javax.el.MethodExpression filterFunction) {
         getStateHelper().put(PropertyKeys.filterFunction, filterFunction);
+    }
+
+    public String getFilterEvent() {
+        return (String) getStateHelper().eval(PropertyKeys.filterEvent, null);
+    }
+
+    public void setFilterEvent(String filterEvent) {
+        getStateHelper().put(PropertyKeys.filterEvent, filterEvent);
+    }
+
+    public int getFilterDelay() {
+        return (Integer) getStateHelper().eval(PropertyKeys.filterDelay, Integer.MAX_VALUE);
+    }
+
+    public void setFilterDelay(int filterDelay) {
+        getStateHelper().put(PropertyKeys.filterDelay, filterDelay);
     }
 }

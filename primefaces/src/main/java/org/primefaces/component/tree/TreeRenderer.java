@@ -334,6 +334,8 @@ public class TreeRenderer extends CoreRenderer {
 
         if (tree.isFiltering()) {
             wb.attr("filter", true)
+                    .attr("filterEvent", tree.getFilterEvent(), null)
+                    .attr("filterDelay", tree.getFilterDelay(), Integer.MAX_VALUE)
                     .attr("filterMode", tree.getFilterMode(), "lenient");
         }
 

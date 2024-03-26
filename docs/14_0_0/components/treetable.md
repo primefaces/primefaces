@@ -36,7 +36,7 @@ exportTag | null | String | If XML data exporter in use, this allows customizati
 exportRowTag | null | String | If XML data exporter in use, this allows customization of the row tag in the XML.
 filterBy | null | SortMeta / Collection<SortMeta> | Property to be used for default sorting. Expects a single or a collection of SortMeta.
 filterDelay | 300 | Integer | Delay in milliseconds before sending an ajax filter query.
-filterEvent | keyup | String | Event triggering filter for input filters.
+filterEvent | keyup | String | Event triggering filter for input filters. If "enter" it will only filter after ENTER key is pressed.
 filteredValue  | null | TreeNode | TreeNode to keep filtered data.
 first | 0 | Integer | Index of the first data to display.
 globalFilter | null | String | Value of the global filter to use when filtering by default.
