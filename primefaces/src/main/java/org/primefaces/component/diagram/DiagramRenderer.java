@@ -386,8 +386,6 @@ public class DiagramRenderer extends CoreRenderer {
         String styleClass = diagram.getStyleClass();
         styleClass = (styleClass == null) ? Diagram.CONTAINER_CLASS : Diagram.CONTAINER_CLASS + " " + styleClass;
         UIComponent elementFacet = diagram.getFacet("element");
-        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-        String var = diagram.getVar();
 
         writer.startElement("div", diagram);
         writer.writeAttribute("id", diagram.getClientId(context), null);
@@ -397,44 +395,38 @@ public class DiagramRenderer extends CoreRenderer {
         }
 
         if (model != null) {
-            List<Element> elements = model.getElements();
-            if (elements != null && !elements.isEmpty()) {
-                for (int i = 0; i < elements.size(); i++) {
-                    Element element = elements.get(i);
-                    String elementClass = element.getStyleClass();
-                    elementClass = (elementClass == null) ? Diagram.ELEMENT_CLASS : Diagram.ELEMENT_CLASS + " " + elementClass;
-                    if (element.isDraggable()) {
-                        elementClass = elementClass + " " + Diagram.DRAGGABLE_ELEMENT_CLASS;
-                    }
-                    Object data = element.getData();
-                    String x = element.getX();
-                    String y = element.getY();
-                    String coords = "left:" + x + ";top:" + y;
-                    String title = element.getTitle();
+            int rowCount = diagram.getRowCount();
+            for (int i = 0; i < rowCount; i++) {
+                diagram.setRowIndex(i);
 
-                    writer.startElement("div", null);
-                    writer.writeAttribute("id", clientId + "-" + element.getId(), null);
-                    writer.writeAttribute("class", elementClass, null);
-                    writer.writeAttribute("style", coords, null);
-                    writer.writeAttribute("data-tooltip", title, null);
-
-                    if (var != null) {
-                        requestMap.put(var, data);
-                    }
-
-                    if (FacetUtils.shouldRenderFacet(elementFacet)) {
-                        elementFacet.encodeAll(context);
-                    }
-                    else if (data != null) {
-                        writer.writeText(data, null);
-                    }
-                    writer.endElement("div");
+                Element element = (Element) diagram.getRowData();
+                String elementClass = element.getStyleClass();
+                elementClass = (elementClass == null) ? Diagram.ELEMENT_CLASS : Diagram.ELEMENT_CLASS + " " + elementClass;
+                if (element.isDraggable()) {
+                    elementClass = elementClass + " " + Diagram.DRAGGABLE_ELEMENT_CLASS;
                 }
+                Object data = element.getData();
+                String x = element.getX();
+                String y = element.getY();
+                String coords = "left:" + x + ";top:" + y;
+                String title = element.getTitle();
+
+                writer.startElement("div", null);
+                writer.writeAttribute("id", clientId + "-" + element.getId(), null);
+                writer.writeAttribute("class", elementClass, null);
+                writer.writeAttribute("style", coords, null);
+                writer.writeAttribute("data-tooltip", title, null);
+
+                if (FacetUtils.shouldRenderFacet(elementFacet)) {
+                    elementFacet.encodeAll(context);
+                }
+                else if (data != null) {
+                    writer.writeText(data, null);
+                }
+                writer.endElement("div");
             }
 
-            if (var != null) {
-                requestMap.remove(var);
-            }
+            diagram.setRowIndex(-1);
         }
 
         writer.endElement("div");
