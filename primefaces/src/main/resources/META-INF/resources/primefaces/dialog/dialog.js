@@ -858,30 +858,32 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
     bindResizeListener: function() {
         var $this = this;
 
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', null, function() {
-            if ($this.cfg.fitViewport) {
-                $this.fitViewport();
-            }
+        // internal function to handle resize or scrolling
+        function handleResize() {
+            if ($this.isVisible()) {
+                if ($this.cfg.fitViewport) {
+                    $this.fitViewport();
+                }
 
-            if ($this.isVisible() && !$this.cfg.absolutePositioned) {
-                // instant reinit position
-                $this.initPosition();
+                if (!$this.cfg.absolutePositioned) {
+                    $this.initPosition();
+                }
+                else {
+                    $this.positionInitialized = false;
+                }
             }
-            else {
-                // reset, so the dialog will be positioned again when showing the dialog next time
-                $this.positionInitialized = false;
-            }
-        });
-        PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id + '_align', function() {
-            if ($this.isVisible() && !$this.cfg.absolutePositioned) {
-                // instant reinit position
-                $this.initPosition();
-            }
-            else {
-                // reset, so the dialog will be positioned again when showing the dialog next time
-                $this.positionInitialized = false;
-            }
-        });
+        }
+
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', null, handleResize);
+        PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id + '_align', handleResize);
+
+        // #11578 if not using dialog framework (it has its own observer) then resize if the dialog is resized
+        if (!this.cfg.hasIframe && !this.cfg.resizable) {
+            const observer = new ResizeObserver(_entries => {
+                handleResize();
+            });
+            observer.observe(this.jq[0]);
+        }
     }
 
 });
