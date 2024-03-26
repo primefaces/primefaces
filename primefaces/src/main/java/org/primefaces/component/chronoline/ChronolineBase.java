@@ -23,9 +23,9 @@
  */
 package org.primefaces.component.chronoline;
 
-import org.primefaces.component.api.UIData;
+import org.primefaces.component.api.PrimeUIData;
 
-public abstract class ChronolineBase extends UIData {
+public abstract class ChronolineBase extends PrimeUIData {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
