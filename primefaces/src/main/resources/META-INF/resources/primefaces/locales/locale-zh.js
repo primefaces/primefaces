@@ -323,10 +323,10 @@ if (window.PrimeFaces) {
     aria: {
       cancelEdit: "取消編輯",
       close: "關閉",
-      collapseLabel: "坍塌",
-      collapseRow: "收闔行",
+      collapseLabel: "收合",
+      collapseRow: "收合行",
       editRow: "編輯行",
-      expandLabel: "擴張",
+      expandLabel: "展開",
       expandRow: "展開行",
       falseLabel: "否",
       filterConstraint: "篩選條件",
