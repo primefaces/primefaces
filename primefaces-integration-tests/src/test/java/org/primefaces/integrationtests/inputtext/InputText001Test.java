@@ -31,6 +31,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.InvalidElementStateException;
+import org.openqa.selenium.JavascriptException;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
@@ -89,6 +90,11 @@ class InputText001Test extends AbstractPrimePageTest {
         }
         catch (InvalidElementStateException e) {
             assertNotClickable(inputText);
+        }
+        catch (JavascriptException e) {
+            assertNotClickable(inputText);
+            // Chrome 123+
+            assertTrue(e.getMessage().contains("Element is not currently interactable and may not be manipulated"));
         }
 
         // Assert - value should not be accepted
