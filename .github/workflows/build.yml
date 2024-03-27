@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        java: [11, 17]
+        java: [11, 21]
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK ${{ matrix.java }}
@@ -27,7 +27,7 @@ jobs:
       - name: Build
         run: mvn clean install -T1C -Pjsdoc,minify --batch-mode --show-version
       - name: Sonar Cloud
-        if: github.repository == 'primefaces/primefaces' && github.ref == 'refs/heads/master' && matrix.java == 17
+        if: github.repository == 'primefaces/primefaces' && github.ref == 'refs/heads/master' && matrix.java == 21
         run: mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.organization=primefaces -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=${{secrets.SONAR_TOKEN}}  -fprimefaces/pom.xml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -41,7 +41,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        java: [11, 21]
+        java: [11, 21, 22]
         facesimpl: [ 'mojarra-2.3', 'myfaces-2.3']
     steps:
       - uses: actions/checkout@v4
