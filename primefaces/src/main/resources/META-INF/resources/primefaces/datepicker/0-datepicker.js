@@ -1116,6 +1116,11 @@
 
         _destroy: function() {
             this.hideOverlay();
+            this.unbindResponsiveResizeListener();
+            if (this.panel) {
+                this.panel.remove();
+                this.panel = null;
+            }
         },
 
         /**
@@ -2705,6 +2710,10 @@
                     $this.updateResponsiveness();
                 });
             }
+        },
+        
+        unbindResponsiveResizeListener: function() {
+            $(window).off('resize.responsive' + this.options.id);
         },
 
         bindWindowResizeListener: function() {
