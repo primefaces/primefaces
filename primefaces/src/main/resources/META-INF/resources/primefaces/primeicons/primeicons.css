@@ -35,6 +35,21 @@
     animation: fa-spin 2s infinite linear;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .pi-spin {
+    -webkit-animation-delay: -1ms;
+    animation-delay: -1ms;
+    -webkit-animation-duration: 1ms;
+    animation-duration: 1ms;
+    -webkit-animation-iteration-count: 1;
+    animation-iteration-count: 1;
+    -webkit-transition-delay: 0s;
+    transition-delay: 0s;
+    -webkit-transition-duration: 0s;
+    transition-duration: 0s;
+  }
+}
+
 @-webkit-keyframes fa-spin {
     0% {
         -webkit-transform: rotate(0deg);
@@ -55,6 +70,218 @@
         -webkit-transform: rotate(359deg);
         transform: rotate(359deg);
     }
+}
+
+.pi-folder-plus:before {
+    content: "\ea05";
+}
+
+.pi-receipt:before {
+    content: "\ea06";
+}
+
+.pi-asterisk:before {
+    content: "\ea07";
+}
+
+.pi-face-smile:before {
+    content: "\ea08";
+}
+
+.pi-pinterest:before {
+    content: "\ea09";
+}
+
+.pi-expand:before {
+    content: "\ea0a";
+}
+
+.pi-pen-to-square:before {
+    content: "\ea0b";
+}
+
+.pi-wave-pulse:before {
+    content: "\ea0c";
+}
+
+.pi-turkish-lira:before {
+    content: "\ea0d";
+}
+
+.pi-spinner-dotted:before {
+    content: "\ea0e";
+}
+
+.pi-crown:before {
+    content: "\ea0f";
+}
+
+.pi-pause-circle:before {
+    content: "\ea10";
+}
+
+.pi-warehouse:before {
+    content: "\ea11";
+}
+
+.pi-objects-column:before {
+    content: "\ea12";
+}
+
+.pi-clipboard:before {
+    content: "\ea13";
+}
+
+.pi-play-circle:before {
+    content: "\ea14";
+}
+
+.pi-venus:before {
+    content: "\ea15";
+}
+
+.pi-cart-minus:before {
+    content: "\ea16";
+}
+
+.pi-file-plus:before {
+    content: "\ea17";
+}
+
+.pi-microchip:before {
+    content: "\ea18";
+}
+
+.pi-twitch:before {
+    content: "\ea19";
+}
+
+.pi-building-columns:before {
+    content: "\ea1a";
+}
+
+.pi-file-check:before {
+    content: "\ea1b";
+}
+
+.pi-microchip-ai:before {
+    content: "\ea1c";
+}
+
+.pi-trophy:before {
+    content: "\ea1d";
+}
+
+.pi-barcode:before {
+    content: "\ea1e";
+}
+
+.pi-file-arrow-up:before {
+    content: "\ea1f";
+}
+
+.pi-mars:before {
+    content: "\ea20";
+}
+
+.pi-tiktok:before {
+    content: "\ea21";
+}
+
+.pi-arrow-up-right-and-arrow-down-left-from-center:before {
+    content: "\ea22";
+}
+
+.pi-ethereum:before {
+    content: "\ea23";
+}
+
+.pi-list-check:before {
+    content: "\ea24";
+}
+
+.pi-thumbtack:before {
+    content: "\ea25";
+}
+
+.pi-arrow-down-left-and-arrow-up-right-to-center:before {
+    content: "\ea26";
+}
+
+.pi-equals:before {
+    content: "\ea27";
+}
+
+.pi-lightbulb:before {
+    content: "\ea28";
+}
+
+.pi-star-half:before {
+    content: "\ea29";
+}
+
+.pi-address-book:before {
+    content: "\ea2a";
+}
+
+.pi-chart-scatter:before {
+    content: "\ea2b";
+}
+
+.pi-indian-rupee:before {
+    content: "\ea2c";
+}
+
+.pi-star-half-fill:before {
+    content: "\ea2d";
+}
+
+.pi-cart-arrow-down:before {
+    content: "\ea2e";
+}
+
+.pi-calendar-clock:before {
+    content: "\ea2f";
+}
+
+.pi-sort-up-fill:before {
+    content: "\ea30";
+}
+
+.pi-sparkles:before {
+    content: "\ea31";
+}
+
+.pi-bullseye:before {
+    content: "\ea32";
+}
+
+.pi-sort-down-fill:before {
+    content: "\ea33";
+}
+
+.pi-graduation-cap:before {
+    content: "\ea34";
+}
+
+.pi-hammer:before {
+    content: "\ea35";
+}
+
+.pi-bell-slash:before {
+    content: "\ea36";
+}
+
+.pi-gauge:before {
+    content: "\ea37";
+}
+
+.pi-shop:before {
+    content: "\ea38";
+}
+
+.pi-headphones:before {
+    content: "\ea39";
 }
 
 .pi-eraser:before {

@@ -98,7 +98,7 @@ public class AppMenu {
 
         //PRIMEICONS CATEGORY START
         List<MenuItem> primeIconsMenuItems = new ArrayList<>();
-        primeIconsMenuItems.add(new MenuItem("Icons v6.0.1", "/icons"));
+        primeIconsMenuItems.add(new MenuItem("Icons v7.0.0", "/icons", "Updated"));
         menuCategories.add(new MenuCategory("PrimeIcons", primeIconsMenuItems));
         //PRIMEICONS CATEGORY END
 
