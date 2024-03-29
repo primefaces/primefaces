@@ -1351,7 +1351,7 @@ if (!PrimeFaces.ajax) {
                         try {
                             widget.destroy();
 
-                            // null out all values to de-reference any JQ objects
+                            // remove any event listeners on jQuery objects
                             for (var key in widget) {
                                 var jq = widget[key];
                                 if (jq instanceof jQuery) {
