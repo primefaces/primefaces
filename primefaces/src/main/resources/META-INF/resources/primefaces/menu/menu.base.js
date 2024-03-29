@@ -78,6 +78,9 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
 
         this.trigger = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.trigger);
+        
+        // if the trigger is removed from the DOM we should destroy this menu widget
+        this.bindDomRemovalEvent(this.trigger);
 
         //mark trigger and descendants of trigger as a trigger for a primefaces overlay
         this.trigger.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);

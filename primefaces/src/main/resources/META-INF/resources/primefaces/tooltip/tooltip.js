@@ -107,6 +107,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
      */
     _cleanup: function() {
         if (this.cfg.target) {
+            this.hide();
             var targetTooltip = $(document.body).children(PrimeFaces.escapeClientId(this.cfg.id));
             if (targetTooltip.length)
                 targetTooltip.remove();
@@ -227,9 +228,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         }
         else {
             // GitHub #9941 Helper to remove tooltips when elements are removed
-            this.target.off('remove.tooltip').on('remove.tooltip', function() {
-                $this.hide();
-            });      
+            this.bindDomRemovalEvent(this.target);
 
             this.target.off(this.cfg.showEvent + ' ' + this.cfg.hideEvent)
                 .on(this.cfg.showEvent, function(e) {

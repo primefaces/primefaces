@@ -72,6 +72,12 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         //target
         this.jqTargetId = documentTarget ? document : PrimeFaces.escapeClientId(this.cfg.target);
         this.jqTarget = $(this.jqTargetId);
+        
+        // if the target is a regular element (aka not the document) and it is removed 
+        // from the DOM we should destroy this widget
+        if (this.cfg.target && this.jqTarget.length) {
+            this.bindDomRemovalEvent(this.jqTarget);
+        }
 
         //append to body
         this.cfg.appendTo = '@(body)';

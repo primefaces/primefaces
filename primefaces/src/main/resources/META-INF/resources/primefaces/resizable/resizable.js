@@ -53,6 +53,9 @@ PrimeFaces.widget.Resizable = PrimeFaces.widget.BaseWidget.extend({
         this._super(cfg);
 
         this.jqTarget = $(PrimeFaces.escapeClientId(this.cfg.target));
+        
+        // if the target is removed from the DOM we should destroy this widget
+        this.bindDomRemovalEvent(this.jqTarget);
 
         this.renderDeferred();
     },
@@ -106,29 +109,35 @@ PrimeFaces.widget.Resizable = PrimeFaces.widget.BaseWidget.extend({
         	this.cfg.containment = PrimeFaces.escapeClientId(this.cfg.parentComponentId);
         }
 
-        var _self = this;
+        var $this = this;
 
         this.cfg.stop = function(event, ui) {
-            if(_self.cfg.onStop) {
-                _self.cfg.onStop.call(_self, event, ui);
+            if($this.cfg.onStop) {
+                $this.cfg.onStop.call($this, event, ui);
             }
 
-            _self.fireAjaxResizeEvent(event, ui);
+            $this.fireAjaxResizeEvent(event, ui);
         };
 
         this.cfg.start = function(event, ui) {
-            if(_self.cfg.onStart) {
-                _self.cfg.onStart.call(_self, event, ui);
+            if($this.cfg.onStart) {
+                $this.cfg.onStart.call($this, event, ui);
             }
         };
 
         this.cfg.resize = function(event, ui) {
-            if(_self.cfg.onResize) {
-                _self.cfg.onResize.call(_self, event, ui);
+            if($this.cfg.onResize) {
+                $this.cfg.onResize.call($this, event, ui);
             }
         };
 
         this.jqTarget.resizable(this.cfg);
+
+        this.addDestroyListener(function() {
+            if ($this.jqTarget.length) {
+                $this.jqTarget.resizable('destroy');
+            }
+        });
 
         this.removeScriptElement(this.id);
     },

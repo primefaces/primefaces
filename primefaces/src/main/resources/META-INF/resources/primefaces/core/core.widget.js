@@ -325,12 +325,8 @@ if (!PrimeFaces.widget) {
             //remove script tag
             this.removeScriptElement(this.id);
 
-            if (this.widgetVar) {
-                var $this = this;
-                this.jq.on("remove", function() {
-                    PrimeFaces.detachedWidgets.push($this.widgetVar);
-                });
-            }
+            // clean up the widget if its DOM element is removed from the DOM
+            this.bindDomRemovalEvent(this.jq);
         },
 
         /**
@@ -585,6 +581,25 @@ if (!PrimeFaces.widget) {
             }
             
             return this.cfg.formId;
+        },
+
+        /**
+         * Registers a DOM element such that its removal from the DOM results in the widget becoming "detached,"
+         * subsequently leading to its removal upon completion of the AJAX call.
+         *
+         * @param {JQuery | HTMLElement} watchElement The HTML element that if removed from the DOM will detach this widget.
+         * @since 14.0.0
+         */
+        bindDomRemovalEvent: function(watchElement) {
+            if (this.widgetVar) {
+                var $this = this,
+                    namespace = '.widget' + this.id;
+                $(watchElement).off("remove" + namespace).on("remove" + namespace, function() {
+                    if (!PrimeFaces.detachedWidgets.includes($this.widgetVar)) {
+                        PrimeFaces.detachedWidgets.push($this.widgetVar);
+                    }
+                });
+            }
         }
     });
 

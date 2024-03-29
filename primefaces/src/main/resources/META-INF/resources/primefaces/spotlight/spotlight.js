@@ -24,6 +24,9 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
         this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.target);
+        
+        // if the target is removed from the DOM we should destroy this widget
+        this.bindDomRemovalEvent(this.target);
 
         if(!$(document.body).children('.ui-spotlight').length) {
             this.createMasks();
@@ -39,8 +42,7 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     createMasks: function() {
-        var documentBody = $(document.body);
-        documentBody.append('<div class="ui-widget-overlay ui-spotlight ui-spotlight-top ui-helper-hidden"></div><div class="ui-widget-overlay ui-spotlight ui-spotlight-bottom ui-helper-hidden"></div>' +
+        $(document.body).append('<div class="ui-widget-overlay ui-spotlight ui-spotlight-top ui-helper-hidden"></div><div class="ui-widget-overlay ui-spotlight ui-spotlight-bottom ui-helper-hidden"></div>' +
                         '<div class="ui-widget-overlay ui-spotlight ui-spotlight-left ui-helper-hidden"></div><div class="ui-widget-overlay ui-spotlight ui-spotlight-right ui-helper-hidden"></div>');
     },
 

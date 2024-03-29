@@ -32,15 +32,19 @@ PrimeFaces.widget.Sticky = PrimeFaces.widget.BaseWidget.extend({
      */
     init: function(cfg) {
         this._super(cfg);
-        this.target = $(PrimeFaces.escapeClientId(this.cfg.target));
         this.cfg.margin = this.cfg.margin || 0;
+        this.target = $(PrimeFaces.escapeClientId(this.cfg.target));
+        
+        if (this.target.length) {
+            this.initialState = {
+                top: this.target.offset().top,
+                height: this.target.height()
+            };
 
-        this.initialState = {
-            top: this.target.offset().top,
-            height: this.target.height()
-        };
-
-        this.bindEvents();
+            // if the target is removed from the DOM we should destroy this widget
+            this.bindDomRemovalEvent(this.target);
+            this.bindEvents();
+        }
     },
 
     /**

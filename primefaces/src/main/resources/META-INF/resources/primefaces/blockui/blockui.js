@@ -50,6 +50,8 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         }
 
         this.bindResizer();
+        // if the target is removed from the DOM we should destroy this widget
+        this.bindDomRemovalEvent(this.target);
     },
 
     /**

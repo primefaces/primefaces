@@ -39,6 +39,8 @@ PrimeFaces.widget.KeyFilter = PrimeFaces.widget.BaseWidget.extend({
             var nestedInput = $(':not(:submit):not(:button):input:visible:enabled:first', this.target);
             this.applyKeyFilter(nestedInput, cfg);
         }
+        // if the target is removed from the DOM we should destroy this widget
+        this.bindDomRemovalEvent(this.target);
     },
 
     /**
