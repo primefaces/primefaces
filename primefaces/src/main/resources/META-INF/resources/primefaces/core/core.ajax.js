@@ -1348,12 +1348,24 @@ if (!PrimeFaces.ajax) {
 
                     var widget = PF(widgetVar);
                     if (widget && widget.isDetached() === true) {
-                        widget.destroy();
-
                         try {
+                            widget.destroy();
+
+                            // null out all values to de-reference any JQ objects
+                            for (var key in widget) {
+                                var jq = widget[key];
+                                if (jq instanceof jQuery) {
+                                    // remove events on all descendants
+                                    jq.children().off();
+                                    // remove events from element
+                                    jq.off();
+                                }
+                            }
+
+                            // remove the widget from the global collection
                             delete PrimeFaces.widgets[widgetVar];
-                            delete widget;
-                        } catch (e) { }
+                            widget = null;
+                        } catch (e) { PrimeFaces.warn("Error destroying widget: " + widgetVar) }
                     }
                 }
 
