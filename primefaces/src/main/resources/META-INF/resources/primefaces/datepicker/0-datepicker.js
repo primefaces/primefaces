@@ -1117,10 +1117,7 @@
         _destroy: function() {
             this.hideOverlay();
             this.unbindResponsiveResizeListener();
-            if (this.panel) {
-                this.panel.remove();
-                this.panel = null;
-            }
+            PrimeFaces.utils.cleanseDomElement(this.panel);
         },
 
         /**
