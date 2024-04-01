@@ -1350,8 +1350,6 @@ if (!PrimeFaces.ajax) {
                     if (widget && widget.isDetached() === true) {
                         try {
                             widget.destroy();
-
-                            // remove the widget from the global collection
                             delete PrimeFaces.widgets[widgetVar];
                             widget = null;
                         } catch (e) { PrimeFaces.warn("Error destroying widget: " + widgetVar) }
