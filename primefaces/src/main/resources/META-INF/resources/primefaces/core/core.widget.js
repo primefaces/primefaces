@@ -393,6 +393,17 @@ if (!PrimeFaces.widget) {
                 }
             }
             this.destroyListeners = [];
+
+            // remove any event listeners on jQuery objects
+            for (var key in this) {
+                var jq = this[key];
+                if (jq instanceof jQuery) {
+                    // remove events on all descendants
+                    jq.children().off();
+                    // remove events from element
+                    jq.off();
+                }
+            }
         },
 
         /**

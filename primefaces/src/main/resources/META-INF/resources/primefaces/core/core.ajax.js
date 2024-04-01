@@ -1351,17 +1351,6 @@ if (!PrimeFaces.ajax) {
                         try {
                             widget.destroy();
 
-                            // remove any event listeners on jQuery objects
-                            for (var key in widget) {
-                                var jq = widget[key];
-                                if (jq instanceof jQuery) {
-                                    // remove events on all descendants
-                                    jq.children().off();
-                                    // remove events from element
-                                    jq.off();
-                                }
-                            }
-
                             // remove the widget from the global collection
                             delete PrimeFaces.widgets[widgetVar];
                             widget = null;
