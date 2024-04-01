@@ -900,6 +900,7 @@
                                 <include>org.apache.commons.io.FilenameUtils</include>
                                 <include>org.apache.commons.io.FileSystem</include>
                                 <include>org.apache.commons.io.IOCase</include>
+                                <include>org.apache.commons.io.input.ProxyInputStream</include>
                                 <include>org.apache.commons.io.input.BoundedInputStream</include>
                             </includes>
                         </relocation>
@@ -911,6 +912,7 @@
                                 <include>org/apache/commons/io/FilenameUtils.class</include>
                                 <include>org/apache/commons/io/FileSystem.class</include>
                                 <include>org/apache/commons/io/IOCase.class</include>
+                                <include>org/apache/commons/io/input/ProxyInputStream.class</include>
                                 <include>org/apache/commons/io/input/BoundedInputStream.class</include>
                             </includes>
                         </filter>
