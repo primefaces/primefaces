@@ -326,7 +326,9 @@ if (!PrimeFaces.ajax) {
                         PrimeFaces.warn("DOM element with id '" + id + "' cant be found; skip update...");
                     }
                     else {
-                        target.replaceWith(content);
+                        var removedContent = target.replaceWith(content);
+                        // detach all handlers and data to clean up DOM
+                        PrimeFaces.utils.cleanseDomElement(removedContent);
                     }
                 }
             }
@@ -1352,7 +1354,7 @@ if (!PrimeFaces.ajax) {
 
                         try {
                             delete PrimeFaces.widgets[widgetVar];
-                            delete widget;
+                            widget = null;
                         } catch (e) { }
                     }
                 }
