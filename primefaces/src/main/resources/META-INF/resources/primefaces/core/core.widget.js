@@ -244,6 +244,7 @@ if (!PrimeFaces.widget) {
      * instead.
      * @prop {string} widgetVar The name of the widget variables of this widget. The widget variable can be used to
      * access a widget instance by calling `PF('myWidgetVar')`.
+     * @prop {string} key The key of the JSON object.
      * 
      * @method constructor Creates a new instance of this widget. Please note that you should __NOT__ override this
      * constructor. Instead, override the {@link init} method, which is called at the end of the constructor once the
