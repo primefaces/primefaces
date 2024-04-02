@@ -101,9 +101,10 @@ PrimeFaces.widget.IdleMonitor = PrimeFaces.widget.BaseWidget.extend({
         if (this.cfg.multiWindowSupport) {
             clearInterval(this.timer);
         }
-        $(document).off('idle.idleTimer active.idleTimer');
+        $(document).off("idle.idleTimer" + this.cfg.id);
+        $(document).off("active.idleTimer" + this.cfg.id);
         $.idleTimer('destroy', document, this.cfg.id);
-        
+
         this._super();
     },
 
