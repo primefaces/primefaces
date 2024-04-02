@@ -395,7 +395,8 @@ if (!PrimeFaces.widget) {
             }
             this.destroyListeners = [];
 
-            // remove any event listeners on jQuery objects
+            // Iterate through all stored variables within this widget. If any of them are jQuery objects, 
+            // it is imperative to unbind their event listeners to avoid memory leaks in the DOM.
             for (var key in this) {
                 var jq = this[key];
                 if (jq instanceof jQuery) {
