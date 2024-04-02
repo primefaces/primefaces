@@ -404,6 +404,8 @@ if (!PrimeFaces.widget) {
                     jq.children().off();
                     // remove events from element
                     jq.off();
+                    // NOTE: do not null out the value here as is it needed sometimes still after destroy happens
+                    // this[key] = null; DO NOT ENABLE THIS
                 }
             }
         },
