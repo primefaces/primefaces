@@ -536,7 +536,7 @@ PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
      */
     bindContextMenu : function(menuWidget, targetWidget, targetId, cfg) {
         var selector = targetId + " .ui-organigram-node.selectable",
-        event = cfg.event + ".organigram";
+        event = cfg.event + ".organigram" + this.id;
 
         if (cfg.nodeType) {
             selector += "." + cfg.nodeType;
@@ -545,6 +545,9 @@ PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
         $(document).off(event, selector).on(event, selector, null, function(e) {
             targetWidget.selectNode(targetWidget, $(this), "contextmenu");
             menuWidget.show(e);
+        });
+        this.addDestroyListener(function() {
+            $(document).off(event);
         });
     },
 

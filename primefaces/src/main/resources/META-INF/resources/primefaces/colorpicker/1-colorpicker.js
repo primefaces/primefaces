@@ -208,13 +208,17 @@ PrimeFaces.widget.ColorPicker = PrimeFaces.widget.BaseWidget.extend({
     bindInlineCallbacks: function() {
         var $this = this;
         if ($this.hasBehavior('change')) {
-            $(document).on('coloris:pick', function(e) {
+            var pickNS = 'coloris:pick';
+            $(document).on(pickNS, function(e) {
                 var ext = {
                     params: [
                         { name: $this.id + '_color', value: e.detail.color }
                     ]
                 };
                 $this.callBehavior('change', ext);
+            });
+            this.addDestroyListener(function() {
+                $(document).off(pickNS);
             });
         }
     },
