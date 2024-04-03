@@ -1098,7 +1098,7 @@ if (!PrimeFaces.utils) {
             // Decrease zIndex by 1 and return
             return zIndex - 1;
         },
-
+        
         /**
          * Deletes all events, 'on' attributes, data, and the element itself in a recursive manner, 
          * ensuring that the garbage collector does not retain any references to this element or its children.
@@ -1128,6 +1128,7 @@ if (!PrimeFaces.utils) {
             }
             // Remove event listeners
             jq.off();
+            
             // Clear data
             if (clearData) {
                 jq.removeData();

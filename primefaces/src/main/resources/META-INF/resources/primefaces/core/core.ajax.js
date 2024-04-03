@@ -1370,7 +1370,7 @@ if (!PrimeFaces.ajax) {
 
                         try {
                             delete PrimeFaces.widgets[widgetVar];
-                            widget = null;
+                            delete widget;
                         } catch (e) { }
                     }
                 }
