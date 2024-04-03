@@ -321,14 +321,15 @@ if (!PrimeFaces.ajax) {
                         .filter("link[href], script[src]")
                         .each(function() {
                             var $resource = $(this);
+                            var $head = $("head");
                             var src = $resource.attr("href") || $resource.attr("src");
                             var type = this.tagName.toLowerCase();
-                            var $resources = $("head").find(type + '[src="' + src + '"], ' + type + '[href="' + src + '"]');
+                            var $resources = $head.find(type + '[src="' + src + '"], ' + type + '[href="' + src + '"]');
 
                             // Check if script or stylesheet already exists and add it to head if it does not
                             if ($resources.length === 0) {
                                 PrimeFaces.debug("Appending " + type + " to head: " + src);
-                                $("head").append($resource);
+                                $head.append($resource);
                             }
                         });
                 }
