@@ -132,8 +132,9 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
         this.rootList.find('> li.ui-menuitem > ul.ui-menu-child').on("mouseleave", function(e) {
             e.stopPropagation();
         });
-
-        $(document.body).on("click", function(e) {
+ 
+        var clickNS = 'click.' + this.id;
+        $(document.body).off(clickNS).on(clickNS, function(e) {
             var target = $(e.target);
             if(target.data('primefaces-megamenu') === $this.id) {
                 return;
@@ -141,6 +142,9 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
 
             $this.active = false;
             $this.deactivate($this.rootList.children('li.ui-menuitem-active'), true);
+        });
+        this.addDestroyListener(function() {
+            $(document.body).off(clickNS);
         });
     },
 
