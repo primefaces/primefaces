@@ -119,11 +119,15 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
                 }
             });
 
-        $(document.body).on('mouseup.' + this.id, function (e) {
+        var mouseUpEventName = 'mouseup.' + this.id;
+        $(document.body).off(mouseUpEventName).on(mouseUpEventName, function (e) {
             if ($this.itemMouseDown) {
                 $this.hide(e);
                 $this.itemMouseDown = false;
             }
+        });
+        this.addDestroyListener(function() {
+            $(document.body).off(mouseUpEventName);
         });
 
         //Hide overlay on resize
