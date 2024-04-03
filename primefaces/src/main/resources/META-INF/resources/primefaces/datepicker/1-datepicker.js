@@ -217,7 +217,18 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
     destroy: function() {
         if (this.panel && this.cfg.appendTo) {
             var appendTo = PrimeFaces.utils.resolveDynamicOverlayContainer(this);
-            PrimeFaces.utils.removeDynamicOverlay(this, null, this.id + '_panel', appendTo);
+            PrimeFaces.utils.removeDynamicOverlay(this, null, this.id + "_panel", appendTo);
+        }
+
+        this.jq.datePicker().data().primeDatePicker._destroy();
+        // DOM de-reference memory clean up
+        for (var key in this.jq.data().primeDatePicker) {
+            this.jq.data().primeDatePicker[key] = null;
+        }
+
+        if (this.cfg.mask && this.input) {
+            this.input.inputmask("remove");
+            this.input.off();
         }
 
         this._super();
