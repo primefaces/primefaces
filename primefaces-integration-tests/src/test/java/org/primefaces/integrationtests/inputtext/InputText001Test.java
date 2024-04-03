@@ -26,6 +26,7 @@ package org.primefaces.integrationtests.inputtext;
 import org.json.JSONObject;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.InvalidElementStateException;
+import org.openqa.selenium.JavascriptException;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
@@ -83,6 +84,11 @@ public class InputText001Test extends AbstractPrimePageTest {
         }
         catch (InvalidElementStateException e) {
             assertNotClickable(inputText);
+        }
+        catch (JavascriptException e) {
+            assertNotClickable(inputText);
+            // Chrome 123+
+            Assertions.assertTrue(e.getMessage().contains("Element is not currently interactable and may not be manipulated"));
         }
 
         // Assert - value should not be accepted
