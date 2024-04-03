@@ -213,6 +213,10 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         .on('mouseout.pickList', function(e) {
             $(this).removeClass('ui-state-hover');
         })
+        .on('mousedown.pickList', function(e) {
+            var item = $(this).closest('li.ui-picklist-item');
+            $this.focusedItem = item;
+        })
         .on('click.pickList', function(e) {
             //stop propagation
             if($this.checkboxClick||$this.dragging) {
