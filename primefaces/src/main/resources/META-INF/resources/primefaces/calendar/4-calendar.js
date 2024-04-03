@@ -324,6 +324,26 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
+     * @override
+     * @inheritdoc
+     */
+    destroy: function() {
+        if (this.cfg.popup && $.datepicker._lastInput && this.cfg.id + "_input" === $.datepicker._lastInput.id) {
+            $.datepicker._hideDatepicker();
+        }
+        if ($.datepicker._curInst) $.datepicker._curInst.input = null;
+        if ($.datepicker._lastInput) $.datepicker._lastInput = null;
+        $.datepicker._disabledInputs = [];
+
+        if (this.cfg.mask && this.input) {
+            this.input.inputmask("remove");
+            this.input.off();
+        }
+
+        this._super();
+    },
+
+    /**
      * Sets up the locale so that this calendar is displayed in the configured langauge.
      * @private
      */

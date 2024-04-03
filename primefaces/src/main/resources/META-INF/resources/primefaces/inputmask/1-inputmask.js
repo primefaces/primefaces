@@ -28,6 +28,17 @@ PrimeFaces.widget.InputMask = PrimeFaces.widget.BaseWidget.extend({
         //Visuals
         PrimeFaces.skinInput(this.jq);
     },
+    
+
+    /**
+     * @override
+     * @inheritdoc
+     */
+    destroy: function() {
+        this.jq.inputmask('remove');
+
+        this._super();
+    },
 
     /**
      * Applys the mask to the input.
