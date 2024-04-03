@@ -328,7 +328,9 @@ if (!PrimeFaces.widget) {
             if (this.widgetVar) {
                 var $this = this;
                 this.jq.on("remove", function() {
-                    PrimeFaces.detachedWidgets.push($this.widgetVar);
+                    if (!PrimeFaces.detachedWidgets.includes($this.widgetVar)) {
+                        PrimeFaces.detachedWidgets.push($this.widgetVar);
+                    }
                 });
             }
         },
