@@ -289,11 +289,15 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         }
 
         if(this.cfg.showCheckbox) {
-            this.checkboxes.on('mouseenter.pickList', function(e) {
+            this.checkboxes.off().on('mouseenter.pickList', function(e) {
                 $(this).addClass('ui-state-hover');
             })
             .on('mouseleave.pickList', function(e) {
                 $(this).removeClass('ui-state-hover');
+            })
+            .on('mousedown.pickList', function(e) {
+                var item = $(this).closest('li.ui-picklist-item');
+                $this.focusedItem = item;
             })
             .on('click.pickList', function(e) {
                 $this.checkboxClick = true;
