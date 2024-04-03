@@ -1014,6 +1014,46 @@ if (!PrimeFaces.utils) {
             // Decrease zIndex by 1 and return
             return zIndex - 1;
         },
+        
+        /**
+         * Deletes all events, 'on' attributes, data, and the element itself in a recursive manner, 
+         * ensuring that the garbage collector does not retain any references to this element or its children.
+         *
+         * @param {JQuery | undefined} jq jQuery object to cleanse
+         * @param {boolean} [clearData] flag to clear data off elements (default to true)
+         * @param {boolean} [removeElement] flag to remove the element from DOM (default to true)
+         * @see {@link https://github.com/primefaces/primefaces/issues/11696|GitHub Issue 11696}
+         * @see {@link https://github.com/primefaces/primefaces/issues/11702|GitHub Issue 11702}
+         */
+        cleanseDomElement: function(jq, clearData = true, removeElement = true) {
+            if (!jq || !jq.length) {
+                return;
+            }
+            // Recursively remove events from children elements
+            jq.children().each(function() {
+                PrimeFaces.utils.cleanseDomElement($(this), clearData, removeElement);
+            });
+
+            // Remove inline event attributes
+            var attributes = jq[0].attributes;
+            for (var i = 0; i < attributes.length; i++) {
+                var attributeName = attributes[i].name;
+                if (attributeName.startsWith("on")) {
+                    jq.removeAttr(attributeName);
+                }
+            }
+            // Remove event listeners
+            jq.off();
+            
+            // Clear data
+            if (clearData) {
+                jq.removeData();
+            }
+            // Remove elements itself from memory
+            if (removeElement) {
+                jq.remove();
+            }
+        },
     };
 
 }

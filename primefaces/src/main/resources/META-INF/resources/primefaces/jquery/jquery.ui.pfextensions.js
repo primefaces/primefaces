@@ -112,12 +112,11 @@ $.widget( "ui.sortable", $.ui.sortable, {
 
 // GitHub #9941 tooltip removal fix
 (function() {
-    var ev = new $.Event('remove'),
-        orig = $.fn.remove;
+    var orig = $.fn.remove;
     $.fn.remove = function() {
         // Don't change JQuery.remove(selector) behavior, so trigger event only when remove is called without arguments.
         if (!arguments || arguments.length === 0) {
-            $(this).trigger(ev);
+            $(this).trigger(new $.Event('remove'));
         }
         
         return orig.apply(this, arguments);
