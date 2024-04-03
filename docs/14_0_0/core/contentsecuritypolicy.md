@@ -107,7 +107,7 @@ If you use the PrimeFaces Extensions SunEditor component you must add `blob:` fo
 ```
 
 ## PrimeFaces Extensions Clipboard
-If you use the PrimeFaces Extensions Clipboard component and want to use `url="javascript:void(0)"` to perform the copy you must add `unsafe-hashes`:
+If you use the PrimeFaces Extensions Clipboard component and want to use `url="javascript:void(0);"` to perform the copy you must add `unsafe-hashes`:
 
 ```xml
 <context-param>
