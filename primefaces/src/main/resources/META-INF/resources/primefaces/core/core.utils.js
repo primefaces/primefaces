@@ -1128,7 +1128,6 @@ if (!PrimeFaces.utils) {
             }
             // Remove event listeners
             jq.off();
-
             // Clear data
             if (clearData) {
                 jq.removeData();

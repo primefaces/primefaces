@@ -115,14 +115,18 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
       * @private
       */
     bindAjaxListener: function() {
-        var $this = this;
+        var $this = this,
+            ajaxEventName = 'pfAjaxUpdated.' + this.id;
 
         //listen global ajax send and complete callbacks
-        $(document).on('pfAjaxUpdated.' + this.id, function(e, xhr, settings) {
+        $(document).off(ajaxEventName).on(ajaxEventName, function(e, xhr, settings) {
             // #3921 if the trigger is updated we need to re-subscribe
             if (PrimeFaces.ajax.Utils.isXhrSourceATrigger($this, settings, true)) {
                 PrimeFaces.queueTask(function() { $this.bindTrigger() });
             }
+        });
+        this.addDestroyListener(function() {
+            $(document).off(ajaxEventName);
         });
     },
 
@@ -149,11 +153,15 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
                 }
             });
 
-        $(document.body).on('mouseup.' + this.id, function (e) {
+        var mouseUpEventName = 'mouseup.' + this.id;
+        $(document.body).off(mouseUpEventName).on(mouseUpEventName, function (e) {
             if ($this.itemMouseDown) {
                 $this.hide(e);
                 $this.itemMouseDown = false;
             }
+        });
+        this.addDestroyListener(function() {
+            $(document.body).off(mouseUpEventName);
         });
 
         //Hide overlay on resize

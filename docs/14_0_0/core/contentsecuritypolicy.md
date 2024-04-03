@@ -86,13 +86,33 @@ thing in CSP_POLICY because we add the NONCE on the end of this policy.
 </context-param>
 ```
 
-## Google reCaptcha
-If you use the PrimeFaces Captcha component you must use a custom policy as follows:
+## Google reCaptcha / Maps
+If you use the PrimeFaces Captcha or Google Maps component you must use a custom policy that adds Google API usage as follows:
 
 ```xml
 <context-param>
     <param-name>primefaces.CSP_POLICY</param-name>
     <param-value>frame-ancestors 'none'; script-src 'self' https: *.googleapis.com</param-value>
+</context-param>
+```
+
+## PrimeFaces Extensions SunEditor
+If you use the PrimeFaces Extensions SunEditor component you must add `blob:` for full functionality:
+
+```xml
+<context-param>
+    <param-name>primefaces.CSP_POLICY</param-name>
+    <param-value>script-src 'self' blob:</param-value>
+</context-param>
+```
+
+## PrimeFaces Extensions Clipboard
+If you use the PrimeFaces Extensions Clipboard component and want to use `url="javascript:void(0);"` to perform the copy you must add `unsafe-hashes`:
+
+```xml
+<context-param>
+    <param-name>primefaces.CSP_POLICY</param-name>
+    <param-value>script-src 'self' 'unsafe-hashes' 'sha256-kbHtQyYDQKz4SWMQ8OHVol3EC0t3tHEJFPCSwNG9NxQ='</param-value>
 </context-param>
 ```
 
