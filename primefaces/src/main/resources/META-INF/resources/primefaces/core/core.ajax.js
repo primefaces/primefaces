@@ -1364,12 +1364,11 @@ if (!PrimeFaces.ajax) {
 
                     var widget = PF(widgetVar);
                     if (widget && widget.isDetached() === true) {
-                        widget.destroy();
-
                         try {
+                            widget.destroy();
                             delete PrimeFaces.widgets[widgetVar];
-                            delete widget;
-                        } catch (e) { }
+                            widget = null;
+                        } catch (e) { PrimeFaces.warn("Error destroying widget: " + widgetVar) }
                     }
                 }
 
