@@ -342,7 +342,9 @@ if (!PrimeFaces.ajax) {
                         PrimeFaces.warn("DOM element with id '" + id + "' cant be found; skip update...");
                     }
                     else {
-                        target.replaceWith(content);
+                        var removedContent = target.replaceWith(content);
+                        // detach all handlers and data to clean up DOM
+                        PrimeFaces.utils.cleanseDomElement(removedContent);
                     }
                 }
             }
@@ -1364,12 +1366,11 @@ if (!PrimeFaces.ajax) {
 
                     var widget = PF(widgetVar);
                     if (widget && widget.isDetached() === true) {
-                        widget.destroy();
-
                         try {
+                            widget.destroy();
                             delete PrimeFaces.widgets[widgetVar];
-                            delete widget;
-                        } catch (e) { }
+                            widget = null;
+                        } catch (e) { PrimeFaces.warn("Error destroying widget: " + widgetVar) }
                     }
                 }
 
