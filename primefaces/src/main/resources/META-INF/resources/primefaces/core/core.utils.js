@@ -408,29 +408,31 @@ if (!PrimeFaces.utils) {
          * @return {PrimeFaces.UnbindCallback} unbind callback handler
          */
         registerScrollHandler: function(widget, scrollNamespace, scrollCallback) {
-            var scrollParent;
             var widgetJq = widget.getJQ();
-            if (widgetJq && typeof widgetJq.scrollParent === 'function') {
-                scrollParent = widgetJq.scrollParent();
-            }
+            var scrollParent = (widgetJq && typeof widgetJq.scrollParent === 'function') ? widgetJq.scrollParent() : null;
+
             if (!scrollParent || PrimeFaces.utils.isScrollParentWindow(scrollParent)) {
                 scrollParent = $(window);
             }
 
+            // To avoid holding the $(window) variable explicitly, you can directly bind and unbind 
+            // the scroll event on the window within the function itself.
+            var scrollHandler = function(e) {
+                scrollCallback(e);
+            };
+
+            scrollParent.off(scrollNamespace).on(scrollNamespace, scrollHandler);
+
             widget.addDestroyListener(function() {
-                scrollParent.off(scrollNamespace);
+                scrollParent.off(scrollNamespace, scrollHandler);
             });
             widget.addRefreshListener(function() {
-                scrollParent.off(scrollNamespace);
-            });
-
-            scrollParent.off(scrollNamespace).on(scrollNamespace, function(e) {
-                scrollCallback(e);
+                scrollParent.off(scrollNamespace, scrollHandler);
             });
 
             return {
                 unbind: function() {
-                    scrollParent.off(scrollNamespace);
+                    scrollParent.off(scrollNamespace, scrollHandler);
                 }
             };
         },
@@ -532,10 +534,10 @@ if (!PrimeFaces.utils) {
         unbindScrollHandler: function(widget, scrollNamespace) {
             var scrollParent = widget.getJQ().scrollParent();
             if (PrimeFaces.utils.isScrollParentWindow(scrollParent)) {
-                scrollParent = $(window);
+                $(window).off(scrollNamespace); // Unbind directly from window
+            } else {
+                scrollParent.off(scrollNamespace);
             }
-
-            scrollParent.off(scrollNamespace);
         },
 
         /**

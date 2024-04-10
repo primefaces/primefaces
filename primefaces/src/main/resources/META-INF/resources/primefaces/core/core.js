@@ -404,7 +404,8 @@
             }
 
             widget.ajaxCount = 0;
-            $(document).on('pfAjaxSend.' + widget.id, function(e, xhr, settings) {
+            var namespace = '.' + widget.id;
+            $(document).on('pfAjaxSend' + namespace, function(e, xhr, settings) {
                 if (isXhrSource.call(this, widget, settings)) {
                     widget.ajaxCount++;
                     if (widget.ajaxCount > 1) {
@@ -427,7 +428,7 @@
                     }
                     button.prepend(loadIcon);
                 }
-            }).on('pfAjaxComplete.' + widget.id, function(e, xhr, settings, args) {
+            }).on('pfAjaxComplete' + namespace, function(e, xhr, settings, args) {
                 if (isXhrSource.call(this, widget, settings)) {
                     widget.ajaxCount--;
                     if (widget.ajaxCount > 0 || !args || args.redirect) {
@@ -440,6 +441,9 @@
                     );
                     delete widget.ajaxStart;
                 }
+            });
+            widget.addDestroyListener(function() {
+                $(document).off(namespace);
             });
         },
 

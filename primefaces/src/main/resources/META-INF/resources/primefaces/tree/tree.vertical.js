@@ -328,11 +328,14 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         });
 
         /* For copy/paste operation on drag and drop */
-        $(document.body).on('keydown.tree', function(e) {
+        var namespace = '.tree' + this.id;
+        $(document.body).on('keydown' + namespace, function(e) {
             $this.shiftKey = e.shiftKey;
-        })
-        .on('keyup.tree', function() {
+        }).on('keyup' + namespace, function() {
             $this.shiftKey = false;
+        });
+        this.addDestroyListener(function() {
+            $(document.body).off(namespace);
         });
     },
 
