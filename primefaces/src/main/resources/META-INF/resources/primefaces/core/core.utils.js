@@ -351,6 +351,9 @@ if (!PrimeFaces.utils) {
             widget.addDestroyListener(function() {
                 $(window).off(resizeNamespace);
             });
+            widget.addRefreshListener(function() {
+                $(window).off(resizeNamespace);
+            });
 
             $(window).off(resizeNamespace).on(resizeNamespace, params||null, function(e) {
                 if (element && (element.is(":hidden") || element.css('visibility') === 'hidden')) {
@@ -421,6 +424,9 @@ if (!PrimeFaces.utils) {
             scrollParent.off(scrollNamespace).on(scrollNamespace, scrollHandler);
 
             widget.addDestroyListener(function() {
+                scrollParent.off(scrollNamespace, scrollHandler);
+            });
+            widget.addRefreshListener(function() {
                 scrollParent.off(scrollNamespace, scrollHandler);
             });
 
