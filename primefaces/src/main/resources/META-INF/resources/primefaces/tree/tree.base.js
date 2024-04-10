@@ -118,7 +118,8 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
     bindContextMenu : function(menuWidget, targetWidget, targetId, cfg) {
         var nodeContentSelector = targetId + ' .ui-tree-selectable',
         nodeEvent = cfg.nodeType ? cfg.event + '.treenode.' + cfg.nodeType : cfg.event + '.treenode',
-        containerEvent = cfg.event + '.tree';
+        containerEvent = cfg.event + '.tree' + this.id;
+        nodeEvent = nodeEvent + this.id;
 
         $(document).off(nodeEvent, nodeContentSelector).on(nodeEvent, nodeContentSelector, null, function(e) {
             var nodeContent = $(this);
@@ -139,6 +140,9 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
             if(e.target.id == targetWidget.id && targetWidget.isEmpty()) {
                 menuWidget.show(e);
             }
+        });
+        this.addDestroyListener(function() {
+            $(document).off(nodeEvent + ' ' + containerEvent);
         });
     },
 

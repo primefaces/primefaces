@@ -611,7 +611,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     bindContextMenu : function(menuWidget, targetWidget, targetId, cfg) {
         var targetSelector = targetId + ' .ui-treetable-data > ' + (cfg.nodeType ? 'tr.ui-treetable-selectable-node.' + cfg.nodeType : 'tr.ui-treetable-selectable-node');
-        var targetEvent = cfg.event + '.treetable';
+        var targetEvent = cfg.event + '.treetable' + this.id;
 
         $(document).off(targetEvent, targetSelector).on(targetEvent, targetSelector, null, function(e) {
             var isContextMenuDelayed = targetWidget.onRowRightClick(e, $(this), function() {
@@ -623,6 +623,9 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 e.stopPropagation();
             }
         });
+        this.addDestroyListener(function() {
+            $(document).off(targetEvent);
+        });
     },
 
     /**
@@ -633,7 +636,6 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         var table = this.thead.parent(),
         offset = table.offset(),
         orginTableContent = this.jq.children('table'),
-        win = $(window),
         $this = this;
 
         this.stickyContainer = $('<div class="ui-treetable ui-treetable-sticky ui-widget"><table></table></div>');
@@ -656,7 +658,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id + '_align', function() {
-            var scrollTop = win.scrollTop(),
+            var scrollTop = $(window).scrollTop(),
             tableOffset = table.offset();
 
             if(scrollTop > tableOffset.top) {
@@ -793,6 +795,9 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                     else
                         $this.doCellEditCancelRequest($this.currentCell);
                 });
+            this.addDestroyListener(function() {
+                $(document).off('mouseup.treetable-cell-blur' + this.id);
+            });
         }
     },
 

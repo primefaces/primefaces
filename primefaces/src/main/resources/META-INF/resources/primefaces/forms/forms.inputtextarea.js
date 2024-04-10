@@ -273,7 +273,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
         });
 
         //hide panel when outside is clicked
-        $(document.body).on('mousedown.ui-inputtextarea', function (e) {
+        $(document.body).on('mousedown.ui-inputtextarea'+this.id, function (e) {
             if(_self.panel.is(":hidden")) {
                 return;
             }
@@ -288,6 +288,9 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
                 e.pageY > offset.top + _self.panel.height()) {
                 _self.hide();
             }
+        });
+        this.addDestroyListener(function() {
+             $(document.body).off('mousedown.ui-inputtextarea'+this.id);
         });
 
         //Hide overlay on resize

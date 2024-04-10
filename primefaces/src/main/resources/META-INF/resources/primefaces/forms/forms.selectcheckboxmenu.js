@@ -1079,8 +1079,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
      */
     alignPanel: function() {
         var fixedPosition = this.panel.css('position') == 'fixed',
-            win = $(window),
-            positionOffset = fixedPosition ? '-' + win.scrollLeft() + ' -' + win.scrollTop() : null,
+            positionOffset = fixedPosition ? '-' + $(window).scrollLeft() + ' -' + $(window).scrollTop() : null,
             panelStyle = this.panel.attr('style');
 
         this.panel.css({

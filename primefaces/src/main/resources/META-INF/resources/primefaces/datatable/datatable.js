@@ -1241,7 +1241,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     bindContextMenu : function(menuWidget, targetWidget, targetId, cfg) {
         var $this = this;
         var targetSelector = targetId + ' tbody.ui-datatable-data > tr.ui-widget-content';
-        var targetEvent = cfg.event + '.datatable';
+        var targetEvent = cfg.event + '.datatable' + this.id;
         this.contextMenuWidget = menuWidget;
 
         $(document).off(targetEvent, targetSelector).on(targetEvent, targetSelector, null, function(e) {
@@ -1265,6 +1265,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             else if(row.hasClass('ui-datatable-empty-message') && !$this.cfg.disableContextMenuIfEmpty) {
                 $this.contextMenuWidget.show(e);
             }
+        });
+        this.addDestroyListener(function() {
+            $(document).off(targetEvent);
         });
 
         if(this.cfg.scrollable && this.scrollBody) {
@@ -3135,7 +3138,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     bindEditEvents: function() {
         var $this = this;
+        var namespace = '.datatable' + this.id;
         this.cfg.saveOnCellBlur = (this.cfg.saveOnCellBlur === false) ? false : true;
+        
+        // ensure DOM memory is cleaned up by releasing document event handlers
+        this.addDestroyListener(function() {
+            $(document).off(namespace);
+            $(document).off('mouseup.datatable-cell-blur' + this.id);
+        });
 
         if(this.cfg.editMode === 'row') {
             var rowEditorSelector = '> tr > td > div.ui-row-editor > a';
@@ -3166,8 +3176,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         });
 
             // GitHub #433 Allow ENTER to submit ESC to cancel row editor
-            $(document).off("keydown.datatable", "tr.ui-row-editing")
-                        .on("keydown.datatable", "tr.ui-row-editing", function(e) {
+            $(document).off("keydown" + namespace, "tr.ui-row-editing")
+                        .on("keydown" + namespace, "tr.ui-row-editing", function(e) {
                             switch (e.key) {
                                 case 'Enter':
                                     var target = $(e.target);
@@ -3184,6 +3194,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                                     break;
                 }
             });
+            
         }
         else if(this.cfg.editMode === 'cell') {
             var originalCellSelector = '> tr > td.ui-editable-column',
@@ -4730,7 +4741,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     setupStickyHeader: function() {
         var table = this.thead.parent(),
             offset = table.offset(),
-            win = $(window),
             $this = this,
             orginTableContent = this.jq.find('> .ui-datatable-tablewrapper > table'),
             fixedElementsOnTop = this.cfg.stickyTopAt ? $(this.cfg.stickyTopAt) : null,
@@ -4762,7 +4772,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id, function() {
-            var scrollTop = win.scrollTop(),
+            var scrollTop = $(window).scrollTop(),
                 tableOffset = table.offset();
 
             if (scrollTop + fixedElementsHeight > tableOffset.top) {
@@ -4825,6 +4835,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         //filter support
         this.clone.find('.ui-column-filter').prop('disabled', true);
+        
+        this.addDestroyListener(function() {
+            $this.clone.off().remove();
+            $this.stickyContainer.off().remove();
+        });
     },
 
     /**

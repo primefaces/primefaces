@@ -401,8 +401,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
      * @param {string | JQuery} [target] ID or DOM element of the target component that triggers this overlay panel.
      */
     align: function(target) {
-        var win = $(window),
-            allowedNegativeValuesByParentOffset = this.jq.offsetParent().offset();
+        var allowedNegativeValuesByParentOffset = this.jq.offsetParent().offset();
 
         this.targetElement = this.getTarget(target);
         if (this.targetElement.hasClass('ui-splitbutton-menubutton')) {
@@ -432,7 +431,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
             });
 
         var widthOffset = this.jq.width() - this.content.width();
-        this.jq.css('max-width', win.width() - widthOffset + 'px');
+        this.jq.css('max-width', $(window).width() - widthOffset + 'px');
     },
 
     /**

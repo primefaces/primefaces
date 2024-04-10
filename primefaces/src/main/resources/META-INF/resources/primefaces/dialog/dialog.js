@@ -453,6 +453,9 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
                     }
                 };
             });
+            this.addDestroyListener(function() {
+                $(document).off('keydown.dialog_' + this.id);
+            });
         }
     },
 
@@ -642,14 +645,12 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         else {
             this.saveState();
 
-            var win = $(window);
-
             this.jq.addClass('ui-dialog-maximized').css({
-                'width': String(win.width() - 6)
-                ,'height': String(win.height())
+                'width': String($(window).width() - 6)
+                ,'height': String($(window).height())
             }).offset({
-                top: win.scrollTop()
-                ,left: win.scrollLeft()
+                top: $(window).scrollTop()
+                ,left: $(window).scrollLeft()
             });
 
             //maximize content
@@ -741,10 +742,9 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             contentHeight: this.content.height()
         };
 
-        var win = $(window);
         this.state.offset = this.jq.offset();
-        this.state.windowScrollLeft = win.scrollLeft();
-        this.state.windowScrollTop = win.scrollTop();
+        this.state.windowScrollLeft = $(window).scrollLeft();
+        this.state.windowScrollTop = $(window).scrollTop();
     },
 
     /**
@@ -755,10 +755,9 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.jq.width(this.state.width).height(this.state.height);
         this.content.width(this.state.contentWidth).height(this.state.contentHeight);
 
-        var win = $(window);
         this.jq.offset({
-                top: this.state.offset.top + (win.scrollTop() - this.state.windowScrollTop)
-                ,left: this.state.offset.left + (win.scrollLeft() - this.state.windowScrollLeft)
+                top: this.state.offset.top + ($(window).scrollTop() - this.state.windowScrollTop)
+                ,left: this.state.offset.left + ($(window).scrollLeft() - this.state.windowScrollLeft)
         });
     },
 
