@@ -254,7 +254,10 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
 
                 $this.isItemClicked = false;
             };
-            $(document).on('click', this.documentClickListener);
+            $(document).on('click.' + this.id, this.documentClickListener);
+            this.addDestroyListener(function() {
+                $(document).off('click.' + this.id);
+            });
         }
     },
 

@@ -30,7 +30,7 @@ PrimeFaces.widget.Lifecycle = PrimeFaces.widget.BaseWidget.extend({
         }
 
         var $this = this;
-        $(document).on('pfAjaxSuccess', function() {
+        $(document).on('pfAjaxSuccess.'+this.id, function() {
             if (!$this.updating) {
                 PrimeFaces.queueTask(function() {
                     if (!$this.updating) {
@@ -38,6 +38,9 @@ PrimeFaces.widget.Lifecycle = PrimeFaces.widget.BaseWidget.extend({
                     }
                 }, 25);
             }
+        });
+        this.addDestroyListener(function() {
+            $(document).off('pfAjaxSuccess.'+this.id);
         });
 
         if (window.jsf && window.jsf.ajax) {

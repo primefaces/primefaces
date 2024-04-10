@@ -62,11 +62,10 @@ PrimeFaces.widget.Sticky = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     bindEvents: function() {
-        var $this = this,
-            win = $(window);
+        var $this = this;
 
         PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id + '_align', function() {
-            if (win.scrollTop() > $this.initialState.top - $this.cfg.margin)
+            if ($(window).scrollTop() > $this.initialState.top - $this.cfg.margin)
                 $this.fix();
             else
                 $this.restore();
@@ -85,8 +84,7 @@ PrimeFaces.widget.Sticky = PrimeFaces.widget.BaseWidget.extend({
      */
     fix: function(force) {
         if (!this.fixed || force) {
-            var win = $(window),
-                winScrollTop = win.scrollTop();
+            var winScrollTop = $(window).scrollTop();
 
             this.target.css({
                 'position': 'fixed',
@@ -98,7 +96,7 @@ PrimeFaces.widget.Sticky = PrimeFaces.widget.BaseWidget.extend({
             this.ghost = $('<div class="ui-sticky-ghost"></div>').height(this.target.outerHeight()).insertBefore(this.target);
             this.target.width(this.ghost.outerWidth() - (this.target.outerWidth() - this.target.width()));
             this.fixed = true;
-            win.scrollTop(winScrollTop);
+            $(window).scrollTop(winScrollTop);
         }
     },
 

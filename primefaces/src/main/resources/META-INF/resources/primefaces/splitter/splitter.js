@@ -104,11 +104,14 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
     bindDocumentEvents: function() {
         var $this = this;
 
-        $(document).on('mousemove.splitter', function(event) {
+        $(document).on('mousemove.splitter' + this.id, function(event) {
             $this.onResize(event);
-        }).on('mouseup.splitter', function(event) {
+        }).on('mouseup.splitter' + this.id, function(event) {
             $this.onResizeEnd(event);
             $this.unbindDocumentEvents();
+        });
+        this.addDestroyListener(function() {
+            $(document).off('.splitter' + this.id);
         });
     },
 
@@ -117,7 +120,7 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     unbindDocumentEvents: function() {
-        $(document).off('mousemove.splitter mouseup.splitter');
+        $(document).off('.splitter' + this.id);
     },
 
     /**
