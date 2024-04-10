@@ -43,24 +43,30 @@ PrimeFaces.widget.Draggable = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.appendTo) {
             this.cfg.appendTo = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.appendTo);
         }
-        
+
         var $this = this;
 
         this.cfg.start = function(event, ui) {
-            if($this.cfg.onStart) {
+            if ($this.cfg.onStart) {
                 $this.cfg.onStart.call($this, event, ui);
             }
         };
-        
+
         this.cfg.stop = function(event, ui) {
-            if($this.cfg.onStop) {
+            if ($this.cfg.onStop) {
                 $this.cfg.onStop.call($this, event, ui);
             }
         };
-        
+
         this.jqTarget.draggable(this.cfg);
+
+        this.addDestroyListener(function() {
+            if ($this.jqTarget.length) {
+                $this.jqTarget.draggable('destroy');
+            }
+        });
     }
-    
+
 });
 
 /**
@@ -99,6 +105,13 @@ PrimeFaces.widget.Droppable = PrimeFaces.widget.BaseWidget.extend({
         this.bindDropListener();
 
         this.jqTarget.droppable(this.cfg);
+
+        var $this = this;
+        this.addDestroyListener(function() {
+            if ($this.jqTarget.length) {
+                $this.jqTarget.droppable('destroy');
+            }
+        });
     },
 
     /**
@@ -106,27 +119,27 @@ PrimeFaces.widget.Droppable = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     bindDropListener: function() {
-        var _self = this;
+        var $this = this;
 
         this.cfg.drop = function(event, ui) {
-            if(_self.cfg.onDrop) {
-                _self.cfg.onDrop.call(_self, event, ui);
+            if ($this.cfg.onDrop) {
+                $this.cfg.onDrop.call($this, event, ui);
             }
-            if(_self.cfg.behaviors) {
-                var dropBehavior = _self.cfg.behaviors['drop'];
+            if ($this.cfg.behaviors) {
+                var dropBehavior = $this.cfg.behaviors['drop'];
 
-                if(dropBehavior) {
+                if (dropBehavior) {
                     var ext = {
                         params: [
-                            {name: _self.id + '_dragId', value: ui.draggable.attr('id')},
-                            {name: _self.id + '_dropId', value: _self.cfg.target}
+                            { name: $this.id + '_dragId', value: ui.draggable.attr('id') },
+                            { name: $this.id + '_dropId', value: $this.cfg.target }
                         ]
                     };
 
-                    dropBehavior.call(_self, ext);
+                    dropBehavior.call($this, ext);
                 }
             }
         };
     }
-    
+
 });
