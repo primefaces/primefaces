@@ -42,11 +42,22 @@ PrimeFaces.widget.Sticky = PrimeFaces.widget.BaseWidget.extend({
             };
 
             // if the target is removed from the DOM we should destroy this widget
-            this.bindDomRemovalEvent(this.target);
+            this.destroyOnElementRemoval(this.target);
             this.bindEvents();
         }
     },
-
+    
+    /**
+     * @override
+     * @inheritdoc
+     */
+    destroy: function() {
+        this._super();
+        if (this.ghost && this.ghost.length) {
+            this.ghost.remove();
+        }
+    },
+    
     /**
      * @override
      * @inheritdoc
@@ -54,6 +65,8 @@ PrimeFaces.widget.Sticky = PrimeFaces.widget.BaseWidget.extend({
      */
     refresh: function(cfg) {
         this.target = $(PrimeFaces.escapeClientId(this.cfg.target));
+        // if the target is removed from the DOM we should destroy this widget
+        this.destroyOnElementRemoval(this.target);
 
         if (this.fixed) {
             this.ghost.remove();

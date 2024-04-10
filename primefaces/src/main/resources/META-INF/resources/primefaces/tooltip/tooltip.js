@@ -228,7 +228,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         }
         else {
             // GitHub #9941 Helper to remove tooltips when elements are removed
-            this.bindDomRemovalEvent(this.target);
+            this.destroyOnElementRemoval(this.target);
 
             this.target.off(this.cfg.showEvent + ' ' + this.cfg.hideEvent)
                 .on(this.cfg.showEvent, function(e) {

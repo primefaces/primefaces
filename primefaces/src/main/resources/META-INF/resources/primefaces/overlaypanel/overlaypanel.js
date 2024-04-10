@@ -188,9 +188,6 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
         });
 
         this.bindAutoHide();
-        
-        // if the target is removed from the DOM we should destroy this widget
-        this.bindDomRemovalEvent(this.target);
     },
 
     /**

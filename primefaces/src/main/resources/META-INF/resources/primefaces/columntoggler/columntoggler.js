@@ -180,9 +180,6 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
             else
                 $this.show();
         });
-        // if the trigger/table is removed from the DOM we should destroy this widget
-        this.bindDomRemovalEvent(this.trigger);
-        this.bindDomRemovalEvent(this.table);
 
         //checkboxes
         this.itemContainer.find('> .ui-columntoggler-item > .ui-chkbox > .ui-chkbox-box').on('mouseenter.columnToggler', function() {

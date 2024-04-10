@@ -230,6 +230,8 @@ if (!PrimeFaces.widget) {
      * @prop {PrimeFaces.widget.DestroyListener<BaseWidget>[]} destroyListeners Array of registered listeners invoked
      * when this widget is destroyed. You should normally not use modify this directly, use {@link addDestroyListener}
      * instead.
+     * @prop {string[]} removalIdentifiers Array of registered DOM ID's that if they are removed from the DOM this 
+     * widget is considered "detached".
      * @prop {string | string[]} id The client-side ID of this widget, with all parent naming containers, such as
      * `myForm:myWidget`. This is also the ID of the container HTML element for this widget. In case the widget needs
      * multiple container elements (such as {@link Paginator}), this may also be an array if IDs.
@@ -322,12 +324,13 @@ if (!PrimeFaces.widget) {
             this.widgetVar = cfg.widgetVar;
             this.destroyListeners = [];
             this.refreshListeners = [];
+            this.removalIdentifiers = [];
 
             //remove script tag
             this.removeScriptElement(this.id);
 
             // clean up the widget if its DOM element is removed from the DOM
-            this.bindDomRemovalEvent(this.jq);
+            this.destroyOnElementRemoval(this.jq);
         },
 
         /**
@@ -413,12 +416,20 @@ if (!PrimeFaces.widget) {
          * @return {boolean} `true` if this widget is currently detached, or `false` otherwise.
          */
         isDetached: function() {
-            var element = document.getElementById(this.id);
-            if (typeof(element) !== 'undefined' && element !== null) {
-                return false;
+            if (this.removalIdentifiers) {
+                for (var i = 0; i < this.removalIdentifiers.length; i++) {
+                    var id = this.removalIdentifiers[i];
+                    var element = document.getElementById(id);
+                    if (typeof (element) === 'undefined' || element === null) {
+                        // If any ID is not found, return true immediately
+                        return true;
+                    }
+                }
             }
+            this.removalIdentifiers = [];
 
-            return true;
+            // If all IDs are found, return false
+            return false;
         },
 
         /**
@@ -605,11 +616,19 @@ if (!PrimeFaces.widget) {
          * @param {JQuery | HTMLElement} watchElement The HTML element that if removed from the DOM will detach this widget.
          * @since 14.0.0
          */
-        bindDomRemovalEvent: function(watchElement) {
-            if (this.widgetVar) {
+        destroyOnElementRemoval: function(watchElement) {
+            if (this.widgetVar && watchElement) {
                 var $this = this,
-                    namespace = '.widget' + this.id;
-                $(watchElement).off("remove" + namespace).on("remove" + namespace, function() {
+                    namespace = '.widget' + this.id,
+                    $watchElement = $(watchElement),
+                    watchId = $watchElement.attr('id');
+
+                // add id to list of ids checked for isDetached
+                if (!this.removalIdentifiers.includes(watchId)) {
+                    this.removalIdentifiers.push(watchId);
+                }
+                // subscribe to the remove event and add this to detached widgets if DOM has been removed
+                $watchElement.off("remove" + namespace).on("remove" + namespace, function() {
                     if (!PrimeFaces.detachedWidgets.includes($this.widgetVar)) {
                         PrimeFaces.detachedWidgets.push($this.widgetVar);
                     }

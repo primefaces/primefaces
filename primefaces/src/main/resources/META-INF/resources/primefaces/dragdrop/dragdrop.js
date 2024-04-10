@@ -59,15 +59,6 @@ PrimeFaces.widget.Draggable = PrimeFaces.widget.BaseWidget.extend({
         };
         
         this.jqTarget.draggable(this.cfg);
-        
-        // if the target is removed from the DOM we should destroy this widget
-        this.bindDomRemovalEvent(this.jqTarget);
-
-        this.addDestroyListener(function() {
-            if ($this.jqTarget.length) {
-                $this.jqTarget.draggable('destroy');
-            }
-        });
     }
     
 });
@@ -103,21 +94,11 @@ PrimeFaces.widget.Droppable = PrimeFaces.widget.BaseWidget.extend({
      */
     init: function(cfg) {
         this._super(cfg);
-        var $this = this;
-        
         this.jqTarget = $(PrimeFaces.escapeClientId(this.cfg.target));
 
         this.bindDropListener();
-        // if the target is removed from the DOM we should destroy this widget
-        this.bindDomRemovalEvent(this.jqTarget);
 
         this.jqTarget.droppable(this.cfg);
-
-        this.addDestroyListener(function() {
-            if ($this.jqTarget.length) {
-                $this.jqTarget.droppable('destroy');
-            }
-        });
     },
 
     /**
