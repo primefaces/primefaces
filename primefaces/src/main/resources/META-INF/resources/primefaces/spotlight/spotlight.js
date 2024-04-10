@@ -39,8 +39,7 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     createMasks: function() {
-        var documentBody = $(document.body);
-        documentBody.append('<div class="ui-widget-overlay ui-spotlight ui-spotlight-top ui-helper-hidden"></div><div class="ui-widget-overlay ui-spotlight ui-spotlight-bottom ui-helper-hidden"></div>' +
+        $(document.body).append('<div class="ui-widget-overlay ui-spotlight ui-spotlight-top ui-helper-hidden"></div><div class="ui-widget-overlay ui-spotlight ui-spotlight-bottom ui-helper-hidden"></div>' +
                         '<div class="ui-widget-overlay ui-spotlight ui-spotlight-left ui-helper-hidden"></div><div class="ui-widget-overlay ui-spotlight ui-spotlight-right ui-helper-hidden"></div>');
     },
 
@@ -120,7 +119,8 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
             return $this.target.find(':tabbable');
         });
 
-        $(window).on('resize.spotlight scroll.spotlight', function() {
+        var namespace = '.spotlight' + this.id;
+        $(window).on('resize' + namespace + ' scroll' + namespace, function() {
             $this.calculatePositions();
         });
     },
@@ -134,7 +134,8 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
         if (this.cfg.blockScroll) {
             PrimeFaces.utils.enableScrolling();
         }
-        $(window).off('resize.spotlight scroll.spotlight');
+        var namespace = '.spotlight' + this.id;
+        $(window).off(namespace);
     },
 
     /**

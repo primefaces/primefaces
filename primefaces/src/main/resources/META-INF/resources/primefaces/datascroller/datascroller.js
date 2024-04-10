@@ -77,12 +77,10 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
 
         if(this.cfg.mode === 'document') {
-            var win = $(window),
-            doc = $(document),
-            $this = this;
+            var $this = this;
 
             PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id + '_align', function() {
-                if (win.scrollTop() >= ((doc.height() * $this.cfg.buffer) - win.height()) && $this.shouldLoad()) {
+                if ($(window).scrollTop() >= (($(document).height() * $this.cfg.buffer) - $(window).height()) && $this.shouldLoad()) {
                     $this.load();
                 }
             });
