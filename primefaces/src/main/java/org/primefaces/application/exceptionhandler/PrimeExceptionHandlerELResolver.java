@@ -25,9 +25,15 @@ package org.primefaces.application.exceptionhandler;
 
 import java.beans.FeatureDescriptor;
 import java.util.Iterator;
+import java.util.Map;
+
 import javax.el.ELContext;
 import javax.el.ELResolver;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.lifecycle.ClientWindow;
+
+import org.primefaces.util.LangUtils;
 
 public class PrimeExceptionHandlerELResolver extends ELResolver {
 
@@ -40,10 +46,22 @@ public class PrimeExceptionHandlerELResolver extends ELResolver {
             elContext.setPropertyResolved(true);
 
             FacesContext context = FacesContext.getCurrentInstance();
+            ExternalContext externalContext = context.getExternalContext();
+
             ExceptionInfo info = (ExceptionInfo) context.getAttributes().get(ExceptionInfo.ATTRIBUTE_NAME);
 
-            if (info == null) {
-                info = (ExceptionInfo) context.getExternalContext().getSessionMap().get(ExceptionInfo.ATTRIBUTE_NAME);
+            if (info == null && externalContext.getSession(false) != null) {
+                ClientWindow clientWindow = externalContext.getClientWindow();
+                if (clientWindow != null && LangUtils.isNotBlank(clientWindow.getId())) {
+                    Map<String, ExceptionInfo> windowsMap = (Map<String, ExceptionInfo>)
+                            externalContext.getSessionMap().get(ExceptionInfo.ATTRIBUTE_NAME + "_map");
+                    if (windowsMap != null) {
+                        info = windowsMap.get(clientWindow.getId());
+                    }
+                }
+                if (info == null) {
+                    info = (ExceptionInfo) externalContext.getSessionMap().get(ExceptionInfo.ATTRIBUTE_NAME);
+                }
             }
 
             return info;
