@@ -205,7 +205,7 @@ public class DataTableExcelExporter extends DataTableExporter<Workbook, ExcelOpt
     }
 
     public String getSheetName(FacesContext context, UIComponent table, int index) {
-        String sheetName = ExporterUtils.getComponentFacetValue(context, table, "header");
+        String sheetName = getComponentFacetValue(context, table, "header");
         if (sheetName == null) {
             sheetName = table.getId() + (index + 1);
         }

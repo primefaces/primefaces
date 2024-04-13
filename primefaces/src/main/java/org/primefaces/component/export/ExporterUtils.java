@@ -46,6 +46,10 @@ import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.LangUtils;
 
+/**
+ * @deprecated ALl methods have been moved to {@link TableExporter}
+ */
+@Deprecated(since = "14.0.0")
 public final class ExporterUtils {
 
     private ExporterUtils() {

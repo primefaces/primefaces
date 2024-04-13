@@ -72,7 +72,7 @@ public class TextExporter extends DataTableExporter<PrintWriter, ExporterOptions
 
     @Override
     protected void exportCellValue(FacesContext context, DataTable table, UIColumn col, ColumnValue columnValue, int index) {
-        String columnTag = ExporterUtils.getColumnExportTag(context, col);
+        String columnTag = getColumnExportTag(context, col);
         document.append("\t\t")
                 .append(columnTag)
                 .append(": ")
