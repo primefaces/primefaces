@@ -36,7 +36,6 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.export.DataTableExporter;
 import org.primefaces.component.export.ColumnValue;
 import org.primefaces.component.export.ExporterOptions;
-import org.primefaces.component.export.ExporterUtils;
 import org.primefaces.util.EscapeUtils;
 
 public class TextExporter extends DataTableExporter<PrintWriter, ExporterOptions> {
