@@ -36,7 +36,6 @@ import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.ColumnValue;
 import org.primefaces.component.export.ExcelOptions;
-import org.primefaces.component.export.ExporterUtils;
 import org.primefaces.util.ExcelStylesManager;
 import org.primefaces.util.LocaleUtils;
 
