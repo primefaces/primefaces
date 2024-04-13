@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.showcase;
+package org.primefaces.showcase.util;
 
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.DataExporters;
@@ -32,7 +32,7 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 
-public class PFShowcaseSystemEventListener implements SystemEventListener {
+public class ShowcaseSystemEventListener implements SystemEventListener {
 
     @Override
     public void processEvent(SystemEvent event) throws AbortProcessingException {
