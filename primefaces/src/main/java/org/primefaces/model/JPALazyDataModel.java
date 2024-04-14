@@ -70,51 +70,6 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         // NOOP
     }
 
-    /**
-     * Constructs a JpaLazyDataModel for usage without enabled selection.
-     *
-     * @param entityClass The entity class
-     * @param entityManager The {@link EntityManager}
-     *
-     * @deprecated Use {@link JPALazyDataModel#builder()} instead
-     */
-    @Deprecated
-    public JPALazyDataModel(Class<T> entityClass, SerializableSupplier<EntityManager> entityManager) {
-        this.entityClass = entityClass;
-        this.entityManager = entityManager;
-    }
-
-    /**
-     * Constructs a JpaLazyDataModel with selection support.
-     *
-     * @param entityClass The entity class
-     * @param entityManager The {@link EntityManager}
-     * @param rowKeyField The name of the rowKey property (e.g. "id")
-     *
-     * @deprecated Use {@link JPALazyDataModel#builder()} instead
-     */
-    @Deprecated
-    public JPALazyDataModel(Class<T> entityClass, SerializableSupplier<EntityManager> entityManager, String rowKeyField) {
-        this(entityClass, entityManager);
-        this.rowKeyField = rowKeyField;
-    }
-
-    /**
-     * Constructs a JpaLazyDataModel with selection support, with an already existing {@link Converter}.
-     *
-     * @param entityClass The entity class
-     * @param entityManager The {@link EntityManager}
-     * @param rowKeyConverter The converter, which will be used for converting the entity to a rowKey and vice versa
-     *
-     * @deprecated Use {@link JPALazyDataModel#builder()} instead
-     */
-    @Deprecated
-    public JPALazyDataModel(Class<T> entityClass, SerializableSupplier<EntityManager> entityManager, Converter<T> rowKeyConverter) {
-        super(rowKeyConverter);
-        this.entityClass = entityClass;
-        this.entityManager = entityManager;
-    }
-
     @Override
     public int count(Map<String, FilterMeta> filterBy) {
         EntityManager em = entityManager.get();
@@ -370,7 +325,7 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         private final JPALazyDataModel<T> model;
 
         public Builder() {
-            model = new JPALazyDataModel<>(null, null, (String) null);
+            model = new JPALazyDataModel<>();
         }
 
         public Builder<T> entityClass(Class<T> entityClass) {
