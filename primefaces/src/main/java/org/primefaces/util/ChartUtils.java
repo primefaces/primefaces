@@ -32,7 +32,10 @@ import org.primefaces.model.charts.data.NumericPoint;
 
 /**
  * Utilities for Chart components that use chartJs
+ *
+ * @deprecated use new p:chart component
  */
+@Deprecated(since = "14.0.0", forRemoval = true)
 public class ChartUtils {
 
     private ChartUtils() {
