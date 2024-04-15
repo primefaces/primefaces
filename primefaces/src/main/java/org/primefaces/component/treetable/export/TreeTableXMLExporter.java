@@ -34,7 +34,6 @@ import javax.faces.context.FacesContext;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.export.ColumnValue;
 import org.primefaces.component.export.ExporterOptions;
-import org.primefaces.component.export.ExporterUtils;
 import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.util.EscapeUtils;
 
@@ -90,7 +89,7 @@ public class TreeTableXMLExporter extends TreeTableExporter<PrintWriter, Exporte
 
     @Override
     protected void exportCellValue(FacesContext context, TreeTable table, UIColumn col, ColumnValue columnValue, int index) {
-        String tag = ExporterUtils.getColumnExportTag(context, col);
+        String tag = getColumnExportTag(context, col);
         document.append("\t\t<").append(tag).append(">")
                 .append(EscapeUtils.forXml(columnValue.toString()))
                 .append("</").append(tag).append(">\n");

@@ -35,7 +35,6 @@ import org.apache.poi.ss.util.WorkbookUtil;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.export.ColumnValue;
 import org.primefaces.component.export.ExcelOptions;
-import org.primefaces.component.export.ExporterUtils;
 import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.util.ExcelStylesManager;
 import org.primefaces.util.LocaleUtils;
@@ -206,7 +205,7 @@ public class TreeTableExcelExporter extends TreeTableExporter<Workbook, ExcelOpt
     }
 
     public String getSheetName(FacesContext context, UIComponent table, int index) {
-        String sheetName = ExporterUtils.getComponentFacetValue(context, table, "header");
+        String sheetName = getComponentFacetValue(context, table, "header");
         if (sheetName == null) {
             sheetName = table.getId() + (index + 1);
         }
