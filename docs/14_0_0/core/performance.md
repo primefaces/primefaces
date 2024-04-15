@@ -127,7 +127,7 @@ and Whitespace compression: https://myfaces.apache.org/#/coreConceptsWhitespaceC
 ### Other
 
 - Only required for non-JSF managed resources: Use a custom ServletFilter to set the correct expires/cache headers of your resources (images, stylesheets, javascripts).
-- Compress and optimize your Javascripts in your build process. If you use Maven, try primefaces-extensions' closure compiler Maven plugin.
+- Compress and optimize your Javascripts in your build process. If you use Maven, try [PrimeFaces Extensions Resources Optimizer Plugin](https://github.com/primefaces-extensions/resources-optimizer-maven-plugin) Maven plugin.
 - Enable GZIP in your webserver. If it's not supported by your webserver/container, you can still add the GzipResponseFilter from OmniFaces: http://showcase.omnifaces.org/filters/GzipResponseFilter
 
 ## Patterns
