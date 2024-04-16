@@ -30,7 +30,7 @@
 
         <!-- dependency versions -->
         <lombok.version>1.18.32</lombok.version>
-        <tomcat.version>9.0.88</tomcat.version>
+        <tomcat.version>10.1.20</tomcat.version>
         <jetty.version>9.4.54.v20240208</jetty.version>
     </properties>
 
