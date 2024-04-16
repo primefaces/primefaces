@@ -59,7 +59,7 @@ if (!PrimeFaces.csp) {
          */
         isFacesForm: function(form) {
             if (form.method === 'post') {
-                for (child in form.children) {
+                for (let child of form.children) {
                     if (child instanceof HTMLInputElement && child.name && child.name.includes(PrimeFaces.VIEW_STATE)) {
                         return true;
                     }
