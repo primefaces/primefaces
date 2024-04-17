@@ -62,7 +62,7 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
     protected SortEnricher<T> sortEnricher;
     protected SerializableSupplier<EntityManager> entityManager;
     protected SerializableFunction<T, Object> rowKeyProvider;
-    protected SerializableConsumer<List<T>> postLoadEnricher;
+    protected SerializableConsumer<List<T>> resultEnricher;
 
     /**
      * For serialization only
@@ -107,8 +107,8 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         }
 
         List<T> result = query.getResultList();
-        if (postLoadEnricher != null) {
-            postLoadEnricher.accept(result);
+        if (resultEnricher != null) {
+            resultEnricher.accept(result);
         }
         return result;
     }
@@ -407,7 +407,7 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         }
 
         public Builder<T> postLoadEnricher(SerializableConsumer<List<T>> postLoadEnricher) {
-            model.postLoadEnricher = postLoadEnricher;
+            model.resultEnricher = postLoadEnricher;
             return this;
         }
 

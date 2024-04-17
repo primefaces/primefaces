@@ -42,7 +42,7 @@ Look into [migration guide](https://primefaces.github.io/primefaces/14_0_0/#/../
     * JPALazyDataModel now supports builder pattern instead of constructor.
     * JPALazyDataModel now supports case insensitive filters with `JPALazyDataModel.Builder#caseSensitive(false)`,
     * JPALazyDataModel now supports wildcard filters with `JPALazyDataModel.Builder#wildcardSupport(true)` so you can use `*`, `%`, `_` or `?` in filter.
-    * JPALazyDataModel now supports post load data callback with `JPALazyDataModel.Builder#postLoadEnricher()` .
+    * JPALazyDataModel now supports post load data enricher with `JPALazyDataModel.Builder#resultEnricher()` .
     * Added `filterPlaceholder` for `Column` and `Columns`
     * Added `rowData` to `CellEditEvent` which contains the entire row from the cell being edited.
 
