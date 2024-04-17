@@ -107,7 +107,7 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         }
 
         List<T> result = query.getResultList();
-        if(postLoadEnricher != null) {
+        if (postLoadEnricher != null) {
             postLoadEnricher.accept(result);
         }
         return result;
