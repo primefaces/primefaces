@@ -406,8 +406,8 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
             return this;
         }
 
-        public Builder<T> postLoadEnricher(SerializableConsumer<List<T>> postLoadEnricher) {
-            model.resultEnricher = postLoadEnricher;
+        public Builder<T> resultEnricher(SerializableConsumer<List<T>> resultEnricher) {
+            model.resultEnricher = resultEnricher;
             return this;
         }
 
