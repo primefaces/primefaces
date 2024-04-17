@@ -23,6 +23,7 @@
  */
 package org.primefaces.showcase.convert;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -36,6 +37,7 @@ import org.primefaces.showcase.domain.Country;
 import org.primefaces.showcase.service.CountryService;
 
 @Named
+@ApplicationScoped
 @FacesConverter(value = "countryConverter", managed = true)
 public class CountryConverter implements Converter<Country> {
 

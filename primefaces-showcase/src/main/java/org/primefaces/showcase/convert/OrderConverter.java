@@ -26,6 +26,7 @@ package org.primefaces.showcase.convert;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -36,6 +37,7 @@ import org.primefaces.model.timeline.TimelineEvent;
 import org.primefaces.showcase.domain.Order;
 
 @Named
+@ApplicationScoped
 @FacesConverter("org.primefaces.showcase.converter.OrderConverter")
 public class OrderConverter implements Converter<TimelineEvent<Order>>, Serializable {
 
