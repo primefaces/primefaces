@@ -62,6 +62,7 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
     protected SortEnricher<T> sortEnricher;
     protected SerializableSupplier<EntityManager> entityManager;
     protected SerializableFunction<T, Object> rowKeyProvider;
+    protected SerializableConsumer<List<T>> resultEnricher;
 
     /**
      * For serialization only
@@ -105,7 +106,11 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
             queryEnricher.enrich(query);
         }
 
-        return query.getResultList();
+        List<T> result = query.getResultList();
+        if (resultEnricher != null) {
+            resultEnricher.accept(result);
+        }
+        return result;
     }
 
     protected void applyFilters(CriteriaBuilder cb,
@@ -398,6 +403,11 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
 
         public Builder<T> sortEnricher(SortEnricher<T> sortEnricher) {
             model.sortEnricher = sortEnricher;
+            return this;
+        }
+
+        public Builder<T> resultEnricher(SerializableConsumer<List<T>> resultEnricher) {
+            model.resultEnricher = resultEnricher;
             return this;
         }
 
