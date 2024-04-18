@@ -71,8 +71,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         this.frozenThead.find('> tr > th').addClass('ui-frozen-column');
 
         var $this = this,
-        scrollBarWidth = this.getScrollbarWidth() + 'px',
-        hScrollWidth = this.scrollBody[0].scrollWidth;
+        scrollBarWidth = this.getScrollbarWidth() + 'px';
 
         if(this.cfg.scrollHeight) {
             if(this.percentageScrollHeight) {
@@ -80,8 +79,9 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
             }
 
             if(this.hasVerticalOverflow()) {
-                this.scrollHeaderBox.css('margin-right', scrollBarWidth);
-                this.scrollFooterBox.css('margin-right', scrollBarWidth);
+                var marginProperty = this.isRTL ? 'margin-left' : 'margin-right';
+                this.scrollHeaderBox.css(marginProperty, scrollBarWidth);
+                this.scrollFooterBox.css(marginProperty, scrollBarWidth);
             }
         }
 
@@ -136,19 +136,18 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         }
 
         this.scrollBody.on('scroll.datatable', function() {
-            var scrollLeft = $this.scrollBody.scrollLeft(),
-            scrollTop = $this.scrollBody.scrollTop();
+           var scrollShift = $this.scrollBody.scrollLeft();
 
             if ($this.isRTL) {
-                $this.scrollHeaderBox.css('margin-right', (scrollLeft - hScrollWidth + this.clientWidth) + 'px');
-                $this.scrollFooterBox.css('margin-right', (scrollLeft - hScrollWidth + this.clientWidth) + 'px');
+                $this.scrollHeaderBox.css('margin-right', scrollShift + 'px');
+                $this.scrollFooterBox.css('margin-right', scrollShift + 'px');
             }
             else {
-                $this.scrollHeaderBox.css('margin-left', -scrollLeft + 'px');
-                $this.scrollFooterBox.css('margin-left', -scrollLeft + 'px');
+                $this.scrollHeaderBox.css('margin-left', -scrollShift + 'px');
+                $this.scrollFooterBox.css('margin-left', -scrollShift + 'px');
             }
 
-            $this.frozenBody.scrollTop(scrollTop);
+            $this.frozenBody.scrollTop($this.scrollBody.scrollTop());
 
             if($this.cfg.virtualScroll) {
                 var virtualScrollBody = this;

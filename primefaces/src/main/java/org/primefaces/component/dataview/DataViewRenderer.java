@@ -171,15 +171,11 @@ public class DataViewRenderer extends DataRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", containerClass, null);
 
-        if (hasListItem) {
+        if (hasGridItem && hasListItem) {
             String listIcon = dataview.getListIcon() != null ? dataview.getListIcon() : "ui-icon-grip-dotted-horizontal";
-
             encodeButton(context, dataview, "list", listIcon, !isGridLayout);
-        }
 
-        if (hasGridItem) {
             String gridIcon = dataview.getGridIcon() != null ? dataview.getGridIcon() : "ui-icon-grip-dotted-vertical";
-
             encodeButton(context, dataview, "grid", gridIcon, isGridLayout);
         }
 

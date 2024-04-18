@@ -130,9 +130,10 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.globalSelector = this.cfg.globalSelector || 'a,:input,:button';
         var $this = this;
 
-        $(document).off(this.cfg.showEvent + ' ' + this.cfg.hideEvent, this.cfg.globalSelector)
-            .on(this.cfg.showEvent, this.cfg.globalSelector, function(e) {
-                $this.hide();
+        var namespace = '.tooltip' + this.id;
+        $(document).off(this.cfg.showEvent + namespace + ' ' + this.cfg.hideEvent + namespace, this.cfg.globalSelector)
+            .on(this.cfg.showEvent + namespace, this.cfg.globalSelector, function(e) {
+                $this._hide();
                 var element = $(this);
                 if (element.prop('disabled')) {
                     return;
@@ -164,6 +165,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                     else
                         $this.jq.children('.ui-tooltip-text').html(text);
 
+                    $this.clearTimeout();
                     $this.timeout = setTimeout(function() {
                         $this.globalTitle = text;
                         $this.target = element;
@@ -171,9 +173,12 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                     }, $this.cfg.showDelay);
                 }
             })
-            .on(this.cfg.hideEvent + '.tooltip', this.cfg.globalSelector, function() {
+            .on(this.cfg.hideEvent + namespace, this.cfg.globalSelector, function() {
                 $this.hide();
             });
+        this.addDestroyListener(function() {
+            $(document).off(namespace);
+        });
 
         PrimeFaces.utils.registerResizeHandler(this, 'resize.tooltip' + '_align', $this.jq, function() {
             $this.align();
@@ -209,8 +214,9 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                  targetSelector = "*[id='" + this.target.attr('id') + "']";
              }
 
-            $(document).off(this.cfg.showEvent + ' ' + this.cfg.hideEvent, targetSelector)
-                .on(this.cfg.showEvent, targetSelector, function(e) {
+            var namespace = '.tooltip' + this.id;
+            $(document).off(this.cfg.showEvent + namespace + ' ' + this.cfg.hideEvent + namespace, targetSelector)
+                .on(this.cfg.showEvent + namespace, targetSelector, function(e) {
                     if ($this.cfg.trackMouse) {
                         $this.mouseEvent = e;
                     }
@@ -220,9 +226,12 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                         $this.show();
                     }
                 })
-                .on(this.cfg.hideEvent + '.tooltip', function() {
+                .on(this.cfg.hideEvent + namespace, function() {
                     $this.hide();
                 });
+            this.addDestroyListener(function() {
+                $(document).off(namespace);
+            });
         }
         else {
             // GitHub #9941 Helper to remove tooltips when elements are removed

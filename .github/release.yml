@@ -6,6 +6,9 @@ changelog:
     - title: Security 🔒
       labels:
         - ":lock: security"
+    - title: Performance⚡
+      labels:
+        - ":zap: performance"
     - title: New Features & Enhancements 🎉
       labels:
         - "new feature"

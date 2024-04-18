@@ -380,7 +380,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
     returnFocus: function() {
         var el = this.focusedElementBeforeDialogOpened;
         if (el) {
-            el.focus();
+            setTimeout(function() { el.focus({ preventScroll: true }) }, 100);
         }
     },
 
@@ -440,13 +440,21 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
         if(this.cfg.closeOnEscape) {
             $(document).on('keydown.dialog_' + this.id, function(e) {
-                if(e.key === 'Escape' && $this.isVisible()) {
+                if(!e.isDefaultPrevented() && e.key === 'Escape' && $this.isVisible()) {
                     // GitHub #6677 if multiple dialogs check if this is the topmost active dialog to close
-                    var active = parseInt($this.jq.css('z-index')) === parseInt($('.ui-dialog:visible').last().css('z-index'));
-                    if(active) {
-                         $this.hide();
+                    var currentZIndex = parseInt($this.jq.css('z-index'));
+                    var highestZIndex = Math.max(...$('.ui-dialog:visible').map(function() {
+                        return parseInt($(this).css('z-index')) || 0;
+                    }).get());
+                    if (currentZIndex === highestZIndex) {
+                        $this.hide();
+                        e.preventDefault();
+                        e.stopPropagation();
                     }
                 };
+            });
+            this.addDestroyListener(function() {
+                $(document).off('keydown.dialog_' + this.id);
             });
         }
     },
@@ -637,14 +645,12 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         else {
             this.saveState();
 
-            var win = $(window);
-
             this.jq.addClass('ui-dialog-maximized').css({
-                'width': String(win.width() - 6)
-                ,'height': String(win.height())
+                'width': String($(window).width() - 6)
+                ,'height': String($(window).height())
             }).offset({
-                top: win.scrollTop()
-                ,left: win.scrollLeft()
+                top: $(window).scrollTop()
+                ,left: $(window).scrollLeft()
             });
 
             //maximize content
@@ -736,10 +742,9 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             contentHeight: this.content.height()
         };
 
-        var win = $(window);
         this.state.offset = this.jq.offset();
-        this.state.windowScrollLeft = win.scrollLeft();
-        this.state.windowScrollTop = win.scrollTop();
+        this.state.windowScrollLeft = $(window).scrollLeft();
+        this.state.windowScrollTop = $(window).scrollTop();
     },
 
     /**
@@ -750,10 +755,9 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.jq.width(this.state.width).height(this.state.height);
         this.content.width(this.state.contentWidth).height(this.state.contentHeight);
 
-        var win = $(window);
         this.jq.offset({
-                top: this.state.offset.top + (win.scrollTop() - this.state.windowScrollTop)
-                ,left: this.state.offset.left + (win.scrollLeft() - this.state.windowScrollLeft)
+                top: this.state.offset.top + ($(window).scrollTop() - this.state.windowScrollTop)
+                ,left: this.state.offset.left + ($(window).scrollLeft() - this.state.windowScrollLeft)
         });
     },
 

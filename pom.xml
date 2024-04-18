@@ -6,7 +6,7 @@
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces-parent</artifactId>
     <packaging>pom</packaging>
-    <version>13.0.4-SNAPSHOT</version>
+    <version>13.0.9-SNAPSHOT</version>
     <name>PrimeFaces Parent</name>
     <url>https://www.primefaces.org</url>
 
@@ -319,7 +319,7 @@
             <dependency>
                 <groupId>org.json</groupId>
                 <artifactId>json</artifactId>
-                <version>20231013</version>
+                <version>20240303</version>
             </dependency>
             <dependency>
                 <groupId>org.owasp.encoder</groupId>
@@ -335,7 +335,7 @@
             <dependency>
                 <groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
                 <artifactId>owasp-java-html-sanitizer</artifactId>
-                <version>20220608.1</version>
+                <version>20240325.1</version>
             </dependency>
 
             <!-- Data Exporter -->
@@ -352,7 +352,7 @@
             <dependency>
                 <groupId>com.github.librepdf</groupId>
                 <artifactId>openpdf</artifactId>
-                <version>1.3.30</version>
+                <version>1.3.42</version>
             </dependency>
 
             <!-- File Upload -->

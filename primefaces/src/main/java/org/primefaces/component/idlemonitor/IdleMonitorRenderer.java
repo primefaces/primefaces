@@ -27,6 +27,7 @@ import java.io.IOException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
@@ -42,6 +43,11 @@ public class IdleMonitorRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         IdleMonitor idleMonitor = (IdleMonitor) component;
 
+        encodeMarkup(context, idleMonitor);
+        encodeScript(context, idleMonitor);
+    }
+
+    protected void encodeScript(FacesContext context, IdleMonitor idleMonitor) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("IdleMonitor", idleMonitor)
                 .attr("timeout", idleMonitor.getTimeout())
@@ -52,5 +58,15 @@ public class IdleMonitorRenderer extends CoreRenderer {
         encodeClientBehaviors(context, idleMonitor);
 
         wb.finish();
+    }
+
+    protected void encodeMarkup(FacesContext context, IdleMonitor idleMonitor) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = idleMonitor.getClientId(context);
+
+        writer.startElement("span", idleMonitor);
+        writer.writeAttribute("id", clientId, null);
+        writer.writeAttribute("class", "ui-idlemonitor", "styleClass");
+        writer.endElement("span");
     }
 }

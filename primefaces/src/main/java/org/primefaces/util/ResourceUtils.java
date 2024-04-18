@@ -162,7 +162,23 @@ public class ResourceUtils {
      * @see <a href="https://github.com/primefaces/primefaces/issues/6359">FileDownload: configure Cache-Control</a>
      */
     public static void addNoCacheControl(ExternalContext externalContext) {
-        externalContext.setResponseHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        addNoCacheControl(externalContext, false);
+    }
+
+    /**
+     * Adds no cache pragma to the response to ensure it is not cached.  Dynamic downloads should always add this
+     * to prevent caching and for GDPR.
+     *
+     * @param externalContext the ExternalContext we add the pragma to
+     * @param store used to add no-store or exclude it if false
+     * @see <a href="https://github.com/primefaces/primefaces/issues/6359">FileDownload: configure Cache-Control</a>
+     */
+    public static void addNoCacheControl(ExternalContext externalContext, boolean store) {
+        String cacheControl = "no-cache, no-store, must-revalidate";
+        if (store) {
+            cacheControl = "no-cache, must-revalidate";
+        }
+        externalContext.setResponseHeader("Cache-Control", cacheControl);
         externalContext.setResponseHeader("Pragma", "no-cache");
         externalContext.setResponseHeader("Expires", "0");
     }

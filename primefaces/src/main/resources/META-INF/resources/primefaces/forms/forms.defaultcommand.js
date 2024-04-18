@@ -48,7 +48,7 @@ PrimeFaces.widget.DefaultCommand = PrimeFaces.widget.BaseWidget.extend({
                 }
 
                 if (!$this.jqTarget.is(':disabled, .ui-state-disabled')) {
-                    $this.jqTarget.trigger(PrimeFaces.csp.clickEvent());
+                    $this.jqTarget.trigger(PrimeFaces.csp.clickEvent($this.jqTarget));
                 }
                 e.preventDefault();
                 e.stopImmediatePropagation();

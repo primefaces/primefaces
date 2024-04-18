@@ -256,10 +256,10 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
         }
 
         if (delay) {
-            setTimeout(function() { el.focus() }, delay);
+            setTimeout(function() { el.focus({ preventScroll: true }) }, delay);
         }
         else {
-            el.focus()
+            el.focus({ preventScroll: true });
         }
     },
 

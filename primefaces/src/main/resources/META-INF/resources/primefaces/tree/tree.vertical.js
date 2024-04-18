@@ -315,11 +315,14 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         });
 
         /* For copy/paste operation on drag and drop */
-        $(document.body).on('keydown.tree', function(e) {
+        var namespace = '.tree' + this.id;
+        $(document.body).on('keydown' + namespace, function(e) {
             $this.shiftKey = e.shiftKey;
-        })
-        .on('keyup.tree', function() {
+        }).on('keyup' + namespace, function() {
             $this.shiftKey = false;
+        });
+        this.addDestroyListener(function() {
+            $(document.body).off(namespace);
         });
     },
 
@@ -654,7 +657,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     source = PF($(element.data('dragsourceid')).data('widget')),
                     height = 20;
 
-                    if(source.cfg.multipleDrag && element.find('.ui-treenode-content').hasClass('ui-state-highlight')) {
+                    if(source.cfg.multipleDrag && element.hasClass('ui-treenode-content') && element.hasClass('ui-state-highlight')) {
                         source.draggedSourceKeys = $this.findSelectedParentKeys(source.selections.slice());
                         height = 20 * (source.draggedSourceKeys.length || 1);
                     }
@@ -727,7 +730,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
 
                     dragNodeKey = $this.getRowKey(targetDragNode);
 
-                    if(!transfer && dropNodeKey && dropNodeKey.indexOf(dragNodeKey) === 0) {
+                    if(!transfer && dropNodeKey && dropNodeKey.indexOf(dragNodeKey + '_') === 0) {
                         return;
                     }
 
@@ -753,14 +756,15 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 draggedSourceKeys = draggedSourceKeys.filter(function(key) {
                     return $.inArray(key, $this.invalidSourceKeys) === -1;
                 });
-
+                
+                var dndIndex = dropPoint.prevAll('li.ui-treenode').length;
                 if (draggedSourceKeys && draggedSourceKeys.length) {
                     draggedSourceKeys = draggedSourceKeys.reverse().join(',');
                     $this.fireDragDropEvent({
                         'dragNodeKey': draggedSourceKeys,
                         'dropNodeKey': dropNodeKey,
                         'dragSource': dragSource.id,
-                        'dndIndex': dropPoint.prevAll('li.ui-treenode').length,
+                        'dndIndex': dndIndex,
                         'transfer': transfer,
                         'isDroppedNodeCopy': isDroppedNodeCopy
                     });
@@ -891,7 +895,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
 
                     dragNodeKey = $this.getRowKey(targetDragNode);
 
-                    if(!transfer && dropNodeKey && dropNodeKey.indexOf(dragNodeKey) === 0) {
+                    if(!transfer && dropNodeKey && dropNodeKey.indexOf(dragNodeKey + '_') === 0) {
                         return;
                     }
 
@@ -1014,7 +1018,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
             var key = arr[i];
             for(var j = 0; j < arr.length && key !== -1; j++) {
                 var tempKey = arr[j];
-                if(tempKey !== -1 && key.length > tempKey.length && key.indexOf(tempKey) === 0) {
+                if(tempKey !== -1 && key.length > tempKey.length && key.indexOf(tempKey + '_') === 0) {
                     arr[i] = -1;
                 }
             }
@@ -1451,6 +1455,14 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                                 .find('> .ui-treenode-content > .ui-tree-toggler').removeClass('ui-tree-toggler ui-icon ui-icon-triangle-1-e').addClass('ui-treenode-leaf-icon');
                         }
                     }
+                }
+
+                if ($this.cfg.draggable) {
+                    $this.initDraggable();
+                }
+
+                if ($this.cfg.droppable) {
+                    $this.initDroppable();
                 }
             }
         };

@@ -36,7 +36,7 @@ if (!PrimeFaces.utils) {
                     }
 
                     //append to body if not already appended by user choice
-                    if(!overlay.parent().is(document.body)) {
+                    if(!widget.cfg.appendTo) {
                         widget.cfg.appendTo = "@(body)";
                         return widget.cfg.appendTo;
                     }
@@ -345,6 +345,9 @@ if (!PrimeFaces.utils) {
             widget.addDestroyListener(function() {
                 $(window).off(resizeNamespace);
             });
+            widget.addRefreshListener(function() {
+                $(window).off(resizeNamespace);
+            });
 
             $(window).off(resizeNamespace).on(resizeNamespace, params||null, function(e) {
                 if (element && (element.is(":hidden") || element.css('visibility') === 'hidden')) {
@@ -399,26 +402,31 @@ if (!PrimeFaces.utils) {
          * @return {PrimeFaces.UnbindCallback} unbind callback handler
          */
         registerScrollHandler: function(widget, scrollNamespace, scrollCallback) {
-            var scrollParent;
             var widgetJq = widget.getJQ();
-            if (widgetJq && typeof widgetJq.scrollParent === 'function') {
-                scrollParent = widgetJq.scrollParent();
-            }
+            var scrollParent = (widgetJq && typeof widgetJq.scrollParent === 'function') ? widgetJq.scrollParent() : null;
+
             if (!scrollParent || PrimeFaces.utils.isScrollParentWindow(scrollParent)) {
                 scrollParent = $(window);
             }
 
-            widget.addDestroyListener(function() {
-                scrollParent.off(scrollNamespace);
-            });
-
-            scrollParent.off(scrollNamespace).on(scrollNamespace, function(e) {
+            // To avoid holding the $(window) variable explicitly, you can directly bind and unbind 
+            // the scroll event on the window within the function itself.
+            var scrollHandler = function(e) {
                 scrollCallback(e);
+            };
+
+            scrollParent.off(scrollNamespace).on(scrollNamespace, scrollHandler);
+
+            widget.addDestroyListener(function() {
+                scrollParent.off(scrollNamespace, scrollHandler);
+            });
+            widget.addRefreshListener(function() {
+                scrollParent.off(scrollNamespace, scrollHandler);
             });
 
             return {
                 unbind: function() {
-                    scrollParent.off(scrollNamespace);
+                    scrollParent.off(scrollNamespace, scrollHandler);
                 }
             };
         },
@@ -520,10 +528,10 @@ if (!PrimeFaces.utils) {
         unbindScrollHandler: function(widget, scrollNamespace) {
             var scrollParent = widget.getJQ().scrollParent();
             if (PrimeFaces.utils.isScrollParentWindow(scrollParent)) {
-                scrollParent = $(window);
+                $(window).off(scrollNamespace); // Unbind directly from window
+            } else {
+                scrollParent.off(scrollNamespace);
             }
-
-            scrollParent.off(scrollNamespace);
         },
 
         /**
@@ -577,7 +585,14 @@ if (!PrimeFaces.utils) {
          * @return {boolean} `true` if the key is a meta key, or `false` otherwise.
          */
         isMetaKey: function(e) {
-            return PrimeFaces.env.browser.mac ? e.metaKey : e.ctrlKey;
+            if (e.originalEvent) {
+                // original event returns the metakey value at the time the event was generated
+                return PrimeFaces.env.browser.mac ? e.originalEvent.metaKey : e.originalEvent.ctrlKey;
+            }
+            else {
+                // jQuery returns the real time value of the meta key
+                return PrimeFaces.env.browser.mac ? e.metaKey  : e.ctrlKey;
+            }
         },
 
         /**
@@ -597,18 +612,14 @@ if (!PrimeFaces.utils) {
         isPrintableKey: function(e) {
             return e && e.key && (e.key.length === 1 || e.key === 'Unidentified');
         },
-
+        
         /**
-         * Ignores unprintable keys on filter input text box. Useful in filter input events in many components.
+         * Checks if the key pressed is cut, copy, or paste.
          * @param {JQuery.TriggeredEvent} e The key event that occurred.
-         * @return {boolean} `true` if the one of the keys to ignore was pressed, or `false` otherwise.
+         * @return {boolean} `true` if the key is cut/copy/paste, or `false` otherwise.
          */
-        ignoreFilterKey: function(e) {
+        isClipboardKey: function(e) {
             switch (e.key) {
-                case 'Backspace':
-                case 'Enter':
-                case 'Delete':
-                    return false;
                 case 'a':
                 case 'A':
                 case 'c':
@@ -617,8 +628,28 @@ if (!PrimeFaces.utils) {
                 case 'X':
                 case 'v':
                 case 'V':
-                    // allow select all, cut, copy, paste
                     return PrimeFaces.utils.isMetaKey(e);
+                default:
+                    return false;
+            }
+        },
+
+        /**
+         * Ignores unprintable keys on filter input text box. Useful in filter input events in many components.
+         * @param {JQuery.TriggeredEvent} e The key event that occurred.
+         * @return {boolean} `true` if the one of the keys to ignore was pressed, or `false` otherwise.
+         */
+        ignoreFilterKey: function(e) {
+            // cut copy paste allows filter to trigger
+            if (PrimeFaces.utils.isClipboardKey(e)) {
+                return false;
+            }
+            // backspace,enter,delete trigger a filter as well as printable key like 'a'
+            switch (e.key) {
+                case 'Backspace':
+                case 'Enter':
+                case 'Delete':
+                    return false;
                 default:
                     return !PrimeFaces.utils.isPrintableKey(e);
             }
@@ -963,7 +994,74 @@ if (!PrimeFaces.utils) {
                 return doc.documentElement.textContent;
             }
             return input;
-        }
+        },
+
+        /**
+         * Retrieves the subsequent z-index for a sticky element. Typically, a sticky element requires a 
+         * z-index higher than the current one, but certain scenarios arise, such as when an overlay mask 
+         * is present or when there are multiple sticky elements on the page, necessitating a z-index 
+         * one lower than the highest among them.
+         *
+         * @return {string} the next `z-index` as a string.
+         * @see {@link https://github.com/primefaces/primefaces/issues/10299|GitHub Issue 10299}
+         * @see {@link https://github.com/primefaces/primefaces/issues/9259|GitHub Issue 9259}
+         */
+        nextStickyZindex: function() {
+            // Get the z-index of the highest visible sticky, or use PrimeFaces.nextZindex() + 1 if none found
+            var zIndex = $('.ui-sticky:visible').last().zIndex() || PrimeFaces.nextZindex() + 1;
+
+            // GitHub #9295 Adjust z-index based on overlays
+            var overlays = $('.ui-widget-overlay:visible');
+            if (overlays.length) {
+                overlays.each(function() {
+                    var currentZIndex = $(this).zIndex() - 1;
+                    zIndex = Math.min(currentZIndex, zIndex);
+                });
+            }
+
+            // Decrease zIndex by 1 and return
+            return zIndex - 1;
+        },
+        
+        /**
+         * Deletes all events, 'on' attributes, data, and the element itself in a recursive manner, 
+         * ensuring that the garbage collector does not retain any references to this element or its children.
+         *
+         * @param {JQuery | undefined} jq jQuery object to cleanse
+         * @param {boolean} [clearData] flag to clear data off elements (default to true)
+         * @param {boolean} [removeElement] flag to remove the element from DOM (default to true)
+         * @see {@link https://github.com/primefaces/primefaces/issues/11696|GitHub Issue 11696}
+         * @see {@link https://github.com/primefaces/primefaces/issues/11702|GitHub Issue 11702}
+         */
+        cleanseDomElement: function(jq, clearData = true, removeElement = true) {
+            if (!jq || !jq.length) {
+                return;
+            }
+            // Recursively remove events from children elements
+            jq.children().each(function() {
+                PrimeFaces.utils.cleanseDomElement($(this), clearData, removeElement);
+            });
+
+            // Remove inline event attributes
+            var attributes = jq[0].attributes;
+            for (var i = 0; i < attributes.length; i++) {
+                var attributeName = attributes[i].name;
+                if (attributeName.startsWith("on")) {
+                    jq.removeAttr(attributeName);
+                }
+            }
+            // Remove event listeners
+            jq.off();
+            
+            // Clear data
+            if (clearData) {
+                jq.removeData();
+            }
+            // Remove elements itself from memory
+            if (removeElement) {
+                jq.remove();
+            }
+        },
     };
 
 }

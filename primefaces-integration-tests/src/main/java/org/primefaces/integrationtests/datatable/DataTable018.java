@@ -45,7 +45,7 @@ public class DataTable018 implements Serializable {
 
     private static final long serialVersionUID = -7518459955779385834L;
 
-    private DataModel<ProgrammingLanguage> dataModel;
+    private transient DataModel<ProgrammingLanguage> dataModel;
     private List<ProgrammingLanguage> filteredProgLanguages;
 
     @Inject

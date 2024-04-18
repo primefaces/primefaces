@@ -129,6 +129,7 @@ Side Validation, messages property is used as the bundle for the locale.
      moreLinkText: 'More...',
      noEventsText: 'No Events',
      today: 'Today',
+     now: 'Now',
      clear: 'Clear',
      aria: {
          'paginator.PAGE': 'Page {0}',

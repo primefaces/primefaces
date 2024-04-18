@@ -328,10 +328,12 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
                     for(var i = 0; i < data.files.length; i++) {
                         var file = data.files[i];
-                        if(file.row) {
-                            file.row.children('.ui-fileupload-progress').find('> .ui-progressbar > .ui-progressbar-value').css({
-                                width: progress + '%',
-                                display: 'block'
+                        if (file.row) {
+                            var fileuploadProgress = file.row.children(".ui-fileupload-progress").find("> .ui-progressbar");
+                            fileuploadProgress.attr("aria-valuenow", progress);
+                            fileuploadProgress.find("> .ui-progressbar-value").css({
+                                width: progress + "%",
+                                display: "block"
                             });
                         }
                     }
@@ -365,6 +367,20 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         };
 
         this.jq.fileupload(this.ucfg);
+    },
+    
+    /**
+     * @override
+     * @inheritdoc
+     */
+    destroy: function() {
+        try {
+            this.jq.fileupload("destroy");
+        } catch (err) {
+            // this can throw file upload not initialized yet if an upload was never performed.
+            PrimeFaces.debug("Could not destroy FileUpload: " + err);
+        }
+        this._super();
     },
 
     /**
@@ -545,26 +561,27 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         this.rowCancelActionSelector = this.jqId + " .ui-fileupload-files .ui-fileupload-cancel";
         this.clearMessagesSelector = this.jqId + " .ui-messages .ui-messages-close";
 
-        $(document).off('mouseover.fileupload mouseout.fileupload mousedown.fileupload mouseup.fileupload focus.fileupload blur.fileupload click.fileupload ', this.rowCancelActionSelector)
-                .on('mouseover.fileupload', this.rowCancelActionSelector, null, function(e) {
+        var namespace = '.fileupload' + this.id;
+        $(document).off(namespace, this.rowCancelActionSelector)
+                .on('mouseover'+namespace, this.rowCancelActionSelector, null, function(e) {
                     $(this).addClass('ui-state-hover');
                 })
-                .on('mouseout.fileupload', this.rowCancelActionSelector, null, function(e) {
+                .on('mouseout'+namespace, this.rowCancelActionSelector, null, function(e) {
                     $(this).removeClass('ui-state-hover ui-state-active');
                 })
-                .on('mousedown.fileupload', this.rowCancelActionSelector, null, function(e) {
+                .on('mousedown'+namespace, this.rowCancelActionSelector, null, function(e) {
                     $(this).addClass('ui-state-active').removeClass('ui-state-hover');
                 })
-                .on('mouseup.fileupload', this.rowCancelActionSelector, null, function(e) {
+                .on('mouseup'+namespace, this.rowCancelActionSelector, null, function(e) {
                     $(this).addClass('ui-state-hover').removeClass('ui-state-active');
                 })
-                .on('focus.fileupload', this.rowCancelActionSelector, null, function(e) {
+                .on('focus'+namespace, this.rowCancelActionSelector, null, function(e) {
                     $(this).addClass('ui-state-focus');
                 })
-                .on('blur.fileupload', this.rowCancelActionSelector, null, function(e) {
+                .on('blur'+namespace, this.rowCancelActionSelector, null, function(e) {
                     $(this).removeClass('ui-state-focus');
                 })
-                .on('click.fileupload', this.rowCancelActionSelector, null, function(e) {
+                .on('click'+namespace, this.rowCancelActionSelector, null, function(e) {
                     var row = $(this).closest('.ui-fileupload-row');
                     var removedFile = $.grep($this.files, function (value) {
                          return (value.row.data('fileId') === row.data('fileId'));
@@ -585,6 +602,9 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
                     e.preventDefault();
                 });
+        this.addDestroyListener(function() {
+            $(document).off(namespace);
+        });
 
         if (this.dropZone) {
             this.dropZone

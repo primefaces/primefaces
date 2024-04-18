@@ -1072,6 +1072,8 @@
 
         _destroy: function () {
             this.hideOverlay();
+            this.unbindResponsiveResizeListener();
+            PrimeFaces.utils.cleanseDomElement(this.panel);
         },
 
         /**
@@ -1304,6 +1306,10 @@
 
             if (this.options.showTime){
                todayLabel = this.options.locale.now;
+            }
+            else {
+                // only use date at 00:00 for comparison
+                now = this.truncateDate(now);
             }
             if ((minDate && minDate > now) || (maxDate && maxDate < now)) {
                 todayStyleClass += ' ui-helper-hidden';
@@ -1739,7 +1745,7 @@
         _bindEvents: function () {
             var $this = this;
             if (!this.options.inline) {
-                this.inputfield.off('focus.datePicker blur.datePicker keydown.datePicker input.datePicker click.datePicker')
+                this.inputfield.off('focus.datePicker blur.datePicker change.datePicker keydown.datePicker input.datePicker click.datePicker')
                     .on('focus.datePicker', this.onInputFocus.bind($this))
                     .on('blur.datePicker', this.onInputBlur.bind($this))
                     .on('change.datePicker', this.onInputChange.bind($this))
@@ -1771,7 +1777,7 @@
 
             var timeSelector = '.ui-hour-picker > a,  .ui-minute-picker > a, .ui-second-picker > a, .ui-millisecond-picker > a',
                 ampmSelector = '.ui-ampm-picker > a';
-            this.panel.off('mousedown.datePicker-time mouseup.datePicker-time mouseleave.datePicker-time', timeSelector).off('click.datePicker-ampm', ampmSelector)
+            this.panel.off('mousedown.datePicker-time mouseup.datePicker-time mouseout.datePicker-time', timeSelector).off('click.datePicker-ampm', ampmSelector)
                 .on('mousedown.datePicker-time', timeSelector, null, function (event) {
                     var button = $(this),
                         parentEl = button.parent();
@@ -1781,7 +1787,7 @@
                 .on('mouseup.datePicker-time', timeSelector, null, function (event) {
                     $this.onTimePickerElementMouseUp(event);
                 })
-                .on('mouseleave.datePicker-time', timeSelector, null, function (event) {
+                .on('mouseout.datePicker-time', timeSelector, null, function (event) {
                     if ($this.timePickerTimer) {
                         $this.onTimePickerElementMouseUp(event);
                     }
@@ -1886,11 +1892,7 @@
             }
 
             if (event.keyCode === 9 || event.keyCode === 27) {
-                if (this.options.touchUI) {
-                    this.disableModality();
-                }
-
-                this.hideOverlay();
+                this.onEscapeKey(event);
             }
         },
 
@@ -1977,9 +1979,7 @@
                 }
 
                 // previous (check first day of month at 00:00:00)
-                newViewDate.setHours(0);
-                newViewDate.setMinutes(0);
-                newViewDate.setSeconds(0);
+                newViewDate = this.truncateDate(newViewDate);
 
                 // #5967 check if month can be navigated to by checking last day in month
                 var testDate = new Date(newViewDate.getTime()),
@@ -2041,9 +2041,7 @@
                 }
 
                 // next (check last day of month)
-                newViewDate.setHours(0);
-                newViewDate.setMinutes(0);
-                newViewDate.setSeconds(0);
+                newViewDate = this.truncateDate(newViewDate);
 
                 // #5967 check if month can be navigated to by checking first day next month
                 var maxDate = this.options.maxDate;
@@ -2101,16 +2099,8 @@
             if (this.options.minDate) {
                 let firstDayOfMonth = new Date(newViewDate.getTime());
 
-                if (firstDayOfMonth.getMonth() === 0) {
-                    firstDayOfMonth.setMonth(11, 1);
-                    firstDayOfMonth.setFullYear(firstDayOfMonth.getFullYear() - 1);
-                } else {
-                    firstDayOfMonth.setMonth(firstDayOfMonth.getMonth(), 1);
-                }
-
-                firstDayOfMonth.setHours(0);
-                firstDayOfMonth.setMinutes(0);
-                firstDayOfMonth.setSeconds(0);
+                firstDayOfMonth.setMonth(firstDayOfMonth.getMonth(), 1);
+                firstDayOfMonth = this.truncateDate(firstDayOfMonth);
 
                 if (this.options.minDate > firstDayOfMonth) {
                     navPrev.addClass('ui-state-disabled');
@@ -2123,16 +2113,8 @@
             if (this.options.maxDate) {
                 let lastDayOfMonth = new Date(newViewDate.getTime());
 
-                if (lastDayOfMonth.getMonth() === 11) {
-                    lastDayOfMonth.setMonth(0, 1);
-                    lastDayOfMonth.setFullYear(lastDayOfMonth.getFullYear() + 1);
-                } else {
-                    lastDayOfMonth.setMonth(lastDayOfMonth.getMonth() + 1, 1);
-                }
-
-                lastDayOfMonth.setHours(0);
-                lastDayOfMonth.setMinutes(0);
-                lastDayOfMonth.setSeconds(0);
+                lastDayOfMonth.setMonth(lastDayOfMonth.getMonth() + 1, 1);
+                lastDayOfMonth = this.truncateDate(lastDayOfMonth);
                 lastDayOfMonth.setSeconds(-1);
 
                 if (this.options.maxDate < lastDayOfMonth) {
@@ -2204,6 +2186,15 @@
             if (this.timePickerTimer) {
                 clearTimeout(this.timePickerTimer);
                 this.timePickerTimer = null;
+            }
+        },
+        
+        onEscapeKey: function(event) {
+            if (this.mask) {
+                this.disableModality();
+            }
+            else {
+                this.hideOverlay();
             }
         },
 
@@ -2302,6 +2293,10 @@
                     $this.updateResponsiveness();
                 });
             }
+        },
+        
+        unbindResponsiveResizeListener: function() {
+            $(window).off('resize.responsive' + this.options.id);
         },
 
         bindWindowResizeListener: function () {
@@ -2857,6 +2852,17 @@
             return String(value).replace(/[&<>"'`=\/]/g, function (s) {
                 return entityMap[s];
             });
+        },
+        
+        truncateDate: function(value) {
+            if (value) {
+                // only use date at 00:00 for comparison
+                value.setHours(0);
+                value.setMinutes(0);
+                value.setSeconds(0);
+                value.setMilliseconds(0);
+            }
+            return value;
         },
 
         updateYearNavigator: function() {

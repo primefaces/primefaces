@@ -374,10 +374,10 @@ public class DataTableRenderer extends DataRenderer {
 
         writer.startElement("table", null);
         writer.writeAttribute("role", "grid", null);
-        if (tableStyle != null) {
+        if (LangUtils.isNotBlank(tableStyle)) {
             writer.writeAttribute("style", tableStyle, null);
         }
-        if (table.getTableStyleClass() != null) {
+        if (LangUtils.isNotBlank(table.getTableStyleClass())) {
             writer.writeAttribute("class", table.getTableStyleClass(), null);
         }
 
@@ -404,10 +404,29 @@ public class DataTableRenderer extends DataRenderer {
         boolean hasFrozenColumns = (frozenColumns != 0);
         ResponseWriter writer = context.getResponseWriter();
         String clientId = table.getClientId(context);
-        int columnsCount = table.getColumns().size();
+        List<UIColumn> columns = table.getColumns();
+        int columnsCount = columns.size();
         boolean isVirtualScroll = table.isVirtualScroll();
 
         if (hasFrozenColumns) {
+            int lastFrozenColumn = 0;
+
+            // #11023 account for non-rendered frozen columns
+            for (int i = 0; i < columnsCount; i++) {
+                UIColumn column = columns.get(i);
+                if (column instanceof DynamicColumn) {
+                    ((DynamicColumn) column).applyModel();
+                }
+                if (column.isRendered()) {
+                    lastFrozenColumn++;
+                }
+
+                if (lastFrozenColumn == frozenColumns) {
+                    lastFrozenColumn = i + 1;
+                    break;
+                }
+            }
+
             writer.startElement("table", null);
             writer.writeAttribute("class", "ui-datatable-fs", null);
             writer.startElement("tbody", null);
@@ -419,19 +438,19 @@ public class DataTableRenderer extends DataRenderer {
             writer.startElement("div", null);
             writer.writeAttribute("class", "ui-datatable-frozen-container", null);
             encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_HEADER_CLASS, DataTable.SCROLLABLE_HEADER_BOX_CLASS, tableStyle, tableStyleClass);
-            encodeThead(context, table, 0, frozenColumns, clientId + "_frozenThead", "frozenHeader");
-            encodeFrozenRows(context, table, 0, frozenColumns);
+            encodeThead(context, table, 0, lastFrozenColumn, clientId + "_frozenThead", "frozenHeader");
+            encodeFrozenRows(context, table, 0, lastFrozenColumn);
             encodeScrollAreaEnd(context);
 
             if (isVirtualScroll) {
-                encodeVirtualScrollBody(context, table, tableStyle, tableStyleClass, 0, frozenColumns, clientId + "_frozenTbody");
+                encodeVirtualScrollBody(context, table, tableStyle, tableStyleClass, 0, lastFrozenColumn, clientId + "_frozenTbody");
             }
             else {
-                encodeScrollBody(context, table, tableStyle, tableStyleClass, 0, frozenColumns, clientId + "_frozenTbody");
+                encodeScrollBody(context, table, tableStyle, tableStyleClass, 0, lastFrozenColumn, clientId + "_frozenTbody");
             }
 
             encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_FOOTER_CLASS, DataTable.SCROLLABLE_FOOTER_BOX_CLASS, tableStyle, tableStyleClass);
-            encodeTFoot(context, table, 0, frozenColumns, clientId + "_frozenTfoot", "frozenFooter");
+            encodeTFoot(context, table, 0, lastFrozenColumn, clientId + "_frozenTfoot", "frozenFooter");
             encodeScrollAreaEnd(context);
             writer.endElement("div");
             writer.endElement("td");
@@ -443,19 +462,19 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("class", "ui-datatable-scrollable-container", null);
 
             encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_HEADER_CLASS, DataTable.SCROLLABLE_HEADER_BOX_CLASS, tableStyle, tableStyleClass);
-            encodeThead(context, table, frozenColumns, columnsCount, clientId + "_scrollableThead", "scrollableHeader");
-            encodeFrozenRows(context, table, frozenColumns, columnsCount);
+            encodeThead(context, table, lastFrozenColumn, columnsCount, clientId + "_scrollableThead", "scrollableHeader");
+            encodeFrozenRows(context, table, lastFrozenColumn, columnsCount);
             encodeScrollAreaEnd(context);
 
             if (isVirtualScroll) {
-                encodeVirtualScrollBody(context, table, tableStyle, tableStyleClass, frozenColumns, columnsCount, clientId + "_scrollableTbody");
+                encodeVirtualScrollBody(context, table, tableStyle, tableStyleClass, lastFrozenColumn, columnsCount, clientId + "_scrollableTbody");
             }
             else {
-                encodeScrollBody(context, table, tableStyle, tableStyleClass, frozenColumns, columnsCount, clientId + "_scrollableTbody");
+                encodeScrollBody(context, table, tableStyle, tableStyleClass, lastFrozenColumn, columnsCount, clientId + "_scrollableTbody");
             }
 
             encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_FOOTER_CLASS, DataTable.SCROLLABLE_FOOTER_BOX_CLASS, tableStyle, tableStyleClass);
-            encodeTFoot(context, table, frozenColumns, columnsCount, clientId + "_scrollableTfoot", "scrollableFooter");
+            encodeTFoot(context, table, lastFrozenColumn, columnsCount, clientId + "_scrollableTfoot", "scrollableFooter");
             encodeScrollAreaEnd(context);
             writer.endElement("div");
             writer.endElement("td");
@@ -500,10 +519,10 @@ public class DataTableRenderer extends DataRenderer {
 
         writer.startElement("table", null);
         writer.writeAttribute("role", "grid", null);
-        if (tableStyle != null) {
+        if (LangUtils.isNotBlank(tableStyle)) {
             writer.writeAttribute("style", tableStyle, null);
         }
-        if (tableStyleClass != null) {
+        if (LangUtils.isNotBlank(tableStyleClass)) {
             writer.writeAttribute("class", tableStyleClass, null);
         }
     }
@@ -537,10 +556,10 @@ public class DataTableRenderer extends DataRenderer {
         writer.startElement("table", null);
         writer.writeAttribute("role", "grid", null);
 
-        if (tableStyle != null) {
+        if (LangUtils.isNotBlank(tableStyle)) {
             writer.writeAttribute("style", tableStyle, null);
         }
-        if (table.getTableStyleClass() != null) {
+        if (LangUtils.isNotBlank(tableStyleClass)) {
             writer.writeAttribute("class", tableStyleClass, null);
         }
 
@@ -569,9 +588,10 @@ public class DataTableRenderer extends DataRenderer {
 
         writer.startElement("table", null);
         writer.writeAttribute("role", "grid", null);
-        writer.writeAttribute("class", tableStyleClass, null);
-
-        if (tableStyle != null) {
+        if (LangUtils.isNotBlank(tableStyleClass)) {
+            writer.writeAttribute("class", tableStyleClass, null);
+        }
+        if (LangUtils.isNotBlank(tableStyle)) {
             writer.writeAttribute("style", tableStyle, null);
         }
 
@@ -872,9 +892,10 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         writer.startElement("td", null);
-        writer.writeAttribute("class", styleClass, null);
-
-        if (style != null) {
+        if (LangUtils.isNotBlank(styleClass)) {
+            writer.writeAttribute("class", styleClass, null);
+        }
+        if (LangUtils.isNotBlank(style)) {
             writer.writeAttribute("style", style, null);
         }
         if (column.getRowspan() != 1) {
@@ -1067,7 +1088,6 @@ public class DataTableRenderer extends DataRenderer {
         String clientId = table.getClientId(context);
         List<SummaryRow> summaryRows = table.getSummaryRows();
         HeaderRow headerRow = table.getHeaderRow();
-        ELContext elContext = context.getELContext();
 
         SortMeta sort = table.getHighestPriorityActiveSortMeta();
         boolean encodeHeaderRow = headerRow != null && headerRow.isEnabled() && sort != null;
@@ -1083,7 +1103,7 @@ public class DataTableRenderer extends DataRenderer {
 
             table.setRowIndex(i);
 
-            if (encodeHeaderRow && (i == first || !isInSameGroup(context, table, i, -1, sort.getSortBy(), elContext))) {
+            if (encodeHeaderRow && (i == first || !isInSameGroup(context, table, i, -1, sort.getSortBy(), false))) {
                 table.setRowIndex(i);
                 encodeHeaderRow(context, table, headerRow);
             }
@@ -1091,7 +1111,7 @@ public class DataTableRenderer extends DataRenderer {
             table.setRowIndex(i);
             encodeRow(context, table, clientId, i, columnStart, columnEnd);
 
-            if (encodeSummaryRow && !isInSameGroup(context, table, i, 1, sort.getSortBy(), elContext)) {
+            if (encodeSummaryRow && !isInSameGroup(context, table, i, 1, sort.getSortBy(), i == last - 1)) {
                 table.setRowIndex(i);
                 encodeSummaryRow(context, summaryRows, sort);
             }
@@ -1173,8 +1193,12 @@ public class DataTableRenderer extends DataRenderer {
         if (rowKey != null) {
             writer.writeAttribute("data-rk", rowKey, null);
         }
-        writer.writeAttribute("class", rowStyleClass, null);
-        writer.writeAttribute("title", table.getRowTitle(), null);
+        if (LangUtils.isNotBlank(rowStyleClass)) {
+            writer.writeAttribute("class", rowStyleClass, null);
+        }
+        if (LangUtils.isNotBlank(table.getRowTitle())) {
+            writer.writeAttribute("title", table.getRowTitle(), null);
+        }
         if (selectionEnabled) {
             writer.writeAttribute(HTML.ARIA_SELECTED, String.valueOf(selected), null);
         }
@@ -1249,13 +1273,13 @@ public class DataTableRenderer extends DataRenderer {
         if (rowspan != 1) {
             writer.writeAttribute("rowspan", rowspan, null);
         }
-        if (style != null) {
+        if (LangUtils.isNotBlank(style)) {
             writer.writeAttribute("style", style, null);
         }
-        if (styleClass != null) {
+        if (LangUtils.isNotBlank(styleClass)) {
             writer.writeAttribute("class", styleClass, null);
         }
-        if (title != null) {
+        if (LangUtils.isNotBlank(title)) {
             writer.writeAttribute("title", title, null);
         }
         UIComponent component = (column instanceof UIComponent) ? (UIComponent) column : null;
@@ -1395,7 +1419,9 @@ public class DataTableRenderer extends DataRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", styleClass, null);
+        if (LangUtils.isNotBlank(styleClass)) {
+            writer.writeAttribute("class", styleClass, null);
+        }
 
         facet.encodeAll(context);
 
@@ -1499,7 +1525,7 @@ public class DataTableRenderer extends DataRenderer {
 
             writer.writeAttribute("id", table.getClientId(context) + "_" + rowKey + "_checkbox", null);
             writer.writeAttribute("role", "checkbox", null);
-            writer.writeAttribute("tabindex", "0", null);
+            writer.writeAttribute("tabindex", disabled ? "-1" : "0", null);
             writer.writeAttribute(HTML.ARIA_LABEL, ariaRowLabel, null);
             writer.writeAttribute(HTML.ARIA_CHECKED, String.valueOf(checked), null);
 
@@ -1579,8 +1605,8 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected boolean isInSameGroup(FacesContext context, DataTable table, int currentRowIndex, int step, ValueExpression groupByVE,
-                                    ELContext elContext) {
-
+                                    boolean loadFirstRowOfNextPage) {
+        ELContext elContext = context.getELContext();
         table.setRowIndex(currentRowIndex);
         Object currentGroupByData = groupByVE.getValue(elContext);
 
@@ -1588,11 +1614,10 @@ public class DataTableRenderer extends DataRenderer {
 
         Object nextGroupByData;
 
-        // in case of a lazy DataTable, the LazyDataModel currently only loads rows inside the current page; we need a small hack here
-        // 1) get the rowData manually for the next row
-        // 2) put it into request-scope
-        // 3) invoke the groupBy ValueExpression
-        if (table.isLazy()) {
+        // An additional check is required to ensure summaryRow will be rendered in case
+        // number of rows of the current page is equals to the number of items in the current group (otherwise, it'll never be rendered)
+        // see #9077
+        if (loadFirstRowOfNextPage && table.isLazy()) {
             Object nextRowData = table.getLazyDataModel().getRowData(nextRowIndex, table.getActiveSortMeta(), table.getActiveFilterMeta());
             if (nextRowData == null) {
                 return false;
@@ -1665,7 +1690,15 @@ public class DataTableRenderer extends DataRenderer {
 
             headerLabel.set(null);
             table.invokeOnColumn(sortMeta.getColumnKey(), (column) -> {
-                headerLabel.set(getHeaderLabel(context, column));
+                String label = getHeaderLabel(context, column);
+                if (LangUtils.isBlank(label)) {
+                    UIComponent headerFacet = column.getFacet("header");
+                    if (ComponentUtils.shouldRenderFacet(headerFacet)) {
+                        // encode and strip all HTML tags
+                        label = ComponentUtils.encodeComponent(headerFacet, context).replaceAll("\\<.*?\\>", Constants.EMPTY_STRING);
+                    }
+                }
+                headerLabel.set(label);
             });
             headers.put(sortMeta, headerLabel.get());
         }

@@ -272,7 +272,23 @@ if (!PrimeFaces.ajax) {
                     PrimeFaces.ajax.Utils.updateBody(content);
                 }
                 else if (id === PrimeFaces.ajax.RESOURCE) {
-                    $('head').append(content);
+                    // #11714 Iterate through each script and stylesheet tag in the content
+                    // checking if resource is already attached to the head and adding it if not
+                    $(content)
+                        .filter("link[href], script[src]")
+                        .each(function() {
+                            var $resource = $(this);
+                            var $head = $("head");
+                            var src = $resource.attr("href") || $resource.attr("src");
+                            var type = this.tagName.toLowerCase();
+                            var $resources = $head.find(type + '[src="' + src + '"], ' + type + '[href="' + src + '"]');
+
+                            // Check if script or stylesheet already exists and add it to head if it does not
+                            if ($resources.length === 0) {
+                                PrimeFaces.debug("Appending " + type + " to head: " + src);
+                                $head.append($resource);
+                            }
+                        });
                 }
                 else if (id === $('head')[0].id) {
                     PrimeFaces.ajax.Utils.updateHead(content);
@@ -283,7 +299,9 @@ if (!PrimeFaces.ajax) {
                         PrimeFaces.warn("DOM element with id '" + id + "' cant be found; skip update...");
                     }
                     else {
-                        target.replaceWith(content);
+                        var removedContent = target.replaceWith(content);
+                        // detach all handlers and data to clean up DOM
+                        PrimeFaces.utils.cleanseDomElement(removedContent);
                     }
                 }
             }
@@ -742,11 +760,16 @@ if (!PrimeFaces.ajax) {
 
                     //add form state if necessary
                     if (!formProcessed) {
+                        // Faces
                         PrimeFaces.ajax.Request.addParamFromInput(postParams, PrimeFaces.VIEW_STATE, form, parameterPrefix);
                         PrimeFaces.ajax.Request.addParamFromInput(postParams, PrimeFaces.CLIENT_WINDOW, form, parameterPrefix);
+                        // PrimeFaces
                         PrimeFaces.ajax.Request.addParamFromInput(postParams, PrimeFaces.csp.NONCE_INPUT, form, parameterPrefix);
+                        // DeltaSpike
                         PrimeFaces.ajax.Request.addParamFromInput(postParams, 'dsPostWindowId', form, parameterPrefix);
                         PrimeFaces.ajax.Request.addParamFromInput(postParams, 'dspwid', form, parameterPrefix);
+                        // Spring Security
+                        PrimeFaces.ajax.Request.addParamFromInput(postParams, '_csrf', form, parameterPrefix);
                     }
 
                 }
@@ -1142,11 +1165,16 @@ if (!PrimeFaces.ajax) {
                     PrimeFaces.ajax.Request.addFormData(formData, PrimeFaces.PARTIAL_UPDATE_PARAM, update, parameterPrefix);
                 }
 
+                // Faces
                 PrimeFaces.ajax.Request.addFormDataFromInput(formData, PrimeFaces.VIEW_STATE, form, parameterPrefix);
                 PrimeFaces.ajax.Request.addFormDataFromInput(formData, PrimeFaces.CLIENT_WINDOW, form, parameterPrefix);
+                // PrimeFaces
                 PrimeFaces.ajax.Request.addFormDataFromInput(formData, PrimeFaces.csp.NONCE_INPUT, form, parameterPrefix);
+                // DeltaSpike
                 PrimeFaces.ajax.Request.addFormDataFromInput(formData, 'dsPostWindowId', form, parameterPrefix);
                 PrimeFaces.ajax.Request.addFormDataFromInput(formData, 'dspwid', form, parameterPrefix);
+                // Spring Security
+                PrimeFaces.ajax.Request.addFormDataFromInput(formData, '_csrf', form, parameterPrefix);
 
                 return formData;
             }
@@ -1291,12 +1319,11 @@ if (!PrimeFaces.ajax) {
 
                     var widget = PF(widgetVar);
                     if (widget && widget.isDetached() === true) {
-                        widget.destroy();
-
                         try {
+                            widget.destroy();
                             delete PrimeFaces.widgets[widgetVar];
-                            delete widget;
-                        } catch (e) { }
+                            widget = null;
+                        } catch (e) { PrimeFaces.warn("Error destroying widget: " + widgetVar) }
                     }
                 }
 

@@ -251,6 +251,9 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
                $this.removeFocusedItem();
             }
         });
+        this.addDestroyListener(function() {
+            $(document.body).off(clickNS);
+        });
     },
 
     /**

@@ -201,6 +201,9 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
 
             $this.reset();
         });
+        this.addDestroyListener(function() {
+            $(document.body).off(clickNS);
+        });
     },
 
     /**

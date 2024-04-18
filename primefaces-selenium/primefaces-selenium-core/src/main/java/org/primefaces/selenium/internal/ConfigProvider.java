@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.primefaces.selenium.spi.WebDriverAdapter;
@@ -39,7 +41,12 @@ import org.primefaces.selenium.spi.OnloadScriptsAdapter;
 
 public class ConfigProvider {
 
+    public static final String DEPLOYMENT_ADAPTER = "deployment.adapter";
+    public static final String DEPLOYMENT_BASEURL = "deployment.baseUrl";
+
     private static ConfigProvider configProvider = null;
+
+    private static final Pattern PROPERTY_ENV_PLACEHOLDER = Pattern.compile("\\$\\{(.*?)}");
 
     private int timeoutGui = 2;
     private int timeoutAjax = 10;
@@ -64,6 +71,8 @@ public class ConfigProvider {
 
     private List<String> onloadScripts;
 
+    private String screenshotDirectory;
+
     public ConfigProvider() {
         try {
             InputStream config = getClass().getResourceAsStream("/primefaces-selenium/config.properties");
@@ -71,79 +80,84 @@ public class ConfigProvider {
                 Properties properties = new Properties();
                 properties.load(config);
 
-                String timeoutGui = properties.getProperty("timeout.gui");
+                String timeoutGui = getAndResolveProperty(properties, "timeout.gui");
                 if (timeoutGui != null && !timeoutGui.trim().isEmpty()) {
                     this.timeoutGui = Integer.parseInt(timeoutGui);
                 }
 
-                String timeoutAjax = properties.getProperty("timeout.ajax");
+                String timeoutAjax = getAndResolveProperty(properties, "timeout.ajax");
                 if (timeoutAjax != null && !timeoutAjax.trim().isEmpty()) {
                     this.timeoutAjax = Integer.parseInt(timeoutAjax);
                 }
 
-                String timeoutHttp = properties.getProperty("timeout.http");
+                String timeoutHttp = getAndResolveProperty(properties, "timeout.http");
                 if (timeoutHttp != null && !timeoutHttp.trim().isEmpty()) {
                     this.timeoutHttp = Integer.parseInt(timeoutHttp);
                 }
 
-                String timeoutDocumentLoad = properties.getProperty("timeout.documentLoad");
+                String timeoutDocumentLoad = getAndResolveProperty(properties, "timeout.documentLoad");
                 if (timeoutDocumentLoad != null && !timeoutDocumentLoad.trim().isEmpty()) {
                     this.timeoutDocumentLoad = Integer.parseInt(timeoutDocumentLoad);
                 }
 
-                String timeoutFileUpload = properties.getProperty("timeout.fileUpload");
+                String timeoutFileUpload = getAndResolveProperty(properties, "timeout.fileUpload");
                 if (timeoutFileUpload != null && !timeoutFileUpload.trim().isEmpty()) {
                     this.timeoutFileUpload = Integer.parseInt(timeoutFileUpload);
                 }
 
-                String disableAnimations = properties.getProperty("disableAnimations");
+                String disableAnimations = getAndResolveProperty(properties, "disableAnimations");
                 if (disableAnimations != null && !disableAnimations.trim().isEmpty()) {
                     this.disableAnimations = Boolean.parseBoolean(disableAnimations);
                 }
 
-                String scrollElementIntoView = properties.getProperty("scrollElementIntoView");
+                String scrollElementIntoView = getAndResolveProperty(properties, "scrollElementIntoView");
                 if (scrollElementIntoView != null && !scrollElementIntoView.trim().isEmpty()) {
                     this.scrollElementIntoView = scrollElementIntoView;
                 }
 
-                String deploymentBaseUrl = properties.getProperty("deployment.baseUrl");
+                String deploymentBaseUrl = getAndResolveProperty(properties, DEPLOYMENT_BASEURL);
                 if (deploymentBaseUrl != null && !deploymentBaseUrl.trim().isEmpty()) {
                     this.deploymentBaseUrl = deploymentBaseUrl;
                 }
 
-                String deploymentAdapter = properties.getProperty("deployment.adapter");
+                String deploymentAdapter = getAndResolveProperty(properties, DEPLOYMENT_ADAPTER);
                 if (deploymentAdapter != null && !deploymentAdapter.trim().isEmpty()) {
                     this.deploymentAdapter = (DeploymentAdapter) Class.forName(deploymentAdapter).getDeclaredConstructor().newInstance();
                 }
 
-                String webdriverAdapter = properties.getProperty("webdriver.adapter");
+                String webdriverAdapter = getAndResolveProperty(properties, "webdriver.adapter");
                 if (webdriverAdapter != null && !webdriverAdapter.trim().isEmpty()) {
                     this.webdriverAdapter = (WebDriverAdapter) Class.forName(webdriverAdapter).getDeclaredConstructor().newInstance();
                 }
 
-                String webdriverBrowser = properties.getProperty("webdriver.browser");
+                String webdriverBrowser = getAndResolveProperty(properties, "webdriver.browser");
                 if (webdriverBrowser != null && !webdriverBrowser.trim().isEmpty()) {
                     this.webdriverBrowser = webdriverBrowser;
                 }
 
-                String webdriverHeadless = properties.getProperty("webdriver.headless");
+                String webdriverHeadless = getAndResolveProperty(properties, "webdriver.headless");
                 if (webdriverHeadless != null && !webdriverHeadless.trim().isEmpty()) {
                     this.webdriverHeadless = Boolean.parseBoolean(webdriverHeadless);
                 }
 
-                String webdriverVersion = properties.getProperty("webdriver.version");
+                String webdriverVersion = getAndResolveProperty(properties, "webdriver.version");
                 if (webdriverVersion != null && !webdriverVersion.trim().isEmpty()) {
                     this.webdriverVersion = webdriverVersion;
                 }
 
-                String webdriverLogLevel = properties.getProperty("webdriver.logLevel");
+                String webdriverLogLevel = getAndResolveProperty(properties, "webdriver.logLevel");
                 if (webdriverLogLevel != null && !webdriverLogLevel.trim().isEmpty()) {
                     this.webdriverLogLevel = Level.parse(webdriverLogLevel);
                 }
 
-                String onloadScriptsAdapter = properties.getProperty("onloadScripts.adapter");
+                String onloadScriptsAdapter = getAndResolveProperty(properties, "onloadScripts.adapter");
                 if (onloadScriptsAdapter != null && !onloadScriptsAdapter.trim().isEmpty()) {
                     this.onloadScriptsAdapter = (OnloadScriptsAdapter) Class.forName(onloadScriptsAdapter).getDeclaredConstructor().newInstance();
+                }
+
+                String screenshotDirectory = getAndResolveProperty(properties, "screenshotDirectory");
+                if (screenshotDirectory != null && !screenshotDirectory.trim().isEmpty()) {
+                    this.screenshotDirectory = screenshotDirectory;
                 }
             }
 
@@ -152,8 +166,8 @@ public class ConfigProvider {
             }
 
             if (deploymentBaseUrl == null && deploymentAdapter == null) {
-                throw new RuntimeException("Please either provide a deployment.baseUrl for remote testing "
-                        + "or deployment.adapter via config.properties!");
+                throw new RuntimeException("Please either provide a " + DEPLOYMENT_BASEURL + " for remote testing or "
+                        + DEPLOYMENT_ADAPTER + " via config.properties!");
             }
 
             buildOnloadScripts();
@@ -163,6 +177,20 @@ public class ConfigProvider {
         catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private String getAndResolveProperty(Properties properties, String propertyKey) {
+        String val = properties.getProperty(propertyKey);
+        if (val != null) {
+            Matcher matcher = PROPERTY_ENV_PLACEHOLDER.matcher(val);
+            if (matcher.matches()) {
+                String env = System.getenv(matcher.group(1));
+                if (env != null && !env.trim().isEmpty()) {
+                    return env;
+                }
+            }
+        }
+        return val;
     }
 
     protected void buildOnloadScripts() throws Exception {

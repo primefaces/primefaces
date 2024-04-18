@@ -152,13 +152,19 @@ public final class PrimeSelenium {
      * @return the URL of the page
      */
     public static String getUrl(AbstractPrimePage page) {
-        DeploymentAdapter deploymentAdapter = ConfigProvider.getInstance().getDeploymentAdapter();
-
         String baseLocation = page.getBaseLocation();
-        if (deploymentAdapter != null) {
+        if (baseLocation == null) {
             baseLocation = getBaseUrl();
         }
-
+        if (baseLocation == null) {
+            DeploymentAdapter deploymentAdapter = ConfigProvider.getInstance().getDeploymentAdapter();
+            String message = "Cannot determine base url. Please either configure " + ConfigProvider.DEPLOYMENT_BASEURL + " or " +
+                    (deploymentAdapter != null ?
+                            ("implement " + deploymentAdapter.getClass().getCanonicalName() + "#getBaseUrl") :
+                            ("define " + ConfigProvider.DEPLOYMENT_ADAPTER + " with implemented DeploymentAdapter#getBaseUrl")) +
+                    " or implement " + page.getClass().getCanonicalName() + "#getBaseLocation";
+            throw new RuntimeException(message);
+        }
         return baseLocation + page.getLocation();
     }
 
@@ -169,7 +175,16 @@ public final class PrimeSelenium {
      * @return the full URL
      */
     public static String getUrl(String url) {
-        return getBaseUrl() + url;
+        String baseUrl = getBaseUrl();
+        if (baseUrl == null) {
+            DeploymentAdapter deploymentAdapter = ConfigProvider.getInstance().getDeploymentAdapter();
+            String message = "Cannot determine base url. Please either configure " + ConfigProvider.DEPLOYMENT_BASEURL + " or " +
+                    (deploymentAdapter != null ?
+                            ("implement " + deploymentAdapter.getClass().getCanonicalName() + "#getBaseUrl") :
+                            ("define " + ConfigProvider.DEPLOYMENT_ADAPTER + " with implemented DeploymentAdapter#getBaseUrl"));
+            throw new RuntimeException(message);
+        }
+        return baseUrl + url;
     }
 
     public static String getBaseUrl() {

@@ -28,7 +28,6 @@ import java.util.Iterator;
 import java.util.Objects;
 
 import javax.faces.application.FacesMessage;
-import javax.faces.application.FacesMessage.Severity;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -80,34 +79,14 @@ public class MessageRenderer extends UINotificationRenderer {
             writer.writeAttribute("data-redisplay", String.valueOf(uiMessage.isRedisplay()), null);
         }
 
-        if (msgs.hasNext()) {
+        boolean hasMessage = false;
+        while (msgs.hasNext()) {
             FacesMessage msg = msgs.next();
             String severityName = getSeverityName(msg);
 
-            if (!shouldRender(uiMessage, msg, severityName)) {
-                writer.writeAttribute("class", styleClass, null);
-                writer.endElement("div");
+            if (shouldRender(uiMessage, msg, severityName)) {
 
-                return;
-            }
-            else {
-                Severity severity = msg.getSeverity();
-                String severityKey = null;
-
-                if (severity.equals(FacesMessage.SEVERITY_ERROR)) {
-                    severityKey = "error";
-                }
-                else if (severity.equals(FacesMessage.SEVERITY_INFO)) {
-                    severityKey = "info";
-                }
-                else if (severity.equals(FacesMessage.SEVERITY_WARN)) {
-                    severityKey = "warn";
-                }
-                else if (severity.equals(FacesMessage.SEVERITY_FATAL)) {
-                    severityKey = "fatal";
-                }
-
-                styleClass += " ui-message-" + severityKey + " ui-widget ui-corner-all";
+                styleClass += " ui-message-" + severityName + " ui-widget ui-corner-all";
 
                 if (iconOnly) {
                     styleClass += " ui-message-icon-only ui-helper-clearfix";
@@ -118,7 +97,7 @@ public class MessageRenderer extends UINotificationRenderer {
                 writer.startElement("div", null);
 
                 if (!"text".equals(display)) {
-                    encodeIcon(writer, severityKey, msg.getDetail(), iconOnly);
+                    encodeIcon(writer, severityName, msg.getDetail(), iconOnly);
                 }
 
                 if (!iconOnly) {
@@ -129,18 +108,22 @@ public class MessageRenderer extends UINotificationRenderer {
                     }
 
                     if (uiMessage.isShowSummary()) {
-                        encodeText(context, uiMessage, summary, severityKey + "-summary");
+                        encodeText(context, uiMessage, summary, severityName + "-summary");
                     }
                     if (uiMessage.isShowDetail()) {
-                        encodeText(context, uiMessage, detail, severityKey + "-detail");
+                        encodeText(context, uiMessage, detail, severityName + "-detail");
                     }
                 }
                 writer.endElement("div");
 
                 msg.rendered();
+
+                hasMessage = true;
+                break;
             }
         }
-        else {
+
+        if (!hasMessage) {
             writer.writeAttribute("class", styleClass, null);
         }
 

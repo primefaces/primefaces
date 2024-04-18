@@ -87,10 +87,9 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     bind: function() {
-        var doc = $(document),
-        $this = this;
-
-        doc.on('pfAjaxStart', function() {
+        var $this = this;
+        var namespace = '.status' + this.id;
+        $(document).on('pfAjaxStart' + namespace, function() {
             var delay = $this.cfg.delay;
             if (delay > 0 ) {
                 $this.timeout = setTimeout(function () {
@@ -100,17 +99,20 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
                 $this.trigger('start', arguments);
             }
         })
-        .on('pfAjaxError', function() {
+        .on('pfAjaxError' + namespace, function() {
             $this.trigger('error', arguments);
         })
-        .on('pfAjaxSuccess', function() {
+        .on('pfAjaxSuccess' + namespace, function() {
             $this.trigger('success', arguments);
         })
-        .on('pfAjaxComplete', function() {
+        .on('pfAjaxComplete' + namespace, function() {
             if($this.timeout) {
                 $this.deleteTimeout();
             }
             $this.trigger('complete', arguments);
+        });
+        this.addDestroyListener(function() {
+            $(document).off(namespace);
         });
 
         // also bind to JSF (f:ajax) events

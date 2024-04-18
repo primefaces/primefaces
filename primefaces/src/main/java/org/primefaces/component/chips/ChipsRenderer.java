@@ -210,7 +210,7 @@ public class ChipsRenderer extends InputRenderer {
                 .attr("addOnBlur", chips.isAddOnBlur(), false)
                 .attr("addOnPaste", chips.isAddOnPaste(), false)
                 .attr("unique", chips.isUnique(), false)
-                .attr("separator", chips.getSeparator(), ",");
+                .attr("separator", chips.getSeparator());
 
         encodeClientBehaviors(context, chips);
 
