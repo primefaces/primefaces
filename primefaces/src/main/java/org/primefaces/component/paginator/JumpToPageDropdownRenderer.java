@@ -30,6 +30,8 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.api.Pageable;
 import org.primefaces.component.api.UIPageableData;
+import org.primefaces.util.HTML;
+import org.primefaces.util.MessageFactory;
 
 public class JumpToPageDropdownRenderer implements PaginatorElementRenderer {
 
@@ -42,6 +44,7 @@ public class JumpToPageDropdownRenderer implements PaginatorElementRenderer {
         writer.startElement("select", null);
         writer.writeAttribute("class", UIPageableData.PAGINATOR_JTP_SELECT_CLASS, null);
         writer.writeAttribute("value", pageable.getPage(), null);
+        writer.writeAttribute( HTML.ARIA_LABEL, MessageFactory.getMessage( UIPageableData.ARIA_JUMP_TO_PAGE_LABEL ), null );
 
         for (int i = 0; i < pageCount; i++) {
             writer.startElement("option", null);
