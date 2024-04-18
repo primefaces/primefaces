@@ -207,12 +207,17 @@ public class ResourceUtils {
         PrimeRequestContext requestContext = PrimeRequestContext.getCurrentInstance(context);
         PrimeApplicationContext applicationContext = requestContext.getApplicationContext();
 
-        if (requestContext.isSecure() && applicationContext.getConfig().isCookiesSecure()) {
-            properties.put("secure", true);
+        boolean isSecure = requestContext.isSecure() && applicationContext.getConfig().isCookiesSecure();
+        boolean isJsf40OrHigher = applicationContext.getEnvironment().isAtLeastJsf40();
 
-            if (applicationContext.getEnvironment().isAtLeastJsf40()) {
+        if (isSecure) {
+            properties.put("secure", true);
+            if (isJsf40OrHigher) {
                 properties.put("SameSite", applicationContext.getConfig().getCookiesSameSite());
             }
+        }
+        else if (isJsf40OrHigher) {
+            properties.put("SameSite", "None");
         }
 
         context.getExternalContext().addResponseCookie(name, value, properties);
