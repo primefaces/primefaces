@@ -36,6 +36,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.primefaces.event.SelectEvent;
+import org.primefaces.event.ToggleSelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.showcase.domain.Country;
 import org.primefaces.showcase.service.CountryService;
@@ -190,6 +191,14 @@ public class CheckboxView {
 
     public void setSelectedCountries3(List<Country> selectedCountries3) {
         this.selectedCountries3 = selectedCountries3;
+    }
+
+    public void onToggleSelect(ToggleSelectEvent event) {
+        FacesMessage msg = new FacesMessage();
+        msg.setSummary("Toggled: " + event.isSelected());
+        msg.setSeverity(FacesMessage.SEVERITY_INFO);
+
+        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
     public void onItemSelect(SelectEvent event) {
