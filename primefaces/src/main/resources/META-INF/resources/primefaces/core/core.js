@@ -1181,7 +1181,7 @@
             }
         },
         
-         /**
+        /**
          * Finds the current locale with the i18n keys and the associated translations. Uses the current language key
          * as specified by `PrimeFaces.settings.locale`. When no locale was found for the given locale, falls back to
          * the default English locale.
@@ -1190,14 +1190,14 @@
          */
         getLocaleSettings: function(cfgLocale) {
             var locale;
+
             if(cfgLocale) {
                 // widget locale must not be cached since it can change per widget
                 locale = PrimeFaces.locales[cfgLocale];
-            }
-            else {
+            } else {
                 // global settings so return cached value if already loaded
                 if(this.localeSettings) {
-                   return this.localeSettings;
+                    return this.localeSettings;
                 }
                 locale = PrimeFaces.locales[PrimeFaces.settings.locale];
             }
@@ -1205,7 +1205,10 @@
             // try and strip specific language from nl_BE to just nl
             if (!locale) {
                 var localeKey = cfgLocale ? cfgLocale : PrimeFaces.settings.locale;
-                locale = PrimeFaces.locales[localeKey.split('_')[0]];
+                var strippedLocaleKey = localeKey ? localeKey.split('_')[0] : null;
+                if (strippedLocaleKey) {
+                    locale = PrimeFaces.locales[strippedLocaleKey];
+                }
             }
 
             // if all else fails default to US English
