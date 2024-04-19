@@ -30,6 +30,8 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.api.Pageable;
 import org.primefaces.component.api.UIPageableData;
+import org.primefaces.util.HTML;
+import org.primefaces.util.MessageFactory;
 
 public class JumpToPageInputRenderer implements PaginatorElementRenderer {
 
@@ -40,6 +42,7 @@ public class JumpToPageInputRenderer implements PaginatorElementRenderer {
         writer.startElement("input", null);
         writer.writeAttribute("class", UIPageableData.PAGINATOR_JTP_INPUT_CLASS, null);
         writer.writeAttribute("value", pageable.getPage() + 1, null);
+        writer.writeAttribute( HTML.ARIA_LABEL, MessageFactory.getMessage( UIPageableData.ARIA_JUMP_TO_PAGE_LABEL ), null );
         writer.endElement("input");
     }
 
