@@ -272,23 +272,7 @@ if (!PrimeFaces.ajax) {
                     PrimeFaces.ajax.Utils.updateBody(content);
                 }
                 else if (id === PrimeFaces.ajax.RESOURCE) {
-                    // #11714 Iterate through each script and stylesheet tag in the content
-                    // checking if resource is already attached to the head and adding it if not
-                    $(content)
-                        .filter("link[href], script[src]")
-                        .each(function() {
-                            var $resource = $(this);
-                            var $head = $("head");
-                            var src = $resource.attr("href") || $resource.attr("src");
-                            var type = this.tagName.toLowerCase();
-                            var $resources = $head.find(type + '[src="' + src + '"], ' + type + '[href="' + src + '"]');
-
-                            // Check if script or stylesheet already exists and add it to head if it does not
-                            if ($resources.length === 0) {
-                                PrimeFaces.debug("Appending " + type + " to head: " + src);
-                                $head.append($resource);
-                            }
-                        });
+                    $('head').append(content);
                 }
                 else if (id === $('head')[0].id) {
                     PrimeFaces.ajax.Utils.updateHead(content);
