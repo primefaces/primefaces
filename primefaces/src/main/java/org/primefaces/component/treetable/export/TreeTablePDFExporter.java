@@ -135,7 +135,7 @@ public class TreeTablePDFExporter extends TreeTableExporter<Document, PDFOptions
     @Override
     protected void exportCellValue(FacesContext context, TreeTable table, UIColumn col, ColumnValue columnValue, int index) {
         PdfPCell cell = createCell(col, new Paragraph(columnValue.toString(), cellFont));
-        pdfTable.addCell(cell);
+        addCell(pdfTable, cell);
     }
 
     @Override
@@ -159,6 +159,10 @@ public class TreeTablePDFExporter extends TreeTableExporter<Document, PDFOptions
         for (int i = 0; i < number; i++) {
             paragraph.add(new Paragraph(Constants.SPACE));
         }
+    }
+
+    protected void addCell(PdfPTable table, PdfPCell cell) {
+        table.addCell(cell);
     }
 
     protected void applyFacetOptions(ExporterOptions options) {
@@ -255,6 +259,6 @@ public class TreeTablePDFExporter extends TreeTableExporter<Document, PDFOptions
             cell.setColspan(colSpan);
         }
 
-        pdfTable.addCell(cell);
+        addCell(pdfTable, cell);
     }
 }
