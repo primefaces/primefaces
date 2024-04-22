@@ -553,7 +553,7 @@
                     <useDataUri>false</useDataUri>
                     <failOnWarning>true</failOnWarning>
                     <imagesDir>${project.build.directory}/classes/META-INF/resources</imagesDir>
-                    <languageIn>ECMASCRIPT_2015</languageIn>
+                    <languageIn>ECMASCRIPT_2020</languageIn>
                     <languageOut>ECMASCRIPT5</languageOut>
                     <resourcesSets>
                         <resourcesSet>
@@ -593,7 +593,8 @@
                                 <include>signature/**</include>
                                 <include>stack/**</include>
                                 <include>terminal/**</include>
-                                <include>texteditor/**</include>
+                                <include>texteditor/1-texteditor.js</include>
+                                <include>texteditor/1-texteditor-theme.css</include>
                                 <include>timeline/**</include>
                             </includes>
                             <aggregations>
@@ -609,6 +610,7 @@
                             <includes>
                                 <include>chart/**</include>
                                 <include>chartjs/**</include>
+                                <include>texteditor/**</include>
                             </includes>
                             <aggregations>
                                 <aggregation>
