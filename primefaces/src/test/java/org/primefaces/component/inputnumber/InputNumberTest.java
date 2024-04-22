@@ -26,9 +26,13 @@ package org.primefaces.component.inputnumber;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doCallRealMethod;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,7 +47,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class InputNumberTest {
+class InputNumberTest {
 
     private InputNumberRenderer renderer;
     private FacesContext context;
@@ -53,8 +57,8 @@ public class InputNumberTest {
     private ValueExpression valueExpression;
 
     @BeforeEach
-    public void setup() {
-        renderer = new InputNumberRenderer();
+    void setup() {
+        renderer = spy(new InputNumberRenderer());
         context = mock(FacesContext.class);
         externalContext = mock(ExternalContext.class);
         elContext = mock(ELContext.class);
@@ -68,7 +72,7 @@ public class InputNumberTest {
     }
 
     @AfterEach
-    public void teardown() {
+    void teardown() {
         valueExpression = null;
         inputNumber = null;
         elContext = null;
@@ -195,6 +199,34 @@ public class InputNumberTest {
         setupValues("1", true, "0", "2", false);
         renderer.decode(context, inputNumber);
         Assertions.assertEquals(null, inputNumber.getSubmittedValue());
+    }
+
+    @Test
+    void isIntegral() {
+        // values
+        doReturn(BigDecimal.class).when(renderer).getTypeFromValueExpression(context, inputNumber);
+        assertFalse(renderer.isIntegral(context, inputNumber, BigDecimal.valueOf(5.5)));
+        doReturn(Number.class).when(renderer).getTypeFromValueExpression(context, inputNumber);
+        assertFalse(renderer.isIntegral(context, inputNumber, BigDecimal.valueOf(5.5)));
+        doReturn(Number.class).when(renderer).getTypeFromValueExpression(context, inputNumber);
+        assertTrue(renderer.isIntegral(context, inputNumber, Integer.valueOf(3)));
+
+        // nulls
+        doReturn(Integer.class).when(renderer).getTypeFromValueExpression(context, inputNumber);
+        assertTrue(renderer.isIntegral(context, inputNumber, null));
+        doReturn(Short.class).when(renderer).getTypeFromValueExpression(context, inputNumber);
+        assertTrue(renderer.isIntegral(context, inputNumber, null));
+        doReturn(Byte.class).when(renderer).getTypeFromValueExpression(context, inputNumber);
+        assertTrue(renderer.isIntegral(context, inputNumber, null));
+        doReturn(BigInteger.class).when(renderer).getTypeFromValueExpression(context, inputNumber);
+        assertTrue(renderer.isIntegral(context, inputNumber, null));
+        doReturn(Long.class).when(renderer).getTypeFromValueExpression(context, inputNumber);
+        assertTrue(renderer.isIntegral(context, inputNumber, null));
+        doReturn(BigDecimal.class).when(renderer).getTypeFromValueExpression(context, inputNumber);
+        assertFalse(renderer.isIntegral(context, inputNumber, null));
+        // GitHub #11791
+        doReturn(Number.class).when(renderer).getTypeFromValueExpression(context, inputNumber);
+        assertFalse(renderer.isIntegral(context, inputNumber, null));
     }
 
 }
