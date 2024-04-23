@@ -1,5 +1,5 @@
 /*!
- * jQuery UI Touch Punch 1.1.4 as modified by RWAP Software
+ * jQuery UI Touch Punch 1.1.5 as modified by RWAP Software
  * based on original touchpunch v0.2.3 which has not been updated since 2014
  *
  * Updates by RWAP Software to take account of various suggested changes on the original code issues
@@ -195,9 +195,9 @@
     touchHandled = false;
   };
 
-  let _touchStartBound = mouseProto._touchStart.bind(mouseProto),
-      _touchMoveBound = mouseProto._touchMove.bind(mouseProto),
-      _touchEndBound = mouseProto._touchEnd.bind(mouseProto);
+  let _touchStartBound;
+  let _touchMoveBound;
+  let _touchEndBound;
 
   /**
    * A duck punch of the $.ui.mouse _mouseInit method to support touch events.
@@ -212,7 +212,11 @@
     // Microsoft Surface Support = remove original touch Action
     if ($.support.mspointer) {
       self.element[0].style.msTouchAction = 'none';
-    }	  
+    }	
+
+    _touchStartBound = mouseProto._touchStart.bind(self);
+    _touchMoveBound  = mouseProto._touchMove.bind(self);
+    _touchEndBound   = mouseProto._touchEnd.bind(self);	  
 
     // Delegate the touch handlers to the widget's element
     self.element.on({
