@@ -136,14 +136,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         }
 
         if (this.hasColGroup()) {
-            const frozenHeight = this.frozenThead.height();
-            const scrollHeight = this.scrollThead.height();
-
-            if (frozenHeight > scrollHeight) {
-                this.scrollThead.height(frozenHeight);
-            } else if (frozenHeight < scrollHeight) {
-                this.frozenThead.height(scrollHeight);
-            }
+            this.frozenThead.height(Math.max(this.frozenThead.height(), this.scrollThead.height()));
         }
 
         this.scrollBody.on('scroll.datatable', function() {

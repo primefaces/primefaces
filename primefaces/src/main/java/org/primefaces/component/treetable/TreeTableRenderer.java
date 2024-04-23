@@ -525,7 +525,7 @@ public class TreeTableRenderer extends DataRenderer {
 
         for (int i = 0; i < columns.size(); i++) {
             UIColumn column = columns.get(i);
-            ColumnMeta columnMeta = tt.getColumnMeta().get(column.getColumnKey(tt, rowKey));
+            ColumnMeta columnMeta = tt.getColumnMeta().get(column.getColumnKey());
 
             if (column.isDynamic()) {
                 ((DynamicColumn) column).applyModel();

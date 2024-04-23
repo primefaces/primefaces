@@ -122,28 +122,6 @@ public interface UIColumn {
 
     String getColumnKey();
 
-    /**
-     * Special {@link #getColumnKey()} method which must be used when we are inside e.g.
-     * the DataTable "row state".
-     *
-     * @param parent
-     * @param rowIndex
-     * @return
-     */
-    default String getColumnKey(UIComponent parent, int rowIndex) {
-        return getColumnKey(parent, String.valueOf(rowIndex));
-    }
-
-    /**
-     * Special {@link #getColumnKey()} method which must be used when we are inside e.g.
-     * the DataTable "row state".
-     *
-     * @param parent
-     * @param rowKey
-     * @return
-     */
-    String getColumnKey(UIComponent parent, String rowKey);
-
     String getClientId();
 
     String getClientId(FacesContext context);

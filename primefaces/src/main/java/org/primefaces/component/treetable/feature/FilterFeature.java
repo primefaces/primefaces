@@ -36,6 +36,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
 
 import org.primefaces.PrimeFaces;
+import org.primefaces.component.api.ForEachRowColumn;
+import org.primefaces.component.api.RowColumnVisitor;
+import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.component.treetable.TreeTableRenderer;
 import org.primefaces.component.treetable.TreeTableState;
@@ -150,29 +153,30 @@ public class FilterFeature implements TreeTableFeature {
                 globalMatch.set(globalFilter.getConstraint().isMatching(context, childNode, globalFilter.getFilterValue(), filterLocale));
             }
 
-            tt.forEachColumn(column -> {
-                FilterMeta filter = filterBy.get(column.getColumnKey(tt, rowKey));
-                if (filter == null || filter.isGlobalFilter()) {
-                    return true;
+            ForEachRowColumn.from(tt).invoke(new RowColumnVisitor.Adapter() {
+                @Override
+                public void visitColumn(int index, UIColumn column) throws IOException {
+                    FilterMeta filter = filterBy.get(column.getColumnKey());
+                    if (filter == null || filter.isGlobalFilter()) {
+                        return;
+                    }
+                    Object columnValue = filter.getLocalValue(elContext, column);
+
+                    if (globalFilter != null && globalFilter.isActive() && !globalMatch.get() && !hasGlobalFilterFunction) {
+                        FilterConstraint constraint = globalFilter.getConstraint();
+                        Object filterValue = globalFilter.getFilterValue();
+                        globalMatch.set(constraint.isMatching(context, columnValue, filterValue, filterLocale));
+                    }
+
+                    if (!filter.isActive()) {
+                        return;
+                    }
+
+                    FilterConstraint constraint = filter.getConstraint();
+                    Object filterValue = filter.getFilterValue();
+
+                    localMatch.set(constraint.isMatching(context, columnValue, filterValue, filterLocale));
                 }
-                Object columnValue = filter.getLocalValue(elContext, column);
-
-                if (globalFilter != null && globalFilter.isActive() && !globalMatch.get() && !hasGlobalFilterFunction) {
-                    FilterConstraint constraint = globalFilter.getConstraint();
-                    Object filterValue = globalFilter.getFilterValue();
-                    globalMatch.set(constraint.isMatching(context, columnValue, filterValue, filterLocale));
-                }
-
-                if (!filter.isActive()) {
-                    return true;
-                }
-
-                FilterConstraint constraint = filter.getConstraint();
-                Object filterValue = filter.getFilterValue();
-
-                localMatch.set(constraint.isMatching(context, columnValue, filterValue, filterLocale));
-
-                return localMatch.get();
             });
 
             boolean matches = localMatch.get();

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2024 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,13 +38,11 @@ import org.primefaces.component.columns.Columns;
 import org.primefaces.component.row.Row;
 import org.primefaces.util.ComponentUtils;
 
-// Initial plan was to use VisitCallback API but not optimal for progressive visit. Partial visit requires to know
-// in advance what are the component to be visited
 public class ForEachRowColumn {
 
     public enum ColumnHint implements Predicate<Object> {
 
-        SKIP_UNRENDERED {
+        RENDERED {
             @Override
             public boolean test(Object o) {
                 return o instanceof UIColumn ? ((UIColumn) o).isRendered() : ((UIComponent) o).isRendered();
@@ -54,19 +52,19 @@ public class ForEachRowColumn {
         EXPORTABLE {
             @Override
             public boolean test(Object o) {
-                return !(o instanceof UIColumn) || ((UIColumn) o).isExportable();
+                return o instanceof UIColumn && ((UIColumn) o).isExportable();
             }
         },
 
         VISIBLE {
             @Override
             public boolean test(Object o) {
-                return !(o instanceof UIColumn) || ((UIColumn) o).isVisible();
+                return o instanceof UIColumn && ((UIColumn) o).isVisible();
             }
         }
     }
 
-    private Set<ColumnHint> hints = EnumSet.of(ColumnHint.SKIP_UNRENDERED);
+    private Set<ColumnHint> hints = EnumSet.of(ColumnHint.RENDERED);
 
     private UIComponent root;
 
@@ -191,11 +189,15 @@ public class ForEachRowColumn {
             cols.setRowIndex(-1);
             for (int i = 0; i < cols.getRowCount(); i++) {
                 DynamicColumn column = new DynamicColumn(i, cols, FacesContext.getCurrentInstance());
-                visitIfPossible(index + i, column);
+                if (VisitResult.COMPLETE == visitIfPossible(index + i, column)) {
+                    cols.setRowIndex(-1);
+                    return VisitResult.COMPLETE;
+                }
             }
+            cols.setRowIndex(-1);
         }
-        else {
-            visitIfPossible(index, target);
+        else if (VisitResult.COMPLETE == visitIfPossible(index, target)) {
+            return VisitResult.COMPLETE;
         }
 
         return completeIfRoot(target);
@@ -205,13 +207,17 @@ public class ForEachRowColumn {
         return root == target ? VisitResult.COMPLETE : VisitResult.ACCEPT;
     }
 
-    private void visitIfPossible(int index, UIColumn column) throws IOException {
+    private VisitResult visitIfPossible(int index, UIColumn column) throws IOException {
         if (column instanceof DynamicColumn) {
             ((DynamicColumn) column).applyStatelessModel();
         }
         if (isVisitable(column)) {
             callback.visitColumn(index, column);
+            if (columnKey != null) {
+                return VisitResult.COMPLETE;
+            }
         }
+        return VisitResult.ACCEPT;
     }
 
     private boolean isVisitable(Object target) {

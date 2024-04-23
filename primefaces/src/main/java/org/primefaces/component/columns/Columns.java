@@ -27,11 +27,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
+import java.util.function.Predicate;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.api.DynamicColumn;
+import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.LangUtils;
@@ -71,12 +71,6 @@ public class Columns extends ColumnsBase {
     }
 
     @Override
-    public String getColumnKey(UIComponent parent, String rowIndex) {
-        char separator = UINamingContainer.getSeparatorChar(getFacesContext());
-        return getColumnKey().replace(parent.getId() + separator + rowIndex + separator, parent.getId() + separator);
-    }
-
-    @Override
     public void renderChildren(FacesContext context) throws IOException {
         encodeChildren(context);
     }
@@ -97,13 +91,13 @@ public class Columns extends ColumnsBase {
     public List<DynamicColumn> getDynamicColumns() {
         if (dynamicColumns == null) {
             dynamicColumns = new ArrayList<>(getRowCount());
-            forEachDynamicColumn(false, (col, index) -> dynamicColumns.add(col));
+            forEachColumn(false, UIColumn::isRendered, (col, index) -> dynamicColumns.add(col));
         }
 
         return dynamicColumns;
     }
 
-    public void forEachDynamicColumn(boolean applyModel, BiConsumer<DynamicColumn, Integer> column) {
+    public void forEachColumn(boolean applyModel, Predicate<UIColumn> predicate, BiConsumer<DynamicColumn, Integer> column) {
         FacesContext context = getFacesContext();
         setRowIndex(-1);
         for (int i = 0; i < getRowCount(); i++) {
@@ -114,10 +108,11 @@ public class Columns extends ColumnsBase {
             else {
                 dynaColumn.applyStatelessModel();
             }
-            if (dynaColumn.isRendered()) {
+            if (predicate.test(dynaColumn)) {
                 column.accept(dynaColumn, i);
             }
         }
+        setRowIndex(-1);
     }
 
     public void setDynamicColumns(List<DynamicColumn> dynamicColumns) {

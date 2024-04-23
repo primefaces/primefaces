@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.api;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -211,22 +212,11 @@ public interface ColumnAware {
     }
 
     default void invokeOnColumn(String columnKey, Consumer<UIColumn> callback) {
-        forEachColumn((column) -> {
-            if (column.getColumnKey().equals(columnKey)) {
+        ForEachRowColumn.from((UIComponent) this).columnKey(columnKey).invoke(new RowColumnVisitor.Adapter() {
+            @Override
+            public void visitColumn(int index, UIColumn column) throws IOException {
                 callback.accept(column);
-                return false;
             }
-            return true;
-        });
-    }
-
-    default void invokeOnColumn(String columnKey, int rowIndex, Consumer<UIColumn> callback) {
-        forEachColumn((column) -> {
-            if (column.getColumnKey((UIComponent) this, rowIndex).equals(columnKey)) {
-                callback.accept(column);
-                return false;
-            }
-            return true;
         });
     }
 
@@ -337,8 +327,6 @@ public interface ColumnAware {
         }
 
         Map<String, ColumnMeta> columnMeta = getColumnMeta();
-
-        // sort by displayOrder
         columns.sort(ColumnComparators.displayOrder(columnMeta));
         return columns;
     }

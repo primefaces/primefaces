@@ -400,7 +400,7 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
                 Map<UIColumn, Integer> columnMeta = new LinkedHashMap<>();
                 ForEachRowColumn
                         .from(dt)
-                        .hints(ForEachRowColumn.ColumnHint.SKIP_UNRENDERED, ForEachRowColumn.ColumnHint.EXPORTABLE, ForEachRowColumn.ColumnHint.VISIBLE)
+                        .hints(ForEachRowColumn.ColumnHint.RENDERED, ForEachRowColumn.ColumnHint.EXPORTABLE, ForEachRowColumn.ColumnHint.VISIBLE)
                         .invoke(new RowColumnVisitor.Adapter() {
 
                             @Override
@@ -456,7 +456,7 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
 
         for (ColumnMeta meta : visibleColumnMetadata) {
             String metaColumnKey = meta.getColumnKey();
-            table.invokeOnColumn(metaColumnKey, -1, exportcolumns::add);
+            table.invokeOnColumn(metaColumnKey, exportcolumns::add);
         }
 
         return exportcolumns;

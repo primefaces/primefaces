@@ -34,6 +34,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
 
 import org.primefaces.PrimeFaces;
+import org.primefaces.component.api.ForEachRowColumn;
+import org.primefaces.component.api.RowColumnVisitor;
+import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.datatable.DataTableState;
@@ -127,11 +130,10 @@ public class FilterFeature implements DataTableFeature {
                 globalMatch.set(globalFilter.getConstraint().isMatching(context, rowData, globalFilter.getFilterValue(), filterLocale));
             }
 
-            final int rowIndex = i;
             ForEachRowColumn.from(table).invoke(new RowColumnVisitor.Adapter() {
                 @Override
                 public void visitColumn(int index, UIColumn column) throws IOException {
-                    FilterMeta filter = filterBy.get(column.getColumnKey(table, rowIndex));
+                    FilterMeta filter = filterBy.get(column.getColumnKey());
                     if (filter == null || filter.isGlobalFilter()) {
                         return;
                     }
@@ -148,8 +150,11 @@ public class FilterFeature implements DataTableFeature {
                         return;
                     }
 
-                FilterConstraint constraint = filter.getConstraint();
-                Object filterValue = filter.getFilterValue();
+                    FilterConstraint constraint = filter.getConstraint();
+                    Object filterValue = filter.getFilterValue();
+
+                    localMatch.set(constraint.isMatching(context, columnValue, filterValue, filterLocale));
+                }
             });
 
             boolean matches = localMatch.get();

@@ -56,6 +56,7 @@ import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -1409,7 +1410,7 @@ public class DataTableRenderer extends DataRenderer {
             return;
         }
 
-        ColumnMeta columnMeta = table.getColumnMeta().get(column.getColumnKey(table, rowIndex));
+        ColumnMeta columnMeta = table.getColumnMeta().get(column.getColumnKey());
 
         boolean columnVisible = column.isVisible();
         if (columnMeta != null && columnMeta.getVisible() != null) {
