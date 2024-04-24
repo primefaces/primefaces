@@ -814,7 +814,10 @@ public class DataTable extends DataTableBase {
                         }
 
                         if (columns.isRendered()) {
-                            process(context, columns, phaseId);
+                            for (int k = 0; k < columns.getChildCount(); k++) {
+                                UIComponent grandkid = columns.getChildren().get(k);
+                                process(context, grandkid, phaseId);
+                            }
                         }
                     }
                     columns.setRowIndex(-1);
