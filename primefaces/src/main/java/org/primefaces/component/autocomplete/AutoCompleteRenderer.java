@@ -38,6 +38,7 @@ import org.primefaces.event.AutoCompleteEvent;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
@@ -506,7 +507,11 @@ public class AutoCompleteRenderer extends InputRenderer {
         Converter converter = ComponentUtils.getConverter(context, ac);
 
         if (customContent) {
+            Object helperKey = context.getAttributes().remove(Constants.HELPER_RENDERER);
             encodeSuggestionsAsTable(context, ac, items, converter);
+            if (helperKey != null) {
+                context.getAttributes().put(Constants.HELPER_RENDERER, helperKey);
+            }
         }
         else {
             encodeSuggestionsAsList(context, ac, items, converter);
