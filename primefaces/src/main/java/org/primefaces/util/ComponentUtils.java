@@ -688,6 +688,18 @@ public class ComponentUtils {
         return output.toString();
     }
 
+    /**
+     * Executes a callback within the request scope, optionally storing and restoring a value in the FacesContext request map.
+     * If no variable name is provided, the callback is executed without storing or restoring any value.
+     *
+     * @param context The FacesContext associated with the current request.
+     * @param var The name of the variable to store in the FacesContext request map.
+     *            If null or empty, the callback is executed without storing or restoring any value.
+     * @param value The value to store in the FacesContext request map under the given variable name. If null, no value is stored.
+     * @param callback A Supplier representing the callback to execute within the request scope.
+     * @return The result of executing the callback.
+     * @param <T> The type of result returned by the callback.
+     */
     public static <T> T executeInRequestScope(FacesContext context, String var, Object value, Supplier<T> callback) {
         // if no var passed just execute the callback
         if (LangUtils.isBlank(var)) {
@@ -706,6 +718,35 @@ public class ComponentUtils {
             requestMap.remove(var);
             if (oldValue != null) {
                 requestMap.put(var, oldValue);
+            }
+        }
+    }
+
+    /**
+     * Execute a callback in a stateless scope by temporarily removing and restoring a variable from the FacesContext attributes.
+     *
+     * @param context The FacesContext used for accessing attributes
+     * @param var The variable to be temporarily removed and restored in the context attributes
+     * @param runnable The callback to be executed
+     * @param <E> The type of Throwable that may be thrown
+     * @throws E If the callback throws an exception of type E
+     */
+    public static <E extends Throwable> void runWithoutFacesContextVar(FacesContext context, String var, Callbacks.FailableRunnable<E> runnable) throws E {
+        // if no var passed just execute the callback
+        if (LangUtils.isBlank(var)) {
+            runnable.run();
+            return;
+        }
+
+        Map<Object, Object> stateMap = context.getAttributes();
+
+        Object oldValue = stateMap.remove(var);
+        try {
+            runnable.run();
+        }
+        finally {
+            if (oldValue != null) {
+                stateMap.put(var, oldValue);
             }
         }
     }

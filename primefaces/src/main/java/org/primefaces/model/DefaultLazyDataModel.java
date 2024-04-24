@@ -43,9 +43,9 @@ public class DefaultLazyDataModel<T> extends LazyDataModel<T> {
     private String rowKeyField;
     private FilterConstraint filter;
     private Sorter<T> sorter;
-    private SerializableSupplier<List<T>> valuesSupplier;
-    private SerializableFunction<T, Object> rowKeyProvider;
-    private SerializablePredicate<T> skipFiltering;
+    private Callbacks.SerializableSupplier<List<T>> valuesSupplier;
+    private Callbacks.SerializableFunction<T, Object> rowKeyProvider;
+    private Callbacks.SerializablePredicate<T> skipFiltering;
 
     /**
      * For serialization only
@@ -183,7 +183,7 @@ public class DefaultLazyDataModel<T> extends LazyDataModel<T> {
             model = new DefaultLazyDataModel<>();
         }
 
-        public Builder<T> valueSupplier(SerializableSupplier<List<T>> valuesSupplier) {
+        public Builder<T> valueSupplier(Callbacks.SerializableSupplier<List<T>> valuesSupplier) {
             model.valuesSupplier = valuesSupplier;
             return this;
         }
@@ -193,7 +193,7 @@ public class DefaultLazyDataModel<T> extends LazyDataModel<T> {
             return this;
         }
 
-        public Builder<T> rowKeyProvider(SerializableFunction<T, Object> rowKeyProvider) {
+        public Builder<T> rowKeyProvider(Callbacks.SerializableFunction<T, Object> rowKeyProvider) {
             model.rowKeyProvider = rowKeyProvider;
             return this;
         }
@@ -208,7 +208,7 @@ public class DefaultLazyDataModel<T> extends LazyDataModel<T> {
             return this;
         }
 
-        public Builder<T> skipFiltering(SerializablePredicate<T> skipFiltering) {
+        public Builder<T> skipFiltering(Callbacks.SerializablePredicate<T> skipFiltering) {
             model.skipFiltering = skipFiltering;
             return this;
         }

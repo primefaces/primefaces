@@ -23,8 +23,7 @@
  */
 package org.primefaces.model;
 
-import org.primefaces.util.SerializableFunction;
-
+import org.primefaces.util.Callbacks;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,8 +36,8 @@ import java.util.stream.Collectors;
  */
 public class LazyDefaultTreeNode<T> extends DefaultTreeNode<T> implements LazyTreeNode {
 
-    private SerializableFunction<T, List<T>> loadFunction;
-    private SerializableFunction<T, Boolean> isLeafFunction;
+    private Callbacks.SerializableFunction<T, List<T>> loadFunction;
+    private Callbacks.SerializableFunction<T, Boolean> isLeafFunction;
     private boolean loaded;
 
     // serialization
@@ -46,8 +45,8 @@ public class LazyDefaultTreeNode<T> extends DefaultTreeNode<T> implements LazyTr
     }
 
     public LazyDefaultTreeNode(T data,
-                               SerializableFunction<T, List<T>> loadFunction,
-                               SerializableFunction<T, Boolean> isLeafFunction) {
+            Callbacks.SerializableFunction<T, List<T>> loadFunction,
+            Callbacks.SerializableFunction<T, Boolean> isLeafFunction) {
         super(data);
         this.loadFunction = loadFunction;
         this.isLeafFunction = isLeafFunction;

@@ -60,9 +60,9 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
     protected QueryEnricher<T> queryEnricher;
     protected FilterEnricher<T> filterEnricher;
     protected SortEnricher<T> sortEnricher;
-    protected SerializableSupplier<EntityManager> entityManager;
-    protected SerializableFunction<T, Object> rowKeyProvider;
-    protected SerializableConsumer<List<T>> resultEnricher;
+    protected Callbacks.SerializableSupplier<EntityManager> entityManager;
+    protected Callbacks.SerializableFunction<T, Object> rowKeyProvider;
+    protected Callbacks.SerializableConsumer<List<T>> resultEnricher;
 
     /**
      * For serialization only
@@ -338,7 +338,7 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
             return this;
         }
 
-        public Builder<T> entityManager(SerializableSupplier<EntityManager> entityManager) {
+        public Builder<T> entityManager(Callbacks.SerializableSupplier<EntityManager> entityManager) {
             model.entityManager = entityManager;
             return this;
         }
@@ -348,7 +348,7 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
             return this;
         }
 
-        public Builder<T> rowKeyProvider(SerializableFunction<T, Object> rowKeyProvider) {
+        public Builder<T> rowKeyProvider(Callbacks.SerializableFunction<T, Object> rowKeyProvider) {
             model.rowKeyProvider = rowKeyProvider;
             return this;
         }
@@ -406,7 +406,7 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
             return this;
         }
 
-        public Builder<T> resultEnricher(SerializableConsumer<List<T>> resultEnricher) {
+        public Builder<T> resultEnricher(Callbacks.SerializableConsumer<List<T>> resultEnricher) {
             model.resultEnricher = resultEnricher;
             return this;
         }
