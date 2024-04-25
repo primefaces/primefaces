@@ -51,7 +51,7 @@ treetable and more.
 | resizable | true | Boolean | Specifies resizable feature at column level. Datatable's resizableColumns must be enabled to use this option.
 | responsivePriority | 0 | Integer | Responsive priority of the column, lower values have more priority.
 | rowspan | 1 | Integer | Defines the number of rows the column spans.
-| selectionBox | false | boolean | Indicates whether or not the column should contain a radiobutton or checkbox for selection.
+| selectionBox | false | Boolean | Indicates whether or not the column should contain a radiobutton or checkbox for selection.
 | selectRow | true | Boolean | Whether clicking the column selects the row when parent component has row selection enabled, default is true.
 | sortable | true | Boolean | Boolean value to mark column as sortable.
 | sortBy | null | ValueExpr | ValueExpression to be used for sorting.
