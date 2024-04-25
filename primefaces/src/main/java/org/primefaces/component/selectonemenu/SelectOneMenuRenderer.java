@@ -365,6 +365,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         boolean customContent = menu.getVar() != null;
 
         if (customContent) {
+            Object helperKey = context.getAttributes().remove(Constants.HELPER_RENDERER);
             List<Column> columns = menu.getColumns();
 
             writer.startElement("table", null);
@@ -376,6 +377,9 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             encodeOptionsAsTable(context, menu, selectItems, columns);
             writer.endElement("tbody");
             writer.endElement("table");
+            if (helperKey != null) {
+                context.getAttributes().put(Constants.HELPER_RENDERER, helperKey);
+            }
         }
         else {
             // Rendering was moved to the client - see renderPanelContentFromHiddenSelect as part of forms.selectonemenu.js
