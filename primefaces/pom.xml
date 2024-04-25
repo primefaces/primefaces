@@ -594,7 +594,6 @@
                                 <include>terminal/**</include>
                                 <include>texteditor/**</include>
                                 <include>timeline/**</include>
-                                <include>toggleswitch/**</include>
                             </includes>
                             <aggregations>
                                 <aggregation>
@@ -678,6 +677,7 @@
                                 <include>staticmessage/staticmessage.css</include>
                                 <include>dataview/dataview.css</include>
                                 <include>datepicker/datepicker.css</include>
+                                <include>toggleswitch/toggleswitch.css</include>
                             </includes>
                             <aggregations>
                                 <aggregation>
@@ -798,6 +798,7 @@
                                 <include>scrolltop/scrolltop.js</include>
                                 <include>sidebar/sidebar.js</include>
                                 <include>dataview/dataview.js</include>
+                                <include>toggleswitch/toggleswitch.js</include>
                             </includes>
                             <aggregations>
                                 <aggregation>
