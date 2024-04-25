@@ -368,7 +368,10 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
      */
     applyFocus: function() {
         if(this.cfg.focus)
-        	PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.focus).trigger('focus');
+            var $this = this;
+            setTimeout(function() {
+                PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector($this.jq, $this.cfg.focus).trigger('focus')
+            }, 100);
         else
             PrimeFaces.focus(null, this.id);
     },
