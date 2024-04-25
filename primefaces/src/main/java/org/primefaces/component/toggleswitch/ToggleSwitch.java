@@ -32,11 +32,9 @@ import javax.faces.event.BehaviorEvent;
 import org.primefaces.util.MapBuilder;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
-@ResourceDependency(library = "primefaces", name = "toggleswitch/toggleswitch.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-@ResourceDependency(library = "primefaces", name = "toggleswitch/toggleswitch.js")
 public class ToggleSwitch extends ToggleSwitchBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.ToggleSwitch";
