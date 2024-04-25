@@ -674,7 +674,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             }
         })
         .on('keyup.ui-selectonemenu', function(e) {
-            if (PrimeFaces.utils.ignoreFilterKey(e)) {
+            if (PrimeFaces.utils.ignoreFilterKey(e) || !PrimeFaces.utils.isPrintableKey(e)) {
                 return;
             }
 
