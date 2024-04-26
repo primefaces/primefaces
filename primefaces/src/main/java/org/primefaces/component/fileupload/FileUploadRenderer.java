@@ -38,27 +38,24 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.logging.Logger;
 
 public class FileUploadRenderer extends CoreRenderer {
-
-    private static final Logger LOGGER = Logger.getLogger(FileUploadRenderer.class.getName());
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
         FileUpload fileUpload = (FileUpload) component;
-        if (!fileUpload.isDisabled()) {
-            if (!context.getExternalContext().getRequestContentType().toLowerCase().startsWith("multipart/")) {
-                LOGGER.severe(() -> "Decoding FileUpload requires contentType \"multipart/form-data\"." +
-                        " Skipping clientId: " + component.getClientId(context));
-                return;
-            }
-
-            PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(context);
-
-            FileUploadDecoder decoder = applicationContext.getFileUploadDecoder();
-            decoder.decode(context, fileUpload);
+        if (fileUpload.isDisabled()) {
+            return;
         }
+        if (!context.getExternalContext().getRequestContentType().toLowerCase().startsWith("multipart/")) {
+            logDevelopmentWarning(context,
+                    "Decoding FileUpload requires contentType \"multipart/form-data\" for clientId: " + component.getClientId(context));
+        }
+
+        PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(context);
+
+        FileUploadDecoder decoder = applicationContext.getFileUploadDecoder();
+        decoder.decode(context, fileUpload);
     }
 
     @Override
