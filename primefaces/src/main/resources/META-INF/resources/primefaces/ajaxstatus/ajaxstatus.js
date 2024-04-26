@@ -182,10 +182,12 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
                 return;
             }
 
-            // skip hiding success/error, if no complete-facet is defined
+            // #11824 we must hide all facets and show either complete or default
+            facets.hide();
+
+            // Show complete-facet if defined, else show default facet
             if (facet.length > 0) {
-                facets.hide();
-                facet.show(); 
+                facet.show();
             }
         }
     },
