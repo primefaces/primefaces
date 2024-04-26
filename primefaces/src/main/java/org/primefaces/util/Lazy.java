@@ -37,13 +37,13 @@ public class Lazy<T> implements Serializable, Supplier<T> {
 
     @SuppressWarnings("unchecked")
     private volatile T value = (T) NOT_INITIALIZED;
-    private volatile SerializableSupplier<T> init;
+    private volatile Callbacks.SerializableSupplier<T> init;
 
-    public Lazy(SerializableSupplier<T> init) {
+    public Lazy(Callbacks.SerializableSupplier<T> init) {
         this.init = init;
     }
 
-    public synchronized void reset(SerializableSupplier<T> init) {
+    public synchronized void reset(Callbacks.SerializableSupplier<T> init) {
         this.init = init;
         this.value = (T) NOT_INITIALIZED;
     }
@@ -56,6 +56,7 @@ public class Lazy<T> implements Serializable, Supplier<T> {
         this.value = (T) NOT_INITIALIZED;
     }
 
+    @Override
     public T get() {
         T result = value;
 

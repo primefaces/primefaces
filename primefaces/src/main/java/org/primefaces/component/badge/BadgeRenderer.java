@@ -29,7 +29,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.util.IOBiConsumer;
+import org.primefaces.util.Callbacks;
 import org.primefaces.model.badge.BadgeModel;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.LangUtils;
@@ -44,7 +44,7 @@ public class BadgeRenderer extends CoreRenderer {
     }
 
     public static <T extends UIComponent> void encodeOverlayed(FacesContext context, Object badge,
-            IOBiConsumer<FacesContext, T> contentRenderer, T component) throws IOException {
+            Callbacks.FailableBiConsumer<FacesContext, T> contentRenderer, T component) throws IOException {
         BadgeModel badgeModel = Badge.getBadgeModel(badge);
         if (badgeModel != null) {
             BadgeRenderer badgeRenderer = Badge.create(context).getRenderer();

@@ -31,8 +31,7 @@ import java.util.function.Supplier;
 
 import javax.faces.FacesException;
 
-import org.primefaces.util.SerializableConsumer;
-import org.primefaces.util.SerializableSupplier;
+import org.primefaces.util.Callbacks;
 
 /**
  * Default implementation of a StreamedContent
@@ -40,12 +39,12 @@ import org.primefaces.util.SerializableSupplier;
 public class DefaultStreamedContent implements StreamedContent, Serializable {
 
     private static final long serialVersionUID = 1L;
-    private SerializableSupplier<InputStream> stream;
+    private Callbacks.SerializableSupplier<InputStream> stream;
     private String contentType;
     private String name;
     private String contentEncoding;
     private Long contentLength;
-    private SerializableConsumer<OutputStream> writer;
+    private Callbacks.SerializableConsumer<OutputStream> writer;
 
     public DefaultStreamedContent() {
         // NOOP
@@ -93,7 +92,7 @@ public class DefaultStreamedContent implements StreamedContent, Serializable {
             streamedContent = new DefaultStreamedContent();
         }
 
-        public Builder stream(SerializableSupplier<InputStream> is) {
+        public Builder stream(Callbacks.SerializableSupplier<InputStream> is) {
             streamedContent.stream = is;
             return this;
         }
@@ -118,7 +117,7 @@ public class DefaultStreamedContent implements StreamedContent, Serializable {
             return this;
         }
 
-        public Builder writer(SerializableConsumer<OutputStream> writer) {
+        public Builder writer(Callbacks.SerializableConsumer<OutputStream> writer) {
             streamedContent.writer = writer;
             return this;
         }
