@@ -48,7 +48,7 @@ public class SpinnerRenderer extends InputRenderer {
 
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(spinner.getClientId(context) + "_input");
 
-        if (submittedValue != null) {
+        if (LangUtils.isNotEmpty(submittedValue)) {
             String prefix = spinner.getPrefix();
             String suffix = spinner.getSuffix();
 
@@ -63,6 +63,12 @@ public class SpinnerRenderer extends InputRenderer {
             }
             if (LangUtils.isNotEmpty(spinner.getDecimalSeparator())) {
                 submittedValue = submittedValue.replace(spinner.getDecimalSeparator(), ".");
+            }
+
+            // GitHub #11830 prevent value outside of minimum or maximum range
+            double submittedNumber = Double.parseDouble(submittedValue);
+            if (submittedNumber < spinner.getMin() || submittedNumber > spinner.getMax()) {
+                return;
             }
         }
 

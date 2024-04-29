@@ -95,7 +95,7 @@ public abstract class SpinnerBase extends AbstractPrimeHtmlInputText implements 
     }
 
     public double getMin() {
-        return (Double) getStateHelper().eval(PropertyKeys.min, Double.MIN_VALUE);
+        return (Double) getStateHelper().eval(PropertyKeys.min, -Double.MAX_VALUE);
     }
 
     public void setMin(double min) {
