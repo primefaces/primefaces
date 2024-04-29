@@ -97,6 +97,7 @@
  * the server.
  * @prop {number} cfg.selectLimit Limits the number of simultaneously selected items. Default is unlimited.
  * @prop {number} cfg.scrollHeight Height of the container with the suggestion items.
+ * @prop {boolean} cfg.showEmptyMessage Whether to display the emptyMessage or not.
  * @prop {boolean} cfg.unique Ensures uniqueness of the selected items.
  * @prop {string} cfg.completeEndpoint REST endpoint for fetching autocomplete suggestions. Takes precedence over the
  * bean command specified via `completeMethod` on the component.
@@ -132,6 +133,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.escape = this.cfg.escape === false ? false : true;
         this.cfg.hasFooter = this.cfg.hasFooter === true ? true : false;
         this.cfg.forceSelection = this.cfg.forceSelection === true ? true : false;
+        this.cfg.showEmptyMessage = (this.cfg.showEmptyMessage === undefined) ? true : this.cfg.showEmptyMessage;
         this.suppressInput = true;
         this.touchToDropdownButton = false;
         this.isTabPressed = false;
@@ -647,17 +649,19 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 $this.checkMatchedItem = false;
             });
 
-        this.panel.on('click.emptyMessage', function() {
-            if (!this.children) {
-                return;
-            }
-            var item = $(this.children[0]),
-                isEmptyMessage = item.hasClass('ui-autocomplete-empty-message');
+        if (this.cfg.showEmptyMessage) {
+            this.panel.on('click.emptyMessage', function() {
+                if (!this.children) {
+                    return;
+                }
+                var item = $(this.children[0]),
+                    isEmptyMessage = item.hasClass('ui-autocomplete-empty-message');
 
-            if (isEmptyMessage) {
-                $this.invokeEmptyMessageBehavior();
-            }
-        });
+                if (isEmptyMessage) {
+                    $this.invokeEmptyMessageBehavior();
+                }
+            });
+        }
 
         if (PrimeFaces.env.browser.mobile) {
             this.items.on('touchstart.autocomplete', function() {
@@ -840,7 +844,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             this.displayAriaStatus(this.resultsMessage.replace('{0}', this.items.length));
         }
         else {
-            if (this.emptyMessage && this.cfg.forceSelection) {
+            if (this.cfg.showEmptyMessage && this.emptyMessage && this.cfg.forceSelection) {
                 var emptyText = '<div class="ui-autocomplete-empty-message ui-widget">' + PrimeFaces.escapeHTML(this.emptyMessage) + '</div>';
                 this.panel.prepend(emptyText);
             }

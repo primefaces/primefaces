@@ -14,19 +14,22 @@ Look into [migration guide](https://primefaces.github.io/primefaces/14_0_0/#/../
     * Minimum inline Ajax load animation duration via `PrimeFaces.ajax.minLoadAnimation`.
     * Client side `PrimeFaces.setGlobalLocaleValue(xxx);` if you need to set the same value in all locales.
 
+* Accordion
+    * Added `toggleSpeed` for toggle speed animation duration.
+    * Added `scrollIntoView` to allow the active tab to be scrolled into the viewport.
+    
+* AutoComplete
+    * Added `showEmptyMessage` for whether or not you want the empty message displayed when no items are found
+    
+* Badge
+    * Added `icon` and `iconPos` to allow icons to be used in badge.
+    * Added 'onclick` to allow client side click of badge. If not set it delegates the click to its target element.
+    
 * Chart
    * A new more flexible version of Chart.js can be used `<p:chart>` allowing raw JSON or [XDEV Chart.js Java Model](https://github.com/xdev-software/chartjs-java-model)
    
 * ConfirmDialog
    * Added `ajax=false` support.
-
-* Accordion
-    * Added `toggleSpeed` for toggle speed animation duration.
-    * Added `scrollIntoView` to allow the active tab to be scrolled into the viewport.
-    
-* Badge
-    * Added `icon` and `iconPos` to allow icons to be used in badge.
-    * Added 'onclick` to allow client side click of badge. If not set it delegates the click to its target element.
 
 * CSV - Client Side Validation / CommandButton
     * Added `enabledByValidateClient` to enable CommandButton after CSV was successful (used together with `<p:clientValidator event="..." />` on all relevant input-components)  

@@ -1815,6 +1815,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Should the empty message be displayed when no items are found? Default is true.]]>
+            </description>
+            <name>showEmptyMessage</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Limits the selection. Default is unlimited.]]>
             </description>
             <name>selectLimit</name>
