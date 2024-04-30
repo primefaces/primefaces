@@ -785,6 +785,7 @@ public class AutoCompleteRenderer extends InputRenderer {
                 .attr("queryEvent", ac.getQueryEvent(), null)
                 .attr("dropdownMode", ac.getDropdownMode(), null)
                 .attr("autoHighlight", ac.isAutoHighlight(), true)
+                .attr("showEmptyMessage", ac.isShowEmptyMessage(), true)
                 .attr("myPos", ac.getMy(), null)
                 .attr("atPos", ac.getAt(), null)
                 .attr("active", ac.isActive(), true)
