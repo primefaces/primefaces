@@ -21,6 +21,7 @@
         <jakarta.jar.skip>false</jakarta.jar.skip>
         <resources.dir.compressed>${project.build.directory}/classes/META-INF/resources/primefaces</resources.dir.compressed>
         <mockito.version>5.11.0</mockito.version>
+        <sonar.sources>src/main/java,src/main/resources</sonar.sources>
     </properties>
 
     <dependencies>
