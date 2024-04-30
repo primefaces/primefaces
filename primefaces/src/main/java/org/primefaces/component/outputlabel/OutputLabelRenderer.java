@@ -74,7 +74,7 @@ public class OutputLabelRenderer extends CoreRenderer {
 
         String _for = label.getFor();
         if (!isValueBlank(_for)) {
-            ContextCallback callback = (context1, target) -> {
+            ContextCallback callback = (ctxt, target) -> {
                 if (target instanceof InputHolder) {
                     InputHolder inputHolder = ((InputHolder) target);
                     state.setClientId(inputHolder.getInputClientId());
@@ -82,7 +82,7 @@ public class OutputLabelRenderer extends CoreRenderer {
                     inputHolder.setLabelledBy(clientId);
                 }
                 else {
-                    state.setClientId(target.getClientId(context1));
+                    state.setClientId(target.getClientId(ctxt));
                 }
 
                 if (target instanceof UIInput) {
@@ -97,7 +97,7 @@ public class OutputLabelRenderer extends CoreRenderer {
                         }
                         else {
                             String labelString = value;
-                            char separatorChar = UINamingContainer.getSeparatorChar(context1);
+                            char separatorChar = UINamingContainer.getSeparatorChar(ctxt);
                             int separatorCharPos = labelString.lastIndexOf(separatorChar);
 
                             if (separatorCharPos != -1) {
@@ -125,8 +125,8 @@ public class OutputLabelRenderer extends CoreRenderer {
                             state.setRequired(input.isRequired());
                             // fallback if required=false
                             if (!state.isRequired()) {
-                                PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(context1);
-                                if (applicationContext.getConfig().isBeanValidationEnabled() && isBeanValidationDefined(input, context1)) {
+                                PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(ctxt);
+                                if (applicationContext.getConfig().isBeanValidationEnabled() && isBeanValidationDefined(input, ctxt)) {
                                     state.setRequired(true);
                                 }
                             }
