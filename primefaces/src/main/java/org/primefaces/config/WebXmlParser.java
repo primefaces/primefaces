@@ -202,10 +202,7 @@ public class WebXmlParser {
             String key = Throwable.class.getName().equals(exceptionType) ? null : exceptionType;
 
             String location = xpath.compile(LOCATION_EXPRESSION).evaluate(node.getParentNode()).trim();
-
-            if (!errorPages.containsKey(key)) {
-                errorPages.put(key, location);
-            }
+            errorPages.putIfAbsent(key, location);
         }
 
         if (!errorPages.containsKey(null)) {

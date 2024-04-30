@@ -85,7 +85,6 @@ public class MultiSelectListbox extends MultiSelectListboxBase {
         if (eventName != null && event instanceof AjaxBehaviorEvent) {
             AjaxBehaviorEvent ajaxBehaviorEvent = (AjaxBehaviorEvent) event;
             if ("itemSelect".equals(eventName)) {
-                String clientId = getClientId(context);
                 Object selectedItemValue = ComponentUtils.getConvertedValue(context, this, params.get(getClientId(context) + "_itemSelect"));
                 SelectEvent toggleSelectEvent = new SelectEvent(this, ((AjaxBehaviorEvent) event).getBehavior(), selectedItemValue);
                 toggleSelectEvent.setPhaseId(event.getPhaseId());

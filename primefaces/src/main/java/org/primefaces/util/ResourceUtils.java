@@ -133,30 +133,20 @@ public class ResourceUtils {
     }
 
     public static byte[] toByteArray(InputStream is) {
-        try {
-            try (ByteArrayOutputStream buffer = new ByteArrayOutputStream()) {
-                int nRead;
-                byte[] data = new byte[16384];
+        try (ByteArrayOutputStream buffer = new ByteArrayOutputStream()) {
+            int nRead;
+            byte[] data = new byte[16384];
 
-                while ((nRead = is.read(data, 0, data.length)) != -1) {
-                    buffer.write(data, 0, nRead);
-                }
-
-                buffer.flush();
-
-                return buffer.toByteArray();
+            while ((nRead = is.read(data, 0, data.length)) != -1) {
+                buffer.write(data, 0, nRead);
             }
+
+            buffer.flush();
+
+            return buffer.toByteArray();
         }
         catch (Exception e) {
             throw new FacesException("Could not read InputStream to byte[]", e);
-        }
-        finally {
-            try {
-                is.close();
-            }
-            catch (IOException ex) {
-                // ignore
-            }
         }
     }
 

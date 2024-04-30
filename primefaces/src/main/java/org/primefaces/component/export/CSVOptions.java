@@ -33,6 +33,8 @@ public class CSVOptions implements ExporterOptions {
 
     public static final CSVOptions TABS = new CSVOptions('"', '\t', "\n");
 
+    private static final long serialVersionUID = 1L;
+
     private static final String STYLING_NOT_SUPPORTED = "CSV does not support styling.";
 
     private final char quoteChar;

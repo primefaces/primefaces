@@ -37,6 +37,8 @@ import javax.faces.event.PhaseListener;
  */
 public class DialogKeepFlashPhaseListener implements PhaseListener {
 
+    private static final long serialVersionUID = 1L;
+
     @Override
     public void afterPhase(PhaseEvent event) {
 
