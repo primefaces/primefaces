@@ -3,11 +3,8 @@
  * 
  * Editor is an input component with rich text editing capabilities based on [Quill](https://quilljs.com/).
  * 
- * @typedef {import("quill").QuillOptionsStatic} PrimeFaces.widget.TextEditor.QuillOptionsStatic Type alias for the
- * Quill editor options, needed for technical reasons. 
- * 
  * @prop {boolean} disabled Whether this text editor is disabled.
- * @prop {import("quill").Quill} editor The current Quill text editor instance.
+ * @prop {Quill} editor The current Quill text editor instance.
  * @prop {JQuery} editorContainer The DOM element for the container with the Quill editor.
  * @prop {JQuery} input The DOM element for the hidden input field with the current value.
  * @prop {JQuery} toolbar The DOM element for the toolbar of the editor.
@@ -16,7 +13,7 @@
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.DeferredWidgetCfg} cfg
- * @extends {PrimeFaces.widget.TextEditor.QuillOptionsStatic} cfg
+ * @extends {ExpandedQuillOptions} cfg
  * 
  * @prop {boolean} cfg.disabled Whether this text editor is initially disabled.
  * @prop {boolean} cfg.toolbarVisible Whether the editor toolbar should be displayed.

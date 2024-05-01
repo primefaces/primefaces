@@ -2,10 +2,10 @@
     "extends": "./tsconfig.json",
     "include": [
         "src/**/*",
-        "node_modules/@melloware/coloris/**/*.d.ts",
         "node_modules/@fullcalendar/**/*.d.ts",
-        "node_modules/vis-util/**/*.d.ts",
-        "node_modules/print-js/**/*.d.ts"
+        "node_modules/@melloware/coloris/**/*.d.ts",
+        "node_modules/print-js/**/*.d.ts",
+        "node_modules/vis-util/**/*.d.ts"
     ],
     "exclude": [
         "test/**/*",
