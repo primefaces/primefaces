@@ -576,7 +576,6 @@
                                 <include>imageswitch/**</include>
                                 <include>inputmask/**</include>
                                 <include>inputnumber/**</include>
-                                <include>inputswitch/**</include>
                                 <include>keyboard/**</include>
                                 <include>keyfilter/**</include>
                                 <include>knob/**</include>
