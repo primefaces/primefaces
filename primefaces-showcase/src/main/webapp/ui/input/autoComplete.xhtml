@@ -79,16 +79,6 @@
                     </div>
 
                     <div class="field col-12 md:col-4">
-                        <p:outputLabel value="Empty message" for="@next"/>
-                        <p:autoComplete id="emptyMessage" value="#{autoCompleteView.txt9}"
-                                        completeMethod="#{autoCompleteView.noResults}"
-                                        emptyMessage="No results" scrollHeight="250">
-                            <p:ajax event="emptyMessageSelect" listener="#{autoCompleteView.onEmptyMessageSelect}"
-                                    update="msgs"/>
-                        </p:autoComplete>
-                    </div>
-
-                    <div class="field col-12 md:col-4">
                         <p:outputLabel value="Pojo" for="@next"/>
                         <p:autoComplete id="pojo" value="#{autoCompleteView.country1}"
                                         completeMethod="#{autoCompleteView.completeCountry}"
@@ -102,7 +92,7 @@
                                         var="country" itemLabel="#{country.displayName}" itemValue="#{country}"
                                         converter="#{countryConverter}"
                                         completeEndpoint="#{request.contextPath}/rest/country/autocomplete"
-                                        forceSelection="true" emptyMessage="sorry, no suggestions"
+                                        forceSelection="true"
                                         scrollHeight="250"/>
                     </div>
 
@@ -111,7 +101,7 @@
                         <p:autoComplete id="lazyModel" widgetVar="lazyModel" value="#{autoCompleteView.txt11}"
                                         var="customer" itemLabel="#{customer.name}" itemValue="#{customer.name}"
                                         lazyModel="#{autoCompleteView.lazyModel}" lazyField="name"
-                                        forceSelection="true" emptyMessage="sorry, no suggestions"
+                                        forceSelection="true"
                                         maxResults="10"/>
                     </div>
 
@@ -163,7 +153,7 @@
                         <p:outputLabel value="Footer" for="@next"/>
                         <p:autoComplete id="acFooter" value="#{autoCompleteView.txt10}"
                                         completeMethod="#{autoCompleteView.completeText}"
-                                        maxResults="10" emptyMessage="No results">
+                                        maxResults="10">
                             <f:facet name="footer">
                                 <div class="ui-fluid" style="padding:0.5rem 1rem 1rem 1rem">
                                     <p:button value="Add new" onclick="alert('This could open a dialog')"/>
@@ -175,9 +165,9 @@
 
                 <h5>Multiple</h5>
                 <p:autoComplete id="countries" multiple="true" value="#{autoCompleteView.selectedCountries}"
-                                completeMethod="#{autoCompleteView.completeCountry}"
+                                completeMethod="#{autoCompleteView.completeCountry}" showEmptyMessage="false"
                                 var="country" itemLabel="#{country.name}" itemValue="#{country}"
-                                converter="#{countryConverter}" forceSelection="true" scrollHeight="250">
+                                converter="#{countryConverter}" forceSelection="false" scrollHeight="250">
                     <p:column>
                         <span class="flag flag-#{country.code}" style="width: 30px; height: 20px" />
                         <h:outputText style="vertical-align: middle; margin-left: .5rem" value="#{country.name}"/>
