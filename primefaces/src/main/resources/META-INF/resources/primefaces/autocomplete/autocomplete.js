@@ -844,7 +844,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             this.displayAriaStatus(this.resultsMessage.replace('{0}', this.items.length));
         }
         else {
-            if (this.cfg.showEmptyMessage && this.emptyMessage && this.cfg.forceSelection) {
+            if (this.cfg.showEmptyMessage && this.emptyMessage && !this.cfg.forceSelection) {
                 var emptyText = '<div class="ui-autocomplete-empty-message ui-widget">' + PrimeFaces.escapeHTML(this.emptyMessage) + '</div>';
                 this.panel.prepend(emptyText);
             }
