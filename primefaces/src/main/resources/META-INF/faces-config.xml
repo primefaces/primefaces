@@ -1010,46 +1010,6 @@
     </component>
 
     <component>
-        <component-type>org.primefaces.component.BarChart</component-type>
-        <component-class>org.primefaces.component.barchart.BarChart</component-class>
-    </component>
-
-    <component>
-        <component-type>org.primefaces.component.BubbleChart</component-type>
-        <component-class>org.primefaces.component.bubblechart.BubbleChart</component-class>
-    </component>
-
-    <component>
-        <component-type>org.primefaces.component.DonutChart</component-type>
-        <component-class>org.primefaces.component.donutchart.DonutChart</component-class>
-    </component>
-
-    <component>
-        <component-type>org.primefaces.component.LineChart</component-type>
-        <component-class>org.primefaces.component.linechart.LineChart</component-class>
-    </component>
-
-    <component>
-        <component-type>org.primefaces.component.ScatterChart</component-type>
-        <component-class>org.primefaces.component.scatterchart.ScatterChart</component-class>
-    </component>
-
-    <component>
-        <component-type>org.primefaces.component.PieChart</component-type>
-        <component-class>org.primefaces.component.piechart.PieChart</component-class>
-    </component>
-
-    <component>
-        <component-type>org.primefaces.component.PolarAreaChart</component-type>
-        <component-class>org.primefaces.component.polarareachart.PolarAreaChart</component-class>
-    </component>
-
-    <component>
-        <component-type>org.primefaces.component.RadarChart</component-type>
-        <component-class>org.primefaces.component.radarchart.RadarChart</component-class>
-    </component>
-
-    <component>
         <component-type>org.primefaces.component.DatePicker</component-type>
         <component-class>org.primefaces.component.datepicker.DatePicker</component-class>
     </component>
@@ -1809,46 +1769,6 @@
             <component-family>org.primefaces.component</component-family>
             <renderer-type>org.primefaces.component.ChartRenderer</renderer-type>
             <renderer-class>org.primefaces.component.chart.ChartRenderer</renderer-class>
-        </renderer>
-        <renderer>
-            <component-family>org.primefaces.component</component-family>
-            <renderer-type>org.primefaces.component.BarChartRenderer</renderer-type>
-            <renderer-class>org.primefaces.component.barchart.BarChartRenderer</renderer-class>
-        </renderer>
-        <renderer>
-            <component-family>org.primefaces.component</component-family>
-            <renderer-type>org.primefaces.component.BubbleChartRenderer</renderer-type>
-            <renderer-class>org.primefaces.component.bubblechart.BubbleChartRenderer</renderer-class>
-        </renderer>
-        <renderer>
-            <component-family>org.primefaces.component</component-family>
-            <renderer-type>org.primefaces.component.DonutChartRenderer</renderer-type>
-            <renderer-class>org.primefaces.component.donutchart.DonutChartRenderer</renderer-class>
-        </renderer>
-        <renderer>
-            <component-family>org.primefaces.component</component-family>
-            <renderer-type>org.primefaces.component.LineChartRenderer</renderer-type>
-            <renderer-class>org.primefaces.component.linechart.LineChartRenderer</renderer-class>
-        </renderer>
-        <renderer>
-            <component-family>org.primefaces.component</component-family>
-            <renderer-type>org.primefaces.component.ScatterChartRenderer</renderer-type>
-            <renderer-class>org.primefaces.component.scatterchart.ScatterChartRenderer</renderer-class>
-        </renderer>
-        <renderer>
-            <component-family>org.primefaces.component</component-family>
-            <renderer-type>org.primefaces.component.PieChartRenderer</renderer-type>
-            <renderer-class>org.primefaces.component.piechart.PieChartRenderer</renderer-class>
-        </renderer>
-        <renderer>
-            <component-family>org.primefaces.component</component-family>
-            <renderer-type>org.primefaces.component.PolarAreaChartRenderer</renderer-type>
-            <renderer-class>org.primefaces.component.polarareachart.PolarAreaChartRenderer</renderer-class>
-        </renderer>
-        <renderer>
-            <component-family>org.primefaces.component</component-family>
-            <renderer-type>org.primefaces.component.RadarChartRenderer</renderer-type>
-            <renderer-class>org.primefaces.component.radarchart.RadarChartRenderer</renderer-class>
         </renderer>
         <renderer>
             <component-family>org.primefaces.component</component-family>
