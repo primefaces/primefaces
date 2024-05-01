@@ -609,7 +609,6 @@
                         <resourcesSet>
                             <includes>
                                 <include>chart/**</include>
-                                <include>chartjs/**</include>
                                 <include>texteditor/**</include>
                             </includes>
                             <aggregations>
