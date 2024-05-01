@@ -707,11 +707,9 @@ public class ComponentUtils {
         }
 
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+        Object oldValue = requestMap.put(var, value);
 
-        Object oldValue = requestMap.remove(var);
         try {
-            requestMap.put(var, value);
-
             return callback.get();
         }
         finally {

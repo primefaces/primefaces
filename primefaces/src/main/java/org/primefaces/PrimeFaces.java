@@ -556,12 +556,7 @@ public class PrimeFaces {
                 }
             }
 
-            Map<String, Map<MVSKey, Object>> clientWindowMap = (Map) sessionMap.get(Constants.MULTI_VIEW_STATES);
-            if (clientWindowMap == null) {
-                clientWindowMap = new ConcurrentHashMap<>();
-                sessionMap.put(Constants.MULTI_VIEW_STATES, clientWindowMap);
-            }
-
+            Map<String, Map<MVSKey, Object>> clientWindowMap = (Map) sessionMap.computeIfAbsent(Constants.MULTI_VIEW_STATES, k -> new ConcurrentHashMap<>());
             Map<MVSKey, Object> mvsMap = clientWindowMap.get(clientWindowId);
 
             if (mvsMap == null) {
