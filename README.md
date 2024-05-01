@@ -95,7 +95,7 @@ For a full list of the available downloads, please visit the [download page](htt
       <version>14.0.0-SNAPSHOT</version>
   </dependency>
 
-  <!-- Jakarta EE / jakarta.* / Faces 3.0 - Faces 4.0  -->
+  <!-- Jakarta EE / jakarta.* / Faces 4.0+  -->
   <dependency>
       <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
