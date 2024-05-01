@@ -69,14 +69,14 @@ For a full list of the available downloads, please visit the [download page](htt
 ##### Release 
 
   ```xml
-  <!-- Java EE / javax.* / JSF 2.2 - JSF 2.3 -->
+  <!-- Java EE / javax.* / JSF 2.3 -->
   <dependency>
       <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
       <version>14.0.0</version>
   </dependency>
 
-  <!-- Jakarta EE / jakarta.* / Faces 3.0 - Faces 4.0  -->	
+  <!-- Jakarta EE / jakarta.* / Faces 4.0+  -->	
   <dependency>
       <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
