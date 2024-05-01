@@ -10,3 +10,7 @@ Look into [migration guide](https://primefaces.github.io/primefaces/15_0_0/#/../
 
 * Core
     
+
+* Captcha
+    * Added [hCaptcha](https://www.hcaptcha.com/) support
+    

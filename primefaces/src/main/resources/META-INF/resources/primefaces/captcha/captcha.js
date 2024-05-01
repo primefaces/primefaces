@@ -31,7 +31,7 @@ PrimeFaces.widget.Captcha = PrimeFaces.widget.BaseWidget.extend({
      */
     init: function(cfg) {
         this._super(cfg);
-        this.cfg.language = this.cfg.language||'en';
+        this.cfg.language = this.cfg.language || 'en';
         this.cfg.theme = this.cfg.theme || PrimeFaces.env.getThemeContrast();
 
         var $this = this;
@@ -42,19 +42,18 @@ PrimeFaces.widget.Captcha = PrimeFaces.widget.BaseWidget.extend({
 
         this.appendScript();
     },
-    
+
     /**
      * Appends the script to the document body.
      * @private
      */
-    appendScript : function() {
+    appendScript: function() {
         var nonce = '';
         if (PrimeFaces.csp.NONCE_VALUE) {
-            nonce = 'nonce="'+PrimeFaces.csp.NONCE_VALUE+'"';
+            nonce = 'nonce="' + PrimeFaces.csp.NONCE_VALUE + '"';
         }
-        var sourceUrl = this.cfg.sourceUrl || 'https://www.google.com/recaptcha/api.js';
-        $(document.body).append('<script src="'+sourceUrl+'?onload=' + this.getInitCallbackName() + '&render=explicit&hl='
-                            + this.cfg.language +'" async defer ' + nonce + '>');
+        $(document.body).append('<script src="' + this.cfg.sourceUrl + '?onload=' + this.getInitCallbackName() + '&render=explicit&hl='
+            + this.cfg.language + '" async defer ' + nonce + '>');
     },
 
     /**
@@ -62,7 +61,7 @@ PrimeFaces.widget.Captcha = PrimeFaces.widget.BaseWidget.extend({
      * @private
      * @return {string} Name for the global callback.
      */
-    getInitCallbackName : function() {
+    getInitCallbackName: function() {
         return this.cfg.widgetVar + '_initCallback';
     },
 
@@ -71,9 +70,10 @@ PrimeFaces.widget.Captcha = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     render: function() {
-        $this = this;
-        grecaptcha.render(this.jq.get(0), {
-            'sitekey' : this.cfg.sitekey,
+        var $this = this;
+        var captchaExecutor = window[this.cfg.executor];
+        captchaExecutor.render(this.jq.get(0), {
+            'sitekey': this.cfg.sitekey,
             'tabindex': this.cfg.tabindex,
             'theme': this.cfg.theme,
             'callback': $this.cfg.callback,
@@ -82,7 +82,7 @@ PrimeFaces.widget.Captcha = PrimeFaces.widget.BaseWidget.extend({
         });
 
         if (this.cfg.size === 'invisible') {
-            grecaptcha.execute();
+            captchaExecutor.execute();
         }
 
         window[this.getInitCallbackName()] = null;
