@@ -249,7 +249,7 @@ if (!PrimeFaces.ajax) {
                         if (input.length > 0) {
                             input.val(trimmedValue);
                         } else {
-                            form.append('<input type="hidden" name="' + parameterPrefix + name + '" value="' + trimmedValue + '" autocomplete="off"></input>');
+                            form.append('<input type="hidden" name="' + parameterPrefix + name + '" value="' + trimmedValue + '"></input>');
                         }
                     }
                 }

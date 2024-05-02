@@ -272,8 +272,7 @@ public abstract class CoreRenderer extends Renderer {
     }
 
     /**
-     * Renders a hidden input field commonly use for holding state for a component. Properly handles all attributes
-     * and renders as autocomplete="off" so browsers don't hold onto state between page refreshes.
+     * Renders a hidden input field commonly use for holding state for a component.
      *
      * @param context the FacesContext
      * @param id the id of the hidden field
@@ -287,7 +286,6 @@ public abstract class CoreRenderer extends Renderer {
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "hidden", null);
-        writer.writeAttribute("autocomplete", "off", null);
         if (disabled) {
             writer.writeAttribute("disabled", "disabled", null);
         }
