@@ -120,8 +120,6 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
 
         List<Predicate> predicates = new ArrayList<>();
 
-        applyGlobalFilters(filterBy, cb, cq, root, predicates);
-
         if (filterBy != null) {
             FacesContext context = FacesContext.getCurrentInstance();
             Locale locale = LocaleUtils.getCurrentLocale(context);
@@ -158,15 +156,6 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
             cq.where(
                 cb.and(predicates.toArray(new Predicate[0])));
         }
-    }
-
-    /**
-     * @deprecated use the builder and filterEnricher instead
-     */
-    @Deprecated
-    protected void applyGlobalFilters(Map<String, FilterMeta> filterBy, CriteriaBuilder cb, CriteriaQuery<?> cq,
-            Root<T> root, List<Predicate> predicates) {
-
     }
 
     protected Predicate createPredicate(FilterMeta filter,
@@ -350,18 +339,6 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
 
         public Builder<T> rowKeyProvider(Callbacks.SerializableFunction<T, Object> rowKeyProvider) {
             model.rowKeyProvider = rowKeyProvider;
-            return this;
-        }
-
-        @Deprecated
-        public Builder<T> rowKey(String rowKey) {
-            model.rowKeyField = rowKey;
-            return this;
-        }
-
-        @Deprecated
-        public Builder<T> rowKey(SingularAttribute<T, ?> rowKeyMetamodel) {
-            model.rowKeyField = rowKeyMetamodel.getName();
             return this;
         }
 

@@ -79,11 +79,7 @@ public class WidgetBuilder {
                 .renderLifecycleCallbacks(widget);
     }
 
-    /**
-     * @deprecated Use {@link WidgetBuilder#init(String, UIComponent)} instead
-     */
-    @Deprecated
-    public WidgetBuilder init(String widgetClass, String widgetVar, String id) throws IOException {
+    private WidgetBuilder init(String widgetClass, String widgetVar, String id) throws IOException {
         this.renderScriptBlock(id);
 
         // AJAX case: since jQuery 3 document ready ($(function() {})) are executed async

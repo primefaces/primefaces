@@ -471,32 +471,6 @@ public class ComponentUtils {
     }
 
     /**
-     * Checks if the facet and one of the first level children is rendered.
-     *
-     * @param facet The Facet component to check
-     * @param alwaysRender flag to ignore children and only check the facet itself
-     * @return true if the facet should be rendered, false if not
-     *
-     * @deprecated use FacetUtils
-     */
-    @Deprecated
-    public static boolean shouldRenderFacet(UIComponent facet, boolean alwaysRender) {
-        return FacetUtils.shouldRenderFacet(facet, alwaysRender);
-    }
-
-    /**
-     * Checks if the facet and one of the first level children is rendered.
-     * @param facet The Facet component to check
-     * @return true when facet and one of the first level children is rendered.
-     *
-     * @deprecated use FacetUtils
-     */
-    @Deprecated
-    public static boolean shouldRenderFacet(UIComponent facet) {
-        return FacetUtils.shouldRenderFacet(facet);
-    }
-
-    /**
      * Checks if the component's children are rendered
      * @param component The component to check
      * @return true if one of the first level child's is rendered.
