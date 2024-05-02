@@ -940,11 +940,12 @@ public abstract class CoreRenderer extends Renderer {
     /**
      * Logs a WARN log message in ProjectStage == DEVELOPMENT.
      * @param context the FacesContext
+     * @param clazz the class or object for which the log is generated
      * @param message the message to log
      */
-    protected void logDevelopmentWarning(FacesContext context, String message) {
+    protected void logDevelopmentWarning(FacesContext context, Object clazz, String message) {
         if (LOGGER.isLoggable(Level.WARNING) && context.isProjectStage(ProjectStage.Development)) {
-            LOGGER.log(Level.WARNING, message);
+            LOGGER.logp(Level.WARNING, clazz.getClass().getName(), message, message);
         }
     }
 
