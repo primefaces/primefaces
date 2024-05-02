@@ -44,7 +44,7 @@
 
     <function>
         <function-name>shouldRenderFacet</function-name>
-        <function-class>org.primefaces.util.ComponentUtils</function-class>
+        <function-class>org.primefaces.util.FacetUtils</function-class>
         <function-signature>java.lang.Boolean shouldRenderFacet(javax.faces.component.UIComponent)</function-signature>
     </function>
 
@@ -7913,14 +7913,6 @@
             <name>lazy</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Layout approach to use, valid values are "tabular" and "grid" (default) for responsive grid.]]>
-            </description>
-            <name>layout</name>
-            <required>false</required>
-            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>

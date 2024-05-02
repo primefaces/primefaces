@@ -36,4 +36,3 @@ pattern of JavaEE. Here is the list of all configuration options defined with a 
 | THEME | saga | Theme of the application. |
 | TOUCHABLE | true | Globally enables/disables touch support on browsers that support touch. |
 | TRANSFORM_METADATA | false | Transforms bean validation metadata to HTML attributes. |
-| UPLOADER | auto | Defines uploader mode; 'auto', 'native' or 'commons'. 'auto' means 'native' on JSF2.2+, otherwise 'commons'. |

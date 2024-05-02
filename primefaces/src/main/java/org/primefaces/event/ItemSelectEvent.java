@@ -43,15 +43,6 @@ public class ItemSelectEvent extends AbstractAjaxBehaviorEvent {
         this.data = data;
     }
 
-    @Deprecated
-    public ItemSelectEvent(UIComponent source, Behavior behavior, int itemIndex, int index) {
-        super(source, behavior);
-        this.itemIndex = itemIndex;
-        this.dataSetIndex = index;
-        this.seriesIndex = index;
-        this.data = null;
-    }
-
     public int getItemIndex() {
         return itemIndex;
     }

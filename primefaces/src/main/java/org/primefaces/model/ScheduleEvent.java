@@ -87,12 +87,4 @@ public interface ScheduleEvent<T> {
 
     Map<String, Object> getDynamicProperties();
 
-    /**
-     * @deprecated Use {@link #isResizable()} or {@link #isDraggable()} instead.
-     */
-    @Deprecated
-    default boolean isEditable() {
-        return isDraggable() != null && isResizable() != null && (isDraggable() || isResizable());
-    }
-
 }

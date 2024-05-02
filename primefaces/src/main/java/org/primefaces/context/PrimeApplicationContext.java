@@ -241,12 +241,7 @@ public class PrimeApplicationContext {
     }
 
     private void resolveFileUploadDecoder() {
-        String uploader = config.getUploader();
-        if ("auto".equals(uploader)) {
-            uploader = "native"; // default since JSF 2.2+
-        }
-
-        String finalUploader = uploader;
+        String finalUploader = "native";
         fileUploadDecoder = ServiceLoader.load(FileUploadDecoder.class, applicationClassLoader).stream()
                 .map(ServiceLoader.Provider::get)
                 .filter(d -> d.getName().equals(finalUploader))

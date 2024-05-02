@@ -47,8 +47,6 @@ public class PrimeConfiguration {
     private final boolean primeIconsEnabled;
     private final boolean clientSideLocalizationEnabled;
     private final boolean clientSideValidationEnabled;
-    @Deprecated(forRemoval = true, since = "14.0.0")
-    private final String uploader;
     private final boolean transformMetadataEnabled;
     private final boolean legacyWidgetNamespace;
     private final boolean interpolateClientSideValidationMessages;
@@ -97,9 +95,6 @@ public class PrimeConfiguration {
 
         value = externalContext.getInitParameter(Constants.ContextParams.CSV);
         clientSideValidationEnabled = Boolean.parseBoolean(value);
-
-        value = externalContext.getInitParameter(Constants.ContextParams.UPLOADER);
-        uploader = (value == null) ? "auto" : value;
 
         theme = externalContext.getInitParameter(Constants.ContextParams.THEME);
 
@@ -246,10 +241,6 @@ public class PrimeConfiguration {
 
     public boolean isClientSideValidationEnabled() {
         return clientSideValidationEnabled;
-    }
-
-    public String getUploader() {
-        return uploader;
     }
 
     public boolean isTransformMetadataEnabled() {
