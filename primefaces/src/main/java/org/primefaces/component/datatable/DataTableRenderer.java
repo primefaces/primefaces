@@ -1025,7 +1025,7 @@ public class DataTableRenderer extends DataRenderer {
 
             // #5649 check for invalid first value
             if (rows > 0 && first % rows != 0) {
-                logDevelopmentWarning(context, String.format("%s Invalid 'first' value %d is not divisible evenly by 'rows' %d", clientId, first, rows));
+                logDevelopmentWarning(context, this, String.format("%s Invalid 'first' value %d is not divisible evenly by 'rows' %d", clientId, first, rows));
             }
         }
 
@@ -1571,7 +1571,7 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected void encodeSubTable(FacesContext context, DataTable table, SubTable subTable, int first, int last) throws IOException {
-        LOGGER.info("SubTable has been deprecated, use row grouping instead");
+        logDevelopmentWarning(context, this, "SubTable is not recommended and may be removed in the future, use row grouping instead");
         for (int i = first; i < last; i++) {
             table.setRowIndex(i);
             if (!table.isRowAvailable()) {

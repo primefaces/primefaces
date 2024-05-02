@@ -224,8 +224,6 @@ public class DataGridRenderer extends DataRenderer {
      */
     @Deprecated
     protected void encodeLegacyTable(FacesContext context, DataGrid grid) throws IOException {
-        logDevelopmentWarning(context, "Table layout is deprecated and will be removed in future release. Please switch to responsive layout. ClientId: "
-                + grid.getClientId(context));
         ResponseWriter writer = context.getResponseWriter();
 
         int columns = grid.getColumns();

@@ -216,8 +216,6 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
     @Deprecated
     protected void encodeLegacyTabularLayout(FacesContext context, SelectManyCheckbox checkbox, String layout) throws IOException {
         String clientId = checkbox.getClientId(context);
-        logDevelopmentWarning(context, "Table layout is deprecated and will be removed in future release. Please switch to responsive layout. ClientId: "
-                + clientId);
         ResponseWriter writer = context.getResponseWriter();
         String style = checkbox.getStyle();
         String styleClass = checkbox.getStyleClass();

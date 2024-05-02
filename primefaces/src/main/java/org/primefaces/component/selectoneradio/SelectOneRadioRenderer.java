@@ -191,8 +191,6 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
     @Deprecated
     protected void encodeLegacyTabularLayout(FacesContext context, SelectOneRadio radio, String layout) throws IOException {
         String clientId = radio.getClientId(context);
-        logDevelopmentWarning(context, "Table layout is deprecated and will be removed in future release. Please switch to responsive layout. ClientId: "
-                + clientId);
         ResponseWriter writer = context.getResponseWriter();
         List<SelectItem> selectItems = getSelectItems(context, radio);
         String style = radio.getStyle();
