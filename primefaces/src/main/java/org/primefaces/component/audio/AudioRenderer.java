@@ -29,8 +29,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.apache.commons.io.FilenameUtils;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.FilenameUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 

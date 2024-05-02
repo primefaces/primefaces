@@ -23,7 +23,6 @@
  */
 package org.primefaces.util;
 
-import org.apache.commons.io.FilenameUtils;
 import org.primefaces.component.fileupload.FileUploadChunkDecoder;
 import org.primefaces.component.fileupload.FileUploadDecoder;
 import org.primefaces.context.PrimeApplicationContext;

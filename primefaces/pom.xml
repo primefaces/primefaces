@@ -50,6 +50,10 @@
                     <artifactId>commons-math3</artifactId>
                 </exclusion>
                 <exclusion>
+                    <groupId>commons-io</groupId>
+                    <artifactId>commons-io</artifactId>
+                </exclusion>
+                <exclusion>
                     <groupId>commons-codec</groupId>
                     <artifactId>commons-codec</artifactId>
                 </exclusion>
@@ -79,6 +83,10 @@
                 <exclusion>
                     <groupId>org.apache.commons</groupId>
                     <artifactId>commons-compress</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>commons-io</groupId>
+                    <artifactId>commons-io</artifactId>
                 </exclusion>
                 <exclusion>
                     <groupId>com.github.virtuald</groupId>
@@ -240,11 +248,6 @@
         <dependency>
             <groupId>org.owasp.encoder</groupId>
             <artifactId>encoder</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
             <optional>true</optional>
         </dependency>
     </dependencies>
@@ -888,27 +891,8 @@
                                 <include>**</include>
                             </includes>
                         </relocation>
-                        <relocation>
-                            <pattern>org.apache.commons.io</pattern>
-                            <shadedPattern>org.primefaces.shaded.commons.io</shadedPattern>
-                            <includes>
-                                <include>org.apache.commons.io.FilenameUtils</include>
-                                <include>org.apache.commons.io.FileSystem</include>
-                                <include>org.apache.commons.io.IOCase</include>
-                                <include>org.apache.commons.io.input.BoundedInputStream</include>
-                            </includes>
-                        </relocation>
                     </relocations>
                     <filters>
-                        <filter>
-                            <artifact>commons-io:commons-io</artifact>
-                            <includes>
-                                <include>org/apache/commons/io/FilenameUtils.class</include>
-                                <include>org/apache/commons/io/FileSystem.class</include>
-                                <include>org/apache/commons/io/IOCase.class</include>
-                                <include>org/apache/commons/io/input/BoundedInputStream.class</include>
-                            </includes>
-                        </filter>
                         <filter>
                             <artifact>*:*</artifact>
                             <excludes>
