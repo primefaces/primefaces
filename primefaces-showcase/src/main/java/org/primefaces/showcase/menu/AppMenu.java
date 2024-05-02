@@ -154,7 +154,6 @@ public class AppMenu {
         formMenuItems.add(new MenuItem("InputGroup", "/ui/input/inputGroup"));
         formMenuItems.add(new MenuItem("InputMask", "/ui/input/inputMask"));
         formMenuItems.add(new MenuItem("InputNumber", "/ui/input/inputNumber"));
-        //formMenuItems.add(new MenuItem("InputSwitch", "/ui/input/inputSwitch"));
         formMenuItems.add(new MenuItem("InputText", "/ui/input/inputText"));
         formMenuItems.add(new MenuItem("InputTextArea", "/ui/input/inputTextarea"));
         formMenuItems.add(new MenuItem("KeyFilter", "/ui/input/keyFilter"));
@@ -448,36 +447,18 @@ public class AppMenu {
         List<MenuItem> chartMenuItems = new ArrayList<>();
 
         //Bar Nested MenuItem
-        chartMenuItems.add(new MenuItem("Bar", "/ui/chart/bar", "New"));
-        chartMenuItems.add(new MenuItem("Bubble", "/ui/chart/bubble", "New"));
-        chartMenuItems.add(new MenuItem("Doughnut", "/ui/chart/doughnut", "New"));
-        chartMenuItems.add(new MenuItem("Line", "/ui/chart/line", "New"));
-        chartMenuItems.add(new MenuItem("Pie", "/ui/chart/pie", "New"));
-        chartMenuItems.add(new MenuItem("Scatter", "/ui/chart/scatter", "New"));
-        chartMenuItems.add(new MenuItem("PolarArea", "/ui/chart/polararea", "New"));
-        chartMenuItems.add(new MenuItem("Radar", "/ui/chart/radar", "New"));
-        chartMenuItems.add(new MenuItem("Custom", "/ui/chart/custom", "New"));
-        chartMenuItems.add(new MenuItem("Facet", "/ui/chart/facet", "New"));
-        chartMenuItems.add(new MenuItem("Export", "/ui/chart/export", "New"));
+        chartMenuItems.add(new MenuItem("Bar", "/ui/chart/bar"));
+        chartMenuItems.add(new MenuItem("Bubble", "/ui/chart/bubble"));
+        chartMenuItems.add(new MenuItem("Doughnut", "/ui/chart/doughnut"));
+        chartMenuItems.add(new MenuItem("Line", "/ui/chart/line"));
+        chartMenuItems.add(new MenuItem("Pie", "/ui/chart/pie"));
+        chartMenuItems.add(new MenuItem("Scatter", "/ui/chart/scatter"));
+        chartMenuItems.add(new MenuItem("PolarArea", "/ui/chart/polararea"));
+        chartMenuItems.add(new MenuItem("Radar", "/ui/chart/radar"));
+        chartMenuItems.add(new MenuItem("Custom", "/ui/chart/custom"));
+        chartMenuItems.add(new MenuItem("Facet", "/ui/chart/facet"));
+        chartMenuItems.add(new MenuItem("Export", "/ui/chart/export"));
         menuCategories.add(new MenuCategory("Chart", chartMenuItems));
-        //CHARTS CATEGORY END
-
-        //CHARTS CATEGORY START
-        List<MenuItem> chartsMenuItems = new ArrayList<>();
-
-        //Bar Nested MenuItem
-        chartsMenuItems.add(new MenuItem("Bar", "/ui/chartjs/bar/bar", "Deprecated"));
-        chartsMenuItems.add(new MenuItem("Bubble", "/ui/chartjs/bubble", "Deprecated"));
-        chartsMenuItems.add(new MenuItem("Donut", "/ui/chartjs/donut", "Deprecated"));
-        chartsMenuItems.add(new MenuItem("Line", "/ui/chartjs/line", "Deprecated"));
-        chartsMenuItems.add(new MenuItem("Pie", "/ui/chartjs/pie", "Deprecated"));
-        chartsMenuItems.add(new MenuItem("Scatter", "/ui/chartjs/scatter", "Deprecated"));
-        chartsMenuItems.add(new MenuItem("PolarArea", "/ui/chartjs/polararea", "Deprecated"));
-        chartsMenuItems.add(new MenuItem("Radar", "/ui/chartjs/radar", "Deprecated"));
-        chartsMenuItems.add(new MenuItem("Mixed", "/ui/chartjs/mixed", "Deprecated"));
-        chartsMenuItems.add(new MenuItem("Interactive", "/ui/chartjs/interactive", "Deprecated"));
-        chartsMenuItems.add(new MenuItem("Export", "/ui/chartjs/export", "Deprecated"));
-        menuCategories.add(new MenuCategory("Charts", chartsMenuItems));
         //CHARTS CATEGORY END
 
         //MESSAGES CATEGORY START

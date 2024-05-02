@@ -41,7 +41,6 @@ public abstract class DataGridBase extends UIPageableData
         columns,
         style,
         styleClass,
-        layout,
         rowStyle,
         rowStyleClass,
         rowTitle,
@@ -87,14 +86,6 @@ public abstract class DataGridBase extends UIPageableData
 
     public void setStyleClass(String styleClass) {
         getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public String getLayout() {
-        return (String) getStateHelper().eval(PropertyKeys.layout, "grid");
-    }
-
-    public void setLayout(String layout) {
-        getStateHelper().put(PropertyKeys.layout, layout);
     }
 
     @Override

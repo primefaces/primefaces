@@ -361,13 +361,6 @@
                 <version>1.4.2</version>
             </dependency>
 
-            <!-- File Upload -->
-            <dependency>
-                <groupId>commons-fileupload</groupId>
-                <artifactId>commons-fileupload</artifactId>
-                <version>1.5</version>
-            </dependency>
-
             <!-- FeedReader -->
             <dependency>
                 <groupId>com.rometools</groupId>

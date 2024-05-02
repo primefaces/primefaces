@@ -117,13 +117,6 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- File Upload -->
-        <dependency>
-            <groupId>commons-fileupload</groupId>
-            <artifactId>commons-fileupload</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
         <!-- FeedReader -->
         <dependency>
             <groupId>com.rometools</groupId>
@@ -576,7 +569,6 @@
                                 <include>imageswitch/**</include>
                                 <include>inputmask/**</include>
                                 <include>inputnumber/**</include>
-                                <include>inputswitch/**</include>
                                 <include>keyboard/**</include>
                                 <include>keyfilter/**</include>
                                 <include>knob/**</include>
@@ -609,7 +601,6 @@
                         <resourcesSet>
                             <includes>
                                 <include>chart/**</include>
-                                <include>chartjs/**</include>
                                 <include>texteditor/**</include>
                             </includes>
                             <aggregations>
