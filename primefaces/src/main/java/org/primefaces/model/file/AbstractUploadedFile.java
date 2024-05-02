@@ -29,7 +29,7 @@ import java.io.InputStream;
 import java.io.Serializable;
 import javax.faces.FacesException;
 
-import org.apache.commons.io.input.BoundedInputStream;
+import org.primefaces.util.BoundedInputStream;
 import org.primefaces.util.FileUploadUtils;
 import org.primefaces.util.IOUtils;
 

@@ -42,7 +42,6 @@ import javax.faces.convert.ConverterException;
 import javax.imageio.ImageIO;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.input.BoundedInputStream;
 import org.primefaces.model.CroppedImage;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
