@@ -42,14 +42,14 @@ import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.model.LazyDataModel;
-import org.primefaces.component.patch.UIDataFacesPatch;
+import org.primefaces.component.patch.UIDataPatch;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.ELUtils;
 
 /**
  * Enhanced version of the JSF UIData.
  */
-public class PrimeUIData extends UIDataFacesPatch {
+public class PrimeUIData extends UIDataPatch {
 
     private static final Logger LOGGER = Logger.getLogger(PrimeUIData.class.getName());
 
@@ -191,7 +191,7 @@ public class PrimeUIData extends UIDataFacesPatch {
 
     public void setRowModel(int rowIndex) {
         //update rowIndex
-        getStateHelper().put(UIDataFacesPatch.PropertyKeys.rowIndex, rowIndex);
+        getStateHelper().put(UIDataPatch.PropertyKeys.rowIndex, rowIndex);
         getDataModel().setRowIndex(rowIndex);
 
         //clear datamodel
@@ -485,7 +485,7 @@ public class PrimeUIData extends UIDataFacesPatch {
     }
 
     @Override
-    protected Boolean isNestedWithinIterator(FacesContext context) {
+    protected Boolean isNestedWithinIterator() {
         if (isNested == null) {
             isNested = ComponentUtils.isNestedWithinIterator(this);
         }

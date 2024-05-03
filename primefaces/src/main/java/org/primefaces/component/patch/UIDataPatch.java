@@ -55,14 +55,14 @@ import org.primefaces.util.SharedStringBuilder;
 // Private class to represent saved state information
 
 /**
- * {@link UIDataFacesPatch} is largely a copy of Mojarra 2.3.1's {@code UIData} and few bits from MyFaces
+ * {@link UIDataPatch} is largely a copy of Mojarra 2.3.9's {@code UIData} and few bits from MyFaces
  * The idea is to make a clear distinction between what belongs to the JSF implementation
  * and PrimeFaces. The code replicates exactly the code of the original class with a few exceptions:
  * <ul>
  *   <li>All members become protected, so that it's possible for PrimeFaces to override methods if necessary.</li>
  *   <li>Few methods are either copied or become abstract as they are tightly coupled with Mojarra.</li>
- *   <li>{@link UIDataFacesPatch#getClientId(FacesContext)} and {@link UIDataFacesPatch#getContainerClientId(FacesContext)} copied from MyFaces (see MYFACES-2744)</li>
- *   <li>Support of MyFaces view pooling in {@link UIDataFacesPatch#saveState(FacesContext)}</li>
+ *   <li>{@link UIDataPatch#getClientId(FacesContext)} and {@link UIDataPatch#getContainerClientId(FacesContext)} copied from MyFaces (see MYFACES-2744)</li>
+ *   <li>Support of MyFaces view pooling in {@link UIDataPatch#saveState(FacesContext)}</li>
  * </ul>
  *
  * <p><strong class="changed_modified_2_0_rev_a
@@ -80,9 +80,9 @@ import org.primefaces.util.SharedStringBuilder;
  * the <code>setRendererType()</code> method.</p>
  */
 
-public abstract class UIDataFacesPatch extends UIData {
+public abstract class UIDataPatch extends UIData {
 
-    protected static final String SB_ID = UIDataFacesPatch.class.getName() + "#id";
+    protected static final String SB_ID = UIDataPatch.class.getName() + "#id";
 
     // ------------------------------------------------------ Instance Variables
 
@@ -139,7 +139,6 @@ public abstract class UIDataFacesPatch extends UIData {
 
     protected Map<String, Object> _rowDeltaStates = new HashMap<>();
     protected Map<String, Object> _rowTransientStates = new HashMap<>();
-    
     protected Object _initialDescendantFullComponentState = null;
 
     // -------------------------------------------------------------- Properties
@@ -388,6 +387,7 @@ public abstract class UIDataFacesPatch extends UIData {
 
     }
 
+
     /**
      * <p>Set the request-scope attribute under which the data object for the
      * current row wil be exposed when iterating.</p>
@@ -399,7 +399,7 @@ public abstract class UIDataFacesPatch extends UIData {
         getStateHelper().put(PropertyKeys.var, var);
 
     }
-    
+
     // ----------------------------------------------------- UIComponent Methods
 
     /**
@@ -509,7 +509,7 @@ public abstract class UIDataFacesPatch extends UIData {
      *
      * @param event The {@link FacesEvent} to be broadcast
      *
-     * @throws AbortProcessingException Signal the Jakarta Server Faces
+     * @throws AbortProcessingException Signal the JavaServer Faces
      *                                  implementation that no further
      *                                  processing on the current event should
      *                                  be performed
@@ -529,17 +529,11 @@ public abstract class UIDataFacesPatch extends UIData {
         FacesContext context = event.getFacesContext();
         // Set up the correct context and fire our wrapped event
         WrapperEvent revent = (WrapperEvent) event;
-        if (isNestedWithinIterator(context)) {
+        if (isNestedWithinIterator()) {
             setDataModel(null);
         }
-        int currentRowIndex = getRowIndex();
-        int broadcastedRowIndex = revent.getRowIndex();
-        boolean needsToSetIndex = currentRowIndex != -1 || broadcastedRowIndex != -1; // #5213
-
-        if (needsToSetIndex) {
-            setRowIndex(broadcastedRowIndex);
-        }
-
+        int oldRowIndex = getRowIndex();
+        setRowIndex(revent.getRowIndex());
         FacesEvent rowEvent = revent.getFacesEvent();
         UIComponent source = rowEvent.getComponent();
         UIComponent compositeParent = null;
@@ -558,10 +552,8 @@ public abstract class UIDataFacesPatch extends UIData {
                 compositeParent.popComponentFromEL(context);
             }
         }
+        setRowIndex(oldRowIndex);
 
-        if (needsToSetIndex) {
-            setRowIndex(currentRowIndex);
-        }
     }
 
     /**
@@ -900,7 +892,7 @@ public abstract class UIDataFacesPatch extends UIData {
             }
         }
         finally {
-            // Clean up - pop Jakarta Expression Language and restore old row index
+            // Clean up - pop EL and restore old row index
             popComponentFromEL(facesContext);
             if (visitRows) {
                 setRowIndex(oldRowIndex);
@@ -1283,9 +1275,10 @@ public abstract class UIDataFacesPatch extends UIData {
      */
     protected boolean requiresRowIteration(VisitContext ctx) {
 
-        return !ctx.getHints().contains(VisitHint.SKIP_ITERATION);
+        return !ctx.getHints().contains(VisitHint.SKIP_ITERATION); 
 
     }
+
 
     // Perform pre-decode initialization work.  Note that this
     // initialization may be performed either during a normal decode
@@ -1304,7 +1297,7 @@ public abstract class UIDataFacesPatch extends UIData {
     // initialization may be performed either during a normal validation
     // (ie. processValidators()) or during a tree visit (ie. visitTree()).
     protected void preValidate(FacesContext context) {
-        if (isNestedWithinIterator(context)) {
+        if (isNestedWithinIterator()) {
             setDataModel(null);
         }
     }
@@ -1313,7 +1306,7 @@ public abstract class UIDataFacesPatch extends UIData {
     // initialization may be performed either during normal update
     // (ie. processUpdates()) or during a tree visit (ie. visitTree()).
     protected void preUpdate(FacesContext context) {
-        if (isNestedWithinIterator(context)) {
+        if (isNestedWithinIterator()) {
             setDataModel(null);
         }
     }
@@ -1365,7 +1358,7 @@ public abstract class UIDataFacesPatch extends UIData {
                 }
             }
         }
-        
+
         // collect rendered columns once
         List<UIColumn> renderedColumns = new ArrayList<>(getChildCount());
         if (getChildCount() > 0) {
@@ -1481,8 +1474,8 @@ public abstract class UIDataFacesPatch extends UIData {
 
     // Visit each facet of this component exactly once.
     protected boolean visitFacets(VisitContext context,
-                                VisitCallback callback,
-                                boolean visitRows) {
+                                  VisitCallback callback,
+                                  boolean visitRows) {
 
         if (visitRows) {
             setRowIndex(-1);
@@ -1499,8 +1492,8 @@ public abstract class UIDataFacesPatch extends UIData {
 
     // Visit each UIColumn and any facets it may have defined exactly once
     protected boolean visitColumnsAndColumnFacets(VisitContext context,
-                                                VisitCallback callback,
-                                                boolean visitRows) {
+                                                  VisitCallback callback,
+                                                  boolean visitRows) {
         if (visitRows) {
             setRowIndex(-1);
         }
@@ -1527,8 +1520,8 @@ public abstract class UIDataFacesPatch extends UIData {
 
     // Visit each column and row
     protected boolean visitRows(VisitContext context,
-                              VisitCallback callback,
-                              boolean visitRows) {
+                                VisitCallback callback,
+                                boolean visitRows) {
 
         // Iterate over our UIColumn children, once per row
         int processed = 0;
@@ -1598,12 +1591,12 @@ public abstract class UIDataFacesPatch extends UIData {
      */
     protected boolean keepSaved(FacesContext context) {
 
-        return (contextHasErrorMessages(context) || isNestedWithinIterator(context));
+        return (contextHasErrorMessages(context) || isNestedWithinIterator());
 
     }
 
 
-    protected abstract Boolean isNestedWithinIterator(FacesContext context);
+    protected abstract Boolean isNestedWithinIterator();
 
 
     protected boolean contextHasErrorMessages(FacesContext context) {
@@ -1640,7 +1633,7 @@ public abstract class UIDataFacesPatch extends UIData {
      * @param context   {@link FacesContext} for the current request
      */
     protected void restoreDescendantState(UIComponent component,
-                                        FacesContext context) {
+                                          FacesContext context) {
 
         // Reset the client identifier for this component
         String id = component.getId();
@@ -1718,7 +1711,7 @@ public abstract class UIDataFacesPatch extends UIData {
      * @param context   {@link FacesContext} for the current request
      */
     protected void saveDescendantState(UIComponent component,
-                                     FacesContext context) {
+                                       FacesContext context) {
 
         // Save state for this component (if it is a EditableValueHolder)
         Map<String, SavedState> saved = (Map<String, SavedState>)
@@ -1784,7 +1777,7 @@ public abstract class UIDataFacesPatch extends UIData {
 
 }
 @SuppressWarnings({"SerializableHasSerializationMethods",
-      "NonSerializableFieldInSerializableClass"})
+        "NonSerializableFieldInSerializableClass" })
 class SavedState implements Serializable {
 
     private static final long serialVersionUID = 2920252657338389849L;

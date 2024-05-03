@@ -6,7 +6,7 @@
 
     <module name="SuppressionSingleFilter">
         <property name="checks" value=".*"/>
-        <property name="files" value="UIDataFacesPatch.java"/>
+        <property name="files" value="UIDataPatch.java"/>
     </module>
 
     <module name="FileTabCharacter"/>
