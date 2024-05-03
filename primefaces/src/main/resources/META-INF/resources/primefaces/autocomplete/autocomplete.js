@@ -72,6 +72,7 @@
  * @prop {string} cfg.appendTo ID of the container to which the suggestion box is appended.
  * @prop {string} cfg.atPos Defines which position on the target element to align the positioned element against.
  * @prop {boolean} cfg.autoHighlight Highlights the first suggested item automatically.
+ * @prop {boolean} cfg.highlightSelector Selector specifies what content to identify for highlighting in search results.
  * @prop {boolean} cfg.autoSelection Defines if auto selection of items that are equal to the typed input is enabled. If
  * `true`, an item that is equal to the typed input is selected.
  * @prop {boolean} cfg.cache When enabled autocomplete caches the searched result list.
@@ -127,6 +128,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.appendTo = PrimeFaces.utils.resolveAppendTo(this, this.jq, this.panel);
         this.cfg.myPos = this.cfg.myPos || 'left top';
         this.cfg.atPos = this.cfg.atPos || 'left bottom';
+        this.cfg.highlightSelector = this.cfg.highlightSelector || 'span';
         this.cfg.active = (this.cfg.active === false) ? false : true;
         this.cfg.dynamic = this.cfg.dynamic === true ? true : false;
         this.cfg.autoSelection = this.cfg.autoSelection === false ? false : true;
@@ -818,7 +820,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     }
                     var re = new RegExp('(' + queryParts.join('|') + ')', 'gi');
                     var isCustomContent = this.panel.children().is('table');
-                    var queryResults = isCustomContent ? this.panel.children().find('span') : this.items;
+                    var queryResults = isCustomContent ? this.panel.children().find(this.cfg.highlightSelector) : this.items;
                     queryResults.filter(':not(.ui-autocomplete-moretext)').each(function() {
                         var item = $(this);
                         var escape = $this.cfg.escape;

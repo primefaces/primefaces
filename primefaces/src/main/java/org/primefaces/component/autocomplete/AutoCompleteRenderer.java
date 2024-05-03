@@ -784,6 +784,7 @@ public class AutoCompleteRenderer extends InputRenderer {
                 .attr("grouping", ac.getValueExpression(AutoComplete.PropertyKeys.groupBy.toString()) != null, false)
                 .attr("queryEvent", ac.getQueryEvent(), null)
                 .attr("dropdownMode", ac.getDropdownMode(), null)
+                .attr("highlightSelector", ac.getHighlightSelector(), null)
                 .attr("autoHighlight", ac.isAutoHighlight(), true)
                 .attr("showEmptyMessage", ac.isShowEmptyMessage(), true)
                 .attr("myPos", ac.getMy(), null)
