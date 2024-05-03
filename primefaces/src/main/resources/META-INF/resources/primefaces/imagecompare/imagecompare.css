@@ -163,9 +163,6 @@ div.jx-image img {
     z-index: 5;
     position: absolute;
     margin-bottom: 0;
-
-    max-height: none;
-    max-width: none;
     max-height: initial;
     max-width: initial;
 }
