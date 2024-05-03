@@ -38,7 +38,6 @@ public abstract class DiagramBase extends UIData implements Widget, ClientBehavi
     public enum PropertyKeys {
 
         widgetVar,
-        var,
         style,
         styleClass
     }
@@ -58,14 +57,6 @@ public abstract class DiagramBase extends UIData implements Widget, ClientBehavi
 
     public void setWidgetVar(String widgetVar) {
         getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public String getVar() {
-        return (String) getStateHelper().eval(PropertyKeys.var, null);
-    }
-
-    public void setVar(String var) {
-        getStateHelper().put(PropertyKeys.var, var);
     }
 
     public String getStyle() {
