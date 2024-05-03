@@ -4,6 +4,8 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    ignore:
+      - dependency-name: "commons-io:commons-io"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
