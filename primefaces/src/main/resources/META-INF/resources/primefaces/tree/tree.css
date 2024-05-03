@@ -122,9 +122,6 @@
 .ui-tree-horizontal .ui-treenode-parent .ui-treenode-content {
     font-weight: normal;
     white-space: nowrap;
-}
-
-.ui-tree-horizontal .ui-treenode-parent .ui-treenode-content {
     padding: 0.4em 1em 0.4em 0.2em;
 }
 

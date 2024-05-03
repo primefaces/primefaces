@@ -24,7 +24,3 @@
 	opacity: .85;
 	filter: alpha(opacity = 85);
 }
-
-/* IE Fixes */
-.ui-stack { _position: absolute; }
-.ui-stack ul { _z-index:-1; _top:-15px; }

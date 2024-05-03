@@ -20,7 +20,6 @@
 .ui-panel .ui-panel-titlebar-icon:focus {
 	margin-left:0.2em;
     margin-top:-0.2em;
-    *margin:-1.5em 0em 0em 0.2em;
 }
 
 .ui-panel .ui-panel-content {

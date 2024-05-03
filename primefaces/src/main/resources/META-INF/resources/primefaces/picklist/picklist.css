@@ -1,10 +1,13 @@
 .ui-picklist > div {
-    float: left;
+    float: none;
+    display: table-cell;
+    vertical-align: top;
 }
 
 .ui-picklist .ui-picklist-buttons {
     height: 200px;
     padding: 0px 5px;
+    vertical-align: middle;
 }
 
 .ui-picklist .ui-picklist-list {
@@ -68,16 +71,6 @@
 
 .ui-picklist {
     display: table;
-}
-
-.ui-picklist > div {
-    float: none;
-    display: table-cell;
-    vertical-align: top;
-}
-
-.ui-picklist .ui-picklist-buttons {
-    vertical-align: middle;
 }
 
 /* Vertical */

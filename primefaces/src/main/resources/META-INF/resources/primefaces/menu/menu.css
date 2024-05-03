@@ -133,7 +133,6 @@
 
 .ui-menu .ui-menu-parent .ui-icon-triangle-1-e,
 .ui-menu .ui-menu-parent .ui-icon-triangle-1-s,
-.ui-menubar .ui-menu-child .ui-icon-triangle-1-s,
 .ui-menubar .ui-menu-child .ui-icon-triangle-1-s {
     float:right;
 }
@@ -250,7 +249,6 @@ body .ui-menu .ui-divider.ui-divider-horizontal {
 /** Breadcrumb **/
 .ui-breadcrumb {
     margin: 0;
-    padding: 0;
     overflow-x: auto;
     padding: 5px 5px 7px 5px;
 }

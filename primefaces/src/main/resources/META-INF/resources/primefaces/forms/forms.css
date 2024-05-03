@@ -588,16 +588,13 @@ button.ui-button::-moz-focus-inner {
 .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list-item {
     border:0px none;
     cursor:pointer;
+    display: block;
     font-weight:normal;
     margin:1px 0;
     padding:3px 5px;
+    position: relative;
     text-align:left;
     white-space: nowrap;
-}
-
-.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list-item {
-    display: block;
-    position: relative;
 }
 
 .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list-item .ui-chkbox {
@@ -908,9 +905,6 @@ div.ui-button, .ui-splitbutton {
 
 .ui-cascadeselect-panel {
     min-width: 100%;
-}
-
-.ui-cascadeselect-panel {
     position: absolute;
 }
 

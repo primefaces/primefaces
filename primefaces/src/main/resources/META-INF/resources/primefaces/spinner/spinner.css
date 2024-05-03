@@ -93,7 +93,6 @@ body .ui-fluid .ui-spinner-horizontal-after .ui-spinner-input, body .ui-spinner-
 }
 
 body .ui-fluid .ui-spinner.ui-spinner-vertical .ui-spinner-input, body .ui-spinner.ui-spinner-vertical .ui-spinner-input {
-    padding-right: unset;
     padding: 2.857rem 0;
     text-align: center;
 }
