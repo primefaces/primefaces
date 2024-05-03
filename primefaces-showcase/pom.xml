@@ -96,8 +96,8 @@
 
         <!-- FeedReader -->
         <dependency>
-            <groupId>com.rometools</groupId>
-            <artifactId>rome</artifactId>
+            <groupId>com.apptasticsoftware</groupId>
+            <artifactId>rssreader</artifactId>
         </dependency>
 
         <!-- File Upload -->

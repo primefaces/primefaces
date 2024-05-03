@@ -17,7 +17,7 @@
             <p:feedReader value="#{feedReader001.current}" var="feed" id="feedReader">
                 <div class="p-p-3">
                     <h:outputText value="#{feed.title}" styleClass="p-text-bold p-d-block ui-rss-feed" />
-                    <h:outputText value="#{feed.description.value}" escape="false"/>
+                    <h:outputText value="#{feed.description}" escape="false"/>
                 </div>
 
                 <f:facet name="error">

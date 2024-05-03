@@ -14,3 +14,5 @@ Look into [migration guide](https://primefaces.github.io/primefaces/15_0_0/#/../
 * Captcha
     * Added [hCaptcha](https://www.hcaptcha.com/) support
     
+* FeedReader
+    * Added `podcast="true"` property if [Apple Itunes Podcast](https://help.apple.com/itc/podcasts_connect/#/itcb54353390) parsing and specific tags 

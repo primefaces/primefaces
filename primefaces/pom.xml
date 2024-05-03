@@ -119,15 +119,9 @@
 
         <!-- FeedReader -->
         <dependency>
-            <groupId>com.rometools</groupId>
-            <artifactId>rome</artifactId>
+            <groupId>com.apptasticsoftware</groupId>
+            <artifactId>rssreader</artifactId>
             <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-api</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <!-- JAXB for JDK11+-->
