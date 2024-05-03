@@ -52,14 +52,14 @@ public class ForEachRowColumn {
         EXPORTABLE {
             @Override
             public boolean test(Object o) {
-                return o instanceof UIColumn && ((UIColumn) o).isExportable();
+                return !(o instanceof UIColumn) || ((UIColumn) o).isExportable();
             }
         },
 
         VISIBLE {
             @Override
             public boolean test(Object o) {
-                return o instanceof UIColumn && ((UIColumn) o).isVisible();
+                return !(o instanceof UIColumn) || ((UIColumn) o).isVisible();
             }
         }
     }
@@ -102,7 +102,7 @@ public class ForEachRowColumn {
         return this;
     }
 
-    public void invoke(RowColumnVisitor callback) {
+    public <V extends RowColumnVisitor> V invoke(V callback) {
         this.callback = callback;
 
         try {
@@ -117,6 +117,8 @@ public class ForEachRowColumn {
         finally {
             this.callback = null;
         }
+
+        return callback;
     }
 
     protected VisitResult visit(int index, UIComponent target) throws IOException {

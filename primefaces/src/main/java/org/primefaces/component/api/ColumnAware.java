@@ -332,20 +332,11 @@ public interface ColumnAware {
     }
 
     default int getColumnsCount() {
-        return getColumnsCount(true);
-    }
-
-    default int getColumnsCount(boolean visibleOnly) {
-        final LongAdder columnsCount = new LongAdder();
-
-        forEachColumn(true, true, true, column -> {
-            if (!visibleOnly || column.isVisible()) {
-                columnsCount.increment();
-            }
-            return true;
-        });
-
-        return columnsCount.intValue();
+        return ForEachRowColumn
+                .from((UIComponent) this)
+                .hints(ForEachRowColumn.ColumnHint.RENDERED, ForEachRowColumn.ColumnHint.VISIBLE)
+                .invoke(new RowColumnVisitor.ColumnCounter())
+                .getCount();
     }
 
     default int getColumnsCountWithSpan() {

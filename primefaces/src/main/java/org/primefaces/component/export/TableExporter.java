@@ -243,7 +243,7 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
         for (List<ColumnNode> rows : matrix) {
             for (int colIndex = 0; colIndex < rows.size(); colIndex++) {
                 ColumnNode node = rows.get(colIndex);
-                ColumnValue colValue = ExporterUtils.getColumnFacetValue(context, node.getUIComp(), columnType);
+                ColumnValue colValue = getColumnFacetValue(context, node.getUIComp(), columnType);
 
                 int colSpan = node.getColspan();
                 int rowSpan = node.getUIComp() instanceof UIColumn
@@ -623,19 +623,29 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
         return null;
     }
 
-    public ColumnValue getColumnFacetValue(FacesContext context, UIColumn column, TableExporter.ColumnType columnType) {
+    public ColumnValue getColumnFacetValue(FacesContext context, Object component, TableExporter.ColumnType columnType) {
         ColumnValue columnValue = ColumnValue.EMPTY_VALUE;
-        if (columnType == TableExporter.ColumnType.HEADER) {
-            columnValue = ColumnValue.of(Optional.ofNullable(column.getExportHeaderValue()).orElseGet(column::getHeaderText));
+        if (component instanceof ColumnGroup) {
+            ColumnGroup group = (ColumnGroup) component;
+            if (TableExporter.ColumnType.HEADER == columnType) {
+                return ColumnValue.of(group.getHeaderText());
+            }
         }
-        else if (columnType == TableExporter.ColumnType.FOOTER) {
-            columnValue = ColumnValue.of(Optional.ofNullable(column.getExportFooterValue()).orElseGet(column::getFooterText));
+        else if (component instanceof UIColumn) {
+            UIColumn column = (UIColumn) component;
+            if (columnType == TableExporter.ColumnType.HEADER) {
+                columnValue = ColumnValue.of(Optional.ofNullable(column.getExportHeaderValue()).orElseGet(column::getHeaderText));
+            }
+            else if (columnType == TableExporter.ColumnType.FOOTER) {
+                columnValue = ColumnValue.of(Optional.ofNullable(column.getExportFooterValue()).orElseGet(column::getFooterText));
+            }
+
+            UIComponent facet = column.getFacet(columnType.facet());
+            if (LangUtils.isBlank(columnValue.toString()) && FacetUtils.shouldRenderFacet(facet)) {
+                columnValue = ColumnValue.of(getComponentValue(context, facet));
+            }
         }
 
-        UIComponent facet = column.getFacet(columnType.facet());
-        if (LangUtils.isBlank(columnValue.toString()) && FacetUtils.shouldRenderFacet(facet)) {
-            columnValue = ColumnValue.of(getComponentValue(context, facet));
-        }
 
         return columnValue;
     }

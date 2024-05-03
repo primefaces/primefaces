@@ -458,7 +458,7 @@ public class DataTable extends DataTableBase {
                 if ((child instanceof UIColumn)) {
                     UIColumn column = (UIColumn) child;
 
-                    if (column.getFooterText() != null || ComponentUtils.shouldRenderFacet(column.getFacet("footer"))) {
+                    if (column.getFooterText() != null || FacetUtils.shouldRenderFacet(column.getFacet("footer"))) {
                         return true;
                     }
                 }

@@ -60,4 +60,18 @@ public interface RowColumnVisitor {
             // NOOP
         }
     }
+
+    class ColumnCounter extends Adapter {
+
+        private int count = 0;
+
+        @Override
+        public void visitColumn(int index, UIColumn column) throws IOException {
+            count++;
+        }
+
+        public int getCount() {
+            return count;
+        }
+    }
 }
