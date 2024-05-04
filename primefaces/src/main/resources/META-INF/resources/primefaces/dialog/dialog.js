@@ -384,6 +384,12 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
     returnFocus: function() {
         var el = this.focusedElementBeforeDialogOpened;
         if (el) {
+            // #11860 do not return focus to caller if other dialogs are still open
+            var otherDialogs = $(".ui-dialog:visible").length > 0;
+            if (otherDialogs) {
+                return;
+            }
+            // #11318 prevent scrolling in Chrome by using delayed execution
             setTimeout(function() { el.focus({ preventScroll: true }) }, 100);
         }
     },
