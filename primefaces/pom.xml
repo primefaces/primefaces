@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.primefaces</groupId>
         <artifactId>primefaces-parent</artifactId>
-        <version>13.0.10-SNAPSHOT</version>
+        <version>13.0.10</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -923,6 +923,7 @@
                                 <exclude>META-INF/*.SF</exclude>
                                 <exclude>META-INF/*.DSA</exclude>
                                 <exclude>META-INF/*.RSA</exclude>
+                                <exclude>META-INF/versions/**</exclude>
                             </excludes>
                         </filter>
                     </filters>
