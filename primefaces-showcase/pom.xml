@@ -37,16 +37,16 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.glassfish</groupId>
-            <artifactId>jakarta.faces</artifactId>
-            <version>4.0.7</version>
+            <groupId>org.apache.tomee</groupId>
+            <artifactId>jakartaee-api</artifactId>
+            <version>10.0-M2</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
-            <groupId>jakarta.enterprise</groupId>
-            <artifactId>jakarta.enterprise.cdi-api</artifactId>
-            <version>4.1.0</version>
+            <groupId>org.glassfish</groupId>
+            <artifactId>jakarta.faces</artifactId>
+            <version>4.0.7</version>
             <scope>provided</scope>
         </dependency>
 
@@ -448,13 +448,6 @@
                     <groupId>org.jboss.weld.servlet</groupId>
                     <artifactId>weld-servlet-core</artifactId>
                     <version>5.1.2.Final</version>
-                </dependency>
-
-                <dependency>
-                    <groupId>jakarta.servlet</groupId>
-                    <artifactId>jakarta.servlet-api</artifactId>
-                    <version>6.0.0</version>
-                    <scope>provided</scope>
                 </dependency>
             </dependencies>
             <build>
