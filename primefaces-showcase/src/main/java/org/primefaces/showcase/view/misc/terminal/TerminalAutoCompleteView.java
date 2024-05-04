@@ -26,8 +26,8 @@ package org.primefaces.showcase.view.misc.terminal;
 import org.primefaces.model.terminal.TerminalAutoCompleteModel;
 import org.primefaces.model.terminal.TerminalCommand;
 
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
 import java.io.Serializable;
 
 @Named

@@ -23,9 +23,9 @@
  */
 package org.primefaces.showcase.view.csv;
 
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Named;
-import javax.validation.constraints.*;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Named;
+import jakarta.validation.constraints.*;
 import java.util.Date;
 
 @Named

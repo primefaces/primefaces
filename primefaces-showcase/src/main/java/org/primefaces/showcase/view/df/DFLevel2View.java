@@ -26,8 +26,8 @@ package org.primefaces.showcase.view.df;
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.SelectEvent;
 
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Named;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Named;
 import java.util.HashMap;
 import java.util.Map;
 

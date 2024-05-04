@@ -26,10 +26,10 @@ package org.primefaces.showcase.view.df;
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.SelectEvent;
 
-import javax.enterprise.context.RequestScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.inject.Named;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
+import jakarta.inject.Named;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;

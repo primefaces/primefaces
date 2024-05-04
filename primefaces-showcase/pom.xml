@@ -17,13 +17,12 @@
     <name>PrimeFaces Showcase</name>
 
     <properties>
-        <owb.version>2.0.27</owb.version>
-        <hibernate-validator.version>6.2.4.Final</hibernate-validator.version>
-        <mojarra.version>2.3.21</mojarra.version>
-        <myfaces.version>2.3.10</myfaces.version>
-        <myfaces-next.version>2.3-next-M8</myfaces-next.version>
-        <resteasy.version>5.0.9.Final</resteasy.version>
-        <jetty.version>9.4.54.v20240208</jetty.version>
+<!--        <owb.version>4.0.2</owb.version>-->
+        <hibernate-validator.version>8.0.1.Final</hibernate-validator.version>
+        <mojarra.version>4.0.6</mojarra.version>
+        <myfaces.version>4.0.2</myfaces.version>
+        <resteasy.version>6.2.8.Final</resteasy.version>
+        <jetty.version>12.0.8</jetty.version>
         <jsf.project.stage>Production</jsf.project.stage>
     </properties>
 
@@ -39,12 +38,14 @@
     <dependencies>
         <dependency>
             <groupId>org.apache.tomee</groupId>
-            <artifactId>javaee-api</artifactId>
+            <artifactId>jakartaee-api</artifactId>
+            <version>10.0-M2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.glassfish</groupId>
             <artifactId>jakarta.faces</artifactId>
+            <version>4.0.6</version>
             <scope>provided</scope>
         </dependency>
 
@@ -52,6 +53,7 @@
             <groupId>org.primefaces</groupId>
             <artifactId>primefaces</artifactId>
             <version>${project.version}</version>
+            <classifier>jakarta</classifier>
         </dependency>
 
         <!-- Data Exporter -->
@@ -183,7 +185,7 @@
         <dependency>
             <groupId>com.sun.xml.bind</groupId>
             <artifactId>jaxb-impl</artifactId>
-            <version>2.3.6</version>
+            <version>4.0.5</version>
         </dependency>
 
     </dependencies>
@@ -256,10 +258,11 @@
                     <version>1.68.0</version>
                 </configuration>
             </plugin>
+            <!--
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
-                <version>${jetty.version}</version>
+                <version>${jetty.maven.plugin.version}</version>
                 <configuration>
                     <webAppConfig>
                         <contextPath>/showcase</contextPath>
@@ -268,6 +271,34 @@
                     <scanIntervalSeconds>5</scanIntervalSeconds>
                     <webXml>${project.build.directory}/web.xml</webXml>
                 </configuration>
+            </plugin>
+            -->
+            <plugin>
+                <groupId>org.eclipse.jetty.ee10</groupId>
+                <artifactId>jetty-ee10-maven-plugin</artifactId>
+                <version>${jetty.version}</version>
+                <configuration>
+                    <!-- see https://eclipse.dev/jetty/documentation/jetty-12/programming-guide/index.html#jetty-run-goal -->
+                    <webApp>
+                        <contextPath>/showcase</contextPath>
+                    </webApp>
+                    <scan>5</scan>
+                    <webXml>${project.build.directory}/web.xml</webXml>
+                    <!--
+                    <httpConnector>
+                        <host>0.0.0.0</host>
+                        <port>${jetty.port}</port>
+                        <idleTimeout>60000</idleTimeout>
+                    </httpConnector>
+                    -->
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.eclipse.jetty.ee10</groupId>
+                        <artifactId>jetty-ee10-cdi</artifactId>
+                        <version>${jetty.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -330,7 +361,7 @@
         </profile>
 
         <profile>
-            <id>mojarra-2.3</id>
+            <id>mojarra-4.0</id>
             <dependencies>
                 <dependency>
                     <groupId>org.glassfish</groupId>
@@ -345,7 +376,7 @@
             </build>
         </profile>
         <profile>
-            <id>myfaces-2.3</id>
+            <id>myfaces-4.0</id>
             <activation>
                 <property>
                     <name>dev</name>
@@ -361,28 +392,6 @@
                     <groupId>org.apache.myfaces.core</groupId>
                     <artifactId>myfaces-impl</artifactId>
                     <version>${myfaces.version}</version>
-                </dependency>
-            </dependencies>
-            <build>
-                <filters>
-                    <filter>${basedir}/src/main/resources/filters/myfaces.properties</filter>
-                </filters>
-            </build>
-        </profile>
-        <profile>
-            <id>myfaces-next-2.3</id>
-            <dependencies>
-                <dependency>
-                    <groupId>org.apache.myfaces.core</groupId>
-                    <artifactId>myfaces-api</artifactId>
-                    <version>${myfaces-next.version}</version>
-                    <scope>compile</scope>
-                </dependency>
-                <dependency>
-                    <groupId>org.apache.myfaces.core</groupId>
-                    <artifactId>myfaces-impl</artifactId>
-                    <version>${myfaces-next.version}</version>
-                    <scope>compile</scope>
                 </dependency>
             </dependencies>
             <build>
@@ -460,20 +469,32 @@
                     <version>1.3</version>
                 </dependency>
 
+<!--                <dependency>-->
+<!--                    <groupId>org.apache.openwebbeans</groupId>-->
+<!--                    <artifactId>openwebbeans-impl</artifactId>-->
+<!--                    <version>${owb.version}</version>-->
+<!--                </dependency>-->
+<!--                <dependency>-->
+<!--                    <groupId>org.apache.openwebbeans</groupId>-->
+<!--                    <artifactId>openwebbeans-web</artifactId>-->
+<!--                    <version>${owb.version}</version>-->
+<!--                </dependency>-->
+<!--                <dependency>-->
+<!--                    <groupId>org.apache.openwebbeans</groupId>-->
+<!--                    <artifactId>openwebbeans-jsf</artifactId>-->
+<!--                    <version>${owb.version}</version>-->
+<!--                </dependency>-->
+
                 <dependency>
-                    <groupId>org.apache.openwebbeans</groupId>
-                    <artifactId>openwebbeans-impl</artifactId>
-                    <version>${owb.version}</version>
-                </dependency>
-                <dependency>
-                    <groupId>org.apache.openwebbeans</groupId>
-                    <artifactId>openwebbeans-web</artifactId>
-                    <version>${owb.version}</version>
-                </dependency>
-                <dependency>
-                    <groupId>org.apache.openwebbeans</groupId>
-                    <artifactId>openwebbeans-jsf</artifactId>
-                    <version>${owb.version}</version>
+                    <groupId>org.jboss.weld.servlet</groupId>
+                    <artifactId>weld-servlet-core</artifactId>
+                    <version>5.1.2.Final</version>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>jakarta.el</groupId>
+                            <artifactId>jakarta.el-api</artifactId>
+                        </exclusion>
+                    </exclusions>
                 </dependency>
             </dependencies>
             <build>
@@ -488,13 +509,13 @@
                 <dependency>
                     <groupId>org.apache.myfaces.core</groupId>
                     <artifactId>myfaces-api</artifactId>
-                    <version>${myfaces-next.version}</version>
+                    <version>${myfaces.version}</version>
                     <scope>compile</scope>
                 </dependency>
                 <dependency>
                     <groupId>org.apache.myfaces.core</groupId>
                     <artifactId>myfaces-impl</artifactId>
-                    <version>${myfaces-next.version}</version>
+                    <version>${myfaces.version}</version>
                     <scope>compile</scope>
                 </dependency>
 
@@ -558,21 +579,21 @@
                     <version>1.3</version>
                 </dependency>
 
-                <dependency>
-                    <groupId>org.apache.openwebbeans</groupId>
-                    <artifactId>openwebbeans-impl</artifactId>
-                    <version>${owb.version}</version>
-                </dependency>
-                <dependency>
-                    <groupId>org.apache.openwebbeans</groupId>
-                    <artifactId>openwebbeans-web</artifactId>
-                    <version>${owb.version}</version>
-                </dependency>
-                <dependency>
-                    <groupId>org.apache.openwebbeans</groupId>
-                    <artifactId>openwebbeans-jsf</artifactId>
-                    <version>${owb.version}</version>
-                </dependency>
+<!--                <dependency>-->
+<!--                    <groupId>org.apache.openwebbeans</groupId>-->
+<!--                    <artifactId>openwebbeans-impl</artifactId>-->
+<!--                    <version>${owb.version}</version>-->
+<!--                </dependency>-->
+<!--                <dependency>-->
+<!--                    <groupId>org.apache.openwebbeans</groupId>-->
+<!--                    <artifactId>openwebbeans-web</artifactId>-->
+<!--                    <version>${owb.version}</version>-->
+<!--                </dependency>-->
+<!--                <dependency>-->
+<!--                    <groupId>org.apache.openwebbeans</groupId>-->
+<!--                    <artifactId>openwebbeans-jsf</artifactId>-->
+<!--                    <version>${owb.version}</version>-->
+<!--                </dependency>-->
             </dependencies>
             <build>
                 <filters>

@@ -28,9 +28,9 @@ import java.time.LocalDateTime;
 import java.util.PrimitiveIterator;
 import java.util.Random;
 
-import javax.annotation.PostConstruct;
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
 
 import org.primefaces.component.timeline.TimelineUpdater;
 import org.primefaces.event.timeline.TimelineLazyLoadEvent;

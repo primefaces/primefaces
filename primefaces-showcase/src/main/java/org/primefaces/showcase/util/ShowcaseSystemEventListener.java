@@ -27,10 +27,10 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.DataExporters;
 import org.primefaces.showcase.view.data.dataexporter.TextExporter;
 
-import javax.faces.application.Application;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.SystemEvent;
-import javax.faces.event.SystemEventListener;
+import jakarta.faces.application.Application;
+import jakarta.faces.event.AbortProcessingException;
+import jakarta.faces.event.SystemEvent;
+import jakarta.faces.event.SystemEventListener;
 
 public class ShowcaseSystemEventListener implements SystemEventListener {
 

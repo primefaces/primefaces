@@ -23,10 +23,10 @@
  */
 package org.primefaces.showcase.view.panel;
 
-import javax.faces.view.ViewScoped;
+import jakarta.faces.view.ViewScoped;
 
-import javax.annotation.PostConstruct;
-import javax.inject.Named;
+import jakarta.annotation.PostConstruct;
+import jakarta.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
