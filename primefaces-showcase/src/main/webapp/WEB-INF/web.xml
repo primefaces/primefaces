@@ -98,9 +98,9 @@
         <param-value>client-window</param-value>
     </context-param>
 
-    <listener>
-        <listener-class>${cdiListener}</listener-class>
-    </listener>
+<!--    <listener>-->
+<!--        <listener-class>${cdiListener}</listener-class>-->
+<!--    </listener>-->
     <listener>
         <listener-class>${jsfListener}</listener-class>
     </listener>
