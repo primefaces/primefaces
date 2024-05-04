@@ -481,7 +481,6 @@ public class DataTable extends DataTableBase {
         }
 
         Map<String, FilterMeta> filterBy = getActiveFilterMeta();
-        model.setRowCount(model.count(filterBy));
 
         FacesContext context = getFacesContext();
         boolean clientCacheRequest = isClientCacheRequest(context);
@@ -496,6 +495,9 @@ public class DataTable extends DataTableBase {
             setFirst(offset);
         }
 
+        if (getFirst() > 0) {
+            model.setRowCount(model.count(filterBy));
+        }
         if (calculateFirst()) {
             offset = getFirst();
             LOGGER.fine(() -> "DataTable#loadLazyScrollData: offset has been recalculated due to overflow (first >= rowCount)");
@@ -506,6 +508,12 @@ public class DataTable extends DataTableBase {
         }
 
         List<?> data = model.load(offset, rows, getActiveSortMeta(), getActiveFilterMeta());
+        if (data.size() < getRows() && getFirst() == 0) {
+            model.setRowCount(data.size());
+        }
+        else if (getFirst() == 0) {
+            model.setRowCount(model.count(filterBy));
+        }
         model.setPageSize(rows);
         // set empty list if model returns null; this avoids multiple calls while visiting the component+rows
         model.setWrappedData(data != null ? data : Collections.emptyList());
