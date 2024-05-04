@@ -36,16 +36,17 @@
     </repositories>
 
     <dependencies>
-<!--        <dependency>-->
-<!--            <groupId>org.apache.tomee</groupId>-->
-<!--            <artifactId>jakartaee-api</artifactId>-->
-<!--            <version>10.0-M2</version>-->
-<!--            <scope>provided</scope>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>org.glassfish</groupId>
             <artifactId>jakarta.faces</artifactId>
-            <version>4.0.6</version>
+            <version>4.0.7</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>jakarta.enterprise</groupId>
+            <artifactId>jakarta.enterprise.cdi-api</artifactId>
+            <version>4.1.0</version>
             <scope>provided</scope>
         </dependency>
 
@@ -194,6 +195,7 @@
             <artifactId>jaxb-runtime</artifactId>
             <version>4.0.5</version>
         </dependency>
+
     </dependencies>
 
     <build>
