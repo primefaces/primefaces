@@ -47,7 +47,7 @@
                                  value="Throw NullPointerException!"/>
 
 
-                <p:ajaxExceptionHandler type="javax.faces.application.ViewExpiredException"
+                <p:ajaxExceptionHandler type="jakarta.faces.application.ViewExpiredException"
                                         update="exceptionDialog"
                                         onexception="PF('exceptionDialog').show()" />
 
@@ -63,7 +63,7 @@
 
                     <p:button onclick="document.location.href = document.location.href;"
                               value="Reload!"
-                              rendered="#{pfExceptionHandler.type == 'javax.faces.application.ViewExpiredException'}"/>
+                              rendered="#{pfExceptionHandler.type == 'jakarta.faces.application.ViewExpiredException'}"/>
                 </p:dialog>
             </h:form>
         </div>

@@ -72,7 +72,7 @@
 
                     <p:column field="date" headerText="Join Date" filterMatchMode="between">
                         <f:facet name="filter">
-                            <p:datePicker selectionMode="range" onchange="PF('customersTable').filter()" converter="javax.faces.DateTime" />
+                            <p:datePicker selectionMode="range" onchange="PF('customersTable').filter()" converter="jakarta.faces.DateTime" />
                         </f:facet>
                     </p:column>
 
@@ -88,7 +88,7 @@
                     </p:column>
 
                     <p:column field="activity" headerText="Activity" sortBy="#{customer.activity}" filterMatchMode="gt"
-                              converter="javax.faces.Integer">
+                              converter="jakarta.faces.Integer">
                         <p:progressBar value="#{customer.activity}" displayOnly="true" style="height: .5rem" />
                     </p:column>
 
@@ -147,7 +147,7 @@
                     </p:column>
 
                     <p:column field="activity" headerText="Activity" sortBy="#{customer.activity}"
-                              converter="javax.faces.Integer">
+                              converter="jakarta.faces.Integer">
                         <p:progressBar value="#{customer.activity}" displayOnly="true" style="height: .5rem" />
                     </p:column>
                 </p:dataTable>
