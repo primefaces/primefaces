@@ -155,11 +155,13 @@ public class DataView extends DataViewBase {
             }
 
             List<?> data = lazyModel.load(getFirst(), getRows(), Collections.emptyMap(), Collections.emptyMap());
-            if (data.size() < getRows() && getFirst() == 0) {
-                lazyModel.setRowCount(data.size());
-            }
-            else if (getFirst() == 0) {
-                lazyModel.setRowCount(lazyModel.count(Collections.emptyMap()));
+            if (lazyModel.getRowCount() == 0) {
+                if (data.size() < getRows() && getFirst() == 0) {
+                    lazyModel.setRowCount(data.size());
+                }
+                else if (getFirst() == 0) {
+                    lazyModel.setRowCount(lazyModel.count(Collections.emptyMap()));
+                }
             }
 
             lazyModel.setPageSize(getRows());

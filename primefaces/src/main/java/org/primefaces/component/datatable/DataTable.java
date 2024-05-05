@@ -508,11 +508,13 @@ public class DataTable extends DataTableBase {
         }
 
         List<?> data = model.load(offset, rows, getActiveSortMeta(), getActiveFilterMeta());
-        if (data.size() < getRows() && getFirst() == 0) {
-            model.setRowCount(data.size());
-        }
-        else if (getFirst() == 0) {
-            model.setRowCount(model.count(filterBy));
+        if (model.getRowCount() == 0) {
+            if (data.size() < getRows() && getFirst() == 0) {
+                model.setRowCount(data.size());
+            }
+            else if (getFirst() == 0) {
+                model.setRowCount(model.count(filterBy));
+            }
         }
         model.setPageSize(rows);
         // set empty list if model returns null; this avoids multiple calls while visiting the component+rows
