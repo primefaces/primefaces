@@ -24,33 +24,33 @@
 package org.primefaces.component.feedreader;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
+import org.junit.jupiter.api.Test;
+import org.primefaces.model.feedreader.FeedItem;
 
-import com.rometools.rome.feed.synd.SyndFeed;
-import com.rometools.rome.io.FeedException;
-import com.rometools.rome.io.SyndFeedInput;
-import com.rometools.rome.io.XmlReader;
-import java.io.IOException;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class FeedInput {
+class RSSUtilsTest {
 
-    public List parse(String url, int size) throws IOException, IllegalArgumentException, FeedException {
-        List entries = new ArrayList();
-        URL feedSource = new URL(url);
-        SyndFeedInput input = new SyndFeedInput();
-        SyndFeed feed = input.build(new XmlReader(feedSource));
-        int i = 0;
+    @Test()
+    void parseRSS() throws Exception {
+        URL feed = RSSUtilsTest.class.getResource("/org/primefaces/feeds/RSS2.0.xml");
+        List<FeedItem> rss = RSSUtils.parse(feed.openStream(), 10, false);
+        assertNotNull(rss);
+        assertEquals(2, rss.size());
+        assertEquals("News for September the Second", rss.get(0).getTitle());
+        assertEquals("http://example.com/2002/09/02", rss.get(1).getLink());
+    }
 
-        for (Object f : feed.getEntries()) {
-            if (i == size) {
-                break;
-            }
-
-            entries.add(f);
-            i++;
-        }
-
-        return entries;
+    @Test()
+    void parsePodcast() throws Exception {
+        URL feed = RSSUtilsTest.class.getResource("/org/primefaces/feeds/podcast.xml");
+        List<FeedItem> rss = RSSUtils.parse(feed.openStream(), 5, true);
+        assertNotNull(rss);
+        assertEquals(5, rss.size());
+        assertEquals("Hiking Treks Trailer", rss.get(0).getItunesTitle());
+        assertEquals("1079", rss.get(0).getItunesDuration());
+        assertEquals("S02 EP04 Mt. Hood, Oregon", rss.get(1).getTitle());
+        assertEquals("1024", rss.get(1).getItunesDuration());
     }
 }

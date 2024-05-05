@@ -10436,7 +10436,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[feedReader displays content from a feed.]]>
+            <![CDATA[FeedReader retrieves and displays content from an RSS, Atom, or Itunes Podcast feed.]]>
         </description>
         <tag-name>feedReader</tag-name>
         <component>
@@ -10490,6 +10490,14 @@
             <name>size</name>
             <required>false</required>
             <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Flag to control if this is a podcast feed which will include extra podcast metadata. Default false.]]>
+            </description>
+            <name>podcast</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
     </tag>
     <tag>

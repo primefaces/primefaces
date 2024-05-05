@@ -36,7 +36,8 @@ public abstract class FeedReaderBase extends UIComponentBase {
 
         value,
         var,
-        size
+        size,
+        podcast
     }
 
     public FeedReaderBase() {
@@ -70,6 +71,14 @@ public abstract class FeedReaderBase extends UIComponentBase {
 
     public void setSize(int size) {
         getStateHelper().put(PropertyKeys.size, size);
+    }
+
+    public boolean isPodcast() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.podcast, Boolean.FALSE);
+    }
+
+    public void setPodcast(Boolean podcast) {
+        getStateHelper().put(PropertyKeys.podcast, podcast);
     }
 
 }

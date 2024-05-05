@@ -10,7 +10,7 @@
     </ui:define>
 
     <ui:define name="description">
-        FeedReader retrieves and displays content from a feed.
+        FeedReader retrieves and displays content from an RSS, Atom, or Itunes Podcast feed.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/feedreader"/>
@@ -20,7 +20,7 @@
             <p:feedReader value="https://www.nasa.gov/rss/dyn/breaking_news.rss" var="feed">
                 <div class="p-3">
                     <h:outputText value="#{feed.title}" styleClass="font-bold block" />
-                    <h:outputText value="#{feed.description.value}" escape="false"/>
+                    <h:outputText value="#{feed.description}" escape="false"/>
                     <p:divider/>
                 </div>
                 

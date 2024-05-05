@@ -363,9 +363,9 @@
 
             <!-- FeedReader -->
             <dependency>
-                <groupId>com.rometools</groupId>
-                <artifactId>rome</artifactId>
-                <version>1.19.0</version>
+                <groupId>com.apptasticsoftware</groupId>
+                <artifactId>rssreader</artifactId>
+                <version>3.6.0</version>
             </dependency>
 
             <!-- File Upload -->
