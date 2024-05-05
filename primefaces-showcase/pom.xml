@@ -17,12 +17,12 @@
     <name>PrimeFaces Showcase</name>
 
     <properties>
-<!--        <owb.version>4.0.2</owb.version>-->
         <hibernate-validator.version>8.0.1.Final</hibernate-validator.version>
-        <mojarra.version>4.0.6</mojarra.version>
+        <mojarra.version>4.0.7</mojarra.version>
         <myfaces.version>4.0.2</myfaces.version>
         <resteasy.version>6.2.8.Final</resteasy.version>
         <jetty.version>12.0.8</jetty.version>
+        <weld.version>5.1.2.Final</weld.version>
         <jsf.project.stage>Production</jsf.project.stage>
     </properties>
 
@@ -46,7 +46,7 @@
         <dependency>
             <groupId>org.glassfish</groupId>
             <artifactId>jakarta.faces</artifactId>
-            <version>4.0.7</version>
+            <version>${mojarra.version}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -266,21 +266,6 @@
                     <version>1.68.0</version>
                 </configuration>
             </plugin>
-            <!--
-            <plugin>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
-                <version>${jetty.maven.plugin.version}</version>
-                <configuration>
-                    <webAppConfig>
-                        <contextPath>/showcase</contextPath>
-                        <overrideDescriptor>src/main/webapp/WEB-INF/web-development.xml</overrideDescriptor>
-                    </webAppConfig>
-                    <scanIntervalSeconds>5</scanIntervalSeconds>
-                    <webXml>${project.build.directory}/web.xml</webXml>
-                </configuration>
-            </plugin>
-            -->
             <plugin>
                 <groupId>org.eclipse.jetty.ee10</groupId>
                 <artifactId>jetty-ee10-maven-plugin</artifactId>
@@ -292,13 +277,6 @@
                     </webApp>
                     <scan>5</scan>
                     <webXml>${project.build.directory}/web.xml</webXml>
-                    <!--
-                    <httpConnector>
-                        <host>0.0.0.0</host>
-                        <port>${jetty.port}</port>
-                        <idleTimeout>60000</idleTimeout>
-                    </httpConnector>
-                    -->
                 </configuration>
                 <dependencies>
                     <dependency>
@@ -447,7 +425,7 @@
                 <dependency>
                     <groupId>org.jboss.weld.servlet</groupId>
                     <artifactId>weld-servlet-core</artifactId>
-                    <version>5.1.2.Final</version>
+                    <version>${weld.version}</version>
                 </dependency>
             </dependencies>
             <build>
@@ -472,6 +450,7 @@
                     <scope>compile</scope>
                 </dependency>
 
+                <!-- all following dependencies are identical to non-ee - profile -->
                 <dependency>
                     <groupId>org.hibernate.validator</groupId>
                     <artifactId>hibernate-validator</artifactId>
@@ -500,16 +479,10 @@
                 </dependency>
 
                 <dependency>
-                    <groupId>org.apache.geronimo.specs</groupId>
-                    <artifactId>geronimo-atinject_1.0_spec</artifactId>
-                    <version>1.2</version>
+                    <groupId>org.jboss.weld.servlet</groupId>
+                    <artifactId>weld-servlet-core</artifactId>
+                    <version>${weld.version}</version>
                 </dependency>
-                <dependency>
-                    <groupId>org.apache.geronimo.specs</groupId>
-                    <artifactId>geronimo-jcdi_2.0_spec</artifactId>
-                    <version>1.3</version>
-                </dependency>
-
             </dependencies>
             <build>
                 <filters>
