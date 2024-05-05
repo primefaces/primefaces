@@ -30,6 +30,7 @@ import java.util.Map;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
+import org.primefaces.model.feedreader.FeedItem;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.FacetUtils;
 
@@ -38,15 +39,16 @@ public class FeedReaderRenderer extends CoreRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         FeedReader reader = (FeedReader) component;
-        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-        String var = reader.getVar();
-        int size = reader.getSize();
 
         try {
-            List entries = new FeedInput().parse(reader.getValue(), size);
+            Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+            String var = reader.getVar();
+            int size = reader.getSize();
+            String url = reader.getValue();
+            List<FeedItem> entries = RSSUtils.parse(url, size, reader.isPodcast());
 
-            for (Object f : entries) {
-                requestMap.put(var, f);
+            for (FeedItem item : entries) {
+                requestMap.put(var, item);
                 renderChildren(context, reader);
             }
 
@@ -54,6 +56,7 @@ public class FeedReaderRenderer extends CoreRenderer {
 
         }
         catch (Exception e) {
+            logDevelopmentWarning(context, this, String.format("Unexpected RSS error: %s", e.getMessage()));
             UIComponent errorFacet = reader.getFacet("error");
             if (FacetUtils.shouldRenderFacet(errorFacet)) {
                 errorFacet.encodeAll(context);
