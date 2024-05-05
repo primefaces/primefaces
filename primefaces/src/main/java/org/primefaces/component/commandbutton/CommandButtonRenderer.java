@@ -73,6 +73,7 @@ public class CommandButtonRenderer extends CoreRenderer {
         String type = button.getType();
         boolean pushButton = ("reset".equals(type) || "button".equals(type));
         Object value = button.getValue();
+        String form = button.getForm();
         String icon = button.getIcon();
         String title = button.getTitle();
         String onclick = null;
@@ -105,6 +106,10 @@ public class CommandButtonRenderer extends CoreRenderer {
 
         if (button.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", "disabled");
+        }
+
+        if (!isValueBlank(form)) {
+            writer.writeAttribute("data-pf-form", form, null);
         }
 
         //icon
