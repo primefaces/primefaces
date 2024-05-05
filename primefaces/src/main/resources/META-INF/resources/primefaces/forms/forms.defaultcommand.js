@@ -37,7 +37,10 @@ PrimeFaces.widget.DefaultCommand = PrimeFaces.widget.BaseWidget.extend({
         }
 
         //attach keypress listener to parent form
-        var closestForm = this.jqTarget.closest('form');
+        var closestForm = this.jqTarget[0].hasAttribute('data-pf-form')
+            ? $(PrimeFaces.escapeClientId(this.jqTarget[0].getAttribute('data-pf-form')))
+            : this.jqTarget.closest('form');
+
         closestForm.off('keydown.' + this.id).on('keydown.' + this.id, {scopeEnter: false}, function (e, data) {
             data = data || e.data;
             if (($this.scope && data.scopeEnter && data.scopeDefaultCommandId === $this.id)
