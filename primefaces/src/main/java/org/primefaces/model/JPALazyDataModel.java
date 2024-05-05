@@ -60,59 +60,15 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
     protected QueryEnricher<T> queryEnricher;
     protected FilterEnricher<T> filterEnricher;
     protected SortEnricher<T> sortEnricher;
-    protected SerializableSupplier<EntityManager> entityManager;
-    protected SerializableFunction<T, Object> rowKeyProvider;
+    protected Callbacks.SerializableSupplier<EntityManager> entityManager;
+    protected Callbacks.SerializableFunction<T, Object> rowKeyProvider;
+    protected Callbacks.SerializableConsumer<List<T>> resultEnricher;
 
     /**
      * For serialization only
      */
     public JPALazyDataModel() {
         // NOOP
-    }
-
-    /**
-     * Constructs a JpaLazyDataModel for usage without enabled selection.
-     *
-     * @param entityClass The entity class
-     * @param entityManager The {@link EntityManager}
-     *
-     * @deprecated Use {@link JPALazyDataModel#builder()} instead
-     */
-    @Deprecated
-    public JPALazyDataModel(Class<T> entityClass, SerializableSupplier<EntityManager> entityManager) {
-        this.entityClass = entityClass;
-        this.entityManager = entityManager;
-    }
-
-    /**
-     * Constructs a JpaLazyDataModel with selection support.
-     *
-     * @param entityClass The entity class
-     * @param entityManager The {@link EntityManager}
-     * @param rowKeyField The name of the rowKey property (e.g. "id")
-     *
-     * @deprecated Use {@link JPALazyDataModel#builder()} instead
-     */
-    @Deprecated
-    public JPALazyDataModel(Class<T> entityClass, SerializableSupplier<EntityManager> entityManager, String rowKeyField) {
-        this(entityClass, entityManager);
-        this.rowKeyField = rowKeyField;
-    }
-
-    /**
-     * Constructs a JpaLazyDataModel with selection support, with an already existing {@link Converter}.
-     *
-     * @param entityClass The entity class
-     * @param entityManager The {@link EntityManager}
-     * @param rowKeyConverter The converter, which will be used for converting the entity to a rowKey and vice versa
-     *
-     * @deprecated Use {@link JPALazyDataModel#builder()} instead
-     */
-    @Deprecated
-    public JPALazyDataModel(Class<T> entityClass, SerializableSupplier<EntityManager> entityManager, Converter<T> rowKeyConverter) {
-        super(rowKeyConverter);
-        this.entityClass = entityClass;
-        this.entityManager = entityManager;
     }
 
     @Override
@@ -150,7 +106,11 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
             queryEnricher.enrich(query);
         }
 
-        return query.getResultList();
+        List<T> result = query.getResultList();
+        if (resultEnricher != null) {
+            resultEnricher.accept(result);
+        }
+        return result;
     }
 
     protected void applyFilters(CriteriaBuilder cb,
@@ -159,8 +119,6 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
                                 Map<String, FilterMeta> filterBy) {
 
         List<Predicate> predicates = new ArrayList<>();
-
-        applyGlobalFilters(filterBy, cb, cq, root, predicates);
 
         if (filterBy != null) {
             FacesContext context = FacesContext.getCurrentInstance();
@@ -198,15 +156,6 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
             cq.where(
                 cb.and(predicates.toArray(new Predicate[0])));
         }
-    }
-
-    /**
-     * @deprecated use the builder and filterEnricher instead
-     */
-    @Deprecated
-    protected void applyGlobalFilters(Map<String, FilterMeta> filterBy, CriteriaBuilder cb, CriteriaQuery<?> cq,
-            Root<T> root, List<Predicate> predicates) {
-
     }
 
     protected Predicate createPredicate(FilterMeta filter,
@@ -370,7 +319,7 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         private final JPALazyDataModel<T> model;
 
         public Builder() {
-            model = new JPALazyDataModel<>(null, null, (String) null);
+            model = new JPALazyDataModel<>();
         }
 
         public Builder<T> entityClass(Class<T> entityClass) {
@@ -378,7 +327,7 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
             return this;
         }
 
-        public Builder<T> entityManager(SerializableSupplier<EntityManager> entityManager) {
+        public Builder<T> entityManager(Callbacks.SerializableSupplier<EntityManager> entityManager) {
             model.entityManager = entityManager;
             return this;
         }
@@ -388,20 +337,8 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
             return this;
         }
 
-        public Builder<T> rowKeyProvider(SerializableFunction<T, Object> rowKeyProvider) {
+        public Builder<T> rowKeyProvider(Callbacks.SerializableFunction<T, Object> rowKeyProvider) {
             model.rowKeyProvider = rowKeyProvider;
-            return this;
-        }
-
-        @Deprecated
-        public Builder<T> rowKey(String rowKey) {
-            model.rowKeyField = rowKey;
-            return this;
-        }
-
-        @Deprecated
-        public Builder<T> rowKey(SingularAttribute<T, ?> rowKeyMetamodel) {
-            model.rowKeyField = rowKeyMetamodel.getName();
             return this;
         }
 
@@ -443,6 +380,11 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
 
         public Builder<T> sortEnricher(SortEnricher<T> sortEnricher) {
             model.sortEnricher = sortEnricher;
+            return this;
+        }
+
+        public Builder<T> resultEnricher(Callbacks.SerializableConsumer<List<T>> resultEnricher) {
+            model.resultEnricher = resultEnricher;
             return this;
         }
 

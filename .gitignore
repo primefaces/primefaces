@@ -2,6 +2,7 @@
 **/target/**
 .settings/
 nbactions.xml
+**/dynamichart
 .DS_STORE
 .idea/
 !.idea/codeStyles/*

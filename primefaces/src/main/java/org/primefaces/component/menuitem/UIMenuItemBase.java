@@ -31,7 +31,7 @@ import org.primefaces.component.api.Confirmable;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.model.menu.MenuItem;
-import org.primefaces.util.SerializableFunction;
+import org.primefaces.util.Callbacks;
 
 
 public abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcomeTarget, MenuItem, Confirmable,
@@ -387,7 +387,7 @@ public abstract class UIMenuItemBase extends UICommand implements AjaxSource, UI
     }
 
     @Override
-    public SerializableFunction<MenuItem, String> getFunction() {
+    public Callbacks.SerializableFunction<MenuItem, String> getFunction() {
         return null;
     }
 
@@ -409,6 +409,7 @@ public abstract class UIMenuItemBase extends UICommand implements AjaxSource, UI
         getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
     }
 
+    @Override
     public Object getBadge() {
         return getStateHelper().eval(PropertyKeys.badge, null);
     }

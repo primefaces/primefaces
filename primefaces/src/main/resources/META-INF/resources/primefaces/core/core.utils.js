@@ -351,6 +351,9 @@ if (!PrimeFaces.utils) {
             widget.addDestroyListener(function() {
                 $(window).off(resizeNamespace);
             });
+            widget.addRefreshListener(function() {
+                $(window).off(resizeNamespace);
+            });
 
             $(window).off(resizeNamespace).on(resizeNamespace, params||null, function(e) {
                 if (element && (element.is(":hidden") || element.css('visibility') === 'hidden')) {
@@ -405,26 +408,31 @@ if (!PrimeFaces.utils) {
          * @return {PrimeFaces.UnbindCallback} unbind callback handler
          */
         registerScrollHandler: function(widget, scrollNamespace, scrollCallback) {
-            var scrollParent;
             var widgetJq = widget.getJQ();
-            if (widgetJq && typeof widgetJq.scrollParent === 'function') {
-                scrollParent = widgetJq.scrollParent();
-            }
+            var scrollParent = (widgetJq && typeof widgetJq.scrollParent === 'function') ? widgetJq.scrollParent() : null;
+
             if (!scrollParent || PrimeFaces.utils.isScrollParentWindow(scrollParent)) {
                 scrollParent = $(window);
             }
 
-            widget.addDestroyListener(function() {
-                scrollParent.off(scrollNamespace);
-            });
-
-            scrollParent.off(scrollNamespace).on(scrollNamespace, function(e) {
+            // To avoid holding the $(window) variable explicitly, you can directly bind and unbind 
+            // the scroll event on the window within the function itself.
+            var scrollHandler = function(e) {
                 scrollCallback(e);
+            };
+
+            scrollParent.off(scrollNamespace).on(scrollNamespace, scrollHandler);
+
+            widget.addDestroyListener(function() {
+                scrollParent.off(scrollNamespace, scrollHandler);
+            });
+            widget.addRefreshListener(function() {
+                scrollParent.off(scrollNamespace, scrollHandler);
             });
 
             return {
                 unbind: function() {
-                    scrollParent.off(scrollNamespace);
+                    scrollParent.off(scrollNamespace, scrollHandler);
                 }
             };
         },
@@ -526,10 +534,10 @@ if (!PrimeFaces.utils) {
         unbindScrollHandler: function(widget, scrollNamespace) {
             var scrollParent = widget.getJQ().scrollParent();
             if (PrimeFaces.utils.isScrollParentWindow(scrollParent)) {
-                scrollParent = $(window);
+                $(window).off(scrollNamespace); // Unbind directly from window
+            } else {
+                scrollParent.off(scrollNamespace);
             }
-
-            scrollParent.off(scrollNamespace);
         },
 
         /**
@@ -570,11 +578,15 @@ if (!PrimeFaces.utils) {
          * Blocks the enter key for an event like `keyup` or `keydown`. Useful in filter input events in many
          * components.
          * @param {JQuery.TriggeredEvent} e The key event that occurred.
+         * @return {boolean} `true` if ENTER key was blocked, false if not.
          */
         blockEnterKey: function(e) {
             if(e.key === 'Enter') {
                 e.preventDefault();
+                e.stopPropagation();
+                return true;
             }
+            return false;
         },
         
         /**
@@ -690,7 +702,7 @@ if (!PrimeFaces.utils) {
          * Enables a widget for editing and sets it style as enabled.
          *
          * @param {JQuery} jq a required jQuery element to enable
-         * @param {JQuery | undefined | null} input an optional jQuery input to enable (will use jq if null)
+         * @param {JQuery | undefined | null} [input] an optional jQuery input to enable (will use jq if null)
          */
         enableInputWidget: function(jq, input) {
             if(!input) {
@@ -706,7 +718,7 @@ if (!PrimeFaces.utils) {
          * Disables a widget from editing and sets it style as disabled.
          *
          * @param {JQuery} jq a required jQuery element to disable
-         * @param {JQuery | undefined | null} input an optional jQuery input to disable (will use jq if null)
+         * @param {JQuery | undefined | null} [input] an optional jQuery input to disable (will use jq if null)
          */
         disableInputWidget: function(jq, input) {
             if(!input) {
@@ -880,6 +892,15 @@ if (!PrimeFaces.utils) {
         },
 
         /**
+         * Formats the allowTypes regex pattern in a more human-friendly format.
+         * @param {string} allowTypes The allowTypes regex pattern to format
+         * @return {string} The allowTypes formatted in a more human-friendly format.
+         */
+        formatAllowTypes: function(allowTypes) {
+            return allowTypes === undefined ? '' : allowTypes.replace("/(\\.|\\/)(", "").replace(")$/", "");
+        },
+
+        /**
          * Formats the given data size in a more human-friendly format, e.g., `1.5 MB` etc.
          * @param {number} bytes File size in bytes to format
          * @return {string} The given file size, formatted in a more human-friendly format.
@@ -1021,7 +1042,7 @@ if (!PrimeFaces.utils) {
          * Queue a microtask if delay is 0 or less and setTimeout if > 0.
          *
          * @param {() => void} fn the function to call after the delay
-         * @param {number | undefined} delay the optional delay in milliseconds
+         * @param {number | undefined} [delay] the optional delay in milliseconds
          * @return {number | undefined} the id associated to the timeout or undefined if no timeout used
          */
         queueTask: function(fn, delay) {
@@ -1056,6 +1077,73 @@ if (!PrimeFaces.utils) {
                     PrimeFaces.warn("Stopping IdleMonitor");
                     widget.pause();
                 }
+            }
+        },
+
+        /**
+         * Retrieves the subsequent z-index for a sticky element. Typically, a sticky element requires a 
+         * z-index higher than the current one, but certain scenarios arise, such as when an overlay mask 
+         * is present or when there are multiple sticky elements on the page, necessitating a z-index 
+         * one lower than the highest among them.
+         *
+         * @return {string} the next `z-index` as a string.
+         * @see {@link https://github.com/primefaces/primefaces/issues/10299|GitHub Issue 10299}
+         * @see {@link https://github.com/primefaces/primefaces/issues/9259|GitHub Issue 9259}
+         */
+        nextStickyZindex: function() {
+            // Get the z-index of the highest visible sticky, or use PrimeFaces.nextZindex() + 1 if none found
+            var zIndex = $('.ui-sticky:visible').last().zIndex() || PrimeFaces.nextZindex() + 1;
+
+            // GitHub #9295 Adjust z-index based on overlays
+            var overlays = $('.ui-widget-overlay:visible');
+            if (overlays.length) {
+                overlays.each(function() {
+                    var currentZIndex = $(this).zIndex() - 1;
+                    zIndex = Math.min(currentZIndex, zIndex);
+                });
+            }
+
+            // Decrease zIndex by 1 and return
+            return zIndex - 1;
+        },
+        
+        /**
+         * Deletes all events, 'on' attributes, data, and the element itself in a recursive manner, 
+         * ensuring that the garbage collector does not retain any references to this element or its children.
+         *
+         * @param {JQuery | undefined} jq jQuery object to cleanse
+         * @param {boolean} [clearData] flag to clear data off elements (default to true)
+         * @param {boolean} [removeElement] flag to remove the element from DOM (default to true)
+         * @see {@link https://github.com/primefaces/primefaces/issues/11696|GitHub Issue 11696}
+         * @see {@link https://github.com/primefaces/primefaces/issues/11702|GitHub Issue 11702}
+         */
+        cleanseDomElement: function(jq, clearData = true, removeElement = true) {
+            if (!jq || !jq.length) {
+                return;
+            }
+            // Recursively remove events from children elements
+            jq.children().each(function() {
+                PrimeFaces.utils.cleanseDomElement($(this), clearData, removeElement);
+            });
+
+            // Remove inline event attributes
+            var attributes = jq[0].attributes;
+            for (var i = 0; i < attributes.length; i++) {
+                var attributeName = attributes[i].name;
+                if (attributeName.startsWith("on")) {
+                    jq.removeAttr(attributeName);
+                }
+            }
+            // Remove event listeners
+            jq.off();
+            
+            // Clear data
+            if (clearData) {
+                jq.removeData();
+            }
+            // Remove elements itself from memory
+            if (removeElement) {
+                jq.remove();
             }
         },
     };

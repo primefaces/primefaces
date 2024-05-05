@@ -50,7 +50,7 @@ public class UICacheRenderer extends CoreRenderer {
             if (LOGGER.isLoggable(Level.WARNING)) {
                 boolean moveScriptsToBottom = PrimeRequestContext.getCurrentInstance().getApplicationContext().getConfig().isMoveScriptsToBottom();
                 if (moveScriptsToBottom) {
-                    logDevelopmentWarning(context,
+                    logDevelopmentWarning(context, this,
                             "Using p:cache in combination with PrimeFaces.MOVE_SCRIPTS_TO_BOTTOM may cause Javascript code to stop working.");
                 }
             }

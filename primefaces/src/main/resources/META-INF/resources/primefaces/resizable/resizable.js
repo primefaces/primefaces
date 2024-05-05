@@ -62,7 +62,7 @@ PrimeFaces.widget.Resizable = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     renderDeferred: function() {
-        if(this.jqTarget.is(':visible')) {
+        if (this.jqTarget.is(':visible')) {
             this._render();
         }
         else {
@@ -85,7 +85,7 @@ PrimeFaces.widget.Resizable = PrimeFaces.widget.BaseWidget.extend({
      * @return {boolean} `true` if the target widget is visible, or `false` otherwise.
      */
     render: function() {
-        if(this.jqTarget.is(':visible')) {
+        if (this.jqTarget.is(':visible')) {
             this._render();
             return true;
         }
@@ -98,37 +98,43 @@ PrimeFaces.widget.Resizable = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     _render: function() {
-        if(this.cfg.ajaxResize) {
+        if (this.cfg.ajaxResize) {
             this.cfg.formId = $(this.target).parents('form:first').attr('id');
         }
 
         if (this.cfg.isContainment) {
-        	this.cfg.containment = PrimeFaces.escapeClientId(this.cfg.parentComponentId);
+            this.cfg.containment = PrimeFaces.escapeClientId(this.cfg.parentComponentId);
         }
 
-        var _self = this;
+        var $this = this;
 
         this.cfg.stop = function(event, ui) {
-            if(_self.cfg.onStop) {
-                _self.cfg.onStop.call(_self, event, ui);
+            if ($this.cfg.onStop) {
+                $this.cfg.onStop.call($this, event, ui);
             }
 
-            _self.fireAjaxResizeEvent(event, ui);
+            $this.fireAjaxResizeEvent(event, ui);
         };
 
         this.cfg.start = function(event, ui) {
-            if(_self.cfg.onStart) {
-                _self.cfg.onStart.call(_self, event, ui);
+            if ($this.cfg.onStart) {
+                $this.cfg.onStart.call($this, event, ui);
             }
         };
 
         this.cfg.resize = function(event, ui) {
-            if(_self.cfg.onResize) {
-                _self.cfg.onResize.call(_self, event, ui);
+            if ($this.cfg.onResize) {
+                $this.cfg.onResize.call($this, event, ui);
             }
         };
 
         this.jqTarget.resizable(this.cfg);
+
+        this.addDestroyListener(function() {
+            if ($this.jqTarget.length) {
+                $this.jqTarget.resizable('destroy');
+            }
+        });
 
         this.removeScriptElement(this.id);
     },
@@ -140,11 +146,11 @@ PrimeFaces.widget.Resizable = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQueryUI.ResizableUIParams} ui Data of the resize event.
      */
     fireAjaxResizeEvent: function(event, ui) {
-        if(this.hasBehavior('resize')) {
+        if (this.hasBehavior('resize')) {
             var ext = {
                 params: [
-                    {name: this.id + '_width', value: parseInt(ui.helper.width())},
-                    {name: this.id + '_height', value: parseInt(ui.helper.height())}
+                    { name: this.id + '_width', value: parseInt(ui.helper.width()) },
+                    { name: this.id + '_height', value: parseInt(ui.helper.height()) }
                 ]
             };
 

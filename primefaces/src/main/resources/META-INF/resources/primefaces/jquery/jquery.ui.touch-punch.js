@@ -1,5 +1,5 @@
-/*
- * jQuery UI Touch Punch 1.0.9 as modified by RWAP Software
+/*!
+ * jQuery UI Touch Punch 1.1.5 as modified by RWAP Software
  * based on original touchpunch v0.2.3 which has not been updated since 2014
  *
  * Updates by RWAP Software to take account of various suggested changes on the original code issues
@@ -28,24 +28,24 @@
 }(function ($) {
 
   // Detect touch support - Windows Surface devices and other touch devices
-  $.support.mspointer = window.navigator.msPointerEnabled;      
-  $.support.touch = ( 'ontouchstart' in document
-    || 'ontouchstart' in window
-    || window.TouchEvent
-    || (window.DocumentTouch && document instanceof DocumentTouch)
-    || navigator.maxTouchPoints > 0
-    || navigator.msMaxTouchPoints > 0
+  $.mspointer = window.navigator.msPointerEnabled;		
+  $.touch = ( 'ontouchstart' in document
+   	|| 'ontouchstart' in window
+   	|| window.TouchEvent
+   	|| (window.DocumentTouch && document instanceof DocumentTouch)
+   	|| navigator.maxTouchPoints > 0
+   	|| navigator.msMaxTouchPoints > 0
   );
 
   // Ignore browsers without touch or mouse support
-  if ((!$.support.touch && !$.support.mspointer) || !$.ui.mouse) {
-    return;
+  if ((!$.touch && !$.mspointer) || !$.ui.mouse) {
+	return;
   }
 
-  var mouseProto = $.ui.mouse.prototype,
+  let mouseProto = $.ui.mouse.prototype,
       _mouseInit = mouseProto._mouseInit,
       _mouseDestroy = mouseProto._mouseDestroy,
-      touchHandled;
+      touchHandled, lastClickTime  = 0;
 
     /**
     * Get the x,y position of a touch event
@@ -80,27 +80,16 @@
       event.preventDefault();
     }
 
-    var touch = event.originalEvent.changedTouches[0],
-        simulatedEvent = document.createEvent('MouseEvents');
-
-    // Initialize the simulated mouse event using the touch event's coordinates
-    simulatedEvent.initMouseEvent(
-      simulatedType,    // type
-      true,             // bubbles
-      true,             // cancelable
-      window,           // view
-      1,                // detail
-      touch.screenX,    // screenX
-      touch.screenY,    // screenY
-      touch.clientX,    // clientX
-      touch.clientY,    // clientY
-      false,            // ctrlKey
-      false,            // altKey
-      false,            // shiftKey
-      false,            // metaKey
-      0,                // button
-      null              // relatedTarget
-    );
+    let touch = event.originalEvent.changedTouches[0],
+        simulatedEvent = new MouseEvent(simulatedType, {
+          bubbles: true,
+          cancelable: true,
+          view:window,
+          screenX:touch.screenX,
+          screenY:touch.screenY,
+          clientX:touch.clientX,
+          clientY:touch.clientY
+        });
 
     // Dispatch the simulated event to the target element
     event.target.dispatchEvent(simulatedEvent);
@@ -112,7 +101,7 @@
    */
   mouseProto._touchStart = function (event) {
 
-    var self = this;
+    let self = this;
 
     // Interaction time
     this._startedMove = event.timeStamp;
@@ -179,12 +168,16 @@
     // If the touch interaction did not move, it should trigger a click
     // Check for this in two ways - length of time of simulation and distance moved
     // Allow for Apple Stylus to be used also
-    var timeMoving = event.timeStamp - this._startedMove;
+    let timeMoving = event.timeStamp - this._startedMove;
     if (!this._touchMoved || timeMoving < 500) {
         // Simulate the click event
-        simulateMouseEvent(event, 'click');
+        if( event.timeStamp - lastClickTime < 400 )
+            simulateMouseEvent(event, 'dblclick');
+        else
+            simulateMouseEvent(event, 'click');
+        lastClickTime = event.timeStamp;	    
     } else {
-      var endPos = getTouchCoords(event);
+      let endPos = getTouchCoords(event);
       if ((Math.abs(endPos.x - this._startPos.x) < 10) && (Math.abs(endPos.y - this._startPos.y) < 10)) {
 
           // If the touch interaction did not move, it should trigger a click
@@ -202,6 +195,10 @@
     touchHandled = false;
   };
 
+  let _touchStartBound;
+  let _touchMoveBound;
+  let _touchEndBound;
+
   /**
    * A duck punch of the $.ui.mouse _mouseInit method to support touch events.
    * This method extends the widget with bound touch event handlers that
@@ -210,18 +207,22 @@
    */
   mouseProto._mouseInit = function () {
 
-    var self = this;
-      
+    let self = this;
+	  
     // Microsoft Surface Support = remove original touch Action
     if ($.support.mspointer) {
       self.element[0].style.msTouchAction = 'none';
-    }     
+    }	
+
+    _touchStartBound = mouseProto._touchStart.bind(self);
+    _touchMoveBound  = mouseProto._touchMove.bind(self);
+    _touchEndBound   = mouseProto._touchEnd.bind(self);	  
 
     // Delegate the touch handlers to the widget's element
     self.element.on({
-      touchstart: $.proxy(self, '_touchStart'),
-      touchmove: $.proxy(self, '_touchMove'),
-      touchend: $.proxy(self, '_touchEnd')
+      touchstart: _touchStartBound,
+      touchmove: _touchMoveBound,
+      touchend: _touchEndBound
     });
 
     // Call the original $.ui.mouse init method
@@ -233,13 +234,13 @@
    */
   mouseProto._mouseDestroy = function () {
 
-    var self = this;
+    let self = this;
 
     // Delegate the touch handlers to the widget's element
     self.element.off({
-      touchstart: $.proxy(self, '_touchStart'),
-      touchmove: $.proxy(self, '_touchMove'),
-      touchend: $.proxy(self, '_touchEnd')
+      touchstart: _touchStartBound,
+      touchmove: _touchMoveBound,
+      touchend: _touchEndBound
     });
 
     // Call the original $.ui.mouse destroy method

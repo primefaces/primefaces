@@ -152,7 +152,6 @@ public class InputNumberRenderer extends InputRenderer {
         writer.writeAttribute("id", inputId, null);
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", "hidden", null);
-        writer.writeAttribute("autocomplete", "off", null);
         writer.writeAttribute("value", valueToRender, null);
 
         if (inputNumber.getOnchange() != null) {
@@ -392,7 +391,7 @@ public class InputNumberRenderer extends InputRenderer {
         return formatForPlugin(maximum);
     }
 
-    private boolean isIntegral(FacesContext context, InputNumber inputNumber, Object value) {
+    protected boolean isIntegral(FacesContext context, InputNumber inputNumber, Object value) {
         if (value != null) {
             return value instanceof Long
                     || value instanceof Integer
@@ -402,7 +401,9 @@ public class InputNumberRenderer extends InputRenderer {
         }
 
         Class<?> type = getTypeFromValueExpression(context, inputNumber);
-        if (type == null) {
+
+        // #11791 Number is the superclass for all the types so it could be a decimal
+        if (type == null || type == Number.class) {
             return false;
         }
 

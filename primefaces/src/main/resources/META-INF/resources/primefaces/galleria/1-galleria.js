@@ -81,9 +81,14 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     /**
-     * Shows content on fullscreen mode.
+     * Displays content in fullscreen mode. The index will correspond to the item to be shown, otherwise,
+     * it will default to the last loaded image.
+     * @param {number} [index] optional index of the item to show
      */
-    show: function() {
+    show: function(index) {
+        if (index !== undefined) {
+            this.primeGalleriaWidget.setState({ activeIndex: index }); 
+        }
         this.primeGalleriaWidget.show();
     },
 

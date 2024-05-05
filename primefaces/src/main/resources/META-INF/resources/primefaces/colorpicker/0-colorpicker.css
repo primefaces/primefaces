@@ -88,8 +88,8 @@
   background-image: linear-gradient(90deg, rgba(0,0,0,0), currentColor);
 }
 
-.clr-hue input,
-.clr-alpha input {
+.clr-hue input[type="range"],
+.clr-alpha input[type="range"] {
   position: absolute;
   width: calc(100% + 32px);
   height: 16px;

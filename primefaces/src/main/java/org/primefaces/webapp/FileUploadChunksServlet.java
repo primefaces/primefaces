@@ -35,7 +35,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.primefaces.util.Constants;
 import org.primefaces.util.FileUploadUtils;
 
 public class FileUploadChunksServlet extends HttpServlet {
@@ -45,10 +44,6 @@ public class FileUploadChunksServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        String uploader = getServletContext().getInitParameter(Constants.ContextParams.UPLOADER);
-        if ("commons".equals(uploader)) {
-            throw new ServletException("Resuming chunked file uploads is not supported with commons uploader.");
-        }
     }
 
     @Override

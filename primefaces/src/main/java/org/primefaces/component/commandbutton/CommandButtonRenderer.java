@@ -111,7 +111,7 @@ public class CommandButtonRenderer extends CoreRenderer {
         if (button.isEnabledByValidateClient()) {
             writer.writeAttribute("data-pf-validateclient-dynamic", button.isEnabledByValidateClient(), "data-pf-validateclient-dynamic");
             writer.writeAttribute("data-pf-validateclient-source", "button", "data-pf-validateclient-source");
-            writer.writeAttribute("data-pf-validateclient-ajax", Boolean.valueOf(button.isAjax()).toString(), "data-pf-validateclient-ajax");
+            writer.writeAttribute("data-pf-validateclient-ajax", Boolean.toString(button.isAjax()), "data-pf-validateclient-ajax");
             writer.writeAttribute("data-pf-validateclient-process", SearchExpressionUtils.resolveClientIdsForClientSide(context, button, button.getProcess()),
                     "data-pf-validateclient-process");
             writer.writeAttribute("data-pf-validateclient-update", SearchExpressionUtils.resolveClientIdsForClientSide(context, button, button.getUpdate()),

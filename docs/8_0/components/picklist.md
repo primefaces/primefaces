@@ -7,7 +7,7 @@ PickList is used for transferring data between two different collections.
 | Name | Value |
 | --- | --- |
 | Tag | pickList
-| Component Class | org.primefaces.component.picklist.Panel
+| Component Class | org.primefaces.component.picklist.PickList
 | Component Type | org.primefaces.component.PickList
 | Component Family | org.primefaces.component |
 | Renderer Type | org.primefaces.component.PickListRenderer

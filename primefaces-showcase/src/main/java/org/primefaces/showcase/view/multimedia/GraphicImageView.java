@@ -24,7 +24,7 @@
 package org.primefaces.showcase.view.multimedia;
 
 import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartUtilities;
+import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
@@ -81,7 +81,7 @@ public class GraphicImageView {
                         try {
                             JFreeChart jfreechart = ChartFactory.createPieChart("Cities", createDataset(), true, true, false);
                             File chartFile = new File("dynamichart");
-                            ChartUtilities.saveChartAsPNG(chartFile, jfreechart, 375, 300);
+                            ChartUtils.saveChartAsPNG(chartFile, jfreechart, 375, 300);
                             return new FileInputStream(chartFile);
                         }
                         catch (Exception e) {
@@ -104,7 +104,7 @@ public class GraphicImageView {
                     .writer((os) -> {
                         try {
                             JFreeChart jfreechart = ChartFactory.createPieChart("Cities", createDataset(), true, true, false);
-                            ChartUtilities.writeChartAsPNG(os, jfreechart, 375, 300);
+                            ChartUtils.writeChartAsPNG(os, jfreechart, 375, 300);
                         }
                         catch (Exception e) {
                             e.printStackTrace();
@@ -129,8 +129,8 @@ public class GraphicImageView {
         return array;
     }
 
-    private PieDataset createDataset() {
-        DefaultPieDataset dataset = new DefaultPieDataset();
+    private PieDataset<String> createDataset() {
+        DefaultPieDataset<String> dataset = new DefaultPieDataset<String>();
         dataset.setValue("New York", Double.valueOf(45.0));
         dataset.setValue("London", Double.valueOf(15.0));
         dataset.setValue("Paris", Double.valueOf(25.2));

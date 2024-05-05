@@ -24,6 +24,7 @@
 package org.primefaces.component.datepicker;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.time.chrono.IsoChronology;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
@@ -582,7 +583,7 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         if (fractionSeparator == null) {
             // Determine separator for locale
             Locale locale = calculateLocale(getFacesContext());
-            char ds = ((DecimalFormat) DecimalFormat.getInstance(locale)).getDecimalFormatSymbols().getDecimalSeparator();
+            char ds = ((DecimalFormat) NumberFormat.getInstance(locale)).getDecimalFormatSymbols().getDecimalSeparator();
             fractionSeparator = Character.toString(ds);
         }
         return fractionSeparator;

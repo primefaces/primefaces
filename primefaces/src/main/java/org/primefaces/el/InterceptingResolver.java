@@ -82,8 +82,6 @@ public class InterceptingResolver extends ELResolver {
         return delegate.getCommonPropertyType(context, base);
     }
 
-    // @Override
-    // < EL 2.2 compatibility
     @Override
     public Object invoke(ELContext context,
             Object base,
@@ -91,5 +89,10 @@ public class InterceptingResolver extends ELResolver {
             Class<?>[] paramTypes,
             Object[] params) {
         return delegate.invoke(context, base, method, paramTypes, params);
+    }
+
+    @Override
+    public Object convertToType(ELContext context, Object obj, Class<?> type) {
+        return delegate.convertToType(context, obj, type);
     }
 }

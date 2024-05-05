@@ -7,7 +7,7 @@
 
 .ui-columntoggler .ui-columntoggler-items {
     border: 0 none;
-    padding: 0.4em;
+    padding:1em 0.4em 0.4em 0.4em;
     margin: 0;
 }
 
@@ -51,10 +51,6 @@
 
 .ui-columntoggler .ui-columntoggler-close:focus {
     outline: dotted thin;
-}
-
-.ui-columntoggler .ui-columntoggler-items {
-    padding:1em 0.4em 0.4em 0.4em;
 }
 
 /* Column Priorities */

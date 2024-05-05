@@ -20,7 +20,7 @@
         <div class="card">
             <h:form>
                 <h5>Basic</h5>
-                <p:tree value="#{treeBasicView.root}" var="node" filterBy="#{node}">
+                <p:tree value="#{treeBasicView.root}" var="node" filterBy="#{node}" filterDelay="400">
                     <p:treeNode>
                         <h:outputText value="#{node}"/>
                     </p:treeNode>

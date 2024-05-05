@@ -79,6 +79,6 @@
     border-top-style: dotted;
 }
 
-.ui-divider.ui-divider-dotted.ui-divider-horizontal:before {
+.ui-divider.ui-divider-dotted.ui-divider-vertical:before {
     border-left-style: dotted;
 }

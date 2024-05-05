@@ -44,7 +44,7 @@
 
     <function>
         <function-name>shouldRenderFacet</function-name>
-        <function-class>org.primefaces.util.ComponentUtils</function-class>
+        <function-class>org.primefaces.util.FacetUtils</function-class>
         <function-signature>java.lang.Boolean shouldRenderFacet(javax.faces.component.UIComponent)</function-signature>
     </function>
 
@@ -114,7 +114,7 @@
         </validator>
         <attribute>
             <description>
-                <![CDATA[Regular expression for accepted file types, e.g., /(\.|\/)(gif|jpe?g|png)$/]]>
+                <![CDATA[Regular expression for accepted file types, e.g., /(\.|\/)(gif|jpeg|jpg|png)$/]]>
             </description>
             <name>allowTypes</name>
             <required>false</required>
@@ -1810,6 +1810,14 @@
                 <![CDATA[Highlights the first suggested item automatically. Default is true.]]>
             </description>
             <name>autoHighlight</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Should the empty message be displayed when no items are found? Default is true.]]>
+            </description>
+            <name>showEmptyMessage</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -3719,7 +3727,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[Captcha is a form validation component based on Recaptcha API.]]>
+            <![CDATA[Captcha is a form validation component based on Recaptcha/hCaptcha API.]]>
         </description>
         <tag-name>captcha</tag-name>
         <component>
@@ -3825,6 +3833,22 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Which captcha to use, either 'g-recaptcha' for Google reCaptcha or 'h-captcha` for hCaptcha. Default is 'g-recaptcha'.]]>
+            </description>
+            <name>type</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[JavaScript global executor for the captcha. Default is 'grecaptcha'.]]>
+            </description>
+            <name>executor</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Theme of the captcha either 'light', 'dark', or 'auto'. Default is auto.]]>
             </description>
             <name>theme</name>
@@ -3884,6 +3908,14 @@
                 <![CDATA[URL for the ReCaptcha JavaScript file. Some countries do not have access to Google.]]>
             </description>
             <name>sourceUrl</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[URL for the verification of the captcha.]]>
+            </description>
+            <name>verifyUrl</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -7828,7 +7860,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Position of the paginator. Default is both.]]>
+                <![CDATA[Paginator can be positioned at the "top," "bottom," or "both." Default setting is "both."]]>
             </description>
             <name>paginatorPosition</name>
             <required>false</required>
@@ -7881,14 +7913,6 @@
             <name>lazy</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Layout approach to use, valid values are "tabular" and "grid" (default) for responsive grid.]]>
-            </description>
-            <name>layout</name>
-            <required>false</required>
-            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -8605,7 +8629,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Client side event to invoke datatable filtering for input fields. Default is keyup.]]>
+                <![CDATA[Client side event to invoke filtering. If "enter" it will only filter after ENTER key is pressed. Default is keyup.]]>
             </description>
             <name>filterEvent</name>
             <required>false</required>
@@ -10779,7 +10803,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Regular expression for accepted file types, e.g., /(\.|\/)(gif|jpe?g|png)$/]]>
+                <![CDATA[Regular expression for accepted file types, e.g., /(\.|\/)(gif|jpeg|jpg|png)$/]]>
             </description>
             <name>allowTypes</name>
             <required>false</required>
@@ -10787,7 +10811,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Maximum number of files to be uploaded.]]>
+                <![CDATA[Maximum number of files to be uploaded. Deprecated please attach 'p:validateFile'.]]>
             </description>
             <name>fileLimit</name>
             <required>false</required>
@@ -10795,7 +10819,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Individual file size limit in bytes. Default is unlimited.]]>
+                <![CDATA[Individual file size limit in bytes. Default is unlimited. Deprecated please attach 'p:validateFile'.]]>
             </description>
             <name>sizeLimit</name>
             <required>false</required>
@@ -10915,7 +10939,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Message template to use when displaying file validation errors. Default is "{name} {size}".]]>
+                <![CDATA[Message template to use when displaying file in simple upload mode and some client side validation messages in advanced mode. Default is "{name} {size}".]]>
             </description>
             <name>messageTemplate</name>
             <required>false</required>
@@ -11491,7 +11515,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Type of the map. Required.]]>
+                <![CDATA[There are four types of maps available: roadmap, satellite, hybrid, and terrain. Required.]]>
             </description>
             <name>type</name>
             <required>true</required>
@@ -14157,209 +14181,6 @@
                 <![CDATA[Defines where should be positioned the caret on focus such as 'start', 'end', 'decimalLeft', 'decimalRight', default is null.]]>
             </description>
             <name>caretPositionOnFocus</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-    </tag>
-    <tag>
-        <description>
-            <![CDATA[Deprecated since 10.0 for removal in 15.0.0)]]>
-        </description>
-        <tag-name>inputSwitch</tag-name>
-        <component>
-            <component-type>org.primefaces.InputSwitch</component-type>
-            <renderer-type>org.primefaces.component.InputSwitchRenderer</renderer-type>
-        </component>
-        <attribute>
-            <description>
-                <![CDATA[Unique identifier of the component in a namingContainer.]]>
-            </description>
-            <name>id</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
-            </description>
-            <name>rendered</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
-            </description>
-            <name>binding</name>
-            <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Value of the component.]]>
-            </description>
-            <name>value</name>
-            <required>false</required>
-            <type>java.lang.Object</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[An el expression or a literal text that defines a converter for the component. When it's an EL expression, it's resolved to a converter instance.
-    In case it's a static text, it must refer to a converter id.]]>
-            </description>
-            <name>converter</name>
-            <required>false</required>
-            <type>javax.faces.convert.Converter</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[When set true, process validations logic is executed at apply request values phase for this component. Default is false.]]>
-            </description>
-            <name>immediate</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Marks component as required.]]>
-            </description>
-            <name>required</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[A method expression referring to a method validating the input.]]>
-            </description>
-            <name>validator</name>
-            <required>false</required>
-            <type>javax.faces.validator.Validator</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[A method binding expression referring to a method for handling a valuchangeevent.]]>
-            </description>
-            <name>valueChangeListener</name>
-            <required>false</required>
-            <type>javax.faces.event.ValueChangeListener</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Message to display when required field validation fails.]]>
-            </description>
-            <name>requiredMessage</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Message to display when conversion fails.]]>
-            </description>
-            <name>converterMessage</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Message to display when validation fails.]]>
-            </description>
-            <name>validatorMessage</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Name of the client side widget.]]>
-            </description>
-            <name>widgetVar</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Custom label for on state.]]>
-            </description>
-            <name>onLabel</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Custom label for off state.]]>
-            </description>
-            <name>offLabel</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[User presentable name.]]>
-            </description>
-            <name>label</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Disables or enables the switch.]]>
-            </description>
-            <name>disabled</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Client side callback to execute on value change event.]]>
-            </description>
-            <name>onchange</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Inline style of the main container.]]>
-            </description>
-            <name>style</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Style class of the main container.]]>
-            </description>
-            <name>styleClass</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[The tabindex attribute specifies the tab order of an element when the "tab" button is used for navigating.]]>
-            </description>
-            <name>tabindex</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Controls the visibility of the labels, defaults to true.]]>
-            </description>
-            <name>showLabels</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Client side callback to execute when component receives focus.]]>
-            </description>
-            <name>onfocus</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Client side callback to execute when component loses focus.]]>
-            </description>
-            <name>onblur</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -21145,7 +20966,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Client side event to invoke picklist filtering for input fields. Default is keyup.]]>
+                <![CDATA[Client side event to invoke filtering. If "enter" it will only filter after ENTER key is pressed. Default is keyup.]]>
             </description>
             <name>filterEvent</name>
             <required>false</required>
@@ -30161,6 +29982,22 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Client side event to invoke filtering. If "enter" it will only filter after ENTER key is pressed. Default is keyup.]]>
+            </description>
+            <name>filterEvent</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Delay to wait in milliseconds before sending each filter query. Default is 300.]]>
+            </description>
+            <name>filterDelay</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Disables tree.]]>
             </description>
             <name>disabled</name>
@@ -30677,7 +30514,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Client side event to invoke treetable filtering for input fields. Default is keyup.]]>
+                <![CDATA[Client side event to invoke filtering. If "enter" it will only filter after ENTER key is pressed. Default is keyup.]]>
             </description>
             <name>filterEvent</name>
             <required>false</required>
@@ -31433,7 +31270,7 @@
                 <![CDATA[JSON value of the chart.]]>
             </description>
             <name>value</name>
-            <required>true</required>
+            <required>false</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
@@ -31462,601 +31299,9 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Name of javascript function to extend the options of the underlying fullcalendar plugin.]]>
+                <![CDATA[Name of javascript function to extend the options of the underlying Chart.js plugin.]]>
             </description>
             <name>extender</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-    </tag>
-    <tag>
-        <description>
-            <![CDATA[]]>
-        </description>
-        <tag-name>barChart</tag-name>
-        <component>
-            <component-type>org.primefaces.component.BarChart</component-type>
-            <renderer-type>org.primefaces.component.BarChartRenderer</renderer-type>
-        </component>
-        <attribute>
-            <description>
-                <![CDATA[Unique identifier of the component in a namingContainer.]]>
-            </description>
-            <name>id</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
-            </description>
-            <name>rendered</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
-            </description>
-            <name>binding</name>
-            <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Name of the client side widget.]]>
-            </description>
-            <name>widgetVar</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Model of the chart.]]>
-            </description>
-            <name>model</name>
-            <required>false</required>
-            <type>org.primefaces.model.charts.bar.BarChartModel</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Inline style of the component.]]>
-            </description>
-            <name>style</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Style class of the component.]]>
-            </description>
-            <name>styleClass</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]>
-            </description>
-            <name>ariaLabel</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-    </tag>
-    <tag>
-        <description>
-            <![CDATA[]]>
-        </description>
-        <tag-name>bubbleChart</tag-name>
-        <component>
-            <component-type>org.primefaces.component.BubbleChart</component-type>
-            <renderer-type>org.primefaces.component.BubbleChartRenderer</renderer-type>
-        </component>
-        <attribute>
-            <description>
-                <![CDATA[Unique identifier of the component in a namingContainer.]]>
-            </description>
-            <name>id</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
-            </description>
-            <name>rendered</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
-            </description>
-            <name>binding</name>
-            <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Name of the client side widget.]]>
-            </description>
-            <name>widgetVar</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Model of the chart.]]>
-            </description>
-            <name>model</name>
-            <required>false</required>
-            <type>org.primefaces.model.charts.bubble.BubbleChartModel</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Inline style of the component.]]>
-            </description>
-            <name>style</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Style class of the component.]]>
-            </description>
-            <name>styleClass</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]>
-            </description>
-            <name>ariaLabel</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-    </tag>
-    <tag>
-        <description>
-            <![CDATA[]]>
-        </description>
-        <tag-name>donutChart</tag-name>
-        <component>
-            <component-type>org.primefaces.component.DonutChart</component-type>
-            <renderer-type>org.primefaces.component.DonutChartRenderer</renderer-type>
-        </component>
-        <attribute>
-            <description>
-                <![CDATA[Unique identifier of the component in a namingContainer.]]>
-            </description>
-            <name>id</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
-            </description>
-            <name>rendered</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
-            </description>
-            <name>binding</name>
-            <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Name of the client side widget.]]>
-            </description>
-            <name>widgetVar</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Model of the chart.]]>
-            </description>
-            <name>model</name>
-            <required>false</required>
-            <type>org.primefaces.model.charts.donut.DonutChartModel</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Inline style of the component.]]>
-            </description>
-            <name>style</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Style class of the component.]]>
-            </description>
-            <name>styleClass</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]>
-            </description>
-            <name>ariaLabel</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-    </tag>
-    <tag>
-        <description>
-            <![CDATA[]]>
-        </description>
-        <tag-name>lineChart</tag-name>
-        <component>
-            <component-type>org.primefaces.component.LineChart</component-type>
-            <renderer-type>org.primefaces.component.LineChartRenderer</renderer-type>
-        </component>
-        <attribute>
-            <description>
-                <![CDATA[Unique identifier of the component in a namingContainer.]]>
-            </description>
-            <name>id</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
-            </description>
-            <name>rendered</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
-            </description>
-            <name>binding</name>
-            <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Name of the client side widget.]]>
-            </description>
-            <name>widgetVar</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Model of the chart.]]>
-            </description>
-            <name>model</name>
-            <required>false</required>
-            <type>org.primefaces.model.charts.line.LineChartModel</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Inline style of the component.]]>
-            </description>
-            <name>style</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Style class of the component.]]>
-            </description>
-            <name>styleClass</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]>
-            </description>
-            <name>ariaLabel</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-    </tag>
-    <tag>
-        <description>
-            <![CDATA[Scatter Chart]]>
-        </description>
-        <tag-name>scatterChart</tag-name>
-        <component>
-            <component-type>org.primefaces.component.ScatterChart</component-type>
-            <renderer-type>org.primefaces.component.ScatterChartRenderer</renderer-type>
-        </component>
-        <attribute>
-            <description>
-                <![CDATA[Unique identifier of the component in a namingContainer.]]>
-            </description>
-            <name>id</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
-            </description>
-            <name>rendered</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
-            </description>
-            <name>binding</name>
-            <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Name of the client side widget.]]>
-            </description>
-            <name>widgetVar</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Model of the chart.]]>
-            </description>
-            <name>model</name>
-            <required>false</required>
-            <type>org.primefaces.model.charts.scatter.ScatterChartModel</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Inline style of the component.]]>
-            </description>
-            <name>style</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Style class of the component.]]>
-            </description>
-            <name>styleClass</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]>
-            </description>
-            <name>ariaLabel</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-    </tag>
-    <tag>
-        <description>
-            <![CDATA[]]>
-        </description>
-        <tag-name>pieChart</tag-name>
-        <component>
-            <component-type>org.primefaces.component.PieChart</component-type>
-            <renderer-type>org.primefaces.component.PieChartRenderer</renderer-type>
-        </component>
-        <attribute>
-            <description>
-                <![CDATA[Unique identifier of the component in a namingContainer.]]>
-            </description>
-            <name>id</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
-            </description>
-            <name>rendered</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
-            </description>
-            <name>binding</name>
-            <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Name of the client side widget.]]>
-            </description>
-            <name>widgetVar</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Model of the chart.]]>
-            </description>
-            <name>model</name>
-            <required>false</required>
-            <type>org.primefaces.model.charts.pie.PieChartModel</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Inline style of the component.]]>
-            </description>
-            <name>style</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Style class of the component.]]>
-            </description>
-            <name>styleClass</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]>
-            </description>
-            <name>ariaLabel</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-    </tag>
-    <tag>
-        <description>
-            <![CDATA[]]>
-        </description>
-        <tag-name>polarAreaChart</tag-name>
-        <component>
-            <component-type>org.primefaces.component.PolarAreaChart</component-type>
-            <renderer-type>org.primefaces.component.PolarAreaChartRenderer</renderer-type>
-        </component>
-        <attribute>
-            <description>
-                <![CDATA[Unique identifier of the component in a namingContainer.]]>
-            </description>
-            <name>id</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
-            </description>
-            <name>rendered</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
-            </description>
-            <name>binding</name>
-            <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Name of the client side widget.]]>
-            </description>
-            <name>widgetVar</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Model of the chart.]]>
-            </description>
-            <name>model</name>
-            <required>false</required>
-            <type>org.primefaces.model.charts.polar.PolarAreaChartModel</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Inline style of the component.]]>
-            </description>
-            <name>style</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Style class of the component.]]>
-            </description>
-            <name>styleClass</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]>
-            </description>
-            <name>ariaLabel</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-    </tag>
-    <tag>
-        <description>
-            <![CDATA[]]>
-        </description>
-        <tag-name>radarChart</tag-name>
-        <component>
-            <component-type>org.primefaces.component.RadarChart</component-type>
-            <renderer-type>org.primefaces.component.RadarChartRenderer</renderer-type>
-        </component>
-        <attribute>
-            <description>
-                <![CDATA[Unique identifier of the component in a namingContainer.]]>
-            </description>
-            <name>id</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
-            </description>
-            <name>rendered</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
-            </description>
-            <name>binding</name>
-            <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Name of the client side widget.]]>
-            </description>
-            <name>widgetVar</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Model of the chart.]]>
-            </description>
-            <name>model</name>
-            <required>false</required>
-            <type>org.primefaces.model.charts.radar.RadarChartModel</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Inline style of the component.]]>
-            </description>
-            <name>style</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Style class of the component.]]>
-            </description>
-            <name>styleClass</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]>
-            </description>
-            <name>ariaLabel</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>

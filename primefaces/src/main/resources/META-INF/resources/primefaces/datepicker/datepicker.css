@@ -127,3 +127,10 @@
 .p-datepicker-panel .ui-datepicker-buttonbar .ui-g-6 {
     text-align: center;
 }
+
+body .ui-state-disabled.ui-datepicker-disabled {
+    opacity: 1;
+}
+.ui-datepicker-disabled tbody a {
+    opacity: .4;
+}

@@ -45,4 +45,18 @@ class InputMaskRendererTest {
         assertEquals("[0-9][0-9]?[0-9]?[0-9]?", result.pattern());
     }
 
+    @Test
+    void translateMaskIntoRegex_EscapeCharacter_GitHub11590() {
+        // Arrange
+        InputMaskRenderer comp = new InputMaskRenderer();
+        StringBuilder sb = new StringBuilder();
+        String mask = "\\G.9";
+
+        // Act
+        Pattern result = comp.translateMaskIntoRegex(sb, mask);
+
+        // Assert
+        assertEquals("G\\.[0-9]", result.pattern());
+    }
+
 }

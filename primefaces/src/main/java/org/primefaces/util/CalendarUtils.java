@@ -51,7 +51,7 @@ public class CalendarUtils {
     private CalendarUtils() {
     }
 
-    public static final String getValueAsString(FacesContext context, UICalendar calendar) {
+    public static String getValueAsString(FacesContext context, UICalendar calendar) {
         Object submittedValue = calendar.getSubmittedValue();
         if (submittedValue != null) {
             return submittedValue.toString();
@@ -240,11 +240,11 @@ public class CalendarUtils {
         throw new FacesException(component + " : \"" + id + "\"@\"" + attributeName + "\" has unsupported type " + type);
     }
 
-    public static final String getValueAsString(FacesContext context, UICalendar calendar, Object value) {
+    public static String getValueAsString(FacesContext context, UICalendar calendar, Object value) {
         return getValueAsString(context, calendar, value, false);
     }
 
-    public static final String getValueAsString(FacesContext context, UICalendar calendar, Object value, boolean ignoreConverter) {
+    public static String getValueAsString(FacesContext context, UICalendar calendar, Object value, boolean ignoreConverter) {
         if (value == null) {
             return null;
         }
@@ -252,7 +252,7 @@ public class CalendarUtils {
         return getValueAsString(context, calendar, value, calendar.calculatePattern(), ignoreConverter);
     }
 
-    public static final String getTimeOnlyValueAsString(FacesContext context, UICalendar calendar) {
+    public static String getTimeOnlyValueAsString(FacesContext context, UICalendar calendar) {
         Object value = calendar.getValue();
         if (value == null) {
             return null;
@@ -261,11 +261,11 @@ public class CalendarUtils {
         return getValueAsString(context, calendar, value, calendar.calculateTimeOnlyPattern());
     }
 
-    public static final String getValueAsString(FacesContext context, UICalendar calendar, Object value, String pattern) {
+    public static String getValueAsString(FacesContext context, UICalendar calendar, Object value, String pattern) {
         return getValueAsString(context, calendar, value, pattern, false);
     }
 
-    public static final String getValueAsString(FacesContext context, UICalendar calendar, Object value, String pattern, boolean ignoreConverter) {
+    public static String getValueAsString(FacesContext context, UICalendar calendar, Object value, String pattern, boolean ignoreConverter) {
         if (value == null) {
             return null;
         }
@@ -290,11 +290,11 @@ public class CalendarUtils {
         }
     }
 
-    public static final String getValue(FacesContext context, UICalendar calendar, Object value, String pattern) {
+    public static String getValue(FacesContext context, UICalendar calendar, Object value, String pattern) {
         return getValue(context, calendar, value, pattern, false);
     }
 
-    public static final String getValue(FacesContext context, UICalendar calendar, Object value, String pattern, boolean ignoreConverter) {
+    public static String getValue(FacesContext context, UICalendar calendar, Object value, String pattern, boolean ignoreConverter) {
         if (!ignoreConverter) {
             //first ask the converter
             Converter converter = calendar.getConverter();
@@ -353,7 +353,7 @@ public class CalendarUtils {
      * @param pattern Pattern to be converted
      * @return converted pattern
      */
-    public static final String convertPattern(String pattern) {
+    public static String convertPattern(String pattern) {
         if (pattern == null) {
             return null;
         }
@@ -548,7 +548,7 @@ public class CalendarUtils {
         }
     }
 
-    public static final String removeTime(String pattern) {
+    public static String removeTime(String pattern) {
         for (String timeChar : TIME_CHARS) {
             if (pattern.contains(timeChar)) {
                 pattern = pattern.substring(0, pattern.indexOf(timeChar));
@@ -557,7 +557,7 @@ public class CalendarUtils {
         return pattern.trim();
     }
 
-    public static final boolean hasTime(String pattern) {
+    public static boolean hasTime(String pattern) {
         for (String timeChar : TIME_CHARS) {
             if (pattern.contains(timeChar)) {
                 return true;
@@ -580,9 +580,8 @@ public class CalendarUtils {
 
         ZonedDateTime zonedDateTimeUtc = ZonedDateTime.parse(isoDateString);
         ZonedDateTime zonedDateTimeTargetZone = zonedDateTimeUtc.withZoneSameInstant(zoneId);
-        LocalDateTime localDateTime = zonedDateTimeTargetZone.toLocalDateTime();
 
-        return localDateTime;
+        return zonedDateTimeTargetZone.toLocalDateTime();
     }
 
     /**

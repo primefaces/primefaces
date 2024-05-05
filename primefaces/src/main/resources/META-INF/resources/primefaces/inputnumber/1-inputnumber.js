@@ -123,7 +123,10 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
 
             var oldValue;
             var key = e.key;
-            if (key === 'Backspace' || key === 'Enter' || key === 'Delete' || PrimeFaces.utils.isPrintableKey(e)) {
+
+            // #11652 Check if Cut/Copy/Paste
+            var cutCopyPaste = (e.ctrlKey && ['KeyX', 'KeyC', 'KeyV'].includes(e.code));
+            if (cutCopyPaste || ['Backspace', 'Enter', 'Delete'].includes(key) || PrimeFaces.utils.isPrintableKey(e)) {
                 oldValue = $this.copyValueToHiddenInput();
             }
 

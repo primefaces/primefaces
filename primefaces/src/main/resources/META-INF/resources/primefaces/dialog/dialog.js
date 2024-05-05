@@ -370,8 +370,12 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
      * @protected
      */
     applyFocus: function() {
-        if (this.cfg.focus)
-            PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.focus).trigger('focus');
+        if (this.cfg.focus) {
+            var $this = this;
+            PrimeFaces.queueTask(function() {
+                PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector($this.jq, $this.cfg.focus).trigger('focus')
+            }, 100);
+        }
         else
             PrimeFaces.focus(null, this.id);
     },
@@ -383,6 +387,12 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
     returnFocus: function() {
         var el = this.focusedElementBeforeDialogOpened;
         if (el) {
+            // #11860 do not return focus to caller if other dialogs are still open
+            var otherDialogs = $(".ui-dialog:visible").length > 0;
+            if (otherDialogs) {
+                return;
+            }
+            // #11318 prevent scrolling in Chrome by using delayed execution
             PrimeFaces.queueTask(function() { el.focus({ preventScroll: true }) }, 100);
         }
     },
@@ -456,6 +466,9 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
                         e.stopPropagation();
                     }
                 };
+            });
+            this.addDestroyListener(function() {
+                $(document).off('keydown.dialog_' + this.id);
             });
         }
     },
@@ -646,14 +659,12 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         else {
             this.saveState();
 
-            var win = $(window);
-
             this.jq.addClass('ui-dialog-maximized').css({
-                'width': String(win.width() - 6)
-                ,'height': String(win.height())
+                'width': String($(window).width() - 6)
+                ,'height': String($(window).height())
             }).offset({
-                top: win.scrollTop()
-                ,left: win.scrollLeft()
+                top: $(window).scrollTop()
+                ,left: $(window).scrollLeft()
             });
 
             //maximize content
@@ -760,10 +771,9 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             contentHeight: this.content.height()
         };
 
-        var win = $(window);
         this.state.offset = this.jq.offset();
-        this.state.windowScrollLeft = win.scrollLeft();
-        this.state.windowScrollTop = win.scrollTop();
+        this.state.windowScrollLeft = $(window).scrollLeft();
+        this.state.windowScrollTop = $(window).scrollTop();
     },
 
     /**
@@ -774,10 +784,9 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.jq.width(this.state.width).height(this.state.height);
         this.content.width(this.state.contentWidth).height(this.state.contentHeight);
 
-        var win = $(window);
         this.jq.offset({
-                top: this.state.offset.top + (win.scrollTop() - this.state.windowScrollTop)
-                ,left: this.state.offset.left + (win.scrollLeft() - this.state.windowScrollLeft)
+                top: this.state.offset.top + ($(window).scrollTop() - this.state.windowScrollTop)
+                ,left: this.state.offset.left + ($(window).scrollLeft() - this.state.windowScrollLeft)
         });
     },
 
@@ -858,30 +867,32 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
     bindResizeListener: function() {
         var $this = this;
 
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', null, function() {
-            if ($this.cfg.fitViewport) {
-                $this.fitViewport();
-            }
+        // internal function to handle resize or scrolling
+        function handleResize() {
+            if ($this.isVisible()) {
+                if ($this.cfg.fitViewport) {
+                    $this.fitViewport();
+                }
 
-            if ($this.isVisible() && !$this.cfg.absolutePositioned) {
-                // instant reinit position
-                $this.initPosition();
+                if (!$this.cfg.absolutePositioned) {
+                    $this.initPosition();
+                }
+                else {
+                    $this.positionInitialized = false;
+                }
             }
-            else {
-                // reset, so the dialog will be positioned again when showing the dialog next time
-                $this.positionInitialized = false;
-            }
-        });
-        PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id + '_align', function() {
-            if ($this.isVisible() && !$this.cfg.absolutePositioned) {
-                // instant reinit position
-                $this.initPosition();
-            }
-            else {
-                // reset, so the dialog will be positioned again when showing the dialog next time
-                $this.positionInitialized = false;
-            }
-        });
+        }
+
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', null, handleResize);
+        PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id + '_align', handleResize);
+
+        // #11578 if not using dialog framework (it has its own observer) then resize if the dialog is resized
+        if (!this.cfg.hasIframe && !this.cfg.resizable) {
+            const observer = new ResizeObserver(_entries => {
+                handleResize();
+            });
+            observer.observe(this.jq[0]);
+        }
     }
 
 });

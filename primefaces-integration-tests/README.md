@@ -24,8 +24,8 @@ It utilizes Tomcat Embedded, OpenWebBeans, RestEasy and different JSF implementa
 
 #### Browsers
 
-  - `firefox` (default)
-  - `chrome`
+  - `firefox`
+  - `chrome` (default)
   - `safari`
 
 Keep in mind there are - as of january 2021 - following limitations for Safari webdriver:

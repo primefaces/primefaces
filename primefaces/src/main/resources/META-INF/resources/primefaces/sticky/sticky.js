@@ -62,11 +62,10 @@ PrimeFaces.widget.Sticky = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     bindEvents: function() {
-        var $this = this,
-            win = $(window);
+        var $this = this;
 
         PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id + '_align', function() {
-            if (win.scrollTop() > $this.initialState.top - $this.cfg.margin)
+            if ($(window).scrollTop() > $this.initialState.top - $this.cfg.margin)
                 $this.fix();
             else
                 $this.restore();
@@ -85,30 +84,19 @@ PrimeFaces.widget.Sticky = PrimeFaces.widget.BaseWidget.extend({
      */
     fix: function(force) {
         if (!this.fixed || force) {
-            var win = $(window),
-                winScrollTop = win.scrollTop();
-
-            // GitHub #9295 look for overlays and make sure sticky is not higher
-            var overlays = $('.ui-widget-overlay');
-            var zIndex = PrimeFaces.nextZindex();
-            if (overlays.length) {
-                overlays.each(function() {
-                    var currentZIndex = $(this).zIndex() - 1;
-                    zIndex = currentZIndex < zIndex ? currentZIndex : zIndex;
-                });
-            }
+            var winScrollTop = $(window).scrollTop();
 
             this.target.css({
                 'position': 'fixed',
                 'top': this.cfg.margin + 'px',
-                'z-index': zIndex
+                'z-index': PrimeFaces.utils.nextStickyZindex()
             })
             .addClass('ui-shadow ui-sticky');
 
             this.ghost = $('<div class="ui-sticky-ghost"></div>').height(this.target.outerHeight()).insertBefore(this.target);
             this.target.width(this.ghost.outerWidth() - (this.target.outerWidth() - this.target.width()));
             this.fixed = true;
-            win.scrollTop(winScrollTop);
+            $(window).scrollTop(winScrollTop);
         }
     },
 

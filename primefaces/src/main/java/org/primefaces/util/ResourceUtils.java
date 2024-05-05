@@ -133,30 +133,20 @@ public class ResourceUtils {
     }
 
     public static byte[] toByteArray(InputStream is) {
-        try {
-            try (ByteArrayOutputStream buffer = new ByteArrayOutputStream()) {
-                int nRead;
-                byte[] data = new byte[16384];
+        try (ByteArrayOutputStream buffer = new ByteArrayOutputStream()) {
+            int nRead;
+            byte[] data = new byte[16384];
 
-                while ((nRead = is.read(data, 0, data.length)) != -1) {
-                    buffer.write(data, 0, nRead);
-                }
-
-                buffer.flush();
-
-                return buffer.toByteArray();
+            while ((nRead = is.read(data, 0, data.length)) != -1) {
+                buffer.write(data, 0, nRead);
             }
+
+            buffer.flush();
+
+            return buffer.toByteArray();
         }
         catch (Exception e) {
             throw new FacesException("Could not read InputStream to byte[]", e);
-        }
-        finally {
-            try {
-                is.close();
-            }
-            catch (IOException ex) {
-                // ignore
-            }
         }
     }
 
@@ -207,12 +197,17 @@ public class ResourceUtils {
         PrimeRequestContext requestContext = PrimeRequestContext.getCurrentInstance(context);
         PrimeApplicationContext applicationContext = requestContext.getApplicationContext();
 
-        if (requestContext.isSecure() && applicationContext.getConfig().isCookiesSecure()) {
-            properties.put("secure", true);
+        boolean isSecure = requestContext.isSecure() && applicationContext.getConfig().isCookiesSecure();
+        boolean isJsf40OrHigher = applicationContext.getEnvironment().isAtLeastJsf40();
 
-            if (applicationContext.getEnvironment().isAtLeastJsf40()) {
+        if (isSecure) {
+            properties.put("secure", true);
+            if (isJsf40OrHigher) {
                 properties.put("SameSite", applicationContext.getConfig().getCookiesSameSite());
             }
+        }
+        else if (isJsf40OrHigher) {
+            properties.put("SameSite", "None");
         }
 
         context.getExternalContext().addResponseCookie(name, value, properties);

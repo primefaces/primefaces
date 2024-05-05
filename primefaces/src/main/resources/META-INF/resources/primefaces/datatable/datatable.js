@@ -735,13 +735,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     bindEnterKeyFilter: function(filter) {
         var $this = this;
 
-        filter.off('keydown keyup')
-        .on('keydown', PrimeFaces.utils.blockEnterKey)
-        .on('keyup', function(e) {
-            if(e.key === 'Enter') {
+        filter.off('keydown').on('keydown', function(e) {
+            if(PrimeFaces.utils.blockEnterKey(e)) {
                 $this.filter();
-
-                e.preventDefault();
             }
         });
     },
@@ -770,12 +766,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     bindFilterEvent: function(filter) {
         var $this = this;
         var filterEventName = this.cfg.filterEvent + '.dataTable';
-
-        //prevent form submit on enter key
-        filter.off('keydown.dataTable-blockenter ' + filterEventName)
-        .on('keydown.dataTable-blockenter', PrimeFaces.utils.blockEnterKey)
-        .on(filterEventName, function(e) {
-            if (e.key && PrimeFaces.utils.ignoreFilterKey(e)) {
+        
+        filter.on(filterEventName, function(e) {
+            //prevent form submit on enter key
+            if (e.key && (PrimeFaces.utils.ignoreFilterKey(e) || PrimeFaces.utils.blockEnterKey(e))) {
                 return;
             }
 
@@ -1299,7 +1293,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             var row = toggler.closest('tr');
             var rowMeta = this.getRowMeta(row);
             var expanded = toggler.attr('aria-expanded') === "true";
-            var ariaLabel = expanded ? PrimeFaces.getAriaLabel('expandRow') : PrimeFaces.getAriaLabel('collapseRow');
+            var ariaLabel = expanded ? PrimeFaces.getAriaLabel('collapseLabel') : PrimeFaces.getAriaLabel('expandLabel');
             if (rowMeta && rowMeta.key) {
                 ariaLabel += " " + rowMeta.key;
             }
@@ -1318,7 +1312,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     bindContextMenu : function(menuWidget, targetWidget, targetId, cfg) {
         var $this = this;
         var targetSelector = targetId + ' tbody.ui-datatable-data > tr.ui-widget-content';
-        var targetEvent = cfg.event + '.datatable';
+        var targetEvent = cfg.event + '.datatable' + this.id;
         this.contextMenuWidget = menuWidget;
 
         $(document).off(targetEvent, targetSelector).on(targetEvent, targetSelector, null, function(e) {
@@ -1342,6 +1336,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             else if(row.hasClass('ui-datatable-empty-message') && !$this.cfg.disableContextMenuIfEmpty) {
                 $this.contextMenuWidget.show(e);
             }
+        });
+        this.addDestroyListener(function() {
+            $(document).off(targetEvent);
         });
 
         if(this.cfg.scrollable && this.scrollBody) {
@@ -2681,7 +2678,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             if (jq) {
                 var rowMeta = this.getRowMeta(row);
                 var checked = row.attr('aria-selected') === "true"
-                var ariaLabel = checked ? PrimeFaces.getAriaLabel('selectRow') : PrimeFaces.getAriaLabel('unselectRow');
+                var ariaLabel = checked ? PrimeFaces.getAriaLabel('unselectLabel') : PrimeFaces.getAriaLabel('selectLabel');
                 ariaLabel += " " + rowMeta.key;
                 jq.attr('aria-label', ariaLabel);
             }
@@ -3298,10 +3295,17 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     bindEditEvents: function() {
         var $this = this;
+        var namespace = '.datatable' + this.id;
         this.cfg.saveOnCellBlur = (this.cfg.saveOnCellBlur === false) ? false : true;
         
         // #3571 Set all fields to disabled by default
         this.disableCellEditors();
+        
+        // ensure DOM memory is cleaned up by releasing document event handlers
+        this.addDestroyListener(function() {
+            $(document).off(namespace);
+            $(document).off('mouseup.datatable-cell-blur' + this.id);
+        });
 
         if(this.cfg.editMode === 'row') {
             var rowEditorSelector = '> tr > td > div.ui-row-editor > a';
@@ -3337,8 +3341,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         });
 
             // GitHub #433 Allow ENTER to submit ESC to cancel row editor
-            $(document).off("keydown.datatable", "tr.ui-row-editing")
-                        .on("keydown.datatable", "tr.ui-row-editing", function(e) {
+            $(document).off("keydown" + namespace, "tr.ui-row-editing")
+                        .on("keydown" + namespace, "tr.ui-row-editing", function(e) {
                             switch (e.key) {
                                 case 'Enter':
                                     var target = $(e.target);
@@ -3355,6 +3359,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                                     break;
                 }
             });
+            
         }
         else if(this.cfg.editMode === 'cell') {
             var originalCellSelector = '> tr > td.ui-editable-column',
@@ -4600,7 +4605,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 //drop right
                 if(dropLocation > 0) {
                     if($this.cfg.resizableColumns) {
-                        if(droppedColumnHeader.next().length) {
+                        if(droppedColumnHeader.next().length === 0) {
                             droppedColumnHeader.children('span.ui-column-resizer').show();
                             draggedColumnHeader.children('span.ui-column-resizer').hide();
                         }
@@ -4909,7 +4914,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     setupStickyHeader: function() {
         var table = this.thead.parent(),
             offset = table.offset(),
-            win = $(window),
             $this = this,
             orginTableContent = this.jq.find('> .ui-datatable-tablewrapper > table'),
             fixedElementsOnTop = this.cfg.stickyTopAt ? $(this.cfg.stickyTopAt) : null,
@@ -4941,12 +4945,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id, function() {
-            var scrollTop = win.scrollTop(),
+            var scrollTop = $(window).scrollTop(),
                 tableOffset = table.offset();
 
             if (scrollTop + fixedElementsHeight > tableOffset.top) {
                 if (!$this.stickyContainer.hasClass('ui-shadow ui-sticky')) {
-                    $this.stickyContainer.css({ 'z-index': PrimeFaces.nextZindex() });
+                    $this.stickyContainer.css({ 'z-index': PrimeFaces.utils.nextStickyZindex() });
                 }
                 $this.stickyContainer.css({
                     'position': 'fixed',
@@ -4971,7 +4975,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }).removeClass('ui-shadow ui-sticky');
 
                 if ($this.stickyContainer.is(':hidden')) {
-                    $this.stickyContainer.css({ 'z-index': PrimeFaces.nextZindex() });
+                    $this.stickyContainer.css({ 'z-index': PrimeFaces.utils.nextStickyZindex() });
                     $this.stickyContainer.show();
                 }
 
@@ -5004,6 +5008,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         //filter support
         this.clone.find('.ui-column-filter').prop('disabled', true);
+        
+        this.addDestroyListener(function() {
+            $this.clone.off().remove();
+            $this.stickyContainer.off().remove();
+        });
     },
 
     /**
@@ -5234,12 +5243,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
            parentRow = link.closest('tr.ui-rowgroup-header');
 
            if(togglerIcon.hasClass('ui-icon-circle-triangle-s')) {
-               link.attr('aria-expanded', false).attr('aria-label', PrimeFaces.getAriaLabel('collapseRow'));
+               link.attr('aria-expanded', false).attr('aria-label', PrimeFaces.getAriaLabel('expandLabel'));
                togglerIcon.addClass('ui-icon-circle-triangle-e').removeClass('ui-icon-circle-triangle-s');
                parentRow.nextUntil('tr.ui-rowgroup-header').hide();
            }
            else {
-               link.attr('aria-expanded', true).attr('aria-label', PrimeFaces.getAriaLabel('expandRow'));
+               link.attr('aria-expanded', true).attr('aria-label', PrimeFaces.getAriaLabel('collapseLabel'));
                togglerIcon.addClass('ui-icon-circle-triangle-s').removeClass('ui-icon-circle-triangle-e');
                parentRow.nextUntil('tr.ui-rowgroup-header').show();
            }

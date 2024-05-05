@@ -404,7 +404,8 @@
             }
 
             widget.ajaxCount = 0;
-            $(document).on('pfAjaxSend.' + widget.id, function(e, xhr, settings) {
+            var namespace = '.' + widget.id;
+            $(document).on('pfAjaxSend' + namespace, function(e, xhr, settings) {
                 if (isXhrSource.call(this, widget, settings)) {
                     widget.ajaxCount++;
                     if (widget.ajaxCount > 1) {
@@ -427,7 +428,7 @@
                     }
                     button.prepend(loadIcon);
                 }
-            }).on('pfAjaxComplete.' + widget.id, function(e, xhr, settings, args) {
+            }).on('pfAjaxComplete' + namespace, function(e, xhr, settings, args) {
                 if (isXhrSource.call(this, widget, settings)) {
                     widget.ajaxCount--;
                     if (widget.ajaxCount > 0 || !args || args.redirect) {
@@ -440,6 +441,9 @@
                     );
                     delete widget.ajaxStart;
                 }
+            });
+            widget.addDestroyListener(function() {
+                $(document).off(namespace);
             });
         },
 
@@ -1177,7 +1181,7 @@
             }
         },
         
-         /**
+        /**
          * Finds the current locale with the i18n keys and the associated translations. Uses the current language key
          * as specified by `PrimeFaces.settings.locale`. When no locale was found for the given locale, falls back to
          * the default English locale.
@@ -1186,14 +1190,14 @@
          */
         getLocaleSettings: function(cfgLocale) {
             var locale;
+
             if(cfgLocale) {
                 // widget locale must not be cached since it can change per widget
                 locale = PrimeFaces.locales[cfgLocale];
-            }
-            else {
+            } else {
                 // global settings so return cached value if already loaded
                 if(this.localeSettings) {
-                   return this.localeSettings;
+                    return this.localeSettings;
                 }
                 locale = PrimeFaces.locales[PrimeFaces.settings.locale];
             }
@@ -1201,7 +1205,10 @@
             // try and strip specific language from nl_BE to just nl
             if (!locale) {
                 var localeKey = cfgLocale ? cfgLocale : PrimeFaces.settings.locale;
-                locale = PrimeFaces.locales[localeKey.split('_')[0]];
+                var strippedLocaleKey = localeKey ? localeKey.split('_')[0] : null;
+                if (strippedLocaleKey) {
+                    locale = PrimeFaces.locales[strippedLocaleKey];
+                }
             }
 
             // if all else fails default to US English
@@ -1221,12 +1228,13 @@
          * Some ARIA attributes have a value that depends on the current locale. This returns the localized version for
          * the given aria key.
          * @param {string} key An aria key
+         * @param {string} [defaultValue] Optional default if key is not found
          * @return {string} The translation for the given aria key
          */
-        getAriaLabel: function(key) {
+        getAriaLabel: function(key, defaultValue) {
             var ariaLocaleSettings = this.getLocaleSettings()['aria'];
             var label = (ariaLocaleSettings&&ariaLocaleSettings[key]) ? ariaLocaleSettings[key] : PrimeFaces.locales['en_US']['aria'][key];
-            return label || "???"+key+"???";
+            return label || (defaultValue || "???"+key+"???");
         },
 
         /**
@@ -1237,6 +1245,35 @@
         getLocaleLabel: function(key) {
             var locale = this.getLocaleSettings();
             return (locale&&locale[key]) ? locale[key] : PrimeFaces.locales['en_US'][key];
+        },
+        
+        /**
+         * Loop over all locales and set the label to the new value in all locales.
+         * @param {string} localeKey The locale key
+         * @param {string} localeValue The locale value
+         */
+        setGlobalLocaleValue: function(localeKey, localeValue) {
+            // Recursive function to iterate over nested objects
+            function iterateLocale(locale, lkey, lvalue) {
+                for (var key in locale) {
+                    if (typeof locale[key] === 'object') {
+                        // If the value is an object, call the function recursively
+                        iterateLocale(locale[key], lkey, lvalue);
+                    } else {
+                        // Otherwise, set the new value if found
+                        if (key === lkey) {
+                            locale[key] = lvalue;
+                        }
+                    }
+                }
+            }
+
+            // iterate over all locales and try and set the key in each locale
+            for (var lang in PrimeFaces.locales) {
+                if (typeof PrimeFaces.locales[lang] === 'object') {
+                    iterateLocale(PrimeFaces.locales[lang], localeKey, localeValue)
+                }
+            }
         },
 
         /**
@@ -1283,7 +1320,7 @@
          * Increment and return the next `z-index` for CSS as a string.
          * Note that jQuery will no longer accept numeric values in {@link JQuery.css | $.fn.css} as of version 4.0.
          *
-         *  @return {string} the next `z-index` as a string.
+         * @return {string} the next `z-index` as a string.
          */
         nextZindex: function() {
             return String(++PrimeFaces.zindex);
@@ -1333,7 +1370,7 @@
          * Queue a microtask if delay is 0 or less and setTimeout if > 0.
          *
          * @param {() => void} fn the function to call after the delay
-         * @param {number | undefined} delay the optional delay in milliseconds
+         * @param {number | undefined} [delay] the optional delay in milliseconds
          * @return {number | undefined} the id associated to the timeout or undefined if no timeout used
          */
         queueTask: function(fn, delay) {
@@ -1526,124 +1563,75 @@
      */
     PrimeFaces.locales = {
         'en_US': {
-            "startsWith": "Starts with",
+            "accept": "Yes",
+            "addRule": "Add Rule",
+            "am": "AM",
+            "apply": "Apply",
+            "cancel": "Cancel",
+            "choose": "Choose",
+            "chooseDate": "Choose Date",
+            "chooseMonth": "Choose Month",
+            "chooseYear": "Choose Year",
+            "clear": "Clear",
+            "completed": "Completed",
             "contains": "Contains",
-            "notContains": "Not contains",
-            "endsWith": "Ends with",
-            "equals": "Equals",
-            "notEquals": "Not equals",
-            "noFilter": "No Filter",
-            "filter": "Filter",
-            "lt": "Less than",
-            "lte": "Less than or equal to",
-            "gt": "Greater than",
-            "gte": "Greater than or equal to",
+            "custom": "Custom",
+            "dateAfter": "Date is after",
+            "dateBefore": "Date is before",
+            "dateFormat": "mm/dd/yy",
             "dateIs": "Date is",
             "dateIsNot": "Date is not",
-            "dateBefore": "Date is before",
-            "dateAfter": "Date is after",
-            "custom": "Custom",
-            "clear": "Clear",
-            "apply": "Apply",
+            "dayNames": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+            "dayNamesMin": ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
+            "dayNamesShort": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+            "emptyFilterMessage": "No results found",
+            "emptyMessage": "No available options",
+            "emptySearchMessage": "No results found",
+            "emptySelectionMessage": "No selected item",
+            "endsWith": "Ends with",
+            "equals": "Equals",
+            "fileSizeTypes": ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"],
+            "filter": "Filter",
+            "firstDayOfWeek": 0,
+            "gt": "Greater than",
+            "gte": "Greater than or equal to",
+            "lt": "Less than",
+            "lte": "Less than or equal to",
             "matchAll": "Match All",
             "matchAny": "Match Any",
-            "addRule": "Add Rule",
-            "removeRule": "Remove Rule",
-            "accept": "Yes",
-            "reject": "No",
-            "choose": "Choose",
-            "upload": "Upload",
-            "cancel": "Cancel",
-            "completed": "Completed",
-            "pending": "Pending",
-            "dayNames": [
-                "Sunday",
-                "Monday",
-                "Tuesday",
-                "Wednesday",
-                "Thursday",
-                "Friday",
-                "Saturday"
-            ],
-            "dayNamesShort": [
-                "Sun",
-                "Mon",
-                "Tue",
-                "Wed",
-                "Thu",
-                "Fri",
-                "Sat"
-            ],
-            "dayNamesMin": [
-                "Su",
-                "Mo",
-                "Tu",
-                "We",
-                "Th",
-                "Fr",
-                "Sa"
-            ],
-            "monthNames": [
-                "January",
-                "February",
-                "March",
-                "April",
-                "May",
-                "June",
-                "July",
-                "August",
-                "September",
-                "October",
-                "November",
-                "December"
-            ],
-            "monthNamesShort": [
-                "Jan",
-                "Feb",
-                "Mar",
-                "Apr",
-                "May",
-                "Jun",
-                "Jul",
-                "Aug",
-                "Sep",
-                "Oct",
-                "Nov",
-                "Dec"
-            ],
-            "chooseYear": "Choose Year",
-            "chooseMonth": "Choose Month",
-            "chooseDate": "Choose Date",
-            "prevDecade": "Previous Decade",
-            "nextDecade": "Next Decade",
-            "prevYear": "Previous Year",
-            "nextYear": "Next Year",
-            "prevMonth": "Previous Month",
-            "nextMonth": "Next Month",
-            "prevHour": "Previous Hour",
-            "nextHour": "Next Hour",
-            "prevMinute": "Previous Minute",
-            "nextMinute": "Next Minute",
-            "prevSecond": "Previous Second",
-            "nextSecond": "Next Second",
-            "am": "AM",
-            "pm": "PM",
-            "today": "Today",
-            "now": "Now",
-            "weekHeader": "Wk",
-            "firstDayOfWeek": 0,
-            "showMonthAfterYear": false,
-            "dateFormat": "mm/dd/yy",
-            "weak": "Weak",
             "medium": "Medium",
-            "strong": "Strong",
+            "monthNames": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+            "monthNamesShort": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            "nextDecade": "Next Decade",
+            "nextHour": "Next Hour",
+            "nextMinute": "Next Minute",
+            "nextMonth": "Next Month",
+            "nextSecond": "Next Second",
+            "nextYear": "Next Year",
+            "noFilter": "No Filter",
+            "notContains": "Not contains",
+            "notEquals": "Not equals",
+            "now": "Now",
             "passwordPrompt": "Enter a password",
-            "emptyFilterMessage": "No results found",
+            "pending": "Pending",
+            "pm": "PM",
+            "prevDecade": "Previous Decade",
+            "prevHour": "Previous Hour",
+            "prevMinute": "Previous Minute",
+            "prevMonth": "Previous Month",
+            "prevSecond": "Previous Second",
+            "prevYear": "Previous Year",
+            "reject": "No",
+            "removeRule": "Remove Rule",
             "searchMessage": "{0} results are available",
             "selectionMessage": "{0} items selected",
-            "emptySelectionMessage": "No selected item",
-            "emptySearchMessage": "No results found",
-            "emptyMessage": "No available options",
+            "showMonthAfterYear": false,
+            "startsWith": "Starts with",
+            "strong": "Strong",
+            "today": "Today",
+            "upload": "Upload",
+            "weak": "Weak",
+            "weekHeader": "Wk",
             "weekNumberTitle": "W",
             "isRTL": false,
             "yearSuffix": "",
@@ -1662,54 +1650,61 @@
             "moreLinkText": "More...",
             "noEventsText": "No Events",
             "aria": {
-                "trueLabel": "True",
-                "falseLabel": "False",
-                "nullLabel": "Not Selected",
-                "star": "1 star",
-                "stars": "{star} stars",
-                "selectAll": "All items selected",
-                "unselectAll": "All items unselected",
+                "cancelEdit": "Cancel Edit",
                 "close": "Close",
-                "previous": "Previous",
-                "next": "Next",
-                "navigation": "Navigation",
-                "scrollTop": "Scroll Top",
-                "moveTop": "Move Top",
-                "moveUp": "Move Up",
-                "moveDown": "Move Down",
-                "moveBottom": "Move Bottom",
-                "moveToTarget": "Move to Target",
-                "moveToSource": "Move to Source",
-                "moveAllToTarget": "Move All to Target",
-                "moveAllToSource": "Move All to Source",
-                "pageLabel": "Page {page}",
+                "collapseLabel": "Collapse",
+                "collapseRow": "Row Collapsed",
+                "editRow": "Edit Row",
+                "expandLabel": "Expand",
+                "expandRow": "Row Expanded",
+                "falseLabel": "False",
+                "filterConstraint": "Filter Constraint",
+                "filterOperator": "Filter Operator",
                 "firstPageLabel": "First Page",
-                "lastPageLabel": "Last Page",
-                "nextPageLabel": "Next Page",
-                "previousPageLabel": "Previous Page",
-                "rowsPerPageLabel": "Rows per page",
+                "gridView": "Grid View",
+                "hideFilterMenu": "Hide Filter Menu",
                 "jumpToPageDropdownLabel": "Jump to Page Dropdown",
                 "jumpToPageInputLabel": "Jump to Page Input",
-                "selectRow": "Row Selected",
-                "unselectRow": "Row Unselected",
-                "expandRow": "Row Expanded",
-                "collapseRow": "Row Collapsed",
-                "showFilterMenu": "Show Filter Menu",
-                "hideFilterMenu": "Hide Filter Menu",
-                "filterOperator": "Filter Operator",
-                "filterConstraint": "Filter Constraint",
-                "editRow": "Row Edit",
-                "saveEdit": "Save Edit",
-                "cancelEdit": "Cancel Edit",
+                "lastPageLabel": "Last Page",
                 "listView": "List View",
-                "gridView": "Grid View",
+                "moveAllToSource": "Move All to Source",
+                "moveAllToTarget": "Move All to Target",
+                "moveBottom": "Move Bottom",
+                "moveDown": "Move Down",
+                "moveToSource": "Move to Source",
+                "moveToTarget": "Move to Target",
+                "moveTop": "Move Top",
+                "moveUp": "Move Up",
+                "navigation": "Navigation",
+                "next": "Next",
+                "nextPageLabel": "Next Page",
+                "nullLabel": "Not Selected",
+                "pageLabel": "Page {page}",
+                "otpLabel": "Please enter one time password character {0}",
+                "passwordHide": "Hide Password",
+                "passwordShow": "Show Password",
+                "previous": "Previous",
+                "previousPageLabel": "Previous Page",
+                "rotateLeft": "Rotate Left",
+                "rotateRight": "Rotate Right",
+                "rowsPerPageLabel": "Rows per page",
+                "saveEdit": "Save Edit",
+                "scrollTop": "Scroll Top",
+                "selectAll": "All items selected",
+                "selectLabel": "Select",
+                "selectRow": "Row Selected",
+                "showFilterMenu": "Show Filter Menu",
                 "slide": "Slide",
                 "slideNumber": "{slideNumber}",
+                "star": "1 star",
+                "stars": "{star} stars",
+                "trueLabel": "True",
+                "unselectAll": "All items unselected",
+                "unselectLabel": "Unselect",
+                "unselectRow": "Row Unselected",
                 "zoomImage": "Zoom Image",
                 "zoomIn": "Zoom In",
                 "zoomOut": "Zoom Out",
-                "rotateRight": "Rotate Right",
-                "rotateLeft": "Rotate Left",
                 "datatable.sort.ASC": "activate to sort column ascending",
                 "datatable.sort.DESC": "activate to sort column descending",
                 "datatable.sort.NONE": "activate to remove sorting on column",

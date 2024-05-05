@@ -12,20 +12,24 @@ Look into [migration guide](https://primefaces.github.io/primefaces/14_0_0/#/../
     * `MOVE_SCRIPTS_TO_BOTTOM` adds new option `defer` to defer loading scripts.
     * OS settings for `prefers-reduced-motion: reduce` is now respected and PF disables all animations.
     * Minimum inline Ajax load animation duration via `PrimeFaces.ajax.minLoadAnimation`.
-
-* Chart
-   * A new more flexible version of Chart.js can be used `<p:chart>` allowing raw JSON or [XDEV Chart.js Java Model](https://github.com/xdev-software/chartjs-java-model)
-   
-* ConfirmDialog
-   * Added `ajax=false` support.
+    * Client side `PrimeFaces.setGlobalLocaleValue(xxx);` if you need to set the same value in all locales.
 
 * Accordion
     * Added `toggleSpeed` for toggle speed animation duration.
     * Added `scrollIntoView` to allow the active tab to be scrolled into the viewport.
     
+* AutoComplete
+    * Added `showEmptyMessage` for whether or not you want the empty message displayed when no items are found
+    
 * Badge
     * Added `icon` and `iconPos` to allow icons to be used in badge.
     * Added 'onclick` to allow client side click of badge. If not set it delegates the click to its target element.
+    
+* Chart
+   * A new more flexible version of Chart.js can be used `<p:chart>` allowing raw JSON or [XDEV Chart.js Java Model](https://github.com/xdev-software/chartjs-java-model)
+   
+* ConfirmDialog
+   * Added `ajax=false` support.
 
 * CSV - Client Side Validation / CommandButton
     * Added `enabledByValidateClient` to enable CommandButton after CSV was successful (used together with `<p:clientValidator event="..." />` on all relevant input-components)  
@@ -38,14 +42,18 @@ Look into [migration guide](https://primefaces.github.io/primefaces/14_0_0/#/../
     * Added `hideOnRangeSelection` to control hiding the overlay on date selection is completed when selectionMode is range.
 
 * DataTable
-    * JPALazyDataModel now supports case insensitive filters with `setCaseSensitive(false);`,
-    * JPALazyDataModel now supports wildcard filters with `setWildcardSupport(true);` so you can use `*`, `%`, `_` or `?` in filter.
-    * JPALazyDataModel now supports builder pattern for constructor.
+    * JPALazyDataModel now supports builder pattern instead of constructor.
+    * JPALazyDataModel now supports case insensitive filters with `JPALazyDataModel.Builder#caseSensitive(false)`,
+    * JPALazyDataModel now supports wildcard filters with `JPALazyDataModel.Builder#wildcardSupport(true)` so you can use `*`, `%`, `_` or `?` in filter.
+    * JPALazyDataModel now supports post load data enricher with `JPALazyDataModel.Builder#resultEnricher()` .
     * Added `filterPlaceholder` for `Column` and `Columns`
     * Added `rowData` to `CellEditEvent` which contains the entire row from the cell being edited.
 
 * Dashboard
     * Added `var` to allow dynamic panels in `DashboardWidget.setValue(obj)` per panel
+    
+* Galleria
+    * Widget `show` method now accepts an optional `index` of which item to show.
     
 * Messages
     * Added `clearMessages` widget method to clear all current messages.
@@ -83,6 +91,7 @@ Look into [migration guide](https://primefaces.github.io/primefaces/14_0_0/#/../
 
 * Tree
     * Added `dropMode` with values `move` or `copy` if you want nodes to be copied by default.
+    * Added `filterEvent` and `filterDelay` attributes for more control over filtering.
         
 * TreeTable
     * Added `filterPlaceholder` for `Column` and `Columns`.

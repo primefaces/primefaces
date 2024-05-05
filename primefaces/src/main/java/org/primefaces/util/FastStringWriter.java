@@ -70,7 +70,7 @@ public class FastStringWriter extends Writer {
 
     @Override
     public void write(String str, int off, int len) {
-        builder.append(str.substring(off, off + len));
+        builder.append(str, off, off + len);
     }
 
     public StringBuilder getBuffer() {

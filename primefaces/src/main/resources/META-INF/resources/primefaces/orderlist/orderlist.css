@@ -4,6 +4,9 @@
 
 .ui-orderlist .ui-orderlist-caption {
     width: 180px;
+    text-align: center;
+    padding:4px 0px;
+    border-bottom:0px none;
 }
 
 .ui-orderlist .ui-orderlist-list {
@@ -33,12 +36,6 @@
     cursor:pointer;
     border:0px none;
     font-weight: inherit;
-}
-
-.ui-orderlist .ui-orderlist-caption {
-    text-align: center;
-    padding:4px 0px;
-    border-bottom:0px none;
 }
 
 .ui-orderlist table {

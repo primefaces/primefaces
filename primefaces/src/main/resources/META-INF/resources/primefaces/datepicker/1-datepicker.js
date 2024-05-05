@@ -133,7 +133,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
 
                 // #7457 trigger view change if lazy model is used
                 if ($this.cfg.lazyModel) {
-                    $this.fireViewChangeEvent($this.getViewDate());
+                    $this.updateLazyModel();
                 }
             };
         }
@@ -189,6 +189,11 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
 
         //pfs metadata
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
+
+        // #11645 trigger view change if lazy model is used
+        if (this.cfg.inline && this.cfg.lazyModel) {
+            this.updateLazyModel();
+        }
     },
 
     /**
@@ -212,7 +217,18 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
     destroy: function() {
         if (this.panel && this.cfg.appendTo) {
             var appendTo = PrimeFaces.utils.resolveDynamicOverlayContainer(this);
-            PrimeFaces.utils.removeDynamicOverlay(this, null, this.id + '_panel', appendTo);
+            PrimeFaces.utils.removeDynamicOverlay(this, null, this.id + "_panel", appendTo);
+        }
+
+        this.jq.datePicker().data().primeDatePicker._destroy();
+        // DOM de-reference memory clean up
+        for (var key in this.jq.data().primeDatePicker) {
+            this.jq.data().primeDatePicker[key] = null;
+        }
+
+        if (this.cfg.mask && this.input) {
+            this.input.inputmask("remove");
+            this.input.off();
         }
 
         this._super();
@@ -378,6 +394,9 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
             ]
         }
         if (lazy) {
+            if (!this.panel.parent().is("div.ui-state-disabled")) {
+                this.panel.wrap("<div class='ui-state-disabled ui-datepicker-disabled'/>");
+            }
             options.onsuccess = function(responseXML, status, xhr) {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                     widget: $this,
@@ -402,6 +421,9 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
                         pdp.options.dateStyleClasses = dateStyleClasses;
                         $this.setDisabledDates(disabledDates);
                         $this.setEnabledDates(enabledDates);
+                        if ($this.panel.parent().is("div.ui-state-disabled")) {
+                            $this.panel.unwrap();
+                        }
                     }
                 });
                 return true;
@@ -421,6 +443,15 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
             options.update = this.id;
             options.formId = this.getParentFormId();
             PrimeFaces.ajax.Request.handle(options);
+        }
+    },
+
+    /**
+     * Triggers a viewChange event which updates the lazy model through an Ajax request using the current date.
+     */
+    updateLazyModel: function() {
+        if (this.cfg.lazyModel) {
+            this.fireViewChangeEvent(this.getViewDate());
         }
     },
 

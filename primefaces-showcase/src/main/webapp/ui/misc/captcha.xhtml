@@ -10,7 +10,7 @@
     </ui:define>
 
     <ui:define name="description">
-        Captcha is based on reCAPTCHA API.
+        Captcha is based on <a href="https://www.google.com/recaptcha/about/" target="_blank" rel="noopener noreferrer">reCAPTCHA</a> API or <a href="https://www.hcaptcha.com/" target="_blank" rel="noopener noreferrer">hCaptcha</a> API.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/captcha"/>
@@ -18,11 +18,20 @@
 
     <ui:define name="implementation">
         <div class="card">
+            <p:messages showDetail="true"/>
+
+            <h2>reCAPTCHA (API key is valid)</h2>
             <h:form>
-                <p:messages showDetail="true"/>
-                <p:captcha label="Captcha"/>
+                <p:captcha label="reCaptcha" type="g-recaptcha"/>
                 <br/>
-                <p:commandButton value="Check" action="#{captchaView.submit}" ajax="false" icon="pi pi-check"/>
+                <p:commandButton value="Check reCaptcha" action="#{captchaView.submit}" ajax="false" icon="pi pi-check"/>
+            </h:form>
+            
+            <h2>hCaptcha (API key is invalid)</h2>
+            <h:form>
+                <p:captcha label="hCaptcha" type="h-captcha"/>
+                <br/>
+                <p:commandButton value="Check hCaptcha" action="#{captchaView.submit}" ajax="false" icon="pi pi-check"/>
             </h:form>
         </div>
     </ui:define>

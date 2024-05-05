@@ -315,7 +315,7 @@ public class TabViewRenderer extends CoreRenderer {
 
         tabView.forEachTab((tab, i, active) -> {
             try {
-                String tabindex = active ? tabView.getTabindex() : "-1";
+                String tabindex = Boolean.TRUE.equals(active) ? tabView.getTabindex() : "-1";
                 encodeTabContent(context, tab, i, active, dynamic, repeating, tabindex);
             }
             catch (IOException ex) {

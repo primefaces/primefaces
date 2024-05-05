@@ -5,7 +5,7 @@
 
     <!-- EXAMPLE-SOURCE-START -->
 
-    <p:tabView var="entry" value="#{value}">
+    <p:tabView var="entry" value="#{value}" touchable="false">
         <p:tab title="#{entry.title}" >
             <p:cache region="sources" key="#{entry}">
 <pre class="line-numbers"><code class="language-#{entry.type}">

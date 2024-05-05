@@ -22,7 +22,7 @@ ui-overlay-visible * {
     visibility: hidden;
 }
 .ui-overlay-hidden * {
-    visibility: hidden !important;;
+    visibility: hidden !important;
 }
 
 .ui-overflow-hidden {

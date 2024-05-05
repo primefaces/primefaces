@@ -68,6 +68,13 @@ public final class DataExporters {
         }
     }
 
+    /**
+     * Register a new exporter. In case an exporter is already provided for the corresponding component
+     * and file type: this new exporter will replace the old one
+     * @param targetClass component type on which exporter should be available
+     * @param exporter custom exporter implementing {@link Exporter}
+     * @param type file type
+     */
     public static <T extends UIComponent, E extends Exporter<T>> void register(Class<T> targetClass, Class<E> exporter, String type) {
         PrimeApplicationContext primeAppContext = PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance());
         Map<String, Class<? extends Exporter<?>>> supportedExporters = primeAppContext.getExporters().computeIfAbsent(targetClass, o -> new HashMap<>());

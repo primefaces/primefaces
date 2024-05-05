@@ -62,11 +62,8 @@ public class BeanUtils {
         else if (value.getClass().isArray()) {
             return isBean(value.getClass().getComponentType());
         }
-        else if (value.getClass().isPrimitive()) {
-            return false;
-        }
 
-        return true;
+        return !value.getClass().isPrimitive();
     }
 
     public static boolean isPrimitiveOrPrimitiveWrapper(Class<?> valueClass) {

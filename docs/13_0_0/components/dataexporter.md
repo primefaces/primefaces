@@ -93,11 +93,24 @@ If you need to customize column export, you can do so by using either `exportVal
 If you need to define a new exporter (e.g. txt, yml etc.), register your exporter as follows:
 - implement `DataTableExporter` or `TreeTableExporter`
 - register exporter using `DataExporters#register()` specifying the type of component (e.g. `DataTable` or `TreeTable`) and the type with which your exported is associated. For example:
+- A good place to register your exporter could be in a `SystemEventListener` as follows _(to register in faces-config.xml)_:
+
 ```java
-    DataExporters.register(DataTable.class, TextExporter.class, "txt");
+public class MyAppSystemEventListener implements SystemEventListener {
+
+    @Override
+    public void processEvent(SystemEvent event) throws AbortProcessingException {
+        DataExporters.register(DataTable.class, TextExporter.class, "txt");
+    }
+
+    @Override
+    public boolean isListenerForSource(Object source) {
+        return source instanceof Application;
+    }
+}
 ```
 
-> A good place to register your exporter could be in a `SystemEventListener` or `ServletContextListener`
+Here is an example of a custom exporter for DataTable that will export data in txt format:
 
 ```java
 public class TextExporter extends DataTableExporter<PrintWriter, ExporterOptions> {

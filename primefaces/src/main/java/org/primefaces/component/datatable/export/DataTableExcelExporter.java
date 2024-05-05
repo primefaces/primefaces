@@ -36,7 +36,6 @@ import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.ColumnValue;
 import org.primefaces.component.export.ExcelOptions;
-import org.primefaces.component.export.ExporterUtils;
 import org.primefaces.util.ExcelStylesManager;
 import org.primefaces.util.LocaleUtils;
 
@@ -205,7 +204,7 @@ public class DataTableExcelExporter extends DataTableExporter<Workbook, ExcelOpt
     }
 
     public String getSheetName(FacesContext context, UIComponent table, int index) {
-        String sheetName = ExporterUtils.getComponentFacetValue(context, table, "header");
+        String sheetName = getComponentFacetValue(context, table, "header");
         if (sheetName == null) {
             sheetName = table.getId() + (index + 1);
         }

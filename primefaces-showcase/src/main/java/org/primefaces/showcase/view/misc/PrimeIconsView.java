@@ -45,13 +45,15 @@ import java.util.logging.Logger;
 @ApplicationScoped
 public class PrimeIconsView implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private List<Icon> iconsPrevious;
     private List<Icon> icons;
 
     @PostConstruct
     public void init() {
-        iconsPrevious = getIcons("https://raw.githubusercontent.com/primefaces/primeicons/5.0.0/selection.json");
-        icons = getIcons("https://raw.githubusercontent.com/primefaces/primeicons/6.0.1/selection.json");
+        iconsPrevious = getIcons("https://raw.githubusercontent.com/primefaces/primeicons/6.0.1/selection.json");
+        icons = getIcons("https://raw.githubusercontent.com/primefaces/primeicons/7.0.0/selection.json");
         Collections.sort(icons, Comparator.comparing(Icon::getName));
     }
 

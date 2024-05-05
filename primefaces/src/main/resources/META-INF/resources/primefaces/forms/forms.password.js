@@ -59,17 +59,17 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
 
         //remove previous panel if any
         var oldPanel = $(this.jqId + '_panel');
-        if(oldPanel.length == 1) {
+        if (oldPanel.length == 1) {
             oldPanel.remove();
         }
 
         //config
         this.cfg.showEvent = this.cfg.showEvent ? this.cfg.showEvent + '.password' : 'focus.password';
         this.cfg.hideEvent = this.cfg.hideEvent ? this.cfg.hideEvent + '.password' : 'blur.password';
-        this.cfg.promptLabel = this.cfg.promptLabel||PrimeFaces.getLocaleLabel('passwordPrompt');
-        this.cfg.weakLabel = this.cfg.weakLabel||PrimeFaces.getLocaleLabel('weak');
-        this.cfg.goodLabel = this.cfg.goodLabel||PrimeFaces.getLocaleLabel('medium');
-        this.cfg.strongLabel = this.cfg.strongLabel||PrimeFaces.getLocaleLabel('strong');
+        this.cfg.promptLabel = this.cfg.promptLabel || PrimeFaces.getLocaleLabel('passwordPrompt');
+        this.cfg.weakLabel = this.cfg.weakLabel || PrimeFaces.getLocaleLabel('weak');
+        this.cfg.goodLabel = this.cfg.goodLabel || PrimeFaces.getLocaleLabel('medium');
+        this.cfg.strongLabel = this.cfg.strongLabel || PrimeFaces.getLocaleLabel('strong');
 
         var panelStyle = this.cfg.inline ? 'ui-password-panel-inline' : 'ui-password-panel-overlay';
 
@@ -89,42 +89,42 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
 
         //events
         this.jq.off(this.cfg.showEvent + ' ' + this.cfg.hideEvent + ' keyup.password')
-        .on(this.cfg.showEvent, function() {
-            $this.show();
-        })
-        .on(this.cfg.hideEvent, function() {
-            $this.hide();
-        })
-        .on("keyup.password", function() {
-            var value = $this.jq.val(),
-            label = null,
-            meterPos = null;
+            .on(this.cfg.showEvent, function() {
+                $this.show();
+            })
+            .on(this.cfg.hideEvent, function() {
+                $this.hide();
+            })
+            .on("keyup.password", function() {
+                var value = $this.jq.val(),
+                    label = null,
+                    meterPos = null;
 
-            if(value.length == 0) {
-                label = $this.cfg.promptLabel;
-                meterPos = '0px 0px';
-            }
-            else {
-                var score = $this.testStrength($this.jq.val());
+                if (value.length == 0) {
+                    label = $this.cfg.promptLabel;
+                    meterPos = '0px 0px';
+                }
+                else {
+                    var score = $this.testStrength($this.jq.val());
 
-                if(score < 30) {
-                    label = $this.cfg.weakLabel;
-                    meterPos = '0px -10px';
+                    if (score < 30) {
+                        label = $this.cfg.weakLabel;
+                        meterPos = '0px -10px';
+                    }
+                    else if (score >= 30 && score < 80) {
+                        label = $this.cfg.goodLabel;
+                        meterPos = '0px -20px';
+                    }
+                    else if (score >= 80) {
+                        label = $this.cfg.strongLabel;
+                        meterPos = '0px -30px';
+                    }
                 }
-                else if(score >= 30 && score < 80) {
-                    label = $this.cfg.goodLabel;
-                    meterPos = '0px -20px';
-                }
-                else if(score >= 80) {
-                    label = $this.cfg.strongLabel;
-                    meterPos = '0px -30px';
-                }
-            }
 
-            //update meter and info text
-            $this.meter.css('background-position', meterPos);
-            $this.infoText.text(label);
-        });
+                //update meter and info text
+                $this.meter.css('background-position', meterPos);
+                $this.infoText.text(label);
+            });
 
         //overlay setting
         if (!this.cfg.inline) {
@@ -162,7 +162,7 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
         if (this.resizeHandler) {
             this.resizeHandler.unbind();
         }
-    
+
         if (this.scrollHandler) {
             this.scrollHandler.unbind();
         }
@@ -174,26 +174,43 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
      */
     setupUnmasking: function() {
         var $this = this;
+        
         this.icon = $(PrimeFaces.escapeClientId(this.id + '_mask'));
+        // add ARIA accessibility
+        this.icon.attr('role', 'switch')
+            .attr('aria-checked', 'true')
+            .attr('aria-label', PrimeFaces.getAriaLabel('passwordShow', 'Show Password'))
+            .attr('tabindex', this.jq.attr('tabindex') || '0');
+
+        // add keyboard support
+        this.icon.off('keydown.password').on('keydown.password', function(event) {
+            if (PrimeFaces.utils.isActionKey(event)) {
+                $this.toggleMask();
+                event.preventDefault();
+            }
+        });
+
         this.icon.off('click.password').on('click.password', function() {
             $this.toggleMask();
         });
     },
-    
+
     /**
      * Toggle masking and unmasking the password.
      */
     toggleMask: function() {
-        if(!this.cfg.unmaskable) {
+        if (!this.cfg.unmaskable) {
             return;
         }
 
         if (this.jq.attr('type') === 'password') {
             this.jq.attr('type', 'text').parent().removeClass('ui-password-masked').addClass('ui-password-unmasked');
-        } 
+            this.icon.attr('aria-checked', 'false').attr('aria-label', PrimeFaces.getAriaLabel('passwordHide', 'Hide Password'));;
+        }
         else {
             this.jq.attr('type', 'password').parent().removeClass('ui-password-unmasked').addClass('ui-password-masked');
-        } 
+            this.icon.attr('aria-checked', 'true').attr('aria-label', PrimeFaces.getAriaLabel('passwordShow', 'Show Password'));
+        }
     },
 
     /**
@@ -214,14 +231,14 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
 
         // require 3 of the following 4 categories
         var variations = {
-            digits : /\d/.test(password),
-            lower : /[a-z]/.test(password),
-            upper : /[A-Z]/.test(password),
-            nonWords : /\W/.test(password)
+            digits: /\d/.test(password),
+            lower: /[a-z]/.test(password),
+            upper: /[A-Z]/.test(password),
+            nonWords: /\W/.test(password)
         }
 
         variationCount = 0;
-        for ( var check in variations) {
+        for (var check in variations) {
             variationCount += (variations[check] == true) ? 1 : 0;
         }
         score += variationCount * 28;
@@ -245,7 +262,7 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
             return x / y;
         }
         else {
-            return 1 + 0.5 * (x / (x + y/4));
+            return 1 + 0.5 * (x / (x + y / 4));
         }
     },
 
@@ -255,17 +272,16 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
      */
     align: function() {
         this.panel.css({
-            left:'',
-            top:'',
+            left: '',
+            top: '',
             'min-width': this.jq.outerWidth(),
             'transform-origin': 'center top'
-        })
-        .position({
+        }).position({
             my: 'left top'
-            ,at: 'left bottom'
-            ,of: this.jq
-            ,collision: 'flipfit'
-            ,using: function(pos, directions) {
+            , at: 'left bottom'
+            , of: this.jq
+            , collision: 'flipfit'
+            , using: function(pos, directions) {
                 $(this).css('transform-origin', 'center ' + directions.vertical).css(pos);
             }
         });
@@ -277,7 +293,7 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
     show: function() {
         if (!this.cfg.inline) {
             var $this = this;
-    
+
             if (this.transition) {
                 this.transition.show({
                     onEnter: function() {
@@ -291,7 +307,7 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
             }
         }
         else {
-            this.panel.css({ width: this.jq.outerWidth()});
+            this.panel.css({ width: this.jq.outerWidth() });
             this.panel.slideDown();
         }
     },
@@ -305,7 +321,7 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
         }
         else if (this.transition) {
             var $this = this;
-    
+
             this.transition.hide({
                 onExit: function() {
                     $this.unbindPanelEvents();

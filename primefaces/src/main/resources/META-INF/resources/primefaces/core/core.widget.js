@@ -244,6 +244,7 @@ if (!PrimeFaces.widget) {
      * instead.
      * @prop {string} widgetVar The name of the widget variables of this widget. The widget variable can be used to
      * access a widget instance by calling `PF('myWidgetVar')`.
+     * @prop {string} key The key of the JSON object.
      * 
      * @method constructor Creates a new instance of this widget. Please note that you should __NOT__ override this
      * constructor. Instead, override the {@link init} method, which is called at the end of the constructor once the
@@ -328,7 +329,9 @@ if (!PrimeFaces.widget) {
             if (this.widgetVar) {
                 var $this = this;
                 this.jq.on("remove", function() {
-                    PrimeFaces.detachedWidgets.push($this.widgetVar);
+                    if (!PrimeFaces.detachedWidgets.includes($this.widgetVar)) {
+                        PrimeFaces.detachedWidgets.push($this.widgetVar);
+                    }
                 });
             }
         },
@@ -393,6 +396,20 @@ if (!PrimeFaces.widget) {
                 }
             }
             this.destroyListeners = [];
+
+            // Iterate through all stored variables within this widget. If any of them are jQuery objects, 
+            // it is imperative to unbind their event listeners to avoid memory leaks in the DOM.
+            for (var key in this) {
+                var jq = this[key];
+                if (jq instanceof jQuery) {
+                    // remove events on all descendants
+                    jq.children().off();
+                    // remove events from element
+                    jq.off();
+                    // NOTE: do not null out the value here as is it needed sometimes still after destroy happens
+                    // this[key] = null; DO NOT ENABLE THIS
+                }
+            }
         },
 
         /**

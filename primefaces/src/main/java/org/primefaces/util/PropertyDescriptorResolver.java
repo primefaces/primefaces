@@ -50,6 +50,15 @@ public interface PropertyDescriptorResolver {
 
         @Override
         public PropertyDescriptor get(Class<?> klazz, String expression) {
+            String cacheKey = klazz.getName();
+            Map<String, PropertyDescriptor> classCache = pdCache.get(cacheKey);
+            if (classCache != null) {
+                PropertyDescriptor pd = classCache.get(expression);
+                if (pd != null) {
+                    return pd;
+                }
+            }
+
             PropertyDescriptor pd = null;
             Class<?> parent = klazz;
 
@@ -85,8 +94,7 @@ public interface PropertyDescriptorResolver {
 
         private PropertyDescriptor getSimpleProperty(Class<?> klazz, String field) {
             String cacheKey = klazz.getName();
-            Map<String, PropertyDescriptor> classCache = pdCache.computeIfAbsent(cacheKey, k -> new ConcurrentHashMap<>());
-            return classCache.computeIfAbsent(field, k -> {
+            return pdCache.computeIfAbsent(cacheKey, k -> new ConcurrentHashMap<>()).computeIfAbsent(field, k -> {
                 try {
                     return new PropertyDescriptor(k, klazz);
                 }

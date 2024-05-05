@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.primefaces</groupId>
         <artifactId>primefaces-parent</artifactId>
-        <version>14.0.0-SNAPSHOT</version>
+        <version>15.0.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -20,7 +20,8 @@
         <minify.disabled>true</minify.disabled>
         <jakarta.jar.skip>false</jakarta.jar.skip>
         <resources.dir.compressed>${project.build.directory}/classes/META-INF/resources/primefaces</resources.dir.compressed>
-        <mockito.version>5.10.0</mockito.version>
+        <mockito.version>5.11.0</mockito.version>
+        <sonar.sources>src/main/java,src/main/resources</sonar.sources>
     </properties>
 
     <dependencies>
@@ -116,13 +117,6 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- File Upload -->
-        <dependency>
-            <groupId>commons-fileupload</groupId>
-            <artifactId>commons-fileupload</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
         <!-- FeedReader -->
         <dependency>
             <groupId>com.rometools</groupId>
@@ -182,7 +176,7 @@
         <dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-jasper-el</artifactId>
-            <version>9.0.86</version>
+            <version>9.0.88</version>
             <scope>test</scope>
         </dependency>
         <!-- Content type validation in FileUploadUtilsTest -->
@@ -194,7 +188,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-nop</artifactId>
-            <version>2.0.12</version>
+            <version>2.0.13</version>
             <scope>test</scope>
         </dependency>
 
@@ -265,8 +259,8 @@
                     <version>1.15.0</version>
                     <configuration>
                         <installDirectory>${project.build.directory}</installDirectory>
-                        <nodeVersion>v18.8.0</nodeVersion>
-                        <npmVersion>8.19.1</npmVersion>
+                        <nodeVersion>v20.11.1</nodeVersion>
+                        <npmVersion>10.1.0</npmVersion>
                         <workingDirectory>${basedir}/src/main/type-definitions</workingDirectory>
                     </configuration>
                     <executions>
@@ -552,7 +546,7 @@
                     <useDataUri>false</useDataUri>
                     <failOnWarning>true</failOnWarning>
                     <imagesDir>${project.build.directory}/classes/META-INF/resources</imagesDir>
-                    <languageIn>ECMASCRIPT_2015</languageIn>
+                    <languageIn>ECMASCRIPT_2020</languageIn>
                     <languageOut>ECMASCRIPT5</languageOut>
                     <resourcesSets>
                         <resourcesSet>
@@ -575,7 +569,6 @@
                                 <include>imageswitch/**</include>
                                 <include>inputmask/**</include>
                                 <include>inputnumber/**</include>
-                                <include>inputswitch/**</include>
                                 <include>keyboard/**</include>
                                 <include>keyfilter/**</include>
                                 <include>knob/**</include>
@@ -592,9 +585,9 @@
                                 <include>signature/**</include>
                                 <include>stack/**</include>
                                 <include>terminal/**</include>
-                                <include>texteditor/**</include>
+                                <include>texteditor/1-texteditor.js</include>
+                                <include>texteditor/1-texteditor-theme.css</include>
                                 <include>timeline/**</include>
-                                <include>toggleswitch/**</include>
                             </includes>
                             <aggregations>
                                 <aggregation>
@@ -608,7 +601,7 @@
                         <resourcesSet>
                             <includes>
                                 <include>chart/**</include>
-                                <include>chartjs/**</include>
+                                <include>texteditor/**</include>
                             </includes>
                             <aggregations>
                                 <aggregation>
@@ -678,6 +671,7 @@
                                 <include>staticmessage/staticmessage.css</include>
                                 <include>dataview/dataview.css</include>
                                 <include>datepicker/datepicker.css</include>
+                                <include>toggleswitch/toggleswitch.css</include>
                             </includes>
                             <aggregations>
                                 <aggregation>
@@ -798,6 +792,7 @@
                                 <include>scrolltop/scrolltop.js</include>
                                 <include>sidebar/sidebar.js</include>
                                 <include>dataview/dataview.js</include>
+                                <include>toggleswitch/toggleswitch.js</include>
                             </includes>
                             <aggregations>
                                 <aggregation>
@@ -983,6 +978,9 @@
                                         </transformer>
                                         <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                                             <resource>META-INF/resources/primefaces/locales/locale-ar.js</resource>
+                                        </transformer>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                            <resource>META-INF/resources/primefaces/locales/locale-bg.js</resource>
                                         </transformer>
                                         <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                                             <resource>META-INF/resources/primefaces/locales/locale-ca.js</resource>
@@ -1197,7 +1195,7 @@
                     <dependency>
                         <groupId>io.yupiik.maven</groupId>
                         <artifactId>maven-shade-transformers</artifactId>
-                        <version>0.0.4</version>
+                        <version>0.0.5</version>
                     </dependency>
                 </dependencies>
             </plugin>

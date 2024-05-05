@@ -25,6 +25,8 @@ package org.primefaces.component.export;
 
 public class PDFOptions implements ExporterOptions {
 
+    private static final long serialVersionUID = 1L;
+
     private String facetFontStyle;
 
     private String facetFontColor;

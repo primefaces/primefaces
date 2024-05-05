@@ -166,8 +166,10 @@ public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
     protected void encodeMenuItemContent(FacesContext context, AbstractMenu menu, MenuItem menuitem) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Object value = menuitem.getValue();
-        boolean isRtl = ComponentUtils.isRTL(context, menu);
-        String iconPos = isRtl ? "right" : menuitem.getIconPos();
+        String iconPos = menuitem.getIconPos();
+        if (LangUtils.isBlank(iconPos)) {
+            iconPos = ComponentUtils.isRTL(context, menu) ? "right" : "left";
+        }
 
         if ("left".equals(iconPos)) {
             encodeIcon(writer, menu, menuitem, iconPos);

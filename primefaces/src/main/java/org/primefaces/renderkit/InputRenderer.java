@@ -34,7 +34,6 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 
 import org.primefaces.component.api.InputHolder;
-import org.primefaces.component.api.RTLAware;
 import org.primefaces.util.*;
 
 public abstract class InputRenderer extends CoreRenderer {
@@ -64,12 +63,6 @@ public abstract class InputRenderer extends CoreRenderer {
 
     protected boolean shouldDecode(UIInput component) {
         return !isDisabled(component) && !isReadOnly(component);
-    }
-
-    public <T extends UIComponent & RTLAware> void renderRTLDirection(FacesContext context, T component) throws IOException {
-        if (ComponentUtils.isRTL(context, component)) {
-            context.getResponseWriter().writeAttribute("dir", "rtl", null);
-        }
     }
 
     /**
