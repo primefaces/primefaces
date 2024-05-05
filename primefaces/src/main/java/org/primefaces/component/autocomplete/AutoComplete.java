@@ -171,11 +171,13 @@ public class AutoComplete extends AutoCompleteBase {
             int maxResults = getMaxResults();
             suggestions = lazyModel.load(0, maxResults, sortBy, searchFilter);
             List suggestionsList = (List) suggestions;
-            if (suggestionsList.size() < maxResults) {
-                suggestionsCount = suggestionsList.size();
-            }
-            else {
-                suggestionsCount = lazyModel.count(searchFilter);
+            if (lazyModel.getRowCount() == 0) {
+                if (suggestionsList.size() < maxResults) {
+                    suggestionsCount = suggestionsList.size();
+                }
+                else {
+                    suggestionsCount = lazyModel.count(searchFilter);
+                }
             }
         }
         else {
