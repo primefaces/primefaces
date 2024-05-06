@@ -49,7 +49,7 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
     private static final long serialVersionUID = 1L;
 
     protected Converter<T> rowKeyConverter;
-    private int rowCount;
+    private int rowCount = -1;
     private int pageSize;
 
     // overwrite to restore serialization support; see #7699
@@ -113,7 +113,7 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
     }
 
     public int calculateRowCount(List<?> loadedData, Map<String, FilterMeta> filterBy, int first, int rows) {
-        if (getRowCount() == 0) {
+        if (getRowCount() == -1) {
             if (loadedData.size() < rows && first == 0) {
                 setRowCount(loadedData.size());
             }
