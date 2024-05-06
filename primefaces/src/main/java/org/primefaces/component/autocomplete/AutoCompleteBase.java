@@ -80,7 +80,8 @@ public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implem
         completeEndpoint,
         lazyModel,
         lazyField,
-        showEmptyMessage
+        showEmptyMessage,
+        highlightSelector
     }
 
     public AutoCompleteBase() {
@@ -442,5 +443,13 @@ public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implem
 
     public void setShowEmptyMessage(boolean showEmptyMessage) {
         getStateHelper().put(PropertyKeys.showEmptyMessage, showEmptyMessage);
+    }
+
+    public String getHighlightSelector() {
+        return (String) getStateHelper().eval(PropertyKeys.highlightSelector, null);
+    }
+
+    public void setHighlightSelector(String highlightSelector) {
+        getStateHelper().put(PropertyKeys.highlightSelector, highlightSelector);
     }
 }
