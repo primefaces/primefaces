@@ -92,25 +92,28 @@ public class DataRenderer extends CoreRenderer {
             styleClass = styleClass + " ui-corner-top";
         }
 
+        // start main container
         writer.startElement("div", null);
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute("role", "navigation", null);
 
+        // start left facet
+        writer.startElement("div", null);
+        String leftClass = isTop ? UIPageableData.PAGINATOR_TOP_LEFT_CONTENT_CLASS : UIPageableData.PAGINATOR_BOTTOM_LEFT_CONTENT_CLASS;
+        writer.writeAttribute("class", leftClass, null);
         if (isTop && FacetUtils.shouldRenderFacet(leftTopContent)) {
-            writer.startElement("div", null);
-            writer.writeAttribute("class", UIPageableData.PAGINATOR_TOP_LEFT_CONTENT_CLASS, null);
             renderChild(context, leftTopContent);
-            writer.endElement("div");
         }
-
-        if (isTop && FacetUtils.shouldRenderFacet(rightTopContent)) {
-            writer.startElement("div", null);
-            writer.writeAttribute("class", UIPageableData.PAGINATOR_TOP_RIGHT_CONTENT_CLASS, null);
-            renderChild(context, rightTopContent);
-            writer.endElement("div");
+        if (!isTop && FacetUtils.shouldRenderFacet(leftBottomContent)) {
+            renderChild(context, leftBottomContent);
         }
+        // end left facet
+        writer.endElement("div");
 
+        // start center facet
+        writer.startElement("div", null);
+        writer.writeAttribute("class", UIPageableData.PAGINATOR_CENTER_CONTENT_CLASS, null);
         String[] elements = pageable.getPaginatorTemplate().split(" ");
         for (String element : elements) {
             PaginatorElementRenderer renderer = PAGINATOR_ELEMENTS.get(element);
@@ -129,19 +132,26 @@ public class DataRenderer extends CoreRenderer {
                 }
             }
         }
-        if (!isTop && FacetUtils.shouldRenderFacet(leftBottomContent)) {
-            writer.startElement("div", null);
-            writer.writeAttribute("class", UIPageableData.PAGINATOR_BOTTOM_LEFT_CONTENT_CLASS, null);
-            renderChild(context, leftBottomContent);
-            writer.endElement("div");
-        }
-        if (!isTop && FacetUtils.shouldRenderFacet(rightBottomContent)) {
-            writer.startElement("div", null);
-            writer.writeAttribute("class", UIPageableData.PAGINATOR_BOTTOM_RIGHT_CONTENT_CLASS, null);
-            renderChild(context, rightBottomContent);
-            writer.endElement("div");
+        // end center facet
+        writer.endElement("div");
+
+        // start right facet
+        writer.startElement("div", null);
+        String rightClass = isTop ? UIPageableData.PAGINATOR_TOP_RIGHT_CONTENT_CLASS : UIPageableData.PAGINATOR_BOTTOM_RIGHT_CONTENT_CLASS;
+        writer.writeAttribute("class", rightClass, null);
+        if (isTop && FacetUtils.shouldRenderFacet(rightTopContent)) {
+            writer.writeAttribute("class", UIPageableData.PAGINATOR_TOP_RIGHT_CONTENT_CLASS, null);
+            renderChild(context, rightTopContent);
         }
 
+        if (!isTop && FacetUtils.shouldRenderFacet(rightBottomContent)) {
+            writer.writeAttribute("class", UIPageableData.PAGINATOR_BOTTOM_RIGHT_CONTENT_CLASS, null);
+            renderChild(context, rightBottomContent);
+        }
+        // end right facet
+        writer.endElement("div");
+
+        // end main container
         writer.endElement("div");
     }
 

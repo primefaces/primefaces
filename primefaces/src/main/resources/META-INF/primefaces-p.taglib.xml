@@ -1815,6 +1815,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[jQuery selector specifies what content to identify for highlighting in search results. By default, it targets "<span>" elements.]]>
+            </description>
+            <name>highlightSelector</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Should the empty message be displayed when no items are found? Default is true.]]>
             </description>
             <name>showEmptyMessage</name>

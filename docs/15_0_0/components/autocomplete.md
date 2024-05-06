@@ -42,6 +42,7 @@ AutoComplete provides live suggestions while an input is being typed.
 | escape | true | Boolean | Defines if autocomplete results are escaped or not.
 | forceSelection | false | Boolean | When enabled, autoComplete only accepts input from the selection list.
 | groupByTooltip | null | String | Tooltip to display on group headers.
+| highlightSelector | span | String | jQuery selector specifies what content to identify for highlighting in search results. By default, it targets `<span>` elements.
 | immediate | false | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
 | inputmode | null | String | Hint at the type of data this control has for touch devices to display appropriate virtual keyboard.
 | inputStyle | null | String | Inline style of the input element.

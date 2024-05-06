@@ -10,7 +10,9 @@ Look into [migration guide](https://primefaces.github.io/primefaces/15_0_0/#/../
 
 * Core
     
-
+* AutoComplete
+    * Added property `highlightSelector=""` so you can delcare the jQuery selector for what to find and highlight. See https://github.com/primefaces/primefaces/issues/11822 
+    
 * Captcha
     * Added [hCaptcha](https://www.hcaptcha.com/) support
     
