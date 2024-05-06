@@ -90,14 +90,7 @@ public class DataGrid extends DataGridBase {
                 calculateFirst();
             }
             List<?> data = lazyModel.load(getFirst(), getRows(), Collections.emptyMap(), Collections.emptyMap());
-            if (lazyModel.getRowCount() == 0) {
-                if (data.size() < getRows() && getFirst() == 0) {
-                    lazyModel.setRowCount(data.size());
-                }
-                else if (getFirst() == 0) {
-                    lazyModel.setRowCount(lazyModel.count(Collections.emptyMap()));
-                }
-            }
+            lazyModel.calculateRowCount(data, Collections.emptyMap(), getFirst(), getRows());
 
             lazyModel.setPageSize(getRows());
             lazyModel.setWrappedData(data);
