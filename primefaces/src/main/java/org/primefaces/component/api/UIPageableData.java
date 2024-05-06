@@ -40,6 +40,7 @@ public class UIPageableData extends UIData implements Pageable, TouchAware {
     public static final String PAGINATOR_TOP_CONTAINER_CLASS = "ui-paginator ui-paginator-top ui-widget-header";
     public static final String PAGINATOR_BOTTOM_CONTAINER_CLASS = "ui-paginator ui-paginator-bottom ui-widget-header";
     public static final String PAGINATOR_PAGES_CLASS = "ui-paginator-pages";
+    public static final String PAGINATOR_CENTER_CONTENT_CLASS = "ui-paginator-center-content";
     public static final String PAGINATOR_TOP_LEFT_CONTENT_CLASS = "ui-paginator-top-left-content";
     public static final String PAGINATOR_TOP_RIGHT_CONTENT_CLASS = "ui-paginator-top-right-content";
     public static final String PAGINATOR_BOTTOM_LEFT_CONTENT_CLASS = "ui-paginator-bottom-left-content";
