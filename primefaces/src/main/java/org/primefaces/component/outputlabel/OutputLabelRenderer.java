@@ -65,6 +65,7 @@ public class OutputLabelRenderer extends CoreRenderer {
         final StyleClassBuilder styleClassBuilder = getStyleClassBuilder(context)
                 .add(OutputLabel.STYLE_CLASS)
                 .add(ComponentUtils.isRTL(context, label), OutputLabel.RTL_CLASS)
+                .add(label.isDisabled(), "ui-state-disabled")
                 .add(label.getStyleClass());
 
         final EditableValueHolderState state = new EditableValueHolderState();

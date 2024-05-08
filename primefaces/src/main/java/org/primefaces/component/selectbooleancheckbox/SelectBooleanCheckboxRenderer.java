@@ -126,9 +126,11 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
 
     protected void encodeOutput(FacesContext context, SelectBooleanCheckbox checkbox, boolean checked, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String styleClass = createStyleClass(checkbox, null, HTML.CHECKBOX_BOX_CLASS);
-        styleClass = checked ? styleClass + " ui-state-active" : styleClass;
-        styleClass = disabled ? styleClass + " ui-state-disabled" : styleClass;
+        String styleClass = createStyleClass(checkbox, "styleClass", HTML.CHECKBOX_BOX_CLASS);
+        styleClass = getStyleClassBuilder(context)
+                .add(styleClass)
+                .add(checked, "ui-state-active")
+                .build();
 
         String iconClass = checked ? HTML.CHECKBOX_CHECKED_ICON_CLASS : HTML.CHECKBOX_UNCHECKED_ICON_CLASS;
 

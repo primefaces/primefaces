@@ -35,7 +35,7 @@ public abstract class OutputLabelBase extends HtmlOutputLabel implements RTLAwar
     public static final String DEFAULT_RENDERER = "org.primefaces.component.OutputLabelRenderer";
 
     public enum PropertyKeys {
-
+        disabled,
         indicateRequired;
     }
 
@@ -54,6 +54,14 @@ public abstract class OutputLabelBase extends HtmlOutputLabel implements RTLAwar
 
     public void setIndicateRequired(String indicateRequired) {
         getStateHelper().put(PropertyKeys.indicateRequired, indicateRequired);
+    }
+
+    public boolean isDisabled() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
+    }
+
+    public void setDisabled(boolean disabled) {
+        getStateHelper().put(PropertyKeys.disabled, disabled);
     }
 
 }

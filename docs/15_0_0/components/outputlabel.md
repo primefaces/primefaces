@@ -41,6 +41,7 @@ onmouseout | null | String | Client side callback to execute when a pointer is m
 onmouseover | null | String | Client side callback to execute when a pointer is moved onto component.
 onmouseup | null | String | Client side callback to execute when a pointer is released over component.
 indicateRequired | auto | String | auto, autoSkipDisabled, true or false. Displays * symbol if the input is required.
+disabled | false | Boolean | Disables the output label.
 
 ## Getting Started with OutputLabel
 Usage is same as standard outputLabel, an input component is associated with for attribute.

@@ -19207,6 +19207,12 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
+            <description><![CDATA[Display output label as disabled. Default is false.]]></description>
+            <name>disabled</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
             <description>
                 <![CDATA[An el expression or a literal text that defines a converter for the component. When it's an EL expression, it's resolved to a converter instance.
                 In case it's a static text, it must refer to a converter id.]]>
