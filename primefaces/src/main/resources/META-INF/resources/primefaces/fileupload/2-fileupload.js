@@ -162,7 +162,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         this.ucfg = {
             url: PrimeFaces.ajax.Utils.getPostUrl(this.form),
             portletForms: PrimeFaces.ajax.Utils.getPorletForms(this.form, parameterPrefix),
-            paramName: this.id,
+            paramName: Array.from({length: 999}, (_, i) => this.id), // required so drag´n´drop has for each file the id (Github #11879)
             dataType: 'xml',
             dropZone: this.dropZone,
             sequentialUploads: this.cfg.sequentialUploads,
@@ -201,7 +201,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
                 // we need to fake the filelimit as the jquery-fileupload input always only contains 1 file
                 var dataFileInput = data.fileInput;
-                if (dataFileInput == null) { // drag´n´drop
+                if (dataFileInput == null) { // drag´n´drop - Github #11879
                     dataFileInput = $('#' + $.escapeSelector(data.paramName + '_input'));
                     const fileList = new DataTransfer();
                     data.files.forEach((item) => {
