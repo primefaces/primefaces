@@ -18,3 +18,6 @@ Look into [migration guide](https://primefaces.github.io/primefaces/15_0_0/#/../
     
 * FeedReader
     * Added `podcast="true"` property if [Apple Itunes Podcast](https://help.apple.com/itc/podcasts_connect/#/itcb54353390) parsing and specific tags 
+    
+* StaticMessage
+    * Added `severity="success"` to align with React/Vue/Angular

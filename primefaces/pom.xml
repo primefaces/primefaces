@@ -1209,7 +1209,7 @@
                 <maven.test.skip>true</maven.test.skip>
                 <maven.javadoc.skip>true</maven.javadoc.skip>
                 <maven.source.skip>true</maven.source.skip>
-                <jakarta.jar.skip>true</jakarta.jar.skip>
+                <jakarta.jar.skip>false</jakarta.jar.skip>
                 <checkstyle.skip>true</checkstyle.skip>
                 <license.skipCheckLicense>true</license.skipCheckLicense>
                 <license.skipAddThirdParty>true</license.skipAddThirdParty>
