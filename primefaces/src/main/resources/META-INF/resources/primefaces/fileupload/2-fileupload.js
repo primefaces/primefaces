@@ -200,7 +200,16 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                 }
 
                 // we need to fake the filelimit as the jquery-fileupload input always only contains 1 file
-                var fileLimit = data.fileInput.data('p-filelimit');
+                var dataFileInput = data.fileInput;
+                if (dataFileInput == null) { // drag´n´drop
+                    dataFileInput = $('#' + $.escapeSelector(data.paramName + '_input'));
+                    const fileList = new DataTransfer();
+                    data.files.forEach((item) => {
+                        fileList.items.add(item);
+                    });
+                    dataFileInput[0].files = fileList.files;
+                }
+                var fileLimit = dataFileInput ? dataFileInput.data('p-filelimit') : null;
                 if (fileLimit && ($this.uploadedFileCount + $this.files.length + 1) > fileLimit) {
                     $this.clearMessages();
 
@@ -221,7 +230,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                         : null;
 
                     // we need to pass the real invisible input, which contains the filelist
-                    var validationResult = PrimeFaces.validation.validate($this.jq, data.fileInput, update, true, true, true, true);
+                    var validationResult = PrimeFaces.validation.validate($this.jq, dataFileInput, update, true, true, true, true);
                     if (!validationResult.valid) {
                         for (let clientId in validationResult.messages) {
                             var msgs = validationResult.messages[clientId];
