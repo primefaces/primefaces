@@ -31,9 +31,9 @@ import org.jfree.data.general.PieDataset;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
-import javax.enterprise.context.RequestScoped;
+import jakarta.enterprise.context.RequestScoped;
 import javax.imageio.ImageIO;
-import javax.inject.Named;
+import jakarta.inject.Named;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;

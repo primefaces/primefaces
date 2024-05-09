@@ -23,10 +23,10 @@
  */
 package org.primefaces.showcase.view.misc;
 
-import javax.faces.view.ViewScoped;
+import jakarta.faces.view.ViewScoped;
 
-import javax.inject.Named;
-import javax.validation.constraints.NotNull;
+import jakarta.inject.Named;
+import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Named

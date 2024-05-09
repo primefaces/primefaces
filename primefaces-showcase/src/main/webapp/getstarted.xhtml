@@ -1,18 +1,19 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core"
+    xmlns:ui="jakarta.faces.facelets" xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
 
     <ui:define name="content">
         <div class="content-section documentation">
             <h1>Getting Started</h1>
-            <p>PrimeFaces is a lightweight library with one jar, zero-configuration and no required dependencies. You just need to download PrimeFaces, add the primefaces-{version}.jar to your classpath and import the namespace to get started.</p>
+            <p>PrimeFaces is a lightweight library with one jar, zero-configuration and no required dependencies. You just need to add PrimeFaces and import the namespace into your XHTMLs to get started.</p>
 
-            <h5>Download</h5>
-            <p>PrimeFaces can be downloaded manually or via Apache Maven.</p>
+            <h5>Dependency</h5>
+            <p>PrimeFaces is usally added as Apache Maven dependency. (Or alternatively Gradle dependency or manual download.)</p>
 <pre><code class="language-xml">
 &lt;dependency&gt;
     &lt;groupId&gt;org.primefaces&lt;/groupId&gt;
     &lt;artifactId&gt;primefaces&lt;/artifactId&gt;
-    &lt;version&gt;13.0.0&lt;/version&gt;
+    &lt;version&gt;15.0.0&lt;/version&gt;
+    <classifier>jakarta</classifier>
 &lt;/dependency&gt;
 
 </code></pre>
@@ -31,8 +32,8 @@
 
 <pre><code class="language-xml">
 &lt;html xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:h="http://xmlns.jcp.org/jsf/html"
-    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:h="jakarta.faces.html"
+    xmlns:f="jakarta.faces.core"
     xmlns:p="http://primefaces.org/ui"&gt;
     
     &lt;h:head&gt;

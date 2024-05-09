@@ -26,11 +26,11 @@ package org.primefaces.showcase.view.data.datatable;
 import org.primefaces.showcase.domain.Customer;
 import org.primefaces.showcase.service.CustomerService;
 
-import javax.annotation.PostConstruct;
-import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.time.temporal.Temporal;

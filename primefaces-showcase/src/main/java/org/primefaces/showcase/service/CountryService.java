@@ -25,9 +25,9 @@ package org.primefaces.showcase.service;
 
 import org.primefaces.showcase.domain.Country;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Named;
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Named;
 
 import java.util.ArrayList;
 import java.util.Comparator;

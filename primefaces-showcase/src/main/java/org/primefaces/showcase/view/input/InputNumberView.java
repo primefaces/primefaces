@@ -26,8 +26,8 @@ package org.primefaces.showcase.view.input;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
 
 @Named
 @ViewScoped
