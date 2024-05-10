@@ -89,7 +89,7 @@ import java.util.List;
 import java.util.regex.Matcher; 
 import java.util.regex.Pattern;
 
-import jakarta.imageio.ImageIO;
+import javax.imageio.ImageIO;
 
 public class SigGen {
     private static final String IMAGE_FORMAT = "png";
