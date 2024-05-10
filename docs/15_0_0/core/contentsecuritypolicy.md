@@ -61,7 +61,7 @@ response.addHeader("Content-Security-Policy", "script-src 'self' 'nonce-YTQyM2Zi
 **Script Output**
 ```xml
 <script type="text/javascript"
-        src="/showcase/javax.faces.resource/jquery/jquery.js.xhtml?ln=primefaces&amp;v=8.0"
+        src="/showcase/jakarta.faces.resource/jquery/jquery.js.xhtml?ln=primefaces&amp;v=8.0"
         nonce="YTQyM2ZiNTktNjFhZS00ZjI1LWEzMWItZGYzOTE0ZWQ1NDU1" />
 ```
 ## Default Policy

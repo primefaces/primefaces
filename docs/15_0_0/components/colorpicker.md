@@ -204,9 +204,9 @@ are below.  For full localization see the [localization documentation](/core/loc
 
 | Event | Listener Parameter | Fired |
 | --- | --- | --- |
-| change | javax.faces.event.AjaxBehaviorEvent | On change.
-| open | javax.faces.event.AjaxBehaviorEvent | On open of the popup in popup mode.
-| close | javax.faces.event.AjaxBehaviorEvent | On close of the popup in popup mode.
+| change | jakarta.faces.event.AjaxBehaviorEvent | On change.
+| open | jakarta.faces.event.AjaxBehaviorEvent | On open of the popup in popup mode.
+| close | jakarta.faces.event.AjaxBehaviorEvent | On close of the popup in popup mode.
 
 
 ## Client Side API

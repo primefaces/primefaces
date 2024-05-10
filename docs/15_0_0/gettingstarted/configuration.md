@@ -21,7 +21,7 @@ pattern of JavaEE. Here is the list of all configuration options defined with a 
 | CSP_REPORT_ONLY_POLICY | null | When CSP is `reportOnly` this can be a directive for report only back to a URI endpoint like `report-uri /csp-violation-report-endpoint/`. |
 | DIR | ltr | Defines orientation; 'ltr' or 'rtl' for right-to-left support. |
 | EARLY_POST_PARAM_EVALUATION | false | Make p:ajax behave like f:ajax for queued AJAX requests. See: https://github.com/primefaces/primefaces/issues/109 |
-| EXCEPTION_TYPES_TO_IGNORE_IN_LOGGING | null | Comma separated list of exceptions for PrimeExceptionHandler to ignore e.g. `javax.faces.application.ViewExpiredException,javax.persistence.RollbackException`. |
+| EXCEPTION_TYPES_TO_IGNORE_IN_LOGGING | null | Comma separated list of exceptions for PrimeExceptionHandler to ignore e.g. `jakarta.faces.application.ViewExpiredException,jakarta.persistence.RollbackException`. |
 | FLEX | false | Use PrimeFlex instead of Grid CSS in components with responsive-modes. (not implemented by all components yet) |
 | HIDE_RESOURCE_VERSION | false | Determines whether to hide version information in resource paths. |
 | HTML5_COMPLIANCE | false | Mark true if you know your site is HTML5 doctype so PF won't render certain non-HTML5 compliant values like `text/javascript` on scripts |

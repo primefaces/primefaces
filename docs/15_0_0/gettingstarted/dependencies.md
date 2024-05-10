@@ -33,9 +33,9 @@ if the runtime is JSF 2.2.
 ```xml
 <!DOCTYPE html>
 <html xmlns="http://www.w3c.org/1999/xhtml"
-        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:h="jakarta.faces.html"
         xmlns:p="http://primefaces.org/ui"
-        xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+        xmlns:pt="jakarta.faces.passthrough">
     <h:head>
     </h:head>
     <h:body>

@@ -179,8 +179,8 @@ timeline javascript gets loaded. Following is an example of Spanish localization
 ```xhtml
 <!DOCTYPE html>
 <html xmlns="http://www.w3c.org/1999/xhtml"
-        xmlns:h="http://xmlns.jcp.org/jsf/html"
-        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:h="jakarta.faces.html"
+        xmlns:f="jakarta.faces.core"
         xmlns:p="http://primefaces.org/ui">
     <h:head>
         <f:facet name="first">

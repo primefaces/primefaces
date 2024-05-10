@@ -80,8 +80,8 @@ attribute instead of title.
 
 ```xhtml
 <html xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:h="http://xmlns.jcp.org/jsf/html"
-    xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+    xmlns:h="jakarta.faces.html"
+    xmlns:pt="jakarta.faces.passthrough"
     xmlns:p="http://primefaces.org/ui">
     <h:head></h:head>
     <h:body>

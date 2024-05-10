@@ -401,7 +401,7 @@ address | null | String | String representation of the address.
 latLng | null | LatLng | Coordinates of the address.
 
 ## GMap Event API
-All classes in event API extends from _javax.faces.event.FacesEvent_.
+All classes in event API extends from _jakarta.faces.event.FacesEvent_.
 
 _org.primefaces.event.map.MarkerDragEvent_
 

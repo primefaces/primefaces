@@ -95,12 +95,12 @@ Your custom validator must implement ClientValidator interface to provide the id
 package org.primefaces.examples.validate;
 import java.util.Map;
 import java.util.regex.Pattern;
-import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.validator.FacesValidator;
-import javax.faces.validator.Validator;
-import javax.faces.validator.ValidatorException;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.validator.FacesValidator;
+import jakarta.faces.validator.Validator;
+import jakarta.faces.validator.ValidatorException;
 import org.primefaces.validate.ClientValidator;
 
 @FacesValidator("custom.emailValidator")
@@ -191,7 +191,7 @@ Your _Converter_ can simply implement _ClientConverter_ and provide a implementa
 Here is the example of the built on _BooleanConverter_:
 
 ```java
-public class BooleanConverter extends javax.faces.convert.BooleanConverter implements ClientConverter {
+public class BooleanConverter extends jakarta.faces.convert.BooleanConverter implements ClientConverter {
 
     @Override
     public String getConverterId() {
@@ -201,11 +201,11 @@ public class BooleanConverter extends javax.faces.convert.BooleanConverter imple
 ```
 
 ```js
-PrimeFaces.converter['javax.faces.Boolean'] = {
+PrimeFaces.converter['jakarta.faces.Boolean'] = {
 
     regex: /^[-+]?\d+$/,
 
-    MESSAGE_ID: 'javax.faces.converter.BooleanConverter.BOOLEAN',
+    MESSAGE_ID: 'jakarta.faces.converter.BooleanConverter.BOOLEAN',
 
     convert: function(element, submittedValue) {
         if(submittedValue === null) {

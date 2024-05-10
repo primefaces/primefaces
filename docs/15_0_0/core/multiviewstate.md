@@ -46,7 +46,7 @@ See [Client Window](client.md) for details.
 Enabled in web.xml
 ```xml
 <context-param>
-    <param-name>javax.faces.CLIENT_WINDOW_MODE</param-name>
+    <param-name>jakarta.faces.CLIENT_WINDOW_MODE</param-name>
     <param-value>url</param-value>
 </context-param>
 ```

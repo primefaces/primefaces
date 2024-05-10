@@ -123,14 +123,14 @@ the dialog shows a popup calendar. To customize default focus behavior, use focu
 
 | Event | Listener Parameter | Fired |
 | --- | --- | --- |
-| open | javax.faces.event.AjaxBehaviorEvent | On open.
+| open | jakarta.faces.event.AjaxBehaviorEvent | On open.
 | close | org.primefaces.event.CloseEvent | On close.
-| minimize | javax.faces.event.AjaxBehaviorEvent | On minimize.
-| restoreMinimize | javax.faces.event.AjaxBehaviorEvent | On restore minimize.
-| maximize | javax.faces.event.AjaxBehaviorEvent | On maximize.
-| restoreMaximize | javax.faces.event.AjaxBehaviorEvent | On restore maximize.
+| minimize | jakarta.faces.event.AjaxBehaviorEvent | On minimize.
+| restoreMinimize | jakarta.faces.event.AjaxBehaviorEvent | On restore minimize.
+| maximize | jakarta.faces.event.AjaxBehaviorEvent | On maximize.
+| restoreMaximize | jakarta.faces.event.AjaxBehaviorEvent | On restore maximize.
 | move | org.primefaces.event.MoveEvent | On move.
-| loadContent | javax.faces.event.AjaxBehaviorEvent | On lazy loading the content when dynamic=true
+| loadContent | jakarta.faces.event.AjaxBehaviorEvent | On lazy loading the content when dynamic=true
 | resizeStart | org.primefaces.event.ResizeEvent | On resize start.
 | resizeStop | org.primefaces.event.ResizeEvent | On resize stop.
 

@@ -6,10 +6,10 @@ to your page to begin using the components. Here is a simple page like `test.xht
 ```html
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:jsf="http://xmlns.jcp.org/jsf"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:jsf="jakarta.faces"
+      xmlns:ui="jakarta.faces.facelets"
       xmlns:p="http://primefaces.org/ui">
 
     <f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
