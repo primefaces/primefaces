@@ -994,7 +994,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 suggestions.suggestions.forEach(function(suggestion, index) {
                     var labelEncoded = $("<div>").text(suggestion.label).html();
                     var itemValue = labelEncoded;
-                    if (!!suggestion.value) {
+                    if (suggestion.value) {
                         itemValue = $("<div>").text(suggestion.value).html();
                     }
                     html += '<li id="' + $this.id + '_item_' + index + '" class="ui-autocomplete-item ui-autocomplete-list-item ui-corner-all" data-item-value="' + PrimeFaces.escapeHTML(itemValue) + '" data-item-label="' + PrimeFaces.escapeHTML(labelEncoded) + '" role="option">' + PrimeFaces.escapeHTML(labelEncoded) + '</li>';
@@ -1547,11 +1547,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
         var valid = false;
 
-        for (let strippedItem of this.currentItems) {
-            if (strippedItem) {
-                strippedItem = strippedItem.replace(/\r?\n/g, '');
-            }
-
+        for (let item of this.currentItems) {
+            var strippedItem = item ? item.replace(/\r?\n/g, '') : undefined;
             if (strippedItem === value) {
                 valid = true;
                 break;
