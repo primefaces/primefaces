@@ -87,9 +87,9 @@ content specify baseZIndex property. In example below, initial zIndex of the sid
 
 | Event | Listener Parameter | Fired |
 | --- | --- | --- |
-| open | javax.faces.event.AjaxBehaviorEvent | On open.
+| open | jakarta.faces.event.AjaxBehaviorEvent | On open.
 | close | org.primefaces.event.CloseEvent | On close.
-| loadContent | javax.faces.event.AjaxBehaviorEvent | On dynamic content load.
+| loadContent | jakarta.faces.event.AjaxBehaviorEvent | On dynamic content load.
 
 ## Client Side API
 Widget: _PrimeFaces.widget.Sidebar_

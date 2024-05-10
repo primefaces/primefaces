@@ -421,7 +421,7 @@ component.
     <p:column field="year" headerText="Year" footerText="lte" filterMatchMode="lte">
         <f:facet name="filter">
             <p:spinner onchange="PF('carsTable').filter()" min="1960" max="2010">
-                <f:converter converterId="javax.faces.Integer" />
+                <f:converter converterId="jakarta.faces.Integer" />
             </p:spinner>
         </f:facet>
         <h:outputText value="#{car.year}" />
@@ -448,7 +448,7 @@ component.
     <p:column field="sold" headerText="Status" footerText="equals" filterMatchMode="equals">
         <f:facet name="filter">
             <p:selectOneButton onchange="PF('carsTable').filter()">
-                <f:converter converterId="javax.faces.Boolean" />
+                <f:converter converterId="jakarta.faces.Boolean" />
                 <f:selectItem itemLabel="All" itemValue="" />
                 <f:selectItem itemLabel="Sold" itemValue="true" />
                 <f:selectItem itemLabel="Sale" itemValue="false" />

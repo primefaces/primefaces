@@ -44,8 +44,8 @@ Wizard provides custom ajax behavior events to configure the built-in AJAX reque
 
 | Event | Listener Parameter | Fired |
 | --- | --- | --- |
-next | javax.faces.event.AjaxBehaviorEvent | When "next" is triggered
-back | javax.faces.event.AjaxBehaviorEvent | When "back" is triggered
+next | jakarta.faces.event.AjaxBehaviorEvent | When "next" is triggered
+back | jakarta.faces.event.AjaxBehaviorEvent | When "back" is triggered
 
 ## Getting Started with Wizard
 Each step in the flow is represented with a tab. As an example following wizard is used to create a

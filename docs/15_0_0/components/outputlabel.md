@@ -79,7 +79,7 @@ standard outputLabel component cannot apply focus to these, however PrimeFaces o
 When _indicateRequired_ is `auto` and the target input is required, or _indicateRequired_ is `true`, outputLabel displays * symbol next to the value.
 
 In case of _indicateRequired_ is set to `auto` and the input is not marked as required, PrimeFaces will automatically check for @NotBlank/@NotEmpty.
-PrimeFaces also checks for @NotNull, but only when `javax.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL` is set to `true`.
+PrimeFaces also checks for @NotNull, but only when `jakarta.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL` is set to `true`.
 
 In case of _indicateRequired_ is set to `autoSkipDisabled` it is the same as `auto` except is will check the state of the 
 input component if it is read-only or disabled.

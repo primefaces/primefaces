@@ -22,10 +22,10 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.faces.application.Application;
-import javax.faces.application.ApplicationWrapper;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
+import jakarta.faces.application.Application;
+import jakarta.faces.application.ApplicationWrapper;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
 
 import org.primefaces.component.api.UICalendar;
 
@@ -62,8 +62,8 @@ public class DemoApplication extends ApplicationWrapper {
 Next you must implement a factory to produce your application:
 
 ```java
-import javax.faces.application.Application;
-import javax.faces.application.ApplicationFactory;
+import jakarta.faces.application.Application;
+import jakarta.faces.application.ApplicationFactory;
 
 public class DemoApplicationFactory extends ApplicationFactory {
 

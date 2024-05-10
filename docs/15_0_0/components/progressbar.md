@@ -86,7 +86,7 @@ the interval attribute.
 
 | Event | Listener Parameter | Fired |
 | --- | --- | --- |
-| complete | javax.faces.event.AjaxBehaviorEvent | Is fired when the progress is completed
+| complete | jakarta.faces.event.AjaxBehaviorEvent | Is fired when the progress is completed
 
 
 Example below demonstrates how to use this event:

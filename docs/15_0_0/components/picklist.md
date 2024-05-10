@@ -110,7 +110,7 @@ players(name, age ...).
 <p:pickList value="#{pickListBean.players}" var="player"
 itemLabel="#{player.name}" itemValue="#{player}" converter="player">
 ```
-PlayerConverter in this case should implement _javax.faces.convert.Converter_ contract and
+PlayerConverter in this case should implement _jakarta.faces.convert.Converter_ contract and
 implement getAsString, getAsObject methods. Note that a converter is always necessary for
 primitive types like long, integer, boolean as well.
 
@@ -196,7 +196,7 @@ The following AJAX behavior events are available for this component. If no event
 | --- | --- | --- |
 select | org.primefaces.event.SelectEvent | When an item selected.
 unselect | org.primefaces.event.UnselectEvent | When an item unselected.
-reorder | javax.faces.event.AjaxBehaviorEvent | When list is reordered.
+reorder | jakarta.faces.event.AjaxBehaviorEvent | When list is reordered.
 transfer | org.primefaces.event.TransferEvent | When an item is moved to another list.
 
 

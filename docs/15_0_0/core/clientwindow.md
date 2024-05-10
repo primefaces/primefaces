@@ -9,7 +9,7 @@ Faces 4.0 also contains a new `@ClientWindowScoped`, which enables you to store 
 It can be activated via web.xml:
 ```xml
 <context-param>
-    <param-name>javax.faces.CLIENT_WINDOW_MODE</param-name>
+    <param-name>jakarta.faces.CLIENT_WINDOW_MODE</param-name>
     <param-value>url</param-value>
 </context-param>
 ```
@@ -32,7 +32,7 @@ PrimeFaces `ClientWindow` can be activated in `faces-config.xml`:
 </faces-config>
 ```
 
-As it´s a replacement for the standard JSF-mechanism, make sure you dont have a `javax.faces.CLIENT_WINDOW_MODE` in your web.xml or configured to `none`.
+As it´s a replacement for the standard JSF-mechanism, make sure you dont have a `jakarta.faces.CLIENT_WINDOW_MODE` in your web.xml or configured to `none`.
 
 
 **Mojarra:**  
@@ -44,11 +44,4 @@ For older Mojarra versions you must use the LifeCycleFactory because of this iss
     </factory>
 </faces-config>
 ```
-
-
-
-
-
-
-
 

@@ -105,7 +105,7 @@ public class OrderListBean {
 | --- | --- | --- |
 select | org.primefaces.event.SelectEvent | When an item selected.
 unselect | org.primefaces.event.UnselectEvent | When an item unselected.
-reorder | javax.faces.event.AjaxBehaviorEvent | When list is reordered.
+reorder | jakarta.faces.event.AjaxBehaviorEvent | When list is reordered.
 
 ## Header
 A facet called “caption” is provided to display a header content for the orderlist.

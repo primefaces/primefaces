@@ -64,7 +64,7 @@ terminal nested inside a dialog;
 
 | Event | Listener Parameter | Fired |
 | --- | --- | --- |
-| command | javax.faces.event.AjaxBehaviorEvent | On submission of any command in the terminal.
+| command | jakarta.faces.event.AjaxBehaviorEvent | On submission of any command in the terminal.
 
 
 ## Skinning

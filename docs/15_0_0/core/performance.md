@@ -10,15 +10,15 @@ However, there are some settings and patterns that can improve the performance.
 ### Common
 ```xml
 <context-param>
-    <param-name>javax.faces.PROJECT_STAGE</param-name>
+    <param-name>jakarta.faces.PROJECT_STAGE</param-name>
     <param-value>Production</param-value>
 </context-param>
 <context-param>
-    <param-name>javax.faces.FACELETS_REFRESH_PERIOD</param-name>
+    <param-name>jakarta.faces.FACELETS_REFRESH_PERIOD</param-name>
     <param-value>-1</param-value>
 </context-param>
 <context-param>
-    <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+    <param-name>jakarta.faces.STATE_SAVING_METHOD</param-name>
     <param-value>server</param-value>
 </context-param>
 ```

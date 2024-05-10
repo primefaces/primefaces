@@ -25,18 +25,18 @@ exceptions and a special page for `ViewExpiredException` type.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="2.5"
-    xmlns="http://java.sun.com/xml/ns/javaee"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
-    http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" >
+<web-app
+        xmlns="https://jakarta.ee/xml/ns/jakartaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
+        version="6.0">
     <!-- Other application configuration -->
     <error-page>
         <exception-type>java.lang.Throwable</exception-type>
         <location>/ui/error/error.jsf</location>
     </error-page>
     <error-page>
-        <exception-type>javax.faces.application.ViewExpiredException</exception-type>
+        <exception-type>jakarta.faces.application.ViewExpiredException</exception-type>
         <location>/ui/error/viewExpired.jsf</location>
     </error-page>
 </web-app>
@@ -69,7 +69,7 @@ update other components on the same page. This is quite useful in case you don't
 separate error page. Following example shows the exception in a dialog on the same page.
 
 ```xhtml
-<p:ajaxExceptionHandler type="javax.faces.application.ViewExpiredException" update="exceptionDialog" onexception="PF('exceptionDialog').show();" />
+<p:ajaxExceptionHandler type="jakarta.faces.application.ViewExpiredException" update="exceptionDialog" onexception="PF('exceptionDialog').show();" />
 <p:dialog id="exceptionDialog" header="Exception: #{pfExceptionHandler.type} occured!" widgetVar="exceptionDialog" height="500px">
     Message: #{pfExceptionHandler.message} <br/>
     StackTrace: <h:outputText value="#{pfExceptionHandler.formattedStackTrace}" escape="false" />
@@ -81,7 +81,7 @@ included in every page. [Refer to component documentation for the available attr
 
 ## Render Response Exceptions
 To support exception handling in the `RENDER_RESPONSE` phase, it's required to set the
-`javax.faces.FACELETS_BUFFER_SIZE` parameter. Otherwise you will probably see a
+`jakarta.faces.FACELETS_BUFFER_SIZE` parameter. Otherwise you will probably see a
 ServletException with "Response already committed" message.
 
 ## Exception Logging

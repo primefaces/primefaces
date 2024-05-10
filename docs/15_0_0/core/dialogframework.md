@@ -54,7 +54,7 @@ Simplest use case of DF is opening an xhtml view like _cars.xhtml_ in a dialog;
 
 ```xhtml
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html"
 xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Cars</title>
@@ -173,7 +173,7 @@ The trigger component needs to have _dialogReturn_ ajax behavior event to hook-i
 
 ```xhtml
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html"
     xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Cars</title>

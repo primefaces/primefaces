@@ -29,7 +29,7 @@ Class whose enums would be imported is defined with type property and the var pr
 the variable name to use via EL.
 
 ```xhtml
-<p:importEnum type="javax.faces.application.ProjectStage" var="JsfProjectStages" allSuffix="ALL_ENUM_VALUES" />
+<p:importEnum type="jakarta.faces.application.ProjectStage" var="JsfProjectStages" allSuffix="ALL_ENUM_VALUES" />
 Development: \#{JsfProjectStages.Development}
 ```
 ```xhtml

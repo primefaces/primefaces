@@ -20,12 +20,12 @@ Mojarra do not the label of the field but MyFaces does. For example;
 
 Mojarra:
 ```js
-javax.faces.validator.BeanValidator.MESSAGE={0}
+jakarta.faces.validator.BeanValidator.MESSAGE={0}
 ```
 
 MyFaces:
 ```js
-javax.faces.validator.BeanValidator.MESSAGE={1}: {0}
+jakarta.faces.validator.BeanValidator.MESSAGE={1}: {0}
 ```
 
 Default CSV messages follow the convention of Mojarra.  
@@ -33,10 +33,10 @@ However if you prefer to display the label along with the message, you can overr
 
 Default:
 ```js
-PrimeFaces.locales['en_US'].messages['javax.faces.validator.BeanValidator.MESSAGE'] = '{0}';
+PrimeFaces.locales['en_US'].messages['jakarta.faces.validator.BeanValidator.MESSAGE'] = '{0}';
 ```
 
 With Label:
 ```js
-PrimeFaces.locales['en_US'].messages['javax.faces.validator.BeanValidator.MESSAGE'] = '{1}: {0}';
+PrimeFaces.locales['en_US'].messages['jakarta.faces.validator.BeanValidator.MESSAGE'] = '{1}: {0}';
 ```

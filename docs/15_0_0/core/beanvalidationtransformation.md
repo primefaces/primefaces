@@ -26,7 +26,7 @@ To enable full support for `@NotNull`, `InterpretEmptyStringAsNull` has to be se
 
 ```xml
 <context-param>
-    <param-name>javax.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL</param-name>
+    <param-name>jakarta.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL</param-name>
     <param-value>true</param-value>
 </context-param>
 ```
