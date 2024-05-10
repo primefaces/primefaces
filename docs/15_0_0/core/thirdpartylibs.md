@@ -30,8 +30,8 @@ are many other third party libraries and plugins used to support features.
 | [jScrollPane](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#jScrollPane) | 2.2.3 | https://github.com/vitch/jScrollPane |
 | [JSPlumb Diagram](../jsdocs/modules/node_modules_jsplumb.export_.html) | 2.15.6 | https://github.com/jsplumb/jsplumb |
 | [Keypad](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#keypad) | 2.1.1 | http://keith-wood.name/keypad.html |
-| [Moment](../jsdocs/modules/node_modules_moment_ts3_1_typings_moment.html) | 2.29.4 | https://github.com/moment/moment |
-| [Moment Timezone](../jsdocs/modules/node_modules_moment_ts3_1_typings_moment.html#tz) | 0.5.43 | https://github.com/moment/moment-timezone |
+| [Moment](../jsdocs/modules/node_modules_moment_ts3_1_typings_moment.html) | 2.30.1 | https://github.com/moment/moment |
+| [Moment Timezone](../jsdocs/modules/node_modules_moment_ts3_1_typings_moment.html#tz) | 0.5.45 | https://github.com/moment/moment-timezone |
 | [Quill Editor](../jsdocs/modules/node_modules__types_quill.html) | 2.0.1 | https://quilljs.com/ |
 | [Raphaël](../jsdocs/interfaces/node_modules__types_raphael.RaphaelStatic.html) | 2.3.0 | http://raphaeljs.com |
 | [Signature](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#signature) | 1.2.0 | http://keith-wood.name/signature.html |
