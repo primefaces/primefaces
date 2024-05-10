@@ -27318,7 +27318,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[The severity of the message: error, info, warn, fatal.]]>
+                <![CDATA[The severity of the message: success, info, error, warn, fatal.]]>
             </description>
             <name>severity</name>
             <required>true</required>

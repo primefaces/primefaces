@@ -22,7 +22,7 @@ rendered | true | Boolean | Boolean value to specify the rendering of the compon
 binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
 summary | null | String | The message summary.
 detail | null | String | The message detail.
-severity | null | String | The severity of the message: error, info, warn, fatal.
+severity | null | String | The severity of the message: success, info, error, warn, fatal.
 display | both | String | Defines the display mode.
 escape | true | Boolean | Defines whether HTML would be escaped or not.
 style | null | String | Style of main container element.
