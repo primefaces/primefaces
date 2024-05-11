@@ -1014,11 +1014,6 @@ public class DataTable extends DataTableBase {
     }
 
     @Override
-    public int getFrozenColumnsCount() {
-        return getFrozenColumns();
-    }
-
-    @Override
     public boolean isFilterByAsMapDefined() {
         return getStateHelper().get(InternalPropertyKeys.filterByAsMap) != null;
     }

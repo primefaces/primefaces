@@ -24,6 +24,8 @@
 package org.primefaces.component.api;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.row.Row;
@@ -72,6 +74,20 @@ public interface RowColumnVisitor {
 
         public int getCount() {
             return count;
+        }
+    }
+
+    class ColumnCollector extends Adapter {
+
+        private List<UIColumn> columns = new ArrayList<>();
+
+        @Override
+        public void visitColumn(int index, UIColumn column) throws IOException {
+            columns.add(column);
+        }
+
+        public List<UIColumn> getColumns() {
+            return columns;
         }
     }
 }

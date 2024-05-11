@@ -27,7 +27,6 @@ import org.primefaces.component.api.*;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
-import org.primefaces.component.columns.Columns;
 import org.primefaces.component.datatable.feature.DataTableFeature;
 import org.primefaces.component.datatable.feature.DataTableFeatures;
 import org.primefaces.component.headerrow.HeaderRow;
@@ -442,7 +441,7 @@ public class DataTableRenderer extends DataRenderer {
             writer.startElement("div", null);
             writer.writeAttribute("class", "ui-datatable-frozen-container", null);
             encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_HEADER_CLASS, DataTable.SCROLLABLE_HEADER_BOX_CLASS, tableStyle, tableStyleClass);
-            encodeThead(context, table, 0, lastFrozenColumn, clientId + "_frozenThead", "frozenHeader");
+            encodeThead(context, table, 0, lastFrozenColumn, clientId + "_frozenThead");
             encodeFrozenRows(context, table, 0, lastFrozenColumn);
             encodeScrollAreaEnd(context);
 
@@ -454,7 +453,7 @@ public class DataTableRenderer extends DataRenderer {
             }
 
             encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_FOOTER_CLASS, DataTable.SCROLLABLE_FOOTER_BOX_CLASS, tableStyle, tableStyleClass);
-            encodeTFoot(context, table, 0, lastFrozenColumn, clientId + "_frozenTfoot", "frozenFooter");
+            encodeTFoot(context, table, 0, lastFrozenColumn, clientId + "_frozenTfoot");
             encodeScrollAreaEnd(context);
             writer.endElement("div");
             writer.endElement("td");
@@ -466,7 +465,7 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("class", "ui-datatable-scrollable-container", null);
 
             encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_HEADER_CLASS, DataTable.SCROLLABLE_HEADER_BOX_CLASS, tableStyle, tableStyleClass);
-            encodeThead(context, table, lastFrozenColumn, columnsCount, clientId + "_scrollableThead", "scrollableHeader");
+            encodeThead(context, table, lastFrozenColumn, columnsCount, clientId + "_scrollableThead");
             encodeFrozenRows(context, table, lastFrozenColumn, columnsCount);
             encodeScrollAreaEnd(context);
 
@@ -478,7 +477,7 @@ public class DataTableRenderer extends DataRenderer {
             }
 
             encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_FOOTER_CLASS, DataTable.SCROLLABLE_FOOTER_BOX_CLASS, tableStyle, tableStyleClass);
-            encodeTFoot(context, table, lastFrozenColumn, columnsCount, clientId + "_scrollableTfoot", "scrollableFooter");
+            encodeTFoot(context, table, lastFrozenColumn, columnsCount, clientId + "_scrollableTfoot");
             encodeScrollAreaEnd(context);
             writer.endElement("div");
             writer.endElement("td");
@@ -927,11 +926,10 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected void encodeThead(FacesContext context, DataTable table) throws IOException {
-        encodeThead(context, table, 0, table.getColumns().size(), null, null);
+        encodeThead(context, table, 0, table.getColumns().size(), null);
     }
 
-    protected void encodeThead(FacesContext context, DataTable table, int columnStart, int columnEnd, String theadId,
-                               String columnGroupType) throws IOException {
+    protected void encodeThead(FacesContext context, DataTable table, int columnStart, int columnEnd, String theadId) throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
         String theadClientId = (theadId == null) ? table.getClientId(context) + "_head" : theadId;
@@ -945,30 +943,11 @@ public class DataTableRenderer extends DataRenderer {
         if (!hasColumnGroup) {
             encodeColumnHeader(context, table, columnStart, columnEnd);
         }
-        else if (table.isColumnGroupLegacyEnabled()) {
-            encodeColumnGroupHeadersLegacy(context, table, columnStart, columnEnd, columnGroupType);
-        }
         else {
             encodeColumnGroupHeaders(context, table, columnStart, columnEnd);
         }
 
         writer.endElement("thead");
-    }
-
-    /**
-     * @Deprecated Use {@link DataTableRenderer#encodeColumnGroupHeaders instead
-     */
-    @Deprecated
-    private void encodeColumnGroupHeadersLegacy(FacesContext context, DataTable table, int columnStart, int columnEnd, String columnGroupType)
-            throws IOException {
-        String colGroupType = (columnGroupType == null) ? "header" : columnGroupType;
-        ColumnGroup group = table.getColumnGroup(colGroupType);
-        if (group != null && group.isRendered()) {
-            encodeColumnGroupFacetLegacy(context, table, group, UIColumn.Facet.HEADER);
-        }
-        else {
-            encodeColumnHeader(context, table, columnStart, columnEnd);
-        }
     }
 
     protected void encodeColumnHeader(FacesContext context, DataTable table, int columnStart, int columnEnd) throws IOException {
@@ -985,69 +964,6 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         writer.endElement("tr");
-    }
-
-    /**
-     * @Deprecated Use {@link DataTableRenderer#encodeColumnGroupHeader} instead
-     */
-    @Deprecated
-    protected void encodeColumnGroupFacetLegacy(FacesContext context, DataTable table, ColumnGroup group, UIColumn.Facet facetType) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-
-        context.getAttributes().put(Constants.HELPER_RENDERER, "columnGroup");
-
-        for (UIComponent child : group.getChildren()) {
-            if (child.isRendered()) {
-                if (child instanceof Row) {
-                    Row row = (Row) child;
-                    String rowClass = row.getStyleClass();
-                    String rowStyle = row.getStyle();
-
-                    writer.startElement("tr", null);
-                    if (rowClass != null) {
-                        writer.writeAttribute("class", rowClass, null);
-                    }
-                    if (rowStyle != null) {
-                        writer.writeAttribute("style", rowStyle, null);
-                    }
-
-                    for (UIComponent column : row.getChildren()) {
-                        if (column.isRendered()) {
-                            if (column instanceof Column) {
-                                if (facetType == UIColumn.Facet.HEADER) {
-                                    encodeColumnHeader(context, table, (Column) column);
-                                }
-                                else {
-                                    encodeColumnFooter(context, table, (UIColumn) column);
-                                }
-                            }
-                            else if (column instanceof Columns) {
-                                List<DynamicColumn> dynamicColumns = ((Columns) column).getDynamicColumns();
-                                for (DynamicColumn dynaColumn : dynamicColumns) {
-                                    dynaColumn.applyModel();
-                                    if (facetType == UIColumn.Facet.HEADER) {
-                                        encodeColumnHeader(context, table, dynaColumn);
-                                    }
-                                    else {
-                                        encodeColumnFooter(context, table, dynaColumn);
-                                    }
-                                }
-                            }
-                            else {
-                                column.encodeAll(context);
-                            }
-                        }
-                    }
-
-                    writer.endElement("tr");
-                }
-                else {
-                    child.encodeAll(context);
-                }
-            }
-        }
-
-        context.getAttributes().remove(Constants.HELPER_RENDERER);
     }
 
     protected void encodeTFooter(FacesContext context, DataTable table, UIComponent tfooter, int columnStart, int columnEnd) throws IOException {
@@ -1241,7 +1157,7 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("class", DataTable.EMPTY_MESSAGE_ROW_CLASS, null);
 
             writer.startElement("td", null);
-            writer.writeAttribute("colspan", table.getColumnsCountWithSpan(), null);
+            writer.writeAttribute("colspan", table.getColumnsCount(), null);
 
             UIComponent emptyFacet = table.getFacet("emptyMessage");
             if (FacetUtils.shouldRenderFacet(emptyFacet, table.isRenderEmptyFacets())) {
@@ -1494,75 +1410,31 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected void encodeTFoot(FacesContext context, DataTable table) throws IOException {
-        encodeTFoot(context, table, 0, table.getColumns().size(), null, null);
+        encodeTFoot(context, table, 0, table.getColumns().size(), null);
     }
 
-    protected void encodeTFoot(FacesContext context, DataTable table, int columnStart, int columnEnd, String tfootId, String columnGroupType)
+    protected void encodeTFoot(FacesContext context, DataTable table, int columnStart, int columnEnd, String tfootId)
             throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
 
         String tfootClientId = (tfootId == null) ? table.getClientId(context) + "_foot" : tfootId;
 
-        if (!table.isColumnGroupLegacyEnabled()) {
-            UIComponent tfooter = table.getFacet("tfooter");
-            boolean hasFooterColumn = table.hasFooterColumn();
-            if (tfooter == null && !hasFooterColumn) {
-                return;
-            }
-
-            writer.startElement("tfoot", null);
-            writer.writeAttribute("id", tfootClientId, null);
-            if (hasFooterColumn) {
-                encodeColumnFooters(context, table, columnStart, columnEnd);
-            }
-            if (tfooter != null) {
-                encodeTFooter(context, table, tfooter, columnStart, columnEnd);
-            }
-
-            writer.endElement("tfoot");
-        }
-        else {
-            encodeColumnFootersLegacy(context, table, columnStart, columnEnd, tfootClientId, columnGroupType);
-        }
-    }
-
-    @Deprecated
-    private void encodeColumnFootersLegacy(FacesContext context, DataTable table, int columnStart, int columnEnd, String tfootClientId, String columnGroupType)
-            throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        List<UIColumn> columns = table.getColumns();
-
-        String colGroupType = (columnGroupType == null) ? "footer" : columnGroupType;
-        ColumnGroup group = table.getColumnGroup(colGroupType);
+        UIComponent tfooter = table.getFacet("tfooter");
         boolean hasFooterColumn = table.hasFooterColumn();
-        boolean shouldRenderFooter = (hasFooterColumn || group != null);
-
-        if (!shouldRenderFooter) {
+        if (tfooter == null && !hasFooterColumn) {
             return;
         }
 
         writer.startElement("tfoot", null);
         writer.writeAttribute("id", tfootClientId, null);
-
-        if (group != null && group.isRendered()) {
-            encodeColumnGroupFacetLegacy(context, table, group, UIColumn.Facet.FOOTER);
+        if (hasFooterColumn) {
+            encodeColumnFooters(context, table, columnStart, columnEnd);
         }
-        else if (table.hasFooterColumn()) {
-            writer.startElement("tr", null);
-
-            for (int i = columnStart; i < columnEnd; i++) {
-                UIColumn column = columns.get(i);
-                if (column instanceof DynamicColumn) {
-                    DynamicColumn dynamicColumn = (DynamicColumn) column;
-                    dynamicColumn.applyModel();
-                }
-
-                encodeColumnFooter(context, table, column);
-            }
-
-            writer.endElement("tr");
+        if (tfooter != null) {
+            encodeTFooter(context, table, tfooter, columnStart, columnEnd);
         }
+
         writer.endElement("tfoot");
     }
 

@@ -141,13 +141,7 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
 
         if (exportConfiguration.isExportHeader()) {
             addTableFacets(context, table, ColumnType.HEADER);
-            if (table.isColumnGroupLegacyEnabled()) {
-                boolean headerGroup = addColumnGroupFacetsLegacy(context, table, ColumnType.HEADER);
-                if (!headerGroup) {
-                    addColumnFacets(context, table, ColumnType.HEADER);
-                }
-            }
-            else if (ComponentUtils.hasChildOfType(table, ColumnGroup.class)) {
+            if (ComponentUtils.hasChildOfType(table, ColumnGroup.class)) {
                 addColumnGroupFacets(context, table, ColumnType.HEADER);
             }
             else {
@@ -198,40 +192,6 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
             ColumnValue columnValue = getColumnFacetValue(context, col, columnType);
             exportColumnFacetValue(context, table, columnValue, i);
         });
-    }
-
-    @Deprecated
-    protected boolean addColumnGroupFacetsLegacy(FacesContext context, T table, ColumnType columnType) {
-        if (!supportedFacetTypes.contains(FacetType.COLUMN_GROUP)) {
-            return false;
-        }
-
-        ColumnGroup cg = table.getColumnGroup(columnType.facet());
-        if (cg == null || cg.getChildCount() == 0) {
-            return false;
-        }
-
-        int total = getExportableColumns(table).size();
-        table.forEachColumnGroupRow(context, cg, true, row -> {
-            final AtomicInteger colIndex = new AtomicInteger(0);
-
-            table.forEachColumn(context, row, true, true, false, column -> {
-                if (column.isExportable()) {
-                    ColumnValue columnValue = getColumnFacetValue(context, column, columnType);
-
-                    proxifyWithRowExport(context,
-                            table,
-                            colIndex.get(),
-                            total,
-                            () -> exportColumnGroupFacetValueLegacy(context, table, column, colIndex, columnValue));
-
-                    colIndex.incrementAndGet();
-                }
-                return true;
-            });
-            return true;
-        });
-        return true;
     }
 
     protected void addColumnGroupFacets(FacesContext context, T table, ColumnType columnType) {
@@ -395,71 +355,25 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
     protected List<UIColumn> getExportableColumns(T table) {
         return exportableColumns.computeIfAbsent(table, dt -> {
 
-            boolean colGroupLegacy = dt.isColumnGroupLegacyEnabled();
-            if (!colGroupLegacy) {
-                Map<UIColumn, Integer> columnMeta = new LinkedHashMap<>();
-                ForEachRowColumn
-                        .from(dt)
-                        .hints(ForEachRowColumn.ColumnHint.RENDERED, ForEachRowColumn.ColumnHint.EXPORTABLE, ForEachRowColumn.ColumnHint.VISIBLE)
-                        .invoke(new RowColumnVisitor.Adapter() {
+            Map<UIColumn, Integer> columnMeta = new LinkedHashMap<>();
+            ForEachRowColumn
+                    .from(dt)
+                    .hints(ForEachRowColumn.ColumnHint.RENDERED, ForEachRowColumn.ColumnHint.EXPORTABLE, ForEachRowColumn.ColumnHint.VISIBLE)
+                    .invoke(new RowColumnVisitor.Adapter() {
 
-                            @Override
-                            public void visitColumn(int index, UIColumn column) {
-                                int displayPriority = column.getDisplayPriority();
-                                columnMeta.put(column, displayPriority);
-                            }
-                        });
+                        @Override
+                        public void visitColumn(int index, UIColumn column) {
+                            int displayPriority = column.getDisplayPriority();
+                            columnMeta.put(column, displayPriority);
+                        }
+                    });
 
-                return columnMeta.entrySet()
-                        .stream()
-                        .sorted(Map.Entry.comparingByValue())
-                        .map(Map.Entry::getKey)
-                        .collect(Collectors.toList());
-            }
-            else {
-                return getExportableColumnsLegacy(dt);
-            }
+            return columnMeta.entrySet()
+                    .stream()
+                    .sorted(Map.Entry.comparingByValue())
+                    .map(Map.Entry::getKey)
+                    .collect(Collectors.toList());
         });
-    }
-
-    @Deprecated
-    protected List<UIColumn> getExportableColumnsLegacy(UITable table) {
-        int allColumnsSize = table.getColumns().size();
-        List<UIColumn> exportcolumns = new ArrayList<>(allColumnsSize);
-        boolean visibleColumnsOnly = exportConfiguration.isVisibleOnly();
-        final AtomicBoolean hasNonDefaultSortPriorities = new AtomicBoolean(false);
-        final List<ColumnMeta> visibleColumnMetadata = new ArrayList<>(allColumnsSize);
-        Map<String, ColumnMeta> allColumnMeta = table.getColumnMeta();
-
-        table.forEachColumn(true, true, true, column -> {
-            if (column.isExportable()) {
-                String columnKey = column.getColumnKey();
-                ColumnMeta currentMeta = allColumnMeta.get(columnKey);
-                if (!visibleColumnsOnly || (visibleColumnsOnly && (currentMeta == null || currentMeta.getVisible()))) {
-                    int displayPriority = column.getDisplayPriority();
-                    ColumnMeta metaCopy = new ColumnMeta(columnKey);
-                    metaCopy.setDisplayPriority(displayPriority);
-                    visibleColumnMetadata.add(metaCopy);
-                    if (displayPriority != 0) {
-                        hasNonDefaultSortPriorities.set(true);
-                    }
-                }
-            }
-            return true;
-        });
-
-        if (hasNonDefaultSortPriorities.get()) {
-            // sort by display priority
-            Comparator<Integer> sortIntegersNaturallyWithNullsLast = Comparator.nullsLast(Comparator.naturalOrder());
-            visibleColumnMetadata.sort(Comparator.comparing(ColumnMeta::getDisplayPriority, sortIntegersNaturallyWithNullsLast));
-        }
-
-        for (ColumnMeta meta : visibleColumnMetadata) {
-            String metaColumnKey = meta.getColumnKey();
-            table.invokeOnColumn(metaColumnKey, exportcolumns::add);
-        }
-
-        return exportcolumns;
     }
 
     protected O options() {
