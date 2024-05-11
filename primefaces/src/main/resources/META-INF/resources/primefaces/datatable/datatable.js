@@ -2991,8 +2991,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.configureSelectAllAria();
 
         // GitHub #6730 user wants all rows not just displayed rows
-        if(!this.cfg.selectionPageOnly && shouldCheckAll) {
-            this.selectAllRows();
+        if(!this.cfg.selectionPageOnly) {
+            if (shouldCheckAll) {
+                this.selectAllRows();
+            }
+            else {
+                this.unselectAllRows();
+            }
         }
 
         //save state
