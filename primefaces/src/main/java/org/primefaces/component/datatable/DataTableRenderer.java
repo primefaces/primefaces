@@ -1571,7 +1571,6 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected void encodeSubTable(FacesContext context, DataTable table, SubTable subTable, int first, int last) throws IOException {
-        LOGGER.info("SubTable has been deprecated, use row grouping instead");
         for (int i = first; i < last; i++) {
             table.setRowIndex(i);
             if (!table.isRowAvailable()) {
