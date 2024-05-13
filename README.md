@@ -129,7 +129,7 @@ For a full list of the available downloads, please visit the [download page](htt
 	xmlns:pt="jakarta.faces.passthrough"
 	xmlns:jsf="jakarta.faces"
 	xmlns:ui="jakarta.faces.facelets"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="primefaces">
 
 	<h:head>
 
