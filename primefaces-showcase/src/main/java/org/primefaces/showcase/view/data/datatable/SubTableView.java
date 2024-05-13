@@ -29,9 +29,9 @@ import java.util.List;
 import org.primefaces.showcase.domain.Stats;
 import org.primefaces.showcase.domain.Team;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.enterprise.context.RequestScoped;
-import jakarta.inject.Named;
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
 
 @Named
 @RequestScoped
