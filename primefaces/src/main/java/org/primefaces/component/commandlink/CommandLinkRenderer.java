@@ -72,6 +72,7 @@ public class CommandLinkRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = link.getClientId(context);
         Object label = link.getValue();
+        String referencedForm = link.getForm();
 
         String request;
         boolean ajax = link.isAjax();
@@ -99,6 +100,10 @@ public class CommandLinkRenderer extends CoreRenderer {
         writer.writeAttribute(HTML.ARIA_LABEL, link.getAriaLabel(), null);
         if (link.isDisabled()) {
             writer.writeAttribute("tabindex", "-1", null);
+        }
+
+        if (!isValueBlank(referencedForm)) {
+            writer.writeAttribute("data-pf-form", referencedForm, null);
         }
 
         if (ajax) {
