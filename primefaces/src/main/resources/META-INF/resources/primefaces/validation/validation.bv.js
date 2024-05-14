@@ -6,28 +6,28 @@ if (window.PrimeFaces) {
      * Bean Validation Integration for PrimeFaces Client Side Validation Framework
      */
     PrimeFaces.locales['en_US'].messages['javax.faces.validator.BeanValidator.MESSAGE'] = '{0}';
-    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.AssertFalse.message'] = 'must be false';
-    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.AssertTrue.message'] = 'must be true';
-    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.DecimalMax.message'] = 'must be less than or equal to {0}';
-    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.DecimalMin.message'] = 'must be greater than or equal to {0}';
-    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.Digits.message'] = 'numeric value out of bounds (<{0} digits>.<{1} digits> expected)';
-    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.Email.message'] = 'must be a well-formed email address';
-    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.Future.message'] = 'must be a future date';
-    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.FutureOrPresent.message'] = 'must be a date in the present or in the future';
-    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.Max.message'] = 'must be less than or equal to {0}';
-    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.Min.message'] = 'must be greater than or equal to {0}';
-    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.Negative.message'] = 'must be less than 0';
-    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.NegativeOrZero.message'] = 'must be less than or equal to 0';
-    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.NotBlank.message'] = 'must not be blank';
-    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.NotEmpty.message'] = 'must not be empty';
-    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.NotNull.message'] = 'must not be null';
-    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.Null.message'] = 'must be null';
-    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.Past.message'] = 'must be a past date';
-    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.PastOrPresent.message'] = 'must be a date in the past or in the present';
-    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.Pattern.message'] = 'must match "{0}"';
-    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.Positive.message'] = 'must be greater than 0';
-    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.PositiveOrZero.message'] = 'must be greater than or equal to 0';
-    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.Size.message'] = 'size must be between {0} and {1}';
+    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.AssertFalse.message'] = 'must be false.';
+    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.AssertTrue.message'] = 'must be true.';
+    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.DecimalMax.message'] = 'must be less than or equal to {0}.';
+    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.DecimalMin.message'] = 'must be greater than or equal to {0}.';
+    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.Digits.message'] = 'numeric value out of bounds (<{0} digits>.<{1} digits> expected).';
+    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.Email.message'] = 'must be a well-formed email address.';
+    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.Future.message'] = 'must be a future date.';
+    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.FutureOrPresent.message'] = 'must be a date in the present or in the future.';
+    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.Max.message'] = 'must be less than or equal to {0}.';
+    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.Min.message'] = 'must be greater than or equal to {0}.';
+    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.Negative.message'] = 'must be less than 0.';
+    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.NegativeOrZero.message'] = 'must be less than or equal to 0.';
+    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.NotBlank.message'] = 'must not be blank.';
+    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.NotEmpty.message'] = 'must not be empty.';
+    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.NotNull.message'] = 'must not be null.';
+    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.Null.message'] = 'must be null.';
+    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.Past.message'] = 'must be a past date.';
+    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.PastOrPresent.message'] = 'must be a date in the past or in the present.';
+    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.Pattern.message'] = 'must match "{0}".';
+    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.Positive.message'] = 'must be greater than 0.';
+    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.PositiveOrZero.message'] = 'must be greater than or equal to 0.';
+    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.Size.message'] = 'size must be between {0} and {1}.';
 
     PrimeFaces.validator['AssertFalse'] = {
 
