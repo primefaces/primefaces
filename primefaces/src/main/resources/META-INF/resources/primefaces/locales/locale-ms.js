@@ -232,6 +232,8 @@ if (window.PrimeFaces) {
       "javax.validation.constraints.Future.message": "mestilah pada masa hadapan.",
       "javax.validation.constraints.Max.message": "mestilah kurang daripada atau sama dengan {0}.",
       "javax.validation.constraints.Min.message": "mestilah lebih besar daripada atau sama dengan {0}.",
+      "javax.validation.constraints.NotBlank.message": "mungkin tidak batal.",
+      "javax.validation.constraints.NotEmpty.message": "mungkin tidak batal.",
       "javax.validation.constraints.NotNull.message": "mungkin tidak batal.",
       "javax.validation.constraints.Null.message": "mesti batal.",
       "javax.validation.constraints.Past.message": "mesti masa lalu.",

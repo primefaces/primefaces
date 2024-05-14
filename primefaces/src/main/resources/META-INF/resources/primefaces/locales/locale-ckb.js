@@ -232,6 +232,8 @@ if (window.PrimeFaces) {
       "javax.validation.constraints.Future.message": "دەبێت لە داهاتوودا بێت.",
       "javax.validation.constraints.Max.message": "دەبێت کەمتر بێت یان یەکسان بێت بە {0}.",
       "javax.validation.constraints.Min.message": "دەبێت گەورەتر بێت یان یەکسان بێت بە {0}.",
+      "javax.validation.constraints.NotBlank.message": "لەوانەیە پووچ نەبێت.",
+      "javax.validation.constraints.NotEmpty.message": "لەوانەیە پووچ نەبێت.",
       "javax.validation.constraints.NotNull.message": "لەوانەیە پووچ نەبێت.",
       "javax.validation.constraints.Null.message": "دەبێت پووچ بێت.",
       "javax.validation.constraints.Past.message": "دەبێت لە ڕابردوودا بێت.",

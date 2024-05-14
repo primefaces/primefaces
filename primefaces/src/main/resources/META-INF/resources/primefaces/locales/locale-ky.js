@@ -232,6 +232,8 @@ if (window.PrimeFaces) {
       "javax.validation.constraints.Future.message": "келечекте болушу керек.",
       "javax.validation.constraints.Max.message": "{0} аз же барабар болушу керек.",
       "javax.validation.constraints.Min.message": "{0} чоң же барабар болушу керек.",
+      "javax.validation.constraints.NotBlank.message": "нөл болбошу мүмкүн.",
+      "javax.validation.constraints.NotEmpty.message": "нөл болбошу мүмкүн.",
       "javax.validation.constraints.NotNull.message": "нөл болбошу мүмкүн.",
       "javax.validation.constraints.Null.message": "нөл болушу керек.",
       "javax.validation.constraints.Past.message": "өткөндө болушу керек.",

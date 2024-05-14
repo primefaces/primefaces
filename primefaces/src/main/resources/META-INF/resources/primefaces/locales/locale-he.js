@@ -237,6 +237,8 @@ if (window.PrimeFaces) {
       "javax.validation.constraints.Future.message": "חייב להיות בעתיד.",
       "javax.validation.constraints.Max.message": "חייב להיות קטן או שווה ל-{0}.",
       "javax.validation.constraints.Min.message": "חייב להיות גדול או שווה ל-{0}.",
+      "javax.validation.constraints.NotBlank.message": "ייתכן שלא יהיה null.",
+      "javax.validation.constraints.NotEmpty.message": "ייתכן שלא יהיה null.",
       "javax.validation.constraints.NotNull.message": "ייתכן שלא יהיה null.",
       "javax.validation.constraints.Null.message": "חייב להיות null.",
       "javax.validation.constraints.Past.message": "חייב להיות בעבר.",

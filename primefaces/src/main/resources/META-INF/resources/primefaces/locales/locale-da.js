@@ -233,6 +233,8 @@ if (window.PrimeFaces) {
       "javax.validation.constraints.Future.message": "skal være i fremtiden.",
       "javax.validation.constraints.Max.message": "skal være mindre end eller lig med {0}.",
       "javax.validation.constraints.Min.message": "skal være større end eller lig med {0}.",
+      "javax.validation.constraints.NotBlank.message": "må ikke være null.",
+      "javax.validation.constraints.NotEmpty.message": "må ikke være null.",
       "javax.validation.constraints.NotNull.message": "må ikke være null.",
       "javax.validation.constraints.Null.message": "skal være null.",
       "javax.validation.constraints.Past.message": "skal være i fortiden.",

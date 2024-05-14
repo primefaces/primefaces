@@ -234,6 +234,8 @@ if (window.PrimeFaces) {
       "javax.validation.constraints.Future.message": "必须是未来时间！",
       "javax.validation.constraints.Max.message": "必须小于或等于“{0}”！",
       "javax.validation.constraints.Min.message": "必须大于或等于“{0}”！",
+      "javax.validation.constraints.NotBlank.message": "不能为“null”！",
+      "javax.validation.constraints.NotEmpty.message": "不能为“null”！",
       "javax.validation.constraints.NotNull.message": "不能为“null”！",
       "javax.validation.constraints.Null.message": "必须是“null”！",
       "javax.validation.constraints.Past.message": "必须是过去时间！",

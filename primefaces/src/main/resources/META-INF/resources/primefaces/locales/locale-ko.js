@@ -239,6 +239,8 @@ if (window.PrimeFaces) {
       "javax.validation.constraints.Future.message": "미래여야 합니다.",
       "javax.validation.constraints.Max.message": "{0}보다 작거나 같아야 합니다.",
       "javax.validation.constraints.Min.message": "{0}보다 크거나 같아야 합니다.",
+      "javax.validation.constraints.NotBlank.message": "null이 아닐 수 있습니다.",
+      "javax.validation.constraints.NotEmpty.message": "null이 아닐 수 있습니다.",
       "javax.validation.constraints.NotNull.message": "null이 아닐 수 있습니다.",
       "javax.validation.constraints.Null.message": "null이어야 합니다.",
       "javax.validation.constraints.Past.message": "과거임에 틀림없습니다.",

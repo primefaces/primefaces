@@ -235,6 +235,8 @@ if (window.PrimeFaces) {
       "javax.validation.constraints.Future.message": "trebuie să fie în viitor.",
       "javax.validation.constraints.Max.message": "trebuie să fie mai mic sau egal cu {0}.",
       "javax.validation.constraints.Min.message": "trebuie să fie mai mare sau egal cu {0}.",
+      "javax.validation.constraints.NotBlank.message": "poate să nu fie nul.",
+      "javax.validation.constraints.NotEmpty.message": "poate să nu fie nul.",
       "javax.validation.constraints.NotNull.message": "poate să nu fie nul.",
       "javax.validation.constraints.Null.message": "trebuie să fie nul.",
       "javax.validation.constraints.Past.message": "trebuie să fie în trecut.",

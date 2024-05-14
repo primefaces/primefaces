@@ -303,6 +303,8 @@ if (window.PrimeFaces) {
       "jakarta.validation.constraints.Future.message": "must be in the future.",
       "jakarta.validation.constraints.Max.message": "must be less than or equal to {0}.",
       "jakarta.validation.constraints.Min.message": "must be greater than or equal to {0}.",
+      "jakarta.validation.constraints.NotBlank.message": "may not be blank.",
+      "jakarta.validation.constraints.NotEmpty.message": "may not be empty.",
       "jakarta.validation.constraints.NotNull.message": "may not be null.",
       "jakarta.validation.constraints.Null.message": "must be null.",
       "jakarta.validation.constraints.Past.message": "must be in the past.",

@@ -231,6 +231,8 @@ if (window.PrimeFaces) {
       "javax.validation.constraints.Future.message": "يجب أن يكون في المستقبل.",
       "javax.validation.constraints.Max.message": "يجب أن يكون أقل من أو يساوي {0}.",
       "javax.validation.constraints.Min.message": "يجب أن يكون أكبر من أو يساوي {0}.",
+      "javax.validation.constraints.NotBlank.message": "قد لا تكون فارغة.",
+      "javax.validation.constraints.NotEmpty.message": "قد لا تكون فارغة.",
       "javax.validation.constraints.NotNull.message": "قد لا تكون فارغة.",
       "javax.validation.constraints.Null.message": "يجب أن تكون فارغة.",
       "javax.validation.constraints.Past.message": "يجب أن يكون في الماضي.",

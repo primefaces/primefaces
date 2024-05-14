@@ -237,6 +237,8 @@ if (window.PrimeFaces) {
       "javax.validation.constraints.Future.message": "भविष्य में होना चाहिए।",
       "javax.validation.constraints.Max.message": "{0} से कम या उसके बराबर होना चाहिए।",
       "javax.validation.constraints.Min.message": "{0} से बड़ा या उसके बराबर होना चाहिए।",
+      "javax.validation.constraints.NotBlank.message": "शून्य नहीं हो सकता।",
+      "javax.validation.constraints.NotEmpty.message": "शून्य नहीं हो सकता।",
       "javax.validation.constraints.NotNull.message": "शून्य नहीं हो सकता।",
       "javax.validation.constraints.Null.message": "शून्य होना चाहिए।",
       "javax.validation.constraints.Past.message": "अतीत में होना चाहिए।",

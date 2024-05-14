@@ -237,6 +237,8 @@ if (window.PrimeFaces) {
       "javax.validation.constraints.Future.message": "Должно быть в дальнейшем.",
       "javax.validation.constraints.Max.message": "Значение должно быть меньше или равно{0}.",
       "javax.validation.constraints.Min.message": "Значение должно быть больше или равно {0}.",
+      "javax.validation.constraints.NotBlank.message": "Не должно быть null.",
+      "javax.validation.constraints.NotEmpty.message": "Не должно быть null.",
       "javax.validation.constraints.NotNull.message": "Не должно быть null.",
       "javax.validation.constraints.Null.message": "Должно быть null.",
       "javax.validation.constraints.Past.message": "Должно быть в дальнейшем.",

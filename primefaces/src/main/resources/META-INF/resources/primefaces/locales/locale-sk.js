@@ -232,6 +232,8 @@ if (window.PrimeFaces) {
       "javax.validation.constraints.Future.message": "musí byť v budúcnosti.",
       "javax.validation.constraints.Max.message": "musí byť menšie alebo rovné {0}.",
       "javax.validation.constraints.Min.message": "musí byť väčšie alebo rovné {0}.",
+      "javax.validation.constraints.NotBlank.message": "nemusí byť null.",
+      "javax.validation.constraints.NotEmpty.message": "nemusí byť null.",
       "javax.validation.constraints.NotNull.message": "nemusí byť null.",
       "javax.validation.constraints.Null.message": "musí byť null.",
       "javax.validation.constraints.Past.message": "musí byť v minulosti.",

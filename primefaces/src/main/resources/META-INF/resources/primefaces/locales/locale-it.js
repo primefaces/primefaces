@@ -238,6 +238,8 @@ if (window.PrimeFaces) {
       "javax.validation.constraints.Future.message": "dev'essere nel futuro.",
       "javax.validation.constraints.Max.message": "dev'essere minore o uguale a {0}.",
       "javax.validation.constraints.Min.message": "dev'essere maggiore o uguale a {0}.",
+      "javax.validation.constraints.NotBlank.message": "non può essere nullo.",
+      "javax.validation.constraints.NotEmpty.message": "non può essere nullo.",
       "javax.validation.constraints.NotNull.message": "non può essere nullo.",
       "javax.validation.constraints.Null.message": "dev'essere nullo.",
       "javax.validation.constraints.Past.message": "dev'essere nel passato.",

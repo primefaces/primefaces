@@ -303,6 +303,8 @@ if (window.PrimeFaces) {
       "javax.validation.constraints.Future.message": "must be in the future.",
       "javax.validation.constraints.Max.message": "must be less than or equal to {0}.",
       "javax.validation.constraints.Min.message": "must be greater than or equal to {0}.",
+      "javax.validation.constraints.NotBlank.message": "may not be blank.",
+      "javax.validation.constraints.NotEmpty.message": "may not be empty.",
       "javax.validation.constraints.NotNull.message": "may not be null.",
       "javax.validation.constraints.Null.message": "must be null.",
       "javax.validation.constraints.Past.message": "must be in the past.",

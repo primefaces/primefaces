@@ -232,6 +232,8 @@ if (window.PrimeFaces) {
       "javax.validation.constraints.Future.message": "phải ở tương lai.",
       "javax.validation.constraints.Max.message": "phải nhỏ hơn hoặc bằng {0}.",
       "javax.validation.constraints.Min.message": "phải lớn hơn hoặc bằng {0}.",
+      "javax.validation.constraints.NotBlank.message": "có thể không rỗng.",
+      "javax.validation.constraints.NotEmpty.message": "có thể không rỗng.",
       "javax.validation.constraints.NotNull.message": "có thể không rỗng.",
       "javax.validation.constraints.Null.message": "phải là null.",
       "javax.validation.constraints.Past.message": "phải là quá khứ.",

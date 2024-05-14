@@ -232,6 +232,8 @@ if (window.PrimeFaces) {
       "javax.validation.constraints.Future.message": "a jövőben kell lennie.",
       "javax.validation.constraints.Max.message": "kisebbnek vagy egyenlőnek kell lennie, mint {0}.",
       "javax.validation.constraints.Min.message": "nagyobbnak vagy egyenlőnek kell lennie, mint {0}.",
+      "javax.validation.constraints.NotBlank.message": "nem lehet null.",
+      "javax.validation.constraints.NotEmpty.message": "nem lehet null.",
       "javax.validation.constraints.NotNull.message": "nem lehet null.",
       "javax.validation.constraints.Null.message": "nullnak kell lennie.",
       "javax.validation.constraints.Past.message": "a múltban kell lennie.",

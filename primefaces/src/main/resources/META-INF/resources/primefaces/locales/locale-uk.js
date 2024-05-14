@@ -238,6 +238,8 @@ if (window.PrimeFaces) {
       "javax.validation.constraints.Future.message": "Повинно бути надалі.",
       "javax.validation.constraints.Max.message": "Значення повинно бути меншим або дорівнювати{0}.",
       "javax.validation.constraints.Min.message": "Значення повинно бути більшим або дорівнювати {0}.",
+      "javax.validation.constraints.NotBlank.message": "Не повинно бути null.",
+      "javax.validation.constraints.NotEmpty.message": "Не повинно бути null.",
       "javax.validation.constraints.NotNull.message": "Не повинно бути null.",
       "javax.validation.constraints.Null.message": "Повинно бути null.",
       "javax.validation.constraints.Past.message": "Повинно бути надалі.",

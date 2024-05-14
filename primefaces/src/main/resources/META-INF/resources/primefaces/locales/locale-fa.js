@@ -232,6 +232,8 @@ if (window.PrimeFaces) {
       "javax.validation.constraints.Future.message": "باید در آینده باشد",
       "javax.validation.constraints.Max.message": "باید کمتر یا مساوی با {0} باشد.",
       "javax.validation.constraints.Min.message": "باید بزرگتر یا مساوی با {0} باشد.",
+      "javax.validation.constraints.NotBlank.message": "ممکن است پوچ نباشد",
+      "javax.validation.constraints.NotEmpty.message": "ممکن است پوچ نباشد",
       "javax.validation.constraints.NotNull.message": "ممکن است پوچ نباشد",
       "javax.validation.constraints.Null.message": "باید پوچ باشد",
       "javax.validation.constraints.Past.message": "باید در گذشته باشد",

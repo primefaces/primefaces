@@ -234,6 +234,8 @@ if (window.PrimeFaces) {
       "javax.validation.constraints.Future.message": "musi być w przyszłości.",
       "javax.validation.constraints.Max.message": "musi być mniejszy lub równy {0}.",
       "javax.validation.constraints.Min.message": "musi być większy lub równy {0}.",
+      "javax.validation.constraints.NotBlank.message": "nie może być zerowy.",
+      "javax.validation.constraints.NotEmpty.message": "nie może być zerowy.",
       "javax.validation.constraints.NotNull.message": "nie może być zerowy.",
       "javax.validation.constraints.Null.message": "musi być zerowe.",
       "javax.validation.constraints.Past.message": "musi być w przeszłości.",

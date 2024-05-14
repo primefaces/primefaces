@@ -233,6 +233,8 @@ if (window.PrimeFaces) {
       "javax.validation.constraints.Future.message": "täytyy olla tulevaisuudessa.",
       "javax.validation.constraints.Max.message": "on oltava pienempi tai yhtä suuri kuin {0}.",
       "javax.validation.constraints.Min.message": "on oltava suurempi tai yhtä suuri kuin {0}.",
+      "javax.validation.constraints.NotBlank.message": "ei voi olla tyhjä.",
+      "javax.validation.constraints.NotEmpty.message": "ei voi olla tyhjä.",
       "javax.validation.constraints.NotNull.message": "ei voi olla tyhjä.",
       "javax.validation.constraints.Null.message": "on oltava tyhjä.",
       "javax.validation.constraints.Past.message": "täytyy olla menneisyydessä.",

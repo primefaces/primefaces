@@ -233,6 +233,8 @@ if (window.PrimeFaces) {
       "javax.validation.constraints.Future.message": "måste vara i framtiden.",
       "javax.validation.constraints.Max.message": "måste vara mindre än eller lika med {0}.",
       "javax.validation.constraints.Min.message": "måste vara större än eller lika med {0}.",
+      "javax.validation.constraints.NotBlank.message": "kanske inte är null.",
+      "javax.validation.constraints.NotEmpty.message": "kanske inte är null.",
       "javax.validation.constraints.NotNull.message": "kanske inte är null.",
       "javax.validation.constraints.Null.message": "måste vara null.",
       "javax.validation.constraints.Past.message": "måste vara i det förflutna.",

@@ -241,6 +241,8 @@ if (window.PrimeFaces) {
       "javax.validation.constraints.Future.message": "harus ada di masa depan.",
       "javax.validation.constraints.Max.message": "harus lebih kecil daripada atau sama dengan {0}.",
       "javax.validation.constraints.Min.message": "harus lebih besar daripada atau sama dengan {0}.",
+      "javax.validation.constraints.NotBlank.message": "tidak boleh null.",
+      "javax.validation.constraints.NotEmpty.message": "tidak boleh null.",
       "javax.validation.constraints.NotNull.message": "tidak boleh null.",
       "javax.validation.constraints.Null.message": "harus null.",
       "javax.validation.constraints.Past.message": "harus ada di masa lalu.",

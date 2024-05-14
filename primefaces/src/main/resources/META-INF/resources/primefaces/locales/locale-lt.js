@@ -125,6 +125,8 @@ if (window.PrimeFaces) {
       "javax.validation.constraints.Future.message": "reikšmė turi būti ateityje.",
       "javax.validation.constraints.Max.message": "turi būti mažesnė ar lygi {0}.",
       "javax.validation.constraints.Min.message": "turi būti didesnė ar lygi {0}.",
+      "javax.validation.constraints.NotBlank.message": "negali būti tuščia reikšmė.",
+      "javax.validation.constraints.NotEmpty.message": "negali būti tuščia reikšmė.",
       "javax.validation.constraints.NotNull.message": "negali būti tuščia reikšmė.",
       "javax.validation.constraints.Null.message": "turi būti tuščia reikšmė.",
       "javax.validation.constraints.Past.message": "reikšmė turi būti praeityje.",

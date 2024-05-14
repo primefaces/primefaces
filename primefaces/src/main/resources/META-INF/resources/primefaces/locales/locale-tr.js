@@ -238,6 +238,8 @@ if (window.PrimeFaces) {
       "javax.validation.constraints.Future.message": "Gelecek bir tarih olmalı.",
       "javax.validation.constraints.Max.message": "{0} veya daha düşük olmalı.",
       "javax.validation.constraints.Min.message": "{0} veya daha yüksek olmalı",
+      "javax.validation.constraints.NotBlank.message": "'null' (boş) olmayabilir.",
+      "javax.validation.constraints.NotEmpty.message": "'null' (boş) olmayabilir.",
       "javax.validation.constraints.NotNull.message": "'null' (boş) olmayabilir.",
       "javax.validation.constraints.Null.message": "'null' (boş) olmalıdır.",
       "javax.validation.constraints.Past.message": "Geçmiş bir tarih olmalıdır.",

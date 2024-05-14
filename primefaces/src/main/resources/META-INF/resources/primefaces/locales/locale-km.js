@@ -233,6 +233,8 @@ if (window.PrimeFaces) {
       "javax.validation.constraints.Future.message": "ត្រូវតែមាននាពេលអនាគត។",
       "javax.validation.constraints.Max.message": "ត្រូវតែតិចជាង ឬស្មើនឹង {0}។",
       "javax.validation.constraints.Min.message": "ត្រូវតែធំជាង ឬស្មើ {0}។",
+      "javax.validation.constraints.NotBlank.message": "ប្រហែលជាមិនទទេ។",
+      "javax.validation.constraints.NotEmpty.message": "ប្រហែលជាមិនទទេ។",
       "javax.validation.constraints.NotNull.message": "ប្រហែលជាមិនទទេ។",
       "javax.validation.constraints.Null.message": "ត្រូវតែចាត់ទុកជាមោឃៈ។",
       "javax.validation.constraints.Past.message": "ត្រូវតែនៅក្នុងអតីតកាល។",

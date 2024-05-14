@@ -232,6 +232,8 @@ if (window.PrimeFaces) {
       "javax.validation.constraints.Future.message": "mora biti v prihodnosti.",
       "javax.validation.constraints.Max.message": "mora biti manjši ali enak {0}.",
       "javax.validation.constraints.Min.message": "mora biti večje ali enako {0}.",
+      "javax.validation.constraints.NotBlank.message": "morda ni ničelna.",
+      "javax.validation.constraints.NotEmpty.message": "morda ni ničelna.",
       "javax.validation.constraints.NotNull.message": "morda ni ničelna.",
       "javax.validation.constraints.Null.message": "mora biti ničelna.",
       "javax.validation.constraints.Past.message": "mora biti v preteklosti.",

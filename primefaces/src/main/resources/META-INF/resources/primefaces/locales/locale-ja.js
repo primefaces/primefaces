@@ -239,6 +239,8 @@ if (window.PrimeFaces) {
       "javax.validation.constraints.Future.message": "未来を指定してください。",
       "javax.validation.constraints.Max.message": "{0}以下の数値を入力してください。",
       "javax.validation.constraints.Min.message": "{0}以上の数値を入力してください。",
+      "javax.validation.constraints.NotBlank.message": "値がNULLです。",
+      "javax.validation.constraints.NotEmpty.message": "値がNULLです。",
       "javax.validation.constraints.NotNull.message": "値がNULLです。",
       "javax.validation.constraints.Null.message": "値がNULLではありません。",
       "javax.validation.constraints.Past.message": "過去をしていてください。",

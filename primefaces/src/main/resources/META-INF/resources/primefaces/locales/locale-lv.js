@@ -235,6 +235,8 @@ if (window.PrimeFaces) {
       "javax.validation.constraints.Future.message": "jābūt nākotnē.",
       "javax.validation.constraints.Max.message": "jābūt mazākam vai vienādam ar {0}.",
       "javax.validation.constraints.Min.message": "jābūt lielākam vai vienādam ar {0}.",
+      "javax.validation.constraints.NotBlank.message": "nedrīkst būt Null.",
+      "javax.validation.constraints.NotEmpty.message": "nedrīkst būt Null.",
       "javax.validation.constraints.NotNull.message": "nedrīkst būt Null.",
       "javax.validation.constraints.Null.message": "jābūt Null.",
       "javax.validation.constraints.Past.message": "jābūt pagātnē.",

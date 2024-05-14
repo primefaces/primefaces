@@ -232,6 +232,8 @@ if (window.PrimeFaces) {
       "javax.validation.constraints.Future.message": "debe ser una fecha posterior",
       "javax.validation.constraints.Max.message": "debe ser menor o igual que {0}",
       "javax.validation.constraints.Min.message": "debe ser mayor o igual que {0}",
+      "javax.validation.constraints.NotBlank.message": "no debe ser nulo",
+      "javax.validation.constraints.NotEmpty.message": "no debe ser nulo",
       "javax.validation.constraints.NotNull.message": "no debe ser nulo",
       "javax.validation.constraints.Null.message": "debe ser nulo",
       "javax.validation.constraints.Past.message": "debe ser una fecha anterior",

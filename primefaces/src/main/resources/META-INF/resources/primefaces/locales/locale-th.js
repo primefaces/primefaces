@@ -232,6 +232,8 @@ if (window.PrimeFaces) {
       "javax.validation.constraints.Future.message": "จะต้องอยู่ในอนาคต",
       "javax.validation.constraints.Max.message": "ต้องน้อยกว่าหรือเท่ากับ {0}",
       "javax.validation.constraints.Min.message": "ต้องมากกว่าหรือเท่ากับ {0}",
+      "javax.validation.constraints.NotBlank.message": "อาจไม่เป็นโมฆะ",
+      "javax.validation.constraints.NotEmpty.message": "อาจไม่เป็นโมฆะ",
       "javax.validation.constraints.NotNull.message": "อาจไม่เป็นโมฆะ",
       "javax.validation.constraints.Null.message": "จะต้องเป็นโมฆะ",
       "javax.validation.constraints.Past.message": "จะต้องเป็นในอดีต",
