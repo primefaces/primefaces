@@ -21,10 +21,20 @@
                 <p:messages/>
 
                 <h:panelGrid columns="4" cellpadding="7" styleClass="mb-3">
-                    <p:outputLabel for="@next" value="Name: (@Size(min=2,max=5))"/>
-                    <p:inputText value="#{beanValidationView.name}" label="Name"/>
+                    <p:outputLabel for="@next" value="Given Name: (@Size(min=2,max=5))"/>
+                    <p:inputText value="#{beanValidationView.name}" label="Given Name"/>
                     <p:message for="@previous"/>
                     <h:outputText value="#{beanValidationView.name}"/>
+                    
+                    <p:outputLabel for="@next" value="Surname: (@NotBlank)"/>
+                    <p:inputText value="#{beanValidationView.notBlank}" label="Surname" />
+                    <p:message for="@previous"/>
+                    <h:outputText value="#{beanValidationView.notBlank}"/>
+                    
+                    <p:outputLabel for="@next" value="Address: (@NotEmpty)"/>
+                    <p:inputText value="#{beanValidationView.notEmpty}" label="Address"/>
+                    <p:message for="@previous"/>
+                    <h:outputText value="#{beanValidationView.notEmpty}"/>
 
                     <p:outputLabel for="@next" value="Age: (@Min(10) @Max(20))"/>
                     <p:inputText value="#{beanValidationView.age}" label="Age"/>
@@ -57,6 +67,13 @@
                     </p:inputText>
                     <p:message for="@previous"/>
                     <h:outputText/>
+                    
+                    <p:outputLabel for="@next" value="Date (@PastOrPresent)"/>
+                    <p:inputText value="#{beanValidationView.pastOrPresentDate}">
+                        <f:convertDateTime pattern="MM/dd/yyyy"/>
+                    </p:inputText>
+                    <p:message for="@previous"/>
+                    <h:outputText/>
 
                     <p:outputLabel for="@next" value="Date (@Future)"/>
                     <p:inputText value="#{beanValidationView.futureDate}">
@@ -64,6 +81,33 @@
                     </p:inputText>
                     <p:message for="@previous"/>
                     <h:outputText/>
+                    
+                    <p:outputLabel for="@next" value="Date (@FutureOrPresent)"/>
+                    <p:inputText value="#{beanValidationView.futureOrPresent}">
+                        <f:convertDateTime pattern="MM/dd/yyyy"/>
+                    </p:inputText>
+                    <p:message for="@previous"/>
+                    <h:outputText/>
+                    
+                    <p:outputLabel for="@next" value="Negative: (@Negative)"/>
+                    <p:inputText value="#{beanValidationView.negative}" label="Negative"/>
+                    <p:message for="@previous"/>
+                    <h:outputText value="#{beanValidationView.negative}"/>
+                    
+                    <p:outputLabel for="@next" value="Negative/Zero: (@NegativeOrZero)"/>
+                    <p:inputText value="#{beanValidationView.negativeOrZero}" label="Negative"/>
+                    <p:message for="@previous"/>
+                    <h:outputText value="#{beanValidationView.negativeOrZero}"/>
+                    
+                    <p:outputLabel for="@next" value="Positive: (@Positive)"/>
+                    <p:inputText value="#{beanValidationView.positive}" label="Positive"/>
+                    <p:message for="@previous"/>
+                    <h:outputText value="#{beanValidationView.positive}"/>
+                    
+                    <p:outputLabel for="@next" value="Positive/Zero: (@PositiveOrZero)"/>
+                    <p:inputText value="#{beanValidationView.positiveOrZero}" label="Positive"/>
+                    <p:message for="@previous"/>
+                    <h:outputText value="#{beanValidationView.positiveOrZero}"/>
 
                     <p:outputLabel for="@next" value="Radio Input"/>
                     <p:selectOneRadio value="#{beanValidationView.bool}">
