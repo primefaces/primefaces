@@ -185,8 +185,9 @@ if (window.PrimeFaces) {
 
         validate: function(element, value) {
             if(value !== null && value >= 0) {
+                var max = element.data('p-maxvalue');
                 var vc = PrimeFaces.validation.ValidationContext;
-                throw vc.getMessageBV(element, this.MESSAGE_ID, element.data('p-negative-msg'), min);
+                throw vc.getMessageBV(element, this.MESSAGE_ID, element.data('p-negative-msg'), max);
             }
         }
     };
@@ -197,8 +198,9 @@ if (window.PrimeFaces) {
 
         validate: function(element, value) {
             if(value !== null && value > 0) {
+                var max = element.data('p-maxvalue');
                 var vc = PrimeFaces.validation.ValidationContext;
-                throw vc.getMessageBV(element, this.MESSAGE_ID, element.data('p-negativeorzero-msg'), min);
+                throw vc.getMessageBV(element, this.MESSAGE_ID, element.data('p-negativeorzero-msg'), max);
             }
         }
     };
@@ -298,6 +300,7 @@ if (window.PrimeFaces) {
 
         validate: function(element, value) {
             if(value !== null && value <= 0) {
+                var min = element.data('p-minvalue');
                 var vc = PrimeFaces.validation.ValidationContext;
                 throw vc.getMessageBV(element, this.MESSAGE_ID, element.data('p-positive-msg'), min);
             }
@@ -310,6 +313,7 @@ if (window.PrimeFaces) {
 
         validate: function(element, value) {
             if(value !== null && value < 0) {
+                var min = element.data('p-minvalue');
                 var vc = PrimeFaces.validation.ValidationContext;
                 throw vc.getMessageBV(element, this.MESSAGE_ID, element.data('p-positiveorzero-msg'), min);
             }
