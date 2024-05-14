@@ -326,8 +326,8 @@ droppable.
 <p:draggable for="messi" scope="forward"/>
     <p:graphicImage id="xavi" value="barca/xavi_thumb.jpg" />
 <p:draggable for="xavi" scope="midfield"/>
-<p:outputPanel id="forwardsonly" styleClass="slot" scope="forward" />
-<p:droppable for="forwardsonly" />
+<p:outputPanel id="forwardsonly" styleClass="slot" />
+<p:droppable for="forwardsonly" scope="forward" />
 ```
 ## Skinning
 _hoverStyleClass_ and _activeStyleClass_ attributes are used to change the style of the droppable when
