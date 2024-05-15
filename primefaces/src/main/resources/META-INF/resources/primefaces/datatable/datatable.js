@@ -2980,7 +2980,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             else {
                 this.checkAllToggler.addClass('ui-state-active').children('span.ui-chkbox-icon').removeClass('ui-icon-blank').addClass('ui-icon-check');
                 this.checkAllToggler.attr('aria-checked', true);
-                
 
                 checkboxes.each(function() {
                     $this.selectRowWithCheckbox($(this), null, true);
@@ -2991,8 +2990,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.configureSelectAllAria();
 
         // GitHub #6730 user wants all rows not just displayed rows
-        if(!this.cfg.selectionPageOnly && shouldCheckAll) {
-            this.selectAllRows();
+        if(!this.cfg.selectionPageOnly) {
+            if (shouldCheckAll) {
+                this.selectAllRows();
+            }
+            else {
+                this.unselectAllRows();
+            }
         }
 
         //save state

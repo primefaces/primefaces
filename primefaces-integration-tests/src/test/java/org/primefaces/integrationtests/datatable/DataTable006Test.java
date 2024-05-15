@@ -23,9 +23,6 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
@@ -37,8 +34,12 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.Messages;
+import org.primefaces.selenium.component.SelectBooleanButton;
 import org.primefaces.selenium.component.model.Msg;
 import org.primefaces.selenium.component.model.datatable.Row;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DataTable006Test extends AbstractDataTableTest {
 
@@ -338,6 +339,32 @@ class DataTable006Test extends AbstractDataTableTest {
         assertConfiguration(dataTable.getWidgetConfiguration(), true);
     }
 
+    @Test
+    @Order(9)
+    @DisplayName("DataTable: selection - unselect all for page with selectionPageOnly='false'")
+    void unselectAllRows(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+
+        // Act - select all items on all pages
+        page.toggleSelectPageOnly.click();
+        dataTable.toggleSelectAllCheckBox();
+        page.submit.click();
+
+        // Assert
+        assertSelectAllCheckbox(dataTable, true);
+        assertSelections(page.messages, "1,2,3,4,5");
+
+        // Act - unselect all
+        dataTable.toggleSelectAllCheckBox();
+        page.submit.click();
+
+        // Assert
+        assertSelections(page.messages, "");
+        assertSelectAllCheckbox(dataTable, false);
+        assertConfiguration(dataTable.getWidgetConfiguration(), false);
+    }
+
     private void assertConfiguration(JSONObject cfg, boolean selectionPageOnly) {
         assertNoJavascriptErrors();
         System.out.println("DataTable Config = " + cfg);
@@ -372,7 +399,7 @@ class DataTable006Test extends AbstractDataTableTest {
         CommandButton buttonUnselect;
 
         @FindBy(id = "form:toggleSelectPageOnly")
-        CommandButton toggleSelectPageOnly;
+        SelectBooleanButton toggleSelectPageOnly;
 
         @FindBy(id = "form:toggleLazyMode")
         CommandButton toggleLazyMode;
