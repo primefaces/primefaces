@@ -15,6 +15,8 @@
  * @prop {PrimeFaces.UnbindCallback} [hideOverlayHandler] Unbind callback for the hide overlay handler.
  * @prop {JQuery} icon The DOM element for the message icon.
  * @prop {JQuery} message DOM element of the confirmation message displayed in this confirm popup.
+ * @prop {JQuery} yesButton DOM element of the Yes button.
+ * @prop {JQuery} noButton DOM element of the No button.
  * @prop {HTMLElement} focusedElementBeforeDialogOpened Element that was focused before the dialog was opened.
  * @prop {PrimeFaces.UnbindCallback} [resizeHandler] Unbind callback for the resize handler.
  * @prop {PrimeFaces.UnbindCallback} [scrollHandler] Unbind callback for the scroll handler.
@@ -50,11 +52,17 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
     
         this._super(cfg);
     
+        this.focusedElementBeforeDialogOpened = null;
         this.content = this.jq.children('.ui-confirm-popup-content');
         this.message = this.content.children('.ui-confirm-popup-message');
         this.icon = this.content.children('.ui-confirm-popup-icon');
-        this.focusedElementBeforeDialogOpened = null;
-
+        if (this.cfg.global) {
+            this.yesButton = this.jq.find('.ui-confirm-popup-yes');
+            this.noButton = this.jq.find('.ui-confirm-popup-no');
+            this.yesButton.data('p-text', this.yesButton.children('.ui-button-text').text());
+            this.noButton.data('p-text', this.noButton.children('.ui-button-text').text());
+        }
+        
         this.transition = PrimeFaces.utils.registerCSSTransition(this.jq, 'ui-connected-overlay');
     
         this.bindEvents();
@@ -206,11 +214,31 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
                         callback();
                     }
                     $this.returnFocus(50);
+                    
+                    // Remove added classes and reset button labels to their original values
+                    if (!PrimeFaces.animationEnabled || !$this.isVisible()) {
+                        $this.restoreButtons();
+                    }
                 }
             });
         }
         else {
             $this.returnFocus();
+            $this.restoreButtons();
+        }
+    },
+    
+    /**
+     * Restore the button text and styling to its original form.
+     * @private
+     */
+    restoreButtons: function() {
+        var $this = this;
+        if ($this.cfg.global) {
+            $this.yesButton.removeClass($this.yesButton.data('p-class'));
+            $this.noButton.removeClass($this.noButton.data('p-class'));
+            $this.yesButton.children('.ui-button-text').text($this.yesButton.data('p-text'));
+            $this.noButton.children('.ui-button-text').text($this.noButton.data('p-text'));
         }
     },
     
@@ -256,7 +284,7 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
      * Applies focus to the first focusable element of the content in the popup.
      */
     applyFocus: function() {
-        this.jq.find(':not(:submit):not(:button):input:visible:enabled:first').trigger('focus');
+        this.jq.find(':button:visible:enabled').first().trigger('focus');
     },
 
     /**
@@ -294,18 +322,33 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 PrimeFaces.csp.eval(msg.beforeShow);
             }
         
-            this.icon.removeClass().addClass('ui-confirm-popup-icon');
+            $this.icon.removeClass().addClass('ui-confirm-popup-icon');
             if (msg.icon !== 'null') {
-                this.icon.addClass(msg.icon);
+                $this.icon.addClass(msg.icon);
             }
         
             if (msg.message) {
                 if (msg.escape){
-                    this.message.text(msg.message);
+                    $this.message.text(msg.message);
                 }
                 else {
-                    this.message.html(msg.message);
+                    $this.message.html(msg.message);
                 }
+            }
+
+            // Set labels and classes for yes and no buttons if provided
+            if (msg.yesButtonLabel) {
+                $this.yesButton.children('.ui-button-text').text(msg.yesButtonLabel);
+            }
+            if (msg.yesButtonClass) {
+                $this.yesButton.addClass(msg.yesButtonClass).data('p-class', msg.yesButtonClass);
+            }
+
+            if (msg.noButtonLabel) {
+                $this.noButton.children('.ui-button-text').text(msg.noButtonLabel);
+            }
+            if (msg.noButtonClass) {
+                $this.noButton.addClass(msg.noButtonClass).data('p-class', msg.noButtonClass);
             }
         };
 

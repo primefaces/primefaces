@@ -184,7 +184,7 @@ public abstract class AbstractPrimePageTest {
     protected void assertIsAt(Class<? extends AbstractPrimePage> pageClass) {
         String location;
         try {
-            location = PrimeSelenium.getUrl((AbstractPrimePage) pageClass.getDeclaredConstructor().newInstance());
+            location = PrimeSelenium.getUrl(pageClass.getDeclaredConstructor().newInstance());
         }
         catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
@@ -305,19 +305,20 @@ public abstract class AbstractPrimePageTest {
 
         String[] elementClasses = elementClass.split(" ");
 
-        boolean result = true;
-        for (String expected : cssClasses) {
-            boolean found = false;
-            for (String actual : elementClasses) {
-                if (actual.equalsIgnoreCase(expected)) {
-                    found = true;
+        for (String expectedClass : cssClasses) {
+            for (String expected : expectedClass.split(" ")) {
+                boolean found = false;
+                for (String actual : elementClasses) {
+                    if (actual.equalsIgnoreCase(expected)) {
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found) {
+                    fail("Element expected CSS class '" + expected + "' but was not found in '" + elementClass + "'.");
                     break;
                 }
-            }
-
-            if (!found) {
-                fail("Element expected CSS class '" + expected + "' but was not found in '" + elementClass + "'.");
-                break;
             }
         }
 

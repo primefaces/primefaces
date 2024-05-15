@@ -917,6 +917,8 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
  * @prop {JQuery} title DOM element of the title bar text.
  * @prop {JQuery} message DOM element of the confirmation message displayed in this confirm dialog.
  * @prop {JQuery} icon DOM element of the icon displayed next to the confirmation message.
+ * @prop {JQuery} yesButton DOM element of the Yes button.
+ * @prop {JQuery} noButton DOM element of the No button.
  * 
  * @interface {PrimeFaces.widget.ConfirmDialogCfg} cfg The configuration for the
  * {@link  ConfirmDialog| ConfirmDialog widget}. You can access this configuration via
@@ -948,6 +950,11 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
 
         if(this.cfg.global) {
             PrimeFaces.confirmDialog = this;
+            
+            this.yesButton = this.jq.find('.ui-confirmdialog-yes');
+            this.noButton = this.jq.find('.ui-confirmdialog-no');
+            this.yesButton.data('p-text', this.yesButton.children('.ui-button-text').text());
+            this.noButton.data('p-text', this.noButton.children('.ui-button-text').text());
 
             this.jq.on('click.ui-confirmdialog', '.ui-confirmdialog-yes, .ui-confirmdialog-no', null, function(e) {
                 var el = $(this);
@@ -994,36 +1001,72 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
     applyFocus: function() {
         this.jq.find(':button,:submit').filter(':visible:enabled').eq(0).trigger('focus');
     },
+    
+    /**
+     * @override
+     * @protected
+     * @inheritdoc
+     * @param {unknown} [event] Unused.
+     * @param {unknown} [ui] Unused. 
+     */
+    onHide: function(event, ui) {
+        this._super(event, ui);
+
+        // Remove added classes and reset button labels to their original values
+        if (this.cfg.global) {
+            this.yesButton.removeClass(this.yesButton.data('p-class'));
+            this.noButton.removeClass(this.noButton.data('p-class'));
+            this.yesButton.children('.ui-button-text').text(this.yesButton.data('p-text'));
+            this.noButton.children('.ui-button-text').text(this.noButton.data('p-text'));
+        }
+    },
 
     /**
      * Shows the given message in this confirmation dialog.
      * @param {Partial<PrimeFaces.widget.ConfirmDialog.ConfirmDialogMessage>} msg Message to show.
      */
     showMessage: function(msg) {
-        if(msg.beforeShow) {
+        // Execute any code specified to run before showing the message
+        if (msg.beforeShow) {
             PrimeFaces.csp.eval(msg.beforeShow);
         }
 
+        // Set icon if provided, or hide it otherwise
         if (msg.icon) {
             this.icon.removeClass().addClass('ui-icon ui-confirm-dialog-severity ' + msg.icon);
             this.icon.show();
-        }
-        else {
+        } else {
             this.icon.hide();
         }
 
-        if(msg.header)
-            this.title.text(msg.header);
+        // Set labels and classes for yes and no buttons if provided
+        if (msg.yesButtonLabel) {
+            this.yesButton.children('.ui-button-text').text(msg.yesButtonLabel);
+        }
+        if (msg.yesButtonClass) {
+            this.yesButton.addClass(msg.yesButtonClass).data('p-class', msg.yesButtonClass);
+        }
 
-        if(msg.message){
-            if (msg.escape){
+        if (msg.noButtonLabel) {
+            this.noButton.children('.ui-button-text').text(msg.noButtonLabel);
+        }
+        if (msg.noButtonClass) {
+            this.noButton.addClass(msg.noButtonClass).data('p-class', msg.noButtonClass);
+        }
+
+        // Set title, message content, and escape HTML if necessary
+        if (msg.header) {
+            this.title.text(msg.header);
+        }
+        if (msg.message) {
+            if (msg.escape) {
                 this.message.text(msg.message);
-            }
-            else {
-            	this.message.html(msg.message);
+            } else {
+                this.message.html(msg.message);
             }
         }
-        
+
+        // Reset position if specified in global configuration
         if (this.cfg.global) {
             this.positionInitialized = false;
         }

@@ -16,6 +16,12 @@ Look into [migration guide](https://primefaces.github.io/primefaces/15_0_0/#/../
 * Captcha
     * Added [hCaptcha](https://www.hcaptcha.com/) support
     
+* ConfirmDialog/ConfirmPopup
+    * `yesButtonLabel`: overrides label of 'Yes' button (and restores it before the global confirm dialog is reused elsewhere)
+    * `yesButtonClass`: adds given class to 'Yes' button (and removes it before the global confirm dialog is reused elsewhere)
+    * `noButtonLabel`: overrides label of 'No' button (and restores it before the global confirm dialog is reused elsewhere)
+    * `noButtonClass`: adds given class to 'No' button (and removes it before the global confirm dialog is reused elsewhere)
+    
 * FeedReader
     * Added `podcast="true"` property if [Apple Itunes Podcast](https://help.apple.com/itc/podcasts_connect/#/itcb54353390) parsing and specific tags 
     
