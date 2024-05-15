@@ -95,6 +95,7 @@ public class TabMenuRenderer extends BaseMenuRenderer {
         String containerStyleClass = getStyleClassBuilder(context)
                 .add(item.getContainerStyleClass())
                 .add(active, TabMenu.ACTIVE_TAB_HEADER_CLASS, TabMenu.INACTIVE_TAB_HEADER_CLASS)
+                .add("ui-corner-" + menu.getOrientation())
                 .add(item.isDisabled(), "ui-state-disabled", "ui-state-default")
                 .add(item.getIcon() != null, "ui-tabmenuitem-hasicon")
                 .add(item.getBadge() != null, "ui-overlay-badge")
