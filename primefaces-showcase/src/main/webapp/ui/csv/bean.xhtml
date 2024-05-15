@@ -68,9 +68,9 @@
                     <p:message for="@previous"/>
                     <h:outputText/>
                     
-                    <p:outputLabel for="@next" value="Date (@PastOrPresent)"/>
+                    <p:outputLabel for="@next" value="Time (@PastOrPresent)"/>
                     <p:inputText value="#{beanValidationView.pastOrPresentDate}">
-                        <f:convertDateTime pattern="MM/dd/yyyy"/>
+                        <f:convertDateTime pattern="HH:mm:ss"/>
                     </p:inputText>
                     <p:message for="@previous"/>
                     <h:outputText/>
@@ -82,9 +82,9 @@
                     <p:message for="@previous"/>
                     <h:outputText/>
                     
-                    <p:outputLabel for="@next" value="Date (@FutureOrPresent)"/>
+                    <p:outputLabel for="@next" value="DateTime (@FutureOrPresent)"/>
                     <p:inputText value="#{beanValidationView.futureOrPresent}">
-                        <f:convertDateTime pattern="MM/dd/yyyy"/>
+                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss"/>
                     </p:inputText>
                     <p:message for="@previous"/>
                     <h:outputText/>
