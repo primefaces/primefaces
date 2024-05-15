@@ -266,6 +266,23 @@ if (window.PrimeFaces) {
         DATETIME_ID: 'javax.faces.converter.DateTimeConverter.DATETIME',
 
         convert: function(element, submittedValue) {
+            // #11938 user might not have Calendar on page so we need to load the JS
+            if (!$.datepicker) {
+                var existingScript = $(document).find('script[src*="jquery.js"]');
+                if (existingScript.length) {
+                    var calendarScript = existingScript.clone().attr("src", existingScript.attr("src").replace(/jquery/g, "calendar"));
+                    $("head").append(calendarScript);
+
+                    $.ajax({
+                        url: calendarScript.attr("src"),
+                        async: false,
+                        dataType: "script",
+                    });
+                } else {
+                    PrimeFaces.error("No existing jQuery script found to clone.");
+                }
+            }
+
             if(submittedValue === null) {
                 return null;
             }
