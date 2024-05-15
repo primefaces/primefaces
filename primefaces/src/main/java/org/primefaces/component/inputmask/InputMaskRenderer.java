@@ -70,21 +70,29 @@ public class InputMaskRenderer extends InputRenderer {
 
     /**
      * Translates the client side mask to to a {@link Pattern} base on:
-     * https://github.com/digitalBush/jquery.maskedinput
+     * https://github.com/RobinHerbots/Inputmask
      * a - Represents an alpha character (A-Z,a-z)
+     * A - Represents an UPPERCASE alpha character (A-Z)
      * 9 - Represents a numeric character (0-9)
      * * - Represents an alphanumeric character (A-Z,a-z,0-9)
-     * ? - Makes the following input optional
+     * [] - Makes the input in between [ and ] optional
      *
-     * @param context   The {@link FacesContext}
-     * @param mask The mask value of component
-     * @return The generated {@link Pattern}
+     * @param context the FacesContext instance, used to retrieve a shared StringBuilder.
+     * @param mask the mask pattern to translate into a regular expression.
+     * @return the translated regular expression as a {@link Pattern}.
      */
     protected Pattern translateMaskIntoRegex(FacesContext context, String mask) {
         StringBuilder regex = SharedStringBuilder.get(context, SB_PATTERN);
         return translateMaskIntoRegex(regex, mask);
     }
 
+    /**
+     * Translates a mask pattern into a regular expression pattern.
+     *
+     * @param regex the StringBuilder to append the translated regular expression to.
+     * @param mask the mask pattern to translate into a regular expression.
+     * @return the translated regular expression as a {@link Pattern}.
+     */
     protected Pattern translateMaskIntoRegex(StringBuilder regex, String mask) {
         boolean optionalFound = false;
         boolean escapeFound = false;
@@ -104,6 +112,14 @@ public class InputMaskRenderer extends InputRenderer {
         return Pattern.compile(regex.toString());
     }
 
+    /**
+     * Translates a single mask character into its corresponding regular expression snippet.
+     *
+     * @param c the character to translate.
+     * @param optional whether the character is within optional brackets ('[' and ']').
+     * @param escapeFound whether the escape character ('\\') was found before this character.
+     * @return the translated character as a regular expression snippet.
+     */
     protected String translateMaskCharIntoRegex(char c, boolean optional, boolean escapeFound) {
         String translated;
 
