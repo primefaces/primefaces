@@ -275,12 +275,10 @@
                     <webApp>
                         <contextPath>/showcase</contextPath>
                     </webApp>
-                    <scan>5</scan>
                     <webXml>${project.build.directory}/web.xml</webXml>
                     <httpConnector>
                         <host>0.0.0.0</host>
                         <port>8080</port>
-                        <idleTimeout>60000</idleTimeout>
                     </httpConnector>
                 </configuration>
                 <dependencies>
