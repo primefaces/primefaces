@@ -42,7 +42,9 @@ public class RowTogglerRenderer extends CoreRenderer {
         DataTable parentTable = toggler.getParentTable(context);
         String rowKey = parentTable.getRowKey(parentTable.getRowData());
         boolean expanded = parentTable.isExpandedRow() || parentTable.getExpandedRowKeys().contains(rowKey);
-        String icon = expanded ? RowToggler.EXPANDED_ICON : RowToggler.COLLAPSED_ICON;
+        String expandIcon = toggler.getExpandIcon();
+        String collapseIcon = toggler.getCollapseIcon();
+        String icon = "ui-icon " + (expanded ? collapseIcon : expandIcon);
         String expandLabel = toggler.getExpandLabel();
         String collapseLabel = toggler.getCollapseLabel();
         boolean iconOnly = (expandLabel == null && collapseLabel == null);
@@ -52,6 +54,8 @@ public class RowTogglerRenderer extends CoreRenderer {
         writer.writeAttribute("class", togglerClass, null);
         writer.writeAttribute("tabindex", toggler.getTabindex(), null);
         writer.writeAttribute("role", "button", null);
+        writer.writeAttribute("data-expand-icon", expandIcon, null);
+        writer.writeAttribute("data-collapse-icon", collapseIcon, null);
         writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(expanded), null);
 
         if (!iconOnly) {
