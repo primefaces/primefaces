@@ -3077,16 +3077,18 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         rowIndex = this.getRowMeta(row).index,
         iconOnly = toggler.hasClass('ui-icon'),
         labels = toggler.children('span'),
-        expanded = iconOnly ? toggler.hasClass('ui-icon-circle-triangle-s'): toggler.children('span').eq(0).hasClass('ui-helper-hidden'),
+        expandIconClasses = toggler.attr('data-expand-icon').split(' '),
+        collapseIconClasses = toggler.attr('data-collapse-icon').split(' '),
+        expanded = iconOnly ? collapseIconClasses.every(it => toggler.hasClass(it)) : toggler.children('span').eq(0).hasClass('ui-helper-hidden'),
         $this = this;
-        
+
         //Run toggle expansion if row is not being toggled already to prevent conflicts
         if($.inArray(rowIndex, this.expansionProcess) === -1) {
             this.expansionProcess.push(rowIndex);
 
             if(expanded) {
                 if(iconOnly) {
-                    toggler.addClass('ui-icon-circle-triangle-e').removeClass('ui-icon-circle-triangle-s').attr('aria-expanded', false);
+                    toggler.removeClass(collapseIconClasses).addClass(expandIconClasses).attr('aria-expanded', false);
                     this.updateExpansionAria(toggler);
                 }
                 else {
@@ -3106,7 +3108,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
 
                 if(iconOnly) {
-                    toggler.addClass('ui-icon-circle-triangle-s').removeClass('ui-icon-circle-triangle-e').attr('aria-expanded', true);
+                    toggler.removeClass(expandIconClasses).addClass(collapseIconClasses).attr('aria-expanded', true);
                     this.updateExpansionAria(toggler);
                 }
                 else {
@@ -3247,7 +3249,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                 if(toggler.length > 0) {
                     if(toggler.hasClass('ui-icon')) {
-                        toggler.addClass('ui-icon-circle-triangle-e').removeClass('ui-icon-circle-triangle-s');
+                        toggler.removeClass(toggler.attr('data-collapse-icon')).addClass(toggler.attr('data-expand-icon'));
                     }
                     else {
                         var labels = toggler.children('span');

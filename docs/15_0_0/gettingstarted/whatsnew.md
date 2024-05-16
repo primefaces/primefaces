@@ -21,3 +21,6 @@ Look into [migration guide](https://primefaces.github.io/primefaces/15_0_0/#/../
     
 * StaticMessage
     * Added `severity="success"` to align with React/Vue/Angular
+
+* DataTable
+    * Added `expandIcon`/`collapseIcon` attributes for RowToggler

@@ -22295,6 +22295,22 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Icon to expand rowExpansion]]>
+            </description>
+            <name>expandIcon</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Icon to collapse rowExpansion]]>
+            </description>
+            <name>collapseIcon</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Position of the element in the tabbing order.]]>
             </description>
             <name>tabindex</name>
