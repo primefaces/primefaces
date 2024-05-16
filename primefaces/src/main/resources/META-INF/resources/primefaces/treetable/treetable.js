@@ -1453,6 +1453,10 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             options.params = [
                 {name: this.id + '_instantSelection', value: nodeKey}
             ];
+            
+            var checkboxSelector =  this.cfg.nativeElements ? '> tr.ui-treetable-selectable-node > td:first-child :checkbox':
+                    '> tr.ui-treetable-selectable-node > td:first-child div.ui-chkbox-box';
+            var checkboxes = this.tbody.find(checkboxSelector).addClass('ui-state-disabled');
 
             options.oncomplete = function(xhr, status, args, data) {
                 if(args.descendantRowKeys && args.descendantRowKeys !== '') {
@@ -1462,6 +1466,8 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                     }
                     $this.writeSelections();
                 }
+                
+                checkboxes.removeClass('ui-state-disabled');
             }
 
             if(this.hasBehavior('select')) {
