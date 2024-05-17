@@ -84,9 +84,13 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
         ConfirmPopup popup = page.popup;
         assertFalse(popup.isVisible());
         page.confirm.click();
+        CommandButton noButton = popup.getNoButton();
+        assertEquals("No", noButton.getText());
+        assertCss(noButton,
+                "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only ui-confirm-popup-no ui-button-flat");
 
         // Act
-        popup.getNoButton().click();
+        noButton.click();
 
         // Assert
         assertFalse(popup.isVisible());
@@ -102,9 +106,12 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
         ConfirmPopup popup = page.popup;
         assertFalse(popup.isVisible());
         page.confirm.click();
+        CommandButton yesButton = popup.getYesButton();
+        assertEquals("Yes", yesButton.getText());
+        assertCss(yesButton, "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only ui-confirm-popup-yes");
 
         // Act
-        PrimeSelenium.guardAjax(popup.getYesButton()).click();
+        PrimeSelenium.guardAjax(yesButton).click();
 
         // Assert
         assertFalse(popup.isVisible());
@@ -120,14 +127,21 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
         ConfirmPopup popup = page.popup;
         assertFalse(popup.isVisible());
         page.delete.click();
+        CommandButton noButton = popup.getNoButton();
+        assertEquals("Keep this!", noButton.getText());
+        assertCss(noButton,
+                "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only ui-confirm-popup-no ui-button-flat bg-green-500 text-white");
 
         // Act
-        popup.getNoButton().click();
+        noButton.click();
 
         // Assert
         assertFalse(popup.isVisible());
         assertTrue(page.messages.isEmpty());
         assertConfiguration(popup.getWidgetConfiguration());
+
+        // assert the buttons are back to normal
+        confirmNo(page);
     }
 
     @Test
@@ -138,14 +152,19 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
         ConfirmPopup popup = page.popup;
         assertFalse(popup.isVisible());
         page.delete.click();
+        CommandButton yesButton = popup.getYesButton();
+        assertEquals("Delete Me!", yesButton.getText());
+        assertCss(yesButton, "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only ui-confirm-popup-yes bg-red-500 text-white");
 
         // Act
-        PrimeSelenium.guardAjax(popup.getYesButton()).click();
+        PrimeSelenium.guardAjax(yesButton).click();
 
         // Assert
         assertFalse(popup.isVisible());
         assertMessage(page, "Record deleted");
         assertConfiguration(popup.getWidgetConfiguration());
+        // assert the buttons are back to normal
+        confirmYes(page);
     }
 
     private void assertMessage(Page page, String message) {

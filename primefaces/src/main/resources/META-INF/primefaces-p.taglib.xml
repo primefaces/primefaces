@@ -534,6 +534,30 @@
             <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
+            <description><![CDATA[Overrides label of 'Yes' button (and restores it before the global confirm dialog is reused elsewhere)]]></description>
+            <name>yesButtonLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description><![CDATA[Adds given style class to 'Yes' button (and removes it before the global confirm dialog is reused elsewhere)]]></description>
+            <name>yesButtonClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description><![CDATA[Overrides label of 'No' button (and restores it before the global confirm dialog is reused elsewhere)]]></description>
+            <name>noButtonLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description><![CDATA[Adds given style class to 'No' button (and removes it before the global confirm dialog is reused elsewhere)]]></description>
+            <name>noButtonClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
             <description>
                 <![CDATA[Callback to execute before displaying confirmation dialog. Return false to prevent dialog from appearing.]]>
             </description>

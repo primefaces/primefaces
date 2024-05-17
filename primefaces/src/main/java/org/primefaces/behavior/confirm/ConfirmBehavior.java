@@ -42,6 +42,10 @@ public class ConfirmBehavior extends AbstractBehavior {
         header(String.class),
         message(String.class),
         icon(String.class),
+        yesButtonLabel(String.class),
+        yesButtonClass(String.class),
+        noButtonLabel(String.class),
+        noButtonClass(String.class),
         disabled(Boolean.class),
         beforeShow(String.class),
         escape(Boolean.class);
@@ -76,6 +80,10 @@ public class ConfirmBehavior extends AbstractBehavior {
         String headerText = JSONObject.quote(getHeader());
         String messageText = JSONObject.quote(getMessage());
         String beforeShow = JSONObject.quote(getBeforeShow());
+        String yesButtonClass = JSONObject.quote(getYesButtonClass());
+        String yesButtonLabel = JSONObject.quote(getYesButtonLabel());
+        String noButtonClass = JSONObject.quote(getNoButtonClass());
+        String noButtonLabel = JSONObject.quote(getNoButtonLabel());
 
         source = (source == null) ? component.getClientId(context) : source;
 
@@ -88,6 +96,10 @@ public class ConfirmBehavior extends AbstractBehavior {
                                                    + ",escape:" + isEscape()
                                                    + ",header:" + headerText
                                                    + ",message:" + messageText
+                                                   + ",yesButtonClass:" + yesButtonClass
+                                                   + ",yesButtonLabel:" + yesButtonLabel
+                                                   + ",noButtonClass:" + noButtonClass
+                                                   + ",noButtonLabel:" + noButtonLabel
                                                    + ",icon:\"" + (icon == null ? "" : icon)
                                                    + "\",beforeShow:" + beforeShow
                                                    + "});return false;";
@@ -168,5 +180,37 @@ public class ConfirmBehavior extends AbstractBehavior {
 
     public void setEscape(boolean escape) {
         put(PropertyKeys.escape, escape);
+    }
+
+    public String getYesButtonLabel() {
+        return eval(PropertyKeys.yesButtonLabel, null);
+    }
+
+    public void setYesButtonLabel(String yesButtonLabel) {
+        put(PropertyKeys.yesButtonLabel, yesButtonLabel);
+    }
+
+    public String getYesButtonClass() {
+        return eval(PropertyKeys.yesButtonClass, null);
+    }
+
+    public void setYesButtonClass(String yesButtonClass) {
+        put(PropertyKeys.yesButtonClass, yesButtonClass);
+    }
+
+    public String getNoButtonLabel() {
+        return eval(PropertyKeys.noButtonLabel, null);
+    }
+
+    public void setNoButtonLabel(String noButtonLabel) {
+        put(PropertyKeys.noButtonLabel, noButtonLabel);
+    }
+
+    public String getNoButtonClass() {
+        return eval(PropertyKeys.noButtonClass, null);
+    }
+
+    public void setNoButtonClass(String noButtonClass) {
+        put(PropertyKeys.noButtonClass, noButtonClass);
     }
 }
