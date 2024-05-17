@@ -424,6 +424,9 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
                         if ($this.panel.parent().is("div.ui-state-disabled")) {
                             $this.panel.unwrap();
                         }
+                        
+                        // focus the overly correct item for accessibility
+                        pdp.focusOverlay();
                     }
                 });
                 return true;
