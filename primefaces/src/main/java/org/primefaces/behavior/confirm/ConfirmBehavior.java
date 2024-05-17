@@ -23,14 +23,17 @@
  */
 package org.primefaces.behavior.confirm;
 
+import java.io.IOException;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 import org.primefaces.behavior.base.AbstractBehavior;
 import org.primefaces.behavior.base.BehaviorAttribute;
 import org.primefaces.component.api.Confirmable;
 import org.json.JSONObject;
+import org.primefaces.util.FastStringWriter;
 
 public class ConfirmBehavior extends AbstractBehavior {
 
@@ -78,7 +81,26 @@ public class ConfirmBehavior extends AbstractBehavior {
         String source = getSource();
         String type = JSONObject.quote(getType());
         String headerText = JSONObject.quote(getHeader());
-        String messageText = JSONObject.quote(getMessage());
+
+        String messageText;
+        UIComponent messageFacetComponent = component.getFacet("confirmMessage");
+        if (null != messageFacetComponent) {
+            ResponseWriter originalWriter = context.getResponseWriter();
+            FastStringWriter fsw = new FastStringWriter();
+            ResponseWriter clonedWriter = originalWriter.cloneWithWriter(fsw);
+            context.setResponseWriter(clonedWriter);
+            try {
+                messageFacetComponent.encodeAll(context);
+            }
+            catch (IOException ex) {
+                fsw.write("error encoding confirm message facet");
+            }
+            context.setResponseWriter(originalWriter);
+            messageText = JSONObject.quote(fsw.toString());
+        }
+        else {
+            messageText = JSONObject.quote(getMessage());
+        }
         String beforeShow = JSONObject.quote(getBeforeShow());
         String yesButtonClass = JSONObject.quote(getYesButtonClass());
         String yesButtonLabel = JSONObject.quote(getYesButtonLabel());
