@@ -116,7 +116,8 @@ if (window.PrimeFaces) {
                 var filelimit = element.data('p-filelimit'),
                     allowtypes = element.data('p-allowtypes'),
                     sizelimit = element.data('p-sizelimit'),
-                    vc = PrimeFaces.validation.ValidationContext;
+                    vc = PrimeFaces.validation.ValidationContext,
+                    messages = [];
 
                 var allowtypesRegExp = null;
                 if (allowtypes) {
@@ -127,17 +128,21 @@ if (window.PrimeFaces) {
                 }
 
                 if (filelimit && value.length > filelimit) {
-                    throw vc.getMessage(this.FILE_LIMIT_MESSAGE_ID, filelimit);
+                    messages.push(vc.getMessage(this.FILE_LIMIT_MESSAGE_ID, filelimit));
                 }
 
                 for (var file of value) {
                     if (allowtypesRegExp && (!allowtypesRegExp.test(file.type) && !allowtypesRegExp.test(file.name)))  {
-                        throw vc.getMessage(this.ALLOW_TYPES_MESSAGE_ID, file.name, PrimeFaces.utils.formatAllowTypes(allowtypes));
+                        messages.push(vc.getMessage(this.ALLOW_TYPES_MESSAGE_ID, file.name, PrimeFaces.utils.formatAllowTypes(allowtypes)));
                     }
 
                     if (sizelimit && file.size > sizelimit) {
-                        throw vc.getMessage(this.SIZE_LIMIT_MESSAGE_ID, file.name, PrimeFaces.utils.formatBytes(sizelimit));
+                        messages.push(vc.getMessage(this.SIZE_LIMIT_MESSAGE_ID, file.name, PrimeFaces.utils.formatBytes(sizelimit)));
                     }
+                }
+
+                if (messages.length > 0) {
+                    throw messages;
                 }
             }
         },
