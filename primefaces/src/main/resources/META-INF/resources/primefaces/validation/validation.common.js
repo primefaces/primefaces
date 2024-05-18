@@ -465,7 +465,13 @@ if (window.PrimeFaces) {
                                     ? {summary: validatorMessageStr, detail: validatorMessageStr}
                                     : ve;
 
-                                vc.addMessage(element, validatorMsg);
+                                if (Array.isArray(validatorMsg)) {
+                                    // e.g. PrimeFaces.validator['primefaces.File'] may return an array of messages
+                                    validatorMsg.forEach((msg) => vc.addMessage(element, msg));
+                                }
+                                else {
+                                    vc.addMessage(element, validatorMsg);
+                                }
 
                                 valid = false;
                             }
