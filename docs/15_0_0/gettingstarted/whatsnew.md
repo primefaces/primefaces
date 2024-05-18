@@ -21,6 +21,7 @@ Look into [migration guide](https://primefaces.github.io/primefaces/15_0_0/#/../
     * `yesButtonClass`: adds given class to 'Yes' button (and removes it before the global confirm dialog is reused elsewhere)
     * `noButtonLabel`: overrides label of 'No' button (and restores it before the global confirm dialog is reused elsewhere)
     * `noButtonClass`: adds given class to 'No' button (and removes it before the global confirm dialog is reused elsewhere)
+    * `confirmMessage`: facet on the parent component of the `p:confirm` behavior. Can be used as message content instead of the `p:confirm` `message` attribute.
     
 * FeedReader
     * Added `podcast="true"` property if [Apple Itunes Podcast](https://help.apple.com/itc/podcasts_connect/#/itcb54353390) parsing and specific tags 

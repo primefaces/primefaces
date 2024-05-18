@@ -58,10 +58,10 @@ useful if you need to place custom content instead of simple text.
 ```
 
 ## Global
-Creating a confirmPopup for a specific action is a repetitive task, to solve this global confirmPopup
-which is a singleton has been introduced. Trigger components need to have p:confirm _type="popup"_ behavior to
-use the confirm popup. Component that trigger the actual command in popup must have _ui-confirm-
-popup-yes_ style class, similarly component to cancel the command must have _ui-confirm-popup-no_.
+Creating a confirmPopup for a specific action is a repetitive task. To solve this global confirmPopup,
+which is a singleton, has been introduced. Trigger components need to have p:confirm _type="popup"_ behavior to
+use the confirm popup. The component that triggers the actual command in the popup must have _ui-confirm-
+popup-yes_ style class. Similarly, the component to cancel the command must have _ui-confirm-popup-no_ style class.
 At the moment p:confirm is supported by p:commandButton, p:commandLink and p:menuitem.
 
 ```xhtml
