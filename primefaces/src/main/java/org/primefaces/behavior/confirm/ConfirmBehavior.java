@@ -23,17 +23,16 @@
  */
 package org.primefaces.behavior.confirm;
 
-import java.io.IOException;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import org.primefaces.behavior.base.AbstractBehavior;
 import org.primefaces.behavior.base.BehaviorAttribute;
 import org.primefaces.component.api.Confirmable;
 import org.json.JSONObject;
-import org.primefaces.util.FastStringWriter;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 
 public class ConfirmBehavior extends AbstractBehavior {
 
@@ -84,19 +83,8 @@ public class ConfirmBehavior extends AbstractBehavior {
 
         String messageText;
         UIComponent messageFacetComponent = component.getFacet("confirmMessage");
-        if (null != messageFacetComponent) {
-            ResponseWriter originalWriter = context.getResponseWriter();
-            FastStringWriter fsw = new FastStringWriter();
-            ResponseWriter clonedWriter = originalWriter.cloneWithWriter(fsw);
-            context.setResponseWriter(clonedWriter);
-            try {
-                messageFacetComponent.encodeAll(context);
-            }
-            catch (IOException ex) {
-                fsw.write("error encoding confirm message facet");
-            }
-            context.setResponseWriter(originalWriter);
-            messageText = JSONObject.quote(fsw.toString());
+        if (FacetUtils.shouldRenderFacet(messageFacetComponent)) {
+            messageText = JSONObject.quote(ComponentUtils.encodeComponent(messageFacetComponent, context));
         }
         else {
             messageText = JSONObject.quote(getMessage());
