@@ -52,9 +52,11 @@ public class InputMaskRenderer extends InputRenderer {
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId);
 
         if (submittedValue != null) {
-            // strip mask characters in case of optional values
-            submittedValue = submittedValue.replace(inputMask.getSlotChar(), Constants.EMPTY_STRING);
+            // #6469/#11958 strip mask characters in case of optional values
             String mask = inputMask.getMask();
+            if (isMaskOptional(mask)) {
+                submittedValue = submittedValue.replace(inputMask.getSlotChar(), Constants.EMPTY_STRING);
+            }
 
             if (inputMask.isValidateMask() && !LangUtils.isEmpty(submittedValue) && LangUtils.isNotBlank(mask)) {
                 Pattern pattern = translateMaskIntoRegex(context, mask);
@@ -150,6 +152,17 @@ public class InputMaskRenderer extends InputRenderer {
         return optional ? (translated + "?") : translated;
     }
 
+    /**
+     * Checks if the given mask string contains any optional mask characters.
+     * In this context, an optional mask character is defined as either '[' or ']'.
+     *
+     * @param mask the mask string to check
+     * @return {@code true} if the mask contains either '[' or ']'; {@code false} otherwise
+     */
+    protected boolean isMaskOptional(String mask) {
+        return mask.contains("[") || mask.contains("]");
+    }
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         InputMask inputMask = (InputMask) component;
@@ -166,7 +179,7 @@ public class InputMaskRenderer extends InputRenderer {
         if (mask != null) {
             // autoclear must be false when using optional mask
             boolean autoClear = inputMask.isAutoClear();
-            if (mask.contains("[") || mask.contains("]")) {
+            if (isMaskOptional(mask)) {
                 autoClear = false;
             }
             wb.attr("mask", mask)
