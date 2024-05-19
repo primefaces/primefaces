@@ -275,45 +275,48 @@ if (window.PrimeFaces) {
             }
 
             var vc = PrimeFaces.validation.ValidationContext,
-            pattern = element.data('p-pattern'),
+            javaPattern = element.data('p-pattern'),
             type = element.data('p-dttype'),
             datePattern = null,
             timePattern = null;
-
-            var locale = PrimeFaces.getLocaleSettings();
+            
+            if (typeof moment === 'undefined') {
+                PrimeFaces.error("Moment.js is not loaded! Please enable 'primefaces.CLIENT_SIDE_VALIDATION' in web.xml!");
+            }
 
             try {
-                if(pattern) {
-                    var patternArr = pattern.split(" ");
-                    for(var i = 0; i < patternArr.length; i++) {
-                        if(patternArr[i].toLowerCase().indexOf('h') !== -1) {
-                            timePattern = patternArr[i];
+                if (javaPattern) {
+                    var patternTokens = javaPattern.split(" ");
+                    for (var i = 0; i < patternTokens.length; i++) {
+                        if (patternTokens[i].toLowerCase().indexOf('h') !== -1) {
+                            timePattern = patternTokens[i];
                         }
-                        else if(patternArr[i].toLowerCase().indexOf('t') !== -1 && timePattern) {
-                            timePattern = timePattern + " " + patternArr[i];
+                        else if (patternTokens[i].toLowerCase().indexOf('t') !== -1 && timePattern) {
+                            timePattern = timePattern + " " + patternTokens[i];
                         }
                         else {
-                            datePattern = patternArr[i];
+                            datePattern = patternTokens[i];
                         }
                     }
                 }
                 else {
-                     datePattern = element.data('p-dspattern');
-                     timePattern = element.data('p-tspattern');
+                    datePattern = element.data('p-dspattern');
+                    timePattern = element.data('p-tspattern');
                 }
 
-                if(timePattern && datePattern) {
-                    return $.datepicker.parseDateTime(datePattern, timePattern, submittedValue, locale, {timeFormat:timePattern});
-                }
-                else if(timePattern) {
-                    return $.datepicker.parseTime(timePattern, submittedValue, locale);
-                }
-                else {
-                    return $.datepicker.parseDate(datePattern, submittedValue, locale);
+                // convert Java pattern into Moment pattern and return a Date()
+                const convertDate = (submittedValue, format) => moment(submittedValue, moment().toMomentFormatString(format)).toDate();
+
+                if (timePattern && datePattern) {
+                    return convertDate(submittedValue, javaPattern);
+                } else if (timePattern) {
+                    return convertDate(submittedValue, timePattern);
+                } else {
+                    return convertDate(submittedValue, datePattern);
                 }
             }
             catch(exception) {
-                var now = $.datepicker.formatDate(pattern, new Date(), locale);
+                var now = moment().formatWithJDF(javaPattern);
 
                 if(type === 'date')
                     throw vc.getMessage(this.DATE_ID, submittedValue, now, vc.getLabel(element));
