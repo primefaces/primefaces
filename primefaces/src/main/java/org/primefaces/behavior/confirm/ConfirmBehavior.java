@@ -31,6 +31,8 @@ import org.primefaces.behavior.base.AbstractBehavior;
 import org.primefaces.behavior.base.BehaviorAttribute;
 import org.primefaces.component.api.Confirmable;
 import org.json.JSONObject;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 
 public class ConfirmBehavior extends AbstractBehavior {
 
@@ -78,7 +80,15 @@ public class ConfirmBehavior extends AbstractBehavior {
         String source = getSource();
         String type = JSONObject.quote(getType());
         String headerText = JSONObject.quote(getHeader());
-        String messageText = JSONObject.quote(getMessage());
+
+        String messageText;
+        UIComponent messageFacetComponent = component.getFacet("confirmMessage");
+        if (FacetUtils.shouldRenderFacet(messageFacetComponent)) {
+            messageText = JSONObject.quote(ComponentUtils.encodeComponent(messageFacetComponent, context));
+        }
+        else {
+            messageText = JSONObject.quote(getMessage());
+        }
         String beforeShow = JSONObject.quote(getBeforeShow());
         String yesButtonClass = JSONObject.quote(getYesButtonClass());
         String yesButtonLabel = JSONObject.quote(getYesButtonLabel());
