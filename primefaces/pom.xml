@@ -618,6 +618,20 @@
                                 </aggregation>
                             </aggregations>
                         </resourcesSet>
+                        <!-- moment.js (already compressed)-->
+                        <resourcesSet>
+                            <includes>
+                                <include>moment/moment.js</include>
+                                <include>moment/moment-java-formatter.js</include>
+                            </includes>
+                            <aggregations>
+                                <aggregation>
+                                    <inputDir>${resources.dir.compressed}</inputDir>
+                                    <outputFile>${resources.dir.compressed}/moment/moment.js</outputFile>
+                                    <withoutCompress>true</withoutCompress>
+                                </aggregation>
+                            </aggregations>
+                        </resourcesSet>
                         <resourcesSet>
                             <includes>
                                 <include>core/core.css</include>

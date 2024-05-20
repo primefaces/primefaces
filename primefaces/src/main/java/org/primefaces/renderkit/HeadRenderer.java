@@ -126,10 +126,16 @@ public class HeadRenderer extends Renderer {
 
         // normal CSV is a required dependency for some special components like fileupload
         encodeJS(context, LIBRARY, "validation/validation.js");
-        // BV CSV is optional and must be enabled by config
-        if (applicationContext.getConfig().isClientSideValidationEnabled()
-                && applicationContext.getConfig().isBeanValidationEnabled()) {
-            encodeJS(context, LIBRARY, "validation/validation.bv.js");
+
+
+        if (applicationContext.getConfig().isClientSideValidationEnabled()) {
+            // moment is needed for Date validation
+            encodeJS(context, LIBRARY, "moment/moment.js");
+
+            // BV CSV is optional and must be enabled by config
+            if (applicationContext.getConfig().isBeanValidationEnabled()) {
+                encodeJS(context, LIBRARY, "validation/validation.bv.js");
+            }
         }
 
         if (applicationContext.getConfig().isClientSideLocalizationEnabled()) {
