@@ -89,9 +89,8 @@ public class MenuRenderer extends BaseMenuRenderer {
         }
         writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENU, null);
 
-        encodeKeyboardTarget(context, menu);
-
         if (menu.getElementsCount() > 0) {
+            writer.writeAttribute("tabindex", "-1", "tabindex");
             writer.startElement("ul", null);
             writer.writeAttribute("class", Menu.LIST_CLASS, null);
             encodeElements(context, menu, menu.getElements(), false, true);

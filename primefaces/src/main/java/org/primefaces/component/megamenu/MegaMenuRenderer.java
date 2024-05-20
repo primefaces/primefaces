@@ -70,11 +70,10 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         writer.startElement("div", menu);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
+        writer.writeAttribute("tabindex", "-1", "tabindex");
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
-
-        encodeKeyboardTarget(context, menu);
 
         writer.startElement("ul", null);
         writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUBAR, null);

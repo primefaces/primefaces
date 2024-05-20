@@ -5,7 +5,6 @@
  * 
  * @prop {PrimeFaces.UnbindCallback} [hideOverlayHandler] Unbind callback for the hide overlay handler.
  * @prop {boolean} itemMouseDown `true` if a menu item was clicked and the mouse button is still pressed.
- * @prop {JQuery} keyboardTarget The DOM element for the form element that can be targeted via arrow or tab keys. 
  * @prop {PrimeFaces.UnbindCallback} [resizeHandler] Unbind callback for the resize handler.
  * @prop {PrimeFaces.UnbindCallback} [scrollHandler] Unbind callback for the scroll handler.
  * @prop {PrimeFaces.CssTransitionHandler | null} [transition] Handler for CSS transitions used by this widget.
@@ -39,8 +38,6 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.overlay) {
             this.initOverlay();
         }
-
-        this.keyboardTarget = this.jq.children('.ui-helper-hidden-accessible');
     },
 
     /**
@@ -48,8 +45,6 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
      * @protected
      */
     initOverlay: function() {
-        var $this = this;
-
         this.jq.addClass('ui-menu-overlay');
 
         this.cfg.trigger = this.cfg.trigger.replace(/\\\\:/g, "\\:");
@@ -234,6 +229,8 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
                 },
                 onEntered: function() {
                     $this.bindPanelEvents();
+                    $this.resetFocus(true);
+                    $this.jq.find('a.ui-menuitem-link:focusable:first').trigger('focus');
                 }
             });
         }
@@ -252,7 +249,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
                 },
                 onExited: function() {
                     if ($this.trigger && $this.trigger.is(':button')) {
-                        $this.trigger.removeClass('ui-state-focus');
+                        $this.trigger.trigger('focus');
                     }
                 }
             });
@@ -264,6 +261,56 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
      */
     align: function() {
         this.jq.css({left:'0', top:'0', 'transform-origin': 'center top'}).position(this.cfg.pos);
+    },
+
+    /**
+     * Resets all menu items to tabindex="0" except the first item if resetFirst
+     * @param {JQuery} menu Menu item (`A`) to select.
+     * @param {boolean} resetFirst whether to reset to the first cell to "0"
+     */
+    resetFocus: function(resetFirst) {
+        // default all links to not focusable
+        var $container = this.menu || this.jq;
+        var focusableLinks = $container.find("a.ui-menuitem-link");
+        focusableLinks.removeClass('ui-state-hover ui-state-active').attr('tabindex', -1);
+
+        if (resetFirst) {
+            // the very first link should be focusable
+            var focused = focusableLinks.filter(':focusable:first').first();
+            focused.addClass('ui-state-hover ui-state-active').attr('tabindex', 0);
+            if (focused.attr('aria-expanded') === "false") {
+                focused.attr('aria-expanded', "true");
+            }
+        }
+    },
+
+    /**
+     * Select the menu item link by making it focused and tabindex=0 for ARIA.
+     * @param {JQuery} menulink Menu item (`A`) to select.
+     */
+    focus: function(menulink) {
+        if (menulink.hasClass('ui-state-disabled')) {
+            return;
+        }
+        this.resetFocus(false);
+        menulink.addClass('ui-state-hover ui-state-active').attr('tabindex', 0);
+        if (menulink.attr('aria-expanded') === "false") {
+            menulink.attr('aria-expanded', "true");
+        }
+    },
+
+    /**
+     * Unselect the menu item link by removing focus and tabindex=-1 for ARIA.
+     * @param {JQuery} menulink Menu item (`A`) to unselect.
+     */
+    unfocus: function(menulink) {
+        if (menulink.hasClass('ui-state-disabled')) {
+            return;
+        }
+        menulink.removeClass('ui-state-hover ui-state-active').attr('tabindex', -1);
+        if (menulink.attr('aria-expanded') === "true") {
+            menulink.attr('aria-expanded', "false");
+        }
     }
 });
 

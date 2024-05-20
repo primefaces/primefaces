@@ -47,16 +47,58 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
      */
     bindEvents: function() {
         var $this = this;
+        
+        // make first focusable
+        this.menuitemLinks.filter(':not([disabled])').first().attr("tabindex", "0");
+        this.resetFocus(true);
 
-        this.menuitemLinks.on("mouseenter", function(e) {
-            if($this.jq.is(':focus')) {
-                $this.jq.trigger("blur");
-            }
-
-            $(this).addClass('ui-state-hover');
+        this.menuitemLinks.on("mouseenter.menu click.menu", function(e) {
+            $(this).trigger('focus');
         })
-        .on("mouseleave", function(e) {
-            $(this).removeClass('ui-state-hover');
+        .on("focusin.menu", function(e) {
+            $this.focus($(this));
+        })
+        .on("focusout.menu mouseleave.menu", function(e) {
+            $this.unfocus($(this));
+        })
+        .on('keydown.menu', function(e) {
+            var currentLink = $this.menuitemLinks.filter('.ui-state-hover');
+            switch(e.code) {
+                    case 'ArrowUp':
+                        var prevItem = currentLink.parent().prevAll('.ui-menuitem:first');
+                        if (prevItem.length) {
+                            $this.unfocus(currentLink);
+                            $this.focus(prevItem.children('.ui-menuitem-link'));
+                        }
+
+                        e.preventDefault();
+                    break;
+
+                    case 'ArrowDown':
+                        var nextItem = currentLink.parent().nextAll('.ui-menuitem:first');
+                        if(nextItem.length) {
+                            $this.unfocus(currentLink);
+                            $this.focus(nextItem.children('.ui-menuitem-link'));
+                        }
+
+                        e.preventDefault();
+                    break;
+
+                    case 'Enter':
+                    case 'NumpadEnter':
+                        currentLink.trigger('click');
+                        PrimeFaces.utils.openLink(e, currentLink);
+                    break;
+
+                    case 'Escape':
+                        $this.hide();
+
+                        if($this.cfg.overlay) {
+                            $this.trigger.trigger('focus');
+                        }
+                    break;
+
+            }
         });
 
         if(this.cfg.overlay) {
@@ -67,7 +109,9 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
             this.trigger.on('keydown.ui-menu', function(e) {
                 switch(e.key) {
                     case 'ArrowDown':
-                        $this.keyboardTarget.trigger('focus.menu');
+                        if(!$this.jq.is(':visible')) {
+                            $this.show();
+                        }
                         e.preventDefault();
                     break;
 
@@ -76,6 +120,13 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
                             $this.hide();
                         }
                     break;
+                }
+            });
+        }
+        else {
+            this.jq.on("focusout.menu", function(e) {
+                if (!$this.jq.has(e.relatedTarget).length) {
+                    $this.resetFocus(true);
                 }
             });
         }
@@ -99,53 +150,6 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
                 e.preventDefault();
             });
         }
-
-        this.keyboardTarget.on('focus.menu', function() {
-            $this.menuitemLinks.eq(0).addClass('ui-state-hover');
-        })
-        .on('blur.menu', function() {
-            $this.menuitemLinks.filter('.ui-state-hover').removeClass('ui-state-hover');
-        })
-        .on('keydown.menu', function(e) {
-            var currentLink = $this.menuitemLinks.filter('.ui-state-hover');
-            switch(e.code) {
-                    case 'ArrowUp':
-                        var prevItem = currentLink.parent().prevAll('.ui-menuitem:first');
-                        if(prevItem.length) {
-                            currentLink.removeClass('ui-state-hover');
-                            prevItem.children('.ui-menuitem-link').addClass('ui-state-hover');
-                        }
-
-                        e.preventDefault();
-                    break;
-
-                    case 'ArrowDown':
-                        var nextItem = currentLink.parent().nextAll('.ui-menuitem:first');
-                        if(nextItem.length) {
-                            currentLink.removeClass('ui-state-hover');
-                            nextItem.children('.ui-menuitem-link').addClass('ui-state-hover');
-                        }
-
-                        e.preventDefault();
-                    break;
-
-                    case 'Enter':
-                    case 'NumpadEnter':
-                        currentLink.trigger('click');
-                        $this.jq.trigger("blur");
-                        PrimeFaces.utils.openLink(e, currentLink);
-                    break;
-
-                    case 'Escape':
-                        $this.hide();
-
-                        if($this.cfg.overlay) {
-                            $this.trigger.trigger('focus');
-                        }
-                    break;
-
-            }
-        });
     },
     
     /**

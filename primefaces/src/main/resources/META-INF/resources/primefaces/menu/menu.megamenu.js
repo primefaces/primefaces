@@ -5,7 +5,6 @@
  *
  * @prop {boolean} active Whether the current menu is active and displayed.
  * @prop {JQuery | null} [activeitem] The currently active (highlighted) menu item.
- * @prop {JQuery} keyboardTarget The DOM element for the input element accessible via keyboard keys.
  * @prop {JQuery} rootLinks The DOM elements for the root level menu links with the class `.ui-menuitem-link`.
  * @prop {JQuery} rootList The DOM elements for the root level menu items with the class `.ui-menu-list`.
  * @prop {JQuery} subLinks The DOM elements for all menu links not a the root level, with the class `.ui-menuitem-link`.
@@ -24,7 +23,7 @@
  * @prop {boolean} cfg.vertical `true` if the mega menu is displayed with a vertical layout, `false` if displayed with a
  * horizontal layout.
  */
-PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.MegaMenu = PrimeFaces.widget.Menu.extend({
 
     /**
      * @override
@@ -38,7 +37,6 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
         this.rootList = this.jq.children('ul.ui-menu-list');
         this.rootLinks = this.rootList.find('> li.ui-menuitem > a.ui-menuitem-link:not(.ui-state-disabled)');
         this.subLinks = this.jq.find('.ui-menu-child a.ui-menuitem-link:not(.ui-state-disabled)');
-        this.keyboardTarget = this.jq.children('.ui-helper-hidden-accessible');
         this.isRTL = this.jq.hasClass('ui-menu-rtl');
 
         if(this.cfg.activeIndex !== undefined) {
@@ -154,12 +152,29 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
      */
     bindKeyEvents: function() {
         var $this = this;
+        
+        // make first focusable
+        var firstLink = this.rootLinks.filter(':not([disabled])').first();
+        firstLink.attr("tabindex", "0");
+        this.resetFocus(true);
+        firstLink.removeClass('ui-state-hover ui-state-active');
+        
+        this.jq.on("blur.menu focusout.menu", function(e) {
+            if (!$this.jq.has(e.relatedTarget).length) {
+                $this.reset();
+            }
+        });
 
-        this.keyboardTarget.on('focus.megamenu', function(e) {
-            $this.highlight($this.rootLinks.eq(0).parent());
+        this.rootLinks.on("mouseenter.menu click.menu", function(e) {
+            $(this).trigger('focus');
         })
-        .on('blur.megamenu', function() {
-            $this.reset();
+        .on("focusin.menu", function(e) {
+            var $link = $(this);
+            $this.focus($link);
+            $this.highlight($link.parent());
+        })
+        .on("focusout.menu mouseleave.menu", function(e) {
+            $this.unfocus($(this));
         })
         .on('keydown.megamenu', function(e) {
             var currentitem = $this.activeitem;
@@ -255,14 +270,11 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
                     break;
 
                     case 'Enter':
+                    case 'Space':
                     case 'NumpadEnter':
                         var currentLink = currentitem.children('.ui-menuitem-link');
                         currentLink.trigger('click');
-                        $this.jq.trigger("blur");
-                        var href = currentLink.attr('href');
-                        if(href && href !== '#') {
-                            window.location.href = href;
-                        }
+                        PrimeFaces.utils.openLink(e, currentLink);
                         $this.deactivate(currentitem);
                         e.preventDefault();
                     break;
@@ -360,6 +372,8 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
         this.jq.find('li.ui-menuitem-active').each(function() {
             $this.deactivate($(this), true);
         });
+        this.resetFocus(true);
+        this.rootLinks.removeClass('ui-state-hover');
     },
 
     /**
@@ -372,7 +386,7 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
         submenu = link.next();
 
         menuitem.removeClass('ui-menuitem-active');
-        link.removeClass('ui-state-hover');
+        this.unfocus(link);
         this.activeitem = null;
 
         if(submenu.length > 0) {
@@ -389,9 +403,8 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
      */
     highlight: function(menuitem) {
         var link = menuitem.children('a.ui-menuitem-link');
-
         menuitem.addClass('ui-menuitem-active');
-        link.addClass('ui-state-hover');
+        this.focus(link);
         this.activeitem = menuitem;
     },
 
