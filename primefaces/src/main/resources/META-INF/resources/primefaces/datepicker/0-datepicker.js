@@ -2124,6 +2124,8 @@
             }
 
             switch (event.key) {
+                case 'ArrowDown':
+                case 'ArrowUp':
                 case 'Tab':
                 case 'Delete':
                 case 'Backspace':
@@ -2143,24 +2145,33 @@
                 case '8':
                 case '9':
                     var input = event.currentTarget;
+                    var newValue = input.value + event.key;
+                    
+                    // If input is for year and already full, reset value
+                    if (input.maxLength === 4 && input.value.length === 4) {
+                        newValue = event.key;
+                        input.value = "";
+                    }
+                    
+                    // Prevent adding more characters if input is at max length
                     if (input.value.length >= input.maxLength) {
                         event.preventDefault();
                         event.stopPropagation();
                         return;
                     }
-                    var val = input.value + event.key;
                     
-                    // for year we only want to evaluate the full number
-                    if (input.maxLength === 4 && val.length != 4) {
+                    // For year input, only evaluate if the input is 4 digits long
+                    if (input.maxLength === 4 && newValue.length < 4) {
                         return;
                     }
                     
-                    // evaluate if its within min and max range
-                    val = parseInt(val, 10);
+                    // Parse new value and min/max limits for comparison
+                    newValue = parseInt(newValue, 10);
                     var inputMin =  parseInt(input.min, 10);
                     var inputMax =  parseInt(input.max, 10);
 
-                    if (val < inputMin || val > inputMax) {
+                    // Prevent input if new value is outside the min/max range
+                    if (isNaN(newValue) || newValue < inputMin || newValue > inputMax) {
                         event.preventDefault();
                         event.stopPropagation();
                     }
@@ -2199,27 +2210,26 @@
             if (this.documentClickListener) {
                 this.datepickerClick = true;
             }
-
-            if (this.options.showOnFocus && !this.isPanelVisible()) {
-                this.showOverlay();
+            // #11928 allow the input to be clicked again to close panel and allow typing of date
+            if (!this.datepickerFocus && this.isPanelVisible()) {
+                this.hideOverlay();
             }
         },
 
         onInputFocus: function(event) {
-            if (this.options.showOnFocus && !this.isPanelVisible()) {
-                this.showOverlay();
+            if (this.options.showOnFocus && !this.isPanelVisible() && !this.datepickerFocus) {
+                this.datepickerFocus = true;
+                this.showOverlay()
             }
-
             if (this.options.onFocus) {
                 this.options.onFocus.call(this, event);
             }
-
             this.inputfield.addClass('ui-state-focus');
             this.container.addClass('ui-inputwrapper-focus');
         },
 
         onInputBlur: function(event) {
-            if (this.options.onBlur) {
+            if (this.options.onBlur && event) {
                 this.options.onBlur.call(this, event);
             }
 
@@ -2261,7 +2271,7 @@
         },
 
         onEscapeKey: function(event) {
-            this.hideOverlay(event);
+            this.hideOverlay();
         },
 
         onUserInput: function(event) {
@@ -2567,6 +2577,41 @@
             }
         },
 
+        focusOverlay: function() {
+            var $this = this;
+            var focused = null;
+            if ($this.options.view === 'month') {
+                focused = $this.panel.find('a.ui-monthpicker-month');
+            }
+            if ($this.options.view === 'date') {
+                // focus first selected day or today
+                focused = $this.panel.find('a.ui-state-active');
+
+                if (focused.length === 0) {
+                    focused = $this.panel.find('.ui-datepicker-today a');
+                }
+                if (focused.length === 0) {
+                    focused = $this.panel.find('a.ui-state-default');
+                }
+                if (focused.length === 0) {
+                    focused = $this.panel.find('a.ui-state-default');
+                }
+                if (focused.length === 0) {
+                    focused = $this.panel.find(':button, :input');
+                }
+            }
+            if (focused) {
+                focused.first().trigger('focus');
+            }
+
+            $this.inputfield.attr('aria-expanded', 'true');
+            $this.inputfield.removeClass('ui-state-focus');
+
+            if ($this.triggerButton) {
+                $this.triggerButton.attr('aria-expanded', 'true');
+            }
+        },
+
         showOverlay: function() {
             if (!this.options.inline && !this.isPanelVisible() && this.transition) {
                 var $this = this;
@@ -2581,55 +2626,32 @@
                     },
                     onEntered: function() {
                         $this.datepickerClick = true;
-                        PrimeFaces.queueTask(function() { $this.datepickerClick = false; }, 200);
+                        PrimeFaces.queueTask(function() {
+                            $this.datepickerClick = false;
+                            $this.datepickerFocus = false;
+                        }, 200);
+                        
                         $this.bindDocumentClickListener();
                         $this.bindWindowResizeListener();
 
                         if (!$this.options.inline) {
                             $this.bindScrollListener();
                         }
-
-                        var focused = null;
-                        if ($this.options.view === 'month') {
-                            focused = $this.panel.find('a.ui-monthpicker-month');
-                        }
-                        if ($this.options.view === 'date') {
-                            // focus first selected day or today
-                            focused = $this.panel.find('a.ui-state-active');
-
-                            if (focused.length === 0) {
-                                focused = $this.panel.find('.ui-datepicker-today a');
-                            }
-                            if (focused.length === 0) {
-                                focused = $this.panel.find('a.ui-state-default');
-                            }
-                            if (focused.length === 0) {
-                                focused = $this.panel.find('a.ui-state-default');
-                            }
-                            if (focused.length === 0) {
-                                focused = $this.panel.find(':button, :input');
-                            }
-                        }
-                        if (focused) {
-                            focused.first().trigger('focus');
-                        }
-
-                        $this.inputfield.attr('aria-expanded', 'true');
-
-                        if ($this.triggerButton) {
-                            $this.triggerButton.attr('aria-expanded', 'true');
-                        }
+                        
+                        $this.focusOverlay();
                     }
                 });
             }
         },
 
-        hideOverlay: function() {
+        hideOverlay: function(event) {
             if (!this.options.inline && this.isPanelVisible() && this.transition) {
                 var $this = this;
 
                 //put the focus back to the inputfield
-                $this.inputfield.trigger('focus');
+                if (!event) {
+                   $this.inputfield.trigger('focus'); 
+                }
                 
                 // if using mask disable the modality
                 $this.disableModality();
@@ -2674,9 +2696,11 @@
         bindDocumentClickListener: function() {
             var $this = this;
             if (!this.documentClickListener) {
-                this.documentClickListener = function() {
+                this.documentClickListener = function(event) {
                     if (!$this.datepickerClick) {
-                        $this.hideOverlay();
+                        $this.hideOverlay(event);
+                        $this.onInputBlur();
+                        PrimeFaces.queueTask(function() { $(event.target).trigger('focus') }, 1);
                     }
 
                     $this.datepickerClick = false;
@@ -2719,8 +2743,11 @@
             }
 
             var $this = this;
-            $(window).on('resize.' + this.options.id, function() {
-                $this.hideOverlay();
+            $(window).on('resize.' + $this.options.id, function() {
+                // TODO: lazy model for some reason triggers a windows resize
+                if (!$this.options.lazyModel) {
+                    $this.hideOverlay();
+                }
             });
         },
 
