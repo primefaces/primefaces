@@ -70,10 +70,10 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
                 .add(ComponentUtils.isRTL(context, abstractMenu), AbstractMenu.MENU_RTL_CLASS)
                 .build();
 
-        encodeMenu(context, menu, style, styleClass, HTML.ARIA_ROLE_MENU);
+        encodeMenu(context, menu, style, styleClass, HTML.ARIA_ORIENTATION_VERTICAL);
     }
 
-    protected void encodeMenu(FacesContext context, AbstractMenu menu, String style, String styleClass, String role) throws IOException {
+    protected void encodeMenu(FacesContext context, AbstractMenu menu, String style, String styleClass, String orientation) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", menu);
@@ -85,12 +85,13 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
 
         writer.startElement("ul", null);
         writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUBAR, null);
+        writer.writeAttribute(HTML.ARIA_ORIENTATION, orientation, null);
         writer.writeAttribute("class", Menu.LIST_CLASS, null);
+        writer.writeAttribute("tabindex", "-1", "tabindex"); // allow focus/blur events
 
         encodeFacet(context, menu, "start", Menu.START_CLASS);
 
         if (menu.getElementsCount() > 0) {
-            writer.writeAttribute("tabindex", "-1", "tabindex");
             encodeElements(context, menu, menu.getElements());
         }
 

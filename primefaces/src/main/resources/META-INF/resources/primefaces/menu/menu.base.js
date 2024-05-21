@@ -275,12 +275,17 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         focusableLinks.removeClass('ui-state-hover ui-state-active').attr('tabindex', -1);
 
         if (resetFirst) {
+            // reset aria-expanded
+            focusableLinks.each(function() {
+                var $link = $(this);
+                if ($link.attr('aria-expanded') !== undefined) {
+                    $link.attr('aria-expanded', 'false');
+                }
+            });
+
             // the very first link should be focusable
             var focused = focusableLinks.filter(':focusable:first').first();
             focused.addClass('ui-state-hover ui-state-active').attr('tabindex', 0);
-            if (focused.attr('aria-expanded') === "false") {
-                focused.attr('aria-expanded', "true");
-            }
         }
     },
 
@@ -294,9 +299,6 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         }
         this.resetFocus(false);
         menulink.addClass('ui-state-hover ui-state-active').attr('tabindex', 0);
-        if (menulink.attr('aria-expanded') === "false") {
-            menulink.attr('aria-expanded', "true");
-        }
     },
 
     /**
@@ -308,9 +310,6 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
             return;
         }
         menulink.removeClass('ui-state-hover ui-state-active').attr('tabindex', -1);
-        if (menulink.attr('aria-expanded') === "true") {
-            menulink.attr('aria-expanded', "false");
-        }
     }
 });
 

@@ -184,7 +184,7 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.Menu.extend({
 
             var isRootLink = $this.isRootLink(currentitem);
 
-            switch(e.key) {
+            switch(e.code) {
                     case 'ArrowLeft':
                         if(isRootLink && !$this.cfg.vertical) {
                             var prevItem = currentitem.prevAll('.ui-menuitem:first');

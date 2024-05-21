@@ -84,6 +84,7 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
                         e.preventDefault();
                     break;
 
+                    case 'Space':
                     case 'Enter':
                     case 'NumpadEnter':
                         currentLink.trigger('click');

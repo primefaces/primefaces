@@ -13,6 +13,8 @@
  * @prop {JQuery} rootLinks DOM element with all links for the root (top-level) menu entries of this tiered menu.
  * @prop {number} [timeoutId] Timeout ID, used for the animation when the menu is shown.
  * @prop {boolean} isRTL Whether the writing direction is set to right-to-left.
+ * @prop {boolean} isVertical Whether component is vertical orientation like TieredMenu.
+ * @prop {boolean} isHorizontal Whether component is horizontal orientation like MenuBar.
  * 
  * @interface {PrimeFaces.widget.TieredMenuCfg} cfg The configuration for the {@link  TieredMenu| TieredMenu widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
@@ -41,6 +43,8 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
         this.links = this.jq.find('a.ui-menuitem-link:not(.ui-state-disabled)');
         this.rootLinks = this.jq.find('> ul.ui-menu-list > .ui-menuitem > .ui-menuitem-link');
         this.isRTL = this.jq.hasClass('ui-menu-rtl');
+        this.isVertical = this.jq.find('> ul.ui-menu-list').attr('aria-orientation') === 'vertical';
+        this.isHorizontal = !this.isVertical;
 
         this.bindEvents();
     },
@@ -53,6 +57,7 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
         this.bindItemEvents();
         this.bindKeyEvents();
         this.bindDocumentHandler();
+        this.bindFocusEvents();
     },
 
     /**
@@ -60,23 +65,47 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
      * @protected
      */
     bindItemEvents: function() {
-        var $this = this;
         if (this.cfg.toggleEvent === 'click' || PrimeFaces.env.isTouchable(this.cfg))
             this.bindClickModeEvents();
         else if (this.cfg.toggleEvent === 'hover')
             this.bindHoverModeEvents();
-            
-        this.jq.on("blur.tieredMenu focusout.tieredMenu", function(e) {
-            if (!$this.jq.has(e.relatedTarget).length) {
-                if ($this.activeitem) {
-                    $this.deactivate($this.activeitem);
-                }
+    },
 
-                if ($this.cfg.hideDelay > 0) {
-                    $this.timeoutId = PrimeFaces.queueTask(function() {
-                        $this.reset();
-                    }, $this.cfg.hideDelay);
-                }
+    /**
+     * Sets up all event listners required for focus interactions.
+     * @protected
+     */
+    bindFocusEvents: function() {
+        var $this = this;
+
+        // make first focusable
+        var firstLink = this.links.filter(':not([disabled])').first();
+        firstLink.attr("tabindex", "0");
+        this.resetFocus(true);
+        firstLink.removeClass('ui-state-hover ui-state-active');
+
+        this.links.on("mouseenter.tieredFocus click.tieredFocus", function() {
+            $(this).trigger('focus');
+
+            var link = $(this),
+                menuitem = link.parent();
+
+            var activeSibling = menuitem.siblings('.ui-menuitem-active');
+            if (activeSibling.length === 1) {
+                activeSibling.find('li.ui-menuitem-active').each(function() {
+                    $this.deactivate($(this));
+                });
+                $this.deactivate(activeSibling);
+            }
+        }).on("focusin.tieredFocus", function() {
+            var menuitem = $(this).parent();
+            $this.highlight(menuitem, false);
+        });
+
+        // reset menu when focus is lost on the entire menu
+        this.jq.on("blur.tieredFocus focusout.tieredFocus", (e) => {
+            if (!$this.jq.has(e.relatedTarget).length) {
+                $this.deactivateAndReset(e);
             }
         });
     },
@@ -88,30 +117,19 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
     bindHoverModeEvents: function() {
         var $this = this;
 
-        this.links.on("mouseenter", function() {
+        this.links.on("mouseenter.tieredHover", function() {
             var link = $(this),
                 menuitem = link.parent();
 
-            var activeSibling = menuitem.siblings('.ui-menuitem-active');
-            if (activeSibling.length === 1) {
-                activeSibling.find('li.ui-menuitem-active').each(function() {
-                    $this.deactivate($(this));
-                });
-                $this.deactivate(activeSibling);
-            }
-
             if ($this.cfg.autoDisplay || $this.active) {
-                if (menuitem.hasClass('ui-menuitem-active'))
-                    $this.reactivate(menuitem);
-                else
-                    $this.activate(menuitem);
+                $this.activate(menuitem);
             }
             else {
                 $this.highlight(menuitem);
             }
         });
 
-        this.rootLinks.on("click", function(e) {
+        this.rootLinks.on("click.tieredHover", function() {
             var link = $(this),
                 menuitem = link.parent(),
                 submenu = menuitem.children('ul.ui-menu-child');
@@ -137,17 +155,7 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
         });
 
         this.jq.find('ul.ui-menu-list').on("mouseleave", function(e) {
-            if ($this.activeitem) {
-                $this.deactivate($this.activeitem);
-            }
-            
-            if ($this.cfg.hideDelay > 0) {
-                $this.timeoutId = PrimeFaces.queueTask(function() {
-                    $this.reset();
-                }, $this.cfg.hideDelay);
-            }
-
-            e.stopPropagation();
+            $this.deactivateAndReset(e);
         });
     },
 
@@ -158,21 +166,7 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
     bindClickModeEvents: function() {
         var $this = this;
 
-        this.links.on("mouseenter", function() {
-            var menuitem = $(this).parent();
-
-            if (!menuitem.hasClass('ui-menuitem-active')) {
-                menuitem.addClass('ui-menuitem-highlight').children('a.ui-menuitem-link').addClass('ui-state-hover');
-            }
-        }).on("mouseleave", function() {
-            var menuitem = $(this).parent();
-
-            if (!menuitem.hasClass('ui-menuitem-active')) {
-                menuitem.removeClass('ui-menuitem-highlight').children('a.ui-menuitem-link').removeClass('ui-state-hover');
-            }
-        });
-
-        this.links.filter('.ui-submenu-link').on('click.tieredMenu', function(e) {
+        this.links.filter('.ui-submenu-link').on('click.tieredClick', function(e) {
             var link = $(this),
                 menuitem = link.parent(),
                 submenu = menuitem.children('ul.ui-menu-child');
@@ -199,7 +193,7 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
             }
 
             e.preventDefault();
-        }).on('mousedown.tieredMenu', function(e) {
+        }).on('mousedown.tieredClick', function(e) {
             e.stopPropagation();
         });
     },
@@ -211,65 +205,103 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
     bindKeyEvents: function() {
         var $this = this;
 
-        // make first focusable
-        var firstLink = this.links.filter(':not([disabled])').first();
-        firstLink.attr("tabindex", "0");
-        this.resetFocus(true);
-        firstLink.removeClass('ui-state-hover ui-state-active');
-
-        this.links.on("mouseenter.tieredMenu click.tieredMenu", function(e) {
-            $(this).trigger('focus');
-        }).on("focusin.tieredMenu", function(e) {
-            $this.highlight($(this).parent(), false);
-        }).on("focusout.tieredMenu mouseleave.tieredMenu", function(e) {
-            $this.deactivate($(this));
-        }).on('keydown.tieredMenu', function(e) {
+        this.links.on('keydown.tieredMenu', function(e) {
             var link = $(this),
                 menuitem = link.parent(),
-                submenu = menuitem.children('ul.ui-menu-child');
+                isRootLink = false;
 
-            switch (e.key) {
+            // menubar is horizontal and is only one we care about if this is a root link
+            if ($this.isHorizontal) {
+                isRootLink = !menuitem.closest('ul').hasClass('ui-menu-child')
+            }
+
+            // Helper functionto navigate to a menu item
+            function navigateTo(item) {
+                if (item.length) {
+                    $this.deactivate(menuitem);
+                    $this.highlight(item);
+                }
+            }
+
+            // Helper function to close the submenu if its open
+            function closeSubmenu() {
+                var submenu = $('.ui-submenu-link[aria-expanded="true"]').last().parent();
+                if (submenu.length === 1) {
+                    $this.deactivate(submenu);
+                    $this.highlight(submenu);
+                }
+            }
+
+            // Helper function to open the submenu if its open
+            function openSubmenu() {
+                if (menuitem.hasClass('ui-menu-parent')) {
+                    $this.activate(menuitem);
+                }
+            }
+
+            switch (e.code) {
+                case 'Home':
+                    navigateTo(menuitem.prevAll('.ui-menuitem:last'));
+                    e.preventDefault();
+                    break;
+                case 'End':
+                    navigateTo(menuitem.nextAll('.ui-menuitem:last'));
+                    e.preventDefault();
+                    break;
                 case 'ArrowUp':
-                    var prevItem = menuitem.prevAll('.ui-menuitem:first');
-                    if (prevItem.length) {
-                        $this.deactivate(menuitem);
-                        $this.highlight(prevItem);
+                    var navigatedTo = menuitem.prevAll('.ui-menuitem:first');
+                    if ((isRootLink || navigatedTo.length === 0) && !$this.isVertical) {
+                        closeSubmenu();
+                    }
+                    else {
+                        navigateTo(navigatedTo);
                     }
                     e.preventDefault();
                     break;
-
                 case 'ArrowDown':
-                    var nextItem = menuitem.nextAll('.ui-menuitem:first');
-                    if (nextItem.length) {
-                        $this.deactivate(menuitem);
-                        $this.highlight(nextItem);
+                    if (isRootLink) {
+                        openSubmenu();
+                    }
+                    else {
+                        navigateTo(menuitem.nextAll('.ui-menuitem:first'));
                     }
                     e.preventDefault();
                     break;
                 case 'ArrowRight':
-                    if (menuitem.hasClass('ui-menu-parent')) {
-                        $this.activate(menuitem);
+                    if (isRootLink) {
+                        navigateTo(menuitem.nextAll('.ui-menuitem:first'));
+                    }
+                    else {
+                        openSubmenu();
                     }
                     e.preventDefault();
                     break;
-                case 'Enter':
-                case 'NumpadEnter':
-                    var currentLink = menuitem.children('.ui-menuitem-link');
-                    currentLink.trigger('click');
-                    PrimeFaces.utils.openLink(e, currentLink);
+                case 'ArrowLeft':
+                    if (isRootLink) {
+                        navigateTo(menuitem.prevAll('.ui-menuitem:first'));
+                    }
+                    else {
+                        closeSubmenu();
+                    }
                     e.preventDefault();
                     break;
-
-                case 'ArrowLeft':
-                    $this.deactivate($('.ui-submenu-link[aria-expanded="true"]').last().parent());
+                case 'Space':
+                case 'Enter':
+                case 'NumpadEnter':
+                    if (menuitem.hasClass('ui-menu-parent')) {
+                        $this.activate(menuitem);
+                    } else {
+                        link.trigger('click');
+                        PrimeFaces.utils.openLink(e, link);
+                    }
+                    e.preventDefault();
                     break;
                 case 'Escape':
                     if ($this.cfg.overlay) {
                         $this.hide();
                         $this.trigger.trigger('focus');
-                    }
-                    else {
-                        $this.deactivate($('.ui-submenu-link[aria-expanded="true"]').last().parent());
+                    } else {
+                        closeSubmenu();
                     }
                     e.preventDefault();
                     break;
@@ -285,7 +317,7 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
         var $this = this,
             clickNS = 'click.' + this.id;
 
-        $(document.body).off(clickNS).on(clickNS, function(e) {
+        $(document.body).off(clickNS).on(clickNS, function() {
             if ($this.itemClick) {
                 $this.itemClick = false;
                 return;
@@ -305,57 +337,46 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
      */
     deactivate: function(menuitem, animate) {
         this.activeitem = null;
-        this.unfocus(menuitem.children('a.ui-menuitem-link'));
+        var $link = menuitem.children('a.ui-menuitem-link');
+        this.unfocus($link);
         menuitem.removeClass('ui-menuitem-active ui-menuitem-highlight');
 
-        var submenu = menuitem.children('ul.ui-menu-child').attr('aria-expanded', 'false');
-        if (animate)
-            submenu.fadeOut('fast');
-        else
-            submenu.hide();
+        var submenu = menuitem.children('ul.ui-menu-child');
+        if (submenu.length > 0) {
+            $link.attr('aria-expanded', 'false');
+            if (animate)
+                submenu.fadeOut('fast');
+            else
+                submenu.hide();
+        }
     },
 
     /**
      * Activates a menu item so that it can be clicked and interacted with.
-     * @param {JQuery} menuitem Menu item (`LI`) to activate.
+     * @param {JQuery} menuitem The menu item to activate.
      */
     activate: function(menuitem) {
         this.highlight(menuitem);
 
         var submenu = menuitem.children('ul.ui-menu-child');
         if (submenu.length == 1) {
-            submenu.attr('aria-expanded', 'true');
             this.showSubmenu(menuitem, submenu);
         }
     },
 
     /**
-     * Reactivates the given menu item.
-     * @protected
-     * @param {JQuery} menuitem Menu item (`LI`) to reactivate.
-     */
-    reactivate: function(menuitem) {
-        this.activeitem = menuitem;
-        var submenu = menuitem.children('ul.ui-menu-child'),
-            activeChilditem = submenu.children('li.ui-menuitem-active:first'),
-            _self = this;
-
-        if (activeChilditem.length == 1) {
-            _self.deactivate(activeChilditem);
-        }
-    },
-
-    /**
-     * Highlights the given menu item by applying the proper CSS classes.
-     * @param {JQuery} menuitem Menu item to highlight.
+     * Highlights the given menu item by applying the proper CSS classes and focusing the associated link.
+     *
+     * @param {JQuery} menuitem - The menu item to highlight.
+     * @param {boolean} [shouldFocus=true] - Indicates whether the link should be focused. Defaults to true if not provided.
      */
     highlight: function(menuitem, shouldFocus) {
         menuitem.addClass('ui-menuitem-active');
         this.activeitem = menuitem;
-        var link = menuitem.children('a.ui-menuitem-link');
-        this.focus(link);
+        var $link = menuitem.children('a.ui-menuitem-link');
+        this.focus($link);
         if (shouldFocus === true || shouldFocus === undefined) {
-            link.trigger('focus');
+            $link.trigger('focus');
         }
     },
 
@@ -385,6 +406,8 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
             submenu.css('z-index', PrimeFaces.nextZindex())
                 .show()
                 .position(pos);
+            var $link = menuitem.children('a.ui-menuitem-link');
+            $link.attr('aria-expanded', 'true');
             submenu.find('a.ui-menuitem-link:focusable:first').trigger('focus');
         }, this.cfg.showDelay);
     },
@@ -402,6 +425,33 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
         });
         this.resetFocus(true);
         this.links.removeClass('ui-state-hover');
+    },
+
+    /**
+     * Deactivates the current active menu item and resets the menu state after a delay.
+     * Optionally stops the propagation of the event.
+     * 
+     * @param {Event} [e] - The event object (optional).
+     */
+    deactivateAndReset: function(e) {
+        var $this = this;
+
+        // Deactivate the current active menu item if it exists
+        if (this.activeitem) {
+            this.deactivate(this.activeitem);
+        }
+
+        // If hideDelay is configured, reset the menu state after the delay
+        if (this.cfg.hideDelay > 0) {
+            this.timeoutId = PrimeFaces.queueTask(() => {
+                $this.reset();
+            }, this.cfg.hideDelay);
+        }
+
+        // Stop the propagation of the event if the event object is provided
+        if (e) {
+            e.stopPropagation();
+        }
     }
 
 });
