@@ -40,6 +40,8 @@ import java.util.*;
 @ViewScoped
 public class CalendarView implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private Date date;
     private Date date1;
     @Future
@@ -51,7 +53,6 @@ public class CalendarView implements Serializable {
     private Date date7;
     private Date date8;
     private Date date9;
-    private Date dateDe;
     @Future
     private Date date10;
     private Date date11;
@@ -61,7 +62,6 @@ public class CalendarView implements Serializable {
     private Date date15;
     private Date date16;
     private Date date17;
-    private Date dateTimeDe;
     private Date dateTimeMillis;
     private List<Date> multi;
     private List<Date> range;
@@ -116,8 +116,6 @@ public class CalendarView implements Serializable {
         minDateTime = new Date(today.getTime() - (7 * oneDay));
         maxDateTime = new Date(today.getTime() + (7 * oneDay));
 
-        dateDe = GregorianCalendar.getInstance().getTime();
-        dateTimeDe = GregorianCalendar.getInstance().getTime();
         dateTimeMillis = GregorianCalendar.getInstance().getTime();
     }
 
@@ -314,22 +312,6 @@ public class CalendarView implements Serializable {
 
     public void setMaxDate(Date maxDate) {
         this.maxDate = maxDate;
-    }
-
-    public Date getDateTimeDe() {
-        return dateTimeDe;
-    }
-
-    public void setDateTimeDe(Date dateTimeDe) {
-        this.dateTimeDe = dateTimeDe;
-    }
-
-    public Date getDateDe() {
-        return dateDe;
-    }
-
-    public void setDateDe(Date dateDe) {
-        this.dateDe = dateDe;
     }
 
     public Date getDateTimeMillis() {
