@@ -23,6 +23,7 @@ DataTable displays data in tabular format.
 | ariaRowLabel              | null               | String           | Label to read by screen readers on checkbox selection.
 | binding                   | null               | Object           | An el expression that maps to a server side UIComponent instance in a backing bean
 | cellEditMode              | eager              | String           | Defines the cell edit behavior, valid values are "eager" (default) and "lazy".
+| cellNavigation            | true               | Boolean          | Enables cell navigation with the keyboard for WCAG and screen reader compliance.
 | cellSeparator             | null               | String           | Separator text to use in output mode of editable cells with multiple components.
 | clientCache               | false              | Boolean          | Caches the next page asynchronously, default is false.
 | currentPageReportTemplate | null               | String           | Template of the currentPageReport UI.

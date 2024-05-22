@@ -9018,6 +9018,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Enables cell navigation with the keyboard for WCAG and screen reader compliance. Default is true.]]>
+            </description>
+            <name>cellNavigation</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Loads data on demand as the scrollbar gets close to the bottom. Default is false.]]>
             </description>
             <name>virtualScroll</name>
