@@ -72,6 +72,7 @@ public class CommandLinkRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = link.getClientId(context);
         Object label = link.getValue();
+        String form = link.getForm();
 
         String request;
         boolean ajax = link.isAjax();
@@ -101,16 +102,20 @@ public class CommandLinkRenderer extends CoreRenderer {
             writer.writeAttribute("tabindex", "-1", null);
         }
 
+        if (!isValueBlank(form)) {
+            writer.writeAttribute("data-pf-form", form, null);
+        }
+
         if (ajax) {
             request = buildAjaxRequest(context, link);
         }
         else {
-            UIForm form = ComponentTraversalUtils.closestForm(link);
-            if (form == null) {
+            UIForm uiForm = ComponentTraversalUtils.closestForm(link);
+            if (uiForm == null) {
                 throw new FacesException("Commandlink \"" + clientId + "\" must be inside a form component");
             }
 
-            request = buildNonAjaxRequest(context, link, form, clientId, true);
+            request = buildNonAjaxRequest(context, link, uiForm, clientId, true);
         }
 
         if (csvEnabled) {
