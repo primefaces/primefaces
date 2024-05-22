@@ -955,6 +955,8 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
             this.noButton = this.jq.find('.ui-confirmdialog-no');
             this.yesButton.data('p-text', this.yesButton.children('.ui-button-text').text());
             this.noButton.data('p-text', this.noButton.children('.ui-button-text').text());
+            this.yesButton.data('p-icon', this.yesButton.children('.ui-icon').attr('class'));
+            this.noButton.data('p-icon', this.noButton.children('.ui-icon').attr('class'));
 
             this.jq.on('click.ui-confirmdialog', '.ui-confirmdialog-yes, .ui-confirmdialog-no', null, function(e) {
                 var el = $(this);
@@ -1031,6 +1033,8 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
             this.noButton.removeClass(this.noButton.data('p-class'));
             this.yesButton.children('.ui-button-text').text(this.yesButton.data('p-text'));
             this.noButton.children('.ui-button-text').text(this.noButton.data('p-text'));
+            this.yesButton.children('.ui-icon').attr('class', this.yesButton.data('p-icon'));
+            this.noButton.children('.ui-icon').attr('class', this.noButton.data('p-icon'));
         }
     },
 
@@ -1059,12 +1063,17 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
         if (msg.yesButtonClass) {
             this.yesButton.addClass(msg.yesButtonClass).data('p-class', msg.yesButtonClass);
         }
-
+        if (msg.yesButtonIcon) {
+            PrimeFaces.utils.replaceIcon(this.yesButton.children('.ui-icon'), msg.yesButtonIcon);
+        }
         if (msg.noButtonLabel) {
             this.noButton.children('.ui-button-text').text(msg.noButtonLabel);
         }
         if (msg.noButtonClass) {
             this.noButton.addClass(msg.noButtonClass).data('p-class', msg.noButtonClass);
+        }
+        if (msg.noButtonIcon) {
+            PrimeFaces.utils.replaceIcon(this.noButton.children('.ui-icon'), msg.noButtonIcon);
         }
 
         // Set title, message content, and escape HTML if necessary

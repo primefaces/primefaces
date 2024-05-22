@@ -19,8 +19,10 @@ Look into [migration guide](https://primefaces.github.io/primefaces/15_0_0/#/../
 * ConfirmDialog/ConfirmPopup
     * `yesButtonLabel`: overrides label of 'Yes' button (and restores it before the global confirm dialog is reused elsewhere)
     * `yesButtonClass`: adds given class to 'Yes' button (and removes it before the global confirm dialog is reused elsewhere)
+    * `yesButtonIcon`: overrides icon of 'Yes' button (and removes it before the global confirm dialog is reused elsewhere)
     * `noButtonLabel`: overrides label of 'No' button (and restores it before the global confirm dialog is reused elsewhere)
     * `noButtonClass`: adds given class to 'No' button (and removes it before the global confirm dialog is reused elsewhere)
+    * `noButtonIcon`: overrides icon of 'No' button (and removes it before the global confirm dialog is reused elsewhere)
     * `confirmMessage`: facet on the parent component of the `p:confirm` behavior. Can be used as message content instead of the `p:confirm` `message` attribute.
     
 * FeedReader
