@@ -43,7 +43,7 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
         this.links = this.jq.find('a.ui-menuitem-link:not(.ui-state-disabled)');
         this.rootLinks = this.jq.find('> ul.ui-menu-list > .ui-menuitem > .ui-menuitem-link');
         this.isRTL = this.jq.hasClass('ui-menu-rtl');
-        this.isVertical = this.jq.find('> ul.ui-menu-list').attr('aria-orientation') === 'vertical';
+        this.isVertical = this.jq.find('ul.ui-menu-list').attr('aria-orientation') === 'vertical';
         this.isHorizontal = !this.isVertical;
 
         this.bindEvents();
@@ -271,6 +271,9 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
                     if (isRootLink) {
                         navigateTo(menuitem.nextAll('.ui-menuitem:first'));
                     }
+                    else if ($this.isRTL) {
+                        closeSubmenu();
+                    }
                     else {
                         openSubmenu();
                     }
@@ -279,6 +282,9 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
                 case 'ArrowLeft':
                     if (isRootLink) {
                         navigateTo(menuitem.prevAll('.ui-menuitem:first'));
+                    }
+                    else if ($this.isRTL) {
+                        openSubmenu();
                     }
                     else {
                         closeSubmenu();
@@ -299,7 +305,11 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
                 case 'Escape':
                     if ($this.cfg.overlay) {
                         $this.hide();
-                        $this.trigger.trigger('focus');
+
+                        // re-focus original trigger if there is one
+                        if ($this.trigger && $this.trigger.length > 0) {
+                            $this.trigger.trigger('focus');
+                        }
                     } else {
                         closeSubmenu();
                     }

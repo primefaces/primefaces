@@ -61,13 +61,14 @@ public class MenuButtonRenderer extends TieredMenuRenderer {
         if (button.getTitle() != null) {
             writer.writeAttribute("title", button.getTitle(), "title");
         }
-        encodeButton(context, button, clientId + "_button", disabled);
-        encodeMenu(context, button, clientId + "_menu");
+        String menuId = clientId + "_menu";
+        encodeButton(context, button, clientId + "_button", menuId, disabled);
+        encodeMenu(context, button, menuId);
 
         writer.endElement("span");
     }
 
-    protected void encodeButton(FacesContext context, MenuButton button, String buttonId, boolean disabled) throws IOException {
+    protected void encodeButton(FacesContext context, MenuButton button, String buttonId, String menuId, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         boolean isIconLeft = button.getIconPos().equals("left");
         String value = button.getValue();
@@ -83,10 +84,14 @@ public class MenuButtonRenderer extends TieredMenuRenderer {
         writer.writeAttribute("name", buttonId, null);
         writer.writeAttribute("type", "button", null);
         writer.writeAttribute("class", buttonClass, null);
+        writer.writeAttribute(HTML.ARIA_LABEL, button.getAriaLabel(), "ariaLabel");
+        writer.writeAttribute(HTML.ARIA_EXPANDED, "false", null);
+        writer.writeAttribute(HTML.ARIA_HASPOPUP, "true", null);
+        writer.writeAttribute(HTML.ARIA_CONTROLS, menuId, null);
+
         if (LangUtils.isNotEmpty(button.getButtonStyle())) {
             writer.writeAttribute("style", button.getButtonStyle(), null);
         }
-        writer.writeAttribute(HTML.ARIA_LABEL, button.getAriaLabel(), "ariaLabel");
         if (button.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", null);
         }
@@ -128,9 +133,10 @@ public class MenuButtonRenderer extends TieredMenuRenderer {
         }
         writer.writeAttribute("id", menuId, null);
         writer.writeAttribute("class", menuStyleClass, "styleClass");
-        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENU, null);
 
         writer.startElement("ul", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUBAR, null);
+        writer.writeAttribute(HTML.ARIA_ORIENTATION, HTML.ARIA_ORIENTATION_VERTICAL, null);
         writer.writeAttribute("class", MenuButton.LIST_CLASS, "styleClass");
 
         if (button.getElementsCount() > 0) {
