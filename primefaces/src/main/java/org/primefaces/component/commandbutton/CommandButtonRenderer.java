@@ -74,6 +74,7 @@ public class CommandButtonRenderer extends CoreRenderer {
         String type = button.getType();
         boolean pushButton = ("reset".equals(type) || "button".equals(type));
         Object value = button.getValue();
+        String form = button.getForm();
         String icon = button.getIcon();
         String title = button.getTitle();
         String onclick = null;
@@ -116,6 +117,10 @@ public class CommandButtonRenderer extends CoreRenderer {
                     "data-pf-validateclient-process");
             writer.writeAttribute("data-pf-validateclient-update", SearchExpressionUtils.resolveClientIdsForClientSide(context, button, button.getUpdate()),
                     "data-pf-validateclient-update");
+        }
+
+        if (!isValueBlank(form)) {
+            writer.writeAttribute("data-pf-form", form, null);
         }
 
         //icon
