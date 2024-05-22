@@ -45,7 +45,7 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
     init: function(cfg) {
-        cfg.dismissable = (cfg.dismissable === false) ? false : true;
+        cfg.dismissable = cfg.dismissable !== false;
         if (!cfg.appendTo && cfg.global) {
             cfg.appendTo = '@(body)';
         }
@@ -73,8 +73,6 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
      * @protected
      */
     bindEvents: function() {
-        var $this = this;
-    
         if (this.cfg.global) {
             PrimeFaces.confirmPopup = this;
     
@@ -82,14 +80,30 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 var el = $(this);
     
                 if (el.hasClass('ui-confirm-popup-yes') && PrimeFaces.confirmPopupSource) {
-                    var id = PrimeFaces.confirmPopupSource.get(0);
-                    var js = PrimeFaces.confirmPopupSource.data('pfconfirmcommand');
+                    var source = PrimeFaces.confirmPopupSource;
+                    var id = source.get(0);
+                    var js = source.data('pfconfirmcommand');
                     var command = $(id);
                     
                     // Test if the function matches the pattern
                     if (PrimeFaces.ajax.Utils.isAjaxRequest(js) || command.is('a')) {
                         // command is ajax=true
-                        PrimeFaces.csp.executeEvent(id, js, e);
+                        var originalOnClick;
+
+                        if (source[0]) {
+                            var events = $._data(source[0], "events");
+                            originalOnClick = source.prop('onclick') || (events && events.click ? events.click[0].handler : null);
+                        }
+
+                        // Temporarily remove the click handler and execute the new one
+                        source.prop('onclick', null).off("click").on("click", function(event) {
+                            PrimeFaces.csp.executeEvent(id, js, event);
+                        }).click();
+
+                        // Restore the original click handler if it exists
+                        if (originalOnClick) {
+                            source.off("click").on("click", originalOnClick);
+                        }
                     }
                     else {
                         // command is ajax=false
@@ -128,7 +142,7 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
             this.hideOverlayHandler = PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', this.jq,
                 function() { return PrimeFaces.confirmPopupSource; },
                 function(e, eventTarget) {
-                    if (!($this.jq.is(eventTarget) || $this.jq.has(eventTarget).length > 0)) {
+                    if (e && !($this.jq.is(eventTarget) || $this.jq.has(eventTarget).length > 0)) {
                         $this.hide();
                     }
                 });
