@@ -240,6 +240,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(this.cfg.selectionMode) {
             this.setupSelection();
         }
+        else {
+            this.cfg.selectionRowMode = this.cfg.selectionRowMode || 'none';
+        }
 
         if(this.cfg.filter) {
             this.setupFiltering();
@@ -317,6 +320,15 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(this.cfg.reflow) {
            this.jq.css('visibility', 'visible');
         }
+
+        this.cfg.cellNavigation = this.cfg.cellNavigation === undefined ? true : this.cfg.cellNavigation;
+        if (this.cfg.editMode === 'cell' || this.cfg.selectionRowMode !== 'none') {
+            // do not allow when editing or row selection enabled
+            this.cfg.cellNavigation = false;
+        }
+        if (this.cfg.cellNavigation) {
+            this.setupNavigableCells();
+        }
     },
 
     /**
@@ -381,6 +393,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         if(this.cfg.expansion) {
             this.initRowExpansion();
+        }
+        
+        if (this.cfg.cellNavigation) {
+            this.setupNavigableCells();
         }
     },
 
@@ -793,6 +809,141 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(!this.cfg.selectionMode || this.cfg.selectionMode === 'checkbox') {
             this.bindRowHover(selector);
         }
+    },
+    
+    /**
+     * Sets up WCAG keyboard navigation of cells.
+     * @private
+     */
+    setupNavigableCells: function() {
+        var $this = this;
+        var pageRows = this.cfg.paginator && this.cfg.paginator.rows ? this.cfg.paginator.rows : 1000;
+
+        // helper function to set the current and next cell focus
+        function makeFocusable(e, cell, nextCell) {
+            if (cell && cell.length) {
+                cell.attr("tabindex", "-1");
+            }
+
+            if (nextCell && nextCell.length) {
+                nextCell.attr("tabindex", "0").trigger("focus");
+                e.preventDefault();
+            }
+        }
+
+        // helper function to reset the state of the whole table
+        function resetFocusable(resetFirstCell) {
+            var selector = resetFirstCell ? "td" : 'td[tabindex="0"]';
+            // default all cells to not focusable
+            var focusableCells = $this.getTbody().find(selector);
+            focusableCells.attr("tabindex", "-1");
+
+            if (resetFirstCell) {
+                // the very first cell should be focusable
+                focusableCells.first().attr("tabindex", "0");
+            }
+        }
+
+        // default all cells to not focusable except the very first cell
+        resetFocusable(true);
+
+        // on click should make it focusable
+        this.getTbody().find("td")
+            .on("click.focuscell", function(e) {
+                if ($(e.target).is(":input")) {
+                    return;
+                }
+                resetFocusable(false);
+
+                makeFocusable(e, null, $(this));
+            })
+            .on("keydown.focuscell", function(e) {
+                if ($(e.target).is(":input")) {
+                    return;
+                }
+                var cell = $(this);
+
+                switch (e.code) {
+                    case "ArrowLeft":
+                        var prevCell = $this.isRTL ? cell.next('[tabindex="-1"]') : cell.prev('[tabindex="-1"]');
+                        makeFocusable(e, cell, prevCell);
+                        break;
+                    case "ArrowRight":
+                        var nextCell = $this.isRTL ? cell.prev('[tabindex="-1"]') : cell.next('[tabindex="-1"]');
+                        makeFocusable(e, cell, nextCell);
+                        break;
+                    case "ArrowDown":
+                        var nextCell = cell.closest("tr[data-ri]").next().find('td[tabindex="-1"]').eq(cell.index());
+                        makeFocusable(e, cell, nextCell);
+                        break;
+                    case "ArrowUp":
+                        var prevCell = cell.closest("tr[data-ri]").prev().find('td[tabindex="-1"]').eq(cell.index());
+                        makeFocusable(e, cell, prevCell);
+                        break;
+                    case "Home":
+                        var prevCell = cell.prevAll('[tabindex="-1"]').last();
+                        if (e.ctrlKey) {
+                            prevCell = cell.closest("tr[data-ri]").prevAll().last().find('td[tabindex="-1"]').first();
+                        }
+                        makeFocusable(e, cell, prevCell);
+                        break;
+                    case "End":
+                        var nextCell = cell.nextAll('[tabindex="-1"]').last();
+                        if (e.ctrlKey) {
+                            nextCell = cell.closest("tr[data-ri]").nextAll().last().find('td[tabindex="-1"]').last();
+                        }
+                        makeFocusable(e, cell, nextCell);
+                        break;
+                    case "PageUp":
+                        // Select the current record
+                        var currentRow = cell.closest("tr[data-ri]");
+                        var prevCell = null;
+
+                        // Navigate back 1 page records
+                        for (var i = 0; i < pageRows; i++) {
+                            currentRow = currentRow.prev("tr[data-ri]");
+                            if (currentRow.length) {
+                                prevCell = currentRow.find('td[tabindex="-1"]').eq(cell.index());
+                            } else {
+                                break;
+                            }
+                        }
+                        makeFocusable(e, cell, prevCell);
+                        break;
+                    case "PageDown":
+                        // Select the current row
+                        var currentRow = cell.closest("tr[data-ri]");
+                        var nextCell = null;
+
+                        // Navigate forward 1 page rows
+                        for (var i = 0; i < pageRows; i++) {
+                            currentRow = currentRow.next("tr[data-ri]");
+                            if (currentRow.length) {
+                                nextCell = currentRow.find('td[tabindex="-1"]').eq(cell.index());
+                            } else {
+                                break;
+                            }
+                        }
+                        makeFocusable(e, cell, nextCell);
+                        break;
+                    case "Space":
+                    case "Enter":
+                    case "NumpadEnter":
+                        // Find the first child element with a click event bound
+                        var $clickable = cell.find(':button:enabled, :input:enabled, a').first();
+                        if ($clickable.length) {
+                            $clickable.trigger('click');
+                            e.stopPropagation();
+                            e.preventDefault();
+                        }
+                        else {
+                            cell.trigger('click');
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            });
     },
 
     /**

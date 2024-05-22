@@ -157,7 +157,17 @@
     top: 0px;
     left: 0px;
     position: absolute;
-} 
+}
+
+/** Accessibility **/
+.ui-datatable-data td[role="gridcell"]:focus,
+.ui-datatable-data td[role="gridcell"] *:focus,
+.ui-datatable-data td[role="grid"] [tabindex="0"]:focus {
+  outline: var(--primary-color, #90caf9);
+  outline-style: solid;
+  outline-width: 2px;
+  border: none;
+}
 
 /* InCell Editing */
 .ui-datatable .ui-cell-editor-input {
