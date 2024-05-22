@@ -864,6 +864,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 var cell = $(this);
 
                 switch (e.code) {
+                    case "KeyW":
+                        if ($this.cfg.resizableColumns && e.altKey) {
+                            $this.autosizeColumnWidth(cell);
+                        }
+                        break;
                     case "ArrowLeft":
                         var prevCell = $this.isRTL ? cell.next('[tabindex="-1"]') : cell.prev('[tabindex="-1"]');
                         makeFocusable(e, cell, prevCell);
@@ -1947,6 +1952,69 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     clearScrollState: function() {
         this.scrollStateHolder.val('0,0');
+    },
+    
+    /**
+     * Adjusts the width of a column in a table to fit the widest cell content.
+     *
+     * This function calculates the maximum width needed for a column in a table
+     * to accommodate the widest cell content. It creates a temporary span element
+     * to measure the width of cell contents and adjusts the column header width accordingly.
+     *
+     * @param {JQuery} cell - A jQuery object representing a cell in the column to be resized.
+     * @private
+     */
+    autosizeColumnWidth: function(cell) {
+        // Create a temporary span element
+        var $span = $("<span></span>")
+            .css({
+                visibility: "hidden",
+                position: "absolute",
+                whiteSpace: "nowrap",
+            })
+            .appendTo(document.body);
+
+        // Function to set the span's styles based on a cell's styles
+        var setSpanStyles = function($element) {
+            $span.text($element.text()).css({
+                font: $element.css("font"),
+                fontSize: $element.css("fontSize"),
+                fontWeight: $element.css("fontWeight"),
+                fontFamily: $element.css("fontFamily"),
+            });
+        };
+
+        // Get the index of the cell's column within its row
+        var columnIndex = cell.index();
+
+        // Select all the cells in the same column of other rows
+        var cellsInSameColumn = this.tbody.find("tr td:nth-child(" + (columnIndex + 1) + ")");
+
+        // Find the max width of the largest column
+        var maxWidth = 0;
+        cellsInSameColumn.each(function() {
+            var $td = $(this);
+            setSpanStyles($td);
+            var cellWidth = $span.outerWidth(true);
+            maxWidth = Math.max(maxWidth, cellWidth);
+        });
+
+        // Find the header for the column
+        var $header = this.thead.find(".ui-resizable-column").eq(columnIndex);
+        setSpanStyles($header);
+
+        // get header width and add 20px to account for possible sort icon
+        var headerWidth = $span.outerWidth(true) + 20;
+        maxWidth = Math.max(maxWidth, headerWidth);
+
+        // Remove the span from the document body
+        $span.remove();
+
+        // set the TH header to the new width
+        $header.css("width", maxWidth);
+        
+        // fire the AJAX event if necessary
+        this.fireColumnResizeEvent($header);
     },
 
     /**
@@ -4329,6 +4397,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         var resizers = this.thead.find('> tr > th > span.ui-column-resizer'),
         $this = this;
+        
+        // #11918 double click resizes column like Excel
+        resizers.on('dblclick', function() {
+            $this.autosizeColumnWidth($(this).parent());
+        });
 
         resizers.draggable({
             axis: 'x',
