@@ -29,6 +29,7 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.support.FindBy;
@@ -99,7 +100,8 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
         page.confirm.click();
         CommandButton noButton = dialog.getNoButton();
         assertEquals("No", noButton.getText());
-        assertCss(noButton, "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only ui-confirmdialog-no ui-button-flat");
+        assertCss(noButton, "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left ui-confirmdialog-no ui-button-flat");
+        assertCss(noButton.findElement(By.className("ui-icon")), "ui-button-icon-left ui-icon ui-c pi pi-times");
 
         // Act
         noButton.click();
@@ -119,7 +121,8 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
         assertTrue(dialog.isVisible());
         CommandButton yesButton = dialog.getYesButton();
         assertEquals("Yes", yesButton.getText());
-        assertCss(yesButton, "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only ui-confirmdialog-yes");
+        assertCss(yesButton, "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left ui-confirmdialog-yes");
+        assertCss(yesButton.findElement(By.className("ui-icon")), "ui-button-icon-left ui-icon ui-c pi pi-check");
 
         // Act
         PrimeSelenium.guardAjax(yesButton).click();
@@ -140,7 +143,8 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
         CommandButton noButton = dialog.getNoButton();
         assertEquals("Keep this!", noButton.getText());
         assertCss(noButton,
-                "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only ui-confirmdialog-no ui-button-flat bg-green-500 text-white");
+                "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left ui-confirmdialog-no ui-button-flat bg-green-600 text-white");
+        assertCss(noButton.findElement(By.className("ui-icon")), "ui-button-icon-left ui-icon ui-c pi pi-heart");
 
         // Act
         dialog.getNoButton().click();
@@ -163,7 +167,8 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
         page.delete.click();
         CommandButton yesButton = dialog.getYesButton();
         assertEquals("Delete Me!", yesButton.getText());
-        assertCss(yesButton, "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only ui-confirmdialog-yes bg-red-500 text-white");
+        assertCss(yesButton, "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left ui-confirmdialog-yes bg-red-600 text-white");
+        assertCss(yesButton.findElement(By.className("ui-icon")), "ui-button-icon-left ui-icon ui-c pi pi-trash");
 
         // Act
         PrimeSelenium.guardAjax(yesButton).click();

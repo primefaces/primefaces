@@ -49,9 +49,9 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
         if (!cfg.appendTo && cfg.global) {
             cfg.appendTo = '@(body)';
         }
-    
+
         this._super(cfg);
-    
+
         this.focusedElementBeforeDialogOpened = null;
         this.content = this.jq.children('.ui-confirm-popup-content');
         this.message = this.content.children('.ui-confirm-popup-message');
@@ -61,13 +61,15 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
             this.noButton = this.jq.find('.ui-confirm-popup-no');
             this.yesButton.data('p-text', this.yesButton.children('.ui-button-text').text());
             this.noButton.data('p-text', this.noButton.children('.ui-button-text').text());
+            this.yesButton.data('p-icon', this.yesButton.children('.ui-icon').attr('class'));
+            this.noButton.data('p-icon', this.noButton.children('.ui-icon').attr('class'));
         }
-        
+
         this.transition = PrimeFaces.utils.registerCSSTransition(this.jq, 'ui-connected-overlay');
-    
+
         this.bindEvents();
     },
-    
+
     /**
      * Sets up all event listeners required by this widget.
      * @protected
@@ -75,16 +77,16 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
     bindEvents: function() {
         if (this.cfg.global) {
             PrimeFaces.confirmPopup = this;
-    
+
             this.jq.on('click.ui-confirmpopup', '.ui-confirm-popup-yes, .ui-confirm-popup-no', null, function(e) {
                 var el = $(this);
-    
+
                 if (el.hasClass('ui-confirm-popup-yes') && PrimeFaces.confirmPopupSource) {
                     var source = PrimeFaces.confirmPopupSource;
                     var id = source.get(0);
                     var js = source.data('pfconfirmcommand');
                     var command = $(id);
-                    
+
                     // Test if the function matches the pattern
                     if (PrimeFaces.ajax.Utils.isAjaxRequest(js) || command.is('a')) {
                         // command is ajax=true
@@ -115,7 +117,7 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
                         }
                         command.removeAttr("data-pfconfirmcommand").click();
                     }
-    
+
                     PrimeFaces.confirmPopup.hide();
                     PrimeFaces.confirmPopupSource = null;
                 }
@@ -123,7 +125,7 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
                     PrimeFaces.confirmPopup.hide();
                     PrimeFaces.confirmPopupSource = null;
                 }
-    
+
                 e.preventDefault();
             });
         }
@@ -147,13 +149,13 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
                     }
                 });
         }
-    
+
         this.resizeHandler = PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_hide', this.jq, function() {
             if (PrimeFaces.hideOverlaysOnViewportChange === true) {
                 $this.hide();
             }
         });
-    
+
         this.scrollHandler = PrimeFaces.utils.registerConnectedOverlayScrollHandler(this, 'scroll.' + this.id + '_hide', target, function() {
             if (PrimeFaces.hideOverlaysOnViewportChange === true) {
                 $this.hide();
@@ -173,12 +175,12 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
         if (this.resizeHandler) {
             this.resizeHandler.unbind();
         }
-    
+
         if (this.scrollHandler) {
             this.scrollHandler.unbind();
         }
     },
-    
+
     /**
      * Makes the popup visible.
      * @param {string | JQuery} [target] Selector or DOM element of the target component that triggers this popup.
@@ -187,7 +189,7 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
         // Remember the focused element before we opened the dialog
         // so we can return focus to it once we close the dialog.
         this.focusedElementBeforeDialogOpened = document.activeElement;
-        
+
         if (this.transition) {
             var $this = this;
 
@@ -210,7 +212,7 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
             });
         }
     },
-    
+
     /**
      * Hides the popup.
      * @param {PrimeFaces.widget.ConfirmPopup.HideCallback} callback Callback that is invoked after this popup was closed.
@@ -228,7 +230,7 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
                         callback();
                     }
                     $this.returnFocus(50);
-                    
+
                     // Remove added classes and reset button labels to their original values
                     if (!PrimeFaces.animationEnabled || !$this.isVisible()) {
                         $this.restoreButtons();
@@ -241,7 +243,7 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
             $this.restoreButtons();
         }
     },
-    
+
     /**
      * Restore the button text and styling to its original form.
      * @private
@@ -253,9 +255,11 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
             $this.noButton.removeClass($this.noButton.data('p-class'));
             $this.yesButton.children('.ui-button-text').text($this.yesButton.data('p-text'));
             $this.noButton.children('.ui-button-text').text($this.noButton.data('p-text'));
+            $this.yesButton.children('.ui-icon').attr('class', $this.yesButton.data('p-icon'));
+            $this.noButton.children('.ui-icon').attr('class', $this.noButton.data('p-icon'));
         }
     },
-    
+
     /**
      * Aligns the popup so that it is shown at the correct position.
      * @param {JQuery} [target] Jquery selector that is the target of this popup
@@ -264,36 +268,36 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
     align: function(target) {
         if (target) {
             var $this = this;
-    
+
             this.jq.removeClass('ui-confirm-popup-flipped');
-    
-            this.jq.css({left:'0px', top:'0px', 'transform-origin': 'center top'}).position({
-                    my: 'left top'
-                    ,at: 'left bottom'
-                    ,of: target
-                    ,collision: 'flipfit'
-                    ,using: function(pos, directions) {
-                        var targetOffset = target.offset();
-                        var arrowLeft = 0;
-    
-                        if (pos.left < targetOffset.left) {
-                            arrowLeft = targetOffset.left - pos.left;
-                        }
-                        $this.jq.css('--overlayArrowLeft', arrowLeft + 'px');
-    
-                        if (pos.top < targetOffset.top) {
-                            $this.jq.addClass('ui-confirm-popup-flipped');
-                        }
-                        else {
-                            pos.top += parseFloat($this.jq.css('margin-top'));
-                        }
-    
-                        $(this).css('transform-origin', 'center ' + directions.vertical).css(pos);
+
+            this.jq.css({ left: '0px', top: '0px', 'transform-origin': 'center top' }).position({
+                my: 'left top'
+                , at: 'left bottom'
+                , of: target
+                , collision: 'flipfit'
+                , using: function(pos, directions) {
+                    var targetOffset = target.offset();
+                    var arrowLeft = 0;
+
+                    if (pos.left < targetOffset.left) {
+                        arrowLeft = targetOffset.left - pos.left;
                     }
-                });
+                    $this.jq.css('--overlayArrowLeft', arrowLeft + 'px');
+
+                    if (pos.top < targetOffset.top) {
+                        $this.jq.addClass('ui-confirm-popup-flipped');
+                    }
+                    else {
+                        pos.top += parseFloat($this.jq.css('margin-top'));
+                    }
+
+                    $(this).css('transform-origin', 'center ' + directions.vertical).css(pos);
+                }
+            });
         }
     },
-    
+
     /**
      * Applies focus to the first focusable element of the content in the popup.
      */
@@ -322,27 +326,27 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
     isVisible: function() {
         return this.jq.is(':visible');
     },
-    
+
     /**
      * Shows the given message in this confirmation popup.
      * @param {Partial<PrimeFaces.widget.ConfirmPopup.ConfirmPopupMessage>} msg Message to show.
      */
     showMessage: function(msg) {
-        PrimeFaces.confirmPopupSource = (typeof(msg.source) === 'string') ? $(PrimeFaces.escapeClientId(msg.source)) : $(msg.source);
-        
+        PrimeFaces.confirmPopupSource = (typeof (msg.source) === 'string') ? $(PrimeFaces.escapeClientId(msg.source)) : $(msg.source);
+
         var $this = this;
         var beforeShow = function() {
             if (msg.beforeShow) {
                 PrimeFaces.csp.eval(msg.beforeShow);
             }
-        
+
             $this.icon.removeClass().addClass('ui-confirm-popup-icon');
             if (msg.icon !== 'null') {
                 $this.icon.addClass(msg.icon);
             }
-        
+
             if (msg.message) {
-                if (msg.escape){
+                if (msg.escape) {
                     $this.message.text(msg.message);
                 }
                 else {
@@ -350,19 +354,24 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 }
             }
 
-            // Set labels and classes for yes and no buttons if provided
+            // Set labels, icons, and CSS classes for yes/no buttons
             if (msg.yesButtonLabel) {
                 $this.yesButton.children('.ui-button-text').text(msg.yesButtonLabel);
             }
             if (msg.yesButtonClass) {
                 $this.yesButton.addClass(msg.yesButtonClass).data('p-class', msg.yesButtonClass);
             }
-
+            if (msg.yesButtonIcon) {
+                PrimeFaces.utils.replaceIcon($this.yesButton.children('.ui-icon'), msg.yesButtonIcon);
+            }
             if (msg.noButtonLabel) {
                 $this.noButton.children('.ui-button-text').text(msg.noButtonLabel);
             }
             if (msg.noButtonClass) {
                 $this.noButton.addClass(msg.noButtonClass).data('p-class', msg.noButtonClass);
+            }
+            if (msg.noButtonIcon) {
+                PrimeFaces.utils.replaceIcon($this.noButton.children('.ui-icon'), msg.noButtonIcon);
             }
         };
 

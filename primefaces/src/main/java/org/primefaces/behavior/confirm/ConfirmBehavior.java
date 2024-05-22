@@ -46,8 +46,10 @@ public class ConfirmBehavior extends AbstractBehavior {
         icon(String.class),
         yesButtonLabel(String.class),
         yesButtonClass(String.class),
+        yesButtonIcon(String.class),
         noButtonLabel(String.class),
         noButtonClass(String.class),
+        noButtonIcon(String.class),
         disabled(Boolean.class),
         beforeShow(String.class),
         escape(Boolean.class);
@@ -92,8 +94,10 @@ public class ConfirmBehavior extends AbstractBehavior {
         String beforeShow = JSONObject.quote(getBeforeShow());
         String yesButtonClass = JSONObject.quote(getYesButtonClass());
         String yesButtonLabel = JSONObject.quote(getYesButtonLabel());
+        String yesButtonIcon = JSONObject.quote(getYesButtonIcon());
         String noButtonClass = JSONObject.quote(getNoButtonClass());
         String noButtonLabel = JSONObject.quote(getNoButtonLabel());
+        String noButtonIcon = JSONObject.quote(getNoButtonIcon());
 
         source = (source == null) ? component.getClientId(context) : source;
 
@@ -108,8 +112,10 @@ public class ConfirmBehavior extends AbstractBehavior {
                                                    + ",message:" + messageText
                                                    + ",yesButtonClass:" + yesButtonClass
                                                    + ",yesButtonLabel:" + yesButtonLabel
+                                                   + ",yesButtonIcon:" + yesButtonIcon
                                                    + ",noButtonClass:" + noButtonClass
                                                    + ",noButtonLabel:" + noButtonLabel
+                                                   + ",noButtonIcon:" + noButtonIcon
                                                    + ",icon:\"" + (icon == null ? "" : icon)
                                                    + "\",beforeShow:" + beforeShow
                                                    + "});return false;";
@@ -208,6 +214,14 @@ public class ConfirmBehavior extends AbstractBehavior {
         put(PropertyKeys.yesButtonClass, yesButtonClass);
     }
 
+    public String getYesButtonIcon() {
+        return eval(PropertyKeys.yesButtonIcon, null);
+    }
+
+    public void setYesButtonIcon(String yesButtonIcon) {
+        put(PropertyKeys.yesButtonIcon, yesButtonIcon);
+    }
+
     public String getNoButtonLabel() {
         return eval(PropertyKeys.noButtonLabel, null);
     }
@@ -222,5 +236,13 @@ public class ConfirmBehavior extends AbstractBehavior {
 
     public void setNoButtonClass(String noButtonClass) {
         put(PropertyKeys.noButtonClass, noButtonClass);
+    }
+
+    public String getNoButtonIcon() {
+        return eval(PropertyKeys.noButtonIcon, null);
+    }
+
+    public void setNoButtonIcon(String noButtonIcon) {
+        put(PropertyKeys.noButtonIcon, noButtonIcon);
     }
 }
