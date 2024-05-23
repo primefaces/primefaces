@@ -166,13 +166,13 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.Menu.extend({
         });
 
         this.rootLinks.on("mouseenter.menu click.menu", function() {
-            $(this).trigger('focus');
+            var $link = $(this),
+                $menuitem = $link.parent();
+            $this.deactivate($menuitem);
+            $link.trigger('focus');
         }).on("focusin.menu", function() {
             var $link = $(this);
-            $this.focus($link);
             $this.highlight($link.parent());
-        }).on("focusout.menu mouseleave.menu", function() {
-            $this.unfocus($(this));
         }).on('keydown.megamenu', function(e) {
             var currentitem = $this.activeitem;
             if (!currentitem) {
@@ -372,15 +372,24 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.Menu.extend({
      * @param {boolean} [animate] If `true`, closes the sub menu with an animation, or `false` otherwise.
      */
     deactivate: function(menuitem, animate) {
-        var link = menuitem.children('a.ui-menuitem-link'),
-        submenu = link.next();
-
-        menuitem.removeClass('ui-menuitem-active');
-        this.unfocus(link);
+        var $this = this;
         this.activeitem = null;
+        menuitem.removeClass('ui-menuitem-active ui-menuitem-highlight');
+        var $link = menuitem.children('a.ui-menuitem-link');
+        this.unfocus($link);
 
-        if(submenu.length > 0) {
-            if(animate)
+        var activeSibling = menuitem.siblings('.ui-menuitem-active');
+        if (activeSibling.length) {
+            activeSibling.find('li.ui-menuitem-active').each(function() {
+                $this.deactivate($(this));
+            });
+            $this.deactivate(activeSibling);
+        }
+
+        var submenu = menuitem.children('ul.ui-menu-child');
+        if (submenu.length > 0) {
+            $link.attr('aria-expanded', 'false');
+            if (animate)
                 submenu.fadeOut('fast');
             else
                 submenu.hide();
@@ -392,24 +401,28 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.Menu.extend({
      * @param {JQuery} menuitem A menu entry to highlight.
      */
     highlight: function(menuitem) {
-        var link = menuitem.children('a.ui-menuitem-link');
-        menuitem.addClass('ui-menuitem-active');
-        this.focus(link);
         this.activeitem = menuitem;
+        menuitem.addClass('ui-menuitem-active ui-menuitem-highlight');
+        menuitem.children('a.ui-menuitem-link').addClass('ui-state-hover');
     },
 
     /**
-     * Activates the menu item, i.e. opens the sub menu.
-     * @param {JQuery} menuitem A menu item to open.
+     * Activates a menu item so that it can be clicked and interacted with.
+     * 
+     * @param {JQuery} menuitem - The menu item to activate.
+     * @param {boolean} [showSubMenu=true] - If false, only focuses the menu item without showing the submenu.
      */
-    activate: function(menuitem) {
-        var submenu = menuitem.children('.ui-menu-child'),
-        $this = this;
+    activate: function(menuitem, showSubMenu = true) {
+        this.highlight(menuitem);
 
-        $this.highlight(menuitem);
+        // focus the menu item when activated
+        this.focus(menuitem.children('a.ui-menuitem-link'));
 
-        if(submenu.length > 0) {
-            $this.showSubmenu(menuitem, submenu);
+        if (showSubMenu) {
+            var submenu = menuitem.children('ul.ui-menu-child');
+            if (submenu.length == 1) {
+                this.showSubmenu(menuitem, submenu);
+            }
         }
     },
 

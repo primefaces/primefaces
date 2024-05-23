@@ -35,7 +35,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
 
-        if(this.cfg.overlay) {
+        if (this.cfg.overlay) {
             this.initOverlay();
         }
     },
@@ -64,7 +64,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         //dialog support
         this.setupDialogSupport();
     },
-    
+
     /**
       * Sets up the event listener on the trigger.
       * @private
@@ -104,7 +104,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
             }
         };
     },
-    
+
     /**
       * Sets up the global event listeners on the document in case trigger has been updated in DOM
       * @private
@@ -143,13 +143,13 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
                 if (eventTarget.is(menuItemLink) || eventTarget.closest(menuItemLink).length) {
                     $this.itemMouseDown = true;
                 }
-                else if(!($this.jq.is(eventTarget) || $this.jq.has(eventTarget).length > 0)) {
+                else if (!($this.jq.is(eventTarget) || $this.jq.has(eventTarget).length > 0)) {
                     $this.hide(e);
                 }
             });
 
         var mouseUpEventName = 'mouseup.' + this.id;
-        $(document.body).off(mouseUpEventName).on(mouseUpEventName, function (e) {
+        $(document.body).off(mouseUpEventName).on(mouseUpEventName, function(e) {
             if ($this.itemMouseDown) {
                 $this.hide(e);
                 $this.itemMouseDown = false;
@@ -181,7 +181,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         if (this.resizeHandler) {
             this.resizeHandler.unbind();
         }
-    
+
         if (this.scrollHandler) {
             this.scrollHandler.unbind();
         }
@@ -210,7 +210,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
     setupDialogSupport: function() {
         var dialog = this.trigger.parents('.ui-dialog:first');
 
-        if(dialog.length == 1 && dialog.css('position') === 'fixed') {
+        if (dialog.length == 1 && dialog.css('position') === 'fixed') {
             this.jq.css('position', 'fixed');
         }
     },
@@ -260,7 +260,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
      * Aligns this menu as specified in its widget configuration (property `pos`).
      */
     align: function() {
-        this.jq.css({left:'0', top:'0', 'transform-origin': 'center top'}).position(this.cfg.pos);
+        this.jq.css({ left: '0', top: '0', 'transform-origin': 'center top' }).position(this.cfg.pos);
     },
 
     /**
@@ -290,15 +290,16 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     * Select the menu item link by making it focused and tabindex=0 for ARIA.
-     * @param {JQuery} menulink Menu item (`A`) to select.
+     * Selects the menu item link by making it focused and setting tabindex to 0 for ARIA.
+     * 
+     * @param {JQuery} menulink - The menu item (`<a>`) to select.
      */
     focus: function(menulink) {
         if (menulink.hasClass('ui-state-disabled')) {
             return;
         }
         this.resetFocus(false);
-        menulink.addClass('ui-state-hover ui-state-active').attr('tabindex', 0);
+        menulink.addClass('ui-state-hover ui-state-active').attr('tabindex', 0).trigger('focus');
     },
 
     /**

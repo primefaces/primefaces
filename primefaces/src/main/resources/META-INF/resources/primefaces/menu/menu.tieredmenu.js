@@ -85,21 +85,13 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
         firstLink.removeClass('ui-state-hover ui-state-active');
 
         this.links.on("mouseenter.tieredFocus click.tieredFocus", function() {
-            $(this).trigger('focus');
-
-            var link = $(this),
-                menuitem = link.parent();
-
-            var activeSibling = menuitem.siblings('.ui-menuitem-active');
-            if (activeSibling.length === 1) {
-                activeSibling.find('li.ui-menuitem-active').each(function() {
-                    $this.deactivate($(this));
-                });
-                $this.deactivate(activeSibling);
-            }
+            var $link = $(this),
+                $menuitem = $link.parent();
+            $this.deactivate($menuitem);
+            $link.trigger('focus');
         }).on("focusin.tieredFocus", function() {
             var menuitem = $(this).parent();
-            $this.highlight(menuitem, false);
+            $this.highlight(menuitem);
         });
 
         // reset menu when focus is lost on the entire menu
@@ -173,21 +165,11 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
 
             $this.itemClick = true;
 
-            var activeSibling = menuitem.siblings('.ui-menuitem-active');
-            if (activeSibling.length) {
-                activeSibling.find('li.ui-menuitem-active').each(function() {
-                    $this.deactivate($(this));
-                });
-                $this.deactivate(activeSibling);
-            }
-
             if (submenu.length) {
                 if (submenu.is(':visible')) {
                     $this.deactivate(menuitem);
-                    menuitem.addClass('ui-menuitem-highlight').children('a.ui-menuitem-link').addClass('ui-state-hover');
                 }
                 else {
-                    menuitem.addClass('ui-menuitem-active').children('a.ui-menuitem-link').removeClass('ui-state-hover').addClass('ui-state-active');
                     $this.showSubmenu(menuitem, submenu);
                 }
             }
@@ -219,7 +201,7 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
             function navigateTo(item) {
                 if (item.length) {
                     $this.deactivate(menuitem);
-                    $this.highlight(item);
+                    $this.activate(item, false);
                 }
             }
 
@@ -227,8 +209,9 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
             function closeSubmenu() {
                 var submenu = $('.ui-submenu-link[aria-expanded="true"]').last().parent();
                 if (submenu.length === 1) {
+                    $this.deactivate(menuitem);
                     $this.deactivate(submenu);
-                    $this.highlight(submenu);
+                    $this.activate(submenu, false);
                 }
             }
 
@@ -304,6 +287,7 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
                     break;
                 case 'Escape':
                     if ($this.cfg.overlay) {
+                        $this.reset();
                         $this.hide();
 
                         // re-focus original trigger if there is one
@@ -314,6 +298,8 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
                         closeSubmenu();
                     }
                     e.preventDefault();
+                    break;
+                default:
                     break;
             }
         });
@@ -346,10 +332,19 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
      * @param {boolean} [animate] `true` to animate the transition to the disabled state, `false` otherwise.
      */
     deactivate: function(menuitem, animate) {
+        var $this = this;
         this.activeitem = null;
+        menuitem.removeClass('ui-menuitem-active ui-menuitem-highlight');
         var $link = menuitem.children('a.ui-menuitem-link');
         this.unfocus($link);
-        menuitem.removeClass('ui-menuitem-active ui-menuitem-highlight');
+
+        var activeSibling = menuitem.siblings('.ui-menuitem-active');
+        if (activeSibling.length) {
+            activeSibling.find('li.ui-menuitem-active').each(function() {
+                $this.deactivate($(this));
+            });
+            $this.deactivate(activeSibling);
+        }
 
         var submenu = menuitem.children('ul.ui-menu-child');
         if (submenu.length > 0) {
@@ -363,14 +358,21 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
 
     /**
      * Activates a menu item so that it can be clicked and interacted with.
-     * @param {JQuery} menuitem The menu item to activate.
+     * 
+     * @param {JQuery} menuitem - The menu item to activate.
+     * @param {boolean} [showSubMenu=true] - If false, only focuses the menu item without showing the submenu.
      */
-    activate: function(menuitem) {
+    activate: function(menuitem, showSubMenu = true) {
         this.highlight(menuitem);
 
-        var submenu = menuitem.children('ul.ui-menu-child');
-        if (submenu.length == 1) {
-            this.showSubmenu(menuitem, submenu);
+        // focus the menu item when activated
+        this.focus(menuitem.children('a.ui-menuitem-link'));
+
+        if (showSubMenu) {
+            var submenu = menuitem.children('ul.ui-menu-child');
+            if (submenu.length == 1) {
+                this.showSubmenu(menuitem, submenu);
+            }
         }
     },
 
@@ -378,16 +380,11 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
      * Highlights the given menu item by applying the proper CSS classes and focusing the associated link.
      *
      * @param {JQuery} menuitem - The menu item to highlight.
-     * @param {boolean} [shouldFocus=true] - Indicates whether the link should be focused. Defaults to true if not provided.
      */
-    highlight: function(menuitem, shouldFocus) {
-        menuitem.addClass('ui-menuitem-active');
+    highlight: function(menuitem) {
         this.activeitem = menuitem;
-        var $link = menuitem.children('a.ui-menuitem-link');
-        this.focus($link);
-        if (shouldFocus === true || shouldFocus === undefined) {
-            $link.trigger('focus');
-        }
+        menuitem.addClass('ui-menuitem-active ui-menuitem-highlight');
+        menuitem.children('a.ui-menuitem-link').addClass('ui-state-hover');
     },
 
     /**
@@ -434,7 +431,7 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
             $this.deactivate($(this), true);
         });
         this.resetFocus(true);
-        this.links.removeClass('ui-state-hover');
+        this.links.removeClass('ui-state-active ui-state-hover');
     },
 
     /**
