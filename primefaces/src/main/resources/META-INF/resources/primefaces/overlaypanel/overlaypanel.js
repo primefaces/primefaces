@@ -134,7 +134,8 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
             PrimeFaces.utils.removeDynamicOverlay(this, this.jq, this.id, $(document.body));
         }
 
-        this.jq.remove();
+        // #11993
+        PrimeFaces.utils.cleanseDomElement(this.jq);
     },
 
     /**
