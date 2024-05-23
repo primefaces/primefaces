@@ -84,20 +84,6 @@
                                 </h:outputText>
                             </p:column>
                         </p:row>
-                        <p:row >
-                            <p:column>Table footer (tfoot) using table tfooter</p:column>
-                            <p:column colspan="2" style="text-align:right">Totals:</p:column>
-                            <p:column>
-                                <h:outputText value="#{dtGroupView.lastYearTotal}">
-                                    <f:convertNumber type="currency" currencySymbol="$"/>
-                                </h:outputText>
-                            </p:column>
-                            <p:column>
-                                <h:outputText value="#{dtGroupView.thisYearTotal}">
-                                    <f:convertNumber type="currency" currencySymbol="$"/>
-                                </h:outputText>
-                            </p:column>
-                        </p:row>
                     </f:facet>
 
                     <f:facet name="footer">

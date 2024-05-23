@@ -24,29 +24,30 @@
 package org.primefaces.component.row;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 
-import org.primefaces.component.row.renderer.ColumnGroupHelperRenderer;
+import org.primefaces.component.api.DynamicColumn;
+import org.primefaces.component.api.ForEachRowColumn;
+import org.primefaces.component.api.RowColumnVisitor;
+import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.row.renderer.HelperRowRenderer;
 import org.primefaces.component.row.renderer.PanelGridBodyRowRenderer;
 import org.primefaces.component.row.renderer.PanelGridFacetRowRenderer;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.MapBuilder;
 
 public class RowRenderer extends CoreRenderer {
 
-    static final Map<String, HelperRowRenderer> RENDERERS;
-
-    static {
-        RENDERERS = new HashMap<>();
-        RENDERERS.put("columnGroup", new ColumnGroupHelperRenderer());
-        RENDERERS.put("panelGridBody", new PanelGridBodyRowRenderer());
-        RENDERERS.put("panelGridFacet", new PanelGridFacetRowRenderer());
-    }
+    static final Map<String, HelperRowRenderer> RENDERERS = MapBuilder.<String, HelperRowRenderer>builder()
+            .put("panelGridBody", new PanelGridBodyRowRenderer())
+            .put("panelGridFacet", new PanelGridFacetRowRenderer())
+            .build();
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -61,8 +62,80 @@ public class RowRenderer extends CoreRenderer {
             }
         }
         else {
-            renderChildren(context, row);
+            encodeRow(context, row);
         }
+    }
+
+    protected void encodeRow(FacesContext context, Row row) {
+        ResponseWriter writer = context.getResponseWriter();
+
+        ForEachRowColumn
+                .from(row)
+                .invoke(new RowColumnVisitor.Adapter() {
+
+                    @Override
+                    public void visitRow(int index, Row row) throws IOException {
+                        String rowClass = row.getStyleClass();
+                        String rowStyle = row.getStyle();
+
+                        writer.startElement("tr", null);
+                        if (rowClass != null) {
+                            writer.writeAttribute("class", rowClass, null);
+                        }
+                        if (rowStyle != null) {
+                            writer.writeAttribute("style", rowStyle, null);
+                        }
+                    }
+
+                    @Override
+                    public void visitRowEnd(int index, Row row) throws IOException {
+                        writer.endElement("tr");
+                    }
+
+                    @Override
+                    public void visitColumn(int index, UIColumn column) throws IOException {
+                        String title = column.getTitle();
+                        String style = column.getStyle();
+                        int responsivePriority = column.getResponsivePriority();
+
+                        String styleClass = getStyleClassBuilder(context)
+                                .add(column.getStyleClass())
+                                .add(responsivePriority > 0, "ui-column-p-" + responsivePriority)
+                                .build();
+
+                        int colspan = column.getColspan();
+                        int rowspan = column.getRowspan();
+
+                        writer.startElement("td", null);
+                        writer.writeAttribute("role", "gridcell", null);
+                        if (colspan != 1) {
+                            writer.writeAttribute("colspan", colspan, null);
+                        }
+                        if (rowspan != 1) {
+                            writer.writeAttribute("rowspan", rowspan, null);
+                        }
+                        if (LangUtils.isNotBlank(style)) {
+                            writer.writeAttribute("style", style, null);
+                        }
+                        if (LangUtils.isNotBlank(styleClass)) {
+                            writer.writeAttribute("class", styleClass, null);
+                        }
+                        if (LangUtils.isNotBlank(title)) {
+                            writer.writeAttribute("title", title, null);
+                        }
+                        UIComponent component = column.asUIComponent();
+                        renderDynamicPassThruAttributes(context, component);
+
+                        if (column instanceof DynamicColumn) {
+                            column.encodeAll(context);
+                        }
+                        else {
+                            column.renderChildren(context);
+                        }
+
+                        writer.endElement("td");
+                    }
+                });
     }
 
     @Override

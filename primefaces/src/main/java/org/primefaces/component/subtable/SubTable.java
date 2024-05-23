@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.subtable;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.faces.event.PhaseId;
-import org.primefaces.component.api.UIColumn;
+
 import org.primefaces.component.api.ColumnAware;
+import org.primefaces.component.api.UIColumn;
 import org.primefaces.model.ColumnMeta;
 
 public class SubTable extends SubTableBase implements ColumnAware {
@@ -61,18 +61,7 @@ public class SubTable extends SubTableBase implements ColumnAware {
     }
 
     @Override
-    public Map<String, ColumnMeta> getColumnMeta() {
-        Map<String, ColumnMeta> value =
-                (Map<String, ColumnMeta>) getStateHelper().get(InternalPropertyKeys.columnMeta);
-        if (value == null) {
-            value = new HashMap<>();
-            setColumnMeta(value);
-        }
-        return value;
-    }
-
-    @Override
     public void setColumnMeta(Map<String, ColumnMeta> columnMeta) {
-        getStateHelper().put(InternalPropertyKeys.columnMeta, columnMeta);
+        // NOOP
     }
 }

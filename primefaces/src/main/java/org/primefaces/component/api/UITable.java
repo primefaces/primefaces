@@ -23,19 +23,11 @@
  */
 package org.primefaces.component.api;
 
-import org.primefaces.component.column.Column;
-import org.primefaces.component.column.ColumnBase;
-import org.primefaces.component.columngroup.ColumnGroup;
-import org.primefaces.component.columns.Columns;
-import org.primefaces.component.headerrow.HeaderRow;
-import org.primefaces.expression.SearchExpressionUtils;
-import org.primefaces.model.ColumnMeta;
-import org.primefaces.model.FilterMeta;
-import org.primefaces.model.SortMeta;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.FacetUtils;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.LocaleUtils;
+import java.io.IOException;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
@@ -46,11 +38,17 @@ import javax.faces.component.ValueHolder;
 import javax.faces.component.search.SearchExpressionHint;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.ConverterException;
-import java.io.IOException;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+
+import org.primefaces.component.column.ColumnBase;
+import org.primefaces.component.headerrow.HeaderRow;
+import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.model.ColumnMeta;
+import org.primefaces.model.FilterMeta;
+import org.primefaces.model.SortMeta;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.LocaleUtils;
 
 public interface UITable<T extends UITableState> extends ColumnAware, MultiViewStateAware<T> {
 
@@ -569,51 +567,6 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         return LocaleUtils.resolveLocale(context, getDataLocale(), getClientId(context));
     }
 
-    int getChildCount();
-
-    List<UIComponent> getChildren();
-
     Object getDataLocale();
 
-    default boolean isColumnGroupLegacyEnabled() {
-        return true;
-    }
-
-    static void treeColumnsTo2DArray(ColumnNode root, List<List<ColumnNode>> nodes, int columnStart, int columnEnd) {
-        int idx = -1;
-        for (int i = 0; i < root.getChildren().size(); i++) {
-            UIComponent child = root.getChildren().get(i);
-            if (ComponentUtils.isTargetableComponent(child)) {
-                idx++;
-
-                int level = root.getLevel() + 1;
-                if (level == 1 && idx < columnStart) { // frozen col start
-                    continue;
-                }
-
-                if (level == 1 && idx >= columnEnd) { // frozen col end
-                    break;
-                }
-
-                if (nodes.size() < level) {
-                    nodes.add(new ArrayList<>());
-                }
-
-                List<ColumnNode> row = nodes.get(root.getLevel());
-
-                if (child instanceof Columns) {
-                    Columns columns = (Columns) child;
-                    columns.forEachColumn(false, UIColumn::isRendered, (col, pos) -> row.add(new ColumnNode(root, col)));
-                }
-                else if (child.isRendered()
-                        && (child instanceof Column || child instanceof ColumnGroup)) {
-                    ColumnNode node = new ColumnNode(root, child);
-                    row.add(node);
-                    if (child instanceof ColumnGroup) {
-                        treeColumnsTo2DArray(node, nodes, columnStart, columnEnd);
-                    }
-                }
-            }
-        }
-    }
 }

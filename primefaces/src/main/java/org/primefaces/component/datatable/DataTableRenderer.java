@@ -23,6 +23,24 @@
  */
 package org.primefaces.component.datatable;
 
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.el.ELContext;
+import javax.el.MethodExpression;
+import javax.el.ValueExpression;
+import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.api.*;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.column.Column;
@@ -38,31 +56,7 @@ import org.primefaces.model.ColumnMeta;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 import org.primefaces.renderkit.DataRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.FacetUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.MessageFactory;
-import org.primefaces.util.WidgetBuilder;
-
-import javax.el.ELContext;
-import javax.el.MethodExpression;
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.primefaces.util.*;
 
 public class DataTableRenderer extends DataRenderer {
 
@@ -937,33 +931,9 @@ public class DataTableRenderer extends DataRenderer {
         writer.startElement("thead", null);
         writer.writeAttribute("id", theadClientId, null);
 
-        // macro optimization in case no column group present, to avoid tree traversal
-        // when building a 2D array columns representation while it's not really needed
-        boolean hasColumnGroup = ComponentUtils.hasChildOfType(table, ColumnGroup.class);
-        if (!hasColumnGroup) {
-            encodeColumnHeader(context, table, columnStart, columnEnd);
-        }
-        else {
-            encodeColumnGroupHeaders(context, table, columnStart, columnEnd);
-        }
+        encodeColumnHeaders(context, table, columnStart, columnEnd);
 
         writer.endElement("thead");
-    }
-
-    protected void encodeColumnHeader(FacesContext context, DataTable table, int columnStart, int columnEnd) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        writer.startElement("tr", null);
-
-        List<UIColumn> columns = table.getColumns();
-        for (int i = columnStart; i < columnEnd; i++) {
-            UIColumn column = columns.get(i);
-            if (column instanceof DynamicColumn) {
-                ((DynamicColumn) column).applyModel();
-            }
-            encodeColumnHeader(context, table, column);
-        }
-
-        writer.endElement("tr");
     }
 
     protected void encodeTFooter(FacesContext context, DataTable table, UIComponent tfooter, int columnStart, int columnEnd) throws IOException {
@@ -1002,10 +972,9 @@ public class DataTableRenderer extends DataRenderer {
                 });
     }
 
-    protected void encodeColumnGroupHeaders(FacesContext context, DataTable table, int columnStart, int columnEnd) throws IOException {
+    protected void encodeColumnHeaders(FacesContext context, DataTable table, int columnStart, int columnEnd) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        List<List<ColumnNode>> matrix = new ArrayList<>();
-        UITable.treeColumnsTo2DArray(ColumnNode.root(table), matrix, columnStart, columnEnd);
+        List<List<ColumnNode>> matrix = ColumnAware.treeColumnsTo2DArray(table, columnStart, columnEnd);
 
         int depth = matrix.size();
         for (List<ColumnNode> rows : matrix) {

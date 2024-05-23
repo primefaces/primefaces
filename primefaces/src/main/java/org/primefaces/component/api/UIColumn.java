@@ -23,10 +23,11 @@
  */
 package org.primefaces.component.api;
 
-import org.primefaces.component.celleditor.CellEditor;
-import org.primefaces.model.MatchMode;
-import org.primefaces.util.FacetUtils;
-import org.primefaces.util.LangUtils;
+import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.el.ELContext;
 import javax.el.MethodExpression;
@@ -36,11 +37,11 @@ import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
-import java.io.IOException;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
+import org.primefaces.component.celleditor.CellEditor;
+import org.primefaces.model.MatchMode;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.LangUtils;
 
 public interface UIColumn {
 
@@ -121,6 +122,28 @@ public interface UIColumn {
     String getContainerClientId(FacesContext context);
 
     String getColumnKey();
+
+    /**
+     * Special {@link #getColumnKey()} method which must be used when we are inside e.g.
+     * the DataTable "row state".
+     *
+     * @param parent
+     * @param rowIndex
+     * @return
+     */
+    default String getColumnKey(UIComponent parent, int rowIndex) {
+        return getColumnKey(parent, String.valueOf(rowIndex));
+    }
+
+    /**
+     * Special {@link #getColumnKey()} method which must be used when we are inside e.g.
+     * the DataTable "row state".
+     *
+     * @param parent
+     * @param rowKey
+     * @return
+     */
+    String getColumnKey(UIComponent parent, String rowKey);
 
     String getClientId();
 

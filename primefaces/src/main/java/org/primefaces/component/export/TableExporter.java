@@ -26,19 +26,15 @@ package org.primefaces.component.export;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.ObjIntConsumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+
 import javax.el.MethodExpression;
 import javax.faces.FacesException;
-import javax.faces.component.EditableValueHolder;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIPanel;
-import javax.faces.component.UISelectMany;
-import javax.faces.component.ValueHolder;
+import javax.faces.component.*;
 import javax.faces.component.html.HtmlCommandLink;
 import javax.faces.component.html.HtmlGraphicImage;
 import javax.faces.component.visit.VisitCallback;
@@ -47,18 +43,13 @@ import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 
+import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.api.*;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.overlaypanel.OverlayPanel;
 import org.primefaces.component.rowtoggler.RowToggler;
-import org.primefaces.model.ColumnMeta;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.EscapeUtils;
-import org.primefaces.util.FacetUtils;
-import org.primefaces.util.IOUtils;
-import org.primefaces.util.LangUtils;
+import org.primefaces.util.*;
 
 public abstract class TableExporter<T extends UIComponent & UITable, D, O extends ExporterOptions> implements Exporter<T> {
 
@@ -195,9 +186,7 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
     }
 
     protected void addColumnGroupFacets(FacesContext context, T table, ColumnType columnType) {
-        List<List<ColumnNode>> matrix = new ArrayList<>();
-        ColumnNode root = ColumnNode.root(table);
-        UITable.treeColumnsTo2DArray(root, matrix, 0, getExportableColumns(table).size());
+        List<List<ColumnNode>> matrix = ColumnAware.treeColumnsTo2DArray(table, 0, getExportableColumns(table).size());
 
         int depth = matrix.size();
         for (List<ColumnNode> rows : matrix) {

@@ -25,6 +25,7 @@ package org.primefaces.component.api;
 
 import java.io.IOException;
 import java.util.List;
+
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
@@ -216,6 +217,11 @@ public class DynamicColumn implements UIColumn {
     @Override
     public String getColumnKey() {
         return columnKey;
+    }
+
+    @Override
+    public String getColumnKey(UIComponent parent, String rowIndex) {
+        return getColumnKey().replace(parent.getId() + separatorChar + rowIndex + separatorChar, parent.getId() + separatorChar);
     }
 
     @Override

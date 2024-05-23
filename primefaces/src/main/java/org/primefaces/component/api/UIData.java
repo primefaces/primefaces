@@ -26,6 +26,7 @@ package org.primefaces.component.api;
 import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
+
 import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
@@ -69,8 +70,6 @@ public class UIData extends javax.faces.component.UIData {
     private Object oldVar;
 
     public enum PropertyKeys {
-        @Deprecated
-        columnGroupLegacyEnabled,
         rowIndex,
         rowIndexVar,
         saved,
@@ -122,14 +121,6 @@ public class UIData extends javax.faces.component.UIData {
     @Override
     public void setRowStatePreserved(boolean rowStatePreserved) {
         getStateHelper().put(PropertyKeys.rowStatePreserved, rowStatePreserved);
-    }
-
-    public boolean isColumnGroupLegacyEnabled() {
-        return (boolean) getStateHelper().eval(PropertyKeys.columnGroupLegacyEnabled, true);
-    }
-
-    public void setColumnGroupLegacyEnabled(boolean columnGroupLegacyEnabled) {
-        getStateHelper().put(PropertyKeys.columnGroupLegacyEnabled, columnGroupLegacyEnabled);
     }
 
     @Override
@@ -761,12 +752,7 @@ public class UIData extends javax.faces.component.UIData {
                     }
                 }
                 else if (child instanceof ColumnGroup) {
-                    if (isColumnGroupLegacyEnabled()) {
-                        visitColumnGroup(context, callback, (ColumnGroup) child);
-                    }
-                    else {
-                        visitColumnsAndColumnFacets(context, child, callback, false, rejectedChildren);
-                    }
+                    visitColumnsAndColumnFacets(context, child, callback, false, rejectedChildren);
                 }
             }
         }

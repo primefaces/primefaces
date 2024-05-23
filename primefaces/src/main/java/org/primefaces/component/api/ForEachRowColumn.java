@@ -28,6 +28,7 @@ import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Set;
 import java.util.function.Predicate;
+
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.visit.VisitResult;
@@ -36,6 +37,7 @@ import javax.faces.context.FacesContext;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.component.row.Row;
+import org.primefaces.component.subtable.SubTable;
 import org.primefaces.util.ComponentUtils;
 
 public class ForEachRowColumn {
@@ -131,6 +133,9 @@ public class ForEachRowColumn {
         else if (target instanceof Row) {
             return handleRow(index, (Row) target);
         }
+        else if (target instanceof SubTable) {
+            return handleSubTable(index, (SubTable) target);
+        }
         else if (root == target) {
             return VisitResult.ACCEPT;
         }
@@ -205,13 +210,22 @@ public class ForEachRowColumn {
         return completeIfRoot(target);
     }
 
+    private VisitResult handleSubTable(int index, SubTable target) throws IOException {
+        if (isVisitable(target)) {
+            callback.visitSubTable(index, target);
+            visitChildren(target);
+            return completeIfRoot(target);
+        }
+        return VisitResult.REJECT;
+    }
+
     private VisitResult completeIfRoot(Object target) {
         return root == target ? VisitResult.COMPLETE : VisitResult.ACCEPT;
     }
 
     private VisitResult visitIfPossible(int index, UIColumn column) throws IOException {
         if (column instanceof DynamicColumn) {
-            ((DynamicColumn) column).applyStatelessModel();
+            ((DynamicColumn) column).applyModel();
         }
         if (isVisitable(column)) {
             callback.visitColumn(index, column);

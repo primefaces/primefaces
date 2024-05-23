@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
+
 import javax.el.ELContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
@@ -130,10 +131,11 @@ public class FilterFeature implements DataTableFeature {
                 globalMatch.set(globalFilter.getConstraint().isMatching(context, rowData, globalFilter.getFilterValue(), filterLocale));
             }
 
+            int finalI = i;
             ForEachRowColumn.from(table).invoke(new RowColumnVisitor.Adapter() {
                 @Override
                 public void visitColumn(int index, UIColumn column) throws IOException {
-                    FilterMeta filter = filterBy.get(column.getColumnKey());
+                    FilterMeta filter = filterBy.get(column.getColumnKey(table, finalI));
                     if (filter == null || filter.isGlobalFilter()) {
                         return;
                     }

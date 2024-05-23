@@ -28,6 +28,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
 import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -756,28 +757,7 @@ public class DataTable extends DataTableBase {
                     }
                 }
                 else if (child instanceof ColumnGroup) {
-                    if (isColumnGroupLegacyEnabled()) {
-                        if (child.getChildCount() > 0) {
-                            for (UIComponent columnGroupChild : child.getChildren()) {
-                                if (columnGroupChild instanceof Row && columnGroupChild.getChildCount() > 0) {
-                                    for (UIComponent rowChild : columnGroupChild.getChildren()) {
-                                        if (rowChild instanceof Column && rowChild.getFacetCount() > 0) {
-                                            processFacets(context, rowChild, phaseId);
-                                        }
-                                        else {
-                                            process(context, rowChild, phaseId);        //e.g. ui:repeat
-                                        }
-                                    }
-                                }
-                                else {
-                                    process(context, columnGroupChild, phaseId);        //e.g. ui:repeat
-                                }
-                            }
-                        }
-                    }
-                    else {
-                        processColumnFacets(context, child, phaseId);
-                    }
+                    processColumnFacets(context, child, phaseId);
                 }
                 else if (child instanceof Row) {
                     processColumnFacets(context, child, phaseId);
@@ -1157,19 +1137,8 @@ public class DataTable extends DataTableBase {
 
     @Override
     public List<UIColumn> collectColumns() {
-        if (!isColumnGroupLegacyEnabled()) {
-            List<UIColumn> columnsTmp = new ArrayList<>();
-            ForEachRowColumn.from(this).invoke(new RowColumnVisitor.Adapter() {
-
-                @Override
-                public void visitColumn(int index, UIColumn column) {
-                    columnsTmp.add(column);
-                }
-            });
-            columnsTmp.sort(ColumnComparators.displayOrder(getColumnMeta()));
-            return columnsTmp;
-        }
-
-        return super.collectColumns();
+        List<UIColumn> columnsTmp = ForEachRowColumn.from(this).invoke(new RowColumnVisitor.ColumnCollector()).getColumns();
+        columnsTmp.sort(ColumnComparators.displayOrder(getColumnMeta()));
+        return columnsTmp;
     }
 }

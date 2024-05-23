@@ -29,6 +29,7 @@ import java.util.List;
 
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.row.Row;
+import org.primefaces.component.subtable.SubTable;
 
 public interface RowColumnVisitor {
 
@@ -39,6 +40,8 @@ public interface RowColumnVisitor {
     void visitRowEnd(int index, Row row) throws IOException;
 
     void visitColumnGroup(int index, ColumnGroup colGroup) throws IOException;
+
+    void visitSubTable(int index, SubTable target) throws IOException;
 
     class Adapter implements RowColumnVisitor {
 
@@ -59,6 +62,11 @@ public interface RowColumnVisitor {
 
         @Override
         public void visitColumnGroup(int index, ColumnGroup colGroup) throws IOException {
+            // NOOP
+        }
+
+        @Override
+        public void visitSubTable(int index, SubTable target) throws IOException {
             // NOOP
         }
     }
