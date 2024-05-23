@@ -23,13 +23,13 @@
  */
 package org.primefaces.validate;
 
-import org.apache.poi.util.StringUtil;
 import org.primefaces.component.fileupload.FileUpload;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.model.file.NativeUploadedFile;
 import org.primefaces.model.file.UploadedFile;
 import org.primefaces.model.file.UploadedFiles;
 import org.primefaces.util.FileUploadUtils;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.LocaleUtils;
 import org.primefaces.util.MessageFactory;
 import org.primefaces.virusscan.VirusException;
@@ -162,7 +162,7 @@ public class FileValidator implements Validator, PartialStateHolder, ClientValid
             metadata.put("data-p-sizelimit", sizeLimit);
         }
 
-        if (!StringUtil.isBlank(allowTypes)) {
+        if (LangUtils.isNotBlank(allowTypes)) {
             metadata.put("data-p-allowtypes", allowTypes);
         }
 
