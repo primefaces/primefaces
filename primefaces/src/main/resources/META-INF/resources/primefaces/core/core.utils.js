@@ -1134,16 +1134,19 @@ if (!PrimeFaces.utils) {
                     jq.removeAttr(attributeName);
                 }
             }
+
+            // Remove the element from the DOM and trigger onRemove events for widget.destroy.
+            // IMPORTANT: This must occur before jq.off() to ensure the on("remove") events remain registered.
+            if (removeElement) {
+                jq.remove();
+            }
+
             // Remove event listeners
             jq.off();
-            
+
             // Clear data
             if (clearData) {
                 jq.removeData();
-            }
-            // Remove elements itself from memory
-            if (removeElement) {
-                jq.remove();
             }
         },
     };
