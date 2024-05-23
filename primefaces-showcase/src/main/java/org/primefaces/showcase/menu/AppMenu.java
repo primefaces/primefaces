@@ -262,7 +262,7 @@ public class AppMenu {
         dataTableMenuItems.add(new MenuItem("Sort", "/ui/data/datatable/sort"));
         dataTableMenuItems.add(new MenuItem("StickyHeader", "/ui/data/datatable/sticky"));
         dataTableMenuItems.add(new MenuItem("StripedRows", "/ui/data/datatable/striped"));
-        dataTableMenuItems.add(new MenuItem("SubTable", "/ui/data/datatable/subTable"));
+        dataTableMenuItems.add(new MenuItem("SubTable", "/ui/data/datatable/subtable"));
         //dataTableMenuItems.add(new MenuItem("SummaryRow", "/ui/data/datatable/summaryRow"));
         dataMenuItems.add(new MenuItem("DataTable", dataTableMenuItems));
 
