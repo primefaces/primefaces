@@ -697,14 +697,14 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
      * @param {number} index 0-based index of the tab to close.
      */
     remove: function(index) {
-        // remove old header and content
         var header = this.headerContainer.eq(index),
         panel = this.panelContainer.children().eq(index);
 
-        header.remove();
-        panel.remove();
-
-        // refresh "chached" selectors
+        // remove and cleanse all traces of the header and contents of the panel
+        PrimeFaces.utils.cleanseDomElement(header);
+        PrimeFaces.utils.cleanseDomElement(panel);
+        
+        // refresh "cached" selectors
         this.headerContainer = this.navContainer.children('li.ui-tabs-header');
         this.panelContainer = this.jq.children('.ui-tabs-panels');
 
