@@ -976,7 +976,7 @@ public class CarBean {
 PrimeFaces provides a OOTB implementation for JPA users, which supports basic features.
 
 ```java
-JPALazyDataModel<MyEntity> lazyDataModel = JPALazyDataModel.<MyEntity>builder())
+JPALazyDataModel<MyEntity> lazyDataModel = JPALazyDataModel.<MyEntity> builder()
         .entityClass(MyEntity.class)
         .entityManager(() -> entityManager)
         .build();
@@ -987,7 +987,7 @@ It's very likely that this is the mapped JPA `@Id`, so we try to auto-lookup per
 Otherwise you can also define it:
 
 ```java
-JPALazyDataModel<MyEntity> lazyDataModel = JPALazyDataModel.<MyEntity>builder())
+JPALazyDataModel<MyEntity> lazyDataModel = JPALazyDataModel.<MyEntity> builder()
         ...
         .rowKeyField(MyEntity_.id) // JPA MetaModel
         .rowKeyField("id") // or as String
@@ -997,7 +997,7 @@ JPALazyDataModel<MyEntity> lazyDataModel = JPALazyDataModel.<MyEntity>builder())
 or provide a existing JSF `Converter`:
 
 ```java
-JPALazyDataModel<MyEntity> lazyDataModel = JPALazyDataModel.<MyEntity>builder())
+JPALazyDataModel<MyEntity> lazyDataModel = JPALazyDataModel.<MyEntity> builder()
         ...
         .rowKeyConverter(myConverter)
         ...
@@ -1007,7 +1007,7 @@ JPALazyDataModel<MyEntity> lazyDataModel = JPALazyDataModel.<MyEntity>builder())
 Per default the filters are case sensitive but you can also disable it:
 
 ```java
-JPALazyDataModel<MyEntity> lazyDataModel = JPALazyDataModel.<MyEntity>builder())
+JPALazyDataModel<MyEntity> lazyDataModel = JPALazyDataModel.<MyEntity> builder()
         ...
         .caseSensitive(false)
         ...
@@ -1019,7 +1019,7 @@ while `?` and `_` mean replace a single character.  For example `Smith*` would f
 the word `Smith`. For single character replacement like `Te?t` would match words `Tent` and `Test`.
 
 ```java
-JPALazyDataModel<MyEntity> lazyDataModel = JPALazyDataModel.<MyEntity>builder())
+JPALazyDataModel<MyEntity> lazyDataModel = JPALazyDataModel.<MyEntity> builder()
         ...
         .wildcardSupport(true)
         ...
@@ -1029,13 +1029,35 @@ JPALazyDataModel<MyEntity> lazyDataModel = JPALazyDataModel.<MyEntity>builder())
 You can add global filters or manipulate generated predicates (from the DataTable columns) via:
 
 ```java
-JPALazyDataModel<MyEntity> lazyDataModel = JPALazyDataModel.<MyEntity>builder())
+JPALazyDataModel<MyEntity> lazyDataModel = JPALazyDataModel.<MyEntity> builder()
         ...
         .filterEnricher((filterBy, cb, cq, root, predicates) -> {
             predicates.add(cb.isNull(root.get("id")));
         })
         ...
 ```
+
+#### `Iterator` and performance considerations
+`JPALazyDataModel`, being an extension of `DataModel`, is iterable over the JPA values. This is accomplished lazily by paging through, and therefore querying, the data as needed (calls to `hasNext()` and `next()` from `Iterator` in turn call `load(first, pageSize, sortBy, filterBy)`).
+
+If you know you are going to retrieve all pages of data this can be inefficient, especially for large datasets. Loading the data, as the following, can result in far fewer individual queries to pull the full dataset.
+```java
+JPALazyDataModel<MyEntity> lazyDataModel = JPALazyDataModel.<MyEntity> builder()
+        ...
+
+// Load all sorted and filtered data in one query (plus one for count)
+DataTable binding = ...
+Map<String, SortMeta> sortMeta = binding.getSortByAsMap();
+Map<String, FilterMeta> filterMeta = binding.getFilterByAsMap();
+List<MyEntity> result = lazyDataModel.load(0, lazyDataModel.count(filterMeta), sortMeta, filterMeta);
+
+// OR, to load all
+Map<String, SortMeta> sortMeta = Collections.emptyMap();
+Map<String, FilterMeta> filterMeta = Collections.emptyMap();
+List<MyEntity> result = lazyDataModel.load(0, lazyDataModel.count(filterMeta), sortMeta, filterMeta);
+```
+
+
 ### FlowLogix JPALazyDataModel (PrimeFaces Community)
 `JPALazyDataModel` implementation that's fully integrated with Jakarta EE and `@Inject`able.
 
