@@ -279,7 +279,7 @@
                     <webXml>${project.build.directory}/web.xml</webXml>
                     <httpConnector>
                         <host>0.0.0.0</host>
-                        <port>8080</port>
+                        <port>80</port>
                         <idleTimeout>60000</idleTimeout>
                     </httpConnector>
                 </configuration>
@@ -353,6 +353,11 @@
 
         <profile>
             <id>mojarra-4.0</id>
+            <activation>
+                <property>
+                    <name>dev</name>
+                </property>
+            </activation>
             <dependencies>
                 <dependency>
                     <groupId>org.glassfish</groupId>
@@ -368,11 +373,6 @@
         </profile>
         <profile>
             <id>myfaces-4.0</id>
-            <activation>
-                <property>
-                    <name>dev</name>
-                </property>
-            </activation>
             <dependencies>
                 <dependency>
                     <groupId>org.apache.myfaces.core</groupId>
