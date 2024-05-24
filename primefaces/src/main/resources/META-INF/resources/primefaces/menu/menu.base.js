@@ -9,6 +9,7 @@
  * @prop {PrimeFaces.UnbindCallback} [scrollHandler] Unbind callback for the scroll handler.
  * @prop {PrimeFaces.CssTransitionHandler | null} [transition] Handler for CSS transitions used by this widget.
  * @prop {JQuery} trigger DOM element which triggers this menu.
+ * @prop {JQuery | undefined} menu DOM element represents the menu.
  * 
  * @interface {PrimeFaces.widget.MenuCfg} cfg The configuration for the {@link  Menu| Menu widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
@@ -24,6 +25,8 @@
  * @prop {JQueryUI.JQueryPositionOptions} cfg.pos Describes how to align this menu.
  * @prop {string} cfg.trigger ID of the event which triggers this menu.
  * @prop {string} cfg.triggerEvent Event which triggers this menu.
+ * @prop {string} cfg.tabIndex The default tabIndex of this component. Default to 0.
+ * @prop {string | undefined} tabIndex The default tabIndex of this component. Default to 0.
  */
 PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
 
@@ -34,6 +37,8 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
      */
     init: function(cfg) {
         this._super(cfg);
+        
+        this.tabIndex = this.cfg.tabIndex || "0";
 
         if (this.cfg.overlay) {
             this.initOverlay();
@@ -265,8 +270,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Resets all menu items to tabindex="0" except the first item if resetFirst
-     * @param {JQuery} menu Menu item (`A`) to select.
-     * @param {boolean} resetFirst whether to reset to the first cell to "0"
+     * @param {boolean} resetFirst whether to reset to the first cell to tabindex="0"
      */
     resetFocus: function(resetFirst) {
         // default all links to not focusable
@@ -291,7 +295,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     * Selects the menu item link by making it focused and setting tabindex to 0 for ARIA.
+     * Selects the menu item link by making it focused and setting tabindex to "0" for ARIA.
      * 
      * @param {JQuery} menulink - The menu item (`<a>`) to select.
      */

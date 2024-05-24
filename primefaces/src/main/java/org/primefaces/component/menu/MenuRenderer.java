@@ -48,6 +48,7 @@ public class MenuRenderer extends BaseMenuRenderer {
         wb.init("PlainMenu", menu)
                 .attr("appendTo", SearchExpressionUtils.resolveOptionalClientIdForClientSide(context, menu, menu.getAppendTo()))
                 .attr("toggleable", menu.isToggleable(), false)
+                .attr("tabIndex", menu.getTabindex(), "0")
                 .attr("statefulGlobal", menu.isStatefulGlobal(), false);
 
         if (menu.isOverlay()) {

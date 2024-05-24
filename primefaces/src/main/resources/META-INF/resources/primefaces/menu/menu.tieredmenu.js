@@ -16,7 +16,6 @@
  * @prop {boolean} isRTL Whether the writing direction is set to right-to-left.
  * @prop {boolean} isVertical Whether component is vertical orientation like TieredMenu.
  * @prop {boolean} isHorizontal Whether component is horizontal orientation like MenuBar.
- * @prop {string} tabIndex The default tabIndex of this component. Default to 0.
  * 
  * @interface {PrimeFaces.widget.TieredMenuCfg} cfg The configuration for the {@link  TieredMenu| TieredMenu widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
@@ -27,7 +26,6 @@
  * When set to `false`, click event is required to display this tiered menu.
  * @prop {number} cfg.showDelay Number of milliseconds before displaying menu. Default to 0 immediate.
  * @prop {number} cfg.hideDelay Number of milliseconds before hiding menu, if 0 not hidden until document.click.
- * @prop {string} cfg.tabIndex The default tabIndex of this component. Default to 0.
  * @prop {PrimeFaces.widget.TieredMenu.ToggleEvent} cfg.toggleEvent Event to toggle the submenus.
  */
 PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({

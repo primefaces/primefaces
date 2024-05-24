@@ -5,6 +5,7 @@
  *
  * @prop {boolean} active Whether the current menu is active and displayed.
  * @prop {JQuery | null} [activeitem] The currently active (highlighted) menu item.
+ * @prop {JQuery | null} [lastFocusedItem] The last root menu that had focus, if any.
  * @prop {JQuery} rootLinks The DOM elements for the root level menu links with the class `.ui-menuitem-link`.
  * @prop {JQuery} rootList The DOM elements for the root level menu items with the class `.ui-menu-list`.
  * @prop {JQuery} subLinks The DOM elements for all menu links not a the root level, with the class `.ui-menuitem-link`.
@@ -14,7 +15,7 @@
  * @interface {PrimeFaces.widget.MegaMenuCfg} cfg The configuration for the {@link  MegaMenu| MegaMenu widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
- * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ * @extends {PrimeFaces.widget.MenuCfg} cfg
  *
  * @prop {number} cfg.activeIndex Index of the menu item initially active.
  * @prop {boolean} cfg.autoDisplay Defines whether sub menus will be displayed on mouseover or not. When set to false,
@@ -362,7 +363,10 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.Menu.extend({
         this.jq.find('li.ui-menuitem-active').each(function() {
             $this.deactivate($(this), true);
         });
-        this.resetFocus(true);
+        this.resetFocus(!this.lastFocusedItem);
+        if (this.lastFocusedItem) {
+            this.lastFocusedItem.children('a.ui-menuitem-link').attr('tabindex', $this.tabIndex);
+        }
         this.rootLinks.removeClass('ui-state-hover');
     },
 
@@ -414,6 +418,12 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.Menu.extend({
      */
     activate: function(menuitem, showSubMenu = true) {
         this.highlight(menuitem);
+        
+        // if this is a root menu item.
+        if (menuitem.parent().is('ul.ui-menu-list:not(.ui-menu-child)')) {
+            this.lastFocusedItem = menuitem;
+        }
+
 
         // focus the menu item when activated
         this.focus(menuitem.children('a.ui-menuitem-link'));
