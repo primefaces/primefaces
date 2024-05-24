@@ -7,6 +7,7 @@
  * 
  * @prop {boolean} [active] Whether the menu is currently active.
  * @prop {JQuery | null} [activeitem] The active menu item, if any.
+ * @prop {JQuery | null} [lastFocusedItem] The last root menu that had focus, if any.
  * @prop {boolean} [itemClick] Set to `true` an item was clicked and se to `false` when the user clicks
  * outside the menu.
  * @prop {JQuery} links DOM element with all links for the menu entries of this tiered menu.
@@ -15,6 +16,7 @@
  * @prop {boolean} isRTL Whether the writing direction is set to right-to-left.
  * @prop {boolean} isVertical Whether component is vertical orientation like TieredMenu.
  * @prop {boolean} isHorizontal Whether component is horizontal orientation like MenuBar.
+ * @prop {string} tabIndex The default tabIndex of this component. Default to 0.
  * 
  * @interface {PrimeFaces.widget.TieredMenuCfg} cfg The configuration for the {@link  TieredMenu| TieredMenu widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
@@ -25,6 +27,7 @@
  * When set to `false`, click event is required to display this tiered menu.
  * @prop {number} cfg.showDelay Number of milliseconds before displaying menu. Default to 0 immediate.
  * @prop {number} cfg.hideDelay Number of milliseconds before hiding menu, if 0 not hidden until document.click.
+ * @prop {string} cfg.tabIndex The default tabIndex of this component. Default to 0.
  * @prop {PrimeFaces.widget.TieredMenu.ToggleEvent} cfg.toggleEvent Event to toggle the submenus.
  */
 PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
@@ -40,6 +43,7 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
         this.cfg.toggleEvent = this.cfg.toggleEvent || 'hover';
         this.cfg.showDelay = this.cfg.showDelay || 0;
         this.cfg.hideDelay = this.cfg.hideDelay || 0;
+        this.tabIndex = this.cfg.tabIndex || "0";
         this.links = this.jq.find('a.ui-menuitem-link:not(.ui-state-disabled)');
         this.rootLinks = this.jq.find('> ul.ui-menu-list > .ui-menuitem > .ui-menuitem-link');
         this.isRTL = this.jq.hasClass('ui-menu-rtl');
@@ -80,7 +84,7 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
 
         // make first focusable
         var firstLink = this.links.filter(':not([disabled])').first();
-        firstLink.attr("tabindex", "0");
+        firstLink.attr("tabindex", $this.tabIndex);
         this.resetFocus(true);
         firstLink.removeClass('ui-state-hover ui-state-active');
 
@@ -146,7 +150,7 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
             e.preventDefault();
         });
 
-        this.jq.find('ul.ui-menu-list').on("mouseleave", function(e) {
+        this.jq.on("mouseleave", function(e) {
             $this.deactivateAndReset(e);
         });
     },
@@ -224,10 +228,12 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
 
             switch (e.code) {
                 case 'Home':
+                case 'PageUp':
                     navigateTo(menuitem.prevAll('.ui-menuitem:last'));
                     e.preventDefault();
                     break;
                 case 'End':
+                case 'PageDown':
                     navigateTo(menuitem.nextAll('.ui-menuitem:last'));
                     e.preventDefault();
                     break;
@@ -299,6 +305,9 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
                     }
                     e.preventDefault();
                     break;
+                case 'Tab':
+                    $this.reset();
+                    break;
                 default:
                     break;
             }
@@ -365,6 +374,11 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
     activate: function(menuitem, showSubMenu = true) {
         this.highlight(menuitem);
 
+        // if this is a root menu item.
+        if (menuitem.parent().is('ul.ui-menu-list:not(.ui-menu-child)')) {
+            this.lastFocusedItem = menuitem;
+        }
+
         // focus the menu item when activated
         this.focus(menuitem.children('a.ui-menuitem-link'));
 
@@ -430,7 +444,10 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
         this.jq.find('li.ui-menuitem-active').each(function() {
             $this.deactivate($(this), true);
         });
-        this.resetFocus(true);
+        this.resetFocus(!this.lastFocusedItem);
+        if (this.lastFocusedItem) {
+            this.lastFocusedItem.children('a.ui-menuitem-link').attr('tabindex', $this.tabIndex);
+        }
         this.links.removeClass('ui-state-active ui-state-hover');
     },
 

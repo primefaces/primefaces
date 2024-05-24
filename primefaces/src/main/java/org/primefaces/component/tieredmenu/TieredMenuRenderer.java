@@ -51,6 +51,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
                 .attr("autoDisplay", menu.isAutoDisplay())
                 .attr("showDelay", menu.getShowDelay(), 0)
                 .attr("hideDelay", menu.getHideDelay(), 0)
+                .attr("tabIndex", menu.getTabindex(), "0")
                 .attr("toggleEvent", menu.getToggleEvent(), null);
 
         if (menu.isOverlay()) {

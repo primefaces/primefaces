@@ -272,7 +272,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         // default all links to not focusable
         var $container = this.menu || this.jq;
         var focusableLinks = $container.find("a.ui-menuitem-link");
-        focusableLinks.removeClass('ui-state-hover ui-state-active').attr('tabindex', -1);
+        focusableLinks.removeClass('ui-state-hover ui-state-active').attr('tabindex', "-1");
 
         if (resetFirst) {
             // reset aria-expanded
@@ -284,8 +284,9 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
             });
 
             // the very first link should be focusable
+            var defaultTabIndex = this.tabIndex || "0";
             var focused = focusableLinks.filter(':focusable:first').first();
-            focused.addClass('ui-state-hover ui-state-active').attr('tabindex', 0);
+            focused.addClass('ui-state-hover ui-state-active').attr('tabindex', defaultTabIndex);
         }
     },
 
@@ -299,7 +300,8 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
             return;
         }
         this.resetFocus(false);
-        menulink.addClass('ui-state-hover ui-state-active').attr('tabindex', 0).trigger('focus');
+        var defaultTabIndex = this.tabIndex || "0";
+        menulink.addClass('ui-state-hover ui-state-active').attr('tabindex', defaultTabIndex).trigger('focus');
     },
 
     /**

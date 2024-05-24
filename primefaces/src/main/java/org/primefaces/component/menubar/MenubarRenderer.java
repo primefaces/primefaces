@@ -46,6 +46,7 @@ public class MenubarRenderer extends TieredMenuRenderer {
                 .attr("autoDisplay", menubar.isAutoDisplay())
                 .attr("showDelay", menubar.getShowDelay(), 0)
                 .attr("hideDelay", menubar.getHideDelay(), 0)
+                .attr("tabIndex", menubar.getTabindex(), "0")
                 .attr("toggleEvent", menubar.getToggleEvent(), null);
 
         wb.finish();
