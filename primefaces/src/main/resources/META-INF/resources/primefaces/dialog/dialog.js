@@ -112,14 +112,14 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         //configuration
         this.cfg.width = this.cfg.width||'auto';
         this.cfg.height = this.cfg.height||'auto';
-        this.cfg.draggable = this.cfg.draggable === false ? false : true;
-        this.cfg.resizable = this.cfg.resizable === false ? false : true;
+        this.cfg.draggable = this.cfg.draggable !== false;
+        this.cfg.resizable = this.cfg.resizable !== false;
+        this.cfg.cache = this.cfg.cache !== false;
+        this.cfg.responsive = this.cfg.responsive !== false;
         this.cfg.minWidth = this.cfg.minWidth||150;
         this.cfg.minHeight = this.cfg.minHeight||this.titlebar.outerHeight();
         this.cfg.my = this.cfg.my||'center';
         this.cfg.position = this.cfg.position||'center';
-        this.cfg.cache = this.cfg.cache === false ? false : true;
-        this.cfg.responsive = this.cfg.responsive === false ? false : true;
         this.parent = this.jq.parent();
         this.focusedElementBeforeDialogOpened = null;
 
@@ -955,26 +955,41 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
             this.noButton = this.jq.find('.ui-confirmdialog-no');
             this.yesButton.data('p-text', this.yesButton.children('.ui-button-text').text());
             this.noButton.data('p-text', this.noButton.children('.ui-button-text').text());
+            this.yesButton.data('p-icon', this.yesButton.children('.ui-icon').attr('class'));
+            this.noButton.data('p-icon', this.noButton.children('.ui-icon').attr('class'));
 
             this.jq.on('click.ui-confirmdialog', '.ui-confirmdialog-yes, .ui-confirmdialog-no', null, function(e) {
                 var el = $(this);
 
                 if(el.hasClass('ui-confirmdialog-yes') && PrimeFaces.confirmSource) {
-                    var id = PrimeFaces.confirmSource.get(0);
-                    var js = PrimeFaces.confirmSource.data('pfconfirmcommand');
+                    var source = PrimeFaces.confirmSource;
+                    var id = source.get(0);
+                    var js = source.data('pfconfirmcommand');
                     var command = $(id);
-                    
-                    // Test if the function matches the pattern
+
                     if (PrimeFaces.ajax.Utils.isAjaxRequest(js) || command.is('a')) {
                         // command is ajax=true
-                        PrimeFaces.csp.executeEvent(id, js, e);
-                    }
-                    else {
+                        var originalOnClick;
+
+                        if (source[0]) {
+                            var events = $._data(source[0], "events");
+                            originalOnClick = source.prop('onclick') || (events && events.click ? events.click[0].handler : null);
+                        }
+
+                        // Temporarily remove the click handler and execute the new one
+                        source.prop('onclick', null).off("click").on("click", function(event) {
+                            PrimeFaces.csp.executeEvent(id, js, event);
+                        }).click();
+
+                        // Restore the original click handler if it exists
+                        if (originalOnClick) {
+                            source.off("click").on("click", originalOnClick);
+                        }
+                    } else {
                         // command is ajax=false
                         if (command.prop('onclick')) {
                             command.removeAttr("onclick");
-                        }
-                        else {
+                        } else {
                             command.off("click");
                         }
                         command.removeAttr("data-pfconfirmcommand").click();
@@ -1018,6 +1033,8 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
             this.noButton.removeClass(this.noButton.data('p-class'));
             this.yesButton.children('.ui-button-text').text(this.yesButton.data('p-text'));
             this.noButton.children('.ui-button-text').text(this.noButton.data('p-text'));
+            this.yesButton.children('.ui-icon').attr('class', this.yesButton.data('p-icon'));
+            this.noButton.children('.ui-icon').attr('class', this.noButton.data('p-icon'));
         }
     },
 
@@ -1046,12 +1063,17 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
         if (msg.yesButtonClass) {
             this.yesButton.addClass(msg.yesButtonClass).data('p-class', msg.yesButtonClass);
         }
-
+        if (msg.yesButtonIcon) {
+            PrimeFaces.utils.replaceIcon(this.yesButton.children('.ui-icon'), msg.yesButtonIcon);
+        }
         if (msg.noButtonLabel) {
             this.noButton.children('.ui-button-text').text(msg.noButtonLabel);
         }
         if (msg.noButtonClass) {
             this.noButton.addClass(msg.noButtonClass).data('p-class', msg.noButtonClass);
+        }
+        if (msg.noButtonIcon) {
+            PrimeFaces.utils.replaceIcon(this.noButton.children('.ui-icon'), msg.noButtonIcon);
         }
 
         // Set title, message content, and escape HTML if necessary

@@ -1146,6 +1146,33 @@ if (!PrimeFaces.utils) {
                 jq.remove();
             }
         },
+        
+        /**
+         * Replaces a specific CSS icon class on an element and appends a new icon class.
+         * If the target class is found, all classes after it are removed and the new class is added.
+         *
+         * @param {JQuery | undefined} jq - The jQuery element to modify.
+         * @param {string} addIcon - The new CSS icon class to add.
+         */
+        replaceIcon: function(jq, addIcon) {
+            if (!jq || !jq.length) {
+                return;
+            }
+            // Get the value of the 'class' attribute and split it into an array
+            var classes = jq.attr('class').split(' ');
+
+            // Find the index of the target class
+            var targetIndex = classes.indexOf('ui-c');
+
+            // If the target class is found, remove all classes after it and add the new class
+            if (targetIndex !== -1) {
+                // Create the new class string by keeping classes up to and including the target class, then adding the new class
+                var newClasses = classes.slice(0, targetIndex + 1).join(' ') + ' ' + addIcon;
+
+                // Set the new class string on the element and store the new class in the 'p-icon' data attribute
+                jq.attr('class', newClasses).data('p-icon', addIcon);
+            }
+        },
     };
 
     // set animation state globally

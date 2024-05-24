@@ -546,6 +546,12 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
+            <description><![CDATA[Overrides icon of 'Yes' button (and removes it before the global confirm dialog is reused elsewhere)]]></description>
+            <name>yesButtonIcon</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
             <description><![CDATA[Overrides label of 'No' button (and restores it before the global confirm dialog is reused elsewhere)]]></description>
             <name>noButtonLabel</name>
             <required>false</required>
@@ -554,6 +560,12 @@
         <attribute>
             <description><![CDATA[Adds given style class to 'No' button (and removes it before the global confirm dialog is reused elsewhere)]]></description>
             <name>noButtonClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description><![CDATA[Overrides icon of 'No' button (and removes it before the global confirm dialog is reused elsewhere)]]></description>
+            <name>noButtonIcon</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -9003,6 +9015,14 @@
             <name>cellEditMode</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Enables cell navigation with the keyboard for WCAG and screen reader compliance. Default is true.]]>
+            </description>
+            <name>cellNavigation</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>

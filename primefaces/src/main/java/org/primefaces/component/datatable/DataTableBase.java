@@ -44,6 +44,7 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         ariaRowLabel,
         caseSensitiveSort,
         cellEditMode,
+        cellNavigation,
         cellSeparator,
         clientCache,
         dataLocale,
@@ -439,7 +440,7 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         getStateHelper().put(PropertyKeys.rowExpandMode, rowExpandMode);
     }
 
-    public Object getDataLocale() {
+    @Override public Object getDataLocale() {
         return getStateHelper().eval(PropertyKeys.dataLocale, null);
     }
 
@@ -768,4 +769,11 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         getStateHelper().put(PropertyKeys.selectAllFilteredOnly, selectAllFilteredOnly);
     }
 
+    public boolean isCellNavigation() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.cellNavigation, true);
+    }
+
+    public void setCellNavigation(boolean cellNavigation) {
+        getStateHelper().put(PropertyKeys.cellNavigation, cellNavigation);
+    }
 }

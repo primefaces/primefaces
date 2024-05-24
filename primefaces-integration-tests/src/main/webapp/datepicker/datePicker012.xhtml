@@ -12,12 +12,13 @@
     <h:body>
 
         <h:form id="form">
-            <p:datePicker id="datepicker1" value="#{datePicker012.date1}"
+            <p:datePicker id="datepicker1" value="#{datePicker012.date1}" style="padding-right: 50px"
                           model="#{datePicker012.lazyModel1}" refreshLazyModel="true"
                           monthNavigator="true" yearNavigator="true" showButtonBar="true">
                 <p:ajax event="dateSelect" listener="#{datePicker012.onDateSelect}"/>
                 <p:ajax event="viewChange" listener="#{datePicker012.onViewChange}"/>
             </p:datePicker>
+            
             <p:datePicker id="datepicker2" value="#{datePicker012.date2}"
                           model="#{datePicker012.lazyModel2}" refreshLazyModel="true"
                           monthNavigator="true" yearNavigator="true" showButtonBar="true">
