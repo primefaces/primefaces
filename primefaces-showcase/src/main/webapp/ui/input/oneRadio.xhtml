@@ -53,13 +53,6 @@
                     <f:selectItems value="#{radioView.cities}" var="city" itemLabel="#{city}" itemValue="#{city}"/>
                 </p:selectOneRadio>
                 
-                
-                <h5>Grid (deprecated)</h5>
-                <p:selectOneRadio id="city" value="#{radioView.city}" layout="grid" columns="3" styleClass="grid-radio">
-                    <f:selectItems value="#{radioView.cities}" var="city" itemLabel="#{city}" itemValue="#{city}"/>
-                </p:selectOneRadio>
-                
-
                 <h5>Custom Layout (Facet)</h5>
                 <p:selectOneRadio id="customRadio" value="#{radioView.color}">
                     <f:selectItem itemLabel="Red" itemValue="Red"/>
