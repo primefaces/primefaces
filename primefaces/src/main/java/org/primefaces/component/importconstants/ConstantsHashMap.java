@@ -23,17 +23,17 @@
  */
 package org.primefaces.component.importconstants;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import javax.faces.FacesException;
 
 /**
- * Custom {@link HashMap} which throws an {@link FacesException} if the key/constant does not exist.
+ * Custom {@link LinkedHashMap} which throws an {@link FacesException} if the key/constant does not exist.
  *
  * @param <K> The key type.
  * @param <V> The value type.
  */
-public class ConstantsHashMap<K, V> extends HashMap<K, V> {
+public class ConstantsHashMap<K, V> extends LinkedHashMap<K, V> {
 
     private static final long serialVersionUID = 1L;
 
