@@ -86,6 +86,15 @@ In order to change the orientation, choose the angle from the 4 pre-defined valu
 ```xhtml
 <p:barcode value="#{bean.barcodeValue}" type="int2of5" orientation="90"/>
 ```
+## QR Code
+QR code support is provided by **qrcodegen** library. 
+
+!> QR codes should be given a proper `height` and `width` so they can be scanned correctly by QR code readers.
+
+```xhtml
+<p:barcode value="0123456789" type="qr" width="125" height="125"/>
+```
+
 ## Dependencies
 Barcode component uses **barcode4j** library underneath except QR code support, which is handled
 by **qrcodegen** library. Following versions are supported officially.

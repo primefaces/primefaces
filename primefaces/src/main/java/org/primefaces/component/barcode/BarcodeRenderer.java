@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.faces.application.ProjectStage;
 import javax.faces.application.Resource;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -39,6 +40,7 @@ import org.primefaces.application.resource.DynamicContentType;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.Constants;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.SharedStringBuilder;
 
 public class BarcodeRenderer extends CoreRenderer {
@@ -97,6 +99,12 @@ public class BarcodeRenderer extends CoreRenderer {
         }
 
         writer.writeAttribute("src", context.getExternalContext().encodeResourceURL(src), null);
+
+        if (dynamicContentType == DynamicContentType.QR_CODE && context.isProjectStage(ProjectStage.Development)) {
+            if (LangUtils.isBlank(barcode.getWidth()) || LangUtils.isBlank(barcode.getHeight())) {
+                logDevelopmentWarning(context, this, "QR code should have a proper width and height so it can be scanned by QR code readers.");
+            }
+        }
 
         renderPassThruAttributes(context, barcode, HTML.IMG_ATTRS);
 
