@@ -31,6 +31,7 @@ import java.util.List;
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -42,7 +43,7 @@ import org.primefaces.selenium.component.DatePicker;
 
 class DatePicker012Test extends AbstractDatePickerTest {
 
-    @Test
+    @RepeatedTest(50)
     @Order(1)
     @DisplayName("DatePicker: refresh lazy meta data model on show panel; see #7457")
     void refreshLazyModel(Page page) {
@@ -65,6 +66,7 @@ class DatePicker012Test extends AbstractDatePickerTest {
         assertNoDisablebCalendarDates(page.datePicker2);
 
         // Act - 3rd show panel and select 5th of current month
+        page.datePicker2.hidePanel(); // close panel of datePicker2 to ensure it does not overlap datePicker1-input-field
         page.datePicker1.click();
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(page.datePicker1.getPanel()));
         page.datePicker1.getPanel().findElement(By.linkText("5")).click();
