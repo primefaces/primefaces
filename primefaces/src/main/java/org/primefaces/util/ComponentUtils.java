@@ -23,15 +23,19 @@
  */
 package org.primefaces.util;
 
-import org.primefaces.component.api.*;
-import org.primefaces.config.PrimeConfiguration;
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.context.PrimeRequestContext;
-import org.primefaces.csp.CspResponseWriter;
-
-import javax.el.ELException;
+import java.io.IOException;
+import java.io.Serializable;
+import java.io.UncheckedIOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.*;
+import java.util.function.Supplier;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.el.ELException;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.FacesWrapper;
@@ -50,19 +54,12 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.render.Renderer;
-import java.io.IOException;
-import java.io.Serializable;
-import java.io.UncheckedIOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.*;
-import java.util.function.Supplier;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import static org.primefaces.renderkit.RendererUtils.getRenderKit;
+import org.primefaces.component.api.*;
+import org.primefaces.config.PrimeConfiguration;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.csp.CspResponseWriter;
 import static org.primefaces.renderkit.RendererUtils.getRenderKit;
 
 public class ComponentUtils {
@@ -801,16 +798,10 @@ public class ComponentUtils {
     }
 
     /**
-     * Method to check if component is a UIInstruction
-     * Since {@link javax.faces.component.search.UntargetableComponent} is introduced in 2.3
-     * Check is based on class name
+     * Method to check if component is not a UntargetableComponent like UIInstructions
      */
-    public static boolean isUntargetableComponent(UIComponent component) {
-        return component instanceof UntargetableComponent; // like UIInstructions
-    }
-
     public static boolean isTargetableComponent(UIComponent component) {
-        return !isUntargetableComponent(component);
+        return !(component instanceof UntargetableComponent); // unlike UIInstructions
     }
 
     public static <T extends UIComponent> boolean hasChildOfType(UIComponent parent, Class<T> clazz) {
