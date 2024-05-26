@@ -224,6 +224,19 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
                 }
             }
 
+            // Helper function close and hide the menu and refocus original trigger
+            function closeMenuPanel() {
+                if ($this.cfg.overlay) {
+                    $this.reset();
+                    $this.hide();
+
+                    // re-focus original trigger if there is one
+                    if ($this.trigger && $this.trigger.length > 0) {
+                        $this.trigger.trigger('focus');
+                    }
+                }
+            }
+
             switch (e.code) {
                 case 'Home':
                 case 'PageUp':
@@ -286,18 +299,13 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
                     } else {
                         link.trigger('click');
                         PrimeFaces.utils.openLink(e, link);
+                        closeMenuPanel();
                     }
                     e.preventDefault();
                     break;
                 case 'Escape':
                     if ($this.cfg.overlay) {
-                        $this.reset();
-                        $this.hide();
-
-                        // re-focus original trigger if there is one
-                        if ($this.trigger && $this.trigger.length > 0) {
-                            $this.trigger.trigger('focus');
-                        }
+                        closeMenuPanel();
                     } else {
                         closeSubmenu();
                     }

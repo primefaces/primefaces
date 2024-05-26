@@ -28,6 +28,7 @@ import java.util.List;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.badge.BadgeRenderer;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
@@ -38,6 +39,7 @@ import org.primefaces.model.menu.Separator;
 import org.primefaces.model.menu.Submenu;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class TieredMenuRenderer extends BaseMenuRenderer {
@@ -80,7 +82,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
         writer.startElement("div", menu);
         writer.writeAttribute("id", menu.getClientId(context), "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        if (style != null) {
+        if (LangUtils.isNotEmpty(style)) {
             writer.writeAttribute("style", style, "style");
         }
 
@@ -88,7 +90,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
         writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUBAR, null);
         writer.writeAttribute(HTML.ARIA_ORIENTATION, orientation, null);
         writer.writeAttribute("class", Menu.LIST_CLASS, null);
-        writer.writeAttribute("tabindex", "-1", "tabindex"); // allow focus/blur events
+        writer.writeAttribute("tabindex", "-1", null); // allow focus/blur events
 
         encodeFacet(context, menu, "start", Menu.START_CLASS);
 
@@ -123,7 +125,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
                     writer.startElement("li", null);
                     writer.writeAttribute("class", containerStyleClass, null);
                     writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
-                    if (containerStyle != null) {
+                    if (LangUtils.isNotEmpty(containerStyle)) {
                         writer.writeAttribute("style", containerStyle, null);
                     }
                     if (menuItem.getBadge() != null) {
@@ -135,15 +137,17 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
                 else if (element instanceof Submenu) {
                     Submenu submenu = (Submenu) element;
                     String style = submenu.getStyle();
-                    String styleClass = submenu.getStyleClass();
-                    styleClass = styleClass == null ? Menu.TIERED_SUBMENU_CLASS : Menu.TIERED_SUBMENU_CLASS + " " + styleClass;
+                    String styleClass = getStyleClassBuilder(context)
+                            .add(Menu.TIERED_SUBMENU_CLASS)
+                            .add(submenu.getStyleClass())
+                            .build();
 
                     writer.startElement("li", null);
                     if (shouldRenderId(submenu)) {
                         writer.writeAttribute("id", submenu.getClientId(), null);
                     }
                     writer.writeAttribute("class", styleClass, null);
-                    if (style != null) {
+                    if (LangUtils.isNotEmpty(style)) {
                         writer.writeAttribute("style", style, null);
                     }
                     writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
@@ -170,10 +174,10 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
         writer.writeAttribute("href", "#", null);
         writer.writeAttribute("tabindex", "-1", null);
 
-        String styleClass = Menu.SUBMENU_LINK_CLASS;
-        if (disabled) {
-            styleClass = styleClass + " ui-state-disabled";
-        }
+        String styleClass = getStyleClassBuilder(context)
+                .add(Menu.SUBMENU_LINK_CLASS)
+                .add(disabled, "ui-state-disabled")
+                .build();
         writer.writeAttribute("class", styleClass, null);
 
         if (disabled) {
