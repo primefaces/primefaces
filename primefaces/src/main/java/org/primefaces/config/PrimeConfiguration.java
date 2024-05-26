@@ -25,6 +25,7 @@ package org.primefaces.config;
 
 import java.util.Map;
 import java.util.Objects;
+
 import javax.faces.component.UIInput;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -53,7 +54,7 @@ public class PrimeConfiguration {
     private final boolean earlyPostParamEvaluation;
     private final boolean moveScriptsToBottom;
     private final boolean moveScriptsToBottomDeferred;
-    private final boolean html5Compliance;
+    private final String html5Compliance;
     private boolean csp;
     private boolean policyProvided;
     private String cspPolicy;
@@ -136,7 +137,7 @@ public class PrimeConfiguration {
         }
 
         value = externalContext.getInitParameter(Constants.ContextParams.HTML5_COMPLIANCE);
-        html5Compliance = Boolean.parseBoolean(value);
+        html5Compliance = LangUtils.isBlank(value) ? "auto" : value;
 
         value = Objects.toString(externalContext.getInitParameter(Constants.ContextParams.CSP));
         switch (value) {
@@ -267,7 +268,7 @@ public class PrimeConfiguration {
         return moveScriptsToBottomDeferred;
     }
 
-    public boolean isHtml5Compliant() {
+    public String getHtml5Compliance() {
         return html5Compliance;
     }
 

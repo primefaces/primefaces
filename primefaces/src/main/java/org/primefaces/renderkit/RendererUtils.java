@@ -24,6 +24,9 @@
 package org.primefaces.renderkit;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.faces.FactoryFinder;
 import javax.faces.application.Application;
@@ -35,12 +38,19 @@ import javax.faces.render.RenderKit;
 import javax.faces.render.RenderKitFactory;
 
 import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.util.Constants;
 import org.primefaces.util.HTML;
 
 public class RendererUtils {
 
     public static final String SCRIPT_TYPE = "text/javascript";
+
+    private static final Logger LOGGER = Logger.getLogger(RendererUtils.class.getName());
+
+    private static Method methodViewRootGetDoctype = null;
+    private static Method methodDoctypeGetRootElement = null;
+    private static Method methodDoctypeGetPublic = null;
+    private static Method methodDoctypeGetSystem = null;
 
     private RendererUtils() {
         // Hide constructor
@@ -54,7 +64,7 @@ public class RendererUtils {
         ResponseWriter writer = context.getResponseWriter();
         String icon;
         String boxClass = disabled ? HTML.CHECKBOX_BOX_CLASS + " ui-state-disabled" : HTML.CHECKBOX_BOX_CLASS;
-        boxClass += checked ? " ui-state-active" : "";
+        boxClass += checked ? " ui-state-active" : Constants.EMPTY_STRING;
         String containerClass = (styleClass == null) ? HTML.CHECKBOX_CLASS : HTML.CHECKBOX_CLASS + " " + styleClass;
 
         if (checked) {
@@ -131,13 +141,67 @@ public class RendererUtils {
      * @throws IOException if any error occurs
      */
     public static void encodeScriptTypeIfNecessary(FacesContext context) throws IOException {
-        PrimeRequestContext requestContext = PrimeRequestContext.getCurrentInstance(context);
-        PrimeApplicationContext applicationContext = requestContext.getApplicationContext();
-        if (applicationContext.getConfig().isHtml5Compliant()) {
+        if (isOutputHtml5Doctype(context)) {
             return;
         }
         ResponseWriter writer = context.getResponseWriter();
         writer.writeAttribute("type", SCRIPT_TYPE, null);
     }
 
+    /**
+     * Returns <code>true</code> if the view root associated with the given {@link FacesContext}
+     * will be rendered with a HTML5 doctype.
+     *
+     * @param context Involved faces context.
+     * @return <code>true</code> if the view root associated with the given faces context
+     *      will be rendered with a HTML5 doctype.
+     */
+    public static boolean isOutputHtml5Doctype(FacesContext context) {
+        PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(context);
+        String html5ComplianceSetting = applicationContext.getConfig().getHtml5Compliance();
+
+        if ("true".equalsIgnoreCase(html5ComplianceSetting)) {
+            return true;
+        }
+
+        if ("auto".equalsIgnoreCase(html5ComplianceSetting)) {
+            UIViewRoot viewRoot = context.getViewRoot();
+            if (viewRoot == null) {
+                return false;
+            }
+
+            if (!PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf40()) {
+                return false;
+            }
+
+            try {
+                if (methodViewRootGetDoctype == null) {
+                    methodViewRootGetDoctype = viewRoot.getClass().getMethod("getDoctype");
+                }
+                Object doctype = methodViewRootGetDoctype.invoke(viewRoot);
+                if (doctype == null) {
+                    return false;
+                }
+
+                if (methodDoctypeGetSystem == null) {
+                    methodDoctypeGetRootElement = doctype.getClass().getMethod("getRootElement");
+                    methodDoctypeGetPublic = doctype.getClass().getMethod("getPublic");
+                    methodDoctypeGetSystem = doctype.getClass().getMethod("getSystem");
+                }
+
+                String rootElement = (String) methodDoctypeGetRootElement.invoke(doctype);
+                String publicVal = (String) methodDoctypeGetPublic.invoke(doctype);
+                String system = (String) methodDoctypeGetSystem.invoke(doctype);
+
+                return "html".equalsIgnoreCase(rootElement)
+                        && publicVal == null
+                        && system == null;
+            }
+            catch (Exception e) {
+                LOGGER.log(Level.SEVERE, "Could not detect Doctype of current view!", e);
+            }
+        }
+
+        return false;
+    }
 }
