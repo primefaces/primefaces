@@ -23,22 +23,19 @@
  */
 package org.primefaces.component.treetable;
 
+import java.io.IOException;
+import java.util.List;
+
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import java.io.IOException;
-import java.util.List;
 
-import org.primefaces.component.api.DynamicColumn;
-import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.api.UITree;
-import org.primefaces.component.column.Column;
+import org.primefaces.component.api.*;
 import org.primefaces.component.columngroup.ColumnGroup;
-import org.primefaces.component.columns.Columns;
-import org.primefaces.component.row.Row;
+import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.tree.Tree;
 import org.primefaces.component.treetable.feature.TreeTableFeature;
 import org.primefaces.component.treetable.feature.TreeTableFeatures;
@@ -48,12 +45,7 @@ import org.primefaces.model.SortOrder;
 import org.primefaces.model.TreeNode;
 import org.primefaces.renderkit.DataRenderer;
 import org.primefaces.renderkit.RendererUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.FacetUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
-
+import org.primefaces.util.*;
 import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
 
 public class TreeTableRenderer extends DataRenderer {
@@ -351,80 +343,81 @@ public class TreeTableRenderer extends DataRenderer {
 
     protected void encodeThead(FacesContext context, TreeTable tt) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        ColumnGroup group = tt.getColumnGroup("header");
         String clientId = tt.getClientId(context);
 
         writer.startElement("thead", null);
         writer.writeAttribute("id", clientId + "_head", null);
 
-        if (group != null && group.isRendered()) {
-            context.getAttributes().put(Constants.HELPER_RENDERER, "columnGroup");
+        encodeColumnHeaders(context, tt, 0, tt.getColumns().size());
 
-            for (UIComponent child : group.getChildren()) {
-                if (child.isRendered()) {
-                    if (child instanceof Row) {
-                        Row headerRow = (Row) child;
-                        String rowClass = headerRow.getStyleClass();
-                        String rowStyle = headerRow.getStyle();
+        writer.endElement("thead");
+    }
 
-                        writer.startElement("tr", null);
-                        if (rowClass != null) {
-                            writer.writeAttribute("class", rowClass, null);
-                        }
-                        if (rowStyle != null) {
-                            writer.writeAttribute("style", rowStyle, null);
-                        }
+    protected void encodeColumnHeaders(FacesContext context, TreeTable table, int columnStart, int columnEnd) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        List<List<ColumnNode>> matrix = ColumnAware.treeColumnsTo2DArray(table, columnStart, columnEnd);
 
-                        for (UIComponent headerRowChild : headerRow.getChildren()) {
-                            if (headerRowChild.isRendered()) {
-                                if (headerRowChild instanceof Column) {
-                                    encodeColumnHeader(context, tt, (Column) headerRowChild);
-                                }
-                                else if (headerRowChild instanceof Columns) {
-                                    List<DynamicColumn> dynamicColumns = ((Columns) headerRowChild).getDynamicColumns();
-                                    for (DynamicColumn dynaColumn : dynamicColumns) {
-                                        dynaColumn.applyModel();
-                                        encodeColumnHeader(context, tt, dynaColumn);
-                                    }
-                                }
-                                else {
-                                    headerRowChild.encodeAll(context);
-                                }
-                            }
-                        }
-
-                        writer.endElement("tr");
-                    }
-                    else {
-                        child.encodeAll(context);
-                    }
-                }
-            }
-
-            context.getAttributes().remove(Constants.HELPER_RENDERER);
-        }
-        else {
+        int depth = matrix.size();
+        for (List<ColumnNode> rows : matrix) {
             writer.startElement("tr", null);
+            writer.writeAttribute("role", "row", null);
 
-            List<UIColumn> columns = tt.getColumns();
-            for (int i = 0; i < columns.size(); i++) {
-                UIColumn column = columns.get(i);
-
-                if (column instanceof Column) {
-                    encodeColumnHeader(context, tt, column);
+            for (ColumnNode column : rows) {
+                Object comp = column.getUIComp();
+                if (comp instanceof UIColumn) {
+                    if (comp instanceof DynamicColumn) {
+                        ((DynamicColumn) comp).applyModel();
+                    }
+                    encodeColumnHeader(context, table, (UIColumn) comp, (depth - column.getLevel()) + 1, column.getColspan());
                 }
-                else if (column instanceof DynamicColumn) {
-                    DynamicColumn dynamicColumn = (DynamicColumn) column;
-                    dynamicColumn.applyModel();
-
-                    encodeColumnHeader(context, tt, dynamicColumn);
+                else if (comp instanceof ColumnGroup) {
+                    encodeColumnGroupHeader(context, table, (ColumnGroup) comp, 1, column.getColspan());
                 }
             }
 
             writer.endElement("tr");
         }
+    }
 
-        writer.endElement("thead");
+    protected void encodeColumnGroupHeader(FacesContext context, TreeTable table, ColumnGroup group, int rowspan, int colspan) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String columnClass = DataTable.COLUMN_HEADER_CLASS;
+        columnClass = group.getStyleClass() != null ? columnClass + " " + group.getStyleClass() : columnClass;
+        writer.startElement("th", group);
+        writer.writeAttribute("id", group.getClientId(context), null);
+        writer.writeAttribute("class", columnClass, null);
+        writer.writeAttribute("role", "columnheader", null);
+        writer.writeAttribute("scope", "col", null);
+
+        renderDynamicPassThruAttributes(context, group);
+
+        if (group.getStyle() != null) {
+            writer.writeAttribute("style", group.getStyle(), null);
+        }
+        if (rowspan != 1) {
+            writer.writeAttribute("rowspan", rowspan, null);
+        }
+        if (colspan != 1) {
+            writer.writeAttribute("colspan", colspan, null);
+        }
+
+        UIComponent header = group.getFacet("header");
+
+        writer.startElement("span", null);
+        writer.writeAttribute("class", DataTable.COLUMN_TITLE_CLASS, null);
+
+        if (FacetUtils.shouldRenderFacet(header)) {
+            header.encodeAll(context);
+        }
+        else {
+            String headerText = group.getHeaderText();
+            if (headerText != null) {
+                writer.write(headerText);
+            }
+        }
+
+        writer.endElement("span");
+        writer.endElement("th");
     }
 
     public void encodeTbody(FacesContext context, TreeTable tt, TreeNode root, boolean dataOnly) throws IOException {
@@ -614,6 +607,10 @@ public class TreeTableRenderer extends DataRenderer {
     }
 
     public void encodeColumnHeader(FacesContext context, TreeTable tt, UIColumn column) throws IOException {
+        encodeColumnHeader(context, tt, column, column.getRowspan(), column.getColspan());
+    }
+
+    public void encodeColumnHeader(FacesContext context, TreeTable tt, UIColumn column, int rowspan, int colspan) throws IOException {
         if (!column.isRendered()) {
             return;
         }
@@ -636,8 +633,6 @@ public class TreeTableRenderer extends DataRenderer {
             columnVisible = columnMeta.getVisible();
         }
 
-        int colspan = column.getColspan();
-        int rowspan = column.getRowspan();
         boolean sortable = tt.isColumnSortable(context, column);
         boolean filterable = tt.isColumnFilterable(context, column);
         SortMeta sortMeta = null;
@@ -836,84 +831,39 @@ public class TreeTableRenderer extends DataRenderer {
 
     protected void encodeTfoot(FacesContext context, TreeTable tt) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        ColumnGroup group = tt.getColumnGroup("footer");
-        boolean hasFooterColumn = tt.hasFooterColumn();
-        boolean shouldRenderFooter = (hasFooterColumn || group != null);
 
-        if (!shouldRenderFooter) {
+        UIComponent tfooter = tt.getFacet("tfooter");
+        boolean hasFooterColumn = tt.hasFooterColumn();
+        if (tfooter == null && !hasFooterColumn) {
             return;
         }
 
         writer.startElement("tfoot", null);
-
-        if (group != null && group.isRendered()) {
-            context.getAttributes().put(Constants.HELPER_RENDERER, "columnGroup");
-
-            for (UIComponent child : group.getChildren()) {
-                if (child.isRendered()) {
-                    if (child instanceof Row) {
-                        Row footerRow = (Row) child;
-                        String rowClass = footerRow.getStyleClass();
-                        String rowStyle = footerRow.getStyle();
-
-                        writer.startElement("tr", null);
-                        if (rowClass != null) {
-                            writer.writeAttribute("class", rowClass, null);
-                        }
-                        if (rowStyle != null) {
-                            writer.writeAttribute("style", rowStyle, null);
-                        }
-
-                        for (UIComponent footerRowChild : footerRow.getChildren()) {
-                            if (footerRowChild.isRendered()) {
-                                if (footerRowChild instanceof Column) {
-                                    encodeColumnFooter(context, tt, (Column) footerRowChild);
-                                }
-                                else if (footerRowChild instanceof Columns) {
-                                    List<DynamicColumn> dynamicColumns = ((Columns) footerRowChild).getDynamicColumns();
-                                    for (DynamicColumn dynaColumn : dynamicColumns) {
-                                        dynaColumn.applyModel();
-                                        encodeColumnFooter(context, tt, dynaColumn);
-                                    }
-                                }
-                                else {
-                                    footerRowChild.encodeAll(context);
-                                }
-                            }
-                        }
-
-                        writer.endElement("tr");
-                    }
-                    else {
-                        child.encodeAll(context);
-                    }
-                }
-            }
-
-            context.getAttributes().remove(Constants.HELPER_RENDERER);
+        if (hasFooterColumn) {
+            encodeColumnFooters(context, tt);
         }
-        else if (hasFooterColumn) {
-            writer.startElement("tr", null);
-
-            List<UIColumn> columns = tt.getColumns();
-            for (int i = 0; i < columns.size(); i++) {
-                UIColumn column = columns.get(i);
-
-                if (column instanceof Column) {
-                    encodeColumnFooter(context, tt, column);
-                }
-                else if (column instanceof DynamicColumn) {
-                    DynamicColumn dynamicColumn = (DynamicColumn) column;
-                    dynamicColumn.applyModel();
-
-                    encodeColumnFooter(context, tt, dynamicColumn);
-                }
-            }
-
-            writer.endElement("tr");
+        if (tfooter != null) {
+            tfooter.encodeAll(context);
         }
 
         writer.endElement("tfoot");
+    }
+
+    protected void encodeColumnFooters(FacesContext context, TreeTable table) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        List<UIColumn> columns = table.getColumns();
+        writer.startElement("tr", null);
+        writer.writeAttribute("role", "row", null);
+        for (int i = 0; i < table.getColumnsCount(); i++) {
+            UIColumn column = columns.get(i);
+            if (column instanceof DynamicColumn) {
+                ((DynamicColumn) column).applyModel();
+            }
+
+            encodeColumnFooter(context, table, column);
+        }
+
+        writer.endElement("tr");
     }
 
     public void encodeColumnFooter(FacesContext context, TreeTable table, UIColumn column) throws IOException {

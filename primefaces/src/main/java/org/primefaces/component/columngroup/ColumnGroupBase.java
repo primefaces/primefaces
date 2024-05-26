@@ -34,8 +34,6 @@ public abstract class ColumnGroupBase extends UIComponentBase {
         style,
         styleClass,
         headerText,
-        @Deprecated
-        type
     }
 
     public ColumnGroupBase() {
@@ -70,15 +68,4 @@ public abstract class ColumnGroupBase extends UIComponentBase {
     public void setHeaderText(String headerText) {
         getStateHelper().put(PropertyKeys.headerText, headerText);
     }
-
-    @Deprecated
-    public String getType() {
-        return (String) getStateHelper().eval(PropertyKeys.type, null);
-    }
-
-    @Deprecated
-    public void setType(String type) {
-        getStateHelper().put(PropertyKeys.type, type);
-    }
-
 }

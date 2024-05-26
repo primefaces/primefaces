@@ -42,8 +42,6 @@ import javax.faces.model.*;
 
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.DynamicColumn;
-import org.primefaces.component.api.ForEachRowColumn;
-import org.primefaces.component.api.RowColumnVisitor;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
@@ -1133,12 +1131,5 @@ public class DataTable extends DataTableBase {
         // see https://github.com/primefaces/primefaces/issues/2154
         return getFacesContext().getCurrentPhaseId() == PhaseId.RENDER_RESPONSE
                 && (!isNestedWithinIterator() || columns.stream().noneMatch(DynamicColumn.class::isInstance));
-    }
-
-    @Override
-    public List<UIColumn> collectColumns() {
-        List<UIColumn> columnsTmp = ForEachRowColumn.from(this).invoke(new RowColumnVisitor.ColumnCollector()).getColumns();
-        columnsTmp.sort(ColumnComparators.displayOrder(getColumnMeta()));
-        return columnsTmp;
     }
 }

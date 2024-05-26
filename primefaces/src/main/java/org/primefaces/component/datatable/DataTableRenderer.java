@@ -41,14 +41,16 @@ import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.component.api.*;
+import org.primefaces.component.api.ColumnAware;
+import org.primefaces.component.api.ColumnNode;
+import org.primefaces.component.api.DynamicColumn;
+import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.datatable.feature.DataTableFeature;
 import org.primefaces.component.datatable.feature.DataTableFeatures;
 import org.primefaces.component.headerrow.HeaderRow;
-import org.primefaces.component.row.Row;
 import org.primefaces.component.subtable.SubTable;
 import org.primefaces.component.summaryrow.SummaryRow;
 import org.primefaces.event.data.PostRenderEvent;
@@ -936,42 +938,6 @@ public class DataTableRenderer extends DataRenderer {
         writer.endElement("thead");
     }
 
-    protected void encodeTFooter(FacesContext context, DataTable table, UIComponent tfooter, int columnStart, int columnEnd) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-
-        ForEachRowColumn
-                .from(tfooter)
-                .columnStart(columnStart)
-                .columnEnd(columnEnd)
-                .invoke(new RowColumnVisitor.Adapter() {
-
-                    @Override
-                    public void visitRow(int index, Row row) throws IOException {
-                        // Row will have his own renderer once col group legacy removed
-                        String rowClass = row.getStyleClass();
-                        String rowStyle = row.getStyle();
-
-                        writer.startElement("tr", null);
-                        if (rowClass != null) {
-                            writer.writeAttribute("class", rowClass, null);
-                        }
-                        if (rowStyle != null) {
-                            writer.writeAttribute("style", rowStyle, null);
-                        }
-                    }
-
-                    @Override
-                    public void visitRowEnd(int index, Row row) throws IOException {
-                        writer.endElement("tr");
-                    }
-
-                    @Override
-                    public void visitColumn(int index, UIColumn column) throws IOException {
-                        encodeCell(context, table, column, false, false, index);
-                    }
-                });
-    }
-
     protected void encodeColumnHeaders(FacesContext context, DataTable table, int columnStart, int columnEnd) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         List<List<ColumnNode>> matrix = ColumnAware.treeColumnsTo2DArray(table, columnStart, columnEnd);
@@ -1401,7 +1367,7 @@ public class DataTableRenderer extends DataRenderer {
             encodeColumnFooters(context, table, columnStart, columnEnd);
         }
         if (tfooter != null) {
-            encodeTFooter(context, table, tfooter, columnStart, columnEnd);
+            tfooter.encodeAll(context);
         }
 
         writer.endElement("tfoot");

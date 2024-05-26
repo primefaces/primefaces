@@ -79,8 +79,7 @@ public interface ColumnAware {
                     Columns columns = (Columns) child;
                     columns.forEachColumn(false, UIColumn::isRendered, (col, pos) -> row.add(new ColumnNode(root, col)));
                 }
-                else if (child.isRendered()
-                        && (child instanceof Column || child instanceof ColumnGroup)) {
+                else if (child.isRendered() && (child instanceof Column || child instanceof ColumnGroup)) {
                     ColumnNode node = new ColumnNode(root, child);
                     row.add(node);
                     if (child instanceof ColumnGroup) {
@@ -137,30 +136,12 @@ public interface ColumnAware {
         throw new FacesException("Cannot find column with key: " + columnKey);
     }
 
-    @Deprecated
-    default ColumnGroup getColumnGroup(String type) {
-        for (int i = 0; i < ((UIComponent) this).getChildCount(); i++) {
-            UIComponent child = ((UIComponent) this).getChildren().get(i);
-            if (child instanceof ColumnGroup) {
-                ColumnGroup colGroup = (ColumnGroup) child;
-                if (Objects.equals(type, colGroup.getType())) {
-                    return colGroup;
-                }
-            }
-        }
-
-        return null;
-    }
-
     List<UIColumn> getColumns();
 
     void setColumns(List<UIColumn> columns);
 
     default List<UIColumn> collectColumns() {
-        List<UIColumn> columns = ForEachRowColumn
-                .from((UIComponent) this)
-                .invoke(new RowColumnVisitor.ColumnCollector())
-                .getColumns();
+        List<UIColumn> columns = ForEachRowColumn.from((UIComponent) this).invoke(new RowColumnVisitor.ColumnCollector()).getColumns();
         Map<String, ColumnMeta> columnMeta = getColumnMeta();
         if (!columnMeta.isEmpty()) {
             columns.sort(ColumnComparators.displayOrder(columnMeta));
