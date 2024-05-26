@@ -49,6 +49,7 @@ Look into [migration guide](https://primefaces.github.io/primefaces/14_0_0/#/../
     * Added `filterPlaceholder` for `Column` and `Columns`
     * Added `rowData` to `CellEditEvent` which contains the entire row from the cell being edited.
     * Added `cellNavigation` property which defaults to true to enable WCAG keyboard navigation of table cells.
+    * Added `ALT+W` keyboard shortcut or double click on column resizer to auto adjust column to fit largest cell text.
 
 * Dashboard
     * Added `var` to allow dynamic panels in `DashboardWidget.setValue(obj)` per panel
