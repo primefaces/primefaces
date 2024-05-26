@@ -33,8 +33,8 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
         //events
         this.bindEvents();
 
-        if(this.cfg.toggleable) {
-            this.cfg.statefulGlobal = this.cfg.statefulGlobal === true ? true : false;
+        if (this.cfg.toggleable) {
+            this.cfg.statefulGlobal = Boolean(this.cfg.statefulGlobal);
             this.collapsedIds = [];
             this.createStorageKey();
             this.restoreState();
@@ -48,106 +48,111 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
     bindEvents: function() {
         var $this = this;
 
-        this.menuitemLinks.on("mouseenter", function(e) {
-            if($this.jq.is(':focus')) {
-                $this.jq.trigger("blur");
-            }
+        // make first focusable
+        this.menuitemLinks.filter(':not([disabled])').first().attr("tabindex", "0");
+        this.resetFocus(true);
 
-            $(this).addClass('ui-state-hover');
+        this.menuitemLinks.on("mouseenter.menu click.menu", function(e) {
+            $(this).trigger('focus');
         })
-        .on("mouseleave", function(e) {
-            $(this).removeClass('ui-state-hover');
-        });
+            .on("focusin.menu", function(e) {
+                $this.focus($(this));
+            })
+            .on("focusout.menu mouseleave.menu", function(e) {
+                $this.unfocus($(this));
+            })
+            .on('keydown.menu', function(e) {
+                var currentLink = $this.menuitemLinks.filter('.ui-state-hover');
+                switch (e.code) {
+                    case 'ArrowUp':
+                        var prevItem = currentLink.parent().prevAll('.ui-menuitem:first');
+                        if (prevItem.length) {
+                            $this.unfocus(currentLink);
+                            $this.focus(prevItem.children('.ui-menuitem-link'));
+                        }
 
-        if(this.cfg.overlay) {
+                        e.preventDefault();
+                        break;
+
+                    case 'ArrowDown':
+                        var nextItem = currentLink.parent().nextAll('.ui-menuitem:first');
+                        if (nextItem.length) {
+                            $this.unfocus(currentLink);
+                            $this.focus(nextItem.children('.ui-menuitem-link'));
+                        }
+
+                        e.preventDefault();
+                        break;
+
+                    case 'Space':
+                    case 'Enter':
+                    case 'NumpadEnter':
+                        currentLink.trigger('click');
+                        PrimeFaces.utils.openLink(e, currentLink);
+                        break;
+
+                    case 'Escape':
+                        $this.hide();
+
+                        if ($this.cfg.overlay) {
+                            $this.trigger.trigger('focus');
+                        }
+                        break;
+
+                }
+            });
+
+        if (this.cfg.overlay) {
             this.menuitemLinks.on("click", function() {
                 $this.hide();
             });
 
             this.trigger.on('keydown.ui-menu', function(e) {
-                switch(e.key) {
+                switch (e.key) {
                     case 'ArrowDown':
-                        $this.keyboardTarget.trigger('focus.menu');
+                        if (!$this.jq.is(':visible')) {
+                            $this.show();
+                        }
                         e.preventDefault();
-                    break;
+                        break;
 
                     case 'Tab':
-                        if($this.jq.is(':visible')) {
+                        if ($this.jq.is(':visible')) {
                             $this.hide();
                         }
-                    break;
+                        break;
+                }
+            });
+        }
+        else {
+            this.jq.on("focusout.menu", function(e) {
+                if (!$this.jq.has(e.relatedTarget).length) {
+                    $this.resetFocus(true);
                 }
             });
         }
 
-        if(this.cfg.toggleable) {
+        if (this.cfg.toggleable) {
             this.jq.find('> .ui-menu-list > .ui-widget-header').on('mouseover.menu', function() {
                 $(this).addClass('ui-state-hover');
             })
-            .on('mouseout.menu', function() {
-                $(this).removeClass('ui-state-hover');
-            })
-            .on('click.menu', function(e) {
-                var header = $(this);
+                .on('mouseout.menu', function() {
+                    $(this).removeClass('ui-state-hover');
+                })
+                .on('click.menu', function(e) {
+                    var header = $(this);
 
-                if(header.find('> h3 > .ui-icon').hasClass('ui-icon-triangle-1-s'))
-                    $this.collapseSubmenu(header, true);
-                else
-                    $this.expandSubmenu(header, true);
+                    if (header.find('> h3 > .ui-icon').hasClass('ui-icon-triangle-1-s'))
+                        $this.collapseSubmenu(header, true);
+                    else
+                        $this.expandSubmenu(header, true);
 
-                PrimeFaces.clearSelection();
-                e.preventDefault();
-            });
+                    PrimeFaces.clearSelection();
+                    e.preventDefault();
+                });
         }
-
-        this.keyboardTarget.on('focus.menu', function() {
-            $this.menuitemLinks.eq(0).addClass('ui-state-hover');
-        })
-        .on('blur.menu', function() {
-            $this.menuitemLinks.filter('.ui-state-hover').removeClass('ui-state-hover');
-        })
-        .on('keydown.menu', function(e) {
-            var currentLink = $this.menuitemLinks.filter('.ui-state-hover');
-            switch(e.code) {
-                    case 'ArrowUp':
-                        var prevItem = currentLink.parent().prevAll('.ui-menuitem:first');
-                        if(prevItem.length) {
-                            currentLink.removeClass('ui-state-hover');
-                            prevItem.children('.ui-menuitem-link').addClass('ui-state-hover');
-                        }
-
-                        e.preventDefault();
-                    break;
-
-                    case 'ArrowDown':
-                        var nextItem = currentLink.parent().nextAll('.ui-menuitem:first');
-                        if(nextItem.length) {
-                            currentLink.removeClass('ui-state-hover');
-                            nextItem.children('.ui-menuitem-link').addClass('ui-state-hover');
-                        }
-
-                        e.preventDefault();
-                    break;
-
-                    case 'Enter':
-                    case 'NumpadEnter':
-                        currentLink.trigger('click');
-                        $this.jq.trigger("blur");
-                        PrimeFaces.utils.openLink(e, currentLink);
-                    break;
-
-                    case 'Escape':
-                        $this.hide();
-
-                        if($this.cfg.overlay) {
-                            $this.trigger.trigger('focus');
-                        }
-                    break;
-
-            }
-        });
     },
-    
+
     /**
      * Create the key where the state for this component is stored.  By default it is stored per view. Override this 
      * method to change the behavior to be global.
@@ -166,11 +171,11 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
         var items = header.nextUntil('li.ui-widget-header');
 
         header.attr('aria-expanded', false)
-                .find('> h3 > .ui-icon').removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-e');
+            .find('> h3 > .ui-icon').removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-e');
 
         items.filter('.ui-submenu-child').hide();
 
-        if(stateful) {
+        if (stateful) {
             this.collapsedIds.push(header.attr('id'));
             this.saveState();
         }
@@ -186,11 +191,11 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
         var items = header.nextUntil('li.ui-widget-header');
 
         header.attr('aria-expanded', true)
-                .find('> h3 > .ui-icon').removeClass('ui-icon-triangle-1-e').addClass('ui-icon-triangle-1-s');
+            .find('> h3 > .ui-icon').removeClass('ui-icon-triangle-1-e').addClass('ui-icon-triangle-1-s');
 
         items.filter('.ui-submenu-child').show();
 
-        if(stateful) {
+        if (stateful) {
             var id = header.attr('id');
             this.collapsedIds = $.grep(this.collapsedIds, function(value) {
                 return (value !== id);
@@ -215,13 +220,12 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
     restoreState: function() {
         var collapsedIdsAsString = localStorage.getItem(this.stateKey);
 
-        if(collapsedIdsAsString) {
+        if (collapsedIdsAsString) {
             this.collapsedIds = collapsedIdsAsString.split(',');
 
-            for(var i = 0 ; i < this.collapsedIds.length; i++) {
-                var id = this.collapsedIds[i];
-                if (id) {
-                    this.collapseSubmenu($(PrimeFaces.escapeClientId(id).replace(/\|/g,"\\|")), false);
+            for (let collapsedId of this.collapsedIds) {
+                if (collapsedId) {
+                    this.collapseSubmenu($(PrimeFaces.escapeClientId(collapsedId).replace(/\|/g, "\\|")), false);
                 }
             }
         }
