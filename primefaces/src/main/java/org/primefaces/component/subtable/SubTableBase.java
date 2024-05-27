@@ -25,7 +25,9 @@ package org.primefaces.component.subtable;
 
 import javax.faces.component.UIData;
 
-public abstract class SubTableBase extends UIData {
+import org.primefaces.component.api.ColumnAware;
+
+public abstract class SubTableBase extends UIData implements ColumnAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

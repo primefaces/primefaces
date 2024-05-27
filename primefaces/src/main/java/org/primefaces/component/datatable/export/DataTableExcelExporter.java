@@ -23,13 +23,12 @@
  */
 package org.primefaces.component.datatable.export;
 
-import java.io.IOException;
-import java.util.concurrent.atomic.AtomicInteger;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.PrintSetup;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.WorkbookUtil;
 import org.primefaces.component.api.ColumnNode;
@@ -39,6 +38,10 @@ import org.primefaces.component.export.ColumnValue;
 import org.primefaces.component.export.ExcelOptions;
 import org.primefaces.util.ExcelStylesManager;
 import org.primefaces.util.LocaleUtils;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import java.io.IOException;
 
 public class DataTableExcelExporter extends DataTableExporter<Workbook, ExcelOptions> {
 
@@ -109,53 +112,6 @@ public class DataTableExcelExporter extends DataTableExporter<Workbook, ExcelOpt
     protected void exportCellValue(FacesContext context, DataTable table, UIColumn col, ColumnValue columnValue, int i) {
         Cell cell = row().createCell(i);
         stylesManager.updateCell(col, cell, columnValue);
-    }
-
-    @Override
-    protected void exportColumnGroupFacetValueLegacy(FacesContext context, DataTable table, UIColumn column,
-                                                     AtomicInteger colIndex, ColumnValue columnValue) {
-        Sheet sheet = sheet();
-        int rowIndex = sheet.getLastRowNum();
-
-        // by default column has 1 rowspan && colspan
-        int rowSpan = (column.getExportRowspan() != 0 ? column.getExportRowspan() : column.getRowspan()) - 1;
-        int colSpan = (column.getExportColspan() != 0 ? column.getExportColspan() : column.getColspan()) - 1;
-
-        if (rowSpan > 0 && colSpan > 0) {
-            colIndex.set(calculateColumnOffset(sheet, rowIndex, colIndex.get()));
-            sheet.addMergedRegion(new CellRangeAddress(
-                    rowIndex, // first row (0-based)
-                    rowIndex + rowSpan, // last row (0-based)
-                    colIndex.get(), // first column (0-based)
-                    colIndex.get() + colSpan // last column (0-based)
-            ));
-            exportColumnFacetValue(context, table, columnValue, (short) colIndex.get());
-            colIndex.set(colIndex.get() + colSpan);
-        }
-        else if (rowSpan > 0) {
-            sheet.addMergedRegion(new CellRangeAddress(
-                    rowIndex, // first row (0-based)
-                    rowIndex + rowSpan, // last row (0-based)
-                    colIndex.get(), // first column (0-based)
-                    colIndex.get() // last column (0-based)
-            ));
-            exportColumnFacetValue(context, table, columnValue, (short) colIndex.get());
-        }
-        else if (colSpan > 0) {
-            colIndex.set(calculateColumnOffset(sheet, rowIndex, colIndex.get()));
-            sheet.addMergedRegion(new CellRangeAddress(
-                    rowIndex, // first row (0-based)
-                    rowIndex, // last row (0-based)
-                    colIndex.get(), // first column (0-based)
-                    colIndex.get() + colSpan // last column (0-based)
-            ));
-            exportColumnFacetValue(context, table, columnValue, (short) colIndex.get());
-            colIndex.set(colIndex.get() + colSpan);
-        }
-        else {
-            colIndex.set(calculateColumnOffset(sheet, rowIndex, colIndex.get()));
-            exportColumnFacetValue(context, table, columnValue, (short) colIndex.get());
-        }
     }
 
     @Override

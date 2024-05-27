@@ -23,18 +23,31 @@
  */
 package org.primefaces.component.export;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.ObjIntConsumer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
+import org.primefaces.component.api.ColumnAware;
+import org.primefaces.component.api.ColumnNode;
+import org.primefaces.component.api.DynamicColumn;
+import org.primefaces.component.api.ForEachRowColumn;
+import org.primefaces.component.api.RowColumnVisitor;
+import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.api.UITable;
+import org.primefaces.component.celleditor.CellEditor;
+import org.primefaces.component.columngroup.ColumnGroup;
+import org.primefaces.component.overlaypanel.OverlayPanel;
+import org.primefaces.component.rowtoggler.RowToggler;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.EscapeUtils;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.IOUtils;
+import org.primefaces.util.LangUtils;
 
 import javax.el.MethodExpression;
 import javax.faces.FacesException;
-import javax.faces.component.*;
+import javax.faces.component.EditableValueHolder;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIPanel;
+import javax.faces.component.UISelectMany;
+import javax.faces.component.ValueHolder;
 import javax.faces.component.html.HtmlCommandLink;
 import javax.faces.component.html.HtmlGraphicImage;
 import javax.faces.component.visit.VisitCallback;
@@ -42,14 +55,20 @@ import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
-
-import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.api.*;
-import org.primefaces.component.celleditor.CellEditor;
-import org.primefaces.component.columngroup.ColumnGroup;
-import org.primefaces.component.overlaypanel.OverlayPanel;
-import org.primefaces.component.rowtoggler.RowToggler;
-import org.primefaces.util.*;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.ObjIntConsumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 public abstract class TableExporter<T extends UIComponent & UITable, D, O extends ExporterOptions> implements Exporter<T> {
 
@@ -132,12 +151,7 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
 
         if (exportConfiguration.isExportHeader()) {
             addTableFacets(context, table, ColumnType.HEADER);
-            if (ComponentUtils.hasChildOfType(table, ColumnGroup.class)) {
-                addColumnGroupFacets(context, table, ColumnType.HEADER);
-            }
-            else {
-                addColumnFacets(context, table, ColumnType.HEADER);
-            }
+            addColumnGroupFacets(context, table, ColumnType.HEADER);
         }
 
         if (exportConfiguration.isPageOnly()) {
@@ -223,12 +237,6 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
     protected void exportColumnFacetValue(FacesContext context, T table, ColumnValue columnValue, int index) {
         if (supportedFacetTypes.contains(FacetType.COLUMN)) {
             throw new UnsupportedOperationException(getClass().getName() + "#exportColumnFacetValue() must be implemented");
-        }
-    }
-
-    protected void exportColumnGroupFacetValueLegacy(FacesContext context, T table, UIColumn column, AtomicInteger colIndex, ColumnValue columnValue) {
-        if (supportedFacetTypes.contains(FacetType.COLUMN_GROUP)) {
-            throw new UnsupportedOperationException(getClass().getName() + "#exportColumnGroupFacetValueLegacy() must be implemented");
         }
     }
 

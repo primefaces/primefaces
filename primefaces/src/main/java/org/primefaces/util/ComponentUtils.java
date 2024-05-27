@@ -23,17 +23,15 @@
  */
 package org.primefaces.util;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.io.UncheckedIOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.*;
-import java.util.function.Supplier;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import org.primefaces.component.api.FlexAware;
+import org.primefaces.component.api.RTLAware;
+import org.primefaces.component.api.TouchAware;
+import org.primefaces.component.api.UITabPanel;
+import org.primefaces.component.api.UITable;
+import org.primefaces.config.PrimeConfiguration;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.csp.CspResponseWriter;
 
 import javax.el.ELException;
 import javax.el.ValueExpression;
@@ -41,7 +39,13 @@ import javax.faces.FacesException;
 import javax.faces.FacesWrapper;
 import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.NavigationCase;
-import javax.faces.component.*;
+import javax.faces.component.EditableValueHolder;
+import javax.faces.component.StateHelper;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
+import javax.faces.component.UINamingContainer;
+import javax.faces.component.UIParameter;
+import javax.faces.component.ValueHolder;
 import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.component.html.HtmlOutputFormat;
@@ -54,12 +58,25 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.render.Renderer;
+import java.io.IOException;
+import java.io.Serializable;
+import java.io.UncheckedIOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.function.Supplier;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import org.primefaces.component.api.*;
-import org.primefaces.config.PrimeConfiguration;
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.context.PrimeRequestContext;
-import org.primefaces.csp.CspResponseWriter;
 import static org.primefaces.renderkit.RendererUtils.getRenderKit;
 
 public class ComponentUtils {
@@ -802,16 +819,5 @@ public class ComponentUtils {
      */
     public static boolean isTargetableComponent(UIComponent component) {
         return !(component instanceof UntargetableComponent); // unlike UIInstructions
-    }
-
-    public static <T extends UIComponent> boolean hasChildOfType(UIComponent parent, Class<T> clazz) {
-        for (int i = 0; i < parent.getChildCount(); i++) {
-            UIComponent child = parent.getChildren().get(i);
-            if (child.isRendered() && child.getClass().isAssignableFrom(clazz)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

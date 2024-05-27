@@ -87,7 +87,7 @@ public interface RowColumnVisitor {
 
     class ColumnCollector extends Adapter {
 
-        private List<UIColumn> columns = new ArrayList<>();
+        private final List<UIColumn> columns = new ArrayList<>();
 
         @Override
         public void visitColumn(int index, UIColumn column) throws IOException {

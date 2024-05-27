@@ -41,10 +41,7 @@ import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.component.api.ColumnAware;
-import org.primefaces.component.api.ColumnNode;
-import org.primefaces.component.api.DynamicColumn;
-import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.api.*;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
@@ -1630,16 +1627,21 @@ public class DataTableRenderer extends DataRenderer {
             }
 
             headerLabel.set(null);
-            table.invokeOnColumn(sortMeta.getColumnKey(), (column) -> {
-                String label = getHeaderLabel(context, column);
-                if (LangUtils.isBlank(label)) {
-                    UIComponent headerFacet = column.getFacet("header");
-                    if (FacetUtils.shouldRenderFacet(headerFacet)) {
-                        // encode and strip all HTML tags
-                        label = ComponentUtils.encodeComponent(headerFacet, context).replaceAll("\\<.*?\\>", Constants.EMPTY_STRING);
+            // encode and strip all HTML tags
+            String columnKey = sortMeta.getColumnKey();
+            ForEachRowColumn.from(table).columnKey(columnKey).invoke(new RowColumnVisitor.Adapter() {
+                @Override
+                public void visitColumn(int index, UIColumn column) throws IOException {
+                    String label = getHeaderLabel(context, column);
+                    if (LangUtils.isBlank(label)) {
+                        UIComponent headerFacet = column.getFacet("header");
+                        if (FacetUtils.shouldRenderFacet(headerFacet)) {
+                            // encode and strip all HTML tags
+                            label = ComponentUtils.encodeComponent(headerFacet, context).replaceAll("<.*?>", Constants.EMPTY_STRING);
+                        }
                     }
+                    headerLabel.set(label);
                 }
-                headerLabel.set(label);
             });
             headers.put(sortMeta, headerLabel.get());
         }

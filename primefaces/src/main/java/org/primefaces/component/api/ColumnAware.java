@@ -23,9 +23,9 @@
  */
 package org.primefaces.component.api;
 
-import java.io.IOException;
-import java.util.*;
-import java.util.function.Consumer;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import javax.faces.FacesException;
@@ -35,8 +35,6 @@ import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.component.subtable.SubTable;
-import org.primefaces.model.ColumnMeta;
-import org.primefaces.util.ColumnComparators;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.FacetUtils;
 
@@ -49,7 +47,7 @@ public interface ColumnAware {
     static List<List<ColumnNode>> treeColumnsTo2DArray(UIComponent root, int columnStart, int columnEnd) {
         List<List<ColumnNode>> matrix = new ArrayList<>();
         ColumnNode rootNode = ColumnNode.root(root);
-        ColumnAware.treeColumnsTo2DArray(rootNode, matrix, columnStart, columnEnd);
+        treeColumnsTo2DArray(rootNode, matrix, columnStart, columnEnd);
         return matrix;
     }
 
@@ -109,15 +107,6 @@ public interface ColumnAware {
         return false;
     }
 
-    default void invokeOnColumn(String columnKey, Consumer<UIColumn> callback) {
-        ForEachRowColumn.from((UIComponent) this).columnKey(columnKey).invoke(new RowColumnVisitor.Adapter() {
-            @Override
-            public void visitColumn(int index, UIColumn column) throws IOException {
-                callback.accept(column);
-            }
-        });
-    }
-
     default UIColumn findColumn(String columnKey) {
         if ("globalFilter".equals(columnKey)) {
             return null;
@@ -141,12 +130,7 @@ public interface ColumnAware {
     void setColumns(List<UIColumn> columns);
 
     default List<UIColumn> collectColumns() {
-        List<UIColumn> columns = ForEachRowColumn.from((UIComponent) this).invoke(new RowColumnVisitor.ColumnCollector()).getColumns();
-        Map<String, ColumnMeta> columnMeta = getColumnMeta();
-        if (!columnMeta.isEmpty()) {
-            columns.sort(ColumnComparators.displayOrder(columnMeta));
-        }
-        return columns;
+        return ForEachRowColumn.from((UIComponent) this).invoke(new RowColumnVisitor.ColumnCollector()).getColumns();
     }
 
     default int getColumnsCount() {
@@ -156,12 +140,6 @@ public interface ColumnAware {
                 .invoke(new RowColumnVisitor.ColumnCounter())
                 .getCount();
     }
-
-    default Map<String, ColumnMeta> getColumnMeta() {
-        return Collections.emptyMap();
-    }
-
-    void setColumnMeta(Map<String, ColumnMeta> columnMeta);
 
     default String getOrderedColumnKeys() {
         return getColumns()

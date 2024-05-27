@@ -23,18 +23,6 @@
  */
 package org.primefaces.component.treetable.feature;
 
-import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
-import javax.el.ELContext;
-import javax.faces.FacesException;
-import javax.faces.context.FacesContext;
-import javax.faces.event.PhaseId;
-
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.ForEachRowColumn;
 import org.primefaces.component.api.RowColumnVisitor;
@@ -51,6 +39,18 @@ import org.primefaces.model.filter.FilterConstraint;
 import org.primefaces.model.filter.FunctionFilterConstraint;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LocaleUtils;
+
+import javax.el.ELContext;
+import javax.faces.FacesException;
+import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseId;
+import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class FilterFeature implements TreeTableFeature {
 
@@ -156,7 +156,7 @@ public class FilterFeature implements TreeTableFeature {
             ForEachRowColumn.from(tt).invoke(new RowColumnVisitor.Adapter() {
                 @Override
                 public void visitColumn(int index, UIColumn column) throws IOException {
-                    FilterMeta filter = filterBy.get(column.getColumnKey());
+                    FilterMeta filter = filterBy.get(column.getColumnKey(tt, rowKey));
                     if (filter == null || filter.isGlobalFilter()) {
                         return;
                     }

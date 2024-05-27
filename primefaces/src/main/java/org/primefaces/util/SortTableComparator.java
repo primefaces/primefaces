@@ -23,16 +23,22 @@
  */
 package org.primefaces.util;
 
+import java.io.IOException;
 import java.text.Collator;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
+
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
+import org.primefaces.component.api.ForEachRowColumn;
+import org.primefaces.component.api.RowColumnVisitor;
+import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.api.UITable;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.model.SortMeta;
@@ -69,8 +75,12 @@ public class SortTableComparator implements Comparator<Object> {
 
         for (SortMeta sortMeta : sortBy) {
             if (mapper.isValueExprBased() && sortMeta.isDynamic()) {
-                table.invokeOnColumn(sortMeta.getColumnKey(), column -> {
-                    compareResult.set(compareWithMapper(sortMeta, o1, o2));
+                String columnKey = sortMeta.getColumnKey();
+                ForEachRowColumn.from((UIComponent) table).columnKey(columnKey).invoke(new RowColumnVisitor.Adapter() {
+                    @Override
+                    public void visitColumn(int index, UIColumn column) throws IOException {
+                        compareResult.set(compareWithMapper(sortMeta, o1, o2));
+                    }
                 });
             }
             else {

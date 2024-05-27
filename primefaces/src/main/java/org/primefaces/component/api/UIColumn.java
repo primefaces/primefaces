@@ -23,11 +23,10 @@
  */
 package org.primefaces.component.api;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import org.primefaces.component.celleditor.CellEditor;
+import org.primefaces.model.MatchMode;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.LangUtils;
 
 import javax.el.ELContext;
 import javax.el.MethodExpression;
@@ -37,18 +36,13 @@ import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
-
-import org.primefaces.component.celleditor.CellEditor;
-import org.primefaces.model.MatchMode;
-import org.primefaces.util.FacetUtils;
-import org.primefaces.util.LangUtils;
+import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public interface UIColumn {
-
-    enum Facet {
-        HEADER,
-        FOOTER
-    }
 
     MatchMode DEFAULT_FILTER_MATCH_MODE = MatchMode.STARTS_WITH;
 

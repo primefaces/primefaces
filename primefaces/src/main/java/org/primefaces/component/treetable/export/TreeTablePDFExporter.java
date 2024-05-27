@@ -23,13 +23,6 @@
  */
 package org.primefaces.component.treetable.export;
 
-import java.awt.*;
-import java.io.IOException;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Logger;
-import javax.faces.context.FacesContext;
-
 import com.lowagie.text.Font;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.BaseFont;
@@ -45,6 +38,12 @@ import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.util.Constants;
 import org.primefaces.util.IOUtils;
 import org.primefaces.util.LangUtils;
+
+import javax.faces.context.FacesContext;
+import java.awt.*;
+import java.io.IOException;
+import java.util.Objects;
+import java.util.logging.Logger;
 
 public class TreeTablePDFExporter extends TreeTableExporter<Document, PDFOptions> {
 
@@ -122,14 +121,6 @@ public class TreeTablePDFExporter extends TreeTableExporter<Document, PDFOptions
     @Override
     protected void exportColumnFacetValue(FacesContext context, TreeTable table, ColumnValue columnValue, int index) {
         addFacetValue(1, 1, columnValue);
-    }
-
-    @Override
-    protected void exportColumnGroupFacetValueLegacy(FacesContext context, TreeTable table, UIColumn column,
-                                               AtomicInteger colIndex, ColumnValue columnValue) {
-        int rowSpan = column.getExportRowspan() != 0 ? column.getExportRowspan() : column.getRowspan();
-        int colSpan = column.getExportColspan() != 0 ? column.getExportColspan() : column.getColspan();
-        addFacetValue(rowSpan, colSpan, columnValue);
     }
 
     @Override

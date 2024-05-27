@@ -45,8 +45,8 @@ import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.ColumnMeta;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.SortMeta;
+import org.primefaces.util.ColumnComparators;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.FacetUtils;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.LocaleUtils;
 
@@ -548,25 +548,23 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         setColumnMeta(null);
     }
 
-    default boolean hasFooterColumn() {
-        for (int i = 0; i < getChildCount(); i++) {
-            UIComponent child = getChildren().get(i);
-            if (child.isRendered() && (child instanceof UIColumn)) {
-                UIColumn column = (UIColumn) child;
-
-                if (column.getFooterText() != null || FacetUtils.shouldRenderFacet(column.getFacet("footer"))) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
     default Locale resolveDataLocale(FacesContext context) {
         return LocaleUtils.resolveLocale(context, getDataLocale(), getClientId(context));
     }
 
     Object getDataLocale();
 
+    Map<String, ColumnMeta> getColumnMeta();
+
+    void setColumnMeta(Map<String, ColumnMeta> columnMeta);
+
+    @Override
+    default List<UIColumn> collectColumns() {
+        List<UIColumn> columns = ForEachRowColumn.from((UIComponent) this).invoke(new RowColumnVisitor.ColumnCollector()).getColumns();
+        Map<String, ColumnMeta> columnMeta = getColumnMeta();
+        if (!columnMeta.isEmpty()) {
+            columns.sort(ColumnComparators.displayOrder(columnMeta));
+        }
+        return columns;
+    }
 }
