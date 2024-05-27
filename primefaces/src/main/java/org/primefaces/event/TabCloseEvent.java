@@ -27,33 +27,10 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
 import org.primefaces.component.tabview.Tab;
 
-public class TabCloseEvent<T> extends AbstractAjaxBehaviorEvent implements TabEvent<T> {
+@Deprecated
+public class TabCloseEvent<T> extends TabEvent<T> {
 
-    private static final long serialVersionUID = 1L;
-
-    private transient Tab tab;
-    private T data;
-
-    public TabCloseEvent(UIComponent component, Behavior behavior, Tab tab) {
-        super(component, behavior);
-        this.tab = tab;
-    }
-
-    @Override
-    public Tab getTab() {
-        return tab;
-    }
-
-    public void setTab(Tab tab) {
-        this.tab = tab;
-    }
-
-    @Override
-    public T getData() {
-        return data;
-    }
-
-    public void setData(T data) {
-        this.data = data;
+    public TabCloseEvent(UIComponent component, Behavior behavior, Tab tab, T data, String type, int index) {
+        super(component, behavior, tab, data, type, index);
     }
 }

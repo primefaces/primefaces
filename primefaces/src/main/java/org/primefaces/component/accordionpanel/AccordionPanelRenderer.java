@@ -94,7 +94,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
                 acco.setIndex(-1);
             }
             else {
-                String tabClientId = params.get(clientId + "_newTab");
+                String tabClientId = params.get(clientId + "_currentTab");
                 Tab tabToLoad = acco.findTab(tabClientId);
                 tabToLoad.encodeAll(context);
                 tabToLoad.setLoaded(true);

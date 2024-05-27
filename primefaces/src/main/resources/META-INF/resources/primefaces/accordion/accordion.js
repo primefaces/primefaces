@@ -331,7 +331,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
                 ignoreAutoUpdate: true,
                 params: [
                     { name: this.id + '_contentLoad', value: true },
-                    { name: this.id + '_newTab', value: panel.attr('id') },
+                    { name: this.id + '_currentTab', value: panel.attr('id') },
                     { name: this.id + '_tabindex', value: parseInt(panel.index() / 2) }
                 ],
                 onsuccess: function(responseXML, status, xhr) {
@@ -370,7 +370,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
         if (this.hasBehavior('tabChange')) {
             var ext = {
                 params: [
-                    { name: this.id + '_newTab', value: panel.attr('id') },
+                    { name: this.id + '_currentTab', value: panel.attr('id') },
                     { name: this.id + '_tabindex', value: parseInt(panel.index() / 2) }
                 ]
             };
@@ -395,7 +395,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
                 global: false,
                 params: [
                     { name: this.id + '_skipChildren', value: true },
-                    { name: this.id + '_newTab', value: panel.attr('id') },
+                    { name: this.id + '_currentTab', value: panel.attr('id') },
                     { name: this.id + '_tabindex', value: parseInt(panel.index() / 2) }
                 ]
             };
@@ -439,7 +439,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
                 global: false,
                 params: [
                     { name: this.id + '_skipChildren', value: true },
-                    { name: this.id + '_newTab', value: panel.attr('id') },
+                    { name: this.id + '_currentTab', value: panel.attr('id') },
                     { name: this.id + '_tabindex', value: parseInt(index) }
                 ]
             };
