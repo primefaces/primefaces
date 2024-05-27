@@ -1,15 +1,18 @@
 /**
- * Rangy Text Inputs, a cross-browser textarea and text input library plug-in for jQuery.
+ * Rangy Inputs, a jQuery plug-in for selection and caret manipulation within textareas and text inputs.
+ * 
+ * https://github.com/timdown/rangyinputs
  *
- * Part of Rangy, a cross-browser JavaScript range and selection library
+ * For range and selection features for contenteditable, see Rangy.
+
  * http://code.google.com/p/rangy/
  *
  * Depends on jQuery 1.0 or later.
  *
- * Copyright 2010, Tim Down
+ * Copyright 2014, Tim Down
  * Licensed under the MIT license.
- * Version: 0.1.205
- * Build date: 5 November 2010
+ * Version: 1.2.0
+ * Build date: 30 November 2014
  */
 (function($) {
     var UNDEF = "undefined";
@@ -33,7 +36,7 @@
 
     function fail(reason) {
         if (window.console && window.console.log) {
-            window.console.log("TextInputs module for Rangy not supported in your browser. Reason: " + reason);
+            window.console.log("RangyInputs not supported in your browser. Reason: " + reason);
         }
     }
 
@@ -88,7 +91,7 @@
                 }
             };
         } else if (isHostMethod(testTextArea, "createTextRange") && isHostObject(document, "selection") &&
-            isHostMethod(document.selection, "createRange")) {
+                   isHostMethod(document.selection, "createRange")) {
 
             getSelection = function(el) {
                 var start = 0, end = 0, normalizedValue, textInputRange, len, endRange;
@@ -155,55 +158,129 @@
         // Clean up
         getBody().removeChild(testTextArea);
 
+        function getValueAfterPaste(el, text) {
+            var val = el.value, sel = getSelection(el), selStart = sel.start;
+            return {
+                value: val.slice(0, selStart) + text + val.slice(sel.end),
+                index: selStart,
+                replaced: sel.text
+            };
+        }
+        
+        function pasteTextWithCommand(el, text) {
+            el.focus();
+            var sel = getSelection(el);
+
+            // Hack to work around incorrect delete command when deleting the last word on a line
+            setSelection(el, sel.start, sel.end);
+            if (text == "") {
+                document.execCommand("delete", false, null);
+            } else {
+                document.execCommand("insertText", false, text);
+            }
+
+            return {
+                replaced: sel.text,
+                index: sel.start
+            };
+        }
+
+        function pasteTextWithValueChange(el, text) {
+            el.focus();
+            var valueAfterPaste = getValueAfterPaste(el, text);
+            el.value = valueAfterPaste.value;
+            return valueAfterPaste;
+        }
+
+        var pasteText = function(el, text) {
+            var valueAfterPaste = getValueAfterPaste(el, text);
+            try {
+                var pasteInfo = pasteTextWithCommand(el, text);
+                if (el.value == valueAfterPaste.value) {
+                    pasteText = pasteTextWithCommand;
+                    return pasteInfo;
+                }
+            } catch (ex) {
+                // Do nothing and fall back to changing the value manually
+            }
+            pasteText = pasteTextWithValueChange;
+            el.value = valueAfterPaste.value;
+            return valueAfterPaste;
+        };
+
         deleteText = function(el, start, end, moveSelection) {
-            var val;
             if (start != end) {
-                val = el.value;
-                el.value = val.slice(0, start) + val.slice(end);
+                setSelection(el, start, end);
+                pasteText(el, "");
             }
             if (moveSelection) {
-                setSelection(el, start, start);
+                setSelection(el, start);
             }
         };
 
         deleteSelectedText = function(el) {
-            var sel = getSelection(el);
-            deleteText(el, sel.start, sel.end, true);
+            setSelection(el, pasteText(el, "").index);
         };
 
         extractSelectedText = function(el) {
-            var sel = getSelection(el), val;
-            if (sel.start != sel.end) {
-                val = el.value;
-                el.value = val.slice(0, sel.start) + val.slice(sel.end);
+            var pasteInfo = pasteText(el, "");
+            setSelection(el, pasteInfo.index);
+            return pasteInfo.replaced;
+        };
+
+        var updateSelectionAfterInsert = function(el, startIndex, text, selectionBehaviour) {
+            var endIndex = startIndex + text.length;
+            
+            selectionBehaviour = (typeof selectionBehaviour == "string") ?
+                selectionBehaviour.toLowerCase() : "";
+
+            if ((selectionBehaviour == "collapsetoend" || selectionBehaviour == "select") && /[\r\n]/.test(text)) {
+                // Find the length of the actual text inserted, which could vary
+                // depending on how the browser deals with line breaks
+                var normalizedText = text.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+                endIndex = startIndex + normalizedText.length;
+                var firstLineBreakIndex = startIndex + normalizedText.indexOf("\n");
+                
+                if (el.value.slice(firstLineBreakIndex, firstLineBreakIndex + 2) == "\r\n") {
+                    // Browser uses \r\n, so we need to account for extra \r characters
+                    endIndex += normalizedText.match(/\n/g).length;
+                }
             }
-            setSelection(el, sel.start, sel.start);
-            return sel.text;
-        };
 
-        insertText = function(el, text, index, moveSelection) {
-            var val = el.value, caretIndex;
-            el.value = val.slice(0, index) + text + val.slice(index);
-            if (moveSelection) {
-                caretIndex = index + text.length;
-                setSelection(el, caretIndex, caretIndex);
+            switch (selectionBehaviour) {
+                case "collapsetostart":
+                    setSelection(el, startIndex, startIndex);
+                    break;
+                case "collapsetoend":
+                    setSelection(el, endIndex, endIndex);
+                    break;
+                case "select":
+                    setSelection(el, startIndex, endIndex);
+                    break;
             }
         };
 
-        replaceSelectedText = function(el, text) {
-            var sel = getSelection(el), val = el.value;
-            el.value = val.slice(0, sel.start) + text + val.slice(sel.end);
-            var caretIndex = sel.start + text.length;
-            setSelection(el, caretIndex, caretIndex);
+        insertText = function(el, text, index, selectionBehaviour) {
+            setSelection(el, index);
+            pasteText(el, text);
+            if (typeof selectionBehaviour == "boolean") {
+                selectionBehaviour = selectionBehaviour ? "collapseToEnd" : "";
+            }
+            updateSelectionAfterInsert(el, index, text, selectionBehaviour);
         };
 
-        surroundSelectedText = function(el, before, after) {
-            var sel = getSelection(el), val = el.value;
+        replaceSelectedText = function(el, text, selectionBehaviour) {
+            var pasteInfo = pasteText(el, text);
+            updateSelectionAfterInsert(el, pasteInfo.index, text, selectionBehaviour || "collapseToEnd");
+        };
 
-            el.value = val.slice(0, sel.start) + before + sel.text + after + val.slice(sel.end);
-            var startIndex = sel.start + before.length;
-            var endIndex = startIndex + sel.length;
-            setSelection(el, startIndex, endIndex);
+        surroundSelectedText = function(el, before, after, selectionBehaviour) {
+            if (typeof after == UNDEF) {
+                after = before;
+            }
+            var sel = getSelection(el);
+            var pasteInfo = pasteText(el, before + sel.text + after);
+            updateSelectionAfterInsert(el, pasteInfo.index + before.length, sel.text, selectionBehaviour || "select");
         };
 
         function jQuerify(func, returnThis) {
@@ -211,7 +288,8 @@
                 var el = this.jquery ? this[0] : this;
                 var nodeName = el.nodeName.toLowerCase();
 
-                if (el.nodeType == 1 && (nodeName == "textarea" || (nodeName == "input" && el.type == "text"))) {
+                if (el.nodeType == 1 && (nodeName == "textarea" ||
+                        (nodeName == "input" && /^(?:text|email|number|search|tel|url|password)$/i.test(el.type)))) {
                     var args = [el].concat(Array.prototype.slice.call(arguments));
                     var result = func.apply(this, args);
                     if (!returnThis) {

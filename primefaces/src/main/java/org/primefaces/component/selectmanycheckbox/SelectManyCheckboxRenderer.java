@@ -83,7 +83,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
             writer.endElement("span");
         }
         else if ("grid".equals(layout)) {
-            encodeLegacyTabularLayout(context, checkbox, layout);
+            throw new FacesException(layout + " is not a valid value for SelectManyCheckbox layout.");
         }
         else {
             encodeResponsiveLayout(context, checkbox, layout);
@@ -149,11 +149,16 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
                 encodeGroupLabel(context, checkbox, (SelectItemGroup) selectItem);
                 writer.endElement("div");
 
+                if (flex) {
+                    writer.startElement("div", null);
+                    writer.writeAttribute("class", GridLayoutUtils.getFlexGridClass(true), null);
+                }
+
                 for (SelectItem childSelectItem : ((SelectItemGroup) selectItem).getSelectItems()) {
                     colMod = idx % columns;
-                    if (!lineDirection && colMod == 0) {
+                    if (!flex && !lineDirection && colMod == 0) {
                         writer.startElement("div", null);
-                        writer.writeAttribute("class", GridLayoutUtils.getFlexGridClass(flex), null);
+                        writer.writeAttribute("class", GridLayoutUtils.getFlexGridClass(false), null);
                     }
 
                     groupIdx++;
@@ -166,12 +171,12 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
                     idx++;
                     colMod = idx % columns;
 
-                    if (!lineDirection && colMod == 0) {
+                    if (!flex && !lineDirection && colMod == 0) {
                         writer.endElement("div");
                     }
                 }
 
-                if (idx != 0 && (idx % columns) != 0) {
+                if (flex || (!flex && idx != 0 && (idx % columns) != 0)) {
                     writer.endElement("div");
                 }
 
@@ -179,7 +184,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
             }
             else {
                 colMod = idx % columns;
-                if (!lineDirection && colMod == 0) {
+                if ((flex && idx == 0) || (!flex && !lineDirection && colMod == 0)) {
                     writer.startElement("div", null);
                     writer.writeAttribute("class", GridLayoutUtils.getFlexGridClass(flex), null);
                 }
@@ -192,44 +197,17 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
                 idx++;
                 colMod = idx % columns;
 
-                if (!lineDirection && colMod == 0) {
+                if (!flex && !lineDirection && colMod == 0) {
                     writer.endElement("div");
                 }
             }
         }
 
-        if (idx != 0 && (idx % columns) != 0) {
+        if (idx != 0 && (flex || (!flex && (idx % columns) != 0))) {
             writer.endElement("div");
         }
 
         writer.endElement("div");
-    }
-
-    /**
-     * @deprecated in 13.0.0 remove in 14.0.0
-     */
-    @Deprecated
-    protected void encodeLegacyTabularLayout(FacesContext context, SelectManyCheckbox checkbox, String layout) throws IOException {
-        String clientId = checkbox.getClientId(context);
-        logDevelopmentWarning(context, "Table layout is deprecated and will be removed in future release. Please switch to responsive layout. ClientId: "
-                + clientId);
-        ResponseWriter writer = context.getResponseWriter();
-        String style = checkbox.getStyle();
-        String styleClass = checkbox.getStyleClass();
-        styleClass = styleClass == null ? SelectManyCheckbox.STYLE_CLASS : SelectManyCheckbox.STYLE_CLASS + " " + styleClass;
-
-        writer.startElement("table", checkbox);
-        writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("role", "presentation", null);
-        writer.writeAttribute("class", styleClass, "styleClass");
-        if (style != null) {
-            writer.writeAttribute("style", style, "style");
-        }
-
-        renderARIARequired(context, checkbox);
-        encodeSelectItems(context, checkbox, layout);
-
-        writer.endElement("table");
     }
 
     protected void encodeOptionInput(FacesContext context, SelectManyCheckbox checkbox, String id, String name, boolean checked,
@@ -324,134 +302,6 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         writer.endElement("span");
 
         writer.endElement("div");
-    }
-
-    /**
-     * @deprecated in 13.0.0 remove in 14.0.0
-     */
-    @Deprecated protected void encodeSelectItems(FacesContext context, SelectManyCheckbox checkbox, String layout) throws IOException {
-        if ("lineDirection".equals(layout)) {
-            encodeLineLayout(context, checkbox);
-        }
-        else if ("pageDirection".equals(layout)) {
-            encodePageLayout(context, checkbox);
-        }
-        else if ("grid".equals(layout)) {
-            encodeGridLayout(context, checkbox);
-        }
-        else {
-            throw new FacesException("Invalid '" + layout + "' type for component '" + checkbox.getClientId(context) + "'.");
-        }
-    }
-
-    /**
-     * @deprecated in 13.0.0 remove in 14.0.0
-     */
-    @Deprecated protected void encodeLineLayout(FacesContext context, SelectManyCheckbox checkbox) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        List<SelectItem> selectItems = getSelectItems(context, checkbox);
-        Converter converter = checkbox.getConverter();
-        Object values = getValues(checkbox);
-        Object submittedValues = getSubmittedValues(checkbox);
-
-        writer.startElement("tr", null);
-        for (int i = 0; i < selectItems.size(); i++) {
-            SelectItem selectItem = selectItems.get(i);
-            if (selectItem instanceof SelectItemGroup) {
-                writer.startElement("td", null);
-                encodeGroupLabel(context, checkbox, (SelectItemGroup) selectItem);
-                writer.endElement("td");
-            }
-            else {
-                writer.startElement("td", null);
-                encodeOption(context, checkbox, values, submittedValues, converter, selectItem, i);
-                writer.endElement("td");
-            }
-        }
-        writer.endElement("tr");
-    }
-
-    /**
-     * @deprecated in 13.0.0 remove in 14.0.0
-     */
-    @Deprecated protected void encodePageLayout(FacesContext context, SelectManyCheckbox checkbox) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        List<SelectItem> selectItems = getSelectItems(context, checkbox);
-        Converter converter = checkbox.getConverter();
-        Object values = getValues(checkbox);
-        Object submittedValues = getSubmittedValues(checkbox);
-
-        int idx = 0;
-        for (int i = 0; i < selectItems.size(); i++) {
-            SelectItem selectItem = selectItems.get(i);
-            if (selectItem instanceof SelectItemGroup) {
-                writer.startElement("tr", null);
-                writer.startElement("td", null);
-                encodeGroupLabel(context, checkbox, (SelectItemGroup) selectItem);
-                writer.endElement("td");
-                writer.endElement("tr");
-                idx++;
-
-                for (SelectItem childSelectItem : ((SelectItemGroup) selectItem).getSelectItems()) {
-                    writer.startElement("tr", null);
-                    writer.startElement("td", null);
-                    encodeOption(context, checkbox, values, submittedValues, converter, childSelectItem, idx);
-                    writer.endElement("td");
-                    writer.endElement("tr");
-                    idx++;
-                }
-            }
-            else {
-                writer.startElement("tr", null);
-                writer.startElement("td", null);
-                encodeOption(context, checkbox, values, submittedValues, converter, selectItem, idx);
-                writer.endElement("td");
-                writer.endElement("tr");
-                idx++;
-            }
-        }
-    }
-
-    /**
-     * @deprecated in 13.0.0 remove in 14.0.0
-     */
-    @Deprecated protected void encodeGridLayout(FacesContext context, SelectManyCheckbox checkbox) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        List<SelectItem> selectItems = getSelectItems(context, checkbox);
-        Converter converter = checkbox.getConverter();
-        Object values = getValues(checkbox);
-        Object submittedValues = getSubmittedValues(checkbox);
-        int columns = checkbox.getColumns();
-
-        if (columns <= 0) {
-            throw new FacesException("The value of columns attribute must be greater than zero.");
-        }
-
-        int idx = 0;
-        int colMod = 0;
-        for (int i = 0; i < selectItems.size(); i++) {
-            SelectItem selectItem = selectItems.get(i);
-            colMod = idx % columns;
-            if (colMod == 0) {
-                writer.startElement("tr", null);
-            }
-
-            writer.startElement("td", null);
-            encodeOption(context, checkbox, values, submittedValues, converter, selectItem, idx);
-            writer.endElement("td");
-
-            idx++;
-            colMod = idx % columns;
-
-            if (colMod == 0) {
-                writer.endElement("tr");
-            }
-        }
-
-        // close final <tr> if not closed
-        if (colMod != 0) {
-            writer.endElement("tr");
-        }
     }
 
     protected void encodeCustomLayout(FacesContext context, SelectManyCheckbox checkbox) throws IOException {

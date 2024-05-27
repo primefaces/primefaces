@@ -29,11 +29,13 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.ConfirmDialog;
@@ -96,9 +98,13 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
         ConfirmDialog dialog = page.dialog;
         assertFalse(dialog.isVisible());
         page.confirm.click();
+        CommandButton noButton = dialog.getNoButton();
+        assertEquals("No", noButton.getText());
+        assertCss(noButton, "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left ui-confirmdialog-no ui-button-flat");
+        assertCss(noButton.findElement(By.className("ui-icon")), "ui-button-icon-left ui-icon ui-c pi pi-times");
 
         // Act
-        dialog.getNoButton().click();
+        noButton.click();
 
         // Assert
         assertTrue(page.message.isEmpty());
@@ -113,9 +119,13 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
         ConfirmDialog dialog = page.dialog;
         page.confirm.click();
         assertTrue(dialog.isVisible());
+        CommandButton yesButton = dialog.getYesButton();
+        assertEquals("Yes", yesButton.getText());
+        assertCss(yesButton, "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left ui-confirmdialog-yes");
+        assertCss(yesButton.findElement(By.className("ui-icon")), "ui-button-icon-left ui-icon ui-c pi pi-check");
 
         // Act
-        PrimeSelenium.guardAjax(dialog.getYesButton()).click();
+        PrimeSelenium.guardAjax(yesButton).click();
 
         // Assert
         assertEquals("You have accepted", page.message.getMessage(0).getDetail());
@@ -130,6 +140,11 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
         ConfirmDialog dialog = page.dialog;
         assertFalse(dialog.isVisible());
         page.delete.click();
+        CommandButton noButton = dialog.getNoButton();
+        assertEquals("Keep this!", noButton.getText());
+        assertCss(noButton,
+                "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left ui-confirmdialog-no ui-button-flat bg-green-600 text-white");
+        assertCss(noButton.findElement(By.className("ui-icon")), "ui-button-icon-left ui-icon ui-c pi pi-heart");
 
         // Act
         dialog.getNoButton().click();
@@ -137,6 +152,9 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
         // Assert
         assertTrue(page.message.isEmpty());
         assertDialog(page, false);
+
+        // assert the buttons are back to normal
+        confirmNo(page);
     }
 
     @Test
@@ -147,13 +165,19 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
         ConfirmDialog dialog = page.dialog;
         assertFalse(dialog.isVisible());
         page.delete.click();
+        CommandButton yesButton = dialog.getYesButton();
+        assertEquals("Delete Me!", yesButton.getText());
+        assertCss(yesButton, "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left ui-confirmdialog-yes bg-red-600 text-white");
+        assertCss(yesButton.findElement(By.className("ui-icon")), "ui-button-icon-left ui-icon ui-c pi pi-trash");
 
         // Act
-        PrimeSelenium.guardAjax(dialog.getYesButton()).click();
+        PrimeSelenium.guardAjax(yesButton).click();
 
         // Assert
         assertEquals("Record deleted", page.message.getMessage(0).getDetail());
         assertDialog(page, false);
+        // assert the buttons are back to normal
+        confirmYes(page);
     }
 
     @Test
@@ -210,6 +234,7 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
         else {
             assertClickableOrLoading(page.confirm);
             assertClickableOrLoading(page.delete);
+            PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(dialog));
         }
 
         assertConfiguration(dialog.getWidgetConfiguration());

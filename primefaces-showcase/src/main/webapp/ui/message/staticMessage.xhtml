@@ -1,8 +1,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="title">
@@ -23,6 +23,9 @@
             <h5>Basic</h5>
             <div class="grid">
                 <div class="col-12 md:col-4">
+                    <p:staticMessage severity="success" summary="SUCCESS" detail="Message Content" style="width: 100%"/>
+                </div>
+                <div class="col-12 md:col-4">
                     <p:staticMessage severity="info" summary="INFO" detail="Message Content" style="width: 100%"/>
                 </div>
                 <div class="col-12 md:col-4">
@@ -30,6 +33,9 @@
                 </div>
                 <div class="col-12 md:col-4">
                     <p:staticMessage severity="error" summary="ERROR" detail="Message Content" style="width: 100%"/>
+                </div>
+                <div class="col-12 md:col-4">
+                    <p:staticMessage severity="fatal" summary="FATAL" detail="Message Content" style="width: 100%"/>
                 </div>
             </div>
 

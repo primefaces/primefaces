@@ -23,9 +23,9 @@
  */
 package org.primefaces.showcase.view.csv;
 
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Named;
-import javax.validation.constraints.*;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Named;
+import jakarta.validation.constraints.*;
 import java.util.Date;
 
 @Named
@@ -51,14 +51,41 @@ public class BeanValidationView {
     @Past
     private Date pastDate;
 
+    @PastOrPresent
+    private Date pastOrPresentDate;
+
     @Future
     private Date futureDate;
+
+    @FutureOrPresent
+    private Date futureOrPresent;
+
+    @Negative
+    private Integer negative;
+
+    @NegativeOrZero
+    private Integer negativeOrZero;
+
+    @Positive
+    private Integer positive;
+
+    @PositiveOrZero
+    private Integer positiveOrZero;
 
     @Pattern(regexp = "^[-+]?\\d+$")
     private String pattern;
 
     @NotNull
     private Boolean bool;
+
+    @NotBlank
+    private String notBlank;
+
+    @NotEmpty
+    private String notEmpty;
+
+    @Email
+    private String email;
 
     public String getName() {
         return name;
@@ -130,6 +157,78 @@ public class BeanValidationView {
 
     public void setBool(Boolean bool) {
         this.bool = bool;
+    }
+
+    public String getNotBlank() {
+        return notBlank;
+    }
+
+    public void setNotBlank(String notBlank) {
+        this.notBlank = notBlank;
+    }
+
+    public String getNotEmpty() {
+        return notEmpty;
+    }
+
+    public void setNotEmpty(String notEmpty) {
+        this.notEmpty = notEmpty;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Date getPastOrPresentDate() {
+        return pastOrPresentDate;
+    }
+
+    public void setPastOrPresentDate(Date pastOrPresentDate) {
+        this.pastOrPresentDate = pastOrPresentDate;
+    }
+
+    public Date getFutureOrPresent() {
+        return futureOrPresent;
+    }
+
+    public void setFutureOrPresent(Date futureOrPresent) {
+        this.futureOrPresent = futureOrPresent;
+    }
+
+    public Integer getNegative() {
+        return negative;
+    }
+
+    public void setNegative(Integer negative) {
+        this.negative = negative;
+    }
+
+    public Integer getNegativeOrZero() {
+        return negativeOrZero;
+    }
+
+    public void setNegativeOrZero(Integer negativeOrZero) {
+        this.negativeOrZero = negativeOrZero;
+    }
+
+    public Integer getPositive() {
+        return positive;
+    }
+
+    public void setPositive(Integer positive) {
+        this.positive = positive;
+    }
+
+    public Integer getPositiveOrZero() {
+        return positiveOrZero;
+    }
+
+    public void setPositiveOrZero(Integer positiveOrZero) {
+        this.positiveOrZero = positiveOrZero;
     }
 
 }

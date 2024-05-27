@@ -213,6 +213,10 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         .on('mouseout.pickList', function(e) {
             $(this).removeClass('ui-state-hover');
         })
+        .on('mousedown.pickList', function(e) {
+            var item = $(this).closest('li.ui-picklist-item');
+            $this.focusedItem = item;
+        })
         .on('click.pickList', function(e) {
             //stop propagation
             if($this.checkboxClick||$this.dragging) {
@@ -289,11 +293,15 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         }
 
         if(this.cfg.showCheckbox) {
-            this.checkboxes.on('mouseenter.pickList', function(e) {
+            this.checkboxes.off().on('mouseenter.pickList', function(e) {
                 $(this).addClass('ui-state-hover');
             })
             .on('mouseleave.pickList', function(e) {
                 $(this).removeClass('ui-state-hover');
+            })
+            .on('mousedown.pickList', function(e) {
+                var item = $(this).closest('li.ui-picklist-item');
+                $this.focusedItem = item;
             })
             .on('click.pickList', function(e) {
                 $this.checkboxClick = true;
@@ -673,15 +681,11 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
     bindEnterKeyFilter: function(filter) {
         var $this = this;
 
-        filter
-            .on('keydown', PrimeFaces.utils.blockEnterKey)
-            .on('keyup', function(e) {
-                if(e.key === 'Enter') {
-                    $this.filter(this.value, $this.getFilteredList($(this)));
-
-                    e.preventDefault();
-                }
-            });
+        filter.on('keyup', function(e) {
+            if (PrimeFaces.utils.blockEnterKey(e)) {
+                $this.filter(this.value, $this.getFilteredList($(this)));
+            }
+        });
     },
 
     /**
@@ -694,7 +698,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
 
         //prevent form submit on enter key
         filter.on(this.cfg.filterEvent, function(e) {
-            if (PrimeFaces.utils.ignoreFilterKey(e)) {
+            if (PrimeFaces.utils.ignoreFilterKey(e) || PrimeFaces.utils.blockEnterKey(e)) {
                 return;
             }
 
@@ -709,8 +713,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 $this.filterTimeout = null;
             },
             $this.cfg.filterDelay);
-        })
-        .on('keydown', PrimeFaces.utils.blockEnterKey);
+        });
     },
 
     /**
@@ -1168,6 +1171,8 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             $($this.jqId + ' ul').sortable('enable');
             $this.updateButtonsState();
         }
+
+        this.fireInputChanged();
     },
 
     /**
@@ -1229,6 +1234,17 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
      */
     fireReorderEvent: function() {
         this.callBehavior('reorder');
+        this.fireInputChanged();
+    },
+    
+    /**
+     * Triggers change events on the input fields.
+     * @private
+     */
+    fireInputChanged: function() {
+        // #11540: trigger change events on inputs for form handling
+        this.targetInput.trigger("change");
+        this.sourceInput.trigger("change");
     },
 
     /**

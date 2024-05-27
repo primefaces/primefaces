@@ -300,13 +300,22 @@ if (window.PrimeFaces) {
       "javax.validation.constraints.DecimalMax.message": "must be less than or equal to {0}.",
       "javax.validation.constraints.DecimalMin.message": "must be greater than or equal to {0}.",
       "javax.validation.constraints.Digits.message": "numeric value out of bounds (&lt;{0} digits&gt;.&lt;{1} digits&gt; expected).",
-      "javax.validation.constraints.Future.message": "must be in the future.",
+      "javax.validation.constraints.Email.message": "must be a well-formed email address.",
+      "javax.validation.constraints.Future.message": "must be a future date.",
+      "javax.validation.constraints.FutureOrPresent.message": "must be a date in the present or in the future.",
       "javax.validation.constraints.Max.message": "must be less than or equal to {0}.",
       "javax.validation.constraints.Min.message": "must be greater than or equal to {0}.",
-      "javax.validation.constraints.NotNull.message": "may not be null.",
+      "javax.validation.constraints.Negative.message": "must be less than 0.",
+      "javax.validation.constraints.NegativeOrZero.message": "must be less than or equal to 0.",
+      "javax.validation.constraints.NotBlank.message": "must not be blank.",
+      "javax.validation.constraints.NotEmpty.message": "must not be empty.",
+      "javax.validation.constraints.NotNull.message": "must not be null.",
       "javax.validation.constraints.Null.message": "must be null.",
-      "javax.validation.constraints.Past.message": "must be in the past.",
-      "javax.validation.constraints.Pattern.message": 'must match "{0}".',
+      "javax.validation.constraints.Past.message": "must be a past date.",
+      "javax.validation.constraints.PastOrPresent.message": "must be a date in the past or in the present.",
+      "javax.validation.constraints.Pattern.message": "must match '{0}'.",
+      "javax.validation.constraints.Positive.message": "must be greater than 0.",
+      "javax.validation.constraints.PositiveOrZero.message": "must be greater than or equal to 0.",
       "javax.validation.constraints.Size.message": "size must be between {0} and {1}.",
     },
   });
@@ -314,6 +323,15 @@ if (window.PrimeFaces) {
   PrimeFaces.locales["en_US"] = PrimeFaces.locales["en"];
 }
 
+```
+
+### Overwrite Global Value
+
+In certain situations, you might find it necessary to unify all locales to a single value. For instance, if you wish to establish `firstDayOfWeek=1` uniformly across all locales. 
+The function `setGlobalLocaleValue` is available for precisely this purpose, ensuring consistency by applying the same value across all locales. Example usage:
+
+```js
+PrimeFaces.setGlobalLocaleValue('firstDayOfWeek', 1);
 ```
 
 ### Usage

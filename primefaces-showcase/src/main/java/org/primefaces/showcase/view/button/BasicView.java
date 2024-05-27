@@ -25,8 +25,8 @@ package org.primefaces.showcase.view.button;
 
 import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
 
 @Named("buttonBasicView")
 @ViewScoped

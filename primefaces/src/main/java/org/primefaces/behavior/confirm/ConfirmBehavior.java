@@ -31,6 +31,8 @@ import org.primefaces.behavior.base.AbstractBehavior;
 import org.primefaces.behavior.base.BehaviorAttribute;
 import org.primefaces.component.api.Confirmable;
 import org.json.JSONObject;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 
 public class ConfirmBehavior extends AbstractBehavior {
 
@@ -42,6 +44,12 @@ public class ConfirmBehavior extends AbstractBehavior {
         header(String.class),
         message(String.class),
         icon(String.class),
+        yesButtonLabel(String.class),
+        yesButtonClass(String.class),
+        yesButtonIcon(String.class),
+        noButtonLabel(String.class),
+        noButtonClass(String.class),
+        noButtonIcon(String.class),
         disabled(Boolean.class),
         beforeShow(String.class),
         escape(Boolean.class);
@@ -74,8 +82,22 @@ public class ConfirmBehavior extends AbstractBehavior {
         String source = getSource();
         String type = JSONObject.quote(getType());
         String headerText = JSONObject.quote(getHeader());
-        String messageText = JSONObject.quote(getMessage());
+
+        String messageText;
+        UIComponent messageFacetComponent = component.getFacet("confirmMessage");
+        if (FacetUtils.shouldRenderFacet(messageFacetComponent)) {
+            messageText = JSONObject.quote(ComponentUtils.encodeComponent(messageFacetComponent, context));
+        }
+        else {
+            messageText = JSONObject.quote(getMessage());
+        }
         String beforeShow = JSONObject.quote(getBeforeShow());
+        String yesButtonClass = JSONObject.quote(getYesButtonClass());
+        String yesButtonLabel = JSONObject.quote(getYesButtonLabel());
+        String yesButtonIcon = JSONObject.quote(getYesButtonIcon());
+        String noButtonClass = JSONObject.quote(getNoButtonClass());
+        String noButtonLabel = JSONObject.quote(getNoButtonLabel());
+        String noButtonIcon = JSONObject.quote(getNoButtonIcon());
 
         source = (source == null) ? component.getClientId(context) : source;
 
@@ -88,6 +110,12 @@ public class ConfirmBehavior extends AbstractBehavior {
                                                    + ",escape:" + isEscape()
                                                    + ",header:" + headerText
                                                    + ",message:" + messageText
+                                                   + ",yesButtonClass:" + yesButtonClass
+                                                   + ",yesButtonLabel:" + yesButtonLabel
+                                                   + ",yesButtonIcon:" + yesButtonIcon
+                                                   + ",noButtonClass:" + noButtonClass
+                                                   + ",noButtonLabel:" + noButtonLabel
+                                                   + ",noButtonIcon:" + noButtonIcon
                                                    + ",icon:\"" + (icon == null ? "" : icon)
                                                    + "\",beforeShow:" + beforeShow
                                                    + "});return false;";
@@ -168,5 +196,53 @@ public class ConfirmBehavior extends AbstractBehavior {
 
     public void setEscape(boolean escape) {
         put(PropertyKeys.escape, escape);
+    }
+
+    public String getYesButtonLabel() {
+        return eval(PropertyKeys.yesButtonLabel, null);
+    }
+
+    public void setYesButtonLabel(String yesButtonLabel) {
+        put(PropertyKeys.yesButtonLabel, yesButtonLabel);
+    }
+
+    public String getYesButtonClass() {
+        return eval(PropertyKeys.yesButtonClass, null);
+    }
+
+    public void setYesButtonClass(String yesButtonClass) {
+        put(PropertyKeys.yesButtonClass, yesButtonClass);
+    }
+
+    public String getYesButtonIcon() {
+        return eval(PropertyKeys.yesButtonIcon, null);
+    }
+
+    public void setYesButtonIcon(String yesButtonIcon) {
+        put(PropertyKeys.yesButtonIcon, yesButtonIcon);
+    }
+
+    public String getNoButtonLabel() {
+        return eval(PropertyKeys.noButtonLabel, null);
+    }
+
+    public void setNoButtonLabel(String noButtonLabel) {
+        put(PropertyKeys.noButtonLabel, noButtonLabel);
+    }
+
+    public String getNoButtonClass() {
+        return eval(PropertyKeys.noButtonClass, null);
+    }
+
+    public void setNoButtonClass(String noButtonClass) {
+        put(PropertyKeys.noButtonClass, noButtonClass);
+    }
+
+    public String getNoButtonIcon() {
+        return eval(PropertyKeys.noButtonIcon, null);
+    }
+
+    public void setNoButtonIcon(String noButtonIcon) {
+        put(PropertyKeys.noButtonIcon, noButtonIcon);
     }
 }

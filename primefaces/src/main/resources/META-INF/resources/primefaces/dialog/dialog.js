@@ -112,14 +112,14 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         //configuration
         this.cfg.width = this.cfg.width||'auto';
         this.cfg.height = this.cfg.height||'auto';
-        this.cfg.draggable = this.cfg.draggable === false ? false : true;
-        this.cfg.resizable = this.cfg.resizable === false ? false : true;
+        this.cfg.draggable = this.cfg.draggable !== false;
+        this.cfg.resizable = this.cfg.resizable !== false;
+        this.cfg.cache = this.cfg.cache !== false;
+        this.cfg.responsive = this.cfg.responsive !== false;
         this.cfg.minWidth = this.cfg.minWidth||150;
         this.cfg.minHeight = this.cfg.minHeight||this.titlebar.outerHeight();
         this.cfg.my = this.cfg.my||'center';
         this.cfg.position = this.cfg.position||'center';
-        this.cfg.cache = this.cfg.cache === false ? false : true;
-        this.cfg.responsive = this.cfg.responsive === false ? false : true;
         this.parent = this.jq.parent();
         this.focusedElementBeforeDialogOpened = null;
 
@@ -370,8 +370,12 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
      * @protected
      */
     applyFocus: function() {
-        if (this.cfg.focus)
-            PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.focus).trigger('focus');
+        if (this.cfg.focus) {
+            var $this = this;
+            PrimeFaces.queueTask(function() {
+                PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector($this.jq, $this.cfg.focus).trigger('focus')
+            }, 100);
+        }
         else
             PrimeFaces.focus(null, this.id);
     },
@@ -383,6 +387,12 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
     returnFocus: function() {
         var el = this.focusedElementBeforeDialogOpened;
         if (el) {
+            // #11860 do not return focus to caller if other dialogs are still open
+            var otherDialogs = $(".ui-dialog:visible").length > 0;
+            if (otherDialogs) {
+                return;
+            }
+            // #11318 prevent scrolling in Chrome by using delayed execution
             PrimeFaces.queueTask(function() { el.focus({ preventScroll: true }) }, 100);
         }
     },
@@ -456,6 +466,9 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
                         e.stopPropagation();
                     }
                 };
+            });
+            this.addDestroyListener(function() {
+                $(document).off('keydown.dialog_' + this.id);
             });
         }
     },
@@ -646,14 +659,12 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         else {
             this.saveState();
 
-            var win = $(window);
-
             this.jq.addClass('ui-dialog-maximized').css({
-                'width': String(win.width() - 6)
-                ,'height': String(win.height())
+                'width': String($(window).width() - 6)
+                ,'height': String($(window).height())
             }).offset({
-                top: win.scrollTop()
-                ,left: win.scrollLeft()
+                top: $(window).scrollTop()
+                ,left: $(window).scrollLeft()
             });
 
             //maximize content
@@ -760,10 +771,9 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             contentHeight: this.content.height()
         };
 
-        var win = $(window);
         this.state.offset = this.jq.offset();
-        this.state.windowScrollLeft = win.scrollLeft();
-        this.state.windowScrollTop = win.scrollTop();
+        this.state.windowScrollLeft = $(window).scrollLeft();
+        this.state.windowScrollTop = $(window).scrollTop();
     },
 
     /**
@@ -774,10 +784,9 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.jq.width(this.state.width).height(this.state.height);
         this.content.width(this.state.contentWidth).height(this.state.contentHeight);
 
-        var win = $(window);
         this.jq.offset({
-                top: this.state.offset.top + (win.scrollTop() - this.state.windowScrollTop)
-                ,left: this.state.offset.left + (win.scrollLeft() - this.state.windowScrollLeft)
+                top: this.state.offset.top + ($(window).scrollTop() - this.state.windowScrollTop)
+                ,left: this.state.offset.left + ($(window).scrollLeft() - this.state.windowScrollLeft)
         });
     },
 
@@ -858,30 +867,32 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
     bindResizeListener: function() {
         var $this = this;
 
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', null, function() {
-            if ($this.cfg.fitViewport) {
-                $this.fitViewport();
-            }
+        // internal function to handle resize or scrolling
+        function handleResize() {
+            if ($this.isVisible()) {
+                if ($this.cfg.fitViewport) {
+                    $this.fitViewport();
+                }
 
-            if ($this.isVisible() && !$this.cfg.absolutePositioned) {
-                // instant reinit position
-                $this.initPosition();
+                if (!$this.cfg.absolutePositioned) {
+                    $this.initPosition();
+                }
+                else {
+                    $this.positionInitialized = false;
+                }
             }
-            else {
-                // reset, so the dialog will be positioned again when showing the dialog next time
-                $this.positionInitialized = false;
-            }
-        });
-        PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id + '_align', function() {
-            if ($this.isVisible() && !$this.cfg.absolutePositioned) {
-                // instant reinit position
-                $this.initPosition();
-            }
-            else {
-                // reset, so the dialog will be positioned again when showing the dialog next time
-                $this.positionInitialized = false;
-            }
-        });
+        }
+
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', null, handleResize);
+        PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id + '_align', handleResize);
+
+        // #11578 if not using dialog framework (it has its own observer) then resize if the dialog is resized
+        if (!this.cfg.hasIframe && !this.cfg.resizable) {
+            const observer = new ResizeObserver(_entries => {
+                handleResize();
+            });
+            observer.observe(this.jq[0]);
+        }
     }
 
 });
@@ -906,6 +917,8 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
  * @prop {JQuery} title DOM element of the title bar text.
  * @prop {JQuery} message DOM element of the confirmation message displayed in this confirm dialog.
  * @prop {JQuery} icon DOM element of the icon displayed next to the confirmation message.
+ * @prop {JQuery} yesButton DOM element of the Yes button.
+ * @prop {JQuery} noButton DOM element of the No button.
  * 
  * @interface {PrimeFaces.widget.ConfirmDialogCfg} cfg The configuration for the
  * {@link  ConfirmDialog| ConfirmDialog widget}. You can access this configuration via
@@ -937,26 +950,46 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
 
         if(this.cfg.global) {
             PrimeFaces.confirmDialog = this;
+            
+            this.yesButton = this.jq.find('.ui-confirmdialog-yes');
+            this.noButton = this.jq.find('.ui-confirmdialog-no');
+            this.yesButton.data('p-text', this.yesButton.children('.ui-button-text').text());
+            this.noButton.data('p-text', this.noButton.children('.ui-button-text').text());
+            this.yesButton.data('p-icon', this.yesButton.children('.ui-icon').attr('class'));
+            this.noButton.data('p-icon', this.noButton.children('.ui-icon').attr('class'));
 
             this.jq.on('click.ui-confirmdialog', '.ui-confirmdialog-yes, .ui-confirmdialog-no', null, function(e) {
                 var el = $(this);
 
                 if(el.hasClass('ui-confirmdialog-yes') && PrimeFaces.confirmSource) {
-                    var id = PrimeFaces.confirmSource.get(0);
-                    var js = PrimeFaces.confirmSource.data('pfconfirmcommand');
+                    var source = PrimeFaces.confirmSource;
+                    var id = source.get(0);
+                    var js = source.data('pfconfirmcommand');
                     var command = $(id);
-                    
-                    // Test if the function matches the pattern
+
                     if (PrimeFaces.ajax.Utils.isAjaxRequest(js) || command.is('a')) {
                         // command is ajax=true
-                        PrimeFaces.csp.executeEvent(id, js, e);
-                    }
-                    else {
+                        var originalOnClick;
+
+                        if (source[0]) {
+                            var events = $._data(source[0], "events");
+                            originalOnClick = source.prop('onclick') || (events && events.click ? events.click[0].handler : null);
+                        }
+
+                        // Temporarily remove the click handler and execute the new one
+                        source.prop('onclick', null).off("click").on("click", function(event) {
+                            PrimeFaces.csp.executeEvent(id, js, event);
+                        }).click();
+
+                        // Restore the original click handler if it exists
+                        if (originalOnClick) {
+                            source.off("click").on("click", originalOnClick);
+                        }
+                    } else {
                         // command is ajax=false
                         if (command.prop('onclick')) {
                             command.removeAttr("onclick");
-                        }
-                        else {
+                        } else {
                             command.off("click");
                         }
                         command.removeAttr("data-pfconfirmcommand").click();
@@ -983,36 +1016,79 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
     applyFocus: function() {
         this.jq.find(':button,:submit').filter(':visible:enabled').eq(0).trigger('focus');
     },
+    
+    /**
+     * @override
+     * @protected
+     * @inheritdoc
+     * @param {unknown} [event] Unused.
+     * @param {unknown} [ui] Unused. 
+     */
+    onHide: function(event, ui) {
+        this._super(event, ui);
+
+        // Remove added classes and reset button labels to their original values
+        if (this.cfg.global) {
+            this.yesButton.removeClass(this.yesButton.data('p-class'));
+            this.noButton.removeClass(this.noButton.data('p-class'));
+            this.yesButton.children('.ui-button-text').text(this.yesButton.data('p-text'));
+            this.noButton.children('.ui-button-text').text(this.noButton.data('p-text'));
+            this.yesButton.children('.ui-icon').attr('class', this.yesButton.data('p-icon'));
+            this.noButton.children('.ui-icon').attr('class', this.noButton.data('p-icon'));
+        }
+    },
 
     /**
      * Shows the given message in this confirmation dialog.
      * @param {Partial<PrimeFaces.widget.ConfirmDialog.ConfirmDialogMessage>} msg Message to show.
      */
     showMessage: function(msg) {
-        if(msg.beforeShow) {
+        // Execute any code specified to run before showing the message
+        if (msg.beforeShow) {
             PrimeFaces.csp.eval(msg.beforeShow);
         }
 
+        // Set icon if provided, or hide it otherwise
         if (msg.icon) {
             this.icon.removeClass().addClass('ui-icon ui-confirm-dialog-severity ' + msg.icon);
             this.icon.show();
-        }
-        else {
+        } else {
             this.icon.hide();
         }
 
-        if(msg.header)
-            this.title.text(msg.header);
+        // Set labels and classes for yes and no buttons if provided
+        if (msg.yesButtonLabel) {
+            this.yesButton.children('.ui-button-text').text(msg.yesButtonLabel);
+        }
+        if (msg.yesButtonClass) {
+            this.yesButton.addClass(msg.yesButtonClass).data('p-class', msg.yesButtonClass);
+        }
+        if (msg.yesButtonIcon) {
+            PrimeFaces.utils.replaceIcon(this.yesButton.children('.ui-icon'), msg.yesButtonIcon);
+        }
+        if (msg.noButtonLabel) {
+            this.noButton.children('.ui-button-text').text(msg.noButtonLabel);
+        }
+        if (msg.noButtonClass) {
+            this.noButton.addClass(msg.noButtonClass).data('p-class', msg.noButtonClass);
+        }
+        if (msg.noButtonIcon) {
+            PrimeFaces.utils.replaceIcon(this.noButton.children('.ui-icon'), msg.noButtonIcon);
+        }
 
-        if(msg.message){
-            if (msg.escape){
+        // Set title, message content, and escape HTML if necessary
+        if (msg.header) {
+            this.title.text(msg.header);
+        }
+        if (msg.message) {
+            if (msg.escape) {
                 this.message.text(msg.message);
-            }
-            else {
-            	this.message.html(msg.message);
+            } else {
+                this.message.html(msg.message);
             }
         }
-        
+
+        // Reset position if specified in global configuration
         if (this.cfg.global) {
             this.positionInitialized = false;
         }

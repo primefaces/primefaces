@@ -319,8 +319,6 @@
     background-color: #D5DDF6;
     display: inline-block;
     z-index: 1;
-    /*overflow: hidden;
-     */
 }
 
 .vis-item.vis-selected {
@@ -530,7 +528,7 @@ div.vis-tooltip {
     visibility: hidden;
     padding: 5px;
     white-space: nowrap;
-    font-family: verdana;
+    font-family: verdana, sans-serif;
     font-size: 14px;
     color: #000000;
     background-color: #f5f4ed;
@@ -717,8 +715,7 @@ div.vis-tooltip {
 .vis-group-level-unknown-but-gte1 {
     border: 1px solid red;
 }
-.vis-label.vis-nesting-group:before, .vis-label.vis-nesting-group:before
-    {
+.vis-label.vis-nesting-group:before {
     display: inline-block;
     width: 15px;
 }
@@ -763,11 +760,8 @@ div.vis-tooltip {
     top: 0;
     width: 100%;
     color: #4d4d4d;
-    box-sizing: border-box;
-}
-
-.vis-labelset .vis-label {
     border-bottom: 1px solid #bfbfbf;
+    box-sizing: border-box;
 }
 
 .vis-labelset .vis-label.draggable {

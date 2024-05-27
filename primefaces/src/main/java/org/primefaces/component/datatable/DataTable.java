@@ -804,7 +804,25 @@ public class DataTable extends DataTableBase {
 
             for (int i = 0; i < iterableChildren.size(); i++) {
                 UIComponent child = iterableChildren.get(i);
-                if (child.isRendered()) {
+                if (child instanceof Columns) {
+                    Columns columns = (Columns) child;
+                    for (int j = 0; j < columns.getRowCount(); j++) {
+                        columns.setRowIndex(j);
+
+                        if (!columns.isRowAvailable()) {
+                            break;
+                        }
+
+                        if (columns.isRendered()) {
+                            for (int k = 0; k < columns.getChildCount(); k++) {
+                                UIComponent grandkid = columns.getChildren().get(k);
+                                process(context, grandkid, phaseId);
+                            }
+                        }
+                    }
+                    columns.setRowIndex(-1);
+                }
+                else if (child.isRendered()) {
                     if (child instanceof Column) {
                         for (int j = 0; j < child.getChildCount(); j++) {
                             UIComponent grandkid = child.getChildren().get(j);

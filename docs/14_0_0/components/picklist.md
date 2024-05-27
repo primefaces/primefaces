@@ -9,7 +9,7 @@ PickList is used for transferring data between two different collections.
 | Name | Value |
 | --- | --- |
 | Tag | pickList
-| Component Class | org.primefaces.component.picklist.Panel
+| Component Class | org.primefaces.component.picklist.PickList
 | Component Type | org.primefaces.component.PickList
 | Component Family | org.primefaces.component |
 | Renderer Type | org.primefaces.component.PickListRenderer
@@ -187,12 +187,18 @@ to _onTransfer_ attribute.
 
 ## Ajax Behavior Events
 
+The following AJAX behavior events are available for this component. If no event is specified the default event is called.  
+  
+**Default Event:** `transfer`  
+**Available Events:** `reorder, select, transfer, unselect`  
+
 | Event | Listener Parameter | Fired |
 | --- | --- | --- |
 select | org.primefaces.event.SelectEvent | When an item selected.
 unselect | org.primefaces.event.UnselectEvent | When an item unselected.
 reorder | javax.faces.event.AjaxBehaviorEvent | When list is reordered.
 transfer | org.primefaces.event.TransferEvent | When an item is moved to another list.
+
 
 ```xhtml
 <p:pickList value="#{pickListBean.cities}" var="city" itemLabel="#{city}" itemValue="#{city}">

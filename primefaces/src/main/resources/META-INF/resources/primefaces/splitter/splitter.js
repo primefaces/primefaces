@@ -12,8 +12,6 @@
  * - `local`: Use the browser's local storage which keeps data between sessions.
  * - `session`: Use the browser's session storage which is cleared when the session ends.
  *
- * @prop {boolean} [dragging] Whether the splitter is currently being dragged, i.e. whether an element is
- * being resized.
  * @prop {JQuery} gutters DOM elements of the gutter elements in splitter.
  * @prop {JQuery | null} [gutterElement] When resizing, the DOM elements of the gutter used for resizing.
  *@prop {JQuery | null} [gutterHandle] DOM element of the gutter handle for keyboard events.
@@ -104,12 +102,13 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
     bindDocumentEvents: function() {
         var $this = this;
 
-        $(document).on('mousemove.splitter', function(event) {
+        $(document).on('mousemove.splitter' + this.id, function(event) {
             $this.onResize(event);
-        }).on('mouseup.splitter', function(event) {
+        }).on('mouseup.splitter' + this.id, function(event) {
             $this.onResizeEnd(event);
             $this.unbindDocumentEvents();
         });
+        
     },
 
     /**
@@ -117,7 +116,7 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     unbindDocumentEvents: function() {
-        $(document).off('mousemove.splitter mouseup.splitter');
+        $(document).off('.splitter' + this.id);
     },
 
     /**
@@ -250,14 +249,9 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
      * @param {boolean} isKeyDown is key being held down
      */
     onResizeStart: function(event, isKeyDown) {
-        var pageX = event.type === 'touchstart' ? event.touches[0].pageX : event.pageX;
-        var pageY = event.type === 'touchstart' ? event.touches[0].pageY : event.pageY;
-
-        this.gutterElement = $(event.currentTarget);
+        this.gutterElement = $(event.currentTarget || event.target.parentElement);
         this.gutterHandle = this.gutterElement.find('.ui-splitter-gutter-handle')
         this.size = this.horizontal ? this.jq.width() : this.jq.height();
-        this.dragging = true;
-        this.startPos = this.horizontal ? pageX : pageY;
         this.prevPanelElement = this.gutterElement.prev();
         this.nextPanelElement = this.gutterElement.next();
         this.prevPanelIndex = this.panels.index(this.prevPanelElement);
@@ -267,8 +261,11 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
             this.prevPanelSize = this.horizontal ? this.prevPanelElement.outerWidth(true) : this.prevPanelElement.outerHeight(true);
             this.nextPanelSize = this.horizontal ? this.nextPanelElement.outerWidth(true) : this.nextPanelElement.outerHeight(true);
         } else {
-            this.prevPanelSize = 100 * (this.horizontal ? this.prevPanelElement.outerWidth(true) : this.prevPanelElement.outerHeight(true)) / this.size;
-            this.nextPanelSize = 100 * (this.horizontal ? this.nextPanelElement.outerWidth(true) : this.nextPanelElement.outerHeight(true)) / this.size;
+            var pageX = event.type === 'touchstart' ? event.touches[0].pageX : event.pageX;
+            var pageY = event.type === 'touchstart' ? event.touches[0].pageY : event.pageY;
+            this.startPos = this.horizontal ? pageX : pageY;
+            this.prevPanelSize = (100 * (this.horizontal ? this.prevPanelElement.outerWidth(true) : this.prevPanelElement.outerHeight(true))) / this.size;
+            this.nextPanelSize = (100 * (this.horizontal ? this.nextPanelElement.outerWidth(true) : this.nextPanelElement.outerHeight(true))) / this.size;
         }
     },
 
@@ -280,21 +277,15 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
      * @param {boolean} isKeyDown is key being held down
      */
     onResize: function(event, step = 0, isKeyDown = false) {
-        var newPos, newNextPanelSize, newPrevPanelSize;
-        var pageX = event.type === 'touchmove' ? event.touches[0].pageX : event.pageX;
-        var pageY = event.type === 'touchmove' ? event.touches[0].pageY : event.pageY;
+        var newNextPanelSize, newPrevPanelSize;
 
         if (isKeyDown) {
-            if (this.horizontal) {
-                newPrevPanelSize = (100 * (this.prevPanelSize + step)) / this.size;
-                newNextPanelSize = (100 * (this.nextPanelSize - step)) / this.size;
-            } else {
-                newPrevPanelSize = (100 * (this.prevPanelSize - step)) / this.size;
-                newNextPanelSize = (100 * (this.nextPanelSize + step)) / this.size;
-            }
+            var delta = this.horizontal ? step : -step;
+            newPrevPanelSize = (100 * (this.prevPanelSize + delta)) / this.size;
+            newNextPanelSize = (100 * (this.nextPanelSize - delta)) / this.size;
         } else {
-            if (this.horizontal) newPos = (pageX * 100) / this.size - (this.startPos * 100) / this.size;
-            else newPos = (pageY * 100) / this.size - (this.startPos * 100) / this.size;
+            var pagePos = (event.type === 'touchstart' ? event.touches[0] : event)[this.horizontal ? 'pageX' : 'pageY'];
+            var newPos = (pagePos * 100) / this.size - (this.startPos * 100) / this.size;
             newPrevPanelSize = this.prevPanelSize + newPos;
             newNextPanelSize = this.nextPanelSize - newPos;
         }
@@ -354,7 +345,6 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
             // update ARIA for the primary panel
             this.gutterHandle.attr('aria-valuenow', newPrevPanelSize.toString())
                 .attr('aria-valuetext', newPrevPanelSize.toFixed(0) + '%');
-            this.prevPanelSize = newPrevPanelSize;
         }
     },
 
@@ -363,7 +353,6 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     clear: function() {
-        this.dragging = false;
         this.size = null;
         this.startPos = null;
         this.prevPanelElement = null;

@@ -31,35 +31,41 @@ PrimeFaces.widget.DefaultCommand = PrimeFaces.widget.BaseWidget.extend({
         this.scope = this.cfg.scope ? $(PrimeFaces.escapeClientId(this.cfg.scope)) : null;
         var $this = this;
 
-        // container support - e.g. splitButton
+        // Support container elements such as splitButton
         if (this.jqTarget.is(':not(:button):not(:input):not(a)')) {
             this.jqTarget = this.jqTarget.find('button,a').filter(':visible').first();
         }
 
-        //attach keypress listener to parent form
-        var closestForm = this.jqTarget.closest('form');
-        closestForm.off('keydown.' + this.id).on('keydown.' + this.id, {scopeEnter: false}, function (e, data) {
+        // attach keypress listener to parent form
+        var closestForm = this.jqTarget[0].hasAttribute('data-pf-form')
+            ? $(PrimeFaces.escapeClientId(this.jqTarget[0].getAttribute('data-pf-form')))
+            : this.jqTarget.closest('form');
+        var scopeKeydown = 'keydown.' + this.id;
+        closestForm.off(scopeKeydown).on(scopeKeydown, { scopeEnter: false }, function(e, data) {
+            if (e.key !== 'Enter') {
+                return;
+            }
             data = data || e.data;
-            if (($this.scope && data.scopeEnter && data.scopeDefaultCommandId === $this.id)
-                    || (!$this.scope && !data.scopeEnter && (e.key === 'Enter'))) {
-                // Do not proceed if target is a textarea, button, link or TextEditor
-                if ($(e.target).is('textarea,button,input[type="submit"],a,.ql-editor')) {
+            if (($this.scope && data.scopeEnter && data.scopeDefaultCommandId === $this.id) || (!$this.scope && !data.scopeEnter)) {
+                var eventTarget = $(e.target);
+                // Do not proceed if target is a textarea, button, link, or TextEditor
+                if (eventTarget.is('textarea,button,input[type="submit"],a,.ql-editor')) {
                     return true;
                 }
-
                 if (!$this.jqTarget.is(':disabled, .ui-state-disabled')) {
-                    $this.jqTarget.trigger(PrimeFaces.csp.clickEvent($this.jqTarget));
+                    // focus default command button and click it
+                    $this.jqTarget.trigger('focus').trigger(PrimeFaces.csp.clickEvent($this.jqTarget));
                 }
                 e.preventDefault();
                 e.stopImmediatePropagation();
             }
         });
 
+        // Add keydown listener to scope if available
         if (this.scope) {
-            this.scope.off('keydown.' + this.id).on('keydown.' + this.id, function (e) {
+            this.scope.off(scopeKeydown).on(scopeKeydown, function(e) {
                 if (e.key === 'Enter') {
                     closestForm.trigger(e, {scopeEnter: true, scopeDefaultCommandId: $this.id});
-                    //e.preventDefault();
                     e.stopPropagation();
                 }
             });

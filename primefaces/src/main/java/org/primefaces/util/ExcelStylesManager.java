@@ -32,6 +32,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 import org.apache.poi.hssf.usermodel.HSSFFont;
@@ -97,7 +98,7 @@ public class ExcelStylesManager {
 
     public void updateFacetCell(Cell cell, ColumnValue value) {
         if (value.isStringValue()) {
-            updateCellStringValue(cell, value.toString(), facetStyles);
+            updateCellStringValue(cell, Objects.toString(value, Constants.EMPTY_STRING), facetStyles);
         }
         else {
             updateCellObjectValue(cell, value.getValue(), facetStyles);
@@ -120,7 +121,7 @@ public class ExcelStylesManager {
      */
     public void updateCell(UIColumn column, Cell cell, ColumnValue value) {
         if (value.isStringValue()) {
-            updateCellStringValue(cell, value.toString(), cellStyles);
+            updateCellStringValue(cell, Objects.toString(value, Constants.EMPTY_STRING), cellStyles);
         }
         else {
             updateCellObjectValue(cell, value.getValue(), cellStyles);
@@ -149,7 +150,7 @@ public class ExcelStylesManager {
         }
         else {
             cell.setCellStyle(styles.getDefaultStyle());
-            cell.setCellValue(createRichTextString(value.toString()));
+            cell.setCellValue(createRichTextString(Objects.toString(value, Constants.EMPTY_STRING)));
         }
     }
 

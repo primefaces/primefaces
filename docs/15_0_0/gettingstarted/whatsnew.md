@@ -1,0 +1,35 @@
+# What is new?
+
+This page contains a list of big features. Please check the GitHub issues for all changes.
+
+## 15.0.0
+
+### PrimeFaces
+
+Look into [migration guide](https://primefaces.github.io/primefaces/15_0_0/#/../migrationguide/15_0_0) for more enhancements and changes.
+
+* Core
+    
+* AutoComplete
+    * Added property `highlightSelector=""` so you can delcare the jQuery selector for what to find and highlight. See https://github.com/primefaces/primefaces/issues/11822 
+    
+* Captcha
+    * Added [hCaptcha](https://www.hcaptcha.com/) support
+    
+* ConfirmDialog/ConfirmPopup
+    * `yesButtonLabel`: overrides label of 'Yes' button (and restores it before the global confirm dialog is reused elsewhere)
+    * `yesButtonClass`: adds given class to 'Yes' button (and removes it before the global confirm dialog is reused elsewhere)
+    * `yesButtonIcon`: overrides icon of 'Yes' button (and removes it before the global confirm dialog is reused elsewhere)
+    * `noButtonLabel`: overrides label of 'No' button (and restores it before the global confirm dialog is reused elsewhere)
+    * `noButtonClass`: adds given class to 'No' button (and removes it before the global confirm dialog is reused elsewhere)
+    * `noButtonIcon`: overrides icon of 'No' button (and removes it before the global confirm dialog is reused elsewhere)
+    * `confirmMessage`: facet on the parent component of the `p:confirm` behavior. Can be used as message content instead of the `p:confirm` `message` attribute.
+    
+* FeedReader
+    * Added `podcast="true"` property if [Apple Itunes Podcast](https://help.apple.com/itc/podcasts_connect/#/itcb54353390) parsing and specific tags 
+    
+* StaticMessage
+    * Added `severity="success"` to align with React/Vue/Angular
+
+* DataTable
+    * Added `expandIcon`/`collapseIcon` attributes for RowToggler

@@ -284,6 +284,9 @@ PrimeFaces.widget.Wizard = PrimeFaces.widget.BaseWidget.extend({
                 $this.enableNextNav();
             }
         });
+        this.addDestroyListener(function() {
+            $(document).off('.' + this.id);
+        });
     },
 
 });

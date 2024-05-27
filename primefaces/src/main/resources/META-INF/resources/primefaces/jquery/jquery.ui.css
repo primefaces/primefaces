@@ -1,13 +1,7 @@
-/*!
- * jQuery UI CSS Framework 1.12.1
- * http://jqueryui.com
- *
- * Copyright jQuery Foundation and other contributors
- * Released under the MIT license.
- * http://jquery.org/license
- *
- * http://api.jqueryui.com/category/theming/
- */
+/*! jQuery UI - v1.13.3 - 2024-04-26
+* https://jqueryui.com
+* Includes: draggable.css, core.css, resizable.css, selectable.css, sortable.css, slider.css
+* Copyright OpenJS Foundation and other contributors; Licensed MIT */
 .ui-draggable-handle {
 	-ms-touch-action: none;
 	touch-action: none;

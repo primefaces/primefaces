@@ -86,14 +86,15 @@ public class MultiSelectListbox extends MultiSelectListboxBase {
             AjaxBehaviorEvent ajaxBehaviorEvent = (AjaxBehaviorEvent) event;
             if ("itemSelect".equals(eventName)) {
                 String clientId = getClientId(context);
-                Object selectedItemValue = ComponentUtils.getConvertedValue(context, this, params.get(getClientId(context) + "_itemSelect"));
+                Object selectedItemValue = ComponentUtils.getConvertedValue(context, this, params.get(clientId + "_itemSelect"));
                 SelectEvent toggleSelectEvent = new SelectEvent(this, ((AjaxBehaviorEvent) event).getBehavior(), selectedItemValue);
                 toggleSelectEvent.setPhaseId(event.getPhaseId());
 
                 super.queueEvent(toggleSelectEvent);
             }
             else if ("itemUnselect".equals(eventName)) {
-                Object unselectedItemValue = ComponentUtils.getConvertedValue(context, this, params.get(getClientId(context) + "_itemUnselect"));
+                String clientId = getClientId(context);
+                Object unselectedItemValue = ComponentUtils.getConvertedValue(context, this, params.get(clientId + "_itemUnselect"));
                 UnselectEvent unselectEvent = new UnselectEvent(this, ajaxBehaviorEvent.getBehavior(), unselectedItemValue);
                 unselectEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
                 super.queueEvent(unselectEvent);

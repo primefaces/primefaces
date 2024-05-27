@@ -99,7 +99,7 @@ However, there are some settings and patterns that can improve the performance.
 
 <!-- Uses Lambda instead of reflection, might fail for some cases / environments -->
 <context-param>
-    <param-name>org.apache.myfaces.USE_LAMBDA_METAFACTORYL</param-name>
+    <param-name>org.apache.myfaces.USE_LAMBDA_METAFACTORY</param-name>
     <param-value>true</param-value>
 </context-param>
 

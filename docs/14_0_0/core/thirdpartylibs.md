@@ -6,8 +6,8 @@ are many other third party libraries and plugins used to support features.
 | Library | Version | URL |
 | --- | --- | --- |
 | [AutoNumeric](../jsdocs/classes/node_modules_autonumeric.export_-1.html) | 4.10.4 | https://github.com/autoNumeric/autoNumeric |
-| [Chart.js](../jsdocs/classes/node_modules__types_chart_js.export_-1.html) | 4.4.1 | https://www.chartjs.org |
-| [Coloris](../jsdocs/interfaces/src_PrimeFaces.Coloris.html) | 0.21.1 | https://github.com/mdbassit/Coloris |
+| [Chart.js](../jsdocs/classes/node_modules__types_chart_js.export_-1.html) | 4.4.2 | https://www.chartjs.org |
+| [Coloris](../jsdocs/interfaces/src_PrimeFaces.Coloris.html) | 0.24.0 | https://github.com/mdbassit/Coloris |
 | [Cookie](../jsdocs/modules/node_modules__types_js_cookie.html) | 3.0.5 | https://github.com/js-cookie/js-cookie |
 | [Cropper.js](../jsdocs/classes/node_modules_cropperjs_types.Cropper-1.html) | 1.5.13 | https://github.com/fengyuanchen/cropperjs |
 | [Download.js](../jsdocs/modules/node_modules__types_downloadjs.html) | 4.2 | http://danml.com/download.html |
@@ -22,10 +22,10 @@ are many other third party libraries and plugins used to support features.
 | [jQuery Knob](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#knob) | 1.2.13 | https://github.com/aterrien/jQuery-Knob |
 | [jQuery MouseWheel](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#mousewheel) | 3.1.13 | https://github.com/jquery/jquery-mousewheel |
 | [jQuery.print](../jsdocs/modules/src_PrimeFaces.html#printJS) | 1.6.2 | https://github.com/DoersGuild/jQuery.print |
-| [jQuery Rangy](../jsdocs/modules/src_PrimeFaces.JQueryRangy.html) | 0.1.205 | https://github.com/timdown/rangy |
+| [jQuery Rangy](../jsdocs/modules/src_PrimeFaces.JQueryRangy.html) | 1.2.0 | https://github.com/timdown/rangyinputs |
 | [jQuery Timepicker Addon](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#timepicker) | 1.6.3 | http://trentrichardson.com/examples/timepicker |
-| jQuery UI Touch Punch | 1.0.9 | https://github.com/RWAP/jquery-ui-touch-punch |
-| [jQuery UI](../jsdocs/modules/node_modules__types_jqueryui.html) | 1.13.2 | https://github.com/jquery/jquery-ui |
+| [jQuery UI Touch Punch](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#touchpunch) | 1.1.5 | https://github.com/RWAP/jquery-ui-touch-punch |
+| [jQuery UI](../jsdocs/modules/node_modules__types_jqueryui.html) | 1.13.3 | https://github.com/jquery/jquery-ui |
 | [jQuery](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html) | 3.7.1 | https://jquery.com/ |
 | [jScrollPane](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#jScrollPane) | 2.2.3 | https://github.com/vitch/jScrollPane |
 | [JSPlumb Diagram](../jsdocs/modules/node_modules_jsplumb.export_.html) | 2.15.6 | https://github.com/jsplumb/jsplumb |

@@ -93,6 +93,15 @@ InputMask below enforces input to be in 99/99/9999 date format.
 <p:inputMask value="#{bean.field}" mask="99/99/9999" />
 ```
 
+## Mask Characters
+The mask supports the following characters and their meaning based on the underlying [InputMask JS Library](https://github.com/RobinHerbots/Inputmask):
+  * `a` - Represents an alpha character (A-Z,a-z)
+  * `A` - Represents an UPPERCASE alpha character (A-Z)
+  * `9` - Represents a numeric character (0-9)
+  * `*` - Represents an alphanumeric character (A-Z,a-z,0-9)
+  * `[]` - Makes the input in between `[` and `]` optional
+
+
 ## Mask Samples
 Here are more samples based on different masks;
 

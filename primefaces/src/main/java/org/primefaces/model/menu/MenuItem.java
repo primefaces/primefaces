@@ -29,7 +29,7 @@ import java.util.Map;
 import javax.el.MethodExpression;
 
 import org.primefaces.component.api.Confirmable;
-import org.primefaces.util.SerializableFunction;
+import org.primefaces.util.Callbacks;
 
 public interface MenuItem extends MenuElement, Confirmable {
 
@@ -103,7 +103,7 @@ public interface MenuItem extends MenuElement, Confirmable {
      *
      * @return The outcome, which will be used for navigation.
      */
-    SerializableFunction<MenuItem, String> getFunction();
+    Callbacks.SerializableFunction<MenuItem, String> getFunction();
 
     boolean isImmediate();
 

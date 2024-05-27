@@ -646,113 +646,112 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this;
 
         this.keyboardTarget.on('keydown.ui-selectonemenu', function(e) {
-            switch(e.code) {
+            switch (e.code) {
                 case 'ArrowUp':
                 case 'ArrowLeft':
                     $this.callHandleMethod($this.highlightPrev, e);
-                break;
+                    break;
 
                 case 'ArrowDown':
                 case 'ArrowRight':
                     $this.callHandleMethod($this.highlightNext, e);
-                break;
+                    break;
 
                 case 'Enter':
                 case 'NumpadEnter':
                     $this.handleEnterKey(e);
-                break;
+                    break;
 
                 case 'Tab':
                     $this.handleTabKey(e);
-                break;
+                    break;
 
                 case 'Escape':
                     $this.handleEscapeKey(e);
-                break;
+                    break;
 
                 case 'Space':
                     $this.handleSpaceKey(e);
-                break;
+                    break;
             }
-        })
-        .on('keyup.ui-selectonemenu', function(e) {
+        }).on('keyup.ui-selectonemenu', function(e) {
             if (PrimeFaces.utils.ignoreFilterKey(e)) {
                 return;
             }
-
-            var matchedOptions = null,
-            metaKey = e.metaKey||e.ctrlKey||e.altKey;
-
-            if(!metaKey) {
-                clearTimeout($this.searchTimer);
-
-                // #4682: check for word match
-                var text = $(this).val();
-                if (!$this.focusInput) {
-                    $this.searchValue += e.key;
-                    text = $this.searchValue;
-                }
-
-                matchedOptions = $this.matchOptions(text);
-                if(matchedOptions.length) {
-                    var matchIndex = matchedOptions[0].index;
-                    if($this.panel.is(':hidden')) {
-                        $this.callHandleMethod(function() {
-                            var highlightItem = $this.items.eq(matchIndex);
-                            $this.selectItem(highlightItem);
-                        }, e);
-                    }
-                    else {
-                        var highlightItem = $this.items.eq(matchIndex);
-                        $this.highlightItem(highlightItem);
-                        PrimeFaces.scrollInView($this.itemsWrapper, highlightItem);
-                    }
-                } else {
-                    // #4682: check for first letter match
-                    text = e.key.toLowerCase();
-                    // find all options with the same first letter
-                    matchedOptions = $this.matchOptions(text);
-                    if(matchedOptions.length) {
-                        $this.callHandleMethod(function() {
-                            var selectedIndex = -1;
-
-                            // is current selection one of our matches?
-                            matchedOptions.each(function() {
-                               var option = $(this);
-                               var currentIndex = option[0].index;
-                               var currentItem = $this.items.eq(currentIndex);
-                               if (currentItem.hasClass('ui-state-highlight')) {
-                                   selectedIndex = currentIndex;
-                                   return false;
-                               }
-                            });
-
-                            matchedOptions.each(function() {
-                                var option = $(this);
-                                var currentIndex = option[0].index;
-                                var currentItem = $this.items.eq(currentIndex);
-
-                                // select next item after the current selection
-                                if (currentIndex > selectedIndex) {
-                                     if($this.panel.is(':hidden')) {
-                                         $this.selectItem(currentItem);
-                                     }
-                                     else {
-                                         $this.highlightItem(currentItem);
-                                         PrimeFaces.scrollInView($this.itemsWrapper, currentItem);
-                                     }
-                                     return false;
-                                 }
-                            });
-                        }, e);
-                    }
-                }
-
-                $this.searchTimer = PrimeFaces.queueTask(function(){
-                    $this.searchValue = '';
-                    $this.focusInput ? $this.focusInput.val('') : null;
-                }, 1000);
+            if (!PrimeFaces.utils.isPrintableKey(e) || e.metaKey || e.ctrlKey || e.altKey) {
+                return;
             }
+
+            var matchedOptions = null;
+
+            clearTimeout($this.searchTimer);
+
+            // #4682: check for word match
+            var text = $(this).val();
+            if (!$this.focusInput) {
+                $this.searchValue += e.key;
+                text = $this.searchValue;
+            }
+
+            matchedOptions = $this.matchOptions(text);
+            if (matchedOptions.length) {
+                var matchIndex = matchedOptions[0].index;
+                if ($this.panel.is(':hidden')) {
+                    $this.callHandleMethod(function() {
+                        var highlightItem = $this.items.eq(matchIndex);
+                        $this.selectItem(highlightItem);
+                    }, e);
+                }
+                else {
+                    var highlightItem = $this.items.eq(matchIndex);
+                    $this.highlightItem(highlightItem);
+                    PrimeFaces.scrollInView($this.itemsWrapper, highlightItem);
+                }
+            } else {
+                // #4682: check for first letter match
+                text = e.key.toLowerCase();
+                // find all options with the same first letter
+                matchedOptions = $this.matchOptions(text);
+                if (matchedOptions.length) {
+                    $this.callHandleMethod(function() {
+                        var selectedIndex = -1;
+
+                        // is current selection one of our matches?
+                        matchedOptions.each(function() {
+                            var option = $(this);
+                            var currentIndex = option[0].index;
+                            var currentItem = $this.items.eq(currentIndex);
+                            if (currentItem.hasClass('ui-state-highlight')) {
+                                selectedIndex = currentIndex;
+                                return false;
+                            }
+                        });
+
+                        matchedOptions.each(function() {
+                            var option = $(this);
+                            var currentIndex = option[0].index;
+                            var currentItem = $this.items.eq(currentIndex);
+
+                            // select next item after the current selection
+                            if (currentIndex > selectedIndex) {
+                                if ($this.panel.is(':hidden')) {
+                                    $this.selectItem(currentItem);
+                                }
+                                else {
+                                    $this.highlightItem(currentItem);
+                                    PrimeFaces.scrollInView($this.itemsWrapper, currentItem);
+                                }
+                                return false;
+                            }
+                        });
+                    }, e);
+                }
+            }
+
+            $this.searchTimer = PrimeFaces.queueTask(function() {
+                $this.searchValue = '';
+                $this.focusInput ? $this.focusInput.val('') : null;
+            }, 1000);
         });
     },
 

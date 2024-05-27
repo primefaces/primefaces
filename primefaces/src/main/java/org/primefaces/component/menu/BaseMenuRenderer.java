@@ -26,6 +26,7 @@ package org.primefaces.component.menu;
 import java.io.IOException;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Map.Entry;
+import java.util.Objects;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -39,6 +40,7 @@ import org.primefaces.model.menu.MenuModel;
 import org.primefaces.model.menu.Submenu;
 import org.primefaces.renderkit.MenuItemAwareRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
@@ -58,14 +60,23 @@ public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
         encodeScript(context, menu);
     }
 
+    @Override
+    public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
+        //Do nothing
+    }
+
+    @Override
+    public boolean getRendersChildren() {
+        return true;
+    }
+
     protected abstract void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException;
 
     protected abstract void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException;
 
     protected String getLinkStyleClass(MenuItem menuItem) {
         String styleClass = menuItem.getStyleClass();
-
-        return (styleClass == null) ? AbstractMenu.MENUITEM_LINK_CLASS : AbstractMenu.MENUITEM_LINK_CLASS + " " + styleClass;
+        return AbstractMenu.MENUITEM_LINK_CLASS + (styleClass != null ? " " + styleClass : Constants.EMPTY_STRING);
     }
 
     protected void encodeMenuItem(FacesContext context, AbstractMenu menu, MenuItem menuitem) throws IOException {
@@ -99,7 +110,7 @@ public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
             String ariaLabel = menuitem.getAriaLabel();
 
             writer.startElement("a", null);
-            writer.writeAttribute("tabindex", tabindex, null);
+            writer.writeAttribute("tabindex", Objects.toString(tabindex, "-1"), null);
             if (aria != null) {
                 writer.writeAttribute(aria.getKey(), aria.getValue(), null);
             }
@@ -166,8 +177,10 @@ public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
     protected void encodeMenuItemContent(FacesContext context, AbstractMenu menu, MenuItem menuitem) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Object value = menuitem.getValue();
-        boolean isRtl = ComponentUtils.isRTL(context, menu);
-        String iconPos = isRtl ? "right" : menuitem.getIconPos();
+        String iconPos = menuitem.getIconPos();
+        if (LangUtils.isBlank(iconPos)) {
+            iconPos = ComponentUtils.isRTL(context, menu) ? "right" : "left";
+        }
 
         if ("left".equals(iconPos)) {
             encodeIcon(writer, menu, menuitem, iconPos);
@@ -215,25 +228,6 @@ public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
             wb.attr("trigger", SearchExpressionUtils.resolveClientIdsForClientSide(context, (UIComponent) menu, trigger))
                 .attr("triggerEvent", menu.getTriggerEvent());
         }
-    }
-
-    @Override
-    public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
-        //Do nothing
-    }
-
-    @Override
-    public boolean getRendersChildren() {
-        return true;
-    }
-
-    protected void encodeKeyboardTarget(FacesContext context, AbstractMenu menu) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-
-        writer.startElement("div", null);
-        writer.writeAttribute("tabindex", menu.getTabindex(), null);
-        writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
-        writer.endElement("div");
     }
 
     protected void encodeFacet(FacesContext context, AbstractMenu menu, String facetName, String styleClass) throws IOException {

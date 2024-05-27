@@ -25,9 +25,9 @@ package org.primefaces.showcase.service;
 
 import org.primefaces.showcase.domain.Country;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Named;
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Named;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -75,6 +75,7 @@ public class CountryService {
         locales.add(CountryService.toCountry(Locale.FRANCE));
         locales.add(CountryService.toCountry(Locale.GERMANY));
         locales.add(CountryService.toCountry(new Locale("de", "AT")));
+        locales.add(CountryService.toCountry(new Locale("de", "CH")));
         locales.add(CountryService.toCountry(Locale.ITALY));
         locales.add(CountryService.toCountry(Locale.KOREA));
         locales.add(CountryService.toCountry(new Locale("es", "ES")));
@@ -83,6 +84,8 @@ public class CountryService {
         locales.add(CountryService.toCountry(new Locale("pt", "BR")));
         locales.add(CountryService.toCountry(new Locale("pt", "PT")));
         locales.add(CountryService.toCountry(new Locale("ar", "SA"), true));
+        locales.add(CountryService.toCountry(new Locale("ar", "TN"), true));
+        locales.add(CountryService.toCountry(new Locale("bg", "BG")));
         locales.add(CountryService.toCountry(new Locale("cs", "CZ")));
         locales.add(CountryService.toCountry(new Locale("el", "GR")));
         locales.add(CountryService.toCountry(new Locale("fa", "IR"), true));
@@ -108,6 +111,7 @@ public class CountryService {
         locales.add(CountryService.toCountry(new Locale("ru", "RU")));
         locales.add(CountryService.toCountry(new Locale("sk", "SK")));
         locales.add(CountryService.toCountry(new Locale("sl", "SI")));
+        locales.add(CountryService.toCountry(new Locale("sr", "BA")));
         locales.add(CountryService.toCountry(new Locale("sr", "RS")));
         locales.add(CountryService.toCountry(new Locale("sv", "SE")));
         locales.add(CountryService.toCountry(new Locale("th", "TH")));

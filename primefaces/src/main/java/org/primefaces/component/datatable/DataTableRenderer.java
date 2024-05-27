@@ -249,6 +249,7 @@ public class DataTableRenderer extends DataRenderer {
                 .attr("rowHover", table.isRowHover(), false)
                 .attr("clientCache", table.isClientCache(), false)
                 .attr("multiViewState", table.isMultiViewState(), false)
+                .attr("cellNavigation", table.isCellNavigation(), true)
                 .attr("partialUpdate", table.isPartialUpdate(), true)
                 .nativeAttr("groupColumnIndexes", table.getGroupedColumnIndexes(), null)
                 .callback("onRowClick", "function(row)", table.getOnRowClick());
@@ -1025,7 +1026,7 @@ public class DataTableRenderer extends DataRenderer {
 
             // #5649 check for invalid first value
             if (rows > 0 && first % rows != 0) {
-                logDevelopmentWarning(context, String.format("%s Invalid 'first' value %d is not divisible evenly by 'rows' %d", clientId, first, rows));
+                logDevelopmentWarning(context, this, String.format("%s Invalid 'first' value %d is not divisible evenly by 'rows' %d", clientId, first, rows));
             }
         }
 
@@ -1571,7 +1572,6 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected void encodeSubTable(FacesContext context, DataTable table, SubTable subTable, int first, int last) throws IOException {
-        LOGGER.info("SubTable has been deprecated, use row grouping instead");
         for (int i = first; i < last; i++) {
             table.setRowIndex(i);
             if (!table.isRowAvailable()) {

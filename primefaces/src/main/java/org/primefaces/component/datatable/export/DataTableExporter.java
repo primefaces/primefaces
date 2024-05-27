@@ -143,7 +143,7 @@ public abstract class DataTableExporter<P, O extends ExporterOptions> extends Ta
             }
         }
 
-        super.addCells(context, table);
+        addCells(context, table);
     }
 
 }

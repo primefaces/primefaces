@@ -36,6 +36,8 @@ public abstract class RowTogglerBase extends UIComponentBase {
 
         expandLabel,
         collapseLabel,
+        expandIcon,
+        collapseIcon,
         tabindex;
     }
 
@@ -62,6 +64,22 @@ public abstract class RowTogglerBase extends UIComponentBase {
 
     public void setCollapseLabel(String collapseLabel) {
         getStateHelper().put(PropertyKeys.collapseLabel, collapseLabel);
+    }
+
+    public String getExpandIcon() {
+        return (String) getStateHelper().eval(PropertyKeys.expandIcon, "ui-icon-circle-triangle-e");
+    }
+
+    public void setExpandIcon(String expandIcon) {
+        getStateHelper().put(PropertyKeys.expandIcon, expandIcon);
+    }
+
+    public String getCollapseIcon() {
+        return (String) getStateHelper().eval(PropertyKeys.collapseIcon, "ui-icon-circle-triangle-s");
+    }
+
+    public void setCollapseIcon(String collapseIcon) {
+        getStateHelper().put(PropertyKeys.collapseIcon, collapseIcon);
     }
 
     public String getTabindex() {

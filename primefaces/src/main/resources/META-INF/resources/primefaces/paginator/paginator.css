@@ -1,7 +1,24 @@
 .ui-paginator {
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    justify-content:space-between;
     margin:0px;
     text-align: center;
     padding:2px;
+}
+
+.ui-paginator-center-content,
+.ui-paginator.ui-paginator-top .ui-paginator-top-left-content,
+.ui-paginator.ui-paginator-top .ui-paginator-top-right-content,
+.ui-paginator.ui-paginator-bottom .ui-paginator-bottom-left-content,
+.ui-paginator.ui-paginator-bottom .ui-paginator-bottom-right-content {
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    margin:0px;
+    text-align: center;
+    min-width: 5em;
 }
 
 .ui-paginator.ui-paginator-top {
@@ -10,22 +27,6 @@
 
 .ui-paginator.ui-paginator-bottom {
     border-top:0px none;
-}
-
-.ui-paginator.ui-paginator-top .ui-paginator-top-left-content {
-    float: left;    
-}
-
-.ui-paginator.ui-paginator-top .ui-paginator-top-right-content {
-    float: right;    
-}
-
-.ui-paginator.ui-paginator-bottom .ui-paginator-bottom-left-content {
-    float: left;    
-}
-
-.ui-paginator.ui-paginator-bottom .ui-paginator-bottom-right-content {
-    float: right;    
 }
 
 .ui-paginator .ui-paginator-page,

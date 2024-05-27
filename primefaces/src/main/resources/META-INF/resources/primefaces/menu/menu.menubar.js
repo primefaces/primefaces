@@ -24,7 +24,7 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
     showSubmenu: function(menuitem, submenu) {
         var pos = null;
 
-        if(menuitem.parent().hasClass('ui-menu-child')) {
+        if (menuitem.parent().hasClass('ui-menu-child')) {
             pos = {
                 my: this.isRTL ? 'right top' : 'left top',
                 at: this.isRTL ? 'left top' : 'right top',
@@ -42,7 +42,7 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
         }
 
         //avoid queuing multiple runs
-        if(this.timeoutId) {
+        if (this.timeoutId) {
             clearTimeout(this.timeoutId);
         }
 
@@ -50,119 +50,10 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
             submenu.css('z-index', PrimeFaces.nextZindex())
                 .show()
                 .position(pos);
+            var $link = menuitem.children('a.ui-menuitem-link');
+            $link.attr('aria-expanded', 'true');
+            submenu.find('a.ui-menuitem-link:focusable:first').trigger('focus');
         }, this.cfg.showDelay);
-    },
-
-    /**
-     * @override
-     * @protected
-     * @inheritdoc
-     */
-    bindKeyEvents: function() {
-        var $this = this;
-
-        this.keyboardTarget.on('focus.menubar', function(e) {
-            $this.highlight($this.links.eq(0).parent());
-        })
-        .on('blur.menubar', function() {
-            $this.reset();
-        })
-        .on('keydown.menu', function(e) {
-            var currentitem = $this.activeitem;
-            if(!currentitem) {
-                return;
-            }
-
-            var isRootLink = !currentitem.closest('ul').hasClass('ui-menu-child');
-
-            switch(e.key) {
-                    case 'ArrowLeft':
-                        if(isRootLink) {
-                            var prevItem = currentitem.prevAll('.ui-menuitem:not(.ui-menubar-options):first');
-                            if(prevItem.length) {
-                                $this.deactivate(currentitem);
-                                $this.highlight(prevItem);
-                            }
-
-                            e.preventDefault();
-                        }
-                        else {
-                            if(currentitem.hasClass('ui-menu-parent') && currentitem.children('.ui-menu-child').is(':visible')) {
-                                $this.deactivate(currentitem);
-                                $this.highlight(currentitem);
-                            }
-                            else {
-                                var parentItem = currentitem.parent().parent();
-                                $this.deactivate(currentitem);
-                                $this.deactivate(parentItem);
-                                $this.highlight(parentItem);
-                            }
-                        }
-                    break;
-
-                    case 'ArrowRight':
-                        if(isRootLink) {
-                            var nextItem = currentitem.nextAll('.ui-menuitem:not(.ui-menubar-options):first');
-                            if(nextItem.length) {
-                                $this.deactivate(currentitem);
-                                $this.highlight(nextItem);
-                            }
-
-                            e.preventDefault();
-                        }
-                        else {
-                            if(currentitem.hasClass('ui-menu-parent')) {
-                                var submenu = currentitem.children('.ui-menu-child');
-
-                                if(submenu.is(':visible'))
-                                    $this.highlight(submenu.children('.ui-menuitem:first'));
-                                else
-                                    $this.activate(currentitem);
-                            }
-                        }
-                    break;
-
-                    case 'ArrowUp':
-                        if(!isRootLink) {
-                            var prevItem = currentitem.prev('.ui-menuitem');
-                            if(prevItem.length) {
-                                $this.deactivate(currentitem);
-                                $this.highlight(prevItem);
-                            }
-                        }
-
-                        e.preventDefault();
-                    break;
-
-                    case 'ArrowDown':
-                        if(isRootLink) {
-                            var submenu = currentitem.children('ul.ui-menu-child');
-                            if(submenu.is(':visible'))
-                                $this.highlight(submenu.children('.ui-menuitem:first'));
-                            else
-                                $this.activate(currentitem);
-                        }
-                        else {
-                            var nextItem = currentitem.next('.ui-menuitem');
-                            if(nextItem.length) {
-                                $this.deactivate(currentitem);
-                                $this.highlight(nextItem);
-                            }
-                        }
-
-                        e.preventDefault();
-                    break;
-
-                    case 'Enter':
-                    case 'NumpadEnter':
-                        var currentLink = currentitem.children('.ui-menuitem-link');
-                        currentLink.trigger('click');
-                        $this.jq.trigger("blur");
-                        PrimeFaces.utils.openLink(e, currentLink);
-                    break;
-
-            }
-        });
     }
 
 });

@@ -28,15 +28,14 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.Collections;
-import javax.faces.FacesException;
-import javax.faces.context.FacesContext;
+import jakarta.faces.FacesException;
+import jakarta.faces.context.FacesContext;
 
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.export.DataTableExporter;
 import org.primefaces.component.export.ColumnValue;
 import org.primefaces.component.export.ExporterOptions;
-import org.primefaces.component.export.ExporterUtils;
 import org.primefaces.util.EscapeUtils;
 
 public class TextExporter extends DataTableExporter<PrintWriter, ExporterOptions> {
@@ -72,7 +71,7 @@ public class TextExporter extends DataTableExporter<PrintWriter, ExporterOptions
 
     @Override
     protected void exportCellValue(FacesContext context, DataTable table, UIColumn col, ColumnValue columnValue, int index) {
-        String columnTag = ExporterUtils.getColumnExportTag(context, col);
+        String columnTag = getColumnExportTag(context, col);
         document.append("\t\t")
                 .append(columnTag)
                 .append(": ")

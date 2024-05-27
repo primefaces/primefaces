@@ -29,6 +29,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -315,4 +316,27 @@ public abstract class DatePicker extends AbstractInputComponent {
         yearInput.sendKeys(Integer.toString(year));
     }
 
+    /**
+     * Increment the years by count.
+     *
+     * @param count the number of years to increment
+     */
+    public void incrementYear(int count) {
+        WebElement yearInput = showPanel().findElement(By.cssSelector("input.ui-datepicker-year"));
+        for (int i = 0; i <  count; i++) {
+            yearInput.sendKeys(Keys.ARROW_UP);
+        }
+    }
+
+    /**
+     * Decrement the years by count.
+     *
+     * @param count the number of years to decrement
+     */
+    public void decrementYear(int count) {
+        WebElement yearInput = showPanel().findElement(By.cssSelector("input.ui-datepicker-year"));
+        for (int i = 0; i <  count; i++) {
+            yearInput.sendKeys(Keys.ARROW_DOWN);
+        }
+    }
 }

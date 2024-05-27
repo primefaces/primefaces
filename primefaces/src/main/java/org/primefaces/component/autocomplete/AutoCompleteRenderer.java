@@ -38,6 +38,7 @@ import org.primefaces.event.AutoCompleteEvent;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
@@ -506,7 +507,9 @@ public class AutoCompleteRenderer extends InputRenderer {
         Converter converter = ComponentUtils.getConverter(context, ac);
 
         if (customContent) {
-            encodeSuggestionsAsTable(context, ac, items, converter);
+            ComponentUtils.runWithoutFacesContextVar(context, Constants.HELPER_RENDERER, () -> {
+                encodeSuggestionsAsTable(context, ac, items, converter);
+            });
         }
         else {
             encodeSuggestionsAsList(context, ac, items, converter);
@@ -781,7 +784,9 @@ public class AutoCompleteRenderer extends InputRenderer {
                 .attr("grouping", ac.getValueExpression(AutoComplete.PropertyKeys.groupBy.toString()) != null, false)
                 .attr("queryEvent", ac.getQueryEvent(), null)
                 .attr("dropdownMode", ac.getDropdownMode(), null)
+                .attr("highlightSelector", ac.getHighlightSelector(), null)
                 .attr("autoHighlight", ac.isAutoHighlight(), true)
+                .attr("showEmptyMessage", ac.isShowEmptyMessage(), true)
                 .attr("myPos", ac.getMy(), null)
                 .attr("atPos", ac.getAt(), null)
                 .attr("active", ac.isActive(), true)

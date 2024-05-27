@@ -29,6 +29,7 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
@@ -84,9 +85,14 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
         ConfirmPopup popup = page.popup;
         assertFalse(popup.isVisible());
         page.confirm.click();
+        CommandButton noButton = popup.getNoButton();
+        assertEquals("No", noButton.getText());
+        assertCss(noButton,
+                "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left ui-confirm-popup-no ui-button-flat");
+        assertCss(noButton.findElement(By.className("ui-icon")), "ui-button-icon-left ui-icon ui-c pi pi-times");
 
         // Act
-        popup.getNoButton().click();
+        noButton.click();
 
         // Assert
         assertFalse(popup.isVisible());
@@ -102,9 +108,13 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
         ConfirmPopup popup = page.popup;
         assertFalse(popup.isVisible());
         page.confirm.click();
+        CommandButton yesButton = popup.getYesButton();
+        assertEquals("Yes", yesButton.getText());
+        assertCss(yesButton, "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left ui-confirm-popup-yes ui-state-focus");
+        assertCss(yesButton.findElement(By.className("ui-icon")), "ui-button-icon-left ui-icon ui-c pi pi-check");
 
         // Act
-        PrimeSelenium.guardAjax(popup.getYesButton()).click();
+        PrimeSelenium.guardAjax(yesButton).click();
 
         // Assert
         assertFalse(popup.isVisible());
@@ -120,14 +130,22 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
         ConfirmPopup popup = page.popup;
         assertFalse(popup.isVisible());
         page.delete.click();
+        CommandButton noButton = popup.getNoButton();
+        assertEquals("Keep this!", noButton.getText());
+        assertCss(noButton,
+                "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left ui-confirm-popup-no ui-button-flat bg-green-600 text-white");
+        assertCss(noButton.findElement(By.className("ui-icon")), "ui-button-icon-left ui-icon ui-c pi pi-heart");
 
         // Act
-        popup.getNoButton().click();
+        noButton.click();
 
         // Assert
         assertFalse(popup.isVisible());
         assertTrue(page.messages.isEmpty());
         assertConfiguration(popup.getWidgetConfiguration());
+
+        // assert the buttons are back to normal
+        confirmNo(page);
     }
 
     @Test
@@ -138,14 +156,21 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
         ConfirmPopup popup = page.popup;
         assertFalse(popup.isVisible());
         page.delete.click();
+        CommandButton yesButton = popup.getYesButton();
+        assertEquals("Delete Me!", yesButton.getText());
+        assertCss(yesButton,
+                "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left ui-confirm-popup-yes bg-red-600 text-white ui-state-focus");
+        assertCss(yesButton.findElement(By.className("ui-icon")), "ui-button-icon-left ui-icon ui-c pi pi-trash");
 
         // Act
-        PrimeSelenium.guardAjax(popup.getYesButton()).click();
+        PrimeSelenium.guardAjax(yesButton).click();
 
         // Assert
         assertFalse(popup.isVisible());
         assertMessage(page, "Record deleted");
         assertConfiguration(popup.getWidgetConfiguration());
+        // assert the buttons are back to normal
+        confirmYes(page);
     }
 
     private void assertMessage(Page page, String message) {

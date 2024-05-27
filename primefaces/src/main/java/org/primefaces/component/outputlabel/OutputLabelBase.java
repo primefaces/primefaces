@@ -25,8 +25,10 @@ package org.primefaces.component.outputlabel;
 
 import javax.faces.component.html.HtmlOutputLabel;
 
+import org.primefaces.component.api.RTLAware;
 
-public abstract class OutputLabelBase extends HtmlOutputLabel {
+
+public abstract class OutputLabelBase extends HtmlOutputLabel implements RTLAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

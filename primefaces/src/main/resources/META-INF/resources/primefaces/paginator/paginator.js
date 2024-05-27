@@ -29,6 +29,7 @@
  * @prop {JQuery} jtpInput INPUT element for selecting a page to navigate to (`jump to page`)
  * @prop {JQuery} jtpSelect SELECT element for selecting a page to navigate to (`jump to page`)
  * @prop {JQuery} nextLink DOM element of the link to the next page.
+ * @prop {JQuery} navigator DOM element of the container for all the naivgation elements.
  * @prop {JQuery} pagesContainer DOM element of the container with the numbered page links.
  * @prop {JQuery} pageLinks DOM elements of each numbered page link.
  * @prop {JQuery} prevLink DOM element of the link back to the previous page.
@@ -67,16 +68,17 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         this._super(cfg);
 
         //elements
-        this.pagesContainer = this.jq.children('.ui-paginator-pages');
+        this.navigator = this.jq.children('.ui-paginator-center-content');
+        this.pagesContainer = this.navigator.children('.ui-paginator-pages');
         this.pageLinks = this.pagesContainer.children('.ui-paginator-page');
-        this.rppSelect = this.jq.children('.ui-paginator-rpp-options');
-        this.jtpSelect = this.jq.children('.ui-paginator-jtp-select');
-        this.jtpInput = this.jq.children('.ui-paginator-jtp-input');
-        this.firstLink = this.jq.children('.ui-paginator-first');
-        this.prevLink  = this.jq.children('.ui-paginator-prev');
-        this.nextLink  = this.jq.children('.ui-paginator-next');
-        this.endLink   = this.jq.children('.ui-paginator-last');
-        this.currentReport = this.jq.children('.ui-paginator-current');
+        this.rppSelect = this.navigator.children('.ui-paginator-rpp-options');
+        this.jtpSelect = this.navigator.children('.ui-paginator-jtp-select');
+        this.jtpInput = this.navigator.children('.ui-paginator-jtp-input');
+        this.firstLink = this.navigator.children('.ui-paginator-first');
+        this.prevLink  = this.navigator.children('.ui-paginator-prev');
+        this.nextLink  = this.navigator.children('.ui-paginator-next');
+        this.endLink   = this.navigator.children('.ui-paginator-last');
+        this.currentReport = this.navigator.children('.ui-paginator-current');
 
         //metadata
         this.cfg.rows = this.cfg.rows == 0 ? this.cfg.rowCount : this.cfg.rows;
@@ -115,7 +117,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
 
         //visuals for first,prev,next,last buttons
-        this.jq.children('a.ui-state-default').on('mouseover.paginator', function(){
+        this.navigator.children('a.ui-state-default').on('mouseover.paginator', function(){
             var item = $(this);
             if(!item.hasClass('ui-state-disabled')) {
                 item.addClass('ui-state-hover');
@@ -297,7 +299,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
     * @private
     */
    unbindEvents: function() {
-        var buttons = this.jq.children('a.ui-state-default');
+        var buttons = this.navigator.children('a.ui-state-default');
         if (buttons.length > 0) {
             buttons.off();
         }

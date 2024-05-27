@@ -25,7 +25,6 @@ package org.primefaces.component.datagrid;
 
 import java.io.IOException;
 
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -95,13 +94,11 @@ public class DataGridRenderer extends DataRenderer {
         String clientId = grid.getClientId(context);
         boolean hasPaginator = grid.isPaginator();
         boolean empty = grid.getRowCount() == 0;
-        String layout = grid.getLayout();
         String paginatorPosition = grid.getPaginatorPosition();
         boolean flex = ComponentUtils.isFlex(context, grid);
-        String gridContentClass = DataGrid.GRID_CONTENT_CLASS + " " + GridLayoutUtils.getResponsiveClass(flex);
+        String layoutClass = DataGrid.GRID_CONTENT_CLASS + " " + GridLayoutUtils.getResponsiveClass(flex);
         String style = grid.getStyle();
         String styleClass = grid.getStyleClass() == null ? DataGrid.DATAGRID_CLASS : DataGrid.DATAGRID_CLASS + " " + grid.getStyleClass();
-        String layoutClass = "tabular".equals(layout) ? DataGrid.TABLE_CONTENT_CLASS : gridContentClass;
         String contentClass = empty ? DataGrid.EMPTY_CONTENT_CLASS : layoutClass;
 
         if (hasPaginator) {
@@ -150,17 +147,7 @@ public class DataGridRenderer extends DataRenderer {
     }
 
     protected void encodeContent(FacesContext context, DataGrid grid) throws IOException {
-        String layout = grid.getLayout();
-
-        if ("tabular".equals(layout)) {
-            encodeLegacyTable(context, grid);
-        }
-        else if ("grid".equals(layout)) {
-            encodeGrid(context, grid);
-        }
-        else {
-            throw new FacesException(layout + " is not a valid value for DataGrid layout. Possible values are 'tabular' and 'grid'.");
-        }
+        encodeGrid(context, grid);
     }
 
     protected void encodeGrid(FacesContext context, DataGrid grid) throws IOException {
@@ -217,55 +204,6 @@ public class DataGridRenderer extends DataRenderer {
         writer.endElement("div");
 
         grid.setRowIndex(-1); //cleanup
-    }
-
-    /**
-     * @deprecated in 13.0.0 remove in 14.0.0
-     */
-    @Deprecated
-    protected void encodeLegacyTable(FacesContext context, DataGrid grid) throws IOException {
-        logDevelopmentWarning(context, "Table layout is deprecated and will be removed in future release. Please switch to responsive layout. ClientId: "
-                + grid.getClientId(context));
-        ResponseWriter writer = context.getResponseWriter();
-
-        int columns = grid.getColumns();
-        int rowIndex = grid.getFirst();
-        int rows = grid.getRows();
-        int itemsToRender = rows != 0 ? rows : grid.getRowCount();
-        int numberOfRowsToRender = (itemsToRender + columns - 1) / columns;
-
-        writer.startElement("table", grid);
-        writer.writeAttribute("class", DataGrid.TABLE_CLASS, null);
-        writer.startElement("tbody", null);
-
-        for (int i = 0; i < numberOfRowsToRender; i++) {
-            grid.setRowIndex(rowIndex);
-            if (!grid.isRowAvailable()) {
-                break;
-            }
-
-            writer.startElement("tr", null);
-            writer.writeAttribute("class", DataGrid.TABLE_ROW_CLASS, null);
-
-            for (int j = 0; j < columns; j++) {
-                writer.startElement("td", null);
-                writer.writeAttribute("class", DataGrid.COLUMN_CLASS, null);
-
-                grid.setRowIndex(rowIndex);
-                if (grid.isRowAvailable()) {
-                    renderChildren(context, grid);
-                }
-                rowIndex++;
-
-                writer.endElement("td");
-            }
-            writer.endElement("tr");
-        }
-
-        grid.setRowIndex(-1); //cleanup
-
-        writer.endElement("tbody");
-        writer.endElement("table");
     }
 
     @Override

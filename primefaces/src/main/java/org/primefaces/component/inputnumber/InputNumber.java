@@ -30,7 +30,6 @@ import javax.faces.application.ResourceDependency;
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "inputnumber/inputnumber.js")
-@ResourceDependency(library = "primefaces", name = "inputnumber/inputnumber.css")
 public class InputNumber extends InputNumberBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.InputNumber";

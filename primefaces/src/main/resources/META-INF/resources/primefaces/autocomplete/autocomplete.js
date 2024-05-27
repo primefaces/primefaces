@@ -72,6 +72,7 @@
  * @prop {string} cfg.appendTo ID of the container to which the suggestion box is appended.
  * @prop {string} cfg.atPos Defines which position on the target element to align the positioned element against.
  * @prop {boolean} cfg.autoHighlight Highlights the first suggested item automatically.
+ * @prop {boolean} cfg.highlightSelector Selector specifies what content to identify for highlighting in search results.
  * @prop {boolean} cfg.autoSelection Defines if auto selection of items that are equal to the typed input is enabled. If
  * `true`, an item that is equal to the typed input is selected.
  * @prop {boolean} cfg.cache When enabled autocomplete caches the searched result list.
@@ -97,6 +98,7 @@
  * the server.
  * @prop {number} cfg.selectLimit Limits the number of simultaneously selected items. Default is unlimited.
  * @prop {number} cfg.scrollHeight Height of the container with the suggestion items.
+ * @prop {boolean} cfg.showEmptyMessage Whether to display the emptyMessage or not.
  * @prop {boolean} cfg.unique Ensures uniqueness of the selected items.
  * @prop {string} cfg.completeEndpoint REST endpoint for fetching autocomplete suggestions. Takes precedence over the
  * bean command specified via `completeMethod` on the component.
@@ -122,16 +124,15 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.minLength = this.cfg.minLength != undefined ? this.cfg.minLength : 1;
         this.cfg.cache = this.cfg.cache || false;
         this.cfg.dropdownMode = this.cfg.dropdownMode || 'blank';
-        this.cfg.autoHighlight = (this.cfg.autoHighlight === undefined) ? true : this.cfg.autoHighlight;
+        this.cfg.autoHighlight = this.cfg.autoHighlight === undefined ? true : this.cfg.autoHighlight;
         this.cfg.appendTo = PrimeFaces.utils.resolveAppendTo(this, this.jq, this.panel);
         this.cfg.myPos = this.cfg.myPos || 'left top';
         this.cfg.atPos = this.cfg.atPos || 'left bottom';
-        this.cfg.active = (this.cfg.active === false) ? false : true;
-        this.cfg.dynamic = this.cfg.dynamic === true ? true : false;
-        this.cfg.autoSelection = this.cfg.autoSelection === false ? false : true;
-        this.cfg.escape = this.cfg.escape === false ? false : true;
-        this.cfg.hasFooter = this.cfg.hasFooter === true ? true : false;
-        this.cfg.forceSelection = this.cfg.forceSelection === true ? true : false;
+        this.cfg.highlightSelector = this.cfg.highlightSelector || 'span';
+        this.cfg.active = this.cfg.active === undefined ? true : this.cfg.active;
+        this.cfg.autoSelection = this.cfg.autoSelection === undefined ? true : this.cfg.autoSelection;
+        this.cfg.escape = this.cfg.escape === undefined ? true : this.cfg.escape;
+        this.cfg.showEmptyMessage = this.cfg.showEmptyMessage === undefined ? true : this.cfg.showEmptyMessage;
         this.suppressInput = true;
         this.touchToDropdownButton = false;
         this.isTabPressed = false;
@@ -640,24 +641,29 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     $this.addItem(item);
                 }
 
-                $this.hide();
+                // #11570 allow CTRL+Click to select multiple
+                if (!$this.cfg.multiple || !PrimeFaces.utils.isMetaKey(event)) {
+                    $this.hide();
+                }
             })
             .on('mousedown.autocomplete', function() {
                 $this.preventInputChangeEvent = true;
                 $this.checkMatchedItem = false;
             });
 
-        this.panel.on('click.emptyMessage', function() {
-            if (!this.children) {
-                return;
-            }
-            var item = $(this.children[0]),
-                isEmptyMessage = item.hasClass('ui-autocomplete-empty-message');
+        if (this.cfg.showEmptyMessage) {
+            this.panel.on('click.emptyMessage', function() {
+                if (!this.children) {
+                    return;
+                }
+                var item = $(this.children[0]),
+                    isEmptyMessage = item.hasClass('ui-autocomplete-empty-message');
 
-            if (isEmptyMessage) {
-                $this.invokeEmptyMessageBehavior();
-            }
-        });
+                if (isEmptyMessage) {
+                    $this.invokeEmptyMessageBehavior();
+                }
+            });
+        }
 
         if (PrimeFaces.env.browser.mobile) {
             this.items.on('touchstart.autocomplete', function() {
@@ -731,13 +737,11 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             var content;
             if (item.is('li')) {
                 content = item.next('.ui-autocomplete-itemtip-content');
+            } else if (item.children('td:last').hasClass('ui-autocomplete-itemtip-content')) {
+                content = item.children('td:last');
             } else {
-                if (item.children('td:last').hasClass('ui-autocomplete-itemtip-content')) {
-                    content = item.children('td:last');
-                } else {
-                    this.itemtip.hide();
-                    return;
-                }
+                this.itemtip.hide();
+                return;
             }
 
             this.itemtip.html(content.html())
@@ -814,7 +818,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     }
                     var re = new RegExp('(' + queryParts.join('|') + ')', 'gi');
                     var isCustomContent = this.panel.children().is('table');
-                    var queryResults = isCustomContent ? this.panel.children().find('span') : this.items;
+                    var queryResults = isCustomContent ? this.panel.children().find(this.cfg.highlightSelector) : this.items;
                     queryResults.filter(':not(.ui-autocomplete-moretext)').each(function() {
                         var item = $(this);
                         var escape = $this.cfg.escape;
@@ -840,7 +844,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             this.displayAriaStatus(this.resultsMessage.replace('{0}', this.items.length));
         }
         else {
-            if (this.emptyMessage && this.cfg.forceSelection) {
+            if (this.cfg.showEmptyMessage && this.emptyMessage) {
                 var emptyText = '<div class="ui-autocomplete-empty-message ui-widget">' + PrimeFaces.escapeHTML(this.emptyMessage) + '</div>';
                 this.panel.prepend(emptyText);
             }
@@ -980,41 +984,38 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         if (this.hasBehavior('query')) {
             this.callBehavior('query', options);
         }
-        else {
-            if (this.cfg.completeEndpoint) {
-                $.ajax({
-                    url: this.cfg.completeEndpoint,
-                    data: { query: query },
-                    dataType: 'json'
-                })
-                    .done(function(suggestions) {
-                        var html = '<ul class="ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-corner-all ui-helper-reset" role="listbox">';
-                        suggestions.suggestions.forEach(function(suggestion, index) {
-                            var labelEncoded = $("<div>").text(suggestion.label).html();
-                            var itemValue = labelEncoded;
-                            if (!!suggestion.value) {
-                                itemValue = $("<div>").text(suggestion.value).html();
-                            }
-                            html += '<li id="' + $this.id + '_item_' + index + '" class="ui-autocomplete-item ui-autocomplete-list-item ui-corner-all" data-item-value="' + PrimeFaces.escapeHTML(itemValue) + '" data-item-label="' + PrimeFaces.escapeHTML(labelEncoded) + '" role="option">' + PrimeFaces.escapeHTML(labelEncoded) + '</li>';
-                        });
-                        if (suggestions.moreAvailable == true && $this.cfg.moreText) {
-                            var moreTextEncoded = $("<div>").text($this.cfg.moreText).html();
-                            html += '<li id="' + $this.id + '_item_more' + '" class="ui-autocomplete-item ui-autocomplete-moretext ui-corner-all" role="option">' + PrimeFaces.escapeHTML(moreTextEncoded) + '</li>';
-                        }
-                        html += '</ul>';
+        else if (this.cfg.completeEndpoint) {
+            $.ajax({
+                url: this.cfg.completeEndpoint,
+                data: { query: query },
+                dataType: 'json'
+            }).done(function(suggestions) {
+                var html = '<ul class="ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-corner-all ui-helper-reset" role="listbox">';
+                suggestions.suggestions.forEach(function(suggestion, index) {
+                    var labelEncoded = $("<div>").text(suggestion.label).html();
+                    var itemValue = labelEncoded;
+                    if (suggestion.value) {
+                        itemValue = $("<div>").text(suggestion.value).html();
+                    }
+                    html += '<li id="' + $this.id + '_item_' + index + '" class="ui-autocomplete-item ui-autocomplete-list-item ui-corner-all" data-item-value="' + PrimeFaces.escapeHTML(itemValue) + '" data-item-label="' + PrimeFaces.escapeHTML(labelEncoded) + '" role="option">' + PrimeFaces.escapeHTML(labelEncoded) + '</li>';
+                });
+                if (suggestions.moreAvailable && $this.cfg.moreText) {
+                    var moreTextEncoded = $("<div>").text($this.cfg.moreText).html();
+                    html += '<li id="' + $this.id + '_item_more' + '" class="ui-autocomplete-item ui-autocomplete-moretext ui-corner-all" role="option">' + PrimeFaces.escapeHTML(moreTextEncoded) + '</li>';
+                }
+                html += '</ul>';
 
-                        $this.panel.html(html);
+                $this.panel.html(html);
 
-                        $this.showSuggestions(query);
-                    })
-                    .always(function() {
-                        $this.setQuerying(false);
-                    });
-            }
-            else {
-                PrimeFaces.ajax.Request.handle(options);
-            }
+                $this.showSuggestions(query);
+            }).always(function() {
+                $this.setQuerying(false);
+            });
         }
+        else {
+            PrimeFaces.ajax.Request.handle(options);
+        }
+
     },
 
     /**
@@ -1546,12 +1547,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
         var valid = false;
 
-        for (var i = 0; i < this.currentItems.length; i++) {
-            var strippedItem = this.currentItems[i];
-            if (strippedItem) {
-                strippedItem = strippedItem.replace(/\r?\n/g, '');
-            }
-
+        for (let item of this.currentItems) {
+            var strippedItem = item ? item.replace(/\r?\n/g, '') : undefined;
             if (strippedItem === value) {
                 valid = true;
                 break;

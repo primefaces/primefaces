@@ -31,8 +31,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.Map;
 
 public class ChronolineRenderer extends CoreRenderer {
 
@@ -72,23 +70,21 @@ public class ChronolineRenderer extends CoreRenderer {
         Collection<?> value = (Collection<?>) chronoline.getValue();
 
         if (value != null) {
-            Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-            String var = chronoline.getVar();
-
-            for (Iterator<?> it = value.iterator(); it.hasNext(); ) {
-                requestMap.put(var, it.next());
+            int rowCount = chronoline.getRowCount();
+            for (int i = 0; i < rowCount; i++) {
+                chronoline.setRowIndex(i);
 
                 writer.startElement("div", null);
                 writer.writeAttribute("class", Chronoline.EVENT_CLASS, null);
 
                 encodeOppositeContent(context, chronoline);
-                encodeSeparator(context, chronoline, !it.hasNext());
+                encodeSeparator(context, chronoline, i == rowCount - 1);
                 encodeContent(context, chronoline);
 
                 writer.endElement("div");
             }
 
-            requestMap.remove(var);
+            chronoline.setRowIndex(-1);
         }
     }
 

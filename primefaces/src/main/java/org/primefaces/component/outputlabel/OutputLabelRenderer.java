@@ -64,6 +64,7 @@ public class OutputLabelRenderer extends CoreRenderer {
 
         final StyleClassBuilder styleClassBuilder = getStyleClassBuilder(context)
                 .add(OutputLabel.STYLE_CLASS)
+                .add(ComponentUtils.isRTL(context, label), OutputLabel.RTL_CLASS)
                 .add(label.getStyleClass());
 
         final EditableValueHolderState state = new EditableValueHolderState();
@@ -73,63 +74,60 @@ public class OutputLabelRenderer extends CoreRenderer {
 
         String _for = label.getFor();
         if (!isValueBlank(_for)) {
-            ContextCallback callback = new ContextCallback() {
-                @Override
-                public void invokeContextCallback(FacesContext context, UIComponent target) {
-                    if (target instanceof InputHolder) {
-                        InputHolder inputHolder = ((InputHolder) target);
-                        state.setClientId(inputHolder.getInputClientId());
+            ContextCallback callback = (ctxt, target) -> {
+                if (target instanceof InputHolder) {
+                    InputHolder inputHolder = ((InputHolder) target);
+                    state.setClientId(inputHolder.getInputClientId());
 
-                        inputHolder.setLabelledBy(clientId);
-                    }
-                    else {
-                        state.setClientId(target.getClientId(context));
-                    }
+                    inputHolder.setLabelledBy(clientId);
+                }
+                else {
+                    state.setClientId(target.getClientId(ctxt));
+                }
 
-                    if (target instanceof UIInput) {
-                        UIInput input = (UIInput) target;
+                if (target instanceof UIInput) {
+                    UIInput input = (UIInput) target;
 
-                        if (value != null && !(target instanceof SelectCheckboxMenu) &&
-                                (input.getAttributes().get("label") == null || input.getValueExpression("label") == null)) {
-                            ValueExpression ve = label.getValueExpression("value");
+                    if (value != null && !(target instanceof SelectCheckboxMenu) &&
+                            (input.getAttributes().get("label") == null || input.getValueExpression("label") == null)) {
+                        ValueExpression ve = label.getValueExpression("value");
 
-                            if (ve != null) {
-                                input.setValueExpression("label", ve);
+                        if (ve != null) {
+                            input.setValueExpression("label", ve);
+                        }
+                        else {
+                            String labelString = value;
+                            char separatorChar = UINamingContainer.getSeparatorChar(ctxt);
+                            int separatorCharPos = labelString.lastIndexOf(separatorChar);
+
+                            if (separatorCharPos != -1) {
+                                labelString = labelString.substring(0, separatorCharPos);
                             }
-                            else {
-                                String labelString = value;
-                                char separatorChar = UINamingContainer.getSeparatorChar(context);
-                                int separatorCharPos = labelString.lastIndexOf(separatorChar);
 
-                                if (separatorCharPos != -1) {
-                                    labelString = labelString.substring(0, separatorCharPos);
-                                }
+                            input.getAttributes().put("label", labelString);
+                        }
+                    }
 
-                                input.getAttributes().put("label", labelString);
-                            }
+                    if (!input.isValid()) {
+                        styleClassBuilder.add("ui-state-error");
+                    }
+
+                    if (isAuto) {
+                        boolean disabled = false;
+                        if ("autoSkipDisabled".equals(indicateRequired)) {
+                            disabled = ComponentUtils.isDisabledOrReadonly(input);
                         }
 
-                        if (!input.isValid()) {
-                            styleClassBuilder.add("ui-state-error");
+                        if (disabled) {
+                            state.setRequired(false);
                         }
-
-                        if (isAuto) {
-                            boolean disabled = false;
-                            if ("autoSkipDisabled".equals(indicateRequired)) {
-                                disabled = ComponentUtils.isDisabledOrReadonly(input);
-                            }
-
-                            if (disabled) {
-                                state.setRequired(false);
-                            }
-                            else {
-                                state.setRequired(input.isRequired());
-                                // fallback if required=false
-                                if (!state.isRequired()) {
-                                    PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(context);
-                                    if (applicationContext.getConfig().isBeanValidationEnabled() && isBeanValidationDefined(input, context)) {
-                                        state.setRequired(true);
-                                    }
+                        else {
+                            state.setRequired(input.isRequired());
+                            // fallback if required=false
+                            if (!state.isRequired()) {
+                                PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(ctxt);
+                                if (applicationContext.getConfig().isBeanValidationEnabled() && isBeanValidationDefined(input, ctxt)) {
+                                    state.setRequired(true);
                                 }
                             }
                         }
@@ -158,6 +156,7 @@ public class OutputLabelRenderer extends CoreRenderer {
         writer.writeAttribute("class", styleClassBuilder.build(), "styleClass");
         renderPassThruAttributes(context, label, HTML.LABEL_ATTRS);
         renderDomEvents(context, label, HTML.LABEL_EVENTS);
+        renderRTLDirection(context, label);
 
         if (!isValueBlank(_for)) {
             writer.writeAttribute("for", state.getClientId(), "for");

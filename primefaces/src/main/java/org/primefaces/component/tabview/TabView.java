@@ -41,9 +41,9 @@ import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.event.TabChangeEvent;
 import org.primefaces.event.TabCloseEvent;
 import org.primefaces.event.TabEvent;
+import org.primefaces.util.Callbacks;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
-import org.primefaces.util.ConsumerThree;
 import org.primefaces.util.MapBuilder;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
@@ -168,7 +168,7 @@ public class TabView extends TabViewBase {
         }
     }
 
-    public void forEachTab(ConsumerThree<Tab, Integer, Boolean> callback) {
+    public void forEachTab(Callbacks.TriConsumer<Tab, Integer, Boolean> callback) {
         int activeIndex = getActiveIndex();
         boolean activeTabRendered = false;
 

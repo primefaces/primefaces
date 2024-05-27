@@ -105,6 +105,11 @@ public class PickList extends PickListBase {
     }
 
     @Override
+    public String getDefaultEventName() {
+        return "transfer";
+    }
+
+    @Override
     protected void validateValue(FacesContext facesContext, Object newValue) {
         super.validateValue(facesContext, newValue);
 

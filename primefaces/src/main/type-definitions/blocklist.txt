@@ -9,8 +9,11 @@ moment/moment-timezone-with-data.js
 printer/printer.js
 signature/0-signature.js
 timeline/0-vis-timeline.js
+texteditor/0-quill.min.js
+texteditor/1-texteditor.js
 touch/touchswipe.js
 locales/locale-ar.js
+locales/locale-bg.js
 locales/locale-ca.js
 locales/locale-ckb.js
 locales/locale-cs.js

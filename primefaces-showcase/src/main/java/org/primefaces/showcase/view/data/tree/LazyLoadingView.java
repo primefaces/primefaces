@@ -24,15 +24,15 @@
 package org.primefaces.showcase.view.data.tree;
 
 import java.io.File;
-import javax.faces.view.ViewScoped;
+import jakarta.faces.view.ViewScoped;
 import org.primefaces.model.TreeNode;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.PostConstruct;
-import javax.faces.context.FacesContext;
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.context.FacesContext;
 import org.primefaces.model.LazyDefaultTreeNode;
 
 @Named("treeLazyLoadingView")

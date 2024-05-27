@@ -23,6 +23,7 @@ DataTable displays data in tabular format.
 | ariaRowLabel              | null               | String           | Label to read by screen readers on checkbox selection.
 | binding                   | null               | Object           | An el expression that maps to a server side UIComponent instance in a backing bean
 | cellEditMode              | eager              | String           | Defines the cell edit behavior, valid values are "eager" (default) and "lazy".
+| cellNavigation            | true               | Boolean          | Enables cell navigation with the keyboard for WCAG and screen reader compliance.
 | cellSeparator             | null               | String           | Separator text to use in output mode of editable cells with multiple components.
 | clientCache               | false              | Boolean          | Caches the next page asynchronously, default is false.
 | currentPageReportTemplate | null               | String           | Template of the currentPageReport UI.
@@ -43,7 +44,7 @@ DataTable displays data in tabular format.
 | exportRowTag              | null               | String           | If XML data exporter in use, this allows customization of the row tag in the XML.
 | filterBy                  | null               | FilterMeta / Collection<FilterMeta> | Property to be used for default filtering. Expects a single or a collection of FilterMeta.
 | filterDelay               | 300                | Integer          | Delay in milliseconds before sending an ajax filter query.
-| filterEvent               | keyup              | String           | Event triggering filter for input filters.
+| filterEvent               | keyup              | String           | Event triggering filter for input filters. If "enter" it will only filter after ENTER key is pressed.
 | filteredValue             | null               | List             | List to keep filtered data.
 | first                     | 0                  | Integer          | Index of the first row to be displayed
 | frozenColumns             | 0                  | Integer          | Number of columns to freeze from start index 0.
@@ -63,7 +64,7 @@ DataTable displays data in tabular format.
 | pageLinks                 | 10                 | Integer          | Maximum number of page links to display.
 | paginator                 | false              | Boolean          | Enables pagination.
 | paginatorAlwaysVisible    | true               | Boolean          | Defines if paginator should be hidden if total data count is less than number of rows per page.
-| paginatorPosition         | both               | String           | Position of the paginator.
+| paginatorPosition         | both               | String           | Paginator can be positioned at the "top," "bottom," or "both." Default setting is "both."
 | paginatorTemplate         | null               | String           | Template of the paginator.
 | reflow                    | false              | Boolean          | Reflow mode is a responsive mode to display columns as stacked depending on screen size.
 | rendered                  | true               | Boolean          | Boolean value to specify the rendering of the component, when set to false component will not be rendered.

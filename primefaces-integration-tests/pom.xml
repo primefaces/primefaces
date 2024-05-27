@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.primefaces</groupId>
         <artifactId>primefaces-parent</artifactId>
-        <version>14.0.0-SNAPSHOT</version>
+        <version>15.0.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -24,16 +24,15 @@
         <webdriver.browser>chrome</webdriver.browser>
         <primefaces.CSP>false</primefaces.CSP>
         <primefaces.THEME>saga</primefaces.THEME>
-        <primefaces.UPLOADER>auto</primefaces.UPLOADER>
         <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
         <javax.faces.STATE_SAVING_METHOD>server</javax.faces.STATE_SAVING_METHOD>
 
         <!-- dependency versions -->
         <hibernate-validator.version>6.2.4.Final</hibernate-validator.version>
-        <lombok.version>1.18.30</lombok.version>
+        <lombok.version>1.18.32</lombok.version>
         <myfaces.version>2.3.10</myfaces.version>
-        <myfaces-next.version>2.3-next-M7</myfaces-next.version>
-        <tomcat.version>9.0.86</tomcat.version>
+        <myfaces-next.version>2.3-next-M8</myfaces-next.version>
+        <tomcat.version>9.0.89</tomcat.version>
         <resteasy.version>5.0.9.Final</resteasy.version>
         <owb.version>2.0.27</owb.version>
         <jetty.version>9.4.54.v20240208</jetty.version>
@@ -49,8 +48,8 @@
 
         <!-- FeedReader -->
         <dependency>
-            <groupId>com.rometools</groupId>
-            <artifactId>rome</artifactId>
+            <groupId>com.apptasticsoftware</groupId>
+            <artifactId>rssreader</artifactId>
             <scope>runtime</scope>
         </dependency>
         
@@ -220,12 +219,6 @@
             <version>3.14.0</version>
             <scope>runtime</scope>
         </dependency>
-
-        <dependency>
-            <groupId>commons-fileupload</groupId>
-            <artifactId>commons-fileupload</artifactId>
-            <scope>runtime</scope>
-        </dependency>
         
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -236,7 +229,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>2.0.12</version>
+            <version>2.0.13</version>
             <scope>test</scope>
         </dependency>
 
@@ -498,18 +491,6 @@
             <id>csp</id>
             <properties>
                 <primefaces.CSP>true</primefaces.CSP>
-            </properties>
-        </profile>
-        <profile>
-            <id>uploader-native</id>
-            <properties>
-                <primefaces.UPLOADER>native</primefaces.UPLOADER>
-            </properties>
-        </profile>
-        <profile>
-            <id>uploader-commons</id>
-            <properties>
-                <primefaces.UPLOADER>commons</primefaces.UPLOADER>
             </properties>
         </profile>
         <profile>

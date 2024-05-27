@@ -91,51 +91,54 @@ public class DateTimeConverter extends javax.faces.convert.DateTimeConverter imp
 
     @Override
     public Map<String, Object> getMetadata() {
-        if (metadata == null) {
-            String pattern = this.getPattern();
-            String type = this.getType();
-            String dateStyle = this.getDateStyle();
-            String timeStyle = this.getTimeStyle();
-
-            metadata = new HashMap<>();
-
-            if (pattern != null) {
-                metadata.put(HTML.ValidationMetadata.PATTERN, CalendarUtils.convertPattern(pattern));
-            }
-
-            if (type != null) {
-                String typeCleared = type;
-                if ("localDate".equalsIgnoreCase(typeCleared)) {
-                    typeCleared = "date";
-                }
-                else if ("localTime".equalsIgnoreCase(typeCleared)) {
-                    typeCleared = "time";
-                }
-                else if ("localDateTime".equalsIgnoreCase(typeCleared)) {
-                    typeCleared = "both";
-                }
-
-                metadata.put(HTML.ValidationMetadata.DATETIME_TYPE, typeCleared);
-                if (pattern == null) {
-                    DateFormat df = null;
-                    if ("both".equals(type)) {
-                        df = DateFormat.getDateInstance(getStyle(dateStyle), this.getLocale());
-                        metadata.put(HTML.ValidationMetadata.DATE_STYLE_PATTERN, CalendarUtils.convertPattern(((SimpleDateFormat) df).toPattern()));
-                        df = DateFormat.getTimeInstance(getStyle(timeStyle), this.getLocale());
-                        metadata.put(HTML.ValidationMetadata.TIME_STYLE_PATTERN, CalendarUtils.convertPattern(((SimpleDateFormat) df).toPattern()));
-                    }
-                    else if ("date".equals(type)) {
-                        df = DateFormat.getDateInstance(getStyle(dateStyle), this.getLocale());
-                        metadata.put(HTML.ValidationMetadata.DATE_STYLE_PATTERN, CalendarUtils.convertPattern(((SimpleDateFormat) df).toPattern()));
-                    }
-                    else if ("time".equals(type)) {
-                        df = DateFormat.getTimeInstance(getStyle(timeStyle), this.getLocale());
-                        metadata.put(HTML.ValidationMetadata.TIME_STYLE_PATTERN, CalendarUtils.convertPattern(((SimpleDateFormat) df).toPattern()));
-                    }
-                }
-            }
+        if (metadata != null) {
+            return metadata;
         }
 
+        String pattern = this.getPattern();
+        String type = this.getType();
+        String dateStyle = this.getDateStyle();
+        String timeStyle = this.getTimeStyle();
+
+        metadata = new HashMap<>();
+
+        if (pattern != null) {
+            metadata.put(HTML.ValidationMetadata.PATTERN, pattern);
+        }
+
+        if (type != null) {
+            String typeCleared = type.toLowerCase();
+
+            switch (typeCleared) {
+                case "localdate":
+                    typeCleared = "date";
+                    break;
+                case "localtime":
+                    typeCleared = "time";
+                    break;
+                case "localdatetime":
+                    typeCleared = "both";
+                    break;
+                default:
+                    //keep typeCleared as it is
+                    break;
+            }
+
+
+            metadata.put(HTML.ValidationMetadata.DATETIME_TYPE, typeCleared);
+            if (pattern == null) {
+                DateFormat df = null;
+                if ("both".equals(type) || "date".equals(type)) {
+                    df = DateFormat.getDateInstance(getStyle(dateStyle), this.getLocale());
+                    metadata.put(HTML.ValidationMetadata.DATE_STYLE_PATTERN, ((SimpleDateFormat) df).toPattern());
+                }
+                if ("both".equals(type) || "time".equals(type)) {
+                    df = DateFormat.getTimeInstance(getStyle(timeStyle), this.getLocale());
+                    metadata.put(HTML.ValidationMetadata.TIME_STYLE_PATTERN, ((SimpleDateFormat) df).toPattern());
+                }
+            }
+
+        }
         return metadata;
     }
 

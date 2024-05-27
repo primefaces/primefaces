@@ -27,9 +27,9 @@ import org.primefaces.event.map.GeocodeEvent;
 import org.primefaces.event.map.ReverseGeocodeEvent;
 import org.primefaces.model.map.*;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Named;
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Named;
 import java.util.List;
 
 @Named

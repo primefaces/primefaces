@@ -63,7 +63,7 @@ DataTable displays data in tabular format.
 | pageLinks                 | 10                 | Integer          | Maximum number of page links to display.
 | paginator                 | false              | Boolean          | Enables pagination.
 | paginatorAlwaysVisible    | true               | Boolean          | Defines if paginator should be hidden if total data count is less than number of rows per page.
-| paginatorPosition         | both               | String           | Position of the paginator.
+| paginatorPosition         | both               | String           | Paginator can be positioned at the "top," "bottom," or "both." Default setting is "both."
 | paginatorTemplate         | null               | String           | Template of the paginator.
 | reflow                    | false              | Boolean          | Reflow mode is a responsive mode to display columns as stacked depending on screen size.
 | rendered                  | true               | Boolean          | Boolean value to specify the rendering of the component, when set to false component will not be rendered.

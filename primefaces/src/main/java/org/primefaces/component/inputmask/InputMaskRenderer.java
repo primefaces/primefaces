@@ -52,9 +52,11 @@ public class InputMaskRenderer extends InputRenderer {
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId);
 
         if (submittedValue != null) {
-            // strip mask characters in case of optional values
-            submittedValue = submittedValue.replace(inputMask.getSlotChar(), Constants.EMPTY_STRING);
+            // #6469/#11958 strip mask characters in case of optional values
             String mask = inputMask.getMask();
+            if (isMaskOptional(mask)) {
+                submittedValue = submittedValue.replace(inputMask.getSlotChar(), Constants.EMPTY_STRING);
+            }
 
             if (inputMask.isValidateMask() && !LangUtils.isEmpty(submittedValue) && LangUtils.isNotBlank(mask)) {
                 Pattern pattern = translateMaskIntoRegex(context, mask);
@@ -70,40 +72,64 @@ public class InputMaskRenderer extends InputRenderer {
 
     /**
      * Translates the client side mask to to a {@link Pattern} base on:
-     * https://github.com/digitalBush/jquery.maskedinput
+     * https://github.com/RobinHerbots/Inputmask
      * a - Represents an alpha character (A-Z,a-z)
+     * A - Represents an UPPERCASE alpha character (A-Z)
      * 9 - Represents a numeric character (0-9)
      * * - Represents an alphanumeric character (A-Z,a-z,0-9)
-     * ? - Makes the following input optional
+     * [] - Makes the input in between [ and ] optional
      *
-     * @param context   The {@link FacesContext}
-     * @param mask The mask value of component
-     * @return The generated {@link Pattern}
+     * @param context the FacesContext instance, used to retrieve a shared StringBuilder.
+     * @param mask the mask pattern to translate into a regular expression.
+     * @return the translated regular expression as a {@link Pattern}.
      */
     protected Pattern translateMaskIntoRegex(FacesContext context, String mask) {
         StringBuilder regex = SharedStringBuilder.get(context, SB_PATTERN);
         return translateMaskIntoRegex(regex, mask);
     }
 
+    /**
+     * Translates a mask pattern into a regular expression pattern.
+     *
+     * @param regex the StringBuilder to append the translated regular expression to.
+     * @param mask the mask pattern to translate into a regular expression.
+     * @return the translated regular expression as a {@link Pattern}.
+     */
     protected Pattern translateMaskIntoRegex(StringBuilder regex, String mask) {
         boolean optionalFound = false;
+        boolean escapeFound = false;
 
         for (char c : mask.toCharArray()) {
             if (c == '[' || c == ']') {
                 optionalFound = true;
             }
+            else if (c == '\\') {
+                escapeFound = true;
+            }
             else {
-                regex.append(translateMaskCharIntoRegex(c, optionalFound));
+                regex.append(translateMaskCharIntoRegex(c, optionalFound, escapeFound));
+                escapeFound = false;
             }
         }
         return Pattern.compile(regex.toString());
     }
 
-    protected String translateMaskCharIntoRegex(char c, boolean optional) {
+    /**
+     * Translates a single mask character into its corresponding regular expression snippet.
+     *
+     * @param c the character to translate.
+     * @param optional whether the character is within optional brackets ('[' and ']').
+     * @param escapeFound whether the escape character ('\\') was found before this character.
+     * @return the translated character as a regular expression snippet.
+     */
+    protected String translateMaskCharIntoRegex(char c, boolean optional, boolean escapeFound) {
         String translated;
 
-        if (c == '[' || c == ']') {
-            return ""; //should be ignored
+        if (escapeFound) {
+            return String.valueOf(c);
+        }
+        else if (c == '[' || c == ']') {
+            return Constants.EMPTY_STRING; //should be ignored
         }
         else if (c == '9') {
             translated = "[0-9]";
@@ -126,6 +152,17 @@ public class InputMaskRenderer extends InputRenderer {
         return optional ? (translated + "?") : translated;
     }
 
+    /**
+     * Checks if the given mask string contains any optional mask characters.
+     * In this context, an optional mask character is defined as either '[' or ']'.
+     *
+     * @param mask the mask string to check
+     * @return {@code true} if the mask contains either '[' or ']'; {@code false} otherwise
+     */
+    protected boolean isMaskOptional(String mask) {
+        return mask.contains("[") || mask.contains("]");
+    }
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         InputMask inputMask = (InputMask) component;
@@ -142,7 +179,7 @@ public class InputMaskRenderer extends InputRenderer {
         if (mask != null) {
             // autoclear must be false when using optional mask
             boolean autoClear = inputMask.isAutoClear();
-            if (mask.contains("[") || mask.contains("]")) {
+            if (isMaskOptional(mask)) {
                 autoClear = false;
             }
             wb.attr("mask", mask)

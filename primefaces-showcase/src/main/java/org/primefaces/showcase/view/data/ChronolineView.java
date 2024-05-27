@@ -23,9 +23,11 @@
  */
 package org.primefaces.showcase.view.data;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Named;
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
+import jakarta.inject.Named;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +59,11 @@ public class ChronolineView {
 
     public List<String> getEvents2() {
         return events2;
+    }
+
+    public void clickOnEvent(Event event) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Click on event ", event.getStatus()));
     }
 
     public static class Event {

@@ -6,7 +6,7 @@
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces-parent</artifactId>
     <packaging>pom</packaging>
-    <version>14.0.0-SNAPSHOT</version>
+    <version>15.0.0-SNAPSHOT</version>
 
     <name>PrimeFaces Parent</name>
     <url>https://www.primefaces.org</url>
@@ -104,7 +104,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.12.1</version>
+                <version>3.13.0</version>
                 <configuration>
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
@@ -128,13 +128,13 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.3.0</version>
+                <version>3.4.1</version>
             </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.3.0</version>
+                <version>3.3.1</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -179,7 +179,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
-                <version>3.1.1</version>
+                <version>3.1.2</version>
             </plugin>
 
             <plugin>
@@ -203,7 +203,7 @@
             <plugin>
                 <groupId>com.mycila</groupId>
                 <artifactId>license-maven-plugin</artifactId>
-                <version>4.3</version>
+                <version>4.5</version>
                 <configuration>
                     <licenseSets>
                         <licenseSet>
@@ -268,7 +268,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.5.2</version>
+                <version>3.5.3</version>
             </plugin>
         </plugins>
     </build>
@@ -281,7 +281,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>3.1.0</version>
+                        <version>3.2.4</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -325,7 +325,7 @@
             <dependency>
                 <groupId>org.json</groupId>
                 <artifactId>json</artifactId>
-                <version>20240205</version>
+                <version>20240303</version>
             </dependency>
             <dependency>
                 <groupId>org.owasp.encoder</groupId>
@@ -341,7 +341,7 @@
             <dependency>
                 <groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
                 <artifactId>owasp-java-html-sanitizer</artifactId>
-                <version>20220608.1</version>
+                <version>20240325.1</version>
             </dependency>
 
             <!-- Data Exporter -->
@@ -358,21 +358,14 @@
             <dependency>
                 <groupId>com.github.librepdf</groupId>
                 <artifactId>openpdf</artifactId>
-                <version>1.4.1</version>
-            </dependency>
-
-            <!-- File Upload -->
-            <dependency>
-                <groupId>commons-fileupload</groupId>
-                <artifactId>commons-fileupload</artifactId>
-                <version>1.5</version>
+                <version>1.4.2</version>
             </dependency>
 
             <!-- FeedReader -->
             <dependency>
-                <groupId>com.rometools</groupId>
-                <artifactId>rome</artifactId>
-                <version>1.19.0</version>
+                <groupId>com.apptasticsoftware</groupId>
+                <artifactId>rssreader</artifactId>
+                <version>3.6.0</version>
             </dependency>
 
             <!-- File Upload -->

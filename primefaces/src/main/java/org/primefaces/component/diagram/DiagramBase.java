@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.diagram;
 
-import javax.faces.component.UIOutput;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.UIData;
 import org.primefaces.component.api.Widget;
 
-public abstract class DiagramBase extends UIOutput implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+public abstract class DiagramBase extends UIData implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -38,7 +38,6 @@ public abstract class DiagramBase extends UIOutput implements Widget, ClientBeha
     public enum PropertyKeys {
 
         widgetVar,
-        var,
         style,
         styleClass
     }
@@ -58,14 +57,6 @@ public abstract class DiagramBase extends UIOutput implements Widget, ClientBeha
 
     public void setWidgetVar(String widgetVar) {
         getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public String getVar() {
-        return (String) getStateHelper().eval(PropertyKeys.var, null);
-    }
-
-    public void setVar(String var) {
-        getStateHelper().put(PropertyKeys.var, var);
     }
 
     public String getStyle() {

@@ -83,11 +83,30 @@ public class Spinner005Test extends AbstractPrimePageTest {
         assertEquals("", spinner.getValue());
 
         // Act
-        sendKeys(spinner, "67");
+        sendKeys(spinner, "1350");
         page.button.click();
 
         // Assert
-        assertEquals("55", spinner.getValue());
+        assertEquals("1200", spinner.getValue());
+        assertConfiguration(spinner.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(4)
+    @DisplayName("Spinner: #11660 Rounding above 1000 does not cause NaN")
+    void roundAboveOntThousand(Page page) {
+        // Arrange
+        Spinner spinner = page.spinner;
+        assertEquals("", spinner.getValue());
+
+        // Act
+        sendKeys(spinner, "995");
+        spinner.increment();
+        spinner.increment();
+        page.button.click();
+
+        // Assert
+        assertEquals("1005", spinner.getValue());
         assertConfiguration(spinner.getWidgetConfiguration());
     }
 

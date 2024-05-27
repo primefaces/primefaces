@@ -137,7 +137,8 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
             return;
         }
 
-        var tokens = value.split(this.cfg.separator);
+        var separator = this.cfg.separator !== undefined ? this.cfg.separator : ',';
+        var tokens = value.split(separator);
         for (var i = 0; i < tokens.length; i++) {
             var token = tokens[i];
             if (token && token.trim().length && (!this.cfg.max || this.cfg.max > this.hinput.children('option').length)) {
@@ -165,9 +166,18 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
                 this.refocus(refocus);
 
                 this.hinput.append('<option value="' + escapedValue + '" selected="selected"></option>');
-                this.invokeItemSelectBehavior(escapedValue);
+                // send an event per token
+                if (refocus) {
+                    this.invokeItemSelectBehavior(escapedValue);
+                }
             }
         }
+        
+        // send only 1 event for all tokens pasted
+        if (!refocus) {
+            this.invokeItemSelectBehavior(PrimeFaces.escapeHTML(value));
+        }
+                
         $this.updateFloatLabel();
     },
 

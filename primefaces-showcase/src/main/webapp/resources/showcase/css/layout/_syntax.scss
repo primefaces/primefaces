@@ -1,4 +1,4 @@
-/* PrismJS 1.23.0
+/* PrismJS 1.29.0
 https://prismjs.com/download.html#themes=prism-coy&languages=markup+css+clike+javascript+bash+java&plugins=line-numbers+normalize-whitespace */
 /**
  * prism.js Coy theme for JavaScript, CoffeeScript, CSS and HTML
@@ -11,10 +11,10 @@ Attention: This is not the original CSS downloaded from PrismJS! There are some 
 Some var(iable)-usages have been introduced to adapt color-scheme to dark PrimeFaces-themes like Vela and Arya.
 */
 
-code[class*="language-"],
-pre[class*="language-"] {
-  color: black;
-  background: none;
+code[class*=language-],
+pre[class*=language-] {
+  color: var(--text-color);
+  background: 0 0;
   font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
   font-size: 1em;
   text-align: left;
@@ -23,217 +23,213 @@ pre[class*="language-"] {
   word-break: normal;
   word-wrap: normal;
   line-height: 1.5;
-
   -moz-tab-size: 4;
   -o-tab-size: 4;
   tab-size: 4;
-
   -webkit-hyphens: none;
   -moz-hyphens: none;
   -ms-hyphens: none;
-  hyphens: none;
+  hyphens: none
 }
 
-/* Code blocks */
-pre[class*="language-"] {
+pre[class*=language-] {
   position: relative;
   margin: .5em 0;
   overflow: visible;
-  padding: 0;
+  padding: 1px
 }
-pre[class*="language-"]>code {
+
+pre[class*=language-]>code {
   position: relative;
+  z-index: 1;
   border-left: 10px solid var(--surface-d) !important;
   /*box-shadow: -1px 0px 0px 0px #358ccb, 0px 0px 0px 1px #dfdfdf;*/
   background-color: var(--surface-e) !important;
-  background-image: linear-gradient(transparent 50%, rgba(69, 142, 209, 0.04) 50%);
+  background-image: linear-gradient(transparent 50%, rgba(69, 142, 209, .04) 50%);
   background-size: 3em 3em;
   background-origin: content-box;
-  background-attachment: local;
-  color: var(--text-color);
+  background-attachment: local
 }
 
-code[class*="language-"] {
+code[class*=language-] {
   max-height: inherit;
   height: inherit;
   padding: 0 1em;
   display: block;
-  overflow: auto;
+  overflow: auto
 }
 
-/* Margin bottom to accommodate shadow */
-:not(pre) > code[class*="language-"],
-pre[class*="language-"] {
+:not(pre)>code[class*=language-],
+pre[class*=language-] {
   background-color: #fdfdfd;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  margin-bottom: 1em;
+  margin-bottom: 1em
 }
 
-/* Inline code */
-:not(pre) > code[class*="language-"] {
+:not(pre)>code[class*=language-] {
   position: relative;
   padding: .2em;
-  border-radius: 0.3em;
+  border-radius: .3em;
   color: #c92c2c;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, .1);
   display: inline;
-  white-space: normal;
+  white-space: normal
 }
 
-pre[class*="language-"]:before,
-pre[class*="language-"]:after {
+pre[class*=language-]:after,
+pre[class*=language-]:before {
   content: '';
-  z-index: -2;
   display: block;
   position: absolute;
-  bottom: 0.75em;
-  left: 0.18em;
+  bottom: .75em;
+  left: .18em;
   width: 40%;
   height: 20%;
   max-height: 13em;
-  box-shadow: 0px 13px 8px #979797;
+  box-shadow: 0 13px 8px #979797;
   -webkit-transform: rotate(-2deg);
   -moz-transform: rotate(-2deg);
   -ms-transform: rotate(-2deg);
   -o-transform: rotate(-2deg);
-  transform: rotate(-2deg);
+  transform: rotate(-2deg)
 }
 
-pre[class*="language-"]:after {
-  right: 0.75em;
+pre[class*=language-]:after {
+  right: .75em;
   left: auto;
   -webkit-transform: rotate(2deg);
   -moz-transform: rotate(2deg);
   -ms-transform: rotate(2deg);
   -o-transform: rotate(2deg);
-  transform: rotate(2deg);
+  transform: rotate(2deg)
 }
 
-.token.comment,
 .token.block-comment,
-.token.prolog,
+.token.cdata,
+.token.comment,
 .token.doctype,
-.token.cdata {
-  color: #7D8B99;
+.token.prolog {
+  color: #7d8b99
 }
 
 .token.punctuation {
   color: var(--text-color);
 }
 
-.token.property,
-.token.tag,
 .token.boolean,
-.token.number,
-.token.function-name,
 .token.constant,
+.token.deleted,
+.token.function-name,
+.token.number,
+.token.property,
 .token.symbol,
-.token.deleted {
-  color: #c92c2c;
+.token.tag {
+  color: #c92c2c
 }
 
-.token.selector,
 .token.attr-name,
-.token.string,
+.token.builtin,
 .token.char,
 .token.function,
-.token.builtin,
-.token.inserted {
-  color: #2f9c0a;
+.token.inserted,
+.token.selector,
+.token.string {
+  color: #2f9c0a
 }
 
-.token.operator,
 .token.entity,
+.token.operator,
 .token.url,
 .token.variable {
   color: #a67f59;
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, .5)
 }
 
 .token.atrule,
 .token.attr-value,
-.token.keyword,
-.token.class-name {
-  color: #1990b8;
+.token.class-name,
+.token.keyword {
+  color: #1990b8
 }
 
-.token.regex,
-.token.important {
-  color: #e90;
+.token.important,
+.token.regex {
+  color: #e90
 }
 
 .language-css .token.string,
 .style .token.string {
   color: #a67f59;
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, .5)
 }
 
 .token.important {
-  font-weight: normal;
+  font-weight: 400
 }
 
 .token.bold {
-  font-weight: bold;
+  font-weight: 700
 }
+
 .token.italic {
-  font-style: italic;
+  font-style: italic
 }
 
 .token.entity {
-  cursor: help;
+  cursor: help
 }
 
 .token.namespace {
-  opacity: .7;
+  opacity: .7
 }
 
-@media screen and (max-width: 767px) {
-  pre[class*="language-"]:before,
-  pre[class*="language-"]:after {
+@media screen and (max-width:767px) {
+
+  pre[class*=language-]:after,
+  pre[class*=language-]:before {
     bottom: 14px;
-    box-shadow: none;
+    box-shadow: none
   }
-
 }
 
-/* Plugin styles: Line Numbers */
-pre[class*="language-"].line-numbers.line-numbers {
-  padding-left: 0;
+pre[class*=language-].line-numbers.line-numbers {
+  padding-left: 0
 }
 
-pre[class*="language-"].line-numbers.line-numbers code {
-  padding-left: 3.8em;
+pre[class*=language-].line-numbers.line-numbers code {
+  padding-left: 3.8em
 }
 
-pre[class*="language-"].line-numbers.line-numbers .line-numbers-rows {
-  left: 0;
+pre[class*=language-].line-numbers.line-numbers .line-numbers-rows {
+  left: 0
 }
 
-/* Plugin styles: Line Highlight */
-pre[class*="language-"][data-line] {
+pre[class*=language-][data-line] {
   padding-top: 0;
   padding-bottom: 0;
-  padding-left: 0;
+  padding-left: 0
 }
+
 pre[data-line] code {
   position: relative;
-  padding-left: 4em;
-}
-pre .line-highlight {
-  margin-top: 0;
+  padding-left: 4em
 }
 
-pre[class*="language-"].line-numbers {
+pre .line-highlight {
+  margin-top: 0
+}
+
+pre[class*=language-].line-numbers {
   position: relative;
   padding-left: 3.8em;
-  counter-reset: linenumber;
+  counter-reset: linenumber
 }
 
-pre[class*="language-"].line-numbers > code {
+pre[class*=language-].line-numbers>code {
   position: relative;
-  white-space: inherit;
+  white-space: inherit
 }
 
 .line-numbers .line-numbers-rows {
@@ -242,26 +238,24 @@ pre[class*="language-"].line-numbers > code {
   top: 0;
   font-size: 100%;
   left: -3.8em;
-  width: 3em; /* works for line-numbers below 1000 lines */
+  width: 3em;
   letter-spacing: -1px;
   border-right: 1px solid var(--surface-d) !important;
-
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
-  user-select: none;
-
+  user-select: none
 }
 
-.line-numbers-rows > span {
+.line-numbers-rows>span {
   display: block;
-  counter-increment: linenumber;
+  counter-increment: linenumber
 }
 
-.line-numbers-rows > span:before {
+.line-numbers-rows>span:before {
   content: counter(linenumber);
   color: var(--text-color-secondary);
   display: block;
-  padding-right: 0.8em;
-  text-align: right;
+  padding-right: .8em;
+  text-align: right
 }

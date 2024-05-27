@@ -44,6 +44,7 @@ import javax.faces.validator.Validator;
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.ClientBehaviorRenderingMode;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
+import org.primefaces.component.api.RTLAware;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.convert.ClientConverter;
@@ -271,8 +272,7 @@ public abstract class CoreRenderer extends Renderer {
     }
 
     /**
-     * Renders a hidden input field commonly use for holding state for a component. Properly handles all attributes
-     * and renders as autocomplete="off" so browsers don't hold onto state between page refreshes.
+     * Renders a hidden input field commonly use for holding state for a component.
      *
      * @param context the FacesContext
      * @param id the id of the hidden field
@@ -286,7 +286,6 @@ public abstract class CoreRenderer extends Renderer {
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "hidden", null);
-        writer.writeAttribute("autocomplete", "off", null);
         if (disabled) {
             writer.writeAttribute("disabled", "disabled", null);
         }
@@ -294,6 +293,12 @@ public abstract class CoreRenderer extends Renderer {
             writer.writeAttribute("value", value, null);
         }
         writer.endElement("input");
+    }
+
+    public <T extends UIComponent & RTLAware> void renderRTLDirection(FacesContext context, T component) throws IOException {
+        if (ComponentUtils.isRTL(context, component)) {
+            context.getResponseWriter().writeAttribute("dir", "rtl", null);
+        }
     }
 
     protected String buildDomEvent(FacesContext context, UIComponent component, String domEvent, String behaviorEvent,
@@ -933,11 +938,12 @@ public abstract class CoreRenderer extends Renderer {
     /**
      * Logs a WARN log message in ProjectStage == DEVELOPMENT.
      * @param context the FacesContext
+     * @param clazz the class or object for which the log is generated
      * @param message the message to log
      */
-    protected void logDevelopmentWarning(FacesContext context, String message) {
+    protected void logDevelopmentWarning(FacesContext context, Object clazz, String message) {
         if (LOGGER.isLoggable(Level.WARNING) && context.isProjectStage(ProjectStage.Development)) {
-            LOGGER.log(Level.WARNING, message);
+            LOGGER.logp(Level.WARNING, clazz.getClass().getName(), message, message);
         }
     }
 

@@ -26,9 +26,9 @@ package org.primefaces.showcase.service;
 import java.security.SecureRandom;
 import org.primefaces.showcase.domain.*;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Named;
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Named;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;

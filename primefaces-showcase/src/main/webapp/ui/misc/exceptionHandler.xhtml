@@ -1,8 +1,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="title">
@@ -47,7 +47,7 @@
                                  value="Throw NullPointerException!"/>
 
 
-                <p:ajaxExceptionHandler type="javax.faces.application.ViewExpiredException"
+                <p:ajaxExceptionHandler type="jakarta.faces.application.ViewExpiredException"
                                         update="exceptionDialog"
                                         onexception="PF('exceptionDialog').show()" />
 
@@ -63,7 +63,7 @@
 
                     <p:button onclick="document.location.href = document.location.href;"
                               value="Reload!"
-                              rendered="#{pfExceptionHandler.type == 'javax.faces.application.ViewExpiredException'}"/>
+                              rendered="#{pfExceptionHandler.type == 'jakarta.faces.application.ViewExpiredException'}"/>
                 </p:dialog>
             </h:form>
         </div>

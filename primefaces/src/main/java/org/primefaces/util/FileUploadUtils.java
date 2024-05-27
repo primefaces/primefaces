@@ -140,7 +140,7 @@ public class FileUploadUtils {
             File file = new File(filePath);
             File parentFile = file.getParentFile();
 
-            if (file == null || parentFile == null) {
+            if (parentFile == null) {
                 throw validationError("Invalid directory, \"" + filePath + "\" is not valid.");
             }
             if (mustExist && !file.exists()) {
@@ -181,7 +181,7 @@ public class FileUploadUtils {
             Paths.get(s);
         }
         catch (InvalidPathException e) {
-            if (e.getInput() != null && e.getInput().length() > 0 && e.getIndex() >= 0) {
+            if (e.getInput() != null && !e.getInput().isEmpty() && e.getIndex() >= 0) {
                 return s.toCharArray()[e.getIndex()];
             }
         }

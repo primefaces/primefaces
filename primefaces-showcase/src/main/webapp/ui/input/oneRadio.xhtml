@@ -1,8 +1,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="head">
@@ -53,13 +53,6 @@
                     <f:selectItems value="#{radioView.cities}" var="city" itemLabel="#{city}" itemValue="#{city}"/>
                 </p:selectOneRadio>
                 
-                
-                <h5>Grid (deprecated)</h5>
-                <p:selectOneRadio id="city" value="#{radioView.city}" layout="grid" columns="3" styleClass="grid-radio">
-                    <f:selectItems value="#{radioView.cities}" var="city" itemLabel="#{city}" itemValue="#{city}"/>
-                </p:selectOneRadio>
-                
-
                 <h5>Custom Layout (Facet)</h5>
                 <p:selectOneRadio id="customRadio" value="#{radioView.color}">
                     <f:selectItem itemLabel="Red" itemValue="Red"/>

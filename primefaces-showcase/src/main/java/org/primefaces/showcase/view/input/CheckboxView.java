@@ -26,16 +26,17 @@ package org.primefaces.showcase.view.input;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
-import javax.faces.model.SelectItemGroup;
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.model.SelectItem;
+import jakarta.faces.model.SelectItemGroup;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 import org.primefaces.event.SelectEvent;
+import org.primefaces.event.ToggleSelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.showcase.domain.Country;
 import org.primefaces.showcase.service.CountryService;
@@ -190,6 +191,14 @@ public class CheckboxView {
 
     public void setSelectedCountries3(List<Country> selectedCountries3) {
         this.selectedCountries3 = selectedCountries3;
+    }
+
+    public void onToggleSelect(ToggleSelectEvent event) {
+        FacesMessage msg = new FacesMessage();
+        msg.setSummary("Toggled: " + event.isSelected());
+        msg.setSeverity(FacesMessage.SEVERITY_INFO);
+
+        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
     public void onItemSelect(SelectEvent event) {
