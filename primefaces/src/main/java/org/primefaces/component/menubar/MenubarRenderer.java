@@ -28,6 +28,7 @@ import org.primefaces.component.menu.Menu;
 import org.primefaces.component.tieredmenu.TieredMenuRenderer;
 import org.primefaces.model.menu.Submenu;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 import javax.faces.context.FacesContext;
@@ -45,6 +46,7 @@ public class MenubarRenderer extends TieredMenuRenderer {
                 .attr("autoDisplay", menubar.isAutoDisplay())
                 .attr("showDelay", menubar.getShowDelay(), 0)
                 .attr("hideDelay", menubar.getHideDelay(), 0)
+                .attr("tabIndex", menubar.getTabindex(), "0")
                 .attr("toggleEvent", menubar.getToggleEvent(), null);
 
         wb.finish();
@@ -60,7 +62,7 @@ public class MenubarRenderer extends TieredMenuRenderer {
                 .add(ComponentUtils.isRTL(context, abstractMenu), AbstractMenu.MENU_RTL_CLASS)
                 .build();
 
-        encodeMenu(context, menubar, style, styleClass, "menubar");
+        encodeMenu(context, menubar, style, styleClass, HTML.ARIA_ORIENTATION_HORIZONTAL);
     }
 
     @Override

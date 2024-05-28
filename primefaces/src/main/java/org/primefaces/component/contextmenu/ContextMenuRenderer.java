@@ -72,6 +72,6 @@ public class ContextMenuRenderer extends TieredMenuRenderer {
         String styleClass = menu.getStyleClass();
         styleClass = styleClass == null ? ContextMenu.CONTAINER_CLASS : ContextMenu.CONTAINER_CLASS + " " + styleClass;
 
-        encodeMenu(context, menu, style, styleClass, HTML.ARIA_ROLE_MENU);
+        encodeMenu(context, menu, style, styleClass, HTML.ARIA_ORIENTATION_VERTICAL);
     }
 }

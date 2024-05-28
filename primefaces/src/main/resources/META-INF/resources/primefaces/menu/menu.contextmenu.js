@@ -61,6 +61,7 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
     init: function(cfg) {
         cfg.autoDisplay = true;
         this._super(cfg);
+        this.cfg.overlay = true;
         this.cfg.selectionMode = this.cfg.selectionMode||'multiple';
 
         var $this = this,
@@ -87,7 +88,7 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
 
             if (PrimeFaces.env.isTouchable(this.cfg)) {
                 $(document).swipe({
-                    longTap:function(e, target) {
+                    longTap:function(e) {
                        $this.show(e);
                     }
                 });
@@ -115,9 +116,9 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
             }
 
             if (binded === false) {
-                var event = this.cfg.event + '.' + this.id + '_contextmenu';
+                var customEvent = this.cfg.event + '.' + this.id + '_contextmenu';
 
-                $(document).off(event, this.jqTargetId).on(event, this.jqTargetId, null, function(e) {
+                $(document).off(customEvent, this.jqTargetId).on(customEvent, this.jqTargetId, null, function(e) {
                     $this.show(e);
                 });
 
@@ -179,7 +180,7 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         this.hideOverlayHandler = PrimeFaces.utils.registerHideOverlayHandler(this, 'click.' + this.id + '_hide', this.jq,
             function(e) { return e.key === 'Cancel' ? $this.jqTarget : null; },
             function(e, eventTarget) {
-                if(!($this.jq.is(eventTarget) || $this.jq.has(eventTarget).length > 0)) {
+                if(e && !($this.jq.is(eventTarget) || $this.jq.has(eventTarget).length > 0)) {
                     $this.hide();
                 }
             });
@@ -230,7 +231,7 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
              }
 
              $this.jqTarget.swipe({
-                 longTap:function(e, target) {
+                 longTap:function(e) {
                       $this.show(e);
                  }
              });
@@ -314,6 +315,8 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
                 },
                 onEntered: function() {
                     $this.bindPanelEvents();
+                    $this.resetFocus(true);
+                    $this.jq.find('a.ui-menuitem-link:focusable:first').trigger('focus');
                 }
             });
         }

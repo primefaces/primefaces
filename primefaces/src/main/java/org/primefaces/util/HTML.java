@@ -293,6 +293,7 @@ public class HTML {
     public static final String ARIA_SELECTED = "aria-selected";
     public static final String ARIA_ORIENTATION = "aria-orientation";
     public static final String ARIA_ORIENTATION_HORIZONTAL = "horizontal";
+    public static final String ARIA_ORIENTATION_VERTICAL = "vertical";
     public static final String ARIA_VALUE_NOW = "aria-valuenow";
     public static final String ARIA_VALUE_TEXT = "aria-valuetext";
     public static final String ARIA_VALUE_MIN = "aria-valuemin";

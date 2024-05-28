@@ -48,6 +48,7 @@ public class MenuRenderer extends BaseMenuRenderer {
         wb.init("PlainMenu", menu)
                 .attr("appendTo", SearchExpressionUtils.resolveOptionalClientIdForClientSide(context, menu, menu.getAppendTo()))
                 .attr("toggleable", menu.isToggleable(), false)
+                .attr("tabIndex", menu.getTabindex(), "0")
                 .attr("statefulGlobal", menu.isStatefulGlobal(), false);
 
         if (menu.isOverlay()) {
@@ -63,25 +64,31 @@ public class MenuRenderer extends BaseMenuRenderer {
         ResponseWriter writer = context.getResponseWriter();
         Menu menu = (Menu) abstractMenu;
         String clientId = menu.getClientId(context);
-        String style = menu.getStyle();
-        String styleClass = menu.getStyleClass();
-        String defaultStyleClass = menu.isOverlay() ? Menu.DYNAMIC_CONTAINER_CLASS : Menu.STATIC_CONTAINER_CLASS;
-        if (menu.isToggleable()) {
-            defaultStyleClass = defaultStyleClass + " " + Menu.TOGGLEABLE_MENU_CLASS;
-        }
-        styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
+        boolean isOverlay = menu.isOverlay();
+        String maxHeight = menu.getMaxHeight();
+        boolean hasMaxHeight = LangUtils.isNotEmpty(maxHeight);
+        String styleClass = getStyleClassBuilder(context)
+                .add(menu.getStyleClass())
+                .add(isOverlay, Menu.DYNAMIC_CONTAINER_CLASS)
+                .add(!isOverlay, Menu.STATIC_CONTAINER_CLASS)
+                .add(menu.isToggleable(), Menu.TOGGLEABLE_MENU_CLASS)
+                .add(hasMaxHeight, Menu.CONTAINER_MAXHEIGHT_CLASS)
+                .build();
 
-        writer.startElement("div", menu);
-        if (!LangUtils.isEmpty(menu.getMaxHeight())) {
-            styleClass = styleClass + " "  + Menu.CONTAINER_MAXHEIGHT_CLASS;
-            style = style != null ? style : "";
-            style += ";max-height:" + menu.getMaxHeight();
+        String style = getStyleBuilder(context)
+                .add(menu.getStyle())
+                .add(hasMaxHeight, "max-height", maxHeight)
+                .build();
+
+        if (hasMaxHeight) {
             // If maxHeight is a number, add the unit "px", otherwise use it as is
-            char lastChar = menu.getMaxHeight().charAt(menu.getMaxHeight().length() - 1);
+            char lastChar = maxHeight.charAt(maxHeight.length() - 1);
             if (Character.isDigit(lastChar)) {
                 style += "px";
             }
         }
+
+        writer.startElement("div", menu);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
         if (style != null) {
@@ -89,9 +96,8 @@ public class MenuRenderer extends BaseMenuRenderer {
         }
         writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENU, null);
 
-        encodeKeyboardTarget(context, menu);
-
         if (menu.getElementsCount() > 0) {
+            writer.writeAttribute("tabindex", "-1", "tabindex");
             writer.startElement("ul", null);
             writer.writeAttribute("class", Menu.LIST_CLASS, null);
             encodeElements(context, menu, menu.getElements(), false, true);

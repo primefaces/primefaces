@@ -33,9 +33,14 @@ import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.separator.UISeparator;
-import org.primefaces.model.menu.*;
+import org.primefaces.model.menu.MenuColumn;
+import org.primefaces.model.menu.MenuElement;
+import org.primefaces.model.menu.MenuItem;
+import org.primefaces.model.menu.Separator;
+import org.primefaces.model.menu.Submenu;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class MegaMenuRenderer extends BaseMenuRenderer {
@@ -46,6 +51,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
 
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("MegaMenu", menu)
+                .attr("tabIndex", menu.getTabindex(), "0")
                 .attr("autoDisplay", menu.isAutoDisplay())
                 .attr("delay", menu.getDelay())
                 .attr("activeIndex", menu.getActiveIndex(), Integer.MIN_VALUE);
@@ -70,11 +76,10 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         writer.startElement("div", menu);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
+        writer.writeAttribute("tabindex", "-1", "tabindex");
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
-
-        encodeKeyboardTarget(context, menu);
 
         writer.startElement("ul", null);
         writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUBAR, null);
@@ -122,12 +127,14 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         boolean isRtl = ComponentUtils.isRTL(context, menu);
         boolean isVertical = menu.getOrientation().equals("vertical");
         String style = submenu.getStyle();
-        String styleClass = submenu.getStyleClass();
-        styleClass = styleClass == null ? Menu.TIERED_SUBMENU_CLASS : Menu.TIERED_SUBMENU_CLASS + " " + styleClass;
+        String styleClass = getStyleClassBuilder(context)
+                .add(Menu.TIERED_SUBMENU_CLASS)
+                .add(submenu.getStyleClass())
+                .build();
 
         writer.startElement("li", null);
         writer.writeAttribute("class", styleClass, null);
-        if (style != null) {
+        if (LangUtils.isNotEmpty(style)) {
             writer.writeAttribute("style", style, null);
         }
         writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
@@ -230,7 +237,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         }
 
         writer.startElement("span", null);
-        if (label != null) {
+        if (LangUtils.isNotEmpty(label)) {
             writer.writeText(label, "value");
         }
         writer.endElement("span");
@@ -261,17 +268,21 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
 
     protected void encodeSubmenuSeparator(FacesContext context, Separator separator) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String styleClass = separator.getStyleClass();
-        styleClass = styleClass == null ? UISeparator.DEFAULT_STYLE_CLASS : UISeparator.DEFAULT_STYLE_CLASS + " " + styleClass;
+        String title = separator.getTitle();
+        String style = separator.getStyle();
+        String styleClass = getStyleClassBuilder(context)
+                .add(UISeparator.DEFAULT_STYLE_CLASS)
+                .add(separator.getStyleClass())
+                .build();
 
         writer.startElement("hr", null);
         writer.writeAttribute("class", styleClass, "styleClass");
 
-        if (separator.getTitle() != null) {
-            writer.writeAttribute("title", separator.getTitle(), "title");
+        if (LangUtils.isNotEmpty(title)) {
+            writer.writeAttribute("title", title, "title");
         }
-        if (separator.getStyle() != null) {
-            writer.writeAttribute("style", separator.getStyle(), "style");
+        if (LangUtils.isNotEmpty(style)) {
+            writer.writeAttribute("style", style, "style");
         }
 
         writer.endElement("hr");
