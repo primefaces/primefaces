@@ -817,6 +817,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     setupNavigableCells: function() {
         var $this = this;
+        var cellTabIndex = this.cfg.tabindex || "0";
         var pageRows = this.cfg.paginator && this.cfg.paginator.rows ? this.cfg.paginator.rows : 1000;
 
         // helper function to set the current and next cell focus
@@ -826,21 +827,21 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             }
 
             if (nextCell && nextCell.length) {
-                nextCell.attr("tabindex", "0").trigger("focus");
+                nextCell.attr("tabindex", cellTabIndex).trigger("focus");
                 e.preventDefault();
             }
         }
 
         // helper function to reset the state of the whole table
         function resetFocusable(resetFirstCell) {
-            var selector = resetFirstCell ? "td" : 'td[tabindex="0"]';
+            var selector = resetFirstCell ? "td:not(.ui-helper-hidden)" : 'td[tabindex="'+cellTabIndex+'"]';
             // default all cells to not focusable
             var focusableCells = $this.getTbody().find(selector);
             focusableCells.attr("tabindex", "-1");
 
             if (resetFirstCell) {
                 // the very first cell should be focusable
-                focusableCells.first().attr("tabindex", "0");
+                focusableCells.first().attr("tabindex", cellTabIndex);
             }
         }
 
@@ -870,11 +871,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         }
                         break;
                     case "ArrowLeft":
-                        var prevCell = $this.isRTL ? cell.next('[tabindex="-1"]') : cell.prev('[tabindex="-1"]');
+                        var prevCell = $this.isRTL ? cell.nextAll('[tabindex="-1"]:first') : cell.prevAll('[tabindex="-1"]:first');
                         makeFocusable(e, cell, prevCell);
                         break;
                     case "ArrowRight":
-                        var nextCell = $this.isRTL ? cell.prev('[tabindex="-1"]') : cell.next('[tabindex="-1"]');
+                        var nextCell = $this.isRTL ? cell.prevAll('[tabindex="-1"]:first') : cell.nextAll('[tabindex="-1"]:first');
                         makeFocusable(e, cell, nextCell);
                         break;
                     case "ArrowDown":
