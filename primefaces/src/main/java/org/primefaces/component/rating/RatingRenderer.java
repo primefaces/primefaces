@@ -32,6 +32,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
@@ -50,9 +51,10 @@ public class RatingRenderer extends InputRenderer {
         if (LangUtils.isNotEmpty(submittedValue)) {
             int submittedStars = Integer.parseInt(submittedValue);
             if (submittedStars == 0) {
-                submittedValue = null;
+                submittedValue = Constants.EMPTY_STRING;
             }
             else if (submittedStars < 1 || submittedStars > rating.getStars()) {
+                // prevent form post of invalid value
                 return;
             }
         }
@@ -91,17 +93,12 @@ public class RatingRenderer extends InputRenderer {
         boolean disabled = rating.isDisabled();
         boolean readonly = rating.isReadonly();
         String style = rating.getStyle();
-        String styleClass = rating.getStyleClass();
-        styleClass = styleClass == null ? Rating.CONTAINER_CLASS : Rating.CONTAINER_CLASS + " " + styleClass;
-
-        if (disabled) {
-            styleClass = styleClass + " ui-state-disabled";
-        }
+        String styleClass = createStyleClass(rating, Rating.CONTAINER_CLASS);
 
         writer.startElement("div", rating);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, null);
-        if (style != null) {
+        if (LangUtils.isNotEmpty(style)) {
             writer.writeAttribute("style", style, null);
         }
 

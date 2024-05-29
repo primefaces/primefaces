@@ -212,7 +212,9 @@ public abstract class InputRenderer extends CoreRenderer {
 
         if (LangUtils.isNotBlank(styleClassProperty)) {
             String styleClass = Objects.toString(component.getAttributes().get(styleClassProperty), Constants.EMPTY_STRING);
-            sb.append(" ").append(styleClass);
+            if (LangUtils.isNotBlank(styleClass)) {
+                sb.append(" ").append(styleClass);
+            }
         }
 
         return sb.toString();

@@ -37,6 +37,7 @@ public class RatingView {
     private Integer rating1;
     private Integer rating2;
     private Integer rating3 = 4;
+    private Integer rating4;
 
     public void onrate(RateEvent<Integer> rateEvent) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Rate Event", "You rated:" + rateEvent.getRating());
@@ -45,6 +46,11 @@ public class RatingView {
 
     public void oncancel() {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cancel Event", "Rate Reset");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+
+    public void onSubmit() {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Submitted", "You rated:" + rating4);
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
@@ -70,5 +76,13 @@ public class RatingView {
 
     public void setRating3(Integer rating3) {
         this.rating3 = rating3;
+    }
+
+    public Integer getRating4() {
+        return rating4;
+    }
+
+    public void setRating4(Integer rating4) {
+        this.rating4 = rating4;
     }
 }
