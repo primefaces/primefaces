@@ -112,6 +112,18 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
                         + ", when basic rowKey algorithm is not used [component=%s,view=%s]."));
     }
 
+    public int calculateRowCount(List<?> loadedData, Map<String, FilterMeta> filterBy, int first, int rows) {
+        if (getRowCount() == 0) {
+            if (loadedData.size() < rows && first == 0) {
+                setRowCount(loadedData.size());
+            }
+            else if (first == 0) {
+                setRowCount(count(filterBy));
+            }
+        }
+        return getRowCount();
+    }
+
     /**
      * Loads a single row for the rowIndex provided.
      *
