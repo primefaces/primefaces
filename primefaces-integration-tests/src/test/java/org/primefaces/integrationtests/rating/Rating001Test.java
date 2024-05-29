@@ -23,7 +23,9 @@
  */
 package org.primefaces.integrationtests.rating;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
@@ -206,7 +208,7 @@ class Rating001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(9)
-    @DisplayName("Rating: Submit value below minimum should return original value")
+    @DisplayName("Rating: Submit value below minimum should return NULL")
     void minimumServerSide(Page page) {
         // Arrange
         Rating rating = page.ratingMinMax;
@@ -218,7 +220,7 @@ class Rating001Test extends AbstractPrimePageTest {
         page.submit.click();
 
         // Assert
-        assertEquals(2L, rating.getValue());
+        assertEquals(null, rating.getValue());
         assertConfiguration(rating.getWidgetConfiguration());
     }
 

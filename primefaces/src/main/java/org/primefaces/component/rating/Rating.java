@@ -100,7 +100,7 @@ public class Rating extends RatingBase {
                 AjaxBehaviorEvent behaviorEvent = event.getValue();
                 Object value = "cancel".equals(eventName) ? null : getValue();
                 setValue(value);
-                RateEvent rateEvent = new RateEvent(this, behaviorEvent.getBehavior(), value);
+                RateEvent<?> rateEvent = new RateEvent(this, behaviorEvent.getBehavior(), value);
 
                 rateEvent.setPhaseId(behaviorEvent.getPhaseId());
 
