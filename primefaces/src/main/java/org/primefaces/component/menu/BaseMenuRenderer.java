@@ -39,12 +39,7 @@ import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.MenuModel;
 import org.primefaces.model.menu.Submenu;
 import org.primefaces.renderkit.MenuItemAwareRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.FacetUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.*;
 
 public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
 
@@ -273,6 +268,7 @@ public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
 
         writer.startElement("span", null);
         writer.writeAttribute("class", styleClass, null);
+        writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
         writer.endElement("span");
     }
 }

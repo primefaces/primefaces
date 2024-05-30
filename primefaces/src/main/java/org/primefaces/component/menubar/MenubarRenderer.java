@@ -23,6 +23,11 @@
  */
 package org.primefaces.component.menubar;
 
+import java.io.IOException;
+
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.tieredmenu.TieredMenuRenderer;
@@ -30,10 +35,6 @@ import org.primefaces.model.menu.Submenu;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
-
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import java.io.IOException;
 
 public class MenubarRenderer extends TieredMenuRenderer {
 
@@ -81,6 +82,7 @@ public class MenubarRenderer extends TieredMenuRenderer {
 
         writer.startElement("span", null);
         writer.writeAttribute("class", icon, null);
+        writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
         writer.endElement("span");
     }
 }
