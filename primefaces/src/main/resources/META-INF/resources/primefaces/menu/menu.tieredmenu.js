@@ -95,13 +95,6 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
             var menuitem = $(this).parent();
             $this.highlight(menuitem);
         });
-
-        // reset menu when focus is lost on the entire menu
-        this.jq.on("blur.tieredFocus focusout.tieredFocus", (e) => {
-            if (!$this.jq.has(e.relatedTarget).length) {
-                $this.deactivateAndReset(e);
-            }
-        });
     },
 
     /**
@@ -201,7 +194,7 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
 
             // Helper functionto navigate to a menu item
             function navigateTo(item) {
-                if (item.length) {
+                if (item.length && item.children('a.ui-menuitem-link').length) {
                     $this.deactivate(menuitem);
                     $this.activate(item, false);
                 }
