@@ -23,18 +23,6 @@
  */
 package org.primefaces.util;
 
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.context.PrimeRequestContext;
-
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
-import javax.faces.application.Application;
-import javax.faces.application.Resource;
-import javax.faces.application.ResourceHandler;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIOutput;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,6 +34,19 @@ import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.el.ValueExpression;
+import javax.faces.FacesException;
+import javax.faces.application.Application;
+import javax.faces.application.Resource;
+import javax.faces.application.ResourceHandler;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIOutput;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.context.PrimeRequestContext;
 
 public class ResourceUtils {
 
@@ -200,14 +201,15 @@ public class ResourceUtils {
         boolean isSecure = requestContext.isSecure() && applicationContext.getConfig().isCookiesSecure();
         boolean isJsf40OrHigher = applicationContext.getEnvironment().isAtLeastJsf40();
 
-        if (isSecure) {
-            properties.put("secure", true);
-            if (isJsf40OrHigher) {
-                properties.put("SameSite", applicationContext.getConfig().getCookiesSameSite());
+        properties.put("secure", isSecure);
+
+        if (isJsf40OrHigher) {
+            String sameSite = applicationContext.getConfig().getCookiesSameSite();
+            // "None" is only allowed when Secure attribute so default to Lax if unsecure
+            if (LangUtils.isBlank(sameSite) || (!isSecure && "None".equalsIgnoreCase(sameSite))) {
+                sameSite = "Lax";
             }
-        }
-        else if (isJsf40OrHigher) {
-            properties.put("SameSite", "None");
+            properties.put("SameSite", sameSite);
         }
 
         context.getExternalContext().addResponseCookie(name, value, properties);
