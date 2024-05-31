@@ -34,8 +34,8 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
 
         this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.block);
         this.content = this.jq;
-        this.cfg.animate = (this.cfg.animate === false) ? false : true;
-        this.cfg.blocked = (this.cfg.blocked === true) ? true : false;
+        this.cfg.animate = this.cfg.animate !== false;
+        this.cfg.blocked = !!this.cfg.blocked;
 
         this.render();
 
@@ -182,8 +182,12 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
             }
         };
         var resetPositionCallback = function() {
-            for (var i = 0; i < $this.target.length; i++) {
-                $($this.target[i]).css('position', '');
+            for (let targetElement of $this.target) {
+                var currentTarget = $(targetElement);
+                var previousPosition = currentTarget.data('p-position');
+                if (previousPosition) {
+                    currentTarget.css('position', previousPosition);
+                }
             }
         };
 
@@ -210,8 +214,8 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         var widgetId = this.id,
             shouldClone = this.hasMultipleTargets() && this.hasContent();
         // there can be 1 to N targets
-        for (var i = 0; i < this.target.length; i++) {
-            var currentTarget = $(this.target[i]),
+        for (let targetElement of this.target) {
+            var currentTarget = $(targetElement),
                 currentTargetId = currentTarget.attr('id') || this.id,
                 currentContent = this.jq;
 
@@ -272,7 +276,7 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
             // configure the target positioning
             var position = currentTarget.css("position");
             if (position !== "fixed" && position !== "absolute") {
-                currentTarget.css('position', 'relative');
+                currentTarget.data('p-position', position).css('position', 'relative');
             }
 
             // set the size and position to match the target
