@@ -32,12 +32,13 @@ import javax.faces.view.facelets.MetaRuleset;
 
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.facelets.MethodRule;
+import org.primefaces.model.SortMeta;
 
 public class ColumnsHandler extends ComponentHandler {
 
     private static final MetaRule SORT_FUNCTION = new MethodRule(Columns.PropertyKeys.sortFunction.name(),
             Integer.class,
-            new Class[]{Object.class, Object.class});
+            new Class[]{Object.class, Object.class, SortMeta.class});
 
     private static final MetaRule FILTER_FUNCTION = new MethodRule(Columns.PropertyKeys.filterFunction.name(),
             Integer.class,
