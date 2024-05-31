@@ -91,7 +91,7 @@ DataTable displays data in tabular format.
 | scrollable                | false              | Boolean          | Makes data scrollable with fixed header.
 | selectAllFilteredOnly     | false              | Boolean          | When enabled, toggle select will only apply on filtered items. Default is false.
 | selection                 | null               | Object           | Reference to the selection data.
-| selectionRowMode          | new                | String           | Defines row selection mode. Valid values are "new", "add" and "none".
+| selectionRowMode          | new                | String           | Defines row select mode for checkbox based selection, valid values are 'new' (default, sets the line as the only selected line), 'add' (toggles to selection) and 'none' (the selection is untouched).
 | selectionMode             | null               | String           | Enables row selection, valid values are "single" and "multiple". Automatically detected based on value-binding to `selection` property. So no need to set this explicit.
 | selectionDisabled         | false              | Boolean          | Disables row selection when true. Example: var="xxx" selectionDisabled="#{xxx.year > 1960}"
 | selectionTextDisabled     | true               | Boolean          | Disables text selection on row click.
