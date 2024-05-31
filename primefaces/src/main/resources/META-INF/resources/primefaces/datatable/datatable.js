@@ -882,11 +882,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         makeFocusable(e, cell, nextCell);
                         break;
                     case "ArrowDown":
-                        nextCell = cell.closest("tr[data-ri]").nextAll().find('td[tabindex="-1"]').eq(cell.index());
+                        nextCell = cell.closest("tr[data-ri]").nextAll("tr[data-ri]:first").find('td[tabindex="-1"]').eq(cell.index());
                         makeFocusable(e, cell, nextCell);
                         break;
                     case "ArrowUp":
-                        prevCell = cell.closest("tr[data-ri]").prevAll().find('td[tabindex="-1"]').eq(cell.index());
+                        prevCell = cell.closest("tr[data-ri]").prevAll("tr[data-ri]:first").find('td[tabindex="-1"]').eq(cell.index());
                         makeFocusable(e, cell, prevCell);
                         break;
                     case "Home":
