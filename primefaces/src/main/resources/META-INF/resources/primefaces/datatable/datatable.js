@@ -327,7 +327,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             this.cfg.cellNavigation = false;
         }
         if (this.cfg.cellNavigation) {
-            this.igableCells();
+            this.setupNavigableCells();
         }
     },
 
