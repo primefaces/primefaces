@@ -863,6 +863,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     return;
                 }
                 var cell = $(this);
+                var nextCell = null;
+                var prevCell = null;
+                var currentRow = null;
 
                 switch (e.code) {
                     case "KeyW":
@@ -875,26 +878,26 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         makeFocusable(e, cell, prevCell);
                         break;
                     case "ArrowRight":
-                        var nextCell = $this.isRTL ? cell.prevAll('[tabindex="-1"]:first') : cell.nextAll('[tabindex="-1"]:first');
+                        nextCell = $this.isRTL ? cell.prevAll('[tabindex="-1"]:first') : cell.nextAll('[tabindex="-1"]:first');
                         makeFocusable(e, cell, nextCell);
                         break;
                     case "ArrowDown":
-                        var nextCell = cell.closest("tr[data-ri]").next().find('td[tabindex="-1"]').eq(cell.index());
+                        nextCell = cell.closest("tr[data-ri]").nextAll().find('td[tabindex="-1"]').eq(cell.index());
                         makeFocusable(e, cell, nextCell);
                         break;
                     case "ArrowUp":
-                        var prevCell = cell.closest("tr[data-ri]").prev().find('td[tabindex="-1"]').eq(cell.index());
+                        prevCell = cell.closest("tr[data-ri]").prevAll().find('td[tabindex="-1"]').eq(cell.index());
                         makeFocusable(e, cell, prevCell);
                         break;
                     case "Home":
-                        var prevCell = cell.prevAll('[tabindex="-1"]').last();
+                        prevCell = cell.prevAll('[tabindex="-1"]').last();
                         if (e.ctrlKey) {
                             prevCell = cell.closest("tr[data-ri]").prevAll().last().find('td[tabindex="-1"]').first();
                         }
                         makeFocusable(e, cell, prevCell);
                         break;
                     case "End":
-                        var nextCell = cell.nextAll('[tabindex="-1"]').last();
+                        nextCell = cell.nextAll('[tabindex="-1"]').last();
                         if (e.ctrlKey) {
                             nextCell = cell.closest("tr[data-ri]").nextAll().last().find('td[tabindex="-1"]').last();
                         }
@@ -902,8 +905,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         break;
                     case "PageUp":
                         // Select the current record
-                        var currentRow = cell.closest("tr[data-ri]");
-                        var prevCell = null;
+                        currentRow = cell.closest("tr[data-ri]");
 
                         // Navigate back 1 page records
                         for (var i = 0; i < pageRows; i++) {
@@ -918,8 +920,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         break;
                     case "PageDown":
                         // Select the current row
-                        var currentRow = cell.closest("tr[data-ri]");
-                        var nextCell = null;
+                        currentRow = cell.closest("tr[data-ri]");
 
                         // Navigate forward 1 page rows
                         for (var i = 0; i < pageRows; i++) {
@@ -936,7 +937,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     case "Enter":
                     case "NumpadEnter":
                         // Find the first child element with a click event bound
-                        var $clickable = cell.find(':button:enabled, :input:enabled, a').first();
+                        var $clickable = cell.find(':button:enabled, :input:enabled, a, .ui-row-toggler').first();
                         if ($clickable.length) {
                             $clickable.trigger('click');
                             e.stopPropagation();
