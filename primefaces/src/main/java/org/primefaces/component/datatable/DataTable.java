@@ -445,32 +445,6 @@ public class DataTable extends DataTableBase {
         }
     }
 
-    @Override
-    public boolean hasFooterColumn() {
-        return hasFooterColumn(this);
-    }
-
-    protected boolean hasFooterColumn(UIComponent component) {
-        for (int i = 0; i < component.getChildCount(); i++) {
-            UIComponent child = component.getChildren().get(i);
-            if (child.isRendered()) {
-                if ((child instanceof UIColumn)) {
-                    UIColumn column = (UIColumn) child;
-
-                    if (column.getFooterText() != null || FacetUtils.shouldRenderFacet(column.getFacet("footer"))) {
-                        return true;
-                    }
-                }
-                else if (child instanceof ColumnGroup) {
-                    if (hasFooterColumn(child)) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
     public void loadLazyDataIfRequired() {
         if (getDataModel().getWrappedData() == null) {
             loadLazyDataIfEnabled();
@@ -1131,5 +1105,12 @@ public class DataTable extends DataTableBase {
         // see https://github.com/primefaces/primefaces/issues/2154
         return getFacesContext().getCurrentPhaseId() == PhaseId.RENDER_RESPONSE
                 && (!isNestedWithinIterator() || columns.stream().noneMatch(DynamicColumn.class::isInstance));
+    }
+
+    protected String getOrderedColumnKeys() {
+        return getColumns()
+                .stream()
+                .map(UIColumn::getColumnKey)
+                .collect(Collectors.joining(","));
     }
 }

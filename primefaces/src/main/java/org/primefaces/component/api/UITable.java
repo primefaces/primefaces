@@ -61,7 +61,6 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
     String getClientId(FacesContext context);
 
-
     default Map<String, FilterMeta> initFilterBy(FacesContext context) {
         Map<String, FilterMeta> filterBy = new LinkedHashMap<>();
 
@@ -558,13 +557,32 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
     void setColumnMeta(Map<String, ColumnMeta> columnMeta);
 
-    @Override
+    default UIColumn findColumn(String columnKey) {
+        if ("globalFilter".equals(columnKey)) {
+            return null;
+        }
+
+        List<UIColumn> columns = getColumns();
+
+        //body columns
+        for (int i = 0; i < columns.size(); i++) {
+            UIColumn column = columns.get(i);
+            if (Objects.equals(column.getColumnKey(), columnKey)) {
+                return column;
+            }
+        }
+
+        throw new FacesException("Cannot find column with key: " + columnKey);
+    }
+
     default List<UIColumn> collectColumns() {
-        List<UIColumn> columns = ForEachRowColumn.from((UIComponent) this).invoke(new RowColumnVisitor.ColumnCollector()).getColumns();
+        List<UIColumn> columns = ForEachRowColumn.collectColumns((UIComponent) this);
         Map<String, ColumnMeta> columnMeta = getColumnMeta();
         if (!columnMeta.isEmpty()) {
             columns.sort(ColumnComparators.displayOrder(columnMeta));
         }
         return columns;
     }
+
+    void setColumns(List<UIColumn> columns);
 }

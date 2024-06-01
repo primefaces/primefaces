@@ -33,13 +33,6 @@ public abstract class SubTableBase extends UIData implements ColumnAware {
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.SubTableRenderer";
 
-    public enum PropertyKeys {
-    }
-
-    protected enum InternalPropertyKeys {
-        columnMeta
-    }
-
     public SubTableBase() {
         setRendererType(DEFAULT_RENDERER);
     }

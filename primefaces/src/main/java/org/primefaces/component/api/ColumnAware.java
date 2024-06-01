@@ -25,10 +25,7 @@ package org.primefaces.component.api;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 
 import org.primefaces.component.column.Column;
@@ -44,14 +41,14 @@ public interface ColumnAware {
 
     List<UIComponent> getChildren();
 
-    static List<List<ColumnNode>> treeColumnsTo2DArray(UIComponent root, int columnStart, int columnEnd) {
+    static List<List<ColumnNode>> to2DArray(UIComponent root, int columnStart, int columnEnd) {
         List<List<ColumnNode>> matrix = new ArrayList<>();
         ColumnNode rootNode = ColumnNode.root(root);
-        treeColumnsTo2DArray(rootNode, matrix, columnStart, columnEnd);
+        to2DArray(rootNode, matrix, columnStart, columnEnd);
         return matrix;
     }
 
-    static void treeColumnsTo2DArray(ColumnNode root, List<List<ColumnNode>> nodes, int columnStart, int columnEnd) {
+    static void to2DArray(ColumnNode root, List<List<ColumnNode>> nodes, int columnStart, int columnEnd) {
         int idx = -1;
         for (int i = 0; i < root.getChildren().size(); i++) {
             UIComponent child = root.getChildren().get(i);
@@ -81,12 +78,12 @@ public interface ColumnAware {
                     ColumnNode node = new ColumnNode(root, child);
                     row.add(node);
                     if (child instanceof ColumnGroup) {
-                        treeColumnsTo2DArray(node, nodes, columnStart, columnEnd);
+                        to2DArray(node, nodes, columnStart, columnEnd);
                     }
                 }
-                else if (child instanceof SubTable) {
+                else if (child.isRendered() && child instanceof SubTable) {
                     ColumnNode node = ColumnNode.root(child);
-                    treeColumnsTo2DArray(node, nodes, columnStart, columnEnd);
+                    to2DArray(node, nodes, columnStart, columnEnd);
                 }
             }
         }
@@ -95,57 +92,29 @@ public interface ColumnAware {
     default boolean hasFooterColumn() {
         for (int i = 0; i < getChildCount(); i++) {
             UIComponent child = getChildren().get(i);
-            if (child.isRendered() && (child instanceof UIColumn)) {
-                UIColumn column = (UIColumn) child;
+            if (child.isRendered()) {
+                if ((child instanceof UIColumn)) {
+                    UIColumn column = (UIColumn) child;
 
-                if (column.getFooterText() != null || FacetUtils.shouldRenderFacet(column.getFacet("footer"))) {
-                    return true;
+                    if (column.getFooterText() != null || FacetUtils.shouldRenderFacet(column.getFacet("footer"))) {
+                        return true;
+                    }
+                }
+                else if (child instanceof ColumnGroup) {
+                    if (((ColumnGroup) child).hasFooterColumn()) {
+                        return true;
+                    }
                 }
             }
         }
-
         return false;
     }
 
-    default UIColumn findColumn(String columnKey) {
-        if ("globalFilter".equals(columnKey)) {
-            return null;
-        }
-
-        List<UIColumn> columns = getColumns();
-
-        //body columns
-        for (int i = 0; i < columns.size(); i++) {
-            UIColumn column = columns.get(i);
-            if (Objects.equals(column.getColumnKey(), columnKey)) {
-                return column;
-            }
-        }
-
-        throw new FacesException("Cannot find column with key: " + columnKey);
-    }
-
-    List<UIColumn> getColumns();
-
-    void setColumns(List<UIColumn> columns);
-
-    default List<UIColumn> collectColumns() {
-        return ForEachRowColumn.from((UIComponent) this).invoke(new RowColumnVisitor.ColumnCollector()).getColumns();
+    default List<UIColumn> getColumns() {
+        return ForEachRowColumn.collectColumns((UIComponent) this);
     }
 
     default int getColumnsCount() {
-        return ForEachRowColumn
-                .from((UIComponent) this)
-                .hints(ForEachRowColumn.ColumnHint.RENDERED, ForEachRowColumn.ColumnHint.VISIBLE)
-                .invoke(new RowColumnVisitor.ColumnCounter())
-                .getCount();
+        return ForEachRowColumn.countColumns((UIComponent) this);
     }
-
-    default String getOrderedColumnKeys() {
-        return getColumns()
-                .stream()
-                .map(UIColumn::getColumnKey)
-                .collect(Collectors.joining(","));
-    }
-
 }

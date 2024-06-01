@@ -355,7 +355,7 @@ public class TreeTableRenderer extends DataRenderer {
 
     protected void encodeColumnHeaders(FacesContext context, TreeTable table, int columnStart, int columnEnd) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        List<List<ColumnNode>> matrix = ColumnAware.treeColumnsTo2DArray(table, columnStart, columnEnd);
+        List<List<ColumnNode>> matrix = ColumnAware.to2DArray(table, columnStart, columnEnd);
 
         int depth = matrix.size();
         for (List<ColumnNode> rows : matrix) {

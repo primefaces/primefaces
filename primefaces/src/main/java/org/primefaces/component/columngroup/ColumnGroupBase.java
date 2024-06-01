@@ -25,8 +25,10 @@ package org.primefaces.component.columngroup;
 
 import javax.faces.component.UIComponentBase;
 
+import org.primefaces.component.api.ColumnAware;
 
-public abstract class ColumnGroupBase extends UIComponentBase {
+
+public abstract class ColumnGroupBase extends UIComponentBase implements ColumnAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

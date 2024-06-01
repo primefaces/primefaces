@@ -27,6 +27,7 @@ import java.util.List;
 
 import javax.faces.event.PhaseId;
 
+import org.primefaces.component.api.ForEachRowColumn;
 import org.primefaces.component.api.UIColumn;
 
 public class SubTable extends SubTableBase {
@@ -37,23 +38,18 @@ public class SubTable extends SubTableBase {
 
     @Override
     public List<UIColumn> getColumns() {
-        if (this.columns != null) {
-            return this.columns;
+        if (columns != null) {
+            return columns;
         }
 
-        List<UIColumn> columns = collectColumns();
+        List<UIColumn> columnsTmp = ForEachRowColumn.collectColumns(this);
 
         // lets cache it only when RENDER_RESPONSE is reached, the columns might change before reaching that phase
         // see https://github.com/primefaces/primefaces/issues/2110
         if (getFacesContext().getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
-            this.columns = columns;
+            columns = columnsTmp;
         }
 
-        return columns;
-    }
-
-    @Override
-    public void setColumns(List<UIColumn> columns) {
-        this.columns = columns;
+        return columnsTmp;
     }
 }

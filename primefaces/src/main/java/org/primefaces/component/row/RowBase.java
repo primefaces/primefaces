@@ -25,8 +25,10 @@ package org.primefaces.component.row;
 
 import javax.faces.component.UIComponentBase;
 
+import org.primefaces.component.api.ColumnAware;
 
-public abstract class RowBase extends UIComponentBase {
+
+public abstract class RowBase extends UIComponentBase implements ColumnAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

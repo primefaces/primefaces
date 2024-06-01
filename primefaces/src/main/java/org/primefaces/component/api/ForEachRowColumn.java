@@ -26,6 +26,7 @@ package org.primefaces.component.api;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 
@@ -77,6 +78,14 @@ public class ForEachRowColumn {
     private RowColumnVisitor callback;
 
     private String columnKey;
+
+    public static List<UIColumn> collectColumns(UIComponent root) {
+        return from(root).invoke(new RowColumnVisitor.ColumnCollector()).getColumns();
+    }
+
+    public static int countColumns(UIComponent root) {
+        return from(root).invoke(new RowColumnVisitor.ColumnCounter()).getCount();
+    }
 
     public static ForEachRowColumn from(UIComponent root) {
         ForEachRowColumn visitor = new ForEachRowColumn();
@@ -243,8 +252,6 @@ public class ForEachRowColumn {
     }
 
     private static boolean isColumnAware(UIComponent component) {
-        return component instanceof ColumnAware
-                || component instanceof Row
-                || component instanceof ColumnGroup;
+        return component instanceof ColumnAware;
     }
 }
