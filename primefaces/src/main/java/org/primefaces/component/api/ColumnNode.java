@@ -25,6 +25,7 @@ package org.primefaces.component.api;
 
 import java.util.Collections;
 import java.util.List;
+
 import javax.faces.component.UIComponent;
 
 public class ColumnNode {
@@ -49,11 +50,11 @@ public class ColumnNode {
         }
     }
 
-    boolean isLeaf() {
+    public boolean isLeaf() {
         return uiComp instanceof UIColumn;
     }
 
-    List<UIComponent> getChildren() {
+    public List<UIComponent> getChildren() {
         if (uiComp instanceof UIComponent && ((UIComponent) uiComp).getChildCount() > 0) {
             return ((UIComponent) uiComp).getChildren();
         }

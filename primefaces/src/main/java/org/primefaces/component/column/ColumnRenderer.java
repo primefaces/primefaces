@@ -24,13 +24,11 @@
 package org.primefaces.component.column;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-import org.primefaces.component.column.renderer.ColumnGroupHelperRenderer;
 import org.primefaces.component.column.renderer.HelperColumnRenderer;
 import org.primefaces.component.column.renderer.PanelGridBodyColumnRenderer;
 import org.primefaces.component.column.renderer.PanelGridFacetColumnRenderer;
@@ -39,14 +37,9 @@ import org.primefaces.util.Constants;
 
 public class ColumnRenderer extends CoreRenderer {
 
-    static final Map<String, HelperColumnRenderer> RENDERERS;
-
-    static {
-        RENDERERS = new HashMap<>();
-        RENDERERS.put("columnGroup", new ColumnGroupHelperRenderer());
-        RENDERERS.put("panelGridBody", new PanelGridBodyColumnRenderer());
-        RENDERERS.put("panelGridFacet", new PanelGridFacetColumnRenderer());
-    }
+    static final Map<String, HelperColumnRenderer> RENDERERS = Map.of(
+            "panelGridBody", new PanelGridBodyColumnRenderer(),
+            "panelGridFacet", new PanelGridFacetColumnRenderer());
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {

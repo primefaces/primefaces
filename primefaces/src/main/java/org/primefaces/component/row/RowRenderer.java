@@ -40,14 +40,12 @@ import org.primefaces.component.row.renderer.PanelGridFacetRowRenderer;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.MapBuilder;
 
 public class RowRenderer extends CoreRenderer {
 
-    static final Map<String, HelperRowRenderer> RENDERERS = MapBuilder.<String, HelperRowRenderer>builder()
-            .put("panelGridBody", new PanelGridBodyRowRenderer())
-            .put("panelGridFacet", new PanelGridFacetRowRenderer())
-            .build();
+    static final Map<String, HelperRowRenderer> RENDERERS = Map.of(
+            "panelGridBody", new PanelGridBodyRowRenderer(),
+            "panelGridFacet", new PanelGridFacetRowRenderer());
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
