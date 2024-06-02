@@ -327,7 +327,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             this.cfg.cellNavigation = false;
         }
         if (this.cfg.cellNavigation) {
-            this.setupNavigableCells();
+            this.igableCells();
         }
     },
 
@@ -863,7 +863,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 makeFocusable(null, null, $(this));
             })
             .on("keydown.focuscell", function(e) {
-                if ($(e.target).is(clickSelector)) {
+                if ($(e.target).is(":input:enabled")) {
                     return;
                 }
                 
