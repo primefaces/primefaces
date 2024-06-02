@@ -322,7 +322,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         this.cfg.cellNavigation = this.cfg.cellNavigation === undefined ? true : this.cfg.cellNavigation;
-        if (this.cfg.editMode === 'cell' || this.cfg.selectionRowMode !== 'none') {
+        if (this.cfg.editMode || this.cfg.selectionRowMode !== 'none') {
             // do not allow when editing or row selection enabled
             this.cfg.cellNavigation = false;
         }
@@ -819,6 +819,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this;
         var cellTabIndex = this.cfg.tabindex || "0";
         var pageRows = this.cfg.paginator && this.cfg.paginator.rows ? this.cfg.paginator.rows : 1000;
+        var clickSelector = ':button:enabled, :input:enabled, a, [role="combobox"], .ui-row-toggler';
 
         // helper function to set the current and next cell focus
         function makeFocusable(e, cell, nextCell) {
@@ -828,7 +829,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
             if (nextCell && nextCell.length) {
                 nextCell.attr("tabindex", cellTabIndex).trigger("focus");
-                e.preventDefault();
+                if (e) {
+                    e.preventDefault();
+                }
             }
         }
 
@@ -851,17 +854,19 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         // on click should make it focusable
         this.getTbody().find("td")
             .on("click.focuscell", function(e) {
-                if ($(e.target).is(":input")) {
-                    return;
-                }
                 resetFocusable(false);
 
-                makeFocusable(e, null, $(this));
-            })
-            .on("keydown.focuscell", function(e) {
-                if ($(e.target).is(":input")) {
+                if ($(e.target).is(clickSelector)) {
                     return;
                 }
+
+                makeFocusable(null, null, $(this));
+            })
+            .on("keydown.focuscell", function(e) {
+                if ($(e.target).is(clickSelector)) {
+                    return;
+                }
+                
                 var cell = $(this);
                 var nextCell = null;
                 var prevCell = null;
@@ -874,7 +879,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         }
                         break;
                     case "ArrowLeft":
-                        var prevCell = $this.isRTL ? cell.nextAll('[tabindex="-1"]:first') : cell.prevAll('[tabindex="-1"]:first');
+                        prevCell = $this.isRTL ? cell.nextAll('[tabindex="-1"]:first') : cell.prevAll('[tabindex="-1"]:first');
                         makeFocusable(e, cell, prevCell);
                         break;
                     case "ArrowRight":
@@ -937,7 +942,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     case "Enter":
                     case "NumpadEnter":
                         // Find the first child element with a click event bound
-                        var $clickable = cell.find(':button:enabled, :input:enabled, a, .ui-row-toggler').first();
+                        var $clickable = cell.find(clickSelector).first();
                         if ($clickable.length) {
                             $clickable.trigger('click');
                             e.stopPropagation();
