@@ -643,7 +643,6 @@
             </description>
             <name>var</name>
             <required>false</required>
-            <type>java.lang.String</type>
         </attribute>
     </tag>
     <tag>
@@ -666,7 +665,6 @@
             </description>
             <name>var</name>
             <required>false</required>
-            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -789,7 +787,6 @@
             </description>
             <name>var</name>
             <required>false</required>
-            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -1662,7 +1659,6 @@
             </description>
             <name>var</name>
             <required>false</required>
-            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -4015,11 +4011,10 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Name of the iterator variable used to refer each data.]]>
+                <![CDATA[Name of the iterator variable that references each element in the data set.]]>
             </description>
             <name>var</name>
             <required>false</required>
-            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -6019,11 +6014,10 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Name of the iterator variable that references each element in the data set.]]>
             </description>
             <name>var</name>
             <required>true</required>
-            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -7778,7 +7772,6 @@
             </description>
             <name>var</name>
             <required>false</required>
-            <type>java.lang.String</type>
         </attribute>
     </tag>
     <tag>
@@ -7824,11 +7817,10 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Name of the iterator variable used to refer each data.]]>
+                <![CDATA[Name of the iterator variable that references each element in the data set.]]>
             </description>
             <name>var</name>
             <required>false</required>
-            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -8051,11 +8043,10 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Name of the iterator variable used to refer each data.]]>
+                <![CDATA[Name of the iterator variable that references each element in the data set.]]>
             </description>
             <name>var</name>
             <required>false</required>
-            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -8277,11 +8268,10 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Name of the iterator variable used to refer each data.]]>
+                <![CDATA[Name of the iterator variable that references each element in the data set.]]>
             </description>
             <name>var</name>
             <required>false</required>
-            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -8433,11 +8423,10 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Name of the iterator variable used to refer each data.]]>
+                <![CDATA[Name of the iterator variable that references each element in the data set.]]>
             </description>
             <name>var</name>
             <required>false</required>
-            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -9220,11 +9209,10 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Name of the iterator variable used to refer each data.]]>
+                <![CDATA[Name of the iterator variable that references each element in the data set.]]>
             </description>
             <name>var</name>
             <required>false</required>
-            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -9619,11 +9607,10 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Name of the iterator variable used to refer each data.]]>
+                <![CDATA[Name of the iterator variable that references each element in the data set.]]>
             </description>
             <name>var</name>
             <required>false</required>
-            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -10529,11 +10516,10 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Iterator to refer each item in feed.]]>
+                <![CDATA[Name of the iterator variable that references each element in the data set.]]>
             </description>
             <name>var</name>
             <required>true</required>
-            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -11321,7 +11307,6 @@
             </description>
             <name>var</name>
             <required>false</required>
-            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -18719,11 +18704,10 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Name of the iterator.]]>
+                <![CDATA[Name of the iterator variable that references each element in the data set.]]>
             </description>
             <name>var</name>
             <required>false</required>
-            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -18885,7 +18869,6 @@
             </description>
             <name>var</name>
             <required>false</required>
-            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -20826,11 +20809,10 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Name of the iterator.]]>
+                <![CDATA[Name of the iterator variable that references each element in the data set.]]>
             </description>
             <name>var</name>
             <required>false</required>
-            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -23454,7 +23436,6 @@
             </description>
             <name>var</name>
             <required>false</required>
-            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -24138,7 +24119,6 @@
             </description>
             <name>var</name>
             <required>false</required>
-            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -24589,7 +24569,6 @@
             </description>
             <name>var</name>
             <required>false</required>
-            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -24836,11 +24815,10 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Name of the iterator variable that references each element in the data set.]]>
             </description>
             <name>var</name>
             <required>false</required>
-            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -27697,11 +27675,10 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Name of the iterator variable used to refer each data.]]>
+                <![CDATA[Name of the iterator variable that references each element in the data set.]]>
             </description>
             <name>var</name>
             <required>false</required>
-            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -28063,7 +28040,6 @@
             </description>
             <name>var</name>
             <required>false</required>
-            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -28765,7 +28741,6 @@
             </description>
             <name>var</name>
             <required>false</required>
-            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -29838,7 +29813,6 @@
             </description>
             <name>var</name>
             <required>false</required>
-            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -30262,11 +30236,10 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Name of the iterator variable that references each element in the data set.]]>
             </description>
             <name>var</name>
             <required>false</required>
-            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -33476,11 +33449,10 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Name of the iterator to display an item.]]>
+                <![CDATA[Name of the iterator variable that references each element in the data set.]]>
             </description>
             <name>var</name>
             <required>true</required>
-            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -33729,11 +33701,10 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Name of the item iterator.]]>
+                <![CDATA[Name of the iterator variable that references each element in the data set.]]>
             </description>
             <name>var</name>
             <required>false</required>
-            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
