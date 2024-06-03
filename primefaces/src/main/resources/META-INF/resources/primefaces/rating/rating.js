@@ -42,12 +42,13 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
             this.bindEvents();
         }
         else {
-            this.jq.attr('tabindex', -1);
+            this.input.attr('tabindex', -1);
         }
 
         if(this.cfg.readonly) {
             this.jq.children().css('cursor', 'default');
         }
+        this.updateInput(this.value || '0');
     },
 
     /**
@@ -64,9 +65,11 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
             
             if ((key === 'ArrowLeft' || key === 'ArrowDown') && value > 0) {
                 $this.setValue(--value);
+                e.preventDefault();
             }
             else if ((key === 'ArrowRight' || key === 'ArrowUp') && $this.stars.length !== value) {
                 $this.setValue(++value);
+                e.preventDefault();
             }
             
             $this.focus($this.getFocusableElement());
@@ -92,17 +95,16 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
             $this.focus($(this), true);
         });
     },
-    
+
     /**
-     * Set focus to element
-     * @param {JQuery} el focusable element
-     * @param {boolean} isInputFocus Whether to refocus to input element
-     * @private
+     * Focuses on a specified element and optionally sets focus to the input element.
+     * @param {JQuery} star - The element to which the focus class will be added.
+     * @param {boolean} [isInputFocus=false] - If true, also sets focus to the input element.
      */
-    focus: function(el, isInputFocus) {
-        if (!this.cfg.disabled && el) {
+    focus: function(star, isInputFocus) {
+        if (!this.cfg.disabled && star) {
             this.jq.children('.ui-state-focus').removeClass("ui-state-focus");
-            el.addClass('ui-state-focus');
+            star.addClass('ui-state-focus');
             
             if (isInputFocus) {
                 this.input.focus();
@@ -117,7 +119,11 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
      */
     getFocusableElement: function() {
         var value = this.getValue() || 0;
-        return value === 0 ? (this.cancel && this.cancel.length ? this.cancel : this.stars.eq(0)) : this.stars.eq(value - 1);    
+        if (value === 0) {
+            return this.cancel && this.cancel.length ? this.cancel : this.stars.eq(0);
+        } else {
+            return this.stars.eq(value - 1);
+        }
     },
 
     /**
@@ -129,6 +135,16 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
         this.jq.off('keydown.rating focus.rating blur.rating');
         this.stars.off('click.rating');
         this.cancel.off('mouseenter.rating mouseleave.rating click.rating');
+    },
+
+    /**
+     * Updates the input element with the new rating value and sets the appropriate ARIA label.
+     * @param {number | string} value - The new rating value to update the input element with.
+     * @private
+     */
+    updateInput: function(value) {
+        var ariaLabel = value.toString() === '1' ? PrimeFaces.getAriaLabel('star') : PrimeFaces.getAriaLabel('stars', '{star} stars', {star: value})
+        this.input.val(value).attr('aria-label', ariaLabel);
     },
 
     /**
@@ -161,7 +177,7 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
         }
 
         //set hidden value
-        this.input.attr('value', newValue);
+        this.updateInput(newValue);
 
         //update visuals
         this.stars.removeClass('ui-rating-star-on');
@@ -227,7 +243,7 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
      * Resets the rating so that no stars are selected.
      */
     reset: function() {
-        this.input.attr('value', '0');
+        this.updateInput('0');
 
         this.stars.filter('.ui-rating-star-on').removeClass('ui-rating-star-on');
 

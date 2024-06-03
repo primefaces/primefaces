@@ -24,12 +24,6 @@
                 <h5 class="mt-0">Basic</h5>
                 <p:rating id="rating1" value="#{ratingView.rating1}"/>
 
-                <h5>Required</h5>
-                <div class="flex flex-col gap-2">
-                    <p:rating id="rating4" value="#{ratingView.rating4}" required="true" requiredMessage="Please rate us!" />
-                    <p:commandButton value="Rate" action="#{ratingView.onSubmit}" update="@form" process="@this rating4" />
-                </div>
-
                 <h5>Remote</h5>
                 <p:rating id="rating2" value="#{ratingView.rating2}">
                     <p:ajax event="rate" listener="#{ratingView.onrate}" update="messages"/>
@@ -41,6 +35,12 @@
 
                 <h5>Disabled</h5>
                 <p:rating id="ratingDisabled" value="#{ratingView.rating3}" disabled="true"/>
+
+                <h5>Required</h5>
+                <div class="flex flex-col gap-2">
+                    <p:rating id="rating4" value="#{ratingView.rating4}" required="true" requiredMessage="Please rate us!" />
+                    <p:commandButton value="Rate" action="#{ratingView.onSubmit}" update="@form" process="@this rating4" />
+                </div>
             </h:form>
         </div>
     </ui:define>

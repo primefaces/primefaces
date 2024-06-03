@@ -35,6 +35,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.regex.Pattern;
+
 import javax.faces.FacesException;
 import javax.xml.bind.DatatypeConverter;
 
@@ -74,6 +75,30 @@ public class LangUtils {
 
     public static boolean isNotBlank(String value) {
         return !isBlank(value);
+    }
+
+    /**
+     * Returns either the passed in String, or if the String is
+     * whitespace, empty ("") or {@code null}, the value of {@code defaultStr}.
+     *
+     * <p>Whitespace is defined by {@link Character#isWhitespace(char)}.</p>
+     *
+     * <pre>
+     * StringUtils.defaultIfBlank(null, "NULL")  = "NULL"
+     * StringUtils.defaultIfBlank("", "NULL")    = "NULL"
+     * StringUtils.defaultIfBlank(" ", "NULL")   = "NULL"
+     * StringUtils.defaultIfBlank("bat", "NULL") = "bat"
+     * StringUtils.defaultIfBlank("", null)      = null
+     * </pre>
+     * @param <T> the specific kind of String
+     * @param str the String to check, may be null
+     * @param defaultStr  the default String to return
+     *  if the input is whitespace, empty ("") or {@code null}, may be null
+     * @return the passed in String, or the default
+     * @see StringUtils#defaultString(String, String)
+     */
+    public static String defaultIfBlank(final String str, final String defaultStr) {
+        return isBlank(str) ? defaultStr : str;
     }
 
     /**

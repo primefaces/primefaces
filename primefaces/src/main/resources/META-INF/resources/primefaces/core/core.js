@@ -1222,16 +1222,25 @@
         },
 
         /**
-         * Some ARIA attributes have a value that depends on the current locale. This returns the localized version for
-         * the given aria key.
-         * @param {string} key An aria key
-         * @param {string} [defaultValue] Optional default if key is not found
-         * @return {string} The translation for the given aria key
+         * Retrieves a localized ARIA label based on the provided key. If the key is not found in the current locale,
+         * it falls back to the US English locale. If the key is still not found, it uses a default value or a placeholder
+         * indicating the missing key. This method also supports dynamic replacement of placeholders within the label
+         * string using the `options` object.
+         * 
+         * @param {string} key - The key to retrieve the ARIA label for.
+         * @param {string} [defaultValue] - The default value to use if the key is not found.
+         * @param {unknown} [options] - An object containing placeholder replacements in the format `{placeholderKey: replacementValue}`.
+         * @returns {string} - The localized ARIA label, with placeholders replaced by their corresponding values from `options` if provided.
          */
-        getAriaLabel: function(key, defaultValue) {
+        getAriaLabel: function(key, defaultValue, options) {
             var ariaLocaleSettings = this.getLocaleSettings()['aria'];
-            var label = (ariaLocaleSettings&&ariaLocaleSettings[key]) ? ariaLocaleSettings[key] : PrimeFaces.locales['en_US']['aria'][key];
-            return label || (defaultValue || "???"+key+"???");
+            var label = ariaLocaleSettings[key] || PrimeFaces.locales['en_US']['aria'][key] || defaultValue || "???" + key + "???";
+            if (options) {
+                for (const valKey in options) {
+                    label = label.replace(`{${valKey}}`, options[valKey]);
+                }
+            }
+            return label.trim();
         },
 
         /**
