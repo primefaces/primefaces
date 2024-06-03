@@ -24,7 +24,6 @@
 package org.primefaces.component.rating;
 
 import java.io.IOException;
-import java.util.Objects;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -142,7 +141,7 @@ public class RatingRenderer extends InputRenderer {
         writer.writeAttribute("min", "0", null);
         writer.writeAttribute("max", rating.getStars(), null);
         writer.writeAttribute("autocomplete", "off", null);
-        writer.writeAttribute("value", Objects.toString(value, "0"), null);
+        writer.writeAttribute("value", LangUtils.defaultIfBlank(value, "0"), null);
         //for keyboard accessibility and ScreenReader
         writer.writeAttribute("tabindex", rating.getTabindex(), null);
 

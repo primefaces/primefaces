@@ -25,11 +25,14 @@
                 <h:outputText value="Readonly:"/>
                 <p:rating id="readonly" value="#{rating001.rating2}" readonly="true"/>
 
-                <h:outputText value="Disabled"/>
+                <h:outputText value="Disabled:"/>
                 <p:rating id="disabled" value="#{rating001.rating2}" disabled="true"/>
 
-                <h:outputText value="Min/Max"/>
+                <h:outputText value="Min/Max:"/>
                 <p:rating id="minmax" value="#{rating001.rating3}" stars="8"/>
+
+                <h:outputText value="Required:"/>
+                <p:rating id="required" value="#{rating001.rating4}" required="true" requiredMessage="Please rate us!" />
             </h:panelGrid>
 
             <p:commandButton id="button" value="Submit" update="@form"/>

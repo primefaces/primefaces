@@ -260,7 +260,7 @@ class Rating001Test extends AbstractPrimePageTest {
     }
 
     @Test
-    @Order(11)
+    @Order(12)
     @DisplayName("Rating: cancel the value and check it should be NULL server side")
     void cancelSetsNull(Page page) {
         // Arrange
@@ -279,6 +279,43 @@ class Rating001Test extends AbstractPrimePageTest {
 
         // Assert
         assertNull(rating.getValue());
+    }
+
+    @Test
+    @Order(13)
+    @DisplayName("Rating: Submit required value with a value should not return an error")
+    void requiredWithValue(Page page) {
+        // Arrange
+        Rating rating = page.ratingRequired;
+        assertEquals(4L, rating.getValue());
+
+        // Act
+        PrimeSelenium.setHiddenInput(rating.getInput(), "5");
+        assertEquals("5", rating.getInput().getAttribute("value"));
+        page.submit.click();
+
+        // Assert
+        assertEquals(5L, rating.getValue());
+        assertConfiguration(rating.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(14)
+    @DisplayName("Rating: Submit required value without a value should validation error")
+    void requiredWithoutValue(Page page) {
+        // Arrange
+        Rating rating = page.ratingRequired;
+        assertEquals(4L, rating.getValue());
+
+        // Act
+        rating.reset();
+        assertEquals("0", rating.getInput().getAttribute("value"));
+        page.submit.click();
+
+        // Assert
+        assertNull(rating.getValue());
+        assertEquals("Please rate us!", page.messages.getMessage(0).getDetail());
+        assertConfiguration(rating.getWidgetConfiguration());
     }
 
     private JSONObject assertConfiguration(JSONObject cfg) {
@@ -303,6 +340,9 @@ class Rating001Test extends AbstractPrimePageTest {
 
         @FindBy(id = "form:minmax")
         Rating ratingMinMax;
+
+        @FindBy(id = "form:required")
+        Rating ratingRequired;
 
         @FindBy(id = "form:button")
         CommandButton submit;
