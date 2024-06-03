@@ -44,6 +44,7 @@ public class Rating001 implements Serializable {
     private Integer rating1;
     private Integer rating2 = 3;
     private Integer rating3 = 2;
+    private Integer rating4 = 4;
 
     public void onrate(RateEvent<Integer> rateEvent) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Rate Event", "You rated:" + rateEvent.getRating());
