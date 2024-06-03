@@ -200,21 +200,20 @@
         },
 
         /**
-         * Sets the value of a given cookie.
-         * It will set secure=true, if using HTTPS and session-config/cookie-config/secure is set to true in web.xml.
-         * It will set sameSite, if secure=true, with the value of the primefaces.COOKIES_SAME_SITE parameter.
-         * @param {string} name Name of the cookie to set
-         * @param {string} value Value to set
+         * Sets the value of a specified cookie with additional security configurations.
+         * If the page is served over HTTPS and cookies are configured to be secure in the settings,
+         * the secure flag will be set. The SameSite attribute is set based on the settings or defaults to 'Lax'.
+         * @param {string} name The name of the cookie.
+         * @param {string} value The value to set for the cookie.
          * @param {Partial<Cookies.CookieAttributes>} [cfg] Configuration for this cookie: when it expires, its
          * paths and domain and whether it is secure cookie.
          */
         setCookie : function(name, value, cfg) {
-            if (location.protocol === 'https:' && PrimeFaces.settings.cookiesSecure) {
-                cfg.secure = true;
-
-                if (PrimeFaces.settings.cookiesSameSite) {
-                    cfg.sameSite = PrimeFaces.settings.cookiesSameSite;
-                }
+            cfg.secure = location.protocol === 'https:' && PrimeFaces.settings.cookiesSecure;
+            cfg.sameSite = PrimeFaces.settings.cookiesSameSite || "Lax";
+            // "None" is only allowed when Secure attribute so default to Lax if unsecure
+            if (!cfg.secure && cfg.sameSite === "None") {
+                cfg.sameSite = "Lax"
             }
             Cookies.set(name, value, cfg);
         },
@@ -233,14 +232,12 @@
          * @return {boolean} `true` if cookies are enabled and can be used, `false` otherwise.
          */
         cookiesEnabled: function() {
-            var cookieEnabled = (navigator.cookieEnabled) ? true : false;
-
-            if(typeof navigator.cookieEnabled === 'undefined' && !cookieEnabled) {
-                document.cookie="testcookie";
-                cookieEnabled = (document.cookie.indexOf("testcookie") !== -1) ? true : false;
+            if (navigator.cookieEnabled) {
+                return true;
+            } else {
+                document.cookie = "testcookie";
+                return document.cookie.includes("testcookie");
             }
-
-            return (cookieEnabled);
         },
 
         /**
