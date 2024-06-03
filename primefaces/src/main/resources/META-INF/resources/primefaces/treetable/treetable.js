@@ -274,24 +274,35 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
      * Clear the filter input of this tree table and shows all rows again.
      */
     clearFilters: function() {
-        this.thead.find('> tr > th.ui-filter-column > .ui-column-filter').val('');
-        this.thead.find('> tr > th.ui-filter-column > .ui-column-customfilter').each(function() {
+        var resetInputFields = function(inputFields) {
+            inputFields.val('');
+        };
+
+        var resetWidget = function(widgetElement) {
+            var widget = PrimeFaces.getWidgetById(widgetElement.attr('id'));
+            if (widget && typeof widget.resetValue === 'function') {
+                widget.resetValue(true);
+            } else {
+                resetInputFields(widgetElement.find(':input:not(:disabled):not([readonly]), textarea:not(:disabled):not([readonly])'));
+            }
+        };
+
+        var standardFilters = this.thead.find('> tr > th.ui-filter-column > .ui-column-filter:not(:disabled):not([readonly])');
+        resetInputFields(standardFilters);
+
+        var customFilters = this.thead.find('> tr > th.ui-filter-column > .ui-column-customfilter');
+        customFilters.each(function() {
             var widgetElement = $(this).find('.ui-widget');
             if (widgetElement.length > 0) {
-                var widget = PrimeFaces.getWidgetById(widgetElement.attr('id'));
-                if (widget && typeof widget.resetValue === 'function') {
-                    widget.resetValue(true);
-                }
-                else {
-                    $(this).find(':input').val('');
-                }
-            }
-            else {
-                $(this).find(':input').val('');
+                resetWidget(widgetElement);
+            } else {
+                resetInputFields($(this).find(':input:not(:disabled):not([readonly]), textarea:not(:disabled):not([readonly])'));
             }
         });
 
-        $(this.jqId + '\\:globalFilter').val('');
+        var globalFilter = $(this.jqId + '\\:globalFilter');
+        resetInputFields(globalFilter);
+
         this.filter();
     },
 
