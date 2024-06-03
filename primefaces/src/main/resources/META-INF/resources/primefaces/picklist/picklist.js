@@ -103,17 +103,18 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         this.ariaRegion = $(this.jqId + '_ariaRegion');
 
         var sourceCaption = this.sourceList.prev('.ui-picklist-caption'),
-            targetCaption = this.targetList.prev('.ui-picklist-caption');
+            targetCaption = this.targetList.prev('.ui-picklist-caption'),
+            captionText = null;
 
         if(sourceCaption.length) {
-            var captionText = sourceCaption.text();
+            captionText = sourceCaption.text();
 
             this.sourceList.attr('aria-label', captionText);
             this.sourceInput.attr('title', captionText);
         }
 
         if(targetCaption.length) {
-            var captionText = targetCaption.text();
+            captionText = targetCaption.text();
 
             this.targetList.attr('aria-label', captionText);
             this.targetInput.attr('title', captionText);
@@ -772,13 +773,11 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                         }
                     }
                 }
+                else if(animated) {
+                    item.fadeOut('fast');
+                }
                 else {
-                    if(animated) {
-                        item.fadeOut('fast');
-                    }
-                    else {
-                        item.hide();
-                    }
+                    item.hide();
                 }
             }
         }
