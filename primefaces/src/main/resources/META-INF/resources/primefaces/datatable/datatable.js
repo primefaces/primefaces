@@ -819,7 +819,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this;
         var cellTabIndex = this.cfg.tabindex || "0";
         var pageRows = this.cfg.paginator && this.cfg.paginator.rows ? this.cfg.paginator.rows : 1000;
-        var clickSelector = ':button:enabled, :input:enabled, a, [role="combobox"], .ui-row-toggler';
+        var clickSelector = ':button:enabled, :input:enabled, a, [role="combobox"], .ui-row-toggler, .ui-chkbox-box';
 
         // helper function to set the current and next cell focus
         function makeFocusable(e, cell, nextCell) {
@@ -1330,23 +1330,29 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
             });
 
-            this.jq.off('mouseenter.dataTable mouseleave.dataTable click.dataTable', checkboxSelector)
-                        .on('mouseenter.dataTable', checkboxSelector, null, function() {
-                            $(this).addClass('ui-state-hover');
-                        })
-                        .on('mouseleave.dataTable', checkboxSelector, null, function() {
-                            $(this).removeClass('ui-state-hover');
-                        })
-                        .on('click.dataTable', checkboxSelector, null, function(e) {
-                            var checkbox = $(this);
-
-                            if(checkbox.attr('aria-checked') === "true") {
-                                $this.unselectRowWithCheckbox(checkbox, e);
-                            }
-                            else {
-                                $this.selectRowWithCheckbox(checkbox, e);
-                            }
-                        });
+            this.jq.off('mouseenter.dataTable mouseleave.dataTable click.dataTable keydown.dataTable', checkboxSelector)
+            .on({
+                'mouseenter.dataTable': function() {
+                    $(this).addClass('ui-state-hover');
+                },
+                'mouseleave.dataTable': function() {
+                    $(this).removeClass('ui-state-hover');
+                },
+                'click.dataTable': function(e) {
+                    var checkbox = $(this)
+                    if(checkbox.attr('aria-checked') === "true") {
+                        $this.unselectRowWithCheckbox(checkbox, e);
+                    }
+                    else {
+                        $this.selectRowWithCheckbox(checkbox, e);
+                    }
+                },
+                'keydown.dataTable': function(e) {
+                    if (PrimeFaces.utils.isActionKey(e)) {
+                        $(this).trigger('click');
+                    }
+                }
+            }, checkboxSelector);
         }
         this.configureSelectAllAria();
 
