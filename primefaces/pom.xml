@@ -317,6 +317,14 @@
                         </execution>
                     </executions>
                 </plugin>
+                <plugin>
+                    <groupId>com.github.matinh.vdldoc</groupId>
+                    <artifactId>vdldoc-maven-plugin</artifactId>
+                    <version>2.0</version>
+                    <configuration>
+                         <destDir>../../../docs/vdldoc</destDir>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
 
@@ -1266,6 +1274,18 @@
             <id>debug</id>
             <build>
                  <finalName>${project.artifactId}-debug-${project.version}</finalName>
+            </build>
+        </profile>
+        <!-- Generates the taglib.xml VDL docs in the docs/vdldoc directory -->
+        <profile>
+            <id>vdldoc-publish</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.matinh.vdldoc</groupId>
+                        <artifactId>vdldoc-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
             </build>
         </profile>
         <!-- Generates the JavaScript Api docs in the target directory, to check whether the docs compile -->
