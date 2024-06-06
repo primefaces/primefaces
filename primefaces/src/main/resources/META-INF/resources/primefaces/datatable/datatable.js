@@ -1326,6 +1326,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 if (PrimeFaces.utils.isActionKey(e)) {
                     if(!$(this).hasClass('ui-state-disabled')) {
                         $this.toggleCheckAll();
+                        e.preventDefault();
                     }
                 }
             });
@@ -1350,6 +1351,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 'keydown.dataTable': function(e) {
                     if (PrimeFaces.utils.isActionKey(e)) {
                         $(this).trigger('click');
+                        e.preventDefault();
                     }
                 }
             }, checkboxSelector);
