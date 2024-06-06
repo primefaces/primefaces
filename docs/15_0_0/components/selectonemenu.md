@@ -133,7 +133,7 @@ The following AJAX behavior events are available for this component. If no event
 In addition to the standard events like "change", custom "itemSelect" event is also available to invoke when an item is selected from dropdown.  
   
 **Default Event:** valueChange  
-**Available Events:** blur, change, click, dblclick, focus, itemSelect, keydown, keypress, keyup, mousedown, mousemove, mouseout, mouseover, mouseup, select, valueChange  
+**Available Events:** blur, clear, change, click, dblclick, focus, itemSelect, keydown, keypress, keyup, mousedown, mousemove, mouseout, mouseover, mouseup, select, valueChange  
 
 ```xhtml
 <p:ajax event="valueChange" listener="#{bean.handlevalueChange}" update="msgs" />
