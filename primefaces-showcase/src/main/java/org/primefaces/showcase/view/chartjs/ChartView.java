@@ -382,7 +382,7 @@ public class ChartView implements Serializable {
                                 new Color(54, 162, 235),
                                 new Color(255, 205, 86))
                 )
-                .setLabels("Red", "Yellow", "Blue"))
+                .setLabels("Red", "Blue", "Yellow"))
                 .setOptions(new DoughnutOptions().setMaintainAspectRatio(Boolean.FALSE))
                 .toJson();
     }
