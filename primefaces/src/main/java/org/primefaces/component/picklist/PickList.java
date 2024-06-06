@@ -136,18 +136,52 @@ public class PickList extends PickListBase {
             setValid(false);
         }
 
-        checkDisabled(facesContext, label, newModel.getSource(), oldModel == null ? Collections.emptyList() : oldModel.getSource());
-        checkDisabled(facesContext, label, newModel.getTarget(), oldModel == null ? Collections.emptyList() : oldModel.getTarget());
+        if (isValid()) {
+            List<?> oldModelSource = oldModel == null ? Collections.emptyList() : oldModel.getSource();
+            List<?> oldModelTarget = oldModel == null ? Collections.emptyList() : oldModel.getTarget();
+
+            validateTarget(facesContext, label, newModel.getTarget(), oldModelSource, oldModelTarget);
+            validateDisabled(facesContext, label, newModel.getSource(), oldModelSource);
+            validateDisabled(facesContext, label, newModel.getTarget(), oldModelTarget);
+        }
     }
 
     /**
-     * Prohibits client-side manipulation of disabled entries, when CSS style-class ui-state-disabled is removed. See
-     * <a href="https://github.com/primefaces/primefaces/issues/2127">https://github.com/primefaces/primefaces/issues/2127</a>
+     * Validates the target entries against the source entries. If a target entry is not found in the source entries,
+     * an error message is added to the FacesContext and the component is marked as invalid.
      *
+     * @param facesContext The current FacesContext.
+     * @param label The label to be used in the error message.
+     * @param targetEntries The list of target entries to be validated.
+     * @param oldSource The original list of source entries to validate against.
+     * @param oldTarget The original list of target entries to validate against.
+     * @see <a href="https://github.com/primefaces/primefaces/issues/12059">GitHub #12059</a>
+     */
+    private void validateTarget(FacesContext facesContext, String label, List<?> targetEntries, List<?> oldSource, List<?> oldTarget) {
+        String clientId = getClientId(facesContext);
+
+        for (int i = 0; i < targetEntries.size(); i++) {
+            Object targetItem = targetEntries.get(i);
+            // Check if target item exists in source list
+            if (!oldSource.contains(targetItem) && !oldTarget.contains(targetItem)) {
+                FacesMessage message = MessageFactory.getFacesMessage(UPDATE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, label);
+                facesContext.addMessage(clientId, message);
+                setValid(false);
+                break;
+            }
+        }
+    }
+
+    /**
+     * Prohibits client-side manipulation of disabled entries, when CSS style-class ui-state-disabled is removed.
+     *
+     * @param facesContext The current FacesContext.
+     * @param label The label to be used in the error message.
      * @param newEntries new/set entries of model source/target list
      * @param oldEntries old/former entries of model source/target list
+     * @see <a href="https://github.com/primefaces/primefaces/issues/2127">GitHub #2127</a>
      */
-    protected void checkDisabled(FacesContext facesContext, String label, List<?> newEntries, List<?> oldEntries) {
+    protected void validateDisabled(FacesContext facesContext, String label, List<?> newEntries, List<?> oldEntries) {
         if (!isValid()) {
             return;
         }
