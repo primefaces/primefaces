@@ -118,6 +118,10 @@ For a full list of the available downloads, please visit the [download page](htt
   </repositories>
   ```
 
+### Tag Library
+
+The VDL documentation for the PrimeFaces tag libary can be found here: https://primefaces.github.io/primefaces/vdldoc/
+
 ### Usage
 ***
 
