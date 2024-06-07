@@ -1,6 +1,6 @@
 # Splitter
 
-Splitter component is used to categorize content.
+Splitter is utilized to separate and resize panels.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Splitter.html)
 

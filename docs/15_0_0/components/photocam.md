@@ -1,6 +1,6 @@
 # PhotoCam
 
-PhotoCam is used to take photos with webcam and send them to the JSF backend model.
+PhotoCam is used to take photos with webcam and send them to the Faces backend model.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.PhotoCam-1.html)
 
