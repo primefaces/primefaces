@@ -1121,11 +1121,13 @@ if (!PrimeFaces.utils) {
             if (!jq || !jq.length) {
                 return;
             }
-            // Recursively remove events from children elements
-            jq.children().each(function() {
-                PrimeFaces.utils.cleanseDomElement($(this), clearData, removeElement);
-            });
 
+            if (jq.prop("tagName") !== 'SELECT') { //No need to cleanse <option>s tag
+                // Recursively remove events from children elements
+                jq.children().each(function() {
+                    PrimeFaces.utils.cleanseDomElement($(this), clearData, removeElement);
+                });
+            }
             // Remove inline event attributes
             var attributes = jq[0].attributes;
             for (var i = 0; i < attributes.length; i++) {
