@@ -579,7 +579,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         List<UIColumn> columns = ForEachRowColumn.collectColumns((UIComponent) this);
         Map<String, ColumnMeta> columnMeta = getColumnMeta();
         if (!columnMeta.isEmpty()) {
-            columns.sort(ColumnComparators.displayOrder(columnMeta));
+            columns.sort(ColumnComparators.comparingDisplayOrder(columnMeta));
         }
         return columns;
     }

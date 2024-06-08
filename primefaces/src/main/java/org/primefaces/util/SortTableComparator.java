@@ -44,6 +44,10 @@ import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.TreeNode;
 
+/**
+ * Use {@link ColumnComparators} instead
+ */
+@Deprecated(since = "15.0.0", forRemoval = true)
 public class SortTableComparator implements Comparator<Object> {
 
     public static final BeanPropertyMapper SORT_BY_VE_MAPPER = new SortByVEMapper();

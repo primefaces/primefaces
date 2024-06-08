@@ -28,22 +28,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.faces.model.ListDataModel;
 
 import org.primefaces.PrimeFaces;
-import org.primefaces.component.api.ForEachRowColumn;
-import org.primefaces.component.api.RowColumnVisitor;
-import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.datatable.DataTableState;
 import org.primefaces.event.data.PostSortEvent;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
+import org.primefaces.util.ColumnComparators;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.SortTableComparator;
 
 public class SortFeature implements DataTableFeature {
 
@@ -143,7 +141,7 @@ public class SortFeature implements DataTableFeature {
         String var = table.getVar();
         Object varBackup = context.getExternalContext().getRequestMap().get(var);
 
-        list.sort(SortTableComparator.comparingSortByVE(context, table));
+        list.sort(ColumnComparators.comparingSortByVE(context, table));
 
         if (varBackup == null) {
             context.getExternalContext().getRequestMap().remove(var);

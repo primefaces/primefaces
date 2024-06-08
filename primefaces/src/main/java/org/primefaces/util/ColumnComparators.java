@@ -23,14 +23,27 @@
  */
 package org.primefaces.util;
 
-import java.util.Comparator;
-import java.util.Map;
+import java.io.IOException;
+import java.text.Collator;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
-import org.primefaces.component.api.DynamicColumn;
-import org.primefaces.component.api.UIColumn;
+import javax.el.ValueExpression;
+import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+
+import org.primefaces.component.api.*;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.model.ColumnMeta;
+import org.primefaces.model.SortMeta;
+import org.primefaces.model.TreeNode;
 
 public final class ColumnComparators {
+
+    static final DefaultComparator.BeanPropertyMapper SORT_BY_VE_MAPPER = new DefaultComparator.SortByVEMapper();
+    static final DefaultComparator.BeanPropertyMapper FIELD_MAPPER = new DefaultComparator.FieldMapper();
+    static final DefaultComparator.BeanPropertyMapper TREE_NODE_MAPPER = new DefaultComparator.TreeNodeSortByVEMapper();
 
     private ColumnComparators() {
         // NOOP
@@ -70,8 +83,160 @@ public final class ColumnComparators {
         }
     }
 
-    public static Comparator<UIColumn> displayOrder(Map<String, ColumnMeta> columnMeta) {
+    static class DefaultComparator implements Comparator<Object> {
+
+        private final FacesContext context;
+        private final Collection<SortMeta> sortBy;
+        private final UITable<?> table;
+        private final Locale locale;
+        private final String var;
+        private final Collator collator;
+        private final BeanPropertyMapper mapper;
+        private final AtomicInteger compareResult = new AtomicInteger(0);
+
+        public DefaultComparator(FacesContext context, UITable<?> table, BeanPropertyMapper mapper) {
+            this.context = context;
+            this.table = table;
+            this.sortBy = table.getActiveSortMeta().values();
+            this.var = table.getVar();
+            this.locale = table.resolveDataLocale(context);
+            this.collator = Collator.getInstance(locale);
+            this.mapper = Objects.requireNonNull(mapper, "mapper is necessary to extract property value");
+        }
+
+        @Override
+        public int compare(Object o1, Object o2) {
+            compareResult.set(0); //no local variable, avoid redundant creation: reset to 0 instead
+
+            for (SortMeta sortMeta : sortBy) {
+                if (mapper.isValueExprBased() && sortMeta.isDynamic()) {
+                    String columnKey = sortMeta.getColumnKey();
+                    ForEachRowColumn.from((UIComponent) table).columnKey(columnKey).invoke(new RowColumnVisitor.Adapter() {
+                        @Override
+                        public void visitColumn(int index, UIColumn column) throws IOException {
+                            compareResult.set(compareWithMapper(sortMeta, o1, o2));
+                        }
+                    });
+                }
+                else {
+                    compareResult.set(compareWithMapper(sortMeta, o1, o2));
+                }
+
+                if (compareResult.get() != 0) {
+                    return compareResult.get();
+                }
+            }
+
+            return 0;
+        }
+
+        private int compareWithMapper(SortMeta sortMeta, Object o1, Object o2) {
+            final Object fv1 = mapper.map(context, var, sortMeta, o1);
+            final Object fv2 = mapper.map(context, var, sortMeta, o2);
+            return compare(context, sortMeta, fv1, fv2, collator, locale);
+        }
+
+        public static int compare(FacesContext context, SortMeta sortMeta, Object value1, Object value2,
+                                  Collator collator, Locale locale) {
+            try {
+                int result;
+
+                if (sortMeta.getFunction() == null) {
+                    //Empty check
+                    if (value1 == null && value2 == null) {
+                        result = 0;
+                    }
+                    else if (value1 == null) {
+                        result = sortMeta.getNullSortOrder();
+                    }
+                    else if (value2 == null) {
+                        result = -1 * sortMeta.getNullSortOrder();
+                    }
+                    else if (value1 instanceof String && value2 instanceof String) {
+                        if (sortMeta.isCaseSensitiveSort()) {
+                            result = collator.compare(value1, value2);
+                        }
+                        else {
+                            String str1 = (((String) value1).toLowerCase(locale));
+                            String str2 = (((String) value2).toLowerCase(locale));
+
+                            result = collator.compare(str1, str2);
+                        }
+                    }
+                    else {
+                        result = ((Comparable<Object>) value1).compareTo(value2);
+                    }
+                }
+                else {
+                    result = (Integer) sortMeta.getFunction().invoke(context.getELContext(), new Object[]{value1, value2, sortMeta});
+                }
+
+                return sortMeta.getOrder().isAscending() ? result : -1 * result;
+            }
+            catch (Exception e) {
+                throw new FacesException(e);
+            }
+        }
+
+        public static class SortByVEMapper implements BeanPropertyMapper {
+
+            @Override
+            public boolean isValueExprBased() {
+                return true;
+            }
+
+            @Override
+            public Object map(FacesContext context, String var, SortMeta sortMeta, Object obj) {
+                ValueExpression ve = sortMeta.getSortBy();
+                context.getExternalContext().getRequestMap().put(var, obj);
+                return ve.getValue(context.getELContext());
+            }
+        }
+
+        public static class TreeNodeSortByVEMapper extends SortByVEMapper {
+
+            @Override
+            public Object map(FacesContext context, String var, SortMeta sortMeta, Object obj) {
+                return super.map(context, var, sortMeta, ((TreeNode) obj).getData());
+            }
+        }
+
+        public static class FieldMapper implements BeanPropertyMapper {
+
+            @Override
+            public boolean isValueExprBased() {
+                return false;
+            }
+
+            @Override
+            public Object map(FacesContext context, String var, SortMeta sortMeta, Object obj) {
+                PropertyDescriptorResolver propResolver =
+                        PrimeApplicationContext.getCurrentInstance(context).getPropertyDescriptorResolver();
+                return propResolver.getValue(obj, sortMeta.getField());
+            }
+        }
+
+        public interface BeanPropertyMapper {
+
+            boolean isValueExprBased();
+
+            Object map(FacesContext context, String var, SortMeta sortMeta, Object obj);
+        }
+    }
+
+    public static Comparator<UIColumn> comparingDisplayOrder(Map<String, ColumnMeta> columnMeta) {
         return new DisplayOrderComparator(columnMeta);
     }
 
+    public static Comparator<Object> comparingSortByVE(FacesContext context, UITable<?> table) {
+        return new DefaultComparator(context, table, SORT_BY_VE_MAPPER);
+    }
+
+    public static Comparator<Object> comparingField(FacesContext context, UITable<?> table) {
+        return new DefaultComparator(context, table, FIELD_MAPPER);
+    }
+
+    public static Comparator<Object> comparingTreeNodeSortByVE(FacesContext context, UITable<?> table) {
+        return new DefaultComparator(context, table, TREE_NODE_MAPPER);
+    }
 }

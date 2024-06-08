@@ -27,6 +27,7 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -83,7 +84,7 @@ public class DefaultLazyDataModel<T> extends LazyDataModel<T> {
         FacesContext context = FacesContext.getCurrentInstance();
         UIComponent source = UIComponent.getCurrentComponent(context);
         if (source instanceof UITable) {
-            values.sort(SortTableComparator.comparingField(context, (UITable<?>) source));
+            values.sort(ColumnComparators.comparingField(context, (UITable<?>) source));
         }
 
         if (sorter != null) {

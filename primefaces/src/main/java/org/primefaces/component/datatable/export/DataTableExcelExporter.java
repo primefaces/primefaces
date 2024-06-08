@@ -23,12 +23,13 @@
  */
 package org.primefaces.component.datatable.export;
 
+import java.io.IOException;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.PrintSetup;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.WorkbookUtil;
 import org.primefaces.component.api.ColumnNode;
@@ -38,10 +39,6 @@ import org.primefaces.component.export.ColumnValue;
 import org.primefaces.component.export.ExcelOptions;
 import org.primefaces.util.ExcelStylesManager;
 import org.primefaces.util.LocaleUtils;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import java.io.IOException;
 
 public class DataTableExcelExporter extends DataTableExporter<Workbook, ExcelOptions> {
 
@@ -124,7 +121,7 @@ public class DataTableExcelExporter extends DataTableExporter<Workbook, ExcelOpt
         int colIndex = calculateColumnOffset(sheet, rowIndex, relColIndex); // (1-based)
 
         if (colspan > 1 || rowspan > 1) {
-            sheet().addMergedRegion(new CellRangeAddress(
+            sheet.addMergedRegion(new CellRangeAddress(
                     rowIndex, // first row (0-based)
                     (rowIndex + rowspan) - 1, // last row (0-based)
                     colIndex, // first column (0-based)

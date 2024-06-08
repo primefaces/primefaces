@@ -28,6 +28,7 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 
@@ -40,8 +41,8 @@ import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 import org.primefaces.model.TreeNode;
 import org.primefaces.model.TreeNodeList;
+import org.primefaces.util.ColumnComparators;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.SortTableComparator;
 
 public class SortFeature implements TreeTableFeature {
 
@@ -138,7 +139,7 @@ public class SortFeature implements TreeTableFeature {
 
         if (children != null && !children.isEmpty()) {
             Object[] childrenArray = children.toArray();
-            Arrays.sort(childrenArray, SortTableComparator.comparingTreeNodeSortByVE(context, table));
+            Arrays.sort(childrenArray, ColumnComparators.comparingTreeNodeSortByVE(context, table));
             for (int i = 0; i < childrenArray.length; i++) {
                 children.set(i, (TreeNode) childrenArray[i]);
             }
