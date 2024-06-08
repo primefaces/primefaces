@@ -24,6 +24,7 @@
 package org.primefaces.component.datatable;
 
 import java.util.Collection;
+
 import javax.el.MethodExpression;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 
@@ -776,6 +777,4 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
     public void setCellNavigation(boolean cellNavigation) {
         getStateHelper().put(PropertyKeys.cellNavigation, cellNavigation);
     }
-}
-
 }
