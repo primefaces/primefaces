@@ -1140,7 +1140,8 @@ if (!PrimeFaces.utils) {
             // Remove the element from the DOM and trigger onRemove events for widget.destroy.
             // IMPORTANT: This must occur before jq.off() to ensure the on("remove") events remain registered.
             if (removeElement) {
-                jq.remove();
+                jq.triggerHandler("remove");
+                jq.get(0).remove()
             }
 
             // Remove event listeners
