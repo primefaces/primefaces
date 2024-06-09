@@ -1122,7 +1122,7 @@ if (!PrimeFaces.utils) {
                 return;
             }
 
-            if (jq.prop("tagName") !== 'SELECT') { //No need to cleanse <option>s tag
+            if (!jq.is("select")) { //No need to cleanse <option> tags
                 // Recursively remove events from children elements
                 jq.children().each(function() {
                     PrimeFaces.utils.cleanseDomElement($(this), clearData, removeElement);
