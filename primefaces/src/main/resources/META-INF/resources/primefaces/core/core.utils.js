@@ -1122,7 +1122,8 @@ if (!PrimeFaces.utils) {
                 return;
             }
 
-            if (!jq.is("select")) { //No need to cleanse <option> tags
+            //Skip cleanse of select and svg tags, it can impact performance if a lot of tags are present. They don't have PF listeners attached, so cleanse it's unnecesary.
+            if (!jq.is("select, svg, svg *")) {
                 // Recursively remove events from children elements
                 jq.children().each(function() {
                     PrimeFaces.utils.cleanseDomElement($(this), clearData, removeElement);
