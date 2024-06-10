@@ -2613,84 +2613,87 @@
         },
 
         showOverlay: function() {
-            if (!this.options.inline && !this.isPanelVisible() && this.transition) {
-                var $this = this;
-
-                this.transition.show({
-                    onEnter: function() {
-                        if ($this.options.onBeforeShow) {
-                            $this.options.onBeforeShow.call($this);
-                        }
-
-                        $this.alignPanel();
-                    },
-                    onEntered: function() {
-                        $this.datepickerClick = true;
-                        PrimeFaces.queueTask(function() {
-                            $this.datepickerClick = false;
-                            $this.datepickerFocus = false;
-                        }, 200);
-                        
-                        $this.bindDocumentClickListener();
-                        $this.bindWindowResizeListener();
-
-                        if (!$this.options.inline) {
-                            $this.bindScrollListener();
-                        }
-                        
-                        $this.focusOverlay();
-                    }
-                });
+            // Return immediately if a document click listener is set, or if the datepicker is inline, already visible, or lacks a transition
+            if (this.documentClickListener || this.options.inline || this.isPanelVisible() || !this.transition) {
+                return;
             }
+            var $this = this;
+
+            this.transition.show({
+                onEnter: function() {
+                    if ($this.options.onBeforeShow) {
+                        $this.options.onBeforeShow.call($this);
+                    }
+                    $this.alignPanel();
+                },
+                onEntered: function() {
+                    $this.datepickerClick = true;
+                    PrimeFaces.queueTask(function() {
+                        $this.datepickerClick = false;
+                        $this.datepickerFocus = false;
+                    }, 200);
+                    
+                    $this.bindDocumentClickListener();
+                    $this.bindWindowResizeListener();
+                    if (!$this.options.inline) {
+                        $this.bindScrollListener();
+                    }
+                    
+                    $this.focusOverlay();
+                }
+            });
         },
 
         hideOverlay: function(event) {
-            if (!this.options.inline && this.isPanelVisible() && this.transition) {
-                var $this = this;
+            // Return immediately if no document click listener is set, or if the datepicker is inline, not visible, or lacks a transition
+            if (!this.documentClickListener || this.options.inline || !this.isPanelVisible() || !this.transition) {
+                return;
+            }
 
-                //put the focus back to the inputfield
-                if (!event) {
-                   $this.inputfield.trigger('focus'); 
-                }
-                
-                // if using mask disable the modality
-                $this.disableModality();
+            var $this = this;
 
-                this.transition.hide({
-                    onExit: function() {
-                        if ($this.options.onBeforeHide) {
-                            $this.options.onBeforeHide.call($this);
-                        }
+            //put the focus back to the inputfield
+            if (!event) {
+                $this.inputfield.trigger('focus'); 
+            }
+            
+            // if using mask disable the modality
+            $this.disableModality();
 
-                        $this.unbindDocumentClickListener();
-                        $this.unbindWindowResizeListener();
+            this.transition.hide({
+                onExit: function() {
+                    if ($this.options.onBeforeHide) {
+                        $this.options.onBeforeHide.call($this);
+                    }
 
-                        if (!$this.options.inline) {
-                            $this.unbindScrollListener();
-                        }
+                    $this.unbindDocumentClickListener();
+                    $this.unbindWindowResizeListener();
 
-                        $this.datepickerClick = false;
-                    },
-                    onExited: function() {
-                        var viewDate = $this.options.viewDate && !$this.value ?
-                            $this.parseValue($this.options.viewDate)
-                            :
-                            (((($this.isMultipleSelection() || $this.isRangeSelection()) && $this.value instanceof Array) ? $this.value[0] : $this.value) || $this.parseValue(new Date()));
+                    if (!$this.options.inline) {
+                        $this.unbindScrollListener();
+                    }
 
-                        if (viewDate instanceof Date) {
-                            $this.updateViewDate(null, viewDate);
-                        }
+                    $this.datepickerClick = false;
+                },
+                onExited: function() {
+                    var viewDate = $this.options.viewDate && !$this.value ?
+                        $this.parseValue($this.options.viewDate)
+                        :
+                        (((($this.isMultipleSelection() || $this.isRangeSelection()) && $this.value instanceof Array) ? $this.value[0] : $this.value) || $this.parseValue(new Date()));
 
-                        if (!$this.options.inline) {
-                            $this.inputfield.attr('aria-expanded', 'false');
+                    if (viewDate instanceof Date) {
+                        $this.updateViewDate(null, viewDate);
+                    }
 
-                            if ($this.triggerButton) {
-                                $this.triggerButton.attr('aria-expanded', 'false');
-                            }
+                    if (!$this.options.inline) {
+                        $this.inputfield.attr('aria-expanded', 'false');
+
+                        if ($this.triggerButton) {
+                            $this.triggerButton.attr('aria-expanded', 'false');
                         }
                     }
-                });
-            }
+                }
+            });
         },
 
         bindDocumentClickListener: function() {
