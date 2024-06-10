@@ -1121,11 +1121,14 @@ if (!PrimeFaces.utils) {
             if (!jq || !jq.length) {
                 return;
             }
-            // Recursively remove events from children elements
-            jq.children().each(function() {
-                PrimeFaces.utils.cleanseDomElement($(this), clearData, removeElement);
-            });
 
+            //Skip cleanse of select and svg tags, it can impact performance if a lot of tags are present. They don't have PF listeners attached, so cleanse it's unnecesary.
+            if (!jq.is("select, svg, svg *")) {
+                // Recursively remove events from children elements
+                jq.children().each(function() {
+                    PrimeFaces.utils.cleanseDomElement($(this), clearData, removeElement);
+                });
+            }
             // Remove inline event attributes
             var attributes = jq[0].attributes;
             for (var i = 0; i < attributes.length; i++) {
@@ -1135,10 +1138,11 @@ if (!PrimeFaces.utils) {
                 }
             }
 
-            // Remove the element from the DOM and trigger onRemove events for widget.destroy.
+            // Trigger onRemove events for widget.destroy and remove the element from the DOM
             // IMPORTANT: This must occur before jq.off() to ensure the on("remove") events remain registered.
             if (removeElement) {
-                jq.remove();
+                jq.triggerHandler("remove");
+                jq.get(0).remove()
             }
 
             // Remove event listeners
