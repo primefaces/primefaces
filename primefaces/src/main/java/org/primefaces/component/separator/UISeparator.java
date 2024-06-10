@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.separator;
 
+@Deprecated(since = "15.0", forRemoval = true)
 public class UISeparator extends UISeparatorBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Separator";

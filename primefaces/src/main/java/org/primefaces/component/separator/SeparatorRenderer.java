@@ -31,10 +31,12 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
 
+@Deprecated(since = "15.0", forRemoval = true)
 public class SeparatorRenderer extends CoreRenderer {
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        logDevelopmentWarning(context, this, "Separator is deprecated please switch to Divider.");
         UISeparator separator = (UISeparator) component;
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = separator.getStyleClass();
