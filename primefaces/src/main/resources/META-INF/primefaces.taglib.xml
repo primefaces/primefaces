@@ -111,6 +111,9 @@
 
     <tag>
         <tag-name>validateFile</tag-name>
+        <description>
+            <![CDATA[`p:validateFile` is a validator which can be used to validate single and mulitple files, either of `p:fileUpload` or `h:inputFile`.]]>
+        </description>
         <validator>
             <validator-id>primefaces.File</validator-id>
         </validator>
@@ -284,8 +287,8 @@
     </tag>
 
     <tag>
-        <description><![CDATA[The legacy way to present dynamic binary data to the client is to write a servlet or a filter and stream the binary data.
-            FileDownload presents an easier way to do the same.]]>
+        <description><![CDATA[Traditionally, dynamic binary data was presented to the client by writing a servlet or filter to stream the data.
+            FileDownload simplifies this process.]]>
         </description>
         <tag-name>fileDownload</tag-name>
         <handler-class>
@@ -467,7 +470,7 @@
     </tag>
 
     <tag>
-        <description>Printer allows sending a specific JSF component to the printer, not the whole page.</description>
+        <description>Printer allows sending a specific Faces component to the printer, not the whole page.</description>
         <tag-name>printer</tag-name>
         <behavior>
             <behavior-id>org.primefaces.component.PrinterBehavior</behavior-id>
@@ -627,7 +630,7 @@
 
     <tag>
         <description>
-            <![CDATA[Util tag to import constants.]]>
+            <![CDATA[Utility tag to import constants.]]>
         </description>
         <tag-name>importConstants</tag-name>
         <handler-class>org.primefaces.component.importconstants.ImportConstantsTagHandler</handler-class>
@@ -649,7 +652,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[Util tag to import enums.]]>
+            <![CDATA[Utility tag to import enums.]]>
         </description>
         <tag-name>importEnum</tag-name>
         <handler-class>org.primefaces.component.importenum.ImportEnumTagHandler</handler-class>
@@ -873,7 +876,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
+            <![CDATA[AjaxExceptionHandler is a utility component for the built-in ExceptionHandler.]]>
         </description>
         <tag-name>ajaxExceptionHandler</tag-name>
         <component>
@@ -930,7 +933,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[AjaxStatus is a global notifier for ajax requests made by PrimeFaces components.]]>
+            <![CDATA[AjaxStatus is a global notifier for AJAX requests made by PrimeFaces components.]]>
         </description>
         <tag-name>ajaxStatus</tag-name>
         <component>
@@ -1028,7 +1031,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[Audio component is used for embedding audio content such as MP3, OGG, WAV to JSF views.]]>
+            <![CDATA[Audio component is used for embedding audio content such as MP3, OGG, WAV to Faces views.]]>
         </description>
         <tag-name>audio</tag-name>
         <component>
@@ -2260,7 +2263,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[BlockUI blocks JSF components during ajax processing.]]>
+            <![CDATA[BlockUI blocks Faces components during AJAX processing.]]>
         </description>
         <tag-name>blockUI</tag-name>
         <component>
@@ -2761,8 +2764,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Disable appending the
-             on the rendering of this element.]]>
+                <![CDATA[Disable appending the on the rendering of this element.]]>
             </description>
             <name>disableClientWindow</name>
             <required>false</required>
@@ -2845,7 +2847,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[Calendar is an input component used to provide a date. Other than basic features calendar supports paging, localization, ajax selection and more.]]>
+            <![CDATA[Calendar is an input component used to provide a date. Other than basic features calendar supports paging, localization, AJAX selection and more.]]>
         </description>
         <tag-name>calendar</tag-name>
         <component>
@@ -4215,7 +4217,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
+            <![CDATA[Checkbox is a helper component of SelectManyCheckbox to implement custom layouts.]]>
         </description>
         <tag-name>checkbox</tag-name>
         <component>
@@ -4950,7 +4952,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
+            <![CDATA[ColorPicker is an input component with a color palette.]]>
         </description>
         <tag-name>colorPicker</tag-name>
         <component>
@@ -5975,7 +5977,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
+            <![CDATA[Columns is used by datatable to create columns dynamically.]]>
         </description>
         <tag-name>columns</tag-name>
         <component>
@@ -6444,7 +6446,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[CommandButton is an extended version of standard JSF commandButton with ajax and skinning features.]]>
+            <![CDATA[CommandButton is an extended version of standard Faces commandButton with ajax and skinning features.]]>
         </description>
         <tag-name>commandButton</tag-name>
         <component>
@@ -6928,7 +6930,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[CommandLink extends standard JSF commandLink with Ajax capabilities.]]>
+            <![CDATA[CommandLink extends standard Faces commandLink with extra PrimeFaces capabilities.]]>
         </description>
         <tag-name>commandLink</tag-name>
         <component>
@@ -7778,7 +7780,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[DataGrid displays a collection of data in grid layout. Ajax Pagination is a built-in feature and paginator UI is fully customizable via various options like paginatorTemplate, rowPerPageOptions, pageLinks and more.]]>
+            <![CDATA[DataGrid displays a collection of data in grid layout. AJAX Pagination is a built-in feature and paginator UI is fully customizable via various options like paginatorTemplate, rowPerPageOptions, pageLinks and more.]]>
         </description>
         <tag-name>dataGrid</tag-name>
         <component>
@@ -8004,7 +8006,7 @@
     <tag>
         <description>
             <![CDATA[DataList presents a collection of data in list layout with several display types.
-        Ajax Pagination is a built-in feature and paginator UI is fully customizable via various options like paginatorTemplate, rowsPerPageOptions, pageLinks and more.]]>
+        AJAX Pagination is a built-in feature and paginator UI is fully customizable via various options like paginatorTemplate, rowsPerPageOptions, pageLinks and more.]]>
         </description>
         <tag-name>dataList</tag-name>
         <component>
@@ -9527,7 +9529,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
+            <![CDATA[Diagram is a component to create visual elements and connect them on a web page.]]>
         </description>
         <tag-name>diagram</tag-name>
         <component>
@@ -10031,7 +10033,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
+            <![CDATA[Draggable allows any component to be enhanced with draggable behavior.]]>
         </description>
         <tag-name>draggable</tag-name>
         <component>
@@ -10265,7 +10267,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
+            <![CDATA[Droppable allows any component to be enhanced with droppable behavior.]]>
         </description>
         <tag-name>droppable</tag-name>
         <component>
@@ -11148,7 +11150,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[Focus is a handy component that makes it easy to manage the element focus on a JSF page.]]>
+            <![CDATA[Focus is a handy component that makes it easy to manage the element focus on a Faces page.]]>
         </description>
         <tag-name>focus</tag-name>
         <component>
@@ -11497,7 +11499,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[GMap component is built on Google Maps API Version 3. Gmap is highly integrated with JSF development model and enhanced with Ajax capabilities.]]>
+            <![CDATA[GMap component is built on Google Maps API Version 3. Gmap is highly integrated with Faces development model and enhanced with AJAX capabilities.]]>
         </description>
         <tag-name>gmap</tag-name>
         <component>
@@ -11700,7 +11702,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[PrimeFaces GraphicImage extends standard JSF graphic image component with the ability of displaying binary data like an inputstream.
+            <![CDATA[GraphicImage extends standard Faces graphic image component with the ability of displaying binary data like an inputstream.
         Main use cases of GraphicImage is to make displaying images stored in database or on-the-fly images easier.
         Legacy way to do this is to come up with a Servlet that does the streaming, GraphicImage does all the hard work without the need of a Servlet.]]>
         </description>
@@ -13591,7 +13593,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[InputNumber is an extension to the inputText with optimized handling for numbers.]]>
+            <![CDATA[InputNumber is an extension to the InputText with optimized handling for numbers.]]>
         </description>
         <tag-name>inputNumber</tag-name>
         <component>
@@ -15998,7 +16000,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
+            <![CDATA[Knob is an input component to insert numeric values in a range.]]>
         </description>
         <tag-name>knob</tag-name>
         <component>
@@ -16241,7 +16243,8 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
+            <![CDATA[Lifecycle is a utility component which displays the execution time of each Faces phase. It also
+            synchronizes automatically after each AJAX request.]]>
         </description>
         <tag-name>lifecycle</tag-name>
         <component>
@@ -16971,7 +16974,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[Media component is used for embedding multimedia content such as videos and music to JSF views. Media renders object or embed html tags depending on the user client.]]>
+            <![CDATA[Media component is used for embedding multimedia content such as videos and music to Faces views. Media renders object or embed html tags depending on the user client.]]>
         </description>
         <tag-name>media</tag-name>
         <component>
@@ -17980,7 +17983,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[Message is a pre-skinned extended version of the standard JSF message component with extensions.]]>
+            <![CDATA[Message is a pre-skinned extended version of the standard Faces message component with extensions.]]>
         </description>
         <tag-name>message</tag-name>
         <component>
@@ -18102,7 +18105,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[Messages is a pre-skinned extended version of the standard JSF messages component with extensions.]]>
+            <![CDATA[Messages is a pre-skinned extended version of the standard Faces messages component with extensions.]]>
         </description>
         <tag-name>messages</tag-name>
         <component>
@@ -18502,7 +18505,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[NotificationBar displayes a multipurpose fixed positioned panel for notification. Any group of JSF content can be placed inside notificationbar.]]>
+            <![CDATA[NotificationBar displayes a multipurpose fixed positioned panel for notification. Any group of Faces content can be placed inside notificationbar.]]>
         </description>
         <tag-name>notificationBar</tag-name>
         <component>
@@ -18818,7 +18821,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
+            <![CDATA[Organigram is a data component to display an organizational hierarchy.]]>
         </description>
         <tag-name>organigram</tag-name>
         <component>
@@ -18923,7 +18926,9 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
+            <![CDATA[Organigram requires an instance of OrganigramNode interface as its value to define the root, a
+            default implementation DefaultOrganigramNode is provided. Each node has a type where each
+            node at the backend needs to match the p:organigramNode helper component.]]>
         </description>
         <tag-name>organigramNode</tag-name>
         <component>
@@ -19247,7 +19252,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[OutputPanel is used to group content on a page.]]>
+            <![CDATA[OutputPanel is a panel component with the ability to deferred loading, which is also the key feature of this component.]]>
         </description>
         <tag-name>outputPanel</tag-name>
         <component>
@@ -19702,7 +19707,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[PanelGrid is an extension to the standard PanelGrid.]]>
+            <![CDATA[PanelGrid is an extension to the standard Faces PanelGrid with responsive CSS and skinning.]]>
         </description>
         <tag-name>panelGrid</tag-name>
         <component>
@@ -20469,7 +20474,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[.]]>
+            <![CDATA[PhotoCam is used to take photos with webcam and send them to the Faces backend model.]]>
         </description>
         <tag-name>photoCam</tag-name>
         <component>
@@ -21051,7 +21056,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[Poll is an ajax component that has the ability to send periodical ajax requests and execute listeners on JSF backing beans.]]>
+            <![CDATA[Poll is an AJAX component that has the ability to send periodical AJAX requests and execute listeners on Faces backing beans.]]>
         </description>
         <tag-name>poll</tag-name>
         <component>
@@ -21433,7 +21438,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
+            <![CDATA[RadioButton is a helper component of SelectOneRadio to implement custom layouts.]]>
         </description>
         <tag-name>radioButton</tag-name>
         <component>
@@ -21710,7 +21715,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[RemoteCommand provides a way to execute JSF backing bean methods directly from javascript.]]>
+            <![CDATA[RemoteCommand provides a way to execute Faces backing bean methods directly from javascript.]]>
         </description>
         <tag-name>remoteCommand</tag-name>
         <component>
@@ -21930,7 +21935,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[PrimeFaces features a resizable component that has the ability to make a JSF component resizable.
+            <![CDATA[Resizable component that has the ability to make a Faces component resizable.
         Resizable can be used on various components like resize an input fields, panels, menus, images and more.]]>
         </description>
         <tag-name>resizable</tag-name>
@@ -22348,7 +22353,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[Schedule provides an Outlook Calendar, iCal like JSF component to manage events.
+            <![CDATA[Schedule provides an Outlook Calendar, iCal like Faces component to manage events.
         Schedule is highly customizable featuring various views (month, day, week), built-in I18N, drag-drop, resize, customizable event dialog and skinning.]]>
         </description>
         <tag-name>schedule</tag-name>
@@ -22704,7 +22709,8 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
+            <![CDATA[ScrollPanel is used to display scrollable content with theme aware scrollbars instead of native
+            browser scrollbars.]]>
         </description>
         <tag-name>scrollPanel</tag-name>
         <component>
@@ -22770,7 +22776,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
+            <![CDATA[SelectBooleanButton is used to select a binary decision with a toggle button.]]>
         </description>
         <tag-name>selectBooleanButton</tag-name>
         <component>
@@ -22997,7 +23003,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
+            <![CDATA[SelectBooleanCheckbox is an extended version of the standard checkbox with theme integration.]]>
         </description>
         <tag-name>selectBooleanCheckbox</tag-name>
         <component>
@@ -23208,7 +23214,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
+            <![CDATA[SelectCheckboxMenu is a multi select component that displays options in an overlay.]]>
         </description>
         <tag-name>selectCheckboxMenu</tag-name>
         <component>
@@ -23560,7 +23566,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
+            <![CDATA[SelectManyButton is a multi select component using button user interface.]]>
         </description>
         <tag-name>selectManyButton</tag-name>
         <component>
@@ -23731,7 +23737,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
+            <![CDATA[SelectManyCheckbox is an extended version of the standard Faces SelectManyCheckbox.]]>
         </description>
         <tag-name>selectManyCheckbox</tag-name>
         <component>
@@ -23939,7 +23945,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
+            <![CDATA[SelectManyMenu is an extended version of the standard Faces SelectManyMenu.]]>
         </description>
         <tag-name>selectManyMenu</tag-name>
         <component>
@@ -24210,7 +24216,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
+            <![CDATA[SelectOneButton is an input component to do a single select.]]>
         </description>
         <tag-name>selectOneButton</tag-name>
         <component>
@@ -24389,7 +24395,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
+            <![CDATA[SelectOneListbox is an extended version of the standard Faces selectOneListbox component.]]>
         </description>
         <tag-name>selectOneListbox</tag-name>
         <component>
@@ -24631,7 +24637,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
+            <![CDATA[SelectOneMenu is an extended version of the standard Faces SelectOneMenu.]]>
         </description>
         <tag-name>selectOneMenu</tag-name>
         <component>
@@ -25018,7 +25024,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
+            <![CDATA[SelectOneRadio is an extended version of the standard SelectOneRadio.]]>
         </description>
         <tag-name>selectOneRadio</tag-name>
         <component>
@@ -28142,7 +28148,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
+            <![CDATA[TagCloud displays a collection of tag with different strengths.]]>
         </description>
         <tag-name>tagCloud</tag-name>
         <component>
@@ -30943,7 +30949,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[Video component is used for embedding video content such as MP4, OGG, WEBM to JSF views.]]>
+            <![CDATA[Video component is used for embedding video content such as MP4, OGG, WEBM to Faces views.]]>
         </description>
         <tag-name>video</tag-name>
         <component>
@@ -31121,7 +31127,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[Wizard provides an ajax enhanced UI to implement a workflow easily in a single page.
+            <![CDATA[Wizard provides an enhanced UI to implement a workflow easily in a single page.
         Wizard consists of several child tab components where each tab represents a step in the process.]]>
         </description>
         <tag-name>wizard</tag-name>
@@ -32389,7 +32395,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
+            <![CDATA[Avatar represents people using icons, labels and images.]]>
         </description>
         <tag-name>avatar</tag-name>
         <component>
@@ -32527,7 +32533,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
+            <![CDATA[A set of Avatars can be displayed together using this component.]]>
         </description>
         <tag-name>avatarGroup</tag-name>
         <component>
@@ -32577,7 +32583,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
+            <![CDATA[Badge is a small status indicator for another element.]]>
         </description>
         <tag-name>badge</tag-name>
         <component>
@@ -32683,7 +32689,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
+            <![CDATA[Chip represents entities using icons, labels and images.]]>
         </description>
         <tag-name>chip</tag-name>
         <component>
@@ -32781,7 +32787,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
+            <![CDATA[Tag component is used to categorize content.]]>
         </description>
         <tag-name>tag</tag-name>
         <component>
@@ -32872,7 +32878,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
+            <![CDATA[Skeleton is a placeholder to display instead of the actual content.]]>
         </description>
         <tag-name>skeleton</tag-name>
         <component>
@@ -32962,7 +32968,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
+            <![CDATA[Divider is used to separate contents.]]>
         </description>
         <tag-name>divider</tag-name>
         <component>
@@ -33044,7 +33050,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
+            <![CDATA[ScrollTop gets displayed after a certain scroll position and used to navigates to the top of the page quickly.]]>
         </description>
         <tag-name>scrollTop</tag-name>
         <component>
@@ -33134,7 +33140,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
+            <![CDATA[Splitter is utilized to separate and resize panels.]]>
         </description>
         <tag-name>splitter</tag-name>
         <component>
@@ -33240,7 +33246,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
+            <![CDATA[SplitterPanel is utilized by the Splitter component to separate content.]]>
         </description>
         <tag-name>splitterPanel</tag-name>
         <component>
@@ -33329,7 +33335,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
+            <![CDATA[Card is a flexible container component.]]>
         </description>
         <tag-name>card</tag-name>
         <component>
@@ -33767,7 +33773,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[Speed Dial when pressed, a floating action button can display multiple primary actions that can be performed on a page.]]>
+            <![CDATA[SpeedDial is a floating action button with a popup menu that can display multiple primary actions that can be performed on a page.]]>
         </description>
         <tag-name>speedDial</tag-name>
         <component>
