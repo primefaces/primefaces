@@ -96,26 +96,45 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     * Bind document events
+     * Binds mouse event listeners for the splitter component.
+     * It listens for mousemove to handle resizing and mouseup to end resizing.
      * @private
      */
-    bindDocumentEvents: function() {
+    bindMouseListeners: function() {
         var $this = this;
 
         $(document).on('mousemove.splitter' + this.id, function(event) {
             $this.onResize(event);
         }).on('mouseup.splitter' + this.id, function(event) {
             $this.onResizeEnd(event);
-            $this.unbindDocumentEvents();
+            $this.unbindDocumentListeners();
         });
         
     },
 
     /**
-     * Removes document events
+     * Binds touch event listeners for the splitter component.
+     * It listens for touchmove to handle resizing and touchend to end resizing.
      * @private
      */
-    unbindDocumentEvents: function() {
+    bindTouchListeners: function() {
+        var $this = this;
+
+        $(document).on('touchmove.splitter' + this.id, function(event) {
+            $this.onResize(event);
+        }).on('touchend.splitter' + this.id, function(event) {
+            $this.onResizeEnd(event);
+            $this.unbindDocumentListeners();
+        });
+        
+    },
+
+    /**
+     * Unbinds all document event listeners related to the splitter component.
+     * This is typically called when resizing ends.
+     * @private
+     */
+    unbindDocumentListeners: function() {
         $(document).off('.splitter' + this.id);
     },
 
@@ -136,19 +155,21 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
                 })
                 .on('mousedown.splitter', function(event) {
                     $this.onResizeStart(event);
-                    $this.bindDocumentEvents();
+                    $this.bindMouseListeners();
                 })
                 .on('touchstart.splitter', function(event) {
                     $this.onResizeStart(event);
-                    event.preventDefault();
+                    $this.bindTouchListeners();
+                    if (event.cancelable) event.preventDefault();
                 })
                 .on('touchmove.splitter', function(event) {
                     $this.onResize(event);
-                    event.preventDefault();
+                    if (event.cancelable) event.preventDefault();
                 })
                 .on('touchend.splitter', function(event) {
                     $this.onResizeEnd(event);
-                    event.preventDefault();
+                    $this.unbindDocumentListeners();
+                    if (event.cancelable) event.preventDefault();
                 });
         });
     },
@@ -261,8 +282,8 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
             this.prevPanelSize = this.horizontal ? this.prevPanelElement.outerWidth(true) : this.prevPanelElement.outerHeight(true);
             this.nextPanelSize = this.horizontal ? this.nextPanelElement.outerWidth(true) : this.nextPanelElement.outerHeight(true);
         } else {
-            var pageX = event.type === 'touchstart' ? event.touches[0].pageX : event.pageX;
-            var pageY = event.type === 'touchstart' ? event.touches[0].pageY : event.pageY;
+            var pageX = event.type === 'touchstart' ? event.changedTouches[0].pageX : event.pageX;
+            var pageY = event.type === 'touchstart' ? event.changedTouches[0].pageY : event.pageY;
             this.startPos = this.horizontal ? pageX : pageY;
             this.prevPanelSize = (100 * (this.horizontal ? this.prevPanelElement.outerWidth(true) : this.prevPanelElement.outerHeight(true))) / this.size;
             this.nextPanelSize = (100 * (this.horizontal ? this.nextPanelElement.outerWidth(true) : this.nextPanelElement.outerHeight(true))) / this.size;
@@ -284,7 +305,8 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
             newPrevPanelSize = (100 * (this.prevPanelSize + delta)) / this.size;
             newNextPanelSize = (100 * (this.nextPanelSize - delta)) / this.size;
         } else {
-            var pagePos = (event.type === 'touchstart' ? event.touches[0] : event)[this.horizontal ? 'pageX' : 'pageY'];
+            var isTouchEvent = event.type === 'touchmove';
+            var pagePos = (isTouchEvent ? event.changedTouches[0] : event)[this.horizontal ? 'pageX' : 'pageY'];
             var newPos = (pagePos * 100) / this.size - (this.startPos * 100) / this.size;
             newPrevPanelSize = this.prevPanelSize + newPos;
             newNextPanelSize = this.nextPanelSize - newPos;
@@ -365,25 +387,22 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     * Checks the new values according to the size and minimum size values
-     * @private
-     * @param {number} newPrevPanelSize The new previous panel size.
-     * @param {number} newNextPanelSize The new next panel size.
-     * @return {boolean} `true` if resized, `false` if not.
+     * Validates the new sizes for the panels to ensure they are within acceptable bounds.
+     * Checks if the new sizes are within the range of 0 to 100 and not less than the minimum size specified in the dataset.
+     * 
+     * @param {number} newPrevPanelSize - The proposed new size for the previous panel.
+     * @param {number} newNextPanelSize - The proposed new size for the next panel.
+     * @returns {boolean} Returns true if the new sizes are valid, otherwise false.
      */
     validateResize: function(newPrevPanelSize, newNextPanelSize) {
-        if (newPrevPanelSize > 100 || newPrevPanelSize < 0) return false;
-        if (newNextPanelSize > 100 || newNextPanelSize < 0) return false;
-
-        if (this.panels[0].dataset && parseFloat(this.panels[0].dataset.minsize) > newPrevPanelSize) {
+        const isSizeOutOfRange = newPrevPanelSize > 100 || newPrevPanelSize < 0 || newNextPanelSize > 100 || newNextPanelSize < 0;
+        if (isSizeOutOfRange) {
             return false;
         }
+        const isPrevSizeTooSmall = this.panels[0].dataset && parseFloat(this.panels[0].dataset.minsize) > newPrevPanelSize;
+        const isNextSizeTooSmall = this.panels[1].dataset && parseFloat(this.panels[1].dataset.minsize) > newNextPanelSize;
 
-        if (this.panels[1].dataset && parseFloat(this.panels[1].dataset.minsize) > newNextPanelSize) {
-            return false;
-        }
-
-        return true;
+        return !(isPrevSizeTooSmall || isNextSizeTooSmall);
     },
 
     /**
