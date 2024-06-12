@@ -24,37 +24,31 @@
                         NBA Teams
                     </f:facet>
 
-                    <p:columnGroup type="header">
-                        <p:row>
-                            <p:column rowspan="2" headerText="Team"/>
-                            <p:column colspan="2" headerText="Stats"/>
-                        </p:row>
-                        <p:row>
-                            <p:column headerText="Wins"/>
-                            <p:column headerText="Losses"/>
-                        </p:row>
-                    </p:columnGroup>
-
                     <p:subTable var="stats" value="#{team.stats}">
                         <f:facet name="header">
                             <h:outputText value="#{team.name}"/>
                         </f:facet>
-                        <p:column>
-                            <h:outputText value="#{stats.season}"/>
-                        </p:column>
-                        <p:column>
-                            <h:outputText value="#{stats.win}"/>
-                        </p:column>
-                        <p:column>
-                            <h:outputText value="#{stats.loss}"/>
-                        </p:column>
-                        <p:columnGroup type="footer">
-                            <p:row>
-                                <p:column footerText="Totals: " class="text-right font-bold"/>
-                                <p:column footerText="#{team.allWins}" class="font-bold"/>
-                                <p:column footerText="#{team.allLosses}" class="font-bold"/>
-                            </p:row>
+
+                        <p:column headerText="Team" field="season" sortable="false" filterable="false"/>
+
+                        <p:columnGroup headerText="Stats">
+                            <p:column headerText="Wins" field="win" sortable="false" filterable="false"/>
+                            <p:column headerText="Losses" field="loss" sortable="false" filterable="false"/>
                         </p:columnGroup>
+
+                        <f:facet name="footer">
+                            <p:row>
+                                <p:column class="text-right font-bold">
+                                    Totals:
+                                </p:column>
+                                <p:column class="font-bold">
+                                    #{team.allWins}
+                                </p:column>
+                                <p:column class="font-bold">
+                                    #{team.allLosses}
+                                </p:column>
+                            </p:row>
+                        </f:facet>
                     </p:subTable>
                 </p:dataTable>
             </div>

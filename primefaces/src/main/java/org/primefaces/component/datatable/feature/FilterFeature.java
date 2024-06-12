@@ -29,11 +29,15 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
+
 import javax.el.ELContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
 
 import org.primefaces.PrimeFaces;
+import org.primefaces.component.api.ForEachRowColumn;
+import org.primefaces.component.api.RowColumnVisitor;
+import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.datatable.DataTableState;
@@ -127,30 +131,32 @@ public class FilterFeature implements DataTableFeature {
                 globalMatch.set(globalFilter.getConstraint().isMatching(context, rowData, globalFilter.getFilterValue(), filterLocale));
             }
 
-            final int rowIndex = i;
-            table.forEachColumn(column -> {
-                FilterMeta filter = filterBy.get(column.getColumnKey(table, rowIndex));
-                if (filter == null || filter.isGlobalFilter()) {
-                    return true;
+            int finalI = i;
+            ForEachRowColumn.from(table).invoke(new RowColumnVisitor.Adapter() {
+                @Override
+                public void visitColumn(int index, UIColumn column) throws IOException {
+                    FilterMeta filter = filterBy.get(column.getColumnKey(table, finalI));
+                    if (filter == null || filter.isGlobalFilter()) {
+                        return;
+                    }
+
+                    Object columnValue = filter.getLocalValue(elContext, column);
+
+                    if (globalFilter != null && globalFilter.isActive() && !globalMatch.get() && !hasGlobalFilterFunction) {
+                        FilterConstraint constraint = globalFilter.getConstraint();
+                        Object filterValue = globalFilter.getFilterValue();
+                        globalMatch.set(constraint.isMatching(context, columnValue, filterValue, filterLocale));
+                    }
+
+                    if (!filter.isActive()) {
+                        return;
+                    }
+
+                    FilterConstraint constraint = filter.getConstraint();
+                    Object filterValue = filter.getFilterValue();
+
+                    localMatch.set(constraint.isMatching(context, columnValue, filterValue, filterLocale));
                 }
-
-                Object columnValue = filter.getLocalValue(elContext, column);
-
-                if (globalFilter != null && globalFilter.isActive() && !globalMatch.get() && !hasGlobalFilterFunction) {
-                    FilterConstraint constraint = globalFilter.getConstraint();
-                    Object filterValue = globalFilter.getFilterValue();
-                    globalMatch.set(constraint.isMatching(context, columnValue, filterValue, filterLocale));
-                }
-
-                if (!filter.isActive()) {
-                    return true;
-                }
-
-                FilterConstraint constraint = filter.getConstraint();
-                Object filterValue = filter.getFilterValue();
-
-                localMatch.set(constraint.isMatching(context, columnValue, filterValue, filterLocale));
-                return localMatch.get();
             });
 
             boolean matches = localMatch.get();

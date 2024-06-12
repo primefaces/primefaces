@@ -23,16 +23,11 @@
  */
 package org.primefaces.component.api;
 
-import org.primefaces.component.column.ColumnBase;
-import org.primefaces.component.headerrow.HeaderRow;
-import org.primefaces.expression.SearchExpressionUtils;
-import org.primefaces.model.ColumnMeta;
-import org.primefaces.model.FilterMeta;
-import org.primefaces.model.SortMeta;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.FacetUtils;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.LocaleUtils;
+import java.io.IOException;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
@@ -43,10 +38,17 @@ import javax.faces.component.ValueHolder;
 import javax.faces.component.search.SearchExpressionHint;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.ConverterException;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+
+import org.primefaces.component.column.ColumnBase;
+import org.primefaces.component.headerrow.HeaderRow;
+import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.model.ColumnMeta;
+import org.primefaces.model.FilterMeta;
+import org.primefaces.model.SortMeta;
+import org.primefaces.util.ColumnComparators;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.LocaleUtils;
 
 public interface UITable<T extends UITableState> extends ColumnAware, MultiViewStateAware<T> {
 
@@ -59,18 +61,17 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
     String getClientId(FacesContext context);
 
-
     default Map<String, FilterMeta> initFilterBy(FacesContext context) {
         Map<String, FilterMeta> filterBy = new LinkedHashMap<>();
 
-        // build columns filterBy
-        forEachColumn(c -> {
-            FilterMeta meta = FilterMeta.of(context, getVar(), c);
-            if (meta != null) {
-                filterBy.put(meta.getColumnKey(), meta);
+        ForEachRowColumn.from((UIComponent) this).invoke(new RowColumnVisitor.Adapter() {
+            @Override
+            public void visitColumn(int index, UIColumn column) throws IOException {
+                FilterMeta meta = FilterMeta.of(context, getVar(), column);
+                if (meta != null) {
+                    filterBy.put(meta.getColumnKey(), meta);
+                }
             }
-
-            return true;
         });
 
         // merge internal filterBy with user filterBy
@@ -180,57 +181,54 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
             String componentIdPrefix = ((UIComponent) this).getClientId(context) + separator + FilterMeta.GLOBAL_FILTER_KEY;
             String filterValue = params.entrySet().stream()
                     .filter(e -> e.getKey() != null && e.getKey().startsWith(componentIdPrefix))
-                    .map(e -> e.getValue())
+                    .map(Map.Entry::getValue)
                     .findFirst().orElse(null);
             globalFilter.setFilterValue(filterValue);
         }
 
-        forEachColumn(column -> {
-            FilterMeta filterMeta = filterBy.get(column.getColumnKey());
-            if (filterMeta == null || filterMeta.isGlobalFilter()) {
-                return true;
-            }
-
-            if (column instanceof DynamicColumn) {
-                ((DynamicColumn) column).applyModel();
-            }
-
-            boolean hasCustomFilter = column.getFacet("filter") != null;
-
-            Object filterValue;
-            if (hasCustomFilter) {
-                filterValue = column.getFilterValueFromValueHolder();
-            }
-            else {
-                String valueHolderClientId = column instanceof DynamicColumn
-                        ? column.getContainerClientId(context) + separator + "filter"
-                        : column.getClientId(context) + separator + "filter";
-                filterValue = params.get(valueHolderClientId);
-
-                try {
-                    // if no custom filter provided and conversion necessary, use UIColumn#converter instead
-                    filterValue = ComponentUtils.getConvertedValue(context, column.asUIComponent(), column.getConverter(), filterValue);
+        ForEachRowColumn.from((UIComponent) this).invoke(new RowColumnVisitor.Adapter() {
+            @Override
+            public void visitColumn(int index, UIColumn column) throws IOException {
+                FilterMeta filterMeta = filterBy.get(column.getColumnKey());
+                if (filterMeta == null || filterMeta.isGlobalFilter()) {
+                    return;
                 }
-                catch (ConverterException ex) {
-                    filterValue = null;
+
+                boolean hasCustomFilter = column.getFacet("filter") != null;
+
+                Object filterValue;
+                if (hasCustomFilter) {
+                    filterValue = column.getFilterValueFromValueHolder();
                 }
-            }
+                else {
+                    String valueHolderClientId = column instanceof DynamicColumn
+                            ? column.getContainerClientId(context) + separator + "filter"
+                            : column.getClientId(context) + separator + "filter";
+                    filterValue = params.get(valueHolderClientId);
 
-            if (filterValue != null) {
-                // this is not absolutely necessary, but in case the result is null, it prevents to execution of the next statement
-                filterValue = FilterMeta.resetToNullIfEmpty(filterValue);
-            }
-
-            if (filterValue != null && filterValue.getClass().isArray()) {
-                ValueExpression columnFilterValueVE = column.getValueExpression(ColumnBase.PropertyKeys.filterValue.toString());
-                if (columnFilterValueVE != null && List.class.isAssignableFrom(columnFilterValueVE.getType(context.getELContext()))) {
-                    filterValue = Arrays.asList((Object[]) filterValue);
+                    try {
+                        // if no custom filter provided and conversion necessary, use UIColumn#converter instead
+                        filterValue = ComponentUtils.getConvertedValue(context, column.asUIComponent(), column.getConverter(), filterValue);
+                    }
+                    catch (ConverterException ex) {
+                        filterValue = null;
+                    }
                 }
+
+                if (filterValue != null) {
+                    // this is not absolutely necessary, but in case the result is null, it prevents to execution of the next statement
+                    filterValue = FilterMeta.resetToNullIfEmpty(filterValue);
+                }
+
+                if (filterValue != null && filterValue.getClass().isArray()) {
+                    ValueExpression columnFilterValueVE = column.getValueExpression(ColumnBase.PropertyKeys.filterValue.toString());
+                    if (columnFilterValueVE != null && List.class.isAssignableFrom(columnFilterValueVE.getType(context.getELContext()))) {
+                        filterValue = Arrays.asList((Object[]) filterValue);
+                    }
+                }
+
+                filterMeta.setFilterValue(filterValue);
             }
-
-            filterMeta.setFilterValue(filterValue);
-
-            return true;
         });
     }
 
@@ -281,14 +279,15 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
             sorted.set(true);
         }
 
-        forEachColumn(c -> {
-            SortMeta meta = SortMeta.of(context, getVar(), c);
-            if (meta != null) {
-                sorted.set(sorted.get() || meta.isActive());
-                sortBy.put(meta.getColumnKey(), meta);
+        ForEachRowColumn.from((UIComponent) this).invoke(new RowColumnVisitor.Adapter() {
+            @Override
+            public void visitColumn(int index, UIColumn column) throws IOException {
+                SortMeta meta = SortMeta.of(context, getVar(), column);
+                if (meta != null) {
+                    sorted.set(sorted.get() || meta.isActive());
+                    sortBy.put(meta.getColumnKey(), meta);
+                }
             }
-
-            return true;
         });
 
         // merge internal sortBy with user sortBy
@@ -548,28 +547,42 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         setColumnMeta(null);
     }
 
-    default boolean hasFooterColumn() {
-        for (int i = 0; i < getChildCount(); i++) {
-            UIComponent child = getChildren().get(i);
-            if (child.isRendered() && (child instanceof UIColumn)) {
-                UIColumn column = (UIColumn) child;
-
-                if (column.getFooterText() != null || FacetUtils.shouldRenderFacet(column.getFacet("footer"))) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
     default Locale resolveDataLocale(FacesContext context) {
         return LocaleUtils.resolveLocale(context, getDataLocale(), getClientId(context));
     }
 
-    int getChildCount();
-
-    List<UIComponent> getChildren();
-
     Object getDataLocale();
+
+    Map<String, ColumnMeta> getColumnMeta();
+
+    void setColumnMeta(Map<String, ColumnMeta> columnMeta);
+
+    default UIColumn findColumn(String columnKey) {
+        if ("globalFilter".equals(columnKey)) {
+            return null;
+        }
+
+        List<UIColumn> columns = getColumns();
+
+        //body columns
+        for (int i = 0; i < columns.size(); i++) {
+            UIColumn column = columns.get(i);
+            if (Objects.equals(column.getColumnKey(), columnKey)) {
+                return column;
+            }
+        }
+
+        throw new FacesException("Cannot find column with key: " + columnKey);
+    }
+
+    default List<UIColumn> collectColumns() {
+        List<UIColumn> columns = ForEachRowColumn.collectColumns((UIComponent) this);
+        Map<String, ColumnMeta> columnMeta = getColumnMeta();
+        if (!columnMeta.isEmpty()) {
+            columns.sort(ColumnComparators.comparingDisplayOrder(columnMeta));
+        }
+        return columns;
+    }
+
+    void setColumns(List<UIColumn> columns);
 }

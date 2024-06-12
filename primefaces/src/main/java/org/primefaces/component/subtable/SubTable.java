@@ -23,16 +23,14 @@
  */
 package org.primefaces.component.subtable;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.faces.event.PhaseId;
-import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.api.ColumnAware;
-import org.primefaces.model.ColumnMeta;
 
-public class SubTable extends SubTableBase implements ColumnAware {
+import org.primefaces.component.api.ForEachRowColumn;
+import org.primefaces.component.api.UIColumn;
+
+public class SubTable extends SubTableBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SubTable";
 
@@ -40,39 +38,18 @@ public class SubTable extends SubTableBase implements ColumnAware {
 
     @Override
     public List<UIColumn> getColumns() {
-        if (this.columns != null) {
-            return this.columns;
+        if (columns != null) {
+            return columns;
         }
 
-        List<UIColumn> columns = collectColumns();
+        List<UIColumn> columnsTmp = ForEachRowColumn.collectColumns(this);
 
         // lets cache it only when RENDER_RESPONSE is reached, the columns might change before reaching that phase
         // see https://github.com/primefaces/primefaces/issues/2110
         if (getFacesContext().getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
-            this.columns = columns;
+            columns = columnsTmp;
         }
 
-        return columns;
-    }
-
-    @Override
-    public void setColumns(List<UIColumn> columns) {
-        this.columns = columns;
-    }
-
-    @Override
-    public Map<String, ColumnMeta> getColumnMeta() {
-        Map<String, ColumnMeta> value =
-                (Map<String, ColumnMeta>) getStateHelper().get(InternalPropertyKeys.columnMeta);
-        if (value == null) {
-            value = new HashMap<>();
-            setColumnMeta(value);
-        }
-        return value;
-    }
-
-    @Override
-    public void setColumnMeta(Map<String, ColumnMeta> columnMeta) {
-        getStateHelper().put(InternalPropertyKeys.columnMeta, columnMeta);
+        return columnsTmp;
     }
 }

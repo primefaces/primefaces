@@ -135,6 +135,10 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
             }
         }
 
+        if (this.hasColGroup()) {
+            this.frozenThead.height(Math.max(this.frozenThead.height(), this.scrollThead.height()));
+        }
+
         this.scrollBody.on('scroll.datatable', function() {
             var scrollShift = $this.scrollBody.scrollLeft();
 
@@ -897,7 +901,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         var frozenFootRows = this.frozenTfoot.children();
         if (frozenFootRows.length > 0) {
             this.fixRowHeights(this.scrollTfoot.children(), frozenFootRows);
-            var scrollBarHeight = this.scrollContainer.height() - this.frozenContainer.height();
+            var scrollBarHeight = this.scrollBody.height() - this.frozenBodyTable.height();
             if (scrollBarHeight > 0) {
                 var browser = PrimeFaces.env.browser;
                 if (browser.webkit === true || browser.mozilla === true) {

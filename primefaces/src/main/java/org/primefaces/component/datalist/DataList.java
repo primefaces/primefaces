@@ -42,6 +42,7 @@ import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.model.DataModel;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -174,9 +175,9 @@ public class DataList extends DataListBase {
     }
 
     @Override
-    protected void processFacets(FacesContext context, PhaseId phaseId) {
-        if (getFacetCount() > 0) {
-            UIComponent descriptionFacet = getFacet("description");
+    protected void processFacets(FacesContext context, UIComponent root, PhaseId phaseId) {
+        if (root.getFacetCount() > 0) {
+            UIComponent descriptionFacet = root.getFacet("description");
             for (UIComponent facet : getFacets().values()) {
                 if (facet.equals(descriptionFacet)) {
                     continue;

@@ -24,17 +24,20 @@
 package org.primefaces.component.subtable;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
+import org.primefaces.component.api.ColumnAware;
+import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.column.Column;
-import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.datatable.DataTable;
-import org.primefaces.component.row.Row;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.LangUtils;
 
@@ -50,6 +53,8 @@ public class SubTableRenderer extends CoreRenderer {
         for (int i = 0; i < rowCount; i++) {
             encodeRow(context, table, i);
         }
+
+        table.setRowIndex(-1);
 
         encodeFooter(context, table);
     }
@@ -71,34 +76,6 @@ public class SubTableRenderer extends CoreRenderer {
             writer.endElement("td");
             writer.endElement("tr");
         }
-
-        ColumnGroup group = table.getColumnGroup("header");
-        if (group != null && group.isRendered()) {
-            for (UIComponent child : group.getChildren()) {
-                if (child.isRendered() && child instanceof Row) {
-                    Row headerRow = (Row) child;
-                    String styleClass = "ui-widget-header";
-                    if (LangUtils.isNotBlank(headerRow.getStyleClass())) {
-                        styleClass = styleClass + " " + headerRow.getStyleClass();
-                    }
-
-                    writer.startElement("tr", null);
-                    writer.writeAttribute("class", styleClass, null);
-                    if (LangUtils.isNotBlank(headerRow.getStyle())) {
-                        writer.writeAttribute("style", headerRow.getStyle(), null);
-                    }
-
-                    for (UIComponent headerRowChild : headerRow.getChildren()) {
-                        if (headerRowChild.isRendered() && headerRowChild instanceof Column) {
-                            Column footerColumn = (Column) headerRowChild;
-                            encodeFacetColumn(context, table, footerColumn, "header", DataTable.COLUMN_HEADER_CLASS, footerColumn.getHeaderText());
-                        }
-                    }
-
-                    writer.endElement("tr");
-                }
-            }
-        }
     }
 
     public void encodeRow(FacesContext context, SubTable table, int rowIndex) throws IOException {
@@ -107,122 +84,187 @@ public class SubTableRenderer extends CoreRenderer {
             return;
         }
 
+        encodeRow(context, table, rowIndex, 0, table.getColumnsCount());
+    }
+
+    public void encodeFooter(FacesContext context, SubTable table) throws IOException {
+        UIComponent footer = table.getFacet("footer");
+        boolean hasFooterColumn = table.hasFooterColumn();
+        if (footer == null && !hasFooterColumn) {
+            return;
+        }
+
+        if (hasFooterColumn) {
+            encodeColumnFooters(context, table, 0, table.getColumns().size());
+        }
+        if (footer != null) {
+            footer.encodeAll(context);
+        }
+    }
+
+    public void encodeRow(FacesContext context, SubTable table, int rowIndex, int columnStart, int columnEnd)
+            throws IOException {
+
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = table.getClientId(context);
+        List<UIColumn> columns = table.getColumns();
+
+        String rowStyleClass = getStyleClassBuilder(context)
+                .add(DataTable.ROW_CLASS)
+                .add(rowIndex % 2 == 0, DataTable.EVEN_ROW_CLASS, DataTable.ODD_ROW_CLASS)
+                .build();
 
         writer.startElement("tr", null);
-        writer.writeAttribute("id", clientId + "_row_" + rowIndex, null);
-        writer.writeAttribute("class", DataTable.ROW_CLASS, null);
+        writer.writeAttribute("data-ri", rowIndex, null);
+        if (LangUtils.isNotBlank(rowStyleClass)) {
+            writer.writeAttribute("class", rowStyleClass, null);
+        }
 
-        for (UIColumn column : table.getColumns()) {
-            if (column.isRendered() && column instanceof Column) { //Columns are not supported yet
-                String style = column.getStyle();
-                String styleClass = column.getStyleClass();
-                int colspan = column.getColspan();
-                int rowspan = column.getRowspan();
+        for (int i = columnStart; i < columnEnd; i++) {
+            UIColumn column = columns.get(i);
 
-                writer.startElement("td", null);
-                if (style != null) {
-                    writer.writeAttribute("style", style, null);
-                }
-                if (styleClass != null) {
-                    writer.writeAttribute("class", styleClass, null);
-                }
-                if (colspan != 1) {
-                    writer.writeAttribute("colspan", colspan, null);
-                }
-                if (rowspan != 1) {
-                    writer.writeAttribute("rowspan", rowspan, null);
-                }
+            if (column instanceof Column) {
+                encodeCell(context, table, column);
+            }
+            else if (column instanceof DynamicColumn) {
+                DynamicColumn dynamicColumn = (DynamicColumn) column;
+                dynamicColumn.applyModel();
 
-                column.encodeAll(context);
-
-                writer.endElement("td");
+                encodeCell(context, table, dynamicColumn);
             }
         }
 
         writer.endElement("tr");
     }
 
-    public void encodeFooter(FacesContext context, SubTable table) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        UIComponent footer = table.getFacet("footer");
-
-        if (FacetUtils.shouldRenderFacet(footer)) {
-            writer.startElement("tr", null);
-            writer.writeAttribute("class", "ui-widget-header", null);
-
-            writer.startElement("td", null);
-            writer.writeAttribute("class", DataTable.SUBTABLE_FOOTER, null);
-            writer.writeAttribute("colspan", table.getColumns().size(), null);
-
-            footer.encodeAll(context);
-
-            writer.endElement("td");
-            writer.endElement("tr");
-        }
-
-        ColumnGroup group = table.getColumnGroup("footer");
-
-        if (group == null || !group.isRendered()) {
-            return;
-        }
-
-        for (UIComponent child : group.getChildren()) {
-            if (child.isRendered() && child instanceof Row) {
-                Row footerRow = (Row) child;
-                String styleClass = "ui-widget-header";
-                if (LangUtils.isNotBlank(footerRow.getStyleClass())) {
-                    styleClass = styleClass + " " + footerRow.getStyleClass();
-                }
-
-                writer.startElement("tr", null);
-                writer.writeAttribute("class", styleClass, null);
-                if (LangUtils.isNotBlank(footerRow.getStyle())) {
-                    writer.writeAttribute("style", footerRow.getStyle(), null);
-                }
-
-                for (UIComponent footerRowChild : footerRow.getChildren()) {
-                    if (footerRowChild.isRendered() && footerRowChild instanceof Column) {
-                        Column footerColumn = (Column) footerRowChild;
-                        encodeFacetColumn(context, table, footerColumn, "footer", DataTable.COLUMN_FOOTER_CLASS, footerColumn.getFooterText());
-                    }
-                }
-
-                writer.endElement("tr");
-            }
-        }
-    }
-
-    protected void encodeFacetColumn(FacesContext context, SubTable table, Column column, String facetName, String styleClass, String text) throws IOException {
+    protected void encodeCell(FacesContext context, SubTable table, UIColumn column) throws IOException {
         if (!column.isRendered()) {
             return;
         }
 
         ResponseWriter writer = context.getResponseWriter();
+        CellEditor editor = column.getCellEditor();
+        boolean editorEnabled = editor != null && editor.isRendered();
+        int responsivePriority = column.getResponsivePriority();
+        String title = column.getTitle();
         String style = column.getStyle();
-        String columnClass = column.getStyleClass();
-        columnClass = (columnClass == null) ? styleClass : styleClass + " " + columnClass;
+
+        String styleClass = getStyleClassBuilder(context)
+                .add(editorEnabled && editor.isDisabled(), DataTable.CELL_EDITOR_DISABLED_CLASS)
+                .add(editorEnabled && !editor.isDisabled(), DataTable.EDITABLE_COLUMN_CLASS)
+                .add(!column.isSelectRow(), DataTable.UNSELECTABLE_COLUMN_CLASS)
+                .add(column.getStyleClass())
+                .add(responsivePriority > 0, "ui-column-p-" + responsivePriority)
+                .build();
+
+        int colspan = column.getColspan();
+        int rowspan = column.getRowspan();
 
         writer.startElement("td", null);
-        writer.writeAttribute("class", columnClass, null);
-        if (column.getRowspan() != 1) {
-            writer.writeAttribute("rowspan", column.getRowspan(), null);
+        writer.writeAttribute("role", "gridcell", null);
+        if (colspan != 1) {
+            writer.writeAttribute("colspan", colspan, null);
         }
-        if (column.getColspan() != 1) {
-            writer.writeAttribute("colspan", column.getColspan(), null);
+        if (rowspan != 1) {
+            writer.writeAttribute("rowspan", rowspan, null);
         }
-        if (style != null) {
+        if (LangUtils.isNotBlank(style)) {
             writer.writeAttribute("style", style, null);
         }
+        if (LangUtils.isNotBlank(styleClass)) {
+            writer.writeAttribute("class", styleClass, null);
+        }
+        if (LangUtils.isNotBlank(title)) {
+            writer.writeAttribute("title", title, null);
+        }
+        UIComponent component = (column instanceof UIComponent) ? (UIComponent) column : null;
+        if (component != null) {
+            renderDynamicPassThruAttributes(context, component);
+        }
 
-        // Footer content
-        UIComponent facet = column.getFacet(facetName);
+        if (column.getChildren().isEmpty() && !LangUtils.isBlank(column.getField())) {
+            encodeDefaultFieldCell(context, table, column, writer);
+        }
+        else if (column instanceof DynamicColumn) {
+            encodeDynamicCell(context, table, column);
+        }
+        else {
+            column.renderChildren(context);
+        }
+
+        writer.endElement("td");
+    }
+
+    /**
+     * Encodes dynamic column. Allows to override default behavior.
+     */
+    protected void encodeDynamicCell(FacesContext context, SubTable table, UIColumn column) throws IOException {
+        column.encodeAll(context);
+    }
+
+    protected void encodeDefaultFieldCell(FacesContext context, SubTable table, UIColumn column, ResponseWriter writer) throws IOException {
+        Object value = UIColumn.createValueExpressionFromField(context, table.getVar(), column.getField()).getValue(context.getELContext());
+        String str = ComponentUtils.getConvertedAsString(context, column.asUIComponent(), column.getConverter(), value);
+        if (str != null) {
+            writer.writeText(str, null);
+        }
+    }
+
+    protected <C extends UIComponent & ColumnAware> void encodeColumnFooters(FacesContext context, C table, int columnStart, int columnEnd) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        List<UIColumn> columns = table.getColumns();
+        writer.startElement("tr", null);
+        writer.writeAttribute("role", "row", null);
+        for (int i = columnStart; i < columnEnd; i++) {
+            UIColumn column = columns.get(i);
+            if (column instanceof DynamicColumn) {
+                ((DynamicColumn) column).applyModel();
+            }
+
+            encodeColumnFooter(context, table, column, column.getRowspan(), column.getColspan());
+        }
+
+        writer.endElement("tr");
+    }
+
+    public <C extends UIComponent & ColumnAware> void encodeColumnFooter(FacesContext context, C table, UIColumn column, int rowspan, int colspan)
+            throws IOException {
+        if (!column.isRendered()) {
+            return;
+        }
+
+        ResponseWriter writer = context.getResponseWriter();
+
+        int responsivePriority = column.getResponsivePriority();
+        String style = column.getStyle();
+        String styleClass = column.getStyleClass();
+        styleClass = styleClass == null ? DataTable.COLUMN_FOOTER_CLASS : DataTable.COLUMN_FOOTER_CLASS + " " + styleClass;
+
+        if (responsivePriority > 0) {
+            styleClass = styleClass + " ui-column-p-" + responsivePriority;
+        }
+
+        writer.startElement("td", null);
+        if (LangUtils.isNotBlank(styleClass)) {
+            writer.writeAttribute("class", styleClass, null);
+        }
+        if (LangUtils.isNotBlank(style)) {
+            writer.writeAttribute("style", style, null);
+        }
+        if (rowspan != 1) {
+            writer.writeAttribute("rowspan", rowspan, null);
+        }
+        if (rowspan != 1) {
+            writer.writeAttribute("colspan", colspan, null);
+        }
+
+        //Footer content
+        UIComponent facet = column.getFacet("footer");
+        String text = column.getFooterText();
         if (FacetUtils.shouldRenderFacet(facet)) {
             facet.encodeAll(context);
         }
         else if (text != null) {
-            writer.write(text);
+            writer.writeText(text, "footerText");
         }
 
         writer.endElement("td");

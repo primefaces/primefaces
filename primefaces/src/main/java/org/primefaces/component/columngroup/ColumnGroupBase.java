@@ -25,14 +25,17 @@ package org.primefaces.component.columngroup;
 
 import javax.faces.component.UIComponentBase;
 
+import org.primefaces.component.api.ColumnAware;
 
-public abstract class ColumnGroupBase extends UIComponentBase {
+
+public abstract class ColumnGroupBase extends UIComponentBase implements ColumnAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public enum PropertyKeys {
-
-        type
+        style,
+        styleClass,
+        headerText,
     }
 
     public ColumnGroupBase() {
@@ -44,12 +47,27 @@ public abstract class ColumnGroupBase extends UIComponentBase {
         return COMPONENT_FAMILY;
     }
 
-    public String getType() {
-        return (String) getStateHelper().eval(PropertyKeys.type, null);
+    public String getStyle() {
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setType(String type) {
-        getStateHelper().put(PropertyKeys.type, type);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
+    public String getStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
+    }
+
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+    public String getHeaderText() {
+        return (String) getStateHelper().eval(PropertyKeys.headerText, null);
+    }
+
+    public void setHeaderText(String headerText) {
+        getStateHelper().put(PropertyKeys.headerText, headerText);
+    }
 }

@@ -24,6 +24,7 @@
 package org.primefaces.component.datatable;
 
 import java.util.Collection;
+
 import javax.el.MethodExpression;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 

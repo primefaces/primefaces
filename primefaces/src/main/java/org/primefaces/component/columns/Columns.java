@@ -26,11 +26,15 @@ package org.primefaces.component.columns;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Predicate;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.api.DynamicColumn;
+import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.LangUtils;
@@ -92,19 +96,32 @@ public class Columns extends ColumnsBase {
         return headerText;
     }
 
+    @Deprecated
     public List<DynamicColumn> getDynamicColumns() {
         if (dynamicColumns == null) {
-            FacesContext context = getFacesContext();
-            setRowIndex(-1);
             dynamicColumns = new ArrayList<>(getRowCount());
-
-            for (int i = 0; i < getRowCount(); i++) {
-                DynamicColumn dynaColumn = new DynamicColumn(i, this, context);
-                dynamicColumns.add(dynaColumn);
-            }
+            forEachColumn(false, UIColumn::isRendered, (col, index) -> dynamicColumns.add(col));
         }
 
         return dynamicColumns;
+    }
+
+    public void forEachColumn(boolean applyModel, Predicate<UIColumn> predicate, BiConsumer<DynamicColumn, Integer> column) {
+        FacesContext context = getFacesContext();
+        setRowIndex(-1);
+        for (int i = 0; i < getRowCount(); i++) {
+            DynamicColumn dynaColumn = new DynamicColumn(i, this, context);
+            if (applyModel) {
+                dynaColumn.applyModel();
+            }
+            else {
+                dynaColumn.applyStatelessModel();
+            }
+            if (predicate.test(dynaColumn)) {
+                column.accept(dynaColumn, i);
+            }
+        }
+        setRowIndex(-1);
     }
 
     public void setDynamicColumns(List<DynamicColumn> dynamicColumns) {

@@ -23,19 +23,10 @@
  */
 package org.primefaces.component.treetable.feature;
 
-import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
-import javax.el.ELContext;
-import javax.faces.FacesException;
-import javax.faces.context.FacesContext;
-import javax.faces.event.PhaseId;
-
 import org.primefaces.PrimeFaces;
+import org.primefaces.component.api.ForEachRowColumn;
+import org.primefaces.component.api.RowColumnVisitor;
+import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.component.treetable.TreeTableRenderer;
 import org.primefaces.component.treetable.TreeTableState;
@@ -48,6 +39,18 @@ import org.primefaces.model.filter.FilterConstraint;
 import org.primefaces.model.filter.FunctionFilterConstraint;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LocaleUtils;
+
+import javax.el.ELContext;
+import javax.faces.FacesException;
+import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseId;
+import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class FilterFeature implements TreeTableFeature {
 
@@ -150,29 +153,30 @@ public class FilterFeature implements TreeTableFeature {
                 globalMatch.set(globalFilter.getConstraint().isMatching(context, childNode, globalFilter.getFilterValue(), filterLocale));
             }
 
-            tt.forEachColumn(column -> {
-                FilterMeta filter = filterBy.get(column.getColumnKey(tt, rowKey));
-                if (filter == null || filter.isGlobalFilter()) {
-                    return true;
+            ForEachRowColumn.from(tt).invoke(new RowColumnVisitor.Adapter() {
+                @Override
+                public void visitColumn(int index, UIColumn column) throws IOException {
+                    FilterMeta filter = filterBy.get(column.getColumnKey(tt, rowKey));
+                    if (filter == null || filter.isGlobalFilter()) {
+                        return;
+                    }
+                    Object columnValue = filter.getLocalValue(elContext, column);
+
+                    if (globalFilter != null && globalFilter.isActive() && !globalMatch.get() && !hasGlobalFilterFunction) {
+                        FilterConstraint constraint = globalFilter.getConstraint();
+                        Object filterValue = globalFilter.getFilterValue();
+                        globalMatch.set(constraint.isMatching(context, columnValue, filterValue, filterLocale));
+                    }
+
+                    if (!filter.isActive()) {
+                        return;
+                    }
+
+                    FilterConstraint constraint = filter.getConstraint();
+                    Object filterValue = filter.getFilterValue();
+
+                    localMatch.set(constraint.isMatching(context, columnValue, filterValue, filterLocale));
                 }
-                Object columnValue = filter.getLocalValue(elContext, column);
-
-                if (globalFilter != null && globalFilter.isActive() && !globalMatch.get() && !hasGlobalFilterFunction) {
-                    FilterConstraint constraint = globalFilter.getConstraint();
-                    Object filterValue = globalFilter.getFilterValue();
-                    globalMatch.set(constraint.isMatching(context, columnValue, filterValue, filterLocale));
-                }
-
-                if (!filter.isActive()) {
-                    return true;
-                }
-
-                FilterConstraint constraint = filter.getConstraint();
-                Object filterValue = filter.getFilterValue();
-
-                localMatch.set(constraint.isMatching(context, columnValue, filterValue, filterLocale));
-
-                return localMatch.get();
             });
 
             boolean matches = localMatch.get();
