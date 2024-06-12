@@ -206,13 +206,9 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
 
         var $this = this;
         if (this.cfg.delegate) {
-            var targetSelector;
-             // try to get jq selectors from pf target selector to bind on all elements, not on the 1st one only
-             if ((tg = this.cfg.target.match('@\\((.+)\\)')) && (tg.length > 1)) {
-                 targetSelector = tg[1];
-             } else {
-                 targetSelector = "*[id='" + this.target.attr('id') + "']";
-             }
+            // try to get jq selectors from pf target selector to bind on all elements, not on the 1st one only
+            var matchResult = this.cfg.target.match('@\\((.+)\\)');
+            var targetSelector = (matchResult && matchResult.length > 1) ? matchResult[1] : "*[id='" + this.target.attr('id') + "']";
 
             var namespace = '.tooltip' + this.id;
             $(document).off(this.cfg.showEvent + namespace + ' ' + this.cfg.hideEvent + namespace, targetSelector)
@@ -236,6 +232,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         else {
             // GitHub #9941 Helper to remove tooltips when elements are removed
             this.target.off('remove.tooltip').on('remove.tooltip', function() {
+                $this.allowHide = true;
                 $this.hide();
             });      
 
@@ -250,8 +247,8 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                         $this.show();
                     }
                 })
-                .on(this.cfg.hideEvent + '.tooltip', function() {
-                    $this.hide();
+                .on(this.cfg.hideEvent + '.tooltip', function(e) {
+                    $this.shouldAllowHideBasedOnMouseTarget(e);
                 });
 
             this.bindAutoHide();
@@ -289,16 +286,28 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                 $this.allowHide = false;
             })
             .on("mouseleave.tooltip", function(e) {
-                var mouseTarget = $(e.relatedTarget);
-                if (mouseTarget.is($this.target) || 
-                    mouseTarget.attr('aria-describedby') === $this.id || 
-                    mouseTarget.parent().attr('aria-describedby') === $this.id) {
-                    $this.allowHide = true;
-                    return;
-                }
-                $this.allowHide = true;
-                $this.hide(e);
+                $this.shouldAllowHideBasedOnMouseTarget(e);
             });
+    },
+    /**
+     * Determines if the tooltip should be allowed to hide based on the mouse event's related target.
+     * @param {JQuery.TriggeredEvent} e - The jQuery event object that triggered the mouse event.
+     * @private
+     */
+    shouldAllowHideBasedOnMouseTarget: function(e) {
+        if (this.isAutoHide()) {
+            this.allowHide = true;
+        }
+        else {
+            var mouseTarget = $(e.relatedTarget);
+            this.allowHide = !(mouseTarget.is(this.target) || 
+                               mouseTarget.hasClass('ui-tooltip-arrow') ||
+                               mouseTarget.attr('aria-describedby') === this.id || 
+                               mouseTarget.parent().attr('aria-describedby') === this.id);
+        }
+        if (this.allowHide) {
+            this.hide();
+        }
     },
 
     /**
@@ -347,7 +356,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                 of: this.mouseEvent,
                 collision: 'flipfit',
                 using: function(p, f) {
-                    $this.alignUsing.call($this, p, f);
+                    $this.alignUsing(p, f);
                 }
             });
 
@@ -387,7 +396,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                 of: this.getTarget(),
                 collision: 'flipfit',
                 using: function(p, f) {
-                    $this.alignUsing.call($this, p, f);
+                    $this.alignUsing(p, f);
                 }
             });
         }
