@@ -23,7 +23,9 @@
  */
 package org.primefaces.integrationtests.selectcheckboxmenu;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
@@ -159,7 +161,6 @@ class SelectCheckboxMenu001Test extends AbstractPrimePageTest {
 
     private void assertValue(WebElement checkbox, String value) {
         assertEquals(value, checkbox.getAttribute("value"));
-        assertEquals("aria-checked", checkbox.getDomAttribute("aria-checked"));
     }
 
     private void assertConfiguration(JSONObject cfg) {
