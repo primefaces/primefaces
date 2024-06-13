@@ -28,7 +28,7 @@
                                       dynamic="true"
                                       filter="true" filterMatchMode="startsWith"
                                       label="Cities" updateLabel="true"
-                                      selectedLabel="Item(s) Selected"
+                                      selectedLabel="Cities Selected"
                                       style="width: 15rem" panelStyle="width: 15rem" scrollHeight="250"
                                       value="#{checkboxView.selectedCities}">
                     <f:selectItems value="#{checkboxView.cities}"/>
@@ -42,7 +42,6 @@
 
                 <h5>Multiple</h5>
                 <p:selectCheckboxMenu id="multiple"
-                                      filter="true" filterMatchMode="startsWith"
                                       multiple="true" emptyLabel="Please select..." updateLabel="true"
                                       style="min-width: 15rem" panelStyle="width: 30rem" scrollHeight="250"
                                       value="#{checkboxView.selectedCities2}">

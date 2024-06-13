@@ -26,6 +26,7 @@ package org.primefaces.component.selectcheckboxmenu;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -95,7 +96,6 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
             writer.writeAttribute("title", title, "title");
         }
 
-        renderARIACombobox(context, menu);
         encodeKeyboardTarget(context, menu);
         encodeInputs(context, menu, selectItems);
         if (menu.isMultiple()) {
@@ -125,7 +125,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
             SelectItem selectItem = selectItems.get(i);
             if (selectItem instanceof SelectItemGroup) {
                 SelectItemGroup selectItemGroup = (SelectItemGroup) selectItem;
-                String selectItemGroupLabel = selectItemGroup.getLabel() == null ? "" : selectItemGroup.getLabel();
+                String selectItemGroupLabel = selectItemGroup.getLabel() == null ? Constants.EMPTY_STRING : selectItemGroup.getLabel();
                 for (SelectItem childSelectItem : selectItemGroup.getSelectItems()) {
                     idx++;
                     encodeOption(context, menu, values, submittedValues, converter, childSelectItem, idx, selectItemGroupLabel);
@@ -183,8 +183,6 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         if (selectItemGroupLabel != null) {
             writer.writeAttribute("data-group-label", selectItemGroupLabel, null);
         }
-
-        writer.writeAttribute(HTML.ARIA_CHECKED, checked, null);
         if (checked) {
             writer.writeAttribute("checked", "checked", null);
         }
@@ -342,10 +340,10 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("id", menu.getClientId(context) + "_panel", null);
         writer.writeAttribute("class", panelStyleClass, null);
+        writer.writeAttribute(HTML.ARIA_ROLE, "dialog", null);
         if (panelStyle != null) {
             writer.writeAttribute("style", panelStyle, null);
         }
-        writer.writeAttribute(HTML.ARIA_ROLE, "dialog", null);
 
         if (menu.isShowHeader()) {
             encodePanelHeader(context, menu, selectItems);
@@ -401,7 +399,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
                 });
 
         //toggler
-        encodeCheckbox(context, null, false, !notChecked, null, null);
+        encodeCheckbox(context, null, false, !notChecked, null, null, -1, -1);
 
         //filter
         if (menu.isFilter()) {
@@ -463,9 +461,10 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
                 List<Column> columns = menu.getColumns();
 
                 writer.startElement("table", null);
-                writer.writeAttribute("id", menu.getClientId(context) + "_table", null);
+                writer.writeAttribute("id", menu.getClientId(context) + "_list", null);
                 writer.writeAttribute("class", SelectCheckboxMenu.TABLE_CLASS, null);
-                writer.writeAttribute("role", "listbox", null);
+                writer.writeAttribute(HTML.ARIA_ROLE, "listbox", null);
+                writer.writeAttribute(HTML.ARIA_MULITSELECTABLE, "true", null);
                 encodeColumnsHeader(context, menu, columns);
                 writer.startElement("tbody", null);
                 encodeOptionsAsTable(context, menu, selectItems, columns);
@@ -474,7 +473,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
             });
         }
         else {
-            // Rendering was moved to the client - see renderPanelContentFromHiddenSelect as part of forms.selectcheckboxmenu.js
+            // Rendering was moved to the client - see renderItems as part of forms.selectcheckboxmenu.js
         }
     }
 
@@ -541,33 +540,35 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
     }
 
     protected void encodeOptionsAsTable(FacesContext context, SelectCheckboxMenu menu, List<SelectItem> selectItems, List<Column> columns) throws IOException {
-        for (int i = 0; i < selectItems.size(); i++) {
+        int idx = -1;
+        int totalItems = selectItems.size();
+        for (int i = 0; i < totalItems; i++) {
             SelectItem selectItem = selectItems.get(i);
             if (selectItem instanceof SelectItemGroup) {
                 SelectItemGroup selectItemGroup = (SelectItemGroup) selectItem;
-                encodeTableOption(context, menu, selectItemGroup, columns, i);
+                encodeTableOption(context, menu, selectItemGroup, columns, idx, totalItems);
 
                 for (SelectItem groupSelectItem : selectItemGroup.getSelectItems()) {
-                    encodeTableOption(context, menu, groupSelectItem, columns, i);
+                    idx++;
+                    encodeTableOption(context, menu, groupSelectItem, columns, idx, totalItems);
                 }
             }
             else {
-                encodeTableOption(context, menu, selectItem, columns, i);
+                encodeTableOption(context, menu, selectItem, columns, idx, totalItems);
             }
         }
     }
 
-    protected void encodeTableOption(FacesContext context, SelectCheckboxMenu menu, SelectItem selectItem, List<Column> columns, int index) throws IOException {
+    protected void encodeTableOption(FacesContext context, SelectCheckboxMenu menu, SelectItem selectItem, List<Column> columns, int index, int totalItems)
+        throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         boolean checked = false;
         String rowStyleClass;
         String itemLabel = getOptionLabel(selectItem);
         String itemValueAsString = null;
-        String role;
 
         if (selectItem instanceof SelectItemGroup) {
             rowStyleClass = SelectCheckboxMenu.ROW_ITEM_GROUP_CLASS;
-            role = "optgroup";
         }
         else {
             Converter converter = menu.getConverter();
@@ -603,7 +604,6 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
                 rowStyleClass += " ui-state-disabled";
             }
             itemValueAsString = getOptionAsString(context, menu, converter, selectItem.getValue());
-            role = "option";
 
             //init variable for column rendering
             String var = menu.getVar();
@@ -618,7 +618,6 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         if ((itemValueAsString != null) && menu.isMultiple()) {
             writer.writeAttribute("data-item-value", itemValueAsString, null);
         }
-        writer.writeAttribute("role", role, null);
         if (selectItem.getDescription() != null) {
             writer.writeAttribute("title", selectItem.getDescription(), null);
         }
@@ -639,7 +638,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
 
             //input
             writer.startElement("td", null);
-            encodeCheckbox(context, uuid, disabled, checked, selectItem.getDescription(), selectItem.getLabel());
+            encodeCheckbox(context, uuid, disabled, checked, selectItem.getDescription(), selectItem.getLabel(), index, totalItems);
             writer.endElement("td");
 
             //columns
@@ -722,7 +721,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
     protected void encodeKeyboardTarget(FacesContext context, SelectCheckboxMenu menu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String inputId = menu.getClientId(context) + "_focus";
-        String tabindex = menu.getTabindex();
+        String tabindex = menu.isDisabled() ? "-1" : Objects.toString(menu.getTabindex(), "0");
 
         writer.startElement("div", null);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
@@ -730,17 +729,14 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.writeAttribute("id", inputId, null);
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", "text", null);
-        writer.writeAttribute("readonly", "readonly", null);
-        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_COMBOBOX, null);
-        writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
-        if (tabindex != null) {
-            writer.writeAttribute("tabindex", tabindex, null);
-        }
+        writer.writeAttribute("tabindex", tabindex, null);
+        renderARIACombobox(context, menu);
         writer.endElement("input");
         writer.endElement("div");
     }
 
-    protected void encodeCheckbox(FacesContext context, String id, boolean disabled, boolean checked, String title, String ariaLabel) throws IOException {
+    protected void encodeCheckbox(FacesContext context, String id, boolean disabled, boolean checked, String title, String ariaLabel, int index, int totalItems)
+        throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String boxClass = HTML.CHECKBOX_BOX_CLASS;
         if (disabled) {
@@ -770,6 +766,13 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         }
         if (ariaLabel != null) {
             writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
+        }
+        if (totalItems > -1) {
+            writer.writeAttribute("class", SelectCheckboxMenu.CHECKBOX_INPUT_CLASS, null);
+            writer.writeAttribute(HTML.ARIA_SELECTED, String.valueOf(checked), null);
+            writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_OPTION, null);
+            writer.writeAttribute(HTML.ARIA_SET_SIZE, totalItems, null);
+            writer.writeAttribute(HTML.ARIA_SET_POSITION, index + 1, null);
         }
         writer.endElement("input");
 
