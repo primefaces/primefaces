@@ -26,58 +26,33 @@ package org.primefaces.showcase.view.chartjs;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
+
+import org.primefaces.event.ItemSelectEvent;
+
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Named;
-
-import org.primefaces.event.ItemSelectEvent;
-import software.xdev.chartjs.model.charts.BarChart;
-import software.xdev.chartjs.model.charts.BubbleChart;
-import software.xdev.chartjs.model.charts.DoughnutChart;
-import software.xdev.chartjs.model.charts.LineChart;
-import software.xdev.chartjs.model.charts.PieChart;
-import software.xdev.chartjs.model.charts.PolarChart;
-import software.xdev.chartjs.model.charts.RadarChart;
-import software.xdev.chartjs.model.charts.ScatterChart;
+import software.xdev.chartjs.model.charts.*;
 import software.xdev.chartjs.model.color.Color;
-import software.xdev.chartjs.model.data.BarData;
-import software.xdev.chartjs.model.data.BubbleData;
-import software.xdev.chartjs.model.data.DoughnutData;
-import software.xdev.chartjs.model.data.LineData;
-import software.xdev.chartjs.model.data.PieData;
-import software.xdev.chartjs.model.data.PolarData;
-import software.xdev.chartjs.model.data.RadarData;
-import software.xdev.chartjs.model.data.ScatterData;
+import software.xdev.chartjs.model.data.*;
 import software.xdev.chartjs.model.datapoint.BubbleDataPoint;
 import software.xdev.chartjs.model.datapoint.ScatterDataPoint;
-import software.xdev.chartjs.model.dataset.BarDataset;
-import software.xdev.chartjs.model.dataset.BubbleDataset;
-import software.xdev.chartjs.model.dataset.DoughnutDataset;
-import software.xdev.chartjs.model.dataset.LineDataset;
-import software.xdev.chartjs.model.dataset.PieDataset;
-import software.xdev.chartjs.model.dataset.PolarDataset;
-import software.xdev.chartjs.model.dataset.RadarDataset;
-import software.xdev.chartjs.model.dataset.ScatterDataset;
+import software.xdev.chartjs.model.dataset.*;
 import software.xdev.chartjs.model.enums.FontStyle;
 import software.xdev.chartjs.model.enums.ScalesPosition;
-import software.xdev.chartjs.model.options.BarOptions;
-import software.xdev.chartjs.model.options.DoughnutOptions;
-import software.xdev.chartjs.model.options.LineOptions;
-import software.xdev.chartjs.model.options.Plugins;
-import software.xdev.chartjs.model.options.RadarOptions;
-import software.xdev.chartjs.model.options.Title;
-import software.xdev.chartjs.model.options.Tooltip;
+import software.xdev.chartjs.model.options.*;
 import software.xdev.chartjs.model.options.elements.Fill;
-import software.xdev.chartjs.model.options.scales.AngleLines;
-import software.xdev.chartjs.model.options.scales.BarScale;
-import software.xdev.chartjs.model.options.scales.LinearScale;
-import software.xdev.chartjs.model.options.scales.PointLabels;
-import software.xdev.chartjs.model.options.scales.RadialLinearScale;
-import software.xdev.chartjs.model.options.scales.Scales;
-import software.xdev.chartjs.model.options.ticks.CategoryTicks;
-import software.xdev.chartjs.model.options.ticks.RadialLinearTicks;
+import software.xdev.chartjs.model.options.scale.Scales;
+import software.xdev.chartjs.model.options.scale.cartesian.CartesianScaleOptions;
+import software.xdev.chartjs.model.options.scale.cartesian.CartesianTickOptions;
+import software.xdev.chartjs.model.options.scale.cartesian.linear.LinearScaleOptions;
+import software.xdev.chartjs.model.options.scale.radial.AngleLines;
+import software.xdev.chartjs.model.options.scale.radial.PointLabels;
+import software.xdev.chartjs.model.options.scale.radial.RadialLinearScaleOptions;
+import software.xdev.chartjs.model.options.scale.radial.RadialTickOptions;
+
 
 @Named
 @RequestScoped
@@ -186,7 +161,7 @@ public class ChartView implements Serializable {
                         .setResponsive(true)
                         .setShowLine(Boolean.FALSE)
                         .setScales(new Scales()
-                                .addScale(Scales.ScaleAxis.X, new LinearScale().setPosition(ScalesPosition.BOTTOM)))
+                                .addScale(Scales.ScaleAxis.X, new LinearScaleOptions().setPosition(ScalesPosition.BOTTOM)))
                         .setPlugins(new Plugins()
                                 .setTitle(new Title()
                                         .setDisplay(true)
@@ -214,8 +189,8 @@ public class ChartView implements Serializable {
                         .setResponsive(true)
                         .setMaintainAspectRatio(false)
                         .setScales(new Scales()
-                                .addScale("left-y-axis", new LinearScale().setPosition(ScalesPosition.LEFT))
-                                .addScale("right-y-axis", new LinearScale().setPosition(ScalesPosition.RIGHT)))
+                                .addScale("left-y-axis", new LinearScaleOptions().setPosition(ScalesPosition.LEFT))
+                                .addScale("right-y-axis", new LinearScaleOptions().setPosition(ScalesPosition.RIGHT)))
                         .setPlugins(new Plugins()
                                 .setTitle(new Title()
                                         .setDisplay(true)
@@ -246,10 +221,9 @@ public class ChartView implements Serializable {
                         .setResponsive(true)
                         .setMaintainAspectRatio(false)
                         .setIndexAxis(BarOptions.IndexAxis.X)
-                        .setScales(new Scales().addScale(Scales.ScaleAxis.Y, new BarScale<CategoryTicks>()
-                                .setBarPercentage(BigDecimal.valueOf(0.9))
+                        .setScales(new Scales().addScale(Scales.ScaleAxis.Y, new CartesianScaleOptions()
                                 .setStacked(false)
-                                .setTicks(new CategoryTicks()
+                                .setTicks(new CartesianTickOptions()
                                         .setAutoSkip(true)
                                         .setMirror(true)))
                         )
@@ -280,12 +254,12 @@ public class ChartView implements Serializable {
                         .setResponsive(true)
                         .setMaintainAspectRatio(false)
                         .setScales(new Scales()
-                                .addScale(Scales.ScaleAxis.X, new BarScale<CategoryTicks>()
+                                .addScale(Scales.ScaleAxis.X, new CartesianScaleOptions()
                                         .setStacked(true)
-                                        .setTicks(new CategoryTicks()))
-                                .addScale(Scales.ScaleAxis.Y, new BarScale<CategoryTicks>()
+                                        .setTicks(new CartesianTickOptions()))
+                                .addScale(Scales.ScaleAxis.Y, new CartesianScaleOptions()
                                         .setStacked(true)
-                                        .setTicks(new CategoryTicks()))
+                                        .setTicks(new CartesianTickOptions()))
                         )
                         .setPlugins(new Plugins()
                                 .setTooltip(new Tooltip().setMode("index"))
@@ -332,23 +306,20 @@ public class ChartView implements Serializable {
                 .setOptions(new RadarOptions()
                         .setResponsive(true)
                         .setMaintainAspectRatio(false)
-                        .setScales(new Scales().addScale(Scales.ScaleAxis.Y, new RadialLinearScale<RadialLinearTicks>()
+                        .setScales(new Scales().addScale(Scales.ScaleAxis.Y, new RadialLinearScaleOptions()
                                 .setAngleLines(new AngleLines()
                                         .setDisplay(Boolean.TRUE)
                                         .setLineWidth(BigDecimal.valueOf(0.5))
                                         .setColor(new Color(128, 128, 128, 0.2)))
-                                .setPointLabels(new PointLabels()
-                                        .setFontSize(BigDecimal.valueOf(14))
-                                        .setFontStyle(FontStyle.NORMAL)
-                                        .setFontFamily("Lato, sans-serif")
-                                        .setFontColor(new Color(204, 204, 204, 1)))
-                                .setTicks(new RadialLinearTicks()
-                                        .setBeginAtZero(Boolean.TRUE)
+                                .setPointLabels(new PointLabels().setFont(new Font()
+                                        .setSize(BigDecimal.valueOf(14))
+                                        .setStyle(FontStyle.NORMAL)
+                                        .setFamily("Lato, sans-serif"))
+                                        .setColor(new Color(204, 204, 204, 1)))
+                                .setTicks(new RadialTickOptions()
                                         .setDisplay(false)
-                                        .setMin(BigDecimal.ZERO)
-                                        .setAutoSkip(false)
                                         .setStepSize(BigDecimal.valueOf(0.2))
-                                        .setMax(BigDecimal.valueOf(3))))
+                                        .setMaxTickLimits(BigDecimal.valueOf(3))))
                         )
                         .setPlugins(new Plugins()
                                 .setTitle(new Title()
