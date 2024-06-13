@@ -291,6 +291,8 @@ public class HTML {
     public static final String ARIA_READONLY = "aria-readonly";
     public static final String ARIA_REQUIRED = "aria-required";
     public static final String ARIA_SELECTED = "aria-selected";
+    public static final String ARIA_SET_SIZE = "aria-setsize";
+    public static final String ARIA_SET_POSITION = "aria-posinset";
     public static final String ARIA_ORIENTATION = "aria-orientation";
     public static final String ARIA_ORIENTATION_HORIZONTAL = "horizontal";
     public static final String ARIA_ORIENTATION_VERTICAL = "vertical";
