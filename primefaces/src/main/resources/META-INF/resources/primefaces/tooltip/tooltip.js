@@ -300,10 +300,9 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         }
         else {
             var mouseTarget = $(e.relatedTarget);
-            this.allowHide = !(mouseTarget.is(this.target) || 
-                               mouseTarget.hasClass('ui-tooltip-arrow') ||
-                               mouseTarget.attr('aria-describedby') === this.id || 
-                               mouseTarget.parent().attr('aria-describedby') === this.id);
+            var previousElement = this.target;
+            this.allowHide = !(mouseTarget.is(previousElement) ||
+                               previousElement.attr('aria-describedby') === mouseTarget.closest('#' + this.id).attr('id'));
         }
         if (this.allowHide) {
             this.hide();
