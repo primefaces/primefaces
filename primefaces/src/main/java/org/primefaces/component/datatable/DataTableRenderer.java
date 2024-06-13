@@ -954,20 +954,22 @@ public class DataTableRenderer extends DataRenderer {
                         }
 
                         for (UIComponent headerRowChild : headerRow.getChildren()) {
-                            if (headerRowChild.isRendered()) {
-                                if (headerRowChild instanceof Column) {
+                            if (headerRowChild instanceof Column) {
+                                if (headerRowChild.isRendered()) {
                                     encodeColumnHeader(context, table, (Column) headerRowChild);
                                 }
-                                else if (headerRowChild instanceof Columns) {
-                                    List<DynamicColumn> dynamicColumns = ((Columns) headerRowChild).getDynamicColumns();
-                                    for (DynamicColumn dynaColumn : dynamicColumns) {
-                                        dynaColumn.applyModel();
+                            }
+                            else if (headerRowChild instanceof Columns) {
+                                List<DynamicColumn> dynamicColumns = ((Columns) headerRowChild).getDynamicColumns();
+                                for (DynamicColumn dynaColumn : dynamicColumns) {
+                                    dynaColumn.applyModel();
+                                    if (dynaColumn.isRendered()) {
                                         encodeColumnHeader(context, table, dynaColumn);
                                     }
                                 }
-                                else {
-                                    headerRowChild.encodeAll(context);
-                                }
+                            }
+                            else if (headerRowChild.isRendered()) {
+                                headerRowChild.encodeAll(context);
                             }
                         }
 
