@@ -73,7 +73,7 @@ public class SelectOneMenu extends SelectOneMenuBase {
     public static final String FILTER_CLASS = "ui-selectonemenu-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
     public static final String FILTER_ICON_CLASS = "ui-icon ui-icon-search";
 
-    private static final Collection<String> EVENT_NAMES = LangUtils.unmodifiableList("itemSelect", "blur", "change", "valueChange", "click",
+    private static final Collection<String> EVENT_NAMES = LangUtils.unmodifiableList("itemSelect", "clear", "blur", "change", "valueChange", "click",
             "dblclick", "focus", "keydown", "keypress", "keyup", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup", "select");
 
     @Override
@@ -121,6 +121,10 @@ public class SelectOneMenu extends SelectOneMenuBase {
                 SelectEvent selectEvent = new SelectEvent(this, behaviorEvent.getBehavior(), item);
                 selectEvent.setPhaseId(event.getPhaseId());
                 super.queueEvent(selectEvent);
+            }
+            else if ("clear".equals(eventName)) {
+                behaviorEvent.setPhaseId(event.getPhaseId());
+                super.queueEvent(behaviorEvent);
             }
             else {
                 super.queueEvent(event);

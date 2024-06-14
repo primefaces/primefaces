@@ -115,7 +115,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
         this.cfg.effectSpeed = this.cfg.effectSpeed||'normal';
         this.cfg.autoWidth = this.cfg.autoWidth === undefined ? 'auto' : this.cfg.autoWidth;
-        this.cfg.dynamic = this.cfg.dynamic === true ? true : false;
+        this.cfg.dynamic = !!this.cfg.dynamic;
         this.cfg.appendTo = PrimeFaces.utils.resolveAppendTo(this, this.jq, this.panel);
         this.cfg.renderPanelContentOnClient = this.cfg.renderPanelContentOnClient === true;
         this.isDynamicLoaded = false;
@@ -367,6 +367,15 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             this.label.on('change', function(e) {
                 $this.triggerChange(true);
                 $this.callHandleMethod($this.handleLabelChange, e);
+            }).on('keyup', function(e) {
+                switch (e.code) {
+                    case 'Backspace':
+                    case 'Delete':
+                        if ($(this).val() === '') {
+                            $this.callBehavior('clear');
+                        }
+                        break;
+                }
             });
         }
 
@@ -604,7 +613,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
         if(!silent) {
             this.callBehavior('itemSelect');
-            this.focusInput ? this.focusInput.trigger('focus') : null;
+            if(this.focusInput) {
+                this.focusInput.trigger('focus');
+            }
         }
 
         if(this.panel.is(':visible')) {
@@ -750,7 +761,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
             $this.searchTimer = PrimeFaces.queueTask(function() {
                 $this.searchValue = '';
-                $this.focusInput ? $this.focusInput.val('') : null;
+                if ($this.focusInput) {
+                    $this.focusInput.val('');
+                }
             }, 1000);
         });
     },
@@ -767,10 +780,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         }
         return this.options.filter(function() {
             var option = $(this);
-            if(option.is(':disabled')) {
-                return false;
-            }
-            if(option.text().toLowerCase().indexOf(text.toLowerCase()) !== 0) {
+            if(option.is(':disabled') || option.text().toLowerCase().indexOf(text.toLowerCase()) !== 0) {
                 return false;
             }
             return true;
@@ -807,10 +817,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
                 case 'Enter':
                 case 'NumpadEnter':
-                    $this.keyboardTarget.trigger("focus");
-                    $this.keyboardTarget.trigger(jQuery.Event('keydown', { key: e.key, code: e.code }));
-                break;
-
                 case 'Tab':
                     $this.keyboardTarget.trigger("focus");
                     $this.keyboardTarget.trigger(jQuery.Event('keydown', { key: e.key, code: e.code }));
@@ -847,17 +853,15 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         if(event.altKey) {
             this.show();
         }
-        else {
-            if(next.length === 1) {
-                if(this.panel.is(':hidden')) {
-                    this.selectItem(next);
-                }
-                else {
-                    this.highlightItem(next);
-                    PrimeFaces.scrollInView(this.itemsWrapper, next);
-                }
-                this.changeAriaValue(next);
+        else if(next.length === 1) {
+            if(this.panel.is(':hidden')) {
+                this.selectItem(next);
             }
+            else {
+                this.highlightItem(next);
+                PrimeFaces.scrollInView(this.itemsWrapper, next);
+            }
+            this.changeAriaValue(next);
         }
 
         event.preventDefault();
@@ -1288,27 +1292,23 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
             for(var i = 0; i < this.options.length; i++) {
                 var option = this.options.eq(i),
-                itemLabel = PrimeFaces.toSearchable(option.text(), lowercase, normalize),
                 item = this.items.eq(i);
 
                 if(item.hasClass('ui-noselection-option')) {
                     hide.push(item);
-                }
-                else {
+                } else {
+                    var itemLabel = PrimeFaces.toSearchable(option.text(), lowercase, normalize);
                     if(this.filterMatcher(itemLabel, filterValue)) {
                         show.push(item);
-                    }
-                    else if(!item.is('.ui-selectonemenu-item-group-children')){
+                    } else {
+                        if(item.is('.ui-selectonemenu-item-group-children')) {
+                            itemLabel = PrimeFaces.toSearchable(option.parent().attr('label'), lowercase, normalize);
+                            if (this.filterMatcher(itemLabel, filterValue)) {
+                                show.push(item);
+                                continue;
+                            }
+                        }
                         hide.push(item);
-                    }
-                    else {
-                        itemLabel = PrimeFaces.toSearchable(option.parent().attr('label'), lowercase, normalize);
-                        if (this.filterMatcher(itemLabel, filterValue)) {
-                            show.push(item);
-                        }
-                        else {
-                            hide.push(item);
-                        }
                     }
                 }
             }
@@ -1329,11 +1329,10 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                     else
                         show.push(group);
                 }
-                else {
-                    if(group.nextUntil('.ui-selectonemenu-item-group').filter('.ui-selectonemenu-item-group-children:visible').length === 0)
-                        hide.push(group);
-                    else
-                        show.push(group);
+                else if(group.nextUntil('.ui-selectonemenu-item-group').filter('.ui-selectonemenu-item-group-children:visible').length === 0) {
+                    hide.push(group);
+                } else {
+                    show.push(group);
                 }
             }
 
