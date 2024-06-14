@@ -30,83 +30,61 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
 
         this.menuitemLinks = this.jq.find('.ui-menuitem-link:not(.ui-state-disabled)');
 
-        //events
         this.bindEvents();
-
-        if (this.cfg.toggleable) {
-            this.cfg.statefulGlobal = Boolean(this.cfg.statefulGlobal);
-            this.collapsedIds = [];
-            this.createStorageKey();
-            this.restoreState();
-        }
+        this.bindToggleable();
+        this.bindOverlay();
     },
 
     /**
-     * Sets up all event listeners required by this widget.
+     * Binds the necessary events for the menu if it is toggleable. This includes setting up the state management
+     * by initializing the storage key and restoring the state from storage.
      * @private
      */
-    bindEvents: function() {
+    bindToggleable: function() {
+        if (!this.cfg.toggleable) return;
+
+        this.cfg.statefulGlobal = Boolean(this.cfg.statefulGlobal);
+        this.collapsedIds = [];
+        this.createStorageKey();
+        this.restoreState();
+
+        var $this = this;
+        var headers = this.jq.find('> .ui-menu-list > .ui-widget-header');
+        
+        headers.on('mouseover.menu', function() {
+            $(this).addClass('ui-state-hover');
+        }).on('mouseout.menu', function() {
+            $(this).removeClass('ui-state-hover');
+        }).on('click.menu', function(e) {
+            var header = $(this);
+            var icon = header.find('> h3 > .ui-icon');
+
+            if (icon.hasClass('ui-icon-triangle-1-s')) {
+                $this.collapseSubmenu(header, true);
+            } else {
+                $this.expandSubmenu(header, true);
+            }
+
+            PrimeFaces.clearSelection();
+            e.preventDefault();
+        });
+    },
+
+    /**
+     * Binds overlay-specific event handlers if the overlay configuration is enabled.
+     * This includes hiding the menu on certain key presses or clicks, and managing focus.
+     * @private
+     */
+    bindOverlay: function() {
         var $this = this;
 
-        // make first focusable
-        this.menuitemLinks.filter(':not([disabled])').first().attr("tabindex", "0");
-        this.resetFocus(true);
-
-        this.menuitemLinks.on("mouseenter.menu click.menu", function(e) {
-            $(this).trigger('focus');
-        })
-            .on("focusin.menu", function(e) {
-                $this.focus($(this));
-            })
-            .on("focusout.menu mouseleave.menu", function(e) {
-                $this.unfocus($(this));
-            })
-            .on('keydown.menu', function(e) {
-                var currentLink = $this.menuitemLinks.filter('.ui-state-hover');
-                switch (e.code) {
-                    case 'ArrowUp':
-                        var prevItem = currentLink.parent().prevAll('.ui-menuitem:first');
-                        if (prevItem.length) {
-                            $this.unfocus(currentLink);
-                            $this.focus(prevItem.children('.ui-menuitem-link'));
-                        }
-
-                        e.preventDefault();
-                        break;
-
-                    case 'ArrowDown':
-                        var nextItem = currentLink.parent().nextAll('.ui-menuitem:first');
-                        if (nextItem.length) {
-                            $this.unfocus(currentLink);
-                            $this.focus(nextItem.children('.ui-menuitem-link'));
-                        }
-
-                        e.preventDefault();
-                        break;
-
-                    case 'Space':
-                    case 'Enter':
-                    case 'NumpadEnter':
-                        currentLink.trigger('click');
-                        PrimeFaces.utils.openLink(e, currentLink);
-                        break;
-
-                    case 'Escape':
-                        $this.hide();
-
-                        if ($this.cfg.overlay) {
-                            $this.trigger.trigger('focus');
-                        }
-                        break;
-
-                }
-            });
-
         if (this.cfg.overlay) {
+            // Hide menu when any menu item link is clicked
             this.menuitemLinks.on("click", function() {
                 $this.hide();
             });
 
+            // Handle keyboard navigation for overlay
             this.trigger.on('keydown.ui-menu', function(e) {
                 switch (e.key) {
                     case 'ArrowDown':
@@ -123,33 +101,75 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
                         break;
                 }
             });
-        }
-        else {
+        } else {
+            // Reset focus when focus moves out of the menu and the new focus target is not within the menu
             this.jq.on("focusout.menu", function(e) {
                 if (!$this.jq.has(e.relatedTarget).length) {
                     $this.resetFocus(true);
                 }
             });
         }
+    },
+ 
+    /**
+     * Binds event handlers to menu item links for interaction via mouse and keyboard.
+     * This includes setting the initial focus, handling mouse enter and leave, click events,
+     * and keyboard navigation using arrow keys, space, and enter.
+     * @private
+     */
+    bindEvents: function() {
+        var $this = this;
 
-        if (this.cfg.toggleable) {
-            this.jq.find('> .ui-menu-list > .ui-widget-header').on('mouseover.menu', function() {
-                $(this).addClass('ui-state-hover');
-            })
-                .on('mouseout.menu', function() {
-                    $(this).removeClass('ui-state-hover');
-                })
-                .on('click.menu', function(e) {
-                    var header = $(this);
+        // Set the first focusable menu item
+        this.menuitemLinks.filter(':not([disabled])').first().attr("tabindex", "0");
+        this.resetFocus(true);
 
-                    if (header.find('> h3 > .ui-icon').hasClass('ui-icon-triangle-1-s'))
-                        $this.collapseSubmenu(header, true);
-                    else
-                        $this.expandSubmenu(header, true);
+        // Bind mouse and click events to focus items
+        this.menuitemLinks.on("mouseenter.menu click.menu", function() {
+            $this.focus($(this));
+        }).on("focusout.menu mouseleave.menu", function() {
+            $this.unfocus($(this));
+        });
 
-                    PrimeFaces.clearSelection();
+        // Bind keyboard navigation events
+        this.menuitemLinks.on('keydown.menu', function(e) {
+            var currentLink = $this.menuitemLinks.filter('.ui-state-hover');
+            switch (e.code) {
+                case 'ArrowUp':
+                    $this.navigateMenu(currentLink, 'prev');
                     e.preventDefault();
-                });
+                    break;
+                case 'ArrowDown':
+                    $this.navigateMenu(currentLink, 'next');
+                    e.preventDefault();
+                    break;
+                case 'Space':
+                case 'Enter':
+                case 'NumpadEnter':
+                    currentLink.trigger('click');
+                    PrimeFaces.utils.openLink(e, currentLink);
+                    break;
+                case 'Escape':
+                    $this.hide();
+                    if ($this.cfg.overlay) {
+                        $this.trigger.trigger('focus');
+                    }
+                    break;
+            }
+        });
+    },
+
+    /**
+     * Navigates the menu items in the specified direction ('prev' or 'next').
+     * @param {JQuery} currentLink The currently focused menu item link.
+     * @param {string} direction The direction to navigate ('prev' or 'next').
+     * @private
+     */
+    navigateMenu: function(currentLink, direction) {
+        var targetItem = currentLink.parent()[direction + 'All']('.ui-menuitem:first');
+        if (targetItem.length) {
+            this.unfocus(currentLink);
+            this.focus(targetItem.children('.ui-menuitem-link'));
         }
     },
 
