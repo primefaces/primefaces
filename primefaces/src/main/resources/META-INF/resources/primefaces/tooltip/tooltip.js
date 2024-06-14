@@ -302,7 +302,9 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
             var mouseTarget = $(e.relatedTarget);
             var previousElement = this.target;
             this.allowHide = !(mouseTarget.is(previousElement) ||
-                               previousElement.attr('aria-describedby') === mouseTarget.closest('#' + this.id).attr('id'));
+                               previousElement.attr('aria-describedby') === mouseTarget.closest(PrimeFaces.escapeClientId(this.id)).attr('id') ||
+                               mouseTarget.attr('aria-describedby') === this.id ||
+                               mouseTarget.parent().attr('aria-describedby') === this.id);
         }
         if (this.allowHide) {
             this.hide();
