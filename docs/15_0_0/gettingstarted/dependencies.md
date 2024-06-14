@@ -13,7 +13,7 @@ any 3rd part work incorporated are compatible with the PrimeFaces Licenses.
 | Libre OpenPDF | com.github.librepdf | openpdf | 1.4.1 | Optional | DataExporter (PDF) |
 | Apache POI | org.apache.poi | poi | 5.2.5 | Optional | DataExporter (Excel XLS or XML) |
 | Apache POI | org.apache.poi | poi-ooxml | 5.2.5 | Optional | DataExporter (Excel XLSX Office 2003) |
-| RSS Reader | com.apptasticsoftware | rssreader | 3.6.0 | Optional | FeedReader |
+| RSS Reader | com.apptasticsoftware | rssreader | 3.7.0 | Optional | FeedReader |
 | barcode4j-light | org.primefaces.extensions | barcode4j-light | 2.3.0 | Optional | Barcode |
 | qrcodegen | io.nayuki | qrcodegen | 1.8.0 | Optional | QR Code support for Barcode |
 | owasp-java-html-sanitizer | com.googlecode.owasp-java-html-sanitizer | owasp-java-html-sanitizer |  20240325.1 | Optional | TextEditor |
