@@ -3479,7 +3479,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             for(var i = 0; i < columns.length; i++) {
                 var column = columns.eq(i),
                 toggler = column.children('.ui-row-toggler');
-                this.updateExpansionAria(toggler);
+                $this.updateExpansionAria(toggler);
 
                 if(toggler.length > 0) {
                     if(toggler.hasClass('ui-icon')) {
