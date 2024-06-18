@@ -127,10 +127,12 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
         //set initial value
         this.input.val(this.getEditorValue());
         
-        //update input on change
+        //update input on API change
         this.editor.on('text-change', function(delta, oldDelta, source) {
-            $this.input.val($this.getEditorValue());
-            $this.callBehavior('change');
+            if (source !== 'user') {
+                $this.input.val($this.getEditorValue());
+                $this.callBehavior('change');
+            }
         });
 
         this.editor.on('selection-change', function(range, oldRange, source) {
