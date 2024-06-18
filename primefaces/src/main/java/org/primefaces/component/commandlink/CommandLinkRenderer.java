@@ -26,6 +26,7 @@ package org.primefaces.component.commandlink;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
@@ -98,9 +99,6 @@ public class CommandLinkRenderer extends CoreRenderer {
         writer.writeAttribute("href", "#", null);
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute(HTML.ARIA_LABEL, link.getAriaLabel(), null);
-        if (link.isDisabled()) {
-            writer.writeAttribute("tabindex", "-1", null);
-        }
 
         if (!isValueBlank(form)) {
             writer.writeAttribute("data-pf-form", form, null);
@@ -137,6 +135,10 @@ public class CommandLinkRenderer extends CoreRenderer {
         }
         else {
             renderPassThruAttributes(context, link, HTML.LINK_ATTRS);
+        }
+
+        if (link.isDisabled()) {
+            writer.writeAttribute("tabindex", "-1", null);
         }
 
         List<ClientBehaviorContext.Parameter> behaviorParams = new ArrayList<>(1);
