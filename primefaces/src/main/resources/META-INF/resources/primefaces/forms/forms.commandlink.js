@@ -5,6 +5,7 @@
  *
  * @prop {number} [ajaxCount] Number of concurrent active Ajax requests.
  * @prop {number} [ajaxStart] Timestamp of the Ajax request that started the animation.
+ * @prop {string} [tabIndex] The link tabIndex or default to '0'.
  * 
  * @interface {PrimeFaces.widget.CommandLinkCfg} cfg The configuration for the {@link  CommandLink| CommandLink widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
@@ -20,7 +21,7 @@ PrimeFaces.widget.CommandLink = PrimeFaces.widget.BaseWidget.extend({
      */
     init: function(cfg) {
         this._super(cfg);
-
+        this.tabIndex = this.jq.attr('tabindex') || '0';
         this.bindTriggers();
     },
 
@@ -31,7 +32,7 @@ PrimeFaces.widget.CommandLink = PrimeFaces.widget.BaseWidget.extend({
      */
     refresh: function(cfg) {
         this.jq.off('click.commandlink');
-        $(document).off('pfAjaxSend.' + this.id + ' pfAjaxComplete.' + this.id);
+        $(document).off('.link' + this.id);
 
         this._super(cfg);
     },
@@ -50,7 +51,9 @@ PrimeFaces.widget.CommandLink = PrimeFaces.widget.BaseWidget.extend({
         });
 
         if (this.cfg.disableOnAjax !== false) {
-            $(document).on('pfAjaxSend.' + this.id, function(e, xhr, settings) {
+            var namespace = '.link' + this.id;
+
+            $(document).on('pfAjaxSend.' + namespace, function(e, xhr, settings) {
                 if (PrimeFaces.ajax.Utils.isXhrSource($this, settings)) {
                     $this.ajaxCount++;
                     if ($this.ajaxCount > 1) {
@@ -60,7 +63,7 @@ PrimeFaces.widget.CommandLink = PrimeFaces.widget.BaseWidget.extend({
                     $this.ajaxStart = Date.now();
                     $this.disable();
                 }
-            }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings, args) {
+            }).on('pfAjaxComplete.' + namespace, function(e, xhr, settings, args) {
                 if (PrimeFaces.ajax.Utils.isXhrSource($this, settings)) {
                     $this.ajaxCount--;
                     if ($this.ajaxCount > 0 || !args || args.redirect) {
@@ -72,6 +75,10 @@ PrimeFaces.widget.CommandLink = PrimeFaces.widget.BaseWidget.extend({
                     );
                     delete $this.ajaxStart;
                 }
+            });
+
+            $this.addDestroyListener(function() {
+                $(document).off(namespace);
             });
         }
     },
@@ -102,7 +109,7 @@ PrimeFaces.widget.CommandLink = PrimeFaces.widget.BaseWidget.extend({
      */
     enable: function() {
         this.jq.removeClass('ui-state-disabled')
-                .removeAttr('tabindex');
+                .attr('tabindex', this.tabIndex);
     }
 
 });
