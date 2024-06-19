@@ -1233,8 +1233,7 @@
                         <phase>process-resources</phase>
                         <configuration>
                             <target>
-                                <copy  file="${project.build.directory}/classes/META-INF/primefaces.taglib.xml"
-                                      tofile="${project.build.directory}/classes/META-INF/primefaces.urn.taglib.xml"/>
+                                <copy file="${project.build.directory}/classes/META-INF/primefaces.taglib.xml" tofile="${project.build.directory}/classes/META-INF/primefaces.urn.taglib.xml"/>
                                 <!-- Modify the copied file -->
                                 <replace file="${project.build.directory}/classes/META-INF/primefaces.urn.taglib.xml">
                                     <replacefilter token="http://primefaces.org/ui" value="primefaces"/>
@@ -1242,6 +1241,26 @@
                                     <replacefilter token="http://xmlns.jcp.org/xml/ns/javaee" value="https://jakarta.ee/xml/ns/jakartaee"/>
                                     <replacefilter token="version=&quot;2.3&quot;" value="version=&quot;4.0&quot;"/>
                                 </replace>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>modify-jar</id>
+                        <phase>install</phase>
+                        <configuration>
+                            <skip>${maven.source.skip}</skip>
+                            <target>
+                                <!-- Unpack the JAR -->
+                                <unzip src="${project.build.directory}/${project.build.finalName}.jar" dest="${project.build.directory}/jar-contents"/>
+                                
+                                <!-- Delete the URN taglib.xml from the javax JAR -->
+                                <delete file="${project.build.directory}/jar-contents/META-INF/primefaces.urn.taglib.xml"/>
+                                
+                                <!-- Repack the JAR -->
+                                <jar destfile="${project.build.directory}/${project.build.finalName}.jar" basedir="${project.build.directory}/jar-contents"/>
                             </target>
                         </configuration>
                         <goals>
