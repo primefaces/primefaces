@@ -177,67 +177,6 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
     },
 
     /**
-     * Sets up all panel event listeners
-     *
-     * @override
-     */
-    bindPanelEvents: function() {
-        var $this = this;
-
-        if (!$this.cfg.disabled) {
-            this.hideOverlayHandler = PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', this.menu,
-                function() { return $this.trigger; },
-                function(e, eventTarget) {
-                    if (e && !($this.menu.is(eventTarget) || $this.menu.has(eventTarget).length > 0)) {
-                        $this.trigger.removeClass('ui-state-focus ui-state-hover');
-                        $this.hide();
-                    }
-                });
-        }
-
-        this.resizeHandler = PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', this.menu, function() {
-            $this.handleOverlayViewportChange();
-        });
-
-        this.scrollHandler = PrimeFaces.utils.registerConnectedOverlayScrollHandler(this, 'scroll.' + this.id + '_hide', this.jq, function() {
-            $this.handleOverlayViewportChange();
-        });
-    },
-
-    /**
-     * Unbind all panel event listeners
-     *
-     * @override
-     */
-    unbindPanelEvents: function() {
-        if (this.hideOverlayHandler) {
-            this.hideOverlayHandler.unbind();
-        }
-
-        if (this.resizeHandler) {
-            this.resizeHandler.unbind();
-        }
-
-        if (this.scrollHandler) {
-            this.scrollHandler.unbind();
-        }
-    },
-
-    /**
-     * Fired when the browser viewport is resized or scrolled.  In Mobile environment we don't want to hider the overlay
-     * we want to re-align it.  This is because on some mobile browser the popup may force the browser to trigger a 
-     * resize immediately and close the overlay. See GitHub #7075.
-     * @private
-     */
-    handleOverlayViewportChange: function() {
-        if (PrimeFaces.env.mobile || PrimeFaces.hideOverlaysOnViewportChange === false) {
-            this.alignPanel();
-        } else {
-            this.hide();
-        }
-    },
-
-    /**
      * Brings up the overlay menu with the menu items, as if the menu button were pressed.
      *
      * @override
@@ -281,7 +220,6 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
                     $this.resetFocus(false);
                     if ($this.trigger && $this.trigger.is(':button')) {
                         $this.trigger.attr('aria-expanded', 'false');
-                        PrimeFaces.queueTask(() =>  $this.trigger.trigger('focus'));
                     }
                 }
             });
@@ -290,8 +228,9 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
 
     /**
      * Align the overlay panel with the menu items so that it is positioned next to the menu button.
+     * @override
      */
-    alignPanel: function() {
+    align: function() {
         this.menu.css({ left: '', top: '', 'transform-origin': 'center top' });
 
         if (this.menu.parent().is(this.jq)) {
