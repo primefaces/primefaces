@@ -1233,7 +1233,7 @@
          * @returns {string} - The localized ARIA label, with placeholders replaced by their corresponding values from `options` if provided.
          */
         getAriaLabel: function(key, defaultValue, options) {
-            var ariaLocaleSettings = this.getLocaleSettings()['aria'];
+            var ariaLocaleSettings = this.getLocaleSettings()['aria'] || {};
             var label = ariaLocaleSettings[key] || PrimeFaces.locales['en_US']['aria'][key] || defaultValue || "???" + key + "???";
             if (options) {
                 for (const valKey in options) {
