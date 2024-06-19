@@ -9,7 +9,6 @@
  * @prop {PrimeFaces.UnbindCallback} [scrollHandler] Unbind callback for the scroll handler.
  * @prop {PrimeFaces.CssTransitionHandler | null} [transition] Handler for CSS transitions used by this widget.
  * @prop {JQuery} trigger DOM element which triggers this menu.
- * @prop {JQuery | undefined} menu DOM element represents the menu.
  * 
  * @interface {PrimeFaces.widget.MenuCfg} cfg The configuration for the {@link  Menu| Menu widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
@@ -43,6 +42,15 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         if (this.cfg.overlay) {
             this.initOverlay();
         }
+    },
+
+    /**
+     * Gets the Menu jQuery element.  Override in subclasses to define the menu panel.
+     * @returns {JQuery} The jQuery object for the menu.
+     * @protected
+     */
+    getMenuElement: function() {
+        return this.jq;
     },
 
     /**
@@ -136,11 +144,12 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
      */
     bindPanelEvents: function() {
         var $this = this;
+        var $menu = this.getMenuElement();
 
         //hide overlay on document click
         this.itemMouseDown = false;
 
-        this.hideOverlayHandler = PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', this.jq,
+        this.hideOverlayHandler = PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', $menu,
             function() { return $this.trigger; },
             function(e, eventTarget) {
                 var menuItemLink = '.ui-menuitem-link:not(.ui-submenu-link, .ui-state-disabled)';
@@ -148,7 +157,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
                 if (eventTarget.is(menuItemLink) || eventTarget.closest(menuItemLink).length) {
                     $this.itemMouseDown = true;
                 }
-                else if (!($this.jq.is(eventTarget) || $this.jq.has(eventTarget).length > 0)) {
+                else if (!($menu.is(eventTarget) || $menu.has(eventTarget).length > 0)) {
                     $this.hide(e);
                 }
             });
@@ -165,7 +174,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         });
 
         //Hide overlay on resize
-        this.resizeHandler = PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_hide', this.jq, function() {
+        this.resizeHandler = PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_hide', $menu, function() {
             $this.handleViewportChange();
         });
 
@@ -274,7 +283,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
      */
     resetFocus: function(resetFirst) {
         // default all links to not focusable
-        var $container = this.menu || this.jq;
+        var $container = this.getMenuElement();
         var focusableLinks = $container.find("a.ui-menuitem-link");
         focusableLinks.removeClass('ui-state-hover ui-state-active').attr('tabindex', "-1");
 

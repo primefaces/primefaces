@@ -5,7 +5,6 @@
  *
  * @prop {JQuery} trigger The DOM element for the menu button.
  * @prop {JQuery} menu The DOM element for the menu overlay panel.
- * @prop {string} menuId Client ID of the menu overlay panel.
  * @prop {PrimeFaces.CssTransitionHandler | null} [transition] Handler for CSS transitions used by this widget.
  * @prop {number} [timeoutId] Timeout ID used for the animation when the menu is shown.
  * @forcedProp {number} [ajaxCount] Number of concurrent active Ajax requests.
@@ -30,32 +29,37 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
     init: function(cfg) {
         this._super(cfg);
 
-        this.menuId = this.jqId + '_menu';
         this.trigger = this.jq.children('button');
-        this.menu = this.jq.children('.ui-menu');
         this.cfg.disabled = this.trigger.is(':disabled');
         this.cfg.overlay = true;
 
         this.bindButtonEvents();
-        PrimeFaces.utils.registerDynamicOverlay(this, this.menu, this.id + '_menu');
-        this.transition = PrimeFaces.utils.registerCSSTransition(this.menu, 'ui-connected-overlay');
+        PrimeFaces.utils.registerDynamicOverlay(this, this.getMenuElement(), this.id + '_menu');
+        this.transition = PrimeFaces.utils.registerCSSTransition(this.getMenuElement(), 'ui-connected-overlay');
     },
 
     /**
-     * Disables this button so that the user cannot press the button anymore.
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    disable: function() {
-        this.cfg.disabled = true;
-        this.hide();
-        PrimeFaces.utils.disableButton(this.trigger);
+    refresh: function(cfg) {
+        this.trigger.off('.menubutton');
+        $(document).off('.' + this.id);
+    
+        this._super(cfg);
     },
 
     /**
-     * Enables this button so that the user can press the button.
+     * Retrieves the jQuery object representing the menu DOM element.
+     * @returns {JQuery} The jQuery object for the menu.
+     * @override
      */
-    enable: function() {
-        this.cfg.disabled = false;
-        PrimeFaces.utils.enableButton(this.trigger);
+    getMenuElement: function() {
+        if (!this.menu) {
+            this.menu = this.jq.children('.ui-menu');
+        }
+        return this.menu;
     },
 
     /**
@@ -85,19 +89,6 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
             $link.attr('aria-expanded', 'true');
             submenu.find('a.ui-menuitem-link:focusable:first').trigger('focus');
         }, this.cfg.delay);
-    },
-
-    /**
-     * @override
-     * @inheritdoc
-     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
-     */
-    refresh: function(cfg) {
-        this.trigger.off('mouseover.menubutton mouseout.menubutton mousedown.menubutton mouseup.menubutton focus.menubutton blur.menubutton');
-        this.trigger.off('keydown.menubutton');
-        $(document).off('pfAjaxSend.' + this.id + ' pfAjaxComplete.' + this.id);
-
-        this._super(cfg);
     },
 
     /**
@@ -152,6 +143,7 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
                 case 'Enter':
                 case 'NumpadEnter':
                 case 'Space':
+                case 'ArrowDown':
                     $this.show();
                     e.preventDefault();
                     break;
@@ -177,69 +169,7 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
     },
 
     /**
-     * Sets up all panel event listeners
-     *
-     * @override
-     */
-    bindPanelEvents: function() {
-        var $this = this;
-
-        if (!$this.cfg.disabled) {
-            this.hideOverlayHandler = PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', this.menu,
-                function() { return $this.trigger; },
-                function(e, eventTarget) {
-                    if (e && !($this.menu.is(eventTarget) || $this.menu.has(eventTarget).length > 0)) {
-                        $this.trigger.removeClass('ui-state-focus ui-state-hover');
-                        $this.hide();
-                    }
-                });
-        }
-
-        this.resizeHandler = PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', this.menu, function() {
-            $this.handleOverlayViewportChange();
-        });
-
-        this.scrollHandler = PrimeFaces.utils.registerConnectedOverlayScrollHandler(this, 'scroll.' + this.id + '_hide', this.jq, function() {
-            $this.handleOverlayViewportChange();
-        });
-    },
-
-    /**
-     * Unbind all panel event listeners
-     *
-     * @override
-     */
-    unbindPanelEvents: function() {
-        if (this.hideOverlayHandler) {
-            this.hideOverlayHandler.unbind();
-        }
-
-        if (this.resizeHandler) {
-            this.resizeHandler.unbind();
-        }
-
-        if (this.scrollHandler) {
-            this.scrollHandler.unbind();
-        }
-    },
-
-    /**
-     * Fired when the browser viewport is resized or scrolled.  In Mobile environment we don't want to hider the overlay
-     * we want to re-align it.  This is because on some mobile browser the popup may force the browser to trigger a 
-     * resize immediately and close the overlay. See GitHub #7075.
-     * @private
-     */
-    handleOverlayViewportChange: function() {
-        if (PrimeFaces.env.mobile || PrimeFaces.hideOverlaysOnViewportChange === false) {
-            this.alignPanel();
-        } else {
-            this.hide();
-        }
-    },
-
-    /**
      * Brings up the overlay menu with the menu items, as if the menu button were pressed.
-     *
      * @override
      */
     show: function() {
@@ -252,7 +182,7 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
             this.transition.show({
                 onEnter: function() {
                     $this.menu.css('z-index', PrimeFaces.nextZindex());
-                    $this.alignPanel();
+                    $this.align();
                 },
                 onEntered: function() {
                     $this.bindPanelEvents();
@@ -266,7 +196,6 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
 
     /**
      * Hides the overlay menu with the menu items, as if the user clicked outside the menu.
-     *
      * @override
      */
     hide: function() {
@@ -278,10 +207,9 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
                     $this.unbindPanelEvents();
                 },
                 onExited: function() {
-                    $this.resetFocus(false);
+                    $this.deactivateAndReset();
                     if ($this.trigger && $this.trigger.is(':button')) {
                         $this.trigger.attr('aria-expanded', 'false');
-                        PrimeFaces.queueTask(() =>  $this.trigger.trigger('focus'));
                     }
                 }
             });
@@ -290,8 +218,9 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
 
     /**
      * Align the overlay panel with the menu items so that it is positioned next to the menu button.
+     * @override
      */
-    alignPanel: function() {
+    align: function() {
         this.menu.css({ left: '', top: '', 'transform-origin': 'center top' });
 
         if (this.menu.parent().is(this.jq)) {
@@ -311,6 +240,22 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
                 }
             });
         }
-    }
+    },
 
+    /**
+     * Disables this button so that the user cannot press the button anymore.
+     */
+    disable: function() {
+        this.cfg.disabled = true;
+        this.hide();
+        PrimeFaces.utils.disableButton(this.trigger);
+    },
+
+    /**
+     * Enables this button so that the user can press the button.
+     */
+    enable: function() {
+        this.cfg.disabled = false;
+        PrimeFaces.utils.enableButton(this.trigger);
+    }
 });
