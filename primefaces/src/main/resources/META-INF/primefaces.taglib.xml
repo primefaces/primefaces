@@ -8833,8 +8833,8 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines row select mode for checkbox based selection, valid values are 'new' (default, sets the line
-                as the only selected line), 'add' (toggles to selection) and 'none' (the selection is untouched).]]>
+                <![CDATA[Indicates how rows of a DataTable may be selected, when clicking on the row itself (not the checkbox / radiobutton from p:column). 
+		    The value `new` always unselects other rows, `add` preserves the currently selected rows, and `none` disables row selection.]]>
             </description>
             <name>selectionRowMode</name>
             <required>false</required>
