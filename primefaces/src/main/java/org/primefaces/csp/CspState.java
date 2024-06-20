@@ -24,10 +24,7 @@
 package org.primefaces.csp;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import javax.faces.context.FacesContext;
 
@@ -54,13 +51,18 @@ public class CspState {
     public String getNonce() {
         if (nonce == null) {
             if (context.isPostback() || context.getPartialViewContext().isAjaxRequest()) {
+                String nonceRequest = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.NONCE_PARAM);
+                String nonceViewState = Constants.EMPTY_STRING;
                 Map<String, Object> viewMap = context.getViewRoot().getViewMap(false);
                 if (viewMap != null) {
-                    nonce = (String) viewMap.get(Constants.RequestParams.NONCE_PARAM);
+                    nonceViewState = (String) viewMap.get(Constants.RequestParams.NONCE_PARAM);
+                    if (context.isPostback() && !Objects.equals(nonceViewState, nonceRequest)) {
+                        throw new CspException("CSP nonce mismatch");
+                    }
                 }
-                if (nonce == null) {
-                    nonce = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.NONCE_PARAM);
-                }
+
+                nonce = LangUtils.isNotBlank(nonceViewState) ? nonceViewState : nonceRequest;
+
                 validate(nonce);
             }
             else {
