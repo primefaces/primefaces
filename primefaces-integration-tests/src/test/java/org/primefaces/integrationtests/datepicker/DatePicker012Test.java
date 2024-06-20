@@ -58,6 +58,7 @@ class DatePicker012Test extends AbstractDatePickerTest {
         assertNoDisablebCalendarDates(page.datePicker1);
 
         // Act - 2nd show other panel
+        page.datePicker1.hidePanel(); // #12009 - close panel of datePicker1 to ensure it does not overlap datePicker2-input-field
         page.datePicker2.click();
 
         // Assert
@@ -65,6 +66,7 @@ class DatePicker012Test extends AbstractDatePickerTest {
         assertNoDisablebCalendarDates(page.datePicker2);
 
         // Act - 3rd show panel and select 5th of current month
+        page.datePicker2.hidePanel(); // #12009 - close panel of datePicker2 to ensure it does not overlap datePicker1-input-field
         page.datePicker1.click();
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(page.datePicker1.getPanel()));
         page.datePicker1.getPanel().findElement(By.linkText("5")).click();
@@ -74,6 +76,7 @@ class DatePicker012Test extends AbstractDatePickerTest {
         assertEquals(LocalDate.now().withDayOfMonth(5).atStartOfDay(), page.datePicker1.getValue());
 
         // Act - 4th show other panel
+        page.datePicker1.hidePanel(); // #12009 - close panel of datePicker1 to ensure it does not overlap datePicker2-input-field
         page.datePicker2.click();
 
         // Assert
@@ -89,6 +92,7 @@ class DatePicker012Test extends AbstractDatePickerTest {
         assertEquals(LocalDate.now().withDayOfMonth(6).atStartOfDay(), page.datePicker2.getValue());
 
         // Act - 6th show panel
+        page.datePicker2.hidePanel(); // #12009 - close panel of datePicker2 to ensure it does not overlap datePicker1-input-field
         page.datePicker1.click();
 
         // Assert
