@@ -1104,7 +1104,8 @@ if (!PrimeFaces.utils) {
             }
 
             // Decrease zIndex by 1 and return
-            return zIndex - 1;
+            PrimeFaces.zindex = zIndex - 1;
+            return PrimeFaces.zindex;
         },
         
         /**
