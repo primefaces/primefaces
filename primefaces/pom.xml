@@ -324,6 +324,13 @@
                     <configuration>
                          <destDir>../../../docs/vdldoc</destDir>
                     </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.omnifaces</groupId>
+                            <artifactId>vdldoc</artifactId>
+                            <version>3.2</version>
+                        </dependency>
+                    </dependencies>
                 </plugin>
             </plugins>
         </pluginManagement>
