@@ -348,14 +348,19 @@ if (!PrimeFaces.utils) {
          */
         registerResizeHandler: function(widget, resizeNamespace, element, resizeCallback, params) {
 
-            widget.addDestroyListener(function() {
+            const unbindResizeHandler = function() {
                 $(window).off(resizeNamespace);
-            });
-            widget.addRefreshListener(function() {
-                $(window).off(resizeNamespace);
-            });
+            };
 
-            $(window).off(resizeNamespace).on(resizeNamespace, params||null, function(e) {
+            // #12172 - return early if mobile browser
+            if (PrimeFaces.env.mobile) {
+                return { unbind: unbindResizeHandler };
+            }
+
+            widget.addDestroyListener(unbindResizeHandler);
+            widget.addRefreshListener(unbindResizeHandler);
+
+            $(window).off(resizeNamespace).on(resizeNamespace, params || null, function(e) {
                 if (element && (element.is(":hidden") || element.css('visibility') === 'hidden')) {
                     return;
                 }
@@ -363,11 +368,7 @@ if (!PrimeFaces.utils) {
                 resizeCallback(e);
             });
 
-            return {
-                unbind: function() {
-                    $(window).off(resizeNamespace);
-                }
-            };
+            return { unbind: unbindResizeHandler };
         },
 
         /**

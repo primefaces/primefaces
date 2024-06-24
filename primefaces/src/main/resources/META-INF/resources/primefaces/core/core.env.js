@@ -48,7 +48,7 @@ if (!PrimeFaces.env) {
          */
         init : function() {
             this.browser = $.browser;
-            this.mobile = (this.browser.mobile) ? true : false;
+            this.mobile = this.browser.mobile;
             this.touch = 'ontouchstart' in window || window.navigator.msMaxTouchPoints || PrimeFaces.env.mobile;
             this.ios = /iPhone|iPad|iPod/i.test(window.navigator.userAgent) || (/mac/i.test(window.navigator.userAgent) && PrimeFaces.env.touch);
             this.preferredColorSchemeDark = PrimeFaces.env.evaluateMediaQuery('(prefers-color-scheme: dark)');
