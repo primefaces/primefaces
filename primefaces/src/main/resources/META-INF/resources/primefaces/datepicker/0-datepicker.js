@@ -2741,7 +2741,7 @@
         },
 
         bindWindowResizeListener: function() {
-            if (this.options.inline) {
+            if (this.options.inline || this.options.touchUI || PrimeFaces.env.mobile) {
                 return;
             }
 
