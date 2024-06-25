@@ -112,7 +112,7 @@ public class ShowcaseUtil {
     }
 
     private static void flatFileContent(FileContent source, List<FileContent> dest) {
-        dest.add(new FileContent(source.getTitle(), source.getValue(), source.getType(), Collections.<FileContent>emptyList()));
+        dest.add(new FileContent(source.getTitle(), source.getValue(), source.getType(), Collections.<FileContent>emptySet()));
 
         for (FileContent file : source.getAttached()) {
             flatFileContent(file, dest);
