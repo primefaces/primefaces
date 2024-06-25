@@ -28,6 +28,9 @@ Look into [migration guide](https://primefaces.github.io/primefaces/15_0_0/#/../
 * FeedReader
     * Added `podcast="true"` property if [Apple Itunes Podcast](https://help.apple.com/itc/podcasts_connect/#/itcb54353390) parsing and specific tags 
 
+* InputNumber
+    * Added `modifyValueOnUpDownArrow` which allows the user to increment or decrement the element value with the up and down arrow keys. Default is true.
+
 * SelectOneMenu
     * Added `clear` AJAX event when in `editable="true"` and you clear out a value with BACKSPACE/DELETE
 
