@@ -29,6 +29,7 @@ import java.util.*;
 import java.util.function.Supplier;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -454,7 +455,7 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
                         }
                     }
 
-                    SingularAttribute<?, ?> idAttribute = entityType.getDeclaredId(idType.getJavaType());
+                    SingularAttribute<?, ?> idAttribute = entityType.getId(idType.getJavaType());
                     model.rowKeyField = idAttribute.getName();
                     if (model.rowKeyType == null) {
                         model.rowKeyType = idType.getJavaType();
