@@ -3320,8 +3320,8 @@
             }
         },
 
-        updateViewDate: function(event, value) {
-            if (this.options.onViewDateChange) {
+        updateViewDate: function(event, value, silent = false) {
+            if (this.options.onViewDateChange && !silent) {
                 this.options.onViewDateChange.call(this, event, value);
             }
 

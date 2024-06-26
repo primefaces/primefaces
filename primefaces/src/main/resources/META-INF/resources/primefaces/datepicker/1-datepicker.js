@@ -512,10 +512,11 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Sets the displayed visible calendar date. This refers to the currently displayed month page.
      * @param {string | Date | Date[]} date The date to be shown in the calendar.
+     * @param {boolean} [silent=false] Whether to update the view date without triggering the AJAX viewChange event.
      */
-    setViewDate: function(date) {
+    setViewDate: function(date, silent = false) {
         var viewDate = this.jq.data().primeDatePicker.parseValue(date);
-        this.jq.datePicker('updateViewDate', null, viewDate);
+        this.jq.datePicker('updateViewDate', null, viewDate, silent);
     },
 
     /**
