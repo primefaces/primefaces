@@ -28,9 +28,9 @@ import javax.faces.context.PartialResponseWriter;
 import javax.faces.context.PartialViewContext;
 import javax.faces.context.PartialViewContextWrapper;
 import javax.faces.event.PhaseId;
+
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.csp.CspPartialResponseWriter;
-
 import org.primefaces.util.Constants;
 
 public class PrimePartialViewContext extends PartialViewContextWrapper {
@@ -55,12 +55,13 @@ public class PrimePartialViewContext extends PartialViewContextWrapper {
     public PartialResponseWriter getPartialResponseWriter() {
         if (writer == null) {
             PartialResponseWriter parentWriter = getWrapped().getPartialResponseWriter();
-            writer = new PrimePartialResponseWriter(parentWriter);
-
             FacesContext context = FacesContext.getCurrentInstance();
             PrimeConfiguration config = PrimeApplicationContext.getCurrentInstance(context).getConfig();
             if (config.isCsp()) {
-                writer = new CspPartialResponseWriter(writer, context, PrimeFacesContext.getCspState(context));
+                writer = new CspPartialResponseWriter(parentWriter, context, PrimeFacesContext.getCspState(context));
+            }
+            else {
+                writer = new PrimePartialResponseWriter(parentWriter);
             }
         }
 

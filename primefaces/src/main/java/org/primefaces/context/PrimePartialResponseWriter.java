@@ -23,12 +23,8 @@
  */
 package org.primefaces.context;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.primefaces.util.BeanUtils;
-import org.primefaces.util.EscapeUtils;
-import org.primefaces.util.LangUtils;
+import java.io.IOException;
+import java.util.*;
 
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UINamingContainer;
@@ -36,12 +32,13 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialResponseWriter;
 import javax.faces.event.AbortProcessingException;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.primefaces.util.BeanUtils;
+import org.primefaces.util.EscapeUtils;
+import org.primefaces.util.LangUtils;
 
 public class PrimePartialResponseWriter extends PartialResponseWriter {
 
