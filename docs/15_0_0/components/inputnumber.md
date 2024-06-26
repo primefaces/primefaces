@@ -92,6 +92,7 @@ leadingZero | allow | Sting | Controls leading zero behavior. Valid values are "
 maxValue | 10000000000000 | String | Maximum values allowed. Warning: SEE BELOW!!!
 minValue | -10000000000000 | String | Minimum value. Warning: SEE BELOW!!!
 modifyValueOnWheel | true | Boolean | Allows the user to increment or decrement the element value with the mouse wheel.
+modifyValueOnUpDownArrow | true | Boolean | Allows the user to increment or decrement the element value with the up and down arrow keys.
 padControl | true | Boolean | Controls padding of the decimal places. If true, always pads the decimal with zeros.
 roundMethod | Round-Half-Up-Symmetric | String | Controls the rounding method.
 selectOnFocus | true | Boolean | Defines if the element value should be selected on focu.

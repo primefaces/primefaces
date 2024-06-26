@@ -14220,6 +14220,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Allows the user to increment or decrement the element value with the up and down arrow keys, default is true.]]>
+            </description>
+            <name>modifyValueOnUpDownArrow</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Defines if the element value should be selected on focus, default is true.]]>
             </description>
             <name>selectOnFocus</name>

@@ -55,6 +55,7 @@ public abstract class InputNumberBase extends AbstractPrimeHtmlInputText impleme
         leadingZero,
         decimalSeparatorAlternative,
         modifyValueOnWheel,
+        modifyValueOnUpDownArrow,
         caretPositionOnFocus,
         selectOnFocus
     }
@@ -220,6 +221,14 @@ public abstract class InputNumberBase extends AbstractPrimeHtmlInputText impleme
 
     public void setModifyValueOnWheel(boolean modifyValueOnWheel) {
         getStateHelper().put(PropertyKeys.modifyValueOnWheel, modifyValueOnWheel);
+    }
+
+    public boolean isModifyValueOnUpDownArrow() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.modifyValueOnUpDownArrow, true);
+    }
+
+    public void setModifyValueOnUpDownArrow(boolean modifyValueOnUpDownArrow) {
+        getStateHelper().put(PropertyKeys.modifyValueOnUpDownArrow, modifyValueOnUpDownArrow);
     }
 
     public boolean isSelectOnFocus() {
