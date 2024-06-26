@@ -10,7 +10,7 @@ are many other third party libraries and plugins used to support features.
 | [Coloris](../jsdocs/interfaces/src_PrimeFaces.Coloris.html) | 0.24.0 | https://github.com/mdbassit/Coloris |
 | [Cookie](../jsdocs/modules/node_modules__types_js_cookie.html) | 3.0.5 | https://github.com/js-cookie/js-cookie |
 | [Cropper.js](../jsdocs/classes/node_modules_cropperjs_types.Cropper-1.html) | 1.5.13 | https://github.com/fengyuanchen/cropperjs |
-| [Download.js](../jsdocs/modules/node_modules__types_downloadjs.html) | 4.2 | http://danml.com/download.html |
+| [Download.js](../jsdocs/modules/node_modules__types_downloadjs.html) | 4.21 | https://github.com/rndme/download |
 | [FullCalendar](../jsdocs/classes/node_modules__fullcalendar_core_main.Calendar.html) | 5.11.3 | https://fullcalendar.io/ |
 | [Idle Timer](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#idleTimer) | 1.1.1 | https://github.com/thorst/jquery-idletimer |
 | [Input Mask](../jsdocs/interfaces/node_modules__types_inputmask.default.Static.html) | 5.0.9 | https://github.com/RobinHerbots/Inputmask |
