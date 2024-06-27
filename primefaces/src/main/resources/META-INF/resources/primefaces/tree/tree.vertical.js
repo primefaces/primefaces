@@ -164,7 +164,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         pressTab = false;
 
         this.jq.on('mousedown.tree', function(e) {
-            if($(e.target).is(':not(:input:enabled)')) {
+            if($(e.target).is(':not(:input:enabled):not(.ui-treenode-label)')) {
                 e.preventDefault();
             }
         });
