@@ -24,7 +24,9 @@
 package org.primefaces.integrationtests.calendar;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -55,6 +57,7 @@ class Calendar002Test extends AbstractPrimePageTest {
 
             // Assert
             assertNotDisplayed(messages);
+            assertConfiguration(datePicker.getWidgetConfiguration());
         });
     }
 
@@ -76,7 +79,14 @@ class Calendar002Test extends AbstractPrimePageTest {
 
             // Assert
             assertDisplayed(messages);
+            assertConfiguration(datePicker.getWidgetConfiguration());
         });
+    }
+
+    private void assertConfiguration(JSONObject cfg) {
+        assertNoJavascriptErrors();
+        System.out.println("Calendar Config = " + cfg);
+        assertEquals("mm/dd/yy", cfg.getString("dateFormat"));
     }
 
     public static class Page extends AbstractPrimePage {
