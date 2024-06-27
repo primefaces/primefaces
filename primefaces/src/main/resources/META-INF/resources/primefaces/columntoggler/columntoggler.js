@@ -15,6 +15,7 @@
  * @prop {JQuery} [panel] Overlay column toggler panel with the available columns.
  * @prop {JQuery} table Table to which this column toggle is attached.
  * @prop {string} tableId ID of the table to which this column toggle is attached.
+ * @prop {PrimeFaces.widget.BaseWidget} tableWidget Widget of the table to which this column toggle is attached.
  * @prop {JQuery} tbody The DOM element for the table body of the table to which this column toggle is attached.
  * @prop {JQuery} tfoot The DOM element for the table foot of the table to which this column toggle is attached.
  * @prop {JQuery} thead The DOM element for the table head of the table to which this column toggle is attached.
@@ -49,8 +50,8 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         this.tableId = this.table.attr('id');
         this.hasFrozenColumn = this.table.hasClass('ui-datatable-frozencolumn');
         this.hasStickyHeader = this.table.hasClass('ui-datatable-sticky');
+        
         var clientId = PrimeFaces.escapeClientId(this.tableId);
-
         if (this.hasFrozenColumn) {
             this.thead = $(clientId + '_frozenThead,' + clientId + '_scrollableThead');
             this.tbody = $(clientId + '_frozenTbody,' + clientId + '_scrollableTbody');
@@ -134,9 +135,8 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
 
             if (this.hasPriorityColumns) {
                 var columnClasses = column.attr('class').split(' ');
-                for (var j = 0; j < columnClasses.length; j++) {
-                    var columnClass = columnClasses[j],
-                        pindex = columnClass.indexOf('ui-column-p-');
+                for (const columnClass of columnClasses) {
+                    var pindex = columnClass.indexOf('ui-column-p-');
                     if (pindex !== -1) {
                         item.addClass(columnClass.substring(pindex, pindex + 13));
                     }
@@ -272,19 +272,13 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
             switch (e.code) {
                 case 'Tab':
                     var index = $(this).closest('li').index();
-                    if (e.shiftKey) {
-                        if (index === 0)
-                            $this.closer.trigger('focus');
-                        else
-                            inputs.eq(index - 1).trigger('focus');
-                    }
-                    else {
-                        if (index === ($this.columns.length - 1) && !e.shiftKey)
-                            $this.closer.trigger('focus');
-                        else
-                            inputs.eq(index + 1).trigger('focus');
-                    }
+                    var targetIndex = e.shiftKey ? index - 1 : index + 1;
 
+                    if (e.shiftKey && index === 0 || !e.shiftKey && index === $this.columns.length - 1) {
+                        $this.closer.trigger('focus');
+                    } else {
+                        inputs.eq(targetIndex).trigger('focus');
+                    }
                     e.preventDefault();
                     break;
                 case 'Enter':
@@ -389,9 +383,17 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
 
         var column = $(document.getElementById(chkbox.closest('li.ui-columntoggler-item').data('column'))),
             index = column.index() + 1,
-            thead = this.hasFrozenColumn ? (column.hasClass('ui-frozen-column') ? this.thead.eq(0) : this.thead.eq(1)) : this.thead,
-            tbody = this.hasFrozenColumn ? (column.hasClass('ui-frozen-column') ? this.tbody.eq(0) : this.tbody.eq(1)) : this.tbody,
-            tfoot = this.hasFrozenColumn ? (column.hasClass('ui-frozen-column') ? this.tfoot.eq(0) : this.tfoot.eq(1)) : this.tfoot;
+            isFrozenColumn = column.hasClass('ui-frozen-column'),
+            thead, tbody, tfoot;
+        if (this.hasFrozenColumn) {
+            thead = isFrozenColumn ? this.thead.eq(0) : this.thead.eq(1);
+            tbody = isFrozenColumn ? this.tbody.eq(0) : this.tbody.eq(1);
+            tfoot = isFrozenColumn ? this.tfoot.eq(0) : this.tfoot.eq(1);
+        } else {
+            thead = this.thead;
+            tbody = this.tbody;
+            tfoot = this.tfoot;
+        }
 
         var rowSelector = 'tr:not(.ui-expanded-row-content)';
         var rowHeader = thead.children(rowSelector),
@@ -440,9 +442,17 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
 
         var column = $(document.getElementById(chkbox.closest('li.ui-columntoggler-item').data('column'))),
             index = column.index() + 1,
-            thead = this.hasFrozenColumn ? (column.hasClass('ui-frozen-column') ? this.thead.eq(0) : this.thead.eq(1)) : this.thead,
-            tbody = this.hasFrozenColumn ? (column.hasClass('ui-frozen-column') ? this.tbody.eq(0) : this.tbody.eq(1)) : this.tbody,
-            tfoot = this.hasFrozenColumn ? (column.hasClass('ui-frozen-column') ? this.tfoot.eq(0) : this.tfoot.eq(1)) : this.tfoot;
+            isFrozenColumn = column.hasClass('ui-frozen-column'),
+            thead, tbody, tfoot;
+        if (this.hasFrozenColumn) {
+            thead = isFrozenColumn ? this.thead.eq(0) : this.thead.eq(1);
+            tbody = isFrozenColumn ? this.tbody.eq(0) : this.tbody.eq(1);
+            tfoot = isFrozenColumn ? this.tfoot.eq(0) : this.tfoot.eq(1);
+        } else {
+            thead = this.thead;
+            tbody = this.tbody;
+            tfoot = this.tfoot;
+        }
 
         var rowSelector = 'tr:not(.ui-expanded-row-content)';
         var rowHeader = thead.children(rowSelector),
@@ -451,8 +461,8 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         chkbox.attr('aria-checked', false);
         columnHeader.addClass('ui-helper-hidden');
         $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).addClass('ui-helper-hidden');
-        tbody.children(rowSelector).find('td:nth-child(' + index + ')').addClass('ui-helper-hidden');
-        tfoot.children(rowSelector).find('td:nth-child(' + index + ')').addClass('ui-helper-hidden');
+        tbody.children(rowSelector).find('td:nth-child(' + index + ')').addClass('ui-helper-hidden').removeAttr('tabindex');
+        tfoot.children(rowSelector).find('td:nth-child(' + index + ')').addClass('ui-helper-hidden').removeAttr('tabindex');
 
         if (this.hasFrozenColumn) {
             var headers = rowHeader.children('th');
@@ -550,11 +560,9 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
             var columnIds = '';
             for (var i = 0; i < this.columns.length; i++) {
                 var column = this.columns.eq(i);
-
                 var parts = column.attr('id').split(':');
                 var columnId = parts[parts.length - 1];
-
-                hidden = column.hasClass('ui-helper-hidden')
+                var hidden = column.hasClass('ui-helper-hidden');
 
                 if (!hidden) {
                     if (columnIds != '') {
@@ -643,6 +651,14 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
                 oldColState = columnId + "_" + !isHidden,
                 newColState = columnId + "_" + isHidden;
             this.togglerStateHolder.val(stateVal.replace(oldColState, newColState));
+
+            // #12195 must reset the navigable cells to keyboard accessibility of hidden/shown columns
+            if (!this.tableWidget) {
+                this.tableWidget = PrimeFaces.getWidgetsByType(PrimeFaces.widget.DataTable).find(widget => widget.id === this.tableId);
+            }
+            if (this.tableWidget) {
+                this.tableWidget.setupNavigableCells();
+            }
         }
     }
 
