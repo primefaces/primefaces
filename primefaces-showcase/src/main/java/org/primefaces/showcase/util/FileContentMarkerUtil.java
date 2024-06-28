@@ -36,9 +36,10 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.primefaces.util.LangUtils;
-
+import jakarta.el.ELException;
 import jakarta.faces.context.FacesContext;
+
+import org.primefaces.util.LangUtils;
 
 /**
  * FileContentMarkerUtil
@@ -146,7 +147,13 @@ public class FileContentMarkerUtil {
     }
 
     private static void addBean(FacesContext facesContext, Set<FileContent> javaFiles, String group) throws Exception {
-        Object bean = facesContext.getApplication().evaluateExpressionGet(facesContext, "#{" + group + "}", Object.class);
+        Object bean;
+        try {
+            bean = facesContext.getApplication().evaluateExpressionGet(facesContext, "#{" + group + "}", Object.class);
+        }
+        catch (ELException e) {
+            return;
+        }
         if (bean == null) {
             return;
         }
