@@ -269,7 +269,7 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
                 clearIncomplete: isAutoClear,
                 autoUnmask: false
             };
-            var pattern = new RegExp("m|d|y|h|s", 'i');
+            var pattern = /[mdyhs]/i;
             var isAlias = pattern.test(this.cfg.mask);
             if (isAlias) {
                 maskCfg.alias = 'datetime';
@@ -350,15 +350,19 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
     configureLocale: function() {
         var localeSettings = PrimeFaces.getLocaleSettings(this.cfg.locale);
 
-        if(localeSettings) {
+        if (localeSettings) {
             for(var setting in localeSettings) {
-                this.cfg[setting] = localeSettings[setting];
-            }
-            this.cfg.firstDay = localeSettings.firstDayOfWeek;
-            this.cfg.closeText = localeSettings.aria.close;
-            this.cfg.prevText = localeSettings.aria.previous;
-            this.cfg.nextText = localeSettings.aria.next;
-            this.cfg.currentText = localeSettings.today;
+                if (setting !== 'dateFormat') {
+                    this.cfg[setting] = localeSettings[setting];
+                }
+            };
+            Object.assign(this.cfg, {
+                firstDay: localeSettings.firstDayOfWeek,
+                closeText: localeSettings.aria.close,
+                prevText: localeSettings.aria.previous,
+                nextText: localeSettings.aria.next,
+                currentText: localeSettings.today
+            });
         }
     },
 
@@ -503,20 +507,20 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
             this.cfg.controlType = this.cfg.timeControlObject;
         }
 
-        if(this.cfg.showHour) {
-            this.cfg.showHour = (this.cfg.showHour == "true") ? true : false;
+        if (this.cfg.showHour) {
+            this.cfg.showHour = this.cfg.showHour === "true";
         }
 
-        if(this.cfg.showMinute) {
-            this.cfg.showMinute = (this.cfg.showMinute == "true") ? true : false;
+        if (this.cfg.showMinute) {
+            this.cfg.showMinute = this.cfg.showMinute === "true";
         }
 
-        if(this.cfg.showSecond) {
-            this.cfg.showSecond = (this.cfg.showSecond == "true") ? true : false;
+        if (this.cfg.showSecond) {
+            this.cfg.showSecond = this.cfg.showSecond === "true";
         }
 
-        if(this.cfg.showMillisec) {
-            this.cfg.showMillisec = (this.cfg.showMillisec == "true") ? true : false;
+        if (this.cfg.showMillisec) {
+            this.cfg.showMillisec = this.cfg.showMillisec === "true";
         }
     },
 
