@@ -164,8 +164,10 @@ with your own UI, set _showNavBar_ to false and use the provided the client side
 <p:wizard showNavBar="false" widgetVar="wiz">
 ...
 </p:wizard>
-<h:outputLink value="#" onclick="PF('wiz').next();">Next</h:outputLink>
-<h:outputLink value="#" onclick="PF('wiz').back();">Back</h:outputLink>
+<p:outputPanel id="pnlNav">
+    <p:commandButton value="#{wizard.backLabel}" icon="pi pi-arrow-left" onclick="PF('wiz').back();" rendered="#{wizard.displayBackButton}" update="pnlNav" />
+    <p:commandButton value="#{wizard.nextLabel}" icon="pi pi-arrow-right" onclick="PF('wiz').next();" iconPos="right" update="pnlNav" />
+</p:outputPanel>
 ```
 ## FlowListener
 If you’d like get notified on server side when wizard attempts to go back or forward, define a
