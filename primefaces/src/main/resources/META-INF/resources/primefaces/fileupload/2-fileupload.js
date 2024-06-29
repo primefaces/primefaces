@@ -203,11 +203,11 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                 var dataFileInput = data.fileInput;
                 if (dataFileInput == null) { // drag´n´drop - Github #11879
                     dataFileInput = $('#' + $.escapeSelector(data.paramName + '_input'));
-                    const fileList = new DataTransfer();
+                    const dataTransfer = new DataTransfer();
                     data.files.forEach((item) => {
-                        fileList.items.add(item);
+                        dataTransfer.items.add(item);
                     });
-                    dataFileInput[0].files = fileList.files;
+                    dataFileInput[0].files = dataTransfer.files;
                 }
                 var fileLimit = dataFileInput ? dataFileInput.data('p-filelimit') : null;
                 if (fileLimit && ($this.uploadedFileCount + $this.files.length + 1) > fileLimit) {
@@ -369,6 +369,20 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             done: function(e, data) {
                 $this.uploadedFileCount += data.files.length;
                 $this.removeFiles(data.files);
+
+                // drag´n´drop - Github #11879, #12207
+                const dataFileInput = $('#' + $.escapeSelector(data.paramName + '_input'));
+                if (dataFileInput?.length > 0) {
+                    let dataTransferCleaned = new DataTransfer();
+
+                    for (const file of dataFileInput[0].files) {
+                        if (!data.files.includes(file)) {
+                            dataTransferCleaned.items.add(file);
+                        }
+                    }
+
+                    dataFileInput[0].files = dataTransferCleaned.files;
+                }
 
                 PrimeFaces.ajax.Response.handle(data.result, data.textStatus, data.jqXHR, null);
                 
