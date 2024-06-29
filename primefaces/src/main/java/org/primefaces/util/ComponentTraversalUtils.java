@@ -23,15 +23,12 @@
  */
 package org.primefaces.util;
 
-import javax.faces.component.ContextCallback;
-import javax.faces.component.NamingContainer;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIForm;
-import javax.faces.component.UniqueIdVendor;
-import javax.faces.context.FacesContext;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import javax.faces.component.*;
+import javax.faces.context.FacesContext;
 
 public class ComponentTraversalUtils {
 
@@ -194,6 +191,21 @@ public class ComponentTraversalUtils {
         for (int i = 0; i < base.getChildCount(); i++) {
             UIComponent child = base.getChildren().get(i);
             if (childType.isInstance(child) && child.isRendered() ) {
+                return (T) child;
+            }
+        }
+
+        return null;
+    }
+
+    public static <T> T firstChild(Class<T> childType, UIComponent base) {
+        if (base == null || !base.isRendered()) {
+            return null;
+        }
+
+        for (int i = 0; i < base.getChildCount(); i++) {
+            UIComponent child = base.getChildren().get(i);
+            if (childType.isInstance(child)) {
                 return (T) child;
             }
         }
