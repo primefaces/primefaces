@@ -23,11 +23,12 @@
  */
 package org.primefaces.showcase.view.app;
 
+import java.io.Serializable;
+import java.util.Locale;
+
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Named;
-import java.io.Serializable;
-import java.util.Locale;
 
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.showcase.domain.Country;
@@ -115,19 +116,5 @@ public class App implements Serializable {
 
     public String getPrimeFacesVersion() {
         return PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getEnvironment().getBuildVersion();
-    }
-
-    public String getTagVdlComponent(String documentationLink) {
-        String separator = "/";
-        if (documentationLink == null || documentationLink.isEmpty()) {
-            return documentationLink;
-        }
-
-        int lastIndex = documentationLink.lastIndexOf(separator);
-        if (lastIndex == -1 || lastIndex == documentationLink.length() - separator.length()) {
-            return "";
-        }
-
-        return documentationLink.substring(lastIndex + separator.length());
     }
 }
