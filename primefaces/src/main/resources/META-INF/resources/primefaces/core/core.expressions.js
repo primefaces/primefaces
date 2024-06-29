@@ -36,8 +36,8 @@ if (!PrimeFaces.expressions) {
             var elements = $();
 
             if (splittedExpressions) {
-                for (var i = 0; i < splittedExpressions.length; ++i) {
-                    var expression =  PrimeFaces.trim(splittedExpressions[i]);
+                for (const splittedExpression of splittedExpressions) {
+                    var expression = PrimeFaces.trim(splittedExpression);
                     if (expression.length > 0) {
 
                         // skip unresolvable keywords
@@ -97,8 +97,8 @@ if (!PrimeFaces.expressions) {
             ids = [];
 
             if (splittedExpressions) {
-                for (var i = 0; i < splittedExpressions.length; ++i) {
-                    var expression =  PrimeFaces.trim(splittedExpressions[i]);
+                for (const splittedExpression of splittedExpressions) {
+                    var expression = PrimeFaces.trim(splittedExpression);
                     if (expression.length > 0) {
 
                         // just a id or passtrough keywords
@@ -126,9 +126,9 @@ if (!PrimeFaces.expressions) {
                             //converts pfs to jq selector e.g. @(div.mystyle :input) to div.mystyle :input
                             var elements = $(expression.substring(2, expression.length - 1));
 
-                            for (var j = 0; j < elements.length; j++) {
-                                var element = $(elements[j]),
-                                clientId = element.data(PrimeFaces.CLIENT_ID_DATA) || element.attr('id');
+                            for (const element of elements) {
+                                var $element = $(element);
+                                var clientId = $element.data(PrimeFaces.CLIENT_ID_DATA) || $element.attr('id');
 
                                 if (clientId && !PrimeFaces.inArray(ids, clientId)) {
                                     ids.push(clientId);
@@ -141,9 +141,9 @@ if (!PrimeFaces.expressions) {
                                 PrimeFaces.error("Could not resolve @form for source '" + source.attr('id') + "'");
                             }
                             else {
-                                var clientId = form.data(PrimeFaces.CLIENT_ID_DATA) || form.attr('id');
-                                if (!PrimeFaces.inArray(ids, clientId)) {
-                                    ids.push(clientId);
+                                var formClientId = form.data(PrimeFaces.CLIENT_ID_DATA) || form.attr('id');
+                                if (!PrimeFaces.inArray(ids, formClientId)) {
+                                    ids.push(formClientId);
                                 }
                             }
                         }
@@ -175,9 +175,7 @@ if (!PrimeFaces.expressions) {
             var parenthesesCounter = 0;
 
             if (!expression) {return expressions;}
-
-            for (var i = 0; i < expression.length; i++) {
-                var c = expression[i];
+            for (const c of expression) {
 
                 if (c === '(') {
                     parenthesesCounter++;

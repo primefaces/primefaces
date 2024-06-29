@@ -197,17 +197,15 @@ if (!PrimeFaces.utils) {
                             }
                         }
 
-                        if(target.is(document.body)) {
-                            first.focus(1);
+                        const focusElement = (element) => {
+                            element.focus(1);
                             event.preventDefault();
-                        }
-                        else if(event.target === last[0] && !event.shiftKey) {
-                            first.focus(1);
-                            event.preventDefault();
-                        }
-                        else if (event.target === first[0] && event.shiftKey) {
-                            last.focus(1);
-                            event.preventDefault();
+                        };
+
+                        if (target.is(document.body) || (event.target === last[0] && !event.shiftKey)) {
+                            focusElement(first);
+                        } else if (event.target === first[0] && event.shiftKey) {
+                            focusElement(last);
                         }
                     }
                 }
@@ -451,22 +449,24 @@ if (!PrimeFaces.utils) {
         registerConnectedOverlayScrollHandler: function(widget, scrollNamespace, element, scrollCallback) {
             var scrollableParents = PrimeFaces.utils.getScrollableParents((element || widget.getJQ()).get(0));
 
-            for (var i = 0; i < scrollableParents.length; i++) {
-                var scrollParent = $(scrollableParents[i]);
+            const scrollHandler = function(e) {
+                scrollCallback(e);
+            };
 
-                widget.addDestroyListener(function() {
-                    scrollParent.off(scrollNamespace);
+            for (const scrollParent of scrollableParents) {
+                var $scrollParent = $(scrollParent);
+
+                widget.addDestroyListener(() => {
+                    $scrollParent.off(scrollNamespace, scrollHandler);
                 });
 
-                scrollParent.off(scrollNamespace).on(scrollNamespace, function(e) {
-                    scrollCallback(e);
-                });
+                $scrollParent.off(scrollNamespace, scrollHandler).on(scrollNamespace, scrollHandler);
             }
 
             return {
                 unbind: function() {
-                    for (var i = 0; i < scrollableParents.length; i++) {
-                        $(scrollableParents[i]).off(scrollNamespace);
+                    for (const scrollParent of scrollableParents) {
+                        $(scrollParent).off(scrollNamespace, scrollHandler);
                     }
                 }
             };
@@ -499,13 +499,11 @@ if (!PrimeFaces.utils) {
                     return overflowRegex.test(styleDeclaration.getPropertyValue('overflow')) || overflowRegex.test(styleDeclaration.getPropertyValue('overflowX')) || overflowRegex.test(styleDeclaration.getPropertyValue('overflowY'));
                 };
 
-                for (var i = 0; i < parents.length; i++) {
-                    var parent = parents[i];
+                for (const parent of parents) {
                     var scrollSelectors = parent.nodeType === 1 && parent.dataset['scrollselectors'];
                     if (scrollSelectors) {
                         var selectors = scrollSelectors.split(',');
-                        for (var j = 0; j < selectors.length; j++) {
-                            var selector = selectors[j];
+                        for (const selector of selectors) {
                             var el = parent.querySelector(selector);
                             if (el && overflowCheck(el)) {
                                 addScrollableParent(el);
@@ -932,8 +930,7 @@ if (!PrimeFaces.utils) {
             if (args) {
                 var classes = [];
 
-                for (var i = 0; i < args.length; i++) {
-                    var className = args[i];
+                for (const className of args) {
 
                     if (!className) continue;
 
@@ -943,7 +940,7 @@ if (!PrimeFaces.utils) {
                         classes.push(className);
                     }
                     else if (type === 'object') {
-                        var _classes = Array.isArray(className) ? className : Object.keys(className).map(function(key) { return !!className[key] ? key : null });
+                        var _classes = Array.isArray(className) ? className : Object.keys(className).map(function(key) { return className[key] ? key : null });
 
                         classes = _classes.length ? classes.concat(_classes.filter(function(c) { return !!c })) : classes;
                     }
@@ -996,6 +993,7 @@ if (!PrimeFaces.utils) {
             }
 
             var isEmpty = true;
+            var value = null;
             inputs.each(function() {
                 var input = $(this);
                 if (input.is('select')) {
@@ -1003,12 +1001,12 @@ if (!PrimeFaces.utils) {
                         isEmpty = input.find('option:selected').length === 0;
                     }
                     else {
-                        var value = input.find('option:selected').attr('value');
+                        value = input.find('option:selected').attr('value');
                         isEmpty = value === null || value === '';
                     }
                 }
                 else {
-                    var value = input.val();
+                    value = input.val();
                     isEmpty = value === null || value === '';
                 }
 
@@ -1068,8 +1066,8 @@ if (!PrimeFaces.utils) {
             PrimeFaces.ajax.Queue.abortAll();
 
             // stop all pollers and idle monitors
-            for (item in PrimeFaces.widgets) {
-                widget = PrimeFaces.widgets[item];
+            for (let item in PrimeFaces.widgets) {
+                let widget = PrimeFaces.widgets[item];
                 if (widget instanceof PrimeFaces.widget.Poll) {
                     PrimeFaces.warn("Stopping Poll");
                     widget.stop();
@@ -1135,8 +1133,8 @@ if (!PrimeFaces.utils) {
             }
             // Remove inline event attributes
             var attributes = jq[0].attributes;
-            for (var i = 0; i < attributes.length; i++) {
-                var attributeName = attributes[i].name;
+            for (const attribute of attributes) {
+                const attributeName = attribute.name;
                 if (attributeName.startsWith("on")) {
                     jq.removeAttr(attributeName);
                 }

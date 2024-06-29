@@ -35,8 +35,7 @@ if (!PrimeFaces.csp) {
             PrimeFaces.csp.NONCE_VALUE = nonce;
 
             var forms = document.getElementsByTagName("form");
-            for (var i = 0; i < forms.length; i++) {
-                var form = forms[i];
+            for (const form of forms) {
                 if (!PrimeFaces.csp.isFacesForm(form)) {
                     continue;
                 }
