@@ -87,9 +87,9 @@
                                     <span>CLIENT API</span>
                                 </a>
                             </ui:fragment>
-                            <ui:fragment rendered="#{not empty documentationLink}">
+                            <ui:fragment rendered="#{tagLibrary.isTagVdlAvailable(documentationLink)}">
                                 <a class="documentation-link"
-                                   href="https://primefaces.github.io/primefaces/vdldoc/p/#{app.getTagVdlComponent(documentationLink)}.html"
+                                   href="https://primefaces.github.io/primefaces/vdldoc/p/#{tagLibrary.getTagVdlComponent(documentationLink)}.html"
                                    target="_blank">
                                     <i class="pi pi-external-link"></i>
                                     <span>TAG VDL</span>
