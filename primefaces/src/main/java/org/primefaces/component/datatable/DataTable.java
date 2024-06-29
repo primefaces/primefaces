@@ -28,6 +28,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
 import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -545,7 +546,7 @@ public class DataTable extends DataTableBase {
     }
 
     public RowExpansion getRowExpansion() {
-        return ComponentTraversalUtils.firstChildRendered(RowExpansion.class, this);
+        return ComponentTraversalUtils.firstChild(RowExpansion.class, this);
     }
 
     @Override
