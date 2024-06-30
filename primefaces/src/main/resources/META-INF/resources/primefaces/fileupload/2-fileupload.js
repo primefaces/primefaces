@@ -115,7 +115,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
      * Regular expression that matches image files for which a preview can be shown.
      * @type {RegExp}
      */
-    IMAGE_TYPES: /(\.|\/)(gif|jpeg|jpg|png)$/i,
+    IMAGE_TYPES: /([\.\/])(gif|jpe?g|png)$/i,
 
     /**
      * @override
@@ -147,7 +147,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.previewWidth = this.cfg.previewWidth || 80;
         this.cfg.maxRetries = this.cfg.maxRetries || 30;
         this.cfg.retryTimeout = this.cfg.retryTimeout || 1000;
-        this.cfg.global = (this.cfg.global === true || this.cfg.global === undefined) ? true : false;
+        this.cfg.global = this.cfg.global !== false;
         this.uploadedFileCount = 0;
         this.fileId = 0;
 
@@ -202,12 +202,12 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                 // we need to fake the filelimit as the jquery-fileupload input always only contains 1 file
                 var dataFileInput = data.fileInput;
                 if (dataFileInput == null) { // drag´n´drop - Github #11879
-                    dataFileInput = $('#' + $.escapeSelector(data.paramName + '_input'));
-                    const fileList = new DataTransfer();
+                    dataFileInput = $(PrimeFaces.escapeClientId(data.paramName + '_input'));
+                    const dataTransfer = new DataTransfer();
                     data.files.forEach((item) => {
-                        fileList.items.add(item);
+                        dataTransfer.items.add(item);
                     });
-                    dataFileInput[0].files = fileList.files;
+                    dataFileInput[0].files = dataTransfer.files;
                 }
                 var fileLimit = dataFileInput ? dataFileInput.data('p-filelimit') : null;
                 if (fileLimit && ($this.uploadedFileCount + $this.files.length + 1) > fileLimit) {
@@ -230,10 +230,11 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                         : null;
 
                     // we need to pass the real invisible input, which contains the filelist
+                    var msgs = null;
                     var validationResult = PrimeFaces.validation.validate($this.jq, dataFileInput, update, true, true, true, true);
                     if (!validationResult.valid) {
                         for (let clientId in validationResult.messages) {
-                            var msgs = validationResult.messages[clientId];
+                            msgs = validationResult.messages[clientId];
                             for (let msg of msgs) {
                                 if (!msg.rendered) {
                                     $this.showMessage({
@@ -249,7 +250,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
                         if ($this.cfg.onvalidationfailure) {
                             for (let clientId in validationResult.messages) {
-                                var msgs = validationResult.messages[clientId];
+                                msgs = validationResult.messages[clientId];
                                 for (let msg of msgs) {
                                     $this.cfg.onvalidationfailure({
                                         summary: msg.summary,
@@ -260,17 +261,15 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                             }
                         }
                     }
-                    else {
-                        if ($this.cfg.onAdd) {
-                            $this.cfg.onAdd.call($this, file, function(processedFile) {
-                                file = processedFile;
-                                data.files[0] = processedFile;
-                                $this.addFileToRow(file, data);
-                            });
-                        }
-                        else {
+                    else if ($this.cfg.onAdd) {
+                        $this.cfg.onAdd.call($this, file, function(processedFile) {
+                            file = processedFile;
+                            data.files[0] = processedFile;
                             $this.addFileToRow(file, data);
-                        }
+                        });
+                    }
+                    else {
+                        $this.addFileToRow(file, data);
                     }
 
                     if ($this.cfg.resumeContextPath && $this.cfg.maxChunkSize > 0) {
@@ -283,8 +282,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             },
             send: function(e, data) {
                 if(!window.FormData) {
-                    for(var i = 0; i < data.files.length; i++) {
-                        var file = data.files[i];
+                    for (const file of data.files) {
                         if(file.row) {
                             file.row.children('.ui-fileupload-progress').find('> .ui-progressbar > .ui-progressbar-value')
                                     .addClass('ui-progressbar-value-legacy')
@@ -353,8 +351,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                 if(window.FormData) {
                     var progress = parseInt(data.loaded / data.total * 100, 10);
 
-                    for(var i = 0; i < data.files.length; i++) {
-                        var file = data.files[i];
+                    for (const file of data.files) {
                         if (file.row) {
                             var fileuploadProgress = file.row.children(".ui-fileupload-progress").find("> .ui-progressbar");
                             fileuploadProgress.attr("aria-valuenow", progress);
@@ -369,6 +366,20 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             done: function(e, data) {
                 $this.uploadedFileCount += data.files.length;
                 $this.removeFiles(data.files);
+
+                // drag´n´drop - Github #11879, #12207
+                const dataFileInput = $(PrimeFaces.escapeClientId(data.paramName + '_input'));
+                if (dataFileInput.length > 0) {
+                    let dataTransferCleaned = new DataTransfer();
+
+                    for (const file of dataFileInput[0].files) {
+                        if (!data.files.includes(file)) {
+                            dataTransferCleaned.items.add(file);
+                        }
+                    }
+
+                    dataFileInput[0].files = dataTransferCleaned.files;
+                }
 
                 PrimeFaces.ajax.Response.handle(data.result, data.textStatus, data.jqXHR, null);
                 
@@ -450,7 +461,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                     scale = $this.cfg.previewWidth / this.width;
                 }
 
-                var imgHeight = parseInt(this.height * scale);
+                imgHeight = parseInt(this.height * scale);
 
                 imageCanvas.attr({width:imgWidth, height: imgHeight});
                 context.drawImage(img, 0, 0, imgWidth, imgHeight);
@@ -664,9 +675,9 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             $(document).trigger('pfAjaxStart');
         }
 
-        for(var i = 0; i < this.files.length; i++) {
-            this.files[i].ajaxRequest = this.files[i].row.data('filedata');
-            this.files[i].ajaxRequest.submit();
+        for (const file of this.files) {
+            file.ajaxRequest = file.row.data('filedata');
+            file.ajaxRequest.submit();
         }
     },
 
@@ -714,8 +725,8 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
      * @param {PrimeFaces.widget.FileUpload.UploadFile[]} files Files to remove from this widget.
      */
     removeFiles: function(files) {
-        for (var i = 0; i < files.length; i++) {
-            this.removeFile(files[i]);
+        for (const file of files) {
+            this.removeFile(file);
         }
     },
 
@@ -754,9 +765,9 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
      * Clears this file upload field, i.e. removes all uploaded files.
      */
     clear: function() {
-        for (var i = 0; i < this.files.length; i++) {
-            this.removeFileRow(this.files[i].row);
-            this.files[i].row = null;
+        for (const file of this.files) {
+            this.removeFileRow(file.row);
+            file.row = null;
         }
 
         this.clearMessages();
