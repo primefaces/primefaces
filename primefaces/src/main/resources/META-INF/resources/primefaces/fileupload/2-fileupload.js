@@ -372,7 +372,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
                 // drag´n´drop - Github #11879, #12207
                 const dataFileInput = $('#' + $.escapeSelector(data.paramName + '_input'));
-                if (dataFileInput?.length > 0) {
+                if (dataFileInput.length > 0) {
                     let dataTransferCleaned = new DataTransfer();
 
                     for (const file of dataFileInput[0].files) {
