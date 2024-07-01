@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.primefaces</groupId>
         <artifactId>primefaces-parent</artifactId>
-        <version>14.0.2</version>
+        <version>14.0.3-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -1241,26 +1241,6 @@
                                     <replacefilter token="http://xmlns.jcp.org/xml/ns/javaee" value="https://jakarta.ee/xml/ns/jakartaee"/>
                                     <replacefilter token="version=&quot;2.3&quot;" value="version=&quot;4.0&quot;"/>
                                 </replace>
-                            </target>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>modify-jar</id>
-                        <phase>install</phase>
-                        <configuration>
-                            <skip>${maven.source.skip}</skip>
-                            <target>
-                                <!-- Unpack the JAR -->
-                                <unzip src="${project.build.directory}/${project.build.finalName}.jar" dest="${project.build.directory}/jar-contents"/>
-                                
-                                <!-- Delete the URN taglib.xml from the javax JAR -->
-                                <delete file="${project.build.directory}/jar-contents/META-INF/primefaces.urn.taglib.xml"/>
-                                
-                                <!-- Repack the JAR -->
-                                <jar destfile="${project.build.directory}/${project.build.finalName}.jar" basedir="${project.build.directory}/jar-contents"/>
                             </target>
                         </configuration>
                         <goals>
