@@ -816,6 +816,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      */
     setupNavigableCells: function() {
+        if (!this.cfg.cellNavigation) {
+            return;
+        }
         var $this = this;
         var cellTabIndex = this.cfg.tabindex || "0";
         var pageRows = this.cfg.paginator && this.cfg.paginator.rows ? this.cfg.paginator.rows : 1000;
@@ -852,7 +855,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         resetFocusable(true);
 
         // on click should make it focusable
-        this.getTbody().find("td")
+        this.getTbody().find("td").off('.focuscell')
             .on("click.focuscell", function(e) {
                 resetFocusable(false);
 
@@ -887,11 +890,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         makeFocusable(e, cell, nextCell);
                         break;
                     case "ArrowDown":
-                        nextCell = cell.closest("tr[data-ri]").nextAll("tr[data-ri]:first").find('td[tabindex="-1"]').eq(cell.index());
+                        nextCell = cell.closest("tr[data-ri]").nextAll("tr[data-ri]:first").find('td[tabindex="-1"], td.ui-helper-hidden').eq(cell.index());
                         makeFocusable(e, cell, nextCell);
                         break;
                     case "ArrowUp":
-                        prevCell = cell.closest("tr[data-ri]").prevAll("tr[data-ri]:first").find('td[tabindex="-1"]').eq(cell.index());
+                        prevCell = cell.closest("tr[data-ri]").prevAll("tr[data-ri]:first").find('td[tabindex="-1"], td.ui-helper-hidden').eq(cell.index());
                         makeFocusable(e, cell, prevCell);
                         break;
                     case "Home":
