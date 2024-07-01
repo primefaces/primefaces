@@ -22,6 +22,11 @@ if (!PrimeFaces.env) {
          */
         ios: false,
         /**
+         * `true` if the current browser is an Android browser, `false` otherwise.
+         * @type {boolean}
+         */
+        android: false,
+        /**
          * The current browser type.
          * @type {string}
          */
@@ -51,6 +56,7 @@ if (!PrimeFaces.env) {
             this.mobile = this.browser.mobile;
             this.touch = 'ontouchstart' in window || window.navigator.msMaxTouchPoints || PrimeFaces.env.mobile;
             this.ios = /iPhone|iPad|iPod/i.test(window.navigator.userAgent) || (/mac/i.test(window.navigator.userAgent) && PrimeFaces.env.touch);
+            this.android = /(android)/i.test(window.navigator.userAgent);
             this.preferredColorSchemeDark = PrimeFaces.env.evaluateMediaQuery('(prefers-color-scheme: dark)');
             this.preferredColorSchemeLight = !this.preferredColorSchemeDark;
             this.prefersReducedMotion =  PrimeFaces.env.evaluateMediaQuery('(prefers-reduced-motion: reduce)');

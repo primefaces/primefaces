@@ -2118,6 +2118,9 @@
         },
 
         onTimeInputKeyDown: function(event) {
+            if (PrimeFaces.env.android) {
+                return;
+            }
             if (this.options.disabled) {
                 event.preventDefault();
                 return;
