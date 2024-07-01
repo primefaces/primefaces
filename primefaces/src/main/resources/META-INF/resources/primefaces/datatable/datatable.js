@@ -1589,6 +1589,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.scrollFooterBox = this.scrollFooter.children('div.ui-datatable-scrollable-footer-box');
         this.headerTable = this.scrollHeaderBox.children('table');
         this.bodyTable = this.cfg.virtualScroll ? this.scrollBody.children('div').children('table') : this.scrollBody.children('table');
+        this.scrollTbody = this.bodyTable.children('tbody');
         this.footerTable = this.scrollFooter.children('table');
         this.footerCols = this.scrollFooter.find('> .ui-datatable-scrollable-footer-box > table > tfoot > tr > td');
         this.percentageScrollHeight = this.cfg.scrollHeight && (this.cfg.scrollHeight.indexOf('%') !== -1);
@@ -1756,8 +1757,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * @protected
      */
     cloneHead: function() {
-        var $this = this;
-
         if (this.theadClone) {
             PrimeFaces.utils.cleanseDomElement(this.theadClone);
         }
@@ -2006,7 +2005,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         var columnIndex = cell.index();
 
         // Select all the cells in the same column of other rows
-        var cellsInSameColumn = this.tbody.find("> tr:not(.ui-expanded-row-content) td:nth-child(" + (columnIndex + 1) + ")");
+        var $whichBody = this.cfg.scrollable ? this.scrollTbody : this.tbody;
+        var cellsInSameColumn = $whichBody.find("> tr:not(.ui-expanded-row-content) td:nth-child(" + (columnIndex + 1) + ")");
 
         // Find the max width of the largest column
         var maxWidth = 0;
@@ -2030,6 +2030,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         // set the TH header to the new width
         $header.css("width", maxWidth);
+        // set the cloned scroll header to the same width
+        if (this.cfg.scrollable) {
+            this.theadClone.find(".ui-resizable-column").eq(columnIndex).css("width", maxWidth);
+        }
         
         // fire the AJAX event if necessary
         this.fireColumnResizeEvent($header);
