@@ -88,6 +88,14 @@
                                     <span>CLIENT API</span>
                                 </a>
                             </ui:fragment>
+                            <ui:fragment rendered="#{tagLibrary.isTagVdlAvailable(documentationLink)}">
+                                <a class="documentation-link"
+                                   href="https://primefaces.github.io/primefaces/vdldoc/p/#{tagLibrary.getTagVdlComponent(documentationLink)}.html"
+                                   target="_blank">
+                                    <i class="pi pi-external-link"></i>
+                                    <span>TAG VDL</span>
+                                </a>
+                            </ui:fragment>
                         </div>
                     </div>
                     <div class="content-section implementation">
