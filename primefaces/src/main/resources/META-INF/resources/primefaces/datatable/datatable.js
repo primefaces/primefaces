@@ -2006,7 +2006,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         var columnIndex = cell.index();
 
         // Select all the cells in the same column of other rows
-        var cellsInSameColumn = this.tbody.find("tr td:nth-child(" + (columnIndex + 1) + ")");
+        var cellsInSameColumn = this.tbody.find("tr:not(.ui-expanded-row-content) td:nth-child(" + (columnIndex + 1) + ")");
 
         // Find the max width of the largest column
         var maxWidth = 0;
