@@ -3678,6 +3678,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 this.callBehavior('rowEditInit', ext);
             }
         }
+
+        // #12184 disable other row editors as you should only edit one row at a time
+        this.tbody.find('a.ui-row-editor-pencil').addClass('ui-state-disabled');
     },
 
     /**
@@ -4186,6 +4189,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                             // #258 must reflow after editing
                             this.postUpdateData();
+
+                            // #12184 enable other row edits now that we are done editing
+                            this.tbody.find('a.ui-row-editor-pencil').removeClass('ui-state-disabled');
                         }
                     });
 
