@@ -321,10 +321,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
            this.jq.css('visibility', 'visible');
         }
 
-        this.cfg.cellNavigation = this.cfg.cellNavigation === undefined ? true : this.cfg.cellNavigation;
-        if (this.cfg.editMode || this.cfg.selectionRowMode !== 'none') {
-            // do not allow when editing or row selection enabled
-            this.cfg.cellNavigation = false;
+        // cell navigation is enabled by default, but it is disabled when editing, reflow, orrow selection is enabled (unless explicitly specified by the user).
+        if (this.cfg.cellNavigation === undefined) {
+            this.cfg.cellNavigation = !(this.cfg.editMode || this.cfg.reflow || this.cfg.selectionRowMode !== 'none');
         }
         if (this.cfg.cellNavigation) {
             this.setupNavigableCells();
