@@ -52,6 +52,18 @@ import org.primefaces.util.WidgetBuilder;
 public class DatePickerRenderer extends BaseCalendarRenderer {
 
     @Override
+    public void decode(FacesContext context, UIComponent component) {
+        DatePicker datePicker = (DatePicker) component;
+
+        if (!shouldDecode(datePicker)) {
+            return;
+        }
+
+        initializeDefaults(context, datePicker);
+        super.decode(context, component);
+    }
+
+    @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         DatePicker datePicker = (DatePicker) component;
 
@@ -60,6 +72,18 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             return;
         }
 
+        initializeDefaults(context, datePicker);
+
+        super.encodeEnd(context, component);
+    }
+
+    /**
+     * Initializes the default settings for the DatePicker component based on its pattern and value type.
+     *
+     * @param context the FacesContext instance
+     * @param datePicker the DatePicker component to initialize
+     */
+    protected void initializeDefaults(FacesContext context, DatePicker datePicker) {
         String pattern = datePicker.getPattern() == null ? datePicker.calculatePattern() : datePicker.getPattern();
 
         if (datePicker.isShowTimeWithoutDefault() == null) {
@@ -88,8 +112,6 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
         if (datePicker.isShowMillisecondsWithoutDefault() == null) {
             datePicker.setShowMilliseconds(pattern.contains("S"));
         }
-
-        super.encodeEnd(context, component);
     }
 
     protected void encodeDateMetadata(FacesContext context, DatePicker datePicker) throws IOException {
