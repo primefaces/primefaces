@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <h:head>
+    </h:head>
+    <h:body>
+        <h:form id="form">
+            <p:commandButton id="button" value="Ajax Update" update="@form"/>
+
+            <p:dataTable id="datatable" value="#{dataTable041.cars}" var="car" rowKey="#{car.number}">
+                <p:column style="width:2rem">
+                    <p:rowToggler/>
+                </p:column>
+
+                <p:column headerText="Car Name">
+                    <h:outputText id="name" value="#{car.name}" />
+                </p:column>
+
+                <p:rowExpansion>
+                    <p:dataTable var="subRow" value="#{dataTable041.loadExpansionTable(car)}" paginator="false" rowKey="#{subRow.number}">
+                        <f:facet name="header">
+                            Detail
+                        </f:facet>
+
+                        <p:column field="name" />
+                    </p:dataTable>
+                </p:rowExpansion>
+            </p:dataTable>
+        </h:form>
+    </h:body>
+</html>
