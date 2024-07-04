@@ -1250,26 +1250,6 @@
                             <goal>run</goal>
                         </goals>
                     </execution>
-                    <execution>
-                        <id>modify-jar</id>
-                        <phase>install</phase>
-                        <configuration>
-                            <skip>${maven.source.skip}</skip>
-                            <target>
-                                <!-- Unpack the JAR -->
-                                <unzip src="${project.build.directory}/${project.build.finalName}.jar" dest="${project.build.directory}/jar-contents"/>
-                                
-                                <!-- Delete the URN taglib.xml from the javax JAR -->
-                                <delete file="${project.build.directory}/jar-contents/META-INF/primefaces.urn.taglib.xml"/>
-                                
-                                <!-- Repack the JAR -->
-                                <jar destfile="${project.build.directory}/${project.build.finalName}.jar" basedir="${project.build.directory}/jar-contents"/>
-                            </target>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
                 </executions>
             </plugin>
             <plugin>
