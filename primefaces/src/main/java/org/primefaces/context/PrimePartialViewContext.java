@@ -32,6 +32,7 @@ import javax.faces.context.PartialViewContextWrapper;
 import javax.faces.event.PhaseId;
 
 import org.primefaces.config.PrimeConfiguration;
+import org.primefaces.config.PrimeEnvironment;
 import org.primefaces.csp.CspPartialResponseWriter;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
@@ -50,7 +51,11 @@ public class PrimePartialViewContext extends PartialViewContextWrapper {
     @Override
     public void processPartial(PhaseId phaseId) {
         if (phaseId == PhaseId.RENDER_RESPONSE) {
-            resetValues(FacesContext.getCurrentInstance());
+            // fixed in Faces 4.0+ https://github.com/jakartaee/faces/issues/1936
+            PrimeEnvironment environment = PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getEnvironment();
+            if (!environment.isAtLeastJsf40()) {
+                resetValues(FacesContext.getCurrentInstance());
+            }
         }
 
         getWrapped().processPartial(phaseId);
@@ -93,12 +98,14 @@ public class PrimePartialViewContext extends PartialViewContextWrapper {
     }
 
      /**
+     * Backwards compatible support for JSF 2.3 and below.
      * Visit the current renderIds and, if the component is
      * an instance of {@link EditableValueHolder},
      * call its {@link EditableValueHolder#resetValue} method.
      * Use {@link javax.faces.component.UIComponent#visitTree} to do the visiting.</p>
      *
      * @param context The current {@link FacesContext}.
+     * @see <a href="https://github.com/jakartaee/faces/issues/1936">Faces Issue #1936</a>
      */
     private void resetValues(FacesContext context) {
         Object resetValuesObject = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.RESET_VALUES_PARAM);

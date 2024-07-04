@@ -29,14 +29,36 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
 
+/**
+ * Backwards compatible support for JSF 2.3 and below.
+ * <p>
+ * This class is a callback implementation for resetting input values in JSF components.
+ * It implements the {@link ContextCallback} interface and is used to reset the value
+ * of {@link EditableValueHolder} components or visit their children if they are not
+ * instances of {@link EditableValueHolder}.
+ * @see <a href="https://github.com/jakartaee/faces/issues/1936">Faces Issue #1936</a>
+ */
 public class ResetInputContextCallback implements ContextCallback {
 
     private VisitContext visitContext;
 
+    /**
+     * Constructs a new ResetInputContextCallback with the given {@link VisitContext}.
+     *
+     * @param visitContext the visit context to be used for visiting component trees
+     */
     public ResetInputContextCallback(VisitContext visitContext) {
         this.visitContext = visitContext;
     }
 
+    /**
+     * Invokes the context callback on the given component. If the component is an instance
+     * of {@link EditableValueHolder}, its value is reset. Otherwise, the component's tree
+     * is visited using the {@link ResetInputVisitCallback} instance.
+     *
+     * @param fc the current {@link FacesContext}
+     * @param component the component on which to invoke the context callback
+     */
     @Override
     public void invokeContextCallback(FacesContext fc, UIComponent component) {
         if (component instanceof EditableValueHolder) {
