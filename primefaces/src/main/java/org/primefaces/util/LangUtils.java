@@ -84,18 +84,16 @@ public class LangUtils {
      * <p>Whitespace is defined by {@link Character#isWhitespace(char)}.</p>
      *
      * <pre>
-     * StringUtils.defaultIfBlank(null, "NULL")  = "NULL"
-     * StringUtils.defaultIfBlank("", "NULL")    = "NULL"
-     * StringUtils.defaultIfBlank(" ", "NULL")   = "NULL"
-     * StringUtils.defaultIfBlank("bat", "NULL") = "bat"
-     * StringUtils.defaultIfBlank("", null)      = null
+     * LangUtils.defaultIfBlank(null, "NULL")  = "NULL"
+     * LangUtils.defaultIfBlank("", "NULL")    = "NULL"
+     * LangUtils.defaultIfBlank(" ", "NULL")   = "NULL"
+     * LangUtils.defaultIfBlank("bat", "NULL") = "bat"
+     * LangUtils.defaultIfBlank("", null)      = null
      * </pre>
-     * @param <T> the specific kind of String
      * @param str the String to check, may be null
      * @param defaultStr  the default String to return
      *  if the input is whitespace, empty ("") or {@code null}, may be null
      * @return the passed in String, or the default
-     * @see StringUtils#defaultString(String, String)
      */
     public static String defaultIfBlank(final String str, final String defaultStr) {
         return isBlank(str) ? defaultStr : str;
