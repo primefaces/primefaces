@@ -25,11 +25,13 @@ package org.primefaces.component.api;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
+import javax.faces.application.ProjectStage;
 import javax.faces.application.StateManager;
 import javax.faces.component.*;
 import javax.faces.component.visit.VisitCallback;
@@ -39,7 +41,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PostValidateEvent;
 import javax.faces.event.PreValidateEvent;
-import javax.faces.model.*;
+import javax.faces.model.DataModel;
 import javax.faces.render.Renderer;
 
 import org.primefaces.component.column.Column;
@@ -80,18 +82,27 @@ public class UIData extends javax.faces.component.UIData {
     public boolean isLazy() {
         return ComponentUtils.eval(getStateHelper(), PropertyKeys.lazy, () -> {
             boolean lazy = false;
+            FacesContext context = getFacesContext();
 
-            // if not set by xhtml, we need to check the type of the value binding
-            Class<?> type = ELUtils.getType(getFacesContext(),
-                    getValueExpression("value"),
-                    () -> getValue());
-            if (type == null) {
-                LOGGER.warning("Unable to automatically determine the `lazy` attribute, fallback to false. "
-                        + "Either define the `lazy` attribute on the component or make sure the `value` attribute doesn't resolve to `null`. "
-                        + "clientId: " + this.getClientId());
+            try {
+                // if not set by xhtml, we need to check the type of the value binding
+                Class<?> type = ELUtils.getType(context, getValueExpression("value"), () -> getValue());
+
+                if (type == null) {
+                    if (LOGGER.isLoggable(Level.WARNING) && context.isProjectStage(ProjectStage.Development)) {
+                        LOGGER.warning("Unable to automatically determine the `lazy` attribute, fallback to false. "
+                                + "Either define the `lazy` attribute on the component or make sure the `value` attribute doesn't resolve to `null`. "
+                                + "clientId: " + getClientId());
+                    }
+                }
+                else {
+                    lazy = LazyDataModel.class.isAssignableFrom(type);
+                }
             }
-            else {
-                lazy = LazyDataModel.class.isAssignableFrom(type);
+            catch (Exception e) {
+                LOGGER.severe("Exception occurred while determining the `lazy` attribute, fallback to false. "
+                            + "To prevent this error set the `lazy` property directly on the component. "
+                            + "Error: " + e.getMessage() + ". clientId: " + getClientId());
             }
 
             // remember in ViewState, to not do the same check again

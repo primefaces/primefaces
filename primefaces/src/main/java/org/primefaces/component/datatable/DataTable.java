@@ -261,9 +261,9 @@ public class DataTable extends DataTableBase {
         // restored filter-state if it was filtered in the previous request
         if (event instanceof PostRestoreStateEvent
                 && this == event.getComponent()
-                && !isLazy()
                 && isFilteringEnabled()
-                && isFilteringCurrentlyActive()) {
+                && isFilteringCurrentlyActive()
+                && !isLazy()) {
 
             // restore "value" from "filteredValue" - we must work on filtered data
             // in future we might remember filtered rowKeys and skip them while rendering instead of doing it this way

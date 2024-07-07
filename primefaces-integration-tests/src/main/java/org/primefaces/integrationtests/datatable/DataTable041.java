@@ -23,16 +23,18 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-
-import javax.annotation.PostConstruct;
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.PostConstruct;
+import javax.faces.FacesException;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
+
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Named
 @ViewScoped
@@ -51,8 +53,14 @@ public class DataTable041 implements Serializable {
         cars.add(new Car(5, "Entry_5", 3000d));
     }
 
-    @Getter
-    @Setter
+    public List<Car> loadExpansionTable(Car car) {
+        if (car == null) {
+            throw new FacesException("GitHub #12254 was reverted as this should not throw an error on AJAX update!");
+        }
+        return cars;
+    }
+
+    @Getter @Setter
     public static class Car implements Serializable {
         private Integer number;
         private String name;
