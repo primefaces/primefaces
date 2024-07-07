@@ -1225,6 +1225,33 @@
                     </dependency>
                 </dependencies>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>xml-maven-plugin</artifactId>
+                <version>1.1.0</version>
+                <executions>
+                    <execution>
+                        <id>minify-xml</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>transform</goal>
+                        </goals>
+                        <configuration>
+                            <skip>${xml.formatter.skip}</skip>
+                            <transformationSets>
+                                <transformationSet>
+                                    <dir>${project.build.directory}/classes/META-INF/</dir>
+                                    <outputDir>${project.build.directory}/classes/META-INF/</outputDir>
+                                    <stylesheet>${project.basedir}/../conf/minify.xslt</stylesheet>
+                                    <includes>
+                                        <include>*.xml</include>
+                                    </includes>
+                                </transformationSet>
+                            </transformationSets>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <!-- Rename the copied XML file -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -1270,6 +1297,7 @@
                 <maven.source.skip>true</maven.source.skip>
                 <jakarta.jar.skip>false</jakarta.jar.skip>
                 <checkstyle.skip>true</checkstyle.skip>
+                <xml.formatter.skip>true</xml.formatter.skip>
                 <license.skipCheckLicense>true</license.skipCheckLicense>
                 <license.skipAddThirdParty>true</license.skipAddThirdParty>
                 <license.skipAggregateDownloadLicenses>true</license.skipAggregateDownloadLicenses>
