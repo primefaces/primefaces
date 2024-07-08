@@ -56,6 +56,7 @@ public abstract class TreeBase extends UITree implements Widget, RTLAware, Clien
         filterFunction,
         filterMatchMode,
         filterMode,
+        filterPlaceholder,
         highlight,
         multipleDrag,
         onDrop,
@@ -299,5 +300,13 @@ public abstract class TreeBase extends UITree implements Widget, RTLAware, Clien
 
     public void setFilterDelay(int filterDelay) {
         getStateHelper().put(PropertyKeys.filterDelay, filterDelay);
+    }
+
+    public java.lang.String getFilterPlaceholder() {
+        return (String) getStateHelper().eval(PropertyKeys.filterPlaceholder, null);
+    }
+
+    public void setFilterPlaceholder(String filterPlaceholder) {
+        getStateHelper().put(PropertyKeys.filterPlaceholder, filterPlaceholder);
     }
 }

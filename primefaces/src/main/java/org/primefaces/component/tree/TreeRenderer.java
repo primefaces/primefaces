@@ -23,8 +23,11 @@
  */
 package org.primefaces.component.tree;
 
+import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
+
 import java.io.IOException;
 import java.util.*;
+
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -42,7 +45,6 @@ import org.primefaces.model.filter.FunctionFilterConstraint;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.util.*;
-import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
 
 public class TreeRenderer extends CoreRenderer {
 
@@ -434,6 +436,10 @@ public class TreeRenderer extends CoreRenderer {
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
         writer.writeAttribute("class", Tree.FILTER_CLASS, null);
+
+        if (LangUtils.isNotBlank(tree.getFilterPlaceholder())) {
+            writer.writeAttribute("placeholder", tree.getFilterPlaceholder(), null);
+        }
         writer.endElement("input");
 
         writer.startElement("span", null);

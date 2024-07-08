@@ -40,6 +40,7 @@ filterEvent | keyup | String | Event triggering filter for input filter. If "ent
 filterFunction | null | MethodExpression | Custom implementation to filter TreeNodes against a constraint.
 filterMatchMode | startsWith | String | Match mode for filtering.
 filterMode | lenient | String | Mode for filtering valid values are lenient and strict. Default is lenient.
+filterPlaceholder | null | String  | Placeholder text to show when filter input is empty.
 highlight | true | Boolean | Highlights nodes on hover when selection is enabled.
 multipleDrag | false | Boolean | When enabled, the selected multiple nodes can be dragged from a tree to another tree.
 nodeVar | null | String | Name of the request-scoped variable that'll be used to refer current treenode using EL.
