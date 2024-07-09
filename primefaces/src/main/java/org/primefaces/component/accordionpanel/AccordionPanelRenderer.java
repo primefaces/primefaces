@@ -37,11 +37,7 @@ import org.primefaces.component.menu.Menu;
 import org.primefaces.component.panel.Panel;
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.FacetUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.SharedStringBuilder;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.*;
 
 public class AccordionPanelRenderer extends CoreRenderer {
 
@@ -131,8 +127,6 @@ public class AccordionPanelRenderer extends CoreRenderer {
         if (acco.getStyle() != null) {
             writer.writeAttribute("style", acco.getStyle(), null);
         }
-
-        writer.writeAttribute("role", "tablist", null);
 
         writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
 
@@ -251,9 +245,9 @@ public class AccordionPanelRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId + "_header", null);
         writer.writeAttribute("class", headerStyleClass, null);
-        writer.writeAttribute("role", "tab", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, "button", null);
         writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(active), null);
-        writer.writeAttribute(HTML.ARIA_SELECTED, String.valueOf(active), null);
+        writer.writeAttribute(HTML.ARIA_CONTROLS, clientId, null);
         writer.writeAttribute(HTML.ARIA_LABEL, tab.getAriaLabel(), null);
         writer.writeAttribute("tabindex", tabindex, null);
         if (tab.getTitleStyle() != null) {
@@ -299,7 +293,8 @@ public class AccordionPanelRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", contentStyleClass, null);
-        writer.writeAttribute("role", "tabpanel", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, "region", null);
+        writer.writeAttribute(HTML.ARIA_LABELLEDBY, clientId + "_header", null);
         writer.writeAttribute(HTML.ARIA_HIDDEN, String.valueOf(!active), null);
 
         if (dynamic) {
