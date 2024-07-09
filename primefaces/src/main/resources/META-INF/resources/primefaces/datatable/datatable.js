@@ -2792,25 +2792,25 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     selectRowsInRange: function(row, silent) {
         var rows = this.tbody.children(),
-        rowMeta = this.getRowMeta(row),
-        newCursorIndex = this.originRowMeta.index;
-        $this = this;
+            rowMeta = this.getRowMeta(row),
+            offset = (this.cfg.paginator && this.cfg.paginator.page >= 0) ? this.cfg.paginator.rows * this.cfg.paginator.page : 0,
+            newCursorIndex = offset > this.originRowMeta.index ? this.originRowMeta.index : this.originRowMeta.index - offset,
+            currentIndex = offset > rowMeta.index ? rowMeta.index : rowMeta.index - offset,
+            $this = this;
 
-        //unselect previously selected rows with shift
-        if(this.cursorRowMeta !== null) {
+        // Unselect previously selected rows with shift
+        if (this.cursorRowMeta !== null) {
             var oldCursorIndex = this.cursorRowMeta.index,
-            rowsToUnselect = oldCursorIndex > newCursorIndex ? rows.slice(newCursorIndex, oldCursorIndex + 1) : rows.slice(oldCursorIndex, newCursorIndex + 1);
+                rowsToUnselect = rows.slice(Math.min(oldCursorIndex, newCursorIndex), Math.max(oldCursorIndex, newCursorIndex) + 1);
 
             rowsToUnselect.each(function(i, item) {
                 $this.unselectRow($(item), true);
             });
         }
 
-        //select rows between cursor and origin
+        // Select rows between cursor and origin
         this.cursorRowMeta = rowMeta;
-        var currentIndex = rowMeta.index;
-
-        var rowsToSelect = currentIndex > newCursorIndex ? rows.slice(newCursorIndex, currentIndex + 1) : rows.slice(currentIndex, newCursorIndex + 1);
+        var rowsToSelect = rows.slice(Math.min(currentIndex, newCursorIndex), Math.max(currentIndex, newCursorIndex) + 1);
 
         rowsToSelect.each(function(i, item) {
             $this.selectRow($(item), true);
