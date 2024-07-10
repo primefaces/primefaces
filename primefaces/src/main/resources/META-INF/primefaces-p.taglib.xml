@@ -8759,11 +8759,11 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Align frozen Columns right, default is false.]]>
+                <![CDATA[Defines the alignment of frozen columns, valid values are 'left' and 'right', default is 'left']]>
             </description>
-            <name>alignFrozenColumnsRight</name>
+            <name>frozenColumnsAlignment</name>
             <required>false</required>
-            <type>java.lang.Boolean</type>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>

@@ -192,6 +192,7 @@ public class DataTableRenderer extends DataRenderer {
                     .attr("scrollWidth", table.getScrollWidth(), null)
                     .attr("scrollHeight", table.getScrollHeight(), null)
                     .attr("frozenColumns", table.getFrozenColumns(), 0)
+                    .attr("frozenColumnsAlignment", table.getFrozenColumnsAlignment(), "left")
                     .attr("liveScrollBuffer", table.getLiveScrollBuffer())
                     .attr("virtualScroll", table.isVirtualScroll())
                     .attr("touchable", false,  true);
@@ -432,7 +433,7 @@ public class DataTableRenderer extends DataRenderer {
             writer.startElement("tbody", null);
             writer.startElement("tr", null);
 
-            if (table.isAlignFrozenColumnsRight()) {
+            if (table.getFrozenColumnsAlignment().equals("right")) {
                 encodeScrollableArea(context, table, 0, columnsCount - lastFrozenColumn, tableStyle, tableStyleClass, isVirtualScroll, clientId);
                 encodeFrozenArea(context, table, columnsCount - lastFrozenColumn, columnsCount, tableStyle, tableStyleClass, isVirtualScroll, clientId);
             }
