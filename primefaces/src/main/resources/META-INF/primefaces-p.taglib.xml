@@ -8759,6 +8759,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Align frozen Columns right, default is false.]]>
+            </description>
+            <name>alignFrozenColumnsRight</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[When enabled, rows can be reordered using dragdrop.]]>
             </description>
             <name>draggableRows</name>

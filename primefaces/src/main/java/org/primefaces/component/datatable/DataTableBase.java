@@ -67,6 +67,7 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         filterEvent,
         filteredValue,
         frozenColumns,
+        alignFrozenColumnsRight,
         frozenRows,
         globalFilter,
         globalFilterFunction,
@@ -461,6 +462,14 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
 
     public void setFrozenColumns(int frozenColumns) {
         getStateHelper().put(PropertyKeys.frozenColumns, frozenColumns);
+    }
+
+    public boolean isAlignFrozenColumnsRight() {
+        return (boolean) getStateHelper().eval(PropertyKeys.alignFrozenColumnsRight, false);
+    }
+
+    public void setAlignFrozenColumnsRight(boolean alignFrozenColumnsRight) {
+        getStateHelper().put(PropertyKeys.alignFrozenColumnsRight, alignFrozenColumnsRight);
     }
 
     public boolean isDraggableRows() {
