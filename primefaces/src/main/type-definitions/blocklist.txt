@@ -53,5 +53,6 @@ locales/locale-sv.js
 locales/locale-th.js
 locales/locale-tr.js
 locales/locale-uk.js
+locales/locale-uz.js
 locales/locale-vi.js
 locales/locale-zh.js

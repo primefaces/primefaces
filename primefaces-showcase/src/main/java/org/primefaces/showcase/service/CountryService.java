@@ -117,6 +117,7 @@ public class CountryService {
         locales.add(CountryService.toCountry(new Locale("th", "TH")));
         locales.add(CountryService.toCountry(new Locale("tr", "TR")));
         locales.add(CountryService.toCountry(new Locale("uk", "UA")));
+        locales.add(CountryService.toCountry(new Locale("uz", "UZ")));
         locales.add(CountryService.toCountry(new Locale("vi", "VN")));
         locales.add(CountryService.toCountry(Locale.SIMPLIFIED_CHINESE));
         locales.add(CountryService.toCountry(Locale.TRADITIONAL_CHINESE));
