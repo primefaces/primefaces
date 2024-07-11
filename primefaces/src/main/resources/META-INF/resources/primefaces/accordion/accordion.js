@@ -65,8 +65,8 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
 
             if (stateHolderVal != null && stateHolderVal.length > 0) {
                 var indexes = this.stateHolder.val().split(',');
-                for (var i = 0; i < indexes.length; i++) {
-                    this.cfg.active.push(parseInt(indexes[i]));
+                for (const index of indexes) {
+                    this.cfg.active.push(parseInt(index));
                 }
             }
         }
@@ -137,18 +137,58 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     bindKeyEvents: function() {
-        this.headers.on('focus.accordion', function() {
-            $(this).addClass('ui-tabs-outline');
-        })
-            .on('blur.accordion', function() {
+        var $this = this;
+        this.headers.on({
+            'focus.accordion': function() {
+                $(this).addClass('ui-tabs-outline');
+            },
+            'blur.accordion': function() {
                 $(this).removeClass('ui-tabs-outline');
-            })
-            .on('keydown.accordion', function(e) {
-                if (PrimeFaces.utils.isActionKey(e)) {
-                    $(this).trigger('click');
-                    e.preventDefault();
-                }
-            });
+            },
+            'keydown.accordion': function(e) {
+                var currentHeader = $(this);
+                var index = 0;
+                switch (e.code) {
+                    case 'Enter':
+                    case 'NumpadEnter':
+                    case 'Space':
+                        currentHeader.trigger('click');
+                        e.preventDefault();
+                        break;
+                    case 'PageUp':
+                    case 'Home':
+                        $this.headers.first().trigger('focus');
+                        e.preventDefault();
+                        break;
+                    case 'PageDown':
+                    case 'End':
+                        $this.headers.last().trigger('focus');
+                        e.preventDefault();
+                        break;
+                    case 'ArrowDown':
+                        index = $this.headers.index(currentHeader) + 1;
+                        while (index < $this.headers.length && !$this.headers.eq(index).is(':visible')) {
+                            index++;
+                        }
+                        if (index < $this.headers.length) {
+                            $this.headers.eq(index).trigger('focus');
+                        }
+                        e.preventDefault();
+                        break;
+                        
+                    case 'ArrowUp':
+                        index = $this.headers.index(currentHeader) - 1;
+                        while (index < $this.headers.length && !$this.headers.eq(index).is(':visible')) {
+                            index--;
+                        }
+                        if (index >= 0) {
+                            $this.headers.eq(index).trigger('focus');
+                        }
+                        e.preventDefault();
+                        break;
+                };
+            }
+        });
     },
 
     /**
@@ -156,14 +196,16 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     markLoadedPanels: function() {
-        if (this.cfg.multiple) {
-            for (var i = 0; i < this.cfg.active.length; i++) {
-                if (this.cfg.active[i] >= 0)
-                    this.markAsLoaded(this.panels.eq(this.cfg.active[i]));
+        const markPanelAsLoaded = (index) => {
+            if (index >= 0) {
+                this.markAsLoaded(this.panels.eq(index));
             }
+        };
+
+        if (this.cfg.multiple) {
+            this.cfg.active.forEach(markPanelAsLoaded);
         } else {
-            if (this.cfg.active >= 0)
-                this.markAsLoaded(this.panels.eq(this.cfg.active));
+            markPanelAsLoaded(this.cfg.active);
         }
     },
 
@@ -202,16 +244,12 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
         if (shouldLoad) {
             this.loadDynamicTab(panel);
         }
+        else if (this.cfg.controlled) {
+            this.fireTabChangeEvent(panel);
+        }
         else {
-            if (this.cfg.controlled) {
-                this.fireTabChangeEvent(panel);
-            }
-            else {
-                this.show(panel);
-
-                this.fireTabChangeEvent(panel);
-            }
-
+            this.show(panel);
+            this.fireTabChangeEvent(panel);
         }
 
         return true;
@@ -275,7 +313,6 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
         if (!this.cfg.multiple) {
             var oldHeader = this.headers.filter('.ui-state-active');
             oldHeader.children('.ui-icon').removeClass(this.cfg.expandedIcon).addClass(this.cfg.collapsedIcon);
-            oldHeader.attr('aria-selected', false);
             oldHeader.attr('aria-expanded', false).removeClass('ui-state-active ui-corner-top').addClass('ui-corner-all')
                 .next().attr('aria-hidden', true).slideUp(this.cfg.toggleSpeed, function() {
                     if ($this.cfg.onTabClose)
@@ -285,7 +322,6 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
 
         //activate selected
         var newHeader = panel.prev();
-        newHeader.attr('aria-selected', true);
         newHeader.attr('aria-expanded', true).addClass('ui-state-active ui-corner-top').removeClass('ui-state-hover ui-corner-all')
             .children('.ui-icon').removeClass(this.cfg.collapsedIcon).addClass(this.cfg.expandedIcon);
 
@@ -304,7 +340,6 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
             panel = this.panels.eq(index),
             header = panel.prev();
 
-        header.attr('aria-selected', false);
         header.attr('aria-expanded', false).children('.ui-icon').removeClass(this.cfg.expandedIcon).addClass(this.cfg.collapsedIcon);
         header.removeClass('ui-state-active ui-corner-top').addClass('ui-corner-all');
         panel.attr('aria-hidden', true).slideUp(this.cfg.toggleSpeed, function() {
@@ -464,7 +499,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
      * @return {boolean} `true` if the content of the tab panel is loaded, `false` otherwise.
      */
     isLoaded: function(panel) {
-        return panel.data('loaded') == true;
+        return panel.data('loaded') === true;
     },
 
     /**
