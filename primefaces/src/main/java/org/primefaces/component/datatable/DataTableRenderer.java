@@ -433,7 +433,7 @@ public class DataTableRenderer extends DataRenderer {
             writer.startElement("tbody", null);
             writer.startElement("tr", null);
 
-            if (table.getFrozenColumnsAlignment().equals("right")) {
+            if ("right".equalsIgnoreCase(table.getFrozenColumnsAlignment())) {
                 encodeScrollableArea(context, table, 0, columnsCount - lastFrozenColumn, tableStyle, tableStyleClass, isVirtualScroll, clientId);
                 encodeFrozenArea(context, table, columnsCount - lastFrozenColumn, columnsCount, tableStyle, tableStyleClass, isVirtualScroll, clientId);
             }
