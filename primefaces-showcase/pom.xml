@@ -18,7 +18,7 @@
 
     <properties>
         <hibernate-validator.version>8.0.1.Final</hibernate-validator.version>
-        <mojarra.version>4.0.7</mojarra.version>
+        <mojarra.version>4.1.1</mojarra.version>
         <myfaces.version>4.0.2</myfaces.version>
         <resteasy.version>6.2.8.Final</resteasy.version>
         <jetty.version>12.0.11</jetty.version>

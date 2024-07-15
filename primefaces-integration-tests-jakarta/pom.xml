@@ -370,7 +370,7 @@
                 <dependency>
                     <groupId>org.glassfish</groupId>
                     <artifactId>jakarta.faces</artifactId>
-                    <version>4.0.6</version>
+                    <version>4.1.1</version>
                 </dependency>
             </dependencies>
         </profile>
