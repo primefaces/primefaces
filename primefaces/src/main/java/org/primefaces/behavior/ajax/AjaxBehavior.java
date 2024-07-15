@@ -94,184 +94,184 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
     }
 
     public boolean isDisabled() {
-        return eval(PropertyKeys.disabled, Boolean.FALSE);
+        return attributeHandler.eval(PropertyKeys.disabled, Boolean.FALSE);
     }
 
     public void setDisabled(boolean disabled) {
-        put(PropertyKeys.disabled, disabled);
+        attributeHandler.put(PropertyKeys.disabled, disabled);
     }
 
     @Override
     public boolean isAsync() {
-        return eval(PropertyKeys.async, Boolean.FALSE);
+        return attributeHandler.eval(PropertyKeys.async, Boolean.FALSE);
     }
 
     public void setAsync(boolean async) {
-        put(PropertyKeys.async, async);
+        attributeHandler.put(PropertyKeys.async, async);
     }
 
     @Override
     public boolean isGlobal() {
-        return eval(PropertyKeys.global, Boolean.TRUE);
+        return attributeHandler.eval(PropertyKeys.global, Boolean.TRUE);
     }
 
     public void setGlobal(boolean global) {
-        put(PropertyKeys.global, global);
+        attributeHandler.put(PropertyKeys.global, global);
     }
 
     @Override
     public String getOncomplete() {
-        return eval(PropertyKeys.oncomplete, null);
+        return attributeHandler.eval(PropertyKeys.oncomplete, null);
     }
 
     public void setOncomplete(String oncomplete) {
-        put(PropertyKeys.oncomplete, oncomplete);
+        attributeHandler.put(PropertyKeys.oncomplete, oncomplete);
     }
 
     @Override
     public String getOnstart() {
-        return eval(PropertyKeys.onstart, null);
+        return attributeHandler.eval(PropertyKeys.onstart, null);
     }
 
     public void setOnstart(String onstart) {
-        put(PropertyKeys.onstart, onstart);
+        attributeHandler.put(PropertyKeys.onstart, onstart);
     }
 
     @Override
     public String getOnsuccess() {
-        return eval(PropertyKeys.onsuccess, null);
+        return attributeHandler.eval(PropertyKeys.onsuccess, null);
     }
 
     public void setOnsuccess(String onsuccess) {
-        put(PropertyKeys.onsuccess, onsuccess);
+        attributeHandler.put(PropertyKeys.onsuccess, onsuccess);
     }
 
     @Override
     public String getOnerror() {
-        return eval(PropertyKeys.onerror, null);
+        return attributeHandler.eval(PropertyKeys.onerror, null);
     }
 
     public void setOnerror(String onerror) {
-        put(PropertyKeys.onerror, onerror);
+        attributeHandler.put(PropertyKeys.onerror, onerror);
     }
 
     @Override
     public String getProcess() {
-        return eval(PropertyKeys.process, null);
+        return attributeHandler.eval(PropertyKeys.process, null);
     }
 
     public void setProcess(String process) {
-        put(PropertyKeys.process, process);
+        attributeHandler.put(PropertyKeys.process, process);
     }
 
     @Override
     public String getUpdate() {
-        return eval(PropertyKeys.update, null);
+        return attributeHandler.eval(PropertyKeys.update, null);
     }
 
     public void setUpdate(String update) {
-        put(PropertyKeys.update, update);
+        attributeHandler.put(PropertyKeys.update, update);
     }
 
     @Override
     public String getDelay() {
-        return eval(PropertyKeys.delay, null);
+        return attributeHandler.eval(PropertyKeys.delay, null);
     }
 
     public void setDelay(String delay) {
-        put(PropertyKeys.delay, delay);
+        attributeHandler.put(PropertyKeys.delay, delay);
     }
 
     public boolean isImmediate() {
-        return eval(PropertyKeys.immediate, Boolean.FALSE);
+        return attributeHandler.eval(PropertyKeys.immediate, Boolean.FALSE);
     }
 
     public void setImmediate(Boolean immediate) {
-        put(PropertyKeys.immediate, immediate);
+        attributeHandler.put(PropertyKeys.immediate, immediate);
     }
 
     @Override
     public boolean isIgnoreAutoUpdate() {
-        return eval(PropertyKeys.ignoreAutoUpdate, Boolean.FALSE);
+        return attributeHandler.eval(PropertyKeys.ignoreAutoUpdate, Boolean.FALSE);
     }
 
     public void setIgnoreAutoUpdate(boolean ignoreAutoUpdate) {
-        put(PropertyKeys.ignoreAutoUpdate, ignoreAutoUpdate);
+        attributeHandler.put(PropertyKeys.ignoreAutoUpdate, ignoreAutoUpdate);
     }
 
     @Override
     public boolean isPartialSubmit() {
-        return eval(PropertyKeys.partialSubmit, Boolean.FALSE);
+        return attributeHandler.eval(PropertyKeys.partialSubmit, Boolean.FALSE);
     }
 
     public void setPartialSubmit(boolean partialSubmit) {
-        put(PropertyKeys.partialSubmit, partialSubmit);
+        attributeHandler.put(PropertyKeys.partialSubmit, partialSubmit);
     }
 
     @Override
     public boolean isResetValues() {
-        return eval(PropertyKeys.resetValues, Boolean.FALSE);
+        return attributeHandler.eval(PropertyKeys.resetValues, Boolean.FALSE);
     }
 
     public void setResetValues(boolean resetValues) {
-        put(PropertyKeys.resetValues, resetValues);
+        attributeHandler.put(PropertyKeys.resetValues, resetValues);
     }
 
     public MethodExpression getListener() {
-        return eval(PropertyKeys.listener, null);
+        return attributeHandler.eval(PropertyKeys.listener, null);
     }
 
     public void setListener(MethodExpression listener) {
-        put(PropertyKeys.listener, listener);
+        attributeHandler.put(PropertyKeys.listener, listener);
     }
 
     @Override
     public int getTimeout() {
-        return eval(PropertyKeys.timeout, 0);
+        return attributeHandler.eval(PropertyKeys.timeout, 0);
     }
 
     public void setTimeout(int timeout) {
-        put(PropertyKeys.timeout, timeout);
+        attributeHandler.put(PropertyKeys.timeout, timeout);
     }
 
     @Override
     public String getPartialSubmitFilter() {
-        return eval(PropertyKeys.partialSubmitFilter, null);
+        return attributeHandler.eval(PropertyKeys.partialSubmitFilter, null);
     }
 
     public void setPartialSubmitFilter(String partialSubmitFilter) {
-        put(PropertyKeys.partialSubmitFilter, partialSubmitFilter);
+        attributeHandler.put(PropertyKeys.partialSubmitFilter, partialSubmitFilter);
     }
 
     @Override
     public String getForm() {
-        return eval(PropertyKeys.form, null);
+        return attributeHandler.eval(PropertyKeys.form, null);
     }
 
     public void setForm(String form) {
-        put(PropertyKeys.form, form);
+        attributeHandler.put(PropertyKeys.form, form);
     }
 
     public boolean isSkipChildren() {
-        return eval(PropertyKeys.skipChildren, Boolean.TRUE);
+        return attributeHandler.eval(PropertyKeys.skipChildren, Boolean.TRUE);
     }
 
     public void setSkipChildren(Boolean skipChildren) {
-        put(PropertyKeys.skipChildren, skipChildren);
+        attributeHandler.put(PropertyKeys.skipChildren, skipChildren);
     }
 
     public boolean isImmediateSet() {
-        return isAttributeSet(PropertyKeys.immediate);
+        return attributeHandler.isAttributeSet(PropertyKeys.immediate);
     }
 
     @Override
     public boolean isPartialSubmitSet() {
-        return isAttributeSet(PropertyKeys.partialSubmit);
+        return attributeHandler.isAttributeSet(PropertyKeys.partialSubmit);
     }
 
     @Override
     public boolean isResetValuesSet() {
-        return isAttributeSet(PropertyKeys.resetValues);
+        return attributeHandler.isAttributeSet(PropertyKeys.resetValues);
     }
 
     @Override
@@ -281,11 +281,11 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
 
     @Override
     public boolean isIgnoreComponentNotFound() {
-        return eval(PropertyKeys.ignoreComponentNotFound, Boolean.FALSE);
+        return attributeHandler.eval(PropertyKeys.ignoreComponentNotFound, Boolean.FALSE);
     }
 
     public void setIgnoreComponentNotFound(Boolean ignoreComponentNotFound) {
-        put(PropertyKeys.ignoreComponentNotFound, ignoreComponentNotFound);
+        attributeHandler.put(PropertyKeys.ignoreComponentNotFound, ignoreComponentNotFound);
     }
 
     @Override

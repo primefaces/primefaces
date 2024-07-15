@@ -83,18 +83,18 @@ public class PrinterBehavior extends AbstractBehavior {
     }
 
     public String getTarget() {
-        return eval(PropertyKeys.target, null);
+        return attributeHandler.eval(PropertyKeys.target, null);
     }
 
     public void setTarget(String target) {
-        put(PropertyKeys.target, target);
+        attributeHandler.put(PropertyKeys.target, target);
     }
 
     public String getConfiguration() {
-        return eval(PropertyKeys.configuration, null);
+        return attributeHandler.eval(PropertyKeys.configuration, null);
     }
 
     public void setConfiguration(String configuration) {
-        put(PropertyKeys.configuration, configuration);
+        attributeHandler.put(PropertyKeys.configuration, configuration);
     }
 }

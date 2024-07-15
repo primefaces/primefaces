@@ -135,114 +135,114 @@ public class ConfirmBehavior extends AbstractBehavior {
     }
 
     public String getSource() {
-        return eval(PropertyKeys.source, null);
+        return attributeHandler.eval(PropertyKeys.source, null);
     }
 
     public void setSource(String source) {
-        put(PropertyKeys.source, source);
+        attributeHandler.put(PropertyKeys.source, source);
     }
 
     public String getType() {
-        return eval(PropertyKeys.type, "dialog");
+        return attributeHandler.eval(PropertyKeys.type, "dialog");
     }
 
     public void setType(String type) {
-        put(PropertyKeys.type, type);
+        attributeHandler.put(PropertyKeys.type, type);
     }
 
     public String getHeader() {
-        return eval(PropertyKeys.header, null);
+        return attributeHandler.eval(PropertyKeys.header, null);
     }
 
     public void setHeader(String header) {
-        put(PropertyKeys.header, header);
+        attributeHandler.put(PropertyKeys.header, header);
     }
 
     public String getMessage() {
-        return eval(PropertyKeys.message, null);
+        return attributeHandler.eval(PropertyKeys.message, null);
     }
 
     public void setMessage(String message) {
-        put(PropertyKeys.message, message);
+        attributeHandler.put(PropertyKeys.message, message);
     }
 
     public String getIcon() {
-        return eval(PropertyKeys.icon, null);
+        return attributeHandler.eval(PropertyKeys.icon, null);
     }
 
     public void setIcon(String icon) {
-        put(PropertyKeys.icon, icon);
+        attributeHandler.put(PropertyKeys.icon, icon);
     }
 
     public boolean isDisabled() {
-        return eval(PropertyKeys.disabled, Boolean.FALSE);
+        return attributeHandler.eval(PropertyKeys.disabled, Boolean.FALSE);
     }
 
     public void setDisabled(boolean disabled) {
-        put(PropertyKeys.disabled, disabled);
+        attributeHandler.put(PropertyKeys.disabled, disabled);
     }
 
     public String getBeforeShow() {
-        return eval(PropertyKeys.beforeShow, null);
+        return attributeHandler.eval(PropertyKeys.beforeShow, null);
     }
 
     public void setBeforeShow(String beforeShow) {
-        put(PropertyKeys.beforeShow, beforeShow);
+        attributeHandler.put(PropertyKeys.beforeShow, beforeShow);
     }
 
     public boolean isEscape() {
-        return eval(PropertyKeys.escape, Boolean.TRUE);
+        return attributeHandler.eval(PropertyKeys.escape, Boolean.TRUE);
     }
 
     public void setEscape(boolean escape) {
-        put(PropertyKeys.escape, escape);
+        attributeHandler.put(PropertyKeys.escape, escape);
     }
 
     public String getYesButtonLabel() {
-        return eval(PropertyKeys.yesButtonLabel, null);
+        return attributeHandler.eval(PropertyKeys.yesButtonLabel, null);
     }
 
     public void setYesButtonLabel(String yesButtonLabel) {
-        put(PropertyKeys.yesButtonLabel, yesButtonLabel);
+        attributeHandler.put(PropertyKeys.yesButtonLabel, yesButtonLabel);
     }
 
     public String getYesButtonClass() {
-        return eval(PropertyKeys.yesButtonClass, null);
+        return attributeHandler.eval(PropertyKeys.yesButtonClass, null);
     }
 
     public void setYesButtonClass(String yesButtonClass) {
-        put(PropertyKeys.yesButtonClass, yesButtonClass);
+        attributeHandler.put(PropertyKeys.yesButtonClass, yesButtonClass);
     }
 
     public String getYesButtonIcon() {
-        return eval(PropertyKeys.yesButtonIcon, null);
+        return attributeHandler.eval(PropertyKeys.yesButtonIcon, null);
     }
 
     public void setYesButtonIcon(String yesButtonIcon) {
-        put(PropertyKeys.yesButtonIcon, yesButtonIcon);
+        attributeHandler.put(PropertyKeys.yesButtonIcon, yesButtonIcon);
     }
 
     public String getNoButtonLabel() {
-        return eval(PropertyKeys.noButtonLabel, null);
+        return attributeHandler.eval(PropertyKeys.noButtonLabel, null);
     }
 
     public void setNoButtonLabel(String noButtonLabel) {
-        put(PropertyKeys.noButtonLabel, noButtonLabel);
+        attributeHandler.put(PropertyKeys.noButtonLabel, noButtonLabel);
     }
 
     public String getNoButtonClass() {
-        return eval(PropertyKeys.noButtonClass, null);
+        return attributeHandler.eval(PropertyKeys.noButtonClass, null);
     }
 
     public void setNoButtonClass(String noButtonClass) {
-        put(PropertyKeys.noButtonClass, noButtonClass);
+        attributeHandler.put(PropertyKeys.noButtonClass, noButtonClass);
     }
 
     public String getNoButtonIcon() {
-        return eval(PropertyKeys.noButtonIcon, null);
+        return attributeHandler.eval(PropertyKeys.noButtonIcon, null);
     }
 
     public void setNoButtonIcon(String noButtonIcon) {
-        put(PropertyKeys.noButtonIcon, noButtonIcon);
+        attributeHandler.put(PropertyKeys.noButtonIcon, noButtonIcon);
     }
 }

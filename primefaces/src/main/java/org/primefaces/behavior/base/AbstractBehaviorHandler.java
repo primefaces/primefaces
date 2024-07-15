@@ -169,10 +169,10 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
         if (attr != null) {
             String attributeName = attr.getLocalName();
             if (attr.isLiteral()) {
-                behavior.setLiteral(attributeName, attr.getObject(ctx, type));
+                behavior.getAttributeHandler().setLiteral(attributeName, attr.getObject(ctx, type));
             }
             else {
-                behavior.setValueExpression(attributeName, attr.getValueExpression(ctx, type));
+                behavior.getAttributeHandler().setValueExpression(attributeName, attr.getValueExpression(ctx, type));
             }
         }
     }

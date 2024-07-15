@@ -116,6 +116,7 @@
         </description>
         <validator>
             <validator-id>primefaces.File</validator-id>
+            <handler-class>org.primefaces.validate.base.PrimeValidatorHandler</handler-class>
         </validator>
         <attribute>
             <description>
