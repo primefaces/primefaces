@@ -30,8 +30,10 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
         this._super(cfg);
 
         this.trigger = this.jq.children('button');
+        this.cfg.appendTo = PrimeFaces.escapeClientId(this.trigger.attr("id"));
         this.cfg.disabled = this.trigger.is(':disabled');
         this.cfg.overlay = true;
+        this.menu = null;
 
         this.bindButtonEvents();
         PrimeFaces.utils.registerDynamicOverlay(this, this.getMenuElement(), this.id + '_menu');
