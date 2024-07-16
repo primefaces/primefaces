@@ -41,26 +41,12 @@ import jakarta.faces.context.FacesContext;
 
 import org.primefaces.util.LangUtils;
 
-/**
- * FileContentMarkerUtil
- *
- * @author Sébastien Lepage / last modified by $Author$
- * @version $Revision$
- * @since 6.3
- */
 public class FileContentMarkerUtil {
 
     private static final FileContentSettings JAVA_FILE_SETTINGS = new FileContentSettings()
             .setType("java")
             .setStartMarkers(
-                    Marker.of("@Named"),
-                    Marker.of("@RequestScoped"),
-                    Marker.of("@ViewScoped"),
-                    Marker.of("@SessionScoped"),
-                    Marker.of("@FacesConverter"),
-                    Marker.of("@Target"),
-                    Marker.of(" class "),
-                    Marker.of(" enum "),
+                    Marker.of("package "),
                     Marker.of("EXCLUDE-SOURCE-END").excluded())
             .setEndMarkers(Marker.of("EXCLUDE-SOURCE-START").excluded());
 
