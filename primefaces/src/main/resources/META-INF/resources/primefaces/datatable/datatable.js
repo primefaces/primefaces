@@ -88,6 +88,7 @@
  * @prop {boolean} ignoreRowHoverEvent Whether to ignore row hover event.
  * @prop {boolean} isRTL Whether the writing direction is set to right-to-left.
  * @prop {boolean} isRowTogglerClicked Whether a row toggler was clicked.
+ * @prop {Document | string} [jqTargetId] Target of the context menu, when a context menu is used.
  * @prop {boolean} liveScrollActive Whether live scrolling is currently active.
  * @prop {string[]} [loadedExpansionRows] List of row keys of the expansion rows that had their content
  * already loaded via AJAX.
@@ -1485,7 +1486,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     bindContextMenu : function(menuWidget, targetWidget, targetId, cfg) {
         var $this = this;
         var targetSelector = targetId + ' tbody.ui-datatable-data > tr.ui-widget-content';
-        var targetEvent = cfg.event + '.datatable' + this.id;
+        var targetEvent = cfg.event + '.row' + this.id;
+        var containerEvent = cfg.event + '.datatable' + this.id;
         this.contextMenuWidget = menuWidget;
 
         $(document).off(targetEvent, targetSelector).on(targetEvent, targetSelector, null, function(e) {
@@ -1510,8 +1512,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 $this.contextMenuWidget.show(e);
             }
         });
+        $(document).off(containerEvent, this.jqTargetId).on(containerEvent, this.jqTargetId, null, function(e) {
+            if (e.target.id == targetWidget.id + '_data') {
+                $this.contextMenuWidget.show(e);
+            }
+        });
         this.addDestroyListener(function() {
-            $(document).off(targetEvent);
+            $(document).off(targetEvent + ' ' + containerEvent);
         });
 
         if(this.cfg.scrollable && this.scrollBody) {
