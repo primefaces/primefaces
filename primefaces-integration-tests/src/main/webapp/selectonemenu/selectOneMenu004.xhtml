@@ -21,6 +21,7 @@
                 <f:selectItem itemLabel="PS4" itemValue="PS4" itemDescription="Playstation 4" />
                 <f:selectItem itemLabel="PS5" itemValue="PS5" itemDisabled="true" />
                 <f:selectItem itemLabel="Wii U" itemValue="Wii U" />
+                <f:selectItem itemLabel="Switch" itemValue="Switch" />
             </p:selectOneMenu>
 
             <p:selectOneMenu id="selectonemenu2" value="#{selectOneMenu004.console2}" dynamic="true">
@@ -29,6 +30,15 @@
                 <f:selectItem itemLabel="PS4" itemValue="PS4" itemDescription="Playstation 4" />
                 <f:selectItem itemLabel="PS5" itemValue="PS5" itemDisabled="true" />
                 <f:selectItem itemLabel="Wii U" itemValue="Wii U" />
+                <f:selectItem itemLabel="Switch" itemValue="Switch" />
+            </p:selectOneMenu>
+
+            <p:selectOneMenu id="selectonemenu3" value="#{selectOneMenu004.driver1}" dynamic="true" var="d">
+                <f:selectItem itemLabel="Select a driver" itemValue="" noSelectionOption="true" />
+                <f:selectItems value="#{selectOneMenu001.drivers}" var="driver" itemLabel="#{driver.name}" itemValue="#{driver.id}" />
+                <p:column>
+                    <span style="font-weight: bold;">#{d.name}</span> (#{d.id})
+                </p:column>
             </p:selectOneMenu>
 
             <p:commandButton id="button" update="@form" value="Submit" action="#{selectOneMenu004.submit()}" />

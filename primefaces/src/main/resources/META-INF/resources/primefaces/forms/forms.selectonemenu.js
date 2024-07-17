@@ -1417,9 +1417,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                     handle: function(content) {
                         var $content = $($.parseHTML(content));
 
-                        var $ul = $content.filter('ul');
+                        var $itemContent = $content.filter('ul, table');
                         $this.itemsWrapper.empty();
-                        $this.itemsWrapper.append($ul);
+                        $this.itemsWrapper.append($itemContent);
 
                         var $select = $content.filter('select');
                         $this.input.replaceWith($select);
