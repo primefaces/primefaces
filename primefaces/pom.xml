@@ -719,6 +719,10 @@
                                 <include>core/core.clientwindow.js</include>
                                 <include>ajaxstatus/ajaxstatus.js</include>
                                 <include>poll/poll.js</include>
+                                <include>validation/validation.common.js</include>
+                                <include>validation/validation.converters.js</include>
+                                <include>validation/validation.validators.js</include>
+                                <include>validation/validation.highlighters.js</include>
                             </includes>
                             <aggregations>
                                 <aggregation>
@@ -863,21 +867,6 @@
                                 <aggregation>
                                     <inputDir>${resources.dir.compressed}</inputDir>
                                     <outputFile>${resources.dir.compressed}/validation/validation.bv.js</outputFile>
-                                    <withoutCompress>${minify.disabled}</withoutCompress>
-                                </aggregation>
-                            </aggregations>
-                        </resourcesSet>
-                        <resourcesSet>
-                            <includes>
-                                <include>validation/validation.common.js</include>
-                                <include>validation/validation.converters.js</include>
-                                <include>validation/validation.validators.js</include>
-                                <include>validation/validation.highlighters.js</include>
-                            </includes>
-                            <aggregations>
-                                <aggregation>
-                                    <inputDir>${resources.dir.compressed}</inputDir>
-                                    <outputFile>${resources.dir.compressed}/validation/validation.js</outputFile>
                                     <withoutCompress>${minify.disabled}</withoutCompress>
                                 </aggregation>
                             </aggregations>
