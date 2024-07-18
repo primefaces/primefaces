@@ -23,6 +23,12 @@
  */
 package org.primefaces.integrationtests.selectonemenu;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.List;
+
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
@@ -36,10 +42,6 @@ import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.SelectOneMenu;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class SelectOneMenu004Test extends AbstractPrimePageTest {
 
@@ -66,15 +68,15 @@ class SelectOneMenu004Test extends AbstractPrimePageTest {
 
         // Assert
         List<WebElement> options = selectOneMenu.getItems().findElements(By.className("ui-selectonemenu-item"));
-        assertEquals(5, options.size());
+        assertEquals(6, options.size());
 
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
 
     @Test
     @Order(2)
-    @DisplayName("SelectOneMenu: dynamic - don´t loose selection on submit")
-    void dynamic2(Page page) {
+    @DisplayName("SelectOneMenu: dynamic - do NOT lose selection on submit")
+    void dynamicAjaxSunmit(Page page) {
         // Arrange
         SelectOneMenu selectOneMenu = page.selectOneMenu2;
 
@@ -84,6 +86,34 @@ class SelectOneMenu004Test extends AbstractPrimePageTest {
         // Assert
         assertTrue(page.messages.getMessage(0).getSummary().contains("console2"));
         assertTrue(page.messages.getMessage(0).getDetail().contains("PS4"));
+
+        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(3)
+    @DisplayName("SelectOneMenu: dynamic with advanced rendering- load items on demand")
+    void dynamicAdvancedRendering(Page page) {
+        // Arrange
+        SelectOneMenu selectOneMenu = page.selectOneMenu3;
+
+        // Assert
+        boolean contentPanelExists = false;
+        try {
+            selectOneMenu.getItems().getText();
+            contentPanelExists = true;
+        }
+        catch (NoSuchElementException ex) {
+
+        }
+        assertFalse(contentPanelExists);
+
+        // Act
+        selectOneMenu.toggleDropdown();
+
+        // Assert
+        List<WebElement> options = selectOneMenu.getTable().findElements(By.className("ui-selectonemenu-item"));
+        assertEquals(5, options.size());
 
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
@@ -103,6 +133,9 @@ class SelectOneMenu004Test extends AbstractPrimePageTest {
 
         @FindBy(id = "form:selectonemenu2")
         SelectOneMenu selectOneMenu2;
+
+        @FindBy(id = "form:selectonemenu3")
+        SelectOneMenu selectOneMenu3;
 
         @FindBy(id = "form:button")
         CommandButton button;
