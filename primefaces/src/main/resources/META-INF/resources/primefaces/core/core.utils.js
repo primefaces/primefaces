@@ -1093,20 +1093,22 @@ if (!PrimeFaces.utils) {
          */
         nextStickyZindex: function() {
             // Get the z-index of the highest visible sticky, or use PrimeFaces.nextZindex() + 1 if none found
-            var zIndex = $('.ui-sticky:visible').last().zIndex() || PrimeFaces.nextZindex() + 1;
+            var highestStickyZIndex = parseInt($('.ui-sticky:visible').last().zIndex()) || parseInt(PrimeFaces.nextZindex()) + 1;
 
             // GitHub #9295 Adjust z-index based on overlays
             var overlays = $('.ui-widget-overlay:visible');
             if (overlays.length) {
-                overlays.each(function() {
-                    var currentZIndex = $(this).zIndex() - 1;
-                    zIndex = Math.min(currentZIndex, zIndex);
+                overlays.each(function () {
+                    var overlayZIndex = parseInt($(this).zIndex()) - 1;
+                    highestStickyZIndex = Math.min(overlayZIndex, highestStickyZIndex);
                 });
+            } else {
+                // #12151 Adjust z-index for sticky elements when an overlay mask is not present
+                PrimeFaces.zindex = highestStickyZIndex - 1;
             }
 
             // Decrease zIndex by 1 and return
-            PrimeFaces.zindex = zIndex - 1;
-            return PrimeFaces.zindex;
+            return highestStickyZIndex - 1;
         },
         
         /**
