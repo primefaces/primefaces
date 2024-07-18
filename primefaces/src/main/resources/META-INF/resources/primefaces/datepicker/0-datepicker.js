@@ -55,6 +55,7 @@
             weekCalculator: null,
             showTime: false,
             timeOnly: false,
+            timeZone: null,
             showSeconds: false,
             showMilliseconds: false,
             hourFormat: '24',
@@ -194,7 +195,7 @@
             if (this.options.viewDate && !hasMultipleDates) {
                 this.viewDate = this.parseValue(this.options.viewDate);
                 if (!this.viewDate) {
-                    this.viewDate = new Date();
+                    this.viewDate = this.getNow();
                 }
             }
             else {
@@ -205,7 +206,7 @@
                     this.viewDate = parsedDefaultDate;
                 }
                 if (this.viewDate === null) {
-                    this.viewDate = new Date();
+                    this.viewDate = this.getNow();
                     if (!this.options.showSeconds && !this.options.showMilliseconds) {
                         this.viewDate.setSeconds(0);
                     }
@@ -217,7 +218,7 @@
             }
 
             // #6047 round to nearest stepMinute on even if editing using keyboard
-            this.viewDate = this.isDate(this.viewDate) ? new Date(this.viewDate) : new Date();
+            this.viewDate = this.isDate(this.viewDate) ? new Date(this.viewDate) : this.getNow();
             this.viewDate.setMinutes(this.stepMinute(this.viewDate.getMinutes()));
 
             this.options.minDate = this.parseMinMaxValue(this.options.minDate);
@@ -301,7 +302,7 @@
         },
 
         getFirstDayOfMonthIndex: function(month, year) {
-            var day = new Date();
+            var day = this.getNow();
             day.setDate(1);
             day.setMonth(month);
             day.setFullYear(year);
@@ -417,7 +418,7 @@
             daysLength = this.getDaysCountInMonth(month, year);
             prevMonthDaysLength = this.getDaysCountInPrevMonth(month, year);
             dayNo = 1;
-            today = new Date();
+            today = this.getNow();
             monthRows = Math.ceil((daysLength + firstDay) / 7);
 
             for (var i = 0; i < monthRows; i++) {
@@ -865,7 +866,7 @@
 
             var iFormat, dim, extra,
                 iValue = 0,
-                shortYearCutoff = (typeof this.options.shortYearCutoff !== "string" ? this.options.shortYearCutoff : new Date().getFullYear() % 100 + parseInt(this.options.shortYearCutoff, 10)),
+                shortYearCutoff = (typeof this.options.shortYearCutoff !== "string" ? this.options.shortYearCutoff : this.getNow().getFullYear() % 100 + parseInt(this.options.shortYearCutoff, 10)),
                 year = -1,
                 month = -1,
                 day = -1,
@@ -995,9 +996,9 @@
             }
 
             if (year === -1) {
-                year = new Date().getFullYear();
+                year = this.getNow().getFullYear();
             } else if (year < 100) {
-                year += new Date().getFullYear() - new Date().getFullYear() % 100 +
+                year += this.getNow().getFullYear() - this.getNow().getFullYear() % 100 +
                     (year <= shortYearCutoff ? 0 : -100);
             }
 
@@ -1059,7 +1060,7 @@
                 parts = text.split(' ');
 
             if (this.options.timeOnly) {
-                date = new Date();
+                date = this.getNow();
                 this.populateTime(date, parts[0], parts[1]);
             }
             else {
@@ -1346,7 +1347,7 @@
             var today = this.options.flex ? 'col-6 text-left' : 'ui-g-6';
             var clear = this.options.flex ? 'col-6 text-right' : 'ui-g-6';
             var todayLabel =  this.options.locale.today;
-            var now = new Date();
+            var now = this.getNow();
             var minDate = this.options.minDate;
             var maxDate = this.options.maxDate;
             var todayStyleClass = 'ui-today-button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only ' + this.options.todayButtonStyleClass;
@@ -2682,7 +2683,7 @@
                     var viewDate = $this.options.viewDate && !$this.value ?
                         $this.parseValue($this.options.viewDate)
                         :
-                        (((($this.isMultipleSelection() || $this.isRangeSelection()) && $this.value instanceof Array) ? $this.value[0] : $this.value) || $this.parseValue(new Date()));
+                        (((($this.isMultipleSelection() || $this.isRangeSelection()) && $this.value instanceof Array) ? $this.value[0] : $this.value) || $this.parseValue(this.getNow()));
 
                     if (viewDate instanceof Date) {
                         $this.updateViewDate(null, viewDate);
@@ -2916,7 +2917,7 @@
             var date = new Date(dateMeta.year, dateMeta.month, dateMeta.day);
 
             if (this.options.showTime) {
-                var time = this.isDate(this.value) ? this.value : new Date();
+                var time = this.isDate(this.value) ? this.value : this.getNow();
                 date.setHours(time.getHours());
                 date.setMinutes(this.stepMinute(time.getMinutes()));
                 date.setSeconds(time.getSeconds());
@@ -3121,7 +3122,7 @@
                 return;
             }
 
-            var newDateTime = this.isDate(this.value) ? new Date(this.value) : new Date();
+            var newDateTime = this.isDate(this.value) ? new Date(this.value) : this.getNow();
             newDateTime.setHours(newHours);
 
             this.updateTimeAfterInput(event, newDateTime);
@@ -3147,7 +3148,7 @@
                 return;
             }
 
-            var newDateTime = this.isDate(this.value) ? new Date(this.value) : new Date();
+            var newDateTime = this.isDate(this.value) ? new Date(this.value) : this.getNow();
             newDateTime.setMinutes(newMinutes);
 
             this.updateTimeAfterInput(event, newDateTime);
@@ -3173,7 +3174,7 @@
                 return;
             }
 
-            var newDateTime = this.isDate(this.value) ? new Date(this.value) : new Date();
+            var newDateTime = this.isDate(this.value) ? new Date(this.value) : this.getNow();
             newDateTime.setSeconds(newSeconds);
 
             this.updateTimeAfterInput(event, newDateTime);
@@ -3199,7 +3200,7 @@
                 return;
             }
 
-            var newDateTime = this.isDate(this.value) ? new Date(this.value) : new Date();
+            var newDateTime = this.isDate(this.value) ? new Date(this.value) : this.getNow();
             newDateTime.setMilliseconds(newMilliseconds);
 
             this.updateTimeAfterInput(event, newDateTime);
@@ -3235,7 +3236,7 @@
         },
 
         updateTime: function(event, hour, minute, second, millisecond) {
-            var newDateTime = this.isDate(this.value) ? new Date(this.value) : new Date();
+            var newDateTime = this.isDate(this.value) ? new Date(this.value) : this.getNow();
 
             newDateTime.setHours(hour);
             newDateTime.setMinutes(minute);
@@ -3260,13 +3261,57 @@
             }
         },
 
+        /**
+         * Gets the current date and time. If a time zone is specified in the options, 
+         * it returns the current date and time adjusted to that time zone.
+         * 
+         * @returns {Date} The current date and time.
+         */
+        getNow: function() {
+            var now = new Date();
+            if (this.options.timeZone) {
+                var jsTimezone = this.convertTimeZone(this.options.timeZone);
+                now = new Date(now.toLocaleString(undefined, { timeZone: jsTimezone }));
+            }
+            return now;
+        },
+
+        /**
+         * Converts a Java time zone string to an IANA time zone string.
+         * 
+         * @param {string} javaTimeZone - The Java time zone string to convert.
+         * @returns {string} The corresponding IANA time zone string.
+         * @throws {Error} If the input Java time zone string is in an invalid format.
+         */
+        convertTimeZone: function (javaTimeZone) {
+            if (!javaTimeZone || javaTimeZone.toUpperCase() === 'UTC' || /^(GMT|UTC)$/.test(javaTimeZone)) {
+                return javaTimeZone;
+            }
+
+            // Extract the sign and the offset (hours and minutes)
+            const matches = javaTimeZone.match(/^(GMT|UTC)([+-])(\d{2}):(\d{2})$/);
+            if (!matches) {
+                throw new Error('Invalid GMT/UTC format');
+            }
+
+            const sign = matches[2];
+            const hours = parseInt(matches[3]);
+
+            // Convert GMT offset to IANA time zone format
+            let ianaTimeZone = `Etc/GMT`;
+            if (hours !== 0) {
+                ianaTimeZone = `${ianaTimeZone}${sign === '+' ? '-' : '+'}${hours}`
+            }
+            return ianaTimeZone;
+        },
+
         onTodayButtonClick: function(event) {
-            var today = new Date(),
-                dateMeta = { day: today.getDate(), month: today.getMonth(), year: today.getFullYear(), today: true, selectable: true };
+            var today = this.getNow();
+            var dateMeta = { day: today.getDate(), month: today.getMonth(), year: today.getFullYear(), today: true, selectable: true };
 
             this.updateViewDate(event, today);
             if (this.options.showTime) {
-                this.updateTime(event, today, today.getMinutes(), today.getSeconds(), today.getMilliseconds());
+                this.updateTime(event, today.getHours(), today.getMinutes(), today.getSeconds(), today.getMilliseconds());
             }
             this.onDateSelect(event, dateMeta);
 
@@ -3276,7 +3321,7 @@
         },
 
         onClearButtonClick: function(event) {
-            this.updateViewDate(event, new Date());
+            this.updateViewDate(event, this.getNow());
             this.updateModel(event, null);
 
             if (this.options.onClearButtonClick) {
