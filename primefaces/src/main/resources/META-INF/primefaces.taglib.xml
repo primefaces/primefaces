@@ -613,7 +613,7 @@
         </description>
         <tag-name>clientValidator</tag-name>
         <behavior>
-            <behavior-id>org.primefaces.behavior.ClientValidator</behavior-id>
+            <behavior-id>org.primefaces.behavior.ClientValidatorBehavior</behavior-id>
         </behavior>
         <attribute>
             <description>Event to trigger the validation.</description>

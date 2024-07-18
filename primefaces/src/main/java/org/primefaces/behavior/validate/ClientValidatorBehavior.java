@@ -25,18 +25,20 @@ package org.primefaces.behavior.validate;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehaviorContext;
+
 import org.primefaces.behavior.base.AbstractBehavior;
 import org.primefaces.behavior.base.BehaviorAttribute;
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.util.Constants;
 
-public class ClientValidator extends AbstractBehavior {
+public class ClientValidatorBehavior extends AbstractBehavior {
 
-    private static final Logger LOGGER = Logger.getLogger(ClientValidator.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ClientValidatorBehavior.class.getName());
 
     public enum PropertyKeys implements BehaviorAttribute {
         event(String.class),

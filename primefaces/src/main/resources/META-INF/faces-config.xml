@@ -55,8 +55,8 @@
     </behavior>
 
     <behavior>
-        <behavior-id>org.primefaces.behavior.ClientValidator</behavior-id>
-        <behavior-class>org.primefaces.behavior.validate.ClientValidator</behavior-class>
+        <behavior-id>org.primefaces.behavior.ClientValidatorBehavior</behavior-id>
+        <behavior-class>org.primefaces.behavior.validate.ClientValidatorBehavior</behavior-class>
     </behavior>
 
     <validator>
