@@ -32,14 +32,13 @@ import org.primefaces.util.FileUploadUtils;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.LocaleUtils;
 import org.primefaces.util.MessageFactory;
+import org.primefaces.validate.base.AbstractPrimeValidator;
 import org.primefaces.virusscan.VirusException;
 
 import javax.faces.application.FacesMessage;
-import javax.faces.component.PartialStateHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlInputFile;
 import javax.faces.context.FacesContext;
-import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 import javax.servlet.http.Part;
 import java.util.HashMap;
@@ -48,27 +47,26 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class FileValidator implements Validator, PartialStateHolder, ClientValidator {
+public class FileValidator extends AbstractPrimeValidator implements ClientValidator {
 
     public static final String VALIDATOR_ID = "primefaces.File";
     public static final String FILE_LIMIT_MESSAGE_ID = "primefaces.FileValidator.FILE_LIMIT";
     public static final String ALLOW_TYPES_MESSAGE_ID = "primefaces.FileValidator.ALLOW_TYPES";
     public static final String SIZE_LIMIT_MESSAGE_ID = "primefaces.FileValidator.SIZE_LIMIT";
 
-    private Integer fileLimit;
-    private Long sizeLimit;
-    private String allowTypes;
-    private Boolean contentType;
-    private Boolean virusScan;
-
-    private boolean isTransient = false;
-    private boolean initialStateMarked = false;
+    public enum PropertyKeys {
+        allowTypes,
+        fileLimit,
+        sizeLimit,
+        contentType,
+        virusScan;
+    }
 
     @Override
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 
         if (component instanceof FileUpload) {
-            String accept = Boolean.TRUE.equals(contentType) ? ((FileUpload) component).getAccept() : null;
+            String accept = Boolean.TRUE.equals(getContentType()) ? ((FileUpload) component).getAccept() : null;
             if (value instanceof UploadedFile) {
                 UploadedFile uploadedFile = (UploadedFile) value;
 
@@ -84,15 +82,15 @@ public class FileValidator implements Validator, PartialStateHolder, ClientValid
             }
         }
         else if (component instanceof HtmlInputFile) {
-            String accept = Boolean.TRUE.equals(contentType) ? (String) component.getAttributes().get("accept") : null;
+            String accept = Boolean.TRUE.equals(getContentType()) ? (String) component.getAttributes().get("accept") : null;
 
             if (value instanceof Part) {
-                UploadedFile uploadedFile = new NativeUploadedFile((Part) value, sizeLimit, null);
+                UploadedFile uploadedFile = new NativeUploadedFile((Part) value, getSizeLimit(), null);
                 validateUploadedFile(context, uploadedFile, accept);
             }
             else if (value instanceof List) {
                 List<UploadedFile> uploadedFiles = (List<UploadedFile>) ((List) value).stream()
-                        .map(part -> new NativeUploadedFile((Part) part, sizeLimit, null))
+                        .map(part -> new NativeUploadedFile((Part) part, getSizeLimit(), null))
                         .collect(Collectors.toList());
                 validateUploadedFiles(context, new UploadedFiles(uploadedFiles), accept);
             }
@@ -106,6 +104,7 @@ public class FileValidator implements Validator, PartialStateHolder, ClientValid
     }
 
     protected void validateUploadedFiles(FacesContext context, UploadedFiles uploadedFiles, String accept) {
+        Integer fileLimit = getFileLimit();
         if (fileLimit != null && uploadedFiles.getFiles().size() > fileLimit) {
             throw new ValidatorException(
                     MessageFactory.getFacesMessage(FILE_LIMIT_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, fileLimit));
@@ -117,6 +116,7 @@ public class FileValidator implements Validator, PartialStateHolder, ClientValid
             validateUploadedFile(context, file, accept);
         }
 
+        Long sizeLimit = getSizeLimit();
         if (sizeLimit != null && totalSize > sizeLimit) {
             throw new ValidatorException(
                     MessageFactory.getFacesMessage(SIZE_LIMIT_MESSAGE_ID, FacesMessage.SEVERITY_ERROR,
@@ -127,19 +127,21 @@ public class FileValidator implements Validator, PartialStateHolder, ClientValid
     protected void validateUploadedFile(FacesContext context, UploadedFile uploadedFile, String accept) {
         PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(context);
 
+        Long sizeLimit = getSizeLimit();
         if (sizeLimit != null && uploadedFile.getSize() > sizeLimit) {
             throw new ValidatorException(
                     MessageFactory.getFacesMessage(SIZE_LIMIT_MESSAGE_ID, FacesMessage.SEVERITY_ERROR,
                             uploadedFile.getFileName(), FileUploadUtils.formatBytes(sizeLimit, LocaleUtils.getCurrentLocale(context))));
         }
 
+        String allowTypes = getAllowTypes();
         if (!FileUploadUtils.isValidType(applicationContext, uploadedFile, allowTypes, accept)) {
             throw new ValidatorException(
                     MessageFactory.getFacesMessage(ALLOW_TYPES_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, uploadedFile.getFileName(),
                             FileUploadUtils.formatAllowTypes(allowTypes)));
         }
 
-        if (Boolean.TRUE.equals(virusScan)) {
+        if (Boolean.TRUE.equals(getVirusScan())) {
             try {
                 PrimeApplicationContext.getCurrentInstance(context).getVirusScannerService().performVirusScan(uploadedFile);
             }
@@ -154,14 +156,17 @@ public class FileValidator implements Validator, PartialStateHolder, ClientValid
     public Map<String, Object> getMetadata() {
         HashMap<String, Object> metadata = new HashMap<>();
 
+        Integer fileLimit = getFileLimit();
         if (fileLimit != null) {
             metadata.put("data-p-filelimit", fileLimit);
         }
 
+        Long sizeLimit = getSizeLimit();
         if (sizeLimit != null) {
             metadata.put("data-p-sizelimit", sizeLimit);
         }
 
+        String allowTypes = getAllowTypes();
         if (LangUtils.isNotBlank(allowTypes)) {
             metadata.put("data-p-allowtypes", allowTypes);
         }
@@ -175,68 +180,6 @@ public class FileValidator implements Validator, PartialStateHolder, ClientValid
     }
 
 
-
-    @Override
-    public void clearInitialState() {
-        initialStateMarked = false;
-    }
-
-    @Override
-    public boolean initialStateMarked() {
-        return initialStateMarked;
-    }
-
-    @Override
-    public void markInitialState() {
-        initialStateMarked = true;
-    }
-
-    @Override
-    public Object saveState(FacesContext context) {
-        if (context == null) {
-            throw new NullPointerException();
-        }
-
-        if (!initialStateMarked()) {
-            Object[] values = new Object[5];
-            values[0] = fileLimit;
-            values[1] = sizeLimit;
-            values[2] = allowTypes;
-            values[3] = contentType;
-            values[4] = virusScan;
-            return values;
-        }
-        return null;
-    }
-
-    @Override
-    public void restoreState(FacesContext context, Object state) {
-        if (context == null) {
-            throw new NullPointerException();
-        }
-
-        if (state != null) {
-            Object[] values = (Object[]) state;
-            fileLimit = (Integer) values[0];
-            sizeLimit = (Long) values[1];
-            allowTypes = (String) values[2];
-            contentType = (Boolean) values[3];
-            virusScan = (Boolean) values[4];
-        }
-    }
-
-    @Override
-    public boolean isTransient() {
-        return isTransient;
-    }
-
-    @Override
-    public void setTransient(boolean isTransient) {
-        this.isTransient = isTransient;
-    }
-
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -245,58 +188,55 @@ public class FileValidator implements Validator, PartialStateHolder, ClientValid
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
+
         FileValidator that = (FileValidator) o;
-        return Objects.equals(fileLimit, that.fileLimit)
-                && Objects.equals(sizeLimit, that.sizeLimit)
-                && Objects.equals(allowTypes, that.allowTypes)
-                && Objects.equals(contentType, that.contentType)
-                && Objects.equals(virusScan, that.virusScan);
+        return Objects.equals(getStateHelper(), that.getStateHelper());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(fileLimit, sizeLimit, allowTypes, contentType, virusScan);
+        return Objects.hash(getStateHelper());
     }
 
 
 
     public Integer getFileLimit() {
-        return fileLimit;
+        return (Integer) getStateHelper().eval(PropertyKeys.fileLimit, null);
     }
 
     public void setFileLimit(Integer fileLimit) {
-        this.fileLimit = fileLimit;
+        getStateHelper().put(PropertyKeys.fileLimit, fileLimit);
     }
 
     public Long getSizeLimit() {
-        return sizeLimit;
+        return (Long) getStateHelper().eval(PropertyKeys.sizeLimit, null);
     }
 
     public void setSizeLimit(Long sizeLimit) {
-        this.sizeLimit = sizeLimit;
+        getStateHelper().put(PropertyKeys.sizeLimit, sizeLimit);
     }
 
     public String getAllowTypes() {
-        return allowTypes;
+        return (String) getStateHelper().eval(PropertyKeys.allowTypes, null);
     }
 
     public void setAllowTypes(String allowTypes) {
-        this.allowTypes = allowTypes;
+        getStateHelper().put(PropertyKeys.allowTypes, allowTypes);
     }
 
     public Boolean getContentType() {
-        return contentType;
+        return (Boolean) getStateHelper().eval(PropertyKeys.contentType, null);
     }
 
     public void setContentType(Boolean contentType) {
-        this.contentType = contentType;
+        getStateHelper().put(PropertyKeys.contentType, contentType);
     }
 
     public Boolean getVirusScan() {
-        return virusScan;
+        return (Boolean) getStateHelper().eval(PropertyKeys.virusScan, null);
     }
 
     public void setVirusScan(Boolean virusScan) {
-        this.virusScan = virusScan;
+        getStateHelper().put(PropertyKeys.virusScan, virusScan);
     }
 }

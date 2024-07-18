@@ -135,114 +135,114 @@ public class ConfirmBehavior extends AbstractBehavior {
     }
 
     public String getSource() {
-        return eval(PropertyKeys.source, null);
+        return (String) getStateHelper().eval(PropertyKeys.source, null);
     }
 
     public void setSource(String source) {
-        put(PropertyKeys.source, source);
+        getStateHelper().put(PropertyKeys.source, source);
     }
 
     public String getType() {
-        return eval(PropertyKeys.type, "dialog");
+        return (String) getStateHelper().eval(PropertyKeys.type, "dialog");
     }
 
     public void setType(String type) {
-        put(PropertyKeys.type, type);
+        getStateHelper().put(PropertyKeys.type, type);
     }
 
     public String getHeader() {
-        return eval(PropertyKeys.header, null);
+        return (String) getStateHelper().eval(PropertyKeys.header, null);
     }
 
     public void setHeader(String header) {
-        put(PropertyKeys.header, header);
+        getStateHelper().put(PropertyKeys.header, header);
     }
 
     public String getMessage() {
-        return eval(PropertyKeys.message, null);
+        return (String) getStateHelper().eval(PropertyKeys.message, null);
     }
 
     public void setMessage(String message) {
-        put(PropertyKeys.message, message);
+        getStateHelper().put(PropertyKeys.message, message);
     }
 
     public String getIcon() {
-        return eval(PropertyKeys.icon, null);
+        return (String) getStateHelper().eval(PropertyKeys.icon, null);
     }
 
     public void setIcon(String icon) {
-        put(PropertyKeys.icon, icon);
+        getStateHelper().put(PropertyKeys.icon, icon);
     }
 
     public boolean isDisabled() {
-        return eval(PropertyKeys.disabled, Boolean.FALSE);
+        return (boolean) getStateHelper().eval(PropertyKeys.disabled, Boolean.FALSE);
     }
 
     public void setDisabled(boolean disabled) {
-        put(PropertyKeys.disabled, disabled);
+        getStateHelper().put(PropertyKeys.disabled, disabled);
     }
 
     public String getBeforeShow() {
-        return eval(PropertyKeys.beforeShow, null);
+        return (String) getStateHelper().eval(PropertyKeys.beforeShow, null);
     }
 
     public void setBeforeShow(String beforeShow) {
-        put(PropertyKeys.beforeShow, beforeShow);
+        getStateHelper().put(PropertyKeys.beforeShow, beforeShow);
     }
 
     public boolean isEscape() {
-        return eval(PropertyKeys.escape, Boolean.TRUE);
+        return (boolean) getStateHelper().eval(PropertyKeys.escape, Boolean.TRUE);
     }
 
     public void setEscape(boolean escape) {
-        put(PropertyKeys.escape, escape);
+        getStateHelper().put(PropertyKeys.escape, escape);
     }
 
     public String getYesButtonLabel() {
-        return eval(PropertyKeys.yesButtonLabel, null);
+        return (String) getStateHelper().eval(PropertyKeys.yesButtonLabel, null);
     }
 
     public void setYesButtonLabel(String yesButtonLabel) {
-        put(PropertyKeys.yesButtonLabel, yesButtonLabel);
+        getStateHelper().put(PropertyKeys.yesButtonLabel, yesButtonLabel);
     }
 
     public String getYesButtonClass() {
-        return eval(PropertyKeys.yesButtonClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.yesButtonClass, null);
     }
 
     public void setYesButtonClass(String yesButtonClass) {
-        put(PropertyKeys.yesButtonClass, yesButtonClass);
+        getStateHelper().put(PropertyKeys.yesButtonClass, yesButtonClass);
     }
 
     public String getYesButtonIcon() {
-        return eval(PropertyKeys.yesButtonIcon, null);
+        return (String) getStateHelper().eval(PropertyKeys.yesButtonIcon, null);
     }
 
     public void setYesButtonIcon(String yesButtonIcon) {
-        put(PropertyKeys.yesButtonIcon, yesButtonIcon);
+        getStateHelper().put(PropertyKeys.yesButtonIcon, yesButtonIcon);
     }
 
     public String getNoButtonLabel() {
-        return eval(PropertyKeys.noButtonLabel, null);
+        return (String) getStateHelper().eval(PropertyKeys.noButtonLabel, null);
     }
 
     public void setNoButtonLabel(String noButtonLabel) {
-        put(PropertyKeys.noButtonLabel, noButtonLabel);
+        getStateHelper().put(PropertyKeys.noButtonLabel, noButtonLabel);
     }
 
     public String getNoButtonClass() {
-        return eval(PropertyKeys.noButtonClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.noButtonClass, null);
     }
 
     public void setNoButtonClass(String noButtonClass) {
-        put(PropertyKeys.noButtonClass, noButtonClass);
+        getStateHelper().put(PropertyKeys.noButtonClass, noButtonClass);
     }
 
     public String getNoButtonIcon() {
-        return eval(PropertyKeys.noButtonIcon, null);
+        return (String) getStateHelper().eval(PropertyKeys.noButtonIcon, null);
     }
 
     public void setNoButtonIcon(String noButtonIcon) {
-        put(PropertyKeys.noButtonIcon, noButtonIcon);
+        getStateHelper().put(PropertyKeys.noButtonIcon, noButtonIcon);
     }
 }

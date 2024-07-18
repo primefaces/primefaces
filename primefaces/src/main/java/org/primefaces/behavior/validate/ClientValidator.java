@@ -78,18 +78,18 @@ public class ClientValidator extends AbstractBehavior {
     }
 
     public String getEvent() {
-        return eval(PropertyKeys.event, null);
+        return (String) getStateHelper().eval(PropertyKeys.event, null);
     }
 
     public void setEvent(String event) {
-        put(PropertyKeys.event, event);
+        getStateHelper().put(PropertyKeys.event, event);
     }
 
     public boolean isDisabled() {
-        return eval(PropertyKeys.disabled, false);
+        return (boolean) getStateHelper().eval(PropertyKeys.disabled, false);
     }
 
     public void setDisabled(boolean disabled) {
-        put(PropertyKeys.disabled, disabled);
+        getStateHelper().put(PropertyKeys.disabled, disabled);
     }
 }

@@ -21,21 +21,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.behavior.base;
+package org.primefaces.validate.base;
 
 import org.primefaces.el.ValueExpressionStateHelper;
 
+import javax.faces.component.PartialStateHolder;
 import javax.faces.component.StateHelper;
-import javax.faces.component.behavior.ClientBehaviorBase;
 import javax.faces.context.FacesContext;
+import javax.faces.validator.Validator;
 
-public abstract class AbstractBehavior extends ClientBehaviorBase {
-
+public abstract class AbstractPrimeValidator implements Validator, PartialStateHolder {
     private StateHelper stateHelper;
 
-    public AbstractBehavior() {
-        super();
-    }
+    private boolean transientFlag = false;
+    private boolean initialState = false;
 
     public StateHelper getStateHelper() {
         return getStateHelper(true);
@@ -50,6 +49,31 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
     }
 
     @Override
+    public boolean isTransient() {
+        return transientFlag;
+    }
+
+    @Override
+    public void setTransient(boolean transientFlag) {
+        this.transientFlag = transientFlag;
+    }
+
+    @Override
+    public void markInitialState() {
+        initialState = true;
+    }
+
+    @Override
+    public boolean initialStateMarked() {
+        return initialState;
+    }
+
+    @Override
+    public void clearInitialState() {
+        initialState = false;
+    }
+
+    @Override
     public Object saveState(FacesContext context) {
         if (context == null) {
             throw new NullPointerException();
@@ -57,22 +81,16 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
 
         Object[] values;
 
-        Object superState = super.saveState(context);
-
         if (initialStateMarked()) {
-            if (superState == null) {
+            values = null;
+        }
+        else {
+            if (stateHelper == null) {
                 values = null;
             }
             else {
-                values = new Object[]{superState};
-            }
-        }
-        else {
-            values = new Object[stateHelper == null ? 1 : 2];
-
-            values[0] = superState;
-            if (stateHelper != null) {
-                values[1] = stateHelper.saveState(context);
+                values = new Object[1];
+                values[0] = stateHelper.saveState(context);
             }
         }
 
@@ -87,17 +105,14 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
 
         if (state != null) {
             Object[] values = (Object[]) state;
-            super.restoreState(context, values[0]);
 
-            if (values.length != 1) {
-                getStateHelper().restoreState(context, values[1]);
+            if (values.length == 1) {
+                getStateHelper().restoreState(context, values[0]);
 
                 // If we saved state last time, save state again next time.
                 clearInitialState();
             }
         }
+
     }
-
-
-    protected abstract BehaviorAttribute[] getAllAttributes();
 }
