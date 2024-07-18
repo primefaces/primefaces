@@ -124,10 +124,6 @@ public class HeadRenderer extends Renderer {
             resource.encodeAll(context);
         }
 
-        // normal CSV is a required dependency for some special components like fileupload
-        encodeJS(context, LIBRARY, "validation/validation.js");
-
-
         if (applicationContext.getConfig().isClientSideValidationEnabled()) {
             // moment is needed for Date validation
             encodeJS(context, LIBRARY, "moment/moment.js");
