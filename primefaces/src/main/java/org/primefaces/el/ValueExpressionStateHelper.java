@@ -23,8 +23,6 @@
  */
 package org.primefaces.el;
 
-import org.primefaces.util.Lazy;
-
 import javax.el.ValueExpression;
 import javax.faces.component.StateHelper;
 import javax.faces.context.FacesContext;
@@ -36,29 +34,30 @@ import java.util.Map;
 import java.util.Objects;
 
 public class ValueExpressionStateHelper implements StateHelper {
-    protected Lazy<Map<String, Object>> literals = new Lazy<>(HashMap::new);
-    protected Lazy<Map<String, ValueExpression>> bindings = new Lazy<>(HashMap::new);
+    protected Map<String, Object> literals;
+    protected Map<String, ValueExpression> bindings;
 
     private boolean transientFlag;
 
     @Override
     public Object put(Serializable key, Object value) {
-        Object previous = eval(key);
-        literals.get().put(String.valueOf(key), value);
+        if (literals == null) {
+            literals = new HashMap<>(3);
+        }
 
-        return previous;
+        return literals.put(String.valueOf(key), value);
     }
 
     @Override
     public Object remove(Serializable key) {
         Object previous = eval(key);
 
-        if (literals.isInitialized()) {
-            literals.get().remove(String.valueOf(key));
+        if (literals != null) {
+            literals.remove(String.valueOf(key));
         }
 
-        if (bindings.isInitialized()) {
-            bindings.get().remove(String.valueOf(key));
+        if (bindings != null) {
+            bindings.remove(String.valueOf(key));
         }
 
         return previous;
@@ -68,7 +67,7 @@ public class ValueExpressionStateHelper implements StateHelper {
     public Object put(Serializable key, String mapKey, Object value) {
         Map<String, Object> internalMap = (Map<String, Object>) get(key);
         if (internalMap == null) {
-            internalMap = new HashMap<>();
+            internalMap = new HashMap<>(3);
             put(key, internalMap);
         }
 
@@ -77,11 +76,11 @@ public class ValueExpressionStateHelper implements StateHelper {
 
     @Override
     public Object get(Serializable key) {
-        if (!literals.isInitialized()) {
+        if (literals == null) {
             return null;
         }
 
-        return literals.get().get(String.valueOf(key));
+        return literals.get(String.valueOf(key));
     }
 
     @Override
@@ -96,11 +95,11 @@ public class ValueExpressionStateHelper implements StateHelper {
             return literal;
         }
 
-        if (!bindings.isInitialized()) {
+        if (bindings == null) {
             return defaultValue;
         }
 
-        ValueExpression ve = bindings.get().get(String.valueOf(key));
+        ValueExpression ve = bindings.get(String.valueOf(key));
         if (ve == null) {
             return defaultValue;
         }
@@ -112,7 +111,7 @@ public class ValueExpressionStateHelper implements StateHelper {
     public void add(Serializable key, Object value) {
         List<Object> internalList = (List<Object>) get(key);
         if (internalList == null) {
-            internalList = new ArrayList<>();
+            internalList = new ArrayList<>(3);
             put(key, internalList);
         }
 
@@ -139,8 +138,8 @@ public class ValueExpressionStateHelper implements StateHelper {
     public Object saveState(FacesContext context) {
         Object[] state = new Object[2];
 
-        state[0] = literals.isInitialized() ? literals.get() : null;
-        state[1] = bindings.isInitialized() ? bindings.get() : null;
+        state[0] = literals;
+        state[1] = bindings;
 
         return state;
     }
@@ -156,21 +155,8 @@ public class ValueExpressionStateHelper implements StateHelper {
             return;
         }
 
-        Object literalState = stateArray[0];
-        if (literalState instanceof Map) {
-            literals.reset((Map<String, Object>) literalState);
-        }
-        else {
-            literals.reset();
-        }
-
-        Object bindingState = stateArray[1];
-        if (bindingState instanceof Map) {
-            bindings.reset((Map<String, ValueExpression>) bindingState);
-        }
-        else {
-            bindings.reset();
-        }
+        literals = (Map<String, Object>) stateArray[0];
+        bindings = (Map<String, ValueExpression>) stateArray[1];
     }
 
     @Override
@@ -184,7 +170,11 @@ public class ValueExpressionStateHelper implements StateHelper {
     }
 
     public void setBinding(String key, ValueExpression ve) {
-        this.bindings.get().put(key, ve);
+        if (bindings == null) {
+            bindings = new HashMap<>(3);
+        }
+
+        bindings.put(key, ve);
     }
 
     @Override
