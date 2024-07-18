@@ -23,25 +23,30 @@
  */
 package org.primefaces.behavior.base;
 
-import org.primefaces.el.ValueExpressionAwareAttributeHandler;
+import org.primefaces.el.ValueExpressionStateHelper;
 
-import java.util.Arrays;
-
+import javax.faces.component.StateHelper;
 import javax.faces.component.behavior.ClientBehaviorBase;
 import javax.faces.context.FacesContext;
 
 public abstract class AbstractBehavior extends ClientBehaviorBase {
 
-    protected ValueExpressionAwareAttributeHandler attributeHandler;
+    private StateHelper stateHelper;
 
     public AbstractBehavior() {
         super();
+    }
 
-        String[] allAttributeNames = Arrays.stream(getAllAttributes())
-                .map(BehaviorAttribute::getName)
-                .toArray(String[]::new);
+    public StateHelper getStateHelper() {
+        return getStateHelper(true);
+    }
 
-        this.attributeHandler = new ValueExpressionAwareAttributeHandler(allAttributeNames);
+    public StateHelper getStateHelper(boolean create) {
+        if (stateHelper == null && create) {
+            stateHelper = new ValueExpressionStateHelper();
+        }
+
+        return stateHelper;
     }
 
     @Override
@@ -63,10 +68,12 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
             }
         }
         else {
-            values = new Object[2];
+            values = new Object[stateHelper == null ? 1 : 2];
 
             values[0] = superState;
-            values[1] = attributeHandler.saveState(context);
+            if (stateHelper != null) {
+                values[1] = stateHelper.saveState(context);
+            }
         }
 
         return values;
@@ -83,16 +90,12 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
             super.restoreState(context, values[0]);
 
             if (values.length != 1) {
-                attributeHandler.restoreState(context, values[1]);
+                getStateHelper().restoreState(context, values[1]);
 
                 // If we saved state last time, save state again next time.
                 clearInitialState();
             }
         }
-    }
-
-    public ValueExpressionAwareAttributeHandler getAttributeHandler() {
-        return attributeHandler;
     }
 
 

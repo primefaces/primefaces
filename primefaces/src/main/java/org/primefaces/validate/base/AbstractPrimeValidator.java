@@ -23,25 +23,29 @@
  */
 package org.primefaces.validate.base;
 
-import org.primefaces.el.ValueExpressionAwareAttributeHandler;
+import org.primefaces.el.ValueExpressionStateHelper;
 
 import javax.faces.component.PartialStateHolder;
+import javax.faces.component.StateHelper;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
-import java.util.Arrays;
 
 public abstract class AbstractPrimeValidator implements Validator, PartialStateHolder {
-    protected ValueExpressionAwareAttributeHandler attributeHandler;
+    private StateHelper stateHelper;
 
     private boolean transientFlag = false;
     private boolean initialState = false;
 
-    public AbstractPrimeValidator() {
-        String[] attributeNames = Arrays.stream(getAllAttributes())
-                .map(Enum::name)
-                .toArray(String[]::new);
+    public StateHelper getStateHelper() {
+        return getStateHelper(true);
+    }
 
-        attributeHandler = new ValueExpressionAwareAttributeHandler(attributeNames);
+    public StateHelper getStateHelper(boolean create) {
+        if (stateHelper == null && create) {
+            stateHelper = new ValueExpressionStateHelper();
+        }
+
+        return stateHelper;
     }
 
     @Override
@@ -81,8 +85,13 @@ public abstract class AbstractPrimeValidator implements Validator, PartialStateH
             values = null;
         }
         else {
-            values = new Object[1];
-            values[0] = attributeHandler.saveState(context);
+            if (stateHelper == null) {
+                values = null;
+            }
+            else {
+                values = new Object[1];
+                values[0] = stateHelper.saveState(context);
+            }
         }
 
         return values;
@@ -98,7 +107,7 @@ public abstract class AbstractPrimeValidator implements Validator, PartialStateH
             Object[] values = (Object[]) state;
 
             if (values.length == 1) {
-                attributeHandler.restoreState(context, values[0]);
+                getStateHelper().restoreState(context, values[0]);
 
                 // If we saved state last time, save state again next time.
                 clearInitialState();
@@ -106,10 +115,4 @@ public abstract class AbstractPrimeValidator implements Validator, PartialStateH
         }
 
     }
-
-    public ValueExpressionAwareAttributeHandler getAttributeHandler() {
-        return attributeHandler;
-    }
-
-    protected abstract Enum<?>[] getAllAttributes();
 }

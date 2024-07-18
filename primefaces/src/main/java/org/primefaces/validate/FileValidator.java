@@ -41,7 +41,6 @@ import javax.faces.component.html.HtmlInputFile;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 import javax.servlet.http.Part;
-import javax.swing.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -180,12 +179,6 @@ public class FileValidator extends AbstractPrimeValidator implements ClientValid
         return VALIDATOR_ID;
     }
 
-    @Override
-    protected Enum<?>[] getAllAttributes() {
-        return PropertyKeys.values();
-    }
-
-
 
     @Override
     public boolean equals(Object o) {
@@ -197,53 +190,53 @@ public class FileValidator extends AbstractPrimeValidator implements ClientValid
         }
 
         FileValidator that = (FileValidator) o;
-        return Objects.equals(attributeHandler, that.attributeHandler);
+        return Objects.equals(getStateHelper(), that.getStateHelper());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(attributeHandler);
+        return Objects.hash(getStateHelper());
     }
 
 
 
     public Integer getFileLimit() {
-        return attributeHandler.eval(PropertyKeys.fileLimit, null);
+        return (Integer) getStateHelper().eval(PropertyKeys.fileLimit, null);
     }
 
     public void setFileLimit(Integer fileLimit) {
-        attributeHandler.put(PropertyKeys.fileLimit, fileLimit);
+        getStateHelper().put(PropertyKeys.fileLimit, fileLimit);
     }
 
     public Long getSizeLimit() {
-        return attributeHandler.eval(PropertyKeys.sizeLimit, null);
+        return (Long) getStateHelper().eval(PropertyKeys.sizeLimit, null);
     }
 
     public void setSizeLimit(Long sizeLimit) {
-        attributeHandler.put(PropertyKeys.sizeLimit, sizeLimit);
+        getStateHelper().put(PropertyKeys.sizeLimit, sizeLimit);
     }
 
     public String getAllowTypes() {
-        return attributeHandler.eval(PropertyKeys.allowTypes, null);
+        return (String) getStateHelper().eval(PropertyKeys.allowTypes, null);
     }
 
     public void setAllowTypes(String allowTypes) {
-        attributeHandler.put(PropertyKeys.allowTypes, allowTypes);
+        getStateHelper().put(PropertyKeys.allowTypes, allowTypes);
     }
 
     public Boolean getContentType() {
-        return attributeHandler.eval(PropertyKeys.contentType, null);
+        return (Boolean) getStateHelper().eval(PropertyKeys.contentType, null);
     }
 
     public void setContentType(Boolean contentType) {
-        attributeHandler.put(PropertyKeys.contentType, contentType);
+        getStateHelper().put(PropertyKeys.contentType, contentType);
     }
 
     public Boolean getVirusScan() {
-        return attributeHandler.eval(PropertyKeys.virusScan, null);
+        return (Boolean) getStateHelper().eval(PropertyKeys.virusScan, null);
     }
 
     public void setVirusScan(Boolean virusScan) {
-        attributeHandler.put(PropertyKeys.virusScan, virusScan);
+        getStateHelper().put(PropertyKeys.virusScan, virusScan);
     }
 }

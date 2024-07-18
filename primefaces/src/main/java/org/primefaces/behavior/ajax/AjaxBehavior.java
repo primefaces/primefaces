@@ -94,184 +94,184 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
     }
 
     public boolean isDisabled() {
-        return attributeHandler.eval(PropertyKeys.disabled, Boolean.FALSE);
+        return (boolean) getStateHelper().eval(PropertyKeys.disabled, false);
     }
 
     public void setDisabled(boolean disabled) {
-        attributeHandler.put(PropertyKeys.disabled, disabled);
+        getStateHelper().put(PropertyKeys.disabled, disabled);
     }
 
     @Override
     public boolean isAsync() {
-        return attributeHandler.eval(PropertyKeys.async, Boolean.FALSE);
+        return (boolean) getStateHelper().eval(PropertyKeys.async, false);
     }
 
     public void setAsync(boolean async) {
-        attributeHandler.put(PropertyKeys.async, async);
+        getStateHelper().put(PropertyKeys.async, async);
     }
 
     @Override
     public boolean isGlobal() {
-        return attributeHandler.eval(PropertyKeys.global, Boolean.TRUE);
+        return (boolean) getStateHelper().eval(PropertyKeys.global, true);
     }
 
     public void setGlobal(boolean global) {
-        attributeHandler.put(PropertyKeys.global, global);
+        getStateHelper().put(PropertyKeys.global, global);
     }
 
     @Override
     public String getOncomplete() {
-        return attributeHandler.eval(PropertyKeys.oncomplete, null);
+        return (String) getStateHelper().eval(PropertyKeys.oncomplete, null);
     }
 
     public void setOncomplete(String oncomplete) {
-        attributeHandler.put(PropertyKeys.oncomplete, oncomplete);
+        getStateHelper().put(PropertyKeys.oncomplete, oncomplete);
     }
 
     @Override
     public String getOnstart() {
-        return attributeHandler.eval(PropertyKeys.onstart, null);
+        return (String) getStateHelper().eval(PropertyKeys.onstart, null);
     }
 
     public void setOnstart(String onstart) {
-        attributeHandler.put(PropertyKeys.onstart, onstart);
+        getStateHelper().put(PropertyKeys.onstart, onstart);
     }
 
     @Override
     public String getOnsuccess() {
-        return attributeHandler.eval(PropertyKeys.onsuccess, null);
+        return (String) getStateHelper().eval(PropertyKeys.onsuccess, null);
     }
 
     public void setOnsuccess(String onsuccess) {
-        attributeHandler.put(PropertyKeys.onsuccess, onsuccess);
+        getStateHelper().put(PropertyKeys.onsuccess, onsuccess);
     }
 
     @Override
     public String getOnerror() {
-        return attributeHandler.eval(PropertyKeys.onerror, null);
+        return (String) getStateHelper().eval(PropertyKeys.onerror, null);
     }
 
     public void setOnerror(String onerror) {
-        attributeHandler.put(PropertyKeys.onerror, onerror);
+        getStateHelper().put(PropertyKeys.onerror, onerror);
     }
 
     @Override
     public String getProcess() {
-        return attributeHandler.eval(PropertyKeys.process, null);
+        return (String) getStateHelper().eval(PropertyKeys.process, null);
     }
 
     public void setProcess(String process) {
-        attributeHandler.put(PropertyKeys.process, process);
+        getStateHelper().put(PropertyKeys.process, process);
     }
 
     @Override
     public String getUpdate() {
-        return attributeHandler.eval(PropertyKeys.update, null);
+        return (String) getStateHelper().eval(PropertyKeys.update, null);
     }
 
     public void setUpdate(String update) {
-        attributeHandler.put(PropertyKeys.update, update);
+        getStateHelper().put(PropertyKeys.update, update);
     }
 
     @Override
     public String getDelay() {
-        return attributeHandler.eval(PropertyKeys.delay, null);
+        return (String) getStateHelper().eval(PropertyKeys.delay, null);
     }
 
     public void setDelay(String delay) {
-        attributeHandler.put(PropertyKeys.delay, delay);
+        getStateHelper().put(PropertyKeys.delay, delay);
     }
 
     public boolean isImmediate() {
-        return attributeHandler.eval(PropertyKeys.immediate, Boolean.FALSE);
+        return (boolean) getStateHelper().eval(PropertyKeys.immediate, Boolean.FALSE);
     }
 
     public void setImmediate(Boolean immediate) {
-        attributeHandler.put(PropertyKeys.immediate, immediate);
+        getStateHelper().put(PropertyKeys.immediate, immediate);
     }
 
     @Override
     public boolean isIgnoreAutoUpdate() {
-        return attributeHandler.eval(PropertyKeys.ignoreAutoUpdate, Boolean.FALSE);
+        return (boolean) getStateHelper().eval(PropertyKeys.ignoreAutoUpdate, false);
     }
 
     public void setIgnoreAutoUpdate(boolean ignoreAutoUpdate) {
-        attributeHandler.put(PropertyKeys.ignoreAutoUpdate, ignoreAutoUpdate);
+        getStateHelper().put(PropertyKeys.ignoreAutoUpdate, ignoreAutoUpdate);
     }
 
     @Override
     public boolean isPartialSubmit() {
-        return attributeHandler.eval(PropertyKeys.partialSubmit, Boolean.FALSE);
+        return (boolean) getStateHelper().eval(PropertyKeys.partialSubmit, false);
     }
 
     public void setPartialSubmit(boolean partialSubmit) {
-        attributeHandler.put(PropertyKeys.partialSubmit, partialSubmit);
+        getStateHelper().put(PropertyKeys.partialSubmit, partialSubmit);
     }
 
     @Override
     public boolean isResetValues() {
-        return attributeHandler.eval(PropertyKeys.resetValues, Boolean.FALSE);
+        return (boolean) getStateHelper().eval(PropertyKeys.resetValues, false);
     }
 
     public void setResetValues(boolean resetValues) {
-        attributeHandler.put(PropertyKeys.resetValues, resetValues);
+        getStateHelper().put(PropertyKeys.resetValues, resetValues);
     }
 
     public MethodExpression getListener() {
-        return attributeHandler.eval(PropertyKeys.listener, null);
+        return (MethodExpression) getStateHelper().eval(PropertyKeys.listener, null);
     }
 
     public void setListener(MethodExpression listener) {
-        attributeHandler.put(PropertyKeys.listener, listener);
+        getStateHelper().put(PropertyKeys.listener, listener);
     }
 
     @Override
     public int getTimeout() {
-        return attributeHandler.eval(PropertyKeys.timeout, 0);
+        return (int) getStateHelper().eval(PropertyKeys.timeout, 0);
     }
 
     public void setTimeout(int timeout) {
-        attributeHandler.put(PropertyKeys.timeout, timeout);
+        getStateHelper().put(PropertyKeys.timeout, timeout);
     }
 
     @Override
     public String getPartialSubmitFilter() {
-        return attributeHandler.eval(PropertyKeys.partialSubmitFilter, null);
+        return (String) getStateHelper().eval(PropertyKeys.partialSubmitFilter, null);
     }
 
     public void setPartialSubmitFilter(String partialSubmitFilter) {
-        attributeHandler.put(PropertyKeys.partialSubmitFilter, partialSubmitFilter);
+        getStateHelper().put(PropertyKeys.partialSubmitFilter, partialSubmitFilter);
     }
 
     @Override
     public String getForm() {
-        return attributeHandler.eval(PropertyKeys.form, null);
+        return (String) getStateHelper().eval(PropertyKeys.form, null);
     }
 
     public void setForm(String form) {
-        attributeHandler.put(PropertyKeys.form, form);
+        getStateHelper().put(PropertyKeys.form, form);
     }
 
     public boolean isSkipChildren() {
-        return attributeHandler.eval(PropertyKeys.skipChildren, Boolean.TRUE);
+        return (boolean) getStateHelper().eval(PropertyKeys.skipChildren, true);
     }
 
     public void setSkipChildren(Boolean skipChildren) {
-        attributeHandler.put(PropertyKeys.skipChildren, skipChildren);
+        getStateHelper().put(PropertyKeys.skipChildren, skipChildren);
     }
 
     public boolean isImmediateSet() {
-        return attributeHandler.isAttributeSet(PropertyKeys.immediate);
+        return getStateHelper().eval(PropertyKeys.immediate, null) != null;
     }
 
     @Override
     public boolean isPartialSubmitSet() {
-        return attributeHandler.isAttributeSet(PropertyKeys.partialSubmit);
+        return getStateHelper().eval(PropertyKeys.partialSubmit, null) != null;
     }
 
     @Override
     public boolean isResetValuesSet() {
-        return attributeHandler.isAttributeSet(PropertyKeys.resetValues);
+        return getStateHelper().eval(PropertyKeys.resetValues, null) != null;
     }
 
     @Override
@@ -281,11 +281,11 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
 
     @Override
     public boolean isIgnoreComponentNotFound() {
-        return attributeHandler.eval(PropertyKeys.ignoreComponentNotFound, Boolean.FALSE);
+        return (boolean) getStateHelper().eval(PropertyKeys.ignoreComponentNotFound, false);
     }
 
     public void setIgnoreComponentNotFound(Boolean ignoreComponentNotFound) {
-        attributeHandler.put(PropertyKeys.ignoreComponentNotFound, ignoreComponentNotFound);
+        getStateHelper().put(PropertyKeys.ignoreComponentNotFound, ignoreComponentNotFound);
     }
 
     @Override

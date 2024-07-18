@@ -35,6 +35,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.el.ValueExpression;
 import javax.faces.application.Application;
+import javax.faces.component.StateHelper;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
@@ -46,6 +47,7 @@ import javax.faces.view.facelets.*;
 
 import org.primefaces.config.PrimeEnvironment;
 import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.el.ValueExpressionStateHelper;
 import org.primefaces.util.LangUtils;
 
 public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
@@ -168,12 +170,16 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
     protected void setBehaviorAttribute(FaceletContext ctx, E behavior, TagAttribute attr, Class<?> type) {
         if (attr != null) {
             String attributeName = attr.getLocalName();
-            if (attr.isLiteral()) {
-                behavior.getAttributeHandler().setLiteral(attributeName, attr.getObject(ctx, type));
+
+            StateHelper stateHelper = behavior.getStateHelper();
+            if (!(stateHelper instanceof ValueExpressionStateHelper) || attr.isLiteral()) {
+                stateHelper.put(attributeName, attr.getObject(ctx, type));
+
+                return;
             }
-            else {
-                behavior.getAttributeHandler().setValueExpression(attributeName, attr.getValueExpression(ctx, type));
-            }
+
+            ValueExpressionStateHelper veStateHelper = (ValueExpressionStateHelper) stateHelper;
+            veStateHelper.setBinding(attributeName, attr.getValueExpression(ctx, type));
         }
     }
 

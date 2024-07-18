@@ -23,8 +23,9 @@
  */
 package org.primefaces.validate.base;
 
-import org.primefaces.el.ValueExpressionAwareAttributeHandler;
+import org.primefaces.el.ValueExpressionStateHelper;
 
+import javax.faces.component.StateHelper;
 import javax.faces.view.facelets.FaceletContext;
 import javax.faces.view.facelets.MetaRule;
 import javax.faces.view.facelets.Metadata;
@@ -63,8 +64,14 @@ public class PrimeValidatorMetaRule extends MetaRule {
 
         @Override
         public void applyMetadata(FaceletContext ctx, Object instance) {
-            ValueExpressionAwareAttributeHandler attributeHandler = ((AbstractPrimeValidator) instance).getAttributeHandler();
-            attributeHandler.setValueExpression(this.name, this.attr.getValueExpression(ctx, this.type));
+            StateHelper stateHelper = ((AbstractPrimeValidator) instance).getStateHelper();
+
+            if (stateHelper instanceof ValueExpressionStateHelper) {
+                ((ValueExpressionStateHelper) stateHelper).setBinding(this.name, this.attr.getValueExpression(ctx, type));
+            }
+            else {
+                stateHelper.put(this.name, this.attr.getObject(ctx, type));
+            }
         }
     }
 }
