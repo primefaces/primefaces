@@ -1329,7 +1329,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
             this.labelContainer.addClass('ui-state-active');
         } else {
-            labelText = this.cfg.emptyLabel || this.defaultLabel || '';
+            labelText = (typeof this.cfg.emptyLabel !== 'undefined') ? this.cfg.emptyLabel : (this.defaultLabel || '');
             this.keyboardTarget.val(labelText);
             this.labelContainer.removeClass('ui-state-active');
         }
