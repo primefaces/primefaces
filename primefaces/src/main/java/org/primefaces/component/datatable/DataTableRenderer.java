@@ -249,7 +249,7 @@ public class DataTableRenderer extends DataRenderer {
                 .attr("rowHover", table.isRowHover(), false)
                 .attr("clientCache", table.isClientCache(), false)
                 .attr("multiViewState", table.isMultiViewState(), false)
-                .attr("cellNavigation", table.isCellNavigation(), true)
+                .attr("cellNavigation", table.isCellNavigation())
                 .attr("partialUpdate", table.isPartialUpdate(), true)
                 .nativeAttr("groupColumnIndexes", table.getGroupedColumnIndexes(), null)
                 .callback("onRowClick", "function(row)", table.getOnRowClick());
