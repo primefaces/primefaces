@@ -49,7 +49,6 @@ DataTable displays data in tabular format.
 | filteredValue             | null               | List             | List to keep filtered data.
 | first                     | 0                  | Integer          | Index of the first row to be displayed
 | frozenColumns             | 0                  | Integer          | Number of columns to freeze from start index 0.
-| frozenColumnsAlignment    | left               | String           | Defines Alignment of frozen columns, valid values are `left` (default) and `right` 
 | frozenRows                | null               | Object           | Collection to display as fixed in scrollable mode.
 | globalFilter              | null               | String           | Value of the global filter to use when filtering by default.
 | globalFilterOnly          | false              | Boolean          | When true this will hide all column filters and allow all columns to be filtered by global filter only.
@@ -752,24 +751,11 @@ number of rows to freeze from the start.
 ```
 ## Frozen Columns
 Specific columns can be fixed while the rest of them remain as scrollable. `frozenColumns` defines
-the number of columns to freeze.
+the number of columns to freeze from the start.
 
 
 ```xhtml
 <p:dataTable var="car" value="#{bean.data}" scrollable="true" scrollWidth="200" frozenColumns="2">
-    <p:column />
-    //columns
-</p:dataTable>
-```
-
-## Frozen Columns Alignment
-Frozen columns can be aligned left or right on the table. The `frozenColumnsAlignemnt` property defines 
-their alignment.
-
-
-```xhtml
-<p:dataTable var="car" value="#{bean.data}" scrollable="true" scrollWidth="200" frozenColumns="2" 
-             frozenColumnsAlignment="right">
     <p:column />
     //columns
 </p:dataTable>

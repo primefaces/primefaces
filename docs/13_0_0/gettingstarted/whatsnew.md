@@ -35,7 +35,6 @@ This page contains a list of big features. Please check the GitHub issues for al
     * Added attribute `title` column/columns to support cell specific titles.
     * Added attribute `exportTag` and `exportRowTag` to allow finer grain control over XML export.
     * Attribute `selectionMode` becomes optional as it is automatically detected based on value-binding to `selection` property
-    * Added attribute `frozenColumnsAlignment` to support alignment of frozen columns left and right
 
 * DataView
     * Added attribute `gridRowTitle` to support row-specific titles.

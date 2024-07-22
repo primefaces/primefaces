@@ -31,9 +31,7 @@ import org.primefaces.selenium.component.model.datatable.Cell;
 import org.primefaces.selenium.component.model.datatable.Header;
 import org.primefaces.selenium.component.model.datatable.HeaderCell;
 import org.primefaces.selenium.component.model.datatable.Row;
-import org.primefaces.selenium.component.model.datatable.Body;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -186,67 +184,5 @@ public abstract class AbstractTable<T extends Row> extends AbstractPageableData 
      */
     public WebElement getSelectAllCheckBox() {
         return getHeader().getCell(0).getWebElement();
-    }
-
-    public WebElement getFrozenHeaderWebElement() {
-        return findElement(By.className("ui-datatable-frozenlayout-left")).findElement(By.tagName("thead"));
-    }
-
-    public Header getFrozenHeader() {
-        List<HeaderCell> frozenHeaderCells = getFrozenHeaderWebElement().findElements(By.tagName("th")).stream()
-                .map(HeaderCell::new)
-                .collect(Collectors.toList());
-
-        return new Header(getFrozenHeaderWebElement(), frozenHeaderCells);
-    }
-
-    public WebElement getScrollableHeaderWebElement() {
-        return findElement(By.className("ui-datatable-frozenlayout-right")).findElement(By.tagName("thead"));
-    }
-
-    public Header getScrollableHeader() {
-        List<HeaderCell> scrollableHeaderCells = getScrollableHeaderWebElement().findElements(By.tagName("th")).stream()
-                .map(HeaderCell::new)
-                .collect(Collectors.toList());
-
-        return new Header(getScrollableHeaderWebElement(), scrollableHeaderCells);
-    }
-
-    public WebElement getFrozenBodyWebElement() {
-        return findElement(By.className("ui-datatable-frozenlayout-left")).findElement(By.tagName("tbody"));
-    }
-
-    public WebElement getScrollableBodyWebElement() {
-        return findElement(By.className("ui-datatable-frozenlayout-right")).findElement(By.tagName("tbody"));
-    }
-
-    public Body getFrozenBody() {
-        List<Row> rows = new ArrayList<>();
-        List<WebElement> frozenBodyRows = getFrozenBodyWebElement().findElements(By.tagName("tr"));
-
-        frozenBodyRows.forEach(row -> {
-            List<WebElement> rowCellsTmp = row.findElements(By.tagName("td"));
-            List<Cell> rowCells = rowCellsTmp.stream()
-                    .map(Cell::new)
-                    .collect(Collectors.toList());
-            rows.add(new Row(row, rowCells));
-        });
-
-        return new Body(getFrozenBodyWebElement(), rows);
-    }
-
-    public Body getScrollableBody() {
-        List<Row> rows = new ArrayList<>();
-        List<WebElement> scrollableBodyRows = getScrollableBodyWebElement().findElements(By.tagName("tr"));
-
-        scrollableBodyRows.forEach(row -> {
-            List<WebElement> rowCellsTmp = row.findElements(By.tagName("td"));
-            List<Cell> rowCells = rowCellsTmp.stream()
-                    .map(Cell::new)
-                    .collect(Collectors.toList());
-            rows.add(new Row(row, rowCells));
-        });
-
-        return new Body(getScrollableBodyWebElement(), rows);
     }
 }

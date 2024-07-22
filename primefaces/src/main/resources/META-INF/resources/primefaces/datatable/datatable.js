@@ -157,7 +157,6 @@
  * @prop {number} cfg.filterDelay Delay for filtering in milliseconds.
  * @prop {string} cfg.filterEvent Event to invoke filtering for input filters.
  * @prop {number} cfg.frozenColumns The number of frozen columns.
- * @prop {string} cfg.frozenColumnsAlignment The alignment of frozen columns.
  * @prop {boolean} cfg.liveResize Columns are resized live in this mode without using a resize helper.
  * @prop {boolean} cfg.liveScroll Enables live scrolling.
  * @prop {number} cfg.liveScrollBuffer Percentage of the height of the buffer between the bottom of the page and the
