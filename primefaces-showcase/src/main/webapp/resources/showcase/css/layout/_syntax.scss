@@ -259,3 +259,8 @@ pre[class*=language-].line-numbers>code {
   padding-right: .8em;
   text-align: right
 }
+
+pre[class*=language-]:after,
+pre[class*=language-]:before {
+  box-shadow: none
+}
