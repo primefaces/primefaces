@@ -731,6 +731,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("tabindex", tabindex, null);
         renderARIACombobox(context, menu);
+        renderAccessibilityAttributes(context, menu);
         writer.endElement("input");
         writer.endElement("div");
     }

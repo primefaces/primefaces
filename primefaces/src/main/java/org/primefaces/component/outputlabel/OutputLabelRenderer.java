@@ -31,11 +31,7 @@ import java.util.logging.Logger;
 
 import javax.el.PropertyNotFoundException;
 import javax.el.ValueExpression;
-import javax.faces.component.ContextCallback;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
-import javax.faces.component.UINamingContainer;
-import javax.faces.component.UISelectBoolean;
+import javax.faces.component.*;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.validation.constraints.AssertTrue;
@@ -43,7 +39,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.metadata.ConstraintDescriptor;
 
 import org.primefaces.component.api.InputHolder;
-import org.primefaces.component.selectcheckboxmenu.SelectCheckboxMenu;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.expression.SearchExpressionUtils;
@@ -88,8 +83,7 @@ public class OutputLabelRenderer extends CoreRenderer {
                 if (target instanceof UIInput) {
                     UIInput input = (UIInput) target;
 
-                    if (value != null && !(target instanceof SelectCheckboxMenu) &&
-                            (input.getAttributes().get("label") == null || input.getValueExpression("label") == null)) {
+                    if (value != null && (input.getAttributes().get("label") == null || input.getValueExpression("label") == null)) {
                         ValueExpression ve = label.getValueExpression("value");
 
                         if (ve != null) {
