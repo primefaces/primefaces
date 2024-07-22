@@ -32,6 +32,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.DataTable;
+import org.primefaces.selenium.component.SelectBooleanButton;
 import org.primefaces.selenium.component.model.datatable.Header;
 
 public class DataTable046Test extends AbstractDataTableTest {
@@ -42,7 +43,15 @@ public class DataTable046Test extends AbstractDataTableTest {
     public void testFrozenColumnsJavaScriptWidget(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
+        SelectBooleanButton button = page.frozenColumnToggleButton;
         Assertions.assertNotNull(dataTable);
+        Assertions.assertNotNull(button);
+
+        // Assert
+        assertNoJavascriptErrors();
+
+        // Act
+        button.click();
 
         // Assert
         assertNoJavascriptErrors();
@@ -54,7 +63,17 @@ public class DataTable046Test extends AbstractDataTableTest {
     public void testFrozenColumnsScrollableContainerWidth(Page page) {
         // Arrange
         WebElement scrollableTableContainer = page.scrollableTableContainer;
+        SelectBooleanButton button = page.frozenColumnToggleButton;
+        Assertions.assertNotNull(scrollableTableContainer);
+        Assertions.assertNotNull(button);
 
+        // Assert
+        Assertions.assertEquals(500, scrollableTableContainer.findElement(By.className("ui-datatable-scrollable-header")).getSize().getWidth());
+        Assertions.assertEquals(500, scrollableTableContainer.findElement(By.className("ui-datatable-scrollable-body")).getSize().getWidth());
+        Assertions.assertEquals(500, scrollableTableContainer.findElement(By.className("ui-datatable-scrollable-footer")).getSize().getWidth());
+
+        // Act
+        button.click();
 
         // Assert
         Assertions.assertEquals(500, scrollableTableContainer.findElement(By.className("ui-datatable-scrollable-header")).getSize().getWidth());
@@ -68,7 +87,9 @@ public class DataTable046Test extends AbstractDataTableTest {
     public void testFrozenColumnsHeaderRow(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
+        SelectBooleanButton button = page.frozenColumnToggleButton;
         Assertions.assertNotNull(dataTable);
+        Assertions.assertNotNull(button);
 
         Header frozenHeader = dataTable.getFrozenHeader();
         Header scrollableHeader = dataTable.getScrollableHeader();
@@ -82,6 +103,23 @@ public class DataTable046Test extends AbstractDataTableTest {
         Assertions.assertEquals("ID", frozenHeader.getCells().get(0).getColumnTitle().getText());
         Assertions.assertEquals("Name", scrollableHeader.getCells().get(0).getColumnTitle().getText());
         Assertions.assertEquals("First appeared", scrollableHeader.getCells().get(1).getColumnTitle().getText());
+
+        // Act
+        button.click();
+
+        // Arrange
+        frozenHeader = dataTable.getFrozenHeader();
+        scrollableHeader = dataTable.getScrollableHeader();
+        Assertions.assertNotNull(frozenHeader);
+        Assertions.assertNotNull(scrollableHeader);
+
+        // Assert
+        Assertions.assertEquals(1, frozenHeader.getCells().size());
+        Assertions.assertEquals(2, scrollableHeader.getCells().size());
+
+        Assertions.assertEquals("ID", scrollableHeader.getCell(0).getColumnTitle().getText());
+        Assertions.assertEquals("Name", scrollableHeader.getCell(1).getColumnTitle().getText());
+        Assertions.assertEquals("First appeared", frozenHeader.getCell(0).getColumnTitle().getText());
     }
 
     @Test
@@ -90,7 +128,9 @@ public class DataTable046Test extends AbstractDataTableTest {
     public void testFrozenColumnsFrozenBody(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
+        SelectBooleanButton button = page.frozenColumnToggleButton;
         Assertions.assertNotNull(dataTable);
+        Assertions.assertNotNull(button);
 
         // Assert
         Assertions.assertEquals("1", dataTable.getFrozenBody().getRow(0).getCell(0).getText());
@@ -98,6 +138,16 @@ public class DataTable046Test extends AbstractDataTableTest {
         Assertions.assertEquals("3", dataTable.getFrozenBody().getRow(2).getCell(0).getText());
         Assertions.assertEquals("4", dataTable.getFrozenBody().getRow(3).getCell(0).getText());
         Assertions.assertEquals("5", dataTable.getFrozenBody().getRow(4).getCell(0).getText());
+
+        // Act
+        button.click();
+
+        // Assert
+        Assertions.assertEquals("1995", dataTable.getFrozenBody().getRow(0).getCell(0).getText());
+        Assertions.assertEquals("2000", dataTable.getFrozenBody().getRow(1).getCell(0).getText());
+        Assertions.assertEquals("1995", dataTable.getFrozenBody().getRow(2).getCell(0).getText());
+        Assertions.assertEquals("2012", dataTable.getFrozenBody().getRow(3).getCell(0).getText());
+        Assertions.assertEquals("1990", dataTable.getFrozenBody().getRow(4).getCell(0).getText());
     }
 
     @Test
@@ -106,7 +156,9 @@ public class DataTable046Test extends AbstractDataTableTest {
     public void testFrozenColumnsScrollableBody(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
+        SelectBooleanButton button = page.frozenColumnToggleButton;
         Assertions.assertNotNull(dataTable);
+        Assertions.assertNotNull(button);
 
         // Assert
         Assertions.assertEquals("Java", dataTable.getScrollableBody().getRow(0).getCell(0).getText());
@@ -119,6 +171,21 @@ public class DataTable046Test extends AbstractDataTableTest {
         Assertions.assertEquals("2012", dataTable.getScrollableBody().getRow(3).getCell(1).getText());
         Assertions.assertEquals("Python", dataTable.getScrollableBody().getRow(4).getCell(0).getText());
         Assertions.assertEquals("1990", dataTable.getScrollableBody().getRow(4).getCell(1).getText());
+
+        // Act
+        button.click();
+
+        // Assert
+        Assertions.assertEquals("1", dataTable.getScrollableBody().getRow(0).getCell(0).getText());
+        Assertions.assertEquals("Java", dataTable.getScrollableBody().getRow(0).getCell(1).getText());
+        Assertions.assertEquals("2", dataTable.getScrollableBody().getRow(1).getCell(0).getText());
+        Assertions.assertEquals("C#", dataTable.getScrollableBody().getRow(1).getCell(1).getText());
+        Assertions.assertEquals("3", dataTable.getScrollableBody().getRow(2).getCell(0).getText());
+        Assertions.assertEquals("JavaScript", dataTable.getScrollableBody().getRow(2).getCell(1).getText());
+        Assertions.assertEquals("4", dataTable.getScrollableBody().getRow(3).getCell(0).getText());
+        Assertions.assertEquals("TypeScript", dataTable.getScrollableBody().getRow(3).getCell(1).getText());
+        Assertions.assertEquals("5", dataTable.getScrollableBody().getRow(4).getCell(0).getText());
+        Assertions.assertEquals("Python", dataTable.getScrollableBody().getRow(4).getCell(1).getText());
     }
 
     public static class Page extends AbstractPrimePage {
@@ -131,6 +198,9 @@ public class DataTable046Test extends AbstractDataTableTest {
 
         @FindBy(className = "ui-datatable-frozenlayout-right")
         WebElement scrollableTableContainer;
+
+        @FindBy(id = "form:frozenColumnToggleButton")
+        SelectBooleanButton frozenColumnToggleButton;
 
         @Override
         public String getLocation() {
