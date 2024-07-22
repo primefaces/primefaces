@@ -24,6 +24,7 @@
 package org.primefaces.component.datatable;
 
 import java.util.Collection;
+
 import javax.el.MethodExpression;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 
@@ -769,8 +770,8 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         getStateHelper().put(PropertyKeys.selectAllFilteredOnly, selectAllFilteredOnly);
     }
 
-    public boolean isCellNavigation() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.cellNavigation, true);
+    public Boolean isCellNavigation() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.cellNavigation, null);
     }
 
     public void setCellNavigation(boolean cellNavigation) {
