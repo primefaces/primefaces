@@ -56,6 +56,7 @@ public class AppMenu {
         List<MenuItem> supportMenuItems = new ArrayList<>();
         supportMenuItems.add(new MenuItem("Forum", "https://github.com/orgs/primefaces/discussions"));
         supportMenuItems.add(new MenuItem("Discord Chat", "https://discord.gg/gzKFYnpmCY"));
+        supportMenuItems.add(new MenuItem("Long Term Support", "/lts"));
         supportMenuItems.add(new MenuItem("PRO Support", "/support"));
         menuCategories.add(new MenuCategory("Support", supportMenuItems));
         //SUPPORT CATEGORY END
