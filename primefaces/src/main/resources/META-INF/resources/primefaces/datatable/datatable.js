@@ -945,6 +945,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     case "Space":
                     case "Enter":
                     case "NumpadEnter":
+                        // #12198 allow meta keys for multiselection
+                        if ($this.cfg.selectionRowMode !== 'none' && (e.metaKey || e.ctrlKey || e.shiftKey)) {
+                            return;
+                        }
                         // Find the first child element with a click event bound
                         var $clickable = cell.find(clickSelector).first();
                         if ($clickable.length) {
