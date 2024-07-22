@@ -118,7 +118,7 @@
             <div class="card">
                 <h5>Frozen Columns</h5>
                 <p:dataTable var="customer" value="#{dtScrollView.customers5}" scrollable="true" scrollHeight="250"
-                             scrollWidth="300" frozenColumns="1">
+                             scrollWidth="300" frozenColumns="1" frozenColumnsAlignment="left">
                     <p:column headerText="Name" footerText="Name">
                         <h:outputText value="#{customer.name}"/>
                     </p:column>

@@ -24,7 +24,10 @@ Look into [migration guide](https://primefaces.github.io/primefaces/15_0_0/#/../
     * `noButtonClass`: adds given class to 'No' button (and removes it before the global confirm dialog is reused elsewhere)
     * `noButtonIcon`: overrides icon of 'No' button (and removes it before the global confirm dialog is reused elsewhere)
     * `confirmMessage`: facet on the parent component of the `p:confirm` behavior. Can be used as message content instead of the `p:confirm` `message` attribute.
-    
+ 
+* DataTable 
+    * Added attribute `frozenColumnsAlignment` to support alignment of frozen columns left and right
+
 * FeedReader
     * Added `podcast="true"` property if [Apple Itunes Podcast](https://help.apple.com/itc/podcasts_connect/#/itcb54353390) parsing and specific tags 
 
