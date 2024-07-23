@@ -232,6 +232,7 @@
                     LTS versions require a license key and a pass key to be verified at your web.xml. The keys would be available at
                     <a href="https://www.primefaces.org/store/lts.xhtml" class="text-primary font-medium hover:underline">PrimeStore</a> under LTS Licenses section.
                 </p>
+                <span class="text-900 font-semibold">web.xml</span>
 <pre><code class="language-xml">
 &lt;context-param&gt;
     &lt;param-name&gt;primefaces.lts.LICENSE_KEY&lt;/param-name&gt;
@@ -244,13 +245,33 @@
 &lt;/context-param&gt;
 
 </code></pre>
+
+                <span class="text-900 font-semibold">pom.xml</span>
+<pre><code class="language-xml">
+&lt;repositories&gt;
+    &lt;repository&gt;
+        &lt;id&gt;prime-repo&lt;/id&gt;
+        &lt;name&gt;PrimeFaces Maven Repository&lt;/name&gt;
+        &lt;url&gt;https://repository.primefaces.org&lt;/url&gt;
+        &lt;layout&gt;default&lt;/layout&gt;
+    &lt;/repository&gt;
+&lt;/repositories&gt;
+
+&lt;dependency&gt;
+    &lt;groupId&gt;org.primefaces&lt;/groupId&gt;
+    &lt;artifactId&gt;primefaces&lt;/artifactId&gt;
+    &lt;version&gt;13.0.11-LTS&lt;/version&gt;
+&lt;/dependency&gt;
+...
+    
+    </code></pre>
             </div>
             <div class="card m-0">
                 <div class="text-2xl text-900 font-semibold mb-5">Frequently Asked Questions</div>
                 <div class="flex flex-wrap text-lg -ml-5 -mt-5">
                     <div class="w-full lg:w-4 p-5">
                         <div class="text-900 line-height-3 mb-2 font-medium">Do I have to purchase a license for PrimeFaces?</div>
-                        <p class="mt-0 mb-5 p-0 line-height-3 text-800">No, only the versions that have the <b>-lts</b> suffix required a paid license. Any other version is open source under MIT license.</p>
+                        <p class="mt-0 mb-5 p-0 line-height-3 text-800">No, only the versions that have the <b>-LTS</b> suffix required a paid license. Any other version is open source under MIT license.</p>
 
                         <div class="text-900 line-height-3 mb-2 font-medium">Is LTS License mandatory to use PrimeFaces?</div>
                         <p class="mt-0 mb-5 p-0 line-height-3 text-800">No, LTS is totally optional.</p>
@@ -272,7 +293,7 @@
                         <p class="mt-0 mb-5 p-0 line-height-3 text-800">No, renewal should be done manually at PrimeStore.</p>
 
                         <div class="text-900 line-height-3 mb-2 font-medium">How are LTS and Community versions differentiated?</div>
-                        <p class="mt-0 mb-5 p-0 line-height-3 text-800">LTS releases have <span class="font-bold">-lts</span> suffix such as <span class="font-bold">13.0.11-lts</span>.</p>
+                        <p class="mt-0 mb-5 p-0 line-height-3 text-800">LTS releases have <span class="font-bold">-LTS</span> suffix such as <span class="font-bold">13.0.11-LTS</span>.</p>
 
                         <div class="text-900 line-height-3 mb-2 font-medium">Is the license per organization, per developer or per cpu/server?</div>
                         <p class="mt-0 mb-5 p-0 line-height-3 text-800">LTS license is per organization, there is no limit on the number of developers, projects or hardware.</p>
