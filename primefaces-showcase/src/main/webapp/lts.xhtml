@@ -1,16 +1,9 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
-    xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-    xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
-
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="jakarta.faces.facelets" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core" xmlns:p="primefaces" template="/WEB-INF/template.xhtml">
     <ui:define name="head">
-        <style>
-
-        </style>
+        <style></style>
     </ui:define>
 
-    <ui:define name="title">
-        LTS
-    </ui:define>
+    <ui:define name="title"> LTS </ui:define>
 
     <ui:define name="content">
         <div class="content-section introduction">
@@ -26,15 +19,16 @@
                     <i class="pi pi-github absolute text-200" style="bottom: -50px; right: -50px; font-size: 200px; transform: rotateX(45deg) rotateY(0deg) rotateZ(-45deg)"></i>
                     <div class="text-2xl text-900 font-semibold mb-3 relative">Community Versions</div>
                     <p class="m-0 line-height-3 relative text-lg text-800">
-                        PrimeFaces is a fast paced technology with a new major version every 6 months.
-                        The maintenance releases of the latest PrimeFaces version are provided as free and open source for the following 6 months until the new major PrimeFaces version is ready.
+                        PrimeFaces is a fast paced technology with a new major version every 6 months. The maintenance releases of the latest PrimeFaces version are provided as free and open source for the following 6 months until the new major
+                        PrimeFaces version is ready.
                     </p>
                 </div>
                 <div class="card m-0 xl:w-9 text-white bg-cover" style="background-image: url('https://primefaces.org/cdn/primeng/images/lts/card-lts.jpg')">
                     <div class="text-2xl font-semibold mb-3">LTS Versions</div>
                     <p class="m-0 line-height-3 text-lg">
-                        Majority of the existing applications prefer to remain at a previous version due to stability requirements instead of upgrading to the latest version immediately. PrimeFaces LTS is a support service to provide a license for the finest
-                        compatible version suited to you. LTS covers the prior two versions from the latest release, this means up to 18 months of almost bi-weekly releases to bring the latest defect fixes and security updates to your project.
+                        Majority of the existing applications prefer to remain at a previous version due to stability requirements instead of upgrading to the latest version immediately. PrimeFaces LTS is a support service to provide a license for
+                        the finest compatible version suited to you. LTS covers the prior two versions from the latest release, this means up to 18 months of almost bi-weekly releases to bring the latest defect fixes and security updates to your
+                        project.
                     </p>
                 </div>
             </div>
@@ -233,7 +227,7 @@
                     <a href="https://www.primefaces.org/store/lts.xhtml" class="text-primary font-medium hover:underline">PrimeStore</a> under LTS Licenses section.
                 </p>
                 <span class="text-900 font-semibold">web.xml</span>
-<pre><code class="language-xml">
+                <pre><code class="language-xml">
 &lt;context-param&gt;
     &lt;param-name&gt;primefaces.lts.LICENSE_KEY&lt;/param-name&gt;
     &lt;param-value&gt;VALID_LICENSE_KEY&lt;/param-value&gt;
@@ -247,7 +241,7 @@
 </code></pre>
 
                 <span class="text-900 font-semibold">pom.xml</span>
-<pre><code class="language-xml">
+                <pre><code class="language-xml">
 &lt;repositories&gt;
     &lt;repository&gt;
         &lt;id&gt;prime-repo&lt;/id&gt;
@@ -313,13 +307,12 @@
 
                         <div class="text-900 line-height-3 mb-2 font-medium">What is the difference between LTS and PRO?</div>
                         <p class="mt-0 p-0 line-height-3 text-800">
-                            PrimeFaces PRO is a premium support service delivered via an exclusive JIRA instance where support engineers of PrimeTek provide assistance within 1 business day to the raised tickets. LTS on the other hand provides a license to
-                            utilize the long term support versions.
+                            PrimeFaces PRO is a premium support service delivered via an exclusive JIRA instance where support engineers of PrimeTek provide assistance within 1 business day to the raised tickets. LTS on the other hand provides a
+                            license to utilize the long term support versions.
                         </p>
                     </div>
                 </div>
             </div>
         </div>
     </ui:define>
-
 </ui:composition>
