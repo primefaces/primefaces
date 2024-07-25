@@ -784,7 +784,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this;
         var filterEventName = this.cfg.filterEvent + '.dataTable';
         
-        filter.on(filterEventName, function(e) {
+        filter.off('keydown ' + filterEventName).on(filterEventName, function(e) {
             //prevent form submit on enter key
             if (e.key && (PrimeFaces.utils.ignoreFilterKey(e) || PrimeFaces.utils.blockEnterKey(e))) {
                 return;
@@ -798,6 +798,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 $this.filter();
                 $this.filterTimeout = null;
             }, $this.cfg.filterDelay);
+        })
+        .on('keydown', function(e) {
+            // #12327 do not submit form on ENTER
+            PrimeFaces.utils.blockEnterKey(e);
         });
     },
 
