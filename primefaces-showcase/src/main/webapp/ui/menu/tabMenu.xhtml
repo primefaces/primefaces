@@ -10,7 +10,8 @@
     </ui:define>
 
     <ui:define name="description">
-        TabMenu is a menu component displaying menuitems as tabs.
+        TabMenu is a menu component displaying menuitems as tabs. You can use <code>activeIndex</code> to set the active tab. 
+        If you don't use <code>activeIndex</code>, the tab will be opened based on the browser's session storage to remember the selected tab.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/tabmenu"/>
@@ -41,23 +42,18 @@
         </div>
 
         <div class="card">
-            <h5 class="mt-0">Orientation Left</h5>
-            <p:tabMenu activeIndex="#{param.i}" style="width:15rem" orientation="left">
+            <h5 class="mt-0">Orientation Left </h5>
+            <p:tabMenu style="width:15rem" orientation="left">
                 <p:menuitem value="Home" outcome="/ui/menu/tabMenu" icon="pi pi-fw pi-home">
-                    <f:param name="i" value="0"/>
                 </p:menuitem>
                 <p:menuitem value="Calendar" outcome="/ui/menu/tabMenu" icon="pi pi-fw pi-calendar">
-                    <f:param name="i" value="1"/>
                 </p:menuitem>
                 <p:menuitem value="Edit" outcome="/ui/menu/tabMenu" icon="pi pi-fw pi-pencil"
                             disabled="true">
-                    <f:param name="i" value="2"/>
                 </p:menuitem>
                 <p:menuitem value="Documentation" outcome="/ui/menu/tabMenu" icon="pi pi-fw pi-file">
-                    <f:param name="i" value="3"/>
                 </p:menuitem>
                 <p:menuitem value="Settings" outcome="/ui/menu/tabMenu" icon="pi pi-fw pi-cog">
-                    <f:param name="i" value="4"/>
                 </p:menuitem>
             </p:tabMenu>
         </div>
