@@ -18,6 +18,11 @@
     float: none;
 }
 
+/* GitHub #12338 menu inside tabs */
+.ui-tabs .ui-tabs-nav li .ui-menu-list {
+    white-space: initial;
+}
+
 .ui-tabs .ui-tabs-nav li a {
     float: left;
     padding: .5em 1em;
