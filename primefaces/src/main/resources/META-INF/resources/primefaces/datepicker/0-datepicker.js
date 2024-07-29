@@ -3284,14 +3284,14 @@
          * @throws {Error} If the input Java time zone string is in an invalid format.
          */
         convertTimeZone: function (javaTimeZone) {
-            if (!javaTimeZone || javaTimeZone.toUpperCase() === 'UTC' || /^(GMT|UTC)$/.test(javaTimeZone)) {
+            if (!javaTimeZone || ['ETC/UTC', 'ETC/GMT', 'UTC', 'GMT'].includes(javaTimeZone.toUpperCase())) {
                 return javaTimeZone;
             }
 
             // Extract the sign and the offset (hours and minutes)
             const matches = javaTimeZone.match(/^(GMT|UTC)([+-])(\d{2}):(\d{2})$/);
             if (!matches) {
-                throw new Error('Invalid GMT/UTC format');
+                return javaTimeZone;
             }
 
             const sign = matches[2];
