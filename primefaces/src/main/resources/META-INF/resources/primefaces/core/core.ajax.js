@@ -224,6 +224,45 @@ if (!PrimeFaces.ajax) {
 
             /**
              * Updates the HTML `head` element of the current document with the content received from an AJAX request.
+             * This method ensures that any new JavaScript or CSS resources are only added if they are not already present.
+             * If the content does not contain any JavaScript or CSS links, it is directly appended to the head.
+             * 
+             * @param {string} content The content of the changeset that was returned by an AJAX request.
+             */
+            updateResource: function (content) {
+                var $head = $("head");
+                try {
+                    var $content = $(content);
+                    var filteredContent = $content.length > 0 ? $content.filter("link[href], script[src]") : $();
+
+                    if (filteredContent.length === 0) {
+                        PrimeFaces.debug("Adding content to the head because it lacks any JavaScript or CSS links...");
+                        $head.append(content);
+                    } else {
+                        // #11714 Iterate through each script and stylesheet tag in the content
+                        // checking if resource is already attached to the head and adding it if not
+                        filteredContent.each(function () {
+                            var $resource = $(this);
+                            var src = $resource.attr("href") || $resource.attr("src");
+                            var type = this.tagName.toLowerCase();
+                            var $resources = $head.find(type + '[src="' + src + '"], ' + type + '[href="' + src + '"]');
+
+                            // Check if script or stylesheet already exists and add it to head if it does not
+                            if ($resources.length === 0) {
+                                PrimeFaces.debug("Appending " + type + " to head: " + src);
+                                $head.append($resource);
+                            }
+                        });
+                    }
+                } catch (error) {
+                    // MYFACES-4378 is incorrectly sending executable code here in the Resource section
+                    PrimeFaces.debug("Appending content to the head as it contains only raw JavaScript code...");
+                    $head.append(content);
+                }
+            },
+
+            /**
+             * Updates the HTML `head` element of the current document with the content received from an AJAX request.
              * @param {string} content The content of the changeset that was returned by an AJAX request.
              */
             updateHead: function(content) {
@@ -282,7 +321,7 @@ if (!PrimeFaces.ajax) {
                     PrimeFaces.ajax.Utils.updateBody(content);
                 }
                 else if (id === PrimeFaces.ajax.RESOURCE) {
-                    $('head').append(content);
+                    PrimeFaces.ajax.Utils.updateResource(content);
                 }
                 else if (id === $('head')[0].id) {
                     PrimeFaces.ajax.Utils.updateHead(content);
