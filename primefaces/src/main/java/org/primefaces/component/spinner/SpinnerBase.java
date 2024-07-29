@@ -60,6 +60,8 @@ public abstract class SpinnerBase extends AbstractPrimeHtmlInputText implements 
     public static final String BUTTONS_HORIZONTAL = "horizontal";
     public static final String BUTTONS_HORIZONTAL_AFTER = "horizontal-after";
     public static final String BUTTONS_VERTICAL = "vertical";
+    public static final Double MAX_VALUE = Double.MAX_VALUE;
+    public static final Double MIN_VALUE = -Double.MAX_VALUE;
 
     public SpinnerBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -95,7 +97,7 @@ public abstract class SpinnerBase extends AbstractPrimeHtmlInputText implements 
     }
 
     public double getMin() {
-        return (Double) getStateHelper().eval(PropertyKeys.min, -Double.MAX_VALUE);
+        return (Double) getStateHelper().eval(PropertyKeys.min, MIN_VALUE);
     }
 
     public void setMin(double min) {
@@ -103,7 +105,7 @@ public abstract class SpinnerBase extends AbstractPrimeHtmlInputText implements 
     }
 
     public double getMax() {
-        return (Double) getStateHelper().eval(PropertyKeys.max, Double.MAX_VALUE);
+        return (Double) getStateHelper().eval(PropertyKeys.max, MAX_VALUE);
     }
 
     public void setMax(double max) {
