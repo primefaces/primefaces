@@ -32,7 +32,7 @@ MenuButton displays different commands in a popup menu.
 | icon | null | String | Icon of the menu button.
 | iconPos | left | String | Position of the icon, valid values are left and right.
 | title | null | String | Advisory tooltip information.
-| appendTo | null | String | Appends the overlay to the element defined by search expression. Defaults to document body.
+| appendTo | null | String | Appends the overlay to the element defined by search expression. Defaults to the button itself.
 | menuStyleClass | null | String | Style class of the overlay menu element.
 | ariaLabel | null | String | The aria-label attribute is used to define a string that labels the current element for accessibility.
 | collision | flip | String | For the overlay menu that shows up when the menu button is clicked. When the overlay menu overflows the window in some direction, move it to an alternative position. Supported values are flip, fit, flipfit and none. See https://api.jqueryui.com/position/ for more details. Defaults to flip. When you the body of your layout does not scroll, you may also want to set the option maxHeight.
