@@ -72,7 +72,7 @@ public abstract class AbstractInputMetadataTransformer implements MetadataTransf
         return Integer.MIN_VALUE;
     }
 
-    protected boolean isMaxlenghtSet(UIInput input) {
+    protected boolean isMaxlengthSet(UIInput input) {
         return getMaxlength(input) != Integer.MIN_VALUE;
     }
 
