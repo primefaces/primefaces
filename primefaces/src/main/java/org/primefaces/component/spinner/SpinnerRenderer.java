@@ -25,9 +25,11 @@ package org.primefaces.component.spinner;
 
 import java.io.IOException;
 import java.math.BigInteger;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -98,8 +100,8 @@ public class SpinnerRenderer extends InputRenderer {
         wb.init("Spinner", spinner)
                 .attr("step", spinner.getStepFactor(), 1.0)
                 .attr("round", spinner.isRound(), false)
-                .attr("min", spinner.getMin(), Double.MIN_VALUE)
-                .attr("max", spinner.getMax(), Double.MAX_VALUE)
+                .attr("min", spinner.getMin(), Spinner.MIN_VALUE)
+                .attr("max", spinner.getMax(), Spinner.MAX_VALUE)
                 .attr("prefix", spinner.getPrefix(), null)
                 .attr("suffix", spinner.getSuffix(), null)
                 .attr("required", spinner.isRequired(), false)
