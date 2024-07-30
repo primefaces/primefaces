@@ -23,12 +23,14 @@
  */
 package org.primefaces.util;
 
+
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
+
 import javax.faces.FacesException;
 
 public interface PropertyDescriptorResolver {
@@ -99,7 +101,18 @@ public interface PropertyDescriptorResolver {
                     return new PropertyDescriptor(k, klazz);
                 }
                 catch (IntrospectionException e) {
-                    throw new FacesException(e);
+                    // try fallback without write method, our main concern is to read properties here
+                    try {
+                        // "is" + capitalize(k) is actually copied from another PropertyDescriptor constructor
+                        // it will somehow also work for "get" prefix
+                        return new PropertyDescriptor(k,
+                                klazz,
+                                "is" + LangUtils.capitalize(k),
+                                null);
+                    }
+                    catch (IntrospectionException e2) {
+                        throw new FacesException(e2);
+                    }
                 }
             });
         }
