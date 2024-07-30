@@ -31,6 +31,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 import javax.faces.FacesException;
 
+import static java.util.Locale.ENGLISH;
+
 public interface PropertyDescriptorResolver {
 
     PropertyDescriptor get(Class<?> klazz, String name);
@@ -98,10 +100,28 @@ public interface PropertyDescriptorResolver {
                 try {
                     return new PropertyDescriptor(k, klazz);
                 }
-                catch (IntrospectionException e) {
-                    throw new FacesException(e);
+                catch (IntrospectionException e1) {
+                    // try fallback without write method, our main concern is to read properties here
+                    try {
+                        // "is" + capitalize(k) is actually copied from another PropertyDescriptor constructor
+                        // it will somehow also work for "get" prefix
+                        return new PropertyDescriptor(k,
+                                klazz,
+                                "is" + capitalize(k),
+                                null);
+                    }
+                    catch (IntrospectionException e2) {
+                        throw new FacesException(e2);
+                    }
                 }
             });
+        }
+
+        private String capitalize(String name) {
+            if (name == null || name.length() == 0) {
+                return name;
+            }
+            return name.substring(0, 1).toUpperCase(ENGLISH) + name.substring(1);
         }
     }
 }

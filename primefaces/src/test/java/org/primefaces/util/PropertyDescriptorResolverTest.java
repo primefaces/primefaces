@@ -75,6 +75,20 @@ class PropertyDescriptorResolverTest {
         assertThrows(FacesException.class, () -> propResolver.getValue(b, "unknown"));
     }
 
+    @Test
+    void getValueFromReadOnlyPropertyDescriptor() {
+        PropertyDescriptorResolver propResolver = new PropertyDescriptorResolver.DefaultResolver();
+
+        F f = new F(true, false, "test");
+        assertEquals(true, propResolver.getValue(f, "readOnly1"));
+        assertEquals(false, propResolver.getValue(f, "readOnly2"));
+        assertEquals("test", propResolver.getValue(f, "readOnly3"));
+
+        assertNull(propResolver.get(f.getClass(), "readOnly1").getWriteMethod());
+        assertNull(propResolver.get(f.getClass(), "readOnly2").getWriteMethod());
+        assertNull(propResolver.get(f.getClass(), "readOnly3").getWriteMethod());
+    }
+
     private abstract class A {
 
         private String name;
@@ -168,5 +182,29 @@ class PropertyDescriptorResolverTest {
         X,
         Y,
         Z;
+    }
+
+    public class F {
+        private boolean readOnly1;
+        private boolean readOnly2;
+        private String readOnly3;
+
+        public F(boolean readOnly1, boolean readOnly2, String readOnly3) {
+            this.readOnly1 = readOnly1;
+            this.readOnly2 = readOnly2;
+            this.readOnly3 = readOnly3;
+        }
+
+        public boolean isReadOnly1() {
+            return readOnly1;
+        }
+
+        public boolean isReadOnly2() {
+            return readOnly2;
+        }
+
+        public String getReadOnly3() {
+            return readOnly3;
+        }
     }
 }
