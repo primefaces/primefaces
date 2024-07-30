@@ -104,7 +104,6 @@ public class SpinnerRenderer extends InputRenderer {
                 .attr("max", spinner.getMax(), Spinner.MAX_VALUE)
                 .attr("prefix", spinner.getPrefix(), null)
                 .attr("suffix", spinner.getSuffix(), null)
-                .attr("required", spinner.isRequired(), false)
                 .attr("rotate", spinner.isRotate(), false)
                 .attr("decimalPlaces", decimalPlaces, null)
                 .attr("modifyValueOnWheel", spinner.isModifyValueOnWheel(), true)
