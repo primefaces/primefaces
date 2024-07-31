@@ -23,9 +23,13 @@
  */
 package org.primefaces.util;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.beans.PropertyDescriptor;
+
 import javax.faces.FacesException;
 
 import org.junit.jupiter.api.Test;
@@ -73,6 +77,20 @@ class PropertyDescriptorResolverTest {
         assertEquals(123, obj);
 
         assertThrows(FacesException.class, () -> propResolver.getValue(b, "unknown"));
+    }
+
+    @Test
+    void getValueFromReadOnlyPropertyDescriptor() {
+        PropertyDescriptorResolver propResolver = new PropertyDescriptorResolver.DefaultResolver();
+
+        F f = new F(true, false, "test");
+        assertEquals(true, propResolver.getValue(f, "readOnly1"));
+        assertEquals(false, propResolver.getValue(f, "readOnly2"));
+        assertEquals("test", propResolver.getValue(f, "readOnly3"));
+
+        assertNull(propResolver.get(f.getClass(), "readOnly1").getWriteMethod());
+        assertNull(propResolver.get(f.getClass(), "readOnly2").getWriteMethod());
+        assertNull(propResolver.get(f.getClass(), "readOnly3").getWriteMethod());
     }
 
     private abstract class A {
@@ -168,5 +186,29 @@ class PropertyDescriptorResolverTest {
         X,
         Y,
         Z;
+    }
+
+    public class F {
+        private boolean readOnly1;
+        private boolean readOnly2;
+        private String readOnly3;
+
+        public F(boolean readOnly1, boolean readOnly2, String readOnly3) {
+            this.readOnly1 = readOnly1;
+            this.readOnly2 = readOnly2;
+            this.readOnly3 = readOnly3;
+        }
+
+        public boolean isReadOnly1() {
+            return readOnly1;
+        }
+
+        public boolean isReadOnly2() {
+            return readOnly2;
+        }
+
+        public String getReadOnly3() {
+            return readOnly3;
+        }
     }
 }
