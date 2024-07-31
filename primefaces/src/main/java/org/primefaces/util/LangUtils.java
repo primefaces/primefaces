@@ -23,6 +23,8 @@
  */
 package org.primefaces.util;
 
+import static java.util.Locale.ENGLISH;
+
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -482,6 +484,19 @@ public class LangUtils {
             values[0] = values[0].substring(0 , 1).toUpperCase() + values[0].substring(1).toLowerCase();
         }
         return String.join(" ", values);
+    }
+
+    /**
+     * Capitalizes the first character of the given string.
+     *
+     * @param name The string to capitalize.
+     * @return The capitalized string if the input is not blank; otherwise, returns the input string unchanged.
+     */
+    public static String capitalize(String name) {
+        if (isBlank(name)) {
+            return name;
+        }
+        return name.substring(0, 1).toUpperCase(ENGLISH) + name.substring(1);
     }
 
 
