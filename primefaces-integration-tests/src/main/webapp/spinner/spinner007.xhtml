@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <!-- GitHub #12352: allow NULL initial value if required + min -->
+            <p:spinner id="required" value="#{spinner007.required}" required="true" min="1" max="10"/>
+            <h:outputText id="output1" value="#{spinner007.required}"/>
+            <p:commandButton id="button1" update="@form" value="Submit1" process="@this required"/>
+
+            <!-- GitHub #12352: required="false" allow value even if min is set -->
+            <p:spinner id="notRequired" value="#{spinner007.notRequired}" required="false" min="1" max="10"/>
+            <h:outputText id="output2" value="#{spinner007.notRequired}"/>
+            <p:commandButton id="button2" update="@form" value="Submit2" process="@this notRequired"/>
+
+            <!-- GitHub #12346: respect min and max bean validations -->
+            <p:spinner id="integerBv" value="#{spinner007.beanValueInteger}" />
+            <h:outputText id="output3" value="#{spinner007.beanValueInteger}"/>
+            <p:commandButton id="button3" update="@form" value="Submit3" process="@this integerBv"/>
+
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>
