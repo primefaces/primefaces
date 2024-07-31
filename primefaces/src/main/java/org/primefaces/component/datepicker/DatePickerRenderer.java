@@ -216,7 +216,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             .attr("timeSeparator", datePicker.getTimeSeparator(), ":")
             .attr("fractionSeparator", datePicker.getFractionSeparator(), ".")
             .attr("timeInput", datePicker.isTimeInput())
-            .attr("timeZone", Objects.toString(datePicker.getTimeZone(), null), null)
+            .attr("timeZone", datePicker.getTimeZone() == null ? null : CalendarUtils.calculateZoneId(datePicker.getTimeZone()).toString(), null)
             .attr("touchable", ComponentUtils.isTouchable(context, datePicker), true)
             .attr("lazyModel", datePicker.getModel() instanceof LazyDateMetadataModel, false);
 
