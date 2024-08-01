@@ -190,7 +190,7 @@ public class CarBean {
     @PostConstruct
     public void init() {
         cars = DefaultLazyDataModel.<Car>builder()
-                .valueSupplier(() -> carService.getCars())
+                .valueSupplier((filterBy) -> carService.getCars())
                 .rowKeyProvider(Car::getId) // required for selection
                 .build();
     }
@@ -1104,9 +1104,10 @@ private DefaultLazyDataModel<MyPojo> dataModel;
 @PostConstruct
 public void init() {
     dataModel = DefaultLazyDataModel.<MyPojo>builder()
-        .valueSupplier(() -> service.getListOfMyPojos())
-        .rowKeyProvider(MyPojo::getId) // required for selection
-        .build();
+            .valueSupplier((filterBy) -> service.getListOfMyPojos())
+            .rowKeyProvider(MyPojo::getId) // required for selection
+            .build();
+}
 ```
 
 ## Sticky Header

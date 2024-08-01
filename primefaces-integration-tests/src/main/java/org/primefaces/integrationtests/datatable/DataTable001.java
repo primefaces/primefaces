@@ -56,7 +56,7 @@ public class DataTable001 implements Serializable {
     public void init() {
         progLanguages = service.getLangs();
         progLanguagesLazyDataModel = DefaultLazyDataModel.<ProgrammingLanguage>builder()
-                .valueSupplier(() -> service.getLangs())
+                .valueSupplier((filterBy) -> service.getLangs())
                 .rowKeyProvider(ProgrammingLanguage::getId)
                 .build();
         globalFilterOnly = false;
