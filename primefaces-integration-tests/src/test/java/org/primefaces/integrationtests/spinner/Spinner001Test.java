@@ -125,6 +125,23 @@ public class Spinner001Test extends AbstractPrimePageTest {
         assertConfiguration(spinner.getWidgetConfiguration());
     }
 
+    @Test
+    @Order(6)
+    @DisplayName("Spinner: GitHub #12365 do not allow only a thousands separator character")
+    void thousandSeparatorOnly(Page page) {
+        // Arrange
+        Spinner spinner = page.spinner;
+        assertEquals("", spinner.getValue());
+
+        // Act
+        sendKeys(spinner, ",");
+        page.button.click();
+
+        // Assert
+        assertEquals("", spinner.getValue());
+        assertConfiguration(spinner.getWidgetConfiguration());
+    }
+
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("Spinner Config = " + cfg);
