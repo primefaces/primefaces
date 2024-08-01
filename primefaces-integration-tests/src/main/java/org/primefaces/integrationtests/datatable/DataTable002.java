@@ -56,7 +56,7 @@ public class DataTable002 implements Serializable {
         }
         lazyDataModel = new ProgrammingLanguageLazyDataModel();
         reflectionLazyDataModel = DefaultLazyDataModel.<ProgrammingLanguage>builder()
-                .valueSupplier(() -> programmingLanguages)
+                .valueSupplier((filterBy) -> programmingLanguages)
                 .rowKeyProvider(ProgrammingLanguage::getId)
                 .build();
     }
