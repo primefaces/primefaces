@@ -21,37 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.integrationtests.datatable;
+package org.primefaces.integrationtests.spinner;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.primefaces.model.DefaultLazyDataModel;
-import org.primefaces.model.LazyDataModel;
+import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
-import java.io.Serializable;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+
+import lombok.Data;
 
 @Named
 @ViewScoped
-public class DataTable044 implements Serializable {
-    @Getter @Setter private String programmingLanguageFilter;
-    @Getter private LazyDataModel<ProgrammingLanguage> lazyDataModel;
+@Data
+public class Spinner007 implements Serializable {
 
-    @Inject private ProgrammingLanguageService service;
+    private static final long serialVersionUID = 1L;
+
+    private Integer required;
+    private Integer notRequired;
+
+    @Min(value = 1, message = "Value must be greater than 0")
+    @Max(value = 10, message = "Value must be less than 10")
+    private Integer beanValueInteger;
 
     @PostConstruct
     public void init() {
-        lazyDataModel = DefaultLazyDataModel.<ProgrammingLanguage>builder()
-                .valueSupplier((filterBy) -> service.getLangs())
-                .filter((ctx, value, filter, locale) -> {
-                    if (programmingLanguageFilter == null) {
-                        return true;
-                    }
-
-                    return ((ProgrammingLanguage) value).getName().contains(programmingLanguageFilter);
-                }).build();
     }
+
 }

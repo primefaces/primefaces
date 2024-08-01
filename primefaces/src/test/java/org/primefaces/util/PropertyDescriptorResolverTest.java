@@ -23,9 +23,13 @@
  */
 package org.primefaces.util;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.beans.PropertyDescriptor;
+
 import javax.faces.FacesException;
 
 import org.junit.jupiter.api.Test;
@@ -33,7 +37,7 @@ import org.junit.jupiter.api.Test;
 class PropertyDescriptorResolverTest {
 
     @Test
-    void getPropertyDescriptor() {
+    void get() {
         PropertyDescriptorResolver propResolver = new PropertyDescriptorResolver.DefaultResolver();
 
         PropertyDescriptor pd = propResolver.get(A.class, "name");
@@ -56,7 +60,7 @@ class PropertyDescriptorResolverTest {
     }
 
     @Test
-    void getValueFromPropertyDescriptor() {
+    void getValue() {
         PropertyDescriptorResolver propResolver = new PropertyDescriptorResolver.DefaultResolver();
 
         B b = new B("b", true, Boolean.FALSE, DummyEnum.X);
@@ -76,7 +80,7 @@ class PropertyDescriptorResolverTest {
     }
 
     @Test
-    void getValueFromReadOnlyPropertyDescriptor() {
+    void getValueReadOnly() {
         PropertyDescriptorResolver propResolver = new PropertyDescriptorResolver.DefaultResolver();
 
         F f = new F(true, false, "test");
@@ -89,7 +93,27 @@ class PropertyDescriptorResolverTest {
         assertNull(propResolver.get(f.getClass(), "readOnly3").getWriteMethod());
     }
 
-    private abstract class A {
+    @Test
+    void setValue() {
+        PropertyDescriptorResolver propResolver = new PropertyDescriptorResolver.DefaultResolver();
+
+        A a = new A(null, false, false);
+        assertNull(propResolver.getValue(a, "name"));
+        propResolver.setValue(a, "name", "Hans");
+        assertEquals("Hans", propResolver.getValue(a, "name"));
+
+        B b = new B("b", true, Boolean.FALSE, DummyEnum.X);
+        D d = new D("d", false, Boolean.FALSE, DummyEnum.Z, 123);
+        C c = new C(d);
+
+        assertEquals(123, propResolver.getValue(c, "b.foo"));
+        propResolver.setValue(c, "b.foo", 124);
+        assertEquals(124, propResolver.getValue(c, "b.foo"));
+
+        assertThrows(FacesException.class, () -> propResolver.setValue(new C(null), "b.dummyEnum", null));
+    }
+
+    private class A {
 
         private String name;
         private boolean bool1;

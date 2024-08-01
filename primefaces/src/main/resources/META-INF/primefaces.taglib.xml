@@ -17572,7 +17572,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Appends the overlay to the element defined by search expression. Defaults to document body.]]>
+                <![CDATA[Appends the overlay to the element defined by search expression. Defaults to the button itself.]]>
             </description>
             <name>appendTo</name>
             <required>false</required>

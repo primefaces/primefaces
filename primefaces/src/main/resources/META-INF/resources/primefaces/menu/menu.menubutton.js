@@ -30,7 +30,7 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
         this._super(cfg);
 
         this.trigger = this.jq.children('button');
-        this.cfg.appendTo = PrimeFaces.escapeClientId(this.trigger.attr("id"));
+        this.cfg.appendTo = this.cfg.appendTo || PrimeFaces.escapeClientId(this.trigger.attr("id"));
         this.cfg.disabled = this.trigger.is(':disabled');
         this.cfg.overlay = true;
         this.menu = null;
