@@ -23,21 +23,22 @@
  */
 package org.primefaces.util;
 
-
+import javax.faces.FacesException;
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
-import javax.faces.FacesException;
-
 public interface PropertyDescriptorResolver {
 
-    PropertyDescriptor get(Class<?> klazz, String name);
+    PropertyDescriptor get(Class<?> klazz, String expression);
 
-    Object getValue(Object bean, String name);
+    Object getValue(Object obj, String expression);
+
+    void setValue(Object obj, String expression, Object value);
 
     void flush();
 
@@ -64,8 +65,8 @@ public interface PropertyDescriptorResolver {
             PropertyDescriptor pd = null;
             Class<?> parent = klazz;
 
-            for (String field : NESTED_EXPRESSION_PATTERN.split(expression)) {
-                pd = getSimpleProperty(parent, field);
+            for (String property : NESTED_EXPRESSION_PATTERN.split(expression)) {
+                pd = getSimpleProperty(parent, property);
                 parent = pd.getPropertyType();
             }
 
@@ -73,16 +74,45 @@ public interface PropertyDescriptorResolver {
         }
 
         @Override
-        public Object getValue(Object bean, String expression) {
+        public Object getValue(Object obj, String expression) {
             try {
-                for (String field : NESTED_EXPRESSION_PATTERN.split(expression)) {
-                    bean = getSimpleProperty(bean.getClass(), field).getReadMethod().invoke(bean);
-                    if (bean == null) {
+                for (String property : NESTED_EXPRESSION_PATTERN.split(expression)) {
+                    obj = getSimpleProperty(obj.getClass(), property).getReadMethod().invoke(obj);
+                    if (obj == null) {
                         break;
                     }
                 }
 
-                return bean;
+                return obj;
+            }
+            catch (ReflectiveOperationException e) {
+                throw new FacesException(e);
+            }
+        }
+
+        @Override
+        public void setValue(Object obj, String expression, Object value) {
+            try {
+                String[] expressions = NESTED_EXPRESSION_PATTERN.split(expression);
+
+                for (int i = 0; i < expressions.length; i++) {
+                    String property = expressions[i];
+                    boolean lastExpression = i + 1 == expressions.length;
+
+                    if (lastExpression) {
+                        Method writeMethod = getSimpleProperty(obj.getClass(), property).getWriteMethod();
+                        if (writeMethod == null) {
+                            throw new FacesException("property '" + property + "' is readonly");
+                        }
+                        writeMethod.invoke(obj, value);
+                    }
+                    else {
+                        obj = getSimpleProperty(obj.getClass(), property).getReadMethod().invoke(obj);
+                        if (obj == null) {
+                            throw new FacesException("property '" + property + "' resolved to null");
+                        }
+                    }
+                }
             }
             catch (ReflectiveOperationException e) {
                 throw new FacesException(e);
@@ -94,9 +124,9 @@ public interface PropertyDescriptorResolver {
             pdCache.clear();
         }
 
-        private PropertyDescriptor getSimpleProperty(Class<?> klazz, String field) {
+        private PropertyDescriptor getSimpleProperty(Class<?> klazz, String property) {
             String cacheKey = klazz.getName();
-            return pdCache.computeIfAbsent(cacheKey, k -> new ConcurrentHashMap<>()).computeIfAbsent(field, k -> {
+            return pdCache.computeIfAbsent(cacheKey, k -> new ConcurrentHashMap<>()).computeIfAbsent(property, k -> {
                 try {
                     return new PropertyDescriptor(k, klazz);
                 }
