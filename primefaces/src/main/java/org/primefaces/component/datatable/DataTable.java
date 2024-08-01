@@ -314,7 +314,7 @@ public class DataTable extends DataTableBase {
                 continue;
             }
             ValueExpression columnFilterValueVE = column.getValueExpression(Column.PropertyKeys.filterValue.toString());
-            if (columnFilterValueVE == null) {
+            if (columnFilterValueVE == null || columnFilterValueVE.isReadOnly(elContext)) {
                 continue;
             }
             if (column.isDynamic()) {
