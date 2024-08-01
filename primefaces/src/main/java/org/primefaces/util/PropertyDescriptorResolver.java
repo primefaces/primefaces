@@ -26,6 +26,7 @@ package org.primefaces.util;
 import javax.faces.FacesException;
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -99,7 +100,11 @@ public interface PropertyDescriptorResolver {
                     boolean lastExpression = i + 1 == expressions.length;
 
                     if (lastExpression) {
-                        getSimpleProperty(obj.getClass(), property).getWriteMethod().invoke(obj, value);
+                        Method writeMethod = getSimpleProperty(obj.getClass(), property).getWriteMethod();
+                        if (writeMethod == null) {
+                            throw new FacesException("property '" + property + "' is readonly");
+                        }
+                        writeMethod.invoke(obj, value);
                     }
                     else {
                         obj = getSimpleProperty(obj.getClass(), property).getReadMethod().invoke(obj);
