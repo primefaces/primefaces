@@ -76,6 +76,10 @@ public abstract class Spinner extends InputText {
         PrimeSelenium.executeScript(getWidgetByIdScript() + ".setValue(" + value.toString() + ")");
     }
 
+    public String getWidgetValue() {
+        return PrimeSelenium.executeScript(getWidgetByIdScript() + ".getValue()");
+    }
+
     /**
      * Increments this spinner by one SpinnerCfg.step
      */
