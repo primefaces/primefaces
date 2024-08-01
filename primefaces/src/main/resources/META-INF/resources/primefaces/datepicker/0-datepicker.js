@@ -2214,9 +2214,16 @@
             if (this.documentClickListener) {
                 this.datepickerClick = true;
             }
-            // #11928 allow the input to be clicked again to close panel and allow typing of date
-            if (!this.datepickerFocus && this.isPanelVisible()) {
-                this.hideOverlay();
+            
+            if (this.isPanelVisible()) {
+                // #11928 allow the input to be clicked again to close panel and allow typing of date
+                if (!this.datepickerFocus) {
+                    this.hideOverlay();
+                }
+            } 
+            else if (this.options.showOnFocus) {
+                // #12361 allow the input to be clicked again to open the panel if showOnFocus is true
+                this.showOverlay();
             }
         },
 
