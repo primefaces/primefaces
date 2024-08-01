@@ -56,15 +56,16 @@ public class DefaultLazyDataModel<T> extends LazyDataModel<T> {
 
     @Override
     public int count(Map<String, FilterMeta> filterBy) {
-        List<T> values = valuesSupplier.get();
-        List<T> filteredValues = filter(values, filterBy);
-        return filteredValues.size();
+        return 0;
     }
 
     @Override
     public List<T> load(int first, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
         List<T> values = valuesSupplier.get();
         List<T> filteredValues = filter(values, filterBy);
+
+        setRowCount(filteredValues.size());
+        first = recalculateFirst(first, pageSize, getRowCount());
 
         sort(filteredValues);
 
