@@ -218,6 +218,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             .attr("timeInput", datePicker.isTimeInput())
             .attr("timeZone", datePicker.getTimeZone() == null ? null : CalendarUtils.calculateZoneId(datePicker.getTimeZone()).toString(), null)
             .attr("touchable", ComponentUtils.isTouchable(context, datePicker), true)
+            .attr("readonly", datePicker.isReadonly(), false)
             .attr("lazyModel", datePicker.getModel() instanceof LazyDateMetadataModel, false);
 
         List<Integer> disabledDays = datePicker.getDisabledDays();
