@@ -24,6 +24,7 @@
 package org.primefaces.component.treetable;
 
 import java.util.*;
+
 import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.application.ResourceDependency;
@@ -46,6 +47,7 @@ import org.primefaces.model.SortMeta;
 import org.primefaces.model.TreeNode;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.MapBuilder;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
@@ -231,8 +233,10 @@ public class TreeTable extends TreeTableBase {
                 int rows = getRowsToRender();
                 int first = Integer.parseInt(params.get(clientId + "_first"));
                 int page = rows > 0 ? (first / rows) : 0;
+                String rowsPerPageParam = params.get(clientId + "_rows");
+                Integer rowsPerPage = LangUtils.isNotBlank(rowsPerPageParam) ? Integer.parseInt(rowsPerPageParam) : null;
 
-                wrapperEvent = new PageEvent(this, behaviorEvent.getBehavior(), page);
+                wrapperEvent = new PageEvent(this, behaviorEvent.getBehavior(), page, rowsPerPage);
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             }
 

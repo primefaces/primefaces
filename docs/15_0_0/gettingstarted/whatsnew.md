@@ -27,12 +27,17 @@ Look into [migration guide](https://primefaces.github.io/primefaces/15_0_0/#/../
  
 * DataTable 
     * Added attribute `frozenColumnsAlignment` to support alignment of frozen columns left and right
+    * Added `expandIcon`/`collapseIcon` attributes for RowToggler
+    * Added `rowsPerPage` in the PageEvent AJAX event
 
 * FeedReader
     * Added `podcast="true"` property if [Apple Itunes Podcast](https://help.apple.com/itc/podcasts_connect/#/itcb54353390) parsing and specific tags 
 
 * InputNumber
     * Added `modifyValueOnUpDownArrow` which allows the user to increment or decrement the element value with the up and down arrow keys. Default is true.
+
+* Paginator 
+    * Added `rowsPerPage` in the PageEvent AJAX event
 
 * SelectOneMenu
     * Added `clear` AJAX event when in `editable="true"` and you clear out a value with BACKSPACE/DELETE
@@ -43,5 +48,4 @@ Look into [migration guide](https://primefaces.github.io/primefaces/15_0_0/#/../
 * Tree
     * Added `filterPlaceholder` property
 
-* DataTable
-    * Added `expandIcon`/`collapseIcon` attributes for RowToggler
+    
