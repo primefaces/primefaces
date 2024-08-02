@@ -307,25 +307,38 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
      * Selects the menu item link by making it focused and setting tabindex to "0" for ARIA.
      * 
      * @param {JQuery} menulink - The menu item (`<a>`) to select.
+     * @param {JQuery.TriggeredEvent} [event] - The event that triggered the focus.
      */
-    focus: function(menulink) {
+    focus: function(menulink, event) {
         if (menulink.hasClass('ui-state-disabled')) {
             return;
         }
         this.resetFocus(false);
         var defaultTabIndex = this.tabIndex || "0";
-        menulink.addClass('ui-state-hover ui-state-active').attr('tabindex', defaultTabIndex).trigger('focus');
+        var cssClass = 'ui-state-hover';
+        if (!event || !event.type.startsWith('mouse')) {
+             // only add active class if the event is not a mouse event like a click or keyboard event
+            cssClass = cssClass + ' ui-state-active';
+        }
+        menulink.addClass(cssClass).attr('tabindex', defaultTabIndex).trigger('focus');
     },
 
     /**
      * Unselect the menu item link by removing focus and tabindex=-1 for ARIA.
      * @param {JQuery} menulink Menu item (`A`) to unselect.
+     * @param {JQuery.TriggeredEvent} [event] - The event that triggered the unfocus.
      */
-    unfocus: function(menulink) {
+    unfocus: function(menulink, event) {
         if (menulink.hasClass('ui-state-disabled')) {
             return;
         }
-        menulink.removeClass('ui-state-hover ui-state-active').attr('tabindex', -1);
+
+        var cssClass = 'ui-state-hover';
+        if (!event || !event.type.startsWith('mouse')) {
+            // only remove active class if the event is not a mouse event like a click or keyboard event
+            cssClass = cssClass + ' ui-state-active';
+        }
+        menulink.removeClass(cssClass).attr('tabindex', -1);
     }
 });
 
