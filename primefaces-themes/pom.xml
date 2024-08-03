@@ -11,11 +11,10 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>primefaces-theme</artifactId>
+    <artifactId>primefaces-themes</artifactId>
     <packaging>jar</packaging>
 
-    <name>PrimeFaces Theme</name>
-    <description><![CDATA[SASS Theme Generator for PrimeFaces]]></description>
+    <name>PrimeFaces Themes</name>
 
     <build>
         <finalName>${project.name}</finalName>
