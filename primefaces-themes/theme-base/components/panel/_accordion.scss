@@ -1,0 +1,125 @@
+body {
+  .ui-accordion {
+    .ui-accordion-header {
+      border: $accordionHeaderBorder;
+      border-top: 0 none;
+      background: $accordionHeaderBg;
+      color: $accordionHeaderTextColor;
+      padding: $accordionHeaderPadding;
+      font-weight: $accordionHeaderFontWeight;
+      margin-top: $accordionSpacing;
+      transition: $transition;
+      user-select: none;
+      border-radius: 0;
+      position: relative;
+      outline: 0 none;
+
+      &:first-child {
+        margin-top: 0;
+        border-top: $accordionHeaderBorder;
+        border-top-right-radius: $borderRadius;
+        border-top-left-radius: $borderRadius;
+      }
+
+      &.ui-accordion-header-last {
+        border-bottom-right-radius: $borderRadius;
+        border-bottom-left-radius: $borderRadius;
+
+        &.ui-state-active {
+          border-radius: 0;
+        }
+      }
+
+      &.ui-state-hover {
+        border-color: $accordionHeaderHoverBorderColor;
+        background: $accordionHeaderHoverBg;
+        color: $accordionHeaderTextHoverColor;
+      }
+
+      &.ui-state-active {
+        background: $accordionHeaderActiveBg;
+        border-color: $accordionHeaderActiveBorderColor;
+        color: $accordionHeaderTextActiveColor;
+
+        &:hover {
+          border-color: $accordionHeaderActiveHoverBorderColor;
+          background: $accordionHeaderActiveHoverBg;
+          color: $accordionHeaderTextHoverColor;
+        }
+      }
+
+      &:focus {
+        @include focused();
+      }
+
+      &.ui-state-error {
+        border-color: $errorColor;
+        background-color: $errorColor;
+
+        &.ui-state-active {
+          &:hover {
+            border-color: $errorColor;
+            background-color: $errorColor;
+            color: $accordionHeaderTextActiveColor;
+          }
+        }
+
+        & + .ui-accordion-content {
+          border-color: $errorColor;
+        }
+      }
+
+      > .ui-icon {
+        position: static;
+        display: inline-block;
+        margin: 0 $inlineSpacing 0 0;
+
+        &.ui-icon-triangle-1-e {
+          @include icon-override("\e901");
+        }
+
+        &.ui-icon-triangle-1-s {
+          @include icon-override("\e902");
+        }
+      }
+
+      .ui-panel-titlebar-icon {
+        margin: 0;
+        @include action-icon();
+        margin-top: math.div(-1 * $actionIconHeight, 8);
+        margin-bottom: math.div(-1 * $actionIconHeight, 4);
+
+        .ui-icon-closethick {
+          @include icon-override("\e90b");
+        }
+
+        .ui-icon-minusthick {
+          @include icon-override("\e90f");
+        }
+
+        .ui-icon-plusthick {
+          @include icon-override("\e90d");
+        }
+
+        .ui-icon-gear {
+          @include icon-override("\e94a");
+        }
+      }
+    }
+
+    .ui-accordion-content {
+      border: $accordionContentBorder;
+      background: $accordionContentBg;
+      color: $accordionContentTextColor;
+      padding: $accordionContentPadding;
+      margin: 0;
+      position: static;
+      border-top: 0 none;
+
+      &:last-of-type {
+        border-bottom-right-radius: $borderRadius;
+        border-bottom-left-radius: $borderRadius;
+      }
+    }
+  }
+}

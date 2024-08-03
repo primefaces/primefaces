@@ -1,0 +1,63 @@
+body {
+  .keypad-popup {
+    background: $inputContentPanelBg;
+    color: $inputContentPanelTextColor;
+    padding: 0;
+    border: $inputOverlayBorder;
+    margin: 0;
+    width: auto;
+    box-shadow: $inputOverlayShadow;
+
+    button {
+      background: $keyboardButtonBg;
+      border: $keyboardButtonBorder;
+      padding: $keyboardButtonPadding;
+      margin: $keyboardButtonMargin;
+      outline: 0 none;
+      color: $keyboardButtonTextColor;
+      transition: $transition;
+      border-radius: $borderRadius;
+
+      &.ui-state-hover {
+        background: $keyboardButtonHoverBg;
+        border-color: $keyboardButtonHoverBorderColor;
+        color: $keyboardButtonTextHoverColor;
+      }
+
+      &.ui-state-active {
+        background: $keyboardButtonActiveBg;
+        border-color: $keyboardButtonActiveBorderColor;
+        color: $keyboardButtonTextActiveColor;
+      }
+
+      &.keypad-shift,
+      &.keypad-spacebar,
+      &.keypad-enter,
+      &.keypad-clear,
+      &.keypad-back,
+      &.keypad-close {
+        background: $buttonBg;
+        color: $buttonTextColor;
+        border: $buttonBorder;
+
+        &.ui-state-hover {
+          background: $buttonHoverBg;
+          border-color: $buttonHoverBorderColor;
+          color: $buttonTextHoverColor;
+        }
+
+        &.ui-state-focus {
+          outline: $buttonFocusOutline;
+          outline-offset: $buttonFocusOutlineOffset;
+          box-shadow: $buttonFocusShadow;
+        }
+
+        &.ui-state-active {
+          background: $buttonActiveBg;
+          border-color: $buttonActiveBorderColor;
+          color: $buttonTextActiveColor;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,74 @@
+body {
+  .ui-toggleswitch {
+    position: relative;
+    display: inline-block;
+    width: 3rem;
+    height: 1.75rem;
+
+    .ui-toggleswitch-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: $inputSwitchOffBg;
+      transition: $transition;
+      border: $inputSwitchBorder;
+      border-width: $inputSwitchBorderWidth;
+      border-radius: $inputSwitchBorderRadius;
+
+      &.ui-state-error {
+        @include invalid-input();
+      }
+    }
+
+    .ui-toggleswitch-slider:before,
+    .ui-toggleswitch-handler {
+      position: absolute;
+      top: 50%;
+      background: $inputSwitchHandleOffBg;
+      color: $inputSwitchHandleOffTextColor;
+      width: 1.250rem;
+      height: 1.250rem;
+      left: calc(.25rem - #{$inputSwitchBorderWidth});
+      margin-top: math.div(-1 * 1.250rem, 2);
+      border-radius: $inputSwitchHandleBorderRadius;
+      transition: all $transitionDuration;
+      font-size: math.div(1.250rem, 2);
+      line-height: 1.250rem;
+    }
+
+    .ui-toggleswitch-handler {
+      span {
+        font-size: math.div(1.250rem, 2);
+        line-height: 1.250rem;
+      }
+    }
+
+    &.ui-toggleswitch-checked {
+      .ui-toggleswitch-slider:before,
+      .ui-toggleswitch-handler {
+        color: $inputSwitchHandleOnTextColor;
+        transform: translateX(1.250rem);
+      }
+    }
+
+    &.ui-toggleswitch-focus {
+      .ui-toggleswitch-slider {
+        @include focused();
+      }
+    }
+
+    &.ui-toggleswitch-checked {
+      .ui-toggleswitch-slider {
+        background: $inputSwitchOnBg;
+
+        &:before,
+        .ui-toggleswitch-handler {
+          background: $inputSwitchHandleOnBg;
+        }
+      }
+    }
+  }
+}

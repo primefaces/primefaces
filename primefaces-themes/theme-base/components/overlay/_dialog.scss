@@ -1,0 +1,149 @@
+body {
+  .ui-dialog {
+    padding: 0;
+    box-shadow: $overlayContainerShadow;
+    border: $overlayContentBorder;
+    border-radius: $borderRadius;
+
+    .ui-dialog-titlebar {
+      background: $dialogHeaderBg;
+      color: $dialogHeaderTextColor;
+      font-weight: $dialogHeaderFontWeight;
+      border-bottom: $dialogHeaderBorder;
+      padding: $dialogHeaderPadding;
+
+      .ui-dialog-title {
+        margin: 0;
+        float: none;
+        font-size: $dialogHeaderFontSize;
+      }
+
+      .ui-dialog-titlebar-icon {
+        border: 0 none;
+        padding: 0;
+        margin-left: $inlineSpacing;
+        @include action-icon();
+
+        .ui-icon-closethick {
+          @include icon-override("\e90b");
+        }
+
+        .ui-icon-minus {
+          @include icon-override("\e90f");
+        }
+
+        .ui-icon-plus {
+          @include icon-override("\e90d");
+        }
+
+        .ui-icon-extlink {
+          @include icon-override("\e93b");
+        }
+
+        .ui-icon-newwin {
+          @include icon-override("\e93a");
+        }
+      }
+    }
+
+    .ui-dialog-content {
+      background: $dialogContentBg;
+      color: $dialogContentTextColor;
+      border: $dialogContentBorder;
+      padding: $dialogContentPadding;
+      border: $dialogContentBorder;
+    }
+
+    .ui-dialog-footer {
+      border-top: $dialogFooterBorder;
+      background: $dialogFooterBg;
+      color: $dialogFooterTextColor;
+      padding: $dialogFooterPadding;
+      margin: 0;
+      text-align: right;
+
+      button {
+        margin: 0 $inlineSpacing 0 0;
+        width: auto;
+      }
+    }
+
+    &.ui-confirm-dialog {
+      .ui-dialog-content {
+        padding: $confirmDialogContentPadding;
+        @include flex();
+        @include flex-align-center();
+
+        > span {
+          float: none;
+          display: inline-block;
+          vertical-align: middle;
+          line-height: 1;
+          margin: 0 0 0 $inlineSpacing;
+
+          &.ui-icon {
+            margin-right: $inlineSpacing;
+            font-size: $confirmDialogIconFontSize;
+
+            &.ui-icon-warn {
+              @include icon-override("\e922");
+            }
+
+            &.ui-icon-info {
+              @include icon-override("\e924");
+            }
+
+            &.ui-icon-error {
+              @include icon-override("\e90c");
+            }
+          }
+        }
+      }
+    }
+
+    &.ui-resizable {
+      .ui-dialog-content {
+        box-sizing: content-box;
+      }
+    }
+
+    &.ui-message-dialog {
+      .ui-dialog-content {
+        padding: $confirmDialogContentPadding;
+        @include flex();
+        @include flex-align-center();
+
+        > span {
+          float: none;
+          display: inline-block;
+          vertical-align: middle;
+          line-height: 1;
+          margin: 0 0 0 $inlineSpacing;
+
+          &.ui-dialog-message {
+            margin-right: $inlineSpacing;
+            font-size: $confirmDialogIconFontSize;
+            width: auto;
+            height: auto;
+
+            &.ui-messages-warn-icon {
+              @include icon-override("\e922");
+            }
+
+            &.ui-messages-info-icon {
+              @include icon-override("\e924");
+            }
+
+            &.ui-messages-error-icon {
+              @include icon-override("\e90c");
+            }
+
+            &.ui-messages-fatal-icon {
+              @include icon-override("\e910");
+            }
+          }
+        }
+      }
+    }
+  }
+}

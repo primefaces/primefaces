@@ -1,0 +1,53 @@
+body {
+  .ui-chips {
+    .ui-chips-container {
+      .ui-chips-token {
+        padding: math.div(nth($inputPadding, 1), 2) nth($inputPadding, 2);
+
+        .ui-chips-token-icon {
+          padding-right: 1rem;
+        }
+
+        .ui-chips-token-label {
+          padding: 0;
+          padding-right: 1.5rem;
+        }
+      }
+    }
+  }
+
+  &.ui-input-filled, .ui-input-filled {
+    .ui-chips-container {
+      @include filled-input-wrapper();
+    }
+  }
+
+  .ui-float-label {
+    .ui-chips-container {
+      .ui-chips-token {
+        padding: .25rem 1rem;
+      }
+    }
+  }
+
+  &.ui-input-filled, .ui-input-filled {
+    .ui-float-label {
+      .ui-chips {
+        .ui-chips-container {
+          .ui-chips-token {
+            padding-top: 0;
+            padding-bottom: 0;
+
+            .ui-chips-token-icon {
+              font-size: 75%;
+            }
+          }
+
+          .ui-chips-input-token {
+            padding: 0;
+          }
+        }
+      }
+    }
+  }
+}

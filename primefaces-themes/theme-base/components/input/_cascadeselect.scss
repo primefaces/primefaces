@@ -1,0 +1,95 @@
+body {
+  .ui-cascadeselect {
+    background: $inputBg;
+    border: $inputBorder;
+    transition: $transition;
+    border-radius: $borderRadius;
+
+    &:not(.ui-state-disabled):hover {
+      border-color: $inputHoverBorderColor;
+    }
+
+    &:not(.ui-state-disabled).ui-state-focus {
+      @include focused-input();
+    }
+
+    .ui-cascadeselect-label {
+      background: transparent;
+      border: 0 none;
+      padding: $inputPadding;
+
+      &.ui-placeholder {
+        color: $inputPlaceholderTextColor;
+      }
+
+      &:enabled:focus {
+        outline: 0 none;
+        box-shadow: none;
+      }
+    }
+
+    .ui-cascadeselect-trigger {
+      background: transparent;
+      color: $inputIconColor;
+      width: $inputGroupAddonMinWidth;
+      border-top-right-radius: $borderRadius;
+      border-bottom-right-radius: $borderRadius;
+    }
+  }
+
+  .ui-cascadeselect-panel {
+    background: $inputListBg;
+    border: $inputOverlayBorder;
+    border-radius: $borderRadius;
+    box-shadow: $inputOverlayShadow;
+
+    .ui-cascadeselect-items {
+      padding: $inputListPadding;
+
+      .ui-cascadeselect-item {
+        margin: $inputListItemMargin;
+        border: $inputListItemBorder;
+        color: $inputListItemTextColor;
+        background: $inputListItemBg;
+        transition: $transition;
+        border-radius: $inputListItemBorderRadius;
+
+        .ui-cascadeselect-item-content {
+          padding: $inputListItemPadding;
+
+          &:focus {
+            @include focused-listitem();
+          }
+        }
+
+        &.ui-state-highlight {
+          color: $highlightTextColor;
+          background: $highlightBg;
+        }
+
+        &:not(.ui-state-highlight):not(.ui-state-disabled):hover {
+          color: $inputListItemTextHoverColor;
+          background: $inputListItemHoverBg;
+        }
+
+        .ui-cascadeselect-group-icon {
+          font-size: $iconSize;
+        }
+      }
+    }
+  }
+
+  .ui-input-filled {
+    .ui-cascadeselect {
+      background: $inputFilledBg;
+
+      &:not(.ui-state-disabled):hover {
+        background-color: $inputFilledHoverBg;
+      }
+
+      &:not(.ui-state-disabled).p-focus {
+        background-color: $inputFilledFocusBg;
+      }
+    }
+  }
+}

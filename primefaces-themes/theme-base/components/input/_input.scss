@@ -1,0 +1,115 @@
+body {
+  @include placeholder {
+    color: $inputPlaceholderTextColor;
+  }
+
+  .p-field,
+  .field {
+    small.ui-state-error {
+      color: $inputErrorBorderColor;
+    }
+  }
+
+  .ui-float-label {
+    > label {
+      margin-left: nth($inputPadding, 1);
+      color: $inputPlaceholderTextColor;
+    }
+
+    > input:focus ~ label,
+    > input.ui-state-filled ~ label,
+    > textarea:focus ~ label,
+    > textarea.ui-state-filled ~ label,
+    > .ui-inputwrapper-focus ~ label,
+    > .ui-inputwrapper-filled ~ label {
+      color: $inputTextColor;
+    }
+
+    > input:-webkit-autofill ~ label,
+    > textarea:-webkit-autofill ~ label {
+      color: $inputTextColor;
+    }
+  }
+
+  .ui-input-icon-left,
+  .ui-input-icon-right {
+    position: relative;
+    display: inline-block;
+  }
+
+  .ui-fluid {
+    .ui-input-icon-left,
+    .ui-input-icon-right {
+      display: block;
+    }
+  }
+
+  .ui-input-icon-left > i,
+  .ui-input-icon-right > i {
+    position: absolute;
+    top: 50%;
+    margin-top: -.5rem;
+  }
+
+  .ui-input-icon-left > i:first-of-type {
+    left: nth($inputPadding, 2);
+    color: $inputIconColor;
+  }
+
+  .ui-input-icon-left > .ui-inputfield {
+    padding-left: 2 * nth($inputPadding, 2) + $iconSize;
+  }
+
+  .ui-input-icon-right > i:last-of-type {
+    right: nth($inputPadding, 2);
+    color: $inputIconColor;
+  }
+
+  .ui-input-icon-right > .ui-inputfield {
+    padding-right: 2 * nth($inputPadding, 2) + $iconSize;
+  }
+
+  .ui-inputfield {
+    color: $inputTextColor;
+    background: $inputBg;
+    padding: $inputPadding;
+    border: $inputBorder;
+    outline: 0 none;
+    font-size: $inputTextFontSize;
+    border-radius: $borderRadius;
+    transition: $transition;
+    -webkit-appearance: none;
+    appearance: none;
+
+    &.ui-state-hover {
+      border-color: $inputHoverBorderColor;
+    }
+
+    &.ui-state-focus {
+      @include focused-input();
+    }
+
+    &.ui-state-error {
+      @include invalid-input();
+    }
+  }
+
+  .ui-input-filled,
+  &.ui-input-filled {
+    .ui-inputfield {
+      background-color: $inputFilledBg;
+
+      &.ui-state-hover {
+        background-color: $inputFilledHoverBg;
+      }
+
+      &.ui-state-focus {
+        background-color: $inputFilledFocusBg;
+      }
+    }
+  }
+
+  .ui-inputtextarea {
+    vertical-align: top;
+  }
+}

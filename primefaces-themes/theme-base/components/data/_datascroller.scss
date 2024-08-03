@@ -1,0 +1,27 @@
+body {
+  .ui-datascroller {
+    .ui-datascroller-header,
+    .ui-datascroller-footer {
+      background: $panelHeaderBg;
+      border: $panelHeaderBorder;
+      color: $panelHeaderTextColor;
+      padding: $panelHeaderPadding;
+      font-weight: $panelHeaderFontWeight;
+    }
+
+    .ui-datascroller-header {
+      border-bottom: 0 none;
+    }
+
+    .ui-datascroller-footer {
+      border-top: 0 none;
+    }
+
+    .ui-datascroller-content {
+      border: $panelContentBorder;
+      background: $panelContentBg;
+      color: $panelContentTextColor;
+      padding: $panelContentPadding;
+    }
+  }
+}

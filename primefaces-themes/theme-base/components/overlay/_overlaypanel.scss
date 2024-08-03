@@ -1,0 +1,40 @@
+body {
+  .ui-overlaypanel {
+    background: $panelContentBg;
+    color: $panelContentTextColor;
+    padding: 0;
+    border: $overlayContentBorder;
+    box-shadow: $overlayContainerShadow;
+    border-radius: $borderRadius;
+
+    .ui-overlaypanel-content {
+      padding: $panelContentPadding;
+    }
+
+    .ui-overlaypanel-close {
+      position: absolute;
+      width: $actionIconWidth;
+      height: $actionIconHeight;
+      right: math.div(-1 * $actionIconWidth, 2);
+      top: math.div(-1 * $actionIconWidth, 2);
+      background: $overlayPanelCloseIconBg;
+      color: $overlayPanelCloseIconColor;
+      transition: $transition;
+      border-radius: $actionIconBorderRadius;
+      text-align: center;
+      line-height: $actionIconHeight;
+      padding: 0;
+
+      &:hover {
+        background: $overlayPanelCloseIconHoverBg;
+        color: $overlayPanelCloseIconHoverColor;
+      }
+
+      .ui-icon {
+        @include icon-override("\e90b");
+        display: inline-block;
+        line-height: inherit;
+      }
+    }
+  }
+}

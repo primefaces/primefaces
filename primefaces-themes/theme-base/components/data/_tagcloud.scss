@@ -1,0 +1,19 @@
+body {
+  .ui-tagcloud {
+    border: $panelContentBorder;
+    background: $panelContentBg;
+    color: $panelContentTextColor;
+    padding: $panelContentPadding;
+
+    a {
+      color: $inputListItemTextColor;
+      border-radius: $borderRadius;
+      transition: $transition;
+
+      &.ui-state-hover {
+        background: $inputListItemHighlightBg;
+        color: $inputListItemHighlightTextColor;
+      }
+    }
+  }
+}

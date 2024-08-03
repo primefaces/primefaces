@@ -1,0 +1,90 @@
+body {
+  .ui-panel {
+    padding: 0;
+
+    .ui-panel-title {
+      margin: 0;
+    }
+
+    .ui-panel-titlebar {
+      border: $panelHeaderBorder;
+      background: $panelHeaderBg;
+      color: $panelHeaderTextColor;
+      padding: $panelHeaderPadding;
+      font-weight: $panelHeaderFontWeight;
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
+      @include border-radius-top($borderRadius);
+
+      .ui-panel-titlebar-icon {
+        margin: 0;
+        @include action-icon();
+        margin-top: math.div(-1 * $actionIconHeight, 8);
+        margin-bottom: math.div(-1 * $actionIconHeight, 4);
+
+        .ui-icon-closethick {
+          @include icon-override("\e90b");
+        }
+
+        .ui-icon-minusthick {
+          @include icon-override("\e90f");
+        }
+
+        .ui-icon-plusthick {
+          @include icon-override("\e90d");
+        }
+
+        .ui-icon-gear {
+          @include icon-override("\e94a");
+        }
+      }
+
+      & + .ui-panel-content {
+        border-top: 0 none;
+      }
+    }
+
+    .ui-panel-content {
+      border: $panelContentBorder;
+      background: $panelContentBg;
+      color: $panelContentTextColor;
+      padding: $panelContentPadding;
+    }
+
+    .ui-panel-footer {
+      border: $panelFooterBorder;
+      background: $panelFooterBg;
+      color: $panelFooterTextColor;
+      padding: $panelFooterPadding;
+      margin: 0;
+      border-top: 0 none;
+    }
+
+    > div {
+      &:last-of-type {
+        @include border-radius-bottom($borderRadius);
+      }
+    }
+
+    &.ui-panel-collapsed {
+      .ui-panel-titlebar {
+        @include border-radius-bottom($borderRadius);
+      }
+    }
+
+    &.ui-panel-collapsed-h {
+      .ui-panel-titlebar {
+        position: relative;
+
+        .ui-panel-titlebar-icon {
+          float: none;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          margin-left: math.div(-1 * $iconSize, 2);
+          margin-top: math.div(-1 * $iconSize, 2);
+        }
+      }
+    }
+  }
+}

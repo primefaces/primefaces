@@ -1,0 +1,49 @@
+body {
+  .ui-slider {
+    background: $sliderBg;
+
+    .ui-slider-handle {
+      width: $sliderHandleWidth;
+      height: $sliderHandleHeight;
+      background: $sliderHandleBg;
+      border:$sliderHandleBorder;
+      transition: $transition;
+      border-radius: $sliderHandleBorderRadius;
+
+      &.ui-state-hover {
+        border-color: $sliderHandleHoverBorderColor;
+        background: $sliderHandleHoverBg;
+      }
+
+      &.ui-state-focus {
+        outline: 0 none;
+      }
+    }
+
+    &.ui-slider-horizontal {
+      height: $sliderHeight;
+
+      .ui-slider-handle {
+        top: math.div(-1 * $sliderHandleHeight, 2) + math.div($sliderHeight, 2);
+        margin-left: math.div(-1 * $sliderHandleWidth, 2);
+      }
+    }
+
+    &.ui-slider-vertical {
+      width: $sliderWidth;
+
+      .ui-slider-handle {
+        left: math.div(-1 * $sliderHandleWidth, 2) + math.div($sliderWidth, 2);
+        margin-top: math.div(-1 * $sliderHandleHeight, 2);
+      }
+    }
+
+    .ui-slider-range {
+      background: $sliderRangeBg;
+    }
+  }
+
+  .ui-inputtext + .ui-slider {
+    margin-bottom: $inlineSpacing;
+  }
+}

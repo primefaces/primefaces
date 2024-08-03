@@ -1,0 +1,48 @@
+body {
+  .ui-cascadeselect {
+    .ui-inputfield, .ui-cascadeselect-trigger {
+      background-image: none;
+      background: transparent;
+    }
+
+    .ui-inputfield {
+      border: 0 none;
+    }
+
+    &:not(.ui-state-error).ui-state-focus {
+      box-shadow: inset 0 0 0 1px $inputFocusBorderColor, inset 0 0 0 1px $inputFocusBorderColor, inset 0 0 0 1px $inputFocusBorderColor, inset 0 0 0 1px $inputFocusBorderColor;
+    }
+  }
+
+  &.ui-input-filled, .ui-input-filled {
+    .ui-cascadeselect {
+      @include filled-input-wrapper();
+
+      &:not(.ui-state-disabled):hover {
+        border-color: transparent;
+        border-bottom-color: $inputHoverBorderColor;
+      }
+
+      .ui-inputfield {
+        border: 0 none;
+      }
+    }
+
+    .ui-cascadeselect.ui-state-error {
+      @include invalid-filled-input-wrapper();
+    }
+  }
+
+  .ui-cascadeselect.ui-state-error {
+    @include invalid-input();
+
+    &:hover {
+      @include invalid-input();
+    }
+
+    &.ui-state-focus {
+      @include invalid-input();
+      box-shadow: inset 0 0 0 1px $inputErrorBorderColor, inset 0 0 0 1px $inputErrorBorderColor, inset 0 0 0 1px $inputErrorBorderColor, inset 0 0 0 1px $inputErrorBorderColor;
+    }
+  }
+}

@@ -1,0 +1,106 @@
+body {
+  .ui-orderlist {
+    .ui-orderlist-controls {
+      margin-right: 0;
+      @include flex();
+      @include flex-direction-column();
+      @include flex-align-center();
+      @include flex-justify-center();
+
+      .ui-button {
+        margin-bottom: $inlineSpacing;
+      }
+
+      .ui-icon-arrow-1-n {
+        @include icon-override("\e933");
+      }
+
+      .ui-icon-arrowstop-1-n {
+        @include icon-override("\e92f");
+      }
+
+      .ui-icon-arrow-1-s {
+        @include icon-override("\e930");
+      }
+
+      .ui-icon-arrowstop-1-s {
+        @include icon-override("\e92c");
+      }
+    }
+
+    .ui-orderlist-caption {
+      background: $panelHeaderBg;
+      border: $panelHeaderBorder;
+      color: $panelHeaderTextColor;
+      padding: $panelHeaderPadding;
+      border-bottom: 0 none;
+      font-weight: $panelHeaderFontWeight;
+      @include border-radius-top($borderRadius);
+    }
+
+    .ui-g {
+      > div {
+        padding: 0;
+
+        &.ui-orderlist-controls {
+          padding: 0 $inlineSpacing 0 0;
+        }
+      }
+    }
+
+    .ui-orderlist-list {
+      border: $panelContentBorder;
+      background: $panelContentBg;
+      color: $panelContentTextColor;
+      padding: $inputListPadding;
+      @include border-radius-bottom($borderRadius);
+
+      .ui-orderlist-item {
+        padding: $inputListItemPadding;
+        margin: $inputListItemMargin;
+        border: $inputListItemBorder;
+        color: $inputListItemTextColor;
+        border-radius: $inputListItemBorderRadius ;
+        transition: $transition;
+
+        &.ui-state-hover {
+          background: $inputListItemHoverBg;
+          color: $inputListItemTextHoverColor;
+        }
+
+        &.ui-state-highlight {
+          background: $inputListItemHighlightBg;
+          color: $inputListItemHighlightTextColor;
+
+          &.ui-sortable-placeholder {
+            background: $orderListDropPlaceholderBg;
+          }
+        }
+      }
+    }
+
+    &.ui-orderlist-controls-right {
+      .ui-g {
+        > div {
+          &.ui-orderlist-controls {
+            padding: 0 0 0 $inlineSpacing;
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-width: 640px) {
+    .ui-orderlist {
+      &.ui-grid-responsive {
+        .ui-orderlist-controls {
+          @include flex-direction-row();
+          .ui-button {
+            margin-top: $inlineSpacing;
+            margin-right: $inlineSpacing;
+          }
+        }
+      }
+    }
+  }
+}
