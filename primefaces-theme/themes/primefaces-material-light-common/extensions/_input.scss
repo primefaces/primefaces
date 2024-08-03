@@ -1,0 +1,30 @@
+body {
+  .ui-inputfield {
+    &:not(.ui-state-error).ui-state-focus {
+      box-shadow: inset 0 0 0 1px $inputFocusBorderColor, inset 0 0 0 1px $inputFocusBorderColor, inset 0 0 0 1px $inputFocusBorderColor, inset 0 0 0 1px $inputFocusBorderColor;
+    }
+
+    &.ui-state-error {
+      &.ui-state-hover {
+        @include invalid-input();
+      }
+
+      &.ui-state-focus {
+        @include invalid-input();
+        box-shadow: inset 0 0 0 1px $inputErrorBorderColor, inset 0 0 0 1px $inputErrorBorderColor, inset 0 0 0 1px $inputErrorBorderColor, inset 0 0 0 1px $inputErrorBorderColor;
+      }
+    }
+  }
+
+  &.ui-input-filled, .ui-input-filled {
+    .ui-inputfield {
+      @include filled-input();
+    }
+  }
+
+  .ui-float-label > label {
+    left: nth($inputPadding, 2);
+    color: $inputPlaceholderTextColor;
+    transition-duration: $transitionDuration;
+  }
+}

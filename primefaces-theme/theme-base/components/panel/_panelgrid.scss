@@ -1,0 +1,18 @@
+body {
+  .ui-panelgrid {
+    .ui-panelgrid-cell {
+      border: $panelContentBorder;
+      background: $panelContentBg;
+      color: $panelContentTextColor;
+      padding: $panelContentPadding;
+
+      &.ui-widget-header {
+        border: $panelHeaderBorder;
+        background: $panelHeaderBg;
+        color: $panelHeaderTextColor;
+        padding: $panelHeaderPadding;
+        font-weight: $panelHeaderFontWeight;
+      }
+    }
+  }
+}

@@ -1,0 +1,236 @@
+body {
+  .ui-selectcheckboxmenu {
+    vertical-align: baseline;
+    border: $inputBorder;
+    position: relative;
+    transition: $transition;
+    border-radius: $borderRadius;
+    background: $inputBg;
+
+    .ui-selectcheckboxmenu-label-container {
+      padding: $inputPadding;
+      padding-right: $buttonIconOnlyWidth;
+      display: block;
+      background: transparent;
+      border-radius: $borderRadius;
+
+      .ui-selectcheckboxmenu-label {
+        padding: 0;
+        background: transparent;
+      }
+    }
+
+    .ui-selectcheckboxmenu-trigger {
+      border: 0 none;
+      cursor: pointer;
+      height: 100%;
+      position: absolute;
+      padding: 0;
+      @include flex();
+      @include flex-align-center();
+      @include flex-justify-center();
+      width: $buttonIconOnlyWidth;
+      background: transparent;
+      border-top-right-radius: $borderRadius;
+      border-bottom-right-radius: $borderRadius;
+
+      .ui-icon {
+        position: static;
+        margin: 0;
+        color: $inputIconColor;
+        @include icon-override("\e902");
+      }
+    }
+
+    &.ui-state-hover {
+      border-color: $inputHoverBorderColor;
+    }
+
+    &.ui-state-focus {
+      @include focused-input();
+    }
+
+    &.ui-state-error {
+      @include invalid-input();
+    }
+
+    .ui-selectcheckboxmenu-multiple-container {
+      &.ui-inputfield {
+        padding: $inputPadding;
+        padding-right: $buttonIconOnlyWidth;
+      }
+
+      .ui-selectcheckboxmenu-token {
+        padding: 1px 0;
+        margin: 0 $inlineSpacing 0 0;
+        background: $chipBg;
+        color: $chipTextColor;
+        border-radius: $borderRadius;
+
+        .ui-selectcheckboxmenu-token-label {
+          padding: 0 $iconSize * 2 0 math.div($iconSize, 2);
+        }
+
+        .ui-selectcheckboxmenu-token-icon {
+          margin-top: math.div(-1 * $iconSize, 2);
+          position: absolute;
+          @include icon-override("\e90b");
+        }
+      }
+
+      .ui-selectcheckboxmenu-input-token {
+        margin: 0;
+        padding: math.div(nth($inputPadding,1), 2) 0;
+
+        input {
+          font-family: $fontFamily;
+          padding: 0;
+          margin: 0;
+        }
+      }
+    }
+  }
+
+  &.ui-input-filled,
+  .ui-input-filled {
+    .ui-selectcheckboxmenu {
+      background: $inputFilledBg;
+
+      &.ui-state-hover {
+        background-color: $inputFilledHoverBg;
+      }
+
+      &.ui-state-focus {
+        background-color: $inputFilledFocusBg;
+      }
+    }
+  }
+
+  .ui-selectcheckboxmenu-panel {
+    padding: 0;
+    background: $inputListBg;
+    border: $inputOverlayBorder;
+    box-shadow: $inputOverlayShadow;
+    border-radius: $borderRadius;
+
+    .ui-selectcheckboxmenu-header {
+      padding: $inputListHeaderPadding;
+      margin: 0;
+      border-bottom: $inputListHeaderBorder;
+      background: $inputListHeaderBg;
+      color: $inputListHeaderTextColor;
+      position: relative;
+      @include flex();
+      @include flex-align-center();
+
+      .ui-chkbox {
+        margin-right: $inlineSpacing;
+        float: none;
+      }
+
+      .ui-selectcheckboxmenu-filter-container {
+        padding: 0;
+        margin: 0 $inlineSpacing 0 0;
+        float: none;
+        flex: 1 1 0;
+        -ms-flex: 1 1 0px;
+
+        .ui-inputfield {
+          padding: $inputPadding;
+          width: 100%;
+          padding-left: 2 * nth($inputPadding, 2) + $iconSize;
+        }
+
+        .ui-icon {
+          @include icon-override("\e908");
+          position: absolute;
+          left: nth($inputPadding, 2);
+          top: 50%;
+          right: auto;
+          bottom: auto;
+          margin-top: math.div(-1 * $iconSize, 2);
+          color: $inputIconColor;
+        }
+      }
+
+      .ui-selectcheckboxmenu-close  {
+        @include action-icon();
+        margin-left: auto;
+        text-align: center;
+        margin-right: 0;
+
+        .ui-icon {
+          @include icon-override("\e90b");
+          float: none;
+        }
+      }
+    }
+
+    .ui-selectcheckboxmenu-items {
+      padding: $inputListPadding;
+
+      &.ui-selectcheckboxmenu-table {
+        > thead tr th {
+          background: $panelHeaderBg;
+          border: $datatableHeaderCellBorder;
+          color: $panelHeaderTextColor;
+          font-weight: $panelHeaderFontWeight;
+        }
+      }
+
+      .ui-selectcheckboxmenu-item {
+        padding: $inputListItemPadding;
+        margin: $inputListItemMargin;
+        outline: 0 none;
+        background: $inputListItemBg;
+        color: $inputListItemTextColor;
+        border-radius: $inputListItemBorderRadius;
+        transition: $transition;
+
+        &.ui-state-hover {
+          background: $inputListItemHoverBg;
+          color: $inputListItemTextHoverColor;
+        }
+
+        &.ui-state-highlight {
+          background: $inputListItemHighlightBg;
+          color: $inputListItemHighlightTextColor;
+        }
+
+        .ui-chkbox {
+          top: auto;
+          position: static;
+          margin-top: 0;
+          margin-right: $inlineSpacing;
+        }
+
+        > label {
+          display: inline;
+          padding-left: 0;
+          vertical-align: middle;
+        }
+
+        &.ui-selectcheckboxmenu-row {
+          background: $datatableBodyRowBg;
+          color: $datatableBodyRowTextColor;
+          border: $datatableBodyRowBorder;
+
+          > td {
+            padding: $datatableBodyCellPadding;
+          }
+
+          &:first-child {
+            border-top-color: transparent;
+          }
+        }
+      }
+
+      .ui-selectcheckboxmenu-item-group {
+        background: $submenuHeaderBg;
+        margin: $submenuHeaderMargin;
+        padding: $submenuHeaderPadding;
+        color: $submenuHeaderTextColor;
+      }
+    }
+  }
+}

@@ -1,0 +1,40 @@
+body {
+  &.ui-input-filled, .ui-input-filled {
+    .ui-selectonelistbox {
+      border: $inputListBorder;
+      border-radius: $borderRadius;
+
+      &.ui-inputfield {
+        &.ui-state-error {
+          border-color: $inputErrorBorderColor;
+          background: $inputBg;
+
+          &.ui-state-focus {
+            border-color: $inputErrorBorderColor;
+            box-shadow: inset 0 0 0 1px $inputErrorBorderColor, inset 0 0 0 1px $inputErrorBorderColor, inset 0 0 0 1px $inputErrorBorderColor, inset 0 0 0 1px $inputErrorBorderColor;
+          }
+        }
+
+        &:not(.ui-state-error).ui-state-focus {
+          border: $inputListBorder;
+          background: $inputBg;
+          border-radius: $borderRadius;
+        }
+      }
+    }
+  }
+
+  .ui-selectonelistbox {
+    &.ui-inputfield {
+      &.ui-state-error {
+        &.ui-state-focus {
+          box-shadow: none;
+        }
+      }
+
+      &:not(.ui-state-error).ui-state-focus {
+        box-shadow: none;
+      }
+    }
+  }
+}

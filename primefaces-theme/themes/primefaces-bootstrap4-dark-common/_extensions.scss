@@ -1,0 +1,127 @@
+/* Add your customizations of theme here */
+body {
+  .ui-datatable {
+    .ui-paginator {
+      &.ui-paginator-bottom {
+        border-top: 1px $paginatorBorder;
+      }
+
+      &.ui-paginator-top {
+        border-bottom: 1px $paginatorBorder;
+      }
+    }
+
+    .ui-datatable-data {
+      > tr {
+        > td {
+          .ui-chkbox .ui-chkbox-box {
+            &.ui-state-focus {
+              color: $shade000;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .ui-tabs {
+    &.ui-tabs-top {
+      > .ui-tabs-nav {
+        li.ui-tabs-header {
+          border: 1px solid transparent;
+          border-bottom: $tabsNavBorder;
+          border-radius: $borderRadius;
+
+          &.ui-state-hover {
+            border-color: $tabsHeaderHoverBorderColor;
+          }
+
+          &.ui-state-active {
+            border-color: $tabsHeaderActiveBorderColor $tabsHeaderActiveBorderColor $shade800 $tabsHeaderActiveBorderColor;
+          }
+        }
+      }
+    }
+
+    &.ui-tabs-bottom {
+      > .ui-tabs-nav {
+        li.ui-tabs-header {
+          border: 1px solid transparent;
+          border-top: $tabsNavBorder;
+
+          &.ui-state-hover {
+            border-color: $tabsHeaderHoverBorderColor;
+          }
+
+          &.ui-state-active {
+            border-color: $shade800 $tabsHeaderActiveBorderColor $tabsHeaderActiveBorderColor $tabsHeaderActiveBorderColor;
+          }
+        }
+      }
+    }
+  }
+
+  .ui-menu {
+    &.ui-menubar {
+      .ui-menu-list {
+        .ui-menuitem .ui-menuitem-link {
+          .ui-menuitem-text, .ui-menuitem-icon, .ui-icon {
+            color: $shade100;
+          }
+        }
+
+        &.ui-menu-child {
+          .ui-menuitem .ui-menuitem-link {
+            .ui-menuitem-text, .ui-menuitem-icon, .ui-icon {
+              color: $shade000;
+            }
+          }
+        }
+      }
+
+      .ui-menu-list {
+        .ui-menuitem {
+          .ui-menuitem-link {
+            &.ui-state-hover {
+              .ui-menuitem-text, .ui-menuitem-icon, .ui-icon {
+                color: $shade000;
+              }
+            }
+          }
+
+          &.ui-menuitem-active .ui-menuitem-link {
+            background: transparent;
+
+            .ui-menuitem-text, .ui-menuitem-icon, .ui-icon {
+              color: $shade000;
+            }
+          }
+        }
+
+        &.ui-menu-child {
+          .ui-menuitem .ui-menuitem-link.ui-state-hover {
+            background: $menuitemHoverBg;
+          }
+        }
+      }
+    }
+  }
+
+  .ui-tabmenu {
+    .ui-tabmenu-nav {
+      .ui-tabmenuitem {
+        border: 1px solid transparent;
+        border-bottom: $tabsNavBorder;
+
+        &.ui-state-hover {
+          border-color: $tabsHeaderHoverBorderColor;
+        }
+
+        &.ui-state-active {
+          border-color: $tabsHeaderActiveBorderColor $tabsHeaderActiveBorderColor $shade800 $tabsHeaderActiveBorderColor;
+        }
+      }
+    }
+  }
+}
+

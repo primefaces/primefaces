@@ -1,0 +1,298 @@
+body {
+  .ui-datepicker {
+    background: $inputContentPanelBg;
+    border: $inputBorder;
+    color: $inputContentPanelTextColor;
+    padding: $calendarPadding;
+    width: auto;
+    border-radius: $borderRadius;
+
+    .ui-datepicker-header {
+      margin: 0;
+      padding: $calendarTitlePadding;
+      line-height: normal;
+      background: $calendarTitleBg;
+      color: $calendarTitleTextColor;
+      font-weight: 600;
+      border: $calendarTitleBorder;
+      border-width: $calendarTitleBorderWidth;
+      border-radius: 0;
+    }
+
+    .ui-datepicker-next {
+      @include icon-override("\e901");
+      right: 0;
+    }
+
+    .ui-datepicker-prev {
+      @include icon-override("\e900");
+      left: 0;
+    }
+
+    .ui-datepicker-next,
+    .ui-datepicker-prev {
+      cursor: pointer;
+      top: 50%;
+      margin-top: math.div(-1 * $actionIconHeight, 2);
+      @include action-icon();
+
+      span {
+        display: none;
+      }
+    }
+
+    .ui-datepicker-title {
+      line-height: 1;
+      margin: 0;
+
+      select {
+        width: 40%;
+        margin: 0;
+
+        &:first-child {
+          margin-right: $inlineSpacing;
+        }
+      }
+    }
+
+    .ui-datepicker-calendar {
+      margin: $calendarTableMargin;
+
+      th {
+        padding: $calendarCellPadding;
+        text-align: center;
+
+        > span {
+          width: $calendarCellDateWidth;
+          height: $calendarCellDateHeight;
+        }
+      }
+
+      td {
+        padding: $calendarCellPadding;
+        text-align: center;
+
+        > a {
+          &:hover {
+            background: $calendarCellDateHoverBg;
+            border-color: $calendarCellDateHoverBorderColor;
+          }
+        }
+
+        > a,
+        > span {
+          padding: 0;
+          color: $calendarCellDateTextColor;
+          text-align: center;
+          width: $calendarCellDateWidth;
+          height: $calendarCellDateHeight;
+          line-height: $calendarCellDateHeight;
+          border: $calendarCellDateBorder;
+          display: inline-block;
+          transition: $transition;
+          border-radius: $calendarCellDateBorderRadius;
+
+          &:focus {
+            @include focused();
+          }
+
+          &.ui-state-active {
+            background: $calendarCellDateSelectedBg;
+            color: $calendarCellDateSelectedTextColor;
+            border: $calendarCellDateSelectedBorder;
+          }
+        }
+
+        &.ui-datepicker-today,
+        &.ui-datepicker-current-day {
+          > a {
+            &:hover {
+              background: $calendarCellDateHoverBg;
+              border-color: $calendarCellDateHoverBorderColor;
+            }
+          }
+
+          > a,
+          > span {
+            background: $calendarCellDateTodayBg;
+            color: $calendarCellDateTodayTextColor;
+            font-weight: 600;
+            border: $calendarCellDateTodayBorder;
+
+            &.ui-state-active {
+              background: $calendarCellDateSelectedBg;
+              color: $calendarCellDateSelectedTextColor;
+              border: $calendarCellDateSelectedBorder;
+            }
+          }
+        }
+      }
+    }
+
+    &.ui-input-overlay {
+      border: $inputOverlayBorder;
+      box-shadow: $inputOverlayShadow;
+    }
+
+    .ui-timepicker-div {
+      dl {
+        margin: $calendarTimePickerMargin;
+
+        dt {
+          padding: $calendarTimePickerLabelPadding;
+
+          &.ui_tpicker_time_label {
+            padding: $calendarTimePickerInputPadding;
+          }
+        }
+
+        dd {
+          padding: $calendarTimePickerInputPadding;
+          margin: $calendarTimePickerInputMargin;
+        }
+      }
+    }
+
+    .ui-timepicker-timeinput {
+      input {
+        color: $inputTextColor;
+        background: $inputBg;
+        padding: $inputPadding;
+        border: $inputBorder;
+        outline: 0 none;
+        font-size: $inputTextFontSize;
+        border-radius: $borderRadius;
+        transition: $transition;
+        -webkit-appearance: none;
+        appearance: none;
+        width: auto;
+
+        &:hover {
+          border-color: $inputHoverBorderColor;
+        }
+
+        &:focus {
+          @include focused-input();
+        }
+      }
+
+      .ui-separator {
+        > span {
+          padding: $inputPadding;
+          font-size: $inputTextFontSize;
+        }
+      }
+    }
+
+    .ui-datepicker-buttonpane,
+    .ui-datepicker-buttonbar {
+      button {
+        transition: $transition;
+        border-radius: $borderRadius;
+        @include secondary-button();
+      }
+
+      .ui-g-6:first-child {
+        text-align: left;
+      }
+
+      .ui-g-6:last-child {
+        text-align: right;
+      }
+    }
+
+    .ui-datepicker-buttonbar {
+      border-top: $calendarTitleBorder;
+      padding: $calendarButtonBarPadding;
+    }
+
+    .ui-monthpicker-month {
+      margin: $calendarTableMargin;
+      color: $calendarCellDateTextColor;
+      transition: $transition;
+      padding: $calendarCellPadding;
+      border: $borderRadius;
+
+      &:hover {
+        background: $calendarCellDateHoverBg;
+        border-color: $calendarCellDateHoverBorderColor;
+      }
+
+      &:focus {
+        @include focused();
+      }
+
+      &.ui-state-active {
+        background: $calendarCellDateSelectedBg;
+        color: $calendarCellDateSelectedTextColor;
+        border: $calendarCellDateSelectedBorder;
+      }
+    }
+
+    .ui-datepicker-group {
+      padding: $calendarPadding;
+    }
+
+    .ui-picker-up {
+      @include action-icon();
+
+      .ui-icon {
+        @include icon-override("\e903");
+      }
+    }
+
+    .ui-picker-down {
+      @include action-icon();
+
+      .ui-icon {
+        @include icon-override("\e902");
+      }
+    }
+
+    &.ui-datepicker-multi {
+      width: auto !important;
+    }
+  }
+
+  .ui-calendar {
+    .ui-button.ui-button-icon-only {
+      width: $inputButtonWidth;
+      @include border-radius-left(0);
+
+      .ui-icon-calendar {
+        @include icon-override("\e927");
+      }
+    }
+
+    &.ui-trigger-calendar {
+      input.hasDatepicker {
+        @include border-radius-right(0);
+      }
+    }
+  }
+
+  .ui-fluid {
+    .ui-trigger-calendar {
+      input.hasDatepicker {
+        width: calc(100% - #{$inputButtonWidth});
+        padding-right: 0;
+      }
+
+      .ui-datepicker-trigger.ui-button {
+        position: absolute;
+        right: -1 * $inputButtonWidth;
+        width: $inputButtonWidth;
+
+        .ui-button-text {
+          padding: $buttonIconOnlyPadding;
+        }
+      }
+    }
+
+    .p-datepicker {
+      .ui-datepicker-trigger.ui-button {
+        right: 0;
+      }
+    }
+  }
+}

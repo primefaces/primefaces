@@ -1,0 +1,160 @@
+body {
+  .ui-autocomplete {
+    .ui-autocomplete-input {
+      &.ui-autocomplete-dd-input {
+        padding: $inputPadding;
+        @include border-radius-right(0);
+      }
+    }
+
+    &.ui-state-loading {
+      .ui-icon-loading {
+        right: nth($inputPadding, 2); 
+      }
+
+      &.ui-autocomplete-dd {
+        .ui-icon-loading {
+          right: nth($inputPadding, 2) + $buttonIconOnlyWidth;
+        }
+      }
+    }
+
+    .ui-autocomplete-dropdown {
+      position: relative;
+      height: auto;
+      width: $inputButtonWidth;
+      right: auto;
+      @include border-radius-left(0);
+
+      .ui-button-text {
+        padding: $buttonIconOnlyPadding;
+      }
+
+      .ui-icon {
+        @include icon-override("\e902");
+      }
+    }
+
+    .ui-autocomplete-multiple-container {
+      padding: math.div(nth($inputPadding, 1), 2) nth($inputPadding, 2);
+
+      .ui-autocomplete-token {
+        padding: 1px 0;
+        margin: 0 $inlineSpacing 0 0;
+        background: $chipBg;
+        color: $chipTextColor;
+        display: inline-block;
+        vertical-align: middle;
+        float: none;
+        border-radius: $borderRadius;
+
+        .ui-autocomplete-token-label {
+          padding: 0 $iconSize * 2 0 math.div($iconSize, 2);
+        }
+
+        .ui-autocomplete-token-icon {
+          margin-top: math.div(-1 * $iconSize, 2);
+          position: absolute;
+          @include icon-override("\e90b");
+        }
+      }
+
+      .ui-autocomplete-input-token {
+        margin: 0;
+        padding: math.div(nth($inputPadding, 1), 2) 0;
+        display: inline-block;
+        vertical-align: middle;
+        float: none;
+
+        input {
+          font-family: $fontFamily;
+          font-size: $inputTextFontSize;
+          color: $inputTextColor;
+          -webkit-appearance: none;
+          appearance: none;
+          padding: 0;
+          margin: 0;
+        }
+      }
+
+      &.ui-autocomplete-dd-multiple-container {
+        @include border-radius-right(0);
+      }
+    }
+  }
+
+  .ui-autocomplete-panel {
+    padding: 0;
+    background: $inputListBg;
+    border: $inputOverlayBorder;
+    box-shadow: $inputOverlayShadow;
+
+    .ui-autocomplete-emptyMessage,
+    .ui-autocomplete-empty-message {
+      border: $inputListItemBorder;
+      margin: $inputListItemMargin;
+      padding: $inputListItemPadding;
+      color: $inputListItemTextColor;
+      border-radius: $inputListItemBorderRadius;
+    }
+
+    .ui-autocomplete-items {
+      padding: $inputListPadding;
+      line-height: normal;
+      border: 0 none;
+
+      .ui-autocomplete-item {
+        border: $inputListItemBorder;
+        margin: $inputListItemMargin;
+        padding: $inputListItemPadding;
+        color: $inputListItemTextColor;
+        border-radius: $inputListItemBorderRadius;
+        transition: $transition;
+
+        &.ui-autocomplete-row {
+          background: $datatableBodyRowBg;
+          color: $datatableBodyRowTextColor;
+          border: $datatableBodyRowBorder;
+
+          > td {
+            padding: $datatableBodyCellPadding;
+          }
+        }
+
+        &.ui-state-highlight {
+          background: $inputListItemHighlightBg;
+          color: $inputListItemHighlightTextColor;
+        }
+      }
+    }
+  }
+
+  .ui-autocomplete-itemtip {
+    padding: 0;
+
+    &.ui-state-highlight {
+      background: $inputListItemHighlightBg;
+      color: $inputListItemHighlightTextColor;
+    }
+  }
+
+  .ui-fluid {
+    .ui-autocomplete {
+      .ui-autocomplete-input {
+        &.ui-autocomplete-dd-input {
+          width: calc(100% - #{$inputButtonWidth});
+        }
+      }
+
+      .ui-autocomplete-dropdown.ui-button {
+        width: $inputButtonWidth;
+      }
+    }
+
+    .ui-autocomplete-multiple-container {
+      &.ui-autocomplete-dd-multiple-container {
+        width: calc(100% - #{$inputButtonWidth});
+      }
+    }
+  }
+}

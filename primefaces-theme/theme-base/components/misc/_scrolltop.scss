@@ -1,0 +1,19 @@
+body {
+  .ui-scrolltop {
+    width: $scrollTopWidth;
+    height: $scrollTopHeight;
+    border-radius: $scrollTopBorderRadius;
+    box-shadow: $inputOverlayShadow;
+    transition: $transition;
+    background: $scrollTopBg;
+
+    &:hover {
+      background: $scrollTopHoverBg;
+    }
+
+    .ui-scrolltop-icon {
+      font-size: $scrollTopFontSize;
+      color: $scrollTopTextColor;
+    }
+  }
+}

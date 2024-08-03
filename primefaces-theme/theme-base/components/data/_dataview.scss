@@ -1,0 +1,49 @@
+body {
+  .ui-dataview {
+    .ui-paginator{
+      &.ui-paginator-top {
+        border-width: $datatableTopPaginatorBorderWidth;
+        border-radius: 0;
+      }
+
+      &.ui-paginator-bottom {
+        border-width: $datatableBottomPaginatorBorderWidth;
+        border-radius: 0;
+      }
+    }
+
+    .ui-dataview-header {
+      background: $datatableHeaderBg;
+      color: $datatableHeaderTextColor;
+      padding: $datatableHeaderPadding;
+      font-weight: $datatableHeaderFontWeight;
+      border: $datatableHeaderBorder;
+      border-width: $datatableHeaderBorderWidth;
+    }
+
+    .ui-dataview-footer {
+      background: $datatableFooterBg;
+      color: $datatableFooterTextColor;
+      border: $datatableFooterBorder;
+      border-width: $datatableFooterBorderWidth;
+      padding: $datatableFooterPadding;
+      font-weight: $datatableFooterFontWeight;
+      border-bottom-left-radius: $borderRadius;
+      border-bottom-right-radius: $borderRadius;
+    }
+
+    .ui-dataview-content {
+      border: $dataViewContentBorder;
+      background: $panelContentBg;
+      color: $panelContentTextColor;
+      padding: $dataViewContentPadding;
+    }
+
+    &.ui-dataview-list {
+      .ui-dataview-row {
+        border: $dataViewListItemBorder;
+        border-width: $dataViewListItemBorderWidth;
+      }
+    }
+  }
+}

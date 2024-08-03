@@ -1,0 +1,377 @@
+body {
+  .ui-menu {
+    padding: $verticalMenuPadding;
+    background: $menuBg;
+    border: $menuBorder;
+    border-radius: $borderRadius;
+
+    &.ui-shadow {
+      border: $overlayContentBorder;
+      box-shadow: $overlayMenuShadow;
+    }
+
+    &.ui-menu-toggleable {
+      .ui-menu-list {
+        .ui-widget-header {
+          .ui-icon {
+            position: static;
+            margin-right: $inlineSpacing;
+          }
+
+          .ui-icon-triangle-1-w {
+            @include icon-override("\e901");
+          }
+
+          .ui-icon-triangle-1-e {
+            @include icon-override("\e901");
+          }
+
+          .ui-icon-triangle-1-s {
+            @include icon-override("\e902");
+          }
+
+          h3 {
+            font-size: $fontSize;
+            padding-left: 0;
+          }
+        }
+      }
+    }
+
+    &.ui-menu-rtl {
+      text-align: end;
+  
+      &.ui-menu-toggleable {
+        .ui-menu-list {
+          .ui-widget-header {
+            .ui-icon {
+              margin-right: 0;
+              margin-left: $inlineSpacing;
+            }
+          }
+        }
+      }
+
+      &.ui-menubar {
+        >.ui-menu-list {
+          >.ui-menuitem {
+
+            >.ui-menuitem-link {
+              .ui-icon-triangle-1-s:first-child {
+                margin-right: $inlineSpacing;
+                vertical-align: middle;
+              }
+            }
+
+            &.ui-menubar-start {
+              float: right;
+              margin-right: $inlineSpacing;
+            }
+
+            &.ui-menubar-options,
+            &.ui-menubar-end {
+              float: left;
+              margin-left: $inlineSpacing;
+            }
+          }
+        }
+      }
+  
+      .ui-menu-list {
+        .ui-menuitem {
+          .ui-menuitem-link {
+            .ui-menuitem-icon {
+              margin-right: 0;
+              margin-left: $inlineSpacing;
+            }
+          }
+        }
+      }
+    }
+
+    .ui-menu-list {
+      .ui-widget-header {
+        margin: $submenuHeaderMargin;
+        width: 100%;
+        background: $submenuHeaderBg;
+        color: $submenuHeaderTextColor;
+        float: none;
+        border: $submenuHeaderBorder;
+        padding: $submenuHeaderPadding;
+        transition: $transition;
+        border-radius: 0;
+
+        h3 {
+          padding: 0;
+          font-size: $submenuHeaderFontSize;
+          font-weight: $submenuHeaderFontWeight;
+          color: $submenuHeaderTextColor;
+          float: none;
+        }
+
+        &.ui-state-hover {
+          background: $menuitemHoverBg;
+          color: $menuitemTextHoverColor;
+
+          .ui-icon {
+            color: $menuitemHoverIconColor;
+          }
+        }
+      }
+
+      .ui-menuitem {
+        margin: $menuitemMargin;
+        width: 100%;
+        border: 0 none;
+        float: none;
+        border-radius: $menuitemBorderRadius;
+        transition: $transition;
+
+        .ui-menuitem-link {
+          padding: $menuitemPadding;
+          width: 100%;
+          border: 0 none;
+          float: none;
+          border-radius: $menuitemBorderRadius;
+          transition: $transition;
+
+          &.ui-state-hover {
+            background: $menuitemHoverBg;
+
+            .ui-icon {
+              color: $menuitemHoverIconColor;
+            }
+
+            .ui-menuitem-text {
+              color: $menuitemTextHoverColor;
+            }
+          }
+
+          .ui-menuitem-icon {
+            margin-right: $inlineSpacing;
+            vertical-align: middle;
+            float: none;
+            color: $menuitemIconColor;
+          }
+
+          .ui-menuitem-text {
+            float: none;
+            vertical-align: middle;
+            color: $menuitemTextColor;
+          }
+
+          .ui-icon-triangle-1-w:first-child {
+            @include icon-override("\e931");
+            position: relative;
+            margin-left: math.div(-1 * $iconSize, 2);
+            color: $menuitemIconColor;
+            float: left;
+            display: block;
+          }
+
+          .ui-icon-triangle-1-e:last-child {
+            @include icon-override("\e932");
+            position: relative;
+            margin-right: math.div(-1 * $iconSize, 2);
+            color: $menuitemIconColor;
+            float: right;
+            display: block;
+          }
+
+          .ui-icon-triangle-1-s:last-child {
+            @include icon-override("\e930");
+            margin-right: math.div(-1 * $iconSize, 2);
+            color: $menuitemIconColor;
+          }
+
+          .ui-icon-triangle-1-s:first-child {
+            @include icon-override("\e930");
+            margin-left: math.div(-1 * $iconSize, 2);
+            color: $menuitemIconColor;
+          }
+        }
+
+        &.ui-state-hover {
+          background: $menuitemHoverBg;
+          color: $menuitemTextHoverColor;
+
+          > .ui-menuitem-link {
+            color: $panelContentTextColor;
+
+            .ui-icon {
+              color: $menuitemHoverIconColor;
+            }
+          }
+        }
+
+        &.ui-menuitem-active {
+          > .ui-menuitem-link {
+            background: $menuitemHoverBg;
+
+            .ui-menuitem-text {
+              color: $menuitemTextHoverColor;
+            }
+
+            .ui-menuitem-icon, .ui-icon {
+              color: $menuitemHoverIconColor;
+            }
+          }
+        }
+      }
+
+      .ui-menu-child {
+        background: $menuBg;
+        padding: $verticalMenuPadding;
+
+        &.ui-shadow {
+          border-radius: $borderRadius;
+          border: $overlayContentBorder;
+          box-shadow: $overlayMenuShadow;
+        }
+      }
+
+      .ui-separator {
+        width: 100%;
+        margin: $menuSeparatorMargin;
+        border-top: $menuBorder;
+      }
+    }
+
+    &.ui-menubar {
+      padding: $horizontalMenuPadding;
+      background: $horizontalMenuBg;
+      border-radius: $borderRadius;
+
+      > .ui-menu-list {
+        > .ui-menuitem {
+          display: inline-block;
+          width: auto;
+
+          > .ui-menuitem-link {
+            border-radius: $borderRadius;
+
+            .ui-menuitem-icon {
+              position: static;
+              vertical-align: middle;
+            }
+
+            > span {
+              float: none;
+              display: inline-block;
+            }
+
+            .ui-icon-triangle-1-s:last-child {
+              margin-left: $inlineSpacing;
+              vertical-align: middle;
+            }
+          }
+
+          &.ui-menubar-start {
+            float: left;
+            margin-left: $inlineSpacing;
+          }
+
+          &.ui-menubar-options,
+          &.ui-menubar-end {
+            float: right;
+            margin-right: $inlineSpacing;
+          }
+        }
+      }
+    }
+
+    &.ui-slidemenu {
+      .ui-slidemenu-backward {
+        padding: $submenuHeaderPadding;
+        color: $submenuHeaderTextColor;
+        width: 100%;
+        border: $submenuHeaderBorder;
+        background: $submenuHeaderBg;
+        margin-bottom: 0;
+        border-radius: 0;
+
+        .ui-icon-triangle-1-w {
+          position: relative;
+          top: 2px;
+          @include icon-override("\e931");
+          margin-right: $inlineSpacing;
+        }
+      }
+
+      .ui-menu-child {
+        padding: 0;
+
+        &.ui-shadow {
+          box-shadow: none;
+          border: 0 none;
+        }
+      }
+    }
+
+    &.ui-megamenu {
+      .ui-widget-header {
+        margin: $submenuHeaderMargin;
+        width: 100%;
+        background: $submenuHeaderBg;
+        color: $submenuHeaderTextColor;
+        float: none;
+        border: $submenuHeaderBorder;
+        padding: $submenuHeaderPadding;
+        font-weight: $submenuHeaderFontWeight;
+        font-size: $submenuHeaderFontSize;
+        transition: $transition;
+        border-radius: 0;
+
+        span {
+          float: none;
+          padding: 0;
+        }
+      }
+
+      .ui-menu-list {
+        > table {
+          > tbody {
+            > tr {
+              > td {
+                padding: 0;
+              }
+            }
+          }
+        }
+
+        .ui-menuitem-link {
+          border-radius: $borderRadius;
+        }
+      }
+
+      &.ui-megamenu-vertical {
+        background: $horizontalMenuBg;
+        padding: $verticalMenuPadding;
+
+        > .ui-menu-list {
+          .ui-menuitem {
+            width: 100%;
+
+            > .ui-menuitem-link {
+              border-radius: $menuitemBorderRadius;
+            }
+          }
+
+          > .ui-menuitem {
+            > .ui-menuitem-link {
+              .ui-icon:last-child {
+                float: right;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .ui-divider.ui-widget {
+      &.ui-divider-horizontal {
+        margin: 0;
+      }
+    }
+  }
+}

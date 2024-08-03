@@ -1,0 +1,45 @@
+body {
+  .ui-tag {
+    background: $badgeBg;
+    color: $badgeTextColor;
+    font-size: $badgeFontSize;
+    font-weight: $badgeFontWeight;
+    padding: $tagPadding;
+    border-radius: $borderRadius;
+
+    &:not(.ui-widget) {
+      display: inline-block;
+      text-align: center;
+      line-height: 1;
+    }
+
+    &.ui-tag-success {
+      background: $successButtonBg;
+      color: $successButtonTextColor;
+    }
+
+    &.ui-tag-info {
+      background: $infoButtonBg;
+      color: $infoButtonTextColor;
+    }
+
+    &.ui-tag-warning {
+      background: $warningButtonBg;
+      color: $warningButtonTextColor;
+    }
+
+    &.ui-tag-danger {
+      background: $dangerButtonBg;
+      color: $dangerButtonTextColor;
+    }
+
+    &.ui-tag-rounded {
+      border-radius: 10rem;
+    }
+
+    .ui-tag-icon {
+      margin-right: math.div($inlineSpacing, 2);
+      font-size: $badgeFontSize;
+    }
+  }
+}
