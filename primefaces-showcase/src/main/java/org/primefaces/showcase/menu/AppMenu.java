@@ -475,14 +475,15 @@ public class AppMenu {
         List<MenuItem> multimediaMenuItems = new ArrayList<>();
         multimediaMenuItems.add(new MenuItem("Audio", "/ui/multimedia/audio"));
         multimediaMenuItems.add(new MenuItem("Barcode", "/ui/multimedia/barcode"));
-        multimediaMenuItems.add(new MenuItem("Compare", "/ui/multimedia/compare"));
+        multimediaMenuItems.add(new MenuItem("QRCode", "/ui/multimedia/qrcode"));
+        multimediaMenuItems.add(new MenuItem("Image Compare", "/ui/multimedia/compare"));
 
         //Cropper Nested MenuItem
         List<MenuItem> cropperMenuItems = new ArrayList<>();
         cropperMenuItems.add(new MenuItem("Basic", "/ui/multimedia/cropper/cropper"));
         cropperMenuItems.add(new MenuItem("Dynamic", "/ui/multimedia/cropper/dynamic"));
         cropperMenuItems.add(new MenuItem("FileUpload", "/ui/multimedia/cropper/fileupload"));
-        multimediaMenuItems.add(new MenuItem("Cropper", cropperMenuItems));
+        multimediaMenuItems.add(new MenuItem("Image Cropper", cropperMenuItems));
 
         multimediaMenuItems.add(new MenuItem("Graphic Image", "/ui/multimedia/graphicImage"));
 
@@ -526,9 +527,9 @@ public class AppMenu {
         uploadMenuItems.add(new MenuItem("DragDrop", "/ui/file/upload/dnd"));
         uploadMenuItems.add(new MenuItem("Chunked", "/ui/file/upload/chunked"));
         uploadMenuItems.add(new MenuItem("Tooltips", "/ui/file/upload/tooltips"));
-        fileMenuItems.add(new MenuItem("Upload", uploadMenuItems));
+        fileMenuItems.add(new MenuItem("File Upload", uploadMenuItems));
 
-        fileMenuItems.add(new MenuItem("Download", "/ui/file/download"));
+        fileMenuItems.add(new MenuItem("File Download", "/ui/file/download"));
         menuCategories.add(new MenuCategory("File", fileMenuItems));
         //FILE CATEGORY END
 

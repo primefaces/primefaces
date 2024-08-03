@@ -39,6 +39,7 @@
             inputStyle: null,
             inputStyleClass: null,
             required: false,
+            readonly: false,
             readOnlyInput: false,
             disabled: false,
             valid: true,
@@ -1843,6 +1844,10 @@
         },
 
         _bindEvents: function() {
+            if (this.options.readonly) {
+                // #12385 readonly input should not allow any events
+                return;
+            }
             var $this = this;
             if (!this.options.inline) {
                 this.inputfield.off('focus.datePicker blur.datePicker change.datePicker keydown.datePicker input.datePicker click.datePicker')
