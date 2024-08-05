@@ -44,19 +44,24 @@ public class CspState {
     }
 
     /**
-     * For AJAX request validate the nonce, else generate a new nonce for non-AJAX requests.
+     * Retrieves or generates a nonce (number used once) for Content Security Policy (CSP).
      *
-     * @return the nonce Base64 value
+     * For AJAX requests and postbacks, it validates the existing nonce.
+     * For non-AJAX requests, it generates a new nonce.
+     *
+     * @return the nonce as a Base64 encoded string
+     * @throws CspException if there's a nonce mismatch or validation fails
      */
     public String getNonce() {
         if (nonce == null) {
             if (context.isPostback() || context.getPartialViewContext().isAjaxRequest()) {
                 String nonceRequest = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.NONCE_PARAM);
+                nonceRequest = Objects.toString(nonceRequest, Constants.EMPTY_STRING);
                 String nonceViewState = Constants.EMPTY_STRING;
                 Map<String, Object> viewMap = context.getViewRoot().getViewMap(false);
                 if (viewMap != null) {
-                    nonceViewState = (String) viewMap.get(Constants.RequestParams.NONCE_PARAM);
-                    if (context.isPostback() && !Objects.equals(nonceViewState, nonceRequest)) {
+                    nonceViewState = Objects.toString(viewMap.get(Constants.RequestParams.NONCE_PARAM), Constants.EMPTY_STRING);
+                    if (context.isPostback() && LangUtils.isNotBlank(nonceViewState) && !Objects.equals(nonceViewState, nonceRequest)) {
                         throw new CspException("CSP nonce mismatch");
                     }
                 }
