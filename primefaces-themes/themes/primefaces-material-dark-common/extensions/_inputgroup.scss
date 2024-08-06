@@ -1,0 +1,76 @@
+body {
+  .ui-fluid {
+    .ui-inputgroup {
+      .ui-button {
+        min-width: auto;
+        flex-shrink: 0;
+      }
+
+      .ui-button-icon-only {
+        width: 3rem;
+        min-width: 3rem;
+      }
+
+      .ui-inputgroup-addon,
+      .ui-inputgroup-addon-checkbox {
+        min-width: 3rem;
+
+        &:first-child {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+    }
+  }
+  
+  &.ui-input-filled, .ui-input-filled {
+    .ui-inputgroup {
+      .ui-inputgroup-addon, .ui-inputgroup-addon-checkbox  {
+        @include filled-input-default();
+
+        &:last-child {
+          border-right-color: transparent;
+        }
+      }
+    }
+
+    .ui-inputgroup-addon:first-child,
+    .ui-inputgroup button:first-child,
+    .ui-inputgroup input:first-child {
+      border-bottom-left-radius: 0;
+    }
+
+    .ui-inputgroup .ui-float-label:first-child input {
+      border-bottom-left-radius: 0;
+    }
+
+    .ui-inputgroup-addon:last-child,
+    .ui-inputgroup button:last-child,
+    .ui-inputgroup input:last-child  {
+      border-bottom-right-radius: 0;
+    }
+
+    .ui-inputgroup .ui-float-label:last-child input {
+      border-bottom-right-radius: 0;
+    }
+  }
+
+  .ui-inputgroup .ui-inputgroup-addon + .ui-float-label .ui-inputtext:not(:last-child),
+  .ui-inputgroup .ui-inputgroup-addon + .ui-float-label .ui-inputtextarea:not(:last-child),
+  .ui-inputgroup .ui-inputgroup-addon + .ui-float-label .ui-password:not(:last-child),
+  .ui-inputgroup .ui-inputgroup-addon + .ui-float-label .ui-inputnumber:not(:last-child)>.ui-inputtext,
+  .ui-inputgroup .ui-inputgroup-addon + .ui-float-label .ui-inputmask:not(:last-child),
+  .ui-inputgroup .ui-inputgroup-addon + .ui-float-label .ui-selectonemenu:not(:last-child),
+  .ui-inputgroup .ui-inputgroup-addon + .ui-float-label .ui-calendar:not(:last-child)>.ui-inputfield,
+  .ui-inputgroup .ui-inputgroup-addon + .ui-float-label .ui-chips:not(:last-child)>.ui-chips-container,
+  .ui-inputgroup .ui-inputgroup-addon + .ui-float-label .ui-selectonebutton:not(:last-child)>.ui-button,
+  .ui-inputgroup .ui-inputgroup-addon + .ui-float-label .ui-autocomplete:not(:last-child)>.ui-autocomplete-input,
+  .ui-inputgroup .ui-inputgroup-addon + .ui-float-label .ui-spinner:not(:last-child),
+  .ui-inputgroup .ui-inputgroup-addon + .ui-float-label .ui-spinner:not(:last-child)>.ui-spinner-input,
+  .ui-inputgroup .ui-inputgroup-addon + .ui-float-label .ui-spinner:not(:last-child)>.ui-spinner-button {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left: 0 none;
+  }
+}

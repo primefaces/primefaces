@@ -1,0 +1,135 @@
+body {
+  .ui-panelmenu {
+    .ui-icon {
+      position: static;
+    }
+
+    .ui-panelmenu-panel:first-child {
+      .ui-panelmenu-header {
+        margin-top: 0;
+        border-top: $accordionHeaderBorder;
+        border-top-right-radius: $borderRadius;
+        border-top-left-radius: $borderRadius;
+      }
+    }
+
+    .ui-panelmenu-panel:last-child {
+      .ui-panelmenu-header {
+        border-bottom-right-radius: $borderRadius;
+        border-bottom-left-radius: $borderRadius;
+
+        &.ui-state-active {
+          border-radius: 0;
+        }
+      }
+    }
+
+    h3.ui-panelmenu-header {
+      border: $accordionHeaderBorder;
+      border-top: 0 none;
+      background: $accordionHeaderBg;
+      color: $accordionHeaderTextColor;
+      padding: $accordionHeaderPadding;
+      font-weight: $accordionHeaderFontWeight;
+      margin: $accordionSpacing 0 0 0;
+      transition: $transition;
+      user-select: none;
+      border-radius: 0;
+      position: relative;
+      outline: 0 none;
+      font-size: $fontSize;
+
+      .ui-icon {
+        position: static;
+        margin: 0;
+        vertical-align: middle;
+        margin-right: $inlineSpacing;
+
+        &.ui-icon-triangle-1-e {
+          @include icon-override("\e901");
+        }
+
+        &.ui-icon-triangle-1-s {
+          @include icon-override("\e902");
+        }
+      }
+
+      a {
+        display: inline;
+        padding: 0;
+        outline: 0 none;
+        color: inherit;
+        vertical-align: middle;
+        text-decoration: none;
+      }
+
+      &.ui-state-hover {
+        border-color: $accordionHeaderHoverBorderColor;
+        background: $accordionHeaderHoverBg;
+        color: $accordionHeaderTextHoverColor;
+      }
+
+      &.ui-state-active {
+        border-color: $accordionHeaderActiveBorderColor;
+        background: $panelHeaderBg;
+        color: $accordionHeaderTextActiveColor;
+
+        &:hover {
+          border-color: $accordionHeaderActiveHoverBorderColor;
+          background: $accordionHeaderActiveHoverBg;
+          color: $accordionHeaderTextHoverColor;
+        }
+      }
+    }
+
+    .ui-panelmenu-content {
+      padding: $verticalMenuPadding;
+      background: $menuBg;
+      border: $menuBorder;
+      margin-top: 0;
+      position: static;
+      border-top: 0 none;
+
+      .ui-menuitem-link {
+        padding: $menuitemPadding;
+        color: $menuitemTextColor;
+        transition: $transition;
+
+        &.ui-state-hover {
+          background: $menuitemHoverBg;
+
+          .ui-icon, .ui-panelmenu-icon {
+            color: $menuitemHoverIconColor;
+          }
+
+          .ui-menuitem-text {
+            color: $menuitemTextHoverColor;
+          }
+        }
+
+        > span.ui-icon {
+          display: inline-block;
+          vertical-align: middle;
+          margin-right: $inlineSpacing;
+          position: static;
+          color: $menuitemIconColor;
+
+          &.ui-panelmenu-icon {
+            &.ui-icon-triangle-1-e {
+              @include icon-override("\e932");
+            }
+
+            &.ui-icon-triangle-1-s {
+              @include icon-override("\e930");
+            }
+          }
+        }
+
+        .ui-menuitem-text {
+          display: inline-block;
+          vertical-align: middle;
+        }
+      }
+    }
+  }
+}

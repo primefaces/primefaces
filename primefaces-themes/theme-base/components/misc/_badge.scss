@@ -1,0 +1,69 @@
+body {
+  .ui-badge {
+    background: $badgeBg;
+    color: $badgeTextColor;
+    font-size: $badgeFontSize;
+    font-weight: $badgeFontWeight;
+    min-width: $badgeMinWidth;
+    height: $badgeHeight;
+    line-height: $badgeHeight;
+
+    &:not(.ui-widget) {
+      display: inline-block;
+      border-radius: 50%;
+      text-align: center;
+    }
+
+    &.ui-badge-secondary {
+      background: $secondaryButtonBg;
+      color: $secondaryButtonTextColor;
+    }
+
+    &.ui-badge-success {
+      background: $successButtonBg;
+      color: $successButtonTextColor;
+    }
+
+    &.ui-badge-info {
+      background: $infoButtonBg;
+      color: $infoButtonTextColor;
+    }
+
+    &.ui-badge-warning {
+      background: $warningButtonBg;
+      color: $warningButtonTextColor;
+    }
+
+    &.ui-badge-danger {
+      background: $dangerButtonBg;
+      color: $dangerButtonTextColor;
+    }
+
+    &.ui-badge-lg {
+      font-size: 1.5 * $badgeFontSize;
+      min-width: 1.5 * $badgeMinWidth;
+      height: 1.5 * $badgeHeight;
+      line-height: 1.5 * $badgeHeight;
+    }
+
+    &.ui-badge-xl {
+      font-size: 2 * $badgeFontSize;
+      min-width: 2 * $badgeMinWidth;
+      height: 2 * $badgeHeight;
+      line-height: 2 * $badgeHeight;
+    }
+  }
+
+  .ui-overlay-badge {
+    position: relative;
+    display: inline-block;
+
+    .ui-badge {
+      position: absolute;
+      top: 0;
+      right: 0;
+      transform: translate(50%, -50%);
+      margin: 0;
+    }
+  }
+}

@@ -1,0 +1,39 @@
+body {
+  .ui-datalist {
+    .ui-datalist-header,
+    .ui-datalist-footer {
+      background: $panelHeaderBg;
+      border: $panelHeaderBorder;
+      color: $panelHeaderTextColor;
+      padding: $panelHeaderPadding;
+      font-weight: $panelHeaderFontWeight;
+    }
+
+    .ui-datalist-header {
+      border-bottom: 0 none;
+    }
+
+    .ui-datalist-footer {
+      border-top: 0 none;
+    }
+
+    .ui-datalist-content {
+      border: $panelContentBorder;
+      background: $panelContentBg;
+      color: $panelContentTextColor;
+      padding: $panelContentPadding;
+    }
+
+    .ui-paginator {
+      padding: $paginatorPadding;
+
+      &.ui-paginator-top {
+        border-bottom: 0 none;
+      }
+
+      &.ui-paginator-bottom {
+        border-top: 0 none;
+      }
+    }
+  }
+}

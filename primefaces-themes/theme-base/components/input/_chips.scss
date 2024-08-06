@@ -1,0 +1,41 @@
+body {
+  .ui-chips {
+    .ui-chips-container {
+      padding: math.div(nth($inputPadding, 1), 2) nth($inputPadding, 2);
+
+      .ui-chips-token {
+        padding: 1px 0;
+        margin: math.div($inlineSpacing, 4);
+        background: $chipBg;
+        color: $chipTextColor;
+        border-radius: $borderRadius;
+
+        .ui-chips-token-label {
+          padding: 0 $iconSize * 2 0 math.div($iconSize, 2);
+        }
+
+        .ui-chips-token-icon {
+          margin-top: math.div(-1 * $iconSize, 2);
+          position: absolute;
+          @include icon-override("\e90c");
+        }
+      }
+
+      .ui-chips-input-token {
+        margin: 0;
+        padding: math.div(nth($inputPadding, 1), 2) 0;
+
+        input {
+          font-family: $fontFamily;
+          font-size: $inputTextFontSize;
+          color: $inputTextColor;
+          -webkit-appearance: none;
+          appearance: none;
+          padding: 0;
+          margin: 0;
+          border-radius: 0;
+        }
+      }
+    }
+  }
+}

@@ -314,7 +314,7 @@ public class DataTable extends DataTableBase {
                 continue;
             }
             ValueExpression columnFilterValueVE = column.getValueExpression(Column.PropertyKeys.filterValue.toString());
-            if (columnFilterValueVE == null) {
+            if (columnFilterValueVE == null || columnFilterValueVE.isReadOnly(elContext)) {
                 continue;
             }
             if (column.isDynamic()) {
@@ -355,8 +355,10 @@ public class DataTable extends DataTableBase {
                 int rows = getRowsToRender();
                 int first = Integer.parseInt(params.get(clientId + "_first"));
                 int page = rows > 0 ? (first / rows) : 0;
+                String rowsPerPageParam = params.get(clientId + "_rows");
+                Integer rowsPerPage = LangUtils.isNotBlank(rowsPerPageParam) ? Integer.parseInt(rowsPerPageParam) : null;
 
-                wrapperEvent = new PageEvent(this, behaviorEvent.getBehavior(), page);
+                wrapperEvent = new PageEvent(this, behaviorEvent.getBehavior(), page, rowsPerPage);
             }
             else if ("sort".equals(eventName)) {
                 wrapperEvent = new SortEvent(this, behaviorEvent.getBehavior(), getSortByAsMap());

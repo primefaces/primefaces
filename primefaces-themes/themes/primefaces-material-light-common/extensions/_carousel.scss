@@ -1,0 +1,21 @@
+body {
+  .ui-carousel {
+    .ui-carousel-header,
+    .ui-carousel-footer,
+    .ui-carousel-viewport {
+      border: 0 none;
+    }
+
+    .ui-carousel-viewport {
+      .ui-carousel-item {
+        border-radius: $borderRadius;
+      }
+    }
+
+    .ui-carousel-dropdown {
+      padding: .5rem;
+      border-radius: $borderRadius;
+      border-color: nth($inputBorder, 3);
+    }
+  }
+}

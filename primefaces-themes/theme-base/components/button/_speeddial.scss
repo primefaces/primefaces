@@ -1,0 +1,81 @@
+body {
+  .ui-speeddial-button {
+    &.ui-button.ui-button-icon-only {
+      width: $speedDialButtonWidth;
+      height: $speedDialButtonHeight;
+
+      .ui-button-icon {
+        font-size: $speedDialButtonIconFontSize;
+      }
+    }
+  }
+
+  .ui-speeddial-action {
+    width: $speedDialActionWidth;
+    height: $speedDialActionHeight;
+    background: $speedDialActionBg;
+    color: $speedDialActionTextColor;
+
+    &:hover {
+      background: $speedDialActionHoverBg;
+      color: $speedDialActionTextHoverColor;
+    }
+  }
+
+  .ui-speeddial-direction-up {
+    .ui-speeddial-item {
+      margin: math.div($inlineSpacing, 2) 0;
+
+      &:first-child {
+        margin-bottom: $inlineSpacing;
+      }
+    }
+  }
+
+  .ui-speeddial-direction-down {
+    .ui-speeddial-item {
+      margin: math.div($inlineSpacing, 2) 0;
+
+      &:first-child {
+        margin-top: $inlineSpacing;
+      }
+    }
+  }
+
+  .ui-speeddial-direction-left {
+    .ui-speeddial-item {
+      margin: 0 math.div($inlineSpacing, 2);
+
+      &:first-child {
+        margin-right: $inlineSpacing;
+      }
+    }
+  }
+
+  .ui-speeddial-direction-right {
+    .ui-speeddial-item {
+      margin: 0 math.div($inlineSpacing, 2);
+
+      &:first-child {
+        margin-left: $inlineSpacing;
+      }
+    }
+  }
+
+  .ui-speeddial-circle,
+  .ui-speeddial-semi-circle,
+  .ui-speeddial-quarter-circle {
+    .ui-speeddial-item {
+      margin: 0;
+
+      &:first-child,
+      &:last-child {
+        margin: 0;
+      }
+    }
+  }
+
+  .ui-speeddial-mask {
+    background-color: $maskBg;
+  }
+}

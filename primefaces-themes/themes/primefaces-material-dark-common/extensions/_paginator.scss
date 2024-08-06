@@ -1,0 +1,9 @@
+body {
+  .ui-paginator {
+    .ui-paginator-rpp-options {
+      padding: .5rem;
+      border-radius: $borderRadius;
+      border-color: nth($inputBorder, 3);
+    }
+  }
+}

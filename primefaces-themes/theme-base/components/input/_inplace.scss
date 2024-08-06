@@ -1,0 +1,41 @@
+body {
+  .ui-inplace {
+    .ui-inplace-display {
+      padding: $inplacePadding;
+      border-radius: $borderRadius;
+
+      &.ui-state-highlight {
+        background: $inplaceHoverBg;
+        color: $inplaceTextHoverColor;
+        transition: $transition;
+      }
+
+      &.ui-state-focus {
+        @include focused-input();
+      }
+    }
+
+    .ui-inplace-save {
+      .ui-icon {
+        @include icon-override("\e909");
+      }
+    }
+
+    .ui-inplace-cancel {
+      margin-left: math.div($inlineSpacing, 2);
+      .ui-icon {
+        @include icon-override("\e90b");
+      }
+    }
+
+    .ui-inplace-editor {
+      margin-left: $inlineSpacing;
+
+      .ui-button-icon-only {
+        .ui-button-text {
+          padding: $buttonIconOnlyPadding;
+        }
+      }
+    }
+  }
+}

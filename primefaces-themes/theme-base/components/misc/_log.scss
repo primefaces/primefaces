@@ -1,0 +1,59 @@
+body {
+  .ui-log {
+    padding: 0;
+    box-shadow: $overlayContainerShadow;
+    border: $overlayContentBorder;
+    border-radius: $borderRadius;
+    height: auto;
+
+    .ui-log-header {
+      background: $dialogHeaderBg;
+      color: $dialogHeaderTextColor;
+      font-weight: $dialogHeaderFontWeight;
+      border-bottom: $dialogHeaderBorder;
+      padding: $dialogHeaderPadding;
+      height: auto;
+
+      .ui-log-button {
+        display: inline-block;
+        position: static;
+        margin-right: $inlineSpacing;
+        padding: 2px;
+        @include action-icon();
+
+        .ui-icon-trash {
+          @include icon-override("\e93d");
+        }
+
+        .ui-icon-note {
+          @include icon-override("\e9a8");
+        }
+
+        .ui-icon-info {
+          @include icon-override("\e924");
+        }
+
+        .ui-icon-notice {
+          @include icon-override("\e989");
+        }
+
+        .ui-icon-search {
+          @include icon-override("\e908");
+        }
+
+        .ui-icon-alert {
+          @include icon-override("\e922");
+        }
+      }
+    }
+
+    .ui-log-content {
+      background: $dialogContentBg;
+      color: $dialogContentTextColor;
+      border: $dialogContentBorder;
+      padding: $dialogContentPadding;
+      border: $dialogContentBorder;
+      overflow: auto;
+    }
+  }
+}

@@ -1,0 +1,9 @@
+body {
+  .ui-toolbar {
+    border: $panelHeaderBorder;
+    background: $panelHeaderBg;
+    color: $panelHeaderTextColor;
+    padding: $panelHeaderPadding;
+    border-radius: $borderRadius;
+  }
+}

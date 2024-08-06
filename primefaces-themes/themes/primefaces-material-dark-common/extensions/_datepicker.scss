@@ -1,0 +1,91 @@
+body {
+    .ui-datepicker {
+      .ui-datepicker-header {
+        border: 0 none;
+        font-weight: 500;
+        margin-top: .5rem;
+      }
+  
+      .ui-datepicker-calendar {
+        th {
+          border-bottom: $divider;
+          color: $emphasis-low;
+          font-weight: 400;
+          font-size: .875rem;
+        }
+  
+        td {
+          &.ui-datepicker-today,
+          &.ui-datepicker-current-day {
+            > a {
+              &:hover {
+                border: $calendarCellDateTodayBorder;
+              }
+            }
+
+            > a,
+            > span {
+              font-weight: normal;
+              box-shadow: 0 0 0 1px rgba($overlayColor, .38);
+  
+              &.ui-state-active {
+                border: $calendarCellDateTodayBorder;
+              }
+            }
+          }
+        }
+      }
+  
+      &.ui-datepicker-monthpicker {
+        .ui-datepicker-header {
+          padding: 1rem;
+        }
+      }
+  
+      .ui-timepicker-timeinput {
+        input {
+          &:focus {
+            box-shadow: inset 0 0 0 1px $inputFocusBorderColor, inset 0 0 0 1px $inputFocusBorderColor, inset 0 0 0 1px $inputFocusBorderColor, inset 0 0 0 1px $inputFocusBorderColor;
+          }
+        }
+      }
+  
+      .ui-datepicker-group {
+        padding: 0;
+      }
+    }
+  
+    .p-datepicker {
+      .ui-datepicker-trigger {
+        &.ui-button {
+          padding: .714rem;
+          border: 1px solid transparent;
+  
+          .ui-button-text {
+            padding: .3rem;
+          }
+        }
+      }
+    }
+  
+    .ui-fluid {
+      .p-datepicker {
+        .ui-datepicker-trigger {
+          &.ui-button {
+            padding: .714rem;
+            border: 1px solid transparent;
+  
+            .ui-button-text {
+              padding: .3rem;
+            }
+          }
+        }
+      }
+    }
+  
+    .p-datepicker-panel:not(.ui-datepicker-timeonly) {
+      .ui-timepicker {
+        border-top: $calendarTitleBorder;
+      }
+    }
+  }

@@ -1,0 +1,13 @@
+body {
+  .ui-tooltip {
+    .ui-tooltip-text {
+      box-shadow: none;
+      font-size: .875rem;
+      padding: .5rem;
+    }
+
+    .ui-tooltip-arrow {
+      display: none;
+    }
+  }
+}

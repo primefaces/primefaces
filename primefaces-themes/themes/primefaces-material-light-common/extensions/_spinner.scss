@@ -1,0 +1,37 @@
+body {
+  .ui-spinner {
+    .ui-spinner-button.ui-button {
+      min-width: 3rem;
+    }
+
+    &.ui-spinner-horizontal-after {
+      .ui-inputfield {
+        padding-right: 7rem;
+      }
+
+      .ui-spinner-down {
+        right: 3rem;
+      }
+    }
+
+    &.ui-spinner-vertical {
+      .ui-spinner-input {
+        min-width: 3rem;
+      }
+    }
+  }
+
+  .ui-fluid {
+    .ui-spinner {
+      &.ui-spinner-horizontal-after {
+        .ui-inputfield {
+          padding-right: 7rem;
+        }
+
+        .ui-spinner-down {
+          right: 3rem;
+        }
+      }
+    }
+  }
+}

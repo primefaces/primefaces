@@ -1,0 +1,27 @@
+body {
+  .ui-steps {
+    .ui-steps-item {
+      &:not(.ui-state-highlight) {
+        opacity: 1;
+      }
+
+      .ui-menuitem-link {
+        .ui-steps-number {
+          background-color: #9e9d9e;
+          color: #ffffff;
+          font-size: 0.857rem;
+          width: 1.714rem;
+          height: 1.714rem;
+          line-height: 1.714rem;
+        }
+      }
+
+      &.ui-state-highlight {
+        .ui-steps-number {
+          background-color: $primaryColor;
+          color: $primaryTextColor;
+        }
+      }
+    }
+  }
+}

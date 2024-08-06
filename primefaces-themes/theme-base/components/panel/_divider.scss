@@ -1,0 +1,33 @@
+body {
+  .ui-divider {
+    .ui-divider-content {
+      background-color: $panelContentBg;
+    }
+
+    &.ui-divider-horizontal {
+      margin: $dividerHorizontalMargin;
+      padding: $dividerHorizontalPadding;
+
+      &:before {
+        border-top: $dividerSize $dividerColor;
+      }
+
+      .ui-divider-content {
+        padding: 0 $inlineSpacing;
+      }
+    }
+
+    &.ui-divider-vertical {
+      margin: $dividerVerticalMargin;
+      padding: $dividerVerticalPadding;
+
+      &:before {
+        border-left: $dividerSize $dividerColor;
+      }
+
+      .ui-divider-content {
+        padding: $inlineSpacing 0;
+      }
+    }
+  }
+}

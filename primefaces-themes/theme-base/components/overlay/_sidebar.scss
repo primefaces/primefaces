@@ -1,0 +1,22 @@
+body {
+  .ui-sidebar {
+    background: $panelContentBg;
+    color: $panelContentTextColor;
+    padding: $panelContentPadding;
+    border: $overlayContentBorder;
+    box-shadow: none;
+
+    .ui-sidebar-close {
+      padding: 0;
+      @include action-icon();
+
+      .ui-icon {
+        @include icon-override("\e90b");
+      }
+    }
+
+    &.ui-sidebar-active {
+      box-shadow: $overlayContainerShadow;
+    }
+  }
+}

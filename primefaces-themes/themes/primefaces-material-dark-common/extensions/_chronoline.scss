@@ -1,0 +1,15 @@
+body {
+  .ui-chronoline {
+    &.ui-chronoline-vertical {
+      .ui-chronoline-event-connector {
+        margin: .5rem 0;
+      }
+    }
+
+    &.ui-chronoline-horizontal {
+      .ui-chronoline-event-connector {
+        margin: 0 .5rem;
+      }
+    }
+  }
+}

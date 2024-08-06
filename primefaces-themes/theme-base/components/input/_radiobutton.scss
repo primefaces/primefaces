@@ -1,0 +1,94 @@
+body {
+  .ui-radiobutton {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0;
+    width: $radiobuttonWidth;
+    height: $radiobuttonHeight;
+
+    .ui-radiobutton-box {
+      border: $inputBorder;
+      border-width: $radiobuttonBorderWidth;
+      background: $inputBg;
+      width: $radiobuttonWidth;
+      height: $radiobuttonHeight;
+      text-align: center;
+      position: relative;
+      border-radius: 50%;
+      transition: $transition;
+
+      &.ui-state-hover {
+        border-color: $inputHoverBorderColor;
+      }
+
+      &.ui-state-focus {
+        box-shadow: $radiobuttonFocusShadow;
+      }
+
+      &.ui-state-active {
+        border-color:$radiobuttonActiveBorderColor;
+        background: $radiobuttonActiveBg;
+        color:$radiobuttonTextActiveColor;
+
+        &.ui-state-hover {
+          background: $radiobuttonActiveHoverBg;
+        }
+
+        .ui-icon-bullet {
+          background: $radiobuttonTextActiveColor;
+        }
+      }
+
+      &.ui-state-error {
+        @include invalid-input();
+      }
+
+      .ui-radiobutton-icon {
+        width: $radiobuttonIconSize;
+        height: $radiobuttonIconSize;
+        vertical-align: middle;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: math.div(-1 * $radiobuttonIconSize, 2);
+        margin-left: math.div(-1 * $radiobuttonIconSize, 2);
+        border-radius: 50%;
+
+        &:before {
+          display: none;
+        }
+      }
+    }
+  }
+
+  &.ui-input-filled,
+  .ui-input-filled {
+    .ui-radiobutton {
+      .ui-radiobutton-box {
+        background-color: $inputFilledBg;
+
+        &.ui-state-hover {
+          background-color: $inputFilledHoverBg;
+        }
+
+        &.ui-state-active {
+          background: $radiobuttonActiveBg;
+
+          &.ui-state-hover {
+            background: $radiobuttonActiveHoverBg;
+          }
+        }
+      }
+    }
+  }
+
+  @if ($highlightBg == $radiobuttonActiveBg) {
+    .ui-state-highlight {
+      .ui-radiobutton {
+        .ui-radiobutton-box.ui-state-active {
+          border-color: $highlightTextColor;
+        }
+      }
+    }
+  }
+}
