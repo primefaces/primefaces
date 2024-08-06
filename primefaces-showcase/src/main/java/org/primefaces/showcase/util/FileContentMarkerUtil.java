@@ -236,8 +236,15 @@ public class FileContentMarkerUtil {
         return pretty;
     }
 
+    /**
+     * Determines if a given file is eligible for processing.
+     *
+     * @param file The file name or path to check
+     * @return true if the file is eligible, false otherwise
+     */
     private static boolean isEligibleFile(String file) {
-        return file != null && file.startsWith(SC_PREFIX) && !file.endsWith("[]");
+        // Check the file is a Showcase file, is not an array "[]", and is not an inner class "$"
+        return file != null && file.startsWith(SC_PREFIX) && !file.endsWith("[]") && !file.contains("$");
     }
 
     private static String packageToPathAccess(String pkg) {
