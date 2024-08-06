@@ -45,7 +45,7 @@ public class DataTable044 implements Serializable {
     @PostConstruct
     public void init() {
         lazyDataModel = DefaultLazyDataModel.<ProgrammingLanguage>builder()
-                .valueSupplier(service::getLangs)
+                .valueSupplier((filterBy) -> service.getLangs())
                 .filter((ctx, value, filter, locale) -> {
                     if (programmingLanguageFilter == null) {
                         return true;

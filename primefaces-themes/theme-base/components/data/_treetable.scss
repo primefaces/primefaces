@@ -1,0 +1,343 @@
+body {
+  .ui-treetable {
+    .ui-treetable-header {
+      background: $datatableHeaderBg;
+      color: $datatableHeaderTextColor;
+      border: $datatableHeaderBorder;
+      border-width: $datatableHeaderBorderWidth;
+      padding: $datatableHeaderPadding;
+      font-weight: $datatableHeaderFontWeight;
+    }
+
+    .ui-treetable-footer {
+      background: $datatableFooterBg;
+      color: $datatableFooterTextColor;
+      border: $datatableFooterBorder;
+      border-width: $datatableFooterBorderWidth;
+      padding: $datatableFooterPadding;
+      font-weight: $datatableFooterFontWeight;
+    }
+
+    .ui-treetable-header {
+      text-align: left;
+    }
+
+    .ui-treetable-footer {
+      text-align: left;
+    }
+
+    .ui-paginator {
+      padding: $paginatorPadding;
+
+      &.ui-paginator-top {
+        border-width: $datatableTopPaginatorBorderWidth;
+        border-radius: 0;
+      }
+
+      &.ui-paginator-bottom {
+        border-width: $datatableBottomPaginatorBorderWidth;
+        border-radius: 0;
+      }
+    }
+
+    thead {
+      th {
+        background: $datatableHeaderCellBg;
+        color: $datatableHeaderCellTextColor;
+        padding: $datatableHeaderCellPadding;
+        border: $datatableHeaderCellBorder;
+        border-width: $datatableHeaderCellBorderWidth;
+        text-align: left;
+        box-sizing: content-box;;
+        transition: $transition;
+
+        .ui-column-title {
+          font-weight: $datatableHeaderCellFontWeight;
+          vertical-align: middle;
+        }
+
+        .ui-sortable-column-icon {
+          margin: 0 0 0 $inlineSpacing;
+
+          &.ui-icon-carat-2-n-s {
+            @include icon-override('\e99e');
+            vertical-align: middle;
+          }
+
+          &.ui-icon-triangle-1-n {
+            @include icon-override('\e99f');
+            vertical-align: middle;
+          }
+
+          &.ui-icon-triangle-1-s {
+            @include icon-override('\e9a0');
+            vertical-align: middle;
+          }
+        }
+
+        .ui-sortable-column-badge {
+          border-radius: 50%;
+          height: $datatableSortableColumnBadgeSize;
+          min-width: $datatableSortableColumnBadgeSize;
+          line-height: $datatableSortableColumnBadgeSize;
+          color: $badgeTextColor;
+          background: $badgeBg;
+          margin-left: $inlineSpacing;
+          font-size: $badgeFontSize;
+        }
+
+        &.ui-sortable-column {
+          &.ui-state-focus {
+            @include focused-inset();
+          }
+        }
+
+        &.ui-state-hover {
+          background: $datatableHeaderCellHoverBg;
+          color: $datatableHeaderCellTextHoverColor;
+        }
+
+        &.ui-state-active {
+          background: $datatableHeaderCellHighlightBg;
+          color: $datatableHeaderCellHighlightTextColor;
+
+          &.ui-state-hover {
+            background: $datatableHeaderCellHighlightHoverBg;
+            color: $datatableHeaderCellHighlightTextHoverColor;
+          }
+        }
+      }
+    }
+
+    .ui-treetable-data {
+      > tr {
+        background: $datatableBodyRowBg;
+        color: $datatableBodyRowTextColor;
+        transition: $transition;
+
+        > td {
+          padding: $datatableBodyCellPadding;
+          border: $datatableBodyRowBorder;
+          border-width: $datatableHeaderCellBorderWidth;
+
+          .ui-treetable-toggler {
+            margin-right: $inlineSpacing;
+            margin-top: 0;
+            transition: $transition;
+            @include action-icon();
+
+            &.ui-icon-triangle-1-e {
+              @include icon-override("\e901");
+            }
+
+            &.ui-icon-triangle-1-s {
+              @include icon-override("\e902");
+            }
+          }
+
+          .ui-chkbox.ui-selection {
+            vertical-align: middle;
+            margin-right: $inlineSpacing * 2;
+
+            .ui-icon-minus {
+              @include icon-override("\e90f");
+              color: $panelContentTextColor;
+            }
+          }
+        }
+
+        &.ui-state-hover {
+          background: $datatableBodyRowHoverBg;
+          color: $datatableBodyRowTextHoverColor;
+        }
+
+        &.ui-state-highlight {
+          background: $highlightBg;
+          color: $highlightTextColor;
+          cursor: default;
+
+          .ui-treetable-toggler {
+            color: $highlightTextColor;
+
+            &:hover {
+              color: $highlightTextColor;
+            }
+          }
+        }
+
+        .ui-row-editor {
+          .ui-icon {
+            @include action-icon();
+
+            &.ui-icon-pencil {
+              @include icon-override('\e942');
+            }
+
+            &.ui-icon-check {
+              @include icon-override('\e909');
+              margin-right: $inlineSpacing;
+            }
+
+            &.ui-icon-close {
+              @include icon-override('\e90b');
+            }
+          }
+
+          .ui-row-editor-check {
+            display: none;
+          }
+
+          .ui-row-editor-close {
+            display: none;
+          }
+        }
+
+        &.ui-row-editing {
+          .ui-row-editor-check {
+            display: inline-block;
+          }
+
+          .ui-row-editor-close {
+            display: inline-block;
+            color:$highlightTextColor;
+          }
+
+          .ui-icon {
+            color:$highlightTextColor;
+          }
+        }
+      }
+    }
+
+    tfoot {
+      td {
+        background: $datatableFooterCellBg;
+        border: $datatableFooterCellBorder;
+        border-width: $datatableFooterCellBorderWidth;
+        color: $datatableFooterCellTextColor;
+        padding: $datatableFooterCellPadding;
+        font-weight: $datatableFooterCellFontWeight;
+        box-sizing: content-box;;
+      }
+    }
+
+    .ui-treetable-scrollable-header, .ui-treetable-scrollable-footer {
+      background: $datatableHeaderCellBg;
+    }
+
+    .ui-column-resizer-helper {
+      background: $datatableResizerHelperBg;
+    }
+
+    &.ui-treetable-sm {
+      thead {
+        > tr {
+          > th {
+            padding: nth($datatableHeaderCellPadding,1) * $datatableScaleSm nth($datatableHeaderCellPadding,2) * $datatableScaleSm;
+          }
+        }
+      }
+
+      .ui-treetable-scrollable-theadclone {
+        > tr {
+          > th {
+            padding-top: 0;
+            padding-bottom: 0;
+          }
+        }
+      }
+
+      .ui-treetable-data {
+        > tr {
+          > td {
+            padding: nth($datatableBodyCellPadding,1) * $datatableScaleSm nth($datatableBodyCellPadding,2) * $datatableScaleSm;
+          }
+        }
+      }
+
+      tfoot {
+        > tr {
+          > td {
+            padding: nth($datatableFooterCellPadding,1) * $datatableScaleSm nth($datatableFooterCellPadding,2) * $datatableScaleSm;
+          }
+        }
+      }
+    }
+
+    &.ui-treetable-lg {
+      thead {
+        > tr {
+          > th {
+            padding: nth($datatableHeaderCellPadding,1) * $datatableScaleLg nth($datatableHeaderCellPadding,2) * $datatableScaleLg;
+          }
+        }
+      }
+
+      .ui-treetable-scrollable-theadclone {
+        > tr {
+          > th {
+            padding-top: 0;
+            padding-bottom: 0;
+          }
+        }
+      }
+
+      .ui-treetable-data {
+        > tr {
+          > td {
+            padding: nth($datatableBodyCellPadding,1) * $datatableScaleLg nth($datatableBodyCellPadding,2) * $datatableScaleLg;
+          }
+        }
+      }
+
+      tfoot {
+        > tr {
+          > td {
+            padding: nth($datatableFooterCellPadding,1) * $datatableScaleLg nth($datatableFooterCellPadding,2) * $datatableScaleLg;
+          }
+        }
+      }
+    }
+
+    &.ui-treetable-gridlines {
+      .ui-treetable-header {
+        border-width: 1px 1px 0;
+      }
+
+      thead {
+        > tr {
+          > th {
+            border: $datatableHeaderCellBorder;
+          }
+        }
+      }
+
+      .ui-treetable-data {
+        > tr {
+          > td {
+            border-width: 1px;
+          }
+        }
+      }
+
+      .ui-treetable-scrollable-theadclone {
+        > tr {
+          > th {
+            padding-top: 0;
+            padding-bottom: 0;
+            border-bottom: 0 none;
+            border-top: 0 none;
+          }
+        }
+      }
+
+      tfoot {
+        > tr {
+          > td {
+            border-width: 1px;
+          }
+        }
+      }
+    }
+  }
+}

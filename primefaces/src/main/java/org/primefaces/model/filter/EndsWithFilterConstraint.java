@@ -27,6 +27,8 @@ import java.util.function.BiPredicate;
 
 public class EndsWithFilterConstraint extends StringFilterConstraint {
 
+    private static final long serialVersionUID = 1L;
+
     @Override
     protected BiPredicate<String, String> getPredicate() {
         return String::endsWith;

@@ -25,23 +25,29 @@ package org.primefaces.showcase.view.data.tree;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.Objects;
 
 public class FileInfo implements Serializable {
 
-    private String path;
-    private String name;
-    private boolean directory;
+    private final String path;
+    private final String name;
+    private final boolean directory;
 
     public FileInfo(String path, boolean directory) {
-        this.path = path;
-        if (this.path.equals(File.separator)) {
-            this.name = this.path;
+        this.directory = directory;
+        if (path == null) {
+            this.path = File.separator;
+            this.name = File.separator;
+        }
+        else if (path.equals(File.separator)) {
+            this.name = path;
+            this.path = path;
         }
         else {
             String[] parts = path.split(File.separator.equals("\\") ? "\\\\" : File.separator);
             this.name = parts[parts.length - 1];
+            this.path = path;
         }
-        this.directory = directory;
     }
 
     public String getPath() {
@@ -54,6 +60,19 @@ public class FileInfo implements Serializable {
 
     public boolean isDirectory() {
         return directory;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FileInfo fileInfo = (FileInfo) o;
+        return isDirectory() == fileInfo.isDirectory() && Objects.equals(getPath(), fileInfo.getPath()) && Objects.equals(getName(), fileInfo.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getPath(), getName(), isDirectory());
     }
 
     @Override

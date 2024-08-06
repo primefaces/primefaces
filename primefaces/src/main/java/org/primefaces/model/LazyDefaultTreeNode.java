@@ -36,6 +36,8 @@ import java.util.stream.Collectors;
  */
 public class LazyDefaultTreeNode<T> extends DefaultTreeNode<T> implements LazyTreeNode {
 
+    private static final long serialVersionUID = 1L;
+
     private Callbacks.SerializableFunction<T, List<T>> loadFunction;
     private Callbacks.SerializableFunction<T, Boolean> isLeafFunction;
     private boolean loaded;
@@ -103,6 +105,8 @@ public class LazyDefaultTreeNode<T> extends DefaultTreeNode<T> implements LazyTr
     }
 
     public static class LazyTreeNodeChildren<T> extends TreeNodeChildren<T> {
+
+        private static final long serialVersionUID = 1L;
 
         // serialization
         public LazyTreeNodeChildren() {

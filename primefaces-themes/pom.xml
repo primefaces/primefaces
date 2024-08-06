@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.primefaces</groupId>
+        <artifactId>primefaces-parent</artifactId>
+        <version>15.0.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>primefaces-themes</artifactId>
+    <packaging>jar</packaging>
+
+    <name>PrimeFaces Themes</name>
+
+    <build>
+        <finalName>${project.name}</finalName>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>io.github.cleydyr</groupId>
+                    <artifactId>dart-sass-maven-plugin</artifactId>
+                    <version>1.3.1</version>
+                    <configuration>
+                        <inputFolder>${basedir}</inputFolder>
+                        <outputFolder>${basedir}</outputFolder>
+                        <update>true</update>
+                        <noSourceMap>true</noSourceMap>
+                        <style>COMPRESSED</style>
+                        <quiet>false</quiet>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>io.github.cleydyr</groupId>
+                <artifactId>dart-sass-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>generate-themes</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>compile-sass</goal>
+                        </goals>
+                        <configuration>
+                            <inputFolder>${basedir}</inputFolder>
+                            <outputFolder>${basedir}</outputFolder>
+                            <update>true</update>
+                            <noSourceMap>true</noSourceMap>
+                            <style>COMPRESSED</style>
+                            <quiet>false</quiet>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-themes</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/../primefaces/src/main/resources/META-INF/resources</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>themes</directory>
+                                    <includes>
+                                        <include>primefaces-arya-blue/theme.css</include>
+                                        <include>primefaces-luna-amber/theme.css</include>
+                                        <include>primefaces-luna-blue/theme.css</include>
+                                        <include>primefaces-luna-green/theme.css</include>
+                                        <include>primefaces-luna-pink/theme.css</include>
+                                        <include>primefaces-nova-colored/theme.css</include>
+                                        <include>primefaces-nova-dark/theme.css</include>
+                                        <include>primefaces-nova-light/theme.css</include>
+                                        <include>primefaces-saga-blue/theme.css</include>
+                                        <include>primefaces-vela-blue/theme.css</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+
+
+

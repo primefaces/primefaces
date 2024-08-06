@@ -1,0 +1,185 @@
+body {
+  .ui-button, .ui-button.ui-linkbutton {
+    font-weight: 500;
+    min-width: 4rem;
+
+    &.ui-button-icon-only {
+      min-width: auto;
+    }
+
+    &.ui-state-focus {
+      background: rgba($buttonBg, .76);
+    }
+
+    &.ui-state-active {
+      background: rgba($buttonBg, .68);
+    }
+
+    &.ui-button-flat,
+    &.ui-button-outlined {
+      &.ui-state-focus {
+        background: rgba($buttonBg, .12);
+      }
+
+      &.ui-state-active {
+        background: rgba($buttonBg, .16);
+      }
+    }
+
+    &.ui-state-disabled {
+      background-color: $emphasis-lower !important;
+      color: $emphasis-low !important;
+      opacity: 1;
+
+      &.ui-button-outlined {
+        background-color: transparent !important;
+        color: $emphasis-low !important;
+        border-color: $emphasis-low !important;
+      }
+    }
+
+    &.ui-button-raised:enabled:focus {
+      box-shadow: $raisedButtonShadow;
+    }
+  }
+
+  .ui-splitbutton {
+    > .ui-button {
+      &.ui-button-icon-only {
+        &.ui-state-focus {
+          background: rgba($buttonBg, .76);
+        }
+
+        &.ui-state-active {
+          background: rgba($buttonBg, .68);
+        }
+      }
+    }
+  }
+
+  .ui-button.ui-button-secondary, .ui-splitbutton.ui-button-secondary > .ui-button, .ui-linkbutton.ui-button-secondary {
+    &.ui-state-focus {
+      background: rgba($secondaryButtonBg, .76);
+    }
+
+    &.ui-state-active {
+      background: rgba($secondaryButtonBg, .68);
+    }
+
+    &.ui-button-flat,
+    &.ui-button-outlined {
+      &.ui-state-focus {
+        background: rgba($secondaryButtonBg, .12);
+      }
+
+      &.ui-state-active {
+        background: rgba($secondaryButtonBg, .16);
+      }
+    }
+  }
+
+  .ui-button.ui-button-info, .ui-splitbutton.ui-button-info > .ui-button, .ui-linkbutton.ui-button-info {
+    &.ui-state-focus {
+      background: rgba($infoButtonBg, .76);
+    }
+
+    &.ui-state-active {
+      background: rgba($infoButtonBg, .68);
+    }
+
+    &.ui-button-flat,
+    &.ui-button-outlined {
+      &.ui-state-focus {
+        background: rgba($infoButtonBg, .12);
+      }
+
+      &.ui-state-active {
+        background: rgba($infoButtonBg, .16);
+      }
+    }
+  }
+
+  .ui-button.ui-button-success, .ui-splitbutton.ui-button-success > .ui-button, .ui-linkbutton.ui-button-success {
+    &.ui-state-focus {
+      background: rgba($successButtonBg, .76);
+    }
+
+    &.ui-state-active {
+      background: rgba($successButtonBg, .68);
+    }
+
+    &.ui-button-flat,
+    &.ui-button-outlined {
+      &.ui-state-focus {
+        background: rgba($successButtonBg, .12);
+      }
+
+      &.ui-state-active {
+        background: rgba($successButtonBg, .16);
+      }
+    }
+  }
+
+  .ui-button.ui-button-warning, .ui-splitbutton.ui-button-warning > .ui-button, .ui-linkbutton.ui-button-warning {
+    &.ui-state-focus {
+      background: rgba($warningButtonBg, .76);
+    }
+
+    &.ui-state-active {
+      background: rgba($warningButtonBg, .68);
+    }
+
+    &.ui-button-flat,
+    &.ui-button-outlined {
+      &.ui-state-focus {
+        background: rgba($warningButtonBg, .12);
+      }
+
+      &.ui-state-active {
+        background: rgba($warningButtonBg, .16);
+      }
+    }
+  }
+
+  .ui-button.ui-button-help, .ui-splitbutton.ui-button-help > .ui-button, .ui-linkbutton.ui-button-help {
+    &.ui-state-focus {
+      background: rgba($helpButtonBg, .76);
+    }
+
+    &.ui-state-active {
+      background: rgba($helpButtonBg, .68);
+    }
+
+    &.ui-button-flat,
+    &.ui-button-outlined {
+      &.ui-state-focus {
+        background: rgba($helpButtonBg, .12);
+      }
+
+      &.ui-state-active {
+        background: rgba($helpButtonBg, .16);
+      }
+    }
+  }
+
+  .ui-button.ui-button-danger, .ui-splitbutton.ui-button-danger > .ui-button, .ui-linkbutton.ui-button-danger {
+    &.ui-state-focus {
+      background: rgba($dangerButtonBg, .76);
+    }
+
+    &.ui-state-active {
+      background: rgba($dangerButtonBg, .68);
+    }
+
+    &.ui-button-flat,
+    &.ui-button-outlined {
+      &.ui-state-focus {
+        background: rgba($dangerButtonBg, .12);
+      }
+
+      &.ui-state-active {
+        background: rgba($dangerButtonBg, .16);
+      }
+    }
+  }
+}

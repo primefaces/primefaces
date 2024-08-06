@@ -1,0 +1,89 @@
+body {
+  .ui-selectonelistbox,
+  .ui-selectmanymenu {
+    padding: 0;
+    width: auto;
+    min-width: $inputListMinWidth;
+    border: $inputListBorder;
+    border-radius: $borderRadius;
+    background:$inputListBg;
+
+    .ui-selectlistbox-filter-container {
+      padding: $inputListHeaderPadding;
+      margin: 0;
+      border-bottom: $inputListHeaderBorder;
+      background: $inputListHeaderBg;
+      color: $inputListHeaderTextColor;
+      @include border-radius-top($borderRadius);
+
+      .ui-selectlistbox-filter.ui-inputfield {
+        padding: $inputPadding;
+        width: 100%;
+        padding-left: 2 * nth($inputPadding, 2) + $iconSize;
+      }
+
+      .ui-icon {
+        @include icon-override("\e908");
+        position: absolute;
+        left: nth($inputListHeaderPadding, 2) + nth($inputPadding, 2);
+        top: 50%;
+        right: auto;
+        bottom: auto;
+        margin-top: math.div(-1 * $iconSize, 2);
+        color: $inputIconColor;
+      }
+    }
+
+    .ui-selectlistbox-listcontainer {
+      padding: $inputListPadding;
+      line-height: normal;
+      border: 0 none;
+
+      .ui-selectlistbox-list {
+        list-style-type: none;
+        margin: 0;
+
+        .ui-selectlistbox-item {
+          border: $inputListItemBorder;
+          margin: $inputListItemMargin;
+          padding: $inputListItemPadding;
+          background: $inputListItemBg;
+          color: $inputListItemTextColor;
+          border-radius: $inputListItemBorderRadius;
+          transition: $transition;
+
+          &.ui-state-hover {
+            background: $inputListItemHoverBg;
+            color: $inputListItemTextHoverColor;
+          }
+
+          &.ui-state-highlight {
+            background: $inputListItemHighlightBg;
+            color: $inputListItemHighlightTextColor;
+          }
+
+          .ui-chkbox {
+            margin-right: $inlineSpacing;
+            vertical-align: middle;
+          }
+
+          > td {
+            padding: $datatableBodyCellPadding;
+          }
+        }
+
+        .ui-listbox-outline {
+          @include focused-listitem();
+        }
+      }
+    }
+  }
+
+  .ui-input-filled,
+  &.ui-input-filled {
+    .ui-selectonelistbox.ui-inputfield,
+    .ui-selectmanymenu.ui-inputfield {
+      background: $inputListBg;
+    }
+  }
+}

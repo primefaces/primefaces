@@ -1,0 +1,65 @@
+body {
+  .ui-fileupload {
+    .ui-fileupload-buttonbar {
+      border: $panelHeaderBorder;
+      background: $panelHeaderBg;
+      color: $panelHeaderTextColor;
+      padding: $panelHeaderPadding;
+      @include border-radius-top($borderRadius);
+
+      .ui-button {
+        margin-right: $inlineSpacing;
+
+        &.ui-state-disabled {
+          &:not(.ui-fileupload-choose) {
+            display: none;
+          }
+        }
+      }
+    }
+
+    .ui-fileupload-content {
+      border: $panelContentBorder;
+      background: $panelContentBg;
+      color: $panelContentTextColor;
+      padding: $panelContentPadding;
+      border-top: 0 none;
+      @include border-radius-bottom($borderRadius);
+
+      .ui-fileupload-cancel {
+        .ui-icon {
+          @include icon-override ("\e90b");
+        }
+      }
+
+      .ui-fileupload-files {
+        .ui-fileupload-row > div {
+          padding: $fileItemPadding;
+        }
+      }
+    }
+  }
+
+  .ui-fileupload-simple {
+    .ui-icon-plusthick {
+      @include icon-override ("\e90d");
+    }
+  }
+
+  @media screen and (max-width: 40em) {
+    .ui-fileupload {
+      .ui-fileupload-buttonbar {
+        .ui-button {
+          &.ui-fileupload-choose,
+          &.ui-fileupload-upload,
+          &.ui-fileupload-cancel {
+            .ui-icon {
+              left: 50%;
+              margin-left: math.div(-1 * $iconSize, 2);
+            }
+          }
+        }
+      }
+    }
+  }
+}

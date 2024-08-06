@@ -1,0 +1,10 @@
+body {
+  .ui-selectonebutton {
+    .ui-button {
+      &.ui-state-focus {
+        background: $toggleButtonActiveBg;
+        border-color: $toggleButtonActiveBorderColor;
+      }
+    }
+  }
+}

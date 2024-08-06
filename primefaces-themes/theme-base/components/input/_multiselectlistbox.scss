@@ -1,0 +1,43 @@
+body {
+  .ui-multiselectlistbox {
+    .ui-multiselectlistbox-listcontainer {
+      margin-right: $inlineSpacing;
+      border: $inputBorder;
+      padding: 0;
+
+      .ui-multiselectlistbox-header {
+        padding: $inputListHeaderPadding;
+        margin: 0;
+        border: 0 none;
+        border-bottom: $inputListHeaderBorder;
+        background: $inputListHeaderBg;
+        color: $inputListHeaderTextColor;
+      }
+
+      .ui-multiselectlistbox-list {
+        padding: $inputListPadding;
+        background: $inputListBg;
+        border: 0 none;
+
+        .ui-multiselectlistbox-item {
+          padding: $inputListItemPadding;
+          margin: $inputListItemMargin;
+          background: $inputListItemBg;
+          color: $inputListItemTextColor;
+          border-radius: $inputListItemBorderRadius;
+          transition: $transition;
+
+          &.ui-state-hover {
+            background: $inputListItemHoverBg;
+            color: $inputListItemTextHoverColor;
+          }
+
+          &.ui-state-highlight {
+            background: $inputListItemHighlightBg;
+            color: $inputListItemHighlightTextColor;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,117 @@
+body {
+  .ui-messages {
+    padding: 0;
+    margin: 0;
+    font-weight: $messagesFontWeight;
+    position: relative;
+    border-radius: $borderRadius;
+
+    > div {
+      padding: $messagesPadding;
+      margin: $messagesMargin;
+      border-radius: $borderRadius;
+    }
+
+    ul {
+      margin: 0;
+
+      .ui-messages-info-summary,
+      .ui-messages-warn-summary,
+      .ui-messages-error-summary,
+      .ui-messages-fatal-summary {
+        margin: 0 $inlineSpacing 0 0;
+      }
+
+      .ui-messages-info-detail,
+      .ui-messages-warn-detail,
+      .ui-messages-error-detail,
+      .ui-messages-fatal-detail {
+        margin: 0;
+        overflow-wrap: break-word;
+      }
+    }
+
+    .ui-messages-close {
+      position: relative;
+      right: -1 * $actionIconWidth;
+      top: -1 * $actionIconHeight;
+      @include action-icon();
+      text-align: center;
+      transition: background-color $transitionDuration;
+
+      .ui-icon-close {
+        @include icon-override("\e90b");
+      }
+    }
+
+    .ui-messages-info {
+      background: $infoMessageBg;
+      border: $infoMessageBorder;
+      border-width: $messagesBorderWidth;
+      color: $infoMessageTextColor;
+
+      .ui-messages-info-icon {
+        @include icon-override("\e924");
+        font-size: $messagesIconFontSize;
+        margin: 0 $inlineSpacing 0 0;
+        color: $infoMessageIconColor;
+      }
+
+      .ui-messages-close {
+        background: $infoMessageBg;
+        color: $infoMessageIconColor;
+
+        &:hover {
+          background: darken($infoMessageBg, 5%);
+        }
+      }
+    }
+
+    .ui-messages-warn {
+      background:$warnMessageBg;
+      border: $warnMessageBorder;
+      border-width: $messagesBorderWidth;
+      color: $warnMessageTextColor;
+
+      .ui-messages-warn-icon {
+        @include icon-override("\e922");
+        font-size: $messagesIconFontSize;
+        margin: 0 $inlineSpacing 0 0;
+        color: $warnMessageIconColor;
+      }
+
+      .ui-messages-close {
+        background:$warnMessageBg;
+        color: $warnMessageIconColor;
+
+        &:hover {
+          background: darken($warnMessageBg, 5%);
+        }
+      }
+    }
+
+    .ui-messages-error, .ui-messages-fatal {
+      background: $errorMessageBg;
+      border: $errorMessageBorder;
+      border-width: $messagesBorderWidth;
+      color: $errorMessageTextColor;
+
+      .ui-messages-error-icon,
+      .ui-messages-fatal {
+        @include icon-override("\e90c");
+        font-size: $messagesIconFontSize;
+        margin: 0 $inlineSpacing 0 0;
+        color: $errorMessageIconColor;
+      }
+
+      .ui-messages-close {
+        background: $errorMessageBg;
+        color: $errorMessageIconColor;
+
+        &:hover {
+          background: darken($errorMessageBg, 5%);
+        }
+      }
+    }
+  }
+}

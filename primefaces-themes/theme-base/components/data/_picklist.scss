@@ -1,0 +1,140 @@
+body {
+  .ui-picklist {
+    .ui-picklist-buttons {
+      padding: 0 $inlineSpacing 0 $inlineSpacing;
+
+      .ui-button {
+        margin-bottom: $inlineSpacing;
+      }
+
+      .ui-icon-arrow-1-n {
+        @include icon-override("\e933");
+      }
+
+      .ui-icon-arrowstop-1-n {
+        @include icon-override("\e92f");
+      }
+
+      .ui-icon-arrow-1-s {
+        @include icon-override("\e930");
+      }
+
+      .ui-icon-arrowstop-1-s {
+        @include icon-override("\e92c");
+      }
+
+      .ui-icon-arrow-1-e {
+        @include icon-override("\e932");
+      }
+
+      .ui-icon-arrowstop-1-e {
+        @include icon-override("\e92e");
+      }
+
+      .ui-icon-arrow-1-w {
+        @include icon-override("\e931");
+      }
+
+      .ui-icon-arrowstop-1-w {
+        @include icon-override("\e92d");
+      }
+    }
+
+    .ui-picklist-caption {
+      background: $panelHeaderBg;
+      border: $panelHeaderBorder;
+      color: $panelHeaderTextColor;
+      padding: $panelHeaderPadding;
+      border-bottom: 0 none;
+      font-weight: $panelHeaderFontWeight;
+      @include border-radius-top($borderRadius);
+    }
+
+    .ui-picklist-filter-container {
+      .ui-picklist-filter {
+        padding: $inputPadding;
+        width: 100%;
+        padding-left: 2 * nth($inputPadding, 2) + $iconSize;
+        margin-bottom: $inlineSpacing;
+      }
+
+      .ui-icon {
+        @include icon-override("\e908");
+        position: absolute;
+        left: nth($inputPadding, 2);
+        top: 50%;
+        right: auto;
+        margin-top: math.div(-1 * $iconSize, 2) - math.div($inlineSpacing, 2);
+        color: $inputIconColor;
+      }
+    }
+
+    .ui-picklist-list {
+      border: $panelContentBorder;
+      background: $panelContentBg;
+      color: $panelContentTextColor;
+      padding: $inputListPadding;
+      @include border-radius-bottom($borderRadius);
+
+      .ui-picklist-item {
+        padding: $inputListItemPadding;
+        border: $inputListItemBorder;
+        margin: $inputListItemMargin;
+        color: $inputListItemTextColor;
+        border-radius: $inputListItemBorderRadius;
+        transition: $transition;
+
+        &.ui-state-hover {
+          background: $inputListItemHoverBg;
+          color: $inputListItemTextHoverColor;
+        }
+
+        &.ui-state-highlight {
+          background: $inputListItemHighlightBg;
+          color: $inputListItemHighlightTextColor;
+
+          &.ui-sortable-placeholder {
+            background: $pickListDropPlaceholderBg;
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-width: 640px) {
+    .ui-picklist {
+      &.ui-picklist-responsive {
+        .ui-picklist-buttons {
+          .ui-button {
+            margin-top: $inlineSpacing;
+            margin-right: $inlineSpacing;
+
+            &:last-child {
+              margin-right: 0;
+            }
+
+            .ui-icon-arrow-1-e {
+              @include icon-override("\e930");
+            }
+
+            .ui-icon-arrowstop-1-e {
+              @include icon-override("\e92c");
+            }
+
+            .ui-icon-arrow-1-w {
+              @include icon-override("\e933");
+            }
+
+            .ui-icon-arrowstop-1-w {
+              @include icon-override("\e92f");
+            }
+          }
+        }
+
+        > div.ui-helper-hidden-accessible {
+          display: none;
+        }
+      }
+    }
+  }
+}

@@ -125,10 +125,10 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
         this.resetFocus(true);
 
         // Bind mouse and click events to focus items
-        this.menuitemLinks.on("mouseenter.menu click.menu", function() {
-            $this.focus($(this));
-        }).on("focusout.menu mouseleave.menu", function() {
-            $this.unfocus($(this));
+        this.menuitemLinks.on("mouseenter.menu click.menu", function(e) {
+            $this.focus($(this), e);
+        }).on("mouseleave.menu", function(e) {
+            $this.unfocus($(this), e);
         });
 
         // Bind keyboard navigation events
@@ -136,11 +136,11 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
             var currentLink = $this.menuitemLinks.filter('.ui-state-hover');
             switch (e.code) {
                 case 'ArrowUp':
-                    $this.navigateMenu(currentLink, 'prev');
+                    $this.navigateMenu(e, currentLink, 'prev');
                     e.preventDefault();
                     break;
                 case 'ArrowDown':
-                    $this.navigateMenu(currentLink, 'next');
+                    $this.navigateMenu(e, currentLink, 'next');
                     e.preventDefault();
                     break;
                 case 'Space':
@@ -161,15 +161,16 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
 
     /**
      * Navigates the menu items in the specified direction ('prev' or 'next').
+     * @param {JQuery.TriggeredEvent} event - The event that triggered the focus.
      * @param {JQuery} currentLink The currently focused menu item link.
      * @param {string} direction The direction to navigate ('prev' or 'next').
      * @private
      */
-    navigateMenu: function(currentLink, direction) {
+    navigateMenu: function(event, currentLink, direction) {
         var targetItem = currentLink.parent()[direction + 'All']('.ui-menuitem:first');
         if (targetItem.length) {
-            this.unfocus(currentLink);
-            this.focus(targetItem.children('.ui-menuitem-link'));
+            this.unfocus(currentLink, event);
+            this.focus(targetItem.children('.ui-menuitem-link'), event);
         }
     },
 

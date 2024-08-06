@@ -67,9 +67,17 @@ public class SpinnerRenderer extends InputRenderer {
                 submittedValue = submittedValue.replace(spinner.getDecimalSeparator(), ".");
             }
 
-            // GitHub #11830 prevent value outside of minimum or maximum range
-            double submittedNumber = Double.parseDouble(submittedValue);
-            if (submittedNumber < spinner.getMin() || submittedNumber > spinner.getMax()) {
+            try {
+                // GitHub #11830 prevent value outside of minimum or maximum range
+                double submittedNumber = Double.parseDouble(submittedValue);
+                if (submittedNumber < spinner.getMin() || submittedNumber > spinner.getMax()) {
+                    logDevelopmentWarning(context, this, String.format("Value is outside min/max range: %s", submittedValue));
+                    return;
+                }
+            }
+            catch (NumberFormatException e) {
+                // GitHub #12365 prevent any invalid number like just the thousands separator
+                logDevelopmentWarning(context, this, String.format("Invalid number format: %s", submittedValue));
                 return;
             }
         }
@@ -104,7 +112,6 @@ public class SpinnerRenderer extends InputRenderer {
                 .attr("max", spinner.getMax(), Spinner.MAX_VALUE)
                 .attr("prefix", spinner.getPrefix(), null)
                 .attr("suffix", spinner.getSuffix(), null)
-                .attr("required", spinner.isRequired(), false)
                 .attr("rotate", spinner.isRotate(), false)
                 .attr("decimalPlaces", decimalPlaces, null)
                 .attr("modifyValueOnWheel", spinner.isModifyValueOnWheel(), true)

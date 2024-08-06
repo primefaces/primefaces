@@ -1,0 +1,67 @@
+body {
+  .ui-inputgroup {
+    .ui-inputgroup-addon,
+    .ui-inputgroup-addon-checkbox {
+      padding: $inputPadding;
+      border-color: $inputGroupBorderColor;
+      background: $inputGroupBg;
+      color: $inputGroupIconColor;
+      min-width: $inputGroupAddonMinWidth;
+
+      &:first-child {
+        @include border-radius-left($borderRadius);
+      }
+
+      &:last-child {
+        @include border-radius-right($borderRadius);
+      }
+    }
+
+    button:first-child, input:first-child, textarea:first-child {
+      @include border-radius-left($borderRadius);
+    }
+
+    .ui-float-label:first-child input,
+    .ui-float-label:first-child textarea {
+      border-right-width: 0px;
+      @include border-radius-left($borderRadius);
+    }
+
+    button:last-child, input:last-child, textarea:last-child {
+      @include border-radius-right($borderRadius);
+    }
+
+    .ui-float-label:last-child input,
+    .ui-float-label:last-child textarea {
+      border-left-width: 0px;
+      @include border-radius-right($borderRadius);
+    }
+
+    > .ui-widget,
+    > .ui-float-label > .ui-widget {
+      border-radius: 0;
+
+      &.ui-state-focus {
+        z-index: 1;
+
+        ~ label {
+          z-index: 1;
+        }
+      }
+    }
+
+    .ui-inputgroup-addon-checkbox {
+      padding: 0;
+      position: relative;
+
+      .ui-chkbox {
+        vertical-align: baseline;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: math.div(-1 * $checkboxHeight, 2);
+        margin-left: math.div(-1 * $checkboxWidth, 2);
+      }
+    }
+  }
+}

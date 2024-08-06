@@ -51,6 +51,8 @@ import org.primefaces.util.*;
  */
 public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private static final Logger LOGGER = Logger.getLogger(JPALazyDataModel.class.getName());
 
     protected Class<T> entityClass;

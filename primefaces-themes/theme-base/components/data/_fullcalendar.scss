@@ -1,0 +1,88 @@
+body {
+  .fc {
+    .fc-scrollgrid {
+      border-color: $scheduleCellBorderColor;
+    }
+
+    .fc-daygrid-day.fc-day-today,
+    .fc-timegrid-col.fc-day-today {
+      background-color: $scheduleTodayBg;
+    }
+
+    th {
+      background: $panelHeaderBg;
+      border: $panelHeaderBorder;
+      color: $panelHeaderTextColor;
+
+      > .fc-scrollgrid-sync-inner {
+        padding: $panelHeaderPadding;
+      }
+    }
+
+    td {
+      border: $panelHeaderBorder;
+
+      &.fc-widget-content {
+        background: $panelContentBg;
+        border: $panelContentBorder;
+        color: $panelContentTextColor;
+      }
+
+      &.fc-head-container {
+        border: $panelHeaderBorder;
+      }
+    }
+
+    .fc-row {
+      border-right: $panelHeaderBorder;
+    }
+
+    .fc-event {
+      background: $scheduleEventBg;
+      border: $scheduleEventBorder;
+      color: $scheduleEventTextColor;
+    }
+
+    .fc-divider {
+      background: $panelHeaderBg;
+      border: $panelHeaderBorder;
+    }
+
+    .fc-toolbar {
+      .fc-button {
+        background: $buttonBg;
+        color: $buttonTextColor;
+        border: $buttonBorder;
+        transition: $transition;
+
+        &:not(:disabled):hover {
+          background: $buttonHoverBg;
+          border-color: $buttonHoverBorderColor;
+          color: $buttonTextHoverColor;
+        }
+
+        &:focus {
+          outline: $buttonFocusOutline;
+          outline-offset: $buttonFocusOutlineOffset;
+          box-shadow: $buttonFocusShadow;
+        }
+
+        &:active, &.fc-button-active {
+          background: $buttonActiveBg;
+          border-color: $buttonActiveBorderColor;
+          color: $buttonTextActiveColor;
+        }
+      }
+    }
+  }
+
+  .ui-fluid {
+    .fc {
+      .fc-toolbar {
+        .ui-button {
+          width: auto;
+        }
+      }
+    }
+  }
+}

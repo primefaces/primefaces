@@ -28,6 +28,8 @@ import javax.faces.context.FacesContext;
 
 public class NegationFilterConstraintWrapper implements FilterConstraint {
 
+    private static final long serialVersionUID = 1L;
+
     private FilterConstraint wrapped;
 
     public NegationFilterConstraintWrapper(FilterConstraint wrapped) {

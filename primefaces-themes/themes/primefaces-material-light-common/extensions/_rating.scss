@@ -1,0 +1,57 @@
+body {
+    .ui-rating {
+        .ui-rating-star {
+            border-radius: 50%;
+            width: 2rem;
+            height: 2rem;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 0;
+
+            a {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            &.ui-state-focus {
+                background: rgba($primaryColor, .12);
+            }
+        }
+
+        .ui-rating-cancel {
+            border-radius: 50%;
+            width: 2rem;
+            height: 2rem;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 0;
+            
+            a {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            &.ui-state-focus {
+                background: rgba($ratingCancelIconColor, .12);
+            }
+        }
+
+        &:not(.ui-state-disabled) {
+            .ui-rating-star {
+                &:hover {
+                    background-color: rgba(0,0,0,.04);
+                }
+            }
+
+            .ui-rating-cancel {
+                &:hover {
+                    background: rgba($ratingCancelIconColor, .04);
+                }
+            }
+        }
+    }
+}

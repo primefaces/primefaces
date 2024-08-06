@@ -1,0 +1,186 @@
+body {
+  .ui-galleria {
+    .ui-galleria-close {
+      margin: $galleriaCloseIconMargin;
+      background: $galleriaCloseIconBg;
+      color: $galleriaCloseIconColor;
+      width: $galleriaCloseIconWidth;
+      height: $galleriaCloseIconHeight;
+      transition: $actionIconTransition;
+      border-radius: $galleriaCloseIconBorderRadius;
+
+      .ui-galleria-close-icon {
+        font-size: $galleriaCloseIconFontSize;
+      }
+
+      &:hover {
+        background: $galleriaCloseIconHoverBg;
+        color: $galleriaCloseIconHoverColor;
+      }
+    }
+
+    .ui-galleria-item-nav {
+      background: $galleriaItemNavigatorBg;
+      color: $galleriaItemNavigatorColor;
+      width: $galleriaItemNavigatorWidth;
+      height: $galleriaItemNavigatorHeight;
+      transition: $actionIconTransition;
+      border-radius: $galleriaItemNavigatorBorderRadius;
+      margin: $galleriaItemNavigatorMargin;
+
+      .ui-galleria-item-prev-icon {
+        @include icon-override("\e900");
+        font-size: $galleriaItemNavigatorFontSize;
+      }
+
+      .ui-galleria-item-next-icon {
+        @include icon-override("\e901");
+        font-size: $galleriaItemNavigatorFontSize;
+      }
+
+      &:not(.ui-state-disabled) {
+        &:hover {
+          background: $galleriaItemNavigatorHoverBg;
+          color: $galleriaItemNavigatorHoverColor;
+        }
+      }
+    }
+
+    .ui-galleria-caption-item {
+      background: $galleriaCaptionBg;
+      color: $galleriaCaptionTextColor;
+      padding: $galleriaCaptionPadding;
+    }
+
+    .ui-galleria-indicators {
+      padding: $galleriaIndicatorsPadding;
+
+      .ui-galleria-indicator {
+        button {
+          background-color: $galleriaIndicatorBg;
+          width: $galleriaIndicatorWidth;
+          height: $galleriaIndicatorHeight;
+          transition: $actionIconTransition;
+          border-radius: $galleriaIndicatorBorderRadius;
+
+          &:hover {
+            background: $galleriaIndicatorHoverBg;
+          }
+        }
+
+        &.ui-state-highlight {
+          button {
+            background: $primaryColor;
+            color: $primaryTextColor;
+          }
+        }
+      }
+    }
+
+    &.ui-galleria-indicators-bottom,
+    &.ui-galleria-indicators-top {
+      .ui-galleria-indicator {
+        margin-right: $inlineSpacing;
+      }
+    }
+
+    &.ui-galleria-indicators-left,
+    &.ui-galleria-indicators-right {
+      .ui-galleria-indicator {
+        margin-bottom: $inlineSpacing;
+      }
+    }
+
+    &.ui-galleria-indicator-onitem {
+      .ui-galleria-indicators {
+        background: $galleriaIndicatorsBgOnItem;
+
+        .ui-galleria-indicator {
+          button {
+            background: $galleriaIndicatorBgOnItem;
+
+            &:hover {
+              background: $galleriaIndicatorHoverBgOnItem;
+            }
+          }
+
+          &.ui-state-highlight {
+            button {
+              background: $highlightBg;
+              color: $highlightTextColor;
+            }
+          }
+        }
+      }
+    }
+
+    .ui-galleria-thumbnail-container {
+      background: $galleriaThumbnailContainerBg;
+      padding: $galleriaThumbnailContainerPadding;
+
+      .ui-galleria-thumbnail-prev,
+      .ui-galleria-thumbnail-next {
+        margin: $inlineSpacing;
+        background-color: $galleriaThumbnailNavigatorBg;
+        color: $galleriaThumbnailNavigatorColor;
+        width: $galleriaThumbnailNavigatorWidth;
+        height: $galleriaThumbnailNavigatorHeight;
+        transition: $actionIconTransition;
+        border-radius: $galleriaThumbnailNavigatorBorderRadius;
+
+        &:hover {
+          background: $galleriaThumbnailNavigatorHoverBg;
+          color: $galleriaThumbnailNavigatorHoverColor;
+        }
+
+        .ui-icon-circle-triangle-e {
+          @include icon-override("\e901");
+        }
+
+        .ui-icon-circle-triangle-s {
+          @include icon-override("\e902");
+        }
+
+        .ui-icon-circle-triangle-w {
+          @include icon-override("\e900");
+        }
+
+        .ui-icon-circle-triangle-n {
+          @include icon-override("\e903");
+        }
+      }
+
+      .ui-galleria-thumbnail-item-content {
+        transition: $listItemTransition;
+        margin: $galleriaThumbnailContentMargin;
+        margin-left: 0;
+        margin-right: 0;
+
+        &:focus {
+          @include focused();
+        }
+      }
+    }
+
+    &.ui-galleria-thumbnails-left,
+    &.ui-galleria-thumbnails-right {
+      .ui-galleria-thumbnail-container {  
+        .ui-galleria-thumbnail-item-content {
+          margin: $galleriaThumbnailContentMargin;
+        }
+      }
+    }
+
+    .ui-galleria-link {
+      &:focus {
+        @include focused();
+      }
+    }
+  }
+}
+
+.ui-galleria-mask {
+  &.ui-widget-overlay {
+    background-color: $galleriaMaskBg;
+  }
+}

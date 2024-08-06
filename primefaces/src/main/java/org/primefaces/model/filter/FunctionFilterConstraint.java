@@ -29,6 +29,8 @@ import java.util.Locale;
 
 public class FunctionFilterConstraint implements FilterConstraint {
 
+    private static final long serialVersionUID = 1L;
+
     private MethodExpression methodExpression;
 
     public FunctionFilterConstraint(MethodExpression methodExpression) {

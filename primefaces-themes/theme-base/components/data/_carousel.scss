@@ -1,0 +1,39 @@
+body {
+  .ui-carousel {
+    .ui-carousel-content {
+      .ui-carousel-prev,
+      .ui-carousel-next {
+        @include action-icon();
+        margin: $inlineSpacing;
+      }
+    }
+
+    .ui-carousel-indicators {
+      padding: $carouselIndicatorsPadding;
+
+      .ui-carousel-indicator {
+        margin-right: $inlineSpacing;
+        margin-bottom: $inlineSpacing;
+
+        button {
+          background-color: $carouselIndicatorBg;
+          width: $carouselIndicatorWidth;
+          height: $carouselIndicatorHeight;
+          transition: $actionIconTransition;
+          border-radius: $carouselIndicatorBorderRadius;
+
+          &:hover {
+            background: $carouselIndicatorHoverBg;
+          }
+        }
+
+        &.ui-state-highlight {
+          button {
+            background: $primaryColor;
+            color: $primaryTextColor;
+          }
+        }
+      }
+    }
+  }
+}

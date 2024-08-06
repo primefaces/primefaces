@@ -1,0 +1,21 @@
+body {
+  .ui-autocomplete {
+    .ui-autocomplete-dropdown {
+      border: 1px solid transparent;
+
+      &.ui-button {
+        padding: .714rem;
+
+        .ui-button-text {
+          padding: .29rem;
+        }
+      }
+    }
+  }
+
+  .ui-autocomplete-itemtip {
+    &.ui-state-highlight {
+      background: $inputListBg;
+    }
+  }
+}
