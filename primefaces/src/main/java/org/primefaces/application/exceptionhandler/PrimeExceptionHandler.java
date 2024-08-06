@@ -45,11 +45,12 @@ import javax.faces.event.ExceptionQueuedEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.lifecycle.ClientWindow;
 import javax.faces.view.ViewDeclarationLanguage;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -264,8 +265,8 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
             info.setFormattedStackTrace(EscapeUtils.forXml(sw.toString()).replaceAll("(\r\n|\n)", "<br/>"));
         }
 
-        SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT_PATTERN);
-        info.setFormattedTimestamp(format.format(info.getTimestamp()));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN);
+        info.setFormattedTimestamp(info.getTimestamp().format(formatter));
 
         return info;
     }

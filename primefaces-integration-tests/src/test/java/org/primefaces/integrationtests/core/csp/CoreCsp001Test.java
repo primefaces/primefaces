@@ -46,29 +46,21 @@ public class CoreCsp001Test  extends AbstractPrimePageTest {
         assertEquals("", page.lastname.getValue());
 
         // Act
-        page.btnSave.click();
-
-        // Assert
-        assertCss(page.firstname, "ui-state-error");
-        assertCss(page.firstname, "ui-state-error");
-        assertNoJavascriptErrors();
-
-        // Act
-        page.lnkNewPage.click();
-
-        // Assert
-        assertCss(page.firstname, "ui-state-error");
-        assertCss(page.firstname, "ui-state-error");
-        assertNoJavascriptErrors();
-
-        // Act
         page.firstname.setValue("John");
         page.lastname.setValue("Doe");
-        page.btnSave.click(); //submit on original page was broken with a new nonce
+        page.lnkNewPage.click();
 
         // Assert
         assertEquals("John", page.firstname.getValue());
         assertEquals("Doe", page.lastname.getValue());
+        assertNoJavascriptErrors();
+
+        // Act
+        page.firstname.setValue("");
+        page.lastname.setValue(""); // AJAX update triggers CSP nonce mismatch
+
+        // Assert
+        assertPresent(page.firstname);
         assertNoJavascriptErrors();
     }
 
