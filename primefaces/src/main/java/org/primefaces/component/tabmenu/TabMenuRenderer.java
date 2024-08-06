@@ -29,8 +29,8 @@ import java.util.List;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.component.badge.BadgeRenderer;
 
+import org.primefaces.component.badge.BadgeRenderer;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.model.menu.MenuElement;
@@ -45,6 +45,7 @@ public class TabMenuRenderer extends BaseMenuRenderer {
         TabMenu menu = (TabMenu) abstractMenu;
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("TabMenu", menu);
+        wb.attr("activeIndex", menu.getActiveIndex(), 0);
         wb.finish();
     }
 
@@ -107,6 +108,10 @@ public class TabMenuRenderer extends BaseMenuRenderer {
         writer.writeAttribute("role", "tab", null);
         writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(active), null);
         writer.writeAttribute(HTML.ARIA_SELECTED, String.valueOf(active), null);
+
+        if (!item.isDisabled()) {
+            writer.writeAttribute("tabindex", "0", null);
+        }
 
         if (containerStyle != null) {
             writer.writeAttribute("style", containerStyle, null);
