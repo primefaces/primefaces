@@ -24,7 +24,7 @@
 package org.primefaces.application.exceptionhandler;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class ExceptionInfo implements Serializable {
 
@@ -37,7 +37,7 @@ public class ExceptionInfo implements Serializable {
     private String message;
     private StackTraceElement[] stackTrace;
     private String formattedStackTrace;
-    private Date timestamp;
+    private LocalDateTime timestamp;
     private String formattedTimestamp;
 
     public Throwable getException() {
@@ -72,11 +72,11 @@ public class ExceptionInfo implements Serializable {
         this.stackTrace = stackTrace;
     }
 
-    public Date getTimestamp() {
+    public LocalDateTime getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Date timestamp) {
+    public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
     }
 
