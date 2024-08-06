@@ -547,7 +547,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
             node.children('.ui-treenode-children').find('.ui-treenode:not(.ui-treenode-hidden)').find('.ui-chkbox').each(function() {
                 $this.toggleCheckboxState($(this), checked);
             });
-            children = node.find('> .ui-treenode-children > .ui-treenode');
+            var children = node.find('> .ui-treenode-children > .ui-treenode');
             if(checked) {
                 if(children.filter('.ui-treenode-unselected').length === children.length)
                     $this.uncheck(checkbox);

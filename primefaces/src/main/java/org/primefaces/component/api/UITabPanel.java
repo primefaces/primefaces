@@ -194,7 +194,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
     @Override
     public void setValueExpression(String name, ValueExpression binding) {
         if (name == null) {
-            throw new NullPointerException("name");
+            throw new IllegalArgumentException("name");
         }
         else if ("value".equals(name)) {
             _dataModelMap.clear();
@@ -813,7 +813,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         }
         else {
             if (context == null || clientId == null || callback == null) {
-                throw new NullPointerException();
+                throw new IllegalArgumentException();
             }
 
             final String baseClientId = getClientId(context);

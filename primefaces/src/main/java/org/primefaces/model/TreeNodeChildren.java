@@ -56,7 +56,7 @@ public class TreeNodeChildren<T> extends TreeNodeList<T> {
     @Override
     public boolean add(TreeNode<T> node) {
         if (node == null) {
-            throw new NullPointerException();
+            throw new IllegalArgumentException("node");
         }
 
         eraseParent(node);
@@ -69,7 +69,7 @@ public class TreeNodeChildren<T> extends TreeNodeList<T> {
     @Override
     public void add(int index, TreeNode<T> node) {
         if (node == null) {
-            throw new NullPointerException();
+            throw new IllegalArgumentException("node");
         }
         if (index < 0 || index > size()) {
             throw new IndexOutOfBoundsException();
@@ -133,7 +133,7 @@ public class TreeNodeChildren<T> extends TreeNodeList<T> {
     @Override
     public TreeNode set(int index, TreeNode node) {
         if (node == null) {
-            throw new NullPointerException();
+            throw new IllegalArgumentException("node");
         }
         if (index < 0 || index >= size()) {
             throw new IndexOutOfBoundsException();
@@ -161,11 +161,11 @@ public class TreeNodeChildren<T> extends TreeNodeList<T> {
 
     @Override
     public boolean remove(Object object) {
-        TreeNode node = (TreeNode) object;
-        if (node == null) {
-            throw new NullPointerException();
+        if (object == null) {
+            throw new IllegalArgumentException("object");
         }
 
+        TreeNode node = (TreeNode) object;
         if (super.indexOf(node) != -1) {
             node.clearParent();
         }

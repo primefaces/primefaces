@@ -30,6 +30,8 @@ import org.primefaces.component.tabview.Tab;
 @Deprecated
 public class TabCloseEvent<T> extends TabEvent<T> {
 
+    private static final long serialVersionUID = 1L;
+
     public TabCloseEvent(UIComponent component, Behavior behavior, Tab tab, T data, String type, int index) {
         super(component, behavior, tab, data, type, index);
     }

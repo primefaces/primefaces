@@ -31,6 +31,8 @@ import org.primefaces.util.LangUtils;
 
 public class InFilterConstraint implements FilterConstraint {
 
+    private static final long serialVersionUID = 1L;
+
     @Override
     public boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale) {
         if (filter == null) {

@@ -29,6 +29,8 @@ import java.util.function.BiPredicate;
 
 public abstract class StringFilterConstraint implements FilterConstraint {
 
+    private static final long serialVersionUID = 1L;
+
     @Override
     public boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale) {
         if (value == null || filter == null) {

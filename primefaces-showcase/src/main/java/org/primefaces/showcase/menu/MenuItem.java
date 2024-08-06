@@ -116,12 +116,8 @@ public class MenuItem implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof MenuItem)) {
-            return false;
-        }
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
         MenuItem other = (MenuItem) obj;
         return Objects.equals(label, other.label) && Objects.equals(url, other.url);
     }
