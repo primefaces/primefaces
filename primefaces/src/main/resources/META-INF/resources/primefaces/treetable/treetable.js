@@ -1958,13 +1958,13 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             nextColumnWidth = null;
 
         if(this.cfg.liveResize) {
-            change = columnHeader.outerWidth() - (event.pageX - columnHeader.offset().left),
-            newWidth = (columnHeader.width() - change),
+            change = columnHeader.outerWidth() - (event.pageX - columnHeader.offset().left);
+            newWidth = (columnHeader.width() - change);
             nextColumnWidth = (nextColumnHeader.width() + change);
         }
         else {
-            change = (ui.position.left - ui.originalPosition.left),
-            newWidth = (columnHeader.width() + change),
+            change = (ui.position.left - ui.originalPosition.left);
+            newWidth = (columnHeader.width() + change);
             nextColumnWidth = (nextColumnHeader.width() - change);
         }
 

@@ -4647,13 +4647,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         var nextColumnHeader = this.isRTL ? columnHeader.prevAll(':visible:first') : columnHeader.nextAll(':visible:first');
 
         if(this.cfg.liveResize) {
-            change = columnHeader.outerWidth() - (event.pageX - columnHeader.offset().left),
-            newWidth = (columnHeader.width() - change),
+            change = columnHeader.outerWidth() - (event.pageX - columnHeader.offset().left);
+            newWidth = (columnHeader.width() - change);
             nextColumnWidth = (nextColumnHeader.width() + change);
         }
         else {
-            change = (ui.position.left - ui.originalPosition.left),
-            newWidth = (columnHeader.width() + change),
+            change = (ui.position.left - ui.originalPosition.left);
+            newWidth = (columnHeader.width() + change);
             nextColumnWidth = (nextColumnHeader.width() - change);
         }
 
