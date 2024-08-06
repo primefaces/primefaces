@@ -33,6 +33,8 @@ import java.util.function.Supplier;
  */
 public class Lazy<T> implements Serializable, Supplier<T> {
 
+    private static final long serialVersionUID = 1L;
+
     private static final NotInitialized NOT_INITIALIZED = new NotInitialized();
 
     @SuppressWarnings("unchecked")

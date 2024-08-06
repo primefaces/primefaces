@@ -45,6 +45,8 @@ import org.primefaces.util.*;
  */
 public class DefaultLazyDataModel<T> extends LazyDataModel<T> {
 
+    private static final long serialVersionUID = 1L;
+
     private static final Logger LOGGER = Logger.getLogger(DefaultLazyDataModel.class.getName());
 
     private String rowKeyField;

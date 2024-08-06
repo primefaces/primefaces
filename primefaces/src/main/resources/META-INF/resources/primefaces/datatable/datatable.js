@@ -4647,13 +4647,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         var nextColumnHeader = this.isRTL ? columnHeader.prevAll(':visible:first') : columnHeader.nextAll(':visible:first');
 
         if(this.cfg.liveResize) {
-            change = columnHeader.outerWidth() - (event.pageX - columnHeader.offset().left),
-            newWidth = (columnHeader.width() - change),
+            change = columnHeader.outerWidth() - (event.pageX - columnHeader.offset().left);
+            newWidth = (columnHeader.width() - change);
             nextColumnWidth = (nextColumnHeader.width() + change);
         }
         else {
-            change = (ui.position.left - ui.originalPosition.left),
-            newWidth = (columnHeader.width() + change),
+            change = (ui.position.left - ui.originalPosition.left);
+            newWidth = (columnHeader.width() + change);
             nextColumnWidth = (nextColumnHeader.width() - change);
         }
 
@@ -5008,16 +5008,16 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 return helper;
             },
             update: function(event, ui) {
-                var fromIndex = ui.item.data('ri'),
-                fromNode = ui.item;
-                itemIndex = ui.item.index(),
-                toIndex = $this.paginator ? $this.paginator.getFirst() + itemIndex : itemIndex;
-                isDirectionUp = fromIndex >= toIndex;
+                var fromIndex = ui.item.data('ri');
+                var fromNode = ui.item;
+                var itemIndex = ui.item.index();
+                var toIndex = $this.paginator ? $this.paginator.getFirst() + itemIndex : itemIndex;
+                var isDirectionUp = fromIndex >= toIndex;
 
                 // #5296 must not count header group rows
                 // #6557 must not count expanded rows
                 if (isDirectionUp) {
-                    for (i = 0; i <= toIndex; i++) {
+                    for (let i = 0; i <= toIndex; i++) {
                         fromNode = fromNode.next('tr');
                         if (fromNode.hasClass('ui-rowgroup-header') || fromNode.hasClass('ui-expanded-row-content')){
                             toIndex--;

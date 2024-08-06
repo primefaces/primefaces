@@ -25,6 +25,8 @@ package org.primefaces.model.filter;
 
 public class GlobalFilterConstraint extends ContainsFilterConstraint {
 
+    private static final long serialVersionUID = 1L;
+
     public GlobalFilterConstraint() {
         // NOOP
     }

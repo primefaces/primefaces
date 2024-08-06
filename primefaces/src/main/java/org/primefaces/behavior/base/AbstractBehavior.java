@@ -52,7 +52,7 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
     @Override
     public Object saveState(FacesContext context) {
         if (context == null) {
-            throw new NullPointerException();
+            throw new IllegalArgumentException("context");
         }
 
         Object[] values;
@@ -82,7 +82,7 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
     @Override
     public void restoreState(FacesContext context, Object state) {
         if (context == null) {
-            throw new NullPointerException();
+            throw new IllegalArgumentException("context");
         }
 
         if (state != null) {

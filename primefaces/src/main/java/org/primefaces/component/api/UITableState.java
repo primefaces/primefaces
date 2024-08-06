@@ -32,6 +32,8 @@ import java.util.Map;
 
 public class UITableState implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private Map<String, SortMeta> sortBy;
 
     private Map<String, FilterMeta> filterBy;

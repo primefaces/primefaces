@@ -657,13 +657,13 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         lastFrozen = columnHeader.hasClass('ui-frozen-column-last');
 
         if(this.cfg.liveResize) {
-            change = columnHeader.outerWidth() - (event.pageX - columnHeader.offset().left),
-            newWidth = (columnHeader.width() - change),
+            change = columnHeader.outerWidth() - (event.pageX - columnHeader.offset().left);
+            newWidth = (columnHeader.width() - change);
             nextColumnWidth = (nextColumnHeader.width() + change);
         }
         else {
-            change = (ui.position.left - ui.originalPosition.left),
-            newWidth = (columnHeader.width() + change),
+            change = (ui.position.left - ui.originalPosition.left);
+            newWidth = (columnHeader.width() + change);
             nextColumnWidth = (nextColumnHeader.width() - change);
         }
 
