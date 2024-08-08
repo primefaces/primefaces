@@ -1,11 +1,11 @@
-/* jQuery UI - v1.13.3 - 2024-04-26
+/* jQuery UI - v1.14.0 - 2024-08-08
 * https://jqueryui.com
 * Includes: widget.js, position.js, data.js, disable-selection.js, focusable.js, form-reset-mixin.js, jquery-patch.js, keycode.js, labels.js, scroll-parent.js, tabbable.js, unique-id.js, widgets/draggable.js, widgets/droppable.js, widgets/resizable.js, widgets/selectable.js, widgets/sortable.js, widgets/mouse.js, widgets/slider.js, effect.js, effects/effect-blind.js, effects/effect-bounce.js, effects/effect-clip.js, effects/effect-drop.js, effects/effect-explode.js, effects/effect-fade.js, effects/effect-fold.js, effects/effect-highlight.js, effects/effect-puff.js, effects/effect-pulsate.js, effects/effect-scale.js, effects/effect-shake.js, effects/effect-size.js, effects/effect-slide.js, effects/effect-transfer.js
 * Copyright OpenJS Foundation and other contributors; Licensed MIT */
 
 ( function( factory ) {
 	"use strict";
-	
+
 	if ( typeof define === "function" && define.amd ) {
 
 		// AMD. Register as an anonymous module.
@@ -20,11 +20,11 @@
 
 $.ui = $.ui || {};
 
-var version = $.ui.version = "1.13.3";
+var version = $.ui.version = "1.14.0";
 
 
 /*
- * jQuery UI Widget 1.13.3
+ * jQuery UI Widget 1.14.0
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -766,7 +766,7 @@ var widget = $.widget;
 
 
 /*
- * jQuery UI Position 1.13.3
+ * jQuery UI Position 1.14.0
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -1263,7 +1263,7 @@ var position = $.ui.position;
 
 
 /*
- * jQuery UI :data 1.13.3
+ * jQuery UI :data 1.14.0
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -1278,21 +1278,15 @@ var position = $.ui.position;
 
 
 var data = $.extend( $.expr.pseudos, {
-	data: $.expr.createPseudo ?
-		$.expr.createPseudo( function( dataName ) {
-			return function( elem ) {
-				return !!$.data( elem, dataName );
-			};
-		} ) :
-
-		// Support: jQuery <1.8
-		function( elem, i, match ) {
-			return !!$.data( elem, match[ 3 ] );
-		}
+	data: $.expr.createPseudo( function( dataName ) {
+		return function( elem ) {
+			return !!$.data( elem, dataName );
+		};
+	} )
 } );
 
 /*
- * jQuery UI Disable Selection 1.13.3
+ * jQuery UI Disable Selection 1.14.0
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -1327,7 +1321,7 @@ var disableSelection = $.fn.extend( {
 
 
 /*
- * jQuery UI Focusable 1.13.3
+ * jQuery UI Focusable 1.14.0
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -1376,19 +1370,9 @@ $.ui.focusable = function( element, hasTabindex ) {
 		focusableIfVisible = hasTabindex;
 	}
 
-	return focusableIfVisible && $( element ).is( ":visible" ) && visible( $( element ) );
+	return focusableIfVisible && $( element ).is( ":visible" ) &&
+		$( element ).css( "visibility" ) === "visible";
 };
-
-// Support: IE 8 only
-// IE 8 doesn't resolve inherit to visible/hidden for computed values
-function visible( element ) {
-	var visibility = element.css( "visibility" );
-	while ( visibility === "inherit" ) {
-		element = element.parent();
-		visibility = element.css( "visibility" );
-	}
-	return visibility === "visible";
-}
 
 $.extend( $.expr.pseudos, {
 	focusable: function( element ) {
@@ -1399,17 +1383,8 @@ $.extend( $.expr.pseudos, {
 var focusable = $.ui.focusable;
 
 
-
-// Support: IE8 Only
-// IE8 does not support the form attribute and when it is supplied. It overwrites the form prop
-// with a string, so we need to find the proper form.
-var form = $.fn._form = function() {
-	return typeof this[ 0 ].form === "string" ? this.closest( "form" ) : $( this[ 0 ].form );
-};
-
-
 /*
- * jQuery UI Form Reset Mixin 1.13.3
+ * jQuery UI Form Reset Mixin 1.14.0
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -1437,7 +1412,7 @@ var formResetMixin = $.ui.formResetMixin = {
 	},
 
 	_bindFormResetHandler: function() {
-		this.form = this.element._form();
+		this.form = $( this.element.prop( "form" ) );
 		if ( !this.form.length ) {
 			return;
 		}
@@ -1471,7 +1446,7 @@ var formResetMixin = $.ui.formResetMixin = {
 
 
 /*
- * jQuery UI Support for jQuery core 1.8.x and newer 1.13.3
+ * jQuery UI Legacy jQuery Core patches 1.14.0
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -1480,50 +1455,17 @@ var formResetMixin = $.ui.formResetMixin = {
  *
  */
 
-//>>label: jQuery 1.8+ Support
+//>>label: Legacy jQuery Core patches
 //>>group: Core
-//>>description: Support version 1.8.x and newer of jQuery core
+//>>description: Backport `.even()`, `.odd()` and `$.escapeSelector` to older jQuery Core versions (deprecated)
 
-
-// Support: jQuery 1.9.x or older
-// $.expr[ ":" ] is deprecated.
-if ( !$.expr.pseudos ) {
-	$.expr.pseudos = $.expr[ ":" ];
-}
-
-// Support: jQuery 1.11.x or older
-// $.unique has been renamed to $.uniqueSort
-if ( !$.uniqueSort ) {
-	$.uniqueSort = $.unique;
-}
 
 // Support: jQuery 2.2.x or older.
 // This method has been defined in jQuery 3.0.0.
 // Code from https://github.com/jquery/jquery/blob/e539bac79e666bba95bba86d690b4e609dca2286/src/selector/escapeSelector.js
 if ( !$.escapeSelector ) {
-
-	// CSS string/identifier serialization
-	// https://drafts.csswg.org/cssom/#common-serializing-idioms
-	var rcssescape = /([\0-\x1f\x7f]|^-?\d)|^-$|[^\x80-\uFFFF\w-]/g;
-
-	var fcssescape = function( ch, asCodePoint ) {
-		if ( asCodePoint ) {
-
-			// U+0000 NULL becomes U+FFFD REPLACEMENT CHARACTER
-			if ( ch === "\0" ) {
-				return "\uFFFD";
-			}
-
-			// Control characters and (dependent upon position) numbers get escaped as code points
-			return ch.slice( 0, -1 ) + "\\" + ch.charCodeAt( ch.length - 1 ).toString( 16 ) + " ";
-		}
-
-		// Other potentially-special ASCII characters get backslash-escaped
-		return "\\" + ch;
-	};
-
-	$.escapeSelector = function( sel ) {
-		return ( sel + "" ).replace( rcssescape, fcssescape );
+	$.escapeSelector = function( id ) {
+		return CSS.escape( id + "" );
 	};
 }
 
@@ -1546,7 +1488,7 @@ if ( !$.fn.even || !$.fn.odd ) {
 
 ;
 /*
- * jQuery UI Keycode 1.13.3
+ * jQuery UI Keycode 1.14.0
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -1581,7 +1523,7 @@ var keycode = $.ui.keyCode = {
 
 
 /*
- * jQuery UI Labels 1.13.3
+ * jQuery UI Labels 1.14.0
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -1607,9 +1549,8 @@ var labels = $.fn.labels = function() {
 		return this.pushStack( this[ 0 ].labels );
 	}
 
-	// Support: IE <= 11, FF <= 37, Android <= 2.3 only
-	// Above browsers do not support control.labels. Everything below is to support them
-	// as well as document fragments. control.labels does not work on document fragments
+	// If `control.labels` is empty - e.g. inside of document fragments - find
+	// the labels manually
 	labels = this.eq( 0 ).parents( "label" );
 
 	// Look for the label based on the id
@@ -1624,7 +1565,7 @@ var labels = $.fn.labels = function() {
 		ancestors = ancestor.add( ancestor.length ? ancestor.siblings() : this.siblings() );
 
 		// Create a selector for the label based on the id
-		selector = "label[for='" + $.escapeSelector( id ) + "']";
+		selector = "label[for='" + CSS.escape( id ) + "']";
 
 		labels = labels.add( ancestors.find( selector ).addBack( selector ) );
 
@@ -1636,7 +1577,7 @@ var labels = $.fn.labels = function() {
 
 
 /*
- * jQuery UI Scroll Parent 1.13.3
+ * jQuery UI Scroll Parent 1.14.0
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -1670,7 +1611,7 @@ var scrollParent = $.fn.scrollParent = function( includeHidden ) {
 
 
 /*
- * jQuery UI Tabbable 1.13.3
+ * jQuery UI Tabbable 1.14.0
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -1694,7 +1635,7 @@ var tabbable = $.extend( $.expr.pseudos, {
 
 
 /*
- * jQuery UI Unique ID 1.13.3
+ * jQuery UI Unique ID 1.14.0
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -1731,12 +1672,8 @@ var uniqueId = $.fn.extend( {
 } );
 
 
-
-// This file is deprecated
-var ie = $.ui.ie = !!/msie [\w.]+/.exec( navigator.userAgent.toLowerCase() );
-
 /*
- * jQuery UI Mouse 1.13.3
+ * jQuery UI Mouse 1.14.0
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -1756,7 +1693,7 @@ $( document ).on( "mouseup", function() {
 } );
 
 var widgetsMouse = $.widget( "ui.mouse", {
-	version: "1.13.3",
+	version: "1.14.0",
 	options: {
 		cancel: "input, textarea, button, select, option",
 		distance: 1,
@@ -1808,12 +1745,10 @@ var widgetsMouse = $.widget( "ui.mouse", {
 		this._mouseDownEvent = event;
 
 		var that = this,
-			btnIsLeft = ( event.which === 1 ),
-
-			// event.target.nodeName works around a bug in IE 8 with
-			// disabled inputs (#7620)
-			elIsCancel = ( typeof this.options.cancel === "string" && event.target.nodeName ?
-				$( event.target ).closest( this.options.cancel ).length : false );
+			btnIsLeft = event.which === 1,
+			elIsCancel = typeof this.options.cancel === "string" ?
+				$( event.target ).closest( this.options.cancel ).length :
+				false;
 		if ( !btnIsLeft || elIsCancel || !this._mouseCapture( event ) ) {
 			return true;
 		}
@@ -1859,28 +1794,17 @@ var widgetsMouse = $.widget( "ui.mouse", {
 	_mouseMove: function( event ) {
 
 		// Only check for mouseups outside the document if you've moved inside the document
-		// at least once. This prevents the firing of mouseup in the case of IE<9, which will
-		// fire a mousemove event if content is placed under the cursor. See #7778
-		// Support: IE <9
-		if ( this._mouseMoved ) {
+		// at least once.
+		if ( this._mouseMoved && !event.which ) {
 
-			// IE mouseup check - mouseup happened when mouse was out of window
-			if ( $.ui.ie && ( !document.documentMode || document.documentMode < 9 ) &&
-					!event.button ) {
+			// Support: Safari <=8 - 9
+			// Safari sets which to 0 if you press any of the following keys
+			// during a drag (#14461)
+			if ( event.originalEvent.altKey || event.originalEvent.ctrlKey ||
+					event.originalEvent.metaKey || event.originalEvent.shiftKey ) {
+				this.ignoreMissingWhich = true;
+			} else if ( !this.ignoreMissingWhich ) {
 				return this._mouseUp( event );
-
-			// Iframe mouseup check - mouseup occurred in another document
-			} else if ( !event.which ) {
-
-				// Support: Safari <=8 - 9
-				// Safari sets which to 0 if you press any of the following keys
-				// during a drag (#14461)
-				if ( event.originalEvent.altKey || event.originalEvent.ctrlKey ||
-						event.originalEvent.metaKey || event.originalEvent.shiftKey ) {
-					this.ignoreMissingWhich = true;
-				} else if ( !this.ignoreMissingWhich ) {
-					return this._mouseUp( event );
-				}
 			}
 		}
 
@@ -1986,49 +1910,8 @@ var plugin = $.ui.plugin = {
 };
 
 
-
-var safeActiveElement = $.ui.safeActiveElement = function( document ) {
-	var activeElement;
-
-	// Support: IE 9 only
-	// IE9 throws an "Unspecified error" accessing document.activeElement from an <iframe>
-	try {
-		activeElement = document.activeElement;
-	} catch ( error ) {
-		activeElement = document.body;
-	}
-
-	// Support: IE 9 - 11 only
-	// IE may return null instead of an element
-	// Interestingly, this only seems to occur when NOT in an iframe
-	if ( !activeElement ) {
-		activeElement = document.body;
-	}
-
-	// Support: IE 11 only
-	// IE11 returns a seemingly empty object in some cases when accessing
-	// document.activeElement from an <iframe>
-	if ( !activeElement.nodeName ) {
-		activeElement = document.body;
-	}
-
-	return activeElement;
-};
-
-
-
-var safeBlur = $.ui.safeBlur = function( element ) {
-
-	// Support: IE9 - 10 only
-	// If the <body> is blurred, IE will switch windows, see #9420
-	if ( element && element.nodeName.toLowerCase() !== "body" ) {
-		$( element ).trigger( "blur" );
-	}
-};
-
-
 /*
- * jQuery UI Draggable 1.13.3
+ * jQuery UI Draggable 1.14.0
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -2045,7 +1928,7 @@ var safeBlur = $.ui.safeBlur = function( element ) {
 
 
 $.widget( "ui.draggable", $.ui.mouse, {
-	version: "1.13.3",
+	version: "1.14.0",
 	widgetEventPrefix: "drag",
 	options: {
 		addClasses: true,
@@ -2152,7 +2035,7 @@ $.widget( "ui.draggable", $.ui.mouse, {
 	},
 
 	_blurActiveElement: function( event ) {
-		var activeElement = $.ui.safeActiveElement( this.document[ 0 ] ),
+		var activeElement = this.document[ 0 ].activeElement,
 			target = $( event.target );
 
 		// Don't blur if the event occurred on an element that is within
@@ -2163,7 +2046,7 @@ $.widget( "ui.draggable", $.ui.mouse, {
 		}
 
 		// Blur any element that currently has focus, see #4261
-		$.ui.safeBlur( activeElement );
+		$( activeElement ).trigger( "blur" );
 	},
 
 	_mouseStart: function( event ) {
@@ -3263,7 +3146,7 @@ var widgetsDraggable = $.ui.draggable;
 
 
 /*
- * jQuery UI Droppable 1.13.3
+ * jQuery UI Droppable 1.14.0
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -3279,7 +3162,7 @@ var widgetsDraggable = $.ui.draggable;
 
 
 $.widget( "ui.droppable", {
-	version: "1.13.3",
+	version: "1.14.0",
 	widgetEventPrefix: "drop",
 	options: {
 		accept: "*",
@@ -3707,7 +3590,7 @@ $.ui.ddmanager = {
 
 // DEPRECATED
 // TODO: switch return back to widget declaration at top of file when this is removed
-if ( $.uiBackCompat !== false ) {
+if ( $.uiBackCompat === true ) {
 
 	// Backcompat for activeClass and hoverClass options
 	$.widget( "ui.droppable", $.ui.droppable, {
@@ -3746,7 +3629,7 @@ var widgetsDroppable = $.ui.droppable;
 
 
 /*
- * jQuery UI Resizable 1.13.3
+ * jQuery UI Resizable 1.14.0
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -3765,7 +3648,7 @@ var widgetsDroppable = $.ui.droppable;
 
 
 $.widget( "ui.resizable", $.ui.mouse, {
-	version: "1.13.3",
+	version: "1.14.0",
 	widgetEventPrefix: "resize",
 	options: {
 		alsoResize: false,
@@ -3875,9 +3758,8 @@ $.widget( "ui.resizable", $.ui.mouse, {
 			};
 
 			this.element.css( margins );
-			this.originalElement.css( "margin", 0 );
 
-			// support: Safari
+			// Support: Safari
 			// Prevent Safari textarea resize
 			this.originalResizeStyle = this.originalElement.css( "resize" );
 			this.originalElement.css( "resize", "none" );
@@ -3887,10 +3769,6 @@ $.widget( "ui.resizable", $.ui.mouse, {
 				zoom: 1,
 				display: "block"
 			} ) );
-
-			// Support: IE9
-			// avoid IE jump (hard set the margin)
-			this.originalElement.css( margins );
 
 			this._proportionallyResize();
 		}
@@ -4839,7 +4717,7 @@ $.ui.plugin.add( "resizable", "ghost", {
 
 		// DEPRECATED
 		// TODO: remove after 1.12
-		if ( $.uiBackCompat !== false && typeof that.options.ghost === "string" ) {
+		if ( $.uiBackCompat === true && typeof that.options.ghost === "string" ) {
 
 			// Ghost option
 			that.ghost.addClass( this.options.ghost );
@@ -4947,7 +4825,7 @@ var widgetsResizable = $.ui.resizable;
 
 
 /*
- * jQuery UI Selectable 1.13.3
+ * jQuery UI Selectable 1.14.0
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -4964,7 +4842,7 @@ var widgetsResizable = $.ui.resizable;
 
 
 var widgetsSelectable = $.widget( "ui.selectable", $.ui.mouse, {
-	version: "1.13.3",
+	version: "1.14.0",
 	options: {
 		appendTo: "body",
 		autoRefresh: true,
@@ -5245,7 +5123,7 @@ var widgetsSelectable = $.widget( "ui.selectable", $.ui.mouse, {
 
 
 /*
- * jQuery UI Sortable 1.13.3
+ * jQuery UI Sortable 1.14.0
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -5262,7 +5140,7 @@ var widgetsSelectable = $.widget( "ui.selectable", $.ui.mouse, {
 
 
 var widgetsSortable = $.widget( "ui.sortable", $.ui.mouse, {
-	version: "1.13.3",
+	version: "1.14.0",
 	widgetEventPrefix: "sort",
 	ready: false,
 	options: {
@@ -5500,11 +5378,7 @@ var widgetsSortable = $.widget( "ui.sortable", $.ui.mouse, {
 		if ( o.cursor && o.cursor !== "auto" ) { // cursor option
 			body = this.document.find( "body" );
 
-			// Support: IE
-			this.storedCursor = body.css( "cursor" );
-			body.css( "cursor", o.cursor );
-
-			this.storedStylesheet =
+			this._storedStylesheet =
 				$( "<style>*{ cursor: " + o.cursor + " !important; }</style>" ).appendTo( body );
 		}
 
@@ -6421,11 +6295,9 @@ var widgetsSortable = $.widget( "ui.sortable", $.ui.mouse, {
 			po.top += this.scrollParent.scrollTop();
 		}
 
-		// This needs to be actually done for all browsers, since pageX/pageY includes this
-		// information with an ugly IE fix
-		if ( this.offsetParent[ 0 ] === this.document[ 0 ].body ||
-				( this.offsetParent[ 0 ].tagName &&
-				this.offsetParent[ 0 ].tagName.toLowerCase() === "html" && $.ui.ie ) ) {
+		// This needs to be actually done for all browsers, since pageX/pageY includes
+		// this information.
+		if ( this.offsetParent[ 0 ] === this.document[ 0 ].body ) {
 			po = { top: 0, left: 0 };
 		}
 
@@ -6773,9 +6645,9 @@ var widgetsSortable = $.widget( "ui.sortable", $.ui.mouse, {
 		}
 
 		//Do what was originally in plugins
-		if ( this.storedCursor ) {
-			this.document.find( "body" ).css( "cursor", this.storedCursor );
-			this.storedStylesheet.remove();
+		if ( this._storedStylesheet ) {
+			this._storedStylesheet.remove();
+			this._storedStylesheet = null;
 		}
 		if ( this._storedOpacity ) {
 			this.helper.css( "opacity", this._storedOpacity );
@@ -6838,7 +6710,7 @@ var widgetsSortable = $.widget( "ui.sortable", $.ui.mouse, {
 
 
 /*
- * jQuery UI Slider 1.13.3
+ * jQuery UI Slider 1.14.0
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -6857,7 +6729,7 @@ var widgetsSortable = $.widget( "ui.sortable", $.ui.mouse, {
 
 
 var widgetsSlider = $.widget( "ui.slider", $.ui.mouse, {
-	version: "1.13.3",
+	version: "1.14.0",
 	widgetEventPrefix: "slide",
 
 	options: {
@@ -7581,16 +7453,15 @@ var jQuery = $;
 
 
 /*
- * jQuery Color Animations v2.2.0
+ * jQuery Color Animations v3.0.0
  * https://github.com/jquery/jquery-color
  *
  * Copyright OpenJS Foundation and other contributors
  * Released under the MIT license.
  * https://jquery.org/license
  *
- * Date: Sun May 10 09:02:36 2020 +0200
+ * Date: Wed May 15 16:49:44 2024 +0200
  */
-
 
 
 	var stepHooks = "backgroundColor borderBottomColor borderLeftColor borderRightColor " +
@@ -7717,20 +7588,12 @@ var jQuery = $;
 			floor: true
 		}
 	},
-	support = color.support = {},
-
-	// element for support tests
-	supportElem = jQuery( "<p>" )[ 0 ],
 
 	// colors = jQuery.Color.names
 	colors,
 
 	// local aliases of functions called often
 	each = jQuery.each;
-
-// determine rgba support immediately
-supportElem.style.cssText = "background-color:rgba(1,1,1,.5)";
-support.rgba = supportElem.style.backgroundColor.indexOf( "rgba" ) > -1;
 
 // define cache name and alpha properties
 // for rgba and hsla spaces
@@ -7768,12 +7631,6 @@ function clamp( value, prop, allowEmpty ) {
 
 	// ~~ is an short way of doing floor for positive numbers
 	value = type.floor ? ~~value : parseFloat( value );
-
-	// IE will pass in empty strings as value for alpha,
-	// which will hit this case
-	if ( isNaN( value ) ) {
-		return prop.def;
-	}
 
 	if ( type.mod ) {
 
@@ -7887,7 +7744,10 @@ color.fn = jQuery.extend( color.prototype, {
 					} );
 
 					// everything defined but alpha?
-					if ( inst[ cache ] && jQuery.inArray( null, inst[ cache ].slice( 0, 3 ) ) < 0 ) {
+					if ( inst[ cache ] && jQuery.inArray(
+						null,
+						inst[ cache ].slice( 0, 3 )
+					) < 0 ) {
 
 						// use the default of 1
 						if ( inst[ cache ][ 3 ] == null ) {
@@ -7999,7 +7859,7 @@ color.fn = jQuery.extend( color.prototype, {
 			prefix = "rgb(";
 		}
 
-		return prefix + rgba.join() + ")";
+		return prefix + rgba.join( ", " ) + ")";
 	},
 	toHslaString: function() {
 		var prefix = "hsla(",
@@ -8019,7 +7879,7 @@ color.fn = jQuery.extend( color.prototype, {
 			hsla.pop();
 			prefix = "hsl(";
 		}
-		return prefix + hsla.join() + ")";
+		return prefix + hsla.join( ", " ) + ")";
 	},
 	toHexString: function( includeAlpha ) {
 		var rgba = this._rgba.slice(),
@@ -8032,12 +7892,11 @@ color.fn = jQuery.extend( color.prototype, {
 		return "#" + jQuery.map( rgba, function( v ) {
 
 			// default to 0 when nulls exist
-			v = ( v || 0 ).toString( 16 );
-			return v.length === 1 ? "0" + v : v;
+			return ( "0" + ( v || 0 ).toString( 16 ) ).substr( -2 );
 		} ).join( "" );
 	},
 	toString: function() {
-		return this._rgba[ 3 ] === 0 ? "transparent" : this.toRgbaString();
+		return this.toRgbaString();
 	}
 } );
 color.fn.parse.prototype = color.fn;
@@ -8204,37 +8063,15 @@ color.hook = function( hook ) {
 	each( hooks, function( _i, hook ) {
 		jQuery.cssHooks[ hook ] = {
 			set: function( elem, value ) {
-				var parsed, curElem,
-					backgroundColor = "";
+				var parsed;
 
-				if ( value !== "transparent" && ( getType( value ) !== "string" || ( parsed = stringParse( value ) ) ) ) {
+				if ( value !== "transparent" &&
+					( getType( value ) !== "string" ||
+						( parsed = stringParse( value ) ) ) ) {
 					value = color( parsed || value );
-					if ( !support.rgba && value._rgba[ 3 ] !== 1 ) {
-						curElem = hook === "backgroundColor" ? elem.parentNode : elem;
-						while (
-							( backgroundColor === "" || backgroundColor === "transparent" ) &&
-							curElem && curElem.style
-						) {
-							try {
-								backgroundColor = jQuery.css( curElem, "backgroundColor" );
-								curElem = curElem.parentNode;
-							} catch ( e ) {
-							}
-						}
-
-						value = value.blend( backgroundColor && backgroundColor !== "transparent" ?
-							backgroundColor :
-							"_default" );
-					}
-
 					value = value.toRgbaString();
 				}
-				try {
-					elem.style[ hook ] = value;
-				} catch ( e ) {
-
-					// wrapped to prevent IE from throwing errors on "invalid" values like 'auto' or 'inherit'
-				}
+				elem.style[ hook ] = value;
 			}
 		};
 		jQuery.fx.step[ hook ] = function( fx ) {
@@ -8293,7 +8130,7 @@ colors = jQuery.Color.names = {
 
 
 /*
- * jQuery UI Effects 1.13.3
+ * jQuery UI Effects 1.14.0
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -8356,26 +8193,14 @@ function camelCase( string ) {
 
 function getElementStyles( elem ) {
 	var key, len,
-		style = elem.ownerDocument.defaultView ?
-			elem.ownerDocument.defaultView.getComputedStyle( elem, null ) :
-			elem.currentStyle,
+		style = elem.ownerDocument.defaultView.getComputedStyle( elem ),
 		styles = {};
 
-	if ( style && style.length && style[ 0 ] && style[ style[ 0 ] ] ) {
-		len = style.length;
-		while ( len-- ) {
-			key = style[ len ];
-			if ( typeof style[ key ] === "string" ) {
-				styles[ camelCase( key ) ] = style[ key ];
-			}
-		}
-
-	// Support: Opera, IE <9
-	} else {
-		for ( key in style ) {
-			if ( typeof style[ key ] === "string" ) {
-				styles[ key ] = style[ key ];
-			}
+	len = style.length;
+	while ( len-- ) {
+		key = style[ len ];
+		if ( typeof style[ key ] === "string" ) {
+			styles[ camelCase( key ) ] = style[ key ];
 		}
 	}
 
@@ -8398,15 +8223,6 @@ function styleDifference( oldStyle, newStyle ) {
 	}
 
 	return diff;
-}
-
-// Support: jQuery <1.8
-if ( !$.fn.addBack ) {
-	$.fn.addBack = function( selector ) {
-		return this.add( selector == null ?
-			this.prevObject : this.prevObject.filter( selector )
-		);
-	};
 }
 
 $.effects.animateClass = function( value, duration, easing, callback ) {
@@ -8548,7 +8364,7 @@ if ( $.expr && $.expr.pseudos && $.expr.pseudos.animated ) {
 	} )( $.expr.pseudos.animated );
 }
 
-if ( $.uiBackCompat !== false ) {
+if ( $.uiBackCompat === true ) {
 	$.extend( $.effects, {
 
 		// Saves a set of properties in a data storage
@@ -8677,7 +8493,7 @@ if ( $.uiBackCompat !== false ) {
 }
 
 $.extend( $.effects, {
-	version: "1.13.3",
+	version: "1.14.0",
 
 	define: function( name, mode, effect ) {
 		if ( !effect ) {
@@ -9034,7 +8850,7 @@ $.fn.extend( {
 			// as toggle can be either show or hide depending on element state
 			args.mode = modes.shift();
 
-			if ( $.uiBackCompat !== false && !defaultMode ) {
+			if ( $.uiBackCompat === true && !defaultMode ) {
 				if ( elem.is( ":hidden" ) ? mode === "hide" : mode === "show" ) {
 
 					// Call the core method to track "olddisplay" properly
@@ -9245,7 +9061,7 @@ var effect = $.effects;
 
 
 /*
- * jQuery UI Effects Blind 1.13.3
+ * jQuery UI Effects Blind 1.14.0
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -9300,7 +9116,7 @@ var effectsEffectBlind = $.effects.define( "blind", "hide", function( options, d
 
 
 /*
- * jQuery UI Effects Bounce 1.13.3
+ * jQuery UI Effects Bounce 1.14.0
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -9395,7 +9211,7 @@ var effectsEffectBounce = $.effects.define( "bounce", function( options, done ) 
 
 
 /*
- * jQuery UI Effects Clip 1.13.3
+ * jQuery UI Effects Clip 1.14.0
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -9445,7 +9261,7 @@ var effectsEffectClip = $.effects.define( "clip", "hide", function( options, don
 
 
 /*
- * jQuery UI Effects Drop 1.13.3
+ * jQuery UI Effects Drop 1.14.0
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -9499,7 +9315,7 @@ var effectsEffectDrop = $.effects.define( "drop", "hide", function( options, don
 
 
 /*
- * jQuery UI Effects Explode 1.13.3
+ * jQuery UI Effects Explode 1.14.0
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -9595,7 +9411,7 @@ var effectsEffectExplode = $.effects.define( "explode", "hide", function( option
 
 
 /*
- * jQuery UI Effects Fade 1.13.3
+ * jQuery UI Effects Fade 1.14.0
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -9627,7 +9443,7 @@ var effectsEffectFade = $.effects.define( "fade", "toggle", function( options, d
 
 
 /*
- * jQuery UI Effects Fold 1.13.3
+ * jQuery UI Effects Fold 1.14.0
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -9701,7 +9517,7 @@ var effectsEffectFold = $.effects.define( "fold", "hide", function( options, don
 
 
 /*
- * jQuery UI Effects Highlight 1.13.3
+ * jQuery UI Effects Highlight 1.14.0
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -9743,7 +9559,7 @@ var effectsEffectHighlight = $.effects.define( "highlight", "show", function( op
 
 
 /*
- * jQuery UI Effects Size 1.13.3
+ * jQuery UI Effects Size 1.14.0
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -9921,7 +9737,7 @@ var effectsEffectSize = $.effects.define( "size", function( options, done ) {
 
 
 /*
- * jQuery UI Effects Scale 1.13.3
+ * jQuery UI Effects Scale 1.14.0
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -9961,7 +9777,7 @@ var effectsEffectScale = $.effects.define( "scale", function( options, done ) {
 
 
 /*
- * jQuery UI Effects Puff 1.13.3
+ * jQuery UI Effects Puff 1.14.0
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -9987,7 +9803,7 @@ var effectsEffectPuff = $.effects.define( "puff", "hide", function( options, don
 
 
 /*
- * jQuery UI Effects Pulsate 1.13.3
+ * jQuery UI Effects Pulsate 1.14.0
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -10036,7 +9852,7 @@ var effectsEffectPulsate = $.effects.define( "pulsate", "show", function( option
 
 
 /*
- * jQuery UI Effects Shake 1.13.3
+ * jQuery UI Effects Shake 1.14.0
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -10095,7 +9911,7 @@ var effectsEffectShake = $.effects.define( "shake", function( options, done ) {
 
 
 /*
- * jQuery UI Effects Slide 1.13.3
+ * jQuery UI Effects Slide 1.14.0
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -10156,7 +9972,7 @@ var effectsEffectSlide = $.effects.define( "slide", "show", function( options, d
 
 
 /*
- * jQuery UI Effects Transfer 1.13.3
+ * jQuery UI Effects Transfer 1.14.0
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -10172,7 +9988,7 @@ var effectsEffectSlide = $.effects.define( "slide", "show", function( options, d
 
 
 var effect;
-if ( $.uiBackCompat !== false ) {
+if ( $.uiBackCompat === true ) {
 	effect = $.effects.define( "transfer", function( options, done ) {
 		$( this ).transfer( options, done );
 	} );
