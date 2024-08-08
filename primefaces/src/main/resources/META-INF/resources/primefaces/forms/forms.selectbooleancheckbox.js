@@ -30,56 +30,67 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
         this.itemLabel = this.jq.find('.ui-chkbox-label');
         this.disabled = this.input.is(':disabled');
 
-        var $this = this;
+        //pfs metadata
+        this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
 
-        //bind events if not disabled
-        if(!this.disabled) {
-            this.box.on('mouseenter.selectBooleanCheckbox', function() {
+        this.bindEvents();
+    },
+
+
+    /**
+     * Binds the event handlers for the checkbox.
+     * This method sets up event listeners for mouse interactions, focus/blur events,
+     * change events, and label clicks if the checkbox is not disabled.
+     * @private
+     */
+    bindEvents: function() {
+        if (this.disabled) {
+            return;
+        }
+        var $this = this;
+        this.box.removeClass('ui-state-disabled')
+            .off('.selectBooleanCheckbox')
+            .on('mouseenter.selectBooleanCheckbox', function () {
                 $this.box.addClass('ui-state-hover');
             })
-            .on('mouseleave.selectBooleanCheckbox', function() {
+            .on('mouseleave.selectBooleanCheckbox', function () {
                 $this.box.removeClass('ui-state-hover');
             })
-            .on('click.selectBooleanCheckbox', function() {
+            .on('click.selectBooleanCheckbox', function () {
                 $this.input.trigger('click').trigger('focus.selectBooleanCheckbox');
             });
 
-            this.input.on('focus.selectBooleanCheckbox', function() {
+        this.input.off('.selectBooleanCheckbox')
+            .on('focus.selectBooleanCheckbox', function () {
                 $this.box.addClass('ui-state-focus');
             })
-            .on('blur.selectBooleanCheckbox', function() {
+            .on('blur.selectBooleanCheckbox', function () {
                 $this.box.removeClass('ui-state-focus');
             })
-            .on('change.selectBooleanCheckbox', function(e) {
-                if($this.isChecked()) {
-                    $this.input.prop('checked', true).attr('aria-checked', true);
-                    $this.box.addClass('ui-state-active').children('.ui-chkbox-icon').removeClass('ui-icon-blank').addClass('ui-icon-check');
-                }
-                else {
-                    $this.input.prop('checked', false).attr('aria-checked', false);
-                    $this.box.removeClass('ui-state-active').children('.ui-chkbox-icon').addClass('ui-icon-blank').removeClass('ui-icon-check');
-                }
+            .on('change.selectBooleanCheckbox', function () {
+                var isChecked = $this.isChecked();
+                $this.input.prop('checked', isChecked).attr('aria-checked', isChecked);
+                $this.box.toggleClass('ui-state-active', isChecked)
+                    .children('.ui-chkbox-icon')
+                    .toggleClass('ui-icon-blank', !isChecked)
+                    .toggleClass('ui-icon-check', isChecked);
             });
 
-            //toggle state on label click
-            this.itemLabel.on("click", function() {
+        this.itemLabel.removeClass('ui-state-disabled')
+            .off('.selectBooleanCheckbox')
+            .on("click.selectBooleanCheckbox", function () {
                 $this.toggle();
                 $this.input.trigger('focus');
             });
-        }
-
-        //pfs metadata
-        this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     },
 
     /**
-     * Checks this checkbox if it is currently unchecked, or unchecks it otherwise.
+     * Toggles the state of the checkbox.
+     * If the checkbox is currently checked, it will be unchecked.
+     * If the checkbox is currently unchecked, it will be checked.
      */
     toggle: function() {
-        if(this.isChecked())
-            this.uncheck();
-        else
-            this.check();
+        this.isChecked() ? this.uncheck() : this.check();
     },
 
     /**
@@ -95,13 +106,16 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
      * @param {boolean} [silent] `true` to suppress triggering event listeners, or `false` otherwise.
      */
     check: function(silent) {
-        if(!this.isChecked()) {
-            this.input.prop('checked', true);
-            if(!silent) {
+        if (!this.isChecked()) {
+            this.input.prop('checked', true).attr('aria-checked', true);
+            this.box.addClass('ui-state-active')
+                .children('.ui-chkbox-icon')
+                .removeClass('ui-icon-blank')
+                .addClass('ui-icon-check');
+
+            if (!silent) {
                 this.input.trigger('change');
             }
-            this.input.attr('aria-checked', true);
-            this.box.addClass('ui-state-active').children('.ui-chkbox-icon').removeClass('ui-icon-blank').addClass('ui-icon-check');
         }
     },
 
@@ -110,13 +124,16 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
      * @param {boolean} [silent] `true` to suppress triggering event listeners, or `false` otherwise.
      */
     uncheck: function(silent) {
-        if(this.isChecked()) {
-            this.input.prop('checked', false);
-            if(!silent) {
+        if (this.isChecked()) {
+            this.input.prop('checked', false).attr('aria-checked', false);
+            this.box.removeClass('ui-state-active')
+                .children('.ui-chkbox-icon')
+                .removeClass('ui-icon-check')
+                .addClass('ui-icon-blank');
+
+            if (!silent) {
                 this.input.trigger('change');
             }
-            this.input.attr('aria-checked', false);
-            this.box.removeClass('ui-state-active').children('.ui-chkbox-icon').addClass('ui-icon-blank').removeClass('ui-icon-check');
         }
     },
 
@@ -124,8 +141,9 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
      * Enables this input so that the user can enter a value.
      */
     enable: function() {
-        PrimeFaces.utils.enableInputWidget(this.jq, this.input);
         this.disabled = false;
+        PrimeFaces.utils.enableInputWidget(this.jq, this.input);
+        this.bindEvents();
     },
 
     /**
