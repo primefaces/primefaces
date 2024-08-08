@@ -1050,7 +1050,8 @@ body .ui-cascadeselect-item-content .ui-cascadeselect-group-icon {
 }
 
 /** Password **/
-.ui-fluid .ui-password {
+.ui-fluid .ui-password,
+.ui-fluid .ui-password input {
     width: 100%;
 }
 
