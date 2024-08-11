@@ -37,7 +37,7 @@ public class Signature extends SignatureBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Signature";
 
-    public static final String STYLE_CLASS = "ui-inputfield ui-widget ui-state-default ui-corner-all";
+    public static final String STYLE_CLASS = "ui-inputfield ui-inputtextarea ui-widget ui-state-default ui-corner-all";
     public static final String READONLY_STYLE_CLASS = "ui-widget ui-widget-content ui-corner-all";
 
     @Override
@@ -52,15 +52,34 @@ public class Signature extends SignatureBase {
                 getStateHelper().put(PropertyKeys.base64Value, null);
             }
         }
+
+        String textValue = this.getTextValue();
+        if (textValue != null) {
+            ValueExpression ve = this.getValueExpression(PropertyKeys.textValue.toString());
+            if (ve != null) {
+                ve.setValue(context.getELContext(), textValue);
+                getStateHelper().put(PropertyKeys.textValue, null);
+            }
+        }
     }
 
-    public String resolveStyleClass() {
-        String styleClass = STYLE_CLASS;
+    @Override
+    public String getInputClientId() {
+        return getClientId(getFacesContext()) + "_canvas";
+    }
 
-        if (isReadonly()) {
-            styleClass = READONLY_STYLE_CLASS;
-        }
+    @Override
+    public String getValidatableInputClientId() {
+        return getClientId(getFacesContext()) + "_value";
+    }
 
-        return styleClass;
+    @Override
+    public String getLabelledBy() {
+        return (String) getStateHelper().get("labelledby");
+    }
+
+    @Override
+    public void setLabelledBy(String labelledBy) {
+        getStateHelper().put("labelledby", labelledBy);
     }
 }

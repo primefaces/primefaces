@@ -42,6 +42,11 @@ Look into [migration guide](https://primefaces.github.io/primefaces/15_0_0/#/../
 * SelectOneMenu
     * Added `clear` AJAX event when in `editable="true"` and you clear out a value with BACKSPACE/DELETE
 
+* Signature
+    * Ability to type your signature
+    * Added `textValue`, `fontSize`, `fontFamily` attributes to support typing of signature
+    * ARIA accessibility support with `role="img"` and `aria-label`
+
 * StaticMessage
     * Added `severity="success"` to align with React/Vue/Angular
 
