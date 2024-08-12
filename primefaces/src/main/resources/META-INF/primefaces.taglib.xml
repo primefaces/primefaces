@@ -32697,7 +32697,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[The range of years displayed in the year drop-down in (nnnn:nnnn) format such as (2000:2020).]]>
+                <![CDATA[The range of years allowed in the year input in (nnnn:nnnn) format such as (1974:2020). Default value is "displayed_date - 1000 : displayed_date + 1000"..]]>
             </description>
             <name>yearRange</name>
             <required>false</required>
