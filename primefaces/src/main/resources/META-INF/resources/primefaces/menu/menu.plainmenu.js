@@ -135,12 +135,26 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
         this.menuitemLinks.on('keydown.menu', function(e) {
             var currentLink = $this.menuitemLinks.filter('.ui-state-hover');
             switch (e.code) {
+                case 'Home':
+                case 'PageUp':
+                    $this.navigateMenu(e, currentLink, 'prev', 'last');
+                    e.preventDefault();
+                    break;
+                case 'End':
+                case 'PageDown':
+                    $this.navigateMenu(e, currentLink, 'next', 'last');
+                    e.preventDefault();
+                    break;
                 case 'ArrowUp':
-                    $this.navigateMenu(e, currentLink, 'prev');
+                    if (currentLink.index() === 0) {
+                        $this.navigateMenu(e, currentLink, 'next', 'last');
+                    } else {
+                        $this.navigateMenu(e, currentLink, 'prev', 'first');
+                    }
                     e.preventDefault();
                     break;
                 case 'ArrowDown':
-                    $this.navigateMenu(e, currentLink, 'next');
+                    $this.navigateMenu(e, currentLink, 'next', 'first');
                     e.preventDefault();
                     break;
                 case 'Space':
@@ -164,10 +178,11 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
      * @param {JQuery.TriggeredEvent} event - The event that triggered the focus.
      * @param {JQuery} currentLink The currently focused menu item link.
      * @param {string} direction The direction to navigate ('prev' or 'next').
+     * @param {string} firstOrLast The first or last item to navigate to ('first' or 'last').
      * @private
      */
-    navigateMenu: function(event, currentLink, direction) {
-        var targetItem = currentLink.parent()[direction + 'All']('.ui-menuitem:first');
+    navigateMenu: function(event, currentLink, direction, firstOrLast) {
+        var targetItem = currentLink.parent()[direction + 'All']('.ui-menuitem:' + firstOrLast);
         if (targetItem.length) {
             this.unfocus(currentLink, event);
             this.focus(targetItem.children('.ui-menuitem-link'), event);
