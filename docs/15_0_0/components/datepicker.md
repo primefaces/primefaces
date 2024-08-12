@@ -144,7 +144,7 @@ ajax selection and more.
 | weekCalculator | false | Boolean | A javascript function that is used to calculate the week number. Uses internal implementation on default when start of week is monday, sunday or saturday.
 | widgetVar | null | String | Name of the client side widget.
 | yearNavigator | false | Boolean | Whether the year should be rendered as an input number instead of text.
-| yearRange | null | String | The range of years displayed in the year drop-down in (nnnn:nnnn) format such as (2000:2020). Default value is "displayed_date - 10 : displayed_date + 10".
+| yearRange | null | String | The range of years allowed in the year input in (nnnn:nnnn) format such as (1974:2020). Default value is "displayed_date - 1000 : displayed_date + 1000".
 
 ## Getting Started with DatePicker
 Value of the DatePicker should be a java.time.LocalDate in single selection mode which is the default.
