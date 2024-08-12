@@ -3376,7 +3376,7 @@
             }
             if (this.options.yearNavigator) {
                 var viewYear = this.viewDate.getFullYear();
-                this.options.yearRange = (viewYear - 10) + ':' + (viewYear + 10);
+                this.options.yearRange = (viewYear - 1000) + ':' + (viewYear + 1000);
             }
         },
 
