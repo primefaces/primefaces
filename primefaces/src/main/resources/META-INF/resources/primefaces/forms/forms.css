@@ -1185,6 +1185,18 @@ body .ui-cascadeselect-item-content .ui-cascadeselect-group-icon {
     font-size: 12px;
 }
 
+/** Autofill https://github.com/primefaces/primefaces/issues/12444 **/
+@keyframes pf-autofill {
+    to {
+        /* https://github.com/primefaces/primefaces/issues/12444 */
+    }
+}
+input:-webkit-autofill {
+    animation-name: pf-autofill;
+    animation-duration: 0.1s;
+    animation-fill-mode: both;
+}
+
 /** Element becomes visually hidden however accessibility is still available. **/
 .ui-sr-only {
     border: 0;

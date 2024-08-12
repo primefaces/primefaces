@@ -309,7 +309,8 @@
                 if(parent.is("span:not('.ui-float-label')")) {
                     parent.addClass('ui-inputwrapper-focus');
                 }
-            }).on("blur", function() {
+            }).on("blur animationstart", function() {
+                //animationstart is to fix autofill issue https://github.com/primefaces/primefaces/issues/12444
                 $(this).removeClass('ui-state-focus');
 
                 if(input.hasClass('hasDatepicker')) {
