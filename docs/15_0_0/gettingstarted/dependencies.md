@@ -1,6 +1,6 @@
 # Dependencies
 
-PrimeFaces only requires a Java 8+ runtime and a JSF / Faces implementation as mandatory
+PrimeFaces only requires a Java 11+ runtime and a JSF / Faces implementation as mandatory
 dependencies. There’re some optional libraries for certain features. Licenses of all dependencies and
 any 3rd part work incorporated are compatible with the PrimeFaces Licenses.
 
