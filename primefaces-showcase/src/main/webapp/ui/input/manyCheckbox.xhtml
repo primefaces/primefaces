@@ -44,11 +44,6 @@
                                       columns="3">
                     <f:selectItems value="#{checkboxView.cities}" var="city" itemLabel="#{city}" itemValue="#{city}"/>
                 </p:selectManyCheckbox>
-                
-                <h5>Grid Layout (deprecated)</h5>
-                <p:selectManyCheckbox id="grid" value="#{checkboxView.selectedCities}" layout="grid" columns="3" styleClass="grid-checkbox">
-                    <f:selectItems value="#{checkboxView.cities}" var="city" itemLabel="#{city}" itemValue="#{city}"/>
-                </p:selectManyCheckbox>
 
                 <h5>Line Direction</h5>
                 <p:selectManyCheckbox id="lineDirection" value="#{checkboxView.selectedCities}" layout="lineDirection">
