@@ -377,7 +377,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
      */
     extractQuery: function() {
         var end = this.jq.getSelection().end,
-        result = /\S+$/.exec(this.jq.get(0).value.slice(0, end)),
+        result = /\S+$/.exec(this.jq.get(0).value.slice(0, end)), // NOSONAR
         lastWord = result ? result[0] : null;
 
         return lastWord;

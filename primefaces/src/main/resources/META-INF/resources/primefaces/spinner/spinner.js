@@ -337,7 +337,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
         if(this.value !== null) {
             var value = this.getValue();
             var numAndFract = value.toString().split('.');
-            value = numAndFract[0].replace(/(\d)(?=(?:\d{3})+\b)/g, '$1' + this.cfg.thousandSeparator);
+            value = numAndFract[0].replace(/(\d)(?=(?:\d{3})+\b)/g, '$1' + this.cfg.thousandSeparator); // NOSONAR
             if (numAndFract.length === 2) {
               value += this.cfg.decimalSeparator + numAndFract[1];
             }
