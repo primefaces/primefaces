@@ -32,7 +32,7 @@ if (!PrimeFaces.resources) {
              scriptURI = scriptURI.replace(scriptName, name);
 
              // find the library like ln=primefaces
-             var libraryRegex = new RegExp('[?&]([^&=]*)ln=(.*?)(&|$)'); // NOSONAR
+             var libraryRegex = new RegExp('[?&]([^&=]*)ln=(.*?)(&|$)');
 
              // find library to replace e.g. 'ln=primefaces'
              var currentLibraryName = 'ln=' + libraryRegex.exec(scriptURI)[2];
