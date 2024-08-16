@@ -7158,7 +7158,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Languae code of the resource designated by the link.]]>
+                <![CDATA[Language code of the resource designated by the link.]]>
             </description>
             <name>hreflang</name>
             <required>false</required>

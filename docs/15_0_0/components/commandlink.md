@@ -60,7 +60,7 @@ CommandLink extends standard JSF commandLink with Ajax capabilities.
 | dir | null | String | Direction indication for text that does not inherit directionality. Valid values are LTR and RTL.
 | disabled | false | Boolean | Disables the link
 | disableOnAjax | true | Boolean | If true, the link will be disabled during Ajax requests triggered by the link.
-| hreflang | null | String | Languae code of the resource designated by the link.
+| hreflang | null | String | Language code of the resource designated by the link.
 | rel | null | String | Relationship from the current document to the anchor specified by the link, values are provided by a space-separated list of link types.
 | rev | null | String | A reverse link from the anchor specified by this link to the current document, values are provided by a space-separated list of link types.
 | shape | null | String | Shape of hot spot on the screen, valid values are default, rect, circle and poly.
