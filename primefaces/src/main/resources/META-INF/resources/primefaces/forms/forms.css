@@ -153,6 +153,21 @@
     flex-grow: 1;
 }
 
+.ui-selectmanycheckbox .ui-g-1,
+.ui-selectmanycheckbox .ui-g-2,
+.ui-selectmanycheckbox .ui-g-3,
+.ui-selectmanycheckbox .ui-g-4,
+.ui-selectmanycheckbox .ui-g-5,
+.ui-selectmanycheckbox .ui-g-6,
+.ui-selectmanycheckbox .ui-g-7,
+.ui-selectmanycheckbox .ui-g-8,
+.ui-selectmanycheckbox .ui-g-9,
+.ui-selectmanycheckbox .ui-g-10,
+.ui-selectmanycheckbox .ui-g-11,
+.ui-selectmanycheckbox .ui-g-12 {
+    float: none;
+}
+
 .ui-selectmanycheckbox label {
     vertical-align: middle;
     cursor: pointer;
