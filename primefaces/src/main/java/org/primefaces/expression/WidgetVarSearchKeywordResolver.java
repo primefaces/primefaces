@@ -55,7 +55,9 @@ public class WidgetVarSearchKeywordResolver extends SearchKeywordResolver {
                                 ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED),
                         visitCallback);
 
-                context.invokeContextCallback(visitCallback.getComponent());
+                if (visitCallback.getComponent() != null) {
+                    context.invokeContextCallback(visitCallback.getComponent());
+                }
             }
             else {
                 throw new FacesException("Expression does not match following pattern @widgetVar(var). Expression: \"" + keyword + "\"");
