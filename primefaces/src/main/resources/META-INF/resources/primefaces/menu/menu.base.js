@@ -285,7 +285,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
     resetFocus: function(resetFirst) {
         // default all links to not focusable
         var $container = this.getMenuElement();
-        var focusableLinks = $container.find("a.ui-menuitem-link");
+        var focusableLinks = $container.find("a.ui-menuitem-link:not(.ui-state-disabled)");
         focusableLinks.removeClass('ui-state-hover ui-state-active').attr('tabindex', "-1");
 
         if (resetFirst) {
