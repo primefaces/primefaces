@@ -42,7 +42,7 @@
                 </p:toolbar>
 
                 <p:dataTable id="dt-products" widgetVar="dtProducts" var="product" value="#{crudView.products}"
-                    reflow="true" styleClass="products-table" selection="#{crudView.selectedProducts}"
+                    reflow="true" styleClass="products-table" selectionMode="multiple" selection="#{crudView.selectedProducts}"
                     rowKey="#{product.id}" paginator="true" rows="10" selectionRowMode="add" paginatorPosition="bottom">
                     <f:facet name="header">
                         <div class="products-table-header">
@@ -59,7 +59,7 @@
                     <p:ajax event="rowUnselectCheckbox" update=":form:delete-products-button" />
                     <p:ajax event="toggleSelect" update=":form:delete-products-button" />
 
-                    <p:column selectionMode="multiple" exportable="false"></p:column>
+                    <p:column selectionBox="true" exportable="false"></p:column>
 
                     <p:column headerText="Code" sortBy="#{product.code}" filterBy="#{product.code}">
                         <h:outputText value="#{product.code}" />
