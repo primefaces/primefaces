@@ -34,7 +34,7 @@ are many other third party libraries and plugins used to support features.
 | [Moment Timezone](../jsdocs/modules/node_modules_moment_ts3_1_typings_moment.html#tz) | 0.5.45 | https://github.com/moment/moment-timezone |
 | [Quill Editor](../jsdocs/modules/node_modules__types_quill.html) | 2.0.2 | https://quilljs.com/ |
 | [Raphaël](../jsdocs/interfaces/node_modules__types_raphael.RaphaelStatic.html) | 2.3.0 | http://raphaeljs.com |
-| [Signature](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#signature) | 1.2.0 | http://keith-wood.name/signature.html |
+| [Signature](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#signature) | 1.2.1 | http://keith-wood.name/signature.html |
 | [Timeline](../jsdocs/modules/node_modules_vis_timeline_declarations.html) | 7.7.2 | https://github.com/visjs/vis-timeline |
 | [TouchSwipe](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#swipe) | 1.6.19 | https://github.com/mattbryson/TouchSwipe-Jquery-Plugin |
 | [WebcamJS](../jsdocs/modules/src_PrimeFaces.Webcam.html) | 1.0.26 | https://github.com/jhuckaby/webcamjs |

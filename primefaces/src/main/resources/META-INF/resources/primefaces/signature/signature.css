@@ -1,12 +1,11 @@
-/* Styles for signature plugin v1.2.0. */
+/* Styles for signature plugin v1.2.1. */
 .kbw-signature {
     display: inline-block;
     border: 1px solid #a0a0a0;
 }
 .kbw-signature-disabled {
-    opacity: 0.35;
+    opacity: 0.6;
 }
-
 .ui-inputfield.kbw-signature {
     padding: 0 !important;
 }
