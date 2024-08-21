@@ -31,6 +31,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class SignatureRenderer extends InputRenderer {
@@ -42,13 +43,24 @@ public class SignatureRenderer extends InputRenderer {
             return;
         }
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+
+        // JSON value
         String value = params.get(signature.getClientId(context) + "_value");
-        String base64Value = params.get(signature.getClientId(context) + "_base64");
         signature.setSubmittedValue(value);
 
+        // printed text value
+        String textValue = params.get(signature.getClientId(context) + "_text");
+        if (LangUtils.isNotBlank(textValue)) {
+            signature.setTextValue(textValue);
+        }
+
+        // base64 image value
+        String base64Value = params.get(signature.getClientId(context) + "_base64");
         if (base64Value != null) {
             signature.setBase64Value(base64Value);
         }
+
+        decodeBehaviors(context, signature);
     }
 
     @Override
@@ -63,20 +75,23 @@ public class SignatureRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = signature.getClientId(context);
         String style = signature.getStyle();
-        String styleClass = signature.getStyleClass();
-        String defaultStyle = signature.resolveStyleClass();
-        styleClass = styleClass == null ? defaultStyle : defaultStyle + " " + styleClass;
+        String styleClass = getStyleClassBuilder(context)
+                .add(Signature.STYLE_CLASS)
+                .add(signature.getStyleClass())
+                .add(signature.isReadonly(), Signature.READONLY_STYLE_CLASS)
+                .add(signature.isDisabled(), "ui-state-disabled")
+                .add(!signature.isValid(), "ui-state-error")
+                .build();
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
+        writer.writeAttribute("class", styleClass, null);
         if (style != null) {
             writer.writeAttribute("style", style, null);
         }
-        if (styleClass != null) {
-            writer.writeAttribute("class", styleClass, null);
-        }
 
         encodeInputField(context, signature, clientId + "_value", signature.getValue());
+        encodeInputField(context, signature, clientId + "_text", signature.getTextValue());
 
         if (signature.getValueExpression(Signature.PropertyKeys.base64Value.toString()) != null) {
             encodeInputField(context, signature, clientId + "_base64", null);
@@ -96,6 +111,11 @@ public class SignatureRenderer extends InputRenderer {
                 .attr("guidelineColor", signature.getGuidelineColor(), null)
                 .attr("guidelineOffset", signature.getGuidelineOffset(), 25)
                 .attr("guidelineIndent", signature.getGuidelineIndent(), 10)
+                .attr("fontFamily", signature.getFontFamily(), null)
+                .attr("fontSize", signature.getFontSize(), 40)
+                .attr("ariaLabel", signature.getAriaLabel(), null)
+                .attr("ariaLabelledBy", signature.getLabelledBy(), null)
+                .attr("tabindex", signature.getTabindex(), "0")
                 .callback("onchange", "function()", signature.getOnchange());
 
         if (signature.getValueExpression(Signature.PropertyKeys.base64Value.toString()) != null) {
