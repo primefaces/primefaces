@@ -23,6 +23,16 @@
  */
 package org.primefaces.model;
 
+import java.io.Serializable;
+import java.lang.reflect.Array;
+import java.util.Collection;
+import java.util.Objects;
+
+import javax.el.ELContext;
+import javax.el.MethodExpression;
+import javax.el.ValueExpression;
+import javax.faces.context.FacesContext;
+
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.ColumnBase;
@@ -31,15 +41,6 @@ import org.primefaces.model.filter.FilterConstraints;
 import org.primefaces.model.filter.FunctionFilterConstraint;
 import org.primefaces.model.filter.GlobalFilterConstraint;
 import org.primefaces.util.LangUtils;
-
-import javax.el.ELContext;
-import javax.el.MethodExpression;
-import javax.el.ValueExpression;
-import javax.faces.context.FacesContext;
-import java.io.Serializable;
-import java.lang.reflect.Array;
-import java.util.Collection;
-import java.util.Objects;
 
 public class FilterMeta implements Serializable {
 
@@ -99,7 +100,7 @@ public class FilterMeta implements Serializable {
 
         Object filterValue = column.getFilterValue();
         if (filterValue == null) {
-            filterValue = column.getFilterValueFromValueHolder();
+            filterValue = column.getFilterValueFromValueHolder(context);
         }
 
         return new FilterMeta(column.getColumnKey(),

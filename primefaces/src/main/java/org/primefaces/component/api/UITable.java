@@ -23,6 +23,22 @@
  */
 package org.primefaces.component.api;
 
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import javax.el.MethodExpression;
+import javax.el.ValueExpression;
+import javax.faces.FacesException;
+import javax.faces.component.EditableValueHolder;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
+import javax.faces.component.ValueHolder;
+import javax.faces.component.search.SearchExpressionHint;
+import javax.faces.context.FacesContext;
+import javax.faces.convert.ConverterException;
+
 import org.primefaces.component.column.ColumnBase;
 import org.primefaces.component.headerrow.HeaderRow;
 import org.primefaces.expression.SearchExpressionUtils;
@@ -33,20 +49,6 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.LocaleUtils;
-
-import javax.el.MethodExpression;
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
-import javax.faces.component.ValueHolder;
-import javax.faces.component.search.SearchExpressionHint;
-import javax.faces.context.FacesContext;
-import javax.faces.convert.ConverterException;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public interface UITable<T extends UITableState> extends ColumnAware, MultiViewStateAware<T> {
 
@@ -195,11 +197,11 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                 ((DynamicColumn) column).applyModel();
             }
 
-            boolean hasCustomFilter = column.getFacet("filter") != null;
+            EditableValueHolder hasCustomFilter = column.getFilterValueHolder();
 
             Object filterValue;
-            if (hasCustomFilter) {
-                filterValue = column.getFilterValueFromValueHolder();
+            if (hasCustomFilter != null) {
+                filterValue = column.getFilterValueFromValueHolder(context);
             }
             else {
                 String valueHolderClientId = column instanceof DynamicColumn
