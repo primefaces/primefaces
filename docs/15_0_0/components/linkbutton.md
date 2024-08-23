@@ -1,6 +1,6 @@
 # LinkButton
 
-LinkButton a simple link, which is styled as a button and integrated with JSF navigation model.
+LinkButton a simple link, which is styled as a button and integrated with Jakarta Faces navigation model.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.LinkButton.html)
 

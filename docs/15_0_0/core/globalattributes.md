@@ -9,7 +9,7 @@ components but not wanting to repeat yourself on every single instance on every 
 <p:calendar pattern="dd-MMM-yyyy"/>
 ```
 
-This can be accomplished by using a custom JSF Application wrapper.
+This can be accomplished by using a custom Jakarta Faces Application wrapper.
 
 
 ## Application Wrapper

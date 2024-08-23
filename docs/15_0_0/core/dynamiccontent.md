@@ -1,6 +1,6 @@
 # Dynamic content rendering / streaming
 
-Per default JSF only supports static content placed in resource folders.
+Per default Jakarta Faces only supports static content placed in resource folders.
 Streaming of dynamic content can be done with a custom Servlet or with PrimeFaces:
 
 ```xhtml
@@ -35,7 +35,7 @@ public class ImageView {
 - _ImageView_ and therefore _DefaultStreamedContent_ might get instantiated here, when the EL API can't resolve the value type (_StreamedContent.class_) correctly
 - a UID is generated
 - the UID and the _ValueExpression_ string are stored into the HTTP session
-- the UID is appended to the image URL, which points to JSF _ResourceHandler_
+- the UID is appended to the image URL, which points to Jakarta Faces _ResourceHandler_
 
 ### What happens when the browser requests the URL:
 

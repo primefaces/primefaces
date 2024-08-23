@@ -103,7 +103,7 @@ For the full list of configuration parameters for each effect, please see the jq
 http://docs.jquery.com/UI/Effects
 
 ## Effect on Load
-Effects can also be applied to any JSF component when page is loaded for the first time or after an
+Effects can also be applied to any Jakarta Faces component when page is loaded for the first time or after an
 ajax request is completed by using _load_ as the event name. Following example animates messages
 with pulsate effect after ajax request completes.
 

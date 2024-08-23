@@ -1,6 +1,6 @@
 # Lifecycle
 
-Lifecycle is a utility component which displays the execution time of each JSF phase. It also
+Lifecycle is a utility component which displays the execution time of each Jakarta Faces phase. It also
 synchronizes automatically after each AJAX request.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Lifecycle.html)

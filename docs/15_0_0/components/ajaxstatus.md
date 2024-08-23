@@ -110,5 +110,5 @@ which contains the facets.
 - Avoid updating ajaxStatus itself to prevent duplicate facet/callback bindings.
 - Provide a fixed width/height to an inline ajaxStatus to prevent page layout from changing.
 - Components like commandButton has an attribute ( _global)_ to control triggering of AjaxStatus.
-- AjaxStatus also supports core JSF ajax requests of f:ajax as well.
+- AjaxStatus also supports core Jakarta Faces ajax requests of f:ajax as well.
 - If a _complete_ facet is defined, the user will never see the _error_ or _success_ facets.

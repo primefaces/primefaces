@@ -17,8 +17,8 @@ It can be activated via web.xml:
 ## PrimeFaces ClientWindow
 
 PrimeFaces provides a improved version of the Faces `url` `ClientWindow`, which is heavily inspired by Apache DeltaSpile `LAZY` mode:
-* JSF does NOT append the url param on initial redirect, so F5 creates a new windowId
-* JSF does NOT validate if the tab was initially opened with another windowId
+* Jakarta Faces does NOT append the url param on initial redirect, so F5 creates a new windowId
+* Jakarta Faces does NOT validate if the tab was initially opened with another windowId
 * it uses sessionStorage to save and validate the windowId
 
 
@@ -32,7 +32,7 @@ PrimeFaces `ClientWindow` can be activated in `faces-config.xml`:
 </faces-config>
 ```
 
-As it´s a replacement for the standard JSF-mechanism, make sure you dont have a `jakarta.faces.CLIENT_WINDOW_MODE` in your web.xml or configured to `none`.
+As it´s a replacement for the standard Jakarta Faces-mechanism, make sure you dont have a `jakarta.faces.CLIENT_WINDOW_MODE` in your web.xml or configured to `none`.
 
 
 **Mojarra:**  
