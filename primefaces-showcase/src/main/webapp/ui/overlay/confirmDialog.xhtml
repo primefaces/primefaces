@@ -11,6 +11,8 @@
 
     <ui:define name="description">
         ConfirmDialog is integrated with confirm behavior to implement confirmations with ease.
+        ConfirmDialog has two modes; global and non-global. Non-Global mode is almost same as the dialog component used with a simple client side api,
+        <i>show()</i> and <i>hide()</i>.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/confirm"/>
@@ -18,27 +20,33 @@
 
     <ui:define name="implementation">
         <div class="card">
+            <h3>Global</h3>
             <h:form>
                 <p:growl id="message" showDetail="true"/>
 
-                <p:commandButton value="Confirm" action="#{confirmView.confirm}" update="message" styleClass="mr-2" icon="pi pi-check">
-                    <p:confirm header="Confirmation" message="Are you sure you want to proceed?" icon="pi pi-exclamation-triangle"/>
+                <p:commandButton value="Confirm" action="#{confirmView.confirm}" update="message" styleClass="mr-2"
+                                 icon="pi pi-check">
+                    <p:confirm header="Confirmation" message="Are you sure you want to proceed?"
+                               icon="pi pi-exclamation-triangle"/>
                 </p:commandButton>
 
-				<p:commandButton value="Delete" action="#{confirmView.delete}" update="message" styleClass="ui-button-danger mr-2" icon="pi pi-times">
-					<p:confirm header="Confirmation"
-						message="Do you want to delete this record?"
-						icon="pi pi-info-circle" 
-						yesButtonLabel="Delete Me!"
-						yesButtonClass="bg-red-600 text-white" 
-						yesButtonIcon="pi pi-trash"
-						noButtonLabel="Keep this!" 
-						noButtonClass="bg-green-600 text-white"
-						noButtonIcon="pi pi-heart" />
-				</p:commandButton>
+                <p:commandButton value="Delete" action="#{confirmView.delete}" update="message"
+                                 styleClass="ui-button-danger mr-2" icon="pi pi-times">
+                    <p:confirm header="Confirmation"
+                               message="Do you want to delete this record?"
+                               icon="pi pi-info-circle"
+                               yesButtonLabel="Delete Me!"
+                               yesButtonClass="bg-red-600 text-white"
+                               yesButtonIcon="pi pi-trash"
+                               noButtonLabel="Keep this!"
+                               noButtonClass="bg-green-600 text-white"
+                               noButtonIcon="pi pi-heart"/>
+                </p:commandButton>
 
-				<p:commandButton value="Non-Ajax" action="#{confirmView.nonAjax}" styleClass="ui-button-warning mr-2" icon="pi pi-question" ajax="false">
-                    <p:confirm header="Confirmation" message="Submit this page and reload?" icon="pi pi-question-circle"/>
+                <p:commandButton value="Non-Ajax" action="#{confirmView.nonAjax}" styleClass="ui-button-warning mr-2"
+                                 icon="pi pi-question" ajax="false">
+                    <p:confirm header="Confirmation" message="Submit this page and reload?"
+                               icon="pi pi-question-circle"/>
                 </p:commandButton>
 
                 <p:commandButton value="Facet" action="#{confirmView.confirm}" update="message" icon="pi pi-check">
@@ -51,8 +59,20 @@
                 </p:commandButton>
 
                 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
-                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat" icon="pi pi-times"/>
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"
+                                     icon="pi pi-times"/>
                     <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+                </p:confirmDialog>
+
+
+                <h3>Non-Global</h3>
+                <p:commandButton type="button" onclick="PF('cd').show()" value="Destroy World" icon="pi pi-trash"
+                                 styleClass="ui-button-danger mr-2"/>
+                <p:confirmDialog message="Are you sure about destroying the world?" header="Initiating destroy process"
+                                 severity="alert" widgetVar="cd">
+                    <p:commandButton value="Yes Sure" action="#{confirmView.delete}" update="message"
+                                     oncomplete="PF('cd').hide()" styleClass="ui-button-danger"/>
+                    <p:commandButton value="Not Yet" onclick="PF('cd').hide();" type="button"/>
                 </p:confirmDialog>
             </h:form>
         </div>
