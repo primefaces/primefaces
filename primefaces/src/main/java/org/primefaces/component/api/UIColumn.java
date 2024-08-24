@@ -264,10 +264,10 @@ public interface UIColumn {
         return null;
     }
 
-    default void setFilterValueToValueHolder(Object value) {
+    default void setFilterValueToValueHolder(FacesContext context, Object value) {
         UIComponent filterFacet = getFacet("filter");
 
-        FacetUtils.invokeOnEditableValueHolder(FacesContext.getCurrentInstance(), filterFacet, (ctx, component) -> {
+        FacetUtils.invokeOnEditableValueHolder(context, filterFacet, (ctx, component) -> {
             ((EditableValueHolder) component).setValue(value);
         });
     }
