@@ -80,7 +80,7 @@ public class CompositeUtils {
 
                     final UIComponent child = children.get(0);
 
-                    composite.invokeOnComponent(context, composite.getClientId(context), (ctxt, target1) -> {
+                    composite.invokeOnComponent(context, composite.getClientId(context), (ctxt, comp) -> {
                         if (isComposite(child)) {
                             invokeOnDeepestEditableValueHolder(ctxt, child, callback);
                         }
