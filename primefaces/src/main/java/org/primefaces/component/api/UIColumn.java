@@ -25,6 +25,7 @@ package org.primefaces.component.api;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -251,12 +252,13 @@ public interface UIColumn {
     default EditableValueHolderState getFilterValueHolder(FacesContext context) {
         UIComponent filterFacet = getFacet("filter");
         if (filterFacet != null) {
-            EditableValueHolderState state = new EditableValueHolderState();
+            AtomicReference<EditableValueHolderState> stateRef = new AtomicReference<>(null);
             FacetUtils.invokeOnEditableValueHolder(context, filterFacet, (fc, target) -> {
-                state.setComponent((EditableValueHolder) target);
+                EditableValueHolderState state = new EditableValueHolderState();
                 state.setValue(((EditableValueHolder) target).getValue());
+                stateRef.set(state);
             });
-            return state;
+            return stateRef.get();
         }
 
         return null;

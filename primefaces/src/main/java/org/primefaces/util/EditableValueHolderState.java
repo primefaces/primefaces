@@ -23,11 +23,8 @@
  */
 package org.primefaces.util;
 
-import javax.faces.component.EditableValueHolder;
-
 public class EditableValueHolderState {
 
-    private EditableValueHolder component;
     private Object value;
     private String clientId;
     private boolean valid;
@@ -55,14 +52,6 @@ public class EditableValueHolderState {
 
     public void setRequired(boolean required) {
         this.required = required;
-    }
-
-    public EditableValueHolder getComponent() {
-        return component;
-    }
-
-    public void setComponent(EditableValueHolder component) {
-        this.component = component;
     }
 
     public Object getValue() {
