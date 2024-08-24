@@ -1,13 +1,13 @@
 # AJAX Javascript API
 
-PrimeFaces AJAX Javascript API is powered by jQuery and optimized for JSF.
+PrimeFaces AJAX Javascript API is powered by jQuery and optimized for Jakarta Faces.
 The whole API consists of three properly namespaced simple JavaScript functions.
 
 [See the AJAX Javascript API Docs.](../jsdocs/modules/src_PrimeFaces.PrimeFaces.ajax.html)
 
 ## PrimeFaces.ajax.Request
 
-Sends AJAX requests that execute JSF lifecycle and retrieve partial output.
+Sends AJAX requests that execute Jakarta Faces lifecycle and retrieve partial output.
 
 See the [APIDocs for PrimeFaces.ajax.Request](../jsdocs/interfaces/src_PrimeFaces.PrimeFaces.ajax.Request.html#handle)
 for details. Briefly, the function signature is as follows:
@@ -39,7 +39,7 @@ The most common options are:
 [oncomplete(xhr, status, args, data)](../jsdocs/interfaces/src_PrimeFaces.PrimeFaces.ajax.Configuration.html#oncomplete) | Javascript callback to process when ajax request completes. Takes three arguments, xmlhttprequest, status string and optional arguments provided by PrimeFaces.current() API.
 
 ### Examples
-Suppose you have a JSF page called _createUser_ with a simple form and some input components.
+Suppose you have a Jakarta Faces page called _createUser_ with a simple form and some input components.
 
 ```xhtml
 <h:form id="userForm">
@@ -78,7 +78,7 @@ possible as it achieves the same with much less effort and less possibility of a
 ## PrimeFaces.ajax.Response
 
 [PrimeFaces.ajax.Response.handle()](../jsdocs/interfaces/src_PrimeFaces.PrimeFaces.ajax.Response.html#handle) updates
-the specified components if any and synchronizes the client side JSF state. DOM updates are implemented using jQuery
+the specified components if any and synchronizes the client side Jakarta Faces state. DOM updates are implemented using jQuery
 which uses a very fast algorithm.
 
 ## Abort

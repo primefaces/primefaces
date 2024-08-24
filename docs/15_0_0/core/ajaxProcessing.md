@@ -2,7 +2,7 @@
 
 In Partial Page Rendering, only specified components are rendered, similarly in Partial Processing
 only defined components are processed. Processing means executing `Apply Request Values`,
-`Process Validations`, `Update Model` and `Invoke Application` JSF lifecycle phases only on defined
+`Process Validations`, `Update Model` and `Invoke Application` Jakarta Faces lifecycle phases only on defined
 components.
 
 This feature is a simple but powerful enough to do group validations, avoiding validating unwanted

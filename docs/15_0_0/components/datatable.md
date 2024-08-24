@@ -876,7 +876,7 @@ works by rendering only a particular page but still requires all data to be load
 Lazy loading DataTable renders a particular page similarly but also only loads the page data into memory not the whole dataset.
 In order to implement this, you’d need to bind a `org.primefaces.model.LazyDataModel` as the value and
 implement `load` and `count` method.
-If you have selection enabled, you either need to implement `getRowData` and `getRowKey`, or pass a existing JSF `Converter` to the constructor.
+If you have selection enabled, you either need to implement `getRowData` and `getRowKey`, or pass a existing Jakarta Faces `Converter` to the constructor.
 
 
 ```xhtml
@@ -1009,7 +1009,7 @@ JPALazyDataModel<MyEntity> lazyDataModel = JPALazyDataModel.<MyEntity> builder()
         ...
 ```
 
-or provide a existing JSF `Converter`:
+or provide a existing Jakarta Faces `Converter`:
 
 ```java
 JPALazyDataModel<MyEntity> lazyDataModel = JPALazyDataModel.<MyEntity> builder()

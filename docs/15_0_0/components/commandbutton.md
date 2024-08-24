@@ -113,8 +113,8 @@ using _ajax_ attribute. When ajax attribute is set to false, form is submitted w
 refresh.
 
 The _update_ attribute is used to partially update other component(s) after the ajax response is
-received. Update attribute takes a comma or white-space separated list of JSF component ids to be
-updated. Basically any JSF component, not just PrimeFaces components should be updated with the
+received. Update attribute takes a comma or white-space separated list of Jakarta Faces component ids to be
+updated. Basically any Jakarta Faces component, not just PrimeFaces components should be updated with the
 Ajax response. In the following example, form is submitted with ajax and _display_ outputText is
 updated with the ajax response.
 

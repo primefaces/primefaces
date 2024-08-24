@@ -1,6 +1,6 @@
 # CommandLink
 
-CommandLink extends standard JSF commandLink with Ajax capabilities.
+CommandLink extends standard Jakarta Faces commandLink with Ajax capabilities.
 
 ## Info
 

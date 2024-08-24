@@ -52,7 +52,7 @@ menuitems with different use cases. First menuitem triggers an ajax action, seco
 non-ajax action and third one is used for navigation.
 
 ## Attachment
-ContextMenu can be attached to any JSF component, this means right clicking on the attached
+ContextMenu can be attached to any Jakarta Faces component, this means right clicking on the attached
 component will display the contextMenu. Following example demonstrates an integration between
 contextMenu and imageSwitcher, contextMenu here is used to navigate between images.
 
