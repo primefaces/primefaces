@@ -25,6 +25,7 @@ package org.primefaces.util;
 
 import java.beans.BeanInfo;
 import java.util.List;
+
 import javax.faces.FacesException;
 import javax.faces.component.ContextCallback;
 import javax.faces.component.EditableValueHolder;
@@ -49,9 +50,7 @@ public class CompositeUtils {
      * @param composite
      * @param callback
      */
-    public static void invokeOnDeepestEditableValueHolder(FacesContext context, UIComponent composite,
-            final ContextCallback callback) {
-
+    public static void invokeOnDeepestEditableValueHolder(FacesContext context, UIComponent composite, ContextCallback callback) {
         if (composite instanceof EditableValueHolder) {
             callback.invokeContextCallback(context, composite);
             return;
@@ -81,16 +80,12 @@ public class CompositeUtils {
 
                     final UIComponent child = children.get(0);
 
-                    composite.invokeOnComponent(context, composite.getClientId(context), new ContextCallback() {
-
-                        @Override
-                        public void invokeContextCallback(FacesContext context, UIComponent target) {
-                            if (isComposite(child)) {
-                                invokeOnDeepestEditableValueHolder(context, child, callback);
-                            }
-                            else {
-                                callback.invokeContextCallback(context, child);
-                            }
+                    composite.invokeOnComponent(context, composite.getClientId(context), (ctxt, target1) -> {
+                        if (isComposite(child)) {
+                            invokeOnDeepestEditableValueHolder(ctxt, child, callback);
+                        }
+                        else {
+                            callback.invokeContextCallback(ctxt, child);
                         }
                     });
                 }

@@ -31,7 +31,6 @@ import java.util.stream.Collectors;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
-import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.ValueHolder;
@@ -45,10 +44,7 @@ import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.ColumnMeta;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.SortMeta;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.FacetUtils;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.LocaleUtils;
+import org.primefaces.util.*;
 
 public interface UITable<T extends UITableState> extends ColumnAware, MultiViewStateAware<T> {
 
@@ -197,11 +193,11 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                 ((DynamicColumn) column).applyModel();
             }
 
-            EditableValueHolder hasCustomFilter = column.getFilterValueHolder();
+            EditableValueHolderState editableValueHolderState = column.getFilterValueHolder(context);
 
             Object filterValue;
-            if (hasCustomFilter != null) {
-                filterValue = column.getFilterValueFromValueHolder(context);
+            if (editableValueHolderState != null) {
+                filterValue = editableValueHolderState.getValue();
             }
             else {
                 String valueHolderClientId = column instanceof DynamicColumn

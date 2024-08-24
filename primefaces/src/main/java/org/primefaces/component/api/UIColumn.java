@@ -25,7 +25,6 @@ package org.primefaces.component.api;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,7 +39,7 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.model.MatchMode;
-import org.primefaces.util.ComponentTraversalUtils;
+import org.primefaces.util.EditableValueHolderState;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.LangUtils;
 
@@ -249,23 +248,18 @@ public interface UIColumn {
 
     Object getConverter();
 
-    default EditableValueHolder getFilterValueHolder() {
+    default EditableValueHolderState getFilterValueHolder(FacesContext context) {
         UIComponent filterFacet = getFacet("filter");
-        return ComponentTraversalUtils.firstChildRenderedOrSelf(EditableValueHolder.class, filterFacet);
-    }
-
-    default Object getFilterValueFromValueHolder(FacesContext context) {
-        UIComponent filterFacet = getFacet("filter");
-        if (filterFacet == null) {
-            return null;
+        if (filterFacet != null) {
+            EditableValueHolderState state = new EditableValueHolderState();
+            FacetUtils.invokeOnEditableValueHolder(context, filterFacet, (fc, target) -> {
+                state.setComponent((EditableValueHolder) target);
+                state.setValue(((EditableValueHolder) target).getValue());
+            });
+            return state;
         }
-        AtomicReference<Object> filterValue = new AtomicReference<>(null);
 
-        FacetUtils.invokeOnEditableValueHolder(context, filterFacet, (ctx, component) -> {
-            filterValue.set(((EditableValueHolder) component).getValue());
-        });
-
-        return filterValue.get();
+        return null;
     }
 
     default void setFilterValueToValueHolder(Object value) {
