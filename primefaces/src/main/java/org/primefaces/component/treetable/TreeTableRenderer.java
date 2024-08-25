@@ -23,14 +23,16 @@
  */
 package org.primefaces.component.treetable;
 
+import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
+
+import java.io.IOException;
+import java.util.List;
+
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
-import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import java.io.IOException;
-import java.util.List;
 
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
@@ -48,13 +50,7 @@ import org.primefaces.model.SortOrder;
 import org.primefaces.model.TreeNode;
 import org.primefaces.renderkit.DataRenderer;
 import org.primefaces.renderkit.RendererUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.FacetUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
-
-import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
+import org.primefaces.util.*;
 
 public class TreeTableRenderer extends DataRenderer {
 
@@ -788,9 +784,7 @@ public class TreeTableRenderer extends DataRenderer {
         }
         else {
             Object filterValue = tt.getFilterValue(column);
-            if (filterValue != null) {
-                ((ValueHolder) filterFacet).setValue(filterValue);
-            }
+            column.setFilterValueToValueHolder(context, filterValue);
 
             writer.startElement("div", null);
             writer.writeAttribute("class", TreeTable.COLUMN_CUSTOM_FILTER_CLASS, null);
