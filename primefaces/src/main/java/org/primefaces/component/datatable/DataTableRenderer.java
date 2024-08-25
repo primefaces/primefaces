@@ -800,7 +800,7 @@ public class DataTableRenderer extends DataRenderer {
         }
         else {
             Object filterValue = table.getFilterValue(column);
-            column.setFilterValueToValueHolder(filterValue);
+            column.setFilterValueToValueHolder(context, filterValue);
 
             writer.startElement("div", null);
             writer.writeAttribute("class", DataTable.COLUMN_CUSTOM_FILTER_CLASS, null);
