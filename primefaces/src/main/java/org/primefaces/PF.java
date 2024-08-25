@@ -34,4 +34,7 @@ public class PF {
     public static PrimeFaces current() {
         return PrimeFaces.current();
     }
+
+    public void foo() {
+    }
 }
