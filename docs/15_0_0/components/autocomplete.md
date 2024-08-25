@@ -265,7 +265,7 @@ _cacheTimeout_ option to configure how long it takes to clear a cache automatica
 
 ## Consuming REST-endpoints
 
-To improve performance (and avoid JSF-lifecycle-costs during calling completeMethod) AutoComplete can consume REST-endpoints to provide suggestions to the user.
+To improve performance (and avoid Jakarta Faces-lifecycle-costs during calling completeMethod) AutoComplete can consume REST-endpoints to provide suggestions to the user.
 Or existing REST-endpoints may be re-used.
 
 AutoComplete does a HTTP-GET against the REST-endpoint and passes query-url-parameter. (eg `/rest/theme/autocomplete?query=lu`)

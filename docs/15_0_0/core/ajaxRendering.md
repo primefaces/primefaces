@@ -1,19 +1,19 @@
 # Partial Rendering
 
 In addition to components like `autoComplete`, `dataTable`, `slider` with built-in AJAX capabilities,
-PrimeFaces also provides a generic PPR (Partial Page Rendering) mechanism to update JSF
+PrimeFaces also provides a generic PPR (Partial Page Rendering) mechanism to update Jakarta Faces
 components with AJAX. Several components are equipped with the common PPR attributes (e.g.
 `update`, `process`, `onstart`, `oncomplete`).
 
 ## Infrastructure
 
-PrimeFaces AJAX Framework is based on standard server side APIs of JSF 2. There are no additional
+PrimeFaces AJAX Framework is based on standard server side APIs of Jakarta Faces 2. There are no additional
 artfacts like custom AjaxViewRoot, AjaxStateManager, AjaxViewHandler, Servlet Filters,
 HtmlParsers, PhaseListeners and so on. PrimeFaces aims to keep it clean, fast and lightweight.
 
-On client side rather than using client side API implementations of JSF implementations like
+On client side rather than using client side API implementations of Jakarta Faces implementations like
 Mojarra and MyFaces, PrimeFaces scripts are based on the most popular javascript library; jQuery
-which is far more tested, stable regarding AJAX, DOM handling, DOM tree traversing than a JSF
+which is far more tested, stable regarding AJAX, DOM handling, DOM tree traversing than a Jakarta Faces
 implementations scripts.
 
 ## Using IDs
@@ -58,7 +58,7 @@ It is also possible to define the client id of the component to update.
 If your page has different `NamingContainer` (e.g. two forms), you also need to add the container id
 to search expression so that PPR can handle requests that are triggered inside a `NamingContainer`
 that updates another `NamingContainer`. Following is the suggested way using separator char as a
-prefix, note that this uses same search algorithm as standard JSF 2 implementation;
+prefix, note that this uses same search algorithm as standard Jakarta Faces 2 implementation;
 
 ```xhtml
 <h:form id="form1">
@@ -68,12 +68,12 @@ prefix, note that this uses same search algorithm as standard JSF 2 implementati
     <h:outputText id="display" value="#{bean.value}"/>
 </h:form>
 ```
-Please read **findComponent** algorithm described in link below used by both JSF core and
+Please read **findComponent** algorithm described in link below used by both Jakarta Faces core and
 PrimeFaces to fully understand how component referencing works.
 
 http://docs.oracle.com/javaee/6/api/javax/faces/component/UIComponent.html
 
-JSF h:form, datatable, composite components are naming containers, in addition tabView,
+Jakarta Faces h:form, datatable, composite components are naming containers, in addition tabView,
 accordionPanel, dataTable, dataGrid, dataList, carousel, galleria, ring, sheet and subTable are
 PrimeFaces component that implement NamingContainer.
 

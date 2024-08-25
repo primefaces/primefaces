@@ -11,7 +11,7 @@ ARIA compatibility is an important goal of PrimeFaces as a result keyboard suppo
 screen reader support are available to many components. Many of these features are built-in and
 does not require any configuration to use them. However for screen readers, localized texts might
 be necessary so that component can read the aria labels and messages from a bundle. PrimeFaces
-provides English translations by default and you may use the following keys in your JSF message
+provides English translations by default and you may use the following keys in your Jakarta Faces message
 bundle to provide your own values.
 
 - primefaces.datatable.aria.FILTER_BY = Filter by {0}
@@ -38,7 +38,7 @@ bundle to provide your own values.
 Along with ARIA standards, PrimeFaces strives to be fully [W3C Validation](https://validator.w3.org/) compliant with the
 HTML5 specification.
 
-If running an application on JSF lower than 4.0, the rendered HTML will always contain `type="text/javascript"` for JSF generated script tags. 
+If running an application on Jakarta Faces lower than 4.0, the rendered HTML will always contain `type="text/javascript"` for Jakarta Faces generated script tags. 
 You can remove it this via our custom ResponseWrite via your `faces-config.xml`.
 
 ```xml

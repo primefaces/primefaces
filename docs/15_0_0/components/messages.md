@@ -1,6 +1,6 @@
 # Messages
 
-Messages is a pre-skinned extended version of the standard JSF messages component.
+Messages is a pre-skinned extended version of the standard Jakarta Faces messages component.
 
 ## Info
 

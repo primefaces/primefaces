@@ -23,7 +23,7 @@ well:
 
 | Method | Description |
 | --- | --- |
-[PrimeFaces.escapeClientId(id)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#escapeClientId) | Escaped JSF ids with semi colon to work with jQuery.
+[PrimeFaces.escapeClientId(id)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#escapeClientId) | Escaped Jakarta Faces ids with semi colon to work with jQuery.
 [PrimeFaces.addSubmitParam(el, name, param)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#addSubmitParam) | Adds request parameters dynamically to the element.
 [PrimeFaces.getCookie(name)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#getCookie) | Returns cookie with given name.
 [PrimeFaces.setCookie(name, value, cfg)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#setCookie) | Sets a cookie with given name, value and options. e.g. PrimeFaces.setCookie('name', 'test'); PrimeFaces.setCookie('name','test',{expires:7, path:'/'}) Second example creates cookie for entire site that expires in 7 days.

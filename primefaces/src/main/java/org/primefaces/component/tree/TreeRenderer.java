@@ -253,7 +253,9 @@ public class TreeRenderer extends CoreRenderer {
             Locale filterLocale = LocaleUtils.getCurrentLocale(context);
 
             tree.getFilteredRowKeys().clear();
-            encodeFilteredNodes(context, tree, tree.getValue(), filteredValue, filterLocale);
+            if (LangUtils.isNotBlank(filteredValue)) {
+                encodeFilteredNodes(context, tree, tree.getValue(), filteredValue, filterLocale);
+            }
 
             if (root != null && root.getRowKey() == null) {
                 root.setRowKey(ROOT_ROW_KEY);
@@ -261,7 +263,7 @@ public class TreeRenderer extends CoreRenderer {
                 tree.initPreselection();
             }
 
-            if (root != null && (LangUtils.isBlank(filteredValue) || !tree.getFilteredRowKeys().isEmpty())) {
+            if (root != null) {
                 encodeTreeNodeChildren(context, tree, root, root, clientId, tree.isDynamic(), tree.isCheckboxSelectionMode(), tree.isDroppable());
             }
         }

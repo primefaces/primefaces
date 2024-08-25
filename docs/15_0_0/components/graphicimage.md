@@ -1,6 +1,6 @@
 # GraphicImage
 
-GraphicImage extends standard JSF _h:graphicImage_ component with the ability of displaying binary / dynamic data like an _InputStream_.  
+GraphicImage extends standard Jakarta Faces _h:graphicImage_ component with the ability of displaying binary / dynamic data like an _InputStream_.  
 Main use cases of GraphicImage is to make displaying images stored in database or on-the-fly images easier.  
 Legacy way to do this is to come up with a Servlet that does the streaming, GraphicImage does all the hard work without the need of a Servlet.  
 
@@ -186,7 +186,7 @@ public class BarcodeView {
 
 ## Displaying regular / static images
 
-As the PrimeFaces _GraphicImage_ extends the standard JSF _GraphicImage_ component, it can also display regular non-dynamic images,
+As the PrimeFaces _GraphicImage_ extends the standard Jakarta Faces _GraphicImage_ component, it can also display regular non-dynamic images,
 just like standard graphicImage component using _name_ and optional _library_.
 
 ```xhtml

@@ -1,6 +1,6 @@
 # Focus
 
-Focus is a utility component that makes it easy to manage the element focus on a JSF page.
+Focus is a utility component that makes it easy to manage the element focus on a Jakarta Faces page.
 
 ## Info
 

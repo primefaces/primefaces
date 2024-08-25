@@ -16941,7 +16941,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]>
+                <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility. Only used when the button is icon only.]]>
             </description>
             <name>ariaLabel</name>
             <required>false</required>
