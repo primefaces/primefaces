@@ -716,13 +716,13 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             }
 
             if(animate) {
-                this.jq.effect('transfer', {
-                                to: dockingZone
-                                ,className: 'ui-dialog-minimizing'
-                                }, 500,
-                                function() {
-                                    $this.dock(dockingZone);
-                                });
+                this.jq.transfer({
+                    to: dockingZone,
+                    className: 'ui-dialog-minimizing',
+                    duration: 500
+                    }, function () {
+                        $this.dock(dockingZone);
+                    });
             }
             else {
                 this.dock(dockingZone);
