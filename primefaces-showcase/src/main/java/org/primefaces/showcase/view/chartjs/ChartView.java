@@ -27,13 +27,14 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
-import org.primefaces.event.ItemSelectEvent;
-
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Named;
+
+import org.primefaces.event.ItemSelectEvent;
+
 import software.xdev.chartjs.model.charts.*;
 import software.xdev.chartjs.model.color.Color;
 import software.xdev.chartjs.model.data.*;
@@ -220,7 +221,7 @@ public class ChartView implements Serializable {
                 .setOptions(new BarOptions()
                         .setResponsive(true)
                         .setMaintainAspectRatio(false)
-                        .setIndexAxis(BarOptions.IndexAxis.X)
+                        .setIndexAxis(IndexAxis.X)
                         .setScales(new Scales().addScale(Scales.ScaleAxis.Y, new CartesianScaleOptions()
                                 .setStacked(false)
                                 .setTicks(new CartesianTickOptions()
