@@ -1,0 +1,20 @@
+// Oyunu kaydetme
+    public void saveGame() {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("player_state.dat"))) {
+            oos.writeObject(player);
+            System.out.println("Oyun başarıyla kaydedildi.");
+        } catch (IOException e) {
+            System.out.println("Oyunu kaydederken bir hata oluştu: " + e.getMessage());
+        }
+    }
+
+    // Oyunu yükleme
+    public void loadGame() {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("player_state.dat"))) {
+            player = (Character) ois.readObject();
+            System.out.println("Oyun başarıyla yüklendi.");
+            System.out.println(player);
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Oyunu yüklerken bir hata oluştu: " + e.getMessage());
+        }
+    }
