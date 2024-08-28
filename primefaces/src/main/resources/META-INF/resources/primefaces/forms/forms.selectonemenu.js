@@ -183,11 +183,11 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     initContents: function() {
         this.itemsContainer = this.itemsWrapper.children('.ui-selectonemenu-items');
         this.items = this.itemsContainer.find('.ui-selectonemenu-item');
-        this.optGroupsSize = this.itemsContainer.children('li.ui-selectonemenu-item-group').length;
+        this.optGroupsSize = this.itemsContainer.find('li.ui-selectonemenu-item-group').length;
 
         var $this = this,
         selectedOption = this.options.filter(':selected'),
-        highlightedItem = this.items.eq(this.options.index(selectedOption));
+        highlightedItem = this.selectItemFromOption(selectedOption);
 
         //disable options
         $this.items.filter('[disabled]').addClass('ui-state-disabled');
@@ -540,7 +540,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             this.items.eq(0).addClass('ui-state-active');
         }
         else {
-            this.highlightItem(this.items.eq(this.options.index(this.preShowValue)));
+            this.highlightItem(this.selectItemFromOption(this.preShowValue));
         }
     },
 
@@ -582,7 +582,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * @param {boolean} [silent] `true` to suppress triggering event listeners, or `false` otherwise.
      */
     selectItem: function(item, silent) {
-        var selectedOption = this.options.eq(this.resolveItemIndex(item)),
+        var selectedOption = this.selectOptionFromItem(item),
         currentOption = this.options.filter(':selected'),
         sameOption = selectedOption.val() == currentOption.val(),
         shouldChange = null;
@@ -629,23 +629,11 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * @param {JQuery} option The option that was selected.
      */
     syncTitle: function(option) {
-        var optionTitle = this.items.eq(option.index()).attr('title');
+        var optionTitle = this.selectItemFromOption(option).attr('title');
         if(optionTitle)
-            this.jq.attr('title', this.items.eq(option.index()).attr('title'));
+            this.jq.attr('title', optionTitle);
         else
             this.jq.removeAttr('title');
-    },
-
-    /**
-     * Finds the index of the given selectable option.
-     * @param {JQuery} item One of the available selectable options.
-     * @return {number} The index of the given item.
-     */
-    resolveItemIndex: function(item) {
-        if(this.optGroupsSize === 0)
-            return item.index();
-        else
-            return item.index() - item.prevAll('li.ui-selectonemenu-item-group').length;
     },
 
     /**
@@ -846,10 +834,26 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * @param {JQuery.TriggeredEvent} event The event of the keypress.
      */
     highlightNext: function(event) {
-        var activeItem = this.getActiveItem(),
-        next = this.panel.is(':hidden') ? activeItem.nextAll(':not(.ui-state-disabled,.ui-selectonemenu-item-group):first')
-                                : activeItem.nextAll(':not(.ui-state-disabled,.ui-selectonemenu-item-group):visible:first');
+        // Get the currently active item
+        var activeItem = this.getActiveItem();
+        
+        // Check if the panel is hidden
+        var isHidden = this.panel.is(':hidden');
+        
+        // Create a selector for the next valid option
+        // If panel is hidden, select the first option, otherwise select the first visible option
+        var selector = '[role="option"]:not(.ui-state-disabled)' + (isHidden ? ':first' : ':visible:first');
+        
+        // Try to find the next valid option after the active item
+        var next = activeItem.nextAll(selector);
 
+        if (next.length === 0) {
+            var index = this.items.index(activeItem) + 1;
+            if (index >= 0) {
+                next = this.items.eq(index);
+            }
+        }
+    
         if(event.altKey) {
             this.show();
         }
@@ -873,9 +877,26 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * @param {JQuery.TriggeredEvent} event The event of the keypress.
      */
     highlightPrev: function(event) {
-        var activeItem = this.getActiveItem(),
-        prev = this.panel.is(':hidden') ? activeItem.prevAll(':not(.ui-state-disabled,.ui-selectonemenu-item-group):first')
-                                : activeItem.prevAll(':not(.ui-state-disabled,.ui-selectonemenu-item-group):visible:first');
+        // Get the currently active item
+        var activeItem = this.getActiveItem();
+        
+        // Check if the panel is hidden
+        var isHidden = this.panel.is(':hidden');
+        
+        // Create a selector for the next valid option
+        // If panel is hidden, select the first option, otherwise select the first visible option
+        var selector = '[role="option"]:not(.ui-state-disabled)' + (isHidden ? ':first' : ':visible:first');
+        
+        // Try to find the previous valid option after the active item
+        var prev = activeItem.prevAll(selector);
+        
+        // If no next option found, look for the first option in the next group (ul)
+        if (prev.length === 0) {
+            var index = this.items.index(activeItem) - 1;
+            if (index >= 0) {
+                prev = this.items.eq(index);
+            }
+        }
 
         if(prev.length === 1) {
             if(this.panel.is(':hidden')) {
@@ -1167,7 +1188,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 var option = null;
                 if (this.items) {
                     var selectedItem = this.items.filter('[data-label="' + $.escapeSelector(value) + '"]');
-                    option = this.options.eq(this.resolveItemIndex(selectedItem));
+                    option = this.selectOptionFromItem(selectedItem);
                 }
                 else {
                     option = this.options.filter(':selected');
@@ -1192,9 +1213,47 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
            this.callHandleMethod(null, null);
         }
 
-        var option = this.options.filter('[value="' + $.escapeSelector(value) + '"]');
+        var item;
+        if (this.optGroupsSize === 0) {
+            var option = this.options.filter('[value="' + $.escapeSelector(value) + '"]');
+            item = this.selectItemFromOption(option);
+        }
+        else {
+            item = this.items.filter('[data-value="' + $.escapeSelector(value) + '"]');
+        }
+        this.selectItem(item, true);
+    },
 
-        this.selectItem(this.items.eq(option.index()), true);
+    /**
+     * Selects the item corresponding to the given option.
+     * @param {JQuery} option The option element to select.
+     * @return {JQuery} The selected item element.
+     */
+    selectItemFromOption: function(option) {
+        var item;
+        if (this.optGroupsSize === 0) {
+            item = this.items.eq(option.index());
+        }
+        else {
+            item = this.items.filter('[data-value="' + $.escapeSelector(option.val()) + '"]');
+        }
+        return item;
+    },
+
+    /**
+     * Selects the option corresponding to the given item.
+     * @param {JQuery} item The item element to select.
+     * @return {JQuery} The selected option element.
+     */
+    selectOptionFromItem: function(item) {
+        var option;
+        if (this.optGroupsSize === 0) {
+            option = this.options.eq(item.index());
+        }
+        else {
+            option = this.options.filter('[value="' + $.escapeSelector(item.attr('data-value')) + '"]');
+        }
+        return option;
     },
 
     /**
@@ -1211,7 +1270,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             // if no empty value option found, fallback to first in list like JSF default
             option = this.options.eq(0);
         }
-        this.selectItem(this.items.eq(option.index()), silent);
+        this.selectItem(this.selectItemFromOption(option), silent);
     },
 
     /**
@@ -1284,7 +1343,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
         if(filterValue === '') {
             this.items.filter(':hidden').show();
-            this.itemsContainer.children('.ui-selectonemenu-item-group').show();
+            this.itemsContainer.find('li.ui-selectonemenu-item-group').show();
         }
         else {
             var hide = [];
@@ -1319,7 +1378,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             show = [];
 
             //Toggle groups
-            var groups = this.itemsContainer.children('.ui-selectonemenu-item-group');
+            var groups = this.itemsContainer.find('li.ui-selectonemenu-item-group');
             for(var g = 0; g < groups.length; g++) {
                 var group = groups.eq(g);
 
@@ -1329,7 +1388,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                     else
                         show.push(group);
                 }
-                else if(group.nextUntil('.ui-selectonemenu-item-group').filter('.ui-selectonemenu-item-group-children:visible').length === 0) {
+                else if(group.nextUntil('li.ui-selectonemenu-item-group').filter('.ui-selectonemenu-item-group-children:visible').length === 0) {
                     hide.push(group);
                 } else {
                     show.push(group);
@@ -1501,9 +1560,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      */
     renderPanelContentFromHiddenSelect: function(initContentsAndBindItemEvents) {
          if (this.cfg.renderPanelContentOnClient && this.itemsWrapper.children().length === 0) {
-             var panelContent = '<ul id="' + this.id + '_items" class="ui-selectonemenu-items ui-selectonemenu-list ui-widget-content ui-widget ui-corner-all ui-helper-reset" role="listbox">';
+             var panelContent = '<div id="' + this.id + '_items" class="ui-selectonemenu-items ui-widget-content ui-widget ui-corner-all ui-helper-reset" role="listbox">';
              panelContent += this.renderSelectItems(this.input);
-             panelContent += '</ul>';
+             panelContent += '</div>';
 
              this.itemsWrapper.append(panelContent);
 
@@ -1527,9 +1586,20 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         isGrouped = isGrouped || false;
 
         var opts = parentItem.children("option, optgroup");
-        opts.each(function(index, element) {
-            content += $this.renderSelectItem(element, isGrouped);
-        });
+        var hasOptgroup = opts.filter("optgroup").length > 0;
+        
+        if (!hasOptgroup && !isGrouped) {
+            content += '<ul role="group" class="ui-selectonemenu-list ui-widget-content ui-widget ui-corner-all ui-helper-reset">';
+        }
+
+        content += opts.map(function(index, element) {
+            return $this.renderSelectItem(element, isGrouped);
+        }).get().join('');
+        
+        if (!hasOptgroup && !isGrouped) {
+            content += '</ul>';
+        }
+        
         return content;
     },
 
@@ -1541,61 +1611,43 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * @return {string} The rendered HTML string.
      */
     renderSelectItem: function(item, isGrouped) {
-        var content = "";
         var $item = $(item);
-        var label;
-        var title = $item.data("title");
+        var isOptgroup = item.tagName === "OPTGROUP";
+        var id = PrimeFaces.uuid();
         var escape = $item.data("escape");
-        var cssClass;
+        var label = isOptgroup ? $item.attr("label") : $item.text();
 
-        if (item.tagName === "OPTGROUP") {
-            label = $item.attr("label");
-            if (escape) {
-                label = $("<div>").text(label).html();
-            }
-            cssClass = "ui-selectonemenu-item-group ui-corner-all";
-        }
-        else { //OPTION
-            if (escape) {
-                label = $item.html();
-                if ($item.text() === "&nbsp;") {
-                    label = $item.text();
-                }
-            }
-            else {
-                label = $item.text();
-            }
-            cssClass = "ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all";
-            if (isGrouped) {
-                cssClass += " ui-selectonemenu-item-group-children";
-            }
+        if (escape) {
+            label = isOptgroup ? $("<div>").text(label).html() : $item.html();
+            label = label === "&nbsp;" ? " " : label;
         }
 
-        var dataLabel = escape ? label.replaceAll('"', '&quot;') : PrimeFaces.escapeHTML(label, true);
+        var cssClass = isOptgroup ? "ui-selectonemenu-item-group ui-corner-all" : 
+                       "ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all" + 
+                       (isGrouped ? " ui-selectonemenu-item-group-children" : "") +
+                       ($item.data("noselection-option") ? " ui-noselection-option" : "");
 
-        if ($item.data("noselection-option")) {
-            cssClass += " ui-noselection-option";
-        }
-
-        content += '<li class="' + cssClass + '" tabindex="-1" role="option"';
+        var content = isOptgroup ? '<ul role="group" class="ui-selectonemenu-list ui-widget-content ui-widget ui-corner-all ui-helper-reset" aria-labelledby="' + id + '">' : '';
+        
+        content += '<li id="' + id + '" class="' + cssClass + '" tabindex="-1" role="' + (isOptgroup ? "presentation" : "option") + '"';
+        
+        var title = $item.data("title");
         if (title) {
             content += ' title="' + PrimeFaces.escapeHTML(title) + '"';
         }
         if ($item.is(':disabled')) {
             content += ' disabled';
         }
-        content += ' data-label="' + dataLabel + '"';
-        content += '>';
-        content += label;
-        content += '</li>';
+        
+        var dataLabel = escape ? label.replaceAll('"', '&quot;') : PrimeFaces.escapeHTML(label, true);
+        content += ' data-label="' + dataLabel + '" data-value="' + $item.val() + '">' + label + '</li>';
 
-        if (item.tagName === "OPTGROUP") {
-            content += this.renderSelectItems($item, true);
+        if (isOptgroup) {
+            content += this.renderSelectItems($item, true) + '</ul>';
         }
 
         return content;
     },
-
 
     /**
      * Updates the style class of the label that indicates the currently selected item.
