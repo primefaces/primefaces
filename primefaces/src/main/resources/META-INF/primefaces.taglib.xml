@@ -33059,6 +33059,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[List with dates that should be enabled, the others will be disabled (not selectable).]]>
+            </description>
+            <name>enabledDates</name>
+            <required>false</required>
+            <type>java.util.List</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Callback to invoke when a month is changed using the navigators.]]>
             </description>
             <name>onMonthChange</name>
