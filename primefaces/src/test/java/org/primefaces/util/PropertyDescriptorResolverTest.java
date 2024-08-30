@@ -106,6 +106,7 @@ class PropertyDescriptorResolverTest {
         D d = new D("d", false, Boolean.FALSE, DummyEnum.Z, 123);
         C c = new C(d);
 
+        assertNotNull(b);
         assertEquals(123, propResolver.getValue(c, "b.foo"));
         propResolver.setValue(c, "b.foo", 124);
         assertEquals(124, propResolver.getValue(c, "b.foo"));

@@ -94,7 +94,7 @@ public class OutputLabelRenderer extends CoreRenderer {
         renderDomEvents(context, label, HTML.LABEL_EVENTS);
         renderRTLDirection(context, label);
 
-        if (!isValueBlank(_for)) {
+        if (!isValueBlank(_for) && forState != null) {
             writer.writeAttribute("for", forState.getClientId(), "for");
         }
 
