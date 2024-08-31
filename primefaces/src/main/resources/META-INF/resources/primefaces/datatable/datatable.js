@@ -256,6 +256,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         if(this.cfg.editable) {
             this.bindEditEvents();
+            // ensure DOM memory is cleaned up by releasing document event handlers
+            this.addDestroyListener(function () {
+                $(document).off(namespace);
+                $(document).off('mouseup.datatable-cell-blur' + this.id);
+            });
         }
 
         if(this.cfg.draggableRows) {
@@ -378,6 +383,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      */
     postUpdateData: function() {
+        if (this.cfg.editable) {
+            this.bindEditEvents();
+        }
+
         if(this.cfg.draggableRows) {
             this.makeRowsDraggable();
         }
@@ -3560,12 +3569,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         // #3571 Set all fields to disabled by default
         this.disableCellEditors();
         
-        // ensure DOM memory is cleaned up by releasing document event handlers
-        this.addDestroyListener(function() {
-            $(document).off(namespace);
-            $(document).off('mouseup.datatable-cell-blur' + this.id);
-        });
-
         if(this.cfg.editMode === 'row') {
             var rowEditorSelector = '> tr > td > div.ui-row-editor > a';
             
