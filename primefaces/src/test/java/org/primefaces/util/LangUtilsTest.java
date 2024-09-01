@@ -23,10 +23,14 @@
  */
 package org.primefaces.util;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 class LangUtilsTest {
 
@@ -117,6 +121,31 @@ class LangUtilsTest {
         assertEquals("This Is A Test", LangUtils.toCapitalCase("thisIsATest"));
         assertEquals("Uppercase First Char", LangUtils.toCapitalCase("UppercaseFirstChar"));
         assertEquals("My Über String", LangUtils.toCapitalCase("myÜberString"));
+    }
+
+    @Test
+    void normalize() {
+        assertEquals("test", LangUtils.normalize("test", false));
+        assertEquals("test", LangUtils.normalize("test", true));
+        assertEquals("TEST", LangUtils.normalize("TEST", false));
+        assertEquals("TEST", LangUtils.normalize("TEST", true));
+        assertEquals("tést", LangUtils.normalize("tést", false));
+        assertEquals("test", LangUtils.normalize("tést", true));
+        assertEquals("t e s t", LangUtils.normalize("t e s t", false));
+        assertEquals("t e s t", LangUtils.normalize("t e s t", true));
+        assertEquals("", LangUtils.normalize("", false));
+        assertEquals("", LangUtils.normalize("", true));
+        assertEquals(Constants.EMPTY_STRING, LangUtils.normalize("", true));
+        assertEquals("123", LangUtils.normalize("123", false));
+        assertEquals("123", LangUtils.normalize("123", true));
+        assertEquals("123", LangUtils.normalize("123", false));
+        assertEquals("123", LangUtils.normalize("123", true));
+        assertEquals("test123", LangUtils.normalize("test123", false));
+        assertEquals("test123", LangUtils.normalize("test123", true));
+        assertEquals("tést123", LangUtils.normalize("tést123", false));
+        assertEquals("test123", LangUtils.normalize("tést123", true));
+        SimpleClass simpleClass = new SimpleClass();
+        assertEquals(simpleClass, LangUtils.normalize(simpleClass, true));
     }
 
     class SimpleClass {

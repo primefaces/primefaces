@@ -72,6 +72,7 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
         rows,
         first,
         filterBy,
+        filterNormalize,
         globalFilter,
         globalFilterFunction,
         globalFilterOnly,
@@ -525,5 +526,14 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
 
     public void setExportTag(String exportTag) {
         getStateHelper().put(PropertyKeys.exportTag, exportTag);
+    }
+
+    @Override
+    public boolean isFilterNormalize() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.filterNormalize, false);
+    }
+
+    public void setFilterNormalize(boolean filterNormalize) {
+        getStateHelper().put(PropertyKeys.filterNormalize, filterNormalize);
     }
 }
