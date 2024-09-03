@@ -1,7 +1,7 @@
 # BeanValidation Transformation
 
 Since JavaEE 6, validation metadata is already available for many components via the value
-reference (EL ValueExpression) and BeanValidation (e.g. @NotNull, @Size). The JSF Implementations use this
+reference (EL ValueExpression) and BeanValidation (e.g. @NotNull, @Size). The Jakarta Faces Implementations use this
 information for server side validation and PrimeFaces enhances this feature with client side
 validation framework.
 

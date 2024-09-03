@@ -3283,7 +3283,16 @@
             var now = new Date();
             if (this.options.timeZone) {
                 var jsTimezone = this.convertTimeZone(this.options.timeZone);
-                now = new Date(now.toLocaleString(undefined, { timeZone: jsTimezone }));
+                var localString = now.toLocaleString('en-GB', { // use English so we can parse it back
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                    hour: "numeric",
+                    minute: "numeric",
+                    second: "numeric",
+                    timeZone: jsTimezone
+                }).replace(' at ', ', ');
+                now = new Date(localString);
             }
             return now;
         },
@@ -3376,7 +3385,7 @@
             }
             if (this.options.yearNavigator) {
                 var viewYear = this.viewDate.getFullYear();
-                this.options.yearRange = (viewYear - 10) + ':' + (viewYear + 10);
+                this.options.yearRange = (viewYear - 1000) + ':' + (viewYear + 1000);
             }
         },
 

@@ -82,7 +82,7 @@ with Turkish text.
 <p:captcha language="tr"  type="g-recaptcha"/>
 ```
 ## Overriding Validation Messages
-By default captcha displays it’s own validation messages, this can be easily overridden by the JSF
+By default captcha displays it’s own validation messages, this can be easily overridden by the Jakarta Faces
 message bundle mechanism. Corresponding keys are;
 
 | Description | Key |

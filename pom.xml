@@ -71,7 +71,7 @@
         <build.output>target</build.output>
         <maven.compiler.target>11</maven.compiler.target>
         <maven.compiler.source>11</maven.compiler.source>
-        <junit.version>5.10.3</junit.version>
+        <junit.version>5.11.0</junit.version>
         <poi.version>5.2.5</poi.version>
 
         <npm.token/>
@@ -152,7 +152,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.8.0</version>
+                <version>3.10.0</version>
                 <configuration>
                     <sourcepath>${basedir}/src/main/java;</sourcepath>
                     <doclint>none</doclint>
@@ -182,19 +182,19 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
-                <version>3.1.2</version>
+                <version>3.1.3</version>
             </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>3.3.1</version>
+                <version>3.5.0</version>
             </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.3.1</version>
+                <version>3.5.0</version>
             </plugin>
 
             <plugin>
@@ -230,7 +230,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>3.4.0</version>
+                <version>3.5.0</version>
                 <configuration>
                     <consoleOutput>true</consoleOutput>
                     <failOnViolation>true</failOnViolation>
@@ -284,7 +284,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>3.2.4</version>
+                        <version>3.2.5</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -342,7 +342,7 @@
             <dependency>
                 <groupId>org.owasp.encoder</groupId>
                 <artifactId>encoder</artifactId>
-                <version>1.3.0</version>
+                <version>1.3.1</version>
             </dependency>
             <dependency>
                 <groupId>commons-io</groupId>
@@ -377,7 +377,7 @@
             <dependency>
                 <groupId>com.apptasticsoftware</groupId>
                 <artifactId>rssreader</artifactId>
-                <version>3.7.0</version>
+                <version>3.8.2</version>
             </dependency>
 
             <!-- File Upload -->

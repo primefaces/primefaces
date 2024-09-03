@@ -23,19 +23,15 @@
  */
 package org.primefaces.showcase.service;
 
-import org.primefaces.showcase.domain.Country;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Named;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import org.primefaces.showcase.domain.Country;
 
 @Named
 @ApplicationScoped
@@ -86,6 +82,7 @@ public class CountryService {
         locales.add(CountryService.toCountry(new Locale("ar", "SA"), true));
         locales.add(CountryService.toCountry(new Locale("ar", "TN"), true));
         locales.add(CountryService.toCountry(new Locale("bg", "BG")));
+        locales.add(CountryService.toCountry(new Locale("bn", "BD")));
         locales.add(CountryService.toCountry(new Locale("cs", "CZ")));
         locales.add(CountryService.toCountry(new Locale("el", "GR")));
         locales.add(CountryService.toCountry(new Locale("fa", "IR"), true));

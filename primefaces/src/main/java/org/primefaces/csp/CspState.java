@@ -23,13 +23,12 @@
  */
 package org.primefaces.csp;
 
-import java.nio.charset.StandardCharsets;
-import java.util.*;
-
-import javax.faces.context.FacesContext;
-
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
+
+import javax.faces.context.FacesContext;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 public class CspState {
 
@@ -46,30 +45,43 @@ public class CspState {
     /**
      * Retrieves or generates a nonce (number used once) for Content Security Policy (CSP).
      *
-     * For AJAX requests and postbacks, it validates the existing nonce.
-     * For non-AJAX requests, it generates a new nonce.
-     *
      * @return the nonce as a Base64 encoded string
      * @throws CspException if there's a nonce mismatch or validation fails
      */
     public String getNonce() {
         if (nonce == null) {
+            // If it's a POST, we already generated a nonce in the initial request
+            // -> try to reuse and validate it
             if (context.isPostback() || context.getPartialViewContext().isAjaxRequest()) {
-                String nonceRequest = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.NONCE_PARAM);
-                nonceRequest = Objects.toString(nonceRequest, Constants.EMPTY_STRING);
-                String nonceViewState = Constants.EMPTY_STRING;
                 Map<String, Object> viewMap = context.getViewRoot().getViewMap(false);
-                if (viewMap != null) {
-                    nonceViewState = Objects.toString(viewMap.get(Constants.RequestParams.NONCE_PARAM), Constants.EMPTY_STRING);
-                    if (context.isPostback() && LangUtils.isNotBlank(nonceViewState) && !Objects.equals(nonceViewState, nonceRequest)) {
+
+                String nonceRequest = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.NONCE_PARAM);
+                String nonceViewState = viewMap == null ? null : (String) viewMap.get(Constants.RequestParams.NONCE_PARAM);
+
+                // Validate if nonceRequest matches nonceViewState
+                // There are some cases when the nonceViewState can be null, "" must not happen actually
+                // 1) if the request is a GET / initial request
+                //      this is handled by the outer IF
+                // 2) if the viewMap is null
+                //      this is most likely a case when stateless views are used
+                // 3) if the nonceViewState is null
+                //      this can happen when a navigation or forward is done inside the current request
+                if (nonceViewState != null) {
+                    // normalize both to make it comparable
+                    nonceRequest = Objects.toString(nonceRequest, Constants.EMPTY_STRING);
+                    nonceViewState = Objects.toString(nonceViewState, Constants.EMPTY_STRING);
+
+                    if (!Objects.equals(nonceRequest, nonceViewState)) {
                         throw new CspException("CSP nonce mismatch");
                     }
                 }
 
+                // always prefer nonceViewState over nonceRequest
                 nonce = LangUtils.isNotBlank(nonceViewState) ? nonceViewState : nonceRequest;
 
                 validate(nonce);
             }
+            // otherwise create a new nonce
             else {
                 nonce = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
                 if (!context.getViewRoot().isTransient()) {

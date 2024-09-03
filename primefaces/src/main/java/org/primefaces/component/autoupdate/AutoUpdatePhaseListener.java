@@ -23,17 +23,16 @@
  */
 package org.primefaces.component.autoupdate;
 
-import java.util.List;
-import java.util.Map;
+import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
-
-import org.primefaces.context.PrimeRequestContext;
-import org.primefaces.util.Constants;
-import org.primefaces.util.LangUtils;
+import java.util.List;
+import java.util.Map;
 
 public class AutoUpdatePhaseListener implements PhaseListener {
 
@@ -57,23 +56,9 @@ public class AutoUpdatePhaseListener implements PhaseListener {
                 String clientId = entries.getKey();
                 List<String> events = entries.getValue();
 
-                // observer events defined?
+                // events are optional, otherwise always try to update
                 if (events != null && !events.isEmpty()) {
-                    String update = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_UPDATE_PARAM);
-
-                    // empty update param == no event/observer will be updated this request -> skip
-                    if (LangUtils.isBlank(update)) {
-                        continue;
-                    }
-
-                    // if observers are defined on p:autoUpdate, at least one of the events must be updated in the current request
-                    boolean anyObserverUpdated = false;
-                    for (String event : events) {
-                        if (update.contains("@obs(" + event + ")")) {
-                            anyObserverUpdated = true;
-                        }
-                    }
-                    if (!anyObserverUpdated) {
+                    if (!requestContainsEventToUpdate(context, events)) {
                         continue;
                     }
                 }
@@ -90,4 +75,28 @@ public class AutoUpdatePhaseListener implements PhaseListener {
         return PhaseId.RENDER_RESPONSE;
     }
 
+    /**
+     * Checks if the current request contains one of the events to update.
+     *
+     * @param context the {@link FacesContext}
+     * @param events the events to be checked
+     * @return if it contains one of the events.
+     */
+    protected boolean requestContainsEventToUpdate(FacesContext context, List<String> events) {
+        String update = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_UPDATE_PARAM);
+
+        // empty update param == no event/observer will be updated this request -> skip
+        if (LangUtils.isBlank(update)) {
+            return false;
+        }
+
+        // if observers are defined on p:autoUpdate, at least one of the events must be updated in the current request
+        for (String event : events) {
+            if (update.contains("@obs(" + event + ")")) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

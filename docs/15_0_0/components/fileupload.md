@@ -188,7 +188,7 @@ public class FileUploadView {
 
 **Attention**: Since the files are send asynchronously in parallel to the server, the backing bean has to be **@RequestScoped**!<br/>
 Each file upload request is processed in a separate thread on server side. Special care has to be taken on thread safty.<br/>
-Be aware each file upload runs through the entire JSF lifecycle which implies that several attributes of the component
+Be aware each file upload runs through the entire Jakarta Faces lifecycle which implies that several attributes of the component
 (such as `process`, `update`, `oncomplete` and others) are processed or updated for each file. Consider to use `p:remoteCommand`
 which is called from client side after _all_ files are uploaded by checking the widgets `files` property. E.g.
 

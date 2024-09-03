@@ -1,6 +1,6 @@
 # Partial Submit
 
-Core JSF AJAX implementation and by default PrimeFaces serializes the whole form to build the
+Core Jakarta Faces AJAX implementation and by default PrimeFaces serializes the whole form to build the
 post data in AJAX requests so the same data is posted just like in a non-AJAX request.
 
 This has a downside in large views where you only need to process/execute a minor part of the view.

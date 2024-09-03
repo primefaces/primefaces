@@ -1,6 +1,6 @@
 # Schedule
 
-Schedule provides an Outlook Calendar, iCal like JSF component to manage events which is based on FullCalendar.
+Schedule provides an Outlook Calendar, iCal like Jakarta Faces component to manage events which is based on FullCalendar.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Schedule-1.html)
 

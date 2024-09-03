@@ -1,6 +1,6 @@
 # Terminal
 
-Terminal is an ajax powered web based terminal that brings desktop terminals to JSF.
+Terminal is an ajax powered web based terminal that brings desktop terminals to Jakarta Faces.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Terminal.html)
 

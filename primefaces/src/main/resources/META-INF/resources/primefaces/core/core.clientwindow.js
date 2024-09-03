@@ -176,7 +176,7 @@ if (!PrimeFaces.clientwindow) {
             a.href = uri;
 
             // set empty string as value if not defined or empty
-            if (!parameterValue || parameterValue.replace(/(^\s+)|(\s+$)/g, '').length === 0) {
+            if (!parameterValue || parameterValue.trim().length === 0) {
                 parameterValue = '';
             }
 
@@ -207,7 +207,7 @@ if (!PrimeFaces.clientwindow) {
                     var oldParameterValue = oldParameterPair.split('=')[1];
 
                     // don't add empty parameters again
-                    if (oldParameterValue && oldParameterValue.replace(/(^\s+)|(\s+$)/g, '').length > 0) {
+                    if (oldParameterValue && oldParameterValue.trim().length > 0) {
                         // skip the the old parameter if it's the same as the new parameter
                         if (oldParameterName !== parameterName) {
                             newParameters.push(oldParameterName + "=" + oldParameterValue);
