@@ -213,7 +213,7 @@ public void createLineModel() {
             .addDataset(new LineDataset()
                     .setData(65, 59, 80, 81, 56, 55, 40)
                     .setLabel("My First Dataset")
-                    .setBorderColor(new Color(75, 192, 192))
+                    .setBorderColor(new RGBAColor(75, 192, 192))
                     .setLineTension(0.1f)
                     .setFill(new Fill<Boolean>(false)))
             .setLabels("January", "February", "March", "April", "May", "June", "July"))
