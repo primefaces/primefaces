@@ -123,8 +123,10 @@ if (window.PrimeFaces) {
                 if (allowtypes) {
                     // normally a regex is a object like /(\.|\/)(csv)$/
                     // but as we parse the data-attribute from string to RegEx object, we must remove leading and ending slashes
-                    var transformedAllowtypes = allowtypes.substring(1, allowtypes.length - 1);
-                    allowtypesRegExp = new RegExp(transformedAllowtypes);
+                    var regexParts = allowtypes.match(/^\/(.*)\/([a-z]*)$/);
+                    var transformedAllowtypes = regexParts[1];
+                    var flags = regexParts[2];
+                    allowtypesRegExp = new RegExp(transformedAllowtypes, flags);
                 }
 
                 if (filelimit && value.length > filelimit) {
