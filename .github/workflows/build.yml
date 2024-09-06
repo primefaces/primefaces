@@ -59,7 +59,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: failed_tests_screenshots_java${{ matrix.java }}_${{ matrix.facesimpl }}
+          name: failed_tests_screenshots_java${{ matrix.java }}_${{ matrix.facesimpl }}_${{ matrix.profile }}
           if-no-files-found: ignore
           path: /tmp/pf_it/
 
@@ -89,6 +89,6 @@ jobs:
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: failed_tests_screenshots_java${{ matrix.java }}_${{ matrix.facesimpl }}_jakarta
+          name: failed_tests_screenshots_java${{ matrix.java }}_${{ matrix.facesimpl }}_${{ matrix.profile }}_jakarta
           if-no-files-found: ignore
           path: /tmp/pf_it/
