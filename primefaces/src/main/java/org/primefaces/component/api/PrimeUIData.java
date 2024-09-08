@@ -27,10 +27,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.faces.FacesException;
-import javax.faces.component.*;
+import javax.faces.application.ProjectStage;
+import javax.faces.component.UIComponent;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitContextWrapper;
@@ -41,8 +43,8 @@ import javax.faces.event.PhaseId;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
-import org.primefaces.model.LazyDataModel;
 import org.primefaces.component.patch.UIDataPatch;
+import org.primefaces.model.LazyDataModel;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.ELUtils;
 
@@ -59,18 +61,29 @@ public class PrimeUIData extends UIDataPatch {
     }
 
     public boolean isLazy() {
-        return ComponentUtils.eval(getStateHelper(), PropertyKeys.lazy, () -> {
+        return ComponentUtils.eval(getStateHelper(), UIData.PropertyKeys.lazy, () -> {
             boolean lazy = false;
+            FacesContext context = getFacesContext();
 
-            // if not set by xhtml, we need to check the type of the value binding
-            Class<?> type = ELUtils.getType(getFacesContext(), getValueExpression("value"), this::getValue);
-            if (type == null) {
-                LOGGER.warning("Unable to automatically determine the `lazy` attribute, fallback to false. "
-                        + "Either define the `lazy` attribute on the component or make sure the `value` attribute doesn't resolve to `null`. "
-                        + "clientId: " + getClientId());
+            try {
+                // if not set by xhtml, we need to check the type of the value binding
+                Class<?> type = ELUtils.getType(context, getValueExpression("value"), this::getValue);
+
+                if (type == null) {
+                    if (LOGGER.isLoggable(Level.WARNING) && context.isProjectStage(ProjectStage.Development)) {
+                        LOGGER.warning("Unable to automatically determine the `lazy` attribute, fallback to false. "
+                                + "Either define the `lazy` attribute on the component or make sure the `value` attribute doesn't resolve to `null`. "
+                                + "clientId: " + getClientId());
+                    }
+                }
+                else {
+                    lazy = LazyDataModel.class.isAssignableFrom(type);
+                }
             }
-            else {
-                lazy = LazyDataModel.class.isAssignableFrom(type);
+            catch (Exception e) {
+                LOGGER.severe("Exception occurred while determining the `lazy` attribute, fallback to false. "
+                        + "To prevent this error set the `lazy` property directly on the component. "
+                        + "Error: " + e.getMessage() + ". clientId: " + getClientId());
             }
 
             // remember in ViewState, to not do the same check again
@@ -272,18 +285,6 @@ public class PrimeUIData extends UIDataPatch {
 
     protected boolean shouldSkipChildren(FacesContext context) {
         return false;
-    }
-
-    @Override
-    public boolean invokeOnComponent(FacesContext context, String clientId, ContextCallback callback)
-            throws FacesException {
-
-        // skip if the component is not a children of the UIData
-        if (!clientId.startsWith(getClientId(context))) {
-            return false;
-        }
-
-        return super.invokeOnComponent(context, clientId, callback);
     }
 
     @Override
