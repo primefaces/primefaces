@@ -41,6 +41,8 @@ import org.primefaces.util.LangUtils;
  */
 public class AutoUpdateListener implements ComponentSystemEventListener, Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private static final String COMPONENT_CLIENT_IDS = AutoUpdateListener.class.getName() + ".COMPONENT_CLIENT_IDS";
 
     private static final AutoUpdateListener INSTANCE = new AutoUpdateListener();

@@ -20,7 +20,7 @@
         <minify.disabled>true</minify.disabled>
         <jakarta.jar.skip>false</jakarta.jar.skip>
         <resources.dir.compressed>${project.build.directory}/classes/META-INF/resources/primefaces</resources.dir.compressed>
-        <mockito.version>5.12.0</mockito.version>
+        <mockito.version>5.13.0</mockito.version>
         <sonar.sources>src/main/java,src/main/resources</sonar.sources>
     </properties>
 
@@ -1277,7 +1277,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.4.0</version>
+                <version>3.5.0</version>
             </plugin>
         </plugins>
     </build>

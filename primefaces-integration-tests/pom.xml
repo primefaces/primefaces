@@ -35,7 +35,7 @@
         <tomcat.version>9.0.93</tomcat.version>
         <resteasy.version>5.0.9.Final</resteasy.version>
         <owb.version>2.0.27</owb.version>
-        <jetty.version>9.4.55.v20240627</jetty.version>
+        <jetty.version>9.4.56.v20240826</jetty.version>
     </properties>
 
     <dependencies>
@@ -216,7 +216,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.16.0</version>
+            <version>3.17.0</version>
             <scope>runtime</scope>
         </dependency>
         
