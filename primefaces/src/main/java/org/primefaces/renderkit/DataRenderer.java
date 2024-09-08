@@ -33,7 +33,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.api.Pageable;
 import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.api.UIData;
+import org.primefaces.component.api.PrimeUIData;
 import org.primefaces.component.api.UIPageableData;
 import org.primefaces.component.paginator.CurrentPageReportRenderer;
 import org.primefaces.component.paginator.FirstPageLinkRenderer;
@@ -190,7 +190,7 @@ public class DataRenderer extends CoreRenderer {
         wb.append("}");
     }
 
-    public void encodeFacet(FacesContext context, UIData data, String facet, String styleClass) throws IOException {
+    public void encodeFacet(FacesContext context, PrimeUIData data, String facet, String styleClass) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         UIComponent component = data.getFacet(facet);
 

@@ -4,6 +4,11 @@
     "https://checkstyle.org/dtds/configuration_1_2.dtd">
 <module name="Checker">
 
+    <module name="SuppressionSingleFilter">
+        <property name="checks" value=".*"/>
+        <property name="files" value="UIDataPatch.java"/>
+    </module>
+
     <module name="FileTabCharacter"/>
 
     <module name="LineLength">
