@@ -27,6 +27,8 @@ A bar chart provides a way of showing data values represented as vertical bars. 
 | rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 | ariaLabel | title | String | The aria-label attribute is used to define a string that labels the current element for accessibility. (default to chart title).
 | binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
+| canvasStyle | null | String | Inline style of the canvas element.
+| canvasStyleClass | null | String | Style class of the canvas element.
 | extender | null | String | Name of JavaScript function to extend the options of the underlying Chart.js plugin.
 | style | null | String | Inline style of the component.
 | styleClass | null | String | Style class of the component.

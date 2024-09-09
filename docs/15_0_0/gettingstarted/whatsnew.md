@@ -16,6 +16,9 @@ Look into [migration guide](https://primefaces.github.io/primefaces/15_0_0/#/../
 * Captcha
     * Added [hCaptcha](https://www.hcaptcha.com/) support
     
+* Chart
+    * Added `canvasStyle` and `canvasStyleClass` attributes to support custom styling of the canvas element
+    
 * ConfirmDialog/ConfirmPopup
     * `yesButtonLabel`: overrides label of 'Yes' button (and restores it before the global confirm dialog is reused elsewhere)
     * `yesButtonClass`: adds given class to 'Yes' button (and removes it before the global confirm dialog is reused elsewhere)
