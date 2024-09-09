@@ -24,15 +24,13 @@
 package org.primefaces.component.chart;
 
 import java.io.IOException;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.FacetUtils;
-import org.primefaces.util.FastStringWriter;
-import org.primefaces.util.HTML;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.*;
 
 public class ChartRenderer extends CoreRenderer {
 
@@ -54,19 +52,26 @@ public class ChartRenderer extends CoreRenderer {
         String clientId = chart.getClientId(context);
         String style = chart.getStyle();
         String styleClass = chart.getStyleClass();
+        String canvasStyle = chart.getCanvasStyle();
+        String canvasStyleClass = chart.getCanvasStyleClass();
         styleClass = (styleClass != null) ? "ui-chart " + styleClass : "ui-chart";
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, "styleClass");
+        if (LangUtils.isNotEmpty(style)) {
+            writer.writeAttribute("style", style, "style");
+        }
 
         writer.startElement("canvas", null);
         writer.writeAttribute("id", clientId + "_canvas", null);
         writer.writeAttribute(HTML.ARIA_ROLE, "img", null);
-        String ariaLabel = chart.getAriaLabel();
-        writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
-        if (style != null) {
-            writer.writeAttribute("style", style, "style");
+        writer.writeAttribute(HTML.ARIA_LABEL, chart.getAriaLabel(), null);
+        if (LangUtils.isNotEmpty(canvasStyle)) {
+            writer.writeAttribute("style", canvasStyle, null);
+        }
+        if (LangUtils.isNotEmpty(canvasStyleClass)) {
+            writer.writeAttribute("class", canvasStyleClass, null);
         }
         writer.endElement("canvas");
 
