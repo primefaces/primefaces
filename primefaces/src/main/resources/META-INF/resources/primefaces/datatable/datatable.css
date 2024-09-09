@@ -346,15 +346,15 @@
     }
 
     .ui-datatable-reflow .ui-datatable-data td[role="gridcell"]:not(.ui-helper-hidden) { 
-        text-align: left;
-        display: block;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        clear: left;
+        float: left;
         border: 0px none;
-        width: 100%;
-		-webkit-box-sizing: border-box;
-		-moz-box-sizing: border-box;
-		box-sizing: border-box;
-		float: left;
-		clear: left;
+        display: block;
+        text-align: left !important;
+        width: 100% !important;
     }
     
     .ui-datatable-reflow .ui-datatable-data.ui-widget-content {
@@ -367,10 +367,12 @@
     }
 
     .ui-datatable-reflow .ui-datatable-data td[role="gridcell"] .ui-column-title { 
-        padding: .4em; 
-        min-width: 30%; 
         display: inline-block;
+        font-weight: bold;
         margin: -.4em 1em -.4em -.4em;
+        min-width: 30%;
+        max-width: 35%; 
+        padding: .4em;
     }
     
     .ui-datatable-reflow .ui-reflow-label,
