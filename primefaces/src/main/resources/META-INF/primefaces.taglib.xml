@@ -31534,6 +31534,22 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Inline style of the canvas element.]]>
+            </description>
+            <name>canvasStyle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class of the canvas element.]]>
+            </description>
+            <name>canvasStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]>
             </description>
             <name>ariaLabel</name>
