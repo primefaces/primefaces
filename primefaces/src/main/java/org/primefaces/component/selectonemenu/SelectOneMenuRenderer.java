@@ -118,10 +118,11 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
         String style = menu.getStyle();
         String styleClass = createStyleClass(menu, SelectOneMenu.STYLE_CLASS);
-
-        if (ComponentUtils.isRTL(context, menu)) {
-            styleClass = styleClass + " " + SelectOneMenu.RTL_CLASS;
-        }
+        styleClass = getStyleClassBuilder(context)
+                .add(styleClass)
+                .add(ComponentUtils.isRTL(context, menu),  SelectOneMenu.RTL_CLASS)
+                .add(menu.isReadonly(), "ui-state-readonly")
+                .build();
 
         writer.startElement("div", menu);
         writer.writeAttribute("id", clientId, "id");
@@ -197,6 +198,9 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
         if (menu.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", null);
+        }
+        if (menu.isReadonly()) {
+            writer.writeAttribute("readonly", "readonly", null);
         }
         if (menu.getOnkeydown() != null) {
             writer.writeAttribute("onkeydown", menu.getOnkeydown(), null);
