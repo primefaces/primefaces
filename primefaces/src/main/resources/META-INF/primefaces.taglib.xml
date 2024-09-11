@@ -14197,11 +14197,11 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Controls padding of the decimal places. If true, always pads the decimal with zeros.]]>
+                <![CDATA[Allow padding the decimal places with zeros. If set to 'floats', padding is only done when there are some decimals (up to the number of decimal places from the decimalPlaces variable). If set to an integer, padding will use that number for adding the zeros. If set to "true" it will always pad the decimal places with zeroes, and never if set to "false". Default is "true"]]>
             </description>
             <name>padControl</name>
             <required>false</required>
-            <type>java.lang.Boolean</type>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
