@@ -42,6 +42,7 @@ import software.xdev.chartjs.model.datapoint.BubbleDataPoint;
 import software.xdev.chartjs.model.datapoint.ScatterDataPoint;
 import software.xdev.chartjs.model.dataset.*;
 import software.xdev.chartjs.model.enums.FontStyle;
+import software.xdev.chartjs.model.enums.IndexAxis;
 import software.xdev.chartjs.model.enums.ScalesPosition;
 import software.xdev.chartjs.model.options.*;
 import software.xdev.chartjs.model.options.elements.Fill;
