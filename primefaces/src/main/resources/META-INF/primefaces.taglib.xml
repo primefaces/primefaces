@@ -24883,9 +24883,17 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Flag indicating whether the component should be disabled.]]>
             </description>
             <name>disabled</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Flag indicating that this input element will prevent changes by the user.]]>
+            </description>
+            <name>readonly</name>
             <required>false</required>
             <type>boolean</type>
         </attribute>
@@ -24915,7 +24923,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Client side callback to execute when the value changes.]]>
             </description>
             <name>onchange</name>
             <required>false</required>
@@ -24923,7 +24931,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Inline style of the component.]]>
             </description>
             <name>style</name>
             <required>false</required>
@@ -24931,7 +24939,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Style class of the component.]]>
             </description>
             <name>styleClass</name>
             <required>false</required>
@@ -24971,7 +24979,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Position of the element in the tabbing order.]]>
             </description>
             <name>tabindex</name>
             <required>false</required>
@@ -24979,7 +24987,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[When true, allows the user to edit the dropdown value by typing directly into the input field.]]>
             </description>
             <name>editable</name>
             <required>false</required>
@@ -24987,7 +24995,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Client side callback to execute when a key is pressed down.]]>
             </description>
             <name>onkeydown</name>
             <required>false</required>
@@ -24995,7 +25003,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Client side callback to execute when a key is released.]]>
             </description>
             <name>onkeyup</name>
             <required>false</required>
