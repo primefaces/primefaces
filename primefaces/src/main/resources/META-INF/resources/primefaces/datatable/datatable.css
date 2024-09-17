@@ -160,7 +160,6 @@
 
 /** Accessibility **/
 .ui-datatable-data td[role="gridcell"]:focus,
-.ui-datatable-data td[role="gridcell"] *:focus,
 .ui-datatable-data td[role="grid"] [tabindex="0"]:focus {
   outline: var(--primary-color, #90caf9);
   outline-style: solid;
