@@ -3955,7 +3955,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         if(inputContainer.length) {
             var inputs = inputContainer.find(':input[type!=hidden]'),
-            disabledInputs = inputs.filter(':disabled');
+            disabledInputs = inputs.filter(':disabled:not([data-disabled-by-editor="true"])');
 
             if(inputs.length === disabledInputs.length) {
                 this.tabCell(targetCell, forward);
