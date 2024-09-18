@@ -169,7 +169,8 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
                                         Object filterValue,
                                         Locale locale) {
 
-        Supplier<Expression<String>> fieldExpressionAsString = () -> caseSensitive
+        boolean isCaseSensitive = caseSensitive || !(CharSequence.class.isAssignableFrom(pd.getPropertyType()) || pd.getPropertyType() == char.class);
+        Supplier<Expression<String>> fieldExpressionAsString = () -> isCaseSensitive
                 ? fieldExpression.as(String.class)
                 : cb.upper(fieldExpression.as(String.class));
         Supplier<Collection<Object>> filterValueAsCollection = () -> filterValue.getClass().isArray()
