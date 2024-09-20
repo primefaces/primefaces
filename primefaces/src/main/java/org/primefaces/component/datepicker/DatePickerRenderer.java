@@ -298,8 +298,13 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
                 .attr("stepMinute", datePicker.getStepMinute(), 1)
                 .attr("stepSecond", datePicker.getStepSecond(), 1)
                 .attr("stepMillisecond", datePicker.getStepSecond(), 1)
-                .attr("hideOnDateTimeSelect", datePicker.isHideOnDateTimeSelect(), false);
+                .attr("hideOnDateTimeSelect", datePicker.isHideOnDateTimeSelect(), false)
+                .attr("defaultHour", datePicker.getDefaultHour())
+                .attr("defaultMinute", datePicker.getDefaultMinute())
+                .attr("defaultSecond", datePicker.getDefaultSecond())
+                .attr("defaultMillisecond", datePicker.getDefaultMillisecond());
         }
+
 
         if ("range".equalsIgnoreCase(selectionMode)) {
             wb.attr("hideOnRangeSelection", datePicker.isHideOnRangeSelection(), false);
