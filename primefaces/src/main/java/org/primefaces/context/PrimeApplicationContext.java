@@ -81,7 +81,7 @@ public class PrimeApplicationContext {
     private final PrimeEnvironment environment;
     private final PrimeConfiguration config;
     private final ClassLoader applicationClassLoader;
-    private final Map<Class<?>, Map<String, Object>> enumCacheMap;
+    private final Map<Map.Entry<Class<?>, String>, Map<String, Object>> enumCacheMap;
     private final Map<Class<?>, Map<String, Object>> constantsCacheMap;
     private final Map<Class<? extends UIComponent>, Map<String, Class<? extends Exporter<?>>>> exporters;
     private final Map<String, ClientValidationConstraint> beanValidationClientConstraintMapping;
@@ -304,7 +304,7 @@ public class PrimeApplicationContext {
         return cacheProvider.get();
     }
 
-    public Map<Class<?>, Map<String, Object>> getEnumCacheMap() {
+    public Map<Map.Entry<Class<?>, String>, Map<String, Object>> getEnumCacheMap() {
         return enumCacheMap;
     }
 

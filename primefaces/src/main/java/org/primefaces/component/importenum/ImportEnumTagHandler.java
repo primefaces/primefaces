@@ -110,13 +110,14 @@ public class ImportEnumTagHandler extends TagHandler {
         if (type.isEnum()) {
 
             boolean cacheEnabled = facesContext.isProjectStage(ProjectStage.Production);
-            Map<Class<?>, Map<String, Object>> cache
+            Map<Map.Entry<Class<?>, String>, Map<String, Object>> cache
                     = PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getEnumCacheMap();
+            Map.Entry<Class<?>, String> cacheKey = Map.entry(type, allSuffix != null ? allSuffix : "");
 
             Map<String, Object> enums;
 
-            if (cacheEnabled && cache.containsKey(type)) {
-                enums = cache.get(type);
+            if (cacheEnabled && cache.containsKey(cacheKey)) {
+                enums = cache.get(cacheKey);
             }
             else {
                 enums = new EnumHashMap<>(type);
@@ -135,7 +136,7 @@ public class ImportEnumTagHandler extends TagHandler {
                 enums = Collections.unmodifiableMap(enums);
 
                 if (cacheEnabled) {
-                    cache.put(type, enums);
+                    cache.put(cacheKey, enums);
                 }
             }
 

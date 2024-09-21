@@ -21,12 +21,20 @@
         <div class="card">
             <p:importEnum type="jakarta.faces.application.ProjectStage" var="JsfProjectStages"
                           allSuffix="ALL_ENUM_VALUES"/>
+            <p:importEnum type="jakarta.faces.application.ProjectStage" var="Stages"
+                          allSuffix="ALL_STAGES"/>
 
             <h5 class="mt-0">Development</h5>
             <h:outputText value="#{JsfProjectStages.Development}" />
 
             <h5>ALL</h5>
             <ui:repeat var="current" value="#{JsfProjectStages.ALL_ENUM_VALUES}">
+                <h:outputText value="#{current}" styleClass="mb-2 block"/>
+            </ui:repeat>
+
+            <h5>ALL_STAGES</h5>
+            <p>You can use the same enum with different variable names and suffix for all enums, if necessary.</p>
+            <ui:repeat var="current" value="#{Stages.ALL_STAGES}">
                 <h:outputText value="#{current}" styleClass="mb-2 block"/>
             </ui:repeat>
         </div>
