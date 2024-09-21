@@ -26,6 +26,7 @@ package org.primefaces.component.importenum;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.faces.FacesException;
 import javax.faces.application.ProjectStage;
@@ -43,8 +44,8 @@ import org.primefaces.util.LangUtils;
  * {@link TagHandler} for the <code>ImportEnum</code> component.
  */
 public class ImportEnumTagHandler extends TagHandler {
-
     private static final String DEFAULT_ALL_SUFFIX = "ALL_VALUES";
+    private static final Logger LOG = Logger.getLogger(ImportEnumTagHandler.class.getName());
 
     private final TagAttribute typeTagAttribute;
     private final TagAttribute varTagAttribute;
@@ -109,15 +110,21 @@ public class ImportEnumTagHandler extends TagHandler {
 
         if (type.isEnum()) {
 
-            boolean cacheEnabled = facesContext.isProjectStage(ProjectStage.Production);
-            Map<Map.Entry<Class<?>, String>, Map<String, Object>> cache
+            // allSuffix was not considered by the cache.
+            // allSuffix now got deprecated. If still used, create a new map each time.
+            boolean cacheEnabled = allSuffix == null && facesContext.isProjectStage(ProjectStage.Production);
+            Map<Class<?>, Map<String, Object>> cache
                     = PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getEnumCacheMap();
-            Map.Entry<Class<?>, String> cacheKey = Map.entry(type, allSuffix != null ? allSuffix : "");
+
+            if (allSuffix != null && facesContext.isProjectStage(ProjectStage.Development)) {
+                LOG.info("The allSuffix attribute of '<p:importEnum/>' is deprecated and will be removed in a "
+                        + "future version. Please use the 'ALL_VALUES' attribute to access all enum values.");
+            }
 
             Map<String, Object> enums;
 
-            if (cacheEnabled && cache.containsKey(cacheKey)) {
-                enums = cache.get(cacheKey);
+            if (cacheEnabled && cache.containsKey(type)) {
+                enums = cache.get(type);
             }
             else {
                 enums = new EnumHashMap<>(type);
@@ -136,7 +143,7 @@ public class ImportEnumTagHandler extends TagHandler {
                 enums = Collections.unmodifiableMap(enums);
 
                 if (cacheEnabled) {
-                    cache.put(cacheKey, enums);
+                    cache.put(type, enums);
                 }
             }
 
