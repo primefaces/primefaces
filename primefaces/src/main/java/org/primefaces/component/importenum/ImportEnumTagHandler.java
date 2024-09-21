@@ -129,6 +129,8 @@ public class ImportEnumTagHandler extends TagHandler {
             else {
                 enums = new EnumHashMap<>(type);
 
+                enums.put(DEFAULT_ALL_SUFFIX, type.getEnumConstants());
+
                 for (Object value : type.getEnumConstants()) {
                     Enum<?> currentEnum = (Enum<?>) value;
                     enums.put(currentEnum.name(), currentEnum);
@@ -137,8 +139,6 @@ public class ImportEnumTagHandler extends TagHandler {
                 if (allSuffix != null) {
                     enums.put(allSuffix, type.getEnumConstants());
                 }
-
-                enums.put(DEFAULT_ALL_SUFFIX, type.getEnumConstants());
 
                 enums = Collections.unmodifiableMap(enums);
 
