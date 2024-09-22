@@ -41,7 +41,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        java: [11, 21, 22]
+        java: [11, 21, 23]
         facesimpl: [ 'mojarra-2.3', 'myfaces-2.3']
     steps:
       - uses: actions/checkout@v4
