@@ -110,6 +110,10 @@
                 <version>3.13.0</version>
                 <configuration>
                     <encoding>${project.build.sourceEncoding}</encoding>
+                    <compilerArgs>
+                        <!-- see: https://github.com/projectlombok/lombok/issues/3752 -->
+                        <arg>-proc:full</arg>
+                    </compilerArgs>
                 </configuration>
                 <executions>
                     <execution>
