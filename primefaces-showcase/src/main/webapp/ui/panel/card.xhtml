@@ -2,6 +2,7 @@
                 xmlns:ui="jakarta.faces.facelets"
                 xmlns:p="primefaces"
                 xmlns:f="jakarta.faces.core"
+                xmlns:pt="jakarta.faces.passthrough"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="head">
@@ -18,14 +19,16 @@
     </ui:define>
 
     <ui:define name="description">
-        Card is a flexible container component.
+        Card is a flexible container component. A card can be utilized in many use cases as a result no role is enforced, 
+        in fact a role may not be necessary if the card is used for presentational purposes only. 
+        Any valid attribute is passed to the container element so if you require to use one of the landmark roles like <code>region</code>, you may use the <code>pt:role</code> property.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/card"/>
 
     <ui:define name="implementation">
 
-        <p:card style="width: 25rem; margin-bottom: 2em">
+        <p:card style="width: 25rem; margin-bottom: 2em" pt:role="region">
             <f:facet name="title">
                 Simple Card
             </f:facet>
@@ -35,7 +38,7 @@
 
         </p:card>
 
-        <p:card style="width: 25em">
+        <p:card style="width: 25em" pt:role="region">
             <f:facet name="header">
                 <img alt="user header" src="../../resources/demo/images/usercard.png"/>
             </f:facet>
