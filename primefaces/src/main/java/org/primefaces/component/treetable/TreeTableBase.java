@@ -531,6 +531,7 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
         getStateHelper().put(PropertyKeys.exportTag, exportTag);
     }
 
+    @Override
     protected void processNode(FacesContext context, PhaseId phaseId, TreeNode root, TreeNode treeNode, String rowKey) {
         if (!isPaginator() || root != treeNode) {
             super.processNode(context, phaseId, root, treeNode, rowKey);
