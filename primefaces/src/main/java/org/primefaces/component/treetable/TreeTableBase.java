@@ -25,10 +25,6 @@ package org.primefaces.component.treetable;
 
 import javax.el.MethodExpression;
 import javax.faces.component.behavior.ClientBehaviorHolder;
-import javax.faces.context.FacesContext;
-import javax.faces.event.PhaseId;
-
-import java.util.List;
 
 import org.primefaces.component.api.*;
 import org.primefaces.model.TreeNode;
