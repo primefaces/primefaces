@@ -319,23 +319,32 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
      * calculations to their relative position.
      */
     alignUsing: function(position, feedback) {
-        this.jq.removeClass('ui-tooltip-left ui-tooltip-right ui-tooltip-top ui-tooltip-bottom');
-        switch (this.cfg.position) {
+        // Determine the position of the tooltip
+        // If trackMouse is enabled, use cfg.position
+        // Otherwise, use cfg.atPos if available, or fall back to cfg.position
+        var configPosition = this.cfg.trackMouse ? this.cfg.position : (this.cfg.atPos || this.cfg.position);
+        
+        // Extract the last word from the position string (e.g., "top right" becomes "right")
+        configPosition = configPosition.split(' ').pop().trim();
+        
+        var tooltipClass = 'ui-tooltip-';
+        switch (configPosition) {
             case "right":
             case "left":
-                this.jq.addClass('ui-tooltip-' +
-                    (feedback['horizontal'] == 'left' ? 'right' : 'left'));
+                tooltipClass += feedback['horizontal'] == 'left' ? 'right' : 'left';
                 break;
             case "top":
             case "bottom":
-                this.jq.addClass('ui-tooltip-' +
-                    (feedback['vertical'] == 'top' ? 'bottom' : 'top'));
+                tooltipClass += feedback['vertical'] == 'top' ? 'bottom' : 'top';
                 break;
         }
-        this.jq.css({
-            left: position['left'] + 'px',
-            top: position['top'] + 'px'
-        });
+        
+        this.jq.removeClass('ui-tooltip-left ui-tooltip-right ui-tooltip-top ui-tooltip-bottom')
+               .addClass(tooltipClass)
+               .css({
+                   left: position['left'] + 'px',
+                   top: position['top'] + 'px'
+               });
     },
 
     /**
@@ -344,7 +353,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
     align: function() {
         var $this = this;
         // #10100 make sure z-Index is above any dynamically changing zindex like dialogs.
-        var zIndex = (PrimeFaces.nextZindex() + 1000);
+        var zIndex = (parseInt(PrimeFaces.nextZindex(), 10) + 1000);
         this.jq.css({
             left: '',
             top: '',
