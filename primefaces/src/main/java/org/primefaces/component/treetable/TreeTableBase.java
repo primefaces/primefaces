@@ -530,33 +530,4 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
     public void setExportTag(String exportTag) {
         getStateHelper().put(PropertyKeys.exportTag, exportTag);
     }
-
-    @Override
-    protected void processNode(FacesContext context, PhaseId phaseId, TreeNode root, TreeNode treeNode, String rowKey) {
-        if (!isPaginator() || root != treeNode) {
-            super.processNode(context, phaseId, root, treeNode, rowKey);
-        }
-        else {
-            if (treeNode != null && shouldVisitNode(treeNode) && treeNode.getChildCount() > 0) {
-                int first = getFirst();
-                int rows = getRows() == 0 ? getRowCount() : getRows();
-
-                processColumnChildren(context, phaseId, root, rowKey);
-
-                List<TreeNode> children = root.getChildren();
-                int childCount = root.getChildCount();
-                int last = (first + rows);
-                if (last > childCount) {
-                    last = childCount;
-                }
-
-                for (int i = first; i < last; i++) {
-                    TreeNode child = children.get(i);
-                    String childRowKey = rowKey == null ? String.valueOf(i) : rowKey + SEPARATOR + i;
-                    processNode(context, phaseId, root, child, childRowKey);
-                }
-            }
-        }
-    }
-
 }
