@@ -4,7 +4,7 @@
       xmlns:f="jakarta.faces.core"
       xmlns:ui="jakarta.faces.facelets"
       xmlns:p="primefaces"
-      xmlns:sc="http://primefaces.org/ui/showcase"
+      xmlns:sc="primefaces.showcase"
       lang="#{p:language()}" xml:lang="#{p:language()}">
 
     <h:head>
@@ -44,7 +44,7 @@
                     <div class="layout-news-container">
                         <h:graphicImage name="showcase/images/news/topbar-newyear-logo.svg" alt="News" styleClass="layout-news-logo ml-2" />
                         <h3 class="layout-news-header px-2"><span>UP TO 50% DISCOUNT AT PRIMESTORE</span></h3>
-                        <a href="https://www.primefaces.org/store" target="_blank" class="layout-news-button">
+                        <a href="https://www.primefaces.org/store" target="_blank" rel="noopener noreferrer" class="layout-news-button">
                             VISIT STORE
                         </a>
                         <a tabindex="0" class="layout-news-close">
@@ -68,19 +68,19 @@
                         </div>
                         <div class="feature-documentation">
                             <ui:fragment rendered="#{not empty documentationLink}">
-                                <a class="documentation-link" href="https://primefaces.github.io/primefaces/14_0_0/##{documentationLink}" target="_blank">
+                                <a class="documentation-link" href="https://primefaces.github.io/primefaces/14_0_0/##{documentationLink}" target="_blank" rel="noopener noreferrer">
                                     <i class="pi pi-external-link"></i> 
                                     <span>SERVER API</span>
                                 </a>
                             </ui:fragment>
                             <ui:fragment rendered="#{not empty widgetLink}">
-                                <a class="documentation-link" href="https://primefaces.github.io/primefaces/jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.#{widgetLink}.html#{not empty widgetLinkHash ? '#'.concat(widgetLinkHash) : ''}" target="_blank">
+                                <a class="documentation-link" href="https://primefaces.github.io/primefaces/jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.#{widgetLink}.html#{not empty widgetLinkHash ? '#'.concat(widgetLinkHash) : ''}" target="_blank" rel="noopener noreferrer">
                                     <i class="pi pi-external-link"></i> 
                                     <span>CLIENT API</span>
                                 </a>
                             </ui:fragment>
                             <ui:fragment rendered="#{not empty primefacesClientApiLink}">
-                                <a class="documentation-link" href="https://primefaces.github.io/primefaces/jsdocs/#{primefacesClientApiLink}" target="_blank">
+                                <a class="documentation-link" href="https://primefaces.github.io/primefaces/jsdocs/#{primefacesClientApiLink}" target="_blank" rel="noopener noreferrer">
                                     <i class="pi pi-external-link"></i> 
                                     <span>CLIENT API</span>
                                 </a>
@@ -88,7 +88,7 @@
                             <ui:fragment rendered="#{tagLibrary.isTagVdlAvailable(documentationLink)}">
                                 <a class="documentation-link"
                                    href="https://primefaces.github.io/primefaces/vdldoc/p/#{tagLibrary.getTagVdlComponent(documentationLink)}.html"
-                                   target="_blank">
+                                   target="_blank" rel="noopener noreferrer">
                                     <i class="pi pi-external-link"></i>
                                     <span>TAG VDL</span>
                                 </a>
