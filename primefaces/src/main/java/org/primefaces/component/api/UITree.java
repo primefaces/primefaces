@@ -645,7 +645,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         if (treeNode != null && shouldVisitNode(treeNode) && treeNode.getChildCount() > 0) {
             int childIndex = 0;
             for (Iterator<TreeNode> iterator = treeNode.getChildren().iterator(); iterator.hasNext(); ) {
-                String childRowKey = rowKey == null ? String.valueOf(childIndex) : rowKey + SEPARATOR + childIndex;
+                String childRowKey = childRowKey(rowKey, childIndex);
 
                 processNode(context, phaseId, root, iterator.next(), childRowKey);
 
@@ -1000,7 +1000,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         if (treeNode != null && shouldVisitNode(treeNode) && treeNode.getChildCount() > 0) {
             int childIndex = 0;
             for (Iterator<TreeNode> iterator = treeNode.getChildren().iterator(); iterator.hasNext(); ) {
-                String childRowKey = rowKey == null ? String.valueOf(childIndex) : rowKey + SEPARATOR + childIndex;
+                String childRowKey = childRowKey(rowKey, childIndex);
 
                 if (visitNode(context, root, callback, iterator.next(), childRowKey)) {
                     return true;
@@ -1138,5 +1138,9 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     public boolean isCheckboxSelectionMode() {
         String selectionMode = getSelectionMode();
         return "checkbox".equals(selectionMode);
+    }
+
+    protected String childRowKey(String parentRowKey, int childIndex) {
+        return parentRowKey == null ? String.valueOf(childIndex) : parentRowKey + SEPARATOR + childIndex;
     }
 }

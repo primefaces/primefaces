@@ -584,4 +584,33 @@ public class TreeTable extends TreeTableBase {
         return getFacesContext().getCurrentPhaseId() == PhaseId.RENDER_RESPONSE
                 && (!ComponentUtils.isNestedWithinIterator(this) || columns.stream().noneMatch(DynamicColumn.class::isInstance));
     }
+
+    @Override
+    protected void processNode(FacesContext context, PhaseId phaseId, TreeNode root, TreeNode treeNode, String rowKey) {
+        if (!isPaginator() || root != treeNode) {
+            super.processNode(context, phaseId, root, treeNode, rowKey);
+        }
+        else {
+            if (treeNode != null && shouldVisitNode(treeNode) && treeNode.getChildCount() > 0) {
+                int first = getFirst();
+                int rows = getRows() == 0 ? getRowCount() : getRows();
+
+                processColumnChildren(context, phaseId, root, rowKey);
+
+                List<TreeNode> children = root.getChildren();
+                int childCount = root.getChildCount();
+                int last = (first + rows);
+                if (last > childCount) {
+                    last = childCount;
+                }
+
+                for (int i = first; i < last; i++) {
+                    TreeNode child = children.get(i);
+                    String childRowKey = childRowKey(rowKey, i);
+                    processNode(context, phaseId, root, child, childRowKey);
+                }
+            }
+        }
+    }
+
 }
