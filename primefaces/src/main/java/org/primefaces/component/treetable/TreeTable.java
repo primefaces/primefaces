@@ -610,7 +610,7 @@ public class TreeTable extends TreeTableBase {
 
                 for (int i = first; i < last; i++) {
                     TreeNode child = children.get(i);
-                    String childRowKey = rowKey == null ? String.valueOf(i) : rowKey + SEPARATOR + i;
+                    String childRowKey = childRowKey(rowKey, i);
                     processNode(context, phaseId, root, child, childRowKey);
                 }
             }
