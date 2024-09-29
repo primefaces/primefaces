@@ -100,6 +100,9 @@ public class DefaultWebDriverAdapter implements WebDriverAdapter {
                 chromeOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
                 if (config.isWebdriverHeadless()) {
                     chromeOptions.addArguments("--headless=new");
+                    // Chrome 128 /129 - see https://stackoverflow.com/questions/78996364/chrome-129-headless-shows-blank-window,
+                    // https://issues.chromium.org/issues/359921643
+                    // Should be fixed for Chrome 130
                 }
                 chromeOptions.setCapability(ChromeOptions.LOGGING_PREFS, logPrefs);
 
