@@ -121,6 +121,7 @@ public final class PrimeSelenium {
     public static void goTo(AbstractPrimePage page) {
         WebDriver driver = WebDriverProvider.get();
         driver.get(getUrl(page));
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.documentLoaded());
         if (isSafari()) {
             /*
              * Safari has sometimes weird timing issues. (At least on Github Actions.) So wait a bit.
@@ -137,6 +138,7 @@ public final class PrimeSelenium {
     public static void goTo(String partialUrl) {
         WebDriver driver = WebDriverProvider.get();
         driver.get(getUrl(partialUrl));
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.documentLoaded());
         if (isSafari()) {
             /*
              * Safari has sometimes weird timing issues. (At least on Github Actions.) So wait a bit.
