@@ -129,7 +129,7 @@ public final class PrimeSelenium {
         }
         else if (isChrome()) {
             /*
-             * Chrome (since 127) has sometimes (unpredictable) "org.openqa.selenium.NoSuchElementException: no such element: .." for the first operation.
+             * Chrome (since 128) has sometimes (unpredictable) "org.openqa.selenium.NoSuchElementException: no such element: .." for the first operation.
              * So try to wait a bit. Or maybe find better check to detect page-load is finished.
              */
             wait(200);
@@ -152,7 +152,7 @@ public final class PrimeSelenium {
         }
         else if (isChrome()) {
             /*
-             * Chrome (since 127) has sometimes (unpredictable) "org.openqa.selenium.NoSuchElementException: no such element: .." for the first operation.
+             * Chrome (since 128) has sometimes (unpredictable) "org.openqa.selenium.NoSuchElementException: no such element: .." for the first operation.
              * So try to wait a bit. Or maybe find better check to detect page-load is finished.
              */
             wait(200);
