@@ -33,6 +33,7 @@ Look into [migration guide](https://primefaces.github.io/primefaces/15_0_0/#/../
     * Added attribute `frozenColumnsAlignment` to support alignment of frozen columns left and right
     * Added `expandIcon`/`collapseIcon` attributes for RowToggler
     * Added `rowsPerPage` in the PageEvent AJAX event
+    * Added `scrollBarPosition` attribute to support horizontal scrollbar at the `top`
 
 * DatePicker
     * Added `defaultHour`, `defaultMinute`, `defaultSecond`, `defaultMillisec` attributes to match legacy `Calendar` component
@@ -60,5 +61,8 @@ Look into [migration guide](https://primefaces.github.io/primefaces/15_0_0/#/../
 
 * Tree
     * Added `filterPlaceholder` property
+
+* TreeTable
+    * Added `scrollBarPosition` attribute to support horizontal scrollbar at the `top`
 
     

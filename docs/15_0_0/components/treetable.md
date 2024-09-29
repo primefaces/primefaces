@@ -62,6 +62,7 @@ saveOnCellBlur | true | Boolean | Saves the changes in cell editing on blur, whe
 scrollable | false | Boolean | Whether or not the data should be scrollable.
 scrollHeight | null | Integer | Height of scrollable data.
 scrollWidth | null | Integer | Width of scrollable data.
+scrollBarPosition | bottom | String | Position of the horizontal scrollbar, valid values are "bottom" (default) and "top".
 selection | null | Object | Selection reference.
 selectionMode | null | String | Type of selection mode.
 showGridlines | false | Boolean | When enabled, cell borders are displayed.

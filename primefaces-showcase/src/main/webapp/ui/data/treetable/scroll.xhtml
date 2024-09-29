@@ -51,9 +51,9 @@
             </div>
 
             <div class="card">
-                <h5>Vertical and Horizontal</h5>
+                <h5>Vertical and Horizontal (with top scrollbar)</h5>
                 <p:treeTable value="#{ttScrollableView.root3}" var="document" scrollable="true" scrollHeight="350"
-                             scrollWidth="600">
+                             scrollWidth="600" scrollBarPosition="top">
                     <p:column headerText="Name">
                         <h:outputText value="#{document.name}"/>
                     </p:column>

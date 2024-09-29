@@ -90,6 +90,7 @@ DataTable displays data in tabular format.
 | scrollRows                | 0                  | Integer          | Number of rows to load on live scroll.
 | scrollWidth               | null               | Integer          | Scroll viewport width.
 | scrollable                | false              | Boolean          | Makes data scrollable with fixed header.
+| scrollBarPosition         | bottom             | String           | Position of the horizontal scrollbar, valid values are "bottom" (default) and "top".
 | selectAllFilteredOnly     | false              | Boolean          | When enabled, toggle select will only apply on filtered items. Default is false.
 | selection                 | null               | Object           | Reference to the selection data.
 | selectionRowMode          | new                | String           | Indicates how rows of a DataTable may be selected, when clicking on the row itself (not the checkbox / radiobutton from p:column). The value `new` always unselects other rows, `add` preserves the currently selected rows, and `none` disables row selection.
