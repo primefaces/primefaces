@@ -24,13 +24,16 @@
 package org.primefaces.component.api;
 
 import java.util.regex.Pattern;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
+
 import org.primefaces.util.LangUtils;
 
 public interface Widget {
 
+    String CALLBACK_PRE_CONSTRUCT = "widgetPreConstruct";
     String CALLBACK_POST_CONSTRUCT = "widgetPostConstruct";
     String CALLBACK_POST_REFRESH = "widgetPostRefresh";
     String CALLBACK_PRE_DESTROY = "widgetPreDestroy";

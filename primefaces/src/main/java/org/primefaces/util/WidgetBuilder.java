@@ -141,6 +141,11 @@ public class WidgetBuilder {
     protected WidgetBuilder renderLifecycleCallbacks(UIComponent component) throws IOException {
         Map<String, Object> attributes = component.getAttributes();
 
+        Object preConstruct = attributes.get(Widget.CALLBACK_PRE_CONSTRUCT);
+        if (preConstruct != null) {
+            callback("preConstruct", "function(cfg)", preConstruct.toString());
+        }
+
         Object postConstruct = attributes.get(Widget.CALLBACK_POST_CONSTRUCT);
         if (postConstruct != null) {
             callback("postConstruct", "function(widget)", postConstruct.toString());
