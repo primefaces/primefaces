@@ -173,6 +173,11 @@
                     </div>
 
                     <div class="field col-12 md:col-4">
+                        <p:outputLabel for="timeDefaults" value="Time (with defaults)" />
+                        <p:datePicker id="timeDefaults" value="#{calendarJava8View.dateTime5}" showSeconds="true" showMilliseconds="true" defaultHour="12" defaultMinute="30" defaultSecond="5" defaultMillisecond="25" timeZone="UTC"/>
+                    </div>
+
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel for="timeDe" value="Time (German)" />
                         <p:datePicker id="timeDe" value="#{calendarJava8View.dateTimeDe}" locale="de" pattern="dd.MM.yyyy" />
                     </div>

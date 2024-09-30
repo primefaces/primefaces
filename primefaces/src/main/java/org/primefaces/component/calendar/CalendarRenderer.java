@@ -161,7 +161,7 @@ public class CalendarRenderer extends BaseCalendarRenderer {
                     .attr("hour", calendar.getDefaultHour())
                     .attr("minute", calendar.getDefaultMinute())
                     .attr("second", calendar.getDefaultSecond())
-                    .attr("millisec", calendar.getDefaultMillisec());
+                    .attr("millisec", calendar.getDefaultMillisecond());
 
             String timeControlObject = calendar.getTimeControlObject();
             if ("custom".equalsIgnoreCase(timeControlType)) {

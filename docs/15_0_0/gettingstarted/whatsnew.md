@@ -33,7 +33,11 @@ Look into [migration guide](https://primefaces.github.io/primefaces/15_0_0/#/../
     * Added `expandIcon`/`collapseIcon` attributes for RowToggler
     * Added `rowsPerPage` in the PageEvent AJAX event
 
+* DatePicker
+    * Added `defaultHour`, `defaultMinute`, `defaultSecond`, `defaultMillisec` attributes to match legacy `Calendar` component
+
 * FeedReader
+
     * Added `podcast="true"` property if [Apple Itunes Podcast](https://help.apple.com/itc/podcasts_connect/#/itcb54353390) parsing and specific tags 
 
 * InputNumber
