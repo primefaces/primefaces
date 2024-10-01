@@ -44,56 +44,57 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
 
     public enum PropertyKeys {
 
-        widgetVar,
-        style,
-        styleClass,
-        scrollable,
-        scrollHeight,
-        scrollWidth,
-        tableStyle,
-        tableStyleClass,
-        emptyMessage,
-        resizableColumns,
-        rowStyleClass,
-        rowTitle,
-        liveResize,
-        sortBy,
-        nativeElements,
-        dataLocale,
-        expandMode,
-        stickyHeader,
-        editable,
-        editMode,
-        editingRow,
+        allowUnsorting,
+        cellEditMode,
         cellSeparator,
-        disabledTextSelection,
-        paginator,
-        paginatorTemplate,
-        rowsPerPageTemplate,
+        cloneOnFilter,
         currentPageReportTemplate,
-        pageLinks,
-        paginatorPosition,
-        paginatorAlwaysVisible,
-        rows,
-        first,
+        dataLocale,
+        disabledTextSelection,
+        editInitEvent,
+        editMode,
+        editable,
+        editingRow,
+        emptyMessage,
+        expandMode,
+        exportRowTag,
+        exportTag,
         filterBy,
+        filterDelay,
+        filterEvent,
+        filteredValue,
+        first,
         globalFilter,
         globalFilterFunction,
         globalFilterOnly,
-        filteredValue,
-        filterEvent,
-        filterDelay,
-        cellEditMode,
-        editInitEvent,
+        liveResize,
         multiViewState,
-        allowUnsorting,
-        sortMode,
-        cloneOnFilter,
+        nativeElements,
+        pageLinks,
+        paginator,
+        paginatorAlwaysVisible,
+        paginatorPosition,
+        paginatorTemplate,
+        resizableColumns,
+        rowStyleClass,
+        rowTitle,
+        rows,
+        rowsPerPageTemplate,
         saveOnCellBlur,
+        scrollBarPosition,
+        scrollHeight,
+        scrollWidth,
+        scrollable,
         showGridlines,
         size,
-        exportTag,
-        exportRowTag
+        sortBy,
+        sortMode,
+        stickyHeader,
+        style,
+        styleClass,
+        tableStyle,
+        tableStyleClass,
+        widgetVar
     }
 
     protected enum InternalPropertyKeys {
@@ -530,5 +531,13 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
 
     public void setExportTag(String exportTag) {
         getStateHelper().put(PropertyKeys.exportTag, exportTag);
+    }
+
+    public String getScrollBarPosition() {
+        return (String) getStateHelper().eval(PropertyKeys.scrollBarPosition, "bottom");
+    }
+
+    public void setScrollBarPosition(String scrollBarPosition) {
+        getStateHelper().put(PropertyKeys.scrollBarPosition, scrollBarPosition);
     }
 }

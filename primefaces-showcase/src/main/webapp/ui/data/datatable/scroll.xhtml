@@ -67,8 +67,8 @@
             </div>
 
             <div class="card">
-                <h5>Horizontal and Vertical</h5>
-                <p:dataTable var="customer" value="#{dtScrollView.customers3}" scrollable="true" scrollWidth="50%" scrollHeight="250">
+                <h5>Horizontal and Vertical (with top scrollbar)</h5>
+                <p:dataTable var="customer" value="#{dtScrollView.customers3}" scrollable="true" scrollWidth="50%" scrollHeight="250" scrollBarPosition="top">
                     <p:column headerText="Id" footerText="Id">
                         <h:outputText value="#{customer.id}"/>
                     </p:column>

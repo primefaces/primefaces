@@ -8539,6 +8539,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Defines the horizontal scrollbar position, valid values are "top" and "bottom". The vertical scrollbar position is controlled by rtl mode. Default is "bottom".]]>
+            </description>
+            <name>scrollBarPosition</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Enables data selection, valid values are "single" and "multiple".]]>
             </description>
             <name>selectionMode</name>
@@ -30384,6 +30392,14 @@
                 <![CDATA[Width for scrollable data.]]>
             </description>
             <name>scrollWidth</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines the horizontal scrollbar position, valid values are "top" and "bottom". The vertical scrollbar position is controlled by rtl mode. Default is "bottom".]]>
+            </description>
+            <name>scrollBarPosition</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>

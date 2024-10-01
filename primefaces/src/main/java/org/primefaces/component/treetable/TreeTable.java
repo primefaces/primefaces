@@ -95,6 +95,7 @@ public class TreeTable extends TreeTableBase {
     public static final String SCROLLABLE_BODY_CLASS = "ui-treetable-scrollable-body";
     public static final String SCROLLABLE_FOOTER_CLASS = "ui-widget-header ui-treetable-scrollable-footer";
     public static final String SCROLLABLE_FOOTER_BOX_CLASS = "ui-treetable-scrollable-footer-box";
+    public static final String SCROLLABLE_SCROLLBARS_TOP_CLASS = "ui-treetable-scrollbars-top";
     public static final String SELECTABLE_NODE_CLASS = "ui-treetable-selectable-node";
     public static final String RESIZABLE_COLUMN_CLASS = "ui-resizable-column";
     public static final String INDENT_CLASS = "ui-treetable-indent";

@@ -158,6 +158,18 @@
     position: absolute;
 }
 
+.ui-datatable.ui-datatable-scrollbars-top .ui-datatable-scrollable-body {
+    overflow-x: scroll;
+    overflow-y: auto;
+    transform: rotateX(180deg);
+}
+
+.ui-datatable.ui-datatable-scrollbars-top .ui-datatable-scrollable-body table {
+    overflow-x: scroll;
+    transform: rotateX(180deg);
+    width: 100%;
+}
+
 /** Accessibility **/
 .ui-datatable-data td[role="gridcell"]:focus,
 .ui-datatable-data td[role="grid"] [tabindex="0"]:focus {

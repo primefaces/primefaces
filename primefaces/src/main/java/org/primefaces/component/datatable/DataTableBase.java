@@ -55,8 +55,6 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         dataLocale,
         dir,
         disableContextMenuIfEmpty,
-        selectionDisabled,
-        selectionTextDisabled,
         draggableColumns,
         draggableRows,
         draggableRowsFunction,
@@ -66,8 +64,8 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         editingRow,
         escapeText,
         expandedRow,
-        exportTag,
         exportRowTag,
+        exportTag,
         filterBy,
         filterDelay,
         filterEvent,
@@ -85,6 +83,7 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         nativeElements,
         onExpandStart,
         onRowClick,
+        partialUpdate,
         reflow,
         renderEmptyFacets,
         resizableColumns,
@@ -98,20 +97,27 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         rowStyleClass,
         rowTitle,
         saveOnCellBlur,
+        scrollBarPosition,
         scrollHeight,
         scrollRows,
         scrollWidth,
         scrollable,
         selectAllFilteredOnly,
         selection,
+        selectionDisabled,
         selectionMode,
         selectionPageOnly,
         selectionRowMode,
+        selectionTextDisabled,
+        showGridlines,
+        showSelectAll,
+        size,
         skipChildren,
         sortBy,
         sortMode,
         stickyHeader,
         stickyTopAt,
+        stripedRows,
         style,
         styleClass,
         summary,
@@ -119,12 +125,7 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         tableStyle,
         tableStyleClass,
         virtualScroll,
-        stripedRows,
-        showGridlines,
-        size,
-        widgetVar,
-        partialUpdate,
-        showSelectAll
+        widgetVar
     }
 
     public DataTableBase() {
@@ -789,5 +790,13 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
 
     public void setCellNavigation(boolean cellNavigation) {
         getStateHelper().put(PropertyKeys.cellNavigation, cellNavigation);
+    }
+
+    public String getScrollBarPosition() {
+        return (String) getStateHelper().eval(PropertyKeys.scrollBarPosition, "bottom");
+    }
+
+    public void setScrollBarPosition(String scrollBarPosition) {
+        getStateHelper().put(PropertyKeys.scrollBarPosition, scrollBarPosition);
     }
 }

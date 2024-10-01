@@ -294,6 +294,7 @@ public class DataTableRenderer extends DataRenderer {
                 .add(table.isShowGridlines(), DataTable.GRIDLINES_CLASS)
                 .add("small".equals(table.getSize()), DataTable.SMALL_SIZE_CLASS)
                 .add("large".equals(table.getSize()), DataTable.LARGE_SIZE_CLASS)
+                .add("top".equalsIgnoreCase(table.getScrollBarPosition()), DataTable.SCROLLABLE_SCROLLBARS_TOP_CLASS)
                 .build();
 
         //aria

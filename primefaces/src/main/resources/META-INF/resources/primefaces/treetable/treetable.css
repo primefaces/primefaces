@@ -74,6 +74,18 @@ body .ui-treetable.ui-treetable-scrollable .ui-treetable-scrollable-theadclone t
     font-weight: inherit;
 }
 
+.ui-treetable.ui-treetable-scrollbars-top .ui-treetable-scrollable-body {
+    overflow-x: scroll;
+    overflow-y: auto;
+    transform: rotateX(180deg);
+}
+
+.ui-treetable.ui-treetable-scrollbars-top .ui-treetable-scrollable-body table {
+    overflow-x: scroll;
+    transform: rotateX(180deg);
+    width: 100%;
+}
+
 /** Resizable Columns **/
 .ui-treetable-resizable {
     padding-bottom:1px;     /*fix for webkit overlow*/

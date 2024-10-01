@@ -193,13 +193,16 @@ public class TreeTableRenderer extends DataRenderer {
             tt.initPreselection();
         }
 
-        String containerClass = tt.isResizableColumns() ? TreeTable.RESIZABLE_CONTAINER_CLASS : TreeTable.CONTAINER_CLASS;
-        containerClass = scrollable ? containerClass + " " + TreeTable.SCROLLABLE_CONTAINER_CLASS : containerClass;
-        containerClass = tt.getStyleClass() == null ? containerClass : containerClass + " " + tt.getStyleClass();
-        containerClass = tt.isShowUnselectableCheckbox() ? containerClass + " ui-treetable-checkbox-all" : containerClass;
-        containerClass = tt.isShowGridlines() ? containerClass + " " + TreeTable.GRIDLINES_CLASS : containerClass;
-        containerClass = "small".equals(tt.getSize()) ? containerClass + " " + TreeTable.SMALL_SIZE_CLASS : containerClass;
-        containerClass = "large".equals(tt.getSize()) ? containerClass + " " + TreeTable.LARGE_SIZE_CLASS : containerClass;
+        String containerClass = getStyleClassBuilder(context)
+                .add(tt.isResizableColumns(), TreeTable.RESIZABLE_CONTAINER_CLASS, TreeTable.CONTAINER_CLASS)
+                .add(scrollable, TreeTable.SCROLLABLE_CONTAINER_CLASS)
+                .add(tt.getStyleClass())
+                .add(tt.isShowUnselectableCheckbox(), "ui-treetable-checkbox-all")
+                .add(tt.isShowGridlines(), TreeTable.GRIDLINES_CLASS)
+                .add("small".equals(tt.getSize()), TreeTable.SMALL_SIZE_CLASS)
+                .add("large".equals(tt.getSize()), TreeTable.LARGE_SIZE_CLASS)
+                .add("top".equalsIgnoreCase(tt.getScrollBarPosition()), TreeTable.SCROLLABLE_SCROLLBARS_TOP_CLASS)
+                .build();
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, "id");
