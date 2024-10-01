@@ -23,6 +23,12 @@
  */
 package org.primefaces.virusscan.impl;
 
+import org.primefaces.model.file.UploadedFile;
+import org.primefaces.util.Lazy;
+import org.primefaces.util.MessageFactory;
+import org.primefaces.virusscan.VirusException;
+import org.primefaces.virusscan.VirusScanner;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,12 +38,6 @@ import java.util.logging.Logger;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-
-import org.primefaces.model.file.UploadedFile;
-import org.primefaces.util.Lazy;
-import org.primefaces.util.MessageFactory;
-import org.primefaces.virusscan.VirusException;
-import org.primefaces.virusscan.VirusScanner;
 
 /**
  * ClamAV Daemon custom {@link VirusScanner} provider bundled with PrimeFaces.

@@ -23,6 +23,10 @@
  */
 package org.primefaces.metadata;
 
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.el.ValueExpressionAnalyzer;
+import org.primefaces.util.LangUtils;
+
 import java.util.Collections;
 import java.util.Set;
 
@@ -35,10 +39,6 @@ import javax.validation.groups.Default;
 import javax.validation.metadata.BeanDescriptor;
 import javax.validation.metadata.ConstraintDescriptor;
 import javax.validation.metadata.PropertyDescriptor;
-
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.el.ValueExpressionAnalyzer;
-import org.primefaces.util.LangUtils;
 
 public class BeanValidationMetadataExtractor {
 

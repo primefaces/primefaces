@@ -23,11 +23,11 @@
  */
 package org.primefaces.component.picklist;
 
-import javax.faces.component.UIInput;
-import javax.faces.component.behavior.ClientBehaviorHolder;
-
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
+
+import javax.faces.component.UIInput;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class PickListBase extends UIInput implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 

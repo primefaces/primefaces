@@ -23,10 +23,17 @@
  */
 package org.primefaces.showcase.view.data.dataexporter;
 
+import org.primefaces.component.export.ExcelOptions;
+import org.primefaces.component.export.PDFOptions;
+import org.primefaces.component.export.PDFOrientationType;
+import org.primefaces.showcase.domain.Product;
+import org.primefaces.showcase.service.ProductService;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
+
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.context.ExternalContext;
@@ -34,7 +41,11 @@ import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
-import com.lowagie.text.*;
+import com.lowagie.text.BadElementException;
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.Image;
+import com.lowagie.text.PageSize;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
@@ -42,11 +53,6 @@ import org.apache.poi.xssf.streaming.SXSSFCell;
 import org.apache.poi.xssf.streaming.SXSSFRow;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-import org.primefaces.component.export.ExcelOptions;
-import org.primefaces.component.export.PDFOptions;
-import org.primefaces.component.export.PDFOrientationType;
-import org.primefaces.showcase.domain.Product;
-import org.primefaces.showcase.service.ProductService;
 
 @Named
 @RequestScoped

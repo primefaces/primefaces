@@ -23,12 +23,12 @@
  */
 package org.primefaces.component.toggleswitch;
 
-import javax.faces.component.UIInput;
-import javax.faces.component.behavior.ClientBehaviorHolder;
-
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
+
+import javax.faces.component.UIInput;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class ToggleSwitchBase extends UIInput implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, InputHolder {
 

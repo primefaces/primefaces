@@ -23,7 +23,13 @@
  */
 package org.primefaces.integrationtests.autocomplete;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.primefaces.integrationtests.general.model.Driver;
+import org.primefaces.integrationtests.general.service.RealDriverService;
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.component.AutoComplete;
+import org.primefaces.selenium.component.CommandButton;
+import org.primefaces.selenium.component.Messages;
 
 import java.util.List;
 
@@ -35,13 +41,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.integrationtests.general.model.Driver;
-import org.primefaces.integrationtests.general.service.RealDriverService;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.component.AutoComplete;
-import org.primefaces.selenium.component.CommandButton;
-import org.primefaces.selenium.component.Messages;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class AutoComplete005Test extends AbstractPrimePageTest {
 

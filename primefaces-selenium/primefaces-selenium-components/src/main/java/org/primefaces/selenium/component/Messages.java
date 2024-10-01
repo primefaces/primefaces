@@ -23,6 +23,10 @@
  */
 package org.primefaces.selenium.component;
 
+import org.primefaces.selenium.component.base.AbstractComponent;
+import org.primefaces.selenium.component.model.Msg;
+import org.primefaces.selenium.component.model.Severity;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,9 +34,6 @@ import java.util.stream.Collectors;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
-import org.primefaces.selenium.component.base.AbstractComponent;
-import org.primefaces.selenium.component.model.Msg;
-import org.primefaces.selenium.component.model.Severity;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:messages}.

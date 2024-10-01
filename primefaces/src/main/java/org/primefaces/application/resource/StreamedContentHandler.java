@@ -23,6 +23,9 @@
  */
 package org.primefaces.application.resource;
 
+import org.primefaces.model.StreamedContent;
+import org.primefaces.util.Constants;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,9 +42,6 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.primefaces.model.StreamedContent;
-import org.primefaces.util.Constants;
 
 public class StreamedContentHandler extends BaseDynamicContentHandler {
 

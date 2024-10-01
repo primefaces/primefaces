@@ -23,6 +23,15 @@
  */
 package org.primefaces.component.filedownload;
 
+import org.primefaces.PrimeFaces;
+import org.primefaces.model.StreamedContent;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.DynamicContentSrcBuilder;
+import org.primefaces.util.EscapeUtils;
+import org.primefaces.util.IOUtils;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.ResourceUtils;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -38,10 +47,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
-
-import org.primefaces.PrimeFaces;
-import org.primefaces.model.StreamedContent;
-import org.primefaces.util.*;
 
 public class FileDownloadActionListener implements ActionListener, StateHolder {
 

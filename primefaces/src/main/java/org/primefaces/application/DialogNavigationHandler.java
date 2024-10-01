@@ -27,15 +27,16 @@ import org.primefaces.PrimeFaces;
 import org.primefaces.util.Constants;
 import org.primefaces.util.EscapeUtils;
 
-import javax.faces.application.ConfigurableNavigationHandler;
-import javax.faces.application.NavigationCase;
-import javax.faces.context.FacesContext;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+
+import javax.faces.application.ConfigurableNavigationHandler;
+import javax.faces.application.NavigationCase;
+import javax.faces.context.FacesContext;
 
 public class DialogNavigationHandler extends ConfigurableNavigationHandler {
 

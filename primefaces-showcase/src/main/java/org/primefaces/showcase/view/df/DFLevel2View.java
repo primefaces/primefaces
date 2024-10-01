@@ -26,10 +26,11 @@ package org.primefaces.showcase.view.df;
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.SelectEvent;
 
-import jakarta.enterprise.context.RequestScoped;
-import jakarta.inject.Named;
 import java.util.HashMap;
 import java.util.Map;
+
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Named;
 
 @Named("dfLevel2View")
 @RequestScoped

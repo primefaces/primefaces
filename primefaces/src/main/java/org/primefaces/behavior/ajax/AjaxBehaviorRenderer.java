@@ -23,8 +23,13 @@
  */
 package org.primefaces.behavior.ajax;
 
+import org.primefaces.component.api.ClientBehaviorRenderingMode;
+import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.util.AjaxRequestBuilder;
+
 import java.util.ArrayList;
 import java.util.Collection;
+
 import javax.faces.component.ActionSource;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
@@ -34,10 +39,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.render.ClientBehaviorRenderer;
-import org.primefaces.component.api.ClientBehaviorRenderingMode;
-
-import org.primefaces.context.PrimeRequestContext;
-import org.primefaces.util.AjaxRequestBuilder;
 
 public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
 

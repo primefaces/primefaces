@@ -3741,7 +3741,7 @@
             <description>
                 <![CDATA[Default for millisecond selection, if no date is given. Default is 0.]]>
             </description>
-            <name>defaultMillisec</name>
+            <name>defaultMillisecond</name>
             <required>false</required>
             <type>java.lang.Integer</type>
         </attribute>
@@ -32200,6 +32200,38 @@
             <name>timeOnly</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Default for hour selection, if no date is given. Default is 0.]]>
+            </description>
+            <name>defaultHour</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Default for minute selection, if no date is given. Default is 0.]]>
+            </description>
+            <name>defaultMinute</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Default for second selection, if no date is given. Default is 0.]]>
+            </description>
+            <name>defaultSecond</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Default for millisecond selection, if no date is given. Default is 0.]]>
+            </description>
+            <name>defaultMillisecond</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
         </attribute>
         <attribute>
             <description>

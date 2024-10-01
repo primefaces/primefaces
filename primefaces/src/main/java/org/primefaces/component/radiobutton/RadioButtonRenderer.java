@@ -23,17 +23,17 @@
  */
 package org.primefaces.component.radiobutton;
 
-import java.io.IOException;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.component.selectoneradio.SelectOneRadio;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.HTML;
 import org.primefaces.util.SharedStringBuilder;
+
+import java.io.IOException;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 
 public class RadioButtonRenderer extends InputRenderer {
 

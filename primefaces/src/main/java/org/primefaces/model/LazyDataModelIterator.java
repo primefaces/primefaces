@@ -23,7 +23,12 @@
  */
 package org.primefaces.model;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
 
 public class LazyDataModelIterator<T> implements Iterator<T> {
 

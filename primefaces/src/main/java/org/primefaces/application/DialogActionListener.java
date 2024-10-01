@@ -23,14 +23,16 @@
  */
 package org.primefaces.application;
 
+import org.primefaces.component.api.Widget;
+import org.primefaces.util.Constants;
+
 import java.util.Map;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
-import org.primefaces.component.api.Widget;
-import org.primefaces.util.Constants;
 
 public class DialogActionListener implements ActionListener {
 

@@ -23,19 +23,21 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import lombok.Data;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.util.LangUtils;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Locale;
 
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Locale;
+
+import lombok.Data;
 
 @Named
 @ViewScoped

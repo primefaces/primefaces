@@ -27,9 +27,9 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import javax.faces.event.AjaxBehaviorEvent;
 
 import lombok.Data;
 

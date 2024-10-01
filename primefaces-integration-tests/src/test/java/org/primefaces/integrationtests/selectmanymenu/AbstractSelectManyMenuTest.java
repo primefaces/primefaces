@@ -27,12 +27,11 @@ import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.SelectManyMenu;
 
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.List;
-import java.util.Set;
 
 public class AbstractSelectManyMenuTest extends AbstractPrimePageTest {
 

@@ -23,13 +23,13 @@
  */
 package org.primefaces.model.menu;
 
+import org.primefaces.component.api.Confirmable;
+import org.primefaces.util.Callbacks;
+
 import java.util.List;
 import java.util.Map;
 
 import javax.el.MethodExpression;
-
-import org.primefaces.component.api.Confirmable;
-import org.primefaces.util.Callbacks;
 
 public interface MenuItem extends MenuElement, Confirmable {
 

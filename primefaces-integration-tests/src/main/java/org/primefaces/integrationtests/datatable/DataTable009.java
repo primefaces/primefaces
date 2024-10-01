@@ -23,6 +23,10 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.event.data.FilterEvent;
+import org.primefaces.integrationtests.general.utilities.TestUtils;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -33,10 +37,6 @@ import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-
-import org.primefaces.component.datatable.DataTable;
-import org.primefaces.event.data.FilterEvent;
-import org.primefaces.integrationtests.general.utilities.TestUtils;
 
 import lombok.Data;
 

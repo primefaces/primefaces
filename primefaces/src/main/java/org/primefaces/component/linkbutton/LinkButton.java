@@ -25,12 +25,12 @@ package org.primefaces.component.linkbutton;
 
 import org.primefaces.util.ComponentUtils;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
-
-import java.util.List;
-import java.util.Map;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")

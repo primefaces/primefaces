@@ -23,16 +23,18 @@
  */
 package org.primefaces.integrationtests.dataview;
 
-import lombok.Data;
 import org.primefaces.integrationtests.datatable.ProgrammingLanguage;
 import org.primefaces.integrationtests.datatable.ProgrammingLanguageService;
+
+import java.io.Serializable;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.io.Serializable;
-import java.util.List;
+
+import lombok.Data;
 
 @Named
 @ViewScoped

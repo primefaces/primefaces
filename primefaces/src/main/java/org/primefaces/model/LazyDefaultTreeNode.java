@@ -24,6 +24,7 @@
 package org.primefaces.model;
 
 import org.primefaces.util.Callbacks;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;

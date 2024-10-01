@@ -23,13 +23,6 @@
  */
 package org.primefaces.integrationtests.selectonemenu;
 
-import org.json.JSONObject;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.integrationtests.general.model.Driver;
 import org.primefaces.integrationtests.general.service.RealDriverService;
 import org.primefaces.selenium.AbstractPrimePage;
@@ -40,11 +33,18 @@ import org.primefaces.selenium.component.SelectOneMenu;
 import org.primefaces.selenium.component.base.ComponentUtils;
 
 import java.util.Arrays;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.json.JSONObject;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class SelectOneMenu009Test extends AbstractPrimePageTest {
 

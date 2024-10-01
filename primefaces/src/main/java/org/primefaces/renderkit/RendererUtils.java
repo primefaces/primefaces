@@ -23,6 +23,10 @@
  */
 package org.primefaces.renderkit;
 
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.util.Constants;
+import org.primefaces.util.HTML;
+
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.logging.Level;
@@ -36,10 +40,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.RenderKit;
 import javax.faces.render.RenderKitFactory;
-
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.util.Constants;
-import org.primefaces.util.HTML;
 
 public class RendererUtils {
 

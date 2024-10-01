@@ -23,6 +23,16 @@
  */
 package org.primefaces.component.inputnumber;
 
+import org.primefaces.component.inputtext.InputText;
+import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.WidgetBuilder;
+import org.primefaces.validate.bean.NegativeClientValidationConstraint;
+import org.primefaces.validate.bean.PositiveClientValidationConstraint;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -34,12 +44,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
-
-import org.primefaces.component.inputtext.InputText;
-import org.primefaces.renderkit.InputRenderer;
-import org.primefaces.util.*;
-import org.primefaces.validate.bean.NegativeClientValidationConstraint;
-import org.primefaces.validate.bean.PositiveClientValidationConstraint;
 
 public class InputNumberRenderer extends InputRenderer {
 

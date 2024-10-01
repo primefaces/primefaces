@@ -23,6 +23,18 @@
  */
 package org.primefaces.component.schedule;
 
+import org.primefaces.el.ValueExpressionAnalyzer;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.schedule.ScheduleEntryMoveEvent;
+import org.primefaces.event.schedule.ScheduleEntryResizeEvent;
+import org.primefaces.event.schedule.ScheduleRangeEvent;
+import org.primefaces.model.ScheduleEvent;
+import org.primefaces.util.CalendarUtils;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.LocaleUtils;
+import org.primefaces.util.MapBuilder;
+
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Collection;
@@ -37,14 +49,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
-
-import org.primefaces.el.ValueExpressionAnalyzer;
-import org.primefaces.event.SelectEvent;
-import org.primefaces.event.schedule.ScheduleEntryMoveEvent;
-import org.primefaces.event.schedule.ScheduleEntryResizeEvent;
-import org.primefaces.event.schedule.ScheduleRangeEvent;
-import org.primefaces.model.ScheduleEvent;
-import org.primefaces.util.*;
 
 @ResourceDependency(library = "primefaces", name = "schedule/schedule.css")
 @ResourceDependency(library = "primefaces", name = "components.css")

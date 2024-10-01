@@ -23,8 +23,6 @@
  */
 package org.primefaces.model;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -33,6 +31,8 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class LazyDataModelIteratorTest {
 

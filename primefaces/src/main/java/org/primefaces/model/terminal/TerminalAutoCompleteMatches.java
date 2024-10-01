@@ -23,9 +23,9 @@
  */
 package org.primefaces.model.terminal;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

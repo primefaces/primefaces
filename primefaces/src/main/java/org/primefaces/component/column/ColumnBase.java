@@ -23,10 +23,10 @@
  */
 package org.primefaces.component.column;
 
-import javax.faces.component.UIColumn;
-
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.menu.MenuColumn;
+
+import javax.faces.component.UIColumn;
 
 public abstract class ColumnBase extends UIColumn implements org.primefaces.component.api.UIColumn, MenuColumn {
 

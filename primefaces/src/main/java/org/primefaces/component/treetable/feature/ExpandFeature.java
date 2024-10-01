@@ -23,13 +23,14 @@
  */
 package org.primefaces.component.treetable.feature;
 
-import javax.faces.context.FacesContext;
-import java.io.IOException;
-import java.util.Map;
-
 import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.component.treetable.TreeTableRenderer;
 import org.primefaces.model.TreeNode;
+
+import java.io.IOException;
+import java.util.Map;
+
+import javax.faces.context.FacesContext;
 
 public class ExpandFeature implements TreeTableFeature {
 

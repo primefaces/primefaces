@@ -23,11 +23,15 @@
  */
 package org.primefaces.model.filter;
 
-import java.util.*;
+import org.primefaces.util.LangUtils;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Locale;
+import java.util.Objects;
 
 import javax.faces.context.FacesContext;
-
-import org.primefaces.util.LangUtils;
 
 public class InFilterConstraint implements FilterConstraint {
 

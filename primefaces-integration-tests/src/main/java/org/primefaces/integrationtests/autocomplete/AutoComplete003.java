@@ -23,6 +23,8 @@
  */
 package org.primefaces.integrationtests.autocomplete;
 
+import org.primefaces.integrationtests.general.utilities.TestUtils;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,8 +33,6 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-
-import org.primefaces.integrationtests.general.utilities.TestUtils;
 
 import lombok.Data;
 

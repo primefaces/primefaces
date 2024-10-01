@@ -23,9 +23,9 @@
  */
 package org.primefaces.component.clock;
 
-import javax.faces.component.UIOutput;
-
 import org.primefaces.component.api.Widget;
+
+import javax.faces.component.UIOutput;
 
 public abstract class ClockBase extends UIOutput implements Widget {
 

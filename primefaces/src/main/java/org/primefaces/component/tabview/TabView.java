@@ -23,19 +23,6 @@
  */
 package org.primefaces.component.tabview;
 
-import java.util.Collection;
-import java.util.Map;
-import javax.el.ELContext;
-
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
-import javax.faces.application.ResourceDependency;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.BehaviorEvent;
-import javax.faces.event.FacesEvent;
-
 import org.primefaces.PrimeFaces;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.event.TabChangeEvent;
@@ -45,6 +32,19 @@ import org.primefaces.util.Callbacks;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.MapBuilder;
+
+import java.util.Collection;
+import java.util.Map;
+
+import javax.el.ELContext;
+import javax.el.ValueExpression;
+import javax.faces.FacesException;
+import javax.faces.application.ResourceDependency;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.BehaviorEvent;
+import javax.faces.event.FacesEvent;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")

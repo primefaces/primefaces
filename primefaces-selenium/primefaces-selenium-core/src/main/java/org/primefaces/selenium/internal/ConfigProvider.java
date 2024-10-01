@@ -23,6 +23,10 @@
  */
 package org.primefaces.selenium.internal;
 
+import org.primefaces.selenium.spi.DeploymentAdapter;
+import org.primefaces.selenium.spi.OnloadScriptsAdapter;
+import org.primefaces.selenium.spi.WebDriverAdapter;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -34,10 +38,6 @@ import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-
-import org.primefaces.selenium.spi.WebDriverAdapter;
-import org.primefaces.selenium.spi.DeploymentAdapter;
-import org.primefaces.selenium.spi.OnloadScriptsAdapter;
 
 public class ConfigProvider {
 

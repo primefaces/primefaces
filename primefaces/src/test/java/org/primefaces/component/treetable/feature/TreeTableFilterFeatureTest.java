@@ -23,12 +23,13 @@
  */
 package org.primefaces.component.treetable.feature;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import org.junit.jupiter.api.Test;
 import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
+
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TreeTableFilterFeatureTest {
 

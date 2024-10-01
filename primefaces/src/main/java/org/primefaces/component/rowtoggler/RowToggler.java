@@ -23,10 +23,10 @@
  */
 package org.primefaces.component.rowtoggler;
 
+import org.primefaces.component.datatable.DataTable;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-
-import org.primefaces.component.datatable.DataTable;
 
 
 public class RowToggler extends RowTogglerBase {

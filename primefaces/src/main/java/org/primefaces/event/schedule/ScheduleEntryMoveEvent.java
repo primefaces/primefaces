@@ -23,13 +23,13 @@
  */
 package org.primefaces.event.schedule;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.behavior.Behavior;
-
 import org.primefaces.event.AbstractAjaxBehaviorEvent;
 import org.primefaces.model.ScheduleEvent;
 
 import java.time.Duration;
+
+import javax.faces.component.UIComponent;
+import javax.faces.component.behavior.Behavior;
 
 public class ScheduleEntryMoveEvent extends AbstractAjaxBehaviorEvent {
 

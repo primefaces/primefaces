@@ -23,14 +23,16 @@
  */
 package org.primefaces.integrationtests.treetable;
 
-import lombok.Data;
+import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
+
+import java.io.Serializable;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.io.Serializable;
-import org.primefaces.model.DefaultTreeNode;
+
+import lombok.Data;
 
 @Named
 @ViewScoped

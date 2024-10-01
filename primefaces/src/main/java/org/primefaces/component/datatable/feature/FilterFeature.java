@@ -23,6 +23,16 @@
  */
 package org.primefaces.component.datatable.feature;
 
+import org.primefaces.PrimeFaces;
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.datatable.DataTableRenderer;
+import org.primefaces.component.datatable.DataTableState;
+import org.primefaces.event.data.PostFilterEvent;
+import org.primefaces.model.FilterMeta;
+import org.primefaces.model.filter.FilterConstraint;
+import org.primefaces.model.filter.FunctionFilterConstraint;
+import org.primefaces.util.ComponentUtils;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,16 +43,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import javax.el.ELContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
-
-import org.primefaces.PrimeFaces;
-import org.primefaces.component.datatable.DataTable;
-import org.primefaces.component.datatable.DataTableRenderer;
-import org.primefaces.component.datatable.DataTableState;
-import org.primefaces.event.data.PostFilterEvent;
-import org.primefaces.model.FilterMeta;
-import org.primefaces.model.filter.FilterConstraint;
-import org.primefaces.model.filter.FunctionFilterConstraint;
-import org.primefaces.util.ComponentUtils;
 
 public class FilterFeature implements DataTableFeature {
 

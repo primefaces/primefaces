@@ -23,6 +23,11 @@
  */
 package org.primefaces.component.captcha;
 
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.WidgetBuilder;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -33,11 +38,6 @@ import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.Constants;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
 
 public class CaptchaRenderer extends CoreRenderer {
 

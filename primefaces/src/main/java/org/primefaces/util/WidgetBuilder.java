@@ -23,16 +23,16 @@
  */
 package org.primefaces.util;
 
+import org.primefaces.component.api.Widget;
+import org.primefaces.config.PrimeConfiguration;
+import org.primefaces.renderkit.RendererUtils;
+
 import java.io.IOException;
 import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
-import org.primefaces.component.api.Widget;
-import org.primefaces.config.PrimeConfiguration;
-import org.primefaces.renderkit.RendererUtils;
 
 /**
  * Helper to generate scripts for widgets.
@@ -140,6 +140,11 @@ public class WidgetBuilder {
 
     protected WidgetBuilder renderLifecycleCallbacks(UIComponent component) throws IOException {
         Map<String, Object> attributes = component.getAttributes();
+
+        Object preConstruct = attributes.get(Widget.CALLBACK_PRE_CONSTRUCT);
+        if (preConstruct != null) {
+            callback("preConstruct", "function(cfg)", preConstruct.toString());
+        }
 
         Object postConstruct = attributes.get(Widget.CALLBACK_POST_CONSTRUCT);
         if (postConstruct != null) {

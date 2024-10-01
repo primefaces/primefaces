@@ -23,15 +23,20 @@
  */
 package org.primefaces.component.inplace;
 
+import org.primefaces.component.password.Password;
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.WidgetBuilder;
+
 import java.io.IOException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
-import org.primefaces.component.password.Password;
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.*;
 
 public class InplaceRenderer extends CoreRenderer {
 

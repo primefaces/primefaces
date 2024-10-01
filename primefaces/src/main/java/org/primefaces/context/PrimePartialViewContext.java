@@ -23,14 +23,6 @@
  */
 package org.primefaces.context;
 
-import javax.faces.component.EditableValueHolder;
-import javax.faces.component.visit.VisitContext;
-import javax.faces.context.FacesContext;
-import javax.faces.context.PartialResponseWriter;
-import javax.faces.context.PartialViewContext;
-import javax.faces.context.PartialViewContextWrapper;
-import javax.faces.event.PhaseId;
-
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.config.PrimeEnvironment;
 import org.primefaces.csp.CspPartialResponseWriter;
@@ -39,6 +31,14 @@ import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 import org.primefaces.visit.ResetInputContextCallback;
 import org.primefaces.visit.ResetInputVisitCallback;
+
+import javax.faces.component.EditableValueHolder;
+import javax.faces.component.visit.VisitContext;
+import javax.faces.context.FacesContext;
+import javax.faces.context.PartialResponseWriter;
+import javax.faces.context.PartialViewContext;
+import javax.faces.context.PartialViewContextWrapper;
+import javax.faces.event.PhaseId;
 
 public class PrimePartialViewContext extends PartialViewContextWrapper {
 

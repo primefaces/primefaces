@@ -23,6 +23,10 @@
  */
 package org.primefaces.integrationtests.picklist;
 
+import org.primefaces.integrationtests.general.model.Driver;
+import org.primefaces.integrationtests.general.service.RealDriverService;
+import org.primefaces.model.DualListModel;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,10 +35,6 @@ import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-
-import org.primefaces.integrationtests.general.model.Driver;
-import org.primefaces.integrationtests.general.service.RealDriverService;
-import org.primefaces.model.DualListModel;
 
 import lombok.Data;
 

@@ -23,6 +23,14 @@
  */
 package org.primefaces.component.message;
 
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.renderkit.UINotificationRenderer;
+import org.primefaces.util.CompositeUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.StyleClassBuilder;
+import org.primefaces.util.WidgetBuilder;
+
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Objects;
@@ -32,14 +40,6 @@ import javax.faces.component.ContextCallback;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.expression.SearchExpressionUtils;
-import org.primefaces.renderkit.UINotificationRenderer;
-import org.primefaces.util.CompositeUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.StyleClassBuilder;
-import org.primefaces.util.WidgetBuilder;
 
 public class MessageRenderer extends UINotificationRenderer {
 

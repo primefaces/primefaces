@@ -23,6 +23,13 @@
  */
 package org.primefaces.renderkit;
 
+import org.primefaces.clientwindow.PrimeClientWindow;
+import org.primefaces.clientwindow.PrimeClientWindowUtils;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.LocaleUtils;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -44,13 +51,6 @@ import javax.faces.lifecycle.ClientWindow;
 import javax.faces.render.Renderer;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-
-import org.primefaces.clientwindow.PrimeClientWindow;
-import org.primefaces.clientwindow.PrimeClientWindowUtils;
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.context.PrimeRequestContext;
-import org.primefaces.util.FacetUtils;
-import org.primefaces.util.LocaleUtils;
 
 /**
  * Renders head content based on the following order

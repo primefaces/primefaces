@@ -23,12 +23,17 @@
  */
 package org.primefaces.component.treetable;
 
-import javax.el.MethodExpression;
-import javax.faces.component.behavior.ClientBehaviorHolder;
-
-import org.primefaces.component.api.*;
+import org.primefaces.component.api.Pageable;
+import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.UIPageableData;
+import org.primefaces.component.api.UITable;
+import org.primefaces.component.api.UITree;
+import org.primefaces.component.api.Widget;
 import org.primefaces.model.TreeNode;
 import org.primefaces.util.MessageFactory;
+
+import javax.el.MethodExpression;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class TreeTableBase extends UITree implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable,
         UITable<TreeTableState> {

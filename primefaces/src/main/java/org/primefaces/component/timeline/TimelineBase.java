@@ -23,17 +23,18 @@
  */
 package org.primefaces.component.timeline;
 
-import java.time.LocalDateTime;
-import java.util.Locale;
-import javax.faces.component.UIComponentBase;
-import javax.faces.component.behavior.ClientBehaviorHolder;
-import javax.faces.context.FacesContext;
-
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.model.timeline.TimelineModel;
 import org.primefaces.util.LocaleUtils;
+
+import java.time.LocalDateTime;
+import java.util.Locale;
+
+import javax.faces.component.UIComponentBase;
+import javax.faces.component.behavior.ClientBehaviorHolder;
+import javax.faces.context.FacesContext;
 
 
 public abstract class TimelineBase extends UIComponentBase implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder {

@@ -23,12 +23,12 @@
  */
 package org.primefaces.component.api;
 
+import org.primefaces.util.LangUtils;
+
 import java.util.Collection;
 import java.util.List;
 
 import javax.faces.component.html.HtmlInputTextarea;
-
-import org.primefaces.util.LangUtils;
 
 /**
  * Extended {@link HtmlInputTextarea} to allow for new events such as "input" and "paste".

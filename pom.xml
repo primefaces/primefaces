@@ -245,6 +245,7 @@
                             <goal>check</goal>
                         </goals>
                         <configuration>
+                            <includeTestSourceDirectory>false</includeTestSourceDirectory>
                             <configLocation>/conf/checkstyle.xml</configLocation>
                         </configuration>
                     </execution>

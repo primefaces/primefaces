@@ -23,18 +23,20 @@
  */
 package org.primefaces.showcase.view.multimedia;
 
+import org.primefaces.model.ResponsiveOption;
+import org.primefaces.showcase.domain.Photo;
+import org.primefaces.showcase.service.PhotoService;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-import org.primefaces.model.ResponsiveOption;
-import org.primefaces.showcase.domain.Photo;
-import org.primefaces.showcase.service.PhotoService;
 
 @Named
 @ViewScoped

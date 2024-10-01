@@ -23,8 +23,20 @@
  */
 package org.primefaces.util;
 
-import java.util.*;
+import org.primefaces.component.api.AjaxSource;
+import org.primefaces.component.api.ClientBehaviorRenderingMode;
+import org.primefaces.config.PrimeConfiguration;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.expression.SearchExpressionUtils;
+
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
+
 import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
@@ -32,12 +44,6 @@ import javax.faces.component.UIParameter;
 import javax.faces.component.search.SearchExpressionHint;
 import javax.faces.context.FacesContext;
 import javax.faces.view.facelets.FaceletException;
-
-import org.primefaces.component.api.AjaxSource;
-import org.primefaces.component.api.ClientBehaviorRenderingMode;
-import org.primefaces.config.PrimeConfiguration;
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.expression.SearchExpressionUtils;
 
 /**
  * Helper to generate javascript code of an ajax call

@@ -23,6 +23,8 @@
  */
 package org.primefaces.showcase.view.button;
 
+import org.primefaces.model.badge.BadgeModel;
+import org.primefaces.model.badge.DefaultBadgeModel;
 import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;
 import org.primefaces.model.menu.MenuModel;
@@ -32,8 +34,6 @@ import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Named;
-import org.primefaces.model.badge.BadgeModel;
-import org.primefaces.model.badge.DefaultBadgeModel;
 
 @Named
 @RequestScoped

@@ -26,11 +26,12 @@ package org.primefaces.component.chronoline;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.FacetUtils;
 
+import java.io.IOException;
+import java.util.Collection;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import java.io.IOException;
-import java.util.Collection;
 
 public class ChronolineRenderer extends CoreRenderer {
 

@@ -26,13 +26,14 @@ package org.primefaces.behavior.ajax;
 import org.primefaces.behavior.base.AbstractBehaviorHandler;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 
+import java.util.Map;
+
 import javax.faces.component.UIComponent;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.view.facelets.BehaviorConfig;
 import javax.faces.view.facelets.FaceletContext;
 import javax.faces.view.facelets.TagAttribute;
-import java.util.Map;
 
 public class AjaxBehaviorHandler extends AbstractBehaviorHandler<AjaxBehavior> {
 

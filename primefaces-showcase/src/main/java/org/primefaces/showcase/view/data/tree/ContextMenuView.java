@@ -23,16 +23,17 @@
  */
 package org.primefaces.showcase.view.data.tree;
 
-import jakarta.faces.view.ViewScoped;
 import org.primefaces.model.TreeNode;
 import org.primefaces.showcase.service.DocumentService;
+
+import java.io.Serializable;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-import java.io.Serializable;
 
 @Named("treeContextMenuView")
 @ViewScoped

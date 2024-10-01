@@ -23,17 +23,6 @@
  */
 package org.primefaces.component.treetable;
 
-import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
-
-import java.io.IOException;
-import java.util.List;
-
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.api.UITree;
@@ -50,7 +39,20 @@ import org.primefaces.model.SortOrder;
 import org.primefaces.model.TreeNode;
 import org.primefaces.renderkit.DataRenderer;
 import org.primefaces.renderkit.RendererUtils;
-import org.primefaces.util.*;
+import org.primefaces.util.Constants;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.WidgetBuilder;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 
 public class TreeTableRenderer extends DataRenderer {
 
@@ -186,7 +188,7 @@ public class TreeTableRenderer extends DataRenderer {
         }
 
         if (root.getRowKey() == null) {
-            root.setRowKey(ROOT_ROW_KEY);
+            root.setRowKey(UITree.ROOT_ROW_KEY);
             tt.buildRowKeys(root);
             tt.initPreselection();
         }

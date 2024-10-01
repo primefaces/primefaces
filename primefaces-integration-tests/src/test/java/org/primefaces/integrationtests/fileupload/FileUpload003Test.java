@@ -23,17 +23,18 @@
  */
 package org.primefaces.integrationtests.fileupload;
 
-import org.json.JSONObject;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.FileUpload;
 import org.primefaces.selenium.component.Messages;
 
 import java.io.File;
+
+import org.json.JSONObject;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.*;
 

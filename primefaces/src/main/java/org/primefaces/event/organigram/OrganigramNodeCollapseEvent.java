@@ -23,9 +23,10 @@
  */
 package org.primefaces.event.organigram;
 
+import org.primefaces.model.OrganigramNode;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
-import org.primefaces.model.OrganigramNode;
 
 /**
  * Event class for the "collapse" event.

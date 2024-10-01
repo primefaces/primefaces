@@ -26,6 +26,10 @@
             id: null,
             name: null,
             defaultDate: null,
+            defaultHour: 0,
+            defaultMinute: 0,
+            defaultSecond: 0,
+            defaultMillisecond: 0,
             viewDate: null,
             style: null,
             styleClass: null,
@@ -208,11 +212,19 @@
                 }
                 if (this.viewDate === null) {
                     this.viewDate = this.getNow();
+                    this.viewDate.setHours(this.options.defaultHour);
+                    this.viewDate.setMinutes(this.options.defaultMinute);
                     if (!this.options.showSeconds && !this.options.showMilliseconds) {
                         this.viewDate.setSeconds(0);
                     }
+                    else {
+                        this.viewDate.setSeconds(this.options.defaultSecond);
+                    }
                     if (!this.options.showMilliseconds) {
                         this.viewDate.setMilliseconds(0);
+                    }
+                    else {
+                        this.viewDate.setMilliseconds(this.options.defaultMillisecond);
                     }
                     viewDateDefaultsToNow = true;
                 }

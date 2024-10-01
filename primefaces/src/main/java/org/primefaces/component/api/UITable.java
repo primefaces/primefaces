@@ -23,7 +23,28 @@
  */
 package org.primefaces.component.api;
 
-import java.util.*;
+import org.primefaces.component.column.ColumnBase;
+import org.primefaces.component.headerrow.HeaderRow;
+import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.model.ColumnMeta;
+import org.primefaces.model.FilterMeta;
+import org.primefaces.model.SortMeta;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.EditableValueHolderState;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.LocaleUtils;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -37,14 +58,6 @@ import javax.faces.component.ValueHolder;
 import javax.faces.component.search.SearchExpressionHint;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.ConverterException;
-
-import org.primefaces.component.column.ColumnBase;
-import org.primefaces.component.headerrow.HeaderRow;
-import org.primefaces.expression.SearchExpressionUtils;
-import org.primefaces.model.ColumnMeta;
-import org.primefaces.model.FilterMeta;
-import org.primefaces.model.SortMeta;
-import org.primefaces.util.*;
 
 public interface UITable<T extends UITableState> extends ColumnAware, MultiViewStateAware<T> {
 

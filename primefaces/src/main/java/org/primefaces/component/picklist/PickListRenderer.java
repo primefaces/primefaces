@@ -23,21 +23,25 @@
  */
 package org.primefaces.component.picklist;
 
+import org.primefaces.component.column.Column;
+import org.primefaces.model.DualListModel;
+import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.renderkit.RendererUtils;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.WidgetBuilder;
+
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
-
-import org.primefaces.component.column.Column;
-import org.primefaces.model.DualListModel;
-import org.primefaces.renderkit.InputRenderer;
-import org.primefaces.renderkit.RendererUtils;
-import org.primefaces.util.*;
 
 public class PickListRenderer extends InputRenderer {
 

@@ -23,11 +23,11 @@
  */
 package org.primefaces.component.idlemonitor;
 
-import javax.faces.component.UIComponentBase;
-import javax.faces.component.behavior.ClientBehaviorHolder;
-
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
+
+import javax.faces.component.UIComponentBase;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class IdleMonitorBase extends UIComponentBase implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 

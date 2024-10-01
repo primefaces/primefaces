@@ -23,18 +23,19 @@
  */
 package org.primefaces.component.panel;
 
-import java.io.IOException;
-import java.util.Map;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.component.menu.Menu;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
+
+import java.io.IOException;
+import java.util.Map;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 
 public class PanelRenderer extends CoreRenderer {
 

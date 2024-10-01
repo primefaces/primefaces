@@ -23,21 +23,22 @@
  */
 package org.primefaces.util;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import org.primefaces.component.panel.Panel;
+import org.primefaces.config.PrimeEnvironment;
+import org.primefaces.mock.CollectingResponseWriter;
+import org.primefaces.mock.FacesContextMock;
+import org.primefaces.mock.pf.PrimeConfigurationMock;
 
 import java.io.IOException;
 
 import javax.faces.context.FacesContext;
 
 import org.junit.jupiter.api.Test;
-import org.primefaces.component.panel.Panel;
-import org.primefaces.config.PrimeEnvironment;
-import org.primefaces.mock.CollectingResponseWriter;
-import org.primefaces.mock.FacesContextMock;
-import org.primefaces.mock.pf.PrimeConfigurationMock;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class WidgetBuilderTest {
 

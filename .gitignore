@@ -5,8 +5,8 @@
 nbactions.xml
 **/dynamichart
 .DS_STORE
-.idea/
-!.idea/codeStyles/*
+/.idea/*
+!/.idea/codeStyles
 *.iml
 **/pom.xml.versionsBackup
 *~

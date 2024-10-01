@@ -23,11 +23,11 @@
  */
 package org.primefaces.component.datascroller;
 
-import javax.faces.component.behavior.ClientBehaviorHolder;
-
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.PrimeUIData;
 import org.primefaces.component.api.Widget;
+
+import javax.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class DataScrollerBase extends PrimeUIData implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 

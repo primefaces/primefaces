@@ -23,7 +23,12 @@
  */
 package org.primefaces.integrationtests.confirmdialog;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.component.CommandLink;
+import org.primefaces.selenium.component.ConfirmDialog;
+import org.primefaces.selenium.component.Messages;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
@@ -32,12 +37,8 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.PrimeSelenium;
-import org.primefaces.selenium.component.CommandLink;
-import org.primefaces.selenium.component.ConfirmDialog;
-import org.primefaces.selenium.component.Messages;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class ConfirmDialog002Test extends AbstractPrimePageTest {
 

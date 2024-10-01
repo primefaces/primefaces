@@ -23,15 +23,20 @@
  */
 package org.primefaces.component.inputmask;
 
+import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.SharedStringBuilder;
+import org.primefaces.util.WidgetBuilder;
+
 import java.io.IOException;
 import java.util.regex.Pattern;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
-import org.primefaces.renderkit.InputRenderer;
-import org.primefaces.util.*;
 
 public class InputMaskRenderer extends InputRenderer {
 

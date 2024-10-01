@@ -23,16 +23,6 @@
  */
 package org.primefaces.component.autocomplete;
 
-import java.io.IOException;
-import java.util.*;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.convert.Converter;
-import javax.faces.convert.ConverterException;
-import javax.faces.event.PhaseId;
-
 import org.primefaces.component.column.Column;
 import org.primefaces.event.AutoCompleteEvent;
 import org.primefaces.expression.SearchExpressionUtils;
@@ -43,6 +33,21 @@ import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import javax.faces.convert.Converter;
+import javax.faces.convert.ConverterException;
+import javax.faces.event.PhaseId;
 
 public class AutoCompleteRenderer extends InputRenderer {
 

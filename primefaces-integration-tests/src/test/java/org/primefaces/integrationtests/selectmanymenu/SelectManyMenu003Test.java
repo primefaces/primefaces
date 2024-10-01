@@ -23,12 +23,6 @@
  */
 package org.primefaces.integrationtests.selectmanymenu;
 
-import org.json.JSONObject;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.integrationtests.general.model.Driver;
 import org.primefaces.integrationtests.general.service.RealDriverService;
 import org.primefaces.selenium.AbstractPrimePage;
@@ -38,12 +32,18 @@ import org.primefaces.selenium.component.SelectManyMenu;
 import org.primefaces.selenium.component.base.ComponentUtils;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.json.JSONObject;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 class SelectManyMenu003Test extends AbstractSelectManyMenuTest {
 

@@ -23,11 +23,6 @@
  */
 package org.primefaces.component.column.renderer;
 
-import java.io.IOException;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.datatable.DataTable;
@@ -35,6 +30,11 @@ import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.component.treetable.TreeTableRenderer;
 import org.primefaces.util.ComponentUtils;
+
+import java.io.IOException;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 
 public class ColumnGroupHelperRenderer implements HelperColumnRenderer {
 

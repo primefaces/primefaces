@@ -741,7 +741,10 @@
                 }
                 //page init
                 else {
-		            var newWidget = new this.widget[widgetName](cfg);
+                    if (cfg.preConstruct) {
+                        cfg.preConstruct.call(null, cfg);
+                    }
+                    var newWidget = new this.widget[widgetName](cfg);
                     this.widgets[widgetVar] = newWidget;
                     if(this.settings.legacyWidgetNamespace) {
                         window[widgetVar] = newWidget;

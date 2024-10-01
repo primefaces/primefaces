@@ -23,8 +23,10 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.component.DataTable;
+import org.primefaces.selenium.component.InputText;
 
 import java.util.List;
 
@@ -33,10 +35,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.PrimeSelenium;
-import org.primefaces.selenium.component.DataTable;
-import org.primefaces.selenium.component.InputText;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DataTable019Test extends AbstractDataTableTest {
 

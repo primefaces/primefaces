@@ -24,6 +24,7 @@
 package org.primefaces.showcase.view.message;
 
 import java.io.Serializable;
+
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;

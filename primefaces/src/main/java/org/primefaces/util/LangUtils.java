@@ -23,8 +23,6 @@
  */
 package org.primefaces.util;
 
-import static java.util.Locale.ENGLISH;
-
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -35,7 +33,17 @@ import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import javax.faces.FacesException;
@@ -494,7 +502,7 @@ public class LangUtils {
         if (isBlank(name)) {
             return name;
         }
-        return name.substring(0, 1).toUpperCase(ENGLISH) + name.substring(1);
+        return name.substring(0, 1).toUpperCase(Locale.ENGLISH) + name.substring(1);
     }
 
 

@@ -24,6 +24,7 @@
 package org.primefaces.clientwindow;
 
 import java.util.Iterator;
+
 import javax.faces.lifecycle.Lifecycle;
 import javax.faces.lifecycle.LifecycleFactory;
 

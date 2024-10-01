@@ -23,11 +23,12 @@
  */
 package org.primefaces.selenium.component;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractComponent;
 import org.primefaces.selenium.component.base.ComponentUtils;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:timeline}.

@@ -23,6 +23,9 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import org.primefaces.component.column.Column;
+import org.primefaces.component.datatable.DataTable;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,12 +35,13 @@ import javax.faces.application.Application;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
-import javax.faces.event.*;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.ComponentSystemEvent;
+import javax.faces.event.PreRenderViewEvent;
+import javax.faces.event.SystemEvent;
+import javax.faces.event.SystemEventListener;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-
-import org.primefaces.component.column.Column;
-import org.primefaces.component.datatable.DataTable;
 
 import lombok.Data;
 

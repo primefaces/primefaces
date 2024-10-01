@@ -30,10 +30,12 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.Constants;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
+
+import java.io.IOException;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import java.io.IOException;
 
 public class HeaderRowRenderer extends CoreRenderer {
 

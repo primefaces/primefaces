@@ -23,11 +23,11 @@
  */
 package org.primefaces.component.selectcheckboxmenu;
 
-import javax.faces.component.html.HtmlSelectManyCheckbox;
-
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
+
+import javax.faces.component.html.HtmlSelectManyCheckbox;
 
 public abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox implements Widget, InputHolder, PrimeClientBehaviorHolder {
 

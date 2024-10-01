@@ -23,12 +23,13 @@
  */
 package org.primefaces.selenium.component;
 
-import java.io.Serializable;
-
-import org.openqa.selenium.Keys;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractInputComponent;
 import org.primefaces.selenium.component.base.ComponentUtils;
+
+import java.io.Serializable;
+
+import org.openqa.selenium.Keys;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:inputText}.

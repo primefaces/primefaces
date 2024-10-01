@@ -23,9 +23,9 @@
  */
 package org.primefaces.component.spotlight;
 
-import javax.faces.component.UIComponentBase;
-
 import org.primefaces.component.api.Widget;
+
+import javax.faces.component.UIComponentBase;
 
 public abstract class SpotlightBase extends UIComponentBase implements Widget {
 

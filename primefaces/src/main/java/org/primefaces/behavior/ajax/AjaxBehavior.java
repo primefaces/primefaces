@@ -23,6 +23,10 @@
  */
 package org.primefaces.behavior.ajax;
 
+import org.primefaces.behavior.base.AbstractBehavior;
+import org.primefaces.behavior.base.BehaviorAttribute;
+import org.primefaces.component.api.AjaxSource;
+
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
@@ -31,10 +35,6 @@ import javax.el.MethodExpression;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.behavior.ClientBehaviorHint;
 import javax.faces.event.AjaxBehaviorListener;
-
-import org.primefaces.behavior.base.AbstractBehavior;
-import org.primefaces.behavior.base.BehaviorAttribute;
-import org.primefaces.component.api.AjaxSource;
 
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

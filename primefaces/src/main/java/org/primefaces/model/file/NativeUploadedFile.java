@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+
 import javax.servlet.http.Part;
 
 public class NativeUploadedFile extends AbstractUploadedFile<Part> implements Serializable {

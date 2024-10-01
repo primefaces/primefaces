@@ -23,10 +23,10 @@
  */
 package org.primefaces.component.poll;
 
-import javax.faces.component.UIComponentBase;
-
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.Widget;
+
+import javax.faces.component.UIComponentBase;
 
 public abstract class PollBase extends UIComponentBase implements AjaxSource, Widget {
 

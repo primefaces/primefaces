@@ -23,12 +23,13 @@
  */
 package org.primefaces.integrationtests.tree;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import org.json.JSONObject;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.model.Msg;
+
+import org.json.JSONObject;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public abstract class AbstractTreeTest extends AbstractPrimePageTest {
 

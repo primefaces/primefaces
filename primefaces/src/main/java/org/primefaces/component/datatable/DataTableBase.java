@@ -23,14 +23,18 @@
  */
 package org.primefaces.component.datatable;
 
+import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.RTLAware;
+import org.primefaces.component.api.UIPageableData;
+import org.primefaces.component.api.UITable;
+import org.primefaces.component.api.Widget;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.ELUtils;
+
 import java.util.Collection;
 
 import javax.el.MethodExpression;
 import javax.faces.component.behavior.ClientBehaviorHolder;
-
-import org.primefaces.component.api.*;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.ELUtils;
 
 public abstract class DataTableBase extends UIPageableData implements Widget, RTLAware, ClientBehaviorHolder,
         PrimeClientBehaviorHolder, UITable<DataTableState> {

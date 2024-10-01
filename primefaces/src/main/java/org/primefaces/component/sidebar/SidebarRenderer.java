@@ -23,15 +23,15 @@
  */
 package org.primefaces.component.sidebar;
 
+import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.WidgetBuilder;
+
 import java.io.IOException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
-import org.primefaces.expression.SearchExpressionUtils;
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.WidgetBuilder;
 
 public class SidebarRenderer extends CoreRenderer {
 

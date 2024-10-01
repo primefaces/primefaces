@@ -23,7 +23,10 @@
  */
 package org.primefaces.integrationtests.colorpicker;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.component.ColorPicker;
+import org.primefaces.selenium.component.CommandButton;
+import org.primefaces.selenium.component.Messages;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
@@ -32,10 +35,8 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.component.ColorPicker;
-import org.primefaces.selenium.component.CommandButton;
-import org.primefaces.selenium.component.Messages;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class ColorPicker001Test extends AbstractColorPickerTest {
 

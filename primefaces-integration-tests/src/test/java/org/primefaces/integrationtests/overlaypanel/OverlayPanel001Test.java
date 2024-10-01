@@ -23,7 +23,10 @@
  */
 package org.primefaces.integrationtests.overlaypanel;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.component.CommandButton;
+import org.primefaces.selenium.component.OverlayPanel;
 
 import java.util.List;
 
@@ -35,10 +38,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.component.CommandButton;
-import org.primefaces.selenium.component.OverlayPanel;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class OverlayPanel001Test extends AbstractPrimePageTest {
 

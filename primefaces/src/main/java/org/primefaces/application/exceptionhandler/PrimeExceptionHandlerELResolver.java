@@ -23,6 +23,8 @@
  */
 package org.primefaces.application.exceptionhandler;
 
+import org.primefaces.util.LangUtils;
+
 import java.beans.FeatureDescriptor;
 import java.util.Iterator;
 import java.util.Map;
@@ -32,8 +34,6 @@ import javax.el.ELResolver;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.lifecycle.ClientWindow;
-
-import org.primefaces.util.LangUtils;
 
 public class PrimeExceptionHandlerELResolver extends ELResolver {
 

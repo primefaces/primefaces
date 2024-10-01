@@ -23,17 +23,19 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import org.primefaces.event.SelectEvent;
+import org.primefaces.integrationtests.general.utilities.TestUtils;
+import org.primefaces.model.DefaultLazyDataModel;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
 import lombok.Data;
-import org.primefaces.event.SelectEvent;
-import org.primefaces.integrationtests.general.utilities.TestUtils;
-import org.primefaces.model.DefaultLazyDataModel;
 
 @Named
 @ViewScoped

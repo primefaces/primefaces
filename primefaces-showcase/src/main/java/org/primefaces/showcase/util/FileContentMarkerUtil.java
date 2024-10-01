@@ -23,6 +23,8 @@
  */
 package org.primefaces.showcase.util;
 
+import org.primefaces.util.LangUtils;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -38,8 +40,6 @@ import java.util.regex.Pattern;
 
 import jakarta.el.ELException;
 import jakarta.faces.context.FacesContext;
-
-import org.primefaces.util.LangUtils;
 
 public class FileContentMarkerUtil {
 

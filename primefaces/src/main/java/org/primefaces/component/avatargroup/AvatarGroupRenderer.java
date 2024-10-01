@@ -25,10 +25,11 @@ package org.primefaces.component.avatargroup;
 
 import org.primefaces.renderkit.CoreRenderer;
 
+import java.io.IOException;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import java.io.IOException;
 
 public class AvatarGroupRenderer extends CoreRenderer {
 

@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.accordionpanel;
 
-import javax.faces.component.behavior.ClientBehaviorHolder;
 import org.primefaces.component.api.MultiViewStateAware;
-
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.UITabPanel;
 import org.primefaces.component.api.Widget;
+
+import javax.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class AccordionPanelBase extends UITabPanel implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder,
         MultiViewStateAware<AccordionState> {

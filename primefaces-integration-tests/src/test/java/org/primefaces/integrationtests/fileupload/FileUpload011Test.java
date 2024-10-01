@@ -23,7 +23,9 @@
  */
 package org.primefaces.integrationtests.fileupload;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.component.DataTable;
+import org.primefaces.selenium.component.FileUpload;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,12 +36,16 @@ import java.nio.file.StandardOpenOption;
 import java.util.Comparator;
 import java.util.Random;
 import java.util.UUID;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.component.DataTable;
-import org.primefaces.selenium.component.FileUpload;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests advanced single file upload. p:fileUpload mode=advanced auto=false

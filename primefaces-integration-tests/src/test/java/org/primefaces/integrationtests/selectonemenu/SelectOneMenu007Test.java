@@ -23,8 +23,12 @@
  */
 package org.primefaces.integrationtests.selectonemenu;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.component.CommandButton;
+import org.primefaces.selenium.component.Messages;
+import org.primefaces.selenium.component.SelectOneMenu;
+import org.primefaces.selenium.component.model.Msg;
 
 import java.util.List;
 
@@ -35,12 +39,9 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.component.CommandButton;
-import org.primefaces.selenium.component.Messages;
-import org.primefaces.selenium.component.SelectOneMenu;
-import org.primefaces.selenium.component.model.Msg;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class SelectOneMenu007Test extends AbstractPrimePageTest {
 

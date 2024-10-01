@@ -24,6 +24,7 @@
 package org.primefaces.application.resource;
 
 import java.io.IOException;
+
 import javax.faces.context.FacesContext;
 
 public interface DynamicContentHandler {

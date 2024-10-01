@@ -28,11 +28,12 @@ import org.primefaces.component.api.RTLAware;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuModel;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.faces.component.UIPanel;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public abstract class AbstractMenu extends UIPanel implements MenuItemAware, RTLAware {
 

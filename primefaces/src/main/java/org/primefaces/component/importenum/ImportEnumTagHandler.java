@@ -23,6 +23,9 @@
  */
 package org.primefaces.component.importenum;
 
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.util.LangUtils;
+
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
@@ -36,9 +39,6 @@ import javax.faces.view.facelets.FaceletContext;
 import javax.faces.view.facelets.TagAttribute;
 import javax.faces.view.facelets.TagConfig;
 import javax.faces.view.facelets.TagHandler;
-
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.util.LangUtils;
 
 /**
  * {@link TagHandler} for the <code>ImportEnum</code> component.

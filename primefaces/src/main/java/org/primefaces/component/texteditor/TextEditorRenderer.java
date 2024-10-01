@@ -23,6 +23,16 @@
  */
 package org.primefaces.component.texteditor;
 
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.EscapeUtils;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.HtmlSanitizer;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.WidgetBuilder;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -33,10 +43,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
-
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.renderkit.InputRenderer;
-import org.primefaces.util.*;
 
 public class TextEditorRenderer extends InputRenderer {
 

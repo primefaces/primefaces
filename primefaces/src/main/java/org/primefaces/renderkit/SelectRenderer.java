@@ -23,21 +23,32 @@
  */
 package org.primefaces.renderkit;
 
+import org.primefaces.component.api.WrapperSelectItem;
+import org.primefaces.util.LangUtils;
+
 import java.lang.reflect.Array;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.RandomAccess;
+
 import javax.el.ELException;
 import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
-import javax.faces.component.*;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
+import javax.faces.component.UISelectItem;
+import javax.faces.component.UISelectItems;
+import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
-
-import org.primefaces.component.api.WrapperSelectItem;
-import org.primefaces.util.LangUtils;
 
 public abstract class SelectRenderer extends InputRenderer {
 

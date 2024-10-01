@@ -23,6 +23,9 @@
  */
 package org.primefaces.integrationtests.tree;
 
+import org.primefaces.model.TreeNode;
+import org.primefaces.util.LangUtils;
+
 import java.io.Serializable;
 import java.util.Locale;
 
@@ -32,9 +35,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import lombok.Data;
-
-import org.primefaces.model.TreeNode;
-import org.primefaces.util.LangUtils;
 
 @Named
 @ViewScoped

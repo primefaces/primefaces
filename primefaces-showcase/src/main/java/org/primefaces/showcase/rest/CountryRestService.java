@@ -27,14 +27,15 @@ import org.primefaces.model.rest.AutoCompleteSuggestion;
 import org.primefaces.model.rest.AutoCompleteSuggestionResponse;
 import org.primefaces.showcase.domain.Country;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Path("/country")
 public class CountryRestService {

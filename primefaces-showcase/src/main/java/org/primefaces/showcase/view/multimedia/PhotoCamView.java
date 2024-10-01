@@ -23,17 +23,19 @@
  */
 package org.primefaces.showcase.view.multimedia;
 
-import jakarta.faces.view.ViewScoped;
 import org.primefaces.event.CaptureEvent;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.Serializable;
+
+import javax.imageio.stream.FileImageOutputStream;
 
 import jakarta.faces.FacesException;
 import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
-import javax.imageio.stream.FileImageOutputStream;
+import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
-import java.io.File;
-import java.io.IOException;
-import java.io.Serializable;
 
 @Named
 @ViewScoped

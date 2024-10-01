@@ -23,13 +23,15 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Named;
+import org.primefaces.util.CalendarUtils;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import org.primefaces.util.CalendarUtils;
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Named;
 
 @Named
 @ApplicationScoped

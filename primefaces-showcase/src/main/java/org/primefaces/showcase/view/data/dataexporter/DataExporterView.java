@@ -23,17 +23,18 @@
  */
 package org.primefaces.showcase.view.data.dataexporter;
 
-import java.io.Serializable;
-import java.util.List;
-import jakarta.annotation.PostConstruct;
-import jakarta.faces.view.ViewScoped;
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
-
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.Exporter;
 import org.primefaces.showcase.domain.Product;
 import org.primefaces.showcase.service.ProductService;
+
+import java.io.Serializable;
+import java.util.List;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 @Named
 @ViewScoped

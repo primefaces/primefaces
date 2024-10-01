@@ -23,6 +23,11 @@
  */
 package org.primefaces.component.terminal;
 
+import org.primefaces.model.terminal.TerminalAutoCompleteMatches;
+import org.primefaces.model.terminal.TerminalAutoCompleteModel;
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.WidgetBuilder;
+
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -30,11 +35,6 @@ import javax.el.MethodExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
-import org.primefaces.model.terminal.TerminalAutoCompleteMatches;
-import org.primefaces.model.terminal.TerminalAutoCompleteModel;
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.WidgetBuilder;
 
 public class TerminalRenderer extends CoreRenderer {
 

@@ -23,14 +23,15 @@
  */
 package org.primefaces.selenium.component.html;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractInputComponent;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import org.primefaces.selenium.PrimeSelenium;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 /**
  * Component wrapper for the Faces {@code h:selectOneMenu}.

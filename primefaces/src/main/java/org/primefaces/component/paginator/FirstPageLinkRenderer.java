@@ -23,12 +23,12 @@
  */
 package org.primefaces.component.paginator;
 
+import org.primefaces.component.api.Pageable;
+import org.primefaces.component.api.UIPageableData;
+
 import java.io.IOException;
 
 import javax.faces.context.FacesContext;
-
-import org.primefaces.component.api.Pageable;
-import org.primefaces.component.api.UIPageableData;
 
 public class FirstPageLinkRenderer extends PageLinkRenderer implements PaginatorElementRenderer {
 

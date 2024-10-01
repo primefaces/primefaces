@@ -23,13 +23,13 @@
  */
 package org.primefaces.showcase.view.input;
 
-import jakarta.faces.view.ViewScoped;
+import java.io.Serializable;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
-import java.io.Serializable;
 
 @Named("triStateCheckboxView")
 @ViewScoped

@@ -23,11 +23,11 @@
  */
 package org.primefaces.integrationtests.datatable.dt028;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
 import java.io.Serializable;
 import java.util.Objects;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 @Data
 @AllArgsConstructor

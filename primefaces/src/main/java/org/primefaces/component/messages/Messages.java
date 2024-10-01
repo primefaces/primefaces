@@ -23,8 +23,9 @@
  */
 package org.primefaces.component.messages;
 
-import javax.faces.application.ResourceDependency;
 import org.primefaces.component.api.Widget;
+
+import javax.faces.application.ResourceDependency;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 public class Messages extends MessagesBase implements Widget {

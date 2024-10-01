@@ -23,8 +23,19 @@
  */
 package org.primefaces.component.chips;
 
+import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.WidgetBuilder;
+
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import javax.faces.component.UIComponent;
@@ -32,12 +43,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
-
-import org.primefaces.renderkit.InputRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
 
 public class ChipsRenderer extends InputRenderer {
 

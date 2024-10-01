@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.selectoneradio;
 
+import org.primefaces.util.LangUtils;
+
 import java.util.List;
 
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
-
-import org.primefaces.util.LangUtils;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")

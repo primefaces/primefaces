@@ -23,30 +23,6 @@
  */
 package org.primefaces.component.export;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.ObjIntConsumer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
-import javax.el.MethodExpression;
-import javax.faces.FacesException;
-import javax.faces.component.EditableValueHolder;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIPanel;
-import javax.faces.component.UISelectMany;
-import javax.faces.component.ValueHolder;
-import javax.faces.component.html.HtmlCommandLink;
-import javax.faces.component.html.HtmlGraphicImage;
-import javax.faces.component.visit.VisitCallback;
-import javax.faces.component.visit.VisitContext;
-import javax.faces.component.visit.VisitResult;
-import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
-
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.api.UITable;
@@ -61,6 +37,39 @@ import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.IOUtils;
 import org.primefaces.util.LangUtils;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.ObjIntConsumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
+
+import javax.el.MethodExpression;
+import javax.faces.FacesException;
+import javax.faces.component.EditableValueHolder;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIPanel;
+import javax.faces.component.UISelectMany;
+import javax.faces.component.ValueHolder;
+import javax.faces.component.html.HtmlCommandLink;
+import javax.faces.component.html.HtmlGraphicImage;
+import javax.faces.component.visit.VisitCallback;
+import javax.faces.component.visit.VisitContext;
+import javax.faces.component.visit.VisitResult;
+import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
 
 public abstract class TableExporter<T extends UIComponent & UITable, D, O extends ExporterOptions> implements Exporter<T> {
 
