@@ -23,11 +23,11 @@
  */
 package org.primefaces.model;
 
+import org.primefaces.util.LangUtils;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.primefaces.util.LangUtils;
 
 public class DialogFrameworkOptions implements Serializable {
 

@@ -23,6 +23,12 @@
  */
 package org.primefaces.component.api;
 
+import org.primefaces.component.celleditor.CellEditor;
+import org.primefaces.model.MatchMode;
+import org.primefaces.util.EditableValueHolderState;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.LangUtils;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -37,12 +43,6 @@ import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
-
-import org.primefaces.component.celleditor.CellEditor;
-import org.primefaces.model.MatchMode;
-import org.primefaces.util.EditableValueHolderState;
-import org.primefaces.util.FacetUtils;
-import org.primefaces.util.LangUtils;
 
 public interface UIColumn {
 

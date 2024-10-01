@@ -23,8 +23,6 @@
  */
 package org.primefaces.selenium.internal.junit;
 
-import org.junit.jupiter.api.extension.*;
-import org.openqa.selenium.WebDriver;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.spi.PrimePageFactory;
@@ -34,6 +32,13 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.ParameterContext;
+import org.junit.jupiter.api.extension.ParameterResolutionException;
+import org.junit.jupiter.api.extension.ParameterResolver;
+import org.junit.jupiter.api.extension.TestInstancePostProcessor;
+import org.openqa.selenium.WebDriver;
 
 public class PageInjectionExtension implements ParameterResolver, TestInstancePostProcessor {
 

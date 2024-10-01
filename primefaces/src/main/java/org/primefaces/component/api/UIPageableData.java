@@ -23,14 +23,15 @@
  */
 package org.primefaces.component.api;
 
-import java.util.Map;
-import javax.el.ELContext;
-import javax.el.ValueExpression;
-import javax.faces.context.FacesContext;
-
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.util.MessageFactory;
+
+import java.util.Map;
+
+import javax.el.ELContext;
+import javax.el.ValueExpression;
+import javax.faces.context.FacesContext;
 
 /**
  * UIData for pageable components

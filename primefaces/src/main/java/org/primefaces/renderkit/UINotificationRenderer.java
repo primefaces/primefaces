@@ -23,6 +23,13 @@
  */
 package org.primefaces.renderkit;
 
+import org.primefaces.component.api.InputHolder;
+import org.primefaces.component.api.UINotification;
+import org.primefaces.component.api.UINotifications;
+import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.util.CompositeUtils;
+import org.primefaces.util.LangUtils;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -31,13 +38,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.component.ContextCallback;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-
-import org.primefaces.component.api.InputHolder;
-import org.primefaces.component.api.UINotification;
-import org.primefaces.component.api.UINotifications;
-import org.primefaces.expression.SearchExpressionUtils;
-import org.primefaces.util.CompositeUtils;
-import org.primefaces.util.LangUtils;
 
 public class UINotificationRenderer extends CoreRenderer {
 

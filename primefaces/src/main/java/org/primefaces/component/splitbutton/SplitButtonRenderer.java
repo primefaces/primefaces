@@ -23,25 +23,34 @@
  */
 package org.primefaces.component.splitbutton;
 
+import org.primefaces.component.menu.AbstractMenu;
+import org.primefaces.component.menu.Menu;
+import org.primefaces.component.menubutton.MenuButton;
+import org.primefaces.component.overlaypanel.OverlayPanel;
+import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.model.menu.MenuElement;
+import org.primefaces.model.menu.MenuItem;
+import org.primefaces.model.menu.MenuModel;
+import org.primefaces.model.menu.Separator;
+import org.primefaces.model.menu.Submenu;
+import org.primefaces.renderkit.MenuItemAwareRenderer;
+import org.primefaces.util.ComponentTraversalUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.SharedStringBuilder;
+import org.primefaces.util.WidgetBuilder;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
-
-import org.primefaces.component.menu.AbstractMenu;
-import org.primefaces.component.menu.Menu;
-import org.primefaces.component.menubutton.MenuButton;
-import org.primefaces.component.overlaypanel.OverlayPanel;
-import org.primefaces.expression.SearchExpressionUtils;
-import org.primefaces.model.menu.*;
-import org.primefaces.renderkit.MenuItemAwareRenderer;
-import org.primefaces.util.*;
 
 public class SplitButtonRenderer extends MenuItemAwareRenderer {
 

@@ -23,14 +23,19 @@
  */
 package org.primefaces.component.datatable.export;
 
-import java.lang.reflect.Array;
-import java.util.*;
-import javax.faces.context.FacesContext;
-
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.ExporterOptions;
 import org.primefaces.component.export.TableExporter;
 import org.primefaces.model.LazyDataModel;
+
+import java.lang.reflect.Array;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+
+import javax.faces.context.FacesContext;
 
 public abstract class DataTableExporter<P, O extends ExporterOptions> extends TableExporter<DataTable, P, O> {
 

@@ -23,14 +23,6 @@
  */
 package org.primefaces.component.autocomplete;
 
-import java.util.*;
-import javax.el.MethodExpression;
-import javax.faces.FacesException;
-import javax.faces.application.ResourceDependency;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.FacesEvent;
 import org.primefaces.component.api.AbstractPrimeHtmlInputText;
 import org.primefaces.component.column.Column;
 import org.primefaces.event.SelectEvent;
@@ -43,6 +35,21 @@ import org.primefaces.model.SortOrder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.el.MethodExpression;
+import javax.faces.FacesException;
+import javax.faces.application.ResourceDependency;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.FacesEvent;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")

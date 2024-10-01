@@ -23,12 +23,12 @@
  */
 package org.primefaces.component.panel;
 
-import javax.faces.component.UIPanel;
-import javax.faces.component.behavior.ClientBehaviorHolder;
 import org.primefaces.component.api.MultiViewStateAware;
-
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
+
+import javax.faces.component.UIPanel;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class PanelBase extends UIPanel implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder,
         MultiViewStateAware<PanelState> {

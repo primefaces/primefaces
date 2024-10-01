@@ -26,9 +26,10 @@ package org.primefaces.webapp;
 import org.primefaces.component.fileupload.FileUploadChunkDecoder;
 import org.primefaces.model.file.UploadedFile;
 
+import java.io.IOException;
+
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.ServletRequestListener;
-import java.io.IOException;
 
 public class UploadedFileCleanerListener implements ServletRequestListener {
 

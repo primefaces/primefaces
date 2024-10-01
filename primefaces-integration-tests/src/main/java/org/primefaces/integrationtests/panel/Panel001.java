@@ -23,13 +23,13 @@
  */
 package org.primefaces.integrationtests.panel;
 
+import org.primefaces.event.CloseEvent;
+import org.primefaces.event.ToggleEvent;
+
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
-
-import org.primefaces.event.CloseEvent;
-import org.primefaces.event.ToggleEvent;
 
 @Named
 @RequestScoped

@@ -23,7 +23,10 @@
  */
 package org.primefaces.integrationtests.tree;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.component.Messages;
+import org.primefaces.selenium.component.Tree;
+import org.primefaces.selenium.component.model.tree.TreeNode;
 
 import java.io.File;
 import java.util.List;
@@ -32,10 +35,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.component.Messages;
-import org.primefaces.selenium.component.Tree;
-import org.primefaces.selenium.component.model.tree.TreeNode;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class Tree006Test extends AbstractTreeTest {
 

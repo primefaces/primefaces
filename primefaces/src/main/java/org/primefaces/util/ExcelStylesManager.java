@@ -23,6 +23,10 @@
  */
 package org.primefaces.util;
 
+import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.export.ColumnValue;
+import org.primefaces.component.export.ExcelOptions;
+
 import java.awt.Color;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -40,11 +44,16 @@ import org.apache.poi.hssf.usermodel.HSSFPalette;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.BuiltinFormats;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.RichTextString;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellUtil;
-import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.export.ColumnValue;
-import org.primefaces.component.export.ExcelOptions;
 
 public class ExcelStylesManager {
     protected static final String DEFAULT_FONT = HSSFFont.FONT_ARIAL;

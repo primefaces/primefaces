@@ -23,6 +23,17 @@
  */
 package org.primefaces.component.schedule;
 
+import org.primefaces.model.LazyScheduleModel;
+import org.primefaces.model.ScheduleEvent;
+import org.primefaces.model.ScheduleModel;
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.CalendarUtils;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.EscapeUtils;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.LocaleUtils;
+import org.primefaces.util.WidgetBuilder;
+
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -40,11 +51,6 @@ import javax.faces.context.ResponseWriter;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.primefaces.model.LazyScheduleModel;
-import org.primefaces.model.ScheduleEvent;
-import org.primefaces.model.ScheduleModel;
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.*;
 
 public class ScheduleRenderer extends CoreRenderer {
 

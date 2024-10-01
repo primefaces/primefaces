@@ -23,14 +23,15 @@
  */
 package org.primefaces.integrationtests.cascadeselect;
 
-import org.json.JSONObject;
-import org.openqa.selenium.WebElement;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CascadeSelect;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.model.Msg;
 
 import java.util.List;
+
+import org.json.JSONObject;
+import org.openqa.selenium.WebElement;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;

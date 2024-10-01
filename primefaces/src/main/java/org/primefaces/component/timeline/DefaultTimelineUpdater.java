@@ -23,10 +23,22 @@
  */
 package org.primefaces.component.timeline;
 
+import org.primefaces.PrimeFaces;
+import org.primefaces.model.timeline.TimelineEvent;
+import org.primefaces.model.timeline.TimelineGroup;
+import org.primefaces.model.timeline.TimelineModel;
+import org.primefaces.util.CalendarUtils;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.EscapeUtils;
+import org.primefaces.util.FastStringWriter;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.time.ZoneId;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,15 +48,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
-
-import org.primefaces.PrimeFaces;
-import org.primefaces.model.timeline.TimelineEvent;
-import org.primefaces.model.timeline.TimelineGroup;
-import org.primefaces.model.timeline.TimelineModel;
-import org.primefaces.util.CalendarUtils;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.EscapeUtils;
-import org.primefaces.util.FastStringWriter;
 
 public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseListener {
 

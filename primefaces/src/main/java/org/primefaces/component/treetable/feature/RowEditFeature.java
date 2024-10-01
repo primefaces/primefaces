@@ -23,13 +23,6 @@
  */
 package org.primefaces.component.treetable.feature;
 
-import javax.faces.component.EditableValueHolder;
-import javax.faces.component.UIComponent;
-import javax.faces.component.visit.VisitContext;
-import javax.faces.context.FacesContext;
-import java.io.IOException;
-import java.util.Map;
-
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.treetable.TreeTable;
@@ -37,6 +30,14 @@ import org.primefaces.component.treetable.TreeTableRenderer;
 import org.primefaces.model.TreeNode;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.visit.ResetInputVisitCallback;
+
+import java.io.IOException;
+import java.util.Map;
+
+import javax.faces.component.EditableValueHolder;
+import javax.faces.component.UIComponent;
+import javax.faces.component.visit.VisitContext;
+import javax.faces.context.FacesContext;
 
 public class RowEditFeature implements TreeTableFeature {
 

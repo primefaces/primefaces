@@ -23,11 +23,13 @@
  */
 package org.primefaces.event.map;
 
-import java.util.List;
-import javax.faces.component.UIComponent;
-import javax.faces.component.behavior.Behavior;
 import org.primefaces.event.AbstractAjaxBehaviorEvent;
 import org.primefaces.model.map.GeocodeResult;
+
+import java.util.List;
+
+import javax.faces.component.UIComponent;
+import javax.faces.component.behavior.Behavior;
 
 public class GeocodeEvent extends AbstractAjaxBehaviorEvent {
 

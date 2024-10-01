@@ -23,15 +23,17 @@
  */
 package org.primefaces.integrationtests.fileupload;
 
-import lombok.Data;
 import org.primefaces.model.file.UploadedFile;
 
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
+
+import lombok.Data;
 
 @Named
 @ViewScoped

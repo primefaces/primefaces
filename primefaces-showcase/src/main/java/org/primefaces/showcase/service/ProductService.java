@@ -23,16 +23,17 @@
  */
 package org.primefaces.showcase.service;
 
+import org.primefaces.showcase.domain.InventoryStatus;
+import org.primefaces.showcase.domain.Product;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Named;
-
-import org.primefaces.showcase.domain.InventoryStatus;
-import org.primefaces.showcase.domain.Product;
 
 @Named
 @ApplicationScoped

@@ -23,14 +23,16 @@
  */
 package org.primefaces.component.staticmessage;
 
+import org.primefaces.util.Constants;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
-import org.primefaces.util.Constants;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 public class StaticMessage extends StaticMessageBase {

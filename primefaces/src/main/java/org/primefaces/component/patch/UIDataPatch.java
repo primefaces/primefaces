@@ -23,16 +23,33 @@
  */
 package org.primefaces.component.patch;
 
+import org.primefaces.util.ComponentTraversalUtils;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.SharedStringBuilder;
+
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.StateManager;
-import javax.faces.component.*;
+import javax.faces.component.EditableValueHolder;
+import javax.faces.component.UIColumn;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIComponentBase;
+import javax.faces.component.UIData;
+import javax.faces.component.UIForm;
+import javax.faces.component.UINamingContainer;
+import javax.faces.component.UIViewRoot;
+import javax.faces.component.UniqueIdVendor;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitHint;
@@ -46,10 +63,6 @@ import javax.faces.event.PostValidateEvent;
 import javax.faces.event.PreValidateEvent;
 import javax.faces.model.DataModel;
 import javax.faces.render.Renderer;
-
-import org.primefaces.util.ComponentTraversalUtils;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.SharedStringBuilder;
 
 // ------------------------------------------------------------- Private Classes
 // Private class to represent saved state information

@@ -23,11 +23,12 @@
  */
 package org.primefaces.expression;
 
+import org.primefaces.component.api.Widget;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitResult;
-import org.primefaces.component.api.Widget;
 
 public class WidgetVarVisitCallback implements VisitCallback {
 

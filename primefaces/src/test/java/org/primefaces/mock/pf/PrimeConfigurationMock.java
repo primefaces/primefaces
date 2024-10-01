@@ -23,10 +23,12 @@
  */
 package org.primefaces.mock.pf;
 
-import java.util.Map;
-import javax.faces.context.FacesContext;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.config.PrimeEnvironment;
+
+import java.util.Map;
+
+import javax.faces.context.FacesContext;
 
 public class PrimeConfigurationMock extends PrimeConfiguration {
 

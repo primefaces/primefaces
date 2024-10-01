@@ -23,6 +23,9 @@
  */
 package org.primefaces.showcase.view.input;
 
+import org.primefaces.showcase.domain.Country;
+import org.primefaces.showcase.service.CountryService;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,9 +37,6 @@ import jakarta.faces.model.SelectItem;
 import jakarta.faces.model.SelectItemGroup;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-
-import org.primefaces.showcase.domain.Country;
-import org.primefaces.showcase.service.CountryService;
 
 @Named
 @RequestScoped

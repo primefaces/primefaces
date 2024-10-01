@@ -23,16 +23,17 @@
  */
 package org.primefaces.integrationtests.staticmessage;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.primefaces.component.growl.Growl;
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.component.StaticMessage;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.component.growl.Growl;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.component.StaticMessage;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class StaticMessage001Test extends AbstractPrimePageTest {
 

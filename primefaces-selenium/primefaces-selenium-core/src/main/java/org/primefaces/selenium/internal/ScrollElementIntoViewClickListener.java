@@ -23,9 +23,10 @@
  */
 package org.primefaces.selenium.internal;
 
+import org.primefaces.selenium.PrimeSelenium;
+
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.events.WebDriverListener;
-import org.primefaces.selenium.PrimeSelenium;
 
 public class ScrollElementIntoViewClickListener implements WebDriverListener {
 

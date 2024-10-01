@@ -23,6 +23,10 @@
  */
 package org.primefaces.component.inputtextarea;
 
+import org.primefaces.event.SelectEvent;
+import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -33,10 +37,6 @@ import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
-
-import org.primefaces.event.SelectEvent;
-import org.primefaces.util.Constants;
-import org.primefaces.util.LangUtils;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")

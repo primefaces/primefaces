@@ -23,6 +23,13 @@
  */
 package org.primefaces.renderkit;
 
+import org.primefaces.component.api.InputHolder;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.SharedStringBuilder;
+
 import java.io.IOException;
 import java.util.Objects;
 
@@ -32,9 +39,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
-
-import org.primefaces.component.api.InputHolder;
-import org.primefaces.util.*;
 
 public abstract class InputRenderer extends CoreRenderer {
 

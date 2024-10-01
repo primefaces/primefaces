@@ -23,7 +23,11 @@
  */
 package org.primefaces.integrationtests.timeline;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.component.CommandButton;
+import org.primefaces.selenium.component.Messages;
+import org.primefaces.selenium.component.Timeline;
 
 import java.util.List;
 import java.util.Locale;
@@ -36,11 +40,8 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.component.CommandButton;
-import org.primefaces.selenium.component.Messages;
-import org.primefaces.selenium.component.Timeline;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class Timeline003Test extends AbstractPrimePageTest {
 

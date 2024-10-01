@@ -23,12 +23,12 @@
  */
 package org.primefaces.component.tree;
 
-import javax.faces.component.behavior.ClientBehaviorHolder;
-
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.UITree;
 import org.primefaces.component.api.Widget;
+
+import javax.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class TreeBase extends UITree implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 

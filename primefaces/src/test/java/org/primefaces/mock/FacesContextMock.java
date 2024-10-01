@@ -23,8 +23,6 @@
  */
 package org.primefaces.mock;
 
-import de.odysseus.el.util.SimpleContext;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -34,8 +32,8 @@ import java.util.Map;
 import javax.el.ELContext;
 import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
-import javax.faces.application.ProjectStage;
 import javax.faces.application.FacesMessage.Severity;
+import javax.faces.application.ProjectStage;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -43,6 +41,8 @@ import javax.faces.context.PartialViewContext;
 import javax.faces.context.ResponseStream;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.RenderKit;
+
+import de.odysseus.el.util.SimpleContext;
 
 public class FacesContextMock extends FacesContext {
 

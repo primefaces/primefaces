@@ -23,6 +23,8 @@
  */
 package org.primefaces.component.datascroller;
 
+import org.primefaces.util.MapBuilder;
+
 import java.util.Collection;
 import java.util.Map;
 
@@ -30,8 +32,6 @@ import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.PhaseId;
-
-import org.primefaces.util.MapBuilder;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")

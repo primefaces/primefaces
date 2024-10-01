@@ -23,6 +23,15 @@
  */
 package org.primefaces.event;
 
+import org.primefaces.component.api.DynamicColumn;
+import org.primefaces.component.api.PrimeUIData;
+import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.api.UITree;
+import org.primefaces.component.celleditor.CellEditor;
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.treetable.TreeTable;
+import org.primefaces.util.FacetUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,15 +40,6 @@ import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
 import javax.faces.context.FacesContext;
-
-import org.primefaces.component.api.DynamicColumn;
-import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.api.PrimeUIData;
-import org.primefaces.component.api.UITree;
-import org.primefaces.component.celleditor.CellEditor;
-import org.primefaces.component.datatable.DataTable;
-import org.primefaces.component.treetable.TreeTable;
-import org.primefaces.util.FacetUtils;
 
 public class CellEditEvent<T> extends AbstractAjaxBehaviorEvent {
 

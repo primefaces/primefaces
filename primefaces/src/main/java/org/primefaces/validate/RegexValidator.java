@@ -23,9 +23,10 @@
  */
 package org.primefaces.validate;
 
+import org.primefaces.util.HTML;
+
 import java.util.HashMap;
 import java.util.Map;
-import org.primefaces.util.HTML;
 
 public class RegexValidator extends javax.faces.validator.RegexValidator implements ClientValidator {
 

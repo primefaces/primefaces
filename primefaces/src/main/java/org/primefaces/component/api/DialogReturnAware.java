@@ -23,14 +23,16 @@
  */
 package org.primefaces.component.api;
 
+import org.primefaces.event.SelectEvent;
+import org.primefaces.util.Constants;
+
 import java.util.Map;
 import java.util.function.Consumer;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
-import org.primefaces.event.SelectEvent;
-import org.primefaces.util.Constants;
 
 public interface DialogReturnAware {
 

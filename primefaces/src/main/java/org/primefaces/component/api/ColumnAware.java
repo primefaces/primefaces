@@ -23,6 +23,13 @@
  */
 package org.primefaces.component.api;
 
+import org.primefaces.component.column.Column;
+import org.primefaces.component.columngroup.ColumnGroup;
+import org.primefaces.component.columns.Columns;
+import org.primefaces.component.row.Row;
+import org.primefaces.model.ColumnMeta;
+import org.primefaces.util.ComponentUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -31,18 +38,12 @@ import java.util.concurrent.atomic.LongAdder;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
-
-import org.primefaces.component.column.Column;
-import org.primefaces.component.columngroup.ColumnGroup;
-import org.primefaces.component.columns.Columns;
-import org.primefaces.component.row.Row;
-import org.primefaces.model.ColumnMeta;
-import org.primefaces.util.ComponentUtils;
 
 public interface ColumnAware {
 

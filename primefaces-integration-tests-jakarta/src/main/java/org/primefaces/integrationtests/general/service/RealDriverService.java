@@ -23,14 +23,16 @@
  */
 package org.primefaces.integrationtests.general.service;
 
-import lombok.Getter;
 import org.primefaces.integrationtests.general.model.Driver;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Named;
-import java.util.ArrayList;
-import java.util.List;
+
+import lombok.Getter;
 
 @Named
 @ApplicationScoped

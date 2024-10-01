@@ -23,13 +23,13 @@
  */
 package org.primefaces.model.filter;
 
+import org.primefaces.model.MatchMode;
+import org.primefaces.util.MapBuilder;
+
 import java.util.Map;
 import java.util.Optional;
 
 import javax.faces.FacesException;
-
-import org.primefaces.model.MatchMode;
-import org.primefaces.util.MapBuilder;
 
 public final class FilterConstraints {
 

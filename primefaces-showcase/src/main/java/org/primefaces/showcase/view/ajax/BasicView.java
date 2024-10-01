@@ -23,16 +23,15 @@
  */
 package org.primefaces.showcase.view.ajax;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.inject.Named;
 import java.io.Serializable;
-
-import jakarta.faces.view.ViewScoped;
-import jakarta.faces.application.FacesMessage;
-import jakarta.faces.context.FacesContext;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
 
 @Named
 @ViewScoped

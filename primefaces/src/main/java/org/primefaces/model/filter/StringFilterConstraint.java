@@ -23,9 +23,10 @@
  */
 package org.primefaces.model.filter;
 
-import javax.faces.context.FacesContext;
 import java.util.Locale;
 import java.util.function.BiPredicate;
+
+import javax.faces.context.FacesContext;
 
 public abstract class StringFilterConstraint implements FilterConstraint {
 

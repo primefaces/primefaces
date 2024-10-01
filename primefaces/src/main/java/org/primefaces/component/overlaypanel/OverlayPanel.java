@@ -23,14 +23,15 @@
  */
 package org.primefaces.component.overlaypanel;
 
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.MapBuilder;
+
 import java.util.Collection;
 import java.util.Map;
+
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 import javax.faces.event.BehaviorEvent;
-
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.MapBuilder;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")

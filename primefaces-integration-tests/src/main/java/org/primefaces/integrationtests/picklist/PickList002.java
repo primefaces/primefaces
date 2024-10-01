@@ -23,6 +23,8 @@
  */
 package org.primefaces.integrationtests.picklist;
 
+import org.primefaces.model.DualListModel;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +32,6 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-
-import org.primefaces.model.DualListModel;
 
 import lombok.Data;
 

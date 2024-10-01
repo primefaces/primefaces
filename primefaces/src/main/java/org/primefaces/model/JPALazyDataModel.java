@@ -23,9 +23,24 @@
  */
 package org.primefaces.model;
 
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.util.BeanUtils;
+import org.primefaces.util.Callbacks;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.LocaleUtils;
+import org.primefaces.util.PropertyDescriptorResolver;
+
 import java.beans.PropertyDescriptor;
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -36,13 +51,17 @@ import javax.faces.convert.Converter;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Order;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.Type;
-
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.util.*;
 
 /**
  * Basic {@link LazyDataModel} implementation with JPA and Criteria API.

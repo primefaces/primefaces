@@ -23,21 +23,27 @@
  */
 package org.primefaces.component.datatable.export;
 
-import java.io.IOException;
-import java.util.concurrent.atomic.AtomicInteger;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.ss.util.WorkbookUtil;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.ColumnValue;
 import org.primefaces.component.export.ExcelOptions;
 import org.primefaces.util.ExcelStylesManager;
 import org.primefaces.util.LocaleUtils;
+
+import java.io.IOException;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.PrintSetup;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.ss.util.WorkbookUtil;
 
 public class DataTableExcelExporter extends DataTableExporter<Workbook, ExcelOptions> {
 

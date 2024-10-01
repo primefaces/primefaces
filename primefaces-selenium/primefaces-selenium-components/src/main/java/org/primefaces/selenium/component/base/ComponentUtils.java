@@ -23,8 +23,9 @@
  */
 package org.primefaces.selenium.component.base;
 
-import org.openqa.selenium.WebElement;
 import org.primefaces.selenium.PrimeSelenium;
+
+import org.openqa.selenium.WebElement;
 
 public final class ComponentUtils {
 

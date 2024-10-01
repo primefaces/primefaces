@@ -23,6 +23,12 @@
  */
 package org.primefaces.component.dnd;
 
+import org.primefaces.event.DragDropEvent;
+import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.MapBuilder;
+
 import java.util.Collection;
 import java.util.Map;
 
@@ -33,12 +39,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
-
-import org.primefaces.event.DragDropEvent;
-import org.primefaces.expression.SearchExpressionUtils;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
 
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

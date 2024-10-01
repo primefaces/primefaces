@@ -28,17 +28,17 @@ import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 import org.primefaces.model.TreeNodeList;
 import org.primefaces.selenium.component.Messages;
-import org.primefaces.selenium.component.model.Msg;
 import org.primefaces.selenium.component.TreeTable;
+import org.primefaces.selenium.component.model.Msg;
 import org.primefaces.selenium.component.model.treetable.Row;
 
 import java.util.ArrayList;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class AbstractTreeTableTest extends AbstractTableTest {
 

@@ -28,16 +28,17 @@ import org.primefaces.model.file.UploadedFile;
 import org.primefaces.util.FileUploadUtils;
 import org.primefaces.util.LangUtils;
 
-import javax.faces.context.FacesContext;
-import javax.servlet.MultipartConfigElement;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.Part;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+
+import javax.faces.context.FacesContext;
+import javax.servlet.MultipartConfigElement;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
 
 public class NativeFileUploadDecoder extends AbstractFileUploadDecoder<HttpServletRequest> {
 

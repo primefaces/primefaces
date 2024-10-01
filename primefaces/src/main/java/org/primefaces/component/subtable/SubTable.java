@@ -23,14 +23,15 @@
  */
 package org.primefaces.component.subtable;
 
+import org.primefaces.component.api.ColumnAware;
+import org.primefaces.component.api.UIColumn;
+import org.primefaces.model.ColumnMeta;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.faces.event.PhaseId;
-import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.api.ColumnAware;
-import org.primefaces.model.ColumnMeta;
 
 public class SubTable extends SubTableBase implements ColumnAware {
 

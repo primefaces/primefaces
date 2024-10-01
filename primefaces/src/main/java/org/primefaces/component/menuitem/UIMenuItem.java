@@ -23,6 +23,11 @@
  */
 package org.primefaces.component.menuitem;
 
+import org.primefaces.component.api.DialogReturnAware;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.MapBuilder;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -34,10 +39,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
-import org.primefaces.component.api.DialogReturnAware;
-import org.primefaces.event.SelectEvent;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.MapBuilder;
 
 
 public class UIMenuItem extends UIMenuItemBase implements DialogReturnAware {

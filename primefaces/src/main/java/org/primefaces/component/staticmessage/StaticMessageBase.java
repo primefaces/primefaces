@@ -23,12 +23,14 @@
  */
 package org.primefaces.component.staticmessage;
 
-import java.util.Collection;
-import javax.faces.component.UIComponentBase;
-import javax.faces.component.behavior.ClientBehaviorHolder;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.LangUtils;
+
+import java.util.Collection;
+
+import javax.faces.component.UIComponentBase;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class StaticMessageBase extends UIComponentBase implements Widget, ClientBehaviorHolder, MixedClientBehaviorHolder {
 

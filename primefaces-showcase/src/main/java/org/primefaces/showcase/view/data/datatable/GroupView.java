@@ -23,17 +23,18 @@
  */
 package org.primefaces.showcase.view.data.datatable;
 
-import jakarta.faces.view.ViewScoped;
 import org.primefaces.showcase.domain.Player;
 import org.primefaces.showcase.domain.Sale;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
 
 @Named("dtGroupView")
 @ViewScoped

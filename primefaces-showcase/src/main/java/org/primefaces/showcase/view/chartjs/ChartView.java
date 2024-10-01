@@ -23,6 +23,8 @@
  */
 package org.primefaces.showcase.view.chartjs;
 
+import org.primefaces.event.ItemSelectEvent;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
@@ -33,18 +35,44 @@ import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Named;
 
-import org.primefaces.event.ItemSelectEvent;
-
-import software.xdev.chartjs.model.charts.*;
+import software.xdev.chartjs.model.charts.BarChart;
+import software.xdev.chartjs.model.charts.BubbleChart;
+import software.xdev.chartjs.model.charts.DoughnutChart;
+import software.xdev.chartjs.model.charts.LineChart;
+import software.xdev.chartjs.model.charts.PieChart;
+import software.xdev.chartjs.model.charts.PolarChart;
+import software.xdev.chartjs.model.charts.RadarChart;
+import software.xdev.chartjs.model.charts.ScatterChart;
 import software.xdev.chartjs.model.color.RGBAColor;
-import software.xdev.chartjs.model.data.*;
+import software.xdev.chartjs.model.data.BarData;
+import software.xdev.chartjs.model.data.BubbleData;
+import software.xdev.chartjs.model.data.DoughnutData;
+import software.xdev.chartjs.model.data.LineData;
+import software.xdev.chartjs.model.data.PieData;
+import software.xdev.chartjs.model.data.PolarData;
+import software.xdev.chartjs.model.data.RadarData;
+import software.xdev.chartjs.model.data.ScatterData;
 import software.xdev.chartjs.model.datapoint.BubbleDataPoint;
 import software.xdev.chartjs.model.datapoint.ScatterDataPoint;
-import software.xdev.chartjs.model.dataset.*;
+import software.xdev.chartjs.model.dataset.BarDataset;
+import software.xdev.chartjs.model.dataset.BubbleDataset;
+import software.xdev.chartjs.model.dataset.DoughnutDataset;
+import software.xdev.chartjs.model.dataset.LineDataset;
+import software.xdev.chartjs.model.dataset.PieDataset;
+import software.xdev.chartjs.model.dataset.PolarDataset;
+import software.xdev.chartjs.model.dataset.RadarDataset;
+import software.xdev.chartjs.model.dataset.ScatterDataset;
 import software.xdev.chartjs.model.enums.FontStyle;
 import software.xdev.chartjs.model.enums.IndexAxis;
 import software.xdev.chartjs.model.enums.ScalesPosition;
-import software.xdev.chartjs.model.options.*;
+import software.xdev.chartjs.model.options.BarOptions;
+import software.xdev.chartjs.model.options.DoughnutOptions;
+import software.xdev.chartjs.model.options.Font;
+import software.xdev.chartjs.model.options.LineOptions;
+import software.xdev.chartjs.model.options.Plugins;
+import software.xdev.chartjs.model.options.RadarOptions;
+import software.xdev.chartjs.model.options.Title;
+import software.xdev.chartjs.model.options.Tooltip;
 import software.xdev.chartjs.model.options.elements.Fill;
 import software.xdev.chartjs.model.options.scale.Scales;
 import software.xdev.chartjs.model.options.scale.cartesian.CartesianScaleOptions;

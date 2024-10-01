@@ -23,6 +23,13 @@
  */
 package org.primefaces.component.clock;
 
+import org.primefaces.PrimeFaces;
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.CalendarUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.LocaleUtils;
+import org.primefaces.util.WidgetBuilder;
+
 import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -33,13 +40,6 @@ import java.util.Locale;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
-import org.primefaces.PrimeFaces;
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.CalendarUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.LocaleUtils;
-import org.primefaces.util.WidgetBuilder;
 
 public class ClockRenderer extends CoreRenderer {
 

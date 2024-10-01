@@ -23,21 +23,23 @@
  */
 package org.primefaces.expression;
 
+import org.primefaces.component.api.Widget;
+import org.primefaces.util.ComponentTraversalUtils;
+import org.primefaces.util.LangUtils;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
+
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.search.SearchExpressionContext;
 import javax.faces.component.search.SearchExpressionHint;
 import javax.faces.component.visit.VisitHint;
 import javax.faces.context.FacesContext;
-import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentTraversalUtils;
-import org.primefaces.util.LangUtils;
 
 public class SearchExpressionUtils {
 

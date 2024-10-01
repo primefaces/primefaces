@@ -23,16 +23,16 @@
  */
 package org.primefaces.component.confirmpopup;
 
+import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.WidgetBuilder;
+
 import java.io.IOException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
-import org.primefaces.expression.SearchExpressionUtils;
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.FacetUtils;
-import org.primefaces.util.WidgetBuilder;
 
 public class ConfirmPopupRenderer extends CoreRenderer {
 

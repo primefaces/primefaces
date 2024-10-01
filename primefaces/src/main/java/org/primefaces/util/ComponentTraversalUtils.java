@@ -27,7 +27,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.faces.component.*;
+import javax.faces.component.ContextCallback;
+import javax.faces.component.NamingContainer;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIForm;
+import javax.faces.component.UniqueIdVendor;
 import javax.faces.context.FacesContext;
 
 public class ComponentTraversalUtils {

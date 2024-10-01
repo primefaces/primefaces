@@ -23,11 +23,12 @@
  */
 package org.primefaces.selenium.component;
 
+import org.primefaces.selenium.component.base.AbstractComponent;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
-import org.primefaces.selenium.component.base.AbstractComponent;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:outputLabel}.

@@ -23,8 +23,6 @@
  */
 package org.primefaces.selenium.component;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractTable;
 import org.primefaces.selenium.component.model.datatable.Cell;
@@ -32,6 +30,9 @@ import org.primefaces.selenium.component.model.datatable.Row;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:dataTable}.

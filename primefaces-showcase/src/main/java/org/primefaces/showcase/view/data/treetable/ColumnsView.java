@@ -27,14 +27,15 @@ import org.primefaces.model.TreeNode;
 import org.primefaces.showcase.domain.Document;
 import org.primefaces.showcase.service.DocumentService;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.faces.view.ViewScoped;
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 @Named("ttColumnsView")
 @ViewScoped

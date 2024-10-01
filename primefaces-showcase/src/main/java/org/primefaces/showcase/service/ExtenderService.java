@@ -23,6 +23,8 @@
  */
 package org.primefaces.showcase.service;
 
+import org.primefaces.component.schedule.Schedule;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -31,8 +33,6 @@ import java.util.Properties;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Named;
-
-import org.primefaces.component.schedule.Schedule;
 
 /**
  * Provides the examples for the [@code extender} options of various components,

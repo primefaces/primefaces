@@ -23,6 +23,13 @@
  */
 package org.primefaces.selenium.component.base;
 
+import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.component.model.datatable.Body;
+import org.primefaces.selenium.component.model.datatable.Cell;
+import org.primefaces.selenium.component.model.datatable.Header;
+import org.primefaces.selenium.component.model.datatable.HeaderCell;
+import org.primefaces.selenium.component.model.datatable.Row;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,8 +38,6 @@ import java.util.stream.Collectors;
 import org.json.JSONObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.primefaces.selenium.PrimeSelenium;
-import org.primefaces.selenium.component.model.datatable.*;
 
 public abstract class AbstractTable<T extends Row> extends AbstractPageableData {
 

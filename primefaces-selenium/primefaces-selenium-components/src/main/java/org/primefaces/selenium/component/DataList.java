@@ -23,12 +23,13 @@
  */
 package org.primefaces.selenium.component;
 
+import org.primefaces.selenium.component.base.AbstractPageableData;
+
 import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.component.base.AbstractPageableData;
 
 /**
  * @deprecated since 10.0 and removal possible anytime after that

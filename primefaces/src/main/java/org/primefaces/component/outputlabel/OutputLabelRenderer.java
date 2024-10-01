@@ -23,6 +23,18 @@
  */
 package org.primefaces.component.outputlabel;
 
+import org.primefaces.component.api.InputHolder;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.el.ValueExpressionAnalyzer;
+import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.metadata.BeanValidationMetadataExtractor;
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.CompositeUtils;
+import org.primefaces.util.EditableValueHolderState;
+import org.primefaces.util.HTML;
+import org.primefaces.util.StyleClassBuilder;
+
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.Set;
@@ -31,20 +43,16 @@ import java.util.logging.Logger;
 
 import javax.el.PropertyNotFoundException;
 import javax.el.ValueExpression;
-import javax.faces.component.*;
+import javax.faces.component.ContextCallback;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
+import javax.faces.component.UINamingContainer;
+import javax.faces.component.UISelectBoolean;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
 import javax.validation.metadata.ConstraintDescriptor;
-
-import org.primefaces.component.api.InputHolder;
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.el.ValueExpressionAnalyzer;
-import org.primefaces.expression.SearchExpressionUtils;
-import org.primefaces.metadata.BeanValidationMetadataExtractor;
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.*;
 
 public class OutputLabelRenderer extends CoreRenderer {
 

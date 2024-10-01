@@ -23,6 +23,14 @@
  */
 package org.primefaces.component.dataview;
 
+import org.primefaces.renderkit.DataRenderer;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.GridLayoutUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.WidgetBuilder;
+
 import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Level;
@@ -31,9 +39,6 @@ import java.util.logging.Logger;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
-import org.primefaces.renderkit.DataRenderer;
-import org.primefaces.util.*;
 
 public class DataViewRenderer extends DataRenderer {
 

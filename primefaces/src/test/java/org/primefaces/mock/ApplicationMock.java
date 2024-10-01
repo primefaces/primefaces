@@ -23,11 +23,10 @@
  */
 package org.primefaces.mock;
 
-import de.odysseus.el.ExpressionFactoryImpl;
-
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Locale;
+
 import javax.el.ExpressionFactory;
 import javax.faces.FacesException;
 import javax.faces.application.Application;
@@ -46,6 +45,8 @@ import javax.faces.el.VariableResolver;
 import javax.faces.event.ActionListener;
 import javax.faces.event.SystemEvent;
 import javax.faces.validator.Validator;
+
+import de.odysseus.el.ExpressionFactoryImpl;
 
 @SuppressWarnings("deprecation")
 public class ApplicationMock extends Application {

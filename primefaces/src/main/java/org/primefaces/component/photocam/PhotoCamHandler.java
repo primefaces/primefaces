@@ -23,15 +23,15 @@
  */
 package org.primefaces.component.photocam;
 
+import org.primefaces.event.CaptureEvent;
+import org.primefaces.facelets.MethodRule;
+
 import java.util.List;
 
 import javax.faces.view.facelets.ComponentConfig;
 import javax.faces.view.facelets.ComponentHandler;
 import javax.faces.view.facelets.MetaRule;
 import javax.faces.view.facelets.MetaRuleset;
-
-import org.primefaces.event.CaptureEvent;
-import org.primefaces.facelets.MethodRule;
 
 public class PhotoCamHandler extends ComponentHandler {
 

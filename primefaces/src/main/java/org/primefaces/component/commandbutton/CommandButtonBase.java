@@ -23,12 +23,12 @@
  */
 package org.primefaces.component.commandbutton;
 
-import javax.faces.component.html.HtmlCommandButton;
-
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.Confirmable;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
+
+import javax.faces.component.html.HtmlCommandButton;
 
 public abstract class CommandButtonBase extends HtmlCommandButton implements AjaxSource, Widget, Confirmable, PrimeClientBehaviorHolder {
 

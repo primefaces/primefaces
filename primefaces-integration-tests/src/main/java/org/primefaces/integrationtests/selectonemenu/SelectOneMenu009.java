@@ -23,16 +23,18 @@
  */
 package org.primefaces.integrationtests.selectonemenu;
 
-import lombok.Data;
 import org.primefaces.integrationtests.general.model.Driver;
 import org.primefaces.integrationtests.general.service.RealDriverService;
+
+import java.io.Serializable;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.io.Serializable;
-import java.util.List;
+
+import lombok.Data;
 
 @Named
 @ViewScoped

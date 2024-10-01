@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.timeline;
 
+import org.primefaces.model.timeline.TimelineEvent;
+
 import java.util.Map;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-
-import org.primefaces.model.timeline.TimelineEvent;
 
 public abstract class TimelineUpdater {
 

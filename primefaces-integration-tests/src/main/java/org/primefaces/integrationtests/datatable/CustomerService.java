@@ -24,13 +24,13 @@
 package org.primefaces.integrationtests.datatable;
 
 import java.security.SecureRandom;
-
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class CustomerService {

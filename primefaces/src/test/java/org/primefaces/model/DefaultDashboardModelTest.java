@@ -23,15 +23,16 @@
  */
 package org.primefaces.model;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.primefaces.model.dashboard.DashboardModel;
+import org.primefaces.model.dashboard.DashboardWidget;
+import org.primefaces.model.dashboard.DefaultDashboardModel;
+import org.primefaces.model.dashboard.DefaultDashboardWidget;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.primefaces.model.dashboard.DashboardModel;
-import org.primefaces.model.dashboard.DashboardWidget;
-import org.primefaces.model.dashboard.DefaultDashboardWidget;
-import org.primefaces.model.dashboard.DefaultDashboardModel;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DefaultDashboardModelTest {
 

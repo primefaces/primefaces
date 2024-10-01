@@ -23,6 +23,10 @@
  */
 package org.primefaces.integrationtests.common;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.UUID;
+
 import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
 import javax.el.VariableMapper;
@@ -32,9 +36,6 @@ import javax.faces.view.facelets.TagAttribute;
 import javax.faces.view.facelets.TagAttributeException;
 import javax.faces.view.facelets.TagConfig;
 import javax.faces.view.facelets.TagHandler;
-import java.io.IOException;
-import java.util.List;
-import java.util.UUID;
 
 /**
  * Tag handler to include a facelet multiple times with different contextes (objects from "value").

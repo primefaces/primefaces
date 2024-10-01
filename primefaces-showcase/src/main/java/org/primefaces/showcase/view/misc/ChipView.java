@@ -23,13 +23,13 @@
  */
 package org.primefaces.showcase.view.misc;
 
+import org.primefaces.component.chip.Chip;
+
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.inject.Named;
-
-import org.primefaces.component.chip.Chip;
 
 @Named
 @RequestScoped

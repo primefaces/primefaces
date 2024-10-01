@@ -23,6 +23,11 @@
  */
 package org.primefaces.component.cache;
 
+import org.primefaces.cache.CacheProvider;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.renderkit.CoreRenderer;
+
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.logging.Level;
@@ -31,11 +36,6 @@ import java.util.logging.Logger;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
-import org.primefaces.cache.CacheProvider;
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.context.PrimeRequestContext;
-import org.primefaces.renderkit.CoreRenderer;
 
 public class UICacheRenderer extends CoreRenderer {
 

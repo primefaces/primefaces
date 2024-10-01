@@ -23,16 +23,6 @@
  */
 package org.primefaces.component.organigram;
 
-import java.util.Collection;
-import java.util.Map;
-import javax.faces.FacesException;
-
-import javax.faces.application.ResourceDependency;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.BehaviorEvent;
-import javax.faces.event.FacesEvent;
-
 import org.primefaces.event.organigram.OrganigramNodeCollapseEvent;
 import org.primefaces.event.organigram.OrganigramNodeDragDropEvent;
 import org.primefaces.event.organigram.OrganigramNodeExpandEvent;
@@ -41,6 +31,16 @@ import org.primefaces.model.OrganigramNode;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.MapBuilder;
+
+import java.util.Collection;
+import java.util.Map;
+
+import javax.faces.FacesException;
+import javax.faces.application.ResourceDependency;
+import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.BehaviorEvent;
+import javax.faces.event.FacesEvent;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")

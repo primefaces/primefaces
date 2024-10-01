@@ -24,10 +24,10 @@
 package org.primefaces.event.timeline;
 
 import org.primefaces.event.AbstractAjaxBehaviorEvent;
+import org.primefaces.model.timeline.TimelineEvent;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
-import org.primefaces.model.timeline.TimelineEvent;
 
 public class TimelineSelectEvent<T> extends AbstractAjaxBehaviorEvent {
 

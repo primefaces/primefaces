@@ -23,11 +23,12 @@
  */
 package org.primefaces.showcase.util;
 
+import org.primefaces.cache.CacheProvider;
+
 import org.ehcache.Cache;
 import org.ehcache.CacheManager;
 import org.ehcache.config.builders.CacheManagerBuilder;
 import org.ehcache.xml.XmlConfiguration;
-import org.primefaces.cache.CacheProvider;
 
 /**
  * Same class as org.primefaces.cache.EHCache3Provider

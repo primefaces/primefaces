@@ -23,11 +23,11 @@
  */
 package org.primefaces.event.map;
 
+import org.primefaces.event.AbstractAjaxBehaviorEvent;
+import org.primefaces.model.map.Marker;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
-import org.primefaces.event.AbstractAjaxBehaviorEvent;
-
-import org.primefaces.model.map.Marker;
 
 public class MarkerDragEvent<T> extends AbstractAjaxBehaviorEvent {
 

@@ -23,6 +23,11 @@
  */
 package org.primefaces.seo;
 
+import org.primefaces.model.seo.JsonLDItem;
+import org.primefaces.model.seo.JsonLDModel;
+import org.primefaces.util.FastStringWriter;
+import org.primefaces.util.LangUtils;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -30,10 +35,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.json.JSONObject;
-import org.primefaces.model.seo.JsonLDItem;
-import org.primefaces.model.seo.JsonLDModel;
-import org.primefaces.util.FastStringWriter;
-import org.primefaces.util.LangUtils;
 
 /**
  * Create a script of type `ld+json` for Advanced SEO using JSON for Linking Data.

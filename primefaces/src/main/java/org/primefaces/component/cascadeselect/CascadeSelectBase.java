@@ -23,12 +23,12 @@
  */
 package org.primefaces.component.cascadeselect;
 
-import javax.faces.component.UISelectOne;
-import javax.faces.component.behavior.ClientBehaviorHolder;
 import org.primefaces.component.api.InputHolder;
-
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
+
+import javax.faces.component.UISelectOne;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class CascadeSelectBase extends UISelectOne implements Widget, InputHolder, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 

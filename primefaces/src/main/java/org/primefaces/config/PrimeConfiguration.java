@@ -23,6 +23,9 @@
  */
 package org.primefaces.config;
 
+import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
+
 import java.util.Map;
 import java.util.Objects;
 
@@ -30,9 +33,6 @@ import javax.faces.component.UIInput;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
-
-import org.primefaces.util.Constants;
-import org.primefaces.util.LangUtils;
 
 /**
  * Container for all config parameters.

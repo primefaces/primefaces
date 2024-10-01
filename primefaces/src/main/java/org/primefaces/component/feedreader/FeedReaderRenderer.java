@@ -23,16 +23,16 @@
  */
 package org.primefaces.component.feedreader;
 
+import org.primefaces.model.feedreader.FeedItem;
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.FacetUtils;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-
-import org.primefaces.model.feedreader.FeedItem;
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.FacetUtils;
 
 public class FeedReaderRenderer extends CoreRenderer {
 

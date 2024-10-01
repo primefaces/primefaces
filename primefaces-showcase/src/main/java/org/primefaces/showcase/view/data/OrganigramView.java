@@ -23,7 +23,6 @@
  */
 package org.primefaces.showcase.view.data;
 
-import jakarta.faces.view.ViewScoped;
 import org.primefaces.component.organigram.OrganigramHelper;
 import org.primefaces.event.organigram.OrganigramNodeCollapseEvent;
 import org.primefaces.event.organigram.OrganigramNodeDragDropEvent;
@@ -32,11 +31,13 @@ import org.primefaces.event.organigram.OrganigramNodeSelectEvent;
 import org.primefaces.model.DefaultOrganigramNode;
 import org.primefaces.model.OrganigramNode;
 
+import java.io.Serializable;
+
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
-import java.io.Serializable;
 
 @Named
 @ViewScoped

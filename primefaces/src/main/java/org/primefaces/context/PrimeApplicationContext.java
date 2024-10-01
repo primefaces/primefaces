@@ -23,6 +23,36 @@
  */
 package org.primefaces.context;
 
+import org.primefaces.cache.CacheProvider;
+import org.primefaces.cache.DefaultCacheProvider;
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.datatable.export.DataTableCSVExporter;
+import org.primefaces.component.datatable.export.DataTableExcelExporter;
+import org.primefaces.component.datatable.export.DataTableExcelXExporter;
+import org.primefaces.component.datatable.export.DataTableExcelXStreamExporter;
+import org.primefaces.component.datatable.export.DataTablePDFExporter;
+import org.primefaces.component.datatable.export.DataTableXMLExporter;
+import org.primefaces.component.export.Exporter;
+import org.primefaces.component.fileupload.FileUploadDecoder;
+import org.primefaces.component.treetable.TreeTable;
+import org.primefaces.component.treetable.export.TreeTableCSVExporter;
+import org.primefaces.component.treetable.export.TreeTableExcelExporter;
+import org.primefaces.component.treetable.export.TreeTableExcelXExporter;
+import org.primefaces.component.treetable.export.TreeTableExcelXStreamExporter;
+import org.primefaces.component.treetable.export.TreeTablePDFExporter;
+import org.primefaces.component.treetable.export.TreeTableXMLExporter;
+import org.primefaces.config.PrimeConfiguration;
+import org.primefaces.config.PrimeEnvironment;
+import org.primefaces.metadata.transformer.MetadataTransformer;
+import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.Lazy;
+import org.primefaces.util.MapBuilder;
+import org.primefaces.util.PropertyDescriptorResolver;
+import org.primefaces.validate.bean.ClientValidationConstraint;
+import org.primefaces.virusscan.VirusScannerService;
+import org.primefaces.webapp.FileUploadChunksServlet;
+
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
@@ -38,6 +68,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -47,22 +78,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-
-import org.primefaces.cache.CacheProvider;
-import org.primefaces.cache.DefaultCacheProvider;
-import org.primefaces.component.datatable.DataTable;
-import org.primefaces.component.datatable.export.*;
-import org.primefaces.component.export.Exporter;
-import org.primefaces.component.fileupload.FileUploadDecoder;
-import org.primefaces.component.treetable.TreeTable;
-import org.primefaces.component.treetable.export.*;
-import org.primefaces.config.PrimeConfiguration;
-import org.primefaces.config.PrimeEnvironment;
-import org.primefaces.metadata.transformer.MetadataTransformer;
-import org.primefaces.util.*;
-import org.primefaces.validate.bean.ClientValidationConstraint;
-import org.primefaces.virusscan.VirusScannerService;
-import org.primefaces.webapp.FileUploadChunksServlet;
 
 /**
  * A {@link PrimeApplicationContext} is a contextual store for the current application.

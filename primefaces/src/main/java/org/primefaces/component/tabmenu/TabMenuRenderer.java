@@ -23,20 +23,20 @@
  */
 package org.primefaces.component.tabmenu;
 
-import java.io.IOException;
-import java.util.List;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import org.primefaces.component.badge.BadgeRenderer;
-
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 
 public class TabMenuRenderer extends BaseMenuRenderer {
 

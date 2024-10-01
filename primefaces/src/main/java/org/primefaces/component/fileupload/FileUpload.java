@@ -35,6 +35,10 @@ import org.primefaces.util.MessageFactory;
 import org.primefaces.validate.FileValidator;
 import org.primefaces.virusscan.VirusException;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
 import javax.el.MethodExpression;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.ResourceDependency;
@@ -42,9 +46,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 import javax.faces.validator.ValidatorException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "fileupload/fileupload.css")

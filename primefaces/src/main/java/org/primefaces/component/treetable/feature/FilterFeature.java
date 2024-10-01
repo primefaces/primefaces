@@ -23,18 +23,6 @@
  */
 package org.primefaces.component.treetable.feature;
 
-import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
-import javax.el.ELContext;
-import javax.faces.FacesException;
-import javax.faces.context.FacesContext;
-import javax.faces.event.PhaseId;
-
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.component.treetable.TreeTableRenderer;
@@ -48,6 +36,19 @@ import org.primefaces.model.filter.FilterConstraint;
 import org.primefaces.model.filter.FunctionFilterConstraint;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LocaleUtils;
+
+import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import javax.el.ELContext;
+import javax.faces.FacesException;
+import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseId;
 
 public class FilterFeature implements TreeTableFeature {
 

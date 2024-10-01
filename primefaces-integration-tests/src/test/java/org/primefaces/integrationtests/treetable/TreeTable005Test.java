@@ -23,17 +23,18 @@
  */
 package org.primefaces.integrationtests.treetable;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.component.CommandButton;
+import org.primefaces.selenium.component.Messages;
+import org.primefaces.selenium.component.TreeTable;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.component.CommandButton;
-import org.primefaces.selenium.component.Messages;
-import org.primefaces.selenium.component.TreeTable;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class TreeTable005Test extends AbstractTreeTableTest {
 

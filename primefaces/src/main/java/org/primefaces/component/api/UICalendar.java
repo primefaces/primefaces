@@ -23,6 +23,13 @@
  */
 package org.primefaces.component.api;
 
+import org.primefaces.util.CalendarUtils;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.ELUtils;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.LocaleUtils;
+import org.primefaces.util.MessageFactory;
+
 import java.time.Instant;
 import java.time.chrono.IsoChronology;
 import java.time.format.DateTimeFormatterBuilder;
@@ -35,8 +42,6 @@ import java.util.Locale;
 import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-
-import org.primefaces.util.*;
 
 public abstract class UICalendar extends AbstractPrimeHtmlInputText implements InputHolder, TouchAware {
 

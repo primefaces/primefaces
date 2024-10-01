@@ -23,16 +23,17 @@
  */
 package org.primefaces.integrationtests.datepicker;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.PrimeExpectedConditions;
+import org.primefaces.selenium.PrimeSelenium;
 
 import java.util.Locale;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.PrimeExpectedConditions;
-import org.primefaces.selenium.PrimeSelenium;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class AbstractDatePickerTest extends AbstractPrimePageTest {
 

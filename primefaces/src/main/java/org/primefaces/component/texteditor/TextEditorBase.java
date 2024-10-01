@@ -23,11 +23,12 @@
  */
 package org.primefaces.component.texteditor;
 
+import org.primefaces.component.api.Widget;
+
 import java.util.List;
+
 import javax.faces.component.UIInput;
 import javax.faces.component.behavior.ClientBehaviorHolder;
-
-import org.primefaces.component.api.Widget;
 
 public abstract class TextEditorBase extends UIInput implements Widget, ClientBehaviorHolder {
 

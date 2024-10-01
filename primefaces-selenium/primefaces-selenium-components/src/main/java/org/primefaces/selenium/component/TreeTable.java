@@ -23,13 +23,14 @@
  */
 package org.primefaces.selenium.component;
 
-import org.openqa.selenium.By;
 import org.primefaces.selenium.component.base.AbstractTable;
 import org.primefaces.selenium.component.model.datatable.Cell;
 import org.primefaces.selenium.component.model.treetable.Row;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 

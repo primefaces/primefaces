@@ -23,11 +23,12 @@
  */
 package org.primefaces.selenium.component;
 
+import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.findby.FindByParentPartialId;
+
 import java.io.Serializable;
 
 import org.openqa.selenium.WebElement;
-import org.primefaces.selenium.PrimeSelenium;
-import org.primefaces.selenium.findby.FindByParentPartialId;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:textEditor}.

@@ -23,9 +23,10 @@
  */
 package org.primefaces.selenium.spi;
 
+import org.primefaces.selenium.AbstractPrimePage;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.pagefactory.DefaultElementLocatorFactory;
-import org.primefaces.selenium.AbstractPrimePage;
 
 public class PrimePageFactory {
 

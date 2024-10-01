@@ -23,10 +23,11 @@
  */
 package org.primefaces.selenium.component.base;
 
-import org.json.JSONObject;
-import org.openqa.selenium.WebElement;
 import org.primefaces.selenium.AbstractPrimePageFragment;
 import org.primefaces.selenium.PrimeSelenium;
+
+import org.json.JSONObject;
+import org.openqa.selenium.WebElement;
 
 public abstract class AbstractComponent extends AbstractPrimePageFragment {
 

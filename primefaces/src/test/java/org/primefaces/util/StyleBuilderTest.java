@@ -23,12 +23,14 @@
  */
 package org.primefaces.util;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import org.junit.jupiter.api.Test;
 import org.primefaces.mock.CollectingResponseWriter;
 import org.primefaces.mock.FacesContextMock;
+
 import javax.faces.context.FacesContext;
+
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class StyleBuilderTest {
 

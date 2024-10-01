@@ -23,15 +23,15 @@
  */
 package org.primefaces.model.diagram;
 
+import org.primefaces.model.diagram.connector.Connector;
+import org.primefaces.model.diagram.endpoint.EndPoint;
+import org.primefaces.model.diagram.overlay.Overlay;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.model.ListDataModel;
-
-import org.primefaces.model.diagram.connector.Connector;
-import org.primefaces.model.diagram.endpoint.EndPoint;
-import org.primefaces.model.diagram.overlay.Overlay;
 
 public class DefaultDiagramModel extends ListDataModel<Element> implements DiagramModel, Serializable {
 

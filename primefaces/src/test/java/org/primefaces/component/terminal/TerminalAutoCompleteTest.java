@@ -23,17 +23,18 @@
  */
 package org.primefaces.component.terminal;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.primefaces.model.terminal.TerminalAutoCompleteMatches;
+import org.primefaces.model.terminal.TerminalAutoCompleteModel;
+import org.primefaces.model.terminal.TerminalCommand;
 
 import java.util.Collection;
 
-import org.primefaces.model.terminal.TerminalCommand;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.primefaces.model.terminal.TerminalAutoCompleteMatches;
-import org.primefaces.model.terminal.TerminalAutoCompleteModel;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class TerminalAutoCompleteTest {
 

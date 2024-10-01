@@ -23,6 +23,10 @@
  */
 package org.primefaces.integrationtests.chips;
 
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.UnselectEvent;
+import org.primefaces.integrationtests.general.utilities.TestUtils;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,10 +37,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-
-import org.primefaces.event.SelectEvent;
-import org.primefaces.event.UnselectEvent;
-import org.primefaces.integrationtests.general.utilities.TestUtils;
 
 import lombok.Data;
 

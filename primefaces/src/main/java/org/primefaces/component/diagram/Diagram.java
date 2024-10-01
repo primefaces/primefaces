@@ -23,6 +23,17 @@
  */
 package org.primefaces.component.diagram;
 
+import org.primefaces.event.diagram.ConnectEvent;
+import org.primefaces.event.diagram.ConnectionChangeEvent;
+import org.primefaces.event.diagram.DisconnectEvent;
+import org.primefaces.event.diagram.PositionChangeEvent;
+import org.primefaces.model.diagram.DiagramModel;
+import org.primefaces.model.diagram.Element;
+import org.primefaces.model.diagram.endpoint.EndPoint;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.MapBuilder;
+
 import java.util.Collection;
 import java.util.Map;
 
@@ -32,17 +43,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
-
-import org.primefaces.event.diagram.ConnectEvent;
-import org.primefaces.event.diagram.ConnectionChangeEvent;
-import org.primefaces.event.diagram.PositionChangeEvent;
-import org.primefaces.event.diagram.DisconnectEvent;
-import org.primefaces.model.diagram.DiagramModel;
-import org.primefaces.model.diagram.Element;
-import org.primefaces.model.diagram.endpoint.EndPoint;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "diagram/diagram.css")

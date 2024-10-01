@@ -23,9 +23,10 @@
  */
 package org.primefaces.model.filter;
 
+import java.util.Locale;
+
 import javax.el.MethodExpression;
 import javax.faces.context.FacesContext;
-import java.util.Locale;
 
 public class FunctionFilterConstraint implements FilterConstraint {
 

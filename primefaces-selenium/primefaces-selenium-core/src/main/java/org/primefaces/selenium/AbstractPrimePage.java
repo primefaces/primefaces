@@ -23,9 +23,10 @@
  */
 package org.primefaces.selenium;
 
+import org.primefaces.selenium.spi.WebDriverProvider;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.html5.WebStorage;
-import org.primefaces.selenium.spi.WebDriverProvider;
 
 public abstract class AbstractPrimePage {
 

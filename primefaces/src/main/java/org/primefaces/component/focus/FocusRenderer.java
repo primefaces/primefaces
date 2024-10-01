@@ -23,6 +23,10 @@
  */
 package org.primefaces.component.focus;
 
+import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.renderkit.RendererUtils;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -32,10 +36,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
-import org.primefaces.expression.SearchExpressionUtils;
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.renderkit.RendererUtils;
 
 public class FocusRenderer extends CoreRenderer {
 

@@ -23,11 +23,11 @@
  */
 package org.primefaces.component.texteditor;
 
+import org.primefaces.util.LangUtils;
+
 import java.util.Collection;
 
 import javax.faces.application.ResourceDependency;
-
-import org.primefaces.util.LangUtils;
 
 @ResourceDependency(library = "primefaces", name = "texteditor/texteditor.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")

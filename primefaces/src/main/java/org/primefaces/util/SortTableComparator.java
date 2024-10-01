@@ -23,20 +23,21 @@
  */
 package org.primefaces.util;
 
+import org.primefaces.component.api.UITable;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.model.SortMeta;
+import org.primefaces.model.TreeNode;
+
 import java.text.Collator;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
+
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
-
-import org.primefaces.component.api.UITable;
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.model.SortMeta;
-import org.primefaces.model.TreeNode;
 
 public class SortTableComparator implements Comparator<Object> {
 
