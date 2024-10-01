@@ -23,15 +23,6 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import org.json.JSONObject;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.Select;
 import org.primefaces.integrationtests.datatable.ProgrammingLanguage.ProgrammingLanguageType;
 import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
@@ -43,12 +34,21 @@ import org.primefaces.selenium.component.model.datatable.Header;
 import org.primefaces.selenium.component.model.datatable.Row;
 
 import java.util.Comparator;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.json.JSONObject;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class DataTable001Test extends AbstractDataTableTest {
 

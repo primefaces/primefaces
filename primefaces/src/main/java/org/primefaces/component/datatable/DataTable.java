@@ -23,23 +23,6 @@
  */
 package org.primefaces.component.datatable;
 
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
-import javax.el.ELContext;
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
-import javax.faces.application.ResourceDependency;
-import javax.faces.component.UIComponent;
-import javax.faces.component.visit.VisitCallback;
-import javax.faces.component.visit.VisitContext;
-import javax.faces.context.FacesContext;
-import javax.faces.event.*;
-import javax.faces.model.*;
-
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
@@ -53,12 +36,65 @@ import org.primefaces.component.row.Row;
 import org.primefaces.component.rowexpansion.RowExpansion;
 import org.primefaces.component.subtable.SubTable;
 import org.primefaces.component.summaryrow.SummaryRow;
-import org.primefaces.event.*;
+import org.primefaces.event.CellEditEvent;
+import org.primefaces.event.ColumnResizeEvent;
+import org.primefaces.event.ReorderEvent;
+import org.primefaces.event.RowEditEvent;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.ToggleEvent;
+import org.primefaces.event.ToggleSelectEvent;
+import org.primefaces.event.UnselectEvent;
 import org.primefaces.event.data.FilterEvent;
 import org.primefaces.event.data.PageEvent;
 import org.primefaces.event.data.SortEvent;
-import org.primefaces.model.*;
-import org.primefaces.util.*;
+import org.primefaces.model.ColumnMeta;
+import org.primefaces.model.FilterMeta;
+import org.primefaces.model.LazyDataModel;
+import org.primefaces.model.SelectableDataModel;
+import org.primefaces.model.SortMeta;
+import org.primefaces.model.Visibility;
+import org.primefaces.util.ComponentTraversalUtils;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.ELUtils;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.MapBuilder;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import javax.el.ELContext;
+import javax.el.ValueExpression;
+import javax.faces.FacesException;
+import javax.faces.application.ResourceDependency;
+import javax.faces.component.UIComponent;
+import javax.faces.component.visit.VisitCallback;
+import javax.faces.component.visit.VisitContext;
+import javax.faces.context.FacesContext;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.BehaviorEvent;
+import javax.faces.event.ComponentSystemEvent;
+import javax.faces.event.FacesEvent;
+import javax.faces.event.PhaseId;
+import javax.faces.event.PostRestoreStateEvent;
+import javax.faces.model.ArrayDataModel;
+import javax.faces.model.CollectionDataModel;
+import javax.faces.model.DataModel;
+import javax.faces.model.IterableDataModel;
+import javax.faces.model.ListDataModel;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")

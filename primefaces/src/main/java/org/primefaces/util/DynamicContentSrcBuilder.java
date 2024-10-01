@@ -23,6 +23,10 @@
  */
 package org.primefaces.util;
 
+import org.primefaces.application.resource.DynamicContentType;
+import org.primefaces.el.ValueExpressionAnalyzer;
+import org.primefaces.model.StreamedContent;
+
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
@@ -30,15 +34,13 @@ import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
+
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.Resource;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
-import org.primefaces.application.resource.DynamicContentType;
-import org.primefaces.el.ValueExpressionAnalyzer;
-import org.primefaces.model.StreamedContent;
 
 public class DynamicContentSrcBuilder {
 

@@ -23,10 +23,11 @@
  */
 package org.primefaces.model.diagram;
 
-import java.util.List;
 import org.primefaces.model.diagram.connector.Connector;
 import org.primefaces.model.diagram.endpoint.EndPoint;
 import org.primefaces.model.diagram.overlay.Overlay;
+
+import java.util.List;
 
 public interface DiagramModel {
 

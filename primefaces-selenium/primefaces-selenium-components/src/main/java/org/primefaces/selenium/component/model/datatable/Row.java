@@ -23,12 +23,13 @@
  */
 package org.primefaces.selenium.component.model.datatable;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebElement;
 import org.primefaces.selenium.PrimeSelenium;
 
 import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebElement;
 
 public class Row {
     private WebElement webElement;

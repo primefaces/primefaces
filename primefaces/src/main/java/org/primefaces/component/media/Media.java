@@ -23,9 +23,9 @@
  */
 package org.primefaces.component.media;
 
-import java.util.List;
-
 import org.primefaces.util.LangUtils;
+
+import java.util.List;
 
 public class Media extends MediaBase {
 

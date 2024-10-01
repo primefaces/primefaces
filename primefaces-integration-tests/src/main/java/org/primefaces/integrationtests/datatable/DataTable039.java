@@ -23,14 +23,15 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import lombok.Getter;
-import lombok.Setter;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import java.util.ArrayList;
-import java.util.List;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Named
 @ViewScoped

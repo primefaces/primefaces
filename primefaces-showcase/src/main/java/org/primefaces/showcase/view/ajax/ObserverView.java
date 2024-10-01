@@ -24,6 +24,7 @@
 package org.primefaces.showcase.view.ajax;
 
 import java.io.Serializable;
+
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
 

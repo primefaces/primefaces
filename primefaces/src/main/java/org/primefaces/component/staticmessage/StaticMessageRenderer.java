@@ -23,13 +23,15 @@
  */
 package org.primefaces.component.staticmessage;
 
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import org.primefaces.component.messages.Messages;
 import org.primefaces.renderkit.UINotificationRenderer;
 import org.primefaces.util.WidgetBuilder;
+
+import java.io.IOException;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 
 public class StaticMessageRenderer extends UINotificationRenderer {
 

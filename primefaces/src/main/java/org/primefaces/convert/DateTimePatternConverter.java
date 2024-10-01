@@ -23,12 +23,12 @@
  */
 package org.primefaces.convert;
 
+import org.primefaces.convert.PatternReader.TokenVisitor;
+
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.primefaces.convert.PatternReader.TokenVisitor;
 
 /**
  * Utility class for converting between {@link SimpleDateFormat} /

@@ -23,10 +23,11 @@
  */
 package org.primefaces.selenium.component;
 
+import org.primefaces.selenium.PrimeSelenium;
+
 import java.io.Serializable;
 
 import org.openqa.selenium.WebElement;
-import org.primefaces.selenium.PrimeSelenium;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:inputMask}.

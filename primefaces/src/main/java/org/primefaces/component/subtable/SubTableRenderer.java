@@ -23,12 +23,6 @@
  */
 package org.primefaces.component.subtable;
 
-import java.io.IOException;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
@@ -37,6 +31,12 @@ import org.primefaces.component.row.Row;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.LangUtils;
+
+import java.io.IOException;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 
 public class SubTableRenderer extends CoreRenderer {
 

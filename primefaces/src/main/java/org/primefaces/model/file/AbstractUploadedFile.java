@@ -23,15 +23,17 @@
  */
 package org.primefaces.model.file;
 
+import org.primefaces.util.FileUploadUtils;
+import org.primefaces.util.IOUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+
 import javax.faces.FacesException;
 
 import org.apache.commons.io.input.BoundedInputStream;
-import org.primefaces.util.FileUploadUtils;
-import org.primefaces.util.IOUtils;
 
 public abstract class AbstractUploadedFile<T> implements UploadedFile, Serializable {
 

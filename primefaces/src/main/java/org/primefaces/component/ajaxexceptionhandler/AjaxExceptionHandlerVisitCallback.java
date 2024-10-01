@@ -23,6 +23,8 @@
  */
 package org.primefaces.component.ajaxexceptionhandler;
 
+import org.primefaces.util.LangUtils;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,8 +33,6 @@ import javax.faces.component.UIData;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitResult;
-
-import org.primefaces.util.LangUtils;
 
 /**
  * {@link VisitCallback} which collects all {@link AjaxExceptionHandler}s.

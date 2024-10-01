@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.api;
 
+import org.primefaces.util.LangUtils;
+
 import java.util.regex.Pattern;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
-
-import org.primefaces.util.LangUtils;
 
 public interface Widget {
 

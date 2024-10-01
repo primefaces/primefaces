@@ -23,8 +23,6 @@
  */
 package org.primefaces.component.datatable;
 
-import de.odysseus.el.util.SimpleContext;
-import org.junit.jupiter.api.Test;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columns.Columns;
@@ -35,6 +33,9 @@ import org.primefaces.mock.FacesContextMock;
 import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
 import javax.faces.context.FacesContext;
+
+import de.odysseus.el.util.SimpleContext;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;

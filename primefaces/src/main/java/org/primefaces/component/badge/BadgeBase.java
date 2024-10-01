@@ -24,6 +24,7 @@
 package org.primefaces.component.badge;
 
 import org.primefaces.component.api.Widget;
+
 import javax.faces.component.UIComponentBase;
 
 public abstract class BadgeBase extends UIComponentBase implements Widget {

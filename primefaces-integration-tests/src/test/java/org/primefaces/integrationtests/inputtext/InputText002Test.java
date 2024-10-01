@@ -23,12 +23,6 @@
  */
 package org.primefaces.integrationtests.inputtext;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CommandButton;
@@ -36,6 +30,13 @@ import org.primefaces.selenium.component.InputText;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.model.Msg;
 import org.primefaces.selenium.component.model.Severity;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class InputText002Test extends AbstractPrimePageTest {
 

@@ -23,6 +23,12 @@
  */
 package org.primefaces.component.galleria;
 
+import org.primefaces.component.api.IterationStatus;
+import org.primefaces.model.ResponsiveOption;
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.WidgetBuilder;
+
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
@@ -32,12 +38,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIPanel;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.component.api.IterationStatus;
-import org.primefaces.model.ResponsiveOption;
-
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.FacetUtils;
-import org.primefaces.util.WidgetBuilder;
 
 public class GalleriaRenderer extends CoreRenderer {
 

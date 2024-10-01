@@ -23,8 +23,8 @@
  */
 package org.primefaces.component.columns;
 
-import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.api.PrimeUIData;
+import org.primefaces.component.api.UIColumn;
 import org.primefaces.model.SortMeta;
 
 

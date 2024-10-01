@@ -23,16 +23,17 @@
  */
 package org.primefaces.integrationtests.inputmask;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.component.CommandButton;
+import org.primefaces.selenium.component.InputMask;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.component.CommandButton;
-import org.primefaces.selenium.component.InputMask;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class InputMask003Test extends AbstractInputMaskTest {
 

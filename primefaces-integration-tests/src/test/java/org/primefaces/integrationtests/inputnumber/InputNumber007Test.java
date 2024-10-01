@@ -23,10 +23,6 @@
  */
 package org.primefaces.integrationtests.inputnumber;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.integrationtests.general.utilities.TestUtils;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
@@ -34,6 +30,11 @@ import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.InputNumber;
 import org.primefaces.selenium.component.InputText;
 import org.primefaces.selenium.component.Messages;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;

@@ -23,11 +23,12 @@
  */
 package org.primefaces.selenium.component.base;
 
+import org.primefaces.selenium.PrimeSelenium;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.primefaces.selenium.PrimeSelenium;
 
 public abstract class AbstractInputComponent extends AbstractComponent {
 

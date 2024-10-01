@@ -23,15 +23,15 @@
  */
 package org.primefaces.component.link;
 
+import org.primefaces.renderkit.OutcomeTargetRenderer;
+import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
+
 import java.io.IOException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
-import org.primefaces.renderkit.OutcomeTargetRenderer;
-import org.primefaces.util.HTML;
-import org.primefaces.util.LangUtils;
 
 public class LinkRenderer extends OutcomeTargetRenderer {
 

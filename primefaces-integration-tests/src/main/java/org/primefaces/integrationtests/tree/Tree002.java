@@ -23,17 +23,17 @@
  */
 package org.primefaces.integrationtests.tree;
 
+import org.primefaces.event.NodeSelectEvent;
+import org.primefaces.event.NodeUnselectEvent;
+import org.primefaces.integrationtests.general.utilities.TestUtils;
+import org.primefaces.model.TreeNode;
+
 import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-
-import org.primefaces.event.NodeSelectEvent;
-import org.primefaces.event.NodeUnselectEvent;
-import org.primefaces.integrationtests.general.utilities.TestUtils;
-import org.primefaces.model.TreeNode;
 
 import lombok.Data;
 

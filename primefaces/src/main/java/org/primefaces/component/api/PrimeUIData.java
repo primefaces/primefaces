@@ -23,6 +23,14 @@
  */
 package org.primefaces.component.api;
 
+import org.primefaces.component.column.Column;
+import org.primefaces.component.columngroup.ColumnGroup;
+import org.primefaces.component.columns.Columns;
+import org.primefaces.component.patch.UIDataPatch;
+import org.primefaces.model.LazyDataModel;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.ELUtils;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -39,14 +47,6 @@ import javax.faces.component.visit.VisitContextWrapper;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
-
-import org.primefaces.component.column.Column;
-import org.primefaces.component.columngroup.ColumnGroup;
-import org.primefaces.component.columns.Columns;
-import org.primefaces.component.patch.UIDataPatch;
-import org.primefaces.model.LazyDataModel;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.ELUtils;
 
 /**
  * Enhanced version of the JSF UIData.

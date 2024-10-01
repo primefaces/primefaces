@@ -23,21 +23,22 @@
  */
 package org.primefaces.component.datatable.export;
 
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
-import java.util.EnumSet;
-import javax.faces.FacesException;
-import javax.faces.context.FacesContext;
-
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.CSVOptions;
 import org.primefaces.component.export.ColumnValue;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
+
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.util.EnumSet;
+
+import javax.faces.FacesException;
+import javax.faces.context.FacesContext;
 
 public class DataTableCSVExporter extends DataTableExporter<PrintWriter, CSVOptions> {
 

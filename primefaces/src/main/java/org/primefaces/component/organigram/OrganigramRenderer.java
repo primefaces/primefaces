@@ -23,6 +23,12 @@
  */
 package org.primefaces.component.organigram;
 
+import org.primefaces.component.organigramnode.UIOrganigramNode;
+import org.primefaces.model.OrganigramNode;
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.WidgetBuilder;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,12 +38,6 @@ import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
-import org.primefaces.component.organigramnode.UIOrganigramNode;
-import org.primefaces.model.OrganigramNode;
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.WidgetBuilder;
 
 /**
  * Renderer for the {@link Organigram} component.

@@ -23,17 +23,18 @@
  */
 package org.primefaces.util;
 
+import org.primefaces.component.accordionpanel.AccordionPanel;
+
 import javax.faces.component.TransientStateHelper;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIPanel;
 import javax.faces.context.FacesContext;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import org.primefaces.component.accordionpanel.AccordionPanel;
 
 class ComponentUtilsTest {
 

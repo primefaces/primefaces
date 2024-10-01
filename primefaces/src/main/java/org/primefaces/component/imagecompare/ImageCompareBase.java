@@ -23,9 +23,9 @@
  */
 package org.primefaces.component.imagecompare;
 
-import javax.faces.component.UIComponentBase;
-
 import org.primefaces.component.api.Widget;
+
+import javax.faces.component.UIComponentBase;
 
 public abstract class ImageCompareBase extends UIComponentBase implements Widget {
 

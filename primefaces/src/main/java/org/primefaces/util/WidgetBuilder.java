@@ -23,16 +23,16 @@
  */
 package org.primefaces.util;
 
+import org.primefaces.component.api.Widget;
+import org.primefaces.config.PrimeConfiguration;
+import org.primefaces.renderkit.RendererUtils;
+
 import java.io.IOException;
 import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
-import org.primefaces.component.api.Widget;
-import org.primefaces.config.PrimeConfiguration;
-import org.primefaces.renderkit.RendererUtils;
 
 /**
  * Helper to generate scripts for widgets.

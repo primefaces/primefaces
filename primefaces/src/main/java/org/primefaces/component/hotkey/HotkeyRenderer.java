@@ -23,6 +23,10 @@
  */
 package org.primefaces.component.hotkey;
 
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.renderkit.RendererUtils;
+import org.primefaces.util.AgentUtils;
+
 import java.io.IOException;
 import java.util.Map;
 
@@ -30,10 +34,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
-
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.renderkit.RendererUtils;
-import org.primefaces.util.AgentUtils;
 
 public class HotkeyRenderer extends CoreRenderer {
 

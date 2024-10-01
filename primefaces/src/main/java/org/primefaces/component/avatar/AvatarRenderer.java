@@ -23,6 +23,10 @@
  */
 package org.primefaces.component.avatar;
 
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.SharedStringBuilder;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -34,10 +38,6 @@ import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.SharedStringBuilder;
 
 public class AvatarRenderer extends CoreRenderer {
 

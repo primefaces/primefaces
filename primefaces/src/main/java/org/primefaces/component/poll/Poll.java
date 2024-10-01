@@ -23,12 +23,12 @@
  */
 package org.primefaces.component.poll;
 
+import org.primefaces.PrimeFaces;
+
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
-
-import org.primefaces.PrimeFaces;
 
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

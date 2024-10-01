@@ -24,6 +24,7 @@
 package org.primefaces.cli.migration.primeflex;
 
 import org.primefaces.cli.migration.AbstractPrimeMigration;
+
 import picocli.CommandLine;
 
 @CommandLine.Command(name = "GridCssMigration", mixinStandardHelpOptions = true, version = "early WIP",

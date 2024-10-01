@@ -23,15 +23,48 @@
  */
 package org.primefaces.renderkit;
 
+import org.primefaces.component.api.AjaxSource;
+import org.primefaces.component.api.ClientBehaviorRenderingMode;
+import org.primefaces.component.api.MixedClientBehaviorHolder;
+import org.primefaces.component.api.RTLAware;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.convert.ClientConverter;
+import org.primefaces.util.AjaxRequestBuilder;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.EscapeUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.ResourceUtils;
+import org.primefaces.util.SharedStringBuilder;
+import org.primefaces.util.StyleBuilder;
+import org.primefaces.util.StyleClassBuilder;
+import org.primefaces.util.WidgetBuilder;
+import org.primefaces.validate.ClientValidator;
+import org.primefaces.validate.bean.BeanValidationMetadata;
+import org.primefaces.validate.bean.BeanValidationMetadataMapper;
+
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+
 import javax.el.PropertyNotFoundException;
 import javax.el.ValueExpression;
 import javax.faces.application.ProjectStage;
-import javax.faces.component.*;
+import javax.faces.component.EditableValueHolder;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIForm;
+import javax.faces.component.UIParameter;
+import javax.faces.component.UIViewRoot;
 import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.component.behavior.ClientBehaviorHolder;
@@ -40,18 +73,6 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.render.Renderer;
 import javax.faces.validator.Validator;
-
-import org.primefaces.component.api.AjaxSource;
-import org.primefaces.component.api.ClientBehaviorRenderingMode;
-import org.primefaces.component.api.MixedClientBehaviorHolder;
-import org.primefaces.component.api.RTLAware;
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.context.PrimeRequestContext;
-import org.primefaces.convert.ClientConverter;
-import org.primefaces.util.*;
-import org.primefaces.validate.ClientValidator;
-import org.primefaces.validate.bean.BeanValidationMetadata;
-import org.primefaces.validate.bean.BeanValidationMetadataMapper;
 
 public abstract class CoreRenderer extends Renderer {
 

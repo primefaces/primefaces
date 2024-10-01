@@ -23,14 +23,6 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import org.json.JSONObject;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.Select;
 import org.primefaces.integrationtests.datatable.ProgrammingLanguage.ProgrammingLanguageType;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeSelenium;
@@ -39,11 +31,19 @@ import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.InputText;
 
 import java.util.Comparator;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.json.JSONObject;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.Select;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  *

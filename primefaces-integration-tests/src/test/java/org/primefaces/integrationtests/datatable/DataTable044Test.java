@@ -23,12 +23,13 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.InputText;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

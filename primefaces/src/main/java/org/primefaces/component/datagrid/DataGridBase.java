@@ -23,10 +23,14 @@
  */
 package org.primefaces.component.datagrid;
 
-import javax.faces.component.behavior.ClientBehaviorHolder;
-
-import org.primefaces.component.api.*;
+import org.primefaces.component.api.FlexAware;
+import org.primefaces.component.api.MultiViewStateAware;
+import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.UIPageableData;
+import org.primefaces.component.api.Widget;
 import org.primefaces.component.datalist.DataListBase;
+
+import javax.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class DataGridBase extends UIPageableData
         implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, FlexAware, MultiViewStateAware<DataGridState> {

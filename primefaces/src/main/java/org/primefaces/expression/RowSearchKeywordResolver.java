@@ -23,9 +23,14 @@
  */
 package org.primefaces.expression;
 
+import org.primefaces.component.api.DynamicColumn;
+import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.columns.Columns;
+
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
@@ -33,10 +38,6 @@ import javax.faces.component.search.SearchExpressionContext;
 import javax.faces.component.search.SearchKeywordContext;
 import javax.faces.component.search.SearchKeywordResolver;
 import javax.faces.context.FacesContext;
-
-import org.primefaces.component.api.DynamicColumn;
-import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.columns.Columns;
 
 public class RowSearchKeywordResolver extends SearchKeywordResolver {
 

@@ -23,7 +23,6 @@
  */
 package org.primefaces.util;
 
-import javax.faces.FacesException;
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
@@ -31,6 +30,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
+
+import javax.faces.FacesException;
 
 public interface PropertyDescriptorResolver {
 

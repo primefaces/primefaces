@@ -23,16 +23,17 @@
  */
 package org.primefaces.behavior.printer;
 
-import javax.faces.application.ResourceDependency;
-import javax.faces.component.behavior.ClientBehaviorContext;
-import javax.faces.context.FacesContext;
-
-import org.json.JSONObject;
 import org.primefaces.behavior.base.AbstractBehavior;
 import org.primefaces.behavior.base.BehaviorAttribute;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
+
+import javax.faces.application.ResourceDependency;
+import javax.faces.component.behavior.ClientBehaviorContext;
+import javax.faces.context.FacesContext;
+
+import org.json.JSONObject;
 
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

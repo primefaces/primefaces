@@ -23,15 +23,17 @@
  */
 package org.primefaces.expression;
 
+import org.primefaces.util.ComponentUtils;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.search.SearchExpressionContext;
 import javax.faces.component.search.SearchKeywordContext;
 import javax.faces.component.search.SearchKeywordResolver;
 import javax.faces.component.visit.VisitContext;
-import org.primefaces.util.ComponentUtils;
 
 public class WidgetVarSearchKeywordResolver extends SearchKeywordResolver {
 

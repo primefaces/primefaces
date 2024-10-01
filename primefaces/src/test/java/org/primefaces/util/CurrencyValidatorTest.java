@@ -23,15 +23,15 @@
  */
 package org.primefaces.util;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.util.Locale;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.util.Locale;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Test Case for CurrencyValidator.

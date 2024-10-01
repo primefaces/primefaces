@@ -23,6 +23,15 @@
  */
 package org.primefaces.component.calendar;
 
+import org.primefaces.component.api.UICalendar;
+import org.primefaces.el.ValueExpressionAnalyzer;
+import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.util.CalendarUtils;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.MessageFactory;
+
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -48,11 +57,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
-
-import org.primefaces.component.api.UICalendar;
-import org.primefaces.el.ValueExpressionAnalyzer;
-import org.primefaces.renderkit.InputRenderer;
-import org.primefaces.util.*;
 
 public abstract class BaseCalendarRenderer extends InputRenderer {
 

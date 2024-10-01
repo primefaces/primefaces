@@ -23,18 +23,19 @@
  */
 package org.primefaces.integrationtests.selectoneradio;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.OutputLabel;
 import org.primefaces.selenium.component.RadioButton;
 import org.primefaces.selenium.component.SelectOneRadio;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class SelectOneRadio003Test extends AbstractPrimePageTest {
 

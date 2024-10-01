@@ -23,18 +23,12 @@
  */
 package org.primefaces.util;
 
-import org.apache.commons.io.FilenameUtils;
 import org.primefaces.component.fileupload.FileUploadChunkDecoder;
 import org.primefaces.component.fileupload.FileUploadDecoder;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.model.file.UploadedFile;
 import org.primefaces.virusscan.VirusException;
 
-import javax.faces.FacesException;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.faces.validator.ValidatorException;
-import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -59,6 +53,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import javax.faces.FacesException;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.io.FilenameUtils;
 
 /**
  * Utilities for FileUpload components.

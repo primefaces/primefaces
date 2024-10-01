@@ -23,7 +23,8 @@
  */
 package org.primefaces.integrationtests.csv;
 
-import lombok.Data;
+import java.io.Serializable;
+import java.util.Date;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
@@ -33,8 +34,7 @@ import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.PastOrPresent;
 
-import java.io.Serializable;
-import java.util.Date;
+import lombok.Data;
 
 @Named
 @ViewScoped

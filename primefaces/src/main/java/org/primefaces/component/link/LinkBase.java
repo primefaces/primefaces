@@ -23,9 +23,9 @@
  */
 package org.primefaces.component.link;
 
-import javax.faces.component.html.HtmlOutcomeTargetLink;
-
 import org.primefaces.component.api.UIOutcomeTarget;
+
+import javax.faces.component.html.HtmlOutcomeTargetLink;
 
 
 public abstract class LinkBase extends HtmlOutcomeTargetLink implements UIOutcomeTarget {

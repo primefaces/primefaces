@@ -23,10 +23,10 @@
  */
 package org.primefaces.component.linkbutton;
 
-import javax.faces.component.html.HtmlOutcomeTargetLink;
-
 import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.component.api.Widget;
+
+import javax.faces.component.html.HtmlOutcomeTargetLink;
 
 public abstract class LinkButtonBase extends HtmlOutcomeTargetLink implements UIOutcomeTarget, Widget {
 

@@ -23,9 +23,9 @@
  */
 package org.primefaces.component.submenu;
 
-import javax.faces.component.UIComponentBase;
-
 import org.primefaces.model.menu.Submenu;
+
+import javax.faces.component.UIComponentBase;
 
 
 public abstract class UISubmenuBase extends UIComponentBase implements Submenu {

@@ -23,6 +23,10 @@
  */
 package org.primefaces.integrationtests.timeline;
 
+import org.primefaces.event.timeline.TimelineSelectEvent;
+import org.primefaces.model.timeline.TimelineEvent;
+import org.primefaces.model.timeline.TimelineModel;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -31,10 +35,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-
-import org.primefaces.event.timeline.TimelineSelectEvent;
-import org.primefaces.model.timeline.TimelineEvent;
-import org.primefaces.model.timeline.TimelineModel;
 
 import lombok.Data;
 

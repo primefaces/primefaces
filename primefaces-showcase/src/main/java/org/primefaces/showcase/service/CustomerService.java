@@ -23,19 +23,23 @@
  */
 package org.primefaces.showcase.service;
 
-import java.security.SecureRandom;
-import org.primefaces.showcase.domain.*;
+import org.primefaces.showcase.domain.Country;
+import org.primefaces.showcase.domain.Customer;
+import org.primefaces.showcase.domain.CustomerStatus;
+import org.primefaces.showcase.domain.Representative;
+import org.primefaces.util.Constants;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Named;
+import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
-import org.primefaces.util.Constants;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Named;
 
 @Named
 @ApplicationScoped

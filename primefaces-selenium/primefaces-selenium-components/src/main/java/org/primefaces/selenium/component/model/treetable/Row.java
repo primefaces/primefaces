@@ -23,13 +23,14 @@
  */
 package org.primefaces.selenium.component.model.treetable;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.primefaces.selenium.component.model.datatable.Cell;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 public class Row extends org.primefaces.selenium.component.model.datatable.Row {
     public Row(WebElement webElement, List<Cell> cells) {

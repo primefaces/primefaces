@@ -26,6 +26,7 @@ package org.primefaces;
 import org.primefaces.component.api.MultiViewStateAware;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.DialogFrameworkOptions;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
@@ -33,27 +34,33 @@ import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.LangUtils;
 import org.primefaces.visit.ResetInputVisitCallback;
 
-import javax.faces.FacesException;
-import javax.faces.application.FacesMessage;
-import javax.faces.application.ProjectStage;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
-import javax.faces.component.UIViewRoot;
-import javax.faces.component.visit.VisitContext;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.faces.context.PartialViewContext;
-import javax.faces.lifecycle.ClientWindow;
 import java.io.Serializable;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+
+import javax.faces.FacesException;
+import javax.faces.application.FacesMessage;
+import javax.faces.application.ProjectStage;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
+import javax.faces.component.UIViewRoot;
 import javax.faces.component.search.ComponentNotFoundException;
-import org.primefaces.expression.SearchExpressionUtils;
+import javax.faces.component.visit.VisitContext;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.faces.context.PartialViewContext;
+import javax.faces.lifecycle.ClientWindow;
 
 public class PrimeFaces {
 

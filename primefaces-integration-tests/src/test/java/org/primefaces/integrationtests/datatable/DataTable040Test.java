@@ -23,14 +23,15 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.component.html.SelectOneMenu;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.PrimeSelenium;
-import org.primefaces.selenium.component.html.SelectOneMenu;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DataTable040Test extends AbstractDataTableTest {
 

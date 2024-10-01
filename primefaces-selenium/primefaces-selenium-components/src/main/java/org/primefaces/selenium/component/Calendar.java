@@ -23,6 +23,11 @@
  */
 package org.primefaces.selenium.component;
 
+import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.component.base.AbstractInputComponent;
+import org.primefaces.selenium.component.base.ComponentUtils;
+import org.primefaces.selenium.findby.FindByParentPartialId;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -31,10 +36,6 @@ import java.time.format.DateTimeFormatter;
 
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
-import org.primefaces.selenium.PrimeSelenium;
-import org.primefaces.selenium.component.base.AbstractInputComponent;
-import org.primefaces.selenium.component.base.ComponentUtils;
-import org.primefaces.selenium.findby.FindByParentPartialId;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:calendar}.

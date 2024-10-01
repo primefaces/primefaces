@@ -23,6 +23,11 @@
  */
 package org.primefaces.behavior.base;
 
+import org.primefaces.config.PrimeEnvironment;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.el.ValueExpressionStateHelper;
+import org.primefaces.util.LangUtils;
+
 import java.beans.BeanDescriptor;
 import java.beans.BeanInfo;
 import java.io.IOException;
@@ -33,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.el.ValueExpression;
 import javax.faces.application.Application;
 import javax.faces.component.StateHelper;
@@ -43,12 +49,12 @@ import javax.faces.view.AttachedObjectHandler;
 import javax.faces.view.AttachedObjectTarget;
 import javax.faces.view.BehaviorHolderAttachedObjectHandler;
 import javax.faces.view.BehaviorHolderAttachedObjectTarget;
-import javax.faces.view.facelets.*;
-
-import org.primefaces.config.PrimeEnvironment;
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.el.ValueExpressionStateHelper;
-import org.primefaces.util.LangUtils;
+import javax.faces.view.facelets.ComponentHandler;
+import javax.faces.view.facelets.FaceletContext;
+import javax.faces.view.facelets.TagAttribute;
+import javax.faces.view.facelets.TagConfig;
+import javax.faces.view.facelets.TagException;
+import javax.faces.view.facelets.TagHandler;
 
 public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
         extends TagHandler implements BehaviorHolderAttachedObjectHandler {

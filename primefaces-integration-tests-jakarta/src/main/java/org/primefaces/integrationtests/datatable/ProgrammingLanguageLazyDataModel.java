@@ -23,14 +23,18 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.MatchMode;
 import org.primefaces.model.SortMeta;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ProgrammingLanguageLazyDataModel extends LazyDataModel<ProgrammingLanguage> {
 

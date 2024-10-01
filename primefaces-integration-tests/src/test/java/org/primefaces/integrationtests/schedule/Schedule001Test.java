@@ -23,9 +23,24 @@
  */
 package org.primefaces.integrationtests.schedule;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.primefaces.model.ScheduleEvent;
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.component.CommandButton;
+import org.primefaces.selenium.component.DatePicker;
+import org.primefaces.selenium.component.InputText;
+import org.primefaces.selenium.component.Messages;
+import org.primefaces.selenium.component.Schedule;
+import org.primefaces.selenium.component.SelectOneMenu;
+import org.primefaces.selenium.component.model.Msg;
 
-import java.time.*;
+import java.time.DayOfWeek;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -37,12 +52,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.model.ScheduleEvent;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.PrimeSelenium;
-import org.primefaces.selenium.component.*;
-import org.primefaces.selenium.component.model.Msg;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class Schedule001Test extends AbstractPrimePageTest {
 

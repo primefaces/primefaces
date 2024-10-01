@@ -23,6 +23,11 @@
  */
 package org.primefaces.selenium.component;
 
+import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.component.base.AbstractComponent;
+import org.primefaces.selenium.component.base.ComponentUtils;
+import org.primefaces.selenium.component.model.Tab;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -30,10 +35,6 @@ import java.util.stream.Collectors;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.PrimeSelenium;
-import org.primefaces.selenium.component.base.AbstractComponent;
-import org.primefaces.selenium.component.base.ComponentUtils;
-import org.primefaces.selenium.component.model.Tab;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:accordionPanel}.

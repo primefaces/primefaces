@@ -23,9 +23,9 @@
  */
 package org.primefaces.validate.bean;
 
-import java.util.Map;
-
 import org.primefaces.util.HTML;
+
+import java.util.Map;
 
 public class MaxClientValidationConstraint extends AbstractClientValidationConstraint {
 

@@ -23,10 +23,10 @@
  */
 package org.primefaces.component.message;
 
-import javax.faces.component.UIMessage;
-
 import org.primefaces.component.api.UINotification;
 import org.primefaces.component.api.Widget;
+
+import javax.faces.component.UIMessage;
 
 public abstract class MessageBase extends UIMessage implements UINotification, Widget {
 

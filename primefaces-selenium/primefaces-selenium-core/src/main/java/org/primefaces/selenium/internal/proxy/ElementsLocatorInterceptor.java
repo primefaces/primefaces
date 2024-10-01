@@ -23,6 +23,8 @@
  */
 package org.primefaces.selenium.internal.proxy;
 
+import org.primefaces.selenium.spi.PrimePageFragmentFactory;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -31,7 +33,6 @@ import java.util.List;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.pagefactory.ElementLocator;
-import org.primefaces.selenium.spi.PrimePageFragmentFactory;
 
 public class ElementsLocatorInterceptor implements InvocationHandler {
 

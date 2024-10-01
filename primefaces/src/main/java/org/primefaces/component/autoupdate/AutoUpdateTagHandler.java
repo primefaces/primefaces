@@ -23,6 +23,9 @@
  */
 package org.primefaces.component.autoupdate;
 
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.Lazy;
+
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,9 +35,12 @@ import javax.faces.FacesException;
 import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.view.facelets.*;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.Lazy;
+import javax.faces.view.facelets.ComponentHandler;
+import javax.faces.view.facelets.FaceletContext;
+import javax.faces.view.facelets.FaceletException;
+import javax.faces.view.facelets.TagAttribute;
+import javax.faces.view.facelets.TagConfig;
+import javax.faces.view.facelets.TagHandler;
 
 public class AutoUpdateTagHandler extends TagHandler {
 

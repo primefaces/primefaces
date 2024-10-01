@@ -23,8 +23,12 @@
  */
 package org.primefaces.integrationtests.datepicker;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.PrimeExpectedConditions;
+import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.component.DatePicker;
+import org.primefaces.selenium.component.Messages;
+import org.primefaces.selenium.component.model.Msg;
 
 import java.time.LocalDate;
 
@@ -34,12 +38,9 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.PrimeExpectedConditions;
-import org.primefaces.selenium.PrimeSelenium;
-import org.primefaces.selenium.component.DatePicker;
-import org.primefaces.selenium.component.Messages;
-import org.primefaces.selenium.component.model.Msg;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class DatePicker008Test extends AbstractDatePickerTest {
 

@@ -24,6 +24,7 @@
 package org.primefaces.event;
 
 import java.util.List;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
 

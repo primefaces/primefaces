@@ -23,9 +23,9 @@
  */
 package org.primefaces.component.remotecommand;
 
-import javax.faces.component.UICommand;
-
 import org.primefaces.component.api.AjaxSource;
+
+import javax.faces.component.UICommand;
 
 
 public abstract class RemoteCommandBase extends UICommand implements AjaxSource {

@@ -23,16 +23,18 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.primefaces.model.DefaultLazyDataModel;
 import org.primefaces.model.LazyDataModel;
+
+import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.io.Serializable;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Named
 @ViewScoped

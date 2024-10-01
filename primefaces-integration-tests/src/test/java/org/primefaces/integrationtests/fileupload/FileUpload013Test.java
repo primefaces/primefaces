@@ -23,9 +23,6 @@
  */
 package org.primefaces.integrationtests.fileupload;
 
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.FileUpload;
 import org.primefaces.selenium.component.InputText;
@@ -33,9 +30,11 @@ import org.primefaces.selenium.component.Messages;
 
 import java.io.File;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 // Selenium SafariDriver does not support file uploads
 @Tag("SafariExclude")

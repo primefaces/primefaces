@@ -23,11 +23,12 @@
  */
 package org.primefaces.util;
 
-import javax.faces.context.FacesContext;
 import java.security.Principal;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.stream.Stream;
+
+import javax.faces.context.FacesContext;
 
 public final class SecurityUtils {
 

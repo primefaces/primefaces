@@ -23,18 +23,18 @@
  */
 package org.primefaces.component.datagrid;
 
-import java.io.IOException;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.renderkit.DataRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.GridLayoutUtils;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
+
+import java.io.IOException;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 
 public class DataGridRenderer extends DataRenderer {
 

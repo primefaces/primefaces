@@ -23,8 +23,10 @@
  */
 package org.primefaces.integrationtests.inputnumber;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.component.CommandButton;
+import org.primefaces.selenium.component.InputNumber;
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
@@ -34,10 +36,9 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.JavascriptException;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.component.CommandButton;
-import org.primefaces.selenium.component.InputNumber;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 class InputNumber004Test extends AbstractPrimePageTest {
 

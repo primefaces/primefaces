@@ -23,11 +23,11 @@
  */
 package org.primefaces.event.timeline;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.behavior.Behavior;
-
 import org.primefaces.event.AbstractAjaxBehaviorEvent;
 import org.primefaces.model.timeline.TimelineEvent;
+
+import javax.faces.component.UIComponent;
+import javax.faces.component.behavior.Behavior;
 
 public class TimelineModificationEvent<T> extends AbstractAjaxBehaviorEvent {
 

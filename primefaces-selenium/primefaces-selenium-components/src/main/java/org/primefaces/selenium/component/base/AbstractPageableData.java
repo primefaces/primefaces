@@ -23,15 +23,16 @@
  */
 package org.primefaces.selenium.component.base;
 
-import java.util.List;
-import org.openqa.selenium.By;
-
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.Select;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.model.data.Page;
 import org.primefaces.selenium.component.model.data.Paginator;
+
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.Select;
 
 public abstract class AbstractPageableData extends AbstractComponent {
 

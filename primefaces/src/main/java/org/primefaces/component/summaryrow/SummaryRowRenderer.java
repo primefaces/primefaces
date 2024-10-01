@@ -23,17 +23,17 @@
  */
 package org.primefaces.component.summaryrow;
 
-import java.io.IOException;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.headerrow.HeaderRow;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.Constants;
+
+import java.io.IOException;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 
 public class SummaryRowRenderer extends CoreRenderer {
 

@@ -23,6 +23,8 @@
  */
 package org.primefaces.webapp;
 
+import org.primefaces.util.FileUploadUtils;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Level;
@@ -35,7 +37,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.primefaces.util.FileUploadUtils;
 
 public class FileUploadChunksServlet extends HttpServlet {
 

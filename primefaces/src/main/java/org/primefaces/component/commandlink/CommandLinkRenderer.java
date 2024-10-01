@@ -23,6 +23,17 @@
  */
 package org.primefaces.component.commandlink;
 
+import org.primefaces.component.api.ClientBehaviorRenderingMode;
+import org.primefaces.component.api.DialogReturnAware;
+import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.CSVBuilder;
+import org.primefaces.util.ComponentTraversalUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.HTML;
+import org.primefaces.util.SharedStringBuilder;
+import org.primefaces.util.WidgetBuilder;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,12 +45,6 @@ import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
-
-import org.primefaces.component.api.ClientBehaviorRenderingMode;
-import org.primefaces.component.api.DialogReturnAware;
-import org.primefaces.context.PrimeRequestContext;
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.*;
 
 public class CommandLinkRenderer extends CoreRenderer {
 

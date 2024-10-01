@@ -23,7 +23,10 @@
  */
 package org.primefaces.integrationtests.inputtext;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.component.CommandButton;
+import org.primefaces.selenium.component.InputText;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
@@ -33,10 +36,8 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.InvalidElementStateException;
 import org.openqa.selenium.JavascriptException;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.component.CommandButton;
-import org.primefaces.selenium.component.InputText;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 //example-tag used together with profile/properties/groups in pom.xml to run only tests with this tag
 @Tag("SafariBasic")

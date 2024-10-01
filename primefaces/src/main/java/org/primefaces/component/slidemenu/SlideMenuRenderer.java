@@ -23,16 +23,16 @@
  */
 package org.primefaces.component.slidemenu;
 
-import java.io.IOException;
-
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.tieredmenu.TieredMenuRenderer;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
+
+import java.io.IOException;
+
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 
 public class SlideMenuRenderer extends TieredMenuRenderer {
 

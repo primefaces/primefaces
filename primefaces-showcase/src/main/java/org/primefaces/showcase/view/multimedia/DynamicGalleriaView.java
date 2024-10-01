@@ -23,17 +23,19 @@
  */
 package org.primefaces.showcase.view.multimedia;
 
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
+import org.primefaces.showcase.domain.Photo;
+import org.primefaces.showcase.service.PhotoService;
+
 import java.io.Serializable;
 import java.util.List;
+
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.StreamedContent;
-import org.primefaces.showcase.domain.Photo;
-import org.primefaces.showcase.service.PhotoService;
 
 @Named
 @RequestScoped

@@ -23,7 +23,10 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.primefaces.integrationtests.general.utilities.TestUtils;
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.component.DataTable;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
@@ -33,10 +36,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.integrationtests.general.utilities.TestUtils;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.PrimeSelenium;
-import org.primefaces.selenium.component.DataTable;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class DataTable014Test extends AbstractDataTableTest {
 

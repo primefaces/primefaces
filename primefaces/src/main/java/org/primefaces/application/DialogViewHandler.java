@@ -23,11 +23,13 @@
  */
 package org.primefaces.application;
 
+import org.primefaces.util.Constants;
+
 import java.util.Map;
+
 import javax.faces.application.ViewHandler;
 import javax.faces.application.ViewHandlerWrapper;
 import javax.faces.context.FacesContext;
-import org.primefaces.util.Constants;
 
 public class DialogViewHandler extends ViewHandlerWrapper {
 

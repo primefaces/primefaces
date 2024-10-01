@@ -23,6 +23,16 @@
  */
 package org.primefaces.component.accordionpanel;
 
+import org.primefaces.component.menu.Menu;
+import org.primefaces.component.panel.Panel;
+import org.primefaces.component.tabview.Tab;
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.SharedStringBuilder;
+import org.primefaces.util.WidgetBuilder;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -32,12 +42,6 @@ import java.util.Map;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
-import org.primefaces.component.menu.Menu;
-import org.primefaces.component.panel.Panel;
-import org.primefaces.component.tabview.Tab;
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.*;
 
 public class AccordionPanelRenderer extends CoreRenderer {
 

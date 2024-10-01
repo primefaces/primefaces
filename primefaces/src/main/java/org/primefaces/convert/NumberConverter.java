@@ -23,10 +23,10 @@
  */
 package org.primefaces.convert;
 
+import org.primefaces.util.HTML;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import org.primefaces.util.HTML;
 
 public class NumberConverter extends javax.faces.convert.NumberConverter implements ClientConverter {
 

@@ -23,6 +23,10 @@
  */
 package org.primefaces.component.audio;
 
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
+
 import java.io.IOException;
 
 import javax.faces.component.UIComponent;
@@ -30,9 +34,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.apache.commons.io.FilenameUtils;
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.HTML;
-import org.primefaces.util.LangUtils;
 
 /**
  * The HTML <audio> element is used to embed sound content in documents.

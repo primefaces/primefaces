@@ -23,17 +23,18 @@
  */
 package org.primefaces.component.columns;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
-import javax.faces.context.FacesContext;
-
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.LangUtils;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
+import javax.faces.context.FacesContext;
 
 public class Columns extends ColumnsBase {
 

@@ -24,6 +24,7 @@
 package org.primefaces.mock;
 
 import java.io.IOException;
+
 import javax.faces.context.PartialResponseWriter;
 
 public class CollectingPartialResponseWriter extends PartialResponseWriter {

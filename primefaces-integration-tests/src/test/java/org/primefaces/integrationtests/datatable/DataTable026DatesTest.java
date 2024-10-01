@@ -23,8 +23,15 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.component.CommandButton;
+import org.primefaces.selenium.component.DataTable;
+import org.primefaces.selenium.component.DatePicker;
+import org.primefaces.selenium.component.SelectManyMenu;
+import org.primefaces.selenium.component.base.ComponentUtils;
+import org.primefaces.selenium.component.model.datatable.Row;
+import org.primefaces.util.CalendarUtils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -39,15 +46,9 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.PrimeSelenium;
-import org.primefaces.selenium.component.CommandButton;
-import org.primefaces.selenium.component.DataTable;
-import org.primefaces.selenium.component.DatePicker;
-import org.primefaces.selenium.component.SelectManyMenu;
-import org.primefaces.selenium.component.base.ComponentUtils;
-import org.primefaces.selenium.component.model.datatable.Row;
-import org.primefaces.util.CalendarUtils;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class DataTable026DatesTest extends AbstractDataTableTest {
 

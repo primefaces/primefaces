@@ -23,6 +23,19 @@
  */
 package org.primefaces.showcase.view.data;
 
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.schedule.ScheduleEntryMoveEvent;
+import org.primefaces.event.schedule.ScheduleEntryResizeEvent;
+import org.primefaces.event.schedule.ScheduleRangeEvent;
+import org.primefaces.model.DefaultScheduleEvent;
+import org.primefaces.model.DefaultScheduleModel;
+import org.primefaces.model.LazyScheduleModel;
+import org.primefaces.model.ScheduleDisplayMode;
+import org.primefaces.model.ScheduleEvent;
+import org.primefaces.model.ScheduleModel;
+import org.primefaces.showcase.service.ExtenderService;
+import org.primefaces.showcase.service.ExtenderService.ExtenderExample;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -40,14 +53,6 @@ import jakarta.faces.model.SelectItem;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-
-import org.primefaces.event.SelectEvent;
-import org.primefaces.event.schedule.ScheduleEntryMoveEvent;
-import org.primefaces.event.schedule.ScheduleEntryResizeEvent;
-import org.primefaces.event.schedule.ScheduleRangeEvent;
-import org.primefaces.model.*;
-import org.primefaces.showcase.service.ExtenderService;
-import org.primefaces.showcase.service.ExtenderService.ExtenderExample;
 
 @Named
 @ViewScoped

@@ -23,11 +23,11 @@
  */
 package org.primefaces.showcase.view.misc;
 
-import jakarta.faces.view.ViewScoped;
+import java.io.Serializable;
 
+import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
 import jakarta.validation.constraints.NotNull;
-import java.io.Serializable;
 
 @Named
 @ViewScoped

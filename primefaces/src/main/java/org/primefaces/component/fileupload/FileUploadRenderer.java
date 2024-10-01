@@ -32,12 +32,13 @@ import org.primefaces.util.StyleClassBuilder;
 import org.primefaces.util.WidgetBuilder;
 import org.primefaces.validate.FileValidator;
 
+import java.io.IOException;
+import java.util.Arrays;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
-import java.io.IOException;
-import java.util.Arrays;
 
 public class FileUploadRenderer extends CoreRenderer {
 

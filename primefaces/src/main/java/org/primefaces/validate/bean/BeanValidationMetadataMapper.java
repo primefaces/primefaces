@@ -23,6 +23,10 @@
  */
 package org.primefaces.validate.bean;
 
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.metadata.BeanValidationMetadataExtractor;
+import org.primefaces.util.MapBuilder;
+
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -39,9 +43,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.validation.MessageInterpolator;
 import javax.validation.metadata.ConstraintDescriptor;
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.metadata.BeanValidationMetadataExtractor;
-import org.primefaces.util.MapBuilder;
 
 public class BeanValidationMetadataMapper {
 

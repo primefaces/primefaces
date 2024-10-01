@@ -23,12 +23,12 @@
  */
 package org.primefaces.component.selectonemenu;
 
-import javax.faces.component.html.HtmlSelectOneMenu;
-
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.TouchAware;
 import org.primefaces.component.api.Widget;
+
+import javax.faces.component.html.HtmlSelectOneMenu;
 
 public abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Widget, InputHolder, RTLAware, TouchAware {
 

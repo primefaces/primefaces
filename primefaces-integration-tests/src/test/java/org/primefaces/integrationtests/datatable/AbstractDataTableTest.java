@@ -23,17 +23,18 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.primefaces.integrationtests.AbstractTableTest;
+import org.primefaces.selenium.component.DataTable;
+import org.primefaces.selenium.component.model.datatable.Row;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.openqa.selenium.HasCapabilities;
-import org.primefaces.integrationtests.AbstractTableTest;
-import org.primefaces.selenium.component.DataTable;
-import org.primefaces.selenium.component.model.datatable.Row;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public abstract class AbstractDataTableTest extends AbstractTableTest {
 

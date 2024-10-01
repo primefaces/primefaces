@@ -23,9 +23,12 @@
  */
 package org.primefaces.component.datalist;
 
-import javax.faces.component.behavior.ClientBehaviorHolder;
+import org.primefaces.component.api.MultiViewStateAware;
+import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.UIPageableData;
+import org.primefaces.component.api.Widget;
 
-import org.primefaces.component.api.*;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class DataListBase extends UIPageableData
         implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, MultiViewStateAware<DataListState> {

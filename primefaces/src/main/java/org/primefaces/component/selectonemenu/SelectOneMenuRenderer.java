@@ -23,6 +23,16 @@
  */
 package org.primefaces.component.selectonemenu;
 
+import org.primefaces.component.column.Column;
+import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.renderkit.SelectOneRenderer;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.WidgetBuilder;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -38,11 +48,6 @@ import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 import javax.faces.render.Renderer;
-
-import org.primefaces.component.column.Column;
-import org.primefaces.expression.SearchExpressionUtils;
-import org.primefaces.renderkit.SelectOneRenderer;
-import org.primefaces.util.*;
 
 public class SelectOneMenuRenderer extends SelectOneRenderer {
 

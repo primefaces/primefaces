@@ -23,6 +23,9 @@
  */
 package org.primefaces.renderkit;
 
+import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.util.HTML;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.ListIterator;
@@ -31,9 +34,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
-import org.primefaces.context.PrimeRequestContext;
-import org.primefaces.util.HTML;
 
 public class BodyRenderer extends CoreRenderer {
 

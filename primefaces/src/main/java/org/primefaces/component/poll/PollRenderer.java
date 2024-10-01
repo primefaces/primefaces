@@ -23,6 +23,9 @@
  */
 package org.primefaces.component.poll;
 
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.WidgetBuilder;
+
 import java.io.IOException;
 import java.time.Duration;
 
@@ -31,9 +34,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.PhaseId;
-
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.WidgetBuilder;
 
 public class PollRenderer extends CoreRenderer {
 
