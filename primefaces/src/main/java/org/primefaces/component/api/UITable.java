@@ -76,7 +76,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
         // build columns filterBy
         forEachColumn(c -> {
-            FilterMeta meta = FilterMeta.of(context, getVar(), c);
+            FilterMeta meta = FilterMeta.of(context, getVar(), c, isFilterNormalize());
             if (meta != null) {
                 filterBy.put(meta.getColumnKey(), meta);
             }
@@ -161,7 +161,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
             if (globalFilterComponent instanceof ValueHolder) {
                 ((ValueHolder) globalFilterComponent).setValue(globalFilterDefaultValue);
             }
-            FilterMeta globalFilterBy = FilterMeta.of(globalFilterDefaultValue, getGlobalFilterFunction());
+            FilterMeta globalFilterBy = FilterMeta.of(globalFilterDefaultValue, getGlobalFilterFunction(), isFilterNormalize());
             filterBy.put(globalFilterBy.getColumnKey(), globalFilterBy);
         }
     }
@@ -173,7 +173,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         }
 
         // lazy init - happens in cases where the column is initially not rendered
-        FilterMeta f = FilterMeta.of(context, getVar(), column);
+        FilterMeta f = FilterMeta.of(context, getVar(), column, isFilterNormalize());
         if (f != null) {
             filterBy.put(f.getColumnKey(), f);
         }
@@ -280,6 +280,8 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
     boolean isGlobalFilterOnly();
 
     void setGlobalFilterOnly(boolean globalFilterOnly);
+
+    boolean isFilterNormalize();
 
     default Map<String, SortMeta> initSortBy(FacesContext context) {
         Map<String, SortMeta> sortBy = new LinkedHashMap<>();

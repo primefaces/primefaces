@@ -8675,6 +8675,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Defines if filtering would be done using normalized values (accents will be removed from characters). Default is false.]]>
+            </description>
+            <name>filterNormalize</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Delay to wait in milliseconds before sending each filter query. Default is 300.]]>
             </description>
             <name>filterDelay</name>
@@ -30658,6 +30666,14 @@
             <name>filterEvent</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines if filtering would be done using normalized values (accents will be removed from characters). Default is false.]]>
+            </description>
+            <name>filterNormalize</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>

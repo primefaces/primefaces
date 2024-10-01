@@ -538,6 +538,26 @@ public class LangUtils {
         return withDecimalsParsing(str, 0);
     }
 
+    /**
+     * Normalizes the given value by removing diacritics.
+     *
+     * @param value the value to normalize, expected to be a String.
+     * @param shouldNormalize whether to remove diacritics from the string.
+     * @return the normalized string, or an empty string if the input is not a string or is empty.
+     */
+    public static Object normalize(Object value, boolean shouldNormalize) {
+        if (!shouldNormalize || !(value instanceof String)) {
+            return value;
+        }
+
+        String strValue = (String) value;
+        if (strValue.isEmpty()) {
+            return Constants.EMPTY_STRING;
+        }
+
+        return java.text.Normalizer.normalize(strValue, java.text.Normalizer.Form.NFD).replaceAll("\\p{M}", Constants.EMPTY_STRING);
+    }
+
     private static boolean withDecimalsParsing(final String str, final int beginIdx) {
         int decimalPoints = 0;
         for (int i = beginIdx; i < str.length(); i++) {
