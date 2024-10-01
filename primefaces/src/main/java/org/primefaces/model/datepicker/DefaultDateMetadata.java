@@ -72,15 +72,8 @@ public class DefaultDateMetadata implements DateMetadata, Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (!(obj instanceof DefaultDateMetadata)) {
-            return false;
-        }
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
         DefaultDateMetadata other = (DefaultDateMetadata) obj;
         return disabled == other.disabled && enabled == other.enabled && Objects.equals(styleClass, other.styleClass);
     }

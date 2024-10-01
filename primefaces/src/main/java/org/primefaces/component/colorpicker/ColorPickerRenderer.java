@@ -23,6 +23,14 @@
  */
 package org.primefaces.component.colorpicker;
 
+import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.EscapeUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.WidgetBuilder;
+
 import java.io.IOException;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -31,9 +39,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.convert.Converter;
-import org.primefaces.renderkit.InputRenderer;
-import org.primefaces.util.*;
 
 public class ColorPickerRenderer extends InputRenderer {
 
@@ -71,14 +76,7 @@ public class ColorPickerRenderer extends InputRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ColorPicker colorPicker = (ColorPicker) component;
-        Converter<Object> converter = ComponentUtils.getConverter(context, component);
-        String value;
-        if (converter != null) {
-            value = converter.getAsString(context, component, colorPicker.getValue());
-        }
-        else {
-            value = (String) colorPicker.getValue();
-        }
+        String value = ComponentUtils.getValueToRender(context, component);
 
         String clientId = colorPicker.getClientId(context);
         String uuid = clientId.replaceAll(Character.toString(UINamingContainer.getSeparatorChar(context)), "-");

@@ -23,19 +23,21 @@
  */
 package org.primefaces.integrationtests.tree;
 
-import java.io.File;
-import javax.faces.view.ViewScoped;
+import org.primefaces.model.LazyDefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
-import javax.inject.Named;
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
+
 import lombok.Getter;
-import org.primefaces.model.LazyDefaultTreeNode;
 
 @Named
 @ViewScoped

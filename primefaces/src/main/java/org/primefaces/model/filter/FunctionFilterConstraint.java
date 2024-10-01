@@ -23,11 +23,14 @@
  */
 package org.primefaces.model.filter;
 
-import javax.el.MethodExpression;
-import javax.faces.context.FacesContext;
 import java.util.Locale;
 
+import javax.el.MethodExpression;
+import javax.faces.context.FacesContext;
+
 public class FunctionFilterConstraint implements FilterConstraint {
+
+    private static final long serialVersionUID = 1L;
 
     private MethodExpression methodExpression;
 

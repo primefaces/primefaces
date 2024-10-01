@@ -1,10 +1,10 @@
 # Client Side Validation
 
 PrimeFaces Client Side Validation (CSV) Framework is the most complete and advanced CSV
-solution for JavaServer Faces and Java EE. CSV support for JSF is not an easy task, it is not simple
-as integrating a 3rd party javascript plugin as JSF has its own lifecycle, concepts like conversion
-and then validation, partial processing, facesmessages and many more. Real CSV for JSF should be
-compatible with server side implementation, should do what JSF does, so that users do not
+solution for JavaServer Faces and Java EE. CSV support for Jakarta Faces is not an easy task, it is not simple
+as integrating a 3rd party javascript plugin as Jakarta Faces has its own lifecycle, concepts like conversion
+and then validation, partial processing, facesmessages and many more. Real CSV for Jakarta Faces should be
+compatible with server side implementation, should do what Jakarta Faces does, so that users do not
 experience difference behaviors on client side and server side.
 
 - Compatible with Server Side Implementation.

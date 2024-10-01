@@ -153,6 +153,21 @@
     flex-grow: 1;
 }
 
+.ui-selectmanycheckbox .ui-g-1,
+.ui-selectmanycheckbox .ui-g-2,
+.ui-selectmanycheckbox .ui-g-3,
+.ui-selectmanycheckbox .ui-g-4,
+.ui-selectmanycheckbox .ui-g-5,
+.ui-selectmanycheckbox .ui-g-6,
+.ui-selectmanycheckbox .ui-g-7,
+.ui-selectmanycheckbox .ui-g-8,
+.ui-selectmanycheckbox .ui-g-9,
+.ui-selectmanycheckbox .ui-g-10,
+.ui-selectmanycheckbox .ui-g-11,
+.ui-selectmanycheckbox .ui-g-12 {
+    float: none;
+}
+
 .ui-selectmanycheckbox label {
     vertical-align: middle;
     cursor: pointer;
@@ -991,7 +1006,7 @@ body .ui-cascadeselect-item-content .ui-cascadeselect-group-icon {
 }
 
 /** Calendar **/
-.ui-fluid .ui-calendar, .ui-fluid .ui-calendar input {
+.ui-fluid .ui-calendar, .ui-fluid .ui-calendar > input {
     width: 100%;
 }
 
@@ -1044,7 +1059,8 @@ body .ui-cascadeselect-item-content .ui-cascadeselect-group-icon {
 }
 
 /** Password **/
-.ui-fluid .ui-password {
+.ui-fluid .ui-password,
+.ui-fluid .ui-password input {
     width: 100%;
 }
 
@@ -1182,6 +1198,18 @@ body .ui-cascadeselect-item-content .ui-cascadeselect-group-icon {
 .ui-float-label > textarea:-webkit-autofill ~ label {
     top: -.75em;
     font-size: 12px;
+}
+
+/** Autofill https://github.com/primefaces/primefaces/issues/12444 **/
+@keyframes pf-autofill {
+    to {
+        /* https://github.com/primefaces/primefaces/issues/12444 */
+    }
+}
+input:-webkit-autofill {
+    animation-name: pf-autofill;
+    animation-duration: 0.1s;
+    animation-fill-mode: both;
 }
 
 /** Element becomes visually hidden however accessibility is still available. **/

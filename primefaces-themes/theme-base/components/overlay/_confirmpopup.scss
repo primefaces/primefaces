@@ -1,0 +1,69 @@
+body {
+  .ui-confirm-popup {
+    background: $panelContentBg;
+    color: $panelContentTextColor;
+    border: $overlayContentBorder;
+    border-radius: $borderRadius;
+    box-shadow: $overlayContainerShadow;
+
+    .ui-confirm-popup-content {
+      padding: $confirmPopupContentPadding;
+    }
+
+    .ui-confirm-popup-footer {
+      text-align: right;
+      padding: $confirmPopupFooterPadding;
+
+      button {
+        margin: 0 $inlineSpacing 0 0;
+        width: auto;
+
+        &:last-child {
+          margin: 0;
+        }
+      }
+    }
+
+    &:after {
+      border-style: solid;
+      border-color: rgba($panelContentBg, 0);
+      border-bottom-color: $panelContentBg;
+    }
+
+    &:before {
+      border-style: solid;
+
+      @if (nth($overlayContentBorder, 2) == 'none') {
+        border-color: rgba($panelContentBg, 0);
+        border-bottom-color: $panelContentBg;
+      }
+      @else {
+        border-color: rgba(nth($overlayContentBorder, 3), 0);
+        border-bottom-color: nth($overlayContentBorder, 3);
+      }
+    }
+
+    &.ui-confirm-popup-flipped {
+      &:after {
+        border-top-color: $panelContentBg;
+      }
+
+      &:before {
+        @if (nth($overlayContentBorder, 2) == 'none') {
+          border-top-color: $panelContentBg;
+        }
+        @else {
+          border-top-color: nth($overlayContentBorder, 3);
+        }
+      }
+    }
+
+    .ui-confirm-popup-icon {
+      font-size: $iconSize * 1.5;
+    }
+
+    .ui-confirm-popup-message {
+      margin-left: $inlineSpacing * 2;
+    }
+  }
+}

@@ -23,14 +23,14 @@
  */
 package org.primefaces.component.column.renderer;
 
+import org.primefaces.component.column.Column;
+import org.primefaces.component.panelgrid.PanelGrid;
+import org.primefaces.renderkit.CoreRenderer;
+
 import java.io.IOException;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
-import org.primefaces.component.column.Column;
-import org.primefaces.component.panelgrid.PanelGrid;
-import org.primefaces.renderkit.CoreRenderer;
 
 public class PanelGridFacetColumnRenderer extends CoreRenderer implements HelperColumnRenderer {
 

@@ -23,10 +23,12 @@
  */
 package org.primefaces.metadata.transformer;
 
+import org.primefaces.context.PrimeApplicationContext;
+
 import java.io.IOException;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import org.primefaces.context.PrimeApplicationContext;
 
 public interface MetadataTransformer {
 

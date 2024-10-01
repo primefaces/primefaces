@@ -23,8 +23,11 @@
  */
 package org.primefaces.integrationtests.calendar;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.component.Calendar;
+import org.primefaces.selenium.component.Messages;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
@@ -33,11 +36,9 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.PrimeSelenium;
-import org.primefaces.selenium.component.Calendar;
-import org.primefaces.selenium.component.Messages;
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class Calendar002Test extends AbstractPrimePageTest {
     @Test

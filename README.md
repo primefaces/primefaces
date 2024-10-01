@@ -36,28 +36,28 @@ What does that mean?
 ### Versions
 ***
 
-Version | Binary | Source | JSF version | Java version | Documentation
------------- | -------------  | ------------- | ------------- | ------------- | ------------- |
-![14.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=14&color=cyan)| [JAR](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/14.0.2/primefaces-14.0.2.jar)  | [Sources](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/14.0.2/primefaces-14.0.2-sources.jar)| 2.3 - 4.0 | 11+ | [14.0.2 Documentation](https://primefaces.github.io/primefaces/14_0_0/#/)
-![13.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=13&color=cyan)| [JAR](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/13.0.10/primefaces-13.0.10.jar)  | [Sources](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/13.0.10/primefaces-13.0.10-sources.jar) | 2.0 - 4.0 | 8+ | [13.0.10 Documentation](https://primefaces.github.io/primefaces/13_0_0/#/)
-![12.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=12&color=cyan)| [JAR](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/12.0.0/primefaces-12.0.0.jar)  | [Sources](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/12.0.0/primefaces-12.0.0-sources.jar) | 2.0 - 4.0 | 8+ | [12.0.0 Documentation](https://primefaces.github.io/primefaces/12_0_0/#/)
+Version | JSF version | Java version | Binary | Source | Documentation
+------------ | ------------- | ------------- | -------------  | ------------- | ------------- |
+![14.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=14&color=cyan)| ![JSF23](https://img.shields.io/badge/JSF-2.3-purple.svg) -  ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) | ![Java](https://img.shields.io/badge/Java%2011+-blue.svg) | [JAR](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/14.0.5/primefaces-14.0.5.jar)  | [Sources](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/14.0.5/primefaces-14.0.5-sources.jar)| [14.0.5 Documentation](https://primefaces.github.io/primefaces/14_0_0/#/)
+![13.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=13&color=cyan)| ![JSF20](https://img.shields.io/badge/JSF-2.0-yellow.svg) -  ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) |  ![Java](https://img.shields.io/badge/Java%208+-blue.svg) | [JAR](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/13.0.10/primefaces-13.0.10.jar)  | [Sources](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/13.0.10/primefaces-13.0.10-sources.jar) | [13.0.10 Documentation](https://primefaces.github.io/primefaces/13_0_0/#/)
+![12.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=12&color=cyan)| ![JSF20](https://img.shields.io/badge/JSF-2.0-yellow.svg) -  ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) | ![Java](https://img.shields.io/badge/Java%208+-blue.svg) | [JAR](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/12.0.0/primefaces-12.0.0.jar)  | [Sources](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/12.0.0/primefaces-12.0.0-sources.jar) | [12.0.0 Documentation](https://primefaces.github.io/primefaces/12_0_0/#/)
 
 <details>
   <summary>Archive</summary>
   
 
-Version | Binary | Source | JSF version | Java version | Documentation
------------- | -------------  | ------------- | ------------- | ------------- | ------------- |
-11.0.0| [primefaces-11.0.0.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/11.0.0/primefaces-11.0.0.jar)  | [primefaces-11.0.0-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/11.0.0/primefaces-11.0.0-sources.jar) | 2.0 - 4.0 | 8 - ? | [11.0.0 Documentation](https://primefaces.github.io/primefaces/11_0_0/#/)
-10.0.0| [primefaces-10.0.0.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/10.0.0/primefaces-10.0.0.jar)  | [primefaces-10.0.0-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/10.0.0/primefaces-10.0.0-sources.jar) | 2.0 - 3.0 | 8 - ? | [10.0.0 Documentation](https://primefaces.github.io/primefaces/10_0_0/#/)
-8.0| [primefaces-8.0.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/8.0/primefaces-8.0.jar)  | [primefaces-8.0-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/8.0/primefaces-8.0-sources.jar) | 2.0 - 2.3 | 8 - ? | [8.0 Documentation](https://primefaces.github.io/primefaces/8_0/#/)
-7.0| [primefaces-7.0.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/7.0/primefaces-7.0.jar)  | [primefaces-7.0-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/7.0/primefaces-7.0-sources.jar) | 2.0 - 2.3 | 7 - ? | [7.0 Documentation](https://primefaces.github.io/primefaces/7_0/#/)
-6.2| [primefaces-6.2.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.2/primefaces-6.2.jar)  | [primefaces-6.2-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.2/primefaces-6.2-sources.jar) | 2.0 - 2.3 | 6 - ? | [6.2 Documentation](https://www.primefaces.org/docs/guide/primefaces_user_guide_6_2.pdf)
-6.1| [primefaces-6.1.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.1/primefaces-6.1.jar)  | [primefaces-6.1-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.1/primefaces-6.1-sources.jar) | 2.0 - 2.3 | 5 - ? | [6.1 Documentation](https://www.primefaces.org/docs/guide/primefaces_user_guide_6_1.pdf)
-6.0| [primefaces-6.0.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.0/primefaces-6.0.jar)  | [primefaces-6.0-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.0/primefaces-6.0-sources.jar) | 2.0 - 2.2 | 5 - ? | [6.0 Documentation](https://www.primefaces.org/docs/guide/primefaces_user_guide_6_0.pdf)
-5.3| [primefaces-5.3.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/5.3/primefaces-5.3.jar)  | [primefaces-5.3-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/5.3/primefaces-5.3-sources.jar) | 2.0 - 2.2 | 5 - ? | [5.3 Documentation](https://www.primefaces.org/docs/guide/primefaces_user_guide_5_3.pdf)
-5.2| [primefaces-5.2.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/5.2/primefaces-5.2.jar)  | [primefaces-5.2-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/5.2/primefaces-5.2-sources.jar) | 2.0 - 2.2 | 5 - ? | [5.2 Documentation](https://www.primefaces.org/docs/guide/primefaces_user_guide_5_2.pdf)
-5.1| [primefaces-5.1.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/5.1/primefaces-5.1.jar)  | [primefaces-5.1-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/5.1/primefaces-5.1-sources.jar) | 2.0 - 2.2 | 5 - ? | [5.1 Documentation](https://www.primefaces.org/docs/guide/primefaces_user_guide_5_1.pdf)
+Version | JSF version | Java version | Binary | Source | Documentation
+------------ | ------------- | ------------- | -------------  | ------------- | ------------- |
+11.0.0| 2.0 - 4.0 | 8 - ? | [primefaces-11.0.0.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/11.0.0/primefaces-11.0.0.jar)  | [primefaces-11.0.0-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/11.0.0/primefaces-11.0.0-sources.jar) | [11.0.0 Documentation](https://primefaces.github.io/primefaces/11_0_0/#/)
+10.0.0| 2.0 - 3.0 | 8 - ? | [primefaces-10.0.0.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/10.0.0/primefaces-10.0.0.jar)  | [primefaces-10.0.0-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/10.0.0/primefaces-10.0.0-sources.jar) | [10.0.0 Documentation](https://primefaces.github.io/primefaces/10_0_0/#/)
+8.0| 2.0 - 2.3 | 8 - ? | [primefaces-8.0.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/8.0/primefaces-8.0.jar)  | [primefaces-8.0-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/8.0/primefaces-8.0-sources.jar) | [8.0 Documentation](https://primefaces.github.io/primefaces/8_0/#/)
+7.0| 2.0 - 2.3 | 7 - ? | [primefaces-7.0.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/7.0/primefaces-7.0.jar)  | [primefaces-7.0-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/7.0/primefaces-7.0-sources.jar) | [7.0 Documentation](https://primefaces.github.io/primefaces/7_0/#/)
+6.2| 2.0 - 2.3 | 6 - ? | [primefaces-6.2.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.2/primefaces-6.2.jar)  | [primefaces-6.2-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.2/primefaces-6.2-sources.jar) | [6.2 Documentation](https://www.primefaces.org/docs/guide/primefaces_user_guide_6_2.pdf)
+6.1| 2.0 - 2.3 | 5 - ? | [primefaces-6.1.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.1/primefaces-6.1.jar)  | [primefaces-6.1-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.1/primefaces-6.1-sources.jar) | [6.1 Documentation](https://www.primefaces.org/docs/guide/primefaces_user_guide_6_1.pdf)
+6.0| 2.0 - 2.2 | 5 - ? | [primefaces-6.0.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.0/primefaces-6.0.jar)  | [primefaces-6.0-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.0/primefaces-6.0-sources.jar) | [6.0 Documentation](https://www.primefaces.org/docs/guide/primefaces_user_guide_6_0.pdf)
+5.3| 2.0 - 2.2 | 5 - ? | [primefaces-5.3.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/5.3/primefaces-5.3.jar)  | [primefaces-5.3-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/5.3/primefaces-5.3-sources.jar) | [5.3 Documentation](https://www.primefaces.org/docs/guide/primefaces_user_guide_5_3.pdf)
+5.2| 2.0 - 2.2 | 5 - ? | [primefaces-5.2.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/5.2/primefaces-5.2.jar)  | [primefaces-5.2-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/5.2/primefaces-5.2-sources.jar) | [5.2 Documentation](https://www.primefaces.org/docs/guide/primefaces_user_guide_5_2.pdf)
+5.1| 2.0 - 2.2 | 5 - ? | [primefaces-5.1.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/5.1/primefaces-5.1.jar)  | [primefaces-5.1-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/5.1/primefaces-5.1-sources.jar) | [5.1 Documentation](https://www.primefaces.org/docs/guide/primefaces_user_guide_5_1.pdf)
 </details>
 
 
@@ -73,14 +73,14 @@ For a full list of the available downloads, please visit the [download page](htt
   <dependency>
       <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
-      <version>14.0.2</version>
+      <version>14.0.5</version>
   </dependency>
 
   <!-- Jakarta EE / jakarta.* / Faces 4.0+  -->	
   <dependency>
       <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
-      <version>14.0.2</version>
+      <version>14.0.5</version>
       <classifier>jakarta</classifier>
   </dependency>
   ```
@@ -159,9 +159,9 @@ Visit the [contribution](./CONTRIBUTING.md) page for detailed information.
 
 ### Release Instructions
 ***
-- Run `mvn versions:set -DgenerateBackupPoms=false -DnewVersion=14.0.2` to update all modules versions
+- Run `mvn versions:set -DgenerateBackupPoms=false -DnewVersion=14.0.5` to update all modules versions
 - Commit and push the changes to GitHub
-- In GitHub create a new Release titled `14.0.2` to tag this release
+- In GitHub create a new Release titled `14.0.5` to tag this release
 - Run `mvn clean deploy -Prelease` to push to Maven Central
 - Rename Milestone in GitHub Issues and close it
 - Create a new Milestone

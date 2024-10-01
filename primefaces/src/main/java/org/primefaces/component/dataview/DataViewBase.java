@@ -23,9 +23,13 @@
  */
 package org.primefaces.component.dataview;
 
-import javax.faces.component.behavior.ClientBehaviorHolder;
+import org.primefaces.component.api.FlexAware;
+import org.primefaces.component.api.MultiViewStateAware;
+import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.UIPageableData;
+import org.primefaces.component.api.Widget;
 
-import org.primefaces.component.api.*;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class DataViewBase extends UIPageableData
         implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, MultiViewStateAware<DataViewState>, FlexAware {

@@ -26,13 +26,14 @@ package org.primefaces.showcase.view.df;
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.SelectEvent;
 
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Named;
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
 
 @Named("dfLevel1View")
 @RequestScoped

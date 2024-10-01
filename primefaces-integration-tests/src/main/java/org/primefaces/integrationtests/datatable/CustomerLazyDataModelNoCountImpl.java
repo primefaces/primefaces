@@ -23,7 +23,6 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import org.apache.commons.collections4.ComparatorUtils;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortMeta;
@@ -32,6 +31,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import org.apache.commons.collections4.ComparatorUtils;
 
 /**
  * Dummy implementation of LazyDataModel that uses a list to mimic a real datasource like a database.

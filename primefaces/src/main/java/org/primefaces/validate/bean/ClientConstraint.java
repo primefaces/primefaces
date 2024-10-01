@@ -23,13 +23,13 @@
  */
 package org.primefaces.validate.bean;
 
-import static java.lang.annotation.ElementType.*;
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
-import static java.lang.annotation.RetentionPolicy.*;
+import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target({ANNOTATION_TYPE})
-@Retention(RUNTIME)
+@Target({ ElementType.ANNOTATION_TYPE })
+@Retention(RetentionPolicy.RUNTIME)
 public @interface ClientConstraint {
 
     Class<? extends ClientValidationConstraint> resolvedBy();

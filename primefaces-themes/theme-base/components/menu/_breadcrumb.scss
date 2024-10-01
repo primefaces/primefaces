@@ -1,0 +1,87 @@
+body {
+  .ui-breadcrumb {
+    background: $breadcrumbBg;
+    border: $breadcrumbBorder;
+    border-radius: $borderRadius;
+    padding: $breadcrumbPadding;
+
+    @mixin breadcrumb-item-content {
+      .ui-menuitem-link {
+        transition: $transition;
+        border-radius: $borderRadius;
+        margin: 0;
+
+        &:focus {
+          @include focused();
+        }
+
+        .ui-menuitem-text {
+          color: $breadcrumbItemTextColor;
+        }
+
+        .ui-menuitem-icon {
+          color: $breadcrumbItemIconColor;
+        }
+      }
+
+      &.ui-breadcrumb-chevron {
+        @include icon-override("\e901");
+        margin: 0 $inlineSpacing 0 $inlineSpacing;
+        color: $breadcrumbSeparatorColor;
+      }
+
+      &:not(.ui-breadcrumb-chevron) {
+        @include flex();
+        @include flex-align-center();
+        @include icon-override-with-content("\e901") {
+          margin: 0 $inlineSpacing 0 $inlineSpacing;
+          color: $breadcrumbSeparatorColor;
+        }
+      }
+
+      &:first-child {
+        &:not(.ui-breadcrumb-chevron):before {
+          display: none;
+        }
+
+        a.ui-icon-home {
+          @include icon-override("\e925");
+          color: $breadcrumbItemIconColor;
+          margin: 0;
+
+          span {
+            display: none;
+          }
+        }
+      }
+
+      &:last-child {
+        .ui-menuitem-link {
+          .ui-menuitem-text {
+            color: $breadcrumbLastItemTextColor;
+          }
+
+          .ui-menuitem-icon {
+            color: $breadcrumbLastItemIconColor;
+          }
+        }
+      }
+    }
+
+    ul {
+      li {
+        float: none;
+        display: inline-block;
+        vertical-align: middle;
+
+        @include breadcrumb-item-content;
+      }
+    }
+
+    .ui-breadcrumb-items {
+      li {
+        @include breadcrumb-item-content;
+      }
+    }
+  }
+}

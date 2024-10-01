@@ -23,6 +23,16 @@
  */
 package org.primefaces.component.columntoggler;
 
+import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.event.ColumnToggleEvent;
+import org.primefaces.event.ToggleCloseEvent;
+import org.primefaces.event.ToggleEvent;
+import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.model.Visibility;
+import org.primefaces.util.Constants;
+import org.primefaces.util.MapBuilder;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
@@ -33,16 +43,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
-
-import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.datatable.DataTable;
-import org.primefaces.event.ColumnToggleEvent;
-import org.primefaces.event.ToggleCloseEvent;
-import org.primefaces.event.ToggleEvent;
-import org.primefaces.expression.SearchExpressionUtils;
-import org.primefaces.model.Visibility;
-import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")

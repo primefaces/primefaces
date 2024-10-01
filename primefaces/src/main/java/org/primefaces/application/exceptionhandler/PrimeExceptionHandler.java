@@ -23,11 +23,24 @@
  */
 package org.primefaces.application.exceptionhandler;
 
+import org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandler;
+import org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandlerVisitCallback;
+import org.primefaces.config.PrimeConfiguration;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.csp.CspPhaseListener;
+import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.EscapeUtils;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.Lazy;
+import org.primefaces.util.LimitedSizeHashMap;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -51,19 +64,6 @@ import javax.faces.event.ExceptionQueuedEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.lifecycle.ClientWindow;
 import javax.faces.view.ViewDeclarationLanguage;
-
-import org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandler;
-import org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandlerVisitCallback;
-import org.primefaces.config.PrimeConfiguration;
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.context.PrimeRequestContext;
-import org.primefaces.csp.CspPhaseListener;
-import org.primefaces.expression.SearchExpressionUtils;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.EscapeUtils;
-import org.primefaces.util.Lazy;
-import org.primefaces.util.LimitedSizeHashMap;
 
 public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
@@ -265,7 +265,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         info.setException(rootCause);
         info.setMessage(rootCause.getMessage());
         info.setStackTrace(rootCause.getStackTrace());
-        info.setTimestamp(new Date());
+        info.setTimestamp(LocalDateTime.now());
         info.setType(rootCause.getClass().getName());
 
         try (StringWriter sw = new StringWriter(); PrintWriter pw = new PrintWriter(sw)) {
@@ -273,8 +273,8 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
             info.setFormattedStackTrace(EscapeUtils.forXml(sw.toString()).replaceAll("(\r\n|\n)", "<br/>"));
         }
 
-        SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT_PATTERN);
-        info.setFormattedTimestamp(format.format(info.getTimestamp()));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN);
+        info.setFormattedTimestamp(info.getTimestamp().format(formatter));
 
         return info;
     }

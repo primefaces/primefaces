@@ -23,6 +23,11 @@
  */
 package org.primefaces.csp;
 
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.util.EscapeUtils;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.Lazy;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Arrays;
@@ -31,15 +36,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.context.ResponseWriterWrapper;
-
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.util.EscapeUtils;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.Lazy;
 
 public class CspResponseWriter extends ResponseWriterWrapper {
 

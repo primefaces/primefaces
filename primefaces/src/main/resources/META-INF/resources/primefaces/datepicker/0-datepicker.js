@@ -26,6 +26,10 @@
             id: null,
             name: null,
             defaultDate: null,
+            defaultHour: 0,
+            defaultMinute: 0,
+            defaultSecond: 0,
+            defaultMillisecond: 0,
             viewDate: null,
             style: null,
             styleClass: null,
@@ -39,6 +43,7 @@
             inputStyle: null,
             inputStyleClass: null,
             required: false,
+            readonly: false,
             readOnlyInput: false,
             disabled: false,
             valid: true,
@@ -207,11 +212,19 @@
                 }
                 if (this.viewDate === null) {
                     this.viewDate = this.getNow();
+                    this.viewDate.setHours(this.options.defaultHour);
+                    this.viewDate.setMinutes(this.options.defaultMinute);
                     if (!this.options.showSeconds && !this.options.showMilliseconds) {
                         this.viewDate.setSeconds(0);
                     }
+                    else {
+                        this.viewDate.setSeconds(this.options.defaultSecond);
+                    }
                     if (!this.options.showMilliseconds) {
                         this.viewDate.setMilliseconds(0);
+                    }
+                    else {
+                        this.viewDate.setMilliseconds(this.options.defaultMillisecond);
                     }
                     viewDateDefaultsToNow = true;
                 }
@@ -1843,6 +1856,10 @@
         },
 
         _bindEvents: function() {
+            if (this.options.readonly) {
+                // #12385 readonly input should not allow any events
+                return;
+            }
             var $this = this;
             if (!this.options.inline) {
                 this.inputfield.off('focus.datePicker blur.datePicker change.datePicker keydown.datePicker input.datePicker click.datePicker')
@@ -2214,9 +2231,16 @@
             if (this.documentClickListener) {
                 this.datepickerClick = true;
             }
-            // #11928 allow the input to be clicked again to close panel and allow typing of date
-            if (!this.datepickerFocus && this.isPanelVisible()) {
-                this.hideOverlay();
+            
+            if (this.isPanelVisible()) {
+                // #11928 allow the input to be clicked again to close panel and allow typing of date
+                if (!this.datepickerFocus) {
+                    this.hideOverlay();
+                }
+            } 
+            else if (this.options.showOnFocus) {
+                // #12361 allow the input to be clicked again to open the panel if showOnFocus is true
+                this.showOverlay();
             }
         },
 
@@ -3271,7 +3295,16 @@
             var now = new Date();
             if (this.options.timeZone) {
                 var jsTimezone = this.convertTimeZone(this.options.timeZone);
-                now = new Date(now.toLocaleString(undefined, { timeZone: jsTimezone }));
+                var localString = now.toLocaleString('en-GB', { // use English so we can parse it back
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                    hour: "numeric",
+                    minute: "numeric",
+                    second: "numeric",
+                    timeZone: jsTimezone
+                }).replace(' at ', ', ');
+                now = new Date(localString);
             }
             return now;
         },
@@ -3284,14 +3317,14 @@
          * @throws {Error} If the input Java time zone string is in an invalid format.
          */
         convertTimeZone: function (javaTimeZone) {
-            if (!javaTimeZone || javaTimeZone.toUpperCase() === 'UTC' || /^(GMT|UTC)$/.test(javaTimeZone)) {
+            if (!javaTimeZone || ['ETC/UTC', 'ETC/GMT', 'UTC', 'GMT'].includes(javaTimeZone.toUpperCase())) {
                 return javaTimeZone;
             }
 
             // Extract the sign and the offset (hours and minutes)
             const matches = javaTimeZone.match(/^(GMT|UTC)([+-])(\d{2}):(\d{2})$/);
             if (!matches) {
-                throw new Error('Invalid GMT/UTC format');
+                return javaTimeZone;
             }
 
             const sign = matches[2];
@@ -3364,7 +3397,7 @@
             }
             if (this.options.yearNavigator) {
                 var viewYear = this.viewDate.getFullYear();
-                this.options.yearRange = (viewYear - 10) + ':' + (viewYear + 10);
+                this.options.yearRange = (viewYear - 1000) + ':' + (viewYear + 1000);
             }
         },
 

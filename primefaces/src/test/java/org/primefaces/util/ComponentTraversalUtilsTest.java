@@ -29,6 +29,7 @@ import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIOutput;
 
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 class ComponentTraversalUtilsTest {

@@ -23,29 +23,52 @@
  */
 package org.primefaces.component.api;
 
-import java.io.IOException;
-import java.sql.ResultSet;
-import java.util.*;
-import java.util.function.BiConsumer;
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
-import javax.faces.application.Application;
-import javax.faces.application.FacesMessage;
-import javax.faces.component.*;
-import javax.faces.component.visit.VisitCallback;
-import javax.faces.component.visit.VisitContext;
-import javax.faces.component.visit.VisitHint;
-import javax.faces.component.visit.VisitResult;
-import javax.faces.context.FacesContext;
-import javax.faces.event.*;
-import javax.faces.model.*;
-import javax.faces.render.Renderer;
-
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.SharedStringBuilder;
+
+import java.io.IOException;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.function.BiConsumer;
+
+import javax.el.ValueExpression;
+import javax.faces.FacesException;
+import javax.faces.application.Application;
+import javax.faces.application.FacesMessage;
+import javax.faces.component.ContextCallback;
+import javax.faces.component.EditableValueHolder;
+import javax.faces.component.NamingContainer;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
+import javax.faces.component.UIPanel;
+import javax.faces.component.visit.VisitCallback;
+import javax.faces.component.visit.VisitContext;
+import javax.faces.component.visit.VisitHint;
+import javax.faces.component.visit.VisitResult;
+import javax.faces.context.FacesContext;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.FacesEvent;
+import javax.faces.event.FacesListener;
+import javax.faces.event.PhaseId;
+import javax.faces.event.PostValidateEvent;
+import javax.faces.event.PreValidateEvent;
+import javax.faces.model.ArrayDataModel;
+import javax.faces.model.CollectionDataModel;
+import javax.faces.model.DataModel;
+import javax.faces.model.IterableDataModel;
+import javax.faces.model.ListDataModel;
+import javax.faces.model.ResultSetDataModel;
+import javax.faces.model.ScalarDataModel;
+import javax.faces.render.Renderer;
 
 /**
  * UITabPanel is a specialized version of UIRepeat focusing on components that repeat tabs like tabView and accordionPanel.
@@ -194,7 +217,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
     @Override
     public void setValueExpression(String name, ValueExpression binding) {
         if (name == null) {
-            throw new NullPointerException("name");
+            throw new IllegalArgumentException("name");
         }
         else if ("value".equals(name)) {
             _dataModelMap.clear();
@@ -813,7 +836,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         }
         else {
             if (context == null || clientId == null || callback == null) {
-                throw new NullPointerException();
+                throw new IllegalArgumentException();
             }
 
             final String baseClientId = getClientId(context);

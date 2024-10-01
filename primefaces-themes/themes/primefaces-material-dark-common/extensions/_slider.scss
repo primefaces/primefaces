@@ -1,0 +1,16 @@
+body {
+    .ui-slider {
+        .ui-slider-handle {
+            transition: transform $transitionDuration, box-shadow $transitionDuration;
+            transform: scale(.7);
+
+            &.ui-state-focus {
+                box-shadow: 0 0 1px 10px rgba($accentColor, .2);
+            }
+
+            &.ui-state-active {
+                transform: scale(1);
+            }
+        }
+    }
+}

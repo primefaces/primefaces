@@ -23,17 +23,18 @@
  */
 package org.primefaces.application;
 
-import org.junit.jupiter.api.Test;
 import org.primefaces.application.exceptionhandler.PrimeExceptionHandler;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.el.ELException;
 import javax.faces.FacesException;
 
-import java.io.IOException;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import java.util.HashMap;
-import java.util.Map;
 
 public class PrimeExceptionHandlerTest extends PrimeExceptionHandler {
 

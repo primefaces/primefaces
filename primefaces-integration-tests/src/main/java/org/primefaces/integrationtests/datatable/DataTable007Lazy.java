@@ -23,8 +23,9 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import lombok.Data;
 import org.primefaces.event.RowEditEvent;
+
+import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -32,7 +33,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.io.Serializable;
+
+import lombok.Data;
 
 @Named
 @ViewScoped

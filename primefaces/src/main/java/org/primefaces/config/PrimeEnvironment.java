@@ -23,15 +23,16 @@
  */
 package org.primefaces.config;
 
+import org.primefaces.util.LangUtils;
+
 import java.io.InputStream;
 import java.util.Properties;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.faces.context.FacesContext;
 import javax.validation.Validation;
-
-import org.primefaces.util.LangUtils;
 
 public class PrimeEnvironment {
 

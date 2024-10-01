@@ -23,6 +23,11 @@
  */
 package org.primefaces.component.remotecommand;
 
+import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.renderkit.RendererUtils;
+import org.primefaces.util.CSVBuilder;
+
 import java.io.IOException;
 
 import javax.faces.component.UIComponent;
@@ -31,11 +36,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.PhaseId;
-
-import org.primefaces.context.PrimeRequestContext;
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.renderkit.RendererUtils;
-import org.primefaces.util.CSVBuilder;
 
 public class RemoteCommandRenderer extends CoreRenderer {
 

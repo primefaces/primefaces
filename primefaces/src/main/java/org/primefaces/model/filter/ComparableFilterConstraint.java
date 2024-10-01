@@ -23,11 +23,14 @@
  */
 package org.primefaces.model.filter;
 
-import javax.faces.context.FacesContext;
 import java.util.Locale;
 import java.util.function.BiPredicate;
 
+import javax.faces.context.FacesContext;
+
 public abstract class ComparableFilterConstraint implements FilterConstraint {
+
+    private static final long serialVersionUID = 1L;
 
     @Override
     public boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale) {

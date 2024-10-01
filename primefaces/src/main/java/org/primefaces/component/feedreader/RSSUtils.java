@@ -23,14 +23,14 @@
  */
 package org.primefaces.component.feedreader;
 
+import org.primefaces.model.feedreader.FeedItem;
+import org.primefaces.util.Constants;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import org.primefaces.model.feedreader.FeedItem;
-import org.primefaces.util.Constants;
 
 import com.apptasticsoftware.rssreader.AbstractRssReader;
 import com.apptasticsoftware.rssreader.Item;

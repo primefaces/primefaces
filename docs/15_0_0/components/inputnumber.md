@@ -93,7 +93,7 @@ maxValue | 10000000000000 | String | Maximum values allowed. Warning: SEE BELOW!
 minValue | -10000000000000 | String | Minimum value. Warning: SEE BELOW!!!
 modifyValueOnWheel | true | Boolean | Allows the user to increment or decrement the element value with the mouse wheel.
 modifyValueOnUpDownArrow | true | Boolean | Allows the user to increment or decrement the element value with the up and down arrow keys.
-padControl | true | Boolean | Controls padding of the decimal places. If true, always pads the decimal with zeros.
+padControl | true | String | Allow padding the decimal places with zeros. If set to 'floats', padding is only done when there are some decimals (up to the number of decimal places from the decimalPlaces variable). If set to an integer, padding will use that number for adding the zeros. If set to "true" it will always pad the decimal places with zeroes, and never if set to "false". Default is "true"
 roundMethod | Round-Half-Up-Symmetric | String | Controls the rounding method.
 selectOnFocus | true | Boolean | Defines if the element value should be selected on focu.
 signPosition | null | String | Placement of the negative/positive sign relative to the symbolPosition option The sign is placed on either side of the symbolPosition, which can be placed on either side of the numbers. 'p' for prefix 's' for suffix 'l' for left 'r' for right

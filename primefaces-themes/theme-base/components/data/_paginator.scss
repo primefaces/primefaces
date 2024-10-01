@@ -1,0 +1,122 @@
+body {
+  .ui-paginator {
+    background: $paginatorBg;
+    border: $paginatorBorder;
+    border-width: $paginatorBorderWidth;
+    padding: $paginatorPadding;
+
+    .ui-paginator-first,
+    .ui-paginator-prev,
+    .ui-paginator-next,
+    .ui-paginator-last {
+      color: $paginatorIconColor;
+      width: $paginatorElementWidth;
+      height: $paginatorElementHeight;
+      margin: $paginatorElementMargin;
+      border: $paginatorElementBorder;
+      vertical-align: top;
+      padding: 0;
+      border-radius: $paginatorElementBorderRadius;
+      transition: $transition;
+
+      span {
+        display: none;
+      }
+
+      &.ui-state-hover {
+        background: $paginatorElementHoverBg;
+        color: $paginatorElementHoverIconColor;
+        border-color: $paginatorElementHoverBorderColor;
+      }
+
+      &.ui-state-focus {
+        @include focused();
+      }
+
+      &:before {
+        position: relative;
+        line-height: inherit;
+        top: -1px;
+      }
+    }
+
+    .ui-paginator-first {
+      @include icon-override("\e92d");
+      line-height: $paginatorElementHeight;
+
+      &:before {
+        position: relative;
+      }
+    }
+
+    .ui-paginator-prev {
+      @include icon-override("\e931");
+      line-height: $paginatorElementHeight;
+
+      &:before {
+        position: relative;
+      }
+    }
+
+    .ui-paginator-next {
+      @include icon-override("\e932");
+      line-height: $paginatorElementHeight;
+
+      &:before {
+        position: relative;
+      }
+    }
+
+    .ui-paginator-last {
+      @include icon-override("\e92e");
+      line-height: $paginatorElementHeight;
+
+      &:before {
+        position: relative;
+      }
+    }
+
+    .ui-paginator-current {
+      color: $paginatorIconColor;
+    }
+
+    .ui-paginator-pages {
+      padding: 0;
+      display: inline-block;
+
+      .ui-paginator-page {
+        padding: 0;
+        border: $paginatorElementBorder;
+        text-align: center;
+        line-height: $paginatorElementHeight;
+        min-width: $paginatorElementWidth;
+        height: $paginatorElementHeight;
+        color: $paginatorIconColor;
+        margin: $paginatorElementMargin;
+        border-radius: $paginatorElementBorderRadius;
+        transition: $transition;
+
+        &.ui-state-active {
+          background: $highlightBg;
+          color: $highlightTextColor;
+        }
+
+        &.ui-state-hover {
+          background: $paginatorElementHoverBg;
+          color: $paginatorElementHoverIconColor;
+          border-color: $paginatorElementHoverBorderColor;
+        }
+
+        &.ui-state-focus {
+          @include focused();
+        }
+      }
+    }
+
+    .ui-paginator-current, .ui-paginator-rpp-options {
+      margin: $inlineSpacing;
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+}

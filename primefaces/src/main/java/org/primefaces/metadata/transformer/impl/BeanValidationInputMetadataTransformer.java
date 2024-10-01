@@ -23,6 +23,22 @@
  */
 package org.primefaces.metadata.transformer.impl;
 
+import org.primefaces.component.api.UICalendar;
+import org.primefaces.component.inputnumber.InputNumber;
+import org.primefaces.component.spinner.Spinner;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.metadata.BeanValidationMetadataExtractor;
+import org.primefaces.metadata.transformer.AbstractInputMetadataTransformer;
+import org.primefaces.util.CalendarUtils;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.LangUtils;
+import org.primefaces.validate.bean.FutureOrPresentClientValidationConstraint;
+import org.primefaces.validate.bean.NegativeClientValidationConstraint;
+import org.primefaces.validate.bean.NegativeOrZeroClientValidationConstraint;
+import org.primefaces.validate.bean.PastOrPresentClientValidationConstraint;
+import org.primefaces.validate.bean.PositiveClientValidationConstraint;
+import org.primefaces.validate.bean.PositiveOrZeroClientValidationConstraint;
+
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.time.LocalDate;
@@ -36,19 +52,15 @@ import java.util.logging.Logger;
 import javax.el.PropertyNotFoundException;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
-import javax.validation.constraints.*;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 import javax.validation.metadata.ConstraintDescriptor;
-
-import org.primefaces.component.api.UICalendar;
-import org.primefaces.component.inputnumber.InputNumber;
-import org.primefaces.component.spinner.Spinner;
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.metadata.BeanValidationMetadataExtractor;
-import org.primefaces.metadata.transformer.AbstractInputMetadataTransformer;
-import org.primefaces.util.CalendarUtils;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.LangUtils;
-import org.primefaces.validate.bean.*;
 
 public class BeanValidationInputMetadataTransformer extends AbstractInputMetadataTransformer {
 
@@ -56,7 +68,7 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
 
     @Override
     public void transformInput(FacesContext context, PrimeApplicationContext applicationContext, UIInput input) throws IOException {
-        if (ComponentUtils.isDisabledOrReadonly(input) || (input.isRequired() && isMaxlenghtSet(input))) {
+        if (ComponentUtils.isDisabledOrReadonly(input) || (input.isRequired() && isMaxlengthSet(input))) {
             return;
         }
 
@@ -77,14 +89,14 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
         }
     }
 
-    protected void applyConstraint(ConstraintDescriptor constraintDescriptor, UIInput input) {
+    protected void applyConstraint(ConstraintDescriptor<?> constraintDescriptor, UIInput input) {
 
         Annotation constraint = constraintDescriptor.getAnnotation();
         Class<? extends Annotation> annotationType = constraint.annotationType();
         // for BeanValidation 2.0
         String annotationClassName = annotationType.getSimpleName();
 
-        if (!isMaxlenghtSet(input)) {
+        if (!isMaxlengthSet(input)) {
             if (annotationType.equals(Size.class)) {
                 Size size = (Size) constraint;
                 if (size.max() > 0) {
@@ -96,15 +108,15 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
         if (input instanceof Spinner) {
             Spinner spinner = (Spinner) input;
 
-            if (annotationType.equals(Max.class) && spinner.getMax() == Double.MAX_VALUE) {
+            if (annotationType.equals(Max.class) && spinner.getMax() == Spinner.MAX_VALUE) {
                 Max max = (Max) constraint;
                 spinner.setMax(max.value());
             }
-            if (annotationType.equals(Min.class) && spinner.getMin() == Double.MIN_VALUE) {
+            if (annotationType.equals(Min.class) && spinner.getMin() == Spinner.MIN_VALUE) {
                 Min min = (Min) constraint;
                 spinner.setMin(min.value());
             }
-            if (annotationType.equals(DecimalMax.class) && spinner.getMax() == Double.MAX_VALUE) {
+            if (annotationType.equals(DecimalMax.class) && spinner.getMax() == Spinner.MAX_VALUE) {
                 DecimalMax max = (DecimalMax) constraint;
                 try {
                     spinner.setMax(Double.parseDouble(max.value()));
@@ -113,7 +125,7 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
                     LOGGER.log(Level.WARNING, () -> "Failed setting Spinner max value: " + ex.getMessage());
                 }
             }
-            if (annotationType.equals(DecimalMin.class) && spinner.getMin() == Double.MIN_VALUE) {
+            if (annotationType.equals(DecimalMin.class) && spinner.getMin() == Spinner.MIN_VALUE) {
                 DecimalMin min = (DecimalMin) constraint;
                 try {
                     spinner.setMin(Double.parseDouble(min.value()));

@@ -23,14 +23,14 @@
  */
 package org.primefaces.clientwindow;
 
+import org.primefaces.util.ResourceUtils;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
-
-import org.primefaces.util.ResourceUtils;
 
 public class PrimeClientWindowUtils {
 

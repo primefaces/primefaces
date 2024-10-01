@@ -23,15 +23,16 @@
  */
 package org.primefaces.component.chart;
 
+import org.primefaces.event.ItemSelectEvent;
+import org.primefaces.util.MapBuilder;
+
 import java.util.Collection;
 import java.util.Map;
+
 import javax.faces.application.ResourceDependency;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
-
-import org.primefaces.event.ItemSelectEvent;
-import org.primefaces.util.MapBuilder;
 
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")

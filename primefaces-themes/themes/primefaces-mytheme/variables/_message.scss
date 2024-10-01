@@ -1,0 +1,99 @@
+/// Margin of a messages
+/// @group message
+$messagesMargin: 1rem 0;
+
+/// Padding of a messages
+/// @group message
+$messagesPadding: 1rem 1.5rem;
+
+/// Font size of a messages icon
+/// @group message
+$messagesIconFontSize: 1.5rem;
+
+/// Border width of a messages
+/// @group message
+$messagesBorderWidth: 0 0 0 4px;
+
+/// Font weight of a messages text
+/// @group message
+$messagesFontWeight: 500;
+
+/// Background of an success message
+/// @group message
+$successMessageBg: #c8e6c9;
+
+/// Border of an success message
+/// @group message
+$successMessageBorder: solid #c8e6c9;
+
+/// Text color of an success message
+/// @group message
+$successMessageTextColor: #ffffff;
+
+/// Icon color of an success message
+/// @group message
+$successMessageIconColor: #ffffff;
+
+/// Background of an info message
+/// @group message
+$infoMessageBg: #039BE5;
+
+/// Border of an info message
+/// @group message
+$infoMessageBorder: solid #027cb7;
+
+/// Text color of an info message
+/// @group message
+$infoMessageTextColor: #ffffff;
+
+/// Icon color of an info message
+/// @group message
+$infoMessageIconColor: #ffffff;
+
+/// Background of a warning message
+/// @group message
+$warnMessageBg: #FFB300;
+
+/// Border of a warning message
+/// @group message
+$warnMessageBorder: 0 none;
+
+/// Text color of a warning message
+/// @group message
+$warnMessageTextColor: $textColor;
+
+/// Icon color of a warning message
+/// @group message
+$warnMessageIconColor: $textColor;
+
+/// Background of an error message
+/// @group message
+$errorMessageBg: #E53935;
+
+/// Border of an error message
+/// @group message
+$errorMessageBorder: 0 none;
+
+/// Text color of an error message
+/// @group message
+$errorMessageTextColor: #ffffff;
+
+/// Icon color of an error message
+/// @group message
+$errorMessageIconColor: #ffffff;
+
+/// Font size of a growl message icon
+/// @group message
+$growlIconFontSize: 2rem;
+
+/// Margin of a growl message text
+/// @group message
+$growlMargin: 0 0 0 1rem;
+
+/// Padding of a growl message
+/// @group message
+$growlPadding: 1rem;
+
+/// Border width of a message
+/// @group message
+$messageBorderWidth: 0 0 0 4px;

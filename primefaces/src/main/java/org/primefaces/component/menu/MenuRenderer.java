@@ -23,12 +23,6 @@
  */
 package org.primefaces.component.menu;
 
-import java.io.IOException;
-import java.util.List;
-
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
@@ -37,6 +31,12 @@ import org.primefaces.model.menu.Submenu;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 
 public class MenuRenderer extends BaseMenuRenderer {
 

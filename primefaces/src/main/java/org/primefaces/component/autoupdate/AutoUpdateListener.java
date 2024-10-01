@@ -23,6 +23,9 @@
  */
 package org.primefaces.component.autoupdate;
 
+import org.primefaces.util.LangUtils;
+
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -31,14 +34,18 @@ import java.util.Map;
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.event.*;
-
-import org.primefaces.util.LangUtils;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.ComponentSystemEvent;
+import javax.faces.event.ComponentSystemEventListener;
+import javax.faces.event.PostAddToViewEvent;
+import javax.faces.event.PreRenderComponentEvent;
 
 /**
  * Registers components to auto update
  */
-public class AutoUpdateListener implements ComponentSystemEventListener {
+public class AutoUpdateListener implements ComponentSystemEventListener, Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private static final String COMPONENT_CLIENT_IDS = AutoUpdateListener.class.getName() + ".COMPONENT_CLIENT_IDS";
 

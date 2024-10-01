@@ -23,16 +23,18 @@
  */
 package org.primefaces.behavior.confirm;
 
+import org.primefaces.behavior.base.AbstractBehavior;
+import org.primefaces.behavior.base.BehaviorAttribute;
+import org.primefaces.component.api.Confirmable;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
+
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.context.FacesContext;
-import org.primefaces.behavior.base.AbstractBehavior;
-import org.primefaces.behavior.base.BehaviorAttribute;
-import org.primefaces.component.api.Confirmable;
+
 import org.json.JSONObject;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.FacetUtils;
 
 public class ConfirmBehavior extends AbstractBehavior {
 

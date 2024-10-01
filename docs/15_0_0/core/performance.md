@@ -1,6 +1,6 @@
 # Performance
 
-In general both the JSF implementations and PrimeFaces has good performance per default.
+In general both the Jakarta Faces implementations and PrimeFaces has good performance per default.
 Most of the performance bottlenecks are in the back-end and probably database queries.
 However, there are some settings and patterns that can improve the performance.
 
@@ -126,7 +126,7 @@ and Whitespace compression: https://myfaces.apache.org/#/coreConceptsWhitespaceC
 
 ### Other
 
-- Only required for non-JSF managed resources: Use a custom ServletFilter to set the correct expires/cache headers of your resources (images, stylesheets, javascripts).
+- Only required for non-Jakarta Faces managed resources: Use a custom ServletFilter to set the correct expires/cache headers of your resources (images, stylesheets, javascripts).
 - Compress and optimize your Javascripts in your build process. If you use Maven, try [PrimeFaces Extensions Resources Optimizer Plugin](https://github.com/primefaces-extensions/resources-optimizer-maven-plugin) Maven plugin.
 - Enable GZIP in your webserver. If it's not supported by your webserver/container, you can still add the [GzipResponseFilter from OmniFaces](http://showcase.omnifaces.org/filters/GzipResponseFilter)
 
@@ -134,7 +134,7 @@ and Whitespace compression: https://myfaces.apache.org/#/coreConceptsWhitespaceC
 
 - Correctly define update/render and process/execute! Often this is a huge improvement as many times the whole form is updated instead only a small part. But also think about maintainability over performance here.
 - If you don't use `@ViewScoped` beans, it's a good but small improvement to mark the view as stateless. e.g. `<f:view transient="true">`
-- Try using HTML over JSF tags
+- Try using HTML over Jakarta Faces tags
     - Especially avoid using h:outputText if you don't need the escaping or other features like converters. Just use EL expressions inside your XHTML.
     - The same applies for some other components like p:outputPanel. Just use a plain div. If you need to make it updateable, you can still use "passtrough elements" (`<div jsf:id="...">...</div>`)
 - Try to avoid logic in getters because they can be called multiple times - especially for the rendered attribute!

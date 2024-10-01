@@ -27,8 +27,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import javax.el.MethodExpression;
-import javax.faces.FacesException;
-
 import javax.faces.view.facelets.FaceletContext;
 import javax.faces.view.facelets.MetaRule;
 import javax.faces.view.facelets.Metadata;
@@ -47,10 +45,10 @@ import javax.faces.view.facelets.TagAttributeException;
 public class MethodRule extends MetaRule {
 
     private final String methodName;
-    private final Class returnTypeClass;
-    private final Class[] params;
+    private final Class<?> returnTypeClass;
+    private final Class<?>[] params;
 
-    public MethodRule(String methodName, Class returnTypeClass, Class[] params) {
+    public MethodRule(String methodName, Class<?> returnTypeClass, Class<?>[] params) {
         this.methodName = methodName;
         this.returnTypeClass = returnTypeClass;
         this.params = params;
@@ -70,9 +68,6 @@ public class MethodRule extends MetaRule {
                 return new MethodExpressionMetadata(method, attribute, this.returnTypeClass, this.params);
             }
         }
-        else if (type != null && "javax.faces.el.MethodBinding".equals(type.getName())) {
-            throw new FacesException("javax.faces.el.MethodBinding should not be used anymore!");
-        }
 
         return null;
     }
@@ -81,10 +76,10 @@ public class MethodRule extends MetaRule {
 
         private final Method method;
         private final TagAttribute attribute;
-        private final Class[] paramList;
-        private final Class returnType;
+        private final Class<?>[] paramList;
+        private final Class<?> returnType;
 
-        public MethodExpressionMetadata(Method method, TagAttribute attribute, Class returnType, Class[] paramList) {
+        public MethodExpressionMetadata(Method method, TagAttribute attribute, Class<?> returnType, Class<?>[] paramList) {
             this.method = method;
             this.attribute = attribute;
             this.paramList = paramList;

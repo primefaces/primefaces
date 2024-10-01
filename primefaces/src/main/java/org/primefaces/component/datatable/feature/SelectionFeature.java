@@ -23,16 +23,23 @@
  */
 package org.primefaces.component.datatable.feature;
 
-import java.lang.reflect.Array;
-import java.util.*;
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
-import javax.faces.context.FacesContext;
-
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableBase;
 import org.primefaces.component.datatable.DataTableState;
 import org.primefaces.util.LangUtils;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.el.ValueExpression;
+import javax.faces.FacesException;
+import javax.faces.context.FacesContext;
 
 public class SelectionFeature implements DataTableFeature {
 

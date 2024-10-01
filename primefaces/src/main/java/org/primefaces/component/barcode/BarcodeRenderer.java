@@ -23,6 +23,12 @@
  */
 package org.primefaces.component.barcode;
 
+import org.primefaces.application.resource.DynamicContentType;
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.Constants;
+import org.primefaces.util.HTML;
+import org.primefaces.util.SharedStringBuilder;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -34,12 +40,6 @@ import javax.faces.application.Resource;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
-import org.primefaces.application.resource.DynamicContentType;
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.Constants;
-import org.primefaces.util.HTML;
-import org.primefaces.util.SharedStringBuilder;
 
 public class BarcodeRenderer extends CoreRenderer {
 

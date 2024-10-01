@@ -23,11 +23,11 @@
  */
 package org.primefaces.validate;
 
+import org.primefaces.util.HTML;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-
-import org.primefaces.util.HTML;
 
 public class LongRangeValidator extends javax.faces.validator.LongRangeValidator implements ClientValidator {
 

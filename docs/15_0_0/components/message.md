@@ -1,6 +1,6 @@
 # Message
 
-Message is a pre-skinned extended version of the standard JSF message component.
+Message is a pre-skinned extended version of the standard Jakarta Faces message component.
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Message.html)
 

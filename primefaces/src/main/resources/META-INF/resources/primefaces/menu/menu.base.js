@@ -58,7 +58,8 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
      * @protected
      */
     initOverlay: function() {
-        this.jq.addClass('ui-menu-overlay');
+        var $menu = this.getMenuElement();
+        $menu.addClass('ui-menu-overlay');
 
         this.cfg.trigger = this.cfg.trigger.replace(/\\\\:/g, "\\:");
 
@@ -68,8 +69,8 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         if (!this.cfg.appendTo) {
             this.cfg.appendTo = '@(body)';
         }
-        PrimeFaces.utils.registerDynamicOverlay(this, this.jq, this.id);
-        this.transition = PrimeFaces.utils.registerCSSTransition(this.jq, 'ui-connected-overlay');
+        PrimeFaces.utils.registerDynamicOverlay(this, $menu, this.id);
+        this.transition = PrimeFaces.utils.registerCSSTransition($menu, 'ui-connected-overlay');
 
         // register for AJAX updates on trigger
         this.bindAjaxListener();
@@ -84,8 +85,8 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
       */
     bindTrigger: function() {
         var $this = this;
-
-        this.trigger = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.trigger);
+        var $menu = this.getMenuElement();
+        this.trigger = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector($menu, this.cfg.trigger);
 
         //mark trigger and descendants of trigger as a trigger for a primefaces overlay
         this.trigger.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
@@ -93,7 +94,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         this.trigger.off(this.cfg.triggerEvent + '.ui-menu').on(this.cfg.triggerEvent + '.ui-menu', function(e) {
             var trigger = $(this);
 
-            if ($this.jq.is(':visible')) {
+            if ($menu.is(':visible')) {
                 $this.hide();
             }
             else {
@@ -225,7 +226,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         var dialog = this.trigger.parents('.ui-dialog:first');
 
         if (dialog.length == 1 && dialog.css('position') === 'fixed') {
-            this.jq.css('position', 'fixed');
+            this.getMenuElement().css('position', 'fixed');
         }
     },
 
@@ -238,13 +239,13 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         if (this.transition) {
             this.transition.show({
                 onEnter: function() {
-                    $this.jq.css('z-index', PrimeFaces.nextZindex());
+                    $this.getMenuElement().css('z-index', PrimeFaces.nextZindex());
                     $this.align();
                 },
                 onEntered: function() {
                     $this.bindPanelEvents();
                     $this.resetFocus(true);
-                    $this.jq.find('a.ui-menuitem-link:focusable:first').trigger('focus');
+                    $this.getMenuElement().find('a.ui-menuitem-link:focusable:first').trigger('focus');
                 }
             });
         }
@@ -274,7 +275,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
      * Aligns this menu as specified in its widget configuration (property `pos`).
      */
     align: function() {
-        this.jq.css({ left: '0', top: '0', 'transform-origin': 'center top' }).position(this.cfg.pos);
+        this.getMenuElement().css({ left: '0', top: '0', 'transform-origin': 'center top' }).position(this.cfg.pos);
     },
 
     /**
@@ -284,7 +285,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
     resetFocus: function(resetFirst) {
         // default all links to not focusable
         var $container = this.getMenuElement();
-        var focusableLinks = $container.find("a.ui-menuitem-link");
+        var focusableLinks = $container.find("a.ui-menuitem-link:not(.ui-state-disabled)");
         focusableLinks.removeClass('ui-state-hover ui-state-active').attr('tabindex', "-1");
 
         if (resetFirst) {
@@ -307,25 +308,38 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
      * Selects the menu item link by making it focused and setting tabindex to "0" for ARIA.
      * 
      * @param {JQuery} menulink - The menu item (`<a>`) to select.
+     * @param {JQuery.TriggeredEvent} [event] - The event that triggered the focus.
      */
-    focus: function(menulink) {
+    focus: function(menulink, event) {
         if (menulink.hasClass('ui-state-disabled')) {
             return;
         }
         this.resetFocus(false);
         var defaultTabIndex = this.tabIndex || "0";
-        menulink.addClass('ui-state-hover ui-state-active').attr('tabindex', defaultTabIndex).trigger('focus');
+        var cssClass = 'ui-state-hover';
+        if (!event || !event.type.startsWith('mouse')) {
+             // only add active class if the event is not a mouse event like a click or keyboard event
+            cssClass = cssClass + ' ui-state-active';
+        }
+        menulink.addClass(cssClass).attr('tabindex', defaultTabIndex).trigger('focus');
     },
 
     /**
      * Unselect the menu item link by removing focus and tabindex=-1 for ARIA.
      * @param {JQuery} menulink Menu item (`A`) to unselect.
+     * @param {JQuery.TriggeredEvent} [event] - The event that triggered the unfocus.
      */
-    unfocus: function(menulink) {
+    unfocus: function(menulink, event) {
         if (menulink.hasClass('ui-state-disabled')) {
             return;
         }
-        menulink.removeClass('ui-state-hover ui-state-active').attr('tabindex', -1);
+
+        var cssClass = 'ui-state-hover';
+        if (!event || !event.type.startsWith('mouse')) {
+            // only remove active class if the event is not a mouse event like a click or keyboard event
+            cssClass = cssClass + ' ui-state-active';
+        }
+        menulink.removeClass(cssClass).attr('tabindex', -1);
     }
 });
 

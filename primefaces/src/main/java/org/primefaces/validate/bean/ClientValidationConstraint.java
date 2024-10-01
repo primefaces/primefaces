@@ -24,6 +24,7 @@
 package org.primefaces.validate.bean;
 
 import java.util.Map;
+
 import javax.validation.metadata.ConstraintDescriptor;
 
 public interface ClientValidationConstraint {

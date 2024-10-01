@@ -23,7 +23,11 @@
  */
 package org.primefaces.integrationtests.spinner;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.component.CommandButton;
+import org.primefaces.selenium.component.Spinner;
+import org.primefaces.selenium.component.base.ComponentUtils;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
@@ -31,11 +35,8 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.component.CommandButton;
-import org.primefaces.selenium.component.Spinner;
-import org.primefaces.selenium.component.base.ComponentUtils;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Spinner001Test extends AbstractPrimePageTest {
 
@@ -122,6 +123,23 @@ public class Spinner001Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals("1,456", spinner.getValue());
+        assertConfiguration(spinner.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(6)
+    @DisplayName("Spinner: GitHub #12365 do not allow only a thousands separator character")
+    void thousandSeparatorOnly(Page page) {
+        // Arrange
+        Spinner spinner = page.spinner;
+        assertEquals("", spinner.getValue());
+
+        // Act
+        sendKeys(spinner, ",");
+        page.button.click();
+
+        // Assert
+        assertEquals("", spinner.getValue());
         assertConfiguration(spinner.getWidgetConfiguration());
     }
 

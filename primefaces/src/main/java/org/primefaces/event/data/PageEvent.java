@@ -23,22 +23,36 @@
  */
 package org.primefaces.event.data;
 
+import org.primefaces.event.AbstractAjaxBehaviorEvent;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
-import org.primefaces.event.AbstractAjaxBehaviorEvent;
 
 public class PageEvent extends AbstractAjaxBehaviorEvent {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * The current page number.
+     */
     private int page;
 
-    public PageEvent(UIComponent component, Behavior behavior, int page) {
+    /**
+     * The number of rows per page.
+     */
+    private Integer rowsPerPage;
+
+    public PageEvent(UIComponent component, Behavior behavior, int page, Integer rowsPerPage) {
         super(component, behavior);
         this.page = page;
+        this.rowsPerPage = rowsPerPage;
     }
 
     public int getPage() {
         return page;
+    }
+
+    public Integer getRowsPerPage() {
+        return rowsPerPage;
     }
 }

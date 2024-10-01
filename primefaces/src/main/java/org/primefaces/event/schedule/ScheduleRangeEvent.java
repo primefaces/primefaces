@@ -23,12 +23,12 @@
  */
 package org.primefaces.event.schedule;
 
+import org.primefaces.event.DateRangeEvent;
+
 import java.time.LocalDateTime;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
-
-import org.primefaces.event.DateRangeEvent;
 
 public class ScheduleRangeEvent extends DateRangeEvent {
 

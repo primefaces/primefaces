@@ -23,9 +23,10 @@
  */
 package org.primefaces.event;
 
+import org.primefaces.component.api.UIColumn;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
-import org.primefaces.component.api.UIColumn;
 
 public class ColumnResizeEvent extends ResizeEvent {
 

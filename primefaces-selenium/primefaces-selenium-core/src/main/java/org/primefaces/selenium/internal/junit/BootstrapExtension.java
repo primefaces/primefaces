@@ -23,10 +23,11 @@
  */
 package org.primefaces.selenium.internal.junit;
 
-import org.junit.jupiter.api.extension.BeforeAllCallback;
-import org.junit.jupiter.api.extension.ExtensionContext;
 import org.primefaces.selenium.internal.ConfigProvider;
 import org.primefaces.selenium.spi.DeploymentAdapter;
+
+import org.junit.jupiter.api.extension.BeforeAllCallback;
+import org.junit.jupiter.api.extension.ExtensionContext;
 
 public class BootstrapExtension implements BeforeAllCallback, ExtensionContext.Store.CloseableResource {
 

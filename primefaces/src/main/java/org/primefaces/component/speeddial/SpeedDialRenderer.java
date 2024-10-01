@@ -23,14 +23,6 @@
  */
 package org.primefaces.component.speeddial;
 
-import java.io.IOException;
-import java.util.List;
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIForm;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.component.badge.BadgeRenderer;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
@@ -40,6 +32,15 @@ import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIForm;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 
 public class SpeedDialRenderer extends BaseMenuRenderer {
 

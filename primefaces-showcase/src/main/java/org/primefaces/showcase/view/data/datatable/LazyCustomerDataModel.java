@@ -23,6 +23,14 @@
  */
 package org.primefaces.showcase.view.data.datatable;
 
+import org.primefaces.model.FilterMeta;
+import org.primefaces.model.LazyDataModel;
+import org.primefaces.model.SortMeta;
+import org.primefaces.model.filter.FilterConstraint;
+import org.primefaces.showcase.domain.Customer;
+import org.primefaces.showcase.util.ShowcaseUtil;
+import org.primefaces.util.LocaleUtils;
+
 import java.beans.IntrospectionException;
 import java.util.Collection;
 import java.util.Comparator;
@@ -33,13 +41,6 @@ import java.util.stream.Collectors;
 import jakarta.faces.context.FacesContext;
 
 import org.apache.commons.collections4.ComparatorUtils;
-import org.primefaces.model.FilterMeta;
-import org.primefaces.model.LazyDataModel;
-import org.primefaces.model.SortMeta;
-import org.primefaces.model.filter.FilterConstraint;
-import org.primefaces.showcase.domain.Customer;
-import org.primefaces.showcase.util.ShowcaseUtil;
-import org.primefaces.util.LocaleUtils;
 
 /**
  * Dummy implementation of LazyDataModel that uses a list to mimic a real datasource like a database.

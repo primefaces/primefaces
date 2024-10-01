@@ -23,6 +23,10 @@
  */
 package org.primefaces.csp;
 
+import org.primefaces.context.PrimePartialResponseWriter;
+import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.util.EscapeUtils;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -32,10 +36,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialResponseWriter;
 import javax.faces.context.ResponseWriter;
-
-import org.primefaces.context.PrimePartialResponseWriter;
-import org.primefaces.context.PrimeRequestContext;
-import org.primefaces.util.EscapeUtils;
 
 public class CspPartialResponseWriter extends PrimePartialResponseWriter {
 

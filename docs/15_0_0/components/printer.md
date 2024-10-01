@@ -1,6 +1,6 @@
 # Printer
 
-Printer allows sending a specific JSF component to the printer, not the whole page.
+Printer allows sending a specific Jakarta Faces component to the printer, not the whole page.
 
 [See the jQuery print method in the JavaScript API Docs.](../jsdocs/modules/src_PrimeFaces.html#printJS)
 

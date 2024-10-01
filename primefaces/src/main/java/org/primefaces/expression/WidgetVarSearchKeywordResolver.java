@@ -23,15 +23,17 @@
  */
 package org.primefaces.expression;
 
+import org.primefaces.util.ComponentUtils;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.search.SearchExpressionContext;
 import javax.faces.component.search.SearchKeywordContext;
 import javax.faces.component.search.SearchKeywordResolver;
 import javax.faces.component.visit.VisitContext;
-import org.primefaces.util.ComponentUtils;
 
 public class WidgetVarSearchKeywordResolver extends SearchKeywordResolver {
 
@@ -55,7 +57,9 @@ public class WidgetVarSearchKeywordResolver extends SearchKeywordResolver {
                                 ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED),
                         visitCallback);
 
-                context.invokeContextCallback(visitCallback.getComponent());
+                if (visitCallback.getComponent() != null) {
+                    context.invokeContextCallback(visitCallback.getComponent());
+                }
             }
             else {
                 throw new FacesException("Expression does not match following pattern @widgetVar(var). Expression: \"" + keyword + "\"");

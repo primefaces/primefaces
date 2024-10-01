@@ -31,12 +31,13 @@ import org.primefaces.expression.PfsSearchKeywordResolver;
 import org.primefaces.expression.RowSearchKeywordResolver;
 import org.primefaces.expression.WidgetVarSearchKeywordResolver;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class PostConstructApplicationEventListener implements SystemEventListener {
 

@@ -23,16 +23,18 @@
  */
 package org.primefaces.component.spinner;
 
-import java.io.IOException;
-import java.math.BigInteger;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
+
+import java.io.IOException;
+import java.math.BigInteger;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 
 public class SpinnerRenderer extends InputRenderer {
 
@@ -65,9 +67,17 @@ public class SpinnerRenderer extends InputRenderer {
                 submittedValue = submittedValue.replace(spinner.getDecimalSeparator(), ".");
             }
 
-            // GitHub #11830 prevent value outside of minimum or maximum range
-            double submittedNumber = Double.parseDouble(submittedValue);
-            if (submittedNumber < spinner.getMin() || submittedNumber > spinner.getMax()) {
+            try {
+                // GitHub #11830 prevent value outside of minimum or maximum range
+                double submittedNumber = Double.parseDouble(submittedValue);
+                if (submittedNumber < spinner.getMin() || submittedNumber > spinner.getMax()) {
+                    logDevelopmentWarning(context, this, String.format("Value is outside min/max range: %s", submittedValue));
+                    return;
+                }
+            }
+            catch (NumberFormatException e) {
+                // GitHub #12365 prevent any invalid number like just the thousands separator
+                logDevelopmentWarning(context, this, String.format("Invalid number format: %s", submittedValue));
                 return;
             }
         }
@@ -98,11 +108,10 @@ public class SpinnerRenderer extends InputRenderer {
         wb.init("Spinner", spinner)
                 .attr("step", spinner.getStepFactor(), 1.0)
                 .attr("round", spinner.isRound(), false)
-                .attr("min", spinner.getMin(), Double.MIN_VALUE)
-                .attr("max", spinner.getMax(), Double.MAX_VALUE)
+                .attr("min", spinner.getMin(), Spinner.MIN_VALUE)
+                .attr("max", spinner.getMax(), Spinner.MAX_VALUE)
                 .attr("prefix", spinner.getPrefix(), null)
                 .attr("suffix", spinner.getSuffix(), null)
-                .attr("required", spinner.isRequired(), false)
                 .attr("rotate", spinner.isRotate(), false)
                 .attr("decimalPlaces", decimalPlaces, null)
                 .attr("modifyValueOnWheel", spinner.isModifyValueOnWheel(), true)

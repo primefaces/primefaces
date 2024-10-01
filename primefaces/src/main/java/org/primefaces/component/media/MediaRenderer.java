@@ -23,6 +23,13 @@
  */
 package org.primefaces.component.media;
 
+import org.primefaces.component.media.player.MediaPlayer;
+import org.primefaces.component.media.player.MediaPlayerFactory;
+import org.primefaces.component.media.player.PDFPlayer;
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.DynamicContentSrcBuilder;
+import org.primefaces.util.Lazy;
+
 import java.io.IOException;
 import java.util.Map;
 
@@ -30,13 +37,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
-import org.primefaces.component.media.player.MediaPlayer;
-import org.primefaces.component.media.player.MediaPlayerFactory;
-import org.primefaces.component.media.player.PDFPlayer;
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.DynamicContentSrcBuilder;
-import org.primefaces.util.Lazy;
 
 public class MediaRenderer extends CoreRenderer {
 

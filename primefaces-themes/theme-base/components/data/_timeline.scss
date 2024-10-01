@@ -1,0 +1,79 @@
+body {
+  .timeline-frame {
+    border: $panelContentBorder;
+    background: $panelContentBg;
+    color: $panelContentTextColor;
+
+    .timeline-navigation {
+      @include action-icon();
+
+      .ui-icon {
+        &.ui-icon-circle-zoomin {
+          @include icon-override("\e98f");
+        }
+
+        &.ui-icon-circle-zoomout {
+          @include icon-override("\e990");
+        }
+
+        &.ui-icon-circle-arrow-w {
+          @include icon-override("\e91f");
+        }
+
+        &.ui-icon-circle-arrow-e {
+          @include icon-override("\e920");
+        }
+      }
+    }
+
+    .timeline-event {
+      border: $panelContentBorder;
+      background: $panelContentBg;
+      color: $panelContentTextColor;
+
+      &.ui-state-active {
+        background: $highlightBg;
+        color: $highlightTextColor;
+      }
+    }
+  }
+
+  .vis-timeline {
+    border: $panelContentBorder;
+    background: $panelContentBg;
+    color: $panelContentTextColor;
+
+    .vis-item {
+      border: $panelContentBorder;
+      background: $panelContentBg;
+      color: $panelContentTextColor;
+
+      .vis-item-content {
+        color: $panelContentTextColor;
+      }
+
+      &.vis-dot {
+        border-width: 4px;
+      }
+
+      &.vis-selected {
+        background: $highlightBg;
+        border-color: $highlightBg;
+
+        .vis-item-content {
+          color: $highlightTextColor;
+        }
+      }
+    }
+
+    .vis-time-axis {
+      .vis-text {
+        color: $panelContentTextColor;
+      }
+    }
+
+    .vis-panel .vis-shadow {
+      box-shadow: none;
+    }
+  }
+}

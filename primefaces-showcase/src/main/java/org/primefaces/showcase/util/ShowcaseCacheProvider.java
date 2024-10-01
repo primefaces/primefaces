@@ -23,9 +23,10 @@
  */
 package org.primefaces.showcase.util;
 
+import org.primefaces.cache.CacheProvider;
+
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
-import org.primefaces.cache.CacheProvider;
 
 /**
  * Skip the usage via PrimeApplicationContext, it's not available in 6.2.x

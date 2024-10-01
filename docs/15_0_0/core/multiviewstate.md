@@ -42,7 +42,7 @@ Enabled in faces-config.xml.
 
 See [Client Window](client.md) for details.
 
-### Option 2 - JSF Client Window Mode (requires JSF 2.2 and up)
+### Option 2 - Jakarta Faces Client Window Mode (requires Jakarta Faces 2.2 and up)
 Enabled in web.xml
 ```xml
 <context-param>

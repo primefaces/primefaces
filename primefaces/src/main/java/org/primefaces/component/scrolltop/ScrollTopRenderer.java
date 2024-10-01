@@ -26,11 +26,11 @@ package org.primefaces.component.scrolltop;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
+import java.io.IOException;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
-import java.io.IOException;
 
 public class ScrollTopRenderer extends CoreRenderer {
     @Override

@@ -76,7 +76,7 @@ public abstract class AbstractPrimeValidator implements Validator, PartialStateH
     @Override
     public Object saveState(FacesContext context) {
         if (context == null) {
-            throw new NullPointerException();
+            throw new IllegalArgumentException("context");
         }
 
         Object[] values;
@@ -100,7 +100,7 @@ public abstract class AbstractPrimeValidator implements Validator, PartialStateH
     @Override
     public void restoreState(FacesContext context, Object state) {
         if (context == null) {
-            throw new NullPointerException();
+            throw new IllegalArgumentException("context");
         }
 
         if (state != null) {

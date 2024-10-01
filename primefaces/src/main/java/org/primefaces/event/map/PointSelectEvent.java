@@ -23,11 +23,11 @@
  */
 package org.primefaces.event.map;
 
+import org.primefaces.event.AbstractAjaxBehaviorEvent;
+import org.primefaces.model.map.LatLng;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
-import org.primefaces.event.AbstractAjaxBehaviorEvent;
-
-import org.primefaces.model.map.LatLng;
 
 public class PointSelectEvent extends AbstractAjaxBehaviorEvent {
 

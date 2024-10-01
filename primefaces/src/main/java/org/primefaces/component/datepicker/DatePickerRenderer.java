@@ -23,22 +23,6 @@
  */
 package org.primefaces.component.datepicker;
 
-import java.io.IOException;
-import java.text.DateFormatSymbols;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
-import java.util.*;
-import java.util.Map.Entry;
-
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.convert.ConverterException;
-
-import org.json.JSONObject;
 import org.primefaces.component.api.UICalendar;
 import org.primefaces.component.calendar.BaseCalendarRenderer;
 import org.primefaces.expression.SearchExpressionUtils;
@@ -49,7 +33,40 @@ import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
+import java.io.IOException;
+import java.text.DateFormatSymbols;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import javax.faces.convert.ConverterException;
+
+import org.json.JSONObject;
+
 public class DatePickerRenderer extends BaseCalendarRenderer {
+
+    @Override
+    public void decode(FacesContext context, UIComponent component) {
+        DatePicker datePicker = (DatePicker) component;
+
+        if (!shouldDecode(datePicker)) {
+            return;
+        }
+
+        initializeDefaults(context, datePicker);
+        super.decode(context, component);
+    }
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -60,6 +77,18 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             return;
         }
 
+        initializeDefaults(context, datePicker);
+
+        super.encodeEnd(context, component);
+    }
+
+    /**
+     * Initializes the default settings for the DatePicker component based on its pattern and value type.
+     *
+     * @param context the FacesContext instance
+     * @param datePicker the DatePicker component to initialize
+     */
+    protected void initializeDefaults(FacesContext context, DatePicker datePicker) {
         String pattern = datePicker.getPattern() == null ? datePicker.calculatePattern() : datePicker.getPattern();
 
         if (datePicker.isShowTimeWithoutDefault() == null) {
@@ -88,8 +117,6 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
         if (datePicker.isShowMillisecondsWithoutDefault() == null) {
             datePicker.setShowMilliseconds(pattern.contains("S"));
         }
-
-        super.encodeEnd(context, component);
     }
 
     protected void encodeDateMetadata(FacesContext context, DatePicker datePicker) throws IOException {
@@ -216,8 +243,9 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             .attr("timeSeparator", datePicker.getTimeSeparator(), ":")
             .attr("fractionSeparator", datePicker.getFractionSeparator(), ".")
             .attr("timeInput", datePicker.isTimeInput())
-            .attr("timeZone", Objects.toString(datePicker.getTimeZone(), null), null)
+            .attr("timeZone", datePicker.getTimeZone() == null ? null : CalendarUtils.calculateZoneId(datePicker.getTimeZone()).toString(), null)
             .attr("touchable", ComponentUtils.isTouchable(context, datePicker), true)
+            .attr("readonly", datePicker.isReadonly(), false)
             .attr("lazyModel", datePicker.getModel() instanceof LazyDateMetadataModel, false);
 
         List<Integer> disabledDays = datePicker.getDisabledDays();
@@ -275,8 +303,13 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
                 .attr("stepMinute", datePicker.getStepMinute(), 1)
                 .attr("stepSecond", datePicker.getStepSecond(), 1)
                 .attr("stepMillisecond", datePicker.getStepSecond(), 1)
-                .attr("hideOnDateTimeSelect", datePicker.isHideOnDateTimeSelect(), false);
+                .attr("hideOnDateTimeSelect", datePicker.isHideOnDateTimeSelect(), false)
+                .attr("defaultHour", datePicker.getDefaultHour())
+                .attr("defaultMinute", datePicker.getDefaultMinute())
+                .attr("defaultSecond", datePicker.getDefaultSecond())
+                .attr("defaultMillisecond", datePicker.getDefaultMillisecond());
         }
+
 
         if ("range".equalsIgnoreCase(selectionMode)) {
             wb.attr("hideOnRangeSelection", datePicker.isHideOnRangeSelection(), false);

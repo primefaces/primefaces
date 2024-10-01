@@ -2,7 +2,7 @@
 
 Chart.js based components are a modern replacement for the older jQuery-based `p:chart` component. Each chart component has its own model api that defines the data and the options to customize the graph.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Chart.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Chart-1.html)
 
 ## Chart
 
@@ -27,6 +27,8 @@ A bar chart provides a way of showing data values represented as vertical bars. 
 | rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 | ariaLabel | title | String | The aria-label attribute is used to define a string that labels the current element for accessibility. (default to chart title).
 | binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
+| canvasStyle | null | String | Inline style of the canvas element.
+| canvasStyleClass | null | String | Style class of the canvas element.
 | extender | null | String | Name of JavaScript function to extend the options of the underlying Chart.js plugin.
 | style | null | String | Inline style of the component.
 | styleClass | null | String | Style class of the component.
@@ -213,7 +215,7 @@ public void createLineModel() {
             .addDataset(new LineDataset()
                     .setData(65, 59, 80, 81, 56, 55, 40)
                     .setLabel("My First Dataset")
-                    .setBorderColor(new Color(75, 192, 192))
+                    .setBorderColor(new RGBAColor(75, 192, 192))
                     .setLineTension(0.1f)
                     .setFill(new Fill<Boolean>(false)))
             .setLabels("January", "February", "March", "April", "May", "June", "July"))

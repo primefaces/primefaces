@@ -23,14 +23,6 @@
  */
 package org.primefaces.integrationtests.csv;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.integrationtests.colorpicker.AbstractColorPickerTest;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.CommandButton;
@@ -41,6 +33,15 @@ import org.primefaces.selenium.component.SelectOneRadio;
 import org.primefaces.selenium.component.Spinner;
 import org.primefaces.selenium.component.ToggleSwitch;
 import org.primefaces.selenium.component.TriStateCheckbox;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 public class Csv002Test extends AbstractColorPickerTest {
 

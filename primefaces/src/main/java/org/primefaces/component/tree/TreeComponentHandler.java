@@ -23,14 +23,15 @@
  */
 package org.primefaces.component.tree;
 
+import org.primefaces.facelets.MethodRule;
+import org.primefaces.model.TreeNode;
+
 import java.util.Locale;
+
 import javax.faces.view.facelets.ComponentConfig;
 import javax.faces.view.facelets.ComponentHandler;
 import javax.faces.view.facelets.MetaRule;
 import javax.faces.view.facelets.MetaRuleset;
-
-import org.primefaces.facelets.MethodRule;
-import org.primefaces.model.TreeNode;
 
 public class TreeComponentHandler extends ComponentHandler {
 

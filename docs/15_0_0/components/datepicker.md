@@ -36,6 +36,10 @@ ajax selection and more.
 | converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id
 | converterMessage | null | String | Message to be displayed when conversion fails.
 | dateTemplate | null | Function | Javascript function that takes a date object and returns the content for the date cell.
+| defaultHour | 0 | Integer | Default for hour selection, if no date is given. Default is 0.
+| defaultMillisecond | 0 | Integer | Default for millisecond selection, if no date is given. Default is 0.
+| defaultMinute | 0 | Integer | Default for minute selection, if no date is given. Default is 0.
+| defaultSecond | 0 | Integer | Default for second selection, if no date is given. Default is 0.
 | dir | null | String | Direction indication for text that does not inherit directionality. Valid values are LTR and RTL.
 | disabled | false | Boolean | Disables input field
 | disabledDates | null | List<java.time.LocalDate>, List<java.util.Date> (deprecated) | List of dates that should be disabled.
@@ -144,7 +148,7 @@ ajax selection and more.
 | weekCalculator | false | Boolean | A javascript function that is used to calculate the week number. Uses internal implementation on default when start of week is monday, sunday or saturday.
 | widgetVar | null | String | Name of the client side widget.
 | yearNavigator | false | Boolean | Whether the year should be rendered as an input number instead of text.
-| yearRange | null | String | The range of years displayed in the year drop-down in (nnnn:nnnn) format such as (2000:2020). Default value is "displayed_date - 10 : displayed_date + 10".
+| yearRange | null | String | The range of years allowed in the year input in (nnnn:nnnn) format such as (1974:2020). Default value is "displayed_date - 1000 : displayed_date + 1000".
 
 ## Getting Started with DatePicker
 Value of the DatePicker should be a java.time.LocalDate in single selection mode which is the default.

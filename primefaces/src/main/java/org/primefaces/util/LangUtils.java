@@ -33,7 +33,17 @@ import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import javax.faces.FacesException;
@@ -480,6 +490,19 @@ public class LangUtils {
             values[0] = values[0].substring(0 , 1).toUpperCase() + values[0].substring(1).toLowerCase();
         }
         return String.join(" ", values);
+    }
+
+    /**
+     * Capitalizes the first character of the given string.
+     *
+     * @param name The string to capitalize.
+     * @return The capitalized string if the input is not blank; otherwise, returns the input string unchanged.
+     */
+    public static String capitalize(String name) {
+        if (isBlank(name)) {
+            return name;
+        }
+        return name.substring(0, 1).toUpperCase(Locale.ENGLISH) + name.substring(1);
     }
 
 

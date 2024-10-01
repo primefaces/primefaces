@@ -36,28 +36,28 @@ public abstract class InputNumberBase extends AbstractPrimeHtmlInputText impleme
     public static final String DEFAULT_RENDERER = "org.primefaces.component.InputNumberRenderer";
 
     public enum PropertyKeys {
-        placeholder,
-        widgetVar,
-        type,
-        symbol,
-        symbolPosition,
-        signPosition,
-        minValue,
-        maxValue,
-        roundMethod,
+        caretPositionOnFocus,
         decimalPlaces,
         decimalSeparator,
-        thousandSeparator,
+        decimalSeparatorAlternative,
         emptyValue,
         inputStyle,
         inputStyleClass,
-        padControl,
         leadingZero,
-        decimalSeparatorAlternative,
-        modifyValueOnWheel,
+        maxValue,
+        minValue,
         modifyValueOnUpDownArrow,
-        caretPositionOnFocus,
-        selectOnFocus
+        modifyValueOnWheel,
+        padControl,
+        placeholder,
+        roundMethod,
+        selectOnFocus,
+        signPosition,
+        symbol,
+        symbolPosition,
+        thousandSeparator,
+        type,
+        widgetVar
     }
 
     public InputNumberBase() {
@@ -191,11 +191,11 @@ public abstract class InputNumberBase extends AbstractPrimeHtmlInputText impleme
         getStateHelper().put(PropertyKeys.inputStyleClass, inputStyleClass);
     }
 
-    public boolean isPadControl() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.padControl, true);
+    public String getPadControl() {
+        return (String) getStateHelper().eval(PropertyKeys.padControl, "true");
     }
 
-    public void setPadControl(boolean padControl) {
+    public void setPadControl(String padControl) {
         getStateHelper().put(PropertyKeys.padControl, padControl);
     }
 

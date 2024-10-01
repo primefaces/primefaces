@@ -23,12 +23,15 @@
  */
 package org.primefaces.component.feedreader;
 
-import java.net.URL;
-import java.util.List;
-import org.junit.jupiter.api.Test;
 import org.primefaces.model.feedreader.FeedItem;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.net.URL;
+import java.util.List;
+
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class RSSUtilsTest {
 

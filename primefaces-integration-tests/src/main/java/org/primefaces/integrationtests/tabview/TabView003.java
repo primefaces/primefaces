@@ -23,16 +23,17 @@
  */
 package org.primefaces.integrationtests.tabview;
 
-import lombok.Data;
-
-import javax.annotation.PostConstruct;
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.PostConstruct;
 import javax.enterprise.inject.spi.CDI;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
+
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

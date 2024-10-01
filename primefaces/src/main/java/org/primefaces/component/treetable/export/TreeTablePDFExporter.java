@@ -23,19 +23,6 @@
  */
 package org.primefaces.component.treetable.export;
 
-import java.awt.*;
-import java.io.IOException;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Logger;
-import javax.faces.context.FacesContext;
-
-import com.lowagie.text.Font;
-import com.lowagie.text.*;
-import com.lowagie.text.pdf.BaseFont;
-import com.lowagie.text.pdf.PdfPCell;
-import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfWriter;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.export.ColumnValue;
 import org.primefaces.component.export.ExporterOptions;
@@ -45,6 +32,27 @@ import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.util.Constants;
 import org.primefaces.util.IOUtils;
 import org.primefaces.util.LangUtils;
+
+import java.awt.Color;
+import java.io.IOException;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Logger;
+
+import javax.faces.context.FacesContext;
+
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.Element;
+import com.lowagie.text.Font;
+import com.lowagie.text.FontFactory;
+import com.lowagie.text.PageSize;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.Phrase;
+import com.lowagie.text.pdf.BaseFont;
+import com.lowagie.text.pdf.PdfPCell;
+import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfWriter;
 
 public class TreeTablePDFExporter extends TreeTableExporter<Document, PDFOptions> {
 

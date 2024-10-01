@@ -1,0 +1,76 @@
+body {
+  .ui-steps {
+    position: relative;
+
+    ul {
+      @include flex();
+    }
+
+    .ui-steps-item {
+      flex: 1 1 0;
+      -ms-flex: 1 1 0px;
+      background: transparent;
+      text-align: center;
+      float: none;
+      opacity: 1;
+
+      .ui-menuitem-link {
+        display: block;
+        text-align: center;
+        background: transparent;
+        overflow: hidden;
+        padding: 0;
+
+        .ui-steps-number {
+          color: $stepsItemNumberColor;
+          background: $stepsItemNumberBg;
+          border: $stepsItemNumberBorder;
+          width: $stepsItemNumberWidth;
+          height: $stepsItemNumberHeight;
+          font-size: $stepsItemNumberFontSize;
+          padding: 0;
+          margin-top: $stepsItemNumberHeight;
+          margin-left: auto;
+          margin-right: auto;
+          border-radius: $stepsItemNumberBorderRadius;
+          @include flex();
+          @include flex-align-center();
+          @include flex-justify-center();
+        }
+
+        .ui-steps-title {
+          display: block;
+          padding-top: $inlineSpacing;
+          color: $stepsItemTextColor;
+        }
+      }
+
+      &.ui-state-highlight {
+        .ui-steps-number {
+          background: $highlightBg;
+          color: $highlightTextColor;
+          border-color: $highlightBg;
+        }
+
+        .ui-steps-title {
+          font-weight: 600;
+          color: $textColor;
+        }
+      }
+    }
+
+    .ui-steps-item:not(.ui-state-highlight){
+      opacity: .65;
+    }
+
+    &:before {
+      content:' ';
+      border-top: $menuBorder;
+      width: 100%;
+      top: 50%;
+      left: 0;
+      display: block;
+      position: absolute;
+    }
+  }
+}

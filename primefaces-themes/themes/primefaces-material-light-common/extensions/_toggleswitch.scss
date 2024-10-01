@@ -1,0 +1,61 @@
+body {
+  .ui-toggleswitch {
+    height: 1rem;
+
+    .ui-toggleswitch-slider:before,
+    .ui-toggleswitch-handler {
+      width: 1.50rem;
+      height: 1.50rem;
+      left: -2px;
+      margin-top: -0.75rem;
+      transition-property: box-shadow, transform;
+      box-shadow: 0px 3px 1px -2px rgba($overlayColor, 0.2), 0px 2px 2px 0px rgba($overlayColor, 0.14), 0px 1px 5px 0px rgba($overlayColor, .12);
+      font-size: math.div(1.50rem, 2);
+      line-height: 1.50rem;
+    }
+
+    .ui-toggleswitch-handler {
+      span {
+        font-size: math.div(1.50rem, 2);
+        line-height: 1.50rem;
+      }
+    }
+
+    &.ui-toggleswitch-checked {
+      .ui-toggleswitch-slider:before,
+      .ui-toggleswitch-handler {
+        transform: translateX(1.51rem);
+      }
+    }
+
+    &:not(.ui-state-disabled):hover {
+      .ui-toggleswitch-slider:before,
+      .ui-toggleswitch-handler {
+        box-shadow: 0px 3px 1px -2px rgba($overlayColor, 0.2), 0px 2px 2px 0px rgba($overlayColor, 0.14), 0px 1px 5px 0px rgba($overlayColor, .12), 0 0 1px 10px rgba($overlayColor, .04),
+      }
+    }
+
+    &.ui-toggleswitch-focus,
+    &.ui-toggleswitch-focus:not(.ui-state-disabled):hover {
+      .ui-toggleswitch-slider:before,
+      .ui-toggleswitch-handler {
+        box-shadow: 0 0 1px 10px rgba($overlayColor, .12), 0px 3px 1px -2px rgba($overlayColor, 0.2), 0px 2px 2px 0px rgba($overlayColor, 0.14), 0px 1px 5px 0px rgba($overlayColor, .12);
+      }
+    }
+
+    &.ui-toggleswitch-checked:not(.ui-state-disabled):hover {
+      .ui-toggleswitch-slider:before,
+      .ui-toggleswitch-handler {
+        box-shadow: 0 0 1px 10px rgba($inputSwitchHandleOnBg, .04), 0px 3px 1px -2px rgba($overlayColor, 0.2), 0px 2px 2px 0px rgba($overlayColor, 0.14), 0px 1px 5px 0px rgba($overlayColor, .12);
+      }
+    }
+
+    &.ui-toggleswitch-checked.ui-toggleswitch-focus,
+    &.ui-toggleswitch-checked.ui-toggleswitch-focus:not(.ui-state-disabled):hover {
+      .ui-toggleswitch-slider:before,
+      .ui-toggleswitch-handler {
+        box-shadow: 0 0 1px 10px rgba($inputSwitchHandleOnBg, .12), 0px 3px 1px -2px rgba($overlayColor, 0.2), 0px 2px 2px 0px rgba($overlayColor, 0.14), 0px 1px 5px 0px rgba($overlayColor, .12);
+      }
+    }
+  }
+}

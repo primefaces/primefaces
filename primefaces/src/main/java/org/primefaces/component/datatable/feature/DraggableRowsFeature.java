@@ -23,14 +23,15 @@
  */
 package org.primefaces.component.datatable.feature;
 
+import org.primefaces.component.datatable.DataTable;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+
 import javax.el.MethodExpression;
 import javax.faces.context.FacesContext;
-
-import org.primefaces.component.datatable.DataTable;
 
 public class DraggableRowsFeature implements DataTableFeature {
 

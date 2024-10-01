@@ -23,16 +23,16 @@
  */
 package org.primefaces.component.calendar;
 
+import org.primefaces.component.api.UICalendar;
+import org.primefaces.util.CalendarUtils;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.WidgetBuilder;
+
 import java.io.IOException;
 import java.util.Locale;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
-import org.primefaces.component.api.UICalendar;
-import org.primefaces.util.CalendarUtils;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.WidgetBuilder;
 
 public class CalendarRenderer extends BaseCalendarRenderer {
 
@@ -161,7 +161,7 @@ public class CalendarRenderer extends BaseCalendarRenderer {
                     .attr("hour", calendar.getDefaultHour())
                     .attr("minute", calendar.getDefaultMinute())
                     .attr("second", calendar.getDefaultSecond())
-                    .attr("millisec", calendar.getDefaultMillisec());
+                    .attr("millisec", calendar.getDefaultMillisecond());
 
             String timeControlObject = calendar.getTimeControlObject();
             if ("custom".equalsIgnoreCase(timeControlType)) {

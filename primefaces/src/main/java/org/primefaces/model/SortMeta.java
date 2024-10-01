@@ -23,19 +23,20 @@
  */
 package org.primefaces.model;
 
-import java.io.Serializable;
-import java.util.Objects;
-import javax.el.MethodExpression;
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
-import javax.faces.context.FacesContext;
-
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.ColumnBase;
 import org.primefaces.component.headerrow.HeaderRow;
 import org.primefaces.component.headerrow.HeaderRowBase;
 import org.primefaces.util.LangUtils;
+
+import java.io.Serializable;
+import java.util.Objects;
+
+import javax.el.MethodExpression;
+import javax.el.ValueExpression;
+import javax.faces.FacesException;
+import javax.faces.context.FacesContext;
 
 public class SortMeta implements Serializable, Comparable<SortMeta> {
 

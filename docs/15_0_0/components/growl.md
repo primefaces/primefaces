@@ -37,7 +37,7 @@ skipDetailIfEqualsSummary | false | Boolean | Defines if rendering of the detail
 
 ## Getting Started with Growl
 Growl usage is similar to standard h:messages component. Simply place growl anywhere on your
-page, since messages are displayed as an overlay, the location of growl in JSF page does not matter.
+page, since messages are displayed as an overlay, the location of growl in Jakarta Faces page does not matter.
 
 ```xhtml
 <p:growl />

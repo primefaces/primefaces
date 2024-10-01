@@ -23,19 +23,20 @@
  */
 package org.primefaces.integrationtests.updateform;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.component.Calendar;
+import org.primefaces.selenium.component.CommandButton;
+import org.primefaces.selenium.component.InputNumber;
+import org.primefaces.selenium.component.InputText;
+import org.primefaces.selenium.component.InputTextarea;
 
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.component.CommandButton;
-import org.primefaces.selenium.component.InputText;
-import org.primefaces.selenium.component.InputNumber;
-import org.primefaces.selenium.component.Calendar;
-import org.primefaces.selenium.component.InputTextarea;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class UpdateForm001Test extends AbstractPrimePageTest {
 

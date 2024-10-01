@@ -23,22 +23,24 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import lombok.Data;
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.integrationtests.general.utilities.TestUtils;
+import org.primefaces.model.FilterMeta;
+import org.primefaces.model.SortMeta;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import org.primefaces.model.FilterMeta;
-import org.primefaces.model.SortMeta;
+
+import lombok.Data;
 
 @Named
 @ViewScoped

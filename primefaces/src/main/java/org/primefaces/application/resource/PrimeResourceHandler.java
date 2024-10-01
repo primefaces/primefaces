@@ -23,19 +23,20 @@
  */
 package org.primefaces.application.resource;
 
+import org.primefaces.application.resource.barcode.BarcodeHandler;
+import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
 import javax.faces.application.ResourceHandlerWrapper;
 import javax.faces.context.FacesContext;
-
-import org.primefaces.application.resource.barcode.BarcodeHandler;
-import org.primefaces.util.Constants;
-import org.primefaces.util.LangUtils;
 
 public class PrimeResourceHandler extends ResourceHandlerWrapper {
 

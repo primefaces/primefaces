@@ -1,7 +1,7 @@
 # DefaultCommand
 
 Which command to submit the form with when enter key is pressed a common problem in web apps
-not just specific to JSF. Browsers tend to behave differently as there doesn’t seem to be a standard
+not just specific to Jakarta Faces. Browsers tend to behave differently as there doesn’t seem to be a standard
 and even if a standard exists, IE probably will not care about it. There are some ugly workarounds
 like placing a hidden button and writing javascript for every form in your app. DefaultCommand
 solves this problem by normalizing the command(e.g. button or link) to submit the form with on

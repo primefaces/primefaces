@@ -23,17 +23,17 @@
  */
 package org.primefaces.showcase.view.file;
 
+import org.primefaces.PrimeFaces;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.event.FilesUploadEvent;
 import org.primefaces.model.file.UploadedFile;
 import org.primefaces.model.file.UploadedFiles;
+import org.primefaces.util.EscapeUtils;
 
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Named;
-import org.primefaces.PrimeFaces;
-import org.primefaces.event.FilesUploadEvent;
-import org.primefaces.util.EscapeUtils;
 
 @Named
 @RequestScoped

@@ -23,20 +23,28 @@
  */
 package org.primefaces.component.timeline;
 
-import javax.faces.application.ResourceDependency;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.BehaviorEvent;
-import javax.faces.event.FacesEvent;
-
-import org.primefaces.event.timeline.*;
+import org.primefaces.event.timeline.TimelineAddEvent;
+import org.primefaces.event.timeline.TimelineDragDropEvent;
+import org.primefaces.event.timeline.TimelineLazyLoadEvent;
+import org.primefaces.event.timeline.TimelineModificationEvent;
+import org.primefaces.event.timeline.TimelineRangeEvent;
+import org.primefaces.event.timeline.TimelineSelectEvent;
 import org.primefaces.model.timeline.TimelineEvent;
-import org.primefaces.util.*;
+import org.primefaces.util.CalendarUtils;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.MapBuilder;
 import org.primefaces.visit.UIDataContextCallback;
 
 import java.time.ZoneId;
 import java.util.Collection;
 import java.util.Map;
+
+import javax.faces.application.ResourceDependency;
+import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.BehaviorEvent;
+import javax.faces.event.FacesEvent;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")

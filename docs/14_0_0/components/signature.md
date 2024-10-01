@@ -23,29 +23,33 @@ devices and legacy browsers without canvas support.
 | --- | --- | --- | --- |
 id | null | String | Unique identifier of the component
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-value | null | Object | Value of the component than can be either an EL expression of a literal text
-converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id
-immediate | false | Boolean | Boolean value that specifies the lifecycle phase the valueChangeEvents should be processed, when true the events will be fired at "apply request values", if immediate is set to false, valueChange Events are fired in "process validations" phase
-required | false | Boolean | Marks component as required
-validator | null | MethodExpr | A method binding expression that refers to a method validating the input
-valueChangeListener | null | MethodExpr | A method binding expression that refers to a method for handling a valuchangeevent
-requiredMessage | null | String | Message to be displayed when required field validation fails.
-converterMessage | null | String | Message to be displayed when conversion fails.
-validatorMessage | null | String | Message to be displayed when validation fields.
-widgetVar | null | String | Name of the client side widget
+ariaLabel | "Sign here" | String | The aria-label attribute is used to define a string that labels the current element for accessibility.
 backgroundColor | #ffffff | String | Background color as hex value
+base64Value | null | String | Write-only value used to pass the value in base64 to backing bean
+binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
 color | #000000 | String | Foreground color as hex value
-thickness | 2 | Integer | Thickness of the lines
-style | null | String | Inline style of the component
-styleClass | null | String | Style class of the component.
-readonly | false | Boolean | When enabled, signature is used for display purposes only.
+converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id
+converterMessage | null | String | Message to be displayed when conversion fails.
+fontFamily | "cursive" | String | Font family for typing in a signature. Default is "Brush Script MT, cursive"
+fontSize |40 | Integer | Font size for typing in a signature. Default is 40.
 guideline | false | Boolean | Adds a guideline when enabled
 guidelineColor | #a0a0a0 | String | Color of the guideline
-guidelineOffset | 25 | String | Offset of guideline from bottom
 guidelineIndent | 10 | Integer | Guide line indent from the edges
+guidelineOffset | 25 | String | Offset of guideline from bottom
+immediate | false | Boolean | Boolean value that specifies the lifecycle phase the valueChangeEvents should be processed, when true the events will be fired at "apply request values", if immediate is set to false, valueChange Events are fired in "process validations" phase
 onchange | null | String | Client side callback to execute when signature changes.
-base64Value | null | String | Write-only value used to pass the value in base64 to backing bean
+readonly | false | Boolean | When enabled, signature is used for display purposes only.
+required | false | Boolean | Marks component as required
+requiredMessage | null | String | Message to be displayed when required field validation fails.
+style | null | String | Inline style of the component
+styleClass | null | String | Style class of the component.
+tabindex | null | Integer | Position of the input element in the tabbing order.
+thickness | 2 | Integer | Thickness of the lines
+validator | null | MethodExpr | A method binding expression that refers to a method validating the input
+validatorMessage | null | String | Message to be displayed when validation fields.
+value | null | Object | Value of the component than can be either an EL expression of a literal text
+valueChangeListener | null | MethodExpr | A method binding expression that refers to a method for handling a valuchangeevent
+widgetVar | null | String | Name of the client side widget
 
 ## Getting started with Signature
 Value is interpreted as JSON so at backing bean should be a string value.
@@ -66,6 +70,61 @@ public class SignatureView {
     }
 }
 ```
+
+## Typing in a Signature
+Instead of drawing a signature, you can also type it in.  Just focus on the signature and type.
+
+```xhtml
+<p:signature style="width:400px;height:200px" value="#{signatureView.value}" textValue="#{signatureView.textValue}" fontSize="50" fontFamily="Brush Script MT, cursive" />
+```
+
+```java
+public class SignatureView {
+    private String value;
+    private String textValue;
+
+    public String getValue() {
+        return value;
+    }
+    public void setValue(String value) {
+        this.value = value;
+    }
+    public String getTextValue() {
+        return textValue;
+    }
+    public void setTextValue(String textValue) {
+        this.textValue = textValue;
+    }
+}
+```
+
+## Save as PNG
+Optionally you can save the signature as a PNG image. When submitting the form, the base64 value is passed to the backing bean but this is a "write-only" value so it can only be passed to the backing bean, not read from it.
+
+```xhtml
+<p:signature style="width:400px;height:200px" value="#{signatureView.value}" base64Value="#{signatureView.base64Value}" />
+```
+
+```java
+public class SignatureView {
+    private String value;
+    private String base64Value;
+
+    public String getValue() {
+        return value;
+    }
+    public void setValue(String value) {
+        this.value = value;
+    }
+    public String getBase64Value() {
+        return base64Value;
+    }
+    public void setBase64Value(String base64Value) {
+        this.base64Value = base64Value;
+    }
+}
+```
+
 ## Guideline
 Guideline adds a horizontal line to indicate the area to sign, attributes such as guidelineColor,
 guidelineOffset and guidelineIndent can be used to customize this area.
@@ -172,3 +231,5 @@ Widget: _PrimeFaces.widget.Signature_
 | --- | --- | --- | --- |
 | disable() | - | void | Disables the input field |
 | enable() | - | void | Enables the input field |
+| createSignatureFromText(text) | text | void | Creates an SVG signature from the given text |
+

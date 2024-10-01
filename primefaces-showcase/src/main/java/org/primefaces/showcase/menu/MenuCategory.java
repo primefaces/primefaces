@@ -65,12 +65,8 @@ public class MenuCategory extends MenuItem implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof MenuCategory)) {
-            return false;
-        }
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
         MenuCategory other = (MenuCategory) obj;
         return Objects.equals(label, other.label);
     }

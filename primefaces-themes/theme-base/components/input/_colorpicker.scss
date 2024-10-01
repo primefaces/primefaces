@@ -1,0 +1,10 @@
+body {
+  .ui-colorpicker .ui-button {
+    border-radius: $borderRadius;
+  }
+
+  .ui-fluid .ui-colorpicker .ui-button {
+    width: auto;
+    min-width: auto;
+  }
+}

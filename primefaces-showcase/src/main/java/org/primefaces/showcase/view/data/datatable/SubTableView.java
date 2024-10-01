@@ -23,11 +23,11 @@
  */
 package org.primefaces.showcase.view.data.datatable;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.primefaces.showcase.domain.Stats;
 import org.primefaces.showcase.domain.Team;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.RequestScoped;

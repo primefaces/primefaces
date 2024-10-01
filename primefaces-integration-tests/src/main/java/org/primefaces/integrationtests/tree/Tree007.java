@@ -23,14 +23,16 @@
  */
 package org.primefaces.integrationtests.tree;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.primefaces.model.CheckboxTreeNode;
 import org.primefaces.model.TreeNode;
 
+import java.io.Serializable;
+
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import java.io.Serializable;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Named
 @ViewScoped

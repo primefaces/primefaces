@@ -1,0 +1,21 @@
+body {
+  .ui-tabs {
+    .ui-tabs-nav {
+      li {
+        &.ui-tabs-header {
+          &.ui-state-active {
+            transition: border-color $transitionDuration;
+
+            &.ui-tabs-outline {
+              background-color: rgba($primaryColor, .12);
+            }
+          }
+
+          &.ui-tabs-outline {
+            background-color: rgba($primaryColor, .12);
+          }
+        }
+      }
+    }
+  }
+}

@@ -24,12 +24,6 @@
 package org.primefaces.application.resource;
 
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.contains;
-import static org.mockito.ArgumentMatchers.matches;
-import static org.mockito.Mockito.*;
-
 import java.io.IOException;
 
 import javax.faces.FacesException;
@@ -40,6 +34,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 class MoveScriptsToBottomResponseWriterTest {
 

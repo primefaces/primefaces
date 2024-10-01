@@ -23,10 +23,10 @@
  */
 package org.primefaces.showcase.view.ajax;
 
-import jakarta.inject.Named;
 import java.io.Serializable;
 
 import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
 
 @Named
 @ViewScoped

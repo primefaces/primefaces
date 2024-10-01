@@ -23,17 +23,19 @@
  */
 package org.primefaces.integrationtests.fileupload;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.component.DataTable;
+import org.primefaces.selenium.component.FileUpload;
 
 import java.io.File;
+
 import org.json.JSONObject;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.component.DataTable;
-import org.primefaces.selenium.component.FileUpload;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests advanced auto multiple sequential file upload.

@@ -24,6 +24,7 @@
 package org.primefaces.component.export;
 
 import java.io.OutputStream;
+
 import javax.el.MethodExpression;
 
 public class ExportConfiguration {

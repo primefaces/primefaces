@@ -23,6 +23,9 @@
  */
 package org.primefaces.metadata.transformer;
 
+import org.primefaces.component.inputtextarea.InputTextarea;
+import org.primefaces.context.PrimeApplicationContext;
+
 import java.io.IOException;
 
 import javax.faces.component.EditableValueHolder;
@@ -31,9 +34,6 @@ import javax.faces.component.UIInput;
 import javax.faces.component.html.HtmlInputSecret;
 import javax.faces.component.html.HtmlInputText;
 import javax.faces.context.FacesContext;
-
-import org.primefaces.component.inputtextarea.InputTextarea;
-import org.primefaces.context.PrimeApplicationContext;
 
 public abstract class AbstractInputMetadataTransformer implements MetadataTransformer {
 
@@ -72,7 +72,7 @@ public abstract class AbstractInputMetadataTransformer implements MetadataTransf
         return Integer.MIN_VALUE;
     }
 
-    protected boolean isMaxlenghtSet(UIInput input) {
+    protected boolean isMaxlengthSet(UIInput input) {
         return getMaxlength(input) != Integer.MIN_VALUE;
     }
 

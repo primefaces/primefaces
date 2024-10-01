@@ -23,6 +23,9 @@
  */
 package org.primefaces.showcase.convert;
 
+import org.primefaces.model.timeline.TimelineEvent;
+import org.primefaces.showcase.domain.Order;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -32,9 +35,6 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.FacesConverter;
 import jakarta.inject.Named;
-
-import org.primefaces.model.timeline.TimelineEvent;
-import org.primefaces.showcase.domain.Order;
 
 @Named
 @ApplicationScoped

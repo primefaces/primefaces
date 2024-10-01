@@ -23,18 +23,6 @@
  */
 package org.primefaces.component.tree;
 
-import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
-
-import java.io.IOException;
-import java.util.*;
-
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.UITree;
 import org.primefaces.expression.SearchExpressionUtils;
@@ -44,7 +32,27 @@ import org.primefaces.model.filter.FilterConstraints;
 import org.primefaces.model.filter.FunctionFilterConstraint;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.renderkit.RendererUtils;
-import org.primefaces.util.*;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.LocaleUtils;
+import org.primefaces.util.SharedStringBuilder;
+import org.primefaces.util.WidgetBuilder;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
+import javax.el.ValueExpression;
+import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 
 public class TreeRenderer extends CoreRenderer {
 
@@ -226,7 +234,7 @@ public class TreeRenderer extends CoreRenderer {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String rowKey = params.get(clientId + "_expandNode");
 
-            if (!vertical && rowKey.equals(ROOT_ROW_KEY)) {
+            if (!vertical && rowKey.equals(UITree.ROOT_ROW_KEY)) {
                 encodeHorizontalTreeNodeChildren(context, tree, root, root, tree.getClientId(context), null, tree.isDynamic(),
                         tree.isCheckboxSelectionMode());
             }
@@ -253,15 +261,17 @@ public class TreeRenderer extends CoreRenderer {
             Locale filterLocale = LocaleUtils.getCurrentLocale(context);
 
             tree.getFilteredRowKeys().clear();
-            encodeFilteredNodes(context, tree, tree.getValue(), filteredValue, filterLocale);
+            if (LangUtils.isNotBlank(filteredValue)) {
+                encodeFilteredNodes(context, tree, tree.getValue(), filteredValue, filterLocale);
+            }
 
             if (root != null && root.getRowKey() == null) {
-                root.setRowKey(ROOT_ROW_KEY);
+                root.setRowKey(UITree.ROOT_ROW_KEY);
                 tree.buildRowKeys(root);
                 tree.initPreselection();
             }
 
-            if (root != null && (LangUtils.isBlank(filteredValue) || !tree.getFilteredRowKeys().isEmpty())) {
+            if (root != null) {
                 encodeTreeNodeChildren(context, tree, root, root, clientId, tree.isDynamic(), tree.isCheckboxSelectionMode(), tree.isDroppable());
             }
         }
@@ -352,7 +362,7 @@ public class TreeRenderer extends CoreRenderer {
         TreeNode root = tree.getValue();
 
         if (root != null && root.getRowKey() == null) {
-            root.setRowKey(ROOT_ROW_KEY);
+            root.setRowKey(UITree.ROOT_ROW_KEY);
             tree.buildRowKeys(root);
             tree.initPreselection();
         }
@@ -376,7 +386,7 @@ public class TreeRenderer extends CoreRenderer {
         boolean isDisabled = tree.isDisabled();
 
         if (root != null && root.getRowKey() == null) {
-            root.setRowKey(ROOT_ROW_KEY);
+            root.setRowKey(UITree.ROOT_ROW_KEY);
             tree.buildRowKeys(root);
             tree.initPreselection();
         }
@@ -517,7 +527,7 @@ public class TreeRenderer extends CoreRenderer {
         }
         else {
             context.getExternalContext().getRequestMap().put(tree.getVar(), tree.getValue().getData());
-            writer.writeAttribute("data-rowkey", ROOT_ROW_KEY, null);
+            writer.writeAttribute("data-rowkey", UITree.ROOT_ROW_KEY, null);
         }
 
         writer.writeAttribute("class", nodeClass, null);
@@ -809,7 +819,7 @@ public class TreeRenderer extends CoreRenderer {
                 encodeTreeNode(context, tree, root, node.getChildren().get(i), clientId, dynamic, checkbox, droppable);
             }
         }
-        else if (droppable && ROOT_ROW_KEY.equals(node.getRowKey())) {
+        else if (droppable && UITree.ROOT_ROW_KEY.equals(node.getRowKey())) {
             encodeDropTarget(context, tree);
         }
     }

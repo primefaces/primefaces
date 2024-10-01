@@ -23,11 +23,11 @@
  */
 package org.primefaces.component.chart;
 
-import javax.faces.component.UIComponentBase;
-import javax.faces.component.behavior.ClientBehaviorHolder;
-
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
+
+import javax.faces.component.UIComponentBase;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class ChartBase extends UIComponentBase implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
@@ -50,7 +50,9 @@ public abstract class ChartBase extends UIComponentBase implements Widget, Clien
         extender,
         ariaLabel,
         style,
-        styleClass
+        styleClass,
+        canvasStyle,
+        canvasStyleClass
     }
 
     public String getWidgetVar() {
@@ -99,5 +101,21 @@ public abstract class ChartBase extends UIComponentBase implements Widget, Clien
 
     public void setExtender(String extender) {
         getStateHelper().put(PropertyKeys.extender, extender);
+    }
+
+    public String getCanvasStyle() {
+        return (String) getStateHelper().eval(PropertyKeys.canvasStyle, null);
+    }
+
+    public void setCanvasStyle(String canvasStyle) {
+        getStateHelper().put(PropertyKeys.canvasStyle, canvasStyle);
+    }
+
+    public String getCanvasStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.canvasStyleClass, null);
+    }
+
+    public void setCanvasStyleClass(String canvasStyleClass) {
+        getStateHelper().put(PropertyKeys.canvasStyleClass, canvasStyleClass);
     }
 }

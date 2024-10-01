@@ -24,7 +24,10 @@
 package org.primefaces.integrationtests.datepicker;
 
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.component.CommandButton;
+import org.primefaces.selenium.component.DatePicker;
+import org.primefaces.selenium.component.Messages;
 
 import java.time.LocalDateTime;
 
@@ -32,10 +35,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.component.CommandButton;
-import org.primefaces.selenium.component.DatePicker;
-import org.primefaces.selenium.component.Messages;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DatePicker014Test extends AbstractDatePickerTest {
 

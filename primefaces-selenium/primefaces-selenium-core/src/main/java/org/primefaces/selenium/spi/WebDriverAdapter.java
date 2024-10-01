@@ -23,8 +23,9 @@
  */
 package org.primefaces.selenium.spi;
 
-import org.openqa.selenium.WebDriver;
 import org.primefaces.selenium.internal.ConfigProvider;
+
+import org.openqa.selenium.WebDriver;
 
 public interface WebDriverAdapter {
 

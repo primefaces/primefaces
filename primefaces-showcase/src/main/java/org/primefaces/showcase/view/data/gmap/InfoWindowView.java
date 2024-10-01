@@ -23,16 +23,17 @@
  */
 package org.primefaces.showcase.view.data.gmap;
 
-import jakarta.faces.view.ViewScoped;
 import org.primefaces.event.map.OverlaySelectEvent;
 import org.primefaces.model.map.DefaultMapModel;
 import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.MapModel;
 import org.primefaces.model.map.Marker;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.inject.Named;
 import java.io.Serializable;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
 
 @Named
 @ViewScoped

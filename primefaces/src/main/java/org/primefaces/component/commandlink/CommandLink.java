@@ -23,6 +23,10 @@
  */
 package org.primefaces.component.commandlink;
 
+import org.primefaces.component.api.DialogReturnAware;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.util.MapBuilder;
+
 import java.util.Collection;
 import java.util.Map;
 
@@ -30,10 +34,6 @@ import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
-import org.primefaces.component.api.DialogReturnAware;
-
-import org.primefaces.event.SelectEvent;
-import org.primefaces.util.MapBuilder;
 
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

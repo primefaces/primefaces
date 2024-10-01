@@ -23,6 +23,9 @@
  */
 package org.primefaces.application.resource;
 
+import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
+
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Map;
@@ -31,9 +34,6 @@ import java.util.Objects;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.imageio.ImageIO;
-
-import org.primefaces.util.Constants;
-import org.primefaces.util.LangUtils;
 
 import io.nayuki.qrcodegen.QrCode;
 import io.nayuki.qrcodegen.QrCode.Ecc;

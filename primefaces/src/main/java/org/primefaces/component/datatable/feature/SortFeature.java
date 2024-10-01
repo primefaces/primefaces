@@ -23,15 +23,6 @@
  */
 package org.primefaces.component.datatable.feature;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import javax.faces.FacesException;
-import javax.faces.context.FacesContext;
-import javax.faces.model.ListDataModel;
-
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
@@ -41,6 +32,16 @@ import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.SortTableComparator;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import javax.faces.FacesException;
+import javax.faces.context.FacesContext;
+import javax.faces.model.ListDataModel;
 
 public class SortFeature implements DataTableFeature {
 

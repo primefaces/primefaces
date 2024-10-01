@@ -32,8 +32,8 @@ You can also specify a custom encoding:
 
 ### NoCacheFilter
 
-Per default JSF correctly sets the cache headers for resources like JS and CSS.
-However it does not set no-cache headers for JSF views, which can be enabled with this filter.
+Per default Jakarta Faces correctly sets the cache headers for resources like JS and CSS.
+However it does not set no-cache headers for Jakarta Faces views, which can be enabled with this filter.
 
 ```xml
 <filter>
@@ -69,7 +69,7 @@ public class CustomResourceWrapper extends ResourceWrapper {
     private Resource wrapped;
     private String version;
 
-    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
+    @SuppressWarnings("deprecation") // the default constructor is deprecated in Jakarta Faces 2.3
     public CustomResourceWrapper(final Resource resource) {
         super();
         wrapped = resource;
@@ -128,7 +128,7 @@ public class CustomResourceHandler extends ResourceHandlerWrapper {
 
     private final ResourceHandler wrapped;
 
-    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
+    @SuppressWarnings("deprecation") // the default constructor is deprecated in Jakarta Faces 2.3
     public CustomResourceHandler(ResourceHandler wrapped) {
         this.wrapped = wrapped;
     }

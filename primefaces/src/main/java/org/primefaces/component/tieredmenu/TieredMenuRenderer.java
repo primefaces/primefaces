@@ -23,12 +23,6 @@
  */
 package org.primefaces.component.tieredmenu;
 
-import java.io.IOException;
-import java.util.List;
-
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.component.badge.BadgeRenderer;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
@@ -41,6 +35,12 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 
 public class TieredMenuRenderer extends BaseMenuRenderer {
 

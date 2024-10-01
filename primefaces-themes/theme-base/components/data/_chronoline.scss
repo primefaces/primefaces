@@ -1,0 +1,37 @@
+body {
+  .ui-chronoline {
+    .ui-chronoline-event-marker {
+      border: $chronolineEventMarkerBorder;
+      border-radius: $chronolineEventMarkerBorderRadius;
+      width: $chronolineEventMarkerWidth;
+      height: $chronolineEventMarkerHeight;
+      background-color: $chronolineEventMarkerBackground;
+    }
+
+    .ui-chronoline-event-connector {
+      background-color: $chronolineEventColor;
+    }
+
+    &.ui-chronoline-vertical {
+      .ui-chronoline-event-opposite,
+      .ui-chronoline-event-content  {
+        padding: $chronolineVerticalEventContentPadding;
+      }
+
+      .ui-chronoline-event-connector {
+        width: $chronolineEventConnectorSize;
+      }
+    }
+
+    &.ui-chronoline-horizontal {
+      .ui-chronoline-event-opposite,
+      .ui-chronoline-event-content  {
+        padding: $chronolineHorizontalEventContentPadding;
+      }
+
+      .ui-chronoline-event-connector {
+        height: $chronolineEventConnectorSize;
+      }
+    }
+  }
+}

@@ -23,10 +23,10 @@
  */
 package org.primefaces.component.selectoneradio;
 
-import javax.faces.component.html.HtmlSelectOneRadio;
-
 import org.primefaces.component.api.FlexAware;
 import org.primefaces.component.api.Widget;
+
+import javax.faces.component.html.HtmlSelectOneRadio;
 
 public abstract class SelectOneRadioBase extends HtmlSelectOneRadio implements Widget, FlexAware {
 

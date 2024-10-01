@@ -13,7 +13,7 @@
 
 		<h:form id="form">
 			<p:inputText id="val1" />
-			<p:message id="message" for="val1" severity="error" showDetail="true" />
+			<p:message id="message" for="val1" severity="error" showDetail="true" showSummary="true" />
 			<p:commandButton id="buttonAction1" value="Submit (single)" update="@form" action="#{message001.action1}" />
 			<p:commandButton id="buttonAction2" value="Submit (multiple)" update="@form" action="#{message001.action2}" />
 		</h:form>

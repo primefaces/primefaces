@@ -23,20 +23,29 @@
  */
 package org.primefaces.selenium;
 
-import java.time.Duration;
-import java.util.List;
-
-import org.openqa.selenium.*;
-import org.openqa.selenium.html5.WebStorage;
-import org.openqa.selenium.support.decorators.WebDriverDecorator;
-import org.openqa.selenium.support.pagefactory.ElementLocator;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.primefaces.selenium.internal.ConfigProvider;
 import org.primefaces.selenium.internal.Guard;
 import org.primefaces.selenium.spi.DeploymentAdapter;
 import org.primefaces.selenium.spi.PrimePageFactory;
 import org.primefaces.selenium.spi.PrimePageFragmentFactory;
 import org.primefaces.selenium.spi.WebDriverProvider;
+
+import java.time.Duration;
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.HasCapabilities;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.html5.WebStorage;
+import org.openqa.selenium.support.decorators.WebDriverDecorator;
+import org.openqa.selenium.support.pagefactory.ElementLocator;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public final class PrimeSelenium {
 
@@ -121,6 +130,7 @@ public final class PrimeSelenium {
     public static void goTo(AbstractPrimePage page) {
         WebDriver driver = WebDriverProvider.get();
         driver.get(getUrl(page));
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.documentLoaded());
         if (isSafari()) {
             /*
              * Safari has sometimes weird timing issues. (At least on Github Actions.) So wait a bit.
@@ -137,6 +147,7 @@ public final class PrimeSelenium {
     public static void goTo(String partialUrl) {
         WebDriver driver = WebDriverProvider.get();
         driver.get(getUrl(partialUrl));
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.documentLoaded());
         if (isSafari()) {
             /*
              * Safari has sometimes weird timing issues. (At least on Github Actions.) So wait a bit.

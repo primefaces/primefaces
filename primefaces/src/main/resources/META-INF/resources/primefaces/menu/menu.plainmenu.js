@@ -102,10 +102,17 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
                 }
             });
         } else {
-            // Reset focus when focus moves out of the menu and the new focus target is not within the menu
-            this.jq.on("focusout.menu", function(e) {
-                if (!$this.jq.has(e.relatedTarget).length) {
-                    $this.resetFocus(true);
+            // Handle focus events for the menu
+            this.jq.off('focusout.menu focusin.menu').on({
+                "focusout.menu": function(e) {
+                    if (!e.relatedTarget || !$this.jq.has(e.relatedTarget).length) {
+                        $this.resetFocusState();
+                    }
+                },
+                "focusin.menu": function(e) {
+                    if (e.relatedTarget && !$this.jq.has(e.relatedTarget).length) {
+                        $this.focus($this.menuitemLinks.filter(':not([disabled])').first(), e);
+                    }
                 }
             });
         }
@@ -121,26 +128,35 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
         var $this = this;
 
         // Set the first focusable menu item
-        this.menuitemLinks.filter(':not([disabled])').first().attr("tabindex", "0");
-        this.resetFocus(true);
+        this.resetFocusState();
 
         // Bind mouse and click events to focus items
-        this.menuitemLinks.on("mouseenter.menu click.menu", function() {
-            $this.focus($(this));
-        }).on("focusout.menu mouseleave.menu", function() {
-            $this.unfocus($(this));
+        this.menuitemLinks.on("mouseenter.menu click.menu", function(e) {
+            $this.focus($(this), e);
+        }).on("mouseleave.menu", function(e) {
+            $this.unfocus($(this), e);
         });
 
         // Bind keyboard navigation events
         this.menuitemLinks.on('keydown.menu', function(e) {
-            var currentLink = $this.menuitemLinks.filter('.ui-state-hover');
+            var currentLink = $this.menuitemLinks.filter('.ui-state-active:first');
             switch (e.code) {
+                case 'Home':
+                case 'PageUp':
+                    $this.navigateMenu(e, currentLink, 'prev', 'last');
+                    e.preventDefault();
+                    break;
+                case 'End':
+                case 'PageDown':
+                    $this.navigateMenu(e, currentLink, 'next', 'last');
+                    e.preventDefault();
+                    break;
                 case 'ArrowUp':
-                    $this.navigateMenu(currentLink, 'prev');
+                    $this.navigateMenu(e, currentLink, 'prev', 'first');
                     e.preventDefault();
                     break;
                 case 'ArrowDown':
-                    $this.navigateMenu(currentLink, 'next');
+                    $this.navigateMenu(e, currentLink, 'next', 'first');
                     e.preventDefault();
                     break;
                 case 'Space':
@@ -160,16 +176,33 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
     },
 
     /**
-     * Navigates the menu items in the specified direction ('prev' or 'next').
-     * @param {JQuery} currentLink The currently focused menu item link.
-     * @param {string} direction The direction to navigate ('prev' or 'next').
+     * Resets the focus state of the menu.
+     * This method sets the first focusable menu item and removes hover and active states for non-overlay menus.
      * @private
      */
-    navigateMenu: function(currentLink, direction) {
-        var targetItem = currentLink.parent()[direction + 'All']('.ui-menuitem:first');
+    resetFocusState: function() {
+        // Set the first focusable menu item
+        this.resetFocus(true);
+
+        // plain menu does not have hover and active states
+        if (!this.cfg.overlay) {
+            this.menuitemLinks.removeClass('ui-state-hover ui-state-active');
+        }
+    },
+
+    /**
+     * Navigates the menu items in the specified direction ('prev' or 'next').
+     * @param {JQuery.TriggeredEvent} event - The event that triggered the focus.
+     * @param {JQuery} currentLink The currently focused menu item link.
+     * @param {string} direction The direction to navigate ('prev' or 'next').
+     * @param {string} firstOrLast The first or last item to navigate to ('first' or 'last').
+     * @private
+     */
+    navigateMenu: function(event, currentLink, direction, firstOrLast) {
+        var targetItem = currentLink.parent()[direction + 'All']('.ui-menuitem:not(:has(.ui-state-disabled)):' + firstOrLast);
         if (targetItem.length) {
-            this.unfocus(currentLink);
-            this.focus(targetItem.children('.ui-menuitem-link'));
+            this.unfocus(currentLink, event);
+            this.focus(targetItem.children('.ui-menuitem-link'), event);
         }
     },
 

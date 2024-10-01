@@ -29,15 +29,16 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
     init: function(cfg) {
         this._super(cfg);
 
-        this.trigger = this.jq.children('button');
-        this.cfg.appendTo = PrimeFaces.escapeClientId(this.trigger.attr("id"));
-        this.cfg.disabled = this.trigger.is(':disabled');
-        this.cfg.overlay = true;
         this.menu = null;
-
+        this.trigger = this.jq.children('button');
+        this.cfg.disabled = this.trigger.is(':disabled');
+        
         this.bindButtonEvents();
         PrimeFaces.utils.registerDynamicOverlay(this, this.getMenuElement(), this.id + '_menu');
         this.transition = PrimeFaces.utils.registerCSSTransition(this.getMenuElement(), 'ui-connected-overlay');
+        
+        //dialog support
+        this.setupDialogSupport();
     },
 
     /**
@@ -106,8 +107,9 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
                 $this.trigger.addClass('ui-state-hover');
             }
         }).on('mouseout.menubutton', function() {
+            $this.trigger.removeClass('ui-state-hover');
             if (!$this.trigger.hasClass('ui-state-focus')) {
-                $this.trigger.removeClass('ui-state-hover ui-state-active');
+                $this.trigger.removeClass('ui-state-active');
             }
         }).on('mousedown.menubutton', function() {
             if (!$this.cfg.disabled) {

@@ -9,12 +9,16 @@ This page contains a list of big features. Please check the GitHub issues for al
 Look into [migration guide](https://primefaces.github.io/primefaces/15_0_0/#/../migrationguide/15_0_0) for more enhancements and changes.
 
 * Core
+    * Added `widgetPreConstruct` attribute to support custom logic before widget creation. See [widgets](../core/widgets.md) for more information.
     
 * AutoComplete
     * Added property `highlightSelector=""` so you can delcare the jQuery selector for what to find and highlight. See https://github.com/primefaces/primefaces/issues/11822 
     
 * Captcha
     * Added [hCaptcha](https://www.hcaptcha.com/) support
+    
+* Chart
+    * Added `canvasStyle` and `canvasStyleClass` attributes to support custom styling of the canvas element
     
 * ConfirmDialog/ConfirmPopup
     * `yesButtonLabel`: overrides label of 'Yes' button (and restores it before the global confirm dialog is reused elsewhere)
@@ -27,15 +31,29 @@ Look into [migration guide](https://primefaces.github.io/primefaces/15_0_0/#/../
  
 * DataTable 
     * Added attribute `frozenColumnsAlignment` to support alignment of frozen columns left and right
+    * Added `expandIcon`/`collapseIcon` attributes for RowToggler
+    * Added `rowsPerPage` in the PageEvent AJAX event
+
+* DatePicker
+    * Added `defaultHour`, `defaultMinute`, `defaultSecond`, `defaultMillisec` attributes to match legacy `Calendar` component
 
 * FeedReader
+
     * Added `podcast="true"` property if [Apple Itunes Podcast](https://help.apple.com/itc/podcasts_connect/#/itcb54353390) parsing and specific tags 
 
 * InputNumber
     * Added `modifyValueOnUpDownArrow` which allows the user to increment or decrement the element value with the up and down arrow keys. Default is true.
 
+* Paginator 
+    * Added `rowsPerPage` in the PageEvent AJAX event
+
 * SelectOneMenu
     * Added `clear` AJAX event when in `editable="true"` and you clear out a value with BACKSPACE/DELETE
+
+* Signature
+    * Ability to type your signature
+    * Added `textValue`, `fontSize`, `fontFamily` attributes to support typing of signature
+    * ARIA accessibility support with `role="img"` and `aria-label`
 
 * StaticMessage
     * Added `severity="success"` to align with React/Vue/Angular
@@ -43,5 +61,4 @@ Look into [migration guide](https://primefaces.github.io/primefaces/15_0_0/#/../
 * Tree
     * Added `filterPlaceholder` property
 
-* DataTable
-    * Added `expandIcon`/`collapseIcon` attributes for RowToggler
+    

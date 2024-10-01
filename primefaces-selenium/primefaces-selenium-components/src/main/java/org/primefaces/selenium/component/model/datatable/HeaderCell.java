@@ -23,6 +23,10 @@
  */
 package org.primefaces.selenium.component.model.datatable;
 
+import org.primefaces.selenium.PrimeExpectedConditions;
+import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.component.base.ComponentUtils;
+
 import java.util.Locale;
 
 import org.json.JSONObject;
@@ -30,9 +34,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
-import org.primefaces.selenium.PrimeExpectedConditions;
-import org.primefaces.selenium.PrimeSelenium;
-import org.primefaces.selenium.component.base.ComponentUtils;
 
 public class HeaderCell extends Cell {
 

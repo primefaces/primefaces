@@ -23,6 +23,9 @@
  */
 package org.primefaces.application.resource.barcode;
 
+import org.primefaces.application.resource.BaseDynamicContentHandler;
+import org.primefaces.util.Constants;
+
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -30,6 +33,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.xml.XMLConstants;
@@ -41,8 +45,6 @@ import javax.xml.transform.TransformerFactory;
 import org.krysalis.barcode4j.HumanReadablePlacement;
 import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
 import org.krysalis.barcode4j.output.svg.SVGCanvasProvider;
-import org.primefaces.application.resource.BaseDynamicContentHandler;
-import org.primefaces.util.Constants;
 import org.w3c.dom.DocumentFragment;
 
 public class BarcodeHandler extends BaseDynamicContentHandler {

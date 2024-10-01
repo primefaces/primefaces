@@ -23,7 +23,9 @@
  */
 package org.primefaces.integrationtests.password;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.component.Password;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
@@ -32,9 +34,8 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.component.Password;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 // stability-issues for Firefox (96, 97) together with Selenium 4 and password.showFeedback
 @Tag("FirefoxExclude")

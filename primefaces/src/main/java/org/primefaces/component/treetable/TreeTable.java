@@ -23,20 +23,18 @@
  */
 package org.primefaces.component.treetable;
 
-import java.util.*;
-import javax.el.ELContext;
-import javax.el.ValueExpression;
-import javax.faces.application.ResourceDependency;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.event.*;
-
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.treetable.feature.FilterFeature;
 import org.primefaces.component.treetable.feature.TreeTableFeatures;
-import org.primefaces.event.*;
+import org.primefaces.event.CellEditEvent;
+import org.primefaces.event.ColumnResizeEvent;
+import org.primefaces.event.NodeCollapseEvent;
+import org.primefaces.event.NodeExpandEvent;
+import org.primefaces.event.NodeSelectEvent;
+import org.primefaces.event.NodeUnselectEvent;
+import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.data.FilterEvent;
 import org.primefaces.event.data.PageEvent;
 import org.primefaces.event.data.SortEvent;
@@ -46,7 +44,28 @@ import org.primefaces.model.SortMeta;
 import org.primefaces.model.TreeNode;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.MapBuilder;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
+import javax.el.ELContext;
+import javax.el.ValueExpression;
+import javax.faces.application.ResourceDependency;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.BehaviorEvent;
+import javax.faces.event.ComponentSystemEvent;
+import javax.faces.event.FacesEvent;
+import javax.faces.event.PhaseId;
+import javax.faces.event.PostRestoreStateEvent;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -231,8 +250,10 @@ public class TreeTable extends TreeTableBase {
                 int rows = getRowsToRender();
                 int first = Integer.parseInt(params.get(clientId + "_first"));
                 int page = rows > 0 ? (first / rows) : 0;
+                String rowsPerPageParam = params.get(clientId + "_rows");
+                Integer rowsPerPage = LangUtils.isNotBlank(rowsPerPageParam) ? Integer.parseInt(rowsPerPageParam) : null;
 
-                wrapperEvent = new PageEvent(this, behaviorEvent.getBehavior(), page);
+                wrapperEvent = new PageEvent(this, behaviorEvent.getBehavior(), page, rowsPerPage);
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             }
 
@@ -584,4 +605,33 @@ public class TreeTable extends TreeTableBase {
         return getFacesContext().getCurrentPhaseId() == PhaseId.RENDER_RESPONSE
                 && (!ComponentUtils.isNestedWithinIterator(this) || columns.stream().noneMatch(DynamicColumn.class::isInstance));
     }
+
+    @Override
+    protected void processNode(FacesContext context, PhaseId phaseId, TreeNode root, TreeNode treeNode, String rowKey) {
+        if (!isPaginator() || root != treeNode) {
+            super.processNode(context, phaseId, root, treeNode, rowKey);
+        }
+        else {
+            if (treeNode != null && shouldVisitNode(treeNode) && treeNode.getChildCount() > 0) {
+                int first = getFirst();
+                int rows = getRows() == 0 ? getRowCount() : getRows();
+
+                processColumnChildren(context, phaseId, root, rowKey);
+
+                List<TreeNode> children = root.getChildren();
+                int childCount = root.getChildCount();
+                int last = (first + rows);
+                if (last > childCount) {
+                    last = childCount;
+                }
+
+                for (int i = first; i < last; i++) {
+                    TreeNode child = children.get(i);
+                    String childRowKey = childRowKey(rowKey, i);
+                    processNode(context, phaseId, root, child, childRowKey);
+                }
+            }
+        }
+    }
+
 }

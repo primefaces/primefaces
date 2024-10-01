@@ -30,9 +30,24 @@ import org.primefaces.model.ColumnMeta;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.SortMeta;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.EditableValueHolderState;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.LocaleUtils;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
@@ -43,10 +58,6 @@ import javax.faces.component.ValueHolder;
 import javax.faces.component.search.SearchExpressionHint;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.ConverterException;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public interface UITable<T extends UITableState> extends ColumnAware, MultiViewStateAware<T> {
 
@@ -195,11 +206,11 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                 ((DynamicColumn) column).applyModel();
             }
 
-            boolean hasCustomFilter = column.getFacet("filter") != null;
+            EditableValueHolderState editableValueHolderState = column.getFilterValueHolder(context);
 
             Object filterValue;
-            if (hasCustomFilter) {
-                filterValue = column.getFilterValueFromValueHolder();
+            if (editableValueHolderState != null) {
+                filterValue = editableValueHolderState.getValue();
             }
             else {
                 String valueHolderClientId = column instanceof DynamicColumn

@@ -23,16 +23,18 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.primefaces.model.DefaultLazyDataModel;
 import org.primefaces.model.LazyDataModel;
+
+import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.io.Serializable;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Named
 @ViewScoped
@@ -45,7 +47,7 @@ public class DataTable044 implements Serializable {
     @PostConstruct
     public void init() {
         lazyDataModel = DefaultLazyDataModel.<ProgrammingLanguage>builder()
-                .valueSupplier(service::getLangs)
+                .valueSupplier((filterBy) -> service.getLangs())
                 .filter((ctx, value, filter, locale) -> {
                     if (programmingLanguageFilter == null) {
                         return true;

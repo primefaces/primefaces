@@ -25,10 +25,11 @@ package org.primefaces.component.chip;
 
 import org.primefaces.util.MapBuilder;
 
-import javax.faces.application.ResourceDependency;
-import javax.faces.event.BehaviorEvent;
 import java.util.Collection;
 import java.util.Map;
+
+import javax.faces.application.ResourceDependency;
+import javax.faces.event.BehaviorEvent;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")

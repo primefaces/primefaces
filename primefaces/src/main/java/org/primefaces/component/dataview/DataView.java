@@ -23,6 +23,14 @@
  */
 package org.primefaces.component.dataview;
 
+import org.primefaces.PrimeFaces;
+import org.primefaces.event.data.PageEvent;
+import org.primefaces.model.LazyDataModel;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.MapBuilder;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -35,14 +43,6 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.model.DataModel;
-
-import org.primefaces.PrimeFaces;
-import org.primefaces.event.data.PageEvent;
-import org.primefaces.model.LazyDataModel;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.MapBuilder;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -110,8 +110,10 @@ public class DataView extends DataViewBase {
                 int rows = getRowsToRender();
                 int first = Integer.parseInt(params.get(clientId + "_first"));
                 int page = rows > 0 ? (int) (first / rows) : 0;
+                String rowsPerPageParam = params.get(clientId + "_rows");
+                Integer rowsPerPage = LangUtils.isNotBlank(rowsPerPageParam) ? Integer.parseInt(rowsPerPageParam) : null;
 
-                PageEvent pageEvent = new PageEvent(this, behaviorEvent.getBehavior(), page);
+                PageEvent pageEvent = new PageEvent(this, behaviorEvent.getBehavior(), page, rowsPerPage);
                 pageEvent.setPhaseId(behaviorEvent.getPhaseId());
 
                 super.queueEvent(pageEvent);

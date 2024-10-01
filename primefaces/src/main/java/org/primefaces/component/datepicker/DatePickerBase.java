@@ -23,6 +23,14 @@
  */
 package org.primefaces.component.datepicker;
 
+import org.primefaces.component.api.FlexAware;
+import org.primefaces.component.api.InputHolder;
+import org.primefaces.component.api.MixedClientBehaviorHolder;
+import org.primefaces.component.api.UICalendar;
+import org.primefaces.component.api.Widget;
+import org.primefaces.model.datepicker.DateMetadataModel;
+import org.primefaces.util.CalendarUtils;
+
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.chrono.IsoChronology;
@@ -30,10 +38,6 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
 import java.util.List;
 import java.util.Locale;
-
-import org.primefaces.component.api.*;
-import org.primefaces.model.datepicker.DateMetadataModel;
-import org.primefaces.util.CalendarUtils;
 
 public abstract class DatePickerBase extends UICalendar implements Widget, InputHolder, MixedClientBehaviorHolder, FlexAware {
 
@@ -51,57 +55,57 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
 
     public enum PropertyKeys {
 
-        placeholder,
-        widgetVar,
-        timeOnly,
-        inline,
-        buttonTabindex,
-        showIcon,
+        appendTo,
+        autoDetectDisplay,
+        autoMonthFormat,
         beforeShow,
+        buttonTabindex,
+        dateTemplate,
+        disabledDates,
+        disabledDays,
+        enabledDates,
+        flex,
         focusOnSelect,
-        yearRange,
-        selectionMode,
-        showOtherMonths,
-        selectOtherMonths,
-        showOnFocus,
-        shortYearCutoff,
-        monthNavigator,
-        yearNavigator,
-        showTime,
-        hourFormat,
-        showSeconds,
-        showMilliseconds,
-        stepHour,
-        stepMinute,
-        stepSecond,
-        stepMillisecond,
-        showButtonBar,
-        panelStyleClass,
-        panelStyle,
-        keepInvalid,
         hideOnDateTimeSelect,
         hideOnRangeSelection,
+        hourFormat,
+        inline,
+        keepInvalid,
         maxDateCount,
+        model,
+        monthNavigator,
         numberOfMonths,
-        view,
-        autoDetectDisplay,
-        responsiveBreakpoint,
-        touchUI,
-        dateTemplate,
-        appendTo,
-        triggerButtonIcon,
-        disabledDates,
-        enabledDates,
-        disabledDays,
         onMonthChange,
         onYearChange,
-        timeInput,
-        showWeek,
-        weekCalculator,
+        panelStyle,
+        panelStyleClass,
+        placeholder,
+        responsiveBreakpoint,
+        selectOtherMonths,
+        selectionMode,
+        shortYearCutoff,
+        showButtonBar,
+        showIcon,
+        showMilliseconds,
         showMinMaxRange,
-        autoMonthFormat,
-        model,
-        flex
+        showOnFocus,
+        showOtherMonths,
+        showSeconds,
+        showTime,
+        showWeek,
+        stepHour,
+        stepMillisecond,
+        stepMinute,
+        stepSecond,
+        timeInput,
+        timeOnly,
+        touchUI,
+        triggerButtonIcon,
+        view,
+        weekCalculator,
+        widgetVar,
+        yearNavigator,
+        yearRange
     }
 
     public DatePickerBase() {

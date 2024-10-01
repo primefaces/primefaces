@@ -23,13 +23,15 @@
  */
 package org.primefaces.component.messages;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.primefaces.mock.FacesContextMock;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.primefaces.mock.FacesContextMock;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MessagesRendererTest {
 

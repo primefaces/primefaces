@@ -23,6 +23,18 @@
  */
 package org.primefaces.component.imagecropper;
 
+import org.primefaces.model.CroppedImage;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.Constants;
+import org.primefaces.util.DynamicContentSrcBuilder;
+import org.primefaces.util.FileUploadUtils;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.Lazy;
+import org.primefaces.util.ResourceUtils;
+import org.primefaces.util.WidgetBuilder;
+
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -32,6 +44,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.Files;
 import java.util.Map;
+
 import javax.el.ValueExpression;
 import javax.faces.application.Resource;
 import javax.faces.component.UIComponent;
@@ -43,11 +56,6 @@ import javax.imageio.ImageIO;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.input.BoundedInputStream;
-import org.primefaces.model.CroppedImage;
-import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.StreamedContent;
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.*;
 
 public class ImageCropperRenderer extends CoreRenderer {
 

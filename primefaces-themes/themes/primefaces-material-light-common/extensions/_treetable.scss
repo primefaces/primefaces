@@ -1,0 +1,40 @@
+body {
+  .ui-treetable {
+    thead {
+      th {
+        &.ui-sortable-column {
+          outline: 0 none;
+
+          &.ui-state-focus {
+            background-color: rgba($overlayColor, 0.03);
+          }
+
+          .ui-sortable-column-icon {
+            color: $datatableHeaderCellIconColor;
+          }
+        }
+      }
+    }
+
+    .ui-treetable-data {
+      > tr {
+        outline: 0 none;
+
+        &:not(.ui-state-highlight):focus {
+          background-color: rgba($overlayColor, 0.03);
+        }
+      }
+    }
+
+    .ui-paginator {
+      &.ui-paginator-top {
+        border-top: 1px $paginatorBorder;
+        border-bottom: 1px $paginatorBorder;
+      }
+
+      &.ui-paginator-bottom {
+        border-bottom: 1px $paginatorBorder;
+      }
+    }
+  }
+}

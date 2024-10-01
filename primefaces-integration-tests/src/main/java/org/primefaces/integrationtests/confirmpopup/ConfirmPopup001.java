@@ -23,12 +23,12 @@
  */
 package org.primefaces.integrationtests.confirmpopup;
 
+import org.primefaces.integrationtests.general.utilities.TestUtils;
+
 import java.io.Serializable;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
-
-import org.primefaces.integrationtests.general.utilities.TestUtils;
 
 import lombok.Data;
 

@@ -22,7 +22,6 @@
  * @prop {number} cfg.min Minimum allowed value for this spinner.
  * @prop {number} cfg.precision The number of digits to appear after the decimal point.
  * @prop {string} cfg.prefix Prefix added to the displayed value.
- * @prop {boolean} cfg.required Whether this spinner is a required field.
  * @prop {boolean} cfg.rotate Rotate to the minimum value when maximum value is reached and vice versa.
  * @prop {number} cfg.step Stepping factor for each increment and decrement
  * @prop {string} cfg.suffix Suffix added to the displayed value.
@@ -60,7 +59,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
             this.cfg.precision = decPlaces;
         }
         else if(!(typeof this.cfg.step === 'number' && this.cfg.step % 1 === 0)) {
-            this.cfg.precision = this.cfg.step.toString().split(/[,]|[.]/)[1].length;
+            this.cfg.precision = this.cfg.step.toString().split(/,|[.]/)[1].length;
         }
 
         var maxlength = this.input.attr('maxlength');
@@ -188,7 +187,6 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
 
             if (!isNumber && !(isNegative || isDecimalSeparator || isThousandsSeparator)) {
                 e.preventDefault();
-                return;
             }
         })
         .on('keyup.spinner', function (e) {
@@ -281,7 +279,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
             value = value.replace(new RegExp(PrimeFaces.escapeRegExp(this.cfg.thousandSeparator), 'g'), '');
         }
         if(this.cfg.decimalSeparator) {
-            value = value.replace(new RegExp(PrimeFaces.escapeRegExp(this.cfg.decimalSeparator), 'g'), '\.');
+            value = value.replace(new RegExp(PrimeFaces.escapeRegExp(this.cfg.decimalSeparator), 'g'), '.');
         }
 
         this.value = this.parseValue(value);
@@ -306,11 +304,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
             parsedValue = parseInt(value);
         }
         if(isNaN(parsedValue)) {
-            if(PrimeFaces.trim(value) === '' && this.cfg.min !== undefined && this.cfg.required) {
-                parsedValue = this.cfg.min;
-            } else {
-                parsedValue = null;
-            }
+            parsedValue = null;
         } else {
             var minimum = this.cfg.min;
             var maximum = this.cfg.max;

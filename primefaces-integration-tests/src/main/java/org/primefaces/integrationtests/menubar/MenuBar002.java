@@ -23,17 +23,17 @@
  */
 package org.primefaces.integrationtests.menubar;
 
-import java.io.Serializable;
-
-import javax.annotation.PostConstruct;
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
-
 import org.primefaces.integrationtests.general.utilities.TestUtils;
 import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;
 import org.primefaces.model.menu.DefaultSubMenu;
 import org.primefaces.model.menu.MenuModel;
+
+import java.io.Serializable;
+
+import javax.annotation.PostConstruct;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 
 import lombok.Data;
 

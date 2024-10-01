@@ -23,6 +23,11 @@
  */
 package org.primefaces.component.photocam;
 
+import org.primefaces.event.CaptureEvent;
+import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.WidgetBuilder;
+
 import java.io.IOException;
 import java.util.Map;
 
@@ -31,11 +36,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.PhaseId;
 import javax.xml.bind.DatatypeConverter;
-
-import org.primefaces.event.CaptureEvent;
-import org.primefaces.expression.SearchExpressionUtils;
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.WidgetBuilder;
 
 public class PhotoCamRenderer extends CoreRenderer {
 

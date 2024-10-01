@@ -10,7 +10,15 @@
     </ui:define>
 
     <ui:define name="description">
-        Barcode component generates various types of barcodes in PNG or SVG formats. Browsers with no SVG support fallsback to PNG automatically.
+        Barcode component offers the capability to create diverse barcode types with <b>Barcode4j</b> in both PNG and SVG formats. For browsers lacking SVG support, the component automatically defaults to PNG format.
+    
+        <pre class="language-xml"><code>
+            &lt;dependency&gt;
+               &lt;groupId>org.primefaces.extensions&lt;/groupId&gt;
+               &lt;artifactId>barcode4j-light&lt;/artifactId&gt;
+               &lt;version>2.3.0&lt;/version&gt;
+            &lt;/dependency&gt;
+            </code></pre>
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/barcode"/>

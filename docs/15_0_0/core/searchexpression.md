@@ -5,7 +5,7 @@ PrimeFaces enhances the Faces Search Expressions with own keywords, which are pa
 ## Keywords
 
 Keywords are the easier way to reference components, they resolve to ids so that if an id changes,
-the reference does not need to change. Core JSF provides a couple of keywords and PrimeFaces
+the reference does not need to change. Core Jakarta Faces provides a couple of keywords and PrimeFaces
 provides more along with composite expression support.
 
 
@@ -74,8 +74,8 @@ referencing another.
 
 ## PrimeFaces Selectors (PFS)
 
-PFS integrates jQuery Selector API with JSF component referencing model so that referencing can
-be done using jQuery Selector API instead of core id based JSF model. Best way to explain the
+PFS integrates jQuery Selector API with Jakarta Faces component referencing model so that referencing can
+be done using jQuery Selector API instead of core id based Jakarta Faces model. Best way to explain the
 power of PFS is examples;
 
 Update all forms
@@ -134,7 +134,7 @@ update="compId :form:compId @(:input) @parent:@child(2)"
 ```
 PFS provides an alternative, flexible, grouping based approach to reference components to partially
 process and update.
-There is less CPU server load compared to regular referencing, because JSF component tree is not traversed on server side
+There is less CPU server load compared to regular referencing, because Jakarta Faces component tree is not traversed on server side
 (to find a component and figure out the client id) as PFS is implemented on client side by looking at DOM tree.
 
 Another advantage is avoiding naming container limitations.
@@ -143,7 +143,7 @@ since the component you are looking for is in a different naming container like 
 datatable. PFS can help you out in tricky situations by following jQuery’s “write less do more” style.
 
 For PFS to function properly and not to miss any component, it is required to have explicitly
-defined ids on the matched set as core JSF components usually do not render auto ids. So even
+defined ids on the matched set as core Jakarta Faces components usually do not render auto ids. So even
 though manually defined ids won't be referenced directly, they are still required for PFS to be
 collected and send in the request.
 

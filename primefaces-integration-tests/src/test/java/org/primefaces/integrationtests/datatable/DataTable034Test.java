@@ -23,16 +23,17 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.component.DataTable;
+import org.primefaces.selenium.component.InputText;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.PrimeSelenium;
-import org.primefaces.selenium.component.DataTable;
-import org.primefaces.selenium.component.InputText;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DataTable034Test extends AbstractDataTableTest {
 

@@ -23,7 +23,12 @@
  */
 package org.primefaces.integrationtests.autocomplete;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.component.AutoComplete;
+import org.primefaces.selenium.component.CommandButton;
+import org.primefaces.selenium.component.Messages;
+import org.primefaces.selenium.component.model.Msg;
 
 import java.util.List;
 
@@ -33,12 +38,8 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.component.AutoComplete;
-import org.primefaces.selenium.component.CommandButton;
-import org.primefaces.selenium.component.Messages;
-import org.primefaces.selenium.component.model.Msg;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class AutoComplete006Test extends AbstractPrimePageTest {
 

@@ -257,6 +257,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         if(this.cfg.editable) {
             this.bindEditEvents();
+            // ensure DOM memory is cleaned up by releasing document event handlers
+            this.addDestroyListener(function () {
+                $(document).off(namespace);
+                $(document).off('mouseup.datatable-cell-blur' + this.id);
+            });
         }
 
         if(this.cfg.draggableRows) {
@@ -379,6 +384,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      */
     postUpdateData: function() {
+        if (this.cfg.editable) {
+            this.bindEditEvents();
+        }
+
         if(this.cfg.draggableRows) {
             this.makeRowsDraggable();
         }
@@ -3563,12 +3572,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         // #3571 Set all fields to disabled by default
         this.disableCellEditors();
         
-        // ensure DOM memory is cleaned up by releasing document event handlers
-        this.addDestroyListener(function() {
-            $(document).off(namespace);
-            $(document).off('mouseup.datatable-cell-blur' + this.id);
-        });
-
         if(this.cfg.editMode === 'row') {
             var rowEditorSelector = '> tr > td > div.ui-row-editor > a';
             
@@ -3952,7 +3955,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         if(inputContainer.length) {
             var inputs = inputContainer.find(':input[type!=hidden]'),
-            disabledInputs = inputs.filter(':disabled');
+            disabledInputs = inputs.filter(':disabled:not([data-disabled-by-editor="true"])');
 
             if(inputs.length === disabledInputs.length) {
                 this.tabCell(targetCell, forward);
@@ -4647,13 +4650,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         var nextColumnHeader = this.isRTL ? columnHeader.prevAll(':visible:first') : columnHeader.nextAll(':visible:first');
 
         if(this.cfg.liveResize) {
-            change = columnHeader.outerWidth() - (event.pageX - columnHeader.offset().left),
-            newWidth = (columnHeader.width() - change),
+            change = columnHeader.outerWidth() - (event.pageX - columnHeader.offset().left);
+            newWidth = (columnHeader.width() - change);
             nextColumnWidth = (nextColumnHeader.width() + change);
         }
         else {
-            change = (ui.position.left - ui.originalPosition.left),
-            newWidth = (columnHeader.width() + change),
+            change = (ui.position.left - ui.originalPosition.left);
+            newWidth = (columnHeader.width() + change);
             nextColumnWidth = (nextColumnHeader.width() - change);
         }
 
@@ -5008,16 +5011,16 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 return helper;
             },
             update: function(event, ui) {
-                var fromIndex = ui.item.data('ri'),
-                fromNode = ui.item;
-                itemIndex = ui.item.index(),
-                toIndex = $this.paginator ? $this.paginator.getFirst() + itemIndex : itemIndex;
-                isDirectionUp = fromIndex >= toIndex;
+                var fromIndex = ui.item.data('ri');
+                var fromNode = ui.item;
+                var itemIndex = ui.item.index();
+                var toIndex = $this.paginator ? $this.paginator.getFirst() + itemIndex : itemIndex;
+                var isDirectionUp = fromIndex >= toIndex;
 
                 // #5296 must not count header group rows
                 // #6557 must not count expanded rows
                 if (isDirectionUp) {
-                    for (i = 0; i <= toIndex; i++) {
+                    for (let i = 0; i <= toIndex; i++) {
                         fromNode = fromNode.next('tr');
                         if (fromNode.hasClass('ui-rowgroup-header') || fromNode.hasClass('ui-expanded-row-content')){
                             toIndex--;

@@ -1,0 +1,49 @@
+body {
+  .ui-fieldset {
+    border: $panelContentBorder;
+    background: $panelContentBg;
+    color: $panelContentTextColor;
+    padding: $panelContentPadding;
+    border-radius: $borderRadius;
+
+    .ui-fieldset-legend {
+      border: $panelHeaderBorder;
+      background: $panelHeaderBg;
+      color: $panelHeaderTextColor;
+      padding: $panelHeaderPadding;
+      font-weight: $panelHeaderFontWeight;
+      border-radius: $borderRadius;
+      user-select: none;
+      transition: $transition;
+
+      .ui-fieldset-toggler {
+        display: inline-block;
+        float: none;
+        margin-right: $inlineSpacing;
+      }
+
+      .ui-icon-minusthick {
+        @include icon-override("\e90f");
+      }
+
+      .ui-icon-plusthick {
+        @include icon-override("\e90d");
+      }
+
+      &.ui-state-hover {
+        outline: 0 none;
+        border-color: $panelHeaderHoverBorderColor;
+        background: $panelHeaderHoverBg;
+        color: $panelHeaderTextHoverColor;
+
+        .ui-icon {
+          color: $panelHeaderHoverIconColor;
+        }
+      }
+
+      &.ui-state-focus {
+        @include focused();
+      }
+    }
+  }
+}

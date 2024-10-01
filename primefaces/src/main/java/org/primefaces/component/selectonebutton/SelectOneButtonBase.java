@@ -23,11 +23,11 @@
  */
 package org.primefaces.component.selectonebutton;
 
-import javax.faces.component.UISelectOne;
-import javax.faces.component.behavior.ClientBehaviorHolder;
-
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
+
+import javax.faces.component.UISelectOne;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class SelectOneButtonBase extends UISelectOne implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 

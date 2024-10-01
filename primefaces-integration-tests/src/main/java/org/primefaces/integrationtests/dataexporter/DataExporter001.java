@@ -23,6 +23,11 @@
  */
 package org.primefaces.integrationtests.dataexporter;
 
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.export.Exporter;
+import org.primefaces.integrationtests.datatable.ProgrammingLanguage;
+import org.primefaces.integrationtests.datatable.ProgrammingLanguageService;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -30,11 +35,6 @@ import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-
-import org.primefaces.component.datatable.DataTable;
-import org.primefaces.component.export.Exporter;
-import org.primefaces.integrationtests.datatable.ProgrammingLanguage;
-import org.primefaces.integrationtests.datatable.ProgrammingLanguageService;
 
 import lombok.Data;
 

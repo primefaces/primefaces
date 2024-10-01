@@ -23,6 +23,10 @@
  */
 package org.primefaces.application.resource;
 
+import org.primefaces.renderkit.RendererUtils;
+import org.primefaces.util.AgentUtils;
+import org.primefaces.util.LangUtils;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.LinkedHashMap;
@@ -36,10 +40,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.context.ResponseWriterWrapper;
-
-import org.primefaces.renderkit.RendererUtils;
-import org.primefaces.util.AgentUtils;
-import org.primefaces.util.LangUtils;
 
 public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
 

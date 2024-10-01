@@ -23,6 +23,8 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import org.primefaces.event.RowEditEvent;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -32,8 +34,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-
-import org.primefaces.event.RowEditEvent;
 
 import lombok.Data;
 

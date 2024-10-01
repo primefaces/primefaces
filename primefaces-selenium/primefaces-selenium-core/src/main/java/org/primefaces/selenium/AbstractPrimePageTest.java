@@ -23,15 +23,6 @@
  */
 package org.primefaces.selenium;
 
-import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.logging.LogEntries;
-import org.openqa.selenium.logging.LogEntry;
-import org.openqa.selenium.logging.LogType;
-import org.openqa.selenium.logging.Logs;
 import org.primefaces.selenium.internal.junit.BootstrapExtension;
 import org.primefaces.selenium.internal.junit.PageInjectionExtension;
 import org.primefaces.selenium.internal.junit.ScreenshotOnFailureExtension;
@@ -41,14 +32,25 @@ import org.primefaces.selenium.spi.WebDriverProvider;
 import java.lang.reflect.InvocationTargetException;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.logging.LogEntries;
+import org.openqa.selenium.logging.LogEntry;
+import org.openqa.selenium.logging.LogType;
+import org.openqa.selenium.logging.Logs;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -65,97 +67,97 @@ public abstract class AbstractPrimePageTest {
 
     protected void assertPresent(WebElement element) {
         if (!PrimeSelenium.isElementPresent(element)) {
-            fail("Element should be present!");
+            Assertions.fail("Element should be present!");
         }
     }
 
     protected void assertPresent(By by) {
         if (!PrimeSelenium.isElementPresent(by)) {
-            fail("Element should be present!");
+            Assertions.fail("Element should be present!");
         }
     }
 
     protected void assertNotPresent(WebElement element) {
         if (PrimeSelenium.isElementPresent(element)) {
-            fail("Element should not be present!");
+            Assertions.fail("Element should not be present!");
         }
     }
 
     protected void assertNotPresent(By by) {
         if (PrimeSelenium.isElementPresent(by)) {
-            fail("Element should not be present!");
+            Assertions.fail("Element should not be present!");
         }
     }
 
     protected void assertDisplayed(WebElement element) {
         if (!PrimeSelenium.isElementDisplayed(element)) {
-            fail("Element should be displayed!");
+            Assertions.fail("Element should be displayed!");
         }
     }
 
     protected void assertDisplayed(By by) {
         if (!PrimeSelenium.isElementDisplayed(by)) {
-            fail("Element should be displayed!");
+            Assertions.fail("Element should be displayed!");
         }
     }
 
     protected void assertNotDisplayed(WebElement element) {
         if (PrimeSelenium.isElementDisplayed(element)) {
-            fail("Element should not be displayed!");
+            Assertions.fail("Element should not be displayed!");
         }
     }
 
     protected void assertNotDisplayed(By by) {
         if (PrimeSelenium.isElementDisplayed(by)) {
-            fail("Element should not be displayed!");
+            Assertions.fail("Element should not be displayed!");
         }
     }
 
     protected void assertEnabled(WebElement element) {
         if (!PrimeSelenium.isElementEnabled(element)) {
-            fail("Element should be enabled!");
+            Assertions.fail("Element should be enabled!");
         }
     }
 
     protected void assertEnabled(By by) {
         if (!PrimeSelenium.isElementEnabled(by)) {
-            fail("Element should be enabled!");
+            Assertions.fail("Element should be enabled!");
         }
     }
 
     protected void assertNotEnabled(WebElement element) {
         if (PrimeSelenium.isElementEnabled(element)) {
-            fail("Element should not be enabled!");
+            Assertions.fail("Element should not be enabled!");
         }
     }
 
     protected void assertNotEnabled(By by) {
         if (PrimeSelenium.isElementEnabled(by)) {
-            fail("Element should not be enabled!");
+            Assertions.fail("Element should not be enabled!");
         }
     }
 
     protected void assertDisabled(WebElement element) {
         if (PrimeSelenium.isElementEnabled(element)) {
-            fail("Element should be disabled!");
+            Assertions.fail("Element should be disabled!");
         }
     }
 
     protected void assertDisabled(By by) {
         if (PrimeSelenium.isElementEnabled(by)) {
-            fail("Element should be disabled!");
+            Assertions.fail("Element should be disabled!");
         }
     }
 
     protected void assertNotDisabled(WebElement element) {
         if (!PrimeSelenium.isElementEnabled(element)) {
-            fail("Element should not be disabled!");
+            Assertions.fail("Element should not be disabled!");
         }
     }
 
     protected void assertNotDisabled(By by) {
         if (!PrimeSelenium.isElementEnabled(by)) {
-            fail("Element should not be disabled!");
+            Assertions.fail("Element should not be disabled!");
         }
     }
 
@@ -165,19 +167,19 @@ public abstract class AbstractPrimePageTest {
 
     protected void assertClickable(WebElement element) {
         if (!PrimeSelenium.isElementClickable(element)) {
-            fail("Element should be clickable!");
+            Assertions.fail("Element should be clickable!");
         }
     }
 
     protected void assertClickableOrLoading(WebElement element) {
         if (!PrimeSelenium.hasCssClass(element, "ui-state-loading") && !PrimeSelenium.isElementClickable(element)) {
-            fail("Element should be clickable or loading!");
+            Assertions.fail("Element should be clickable or loading!");
         }
     }
 
     protected void assertNotClickable(WebElement element) {
         if (PrimeSelenium.isElementClickable(element)) {
-            fail("Element should not be clickable!");
+            Assertions.fail("Element should not be clickable!");
         }
     }
 
@@ -204,7 +206,7 @@ public abstract class AbstractPrimePageTest {
         List<LogEntry> severe = logEntries.getAll().stream()
                     .filter(l -> l.getLevel() == Level.SEVERE)
                     .collect(Collectors.toList());
-        assertTrue(severe.isEmpty(), "Javascript errors were detected in the browser console.\r\n" + severe.toString());
+        Assertions.assertTrue(severe.isEmpty(), "Javascript errors were detected in the browser console.\r\n" + severe.toString());
     }
 
     /**
@@ -263,7 +265,7 @@ public abstract class AbstractPrimePageTest {
     }
 
     protected void assertIsAt(String relativePath) {
-        assertTrue(getWebDriver().getCurrentUrl().contains(relativePath));
+        Assertions.assertTrue(getWebDriver().getCurrentUrl().contains(relativePath));
     }
 
     protected <T extends AbstractPrimePage> T goTo(Class<T> pageClass) {
@@ -287,7 +289,7 @@ public abstract class AbstractPrimePageTest {
     protected void assertText(WebElement element, String text) {
         String actual = normalizeSpace(element.getText()).trim();
         String expected = normalizeSpace(text).trim();
-        assertEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
     }
 
     /**
@@ -299,7 +301,7 @@ public abstract class AbstractPrimePageTest {
     protected void assertCss(WebElement element, String... cssClasses) {
         String elementClass = element.getAttribute("class");
         if (elementClass == null) {
-            fail("Element did not have CSS 'class' attribute.");
+            Assertions.fail("Element did not have CSS 'class' attribute.");
             return;
         }
 
@@ -316,7 +318,7 @@ public abstract class AbstractPrimePageTest {
                 }
 
                 if (!found) {
-                    fail("Element expected CSS class '" + expected + "' but was not found in '" + elementClass + "'.");
+                    Assertions.fail("Element expected CSS class '" + expected + "' but was not found in '" + elementClass + "'.");
                     break;
                 }
             }

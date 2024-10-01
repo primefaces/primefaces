@@ -23,19 +23,24 @@
  */
 package org.primefaces.component.message;
 
-import org.primefaces.component.api.UINotifications;
+import org.primefaces.component.api.UINotification;
 import org.primefaces.component.api.Widget;
 
-public abstract class MessageBase extends UINotifications implements Widget {
+import javax.faces.component.UIMessage;
+
+public abstract class MessageBase extends UIMessage implements UINotification, Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.MessageRenderer";
 
     public enum PropertyKeys {
+        escape,
         display,
         style,
         styleClass,
+        severity,
+        skipDetailIfEqualsSummary
     }
 
     public MessageBase() {
@@ -45,6 +50,14 @@ public abstract class MessageBase extends UINotifications implements Widget {
     @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
+    }
+
+    public boolean isEscape() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.escape, true);
+    }
+
+    public void setEscape(boolean escape) {
+        getStateHelper().put(PropertyKeys.escape, escape);
     }
 
     public String getDisplay() {
@@ -69,5 +82,23 @@ public abstract class MessageBase extends UINotifications implements Widget {
 
     public void setStyleClass(String styleClass) {
         getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+    @Override
+    public boolean isSkipDetailIfEqualsSummary() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.skipDetailIfEqualsSummary, false);
+    }
+
+    public void setSkipDetailIfEqualsSummary(boolean skipDetailIfEqualsSummary) {
+        getStateHelper().put(PropertyKeys.skipDetailIfEqualsSummary, skipDetailIfEqualsSummary);
+    }
+
+    @Override
+    public String getSeverity() {
+        return (String) getStateHelper().eval(PropertyKeys.severity, null);
+    }
+
+    public void setSeverity(String severity) {
+        getStateHelper().put(PropertyKeys.severity, severity);
     }
 }

@@ -23,6 +23,10 @@
  */
 package org.primefaces.component.knob;
 
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.WidgetBuilder;
+
 import java.awt.Color;
 import java.io.IOException;
 
@@ -30,10 +34,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
-
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
 
 public class KnobRenderer extends CoreRenderer {
 

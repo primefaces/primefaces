@@ -1,0 +1,48 @@
+body {
+    .ui-float-label input.ui-state-focus ~ label,
+    .ui-float-label input.ui-state-filled ~ label,
+    .ui-float-label textarea.ui-state-focus ~ label,
+    .ui-float-label textarea.ui-state-filled ~ label,
+    .ui-float-label .ui-inputwrapper-focus ~ label,
+    .ui-float-label .ui-inputwrapper-filled ~ label {
+        top: -.5rem !important;
+        background-color: $inputBg;
+        padding: 2px 4px;
+        margin-left: -4px;
+        margin-top: 0;
+    }
+
+    .ui-float-label textarea ~ label {
+        margin-top: 0;
+    }
+
+    .ui-float-label input.ui-state-focus ~ label,
+    .ui-float-label .ui-inputwrapper-focus ~ label {
+        color: $inputFocusBorderColor;
+    }
+
+    .ui-float-label {
+        > label {
+            margin-left: 0;
+        }
+    }
+
+    &.ui-input-filled, .ui-input-filled {
+        .ui-float-label {
+            .ui-inputfield {
+                @include filled-input-float-label();
+            }
+
+            input.ui-state-focus ~ label,
+            input.ui-state-filled ~ label,
+            textarea.ui-state-focus ~ label,
+            textarea.ui-state-filled ~ label,
+            .ui-inputwrapper-focus ~ label,
+            .ui-inputwrapper-filled ~ label {
+                top: .25rem !important;
+                margin-top: 0;
+                background: transparent;
+            }
+        }
+    }
+}

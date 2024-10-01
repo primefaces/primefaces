@@ -23,17 +23,18 @@
  */
 package org.primefaces.util;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.beans.PropertyDescriptor;
+
 import javax.faces.FacesException;
 
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 class PropertyDescriptorResolverTest {
 
     @Test
-    void getPropertyDescriptor() {
+    void get() {
         PropertyDescriptorResolver propResolver = new PropertyDescriptorResolver.DefaultResolver();
 
         PropertyDescriptor pd = propResolver.get(A.class, "name");
@@ -56,7 +57,7 @@ class PropertyDescriptorResolverTest {
     }
 
     @Test
-    void getValueFromPropertyDescriptor() {
+    void getValue() {
         PropertyDescriptorResolver propResolver = new PropertyDescriptorResolver.DefaultResolver();
 
         B b = new B("b", true, Boolean.FALSE, DummyEnum.X);
@@ -75,7 +76,42 @@ class PropertyDescriptorResolverTest {
         assertThrows(FacesException.class, () -> propResolver.getValue(b, "unknown"));
     }
 
-    private abstract class A {
+    @Test
+    void getValueReadOnly() {
+        PropertyDescriptorResolver propResolver = new PropertyDescriptorResolver.DefaultResolver();
+
+        F f = new F(true, false, "test");
+        assertEquals(true, propResolver.getValue(f, "readOnly1"));
+        assertEquals(false, propResolver.getValue(f, "readOnly2"));
+        assertEquals("test", propResolver.getValue(f, "readOnly3"));
+
+        assertNull(propResolver.get(f.getClass(), "readOnly1").getWriteMethod());
+        assertNull(propResolver.get(f.getClass(), "readOnly2").getWriteMethod());
+        assertNull(propResolver.get(f.getClass(), "readOnly3").getWriteMethod());
+    }
+
+    @Test
+    void setValue() {
+        PropertyDescriptorResolver propResolver = new PropertyDescriptorResolver.DefaultResolver();
+
+        A a = new A(null, false, false);
+        assertNull(propResolver.getValue(a, "name"));
+        propResolver.setValue(a, "name", "Hans");
+        assertEquals("Hans", propResolver.getValue(a, "name"));
+
+        B b = new B("b", true, Boolean.FALSE, DummyEnum.X);
+        D d = new D("d", false, Boolean.FALSE, DummyEnum.Z, 123);
+        C c = new C(d);
+
+        assertNotNull(b);
+        assertEquals(123, propResolver.getValue(c, "b.foo"));
+        propResolver.setValue(c, "b.foo", 124);
+        assertEquals(124, propResolver.getValue(c, "b.foo"));
+
+        assertThrows(FacesException.class, () -> propResolver.setValue(new C(null), "b.dummyEnum", null));
+    }
+
+    private class A {
 
         private String name;
         private boolean bool1;
@@ -168,5 +204,29 @@ class PropertyDescriptorResolverTest {
         X,
         Y,
         Z;
+    }
+
+    public class F {
+        private boolean readOnly1;
+        private boolean readOnly2;
+        private String readOnly3;
+
+        public F(boolean readOnly1, boolean readOnly2, String readOnly3) {
+            this.readOnly1 = readOnly1;
+            this.readOnly2 = readOnly2;
+            this.readOnly3 = readOnly3;
+        }
+
+        public boolean isReadOnly1() {
+            return readOnly1;
+        }
+
+        public boolean isReadOnly2() {
+            return readOnly2;
+        }
+
+        public String getReadOnly3() {
+            return readOnly3;
+        }
     }
 }

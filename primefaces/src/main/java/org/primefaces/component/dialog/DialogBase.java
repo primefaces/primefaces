@@ -23,12 +23,12 @@
  */
 package org.primefaces.component.dialog;
 
-import javax.faces.component.UIPanel;
-import javax.faces.component.behavior.ClientBehaviorHolder;
-
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
+
+import javax.faces.component.UIPanel;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class DialogBase extends UIPanel implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 

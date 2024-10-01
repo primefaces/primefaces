@@ -23,6 +23,8 @@
  */
 package org.primefaces.showcase.util;
 
+import org.primefaces.util.LangUtils;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -38,8 +40,6 @@ import java.util.regex.Pattern;
 
 import jakarta.el.ELException;
 import jakarta.faces.context.FacesContext;
-
-import org.primefaces.util.LangUtils;
 
 public class FileContentMarkerUtil {
 
@@ -236,8 +236,15 @@ public class FileContentMarkerUtil {
         return pretty;
     }
 
+    /**
+     * Determines if a given file is eligible for processing.
+     *
+     * @param file The file name or path to check
+     * @return true if the file is eligible, false otherwise
+     */
     private static boolean isEligibleFile(String file) {
-        return file != null && file.startsWith(SC_PREFIX) && !file.endsWith("[]");
+        // Check the file is a Showcase file, is not an array "[]", and is not an inner class "$"
+        return file != null && file.startsWith(SC_PREFIX) && !file.endsWith("[]") && !file.contains("$");
     }
 
     private static String packageToPathAccess(String pkg) {

@@ -23,6 +23,11 @@
  */
 package org.primefaces.component.captcha;
 
+import org.primefaces.PrimeFaces;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.MessageFactory;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -39,11 +44,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 
-import org.primefaces.PrimeFaces;
 import org.json.JSONObject;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.MessageFactory;
 
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")

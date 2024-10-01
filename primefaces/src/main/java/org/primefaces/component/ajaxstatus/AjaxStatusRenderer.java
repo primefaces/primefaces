@@ -23,15 +23,15 @@
  */
 package org.primefaces.component.ajaxstatus;
 
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.WidgetBuilder;
+
 import java.io.IOException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.FacetUtils;
-import org.primefaces.util.WidgetBuilder;
 
 public class AjaxStatusRenderer extends CoreRenderer {
 

@@ -23,13 +23,14 @@
  */
 package org.primefaces.showcase.service;
 
+import org.primefaces.showcase.domain.Photo;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Named;
-
-import org.primefaces.showcase.domain.Photo;
 
 @Named
 @ApplicationScoped

@@ -23,19 +23,28 @@
  */
 package org.primefaces.component.fileupload;
 
+import org.primefaces.model.file.NIOUploadedFile;
+import org.primefaces.model.file.UploadedFile;
+import org.primefaces.model.file.UploadedFileWrapper;
+import org.primefaces.model.file.UploadedFiles;
+import org.primefaces.model.file.UploadedFilesWrapper;
+import org.primefaces.util.FileUploadUtils;
+
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.nio.file.StandardOpenOption;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-
-import org.primefaces.model.file.*;
-import org.primefaces.util.FileUploadUtils;
 
 public abstract class AbstractFileUploadDecoder<T extends HttpServletRequest> implements FileUploadDecoder, FileUploadChunkDecoder<T> {
 

@@ -1,0 +1,38 @@
+body {
+  .ui-tooltip {
+    .ui-tooltip-text {
+      background: $tooltipBg;
+      color: $tooltipTextColor;
+      box-shadow: $overlayContainerShadow;
+      border-radius: $borderRadius;
+    }
+
+    &.ui-state-error {
+      border: 0 none;
+    }
+
+    &.ui-tooltip-right {
+      .ui-tooltip-arrow {
+        border-right-color: $tooltipBg;
+      }
+    }
+
+    &.ui-tooltip-left {
+      .ui-tooltip-arrow {
+        border-left-color: $tooltipBg;
+      }
+    }
+
+    &.ui-tooltip-top {
+      .ui-tooltip-arrow {
+        border-top-color: $tooltipBg;
+      }
+    }
+
+    &.ui-tooltip-bottom {
+      .ui-tooltip-arrow {
+        border-bottom-color: $tooltipBg;
+      }
+    }
+  }
+}

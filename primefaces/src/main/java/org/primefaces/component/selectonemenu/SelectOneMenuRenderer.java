@@ -23,6 +23,16 @@
  */
 package org.primefaces.component.selectonemenu;
 
+import org.primefaces.component.column.Column;
+import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.renderkit.SelectOneRenderer;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.WidgetBuilder;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -38,11 +48,6 @@ import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 import javax.faces.render.Renderer;
-
-import org.primefaces.component.column.Column;
-import org.primefaces.expression.SearchExpressionUtils;
-import org.primefaces.renderkit.SelectOneRenderer;
-import org.primefaces.util.*;
 
 public class SelectOneMenuRenderer extends SelectOneRenderer {
 
@@ -118,10 +123,11 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
         String style = menu.getStyle();
         String styleClass = createStyleClass(menu, SelectOneMenu.STYLE_CLASS);
-
-        if (ComponentUtils.isRTL(context, menu)) {
-            styleClass = styleClass + " " + SelectOneMenu.RTL_CLASS;
-        }
+        styleClass = getStyleClassBuilder(context)
+                .add(styleClass)
+                .add(ComponentUtils.isRTL(context, menu),  SelectOneMenu.RTL_CLASS)
+                .add(menu.isReadonly(), "ui-state-readonly")
+                .build();
 
         writer.startElement("div", menu);
         writer.writeAttribute("id", clientId, "id");
@@ -197,6 +203,9 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
         if (menu.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", null);
+        }
+        if (menu.isReadonly()) {
+            writer.writeAttribute("readonly", "readonly", null);
         }
         if (menu.getOnkeydown() != null) {
             writer.writeAttribute("onkeydown", menu.getOnkeydown(), null);

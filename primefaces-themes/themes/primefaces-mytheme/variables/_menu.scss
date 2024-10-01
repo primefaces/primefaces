@@ -1,0 +1,151 @@
+/// Text color of a steps item
+/// @group menu
+$stepsItemTextColor: $textSecondaryColor;
+
+/// Border of a steps item number
+/// @group menu
+$stepsItemNumberBorder: 1px solid #c8c8c8;
+
+/// Color of a steps item number
+/// @group menu
+$stepsItemNumberColor: $textColor;
+
+/// Background of a steps item number
+/// @group menu
+$stepsItemNumberBg: #ffffff;
+
+/// Font size of a steps item number
+/// @group menu
+$stepsItemNumberFontSize: 1.143rem;
+
+/// Width of a steps item number
+/// @group menu
+$stepsItemNumberWidth: 2rem;
+
+/// Height of a steps item number
+/// @group menu
+$stepsItemNumberHeight: 2rem;
+
+/// Border radius of a steps item number
+/// @group menu
+$stepsItemNumberBorderRadius: 50%;
+
+/// Padding of a vertical menu
+/// @group menu
+$verticalMenuPadding: .25rem 0;
+
+/// Background of a menu
+/// @group menu
+$menuBg: #ffffff;
+
+/// Border of a menu
+/// @group menu
+$menuBorder: 1px solid #dee2e6;
+
+/// Text color of a menuitem
+/// @group menu
+$menuitemTextColor: $textColor;
+
+/// Icon color of a menuitem
+/// @group menu
+$menuitemIconColor: $textSecondaryColor;
+
+/// Background of a menuitem in hover state
+/// @group menu
+$menuitemHoverBg: #e9ecef;
+
+/// Text color of a menuitem in hover state
+/// @group menu
+$menuitemTextHoverColor: $textColor;
+
+/// Icon color of a menuitem in hover state
+/// @group menu
+$menuitemHoverIconColor: $textSecondaryColor;
+
+/// Padding of a menuitem
+/// @group menu
+$menuitemPadding: .75rem 1rem;
+
+/// Margin of a menuitem
+/// @group menu
+$menuitemMargin: 0;
+
+/// Border radius of a menuitem
+/// @group menu
+$menuitemBorderRadius: 0;
+
+/// Margin of a menuitrem separator
+/// @group menu
+$menuSeparatorMargin: .25rem 0;
+
+/// Padding of a breadcrumb
+/// @group menu
+$breadcrumbPadding: 1rem;
+
+/// Background of a breadcrumb
+/// @group menu
+$breadcrumbBg: $menuBg;
+
+/// Border of a breadcrumb
+/// @group menu
+$breadcrumbBorder: $menuBorder;
+
+/// Text color of a breadcrumb item
+/// @group menu
+$breadcrumbItemTextColor: $menuitemTextColor;
+
+/// Icon color of a breadcrumb item
+/// @group menu
+$breadcrumbItemIconColor: $menuitemIconColor;
+
+/// Text color of the breadcrumb item
+/// @group menu
+$breadcrumbLastItemTextColor: $menuitemTextColor;
+
+/// Icon color of the breadcrumb item
+/// @group menu
+$breadcrumbLastItemIconColor: $menuitemIconColor;
+
+/// Color of a breadcrumb separator
+/// @group menu
+$breadcrumbSeparatorColor: $menuitemTextColor;
+
+/// Margin of a submenu header
+/// @group menu
+$submenuHeaderMargin: 0;
+
+/// Padding of a submenu header
+/// @group menu
+$submenuHeaderPadding: .75rem 1rem;
+
+/// Background of a submenu header
+/// @group menu
+$submenuHeaderBg: #ffffff;
+
+/// Border of a submenu
+/// @group menu
+$submenuHeaderBorder: 0 none;
+
+/// Text color of a submenu header
+/// @group menu
+$submenuHeaderTextColor: $textColor;
+
+/// Font weight of a submenu header
+/// @group menu
+$submenuHeaderFontWeight: 600;
+
+/// Font size of a submenu header
+/// @group menu
+$submenuHeaderFontSize: 1rem;
+
+/// Padding of a horizontal menu e.g. menubar
+/// @group menu
+$horizontalMenuPadding: .5rem;
+
+/// Background of a horizontal menu e.g. menubar
+/// @group menu
+$horizontalMenuBg: #f8f9fa;
+
+/// Box shadow of an overlay menu
+/// @group menu
+$overlayMenuShadow: 0 1px 6px 0 rgba(0, 0, 0, 0.1);

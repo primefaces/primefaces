@@ -23,23 +23,34 @@
  */
 package org.primefaces.component.timeline;
 
+import org.primefaces.model.timeline.TimelineEvent;
+import org.primefaces.model.timeline.TimelineGroup;
+import org.primefaces.model.timeline.TimelineModel;
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.CalendarUtils;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.EscapeUtils;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.FastStringWriter;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.WidgetBuilder;
+
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
-import org.primefaces.model.timeline.TimelineEvent;
-import org.primefaces.model.timeline.TimelineGroup;
-import org.primefaces.model.timeline.TimelineModel;
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.*;
-import static java.util.stream.Collectors.toList;
 
 public class TimelineRenderer extends CoreRenderer {
 
@@ -565,6 +576,6 @@ public class TimelineRenderer extends CoreRenderer {
                 .filter(Objects::nonNull)
                 .distinct()
                 .map(group -> new TimelineGroup<Object>(group, group))
-                .collect(toList());
+                .collect(Collectors.toList());
     }
 }

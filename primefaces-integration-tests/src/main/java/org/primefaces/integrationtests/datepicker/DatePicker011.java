@@ -23,24 +23,24 @@
  */
 package org.primefaces.integrationtests.datepicker;
 
-import java.io.Serializable;
-import java.time.LocalDate;
-import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
-
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
-
-
-import lombok.Data;
 import org.primefaces.event.DateViewChangeEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.datepicker.DateMetadataModel;
 import org.primefaces.model.datepicker.DefaultDateMetadata;
 import org.primefaces.model.datepicker.DefaultDateMetadataModel;
 import org.primefaces.model.datepicker.LazyDateMetadataModel;
+
+import java.io.Serializable;
+import java.time.LocalDate;
+
+import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
+
+import lombok.Data;
 
 @Named
 @ViewScoped

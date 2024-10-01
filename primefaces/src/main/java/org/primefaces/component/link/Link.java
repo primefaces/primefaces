@@ -23,12 +23,12 @@
  */
 package org.primefaces.component.link;
 
+import org.primefaces.util.ComponentUtils;
+
 import java.util.List;
 import java.util.Map;
 
 import javax.faces.application.ResourceDependency;
-
-import org.primefaces.util.ComponentUtils;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")

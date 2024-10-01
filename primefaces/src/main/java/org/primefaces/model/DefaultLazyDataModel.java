@@ -23,29 +23,50 @@
  */
 package org.primefaces.model;
 
+import org.primefaces.component.api.UITable;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.model.filter.FilterConstraint;
+import org.primefaces.util.Callbacks;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.LocaleUtils;
+import org.primefaces.util.PropertyDescriptorResolver;
+import org.primefaces.util.SortTableComparator;
+
 import java.io.Serializable;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 
-import org.primefaces.component.api.UITable;
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.model.filter.FilterConstraint;
-import org.primefaces.util.*;
-
+/**
+ * Default implementation of the {@link LazyDataModel}, which implements sorting and filtering via reflection.
+ * It provides some useful features to get more control over filtering,
+ * without lossing the power and performance of the {@link LazyDataModel}.
+ *
+ * @param <T> The result obj
+ */
 public class DefaultLazyDataModel<T> extends LazyDataModel<T> {
+
+    private static final long serialVersionUID = 1L;
 
     private static final Logger LOGGER = Logger.getLogger(DefaultLazyDataModel.class.getName());
 
     private String rowKeyField;
     private FilterConstraint filter;
     private Sorter<T> sorter;
-    private Callbacks.SerializableSupplier<List<T>> valuesSupplier;
+    private ValuesSupplier<T> valuesSupplier;
     private Callbacks.SerializableFunction<T, Object> rowKeyProvider;
     private Callbacks.SerializablePredicate<T> skipFiltering;
+    private Callbacks.SerializablePredicate<FilterMeta> ignoreFilter;
 
     /**
      * For serialization only
@@ -56,15 +77,16 @@ public class DefaultLazyDataModel<T> extends LazyDataModel<T> {
 
     @Override
     public int count(Map<String, FilterMeta> filterBy) {
-        List<T> values = valuesSupplier.get();
-        List<T> filteredValues = filter(values, filterBy);
-        return filteredValues.size();
+        return 0;
     }
 
     @Override
     public List<T> load(int first, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
-        List<T> values = valuesSupplier.get();
+        List<T> values = valuesSupplier.get(filterBy);
         List<T> filteredValues = filter(values, filterBy);
+
+        setRowCount(filteredValues.size());
+        first = recalculateFirst(first, pageSize, getRowCount());
 
         sort(filteredValues);
 
@@ -105,6 +127,7 @@ public class DefaultLazyDataModel<T> extends LazyDataModel<T> {
 
         return values.stream()
                 .filter(obj -> {
+                    // always include the current obj in the result?
                     if (skipFiltering != null && skipFiltering.test(obj)) {
                         return true;
                     }
@@ -112,6 +135,7 @@ public class DefaultLazyDataModel<T> extends LazyDataModel<T> {
                     boolean localMatch = true;
                     boolean globalMatch = false;
 
+                    // global filtering
                     if (hasGlobalFilter) {
                         if (globalFilter != null && globalFilter.isActive()) {
                             globalMatch = globalFilter.getConstraint().isMatching(context, obj, globalFilter.getFilterValue(), locale);
@@ -121,8 +145,15 @@ public class DefaultLazyDataModel<T> extends LazyDataModel<T> {
                         }
                     }
 
+                    // local filtering
                     for (FilterMeta filterMeta : filterBy.values()) {
+                        // skip filter
                         if (filterMeta.getField() == null || filterMeta.getFilterValue() == null || filterMeta.isGlobalFilter()) {
+                            continue;
+                        }
+
+                        // ignore this filter?
+                        if (ignoreFilter != null && ignoreFilter.test(filterMeta)) {
                             continue;
                         }
 
@@ -157,7 +188,7 @@ public class DefaultLazyDataModel<T> extends LazyDataModel<T> {
 
     @Override
     public T getRowData(String rowKey) {
-        List<T> values = Objects.requireNonNullElseGet(valuesSupplier.get(), Collections::emptyList);
+        List<T> values = Objects.requireNonNullElseGet(valuesSupplier.get(Collections.emptyMap()), Collections::emptyList);
         for (T obj : values) {
             if (Objects.equals(rowKey, getRowKey(obj))) {
                 return obj;
@@ -183,7 +214,7 @@ public class DefaultLazyDataModel<T> extends LazyDataModel<T> {
             model = new DefaultLazyDataModel<>();
         }
 
-        public Builder<T> valueSupplier(Callbacks.SerializableSupplier<List<T>> valuesSupplier) {
+        public Builder<T> valueSupplier(ValuesSupplier<T> valuesSupplier) {
             model.valuesSupplier = valuesSupplier;
             return this;
         }
@@ -208,8 +239,27 @@ public class DefaultLazyDataModel<T> extends LazyDataModel<T> {
             return this;
         }
 
+        /**
+         * Registers a callback that can decide whether to always include the given object in the result,
+         * independent of the current filters.
+         *
+         * @param skipFiltering the callback
+         * @return the current builder
+         */
         public Builder<T> skipFiltering(Callbacks.SerializablePredicate<T> skipFiltering) {
             model.skipFiltering = skipFiltering;
+            return this;
+        }
+
+        /**
+         * Registers a callback that can decide to ignore the given filter completely.
+         * You may manually respect the filter in the {@link #valuesSupplier}.
+         *
+         * @param ignoreFilter the callback
+         * @return the current builder
+         */
+        public Builder<T> ignoreFilter(Callbacks.SerializablePredicate<FilterMeta> ignoreFilter) {
+            model.ignoreFilter = ignoreFilter;
             return this;
         }
 
@@ -241,5 +291,11 @@ public class DefaultLazyDataModel<T> extends LazyDataModel<T> {
     @FunctionalInterface
     public interface Sorter<T> extends Comparator<T>, Serializable {
 
+    }
+
+    @FunctionalInterface
+    public interface ValuesSupplier<T> extends Serializable {
+
+        List<T> get(Map<String, FilterMeta> filterBy);
     }
 }

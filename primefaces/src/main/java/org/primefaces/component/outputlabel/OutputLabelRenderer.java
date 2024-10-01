@@ -23,6 +23,18 @@
  */
 package org.primefaces.component.outputlabel;
 
+import org.primefaces.component.api.InputHolder;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.el.ValueExpressionAnalyzer;
+import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.metadata.BeanValidationMetadataExtractor;
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.CompositeUtils;
+import org.primefaces.util.EditableValueHolderState;
+import org.primefaces.util.HTML;
+import org.primefaces.util.StyleClassBuilder;
+
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.Set;
@@ -31,20 +43,16 @@ import java.util.logging.Logger;
 
 import javax.el.PropertyNotFoundException;
 import javax.el.ValueExpression;
-import javax.faces.component.*;
+import javax.faces.component.ContextCallback;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
+import javax.faces.component.UINamingContainer;
+import javax.faces.component.UISelectBoolean;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
 import javax.validation.metadata.ConstraintDescriptor;
-
-import org.primefaces.component.api.InputHolder;
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.el.ValueExpressionAnalyzer;
-import org.primefaces.expression.SearchExpressionUtils;
-import org.primefaces.metadata.BeanValidationMetadataExtractor;
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.*;
 
 public class OutputLabelRenderer extends CoreRenderer {
 
@@ -62,74 +70,16 @@ public class OutputLabelRenderer extends CoreRenderer {
                 .add(ComponentUtils.isRTL(context, label), OutputLabel.RTL_CLASS)
                 .add(label.getStyleClass());
 
-        final EditableValueHolderState state = new EditableValueHolderState();
+        EditableValueHolderState forState = null;
 
         final String indicateRequired = label.getIndicateRequired();
         boolean isAuto = "auto".equals(indicateRequired) || "autoSkipDisabled".equals(indicateRequired);
 
         String _for = label.getFor();
         if (!isValueBlank(_for)) {
-            ContextCallback callback = (ctxt, target) -> {
-                if (target instanceof InputHolder) {
-                    InputHolder inputHolder = ((InputHolder) target);
-                    state.setClientId(inputHolder.getInputClientId());
-
-                    inputHolder.setLabelledBy(clientId);
-                }
-                else {
-                    state.setClientId(target.getClientId(ctxt));
-                }
-
-                if (target instanceof UIInput) {
-                    UIInput input = (UIInput) target;
-
-                    if (value != null && (input.getAttributes().get("label") == null || input.getValueExpression("label") == null)) {
-                        ValueExpression ve = label.getValueExpression("value");
-
-                        if (ve != null) {
-                            input.setValueExpression("label", ve);
-                        }
-                        else {
-                            String labelString = value;
-                            char separatorChar = UINamingContainer.getSeparatorChar(ctxt);
-                            int separatorCharPos = labelString.lastIndexOf(separatorChar);
-
-                            if (separatorCharPos != -1) {
-                                labelString = labelString.substring(0, separatorCharPos);
-                            }
-
-                            input.getAttributes().put("label", labelString);
-                        }
-                    }
-
-                    if (!input.isValid()) {
-                        styleClassBuilder.add("ui-state-error");
-                    }
-
-                    if (isAuto) {
-                        boolean disabled = false;
-                        if ("autoSkipDisabled".equals(indicateRequired)) {
-                            disabled = ComponentUtils.isDisabledOrReadonly(input);
-                        }
-
-                        if (disabled) {
-                            state.setRequired(false);
-                        }
-                        else {
-                            state.setRequired(input.isRequired());
-                            // fallback if required=false
-                            if (!state.isRequired()) {
-                                PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(ctxt);
-                                if (applicationContext.getConfig().isBeanValidationEnabled() && isBeanValidationDefined(input, ctxt)) {
-                                    state.setRequired(true);
-                                }
-                            }
-                        }
-                    }
-                }
-            };
-
             UIComponent forComponent = SearchExpressionUtils.contextlessResolveComponent(context, label, _for);
+            ContextCallbackFor callback = new ContextCallbackFor(clientId, indicateRequired, isAuto, label, styleClassBuilder, value);
+            forState = callback.getState();
 
             if (CompositeUtils.isComposite(forComponent)) {
                 CompositeUtils.invokeOnDeepestEditableValueHolder(context, forComponent, callback);
@@ -140,7 +90,7 @@ public class OutputLabelRenderer extends CoreRenderer {
         }
 
         boolean withRequiredIndicator = "true".equals(indicateRequired)
-                || (isAuto && !isValueBlank(_for) && state.isRequired());
+                || (isAuto && forState != null && forState.isRequired());
         if (withRequiredIndicator) {
             styleClassBuilder.add("ui-required");
         }
@@ -152,8 +102,8 @@ public class OutputLabelRenderer extends CoreRenderer {
         renderDomEvents(context, label, HTML.LABEL_EVENTS);
         renderRTLDirection(context, label);
 
-        if (!isValueBlank(_for)) {
-            writer.writeAttribute("for", state.getClientId(), "for");
+        if (!isValueBlank(_for) && forState != null) {
+            writer.writeAttribute("for", forState.getClientId(), "for");
         }
 
         if (value != null) {
@@ -233,5 +183,90 @@ public class OutputLabelRenderer extends CoreRenderer {
     @Override
     public boolean getRendersChildren() {
         return true;
+    }
+
+    private class ContextCallbackFor implements ContextCallback {
+
+        private final EditableValueHolderState state = new EditableValueHolderState();
+        private final UIComponent label;
+        private final String indicateRequired;
+        private final String clientId;
+        private final String value;
+        private final StyleClassBuilder styleClassBuilder;
+        private final boolean isAuto;
+
+        public ContextCallbackFor(String clientId, String indicateRequired, boolean isAuto, UIComponent label,
+                                  StyleClassBuilder styleClassBuilder, String value) {
+            this.clientId = clientId;
+            this.indicateRequired = indicateRequired;
+            this.isAuto = isAuto;
+            this.label = label;
+            this.styleClassBuilder = styleClassBuilder;
+            this.value = value;
+        }
+
+        @Override
+        public void invokeContextCallback(FacesContext context, UIComponent target) {
+            if (target instanceof InputHolder) {
+                InputHolder inputHolder = ((InputHolder) target);
+                state.setClientId(inputHolder.getInputClientId());
+                inputHolder.setLabelledBy(clientId);
+            }
+            else {
+                state.setClientId(target.getClientId(context));
+            }
+
+            if (target instanceof UIInput) {
+                UIInput input = (UIInput) target;
+
+                if (value != null && (input.getAttributes().get("label") == null || input.getValueExpression("label") == null)) {
+                    ValueExpression ve = label.getValueExpression("value");
+
+                    if (ve != null) {
+                        input.setValueExpression("label", ve);
+                    }
+                    else {
+                        String labelString = value;
+                        char separatorChar = UINamingContainer.getSeparatorChar(context);
+                        int separatorCharPos = labelString.lastIndexOf(separatorChar);
+
+                        if (separatorCharPos != -1) {
+                            labelString = labelString.substring(0, separatorCharPos);
+                        }
+
+                        input.getAttributes().put("label", labelString);
+                    }
+                }
+
+                if (!input.isValid()) {
+                    styleClassBuilder.add("ui-state-error");
+                }
+
+                if (isAuto) {
+                    boolean disabled = false;
+                    if ("autoSkipDisabled".equals(indicateRequired)) {
+                        disabled = ComponentUtils.isDisabledOrReadonly(input);
+                    }
+
+                    if (disabled) {
+                        state.setRequired(false);
+                    }
+                    else {
+                        state.setRequired(input.isRequired());
+                        // fallback if required=false
+                        if (!state.isRequired()) {
+                            PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(context);
+                            if (applicationContext.getConfig().isBeanValidationEnabled() && isBeanValidationDefined(input, context)) {
+                                state.setRequired(true);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        public EditableValueHolderState getState() {
+            return state;
+        }
     }
 }
