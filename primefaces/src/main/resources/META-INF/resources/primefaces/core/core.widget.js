@@ -199,7 +199,13 @@ if (!PrimeFaces.widget) {
      * @template PrimeFaces.widget.DestroyListener.TWidget The type of the widget that is being destroyed.
      * @this {TWidget} PrimeFaces.widget.DestroyListener
      * @param {TWidget} PrimeFaces.widget.DestroyListener.widget The widget that is being destroyed.
-
+     * 
+     * @typedef PrimeFaces.widget.PreConstructCallback A callback for a PrimeFaces widget. An optional callback that is
+     * invoked before a widget is created, at the beginning of the {@link BaseWidget.init | init} method. This is
+     * usually specified via the `widgetPreConstruct` attribute on the JSF component.
+     * @this {BaseWidget} PrimeFaces.widget.PreConstructCallback
+     * @param {BaseWidget} PrimeFaces.widget.PreConstructCallback.cfg The widget configuration.
+     * 
      * @typedef PrimeFaces.widget.PostConstructCallback A callback for a PrimeFaces widget. An optional callback that is
      * invoked after a widget was created successfully, at the end of the {@link BaseWidget.init | init} method. This is
      * usually specified via the `widgetPostConstruct` attribute on the JSF component. Note that this is also called

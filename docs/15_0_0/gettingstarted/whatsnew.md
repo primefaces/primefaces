@@ -9,6 +9,7 @@ This page contains a list of big features. Please check the GitHub issues for al
 Look into [migration guide](https://primefaces.github.io/primefaces/15_0_0/#/../migrationguide/15_0_0) for more enhancements and changes.
 
 * Core
+    * Added `widgetPreConstruct` attribute to support custom logic before widget creation. See [widgets](../core/widgets.md) for more information.
     
 * AutoComplete
     * Added property `highlightSelector=""` so you can delcare the jQuery selector for what to find and highlight. See https://github.com/primefaces/primefaces/issues/11822 

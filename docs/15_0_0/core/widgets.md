@@ -29,19 +29,21 @@ Most of the PrimeFaces components have the same structure, HTML markup and a scr
 ## Widget Lifecycle Events
 
 For any component you can attach client side Javascript to the widget lifecycle events for 
-`PostConstruct`, `PostRefresh`, or `PreDestroy` of the widget.
+`PreConstruct`, `PostConstruct`, `PostRefresh`, or `PreDestroy` of the widget.
 Simply assign the correct `f:attribute` to add your script.
 
-| Event | Execution |
-| --- | --- |
-| PostConstruct | Always called either on page load or Ajax update of component
-| PostRefresh | Only called after Ajax update of the component
-| PreDestroy | Only called before the widget is actually being destroyed
+| Event | Parameters | Execution |
+| --- | --- | --- |
+| PreConstruct | cfg | Always called either on page load or Ajax update of component before the widget is created.
+| PostConstruct | widget | Always called either on page load or Ajax update of component after the widget is created.
+| PostRefresh | widget | Only called after Ajax update of the component
+| PreDestroy | widget | Only called before the widget is actually being destroyed
 
 ```xhtml
 <p:inputText id="name" widgetVar="wgtName" value="#{basicView.text}">
-    <f:attribute name="widgetPostConstruct" value="alert('Widget created!');" />  
-    <f:attribute name="widgetPostRefresh" value="alert('Widget refreshed!');" />  
-    <f:attribute name="widgetPreDestroy" value="alert('Widget destroyed!');" />  
+    <f:attribute name="widgetPreConstruct" value="alert('Widget initialized with config: ' + cfg.id);" />  
+    <f:attribute name="widgetPostConstruct" value="alert('Widget created with id: ' + widget.id);" />  
+    <f:attribute name="widgetPostRefresh" value="alert('Widget refreshed! ' + widget.id);" />  
+    <f:attribute name="widgetPreDestroy" value="alert('Widget destroyed! ' + widget.id);" />  
 </p:inputText>
 ```
