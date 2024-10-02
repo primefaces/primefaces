@@ -38,6 +38,7 @@ filterBy | null | SortMeta / Collection<SortMeta> | Property to be used for defa
 filterDelay | 300 | Integer | Delay in milliseconds before sending an ajax filter query.
 filterEvent | keyup | String | Event triggering filter for input filters. If "enter" it will only filter after ENTER key is pressed.
 filteredValue  | null | TreeNode | TreeNode to keep filtered data.
+filterNormalize | false | Boolean | Defines if filtering would be done using normalized values (accents will be removed from characters). Default is false.
 first | 0 | Integer | Index of the first data to display.
 globalFilter | null | String | Value of the global filter to use when filtering by default.
 globalFilterFunction | null | MethodExpression | Custom implementation to globally filter a value against a constraint.

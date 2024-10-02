@@ -71,6 +71,7 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         filterBy,
         filterDelay,
         filterEvent,
+        filterNormalize,
         filteredValue,
         frozenColumns,
         frozenColumnsAlignment,
@@ -789,5 +790,14 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
 
     public void setCellNavigation(boolean cellNavigation) {
         getStateHelper().put(PropertyKeys.cellNavigation, cellNavigation);
+    }
+
+    @Override
+    public boolean isFilterNormalize() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.filterNormalize, false);
+    }
+
+    public void setFilterNormalize(boolean filterNormalize) {
+        getStateHelper().put(PropertyKeys.filterNormalize, filterNormalize);
     }
 }

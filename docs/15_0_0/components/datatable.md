@@ -46,6 +46,7 @@ DataTable displays data in tabular format.
 | filterDelay               | 300                | Integer          | Delay in milliseconds before sending an ajax filter query.
 | filterEvent               | keyup              | String           | Event triggering filter for input filters. If "enter" it will only filter after ENTER key is pressed.
 | filteredValue             | null               | List             | List to keep filtered data.
+| filterNormalize           | false              | Boolean          | Defines if filtering would be done using normalized values (accents will be removed from characters). Default is false.
 | first                     | 0                  | Integer          | Index of the first row to be displayed
 | frozenColumns             | 0                  | Integer          | Number of columns to freeze from start index 0.
 | frozenColumnsAlignment    | left               | String           | Defines Alignment of frozen columns, valid values are `left` (default) and `right` 
