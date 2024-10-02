@@ -25,12 +25,12 @@ package org.primefaces.model.filter;
 
 import java.util.function.BiPredicate;
 
-public class EqualsFilterConstraint extends StringFilterConstraint {
+public class EqualsFilterConstraint extends ComparableFilterConstraint {
 
     private static final long serialVersionUID = 1L;
 
     @Override
-    protected BiPredicate<String, String> getPredicate() {
-        return String::equals;
+    protected BiPredicate<Comparable, Comparable> getPredicate() {
+        return (o1, o2) -> o1.compareTo(o2) == 0;
     }
 }
