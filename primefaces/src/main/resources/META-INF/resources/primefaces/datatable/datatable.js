@@ -3735,7 +3735,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             cellIndex = cell.index();
 
         if(this.cfg.scrollable && this.cfg.frozenColumns) {
-            cellIndex = (this.scrollTbody.is(cell.closest('tbody'))) ? (cellIndex + $this.cfg.frozenColumns) : cellIndex;
+            cellIndex = (this.scrollTbody.is(cell.closest('tbody'))) ? (cellIndex + this.cfg.frozenColumns) : cellIndex;
         }
 
         if (rowMeta === undefined || rowMeta.index === undefined) {
@@ -4047,7 +4047,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         $this = this;
 
         if(this.cfg.scrollable && this.cfg.frozenColumns) {
-            cellIndex = (this.scrollTbody.is(cell.closest('tbody'))) ? (cellIndex + $this.cfg.frozenColumns) : cellIndex;
+            cellIndex = (this.scrollTbody.is(cell.closest('tbody'))) ? (cellIndex + this.cfg.frozenColumns) : cellIndex;
         }
 
         var cellInfo = rowMeta.index + ',' + cellIndex;
@@ -4109,7 +4109,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         $this = this;
 
         if(this.cfg.scrollable && this.cfg.frozenColumns) {
-            cellIndex = (this.scrollTbody.is(cell.closest('tbody'))) ? (cellIndex + $this.cfg.frozenColumns) : cellIndex;
+            cellIndex = (this.scrollTbody.is(cell.closest('tbody'))) ? (cellIndex + this.cfg.frozenColumns) : cellIndex;
         }
 
         var cellInfo = rowMeta.index + ',' + cellIndex;
