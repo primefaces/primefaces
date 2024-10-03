@@ -1459,7 +1459,7 @@ body .fc a {
 }
 
 .ui-tooltip:not([role]) {
-    background: '#fff';
+    background: #fff;
     padding: 5px;
     font-size: .85em;
 }
