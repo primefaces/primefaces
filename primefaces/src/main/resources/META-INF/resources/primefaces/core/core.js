@@ -645,7 +645,7 @@
          * @return {string} The given value, escaped to be used as a text-literal within an HTML document.
          */
         escapeHTML: function(value, preventDoubleEscaping) {
-            var regex = preventDoubleEscaping ? /[<>"'`=\/]/g : /[&<>"'`=\/]/g;
+            var regex = preventDoubleEscaping ? /[<>"'`=/]/g : /[&<>"'`=/]/g;
             return String(value).replace(regex, function (s) {
                 return PrimeFaces.entityMap[s];
             });
@@ -770,13 +770,7 @@
          * @return {boolean} `true` if the given item is in the given array, `false` otherwise.
          */
         inArray: function(arr, item) {
-            for(var i = 0; i < arr.length; i++) {
-                if(arr[i] === item) {
-                    return true;
-                }
-            }
-
-            return false;
+            return arr.includes(item);
         },
 
         /**
@@ -1009,8 +1003,8 @@
          */
         bcn: function(element, event, functions) {
             if(functions) {
-                for(var i = 0; i < functions.length; i++) {
-                    var retVal = functions[i].call(element, event);
+                for(const fn of functions) {
+                    var retVal = fn.call(element, event);
                     if(retVal === false) {
                         if(event.preventDefault) {
                             event.preventDefault();
@@ -1035,10 +1029,9 @@
          * A list of callback functions. If any returns `false`, the other callbacks are not invoked.
          */
         bcnu: function(ext, event, fns) {
-            if(fns) {
-                for(var i = 0; i < fns.length; i++) {
-                    var retVal = fns[i].call(this, ext, event);
-                    if(retVal === false) {
+            if (fns) {
+                for (const fn of fns) {
+                    if (fn.call(this, ext, event) === false) {
                         break;
                     }
                 }
@@ -1166,8 +1159,7 @@
          */
         invokeDeferredRenders: function(containerId) {
             var widgetsToRemove = [];
-            for(var i = 0; i < this.deferredRenders.length; i++) {
-                var deferredRender = this.deferredRenders[i];
+            for (const deferredRender of this.deferredRenders) {
 
                 if(deferredRender.container === containerId) {
                     var rendered = deferredRender.callback.call();
@@ -1177,8 +1169,8 @@
                 }
             }
 
-            for(var j = 0; j < widgetsToRemove.length; j++) {
-                this.removeDeferredRenders(widgetsToRemove[j]);
+            for (const widget of widgetsToRemove) {
+                this.removeDeferredRenders(widget);
             }
         },
         
@@ -1205,10 +1197,10 @@
 
             // try and strip specific language from nl_BE to just nl
             if (!locale) {
-                var localeKey = cfgLocale ? cfgLocale : PrimeFaces.settings.locale;
-                var strippedLocaleKey = localeKey ? localeKey.split('_')[0] : null;
-                if (strippedLocaleKey) {
-                    locale = PrimeFaces.locales[strippedLocaleKey];
+                var fullLocaleKey = cfgLocale || PrimeFaces.settings.locale;
+                var splitLocaleKey = fullLocaleKey ? fullLocaleKey.split('_')[0] : null;
+                if (splitLocaleKey) {
+                    locale = PrimeFaces.locales[splitLocaleKey];
                 }
             }
 
@@ -1269,11 +1261,10 @@
                     if (typeof locale[key] === 'object') {
                         // If the value is an object, call the function recursively
                         iterateLocale(locale[key], lkey, lvalue);
-                    } else {
-                        // Otherwise, set the new value if found
-                        if (key === lkey) {
-                            locale[key] = lvalue;
-                        }
+                    } 
+                    // Otherwise, set the new value if found
+                    else if (key === lkey) {
+                        locale[key] = lvalue;
                     }
                 }
             }
