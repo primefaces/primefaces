@@ -313,7 +313,8 @@
                 //animationstart is to fix autofill issue https://github.com/primefaces/primefaces/issues/12444
                 $(this).removeClass('ui-state-focus');
 
-                if(input.hasClass('hasDatepicker')) {
+                // if the input is a datepicker or a number input, wait a bit before updating the filled state
+                if(input.hasClass('hasDatepicker') || input.attr('inputmode') === 'numeric') {
                     setTimeout(function() {
                         updateFilledStateOnBlur();
                     }, 150);
