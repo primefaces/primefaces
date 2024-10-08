@@ -122,23 +122,19 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
                     }, $this.cfg.delay);
                 }
                 else if(data.status === 'complete') {
-
+                    // ignore PF complete event when JSF success/error event is fired right after
                 }
                 else if(data.status === 'success') {
-                    if($this.timeout) {
-                        $this.deleteTimeout();
-                    }
+                    $this.deleteTimeout();
                     $this.trigger('success', arguments);
-                    $this.trigger('complete', arguments);
+                    $this.trigger('facesComplete', arguments);
                 }
             });
 
             jsf.ajax.addOnError(function(data) {
-                if($this.timeout) {
-                    $this.deleteTimeout();
-                }
+                $this.deleteTimeout();
                 $this.trigger('error', arguments);
-                $this.trigger('complete', arguments);
+                $this.trigger('facesComplete', arguments);
             });
         }
     },
@@ -189,18 +185,18 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
                 break;
 
             case 'complete':
-                var pfArgs = args[2];
                 // if the current request leads in a redirect, skip hiding the previous facet (in best case this is the start-facet)
                 // when a sucess/error-facet is defined, this wont work as expected as the 'redirect' information is not available before
+                var pfArgs = args[2];
                 if (!pfArgs || pfArgs.redirect) {
                     return;
                 }
-
+                // Fallthrough intentional to handle both PF and JSF complete events
+            case 'facesComplete':
                 // #11824 hide the start facet if there was no error/success facet or there is a complete facet
                 if (this.hasSuccessOrErrorFacet === false || hasFacet) {
                     facets.hide();
                 }
-
                 // Show complete-facet if defined
                 if (hasFacet) {
                     facet.show();
@@ -216,6 +212,9 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
      * @return {string} The ID of the facet element for the given event
      */
     toFacetId: function(event) {
+        if (event === 'facesComplete') {
+            event = 'complete';
+        }
         return this.jqId + '_' + event;
     },
 
@@ -224,8 +223,10 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     deleteTimeout: function() {
-        clearTimeout(this.timeout);
-        this.timeout = null;
+        if (this.timeout) {
+            clearTimeout(this.timeout);
+            this.timeout = null;
+        }
     }
 
 });
