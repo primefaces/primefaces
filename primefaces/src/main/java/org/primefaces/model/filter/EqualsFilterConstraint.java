@@ -23,14 +23,32 @@
  */
 package org.primefaces.model.filter;
 
-import java.util.function.BiPredicate;
+import java.util.Locale;
 
-public class EqualsFilterConstraint extends StringFilterConstraint {
+import javax.faces.context.FacesContext;
+
+public class EqualsFilterConstraint implements FilterConstraint {
 
     private static final long serialVersionUID = 1L;
 
     @Override
-    protected BiPredicate<String, String> getPredicate() {
-        return String::equals;
+    public boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale) {
+        if (value == filter) {
+            return true;
+        }
+        if (value == null || filter == null) {
+            return false;
+        }
+        // If Comparable, prefer compareTo to handle BigDecimal, etc.
+        if (value instanceof Comparable) {
+            ComparableFilterConstraint.assertAssignable(filter, value);
+            return compareToEquals((Comparable) value, (Comparable) filter);
+        }
+        return value.equals(filter);
     }
+
+    protected boolean compareToEquals(Comparable value, Comparable filter) {
+        return value.compareTo(filter) == 0;
+    }
+
 }

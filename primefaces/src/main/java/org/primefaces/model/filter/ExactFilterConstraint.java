@@ -31,6 +31,6 @@ public class ExactFilterConstraint extends StringFilterConstraint {
 
     @Override
     protected BiPredicate<String, String> getPredicate() {
-        return String::equalsIgnoreCase;
+        return String::equals;
     }
 }
