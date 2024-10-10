@@ -23,9 +23,9 @@
  */
 package org.primefaces.showcase.view.misc;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.primefaces.shaded.json.JSONArray;
+import org.primefaces.shaded.json.JSONException;
+import org.primefaces.shaded.json.JSONObject;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
@@ -34,13 +34,11 @@ import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 @Named
 @ApplicationScoped
 public class PrimeIconsView implements Serializable {
@@ -54,7 +52,7 @@ public class PrimeIconsView implements Serializable {
     public void init() {
         iconsPrevious = getIcons("https://raw.githubusercontent.com/primefaces/primeicons/6.0.1/selection.json");
         icons = getIcons("https://raw.githubusercontent.com/primefaces/primeicons/7.0.0/selection.json");
-        Collections.sort(icons, Comparator.comparing(Icon::getName));
+        icons.sort(Comparator.comparing(Icon::getName));
     }
 
     private List<Icon> getIcons(String url) {
@@ -98,7 +96,7 @@ public class PrimeIconsView implements Serializable {
         return !iconsPrevious.contains(icon);
     }
 
-    public class Icon {
+    public static class Icon {
 
         private String name;
         private int key;
