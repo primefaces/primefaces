@@ -184,10 +184,12 @@
             <groupId>org.owasp.encoder</groupId>
             <artifactId>encoder</artifactId>
         </dependency>
+        <!-- POI already comes with common-iov
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
         </dependency>
+        -->
 
         <!-- JAXB required for JDK9+ -->
         <dependency>
