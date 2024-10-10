@@ -173,31 +173,12 @@
             <artifactId>owasp-java-html-sanitizer</artifactId>
         </dependency>
 
-        <!-- JSON-parsing used by PrimeIconsView -->
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-        </dependency>
-
-        <!-- add dependencies which get shaded by PrimeFaces so IDE´s like IntelliJ can run und debug multimoduled showcase on eg Tomcat -->
-        <dependency>
-            <groupId>org.owasp.encoder</groupId>
-            <artifactId>encoder</artifactId>
-        </dependency>
-        <!-- POI already comes with common-iov
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-        </dependency>
-        -->
-
         <!-- JAXB required for JDK9+ -->
         <dependency>
             <groupId>org.glassfish.jaxb</groupId>
             <artifactId>jaxb-runtime</artifactId>
             <version>4.0.5</version>
         </dependency>
-
     </dependencies>
 
     <build>

@@ -300,24 +300,6 @@
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
-
-        <!-- add dependencies which get shaded by PrimeFaces so IDE´s like IntelliJ can run und debug multimoduled integration-tests -->
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.owasp.encoder</groupId>
-            <artifactId>encoder</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <!-- POI already comes with common-io
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <scope>test</scope>
-        </dependency>
-        -->
     </dependencies>
 
     <build>

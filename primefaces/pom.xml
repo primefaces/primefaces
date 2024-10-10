@@ -36,6 +36,26 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- shaded dependencies, dont put it into dependencyManagement, it will overwrite e.g. commons-io version from POI -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20240303</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.owasp.encoder</groupId>
+            <artifactId>encoder</artifactId>
+            <version>1.3.1</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.15.1</version>
+            <optional>true</optional>
+        </dependency>
+
         <!-- Data Exporter -->
         <dependency>
             <groupId>org.apache.poi</groupId>
@@ -223,23 +243,6 @@
             <groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
             <artifactId>owasp-java-html-sanitizer</artifactId>
             <scope>provided</scope>
-        </dependency>
-
-        <!-- Shaded -->
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.owasp.encoder</groupId>
-            <artifactId>encoder</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <optional>true</optional>
         </dependency>
     </dependencies>
 
