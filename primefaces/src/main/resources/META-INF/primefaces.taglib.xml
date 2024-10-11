@@ -23457,7 +23457,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Disables the component when set to true.]]>
             </description>
             <name>disabled</name>
             <required>false</required>
@@ -23465,7 +23465,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[User presentable name of the component.]]>
             </description>
             <name>label</name>
             <required>false</required>
@@ -23473,7 +23473,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Client side callback to execute when value changes.]]>
             </description>
             <name>onchange</name>
             <required>false</required>
@@ -23481,7 +23481,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Inline style of the component.]]>
             </description>
             <name>style</name>
             <required>false</required>
@@ -23489,7 +23489,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Style class of the component.]]>
             </description>
             <name>styleClass</name>
             <required>false</required>
@@ -23647,6 +23647,14 @@
             <name>emptyLabel</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Label to be shown in updateLabel mode when one or more items are selected. If not set the label is shown.]]>
+            </description>
+            <name>selectedLabel</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
