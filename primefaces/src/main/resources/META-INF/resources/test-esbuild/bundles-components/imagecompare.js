@@ -1,0 +1,1 @@
+import "../../primefaces/imagecompare/imagecompare.js";

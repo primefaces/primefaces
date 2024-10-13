@@ -1,0 +1,1 @@
+import "../../primefaces/lifecycle/lifecycle.js";

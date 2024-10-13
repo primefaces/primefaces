@@ -1,0 +1,1 @@
+import "../../primefaces/mindmap/mindmap.js";

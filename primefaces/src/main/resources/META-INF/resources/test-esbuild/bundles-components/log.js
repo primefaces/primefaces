@@ -1,0 +1,1 @@
+import "../../primefaces/log/log.js";

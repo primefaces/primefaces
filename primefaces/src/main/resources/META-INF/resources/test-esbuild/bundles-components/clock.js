@@ -1,0 +1,1 @@
+import "../../primefaces/clock/clock.js";

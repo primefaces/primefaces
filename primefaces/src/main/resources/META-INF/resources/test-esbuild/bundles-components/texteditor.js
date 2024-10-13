@@ -1,0 +1,1 @@
+import "../../primefaces/texteditor/1-texteditor.js";

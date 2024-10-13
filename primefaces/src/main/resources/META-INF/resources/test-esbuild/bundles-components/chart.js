@@ -1,0 +1,1 @@
+import "../../primefaces/chart/9-chartjs-widget.js";

@@ -1,0 +1,1 @@
+import "../../primefaces/terminal/terminal.js";

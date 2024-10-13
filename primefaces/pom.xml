@@ -276,6 +276,7 @@
                 <filtering>true</filtering>
                 <excludes>
                     <exclude>META-INF/resources/primefaces/schedule/build/**/*</exclude>
+                    <exclude>META-INF/resources/test-esbuild/**/*</exclude>
                 </excludes>
             </resource>
         </resources>
@@ -489,7 +490,7 @@
                     <failOnWarning>true</failOnWarning>
                     <imagesDir>${project.build.directory}/classes/META-INF/resources</imagesDir>
                     <languageIn>UNSTABLE</languageIn>
-                    <languageOut>ECMASCRIPT5</languageOut>
+                    <languageOut>ECMASCRIPT_2016</languageOut>
                     <resourcesSets>
                         <resourcesSet>
                             <includes>
