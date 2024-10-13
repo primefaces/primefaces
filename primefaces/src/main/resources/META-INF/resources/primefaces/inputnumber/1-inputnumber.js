@@ -24,15 +24,15 @@
  * @prop {undefined} cfg.pluginOptions Always undefined.
  * @prop {string} cfg.valueToRender The initial, numerical value that is displayed, such as `0.0` or `5.3`.
  */
-PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.InputNumber = class InputNumber extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
         this.input = $(this.jqId + '_input');
         this.hiddenInput = $(this.jqId + '_hinput');
         this.plugOptArray = cfg.pluginOptions;
@@ -72,43 +72,43 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         // GitHub #10046 delay registering events until CSP has registered
         var $this = this;
         PrimeFaces.queueTask(function () {$this.wrapEvents();});
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    refresh: function(cfg) {
+    refresh(cfg) {
         this._cleanup();
-        this._super(cfg);
-    },
+        super.refresh(cfg);
+    }
 
     /**
      * @override
      * @inheritdoc
      */
-    destroy: function() {
-        this._super();
+    destroy() {
+        super.destroy();
         this._cleanup();
-    },
+    }
     
    /**
     * Clean up this widget and remove events from the DOM.
     * @private
     */
-    _cleanup: function() {
+    _cleanup() {
         if (this.autonumeric) {
             this.autonumeric.remove();
         }
-    },
+    }
 
     /**
      * Wraps the events on the external (visible) input to copy the value to the hidden input, before calling the
      * callback.
      * @private
      */
-    wrapEvents: function() {
+    wrapEvents() {
         var $this = this;
 
         // get the current attached events if using CSP
@@ -173,14 +173,14 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         });
 
         this.bindInputEvents();
-    },
+    }
 
     /**
      * Binds input listener which fixes a browser autofill issue.
      * See: https://github.com/autoNumeric/autoNumeric/issues/536
      * @private
      */
-    bindInputEvents: function() {
+    bindInputEvents() {
         var $this = this;
 
         // GitHub #6447: browser auto fill fix
@@ -200,14 +200,14 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
             }
             $this.copyValueToHiddenInput();
         });
-    },
+    }
 
     /**
      * Wraps the events on the external (visible) input to copy the value to the hidden input.
      * @private
      * @return {number} The original value of the hidden input.
      */
-    copyValueToHiddenInput: function() {
+    copyValueToHiddenInput() {
         var oldVal = this.hiddenInput.val();
         var newVal = this.getValue();
 
@@ -216,52 +216,52 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         }
 
         return oldVal;
-    },
+    }
 
     /**
      * Writes the given value to the hidden input field that stores the actual value of this widget.
      * @private
      * @param {string} value A value to set on the hidden input.
      */
-    setValueToHiddenInput: function(value) {
+    setValueToHiddenInput(value) {
         this.hiddenInput.val(value).trigger('input.slider');
-    },
+    }
 
     /**
      * Enables this input field, so that the user can enter data.
      */
-    enable: function() {
+    enable() {
         PrimeFaces.utils.enableInputWidget(this.input);
         PrimeFaces.utils.enableInputWidget(this.hiddenInput);
         this.disabled = false;
-    },
+    }
 
     /**
      * Enables this input field, so that the user cannot enter data.
      */
-    disable: function() {
+    disable() {
         PrimeFaces.utils.disableInputWidget(this.input);
         PrimeFaces.utils.disableInputWidget(this.hiddenInput);
         this.disabled = true;
-    },
+    }
 
     /**
      * Sets the value of this input number widget to the given value. Makes sure that the number is formatted correctly.
      * @param {number | string} value The new value to set. If a number, it will be formatted appropriately. If the
      * empty string, resets the value. Any other string is parsed into a number and then the number is set.
      */
-    setValue: function(value) {
+    setValue(value) {
         this.autonumeric.set(value);
         var cleanVal = this.getValue();
         this.hiddenInput.attr('value', cleanVal);
-    },
+    }
 
     /**
      * Finds the current value, which is the raw numerical value without any formatting applied.
      * @return {string} The current value of this input number widget, in its string representation according to the
      * configured format.
      */
-    getValue: function() {
+    getValue() {
         var val = this.autonumeric.getNumericString();
         if (this.autonumeric.getSettings().allowDecimalPadding && val && parseInt(this.cfg.decimalPlaces, 10) > 0) {
             var decimalPlacesToPad;
@@ -284,4 +284,4 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         }
         return val;
     }
-});
+}

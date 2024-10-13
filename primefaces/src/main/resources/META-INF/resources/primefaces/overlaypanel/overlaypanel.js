@@ -52,21 +52,21 @@
  * @prop {string} cfg.showEvent Event on target to hide the panel.
  * @prop {string} cfg.target Search expression for target component to display panel next to.
  */
-PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
+PrimeFaces.widget.OverlayPanel = class OverlayPanel extends PrimeFaces.widget.DynamicOverlayWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
+    init(cfg) {
         if (cfg.target) {
             this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, cfg.target);
             if (this.target.hasClass('ui-splitbutton')) {
                 this.target = this.target.find('.ui-splitbutton-menubutton');
             }
         }
-        this._super(cfg, null, null, this.target);
+        super.init(cfg, null, null, this.target);
 
         this.content = this.jq.children('div.ui-overlaypanel-content');
 
@@ -100,32 +100,32 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
         }
 
         this.transition = PrimeFaces.utils.registerCSSTransition(this.jq, 'ui-connected-overlay');
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    refresh: function(cfg) {
+    refresh(cfg) {
         this._cleanup();
-        this._super(cfg);
-    },
+        super.refresh(cfg);
+    }
 
     /**
      * @override
      * @inheritdoc
      */
-    destroy: function() {
-        this._super();
+    destroy() {
+        super.destroy();
         this._cleanup();
-    },
+    }
 
     /**
      * Clean up this widget and remove elements from DOM.
      * @private
      */
-    _cleanup: function() {
+    _cleanup() {
         // fix #4307
         this.loaded = false;
 
@@ -135,13 +135,13 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
         }
 
         this.jq.remove();
-    },
+    }
 
     /**
      * Sets up the event listeners for the target component that triggers this overlay panel.
      * @private
      */
-    bindTargetEvents: function() {
+    bindTargetEvents() {
         var $this = this;
 
         //mark target and descandants of target as a trigger for a primefaces overlay
@@ -188,13 +188,13 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
         });
 
         this.bindAutoHide();
-    },
+    }
 
     /**
       * Sets up mouse listeners if autoHide is disabled to keep the overlay open if overlay has focus.
       * @private
       */
-    bindAutoHide: function() {
+    bindAutoHide() {
         if (this.isAutoHide()) {
             return;
         }
@@ -210,13 +210,13 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 $this.allowHide = true;
                 $this.hide();
             });
-    },
+    }
 
     /**
      * Sets up some common event listeners always required by this widget.
      * @private
      */
-    bindCommonEvents: function() {
+    bindCommonEvents() {
         var $this = this;
 
         if (this.cfg.showCloseIcon) {
@@ -237,13 +237,13 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
                     $(this).removeClass('ui-state-focus');
                 });
         }
-    },
+    }
 
     /**
      * Sets up all panel event listeners
      * @private
      */
-    bindPanelEvents: function() {
+    bindPanelEvents() {
         var $this = this;
 
         //hide overlay when mousedown is at outside of overlay
@@ -266,7 +266,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.scrollHandler = PrimeFaces.utils.registerConnectedOverlayScrollHandler(this, 'scroll.' + this.id + '_hide', this.target, function() {
             $this.handleViewportChange();
         });
-    },
+    }
 
     /**
      * Fired when the browser viewport is resized or scrolled.  In Mobile environment we don't want to hider the overlay
@@ -274,19 +274,19 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
      * resize immediately and close the overlay. See GitHub #7075.
      * @private
      */
-    handleViewportChange: function() {
+    handleViewportChange() {
         if (PrimeFaces.env.mobile || PrimeFaces.hideOverlaysOnViewportChange === false) {
             this.align(this.target);
         } else {
             this.hide();
         }
-    },
+    }
 
     /**
      * Unbind all panel event listeners
      * @private
      */
-    unbindPanelEvents: function() {
+    unbindPanelEvents() {
         if (this.hideOverlayHandler) {
             this.hideOverlayHandler.unbind();
         }
@@ -298,12 +298,12 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
         if (this.scrollHandler) {
             this.scrollHandler.unbind();
         }
-    },
+    }
 
     /**
      * Brings up the overlay panel if it is currently hidden, or hides it if it is currently displayed.
      */
-    toggle: function() {
+    toggle() {
         if (!this.isVisible()) {
             this.show();
         }
@@ -311,13 +311,13 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
             clearTimeout(this.showTimeout);
             this.hide();
         }
-    },
+    }
 
     /**
      * Brings up the overlay panel so that is displayed and visible.
      * @param {string | JQuery} [target] ID or DOM element of the target component that triggers this overlay panel.
      */
-    show: function(target) {
+    show(target) {
         if (this.isVisible()) {
             return;
         }
@@ -330,14 +330,14 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 thisPanel._show(target);
             }
         }, this.cfg.showDelay);
-    },
+    }
 
     /**
      * Makes the overlay panel visible.
      * @private
      * @param {string | JQuery} [target] ID or DOM element of the target component that triggers this overlay panel.
      */
-    _show: function(target) {
+    _show(target) {
         var $this = this;
 
         if (this.transition) {
@@ -368,7 +368,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 showWithCSSTransition();
             }
         }
-    },
+    }
 
     /**
      * Get new target element using selector param.
@@ -376,7 +376,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
      * @param {string | JQuery} [target] ID or DOM element of the target component that triggers this overlay panel.
      * @return {JQuery|null} DOM Element or null
      */
-    getTarget: function(target) {
+    getTarget(target) {
         if (target) {
             if (typeof target === 'string') {
                 return $(document.getElementById(target));
@@ -390,14 +390,14 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
         }
 
         return null;
-    },
+    }
 
     /**
      * Aligns the overlay panel so that it is shown at the correct position.
      * @private
      * @param {string | JQuery} [target] ID or DOM element of the target component that triggers this overlay panel.
      */
-    align: function(target) {
+    align(target) {
         var allowedNegativeValuesByParentOffset = this.jq.offsetParent().offset();
 
         this.targetElement = this.getTarget(target);
@@ -429,13 +429,13 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
         var widthOffset = this.jq.width() - this.content.width();
         this.jq.css('max-width', $(window).width() - widthOffset + 'px');
-    },
+    }
 
     /**
      * Hides this overlay panel so that it is not displayed anymore.
      * @param {() => void} [callback] Custom callback that is invoked after this overlay panel was closed.
      */
-    hide: function(callback) {
+    hide(callback) {
         if (this.transition) {
             var $this = this;
 
@@ -456,13 +456,13 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 }
             });
         }
-    },
+    }
 
     /**
      * Callback that is invoked after this overlay panel was opened.
      * @private
      */
-    postShow: function() {
+    postShow() {
 
         this.callBehavior('show');
 
@@ -477,13 +477,13 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
         if (this.target) {
             this.target.attr('aria-expanded', true);
         }
-    },
+    }
 
     /**
      * Callback that is invoked after this overlay panel was closed.
      * @private
      */
-    postHide: function() {
+    postHide() {
         this.callBehavior('hide');
 
         if (this.cfg.onHide) {
@@ -493,14 +493,14 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
         if (this.target) {
             this.target.attr('aria-expanded', false);
         }
-    },
+    }
 
     /**
      * Loads the contents of this overlay panel dynamically via AJAX, if dynamic loading is enabled.
      * @private
      * @param {string | JQuery} [target] ID or DOM element of the target component that triggers this overlay panel.
      */
-    loadContents: function(target) {
+    loadContents(target) {
         var $this = this,
             options = {
                 source: this.id,
@@ -532,53 +532,53 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
         else {
             PrimeFaces.ajax.Request.handle(options);
         }
-    },
+    }
 
     /**
      * Checks whether this overlay panel is currently visible.
      * @return {boolean} `true` if this overlay panel is currently displayed, or `false` otherwise.
      */
-    isVisible: function() {
+    isVisible() {
         return this.jq.is(':visible');
-    },
+    }
 
     /**
      * Applies focus to the first focusable element of the content in the panel.
      */
-    applyFocus: function() {
+    applyFocus() {
         this.jq.find(':not(:submit):not(:button):input:visible:enabled:first').trigger('focus');
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      */
-    enableModality: function() {
-        this._super();
+    enableModality() {
+        super.enableModality();
 
         if (this.targetElement) {
             this.targetElement.css('z-index', String(this.jq.css('z-index')));
         }
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      */
-    disableModality: function() {
-        this._super();
+    disableModality() {
+        super.disableModality();
 
         if (this.targetElement) {
             this.targetElement.css('z-index', String(this.targetZindex));
         }
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      * @return {JQuery}
      */
-    getModalTabbables: function() {
+    getModalTabbables() {
         var tabbables = this.jq.find(':tabbable');
 
         if (this.targetElement && this.targetElement.is(':tabbable')) {
@@ -586,13 +586,13 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
         }
 
         return tabbables;
-    },
+    }
 
     /**
      * Checks if the target has the autoHide property enabled or disabled to keep the overlay open.
      * @return {boolean} Whether this overlay should be left showing or closed.
      */
-    isAutoHide: function() {
+    isAutoHide() {
         return this.jq.data('autohide') || this.cfg.autoHide;
     }
-});
+}

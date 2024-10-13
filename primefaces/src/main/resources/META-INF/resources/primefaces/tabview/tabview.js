@@ -62,15 +62,15 @@
  * @prop {boolean} cfg.focusOnError Whether to focus the first tab that has an error associated to it.
  * @prop {boolean} cfg.focusOnLastActiveTab Whether to focus on the last active tab that a user selected.
  */
-PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
+PrimeFaces.widget.TabView = class TabView extends PrimeFaces.widget.DeferredWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         this.panelContainer = this.jq.children('.ui-tabs-panels');
         this.stateHolder = $(this.jqId + '_activeIndex');
@@ -103,13 +103,13 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         this.renderDeferred();
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      */
-    renderDeferred: function() {
+    renderDeferred() {
         if(this.jq.is(':visible')) {
             this._render();
         }
@@ -125,7 +125,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
                 }
             }
         }
-    },
+    }
 
     /**
      * @include
@@ -133,7 +133,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
      * @protected
      * @inheritdoc
      */
-    _render: function() {
+    _render() {
         if(this.cfg.scrollable) {
             this.initScrolling();
 
@@ -143,24 +143,24 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
                 $this.initScrolling();
             });
         }
-    },
+    }
     
    /**
      * @override
      * @inheritdoc
      */
-    destroy: function() {
-        this._super();
+    destroy() {
+        super.destroy();
         if (PrimeFaces.env.isTouchable(this.cfg)) {
             this.jq.swipe('destroy');
         }
-    },
+    }
 
     /**
      * Sets up all event listeners that are required by this widget.
      * @private
      */
-    bindEvents: function() {
+    bindEvents() {
         var $this = this;
 
         //Tab header events
@@ -256,13 +256,13 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         this.bindSwipeEvents();
         this.bindKeyEvents();
         this.bindRefreshListener();
-    },
+    }
 
     /**
      * Binds swipe events to this tabview.
      * @private
      */
-    bindSwipeEvents: function() {
+    bindSwipeEvents() {
         if (!PrimeFaces.env.isTouchable(this.cfg)) {
             return;
         }
@@ -282,13 +282,13 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
             },
             excludedElements: PrimeFaces.utils.excludedSwipeElements()
         });
-    },
+    }
 
-   /**
-    * Sets up all keyboard related event listeners that are required by this widget.
-    * @private
-    */
-   bindKeyEvents: function() {
+    /**
+     * Sets up all keyboard related event listeners that are required by this widget.
+     * @private
+     */
+    bindKeyEvents() {
         var $this = this,
             tabs = this.headerContainer;
 
@@ -369,13 +369,13 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
                 }
             });
         }
-    },
+    }
 
     /**
      * Binds refresh listener to update error highlighting or restore the last active tab on component udpate.
      * @private
      */
-    bindRefreshListener: function() {
+    bindRefreshListener() {
         var $this = this;
         var focusIndex = -1;
         this.addRefreshListener(function() {
@@ -404,13 +404,13 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
                PrimeFaces.queueTask(function () {$this.select(focusIndex, true)}, 10);
             }
         });
-    },
+    }
 
     /**
      * Sets up the classes and attributes required for scrolling the tab navigation bar.
      * @private
      */
-    initScrolling: function() {
+    initScrolling() {
         if(this.headerContainer.length) {
             var overflown = ((this.lastTab.position().left + this.lastTab.width()) - this.firstTab.position().left) > this.navscroller.innerWidth();
             if (overflown) {
@@ -425,14 +425,14 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
                 this.navcrollerRight.attr('tabindex', this.tabindex);
             }
         }
-    },
+    }
 
     /**
      * Scrolls the tab navigation bar by the given amount.
      * @param {number} step Amount to scroll the navigation bar, positive to scroll to the right, negative to scroll to
      * the left.
      */
-    scroll: function(step) {
+    scroll(step) {
         if(this.navContainer.is(':animated')) {
             return;
         }
@@ -467,45 +467,45 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
                 });
             }
         }
-    },
+    }
 
     /**
      * Disables the buttons for scrolling the contents of the navigation bar.
      * @param {JQuery} btn The scroll button to enable.
      */
-    disableScrollerButton: function(btn) {
+    disableScrollerButton(btn) {
         btn.addClass('ui-state-disabled').removeClass('ui-state-hover ui-state-active ui-state-focus').attr('tabindex', -1);
-    },
+    }
 
     /**
      * Enables the buttons for scrolling the contents of the navigation bar.
      * @param {JQuery} btn The scroll button to enable.
      */
-    enableScrollerButton: function(btn) {
+    enableScrollerButton(btn) {
         btn.removeClass('ui-state-disabled').attr('tabindex', this.tabindex);
-    },
+    }
 
     /**
      * Stores the current scroll position in a hidden input field, called before an AJAX request.
      * @private
      * @param {number} value The scroll position to be saved.
      */
-    saveScrollState: function(value) {
+    saveScrollState(value) {
         this.scrollStateHolder.val(value);
-    },
+    }
 
     /**
      * Restores the current scroll position in a hidden input field, called after an AJAX request.
      * @private
      */
-    restoreScrollState: function() {
+    restoreScrollState() {
         var value = parseInt(this.scrollStateHolder.val());
         if(value === 0) {
             this.disableScrollerButton(this.navcrollerLeft);
         }
 
         this.navContainer.css('margin-left', this.scrollStateHolder.val() + 'px');
-    },
+    }
 
     /**
      * Selects the given tab, if it is not selected already.
@@ -513,7 +513,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
      * @param {boolean} [silent] Controls whether events are triggered.
      * @return {boolean} Whether the given tab is now selected.
      */
-    select: function(index, silent) {
+    select(index, silent) {
         //Call user onTabChange callback
         if(this.cfg.onTabChange && !silent) {
             var result = this.cfg.onTabChange.call(this, index);
@@ -557,14 +557,14 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         return true;
-    },
+    }
 
     /**
      * After a tab was loaded from the server, prepares the given tab and shows it.
      * @private
      * @param {JQuery} newPanel New tab to be shown.
      */
-    show: function(newPanel) {
+    show(newPanel) {
         var oldPanel = this.panelContainer.children('.ui-tabs-panel:visible');
         
         // it is possible the current panel has been removed from the DOM with rendered flag
@@ -637,14 +637,14 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
 
             this.postTabShow(newPanel);
         }
-    },
+    }
 
     /**
      * Dynamically loads contents of a tab from the server via AJAX.
      * @private
      * @param {JQuery} newPanel The tab whose content needs to be loaded.
      */
-    loadDynamicTab: function(newPanel) {
+    loadDynamicTab(newPanel) {
         var $this = this,
         tabIndex = newPanel.data('index'),
         options = {
@@ -690,13 +690,13 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         else {
             PrimeFaces.ajax.Request.handle(options);
         }
-    },
+    }
 
     /**
      * Closes the tab at the given index.
      * @param {number} index 0-based index of the tab to close.
      */
-    remove: function(index) {
+    remove(index) {
         var header = this.headerContainer.eq(index),
         panel = this.panelContainer.children().eq(index);
 
@@ -734,30 +734,30 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         this.fireTabCloseEvent(panel.attr('id'), index);
-    },
+    }
 
     /**
      * Fins the number of tabs of this tab view.
      * @return {number} The number of tabs.
      */
-    getLength: function() {
+    getLength() {
         return this.headerContainer.length;
-    },
+    }
 
     /**
      * Finds and returns the tab that is currently selected.
      * @return {number} The 0-based index of the currently selected tab.
      */
-    getActiveIndex: function() {
+    getActiveIndex() {
         return this.cfg.selected;
-    },
+    }
 
     /**
      * Calls the appropriate behaviors when a different tab was selected.
      * @private
      * @param {JQuery} panel The tab that was selected.
      */
-    fireTabChangeEvent: function(panel) {
+    fireTabChangeEvent(panel) {
         var ext = {
             params: [
                 {name: this.id + '_currentTab', value: panel.attr('id')},
@@ -766,7 +766,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         this.callBehavior('tabChange', ext);
-    },
+    }
 
     /**
      * Calls the appropriate behaviors when a tab was closed.
@@ -774,7 +774,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
      * @param {string} id Client ID of the tab that was closed.
      * @param {number} index 0-based index of the tab that was closed.
      */
-    fireTabCloseEvent: function(id, index) {
+    fireTabCloseEvent(id, index) {
         if(this.hasBehavior('tabClose')) {
             var ext = {
                 params: [
@@ -785,35 +785,35 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
 
             this.callBehavior('tabClose', ext);
         }
-    },
+    }
 
     /**
      * Reloads a dynamic tab even if it has already been loaded once. Forces an AJAX refresh of the tab.
      * @param {number} index 0-based index of the tab to reload.
      */
-    reload: function(index) {
+    reload(index) {
         var reloadPanel = this.panelContainer.children().eq(index);
         this.markAsUnloaded(reloadPanel);
         this.select(index);
-    },
+    }
 
     /**
      * Marks the content of the given tab as loaded.
      * @private
      * @param {JQuery} panel A panel with content that was loaded.
      */
-    markAsLoaded: function(panel) {
+    markAsLoaded(panel) {
         panel.data('loaded', true);
-    },
+    }
 
     /**
      * Marks the content of the given tab as unloaded.
      * @private
      * @param {JQuery} panel A panel with content that was unloaded.
      */
-    markAsUnloaded: function(panel) {
+    markAsUnloaded(panel) {
         panel.data('loaded', false);
-    },
+    }
 
     /**
      * If the content of the tab is loaded dynamically via AJAX, checks if the content was loaded already.
@@ -821,32 +821,32 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
      * @param {JQuery} panel A panel to check.
      * @return {boolean} Whether the content of the given panel was loaded from the server.
      */
-    isLoaded: function(panel) {
+    isLoaded(panel) {
         return panel.data('loaded') === true;
-    },
+    }
 
     /**
      * Disables the tab at the given index. Disabled tabs may not be selected.
      * @param {number} index 0-based index of the tab to disable.
      */
-    disable: function(index) {
+    disable(index) {
         this.headerContainer.eq(index).addClass('ui-state-disabled').find('a').attr('tabindex', '-1');
-    },
+    }
 
     /**
      * Enables the tab at the given index. Enabled tabs may be selected.
      * @param {number} index 0-based index of the tab to enable.
      */
-    enable: function(index) {
+    enable(index) {
         this.headerContainer.eq(index).removeClass('ui-state-disabled').find('a').attr('tabindex', this.tabindex);
-    },
+    }
 
     /**
      * Callback that is invoked after a tab was shown.
      * @private
      * @param {JQuery} newPanel The panel with the content of the tab.
      */
-    postTabShow: function(newPanel) {
+    postTabShow(newPanel) {
         //execute user defined callback
         if(this.cfg.onTabShow) {
             this.cfg.onTabShow.call(this, newPanel.index());
@@ -855,4 +855,4 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         PrimeFaces.invokeDeferredRenders(this.id);
     }
 
-});
+}

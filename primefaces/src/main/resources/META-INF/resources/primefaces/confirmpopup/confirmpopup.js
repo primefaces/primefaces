@@ -37,20 +37,20 @@
  * @prop {string} cfg.hideEvent Event on target to hide the popup.
  * @prop {boolean} cfg.global When enabled, confirmPopup becomes a shared for other components that require confirmation.
  */
-PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
+PrimeFaces.widget.ConfirmPopup = class ConfirmPopup extends PrimeFaces.widget.DynamicOverlayWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
+    init(cfg) {
         cfg.dismissable = cfg.dismissable !== false;
         if (!cfg.appendTo && cfg.global) {
             cfg.appendTo = '@(body)';
         }
 
-        this._super(cfg);
+        super.init(cfg);
 
         this.focusedElementBeforeDialogOpened = null;
         this.content = this.jq.children('.ui-confirm-popup-content');
@@ -68,13 +68,13 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.transition = PrimeFaces.utils.registerCSSTransition(this.jq, 'ui-connected-overlay');
 
         this.bindEvents();
-    },
+    }
 
     /**
      * Sets up all event listeners required by this widget.
      * @protected
      */
-    bindEvents: function() {
+    bindEvents() {
         if (this.cfg.global) {
             PrimeFaces.confirmPopup = this;
 
@@ -129,14 +129,14 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 e.preventDefault();
             });
         }
-    },
+    }
 
     /**
      * Sets up all panel event listeners
      * @param {string | JQuery} [target] Selector or DOM element of the target component that triggers this popup.
      * @private
      */
-    bindPanelEvents: function(target) {
+    bindPanelEvents(target) {
         var $this = this;
 
         //hide overlay when mousedown is at outside of overlay
@@ -161,13 +161,13 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 $this.hide();
             }
         });
-    },
+    }
 
     /**
      * Unbind all panel event listeners
      * @private
      */
-    unbindPanelEvents: function() {
+    unbindPanelEvents() {
         if (this.hideOverlayHandler) {
             this.hideOverlayHandler.unbind();
         }
@@ -179,13 +179,13 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
         if (this.scrollHandler) {
             this.scrollHandler.unbind();
         }
-    },
+    }
 
     /**
      * Makes the popup visible.
      * @param {string | JQuery} [target] Selector or DOM element of the target component that triggers this popup.
      */
-    show: function(target) {
+    show(target) {
         // Remember the focused element before we opened the dialog
         // so we can return focus to it once we close the dialog.
         this.focusedElementBeforeDialogOpened = document.activeElement;
@@ -211,13 +211,13 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 }
             });
         }
-    },
+    }
 
     /**
      * Hides the popup.
      * @param {PrimeFaces.widget.ConfirmPopup.HideCallback} callback Callback that is invoked after this popup was closed.
      */
-    hide: function(callback) {
+    hide(callback) {
         var $this = this;
 
         if (this.transition) {
@@ -242,13 +242,13 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
             $this.returnFocus();
             $this.restoreButtons();
         }
-    },
+    }
 
     /**
      * Restore the button text and styling to its original form.
      * @private
      */
-    restoreButtons: function() {
+    restoreButtons() {
         var $this = this;
         if ($this.cfg.global) {
             $this.yesButton.removeClass($this.yesButton.data('p-class'));
@@ -258,14 +258,14 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
             $this.yesButton.children('.ui-icon').attr('class', $this.yesButton.data('p-icon'));
             $this.noButton.children('.ui-icon').attr('class', $this.noButton.data('p-icon'));
         }
-    },
+    }
 
     /**
      * Aligns the popup so that it is shown at the correct position.
      * @param {JQuery} [target] Jquery selector that is the target of this popup
      * @private
      */
-    align: function(target) {
+    align(target) {
         if (target) {
             var $this = this;
 
@@ -296,42 +296,42 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 }
             });
         }
-    },
+    }
 
     /**
      * Applies focus to the first focusable element of the content in the popup.
      */
-    applyFocus: function() {
+    applyFocus() {
         this.jq.find(':button:visible:enabled').first().trigger('focus');
-    },
+    }
 
     /**
      * Puts focus on the element that opened this dialog.
      * @param {number | undefined} [delay] how long to delay before focusing
      * @protected
      */
-    returnFocus: function(delay) {
+    returnFocus(delay) {
         var el = this.focusedElementBeforeDialogOpened;
         if (!el) {
             return;
         }
 
         PrimeFaces.queueTask(function() { el.focus({ preventScroll: true }) }, delay);
-    },
+    }
 
     /**
      * Checks whether this popup is opened and visible.
      * @return {boolean} `true` if this popup is currently being shown, `false` otherwise.
      */
-    isVisible: function() {
+    isVisible() {
         return this.jq.is(':visible');
-    },
+    }
 
     /**
      * Shows the given message in this confirmation popup.
      * @param {Partial<PrimeFaces.widget.ConfirmPopup.ConfirmPopupMessage>} msg Message to show.
      */
-    showMessage: function(msg) {
+    showMessage(msg) {
         PrimeFaces.confirmPopupSource = (typeof (msg.source) === 'string') ? $(PrimeFaces.escapeClientId(msg.source)) : $(msg.source);
 
         var $this = this;
@@ -386,4 +386,4 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
             this.show(PrimeFaces.confirmPopupSource);
         }
     }
-});
+}

@@ -30,20 +30,20 @@
  * @prop {string} cfg.indicatorsPosition Position of indicators. Valid values are "bottom", "top", "left" and "right".
  * @prop {{breakpoint:string, numVisible:number}[]} cfg.responsiveOptions A model of options for responsive design.
  */
-PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
+PrimeFaces.widget.Galleria = class Galleria extends PrimeFaces.widget.DeferredWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
         
         this.cfg.selector = this.jqId;
 
         this.renderDeferred();
-    },
+    }
 
     /**
      * @include
@@ -51,65 +51,65 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
      * @protected
      * @inheritdoc
      */
-    _render: function() {
+    _render() {
         this.primeGalleriaWidget = this.jq.galleria(this.cfg).data('prime-galleria');
-    },
+    }
     
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    refresh: function(cfg) {
+    refresh(cfg) {
         if(this.primeGalleriaWidget) {
             this.primeGalleriaWidget.destroy();
         }
 
-        this._super(cfg);
-    },
+        super.refresh(cfg);
+    }
 
     /**
      * @override
      * @inheritdoc
      */
-    destroy: function() {
-        this._super();
+    destroy() {
+        super.destroy();
 
         if (this.primeGalleriaWidget) {
             this.primeGalleriaWidget.destroy();
         }
-    },
+    }
     
     /**
      * Displays content in fullscreen mode. The index will correspond to the item to be shown, otherwise,
      * it will default to the last loaded image.
      * @param {number} [index] optional index of the item to show
      */
-    show: function(index) {
+    show(index) {
         if (index !== undefined) {
             this.primeGalleriaWidget.setState({ activeIndex: index }); 
         }
         this.primeGalleriaWidget.show();
-    },
+    }
 
     /**
      * Hides content on fullscreen mode.
      */
-    hide: function() {
+    hide() {
         this.primeGalleriaWidget.hide();
-    },
+    }
 
     /**
      * Moves to the next content that comes after the currently shown content.
      */
-    next: function() {
+    next() {
         this.primeGalleriaWidget.next();
-    },
+    }
 
     /**
      * Moves to the previous content that comes before the currently shown content.
      */
-    prev: function() {
+    prev() {
         this.primeGalleriaWidget.prev();
     }
-});
+}

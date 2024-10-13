@@ -53,15 +53,15 @@
  * @prop {string} cfg.timeSeparator Separator for joining hour and minute, defaults to `:`.
  * @prop {string} cfg.triggerButtonIcon Icon of the datepicker element that toggles the visibility in popup mode.
  */
-PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.DatePicker = class DatePicker extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
         this.input = $(this.jqId + '_input');
         this.jqEl = this.cfg.inline ? $(this.jqId + '_inline') : this.input;
         var $this = this;
@@ -194,27 +194,27 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         if (this.cfg.inline && this.cfg.lazyModel) {
             this.updateLazyModel();
         }
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    refresh: function(cfg) {
+    refresh(cfg) {
         if (this.panel && this.cfg.appendTo) {
             var appendTo = PrimeFaces.utils.resolveDynamicOverlayContainer(this);
             PrimeFaces.utils.cleanupDynamicOverlay(this, this.panel, this.id + '_panel', appendTo);
         }
 
-        this._super(cfg);
-    },
+        super.refresh(cfg);
+    }
 
     /**
      * @override
      * @inheritdoc
      */
-    destroy: function() {
+    destroy() {
         if (this.panel && this.cfg.appendTo) {
             var appendTo = PrimeFaces.utils.resolveDynamicOverlayContainer(this);
             PrimeFaces.utils.removeDynamicOverlay(this, null, this.id + "_panel", appendTo);
@@ -231,14 +231,14 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
             this.input.off();
         }
 
-        this._super();
-    },
+        super.destroy();
+    }
 
     /**
      * Initializes the localized messages for the currently configured language.
      * @private
      */
-    configureLocale: function() {
+    configureLocale() {
         var localeSettings = PrimeFaces.getLocaleSettings(this.cfg.userLocale);
 
         if(localeSettings) {
@@ -254,13 +254,13 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
             }
             this.cfg.userLocale = locale;
         }
-    },
+    }
 
     /**
      * Initializes the mask on the input if using a mask and not an inline picker.
      * @private
      */
-    applyMask: function() {
+    applyMask() {
         if (this.cfg.inline || this.input.is('[readonly]') || this.input.is(':disabled')) {
             return;
         }
@@ -291,13 +291,13 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
             this.input.inputmask('remove').inputmask(maskCfg);
             this.input.off("blur"); // GitHub #9259/#12428
         }
-    },
+    }
 
     /**
      * Callback for after the overlay panel is created.
      * @private
      */
-    bindPanelCreationListener: function() {
+    bindPanelCreationListener() {
         var $this = this;
 
         this.cfg.onPanelCreate = function() {
@@ -309,13 +309,13 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
             }
             this.options.appendTo = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector($this.jq, $this.cfg.appendTo);
         };
-    },
+    }
 
     /**
      * Sets up the event listener for when another date was selected.
      * @private
      */
-    bindDateSelectListener: function() {
+    bindDateSelectListener() {
         var $this = this;
 
         this.cfg.onSelect = function(event, date) {
@@ -339,26 +339,26 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
                 }, 10);
             }
         };
-    },
+    }
 
     /**
      * Sets up the event listener for when the Clear button is selected.
      * @private
      */
-    bindClearButtonListener: function() {
+    bindClearButtonListener() {
         var $this = this;
 
         this.cfg.onClearButtonClick = function(event) {
             $this.input.trigger('change');
             $this.callBehavior('dateSelect');
         };
-    },
+    }
 
     /**
      * Triggers the event for when another date was selected.
      * @private
      */
-    fireDateSelectEvent: function() {
+    fireDateSelectEvent() {
         // #5830: do not fire in range mode if only the first value is set
         if (this.cfg.selectionMode === "range" && this.input.val().indexOf(this.cfg.rangeSeparator) === -1) {
             return;
@@ -366,26 +366,26 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
 
         this.input.trigger('change');
         this.callBehavior('dateSelect');
-    },
+    }
 
     /**
      * Sets up the event listener for when the date picker changes to a different month or year page.
      * @private
      */
-    bindViewChangeListener: function() {
+    bindViewChangeListener() {
         var $this = this;
         this.cfg.onViewDateChange = function(event, date) {
             $this.viewDateOption = date;
             $this.fireViewChangeEvent(date);
         };
-    },
+    }
 
     /**
      * Triggers the event for when the date picker changed to a different month or year page.
      * @private
      * @param {Date} date The date to which the date picker changed.
      */
-    fireViewChangeEvent: function(date) {
+    fireViewChangeEvent(date) {
         var $this = this;
         var lazy = this.cfg.lazyModel;
         var options = {
@@ -448,91 +448,91 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
             options.formId = this.getParentFormId();
             PrimeFaces.ajax.Request.handle(options);
         }
-    },
+    }
 
     /**
      * Triggers a viewChange event which updates the lazy model through an Ajax request using the current date.
      */
-    updateLazyModel: function() {
+    updateLazyModel() {
         if (this.cfg.lazyModel) {
             this.fireViewChangeEvent(this.getViewDate());
         }
-    },
+    }
 
     /**
      * Sets up the event listeners for when the date picker is closed.
      * @private
      */
-    bindCloseListener: function() {
+    bindCloseListener() {
         if(this.hasBehavior('close')) {
             var $this = this;
             this.cfg.onBeforeHide = function() {
                 $this.fireCloseEvent();
             };
         }
-    },
+    }
 
     /**
      * Fires the close event when the date picker is closed.
      * @private
      */
-    fireCloseEvent: function() {
+    fireCloseEvent() {
         if(this.cfg.behaviors) {
             var closeBehavior = this.cfg.behaviors['close'];
             if(closeBehavior) {
                 closeBehavior.call(this);
             }
         }
-    },
+    }
 
     /**
      * Sets the date value the date picker.
      * @param {Date | string} date The new date for this widget.
      */
-    setDate: function(date) {
+    setDate(date) {
         this.jq.datePicker('setDate', date);
-    },
+    }
 
     /**
      * Gets the currently selected date value of the date picker.
      * @return {Date | string | null} The date, if one is currently selected. The empty `string` or `null` when no date
      * is selected.
      */
-    getDate: function() {
+    getDate() {
         return this.jq.datePicker('getDate');
-    },
+    }
 
     /**
      * Checks whether a date is selected.
      * @returns {boolean} true if a date is selected.
      */
-    hasDate: function() {
+    hasDate() {
         return (this.getDate() instanceof Date);
-    },
+    }
 
     /**
      * Sets the displayed visible calendar date. This refers to the currently displayed month page.
      * @param {string | Date | Date[]} date The date to be shown in the calendar.
      * @param {boolean} [silent=false] Whether to update the view date without triggering the AJAX viewChange event.
      */
-    setViewDate: function(date, silent = false) {
+    setViewDate(date, silent = false) {
         var viewDate = this.jq.data().primeDatePicker.parseValue(date);
         this.jq.datePicker('updateViewDate', null, viewDate, silent);
-    },
+    }
 
     /**
      * Gets the displayed visible calendar date. This refers to the currently displayed month page.
      * @return {Date | Date[]} The currently displayed date or dates.
      */
-    getViewDate: function() {
+    getViewDate() {
         return this.jq.datePicker().data().primeDatePicker.viewDate;
-    },
+    }
 
     /**
      * Sets the disabled dates.
      * @param {string[] | Date[]} disabledDates The dates to disable.
      */
-    setDisabledDates: function(disabledDates) {
+    setDisabledDates(disabledDates) {
         var pdp = this.jq.data().primeDatePicker;
         pdp.options.disabledDates = disabledDates;
         if (pdp.options.disabledDates) {
@@ -541,13 +541,13 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
             }
         }
         this.updatePanel();
-    },
+    }
 
     /**
      * Sets the enabled dates.
      * @param {string[] | Date[]} enabledDates The dates to enable.
      */
-    setEnabledDates: function(enabledDates) {
+    setEnabledDates(enabledDates) {
         var pdp = this.jq.data().primeDatePicker;
 
         if (enabledDates != null && enabledDates.length > 0) {
@@ -559,54 +559,54 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
             }
         }
         this.updatePanel();
-    },
+    }
 
     /**
      * Sets the disabled days.
      * @param {number[]} disabledDays The days to disable.
      */
-    setDisabledDays: function(disabledDays) {
+    setDisabledDays(disabledDays) {
         this.jq.data().primeDatePicker.options.disabledDays = disabledDays;
         this.updatePanel();
-    },
+    }
 
     /**
      * Update panel.
      * @private
      */
-    updatePanel: function() {
+    updatePanel() {
         var pdp = this.jq.data().primeDatePicker;
         pdp.panel.get(0).innerHTML = pdp.renderPanelElements();
-    },
+    }
 
     /**
      * Shows the popup panel.
      */
-    show: function() {
+    show() {
         this.jq.data().primeDatePicker.showOverlay();
-    },
+    }
 
     /**
      * Hide the popup panel.
      */
-    hide: function() {
+    hide() {
         this.jq.data().primeDatePicker.hideOverlay();
-    },
+    }
 
     /**
      * Enables the datepicker, so that the user can select a date.
      */
-    enable: function() {
+    enable() {
         this.jq.data().primeDatePicker.options.disabled = false;
         this.updatePanel();
         PrimeFaces.utils.enableInputWidget(this.input);
         PrimeFaces.utils.enableButton(this.triggerButton);
-    },
+    }
 
     /**
      * Disables the datepicker, so that the user can no longer select any date.
      */
-    disable: function() {
+    disable() {
         this.hide();
         this.jq.data().primeDatePicker.options.disabled = true;
         this.updatePanel();
@@ -614,4 +614,4 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         PrimeFaces.utils.disableButton(this.triggerButton);
     }
 
-});
+}

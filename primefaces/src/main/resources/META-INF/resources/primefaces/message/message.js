@@ -10,15 +10,15 @@
  * 
  * @prop {string} cfg.target Client ID of the target for which to show this message.
  */
-PrimeFaces.widget.Message = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Message = class Message extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         var msgSrc = this.jq.find('.ui-message-error-summary');
         if (msgSrc.length === 0) {
@@ -36,4 +36,4 @@ PrimeFaces.widget.Message = PrimeFaces.widget.BaseWidget.extend({
             target.attr('aria-describedby', msgSrc.attr('id'));
         }
     }
-});
+}

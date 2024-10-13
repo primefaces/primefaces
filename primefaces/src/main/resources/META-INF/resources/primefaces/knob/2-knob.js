@@ -35,15 +35,15 @@
  * @prop {PrimeFaces.widget.Knob.OnChangeCallback} cfg.onchange Client side callback to invoke when value changes.
  * @prop {string} cfg.styleClass Style class of the component.
  */
-PrimeFaces.widget.Knob = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Knob = class Knob extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function (cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         this.colorTheme = this.cfg.colorTheme;
         this.input = $(this.jqId + "_hidden");
@@ -53,14 +53,14 @@ PrimeFaces.widget.Knob = PrimeFaces.widget.BaseWidget.extend({
 
         this.createKnob();
 
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    refresh: function(cfg) {
+    refresh(cfg) {
         if (this.knob) {
             this.knob.children('canvas').remove();
             this.input.remove();
@@ -68,13 +68,13 @@ PrimeFaces.widget.Knob = PrimeFaces.widget.BaseWidget.extend({
         }
         
         this.init(cfg);
-    },
+    }
     
     /**
      * Creates the knob widget and sets up all event listeners.
      * @private
      */
-    createKnob: function () {
+    createKnob() {
         var $this = this;
 
         this.themeObject = PrimeFaces.widget.Knob.colorThemes[this.colorTheme || 'aristo'];
@@ -147,66 +147,66 @@ PrimeFaces.widget.Knob = PrimeFaces.widget.BaseWidget.extend({
         });
         
         this.knob.addClass(this.cfg.styleClass);
-    },
+    }
 
     /**
      * Sets the value of this knob widget to the given value.
      * @param {number} value Value to set on this knob.
      */
-    setValue: function (value) {
+    setValue(value) {
         this.input.val(value);
         this.jq.val(value).trigger('change');
-    },
+    }
 
     /**
      * Retrieves the current value of this knob, as a number.
      * @return {number} The current numerical value of this knob.
      */
-    getValue: function () {
+    getValue() {
         return parseInt(this.jq.val());
-    },
+    }
 
     /**
      * Increments the value of this knob by the current step size.
      */
-    increment: function () {
+    increment() {
         var value = this.getValue() + this.step;
         value = value <= this.max ? value : this.max;
         this.setValue(value);
-    },
+    }
 
     /**
      * Decrements the value of this knob by the current step size.
      */
-    decrement: function () {
+    decrement() {
         var value = this.getValue() - this.step;
         value = value >= this.min ? value : this.min;
         this.setValue(value);
-    },
+    }
 
     /**
      * Disables this input so that the user cannot enter a value anymore.
      */
-    disable: function() {
+    disable() {
         PrimeFaces.utils.disableInputWidget(this.jq, this.input);
-    },
+    }
 
     /**
      * Enables this input so that the user can enter a value.
      */
-    enable: function() {
+    enable() {
         PrimeFaces.utils.enableInputWidget(this.jq, this.input);
     }
-});
+}
 
 /**
- * Interface for the the list of available builtin color themes for the {@link Knob} widget.
+ * Interface for the list of available builtin color themes for the {@link Knob} widget.
  * @interface {PrimeFaces.widget.Knob.ColorThemes} .
  * @constant {PrimeFaces.widget.Knob.colorThemes} . Contains a list with the available builtin color themes for the
  * {@link Knob} widget.
  */
 PrimeFaces.widget.Knob.colorThemes = {
-    /** 
+    /**
      * The default afterdark theme.
      * @type {PrimeFaces.widget.Knob.ColorTheme}
      */
@@ -214,7 +214,7 @@ PrimeFaces.widget.Knob.colorThemes = {
         fgColor: '#8C9B8C',
         bgColor: '#535353'
     },
-    /** 
+    /**
      * The default afternoon theme.
      * @type {PrimeFaces.widget.Knob.ColorTheme}
      */
@@ -222,7 +222,7 @@ PrimeFaces.widget.Knob.colorThemes = {
         fgColor: '#5E61B0',
         bgColor: '#EBF8FF'
     },
-    /** 
+    /**
      * The default afterwork theme.
      * @type {PrimeFaces.widget.Knob.ColorTheme}
      */
@@ -230,7 +230,7 @@ PrimeFaces.widget.Knob.colorThemes = {
         fgColor: '#000000',
         bgColor: '#EBEBEB'
     },
-    /** 
+    /**
      * The default aristo theme.
      * @type {PrimeFaces.widget.Knob.ColorTheme}
      */
@@ -238,7 +238,7 @@ PrimeFaces.widget.Knob.colorThemes = {
         fgColor: '#000000',
         bgColor: '#E3E3E3'
     },
-    /** 
+    /**
      * The default blitzer theme.
      * @type {PrimeFaces.widget.Knob.ColorTheme}
      */
@@ -246,7 +246,7 @@ PrimeFaces.widget.Knob.colorThemes = {
         fgColor: '#CC0505',
         bgColor: '#F1F1F1'
     },
-    /** 
+    /**
      * The default bluesky theme.
      * @type {PrimeFaces.widget.Knob.ColorTheme}
      */
@@ -254,7 +254,7 @@ PrimeFaces.widget.Knob.colorThemes = {
         fgColor: 'black',
         bgColor: '#E5EEFA'
     },
-    /** 
+    /**
      * The default black tie theme.
      * @type {PrimeFaces.widget.Knob.ColorTheme}
      */
@@ -262,7 +262,7 @@ PrimeFaces.widget.Knob.colorThemes = {
         fgColor: 'black',
         bgColor: 'white'
     },
-    /** 
+    /**
      * The default bootstrap theme.
      * @type {PrimeFaces.widget.Knob.ColorTheme}
      */
@@ -270,7 +270,7 @@ PrimeFaces.widget.Knob.colorThemes = {
         fgColor: '#000000',
         bgColor: '#EBEBEB'
     },
-    /** 
+    /**
      * The default casablanca theme.
      * @type {PrimeFaces.widget.Knob.ColorTheme}
      */
@@ -278,7 +278,7 @@ PrimeFaces.widget.Knob.colorThemes = {
         fgColor: '#030303',
         bgColor: '#F9F8F5'
     },
-    /** 
+    /**
      * The default cruze theme.
      * @type {PrimeFaces.widget.Knob.ColorTheme}
      */
@@ -286,7 +286,7 @@ PrimeFaces.widget.Knob.colorThemes = {
         fgColor: '#C1C1C1',
         bgColor: '#3D3D3D'
     },
-    /** 
+    /**
      * The default cupertino theme.
      * @type {PrimeFaces.widget.Knob.ColorTheme}
      */
@@ -294,7 +294,7 @@ PrimeFaces.widget.Knob.colorThemes = {
         fgColor: '#2A7BAB',
         bgColor: '#D8EBF9'
     },
-    /** 
+    /**
      * The default dark hive theme.
      * @type {PrimeFaces.widget.Knob.ColorTheme}
      */
@@ -302,7 +302,7 @@ PrimeFaces.widget.Knob.colorThemes = {
         fgColor: 'white',
         bgColor: '#5F5F5F'
     },
-    /** 
+    /**
      * The default delta theme.
      * @type {PrimeFaces.widget.Knob.ColorTheme}
      */
@@ -310,7 +310,7 @@ PrimeFaces.widget.Knob.colorThemes = {
         fgColor: '#1B1D1F',
         bgColor: '#F9F9FC'
     },
-    /** 
+    /**
      * The default dot luv theme.
      * @type {PrimeFaces.widget.Knob.ColorTheme}
      */
@@ -318,7 +318,7 @@ PrimeFaces.widget.Knob.colorThemes = {
         fgColor: 'white',
         bgColor: '#083C6D'
     },
-    /** 
+    /**
      * The default eggplant theme.
      * @type {PrimeFaces.widget.Knob.ColorTheme}
      */
@@ -326,7 +326,7 @@ PrimeFaces.widget.Knob.colorThemes = {
         fgColor: 'white',
         bgColor: '#DFDCE1'
     },
-    /** 
+    /**
      * The default excite bike theme.
      * @type {PrimeFaces.widget.Knob.ColorTheme}
      */
@@ -334,7 +334,7 @@ PrimeFaces.widget.Knob.colorThemes = {
         fgColor: '#E69700',
         bgColor: '#1E88E6'
     },
-    /** 
+    /**
      * The default flick theme.
      * @type {PrimeFaces.widget.Knob.ColorTheme}
      */
@@ -342,7 +342,7 @@ PrimeFaces.widget.Knob.colorThemes = {
         fgColor: '#1980EC',
         bgColor: '#E0E0E0'
     },
-    /** 
+    /**
      * The default glass x theme.
      * @type {PrimeFaces.widget.Knob.ColorTheme}
      */
@@ -350,7 +350,7 @@ PrimeFaces.widget.Knob.colorThemes = {
         fgColor: 'black',
         bgColor: '#D7E1E8'
     },
-    /** 
+    /**
      * The default home theme.
      * @type {PrimeFaces.widget.Knob.ColorTheme}
      */
@@ -358,7 +358,7 @@ PrimeFaces.widget.Knob.colorThemes = {
         fgColor: '#424548',
         bgColor: '#747C89'
     },
-    /** 
+    /**
      * The default hot sneaks theme.
      * @type {PrimeFaces.widget.Knob.ColorTheme}
      */
@@ -366,7 +366,7 @@ PrimeFaces.widget.Knob.colorThemes = {
         fgColor: '#D2D660',
         bgColor: '#35414F'
     },
-    /** 
+    /**
      * The default humanity theme.
      * @type {PrimeFaces.widget.Knob.ColorTheme}
      */
@@ -374,7 +374,7 @@ PrimeFaces.widget.Knob.colorThemes = {
         fgColor: 'white',
         bgColor: '#CB842F'
     },
-    /** 
+    /**
      * The default le frog theme.
      * @type {PrimeFaces.widget.Knob.ColorTheme}
      */
@@ -382,7 +382,7 @@ PrimeFaces.widget.Knob.colorThemes = {
         fgColor: 'white',
         bgColor: '#5BA920'
     },
-    /** 
+    /**
      * The default midnight theme.
      * @type {PrimeFaces.widget.Knob.ColorTheme}
      */
@@ -390,7 +390,7 @@ PrimeFaces.widget.Knob.colorThemes = {
         fgColor: 'white',
         bgColor: '#363641'
     },
-    /** 
+    /**
      * The default mint choc theme.
      * @type {PrimeFaces.widget.Knob.ColorTheme}
      */
@@ -398,7 +398,7 @@ PrimeFaces.widget.Knob.colorThemes = {
         fgColor: '#E3DDC9',
         bgColor: '#59493D'
     },
-    /** 
+    /**
      * The default overcast theme.
      * @type {PrimeFaces.widget.Knob.ColorTheme}
      */
@@ -406,7 +406,7 @@ PrimeFaces.widget.Knob.colorThemes = {
         fgColor: '#3383BB',
         bgColor: '#F2F2F2'
     },
-    /** 
+    /**
      * The default pepper grinder theme.
      * @type {PrimeFaces.widget.Knob.ColorTheme}
      */
@@ -414,7 +414,7 @@ PrimeFaces.widget.Knob.colorThemes = {
         fgColor: '#654B24',
         bgColor: '#F6F5F4'
     },
-    /** 
+    /**
      * The default redmond theme.
      * @type {PrimeFaces.widget.Knob.ColorTheme}
      */
@@ -422,7 +422,7 @@ PrimeFaces.widget.Knob.colorThemes = {
         fgColor: '#2E6E9E',
         bgColor: '#EAF4FD'
     },
-    /** 
+    /**
      * The default rocket theme.
      * @type {PrimeFaces.widget.Knob.ColorTheme}
      */
@@ -430,7 +430,7 @@ PrimeFaces.widget.Knob.colorThemes = {
         fgColor: 'white',
         bgColor: '#292627'
     },
-    /** 
+    /**
      * The default sam theme.
      * @type {PrimeFaces.widget.Knob.ColorTheme}
      */
@@ -438,7 +438,7 @@ PrimeFaces.widget.Knob.colorThemes = {
         fgColor: '#000000',
         bgColor: '#E3E3E3'
     },
-    /** 
+    /**
      * The default smoothness theme.
      * @type {PrimeFaces.widget.Knob.ColorTheme}
      */
@@ -446,7 +446,7 @@ PrimeFaces.widget.Knob.colorThemes = {
         fgColor: '#000000',
         bgColor: '#E3E3E3'
     },
-    /** 
+    /**
      * The default south street theme.
      * @type {PrimeFaces.widget.Knob.ColorTheme}
      */
@@ -454,7 +454,7 @@ PrimeFaces.widget.Knob.colorThemes = {
         fgColor: 'white',
         bgColor: '#4CA109'
     },
-    /** 
+    /**
      * The default start theme.
      * @type {PrimeFaces.widget.Knob.ColorTheme}
      */
@@ -462,7 +462,7 @@ PrimeFaces.widget.Knob.colorThemes = {
         fgColor: '#222222',
         bgColor: '#2E90BD'
     },
-    /** 
+    /**
      * The default sunny theme.
      * @type {PrimeFaces.widget.Knob.ColorTheme}
      */
@@ -470,7 +470,7 @@ PrimeFaces.widget.Knob.colorThemes = {
         fgColor: '#9A9384',
         bgColor: '#FCDA66'
     },
-    /** 
+    /**
      * The default swanky purse theme.
      * @type {PrimeFaces.widget.Knob.ColorTheme}
      */
@@ -478,7 +478,7 @@ PrimeFaces.widget.Knob.colorThemes = {
         fgColor: '#EFEC9F',
         bgColor: '#261803'
     },
-    /** 
+    /**
      * The default trontastic theme.
      * @type {PrimeFaces.widget.Knob.ColorTheme}
      */
@@ -486,7 +486,7 @@ PrimeFaces.widget.Knob.colorThemes = {
         fgColor: 'white',
         bgColor: '#BEE590'
     },
-    /** 
+    /**
      * The default ui darkness theme.
      * @type {PrimeFaces.widget.Knob.ColorTheme}
      */
@@ -494,7 +494,7 @@ PrimeFaces.widget.Knob.colorThemes = {
         fgColor: 'white',
         bgColor: '#585858'
     },
-    /** 
+    /**
      * The default ui lightness theme.
      * @type {PrimeFaces.widget.Knob.ColorTheme}
      */
@@ -502,7 +502,7 @@ PrimeFaces.widget.Knob.colorThemes = {
         fgColor: 'white',
         bgColor: '#F7B13D'
     },
-    /** 
+    /**
      * The default vader theme.
      * @type {PrimeFaces.widget.Knob.ColorTheme}
      */

@@ -104,15 +104,15 @@
  * bean command specified via `completeMethod` on the component.
  * @prop {string} cfg.moreText The text shown in the panel when the number of suggestions is greater than `maxResults`.
  */
-PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.AutoComplete = class AutoComplete extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         this.panelId = this.jqId + '_panel';
         this.input = $(this.jqId + '_input');
@@ -203,63 +203,63 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.input.attr('aria-autocomplete', 'list');
         this.jq.append('<span role="status" aria-live="polite" class="ui-autocomplete-status ui-helper-hidden-accessible"></span>');
         this.status = this.jq.children('.ui-autocomplete-status');
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    refresh: function(cfg) {
-        this._super(cfg);
-    },
+    refresh(cfg) {
+        super.refresh(cfg);
+    }
 
     /**
      * Localizes the ARIA accessibility labels for the autocomplete.
      * @private
      */
-    configureLocale: function() {
+    configureLocale() {
         this.emptyMessage = PrimeFaces.getLocaleLabel('emptySearchMessage');
         this.resultsMessage = PrimeFaces.getLocaleLabel('searchMessage');
         if (this.dropdown) {
             this.dropdown.attr('aria-label', PrimeFaces.getLocaleLabel('choose'));
         }
-    },
+    }
 
     /**
      * Appends the overlay panel to the DOM.
      * @private
      */
-    appendPanel: function() {
+    appendPanel() {
         PrimeFaces.utils.registerDynamicOverlay(this, this.panel, this.id + '_panel');
-    },
+    }
 
     /**
      * Initializes the cache that stores the retrieved suggestions for a search term.
      * @private
      */
-    initCache: function() {
+    initCache() {
         this.cache = {};
         var $this = this;
 
         this.cacheTimeout = setInterval(function() {
             $this.clearCache();
         }, this.cfg.cacheTimeout);
-    },
+    }
 
     /**
      * Clears the cache with the results of an autocomplete search.
      * @private
      */
-    clearCache: function() {
+    clearCache() {
         this.cache = {};
-    },
+    }
 
     /**
      * Binds events for multiple selection mode.
      * @private
      */
-    setupMultipleMode: function() {
+    setupMultipleMode() {
         var $this = this;
         this.multiItemContainer = this.jq.children('ul');
         this.inputContainer = this.multiItemContainer.children('.ui-autocomplete-input-token');
@@ -287,13 +287,13 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             }
             $this.removeItem($(this).parent());
         });
-    },
+    }
 
     /**
      * Sets up all global event listeners for the overlay.
      * @private
      */
-    bindStaticEvents: function() {
+    bindStaticEvents() {
         var $this = this;
 
         this.bindKeyEvents();
@@ -305,13 +305,13 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 $this.touchToDropdownButton = true;
             });
         }
-    },
+    }
 
     /**
      * Sets up all panel event listeners
      * @private
      */
-    bindPanelEvents: function() {
+    bindPanelEvents() {
         var $this = this;
 
         this.hideOverlayHandler = PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', this.panel,
@@ -329,7 +329,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.scrollHandler = PrimeFaces.utils.registerConnectedOverlayScrollHandler(this, 'scroll.' + this.id + '_hide', this.jq, function() {
             $this.handleViewportChange();
         });
-    },
+    }
 
     /**
      * Fired when the browser viewport is resized or scrolled.  In Mobile environment we don't want to hider the overlay
@@ -337,19 +337,19 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
      * resize immediately and close the overlay. See GitHub #7075.
      * @private
      */
-    handleViewportChange: function() {
+    handleViewportChange() {
         if (PrimeFaces.env.mobile || PrimeFaces.hideOverlaysOnViewportChange === false) {
             this.alignPanel();
         } else {
             this.hide();
         }
-    },
+    }
 
     /**
      * Unbind all panel event listeners
      * @private
      */
-    unbindPanelEvents: function() {
+    unbindPanelEvents() {
         if (this.hideOverlayHandler) {
             this.hideOverlayHandler.unbind();
         }
@@ -361,13 +361,13 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         if (this.scrollHandler) {
             this.scrollHandler.unbind();
         }
-    },
+    }
 
     /**
      * Sets up all event listeners for the dropdown menu.
      * @private
      */
-    bindDropdownEvents: function() {
+    bindDropdownEvents() {
         var $this = this;
 
         PrimeFaces.skinButton(this.dropdown);
@@ -385,34 +385,34 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 e.stopPropagation();
             }
         });
-    },
+    }
 
     /**
      * Disables the dropdown menu.
      * @private
      */
-    disableDropdown: function() {
+    disableDropdown() {
         if (this.dropdown.length) {
             this.dropdown.off().prop('disabled', true).addClass('ui-state-disabled');
         }
-    },
+    }
 
     /**
      * Enables the dropdown menu.
      * @private
      */
-    enableDropdown: function() {
+    enableDropdown() {
         if (this.dropdown.length && this.dropdown.prop('disabled')) {
             this.bindDropdownEvents();
             this.dropdown.prop('disabled', false).removeClass('ui-state-disabled');
         }
-    },
+    }
 
     /**
      * Sets up all keyboard related event listeners.
      * @private
      */
-    bindKeyEvents: function() {
+    bindKeyEvents() {
         var $this = this;
 
         // GitHub #6711 use DOM if non-CSP and JQ event if CSP
@@ -606,13 +606,13 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             $this.currentInputValue = $this.cfg.forceSelection && !valid ? '' : value;
             $this.preventInputChangeEvent = false;
         });
-    },
+    }
 
     /**
      * Sets up all event listeners for mouse and click events.
      * @private
      */
-    bindDynamicEvents: function() {
+    bindDynamicEvents() {
         var $this = this;
 
         //visuals and click handler for items
@@ -672,14 +672,14 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 }
             });
         }
-    },
+    }
 
     /**
      * Callback for when a key event occurred.
      * @private
      * @param {JQuery.TriggeredEvent} e Key event that occurred.
      */
-    processKeyEvent: function(e) {
+    processKeyEvent(e) {
         var $this = this;
 
         if ($this.suppressInput) {
@@ -722,14 +722,14 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             }
             $this.fireClearEvent();
         }
-    },
+    }
 
     /**
      * Shows the tooltip for the given suggestion item.
      * @private
      * @param {JQuery} item Item with a tooltip.
      */
-    showItemtip: function(item) {
+    showItemtip(item) {
         if (item.hasClass('ui-autocomplete-moretext')) {
             this.itemtip.hide();
         }
@@ -767,14 +767,14 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
             this.itemtip.show();
         }
-    },
+    }
 
     /**
      * Performs the search for the available suggestion items.
      * @private
      * @param {string} query Keyword for the search.
      */
-    showSuggestions: function(query) {
+    showSuggestions(query) {
         this.items = this.panel.find('.ui-autocomplete-item');
         this.items.attr('role', 'option');
 
@@ -855,27 +855,27 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             this.input.removeAttr('aria-activedescendant');
             this.displayAriaStatus(this.emptyMessage);
         }
-    },
+    }
 
     /**
      * Performs a search the same ways as if the user had opened the dropdown menu. Depending on the configured
      * `dropdownMode`, performs the search either with an empty string or with the current value.
      */
-    searchWithDropdown: function() {
+    searchWithDropdown() {
         this.isSearchWithDropdown = true;
 
         if (this.cfg.dropdownMode === 'current')
             this.search(this.input.val());
         else
             this.search('');
-    },
+    }
 
     /**
      * Initiates a search with given value, that is, look for matching options and present the options that were found
      * to the user.
      * @param {string} query Keyword for the search.
      */
-    search: function(query) {
+    search(query) {
         //allow empty string but not undefined or null
         if (!this.cfg.active || query === undefined || query === null) {
             return;
@@ -1016,14 +1016,14 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             PrimeFaces.ajax.Request.handle(options);
         }
 
-    },
+    }
 
     /**
      * Sets the querying state.
      * @param {boolean} state Querying state to set.
      * @private
      */
-    setQuerying: function(state) {
+    setQuerying(state) {
         if (state && !this.querying) {
             this.jq.addClass('ui-state-loading')
                 .append('<span class="ui-icon-loading pi pi-spin pi-spinner"></span>');
@@ -1033,13 +1033,13 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 .find('.ui-icon-loading').remove();
         }
         this.querying = state;
-    },
+    }
 
     /**
      * Shows the panel with the suggestions.
      * @private
      */
-    show: function() {
+    show() {
         var $this = this;
 
         if (this.transition) {
@@ -1054,13 +1054,13 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 }
             });
         }
-    },
+    }
 
     /**
      * Hides the panel with the suggestions.
      * @private
      */
-    hide: function() {
+    hide() {
         if (this.panel.is(':visible') && this.transition) {
             var $this = this;
             if (this.cfg.dynamic && this.cfg.queryMode === 'server') {
@@ -1082,14 +1082,14 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         if (this.cfg.itemtip) {
             this.itemtip.hide();
         }
-    },
+    }
 
     /**
      * Invokes the appropriate behavior for when a suggestion item was selected.
      * @private
      * @param {string} itemValue Value of the selected item.
      */
-    invokeItemSelectBehavior: function(itemValue) {
+    invokeItemSelectBehavior(itemValue) {
         if (this.hasBehavior('itemSelect')) {
             var ext = {
                 params: [
@@ -1099,14 +1099,14 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
             this.callBehavior('itemSelect', ext);
         }
-    },
+    }
 
     /**
      * Invokes the appropriate behavior when a suggestion item was unselected.
      * @private
      * @param {string} itemValue Value of the unselected item.
      */
-    invokeItemUnselectBehavior: function(itemValue) {
+    invokeItemUnselectBehavior(itemValue) {
         if (this.hasBehavior('itemUnselect')) {
             var ext = {
                 params: [
@@ -1116,13 +1116,13 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
             this.callBehavior('itemUnselect', ext);
         }
-    },
+    }
 
     /**
      * Invokes the appropriate behavior for when more text was selected.
      * @private
      */
-    invokeMoreTextBehavior: function() {
+    invokeMoreTextBehavior() {
         if (this.hasBehavior('moreTextSelect')) {
             var ext = {
                 params: [
@@ -1132,13 +1132,13 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
             this.callBehavior('moreTextSelect', ext);
         }
-    },
+    }
 
     /**
      * Invokes the appropriate behavior for when empty message was selected.
      * @private
      */
-    invokeEmptyMessageBehavior: function() {
+    invokeEmptyMessageBehavior() {
         if (this.hasBehavior('emptyMessageSelect')) {
             var ext = {
                 params: [
@@ -1148,13 +1148,13 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
             this.callBehavior('emptyMessageSelect', ext);
         }
-    },
+    }
 
     /**
      * Add the given suggestion item.
      * @param {JQuery | string} item Suggestion item to add.
      */
-    addItem: function(item) {
+    addItem(item) {
         var $this = this,
             itemValue = '',
             itemStyleClass = '',
@@ -1232,13 +1232,13 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         if (!$this.isTabPressed) {
             $this.input.trigger('focus');
         }
-    },
+    }
 
     /**
      * Removes the given suggestion item.
      * @param {JQuery | string} item Suggestion item to remove.
      */
-    removeItem: function(item) {
+    removeItem(item) {
         var $this = this,
             itemValue = '';
         if ($this.input.hasClass('ui-state-disabled') || $this.input.attr("readonly")) {
@@ -1275,25 +1275,25 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         if (this.placeholder && this.hinput.children('option').length === 0) {
             this.input.attr('placeholder', this.placeholder);
         }
-    },
+    }
 
     /**
      * Removes all items if in multiple mode.
      */
-    removeAllItems: function() {
+    removeAllItems() {
         var $this = this;
         if (this.cfg.multiple && !this.input.val().length) {
             this.multiItemContainer.find('.ui-autocomplete-token').each(function(index) {
                 $this.removeItem($(this));
             });
         }
-    },
+    }
 
     /**
      * Sets up the event listener for the blur event to force a selection, when that feature is enabled.
      * @private
      */
-    setupForceSelection: function() {
+    setupForceSelection() {
         this.currentItems = [this.input.val()];
         var $this = this;
 
@@ -1312,55 +1312,55 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
             $this.checkMatchedItem = false;
         });
-    },
+    }
 
     /**
      * Disables the component.
      */
-    disable: function() {
+    disable() {
         this.jq.addClass("ui-state-disabled");
         PrimeFaces.utils.disableInputWidget(this.input);
         if (this.dropdown.length) {
             this.disableDropdown();
         }
-    },
+    }
 
     /**
      * Enables the component.
      */
-    enable: function() {
+    enable() {
         this.jq.removeClass("ui-state-disabled");
         PrimeFaces.utils.enableInputWidget(this.input);
         if (this.dropdown.length) {
             this.enableDropdown();
         }
-    },
+    }
 
     /**
      * Hides suggested items menu.
      */
-    close: function() {
+    close() {
         this.hide();
-    },
+    }
 
     /**
      * Deactivates search behavior.
      */
-    deactivate: function() {
+    deactivate() {
         this.active = false;
-    },
+    }
 
     /**
      * Activates search behavior.
      */
-    activate: function() {
+    activate() {
         this.active = true;
-    },
+    }
 
     /**
      * Aligns (positions) the overlay panel that shows the found suggestions.
      */
-    alignPanel: function() {
+    alignPanel() {
         var panelWidth = null;
 
         if (this.cfg.multiple) {
@@ -1416,27 +1416,27 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 }
             });
         }
-    },
+    }
 
     /**
      * Adds the given text to the ARIA status label element.
      * @private
      * @param {string} text Label text to display.
      */
-    displayAriaStatus: function(text) {
+    displayAriaStatus(text) {
         this.status.html('<div>' + PrimeFaces.escapeHTML(text) + '</div>');
-    },
+    }
 
     /**
      * Adjusts the value of the aria attributes for the given selectable option.
      * @private
      * @param {Element} item An option for which to set the aria attributes.
      */
-    changeAriaValue: function (item) {
+    changeAriaValue(item) {
         if (item) {
             this.input.attr('aria-activedescendant', item.id);
         }
-    },
+    }
 
     /**
      * Adjusts the highlighting and aria attributes for the given selectable option.
@@ -1444,7 +1444,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
      * @param {Element} item An option for which to set the aria attributes.
      * @param {boolean} highlight Flag to indicate to highlight or not
      */
-    highlightItem: function (item, highlight) {
+    highlightItem(item, highlight) {
         if (highlight) {
             item.addClass('ui-state-highlight');
         }
@@ -1452,13 +1452,13 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             item.removeClass('ui-state-highlight');
         }
         item.attr('aria-selected', highlight);
-    },
+    }
 
     /**
      * Takes the available suggestion items and groups them.
      * @private
      */
-    groupItems: function() {
+    groupItems() {
         var $this = this;
 
         if (this.items.length) {
@@ -1483,7 +1483,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 }
             });
         }
-    },
+    }
 
     /**
      * Creates the grouped suggestion item for the given parameters.
@@ -1493,7 +1493,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
      * @param {string} tooltip Optional tooltip for the group item.
      * @return {JQuery} The newly created group item.
      */
-    getGroupItem: function(group, container, tooltip) {
+    getGroupItem(group, container, tooltip) {
         var element = null;
 
         if (container.is('.ui-autocomplete-table')) {
@@ -1512,26 +1512,26 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         }
 
         return element;
-    },
+    }
 
     /**
      * Clears the set-timeout timer for the autocomplete search.
      * @private
      */
-    deleteTimeout: function() {
+    deleteTimeout() {
         clearTimeout(this.timeout);
         this.timeout = null;
-    },
+    }
 
     /**
      * Triggers the behavior for when the input was cleared.
      * @private
      */
-    fireClearEvent: function() {
+    fireClearEvent() {
         this.callBehavior('clear');
         this.previousText = this.currentText;
         this.currentText = '';
-    },
+    }
 
     /**
      * Checks whether the given value is part of the available suggestion items.
@@ -1540,7 +1540,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
      * @return {boolean | undefined} Whether the given value matches a value in the list of available suggestion items;
      * or `undefined` if {@link AutoCompleteCfg.forceSelection} is set to `false`.
      */
-    isValid: function(value, shouldFireClearEvent) {
+    isValid(value, shouldFireClearEvent) {
         if (!this.cfg.forceSelection) {
             return;
         }
@@ -1567,13 +1567,13 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         }
 
         return valid;
-    },
+    }
 
     /**
      * Fetches the suggestion items for the current query from the server.
      * @private
      */
-    fetchItems: function() {
+    fetchItems() {
         var $this = this;
 
         var options = {
@@ -1596,14 +1596,14 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         };
 
         PrimeFaces.ajax.Request.handle(options);
-    },
+    }
 
     /**
      * Adds the suggestions items in the given wrapper to the local cache of suggestion items.
      * @private
      * @param {JQuery} wrapper Wrapper element with the suggestions fetched from the server.
      */
-    setCache: function(wrapper) {
+    setCache(wrapper) {
         var $this = this,
             items = wrapper.find('.ui-autocomplete-item'),
             prevKey = null;
@@ -1624,14 +1624,14 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
             prevKey = key;
         }
-    },
+    }
 
     /**
      * Finds and sets the wrapper HTML snippets on this instance.
      * @private
      * @param {JQuery} wrapper Wrapper element with the suggestions fetched from the server.
      */
-    findWrapperTag: function(wrapper) {
+    findWrapperTag(wrapper) {
         if (wrapper.is('ul')) {
             this.wrapperStartTag = '<ul class="ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-corner-all ui-helper-reset" role="listbox">';
             this.wrapperEndTag = '</ul>';
@@ -1643,12 +1643,12 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 '<tbody>';
             this.wrapperEndTag = '</tbody></table>';
         }
-    },
+    }
 
     /**
      * Clears the input field.
      */
-    clear: function() {
+    clear() {
         this.input.val('');
         if (this.cfg.multiple) {
             this.removeAllItems();
@@ -1658,4 +1658,4 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         }
     }
 
-});
+}

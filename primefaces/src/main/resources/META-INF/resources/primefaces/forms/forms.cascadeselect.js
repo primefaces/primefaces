@@ -26,16 +26,16 @@
  * body.
  * @prop {boolean} cfg.disabled If true, disables the component.
  */
-PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.DynamicOverlayWidget.extend({
+PrimeFaces.widget.CascadeSelect = class CascadeSelect extends PrimeFaces.widget.DynamicOverlayWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
+    init(cfg) {
         this.panel = $(PrimeFaces.escapeClientId(cfg.id) + '_panel');
-        this._super(cfg, this.panel, cfg.id + '_panel');
+        super.init(cfg, this.panel, cfg.id + '_panel');
 
         this.input = $(this.jqId + '_input');
         this.label = this.jq.children('.ui-cascadeselect-label');
@@ -49,13 +49,13 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.DynamicOverlayWidget.extend(
             this.bindEvents();
             this.transition = PrimeFaces.utils.registerCSSTransition(this.panel, 'ui-connected-overlay');
         }
-    },
+    }
 
     /**
      * Sets up all event listeners that are required by this widget.
      * @private
      */
-    bindEvents: function() {
+    bindEvents() {
         var $this = this;
 
         this.triggers.off('click.cascadeselect').on('click.cascadeselect', function(e) {
@@ -179,48 +179,48 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.DynamicOverlayWidget.extend(
 
                 e.preventDefault();
             });
-    },
+    }
 
     /**
      * Removes some event listeners when this widget was disabled.
      * @private
      */
-    unbindEvents: function() {
+    unbindEvents() {
         this.contents.off();
         this.triggers.off();
         this.input.off();
-    },
+    }
 
     /**
      * Disables this widget so that the user cannot select any option.
      */
-    disable: function() {
+    disable() {
         if (!this.cfg.disabled) {
             this.cfg.disabled = true;
             this.jq.addClass('ui-state-disabled');
             this.input.attr('disabled', 'disabled');
             this.unbindEvents();
         }
-    },
+    }
 
     /**
      * Enables this widget so that the user can select an option.
      */
-    enable: function() {
+    enable() {
         if (this.cfg.disabled) {
             this.cfg.disabled = false;
             this.jq.removeClass('ui-state-disabled');
             this.input.removeAttr('disabled');
             this.bindEvents();
         }
-    },
+    }
 
     /**
      * Deactivate siblings and active children of an item.
      * @private
      * @param {JQuery} item Cascade select panel element.
      */
-    deactivateItems: function(item) {
+    deactivateItems(item) {
         var parentItem = item.parent().parent();
         var siblings = item.siblings('.ui-cascadeselect-item-active');
 
@@ -230,13 +230,13 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.DynamicOverlayWidget.extend(
         if (!parentItem.is(this.itemsWrapper)) {
             this.deactivateItems(parentItem);
         }
-    },
+    }
 
     /**
      * Sets up all panel event listeners
      * @private
      */
-    bindPanelEvents: function() {
+    bindPanelEvents() {
         var $this = this;
 
         this.hideOverlayHandler = PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', this.panel,
@@ -254,7 +254,7 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.DynamicOverlayWidget.extend(
         this.scrollHandler = PrimeFaces.utils.registerConnectedOverlayScrollHandler(this, 'scroll.' + this.id + '_hide', this.jq, function() {
             $this.handleViewportChange();
         });
-    },
+    }
 
     /**
      * Fired when the browser viewport is resized or scrolled.  In Mobile environment we don't want to hider the overlay
@@ -262,19 +262,19 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.DynamicOverlayWidget.extend(
      * resize immediately and close the overlay. See GitHub #7075.
      * @private
      */
-    handleViewportChange: function() {
+    handleViewportChange() {
         if (PrimeFaces.env.mobile || PrimeFaces.hideOverlaysOnViewportChange === false) {
             this.alignPanel();
         } else {
             this.hide();
         }
-    },
+    }
 
     /**
      * Unbind all panel event listeners
      * @private
      */
-    unbindPanelEvents: function() {
+    unbindPanelEvents() {
         if (this.hideOverlayHandler) {
             this.hideOverlayHandler.unbind();
         }
@@ -286,12 +286,12 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.DynamicOverlayWidget.extend(
         if (this.scrollHandler) {
             this.scrollHandler.unbind();
         }
-    },
+    }
 
     /**
      * Brings up the overlay panel with the available options.
      */
-    show: function() {
+    show() {
         var $this = this;
 
         if (this.transition) {
@@ -306,20 +306,20 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.DynamicOverlayWidget.extend(
                 }
             });
         }
-    },
+    }
 
     /**
      * Hides the panel of a group item.
      * @param {JQuery} item Dom element of the cascadeselect.
      */
-    hideGroup: function(item) {
+    hideGroup(item) {
         item.removeClass('ui-cascadeselect-item-active ui-state-highlight').children('.ui-cascadeselect-panel').hide();
-    },
+    }
 
     /**
      * Hides the overlay panel with the available options.
      */
-    hide: function() {
+    hide() {
         if (this.panel.is(':visible') && this.transition) {
             var $this = this;
 
@@ -333,24 +333,24 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.DynamicOverlayWidget.extend(
                 }
             });
         }
-    },
+    }
 
     /**
      * Adjust the width of the overlay panel.
      * @private
      */
-    alignPanelWidth: function() {
+    alignPanelWidth() {
         //align panel and container
         if (this.cfg.appendTo) {
             this.panel.css('min-width', this.jq.outerWidth());
         }
-    },
+    }
 
     /**
      * Align the overlay panel with the available options.
      * @private
      */
-    alignPanel: function() {
+    alignPanel() {
         this.alignPanelWidth();
 
         if (this.panel.parent().is(this.jq)) {
@@ -371,7 +371,7 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.DynamicOverlayWidget.extend(
                 }
             });
         }
-    },
+    }
 
     /**
      * Align the sub overlay panel with the available options.
@@ -379,7 +379,7 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.DynamicOverlayWidget.extend(
      * @param {JQuery} subpanel Sub panel element of the cascade select panel.
      * @param {JQuery} parentPanel Parent panel element of the sub panel element.
      */
-    alignSubPanel: function(subpanel, parentPanel) {
+    alignSubPanel(subpanel, parentPanel) {
         var subitemWrapper = subpanel.children('.ui-cascadeselect-items-wrapper');
         subpanel.css({'display':'block', 'opacity':'0', 'pointer-events': 'none'});
         subitemWrapper.css({'overflow': 'scroll'});
@@ -394,4 +394,4 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.DynamicOverlayWidget.extend(
         subpanel.css({'display':'none', 'opacity':'', 'pointer-events': '', 'z-index': PrimeFaces.nextZindex()});
         subitemWrapper.css({'overflow': ''});
     }
-});
+}

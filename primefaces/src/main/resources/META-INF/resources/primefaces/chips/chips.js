@@ -21,15 +21,15 @@
  * @prop {string} cfg.separator Separator character to allow multiple values such if a list is pasted into the input.
  * Default is `,`.
  */
-PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Chips = class Chips extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         this.input = $(this.jqId + '_input');
         this.hinput = $(this.jqId + '_hinput');
@@ -43,13 +43,13 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
         this.placeholder = this.input.attr('placeholder');
 
         this.bindEvents();
-    },
+    }
 
     /**
      * Sets up all event listeners required for this widget.
      * @private
      */
-    bindEvents: function() {
+    bindEvents() {
         var $this = this;
 
         this.itemContainer.on("mouseenter", function() {
@@ -114,15 +114,15 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
         this.itemContainer.off('click', closeSelector).on('click', closeSelector, null, function(event) {
             $this.removeItem($(this).parent());
         });
-    },
+    }
 
     /**
      * Handles floating label CSS if wrapped in a floating label.
      * @private
      */
-    updateFloatLabel: function() {
+    updateFloatLabel() {
         PrimeFaces.utils.updateFloatLabel(this.jq, this.input.add(this.hinput), this.hasFloatLabel);
-    },
+    }
 
     /**
      * Adds a new item (chip) to the list of currently displayed items.
@@ -130,7 +130,7 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
      * @param {boolean} [refocus] `true` to put focus back on the INPUT again after the chip was added, or `false`
      * otherwise.
      */
-    addItem: function(value, refocus) {
+    addItem(value, refocus) {
         var $this = this;
 
         if (!value || !value.trim().length) {
@@ -179,7 +179,7 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
         }
                 
         $this.updateFloatLabel();
-    },
+    }
 
     /**
      * Deletes the currently editing input value and refocus the input box if necessary.
@@ -187,21 +187,21 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
      * otherwise.
      * @private
      */
-    refocus: function(refocus) {
+    refocus(refocus) {
         this.input.val('');
         this.input.removeAttr('placeholder');
 
         if (refocus) {
             this.input.trigger('focus');
         }
-    },
+    }
 
     /**
      * Removes an item (chip) from the list of currently displayed items.
      * @param {JQuery} item An item (LI element) that should be removed.
      * @param {boolean} [silent] Flag indicating whether to animate the removal and fire the AJAX behavior.
      */
-    removeItem: function(item, silent) {
+    removeItem(item, silent) {
         var itemIndex = this.itemContainer.children('li.ui-chips-token').index(item);
         var itemValue = item.find('span.ui-chips-token-label').html();
         var $this = this;
@@ -225,13 +225,13 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
             this.input.attr('placeholder', this.placeholder);
         }
         $this.updateFloatLabel();
-    },
+    }
 
     /**
      * Converts the current list into a separator delimited list for mass editing while keeping original
      * order of the items or closes the editor turning the values back into chips.
      */
-    toggleEditor: function() {
+    toggleEditor() {
         var $this = this,
             tokens = this.itemContainer.children('li.ui-chips-token');
 
@@ -252,14 +252,14 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
         else {
             $this.addItem(this.input.val(), true);
         }
-    },
+    }
 
     /**
      * Triggers the behaviors and event listeners for when an item (chip) was selected.
      * @param {string} itemValue Value of the selected item.
      * @private
      */
-    invokeItemSelectBehavior: function(itemValue) {
+    invokeItemSelectBehavior(itemValue) {
         if (this.hasBehavior('itemSelect')) {
             var ext = {
                 params: [
@@ -269,14 +269,14 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
 
             this.callBehavior('itemSelect', ext);
         }
-    },
+    }
 
     /**
      * Triggers the behaviors and event listeners for when an item (chip) was unselected.
      * @param {string} itemValue Value of the unselected item.
      * @private
      */
-    invokeItemUnselectBehavior: function(itemValue) {
+    invokeItemUnselectBehavior(itemValue) {
         if (this.hasBehavior('itemUnselect')) {
             var ext = {
                 params: [
@@ -286,19 +286,19 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
 
             this.callBehavior('itemUnselect', ext);
         }
-    },
+    }
 
     /**
      * Disables this input so that the user cannot enter a value anymore.
      */
-    disable: function() {
+    disable() {
         PrimeFaces.utils.disableInputWidget(this.jq, this.input);
-    },
+    }
 
     /**
      * Enables this input so that the user can enter a value.
      */
-    enable: function() {
+    enable() {
         PrimeFaces.utils.enableInputWidget(this.jq, this.input);
     }
-});
+}

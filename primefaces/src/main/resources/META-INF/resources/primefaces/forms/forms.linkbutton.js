@@ -10,27 +10,27 @@
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  */
-PrimeFaces.widget.LinkButton = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.LinkButton = class LinkButton extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function (cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
         this.link = this.jq.children('a');
 
         PrimeFaces.skinButton(this.jq);
 
         this.bindEvents();
-    },
+    }
 
     /**
      * Sets up all event listeners required by this widget.
      * @private
      */
-    bindEvents: function () {
+    bindEvents() {
         var $this = this;
 
         if (this.link.length > 0) {
@@ -41,20 +41,20 @@ PrimeFaces.widget.LinkButton = PrimeFaces.widget.BaseWidget.extend({
                     $this.jq.removeClass('ui-state-focus ui-state-active');
                 });
         }
-    },
+    }
 
     /**
      * Disables this link button so that it cannot be clicked.
      */
-    disable: function () {
+    disable() {
         PrimeFaces.utils.disableButton(this.jq);
-    },
+    }
 
     /**
      * Enables this link button so that it can be clicked.
      */
-    enable: function () {
+    enable() {
         PrimeFaces.utils.enableButton(this.jq);
     }
 
-});
+}

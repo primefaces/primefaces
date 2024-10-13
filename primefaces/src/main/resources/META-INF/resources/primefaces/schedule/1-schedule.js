@@ -36,15 +36,15 @@
  * @prop {string} cfg.urlTarget Target for events with urls. Clicking on such events in the schedule will not trigger the
  * `selectEvent` but open the url using this target instead. Default is `_blank`.
  */
-PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
+PrimeFaces.widget.Schedule = class Schedule extends PrimeFaces.widget.DeferredWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
         this.cfg.options.themeSystem = 'standard';
         this.cfg.options.slotLabelFormat = this.cfg.options.slotLabelFormat || undefined; 
         this.cfg.options.viewClassNames = this.onViewChange.bind(this);
@@ -81,7 +81,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
 
         // must be done after FullCalendar is built
         this.setupTitlebarHandlers();
-    },
+    }
 
     /**
      * @include
@@ -89,19 +89,19 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
      * @protected
      * @inheritdoc
      */
-    _render: function() {
+    _render() {
         var _self = this;
         var calendarEl = document.getElementById(this.cfg.id);
         _self.calendar = new FullCalendar.Calendar(calendarEl, this.cfg.options);
         _self.calendar.render();
-    },
+    }
 
     /**
      * Localizes certain aspects of FullCalendar that are exposed. The rest are configured by "locale"
      * setting and FullCalendar and Moment translations for that locale.
      * @private
      */
-    configureLocale: function() {
+    configureLocale() {
         var options = this.cfg.options;
 
         // #6496 must add all locales
@@ -126,13 +126,13 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
             if (lang.list) { buttonText.list = lang.list; }
             options.buttonText = buttonText;
         }
-    },
+    }
     
     /**
      * Creates and sets the event listeners for the full calendar.
      * @private
      */
-    setupEventHandlers: function() {
+    setupEventHandlers() {
         var $this = this;
 
         this.cfg.options.dateClick = function(dateClickInfo) {
@@ -287,24 +287,24 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                 }
             };
         }
-    },
+    }
 
     /**
      * Creates and sets the event listeners for the previous, next, and today buttons in the title bar.
      * @private
      */
-    setupTitlebarHandlers: function() {
+    setupTitlebarHandlers() {
         var $this = this;
         $('.fc-prev-button, .fc-next-button, .fc-today-button').on('click.' + this.id, function() {
             $this.callBehavior('viewChange');
         });
-    },
+    }
 
     /**
      * Creates the event listeners for the FullCalendar events.
      * @private
      */
-    setupEventSource: function() {
+    setupEventSource() {
         var $this = this;
 
         this.cfg.options.events = function(fetchInfo, successCallback) {
@@ -332,15 +332,15 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
 
             PrimeFaces.ajax.Request.handle(options);
         };
-    },
+    }
 
     /**
      * Updates and refreshes the schedule view.
      */
-    update: function() {
+    update() {
         var _self = this;
         _self.calendar.refetchEvents();
-    },
+    }
 
     /**
      * The event listener for when the user switches the to a different view (month view, week day, or time view).
@@ -349,16 +349,16 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
      * changes.
      * @private
      */
-    onViewChange: function(arg) {
+    onViewChange(arg) {
         this.viewNameState.val(arg.view.type);
         this.callBehavior('viewChange');
-    },
+    }
 
     /**
      * Creates and sets the view options for FullCalendar on this widget configuration.
      * @private
      */
-    setViewOptions: function() {
+    setViewOptions() {
         var views = {
             month: {},
             week: {},
@@ -389,4 +389,4 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
         $.extend(true, this.cfg.options.views, views);
     }
 
-});
+}

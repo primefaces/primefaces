@@ -29,15 +29,15 @@
  * digits.
  * @prop {boolean} cfg.modifyValueOnWheel Increment or decrement the element value with the mouse wheel if true.
  */
-PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Spinner = class Spinner extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         this.input = this.jq.children('.ui-spinner-input');
         this.upButton = this.jq.children('button.ui-spinner-up');
@@ -81,13 +81,13 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
 
         PrimeFaces.skinInput(this.input);
         this.addARIA();
-    },
+    }
 
     /**
      * Sets up all event listeners that are required by this widget.
      * @private
      */
-    bindEvents: function() {
+    bindEvents() {
         var $this = this;
 
         this.jq.children('.ui-spinner-button')
@@ -212,7 +212,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
                 return false;
             }
         });
-    },
+    }
 
     /**
      * Increments or decrements this spinner rapidly, at a rate of one step each few frames. Used when the user keeps
@@ -222,7 +222,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
      * this spinner starts incrementing or decrementing rapidly.
      * @param {-1 | 1} dir `-1` to decrement this spinner, or `+1` to increment this spinner.
      */
-    repeat: function(interval, dir) {
+    repeat(interval, dir) {
         var $this = this,
         i = interval||500;
 
@@ -232,13 +232,13 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
         }, i);
 
         this.spin(dir);
-    },
+    }
 
     /**
      * Increments or decrements this spinner by one {@link SpinnerCfg.step}.
      * @param {-1 | 1} dir `-1` to decrement this spinner, or `+1` to increment this spinner.
      */
-    spin: function(dir) {
+    spin(dir) {
         var step = this.cfg.step * dir,
         currentValue = this.value ? this.value : 0,
         newValue = currentValue + step;
@@ -257,13 +257,13 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
         this.value = newValue;
         this.format();
         this.input.attr('aria-valuenow', this.getValue());
-    },
+    }
 
     /**
      * Callback for when the value of the input was changed. Parses the current values and saves it.
      * @private
      */
-    updateValue: function() {
+    updateValue() {
         var value = this.input.val();
 
         if(this.cfg.prefix && value.indexOf(this.cfg.prefix) === 0) {
@@ -283,7 +283,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
         }
 
         this.value = this.parseValue(value);
-    },
+    }
 
     /**
      * Takes the string representation of a number, parses it and restricts it to the limits imposed by the
@@ -293,7 +293,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
      * @return {number | null} The parsed value, clamped to the allowed range, or `null` if the value could not be
      * parsed.
      */
-    parseValue: function(value) {
+    parseValue(value) {
         var parsedValue;
         if(this.cfg.prefix && value && isNaN(value) && value.indexOf(this.cfg.prefix) === 0) {
             value = value.substring(this.cfg.prefix.length, value.length);
@@ -326,14 +326,14 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
             }
         }
         return parsedValue;
-    },
+    }
 
     /**
      * Takes the current numerical value of this spinner, formats it according to the
      * {@link SpinnerCfg|configuration of this widget}, and writes the result to the input field.
      * @private
      */
-    format: function() {
+    format() {
         if(this.value !== null) {
             var value = this.getValue();
             var numAndFract = value.toString().split('.');
@@ -350,7 +350,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
 
             this.input.val(value);
         }
-    },
+    }
 
     /**
      * If roundStep is enabled then round to the nearest step value.
@@ -359,19 +359,19 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
      * @param {number} value The value for this spinner.
      * @return {number} Original value if rounding disabled, else a rounded value.
      */
-    roundStep: function(value) {
+    roundStep(value) {
         if (!this.cfg.round) {
             return value;
         }
         var numericValue = parseFloat(typeof value === 'string' ? value.replace(this.cfg.thousandSeparator, '') : value);
         return +(Math.ceil(numericValue / this.cfg.step) * this.cfg.step).toFixed(this.cfg.precision);
-    },
+    }
 
     /**
      * Adds the required ARIA attributes to the elements of this spinner.
      * @private
      */
-    addARIA: function() {
+    addARIA() {
         this.input.attr('role', 'spinbutton');
         this.input.attr('aria-valuenow', this.getValue());
 
@@ -389,41 +389,41 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
         
         this.upButton.attr('aria-label', PrimeFaces.getAriaLabel('spinner.INCREASE'));
         this.downButton.attr('aria-label', PrimeFaces.getAriaLabel('spinner.DECREASE'));
-    },
+    }
 
     /**
      * Reads and returns the value of this spinner.
      * @return {number} The current numerical value of this spinner.
      */
-    getValue: function() {
+    getValue() {
         if(this.cfg.precision) {
             return parseFloat(this.value).toFixed(this.cfg.precision);
         }
         else {
             return this.value;
         }
-    },
+    }
 
     /**
      * Sets the value of this spinner to the given number.
      * @param {number} value The new value for this spinner.
      */
-    setValue: function(value) {
+    setValue(value) {
         this.value = value;
         this.format();
-    },
+    }
 
     /**
      * Disables this input so that the user cannot enter a value anymore.
      */
-    disable: function() {
+    disable() {
         PrimeFaces.utils.disableInputWidget(this.jq, this.input);
-    },
+    }
 
     /**
      * Enables this input so that the user can enter a value.
      */
-    enable: function() {
+    enable() {
         PrimeFaces.utils.enableInputWidget(this.jq, this.input);
     }
-});
+}

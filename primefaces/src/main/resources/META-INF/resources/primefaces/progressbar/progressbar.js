@@ -23,15 +23,15 @@
  * @prop {number} cfg.interval Duration in milliseconds between two AJAX polling requests, when `ajax` is set to `true`.
  * @prop {string} cfg.labelTemplate Template of the progress label.
  */
-PrimeFaces.widget.ProgressBar = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.ProgressBar = class ProgressBar extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         this.jqValue = this.jq.children('.ui-progressbar-value');
         this.jqLabel = this.jq.children('.ui-progressbar-label');
@@ -39,13 +39,13 @@ PrimeFaces.widget.ProgressBar = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.global = (this.cfg.global === false) ? false : true;
 
         this.enableARIA();
-    },
+    }
 
     /**
      * Sets the value (progress) of this progress bar to a value between zero and a hundred percent.
      * @param {number} value New value for this progress bar, between `0` and `100`.
      */
-    setValue: function(value) {
+    setValue(value) {
         if(value >= 0 && value<=100) {
             if(value == 0) {
                 this.jqValue.hide().css('width', '0%').removeClass('ui-corner-right');
@@ -66,20 +66,20 @@ PrimeFaces.widget.ProgressBar = PrimeFaces.widget.BaseWidget.extend({
             this.value = value;
             this.jq.attr('aria-valuenow', value);
         }
-    },
+    }
 
     /**
      * Finds the progress currently shown by this progress bar.
      * @return {number} The current value of this progress bar, between `0` and `100`.
      */
-    getValue: function() {
+    getValue() {
         return this.value;
-    },
+    }
 
     /**
      * Starts the progress bar, if not already started. Does not reset its current value.
      */
-    start: function() {
+    start() {
         var $this = this;
 
         if(this.cfg.ajax) {
@@ -106,35 +106,35 @@ PrimeFaces.widget.ProgressBar = PrimeFaces.widget.BaseWidget.extend({
 
             }, this.cfg.interval);
         }
-    },
+    }
 
     /**
      * Invokes the behavior for when the progress bar is complete.
      * @private
      */
-    fireCompleteEvent: function() {
+    fireCompleteEvent() {
         clearInterval(this.progressPoll);
 
         this.callBehavior('complete');
-    },
+    }
 
     /**
      * Cancels the progress bar, resetting it back to zero percent.
      */
-    cancel: function() {
+    cancel() {
         clearInterval(this.progressPoll);
         this.setValue(0);
-    },
+    }
 
     /**
      * Adds the appropriate aria attributes.
      * @private
      */
-    enableARIA: function() {
+    enableARIA() {
         this.jq.attr('role', 'progressbar')
                 .attr('aria-valuemin', 0)
                 .attr('aria-valuenow', this.value)
                 .attr('aria-valuemax', 100);
     }
 
-});
+}

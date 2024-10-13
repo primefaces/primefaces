@@ -11,7 +11,7 @@ if (!PrimeFaces.download) {
      * @param {string} cookieName Name of the file download cookie (by default `primefaces.download`). This function
      * makes sure the cookie is set properly when the download finishes.
      */
-    PrimeFaces.download = function(url, mimeType, fileName, cookieName) {
+    function download(url, mimeType, fileName, cookieName) {
         var cookiePath = PrimeFaces.settings.contextPath;
         if (!cookiePath || cookiePath === '') {
             cookiePath = '/';
@@ -25,5 +25,7 @@ if (!PrimeFaces.download) {
             PrimeFaces.setCookie(cookieName, "true", {path: cookiePath});
         };
         x.send();
-    };
+    }
+
+    PrimeFaces.download = download;
 }

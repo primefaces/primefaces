@@ -8,22 +8,22 @@
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  */
-PrimeFaces.widget.StaticMessage = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.StaticMessage = class StaticMessage extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
         this.bindEvents();
-    },
+    }
 
     /**
      * Bind behavior events.
      */
-    bindEvents: function() {
+    bindEvents() {
         var $this = this;
         var closer = $('.ui-messages-close', this.jq);
 
@@ -35,4 +35,4 @@ PrimeFaces.widget.StaticMessage = PrimeFaces.widget.BaseWidget.extend({
         PrimeFaces.skinCloseAction(closer);
     }
 
-});
+}

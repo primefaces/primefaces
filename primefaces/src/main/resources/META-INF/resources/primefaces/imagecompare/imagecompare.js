@@ -27,15 +27,15 @@
  * @prop {string} cfg.leftImage URL of the image to the left
  * @prop {string} cfg.rightImage URL of the image to the right
  */
- PrimeFaces.widget.ImageCompare = PrimeFaces.widget.BaseWidget.extend({
+ PrimeFaces.widget.ImageCompare = class ImageCompare extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
         this.cfg.showFullLinks = false;
 
         new juxtapose.JXSlider("[id='"+this.cfg.id+"']",
@@ -61,4 +61,4 @@
 
     }
     
-});
+}

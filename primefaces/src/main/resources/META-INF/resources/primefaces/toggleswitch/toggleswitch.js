@@ -14,15 +14,15 @@
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  */
-PrimeFaces.widget.ToggleSwitch = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.ToggleSwitch = class ToggleSwitch extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         this.slider = this.jq.children('.ui-toggleswitch-slider');
         this.handler = this.slider.children('.ui-toggleswitch-handler');
@@ -41,13 +41,13 @@ PrimeFaces.widget.ToggleSwitch = PrimeFaces.widget.BaseWidget.extend({
 
         //pfs metadata
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
-    },
+    }
 
     /**
      * Sets up all event listeners that are required by this widget.
      * @private
      */
-    _bindEvents: function() {
+    _bindEvents() {
         var $this = this;
 
         this.slider.on('click.toggleSwitch', function(e) {
@@ -80,61 +80,61 @@ PrimeFaces.widget.ToggleSwitch = PrimeFaces.widget.BaseWidget.extend({
                 $this.uncheck(true);
             }
         });
-    },
+    }
 
     /**
      * Checks whether this checkbox is currently checked.
      * @return {boolean} `true` if this checkbox is checked, or `false` otherwise.
      */
-    isChecked: function() {
+    isChecked() {
         return this.input.prop('checked');
-    },
+    }
 
     /**
      * Turns this switch in case it is off, or turns of off in case it is on.
      */
-    toggle: function() {
+    toggle() {
         if(this.isChecked())
             this.uncheck();
         else
             this.check();
-    },
+    }
 
     /**
      * Turns this switch on if it is not already turned on.
      * @param {boolean} [silent] `true` to suppress triggering event listeners, or `false` otherwise.
      */
-    check: function(silent) {
+    check(silent) {
         this.input.prop('checked', true).attr('aria-checked', true).attr('aria-label', PrimeFaces.getAriaLabel('switch.ON'));
         if (!silent) {
             this.input.trigger('change');
         }
         this.jq.addClass('ui-toggleswitch-checked');
-    },
+    }
 
     /**
      * Turns this switch off if it is not already turned of.
      * @param {boolean} [silent] `true` to suppress triggering event listeners, or `false` otherwise.
      */
-    uncheck: function(silent) {
+    uncheck(silent) {
         this.input.prop('checked', false).attr('aria-checked', false).attr('aria-label', PrimeFaces.getAriaLabel('switch.OFF'));
         if (!silent) {
             this.input.trigger('change');
         }
         this.jq.removeClass('ui-toggleswitch-checked');
-    },
+    }
 
     /**
      * Disables this input so that the user cannot enter a value anymore.
      */
-    disable: function() {
+    disable() {
         PrimeFaces.utils.disableInputWidget(this.jq, this.input);
-    },
+    }
 
     /**
      * Enables this input so that the user can enter a value.
      */
-    enable: function() {
+    enable() {
         PrimeFaces.utils.enableInputWidget(this.jq, this.input);
     }
-});
+}

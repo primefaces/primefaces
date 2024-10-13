@@ -97,15 +97,15 @@
  * @prop {string} cfg.yearRange Year range for the navigator, default is `c-10:c+10`.
  * @prop {string} cfg.shortYearCutoff The cutoff year for determining the century for a date. Default is `+10`.
  */
-PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Calendar = class Calendar extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         this.input = $(this.jqId + '_input');
         this.jqEl = this.cfg.popup ? this.input : $(this.jqId + '_inline');
@@ -251,13 +251,13 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
 
         //pfs metadata
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
-    },
+    }
 
     /**
      * Initializes the mask on the input if using a mask and not an inline picker.
      * @private
      */
-    applyMask: function() {
+    applyMask() {
         if (this.cfg.inline || this.input.is('[readonly]') || this.input.is(':disabled')) {
             return;
         }
@@ -279,7 +279,7 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
             }
             this.input.inputmask('remove').inputmask(maskCfg);
         }
-    },
+    }
 
     /**
      * Fired when the browser viewport is resized or scrolled.  In Mobile environment we don't want to hider the overlay
@@ -287,19 +287,19 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
      * resize immediately and close the overlay. See GitHub #7075.
      * @private
      */
-    handleViewportChange: function() {
+    handleViewportChange() {
         if (PrimeFaces.env.mobile) {
             this.alignPanel();
         } else {
             $.datepicker._hideDatepicker();
         }
-    },
+    }
 
     /**
      * Aligns the overlay panel with the date picker according to the current configuration. It is usually positioned
      * next to or below the input field to which it is attached.
      */
-    alignPanel: function () {
+    alignPanel() {
         if($.datepicker._lastInput && (this.id + '_input') === $.datepicker._lastInput.id) {
             $('#ui-datepicker-div').css({left: '', top: ''}).position({
                 my: 'left top'
@@ -308,26 +308,26 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
                 , collision: 'flipfit'
             });
         }
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    refresh: function(cfg) {
+    refresh(cfg) {
         if(cfg.popup && $.datepicker._lastInput && (cfg.id + '_input') === $.datepicker._lastInput.id) {
             $.datepicker._hideDatepicker();
         }
 
-        this._super(cfg);
-    },
+        super.refresh(cfg);
+    }
 
     /**
      * @override
      * @inheritdoc
      */
-    destroy: function() {
+    destroy() {
         if (this.cfg.popup && $.datepicker._lastInput && this.cfg.id + "_input" === $.datepicker._lastInput.id) {
             $.datepicker._hideDatepicker();
         }
@@ -340,14 +340,14 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
             this.input.off();
         }
 
-        this._super();
-    },
+        super.destroy();
+    }
 
     /**
      * Sets up the locale so that this calendar is displayed in the configured langauge.
      * @private
      */
-    configureLocale: function() {
+    configureLocale() {
         var localeSettings = PrimeFaces.getLocaleSettings(this.cfg.locale);
 
         if (localeSettings) {
@@ -364,13 +364,13 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
                 currentText: localeSettings.today
             });
         }
-    },
+    }
 
     /**
      * Sets up the event listeners for when the user selects a particular date.
      * @private
      */
-    bindDateSelectListener: function() {
+    bindDateSelectListener() {
         var $this = this;
 
         this.cfg.onSelect = function() {
@@ -405,28 +405,28 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
                 $this.fireDateSelectEvent();
             }
         };
-    },
+    }
 
     /**
      * Triggers the behaviors and event listener for when the user has selected a certain date.
      * @private
      */
-    fireDateSelectEvent: function() {
+    fireDateSelectEvent() {
         this.callBehavior('dateSelect');
-    },
+    }
 
     /**
      * Sets up the event listeners for when the user switches to a different month or year.
      * @private
      */
-    bindViewChangeListener: function() {
+    bindViewChangeListener() {
         if(this.hasBehavior('viewChange')) {
             var $this = this;
             this.cfg.onChangeMonthYear = function(year, month) {
                 $this.fireViewChangeEvent(year, month);
             };
         }
-    },
+    }
 
     /**
      * Triggers the behaviors and event listener for when the user has switched to a different month or year.
@@ -434,7 +434,7 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
      * @param {number} year New year for which a calendar is shown.
      * @param {number} month New month for which a calendar is shown (0=January).
      */
-    fireViewChangeEvent: function(year, month) {
+    fireViewChangeEvent(year, month) {
         if(this.hasBehavior('viewChange')) {
             var ext = {
                     params: [
@@ -445,34 +445,34 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
 
             this.callBehavior('viewChange', ext);
         }
-    },
+    }
 
     /**
      * Sets up the event listeners for when this calendar is closed.
      * @private
      */
-    bindCloseListener: function() {
+    bindCloseListener() {
         if(this.hasBehavior('close')) {
             var $this = this;
             this.cfg.onClose = function() {
                 $this.fireCloseEvent();
             };
         }
-    },
+    }
 
     /**
      * Triggers the `close` event when this calendar is closed.
      * @private
      */
-    fireCloseEvent: function() {
+    fireCloseEvent() {
         this.callBehavior('close');
-    },
+    }
 
     /**
      * Creates and initializes the confiugration options for the time picker.
      * @private
      */
-    configureTimePicker: function() {
+    configureTimePicker() {
         var pattern = this.cfg.dateFormat,
         timeSeparatorIndex = pattern.toLowerCase().indexOf('h');
 
@@ -522,44 +522,44 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
         if (this.cfg.showMillisec) {
             this.cfg.showMillisec = this.cfg.showMillisec === "true";
         }
-    },
+    }
 
     /**
      * Checks whether this calendar lets the user specify a clock time (and not just a date).
      * @return {boolean} `true` when this calendar includes a clock time picker, `false` otherwise.
      */
-    hasTimePicker: function() {
+    hasTimePicker() {
         return this.cfg.dateFormat.toLowerCase().indexOf('h') != -1;
-    },
+    }
 
     /**
      * Sets the currently selected date of the datepicker.
      * @param {Date | null | undefined} date Date to display, or `null` or `undefined` to clear the date.
      */
-    setDate: function(date) {
+    setDate(date) {
         this.jqEl.datetimepicker('setDate', date);
-    },
+    }
 
     /**
      * Finds the currently selected date.
      * @return {Date | null} The selected date of the calendar, or `null` when no date is selected.
      */
-    getDate: function() {
+    getDate() {
         return this.jqEl.datetimepicker('getDate');
-    },
+    }
 
     /**
      * Enables the calendar, so that the user can select a date.
      */
-    enable: function() {
+    enable() {
         this.jqEl.datetimepicker('enable');
-    },
+    }
 
     /**
      * Disables the calendar, so that the user can no longer select any date..
      */
-    disable: function() {
+    disable() {
         this.jqEl.datetimepicker('disable');
     }
 
-});
+}

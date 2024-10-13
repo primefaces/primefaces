@@ -14,15 +14,15 @@
  * @prop {boolean} cfg.blockScroll `true` to block scrolling when the spotlight is turned on, or `false` otherwise.
  * @prop {string} cfg.target The search expression for the target component to highlight.
  */
-PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Spotlight = class Spotlight extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
         this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.target);
 
         if(!$(document.body).children('.ui-spotlight').length) {
@@ -32,21 +32,21 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.active) {
             this.show();
         }
-    },
+    }
 
     /**
      * Creates the mask overlay element for the spotlight effect and adds it to the DOM.
      * @private
      */
-    createMasks: function() {
+    createMasks() {
         $(document.body).append('<div class="ui-widget-overlay ui-spotlight ui-spotlight-top ui-helper-hidden"></div><div class="ui-widget-overlay ui-spotlight ui-spotlight-bottom ui-helper-hidden"></div>' +
                         '<div class="ui-widget-overlay ui-spotlight ui-spotlight-left ui-helper-hidden"></div><div class="ui-widget-overlay ui-spotlight ui-spotlight-right ui-helper-hidden"></div>');
-    },
+    }
 
     /**
      * Turns the spotlight on so that a certain part of the page is highlighted.
      */
-    show: function() {
+    show() {
         this.calculatePositions();
 
         this.target.attr({
@@ -56,13 +56,13 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
         $(document.body).children('div.ui-spotlight').show();
 
         this.bindEvents();
-    },
+    }
 
     /**
      * Computes and applies the rectangular position of the spotlight.
      * @private
      */
-    calculatePositions: function() {
+    calculatePositions() {
         var doc = $(document),
         documentBody = $(document.body),
         offset = PrimeFaces.utils.calculateRelativeOffset(this.target),
@@ -101,13 +101,13 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
             'height': this.target.outerHeight() + 'px',
             'z-index': zindex
         });
-    },
+    }
 
     /**
      * Sets up all event listeners that are required by this widget.
      * @private
      */
-    bindEvents: function() {
+    bindEvents() {
         var $this = this;
 
         this.target.data('zindex',this.target.zIndex()).css('z-index', PrimeFaces.nextZindex());
@@ -123,25 +123,25 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
         $(window).on('resize' + namespace + ' scroll' + namespace, function() {
             $this.calculatePositions();
         });
-    },
+    }
 
     /**
      * Removes the event listeners that were added when the spotlight was turned on.
      * @private
      */
-    unbindEvents: function() {
+    unbindEvents() {
         PrimeFaces.utils.enableTabbing(this, this.id);
         if (this.cfg.blockScroll) {
             PrimeFaces.utils.enableScrolling();
         }
         var namespace = '.spotlight' + this.id;
         $(window).off(namespace);
-    },
+    }
 
     /**
      * Turns of the spotlight so that the entire page is visible normally again.
      */
-    hide: function() {
+    hide() {
         $(document.body).children('.ui-spotlight').hide();
         this.unbindEvents();
         this.target.css('z-index', String(this.target.zIndex()));
@@ -151,4 +151,4 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
         });
     }
 
-});
+}

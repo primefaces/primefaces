@@ -11,18 +11,18 @@
  * @extends {PrimeFaces.widget.DeferredWidgetCfg} cfg
  * @extends {JQueryJScrollPane.JScrollPaneSettings} cfg
  */
-PrimeFaces.widget.ScrollPanel = PrimeFaces.widget.DeferredWidget.extend({
+PrimeFaces.widget.ScrollPanel = class ScrollPanel extends PrimeFaces.widget.DeferredWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         this.renderDeferred();
-    },
+    }
 
     /**
      * @include
@@ -30,40 +30,40 @@ PrimeFaces.widget.ScrollPanel = PrimeFaces.widget.DeferredWidget.extend({
      * @protected
      * @inheritdoc
      */
-    _render: function() {
+    _render() {
         this.jsp = this.jq.jScrollPane(this.cfg).data('jsp');
-    },
+    }
 
     /**
      * Scrolls to the given scroll position.
      * @param {number} x Horizontal coordinate of the new scroll position.
      * @param {number} y Vertical coordinate of the new scroll position.
      */
-    scrollTo: function(x, y) {
+    scrollTo(x, y) {
         this.jsp.scrollTo(x, y);
-    },
+    }
 
     /**
      * Scroll horizontally to the given scroll position.
      * @param {number} x The new horizontal scroll position.
      */
-    scrollX: function(x) {
+    scrollX(x) {
         this.jsp.scrollToX(x);
-    },
+    }
 
     /**
      * Scroll vertically to the given scroll position.
      * @param {number} y The new vertical scroll position.
      */
-    scrollY: function(y) {
+    scrollY(y) {
         this.jsp.scrollToY(y);
-    },
+    }
 
     /**
      * Redraws the scrollbars.
      */
-    redraw: function() {
+    redraw() {
         this.jsp.reinitialise();
     }
 
-});
+}

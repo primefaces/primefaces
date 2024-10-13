@@ -12,31 +12,31 @@
  * 
  * @prop {boolean} cfg.seo Used to produce an Advanced SEO structure on the page. Default is false.
  */
-PrimeFaces.widget.BreadCrumb = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.BreadCrumb = class BreadCrumb extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         if (this.cfg.seo) {
             this.seoScript = $(this.jqId + '_seo');
         }
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    refresh: function(cfg) {
+    refresh(cfg) {
         if (this.seoScript) {
             this.seoScript.remove();
         }
-        
-        this._super(cfg);
+
+        super.refresh(cfg);
     }
-});
+}

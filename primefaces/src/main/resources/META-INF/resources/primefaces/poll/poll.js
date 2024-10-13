@@ -23,49 +23,49 @@
  * depending on the configure `intervalType`.
  * @prop {PrimeFaces.widget.Poll.PollingAction} cfg.fn Callback that performs the polling action.
  */
-PrimeFaces.widget.Poll = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Poll = class Poll extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         this.active = false;
 
         if (this.cfg.autoStart) {
             this.start();
         }
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    refresh: function(cfg) {
+    refresh(cfg) {
         this.stop();
 
-        this._super(cfg);
-    },
+        super.refresh(cfg);
+    }
 
     /**
      * @override
      * @inheritdoc
      */
-    destroy: function() {
-        this._super();
+    destroy() {
+        super.destroy();
 
         this.stop();
-    },
+    }
 
     /**
      * Starts the polling, sending AJAX requests in periodic intervals.
      * @return {boolean} `true` if polling was started, or `false` otherwise.
      */
-    start: function() {
+    start() {
         if (!this.active) {
             //Call user onactivated callback and block if they return false
             if (this.cfg.onActivated && this.cfg.onActivated.call(this) === false) {
@@ -77,13 +77,13 @@ PrimeFaces.widget.Poll = PrimeFaces.widget.BaseWidget.extend({
             this.active = true;
         }
         return true;
-    },
+    }
 
     /**
      * Stops the polling so that no more AJAX requests are made.
      * @return {boolean} `true` if polling wsa stopped, or `false` otherwise.
      */
-    stop: function() {
+    stop() {
         if (this.active) {
             //Call user ondeactivated callback and block if they return false
             if (this.cfg.onDeactivated && this.cfg.onDeactivated.call(this) === false) {
@@ -94,13 +94,13 @@ PrimeFaces.widget.Poll = PrimeFaces.widget.BaseWidget.extend({
             this.active = false;
         }
         return true;
-    },
+    }
 
     /**
      * Checks whether polling is active or whether it was stopped.
      * @return {boolean} `true` if polling is currently active, or `false` otherwise.
      */
-    isActive: function() {
+    isActive() {
         return this.active;
     }
-});
+}

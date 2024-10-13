@@ -25,15 +25,15 @@
  * changes.
  * @prop {boolean} cfg.readonly Whether the signature widget is readonly.
  */
-PrimeFaces.widget.Signature = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Signature = class Signature extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function (cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
         this.inputJson = this.jq.children(this.jqId + '_value');
         this.inputText = this.jq.children(this.jqId + '_text');
         this.cfg.notAvailable = '<p>Your browser does NOT support signing</p>';
@@ -43,23 +43,23 @@ PrimeFaces.widget.Signature = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.fontFamily = this.cfg.fontFamily || 'Brush Script MT, cursive';
 
         this.render();
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      */
-    destroy: function () {
-        this._super();
+    destroy() {
+        super.destroy();
         this.clear();
         this.jq.signature('destroy');
-    },
+    }
 
     /**
      * Renders the client-side parts of this widget.
      * @private
      */
-    render: function () {
+    render() {
         var $this = this;
         this.setupBase64();
 
@@ -93,24 +93,24 @@ PrimeFaces.widget.Signature = PrimeFaces.widget.BaseWidget.extend({
         if (textValue) {
             this.createSignatureFromText(textValue);
         }
-    },
+    }
 
     /**
      * Sets up the base64 configuration for the signature widget.
      * @private
      */
-    setupBase64: function () {
+    setupBase64() {
         if (this.cfg.base64) {
             this.cfg.svgStyles = true;
             this.inputBase64 = this.jq.children(this.jqId + '_base64');
         }
-    },
+    }
 
     /**
      * Sets up the base64 configuration for the signature widget.
      * @private
      */
-    setupCanvas: function () {
+    setupCanvas() {
         this.canvas = this.jq.children('canvas');
 
         // accessibility
@@ -121,13 +121,13 @@ PrimeFaces.widget.Signature = PrimeFaces.widget.BaseWidget.extend({
             'role': 'img',
             'tabindex': this.cfg.readonly ? "-1" : (this.cfg.tabindex || '0'),
         });
-    },
+    }
 
     /**
      * Binds event handlers to the signature canvas.
      * @private
      */
-    bindEvents: function () {
+    bindEvents() {
         var $this = this;
         if (this.cfg.readonly) {
             return;
@@ -174,35 +174,35 @@ PrimeFaces.widget.Signature = PrimeFaces.widget.BaseWidget.extend({
                     $this.createSignatureFromText(printedText);
                 }
             });
-    },
+    }
 
     /**
      * Clears this signature widget, removing all drawn lines.
      */
-    clear: function () {
+    clear() {
         this.jq.signature('clear');
         this.inputJson.val('');
         this.inputText.val('');
         if (this.cfg.base64) {
             this.inputBase64.val('');
         }
-    },
+    }
 
     /**
      * Draws the given line data to this signature widget viewport.
      * @param {string | JQuerySignature.SignatureJson} value The signatue data to draw.
      */
-    draw: function (value) {
+    draw(value) {
         if (value) {
             this.jq.signature('draw', value);
         }
-    },
+    }
 
     /**
      * Callback for when the signature has changed.
      * @private
      */
-    handleChange: function () {
+    handleChange() {
         if (this.cfg.base64) {
             this.inputBase64.val(this.canvas[0].toDataURL());
         }
@@ -210,13 +210,13 @@ PrimeFaces.widget.Signature = PrimeFaces.widget.BaseWidget.extend({
         if (this.cfg.onchange) {
             this.cfg.onchange.call(this);
         }
-    },
+    }
 
     /**
      * Creates a signature from the given text using SVG.
      * @param {string} text - The text to convert into a signature.
      */
-    createSignatureFromText: function (text) {
+    createSignatureFromText(text) {
         const width = this.canvas[0].width;
         const height = this.canvas[0].height;
         let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">
@@ -227,20 +227,20 @@ PrimeFaces.widget.Signature = PrimeFaces.widget.BaseWidget.extend({
         svg = svg.replace(/\n/g, '');
         svg = `data:image/svg+xml;base64,${btoa(svg)}`;
         this.draw(svg);
-    },
+    }
 
     /**
      * Disables this input so that the user cannot enter a value anymore.
      */
-    disable: function () {
+    disable() {
         PrimeFaces.utils.disableInputWidget(this.jq, this.inputJson);
-    },
+    }
 
     /**
      * Enables this input so that the user can enter a value.
      */
-    enable: function () {
+    enable() {
         PrimeFaces.utils.enableInputWidget(this.jq, this.inputJson);
     }
 
-});
+}

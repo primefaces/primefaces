@@ -22,15 +22,15 @@
  * @prop {number} cfg.delay Delay in milliseconds before displaying the block. Default is `0`, meaning immediate.
  * @prop {PrimeFaces.UnbindCallback} [resizeHandler] Unbind callback for the resize handler.
  */
-PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.BlockUI = class BlockUI extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.block);
         this.content = this.jq;
@@ -50,55 +50,55 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         }
 
         this.bindResizer();
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    refresh: function(cfg) {
+    refresh(cfg) {
         this._cleanup();
-        this._super(cfg);
-    },
+        super.refresh(cfg);
+    }
 
     /**
      * @override
      * @inheritdoc
      */
-    destroy: function() {
-        this._super();
+    destroy() {
+        super.destroy();
         this._cleanup();
-    },
+    }
 
     /**
      * Clean up this widget and remove elements from DOM.
      * @private
      */
-    _cleanup: function() {
+    _cleanup() {
         this.content.remove();
         this.blocker.remove();
         this.jq.remove();
         this.target.attr('aria-busy', false);
         $(document).off('pfAjaxSend.' + this.id + ' pfAjaxUpdated.' + this.id + ' pfAjaxComplete.' + this.id);
-    },
+    }
 
     /**
      * Sets up the global resize listener on the document.
      * @private
      */
-    bindResizer: function() {
+    bindResizer() {
         var $this = this;
         this.resizeHandler = PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_resize', this.target, function() {
             $this.alignOverlay();
         });
-    },
+    }
 
     /**
       * Sets up the global event listeners on the document.
       * @private
       */
-    bindTriggers: function() {
+    bindTriggers() {
         var $this = this;
 
         //listen global ajax send and complete callbacks
@@ -120,7 +120,7 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
                 PrimeFaces.queueTask(function() { $this.alignOverlay() });
             }
         });
-    },
+    }
 
     /**
      * Show the component with optional duration animation.
@@ -129,7 +129,7 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
      * animations, not faster ones. The strings `fast` and `slow` can be supplied to indicate durations of 200 and 600
      * milliseconds, respectively.
      */
-    show: function(duration) {
+    show(duration) {
         var $this = this;
         if (this.isBlocking()) {
             return;
@@ -169,7 +169,7 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
                 $element.attr('data-bui-tabindex', currentTabIndex || 0).attr('tabindex', -1);
             });
         }, delay);
-    },
+    }
 
     /**
      * Hide the component with optional duration animation.
@@ -178,7 +178,7 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
      * faster ones. The strings `fast` and `slow` can be supplied to indicate durations of 200 and 600 milliseconds,
      * respectively.
      */
-    hide: function(duration) {
+    hide(duration) {
         if (!this.isBlocking()) {
             return;
         }
@@ -224,13 +224,13 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
             var originalTabIndex = $element.attr('data-bui-tabindex');
             $element.attr('tabindex', originalTabIndex).removeAttr('data-bui-tabindex');
         });
-    },
+    }
 
     /**
      * Renders the client-side parts of this widget.
      * @private
      */
-    render: function() {
+    render() {
         var widgetId = this.id,
             shouldClone = this.hasMultipleTargets() && this.hasContent();
         // there can be 1 to N targets
@@ -275,13 +275,13 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
 
         // set the size and position to match the target
         this.alignOverlay();
-    },
+    }
 
     /**
     * Align the overlay so it covers its target component.
     * @private
     */
-    alignOverlay: function() {
+    alignOverlay() {
         this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.block);
         if (this.blocker) {
             this.blocker.css('z-index', PrimeFaces.nextZindex());
@@ -332,41 +332,41 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
                 'z-index': PrimeFaces.nextZindex()
             });
         }
-    },
+    }
 
     /**
      * Checks whether the blocking overlay contains any content items.
      * @private
      * @return {boolean} `true` if this blocking overlay has got any content, `false` otherwise.
      */
-    hasContent: function() {
+    hasContent() {
         return this.content.contents().length > 0;
-    },
+    }
 
     /**
      * Checks whether this blocker has more than 1 target.
      * @private
      * @return {boolean} `true` if this blocker has more than 1 target, `false` otherwise.
      */
-    hasMultipleTargets: function() {
+    hasMultipleTargets() {
         return this.target.length > 1;
-    },
+    }
 
     /**
      * Checks whether this blockUI is currently blocking.
      * @return {boolean} `true` if this blockUI is blocking, or `false` otherwise.
      */
-    isBlocking: function() {
+    isBlocking() {
         return this.blocker.is(':visible');
-    },
+    }
 
     /**
      * Clears the ste-timeout timer for the delay.
      * @private
      */
-    deleteTimeout: function() {
+    deleteTimeout() {
         clearTimeout(this.timeout);
         this.timeout = null;
     }
 
-});
+}

@@ -23,15 +23,15 @@
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  */
-PrimeFaces.widget.TriStateCheckbox = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.TriStateCheckbox = class TriStateCheckbox extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init:function (cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         this.input = $(this.jqId + '_input');
         this.box = this.jq.find('.ui-chkbox-box');
@@ -102,13 +102,13 @@ PrimeFaces.widget.TriStateCheckbox = PrimeFaces.widget.BaseWidget.extend({
 
         // pfs metadata
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
-    },
+    }
 
     /**
      * Toggles this tri state checkbox in the given direction. Moves between unchecked, half-checked, and fully-checked.
      * @param {-1 | 1} direction `-1` to move backwards through the states, `+1` to move forward through the states 
      */
-    toggle:function (direction) {
+    toggle(direction) {
         if (!this.disabled) {
             // default to switch to next state
             if (isNaN(direction)) {
@@ -139,31 +139,31 @@ PrimeFaces.widget.TriStateCheckbox = PrimeFaces.widget.BaseWidget.extend({
             // fire change event
             this.input.trigger('change');
         }
-    },
+    }
     
     /**
      * Updates the disabled/readonly status of the component.
      * @private
      */
-    updateStatus: function() {
+    updateStatus() {
         this.readonly = this.box.hasClass('ui-chkbox-readonly');
         this.disabled = this.input.is(':disabled') || this.readonly;
-    },
+    }
 
     /**
      * Disables this input so that the user cannot enter a value anymore.
      */
-    disable: function() {
+    disable() {
         PrimeFaces.utils.disableInputWidget(this.jq, this.input);
         this.updateStatus();
-    },
+    }
 
     /**
      * Enables this input so that the user can enter a value.
      */
-    enable: function() {
+    enable() {
         PrimeFaces.utils.enableInputWidget(this.jq, this.input);
         this.updateStatus();
     }
-});
+}
 

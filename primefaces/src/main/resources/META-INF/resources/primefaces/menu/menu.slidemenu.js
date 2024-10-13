@@ -18,15 +18,15 @@
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.MenuCfg} cfg
  */
-PrimeFaces.widget.SlideMenu = PrimeFaces.widget.Menu.extend({
+PrimeFaces.widget.SlideMenu = class SlideMenu extends PrimeFaces.widget.Menu {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         //elements
         this.submenus = this.jq.find('ul.ui-menu-list');
@@ -59,13 +59,13 @@ PrimeFaces.widget.SlideMenu = PrimeFaces.widget.Menu.extend({
         }
 
         this.bindEvents();
-    },
+    }
 
     /**
      * Sets up all event listeners that are required by this widget.
      * @private
      */
-    bindEvents: function() {
+    bindEvents() {
         var $this = this;
 
         this.links.on("mouseenter", function() {
@@ -87,13 +87,13 @@ PrimeFaces.widget.SlideMenu = PrimeFaces.widget.Menu.extend({
         this.backward.on("click", function() {
             $this.back();
         });
-    },
+    }
 
     /**
      * Slides to the given sub menu.
      * @param {JQuery} submenu A sub menu to show, with the class `ui-menuitem-link`.
      */
-    forward: function(submenu) {
+    forward(submenu) {
         var _self = this;
 
         this.push(submenu);
@@ -111,12 +111,12 @@ PrimeFaces.widget.SlideMenu = PrimeFaces.widget.Menu.extend({
                 _self.backward.fadeIn('fast');
             }
         });
-    },
+    }
 
     /**
      * Slides back to the previous menu page.
      */
-    back: function() {
+    back() {
         if(!this.rootList.is(':animated')) {
             var _self = this,
             last = this.pop(),
@@ -136,60 +136,60 @@ PrimeFaces.widget.SlideMenu = PrimeFaces.widget.Menu.extend({
                 }
             });
         }
-    },
+    }
 
     /**
      * Adds the menu page to the top of the stack.
      * @param {JQuery} submenu A menu page to push to the stack. 
      * @private
      */
-    push: function(submenu) {
+    push(submenu) {
         this.stack.push(submenu);
-    },
+    }
 
     /**
      * Pops the most recently a menu page from the stack and return it.
      * @return {JQuery | null} The item on top of the stack, or `null` if the stack is empty.
      * @private
      */
-    pop: function() {
+    pop() {
         return this.stack.length !== 0 ? this.stack.pop() : null;
-    },
+    }
 
     /**
      * Peeks the stack and returns the topmost item.
      * @return {JQuery | undefined} The last item on the stack, or `undefined` if the stack is empty
      * @private
      */
-    last: function() {
+    last() {
         return this.stack[this.stack.length - 1];
-    },
+    }
 
     /**
      * Inspects the stack and returns its size.
      * @return {number} The number of items on the stack.
      * @private
      */
-    depth: function() {
+    depth() {
         return this.stack.length;
-    },
+    }
 
     /**
      * Renders the client-side parts of this widget.
      * @private
      */
-    render: function() {
+    render() {
         this.submenus.width(this.jq.width());
         this.wrapper.height(this.rootList.outerHeight(true) + this.backward.outerHeight(true));
         this.content.height(this.rootList.outerHeight(true));
         this.rendered = true;
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      */
-    show: function() {
+    show() {
         var $this = this;
 
         if (this.transition) {
@@ -207,4 +207,4 @@ PrimeFaces.widget.SlideMenu = PrimeFaces.widget.Menu.extend({
             });
         }
     }
-});
+}

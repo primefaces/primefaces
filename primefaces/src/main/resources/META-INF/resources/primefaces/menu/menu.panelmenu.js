@@ -23,15 +23,15 @@
  * @prop {boolean} cfg.statefulGlobal When enabled, menu state is saved globally across pages. If disabled then state 
  * is stored per view/page.
  */
-PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.PanelMenu = class PanelMenu extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
         this.headers = this.jq.find('> .ui-panelmenu-panel > h3.ui-panelmenu-header:not(.ui-state-disabled)');
         this.menuContent = this.jq.find('> .ui-panelmenu-panel > .ui-panelmenu-content');
         this.menuitemLinks = this.menuContent.find('.ui-menuitem-link:not(.ui-state-disabled)');
@@ -54,13 +54,13 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
         }
 
         this.restoreState();
-    },
+    }
 
     /**
      * Sets up all event listeners that are required by this widget.
      * @private
      */
-    bindEvents: function() {
+    bindEvents() {
         var $this = this;
 
         this.headers.on("mouseover", function() {
@@ -114,13 +114,13 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
         });
 
         this.bindKeyEvents();
-    },
+    }
 
     /**
      * Sets up the keyboard event listeners required by this panel menu widget.
      * @private
      */
-    bindKeyEvents: function() {
+    bindKeyEvents() {
         var $this = this;
 
         this.headers.on('focus.panelmenu', function(){
@@ -254,24 +254,24 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
         this.addDestroyListener(function() {
             $(document.body).off(clickNS);
         });
-    },
+    }
 
     /**
      * Create the key where the state for this component is stored.  By default PanelMenu state is global so it is 
      * remembered between page navigations.
      */
-    createStorageKey: function() {
+    createStorageKey() {
         this.stateKey = PrimeFaces.createStorageKey(this.id, 'PanelMenu', this.cfg.statefulGlobal);
-    },
+    }
 
     /**
      * Collapses all siblings of the given header column.
      * @private
      * @param {JQuery} header The header column that was clicked. 
      */
-    collapseActiveSibling: function(header) {
+    collapseActiveSibling(header) {
         this.collapseRootSubmenu(header.parent().siblings().children('.ui-panelmenu-header.ui-state-active').eq(0));
-    },
+    }
 
     /**
      * Finds the next menu item to focus and highlight when the user presses the down arrow key.
@@ -279,7 +279,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
      * @return {JQuery | null} The found item that should receive focus, or `null` if no item was found.
      * @private
      */
-    searchDown: function(item) {
+    searchDown(item) {
         var nextOfParent = item.closest('ul').parent('li').next(),
         itemToFocus = null;
 
@@ -294,7 +294,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
         }
 
         return itemToFocus;
-    },
+    }
 
     /**
      * Finds the first child menu item of the given content element.
@@ -302,54 +302,54 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
      * @return {JQuery} The first child menu item of the given content, with the class `.ui-menuitem`.
      * @private
      */
-    getFirstItemOfContent: function(content) {
+    getFirstItemOfContent(content) {
         return content.find('> .ui-menu-list > .ui-menuitem:visible:first-child');
-    },
+    }
 
     /**
      * Finds the displayed text of the given menu item.
      * @param {JQuery} item A menu item of this panel menu.
      * @return {string} The displayed text of the given menu item, not including the text of sub menu items.
      */
-    getItemText: function(item) {
+    getItemText(item) {
         return item.find('> .ui-menuitem-link > span.ui-menuitem-text');
-    },
+    }
 
     /**
      * Puts focus on the given menu item.
      * @param {JQuery} item A menu item to focus. 
      */
-    focusItem: function(item) {
+    focusItem(item) {
         this.removeFocusedItem();
         this.getItemText(item).addClass('ui-menuitem-outline').trigger('focus');
         this.focusedItem = item;
-    },
+    }
 
     /**
      * Callback invoked after the focused menu item receives a blur.
      * @private
      */
-    removeFocusedItem: function() {
+    removeFocusedItem() {
         if(this.focusedItem) {
             this.getItemText(this.focusedItem).removeClass('ui-menuitem-outline');
             this.focusedItem = null;
         }
-    },
+    }
 
     /**
      * Checks whether the given menu items is currently expanded or collapsed.
      * @param {JQuery} item A menu item to check.
      * @return {boolean} `true` if the given menu item is expanded (children are shown), or `false` otherwise. 
      */
-    isExpanded: function(item) {
+    isExpanded(item) {
         return item.children('ul.ui-menu-list').is(':visible');
-    },
+    }
 
     /**
      * Collapses the given accordional panel, hiding the menu entries it contains.
      * @param {JQuery} header A menu panel to collapse.
      */
-    collapseRootSubmenu: function(header) {
+    collapseRootSubmenu(header) {
         var panel = header.next();
 
         header.attr('aria-expanded', false).removeClass('ui-state-active ui-corner-top').addClass('ui-state-hover ui-corner-all')
@@ -358,14 +358,14 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
         panel.attr('aria-hidden', true).slideUp('normal', 'easeInOutCirc');
 
         this.removeAsExpanded(panel);
-    },
+    }
 
     /**
      * Expands the given accordional panel, showing the menu entries it contains.
      * @param {JQuery} header A menu panel to collapse.
      * @param {boolean} [restoring] Whether this method was called from `restoreState`.
      */
-    expandRootSubmenu: function(header, restoring) {
+    expandRootSubmenu(header, restoring) {
         var panel = header.next();
 
         header.attr('aria-expanded', true).addClass('ui-state-active ui-corner-top').removeClass('ui-state-hover ui-corner-all')
@@ -379,14 +379,14 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
 
             this.addAsExpanded(panel);
         }
-    },
+    }
 
     /**
      * Expands the given tree-like sub menu item, showing the sub menu entries it contains.
      * @param {JQuery} submenu A sub menu tree item to expand.
      * @param {boolean} [restoring] Whether this method was called from `restoreState`.
      */
-    expandTreeItem: function(submenu, restoring) {
+    expandTreeItem(submenu, restoring) {
         var submenuLink = submenu.find('> .ui-menuitem-link');
 
         submenuLink.find('> .ui-menuitem-text').attr('aria-expanded', true);
@@ -396,13 +396,13 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
         if(!restoring) {
             this.addAsExpanded(submenu);
         }
-    },
+    }
 
     /**
      * Collapses the given tree-like sub menu item, hiding the sub menu entries it contains.
      * @param {JQuery} submenu A sub menu tree item to collapse.
      */
-    collapseTreeItem: function(submenu) {
+    collapseTreeItem(submenu) {
         var submenuLink = submenu.find('> .ui-menuitem-link');
 
         submenuLink.find('> .ui-menuitem-text').attr('aria-expanded', false);
@@ -410,27 +410,27 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
         submenu.children('.ui-menu-list').hide();
 
         this.removeAsExpanded(submenu);
-    },
+    }
 
     /**
      * Writes the UI state of this panel menu to an HTML5 Local Store. Used to preserve the state during AJAX updates as well as
      * between page reloads.
      * @private
      */
-    saveState: function() {
+    saveState() {
         if(this.cfg.stateful) {
             var expandedNodeIds = this.expandedNodes.join(',');
 
             localStorage.setItem(this.stateKey, expandedNodeIds);
         }
-    },
+    }
 
     /**
      * Read the UI state of this panel menu stored in an HTML5 Local Store and reapplies to this panel menu. Used to preserve the
      * state during AJAX updates as well as between page reloads.
      * @private
      */
-    restoreState: function() {
+    restoreState() {
         var expandedNodeIds = null;
 
         if(this.cfg.stateful) {
@@ -462,14 +462,14 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
                 this.expandedNodes.push(activeTreeSubmenus.eq(i).parent().attr('id'));
             }
         }
-    },
+    }
 
     /**
      * Callback invoked after a menu item was collapsed. Saves the current UI state in an HTML5 Local Store.
      * @param {JQuery} element Element that was collapsed.
      * @private
      */
-    removeAsExpanded: function(element) {
+    removeAsExpanded(element) {
         var id = element.attr('id');
 
         this.expandedNodes = $.grep(this.expandedNodes, function(value) {
@@ -477,33 +477,33 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
         });
 
         this.saveState();
-    },
+    }
 
     /**
      * Callback invoked after a menu item was expanded. Saves the current UI state in an HTML5 Local Store.
      * @param {JQuery} element Element that was expanded.
      * @private
      */
-    addAsExpanded: function(element) {
+    addAsExpanded(element) {
         this.expandedNodes.push(element.attr('id'));
 
         this.saveState();
-    },
+    }
 
     /**
      * Deletes the UI state of this panel menu stored in an HTML5 Local Store.
      * @private
      */
-    clearState: function() {
+    clearState() {
         if(this.cfg.stateful) {
             localStorage.removeItem(this.stateKey);
         }
-    },
+    }
 
     /**
      * Collapses all menu panels that are currently expanded.
      */
-    collapseAll: function() {
+    collapseAll() {
         this.headers.filter('.ui-state-active').each(function() {
             var header = $(this);
             header.removeClass('ui-state-active').children('.ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-e').removeClass('ui-icon-triangle-1-s');
@@ -515,4 +515,4 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
         });
     }
 
-});
+}

@@ -19,15 +19,15 @@
  * @prop {boolean} cfg.global When the content is loaded via AJAX, whether AJAX request triggers the global
  * `ajaxStatus`.
  */
-PrimeFaces.widget.OutputPanel = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.OutputPanel = class OutputPanel extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
         this.cfg.global = this.cfg.global||false;
 
         if(this.cfg.deferred) {
@@ -41,13 +41,13 @@ PrimeFaces.widget.OutputPanel = PrimeFaces.widget.BaseWidget.extend({
                     this.bindScrollMonitor();
             }
         }
-    },
+    }
 
     /**
      * Loads the content of this panel via AJAX, if dynamic loading is enabled.
      * @private
      */
-    loadContent: function() {
+    loadContent() {
         var $this = this,
         options = {
             source: this.id,
@@ -80,13 +80,13 @@ PrimeFaces.widget.OutputPanel = PrimeFaces.widget.BaseWidget.extend({
         else {
             PrimeFaces.ajax.Request.handle(options);
         }
-    },
+    }
 
     /**
      * Sets up the event listeners for handling scrolling.
      * @private
      */
-    bindScrollMonitor: function() {
+    bindScrollMonitor() {
         var $this = this;
 
         PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id + '_align', function() {
@@ -95,13 +95,13 @@ PrimeFaces.widget.OutputPanel = PrimeFaces.widget.BaseWidget.extend({
                 $this.loadContent();
             }
         });
-    },
+    }
 
     /**
      * Checks whether this panel is currently visible.
      * @return {boolean} `true` if this panel is currently visible, or `false` otherwise.
      */
-    visible: function() {
+    visible() {
         var win = $(window),
         scrollTop = win.scrollTop(),
         height = win.height(),
@@ -112,4 +112,4 @@ PrimeFaces.widget.OutputPanel = PrimeFaces.widget.BaseWidget.extend({
             return true;
         }
     }
-});
+}

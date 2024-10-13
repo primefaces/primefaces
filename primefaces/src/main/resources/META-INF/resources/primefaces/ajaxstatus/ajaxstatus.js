@@ -70,25 +70,25 @@
  * @prop {PrimeFaces.widget.AjaxStatus.PfAjaxSuccessCallback | jsf.ajax.OnEventCallback} cfg.success Client-side
  * callback for when the AJAX  behavior completes successfully, i.e. when the request succeeds.
  */
-PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.AjaxStatus = class AjaxStatus extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
         this.hasSuccessOrErrorFacet = false;
 
         this.bind();
-    },
+    }
 
     /**
      * Listen to the relevant events on the document element.
      * @private
      */
-    bind: function() {
+    bind() {
         var $this = this;
         var namespace = '.status' + this.id;
         $(document).on('pfAjaxStart' + namespace, function() {
@@ -137,7 +137,7 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
                 $this.trigger('facesComplete', arguments);
             });
         }
-    },
+    }
 
     /**
      * Triggers the given event by invoking the event handler, usually defined on the `<p:ajaxStatus/>` tag.
@@ -148,7 +148,7 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
      * @param {Parameters<PrimeFaces.widget.AjaxStatus.EventToCallbackMap[K]>} args Arguments that are passed to the
      * event handler.
      */
-    trigger: function(event, args) {
+    trigger(event, args) {
         var callback = this.cfg[event];
         if (callback) {
             callback.apply(document, args);
@@ -203,7 +203,7 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
                 }
                 break;
         }
-    },
+    }
 
     /**
      * Finds the facet ID of the given event.
@@ -211,22 +211,22 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
      * @param {PrimeFaces.widget.AjaxStatus.AjaxStatusEventType} event One of the supported event
      * @return {string} The ID of the facet element for the given event
      */
-    toFacetId: function(event) {
+    toFacetId(event) {
         if (event === 'facesComplete') {
             event = 'complete';
         }
         return this.jqId + '_' + event;
-    },
+    }
 
     /**
      * Clears the ste-timeout timer for the delay.
      * @private
      */
-    deleteTimeout: function() {
+    deleteTimeout() {
         if (this.timeout) {
             clearTimeout(this.timeout);
             this.timeout = null;
         }
     }
 
-});
+}

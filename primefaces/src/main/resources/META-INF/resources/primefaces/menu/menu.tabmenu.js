@@ -10,27 +10,27 @@
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.MenuCfg} cfg
  */
-PrimeFaces.widget.TabMenu = PrimeFaces.widget.Menu.extend({
+PrimeFaces.widget.TabMenu = class TabMenu extends PrimeFaces.widget.Menu {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         this.items = this.jq.find('> .ui-tabmenu-nav > li:not(.ui-state-disabled)');
 
         this.bindEvents();
         this.bindKeyEvents();
-    },
+    }
 
     /**
      * Sets up all event listeners that are required by this widget.
      * @private
      */
-    bindEvents: function() {
+    bindEvents() {
         this.items.on('mouseover.tabmenu', function(e) {
                     var element = $(this);
                     if(!element.hasClass('ui-state-active')) {
@@ -40,13 +40,13 @@ PrimeFaces.widget.TabMenu = PrimeFaces.widget.Menu.extend({
                 .on('mouseout.tabmenu', function(e) {
                     $(this).removeClass('ui-state-hover');
                 });
-    },
+    }
 
     /**
      * Sets up all keyboard event listeners that are required by this widget.
      * @private
      */
-    bindKeyEvents: function() {
+    bindKeyEvents() {
         /* For Keyboard accessibility and Screen Readers */
         this.items.attr('tabindex', 0);
 
@@ -64,4 +64,4 @@ PrimeFaces.widget.TabMenu = PrimeFaces.widget.Menu.extend({
             }
         });
     }
-});
+}

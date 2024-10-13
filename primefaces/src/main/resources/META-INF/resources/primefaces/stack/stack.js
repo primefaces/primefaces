@@ -12,15 +12,15 @@
  * @prop {boolean} cfg.expanded Whether the stack is currently closed or opened.
  * @prop {number} cfg.openSpeed Duration in milliseconds it takes the stack to open.
  */
-PrimeFaces.widget.Stack = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Stack = class Stack extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
         this.cfg.expanded = this.cfg.expanded||false;
         var $this = this;
 
@@ -42,14 +42,14 @@ PrimeFaces.widget.Stack = PrimeFaces.widget.BaseWidget.extend({
             nextItem.css({top: '-50px', left: '10px'}).children('li').css({top: '55px', left: '-10px'});
             nextItem.find('li a>img').css({width: '79px', marginLeft: '0'});
         }
-    },
+    }
     
     /**
      * Expands the given menu item of this stack.
      * @param {JQuery} item A menu item to expand, usually the root IMG element that is an immediate child of
      * `.ui-stack`.
      */
-    open: function(item) {
+    open(item) {
         var vertical = 0,
         horizontal = 0,
         $this = this;
@@ -65,18 +65,18 @@ PrimeFaces.widget.Stack = PrimeFaces.widget.BaseWidget.extend({
         item.animate({paddingTop: '0'});
         
         this.cfg.expanded = true;
-    },
+    }
             
     /**
      * Collapses the given menu item of this stack.
      * @param {JQuery} item A menu item to collapse, usually the root IMG element that is an immediate child of
      * `.ui-stack`.
      */
-    collapse: function(item) {
+    collapse(item) {
         item.next().removeClass('openStack').children('li').animate({top: '55px', left: '-10px'}, this.cfg.closeSpeed);
         item.next().find('li a>img').animate({width: '79px', marginLeft: '0'}, this.cfg.closeSpeed);
         item.animate({paddingTop: '35'});
         
         this.cfg.expanded = false;
     }
-});
+}

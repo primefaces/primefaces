@@ -21,15 +21,15 @@
  * @prop {JQueryKeyfilter.TestFunction} cfg.testFunction An optional function which should be used for filtering. The
  * options `testFunction`, `regEx`, `inputRegEx`, and `mask` are mutually exclusive.
  */
-PrimeFaces.widget.KeyFilter = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.KeyFilter = class KeyFilter extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init : function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.target);
 
@@ -39,7 +39,7 @@ PrimeFaces.widget.KeyFilter = PrimeFaces.widget.BaseWidget.extend({
             var nestedInput = $(':not(:submit):not(:button):input:visible:enabled:first', this.target);
             this.applyKeyFilter(nestedInput, cfg);
         }
-    },
+    }
 
     /**
      * Applies the key filter to the given input or textarea element.
@@ -48,7 +48,7 @@ PrimeFaces.widget.KeyFilter = PrimeFaces.widget.BaseWidget.extend({
      * @param {TCfg} cfg The widget configuration.
      * @private
      */
-    applyKeyFilter : function(input, cfg) {
+    applyKeyFilter(input, cfg) {
         if (this.cfg.regEx) {
             input.keyfilter(this.cfg.regEx);
         } else if(this.cfg.inputRegEx) {
@@ -81,4 +81,4 @@ PrimeFaces.widget.KeyFilter = PrimeFaces.widget.BaseWidget.extend({
             });
         }
     }
-});
+}

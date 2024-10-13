@@ -9,24 +9,24 @@
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  */
-PrimeFaces.widget.Messages = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Messages = class Messages extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
         this.closer = $('.ui-messages-close');
         PrimeFaces.skinCloseAction(this.closer);
-    },
+    }
 
     /**
      * Creates the HTML elements for the given faces message, and adds it to the DOM.
      * @param {PrimeFaces.FacesMessage} msg A message to translate into an HTML element.
      */
-    appendMessage: function(msg) {
+    appendMessage(msg) {
         var closeLabel = PrimeFaces.getAriaLabel('close');
         this.jq.append(
              '<div class="ui-messages-' + msg.severity + ' ui-corner-all">' +
@@ -41,12 +41,12 @@ PrimeFaces.widget.Messages = PrimeFaces.widget.BaseWidget.extend({
                     '</li>' +
                 '</ul>' +
             '</div>');
-    },
+    }
 
     /**
      * Clears all current messages from the DOM.
      */
-    clearMessages: function() {
+    clearMessages() {
         this.jq.children().remove();
-    },
-});
+    }
+}

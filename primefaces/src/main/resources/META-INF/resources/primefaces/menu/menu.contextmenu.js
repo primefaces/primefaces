@@ -51,16 +51,16 @@
  * @prop {string} cfg.targetWidgetVar Widget variable of the target widget.
  * @prop {boolean} cfg.disabled If true, prevents menu from being shown.
  */
-PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
+PrimeFaces.widget.ContextMenu = class ContextMenu extends PrimeFaces.widget.TieredMenu {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
+    init(cfg) {
         cfg.autoDisplay = true;
-        this._super(cfg);
+        super.init(cfg);
         this.cfg.overlay = true;
         this.cfg.selectionMode = this.cfg.selectionMode||'multiple';
 
@@ -127,32 +127,32 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         }
 
         this.transition = PrimeFaces.utils.registerCSSTransition(this.jq, 'ui-connected-overlay');
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    refresh: function(cfg) {
+    refresh(cfg) {
         this._cleanup();
-        this._super(cfg);
-    },
+        super.refresh(cfg);
+    }
 
     /**
      * @override
      * @inheritdoc
      */
-    destroy: function() {
-        this._super();
+    destroy() {
+        super.destroy();
         this._cleanup();
-    },
+    }
 
     /**
     * Clean up this widget and remove events from the DOM.
     * @private
     */
-    _cleanup: function() {
+    _cleanup() {
         if (this.cfg.target === undefined) {
             var event = 'contextmenu.' + this.id + '_contextmenu';
             $(document).off(event);
@@ -167,14 +167,14 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
                 this.jqTarget.swipe('destroy');
             }
         }
-    },
+    }
 
     /**
      * @override
      * @protected
      * @inheritdoc
      */
-    bindPanelEvents: function() {
+    bindPanelEvents() {
         var $this = this;
 
         this.hideOverlayHandler = PrimeFaces.utils.registerHideOverlayHandler(this, 'click.' + this.id + '_hide', this.jq,
@@ -196,14 +196,14 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
                 $this.hide();
             }
         });
-    },
+    }
 
     /**
      * @override
      * @protected
      * @inheritdoc
      */
-    unbindPanelEvents: function() {
+    unbindPanelEvents() {
         if (this.hideOverlayHandler) {
             this.hideOverlayHandler.unbind();
         }
@@ -215,13 +215,13 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         if (this.scrollHandler) {
             this.scrollHandler.unbind();
         }
-    },
+    }
 
     /**
      * Binds mobile touch events.
      * @protected
      */
-    bindTouchEvents: function() {
+    bindTouchEvents() {
         if (PrimeFaces.env.isTouchable(this.cfg)) {
              var $this = this;
 
@@ -236,15 +236,15 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
                  }
              });
         }
-    },
+    }
 
     /**
      * @override
      * @protected
      * @inheritdoc
      */
-    bindItemEvents: function() {
-        this._super();
+    bindItemEvents() {
+        super.bindItemEvents();
 
         var $this = this;
 
@@ -259,7 +259,7 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
 
             $this.hide();
         });
-    },
+    }
 
     /**
      * @override
@@ -269,7 +269,7 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
      * Note:  __This parameter is not optional__, but is marked as such since this method overrides a parent method
      * that does not have any parameters. Do not (implicitly) cast an instance of this class to a parent type.
      */
-    show: function(e) {
+    show(e) {
         var $this = this;
 
         if(this.cfg.disabled || this.cfg.targetFilter && $(e.target).is(':not(' + this.cfg.targetFilter + ')')) {
@@ -323,13 +323,13 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
 
         e.preventDefault();
         e.stopPropagation();
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      */
-    hide: function() {
+    hide() {
         if (this.transition) {
             var $this = this;
 
@@ -345,23 +345,23 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
                 }
             });
         }
-    },
+    }
 
     /**
      * Checks whether this context menu is open.
      * @return {boolean} `true` if this context menu is currently visible, `false` otherwise.
      */
-    isVisible: function() {
+    isVisible() {
         return this.jq.is(':visible');
-    },
+    }
 
     /**
      * Finds the target element of this context menu. A right-click on that target element brings up this context menu. 
      * @private
      * @return {JQuery} The target element of this context men.
      */
-    getTarget: function() {
+    getTarget() {
         return this.jqTarget;
     }
 
-});
+}

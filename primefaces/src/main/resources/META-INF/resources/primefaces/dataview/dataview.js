@@ -21,15 +21,15 @@
  * @prop {Partial<PrimeFaces.widget.PaginatorCfg>} cfg.paginator When pagination is enabled: The paginator configuration
  * for the paginator.
  */
-PrimeFaces.widget.DataView = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.DataView = class DataView extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         this.header = this.jq.children('.ui-dataview-header');
         this.content = this.jq.children('.ui-dataview-content');
@@ -41,13 +41,13 @@ PrimeFaces.widget.DataView = PrimeFaces.widget.BaseWidget.extend({
         }
 
         this.bindEvents();
-    },
+    }
 
     /**
      * Initializes the paginator, called during widget initialization.
      * @private
      */
-    setupPaginator: function() {
+    setupPaginator() {
         var $this = this;
         this.cfg.paginator.paginate = function(newState) {
             $this.handlePagination(newState);
@@ -55,13 +55,13 @@ PrimeFaces.widget.DataView = PrimeFaces.widget.BaseWidget.extend({
 
         this.paginator = new PrimeFaces.widget.Paginator(this.cfg.paginator);
         this.paginator.bindSwipeEvents(this.jq, this.cfg);
-    },
+    }
 
     /**
      * Sets up all event listeners required by this widget.
      * @private
      */
-    bindEvents: function () {
+    bindEvents() {
         var $this = this;
 
         this.buttons.on('mouseover', function() {
@@ -100,7 +100,7 @@ PrimeFaces.widget.DataView = PrimeFaces.widget.BaseWidget.extend({
                 e.preventDefault();
             }
         });
-    },
+    }
 
     /**
      * Switches this data view to the given layout (grid or list).
@@ -112,20 +112,20 @@ PrimeFaces.widget.DataView = PrimeFaces.widget.BaseWidget.extend({
      * ```
      * @param {JQuery} button One of the layout switch buttons (`.ui-button`).
      */
-    select: function(button) {
+    select(button) {
         this.buttons.filter('.ui-state-active').removeClass('ui-state-active ui-state-hover').children(':radio').prop('checked', false);
 
         button.addClass('ui-state-active').children(':radio').prop('checked', true);
 
         this.loadLayoutContent(button.children(':radio').val());
-    },
+    }
 
     /**
      * Loads the content with the data items for the selected layout (grid or list).
      * @private
      * @param {PrimeFaces.widget.DataView.Layout} layout The current layout of this data view.
      */
-    loadLayoutContent: function(layout) {
+    loadLayoutContent(layout) {
         var $this = this,
         options = {
             source: this.id,
@@ -150,14 +150,14 @@ PrimeFaces.widget.DataView = PrimeFaces.widget.BaseWidget.extend({
         };
 
         PrimeFaces.ajax.Request.handle(options);
-    },
+    }
 
     /**
      * Handles a pagination event by updating the data grid and invoking the appropriate behaviors.
      * @private
      * @param {PrimeFaces.widget.Paginator.PaginationState} newState The new pagination state to apply. 
      */
-    handlePagination: function(newState) {
+    handlePagination(newState) {
         var $this = this,
         options = {
             source: this.id,
@@ -191,7 +191,7 @@ PrimeFaces.widget.DataView = PrimeFaces.widget.BaseWidget.extend({
         else {
             PrimeFaces.ajax.Request.handle(options);
         }
-    },
+    }
 
     /**
      * Retrieves the paginator widget used by this data grid for pagination. You can use this widget to switch to a
@@ -199,7 +199,7 @@ PrimeFaces.widget.DataView = PrimeFaces.widget.BaseWidget.extend({
      * @return {PrimeFaces.widget.Paginator | undefined} The paginator widget, or `undefined` when pagination is not
      * enabled.
      */
-    getPaginator: function() {
+    getPaginator() {
         return this.paginator;
     }
-});
+}

@@ -27,15 +27,15 @@
  * usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  */
-PrimeFaces.widget.Log = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Log = class Log extends PrimeFaces.widget.BaseWidget {
     
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
         
         this.header = this.jq.children('.ui-log-header');
         this.content = this.jq.children('.ui-log-content');
@@ -61,13 +61,13 @@ PrimeFaces.widget.Log = PrimeFaces.widget.BaseWidget.extend({
 
         //attach
         PrimeFaces.logger = this;
-    },
+    }
 
     /**
      * Sets up all event listeners that are required by this widget.
      * @private
      */
-    bindEvents: function() {
+    bindEvents() {
         var _self = this;
 
         //visuals
@@ -116,39 +116,39 @@ PrimeFaces.widget.Log = PrimeFaces.widget.BaseWidget.extend({
         this.header.children('.ui-log-error').on("click", function(e) {
             _self.handleFilterClick(e, '.ui-log-item-error', 'error', $(this));
         });
-    },
+    }
     
     /**
      * Logs the given message at the `info` level.
      * @param {string} msg Message to log
      */
-    info: function(msg) {
+    info(msg) {
         this.add(msg, 'info', 'ui-icon-info');
-    },
+    }
     
     /**
      * Logs the given message at the `warn` level.
      * @param {string} msg Message to log
      */
-    warn: function(msg) {
+    warn(msg) {
         this.add(msg, 'warn', 'ui-icon-notice');
-    },
+    }
     
     /**
      * Logs the given message at the `debug` level.
      * @param {string} msg Message to log
      */
-    debug: function(msg) {
+    debug(msg) {
         this.add(msg, 'debug', 'ui-icon-search');
-    },
+    }
     
     /**
      * Logs the given message at the `error` level.
      * @param {string} msg Message to log
      */
-    error: function(msg) {
+    error(msg) {
         this.add(msg, 'error', 'ui-icon-alert');
-    },
+    }
     
     /**
      * Logs a message at the given severity level.
@@ -156,7 +156,7 @@ PrimeFaces.widget.Log = PrimeFaces.widget.BaseWidget.extend({
      * @param {PrimeFaces.widget.Log.Severity} severity Severity of the log message
      * @param {string} icon Icon to show near the log message
      */
-    add: function(msg, severity, icon) {
+    add(msg, severity, icon) {
         var visible = this.severity == severity || this.severity == 'all',
         style = visible ? 'display:block' : 'display:none';
 
@@ -164,15 +164,15 @@ PrimeFaces.widget.Log = PrimeFaces.widget.BaseWidget.extend({
             '"><span class="ui-icon ' + icon + '"></span>' + new Date().toLocaleString() + ' : '  + PrimeFaces.escapeHTML(msg) + '</li>';
 
         this.itemsContainer.append(item);
-    },
+    }
 
     /**
      * Hides all log messages except those at the given severity level
      * @param {PrimeFaces.widget.Log.Severity} severity Severity of the log messages to show
      */
-    filter: function(severity) {
+    filter(severity) {
         this.itemsContainer.children().hide().filter(severity).show();
-    },
+    }
 
     /**
      * Callback for when a click occurred on the log message header.
@@ -182,26 +182,26 @@ PrimeFaces.widget.Log = PrimeFaces.widget.BaseWidget.extend({
      * @param {PrimeFaces.widget.Log.Severity} severity Severity of the log message. 
      * @param {JQuery} button The button that was pressed.
      */
-    handleFilterClick: function(event, severityClass, severity, button) {
+    handleFilterClick(event, severityClass, severity, button) {
         this.filter(severityClass);
         this.filters.filter('.ui-state-active').removeClass('ui-state-active');
         button.addClass('ui-state-active').removeClass('ui-state-hover');
         this.severity = severity;
         event.preventDefault();
-    },
+    }
     
     /**
      * Shows all log messages.
      */
-    show: function() {
+    show() {
         this.jq.show();
-    },
+    }
     
     /**
      * Hides all log messages.
      */
-    hide: function() {
+    hide() {
         this.jq.hide();
     }
     
-});
+}

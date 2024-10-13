@@ -27,15 +27,15 @@
  * @prop {string} cfg.hideEvent Event hiding the feedback overlay. Default is 'blur'.
  * @prop {boolean} cfg.unmaskable Whether or not this password can be unmasked/remasked.
  */
-PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Password = class Password extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         if (!this.jq.is(':disabled')) {
             if (this.cfg.feedback) {
@@ -48,13 +48,13 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
 
             PrimeFaces.skinInput(this.jq);
         }
-    },
+    }
 
     /**
      * Sets up the overlay panel informing the user about how good the password their typed is.
      * @private
      */
-    setupFeedback: function() {
+    setupFeedback() {
         var $this = this;
 
         //remove previous panel if any
@@ -131,13 +131,13 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
             this.panel.appendTo('body');
             this.transition = PrimeFaces.utils.registerCSSTransition(this.panel, 'ui-connected-overlay');
         }
-    },
+    }
 
     /**
      * Sets up all panel event listeners
      * @private
      */
-    bindPanelEvents: function() {
+    bindPanelEvents() {
         var $this = this;
 
         //Hide overlay on resize/scroll
@@ -152,13 +152,13 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
                 $this.hide();
             }
         });
-    },
+    }
 
     /**
      * Unbind all panel event listeners
      * @private
      */
-    unbindPanelEvents: function() {
+    unbindPanelEvents() {
         if (this.resizeHandler) {
             this.resizeHandler.unbind();
         }
@@ -166,13 +166,13 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
         if (this.scrollHandler) {
             this.scrollHandler.unbind();
         }
-    },
+    }
 
     /**
      * Sets up the ability to unmask and remask the password.
      * @private
      */
-    setupUnmasking: function() {
+    setupUnmasking() {
         var $this = this;
         
         this.icon = $(PrimeFaces.escapeClientId(this.id + '_mask'));
@@ -193,12 +193,12 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
         this.icon.off('click.password').on('click.password', function() {
             $this.toggleMask();
         });
-    },
+    }
 
     /**
      * Toggle masking and unmasking the password.
      */
-    toggleMask: function() {
+    toggleMask() {
         if (!this.cfg.unmaskable) {
             return;
         }
@@ -211,7 +211,7 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
             this.jq.attr('type', 'password').parent().removeClass('ui-password-unmasked').addClass('ui-password-masked');
             this.icon.attr('aria-checked', 'true').attr('aria-label', PrimeFaces.getAriaLabel('passwordShow', 'Show Password'));
         }
-    },
+    }
 
     /**
      * Computes a numerical score that estimates how strong the given password is. The returned value can range from `0`
@@ -221,7 +221,7 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
      * @return {number} A value between `0` and `128` that indicates how good the password is, with `0` indicating a
      * very weak password and `128` indicating a very strong password.
      */
-    testStrength: function(password) {
+    testStrength(password) {
         // return a number between 0 and 100.
         var score = 0;
 
@@ -237,14 +237,14 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
             nonWords: /\W/.test(password)
         }
 
-        variationCount = 0;
+        var variationCount = 0;
         for (var check in variations) {
             variationCount += (variations[check] == true) ? 1 : 0;
         }
         score += variationCount * 28;
 
         return parseInt(score);
-    },
+    }
 
     /**
      * Returns a normalized value between `0` and `1.5` that indicates how much bigger the first input x is compared
@@ -255,7 +255,7 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
      * @param {number} y  Second input, must be a positive number
      * @return {number} A value between `0` and `1.5` that indicates how big `x` is compared to `y`.
      */
-    normalize: function(x, y) {
+    normalize(x, y) {
         var diff = x - y;
 
         if (diff <= 0) {
@@ -264,13 +264,13 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
         else {
             return 1 + 0.5 * (x / (x + y / 4));
         }
-    },
+    }
 
     /**
      * Align the panel with the password strength indicator so that it is next to the password input field.
      * @private
      */
-    align: function() {
+    align() {
         this.panel.css({
             left: '',
             top: '',
@@ -285,12 +285,12 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
                 $(this).css('transform-origin', 'center ' + directions.vertical).css(pos);
             }
         });
-    },
+    }
 
     /**
      * Brings up the panel with the password strength indicator.
      */
-    show: function() {
+    show() {
         if (!this.cfg.inline) {
             var $this = this;
 
@@ -310,12 +310,12 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
             this.panel.css({ width: this.jq.outerWidth() });
             this.panel.slideDown();
         }
-    },
+    }
 
     /**
      * Hides the panel with the password strength indicator.
      */
-    hide: function() {
+    hide() {
         if (this.cfg.inline) {
             this.panel.slideUp();
         }
@@ -328,20 +328,20 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
                 }
             });
         }
-    },
+    }
 
     /**
      * Enables this input so that the user can enter a value.
      */
-    enable: function() {
+    enable() {
         PrimeFaces.utils.enableInputWidget(this.jq);
-    },
+    }
 
     /**
      * Disables this input so that the user cannot enter a value anymore.
      */
-    disable: function() {
+    disable() {
         PrimeFaces.utils.disableInputWidget(this.jq);
     }
 
-});
+}

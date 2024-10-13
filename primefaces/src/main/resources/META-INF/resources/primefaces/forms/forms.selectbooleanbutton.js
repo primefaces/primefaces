@@ -19,15 +19,15 @@
  * @prop {string} cfg.offLabel Label to display when button is unselected.
  * @prop {string} cfg.offIcon Icon to display when button is unselected.
  */
-PrimeFaces.widget.SelectBooleanButton = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.SelectBooleanButton = class SelectBooleanButton extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         this.input = $(this.jqId + '_input');
         this.disabled = this.input.is(':disabled');
@@ -81,25 +81,25 @@ PrimeFaces.widget.SelectBooleanButton = PrimeFaces.widget.BaseWidget.extend({
 
         //pfs metadata
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
-    },
+    }
 
     /**
      * Toggles the state of this button, i.e. turning it on if it is off and vice-versa. Corresponds to checking or
      * unchecking the underlying checkbox.
      */
-    toggle: function() {
+    toggle() {
         if(!this.disabled) {
             if(this.input.prop('checked'))
                 this.uncheck();
             else
                 this.check();
         }
-    },
+    }
 
     /**
      * Turns this button to its on state, which corresponds to checking the underlying checkbox.
      */
-    check: function() {
+    check() {
         if (!this.disabled) {
             this.input.prop('checked', true);
             this.input.attr('aria-label', this.onLabel);
@@ -111,12 +111,12 @@ PrimeFaces.widget.SelectBooleanButton = PrimeFaces.widget.BaseWidget.extend({
 
             this.input.trigger('change');
         }
-    },
+    }
 
     /**
      * Turns this button to its off state, which corresponds to unchecking the underlying checkbox.
      */
-    uncheck: function() {
+    uncheck() {
         if (!this.disabled) {
             this.input.prop('checked', false);
             this.input.attr('aria-label', this.offLabel);
@@ -128,22 +128,22 @@ PrimeFaces.widget.SelectBooleanButton = PrimeFaces.widget.BaseWidget.extend({
 
             this.input.trigger('change');
         }
-    },
+    }
 
     /**
      * Enables this input so that the user can enter a value.
      */
-    enable: function() {
+    enable() {
         PrimeFaces.utils.enableInputWidget(this.jq);
         this.disabled = false;
-    },
+    }
 
     /**
      * Disables this input so that the user cannot enter a value anymore.
      */
-    disable: function() {
+    disable() {
         PrimeFaces.utils.disableInputWidget(this.jq);
         this.disabled = true;
     }
 
-});
+}

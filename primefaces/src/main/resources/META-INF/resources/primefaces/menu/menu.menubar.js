@@ -13,7 +13,7 @@
  * 
  * @prop {number} cfg.delay Delay in milliseconds before displaying the sub menu. Default is 0 meaning immediate.
  */
-PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
+PrimeFaces.widget.Menubar = class Menubar extends PrimeFaces.widget.TieredMenu {
 
     /**
      * @override
@@ -21,7 +21,7 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
      * @param {JQuery} menuitem
      * @param {JQuery} submenu
      */
-    showSubmenu: function(menuitem, submenu) {
+    showSubmenu(menuitem, submenu) {
         var pos = null;
 
         if (menuitem.parent().hasClass('ui-menu-child')) {
@@ -56,4 +56,4 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
         }, this.cfg.showDelay);
     }
 
-});
+}

@@ -66,15 +66,15 @@
  * @prop {PrimeFaces.widget.BaseTree.SelectionMode} cfg.selectionMode How the node of this tree can be selected, if
  * selection is enabled at all.
  */
-PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.BaseTree = class BaseTree extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
         this.cfg.highlight = (this.cfg.highlight === false) ? false : true;
         this.focusedNode = null;
 
@@ -87,13 +87,13 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
 
             this.jq.data('widget', cfg.widgetVar);
         }
-    },
+    }
 
     /**
      * Called when this tree is initialized. Performs any setup required for enabling the selection of node.
      * @protected
      */
-    initSelection: function() {
+    initSelection() {
         this.selectionHolder = $(this.jqId + '_selection');
         var selectionsValue = this.selectionHolder.val();
         this.selections = selectionsValue === '' ? [] : selectionsValue.split(',');
@@ -105,7 +105,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
         if(this.isCheckboxSelection() && this.cfg.propagateUp) {
             this.preselectCheckbox();
         }
-    },
+    }
 
     /**
      * @override
@@ -115,7 +115,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
      * @param {string} targetId
      * @param {PrimeFaces.widget.ContextMenuCfg} cfg 
      */
-    bindContextMenu : function(menuWidget, targetWidget, targetId, cfg) {
+    bindContextMenu(menuWidget, targetWidget, targetId, cfg) {
         var nodeContentSelector = targetId + ' .ui-tree-selectable',
         nodeEvent = cfg.nodeType ? cfg.event + '.treenode.' + cfg.nodeType : cfg.event + '.treenode',
         containerEvent = cfg.event + '.tree' + this.id;
@@ -144,14 +144,14 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
         this.addDestroyListener(function() {
             $(document).off(nodeEvent + ' ' + containerEvent);
         });
-    },
+    }
 
     /**
      * Expands the given node, as if the user had clicked on the `+` icon of the node. The children of the node will now
      * be visible. 
      * @param {JQuery} node Node to expand. 
      */
-    expandNode: function(node) {
+    expandNode(node) {
         var $this = this;
 
         if(this.cfg.dynamic) {
@@ -214,14 +214,14 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
             this.showNodeChildren(node);
             this.fireExpandEvent(node);
         }
-    },
+    }
 
     /**
      * Called when a node was expanded. Fire the appropriate event.
      * @protected
      * @param {JQuery} node The node for which to fire the event.
      */
-    fireExpandEvent: function(node) {
+    fireExpandEvent(node) {
         if(this.hasBehavior('expand')) {
             var ext = {
                 params: [
@@ -231,14 +231,14 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
 
             this.callBehavior('expand', ext);
         }
-    },
+    }
 
     /**
      * Called when a node was collapsed. Fire the appropriate event.
      * @protected
      * @param {JQuery} node The node for which to fire the event.
      */
-    fireCollapseEvent: function(node) {
+    fireCollapseEvent(node) {
         if(this.hasBehavior('collapse')) {
             var ext = {
                 params: [
@@ -248,7 +248,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
 
             this.callBehavior('collapse', ext);
         }
-    },
+    }
 
     /**
      * Finds the DOM element for the container which contains the child nodes of the given node.
@@ -256,33 +256,33 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery} node A node for which to get the children container.
      * @return {JQuery} The container with the children of the given node.
      */
-    getNodeChildrenContainer: function(node) {
+    getNodeChildrenContainer(node) {
         throw "Unsupported Operation";
-    },
+    }
 
     /**
      * Makes the children of the given node visible. Called when a node is expanded.
      * @protected
      * @param {JQuery} node Node with children to display.
      */
-    showNodeChildren: function(node) {
+    showNodeChildren(node) {
         throw "Unsupported Operation";
-    },
+    }
 
     /**
      * Saves the list of currently selected nodes in a hidden form element.
      * @protected
      */
-    writeSelections: function() {
+    writeSelections() {
         this.selectionHolder.val(this.selections.join(','));
-    },
+    }
 
     /**
      * Called when a node was selected. Fire the appropriate event.
      * @protected
      * @param {JQuery} node The node for which to fire the event.
      */
-    fireNodeSelectEvent: function(node) {
+    fireNodeSelectEvent(node) {
         if(this.isCheckboxSelection() && this.cfg.dynamic) {
             var $this = this,
             options = {
@@ -322,14 +322,14 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                 this.callBehavior('select', ext);
             }
         }
-    },
+    }
 
     /**
      * Called when a node was unselected. Fire the appropriate event.
      * @protected
      * @param {JQuery} node The node for which to fire the event.
      */
-    fireNodeUnselectEvent: function(node) {
+    fireNodeUnselectEvent(node) {
         if(this.hasBehavior('unselect')) {
             var ext = {
                 params: [
@@ -339,7 +339,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
 
             this.callBehavior('unselect', ext);
         }
-    },
+    }
 
     /**
      * Called when a right click was performed on a node. Fire the appropriate event.
@@ -347,7 +347,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery} node The node for which to fire the event.
      * @param {() => void} fnShowMenu Callback that is invoked once the context menu is shown.
      */
-    fireContextMenuEvent: function(node, fnShowMenu) {
+    fireContextMenuEvent(node, fnShowMenu) {
         if(this.hasBehavior('contextMenu')) {
             var ext = {
                 params: [
@@ -362,85 +362,85 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
         } else {
             fnShowMenu();
         }
-    },
+    }
 
     /**
      * Finds the row key (unique ID) of the given node.
      * @param {JQuery} node A node for which to find the row key.
      * @return {string} The key of the given node.
      */
-    getRowKey: function(node) {
+    getRowKey(node) {
         return node.attr('data-rowkey');
-    },
+    }
 
     /**
      * Checks whether the given node is currently selected, irrespective of the current selection mode.
      * @param {JQuery} node A node to check.
      * @return {boolean} `true` if the given node is selected, or `false` otherwise.
      */
-    isNodeSelected: function(node) {
+    isNodeSelected(node) {
         return $.inArray(this.getRowKey(node), this.selections) != -1;
-    },
+    }
 
     /**
      * Checks whether the selection mode of this tree is set to `single`.
      * @return {boolean} `true` if the current selection mode is `single`, or `false` otherwise.
      */
-    isSingleSelection: function() {
+    isSingleSelection() {
         return this.cfg.selectionMode == 'single';
-    },
+    }
 
     /**
      * Checks whether the selection mode of this tree is set to `multiple`.
      * @return {boolean} `true` if the current selection mode is `multiple`, or `false` otherwise.
      */
-    isMultipleSelection: function() {
+    isMultipleSelection() {
         return this.cfg.selectionMode == 'multiple';
-    },
+    }
 
     /**
      * Checks whether the selection mode of this tree is set to `checkbox`.
      * @return {boolean} `true` if the current selection mode is `checkbox`, or `false` otherwise.
      */
-    isCheckboxSelection: function() {
+    isCheckboxSelection() {
         return this.cfg.selectionMode == 'checkbox';
-    },
+    }
 
     /**
      * Adds the given node to the list of selected nodes.
      * @protected
      * @param {string} rowKey Row key of the node to add to the selected nodes.
      */
-    addToSelection: function(rowKey) {
+    addToSelection(rowKey) {
         if(!PrimeFaces.inArray(this.selections, rowKey)) {
             this.selections.push(rowKey);
         }
-    },
+    }
 
     /**
      * Removes the given node from the list of currently selected nodes.
      * @protected
      * @param {string} rowKey Row key of a node to to remove from the current selection.
      */
-    removeFromSelection: function(rowKey) {
+    removeFromSelection(rowKey) {
         this.selections = $.grep(this.selections, function(r) {
             return r !== rowKey;
         });
-    },
+    }
 
     /**
      * Removes all chilren of the given node from the list of currently selected nodes.
      * @protected
      * @param {string} rowKey Row key of a node to process.
      */
-    removeDescendantsFromSelection: function(rowKey) {
+    removeDescendantsFromSelection(rowKey) {
         var newSelections = [];
         for(var i = 0; i < this.selections.length; i++) {
             if(this.selections[i].indexOf(rowKey + '_') !== 0)
                 newSelections.push(this.selections[i]);
         }
         this.selections = newSelections;
-    },
+    }
 
     /**
      * Invoked in response to a normal click on a node.
@@ -448,7 +448,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery.TriggeredEvent} event Event of the click.
      * @param {JQuery} nodeContent Content of the clicked node.
      */
-    nodeClick: function(event, nodeContent) {
+    nodeClick(event, nodeContent) {
         if($(event.target).is(':not(.ui-tree-toggler)')) {
             var node = nodeContent.parent(),
             selectable = nodeContent.hasClass('ui-tree-selectable');
@@ -508,7 +508,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                 }
             }
         }
-    },
+    }
 
     /**
      * Invoked in response to a right click on a node.
@@ -518,7 +518,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
      * @param {() => void} fnShowMenu Callback that is invoked when the context menu is shown. 
      * @return {boolean} `true` if the context menu was opened, or `false` otherwise.
      */
-    nodeRightClick: function(event, nodeContent, fnShowMenu) {
+    nodeRightClick(event, nodeContent, fnShowMenu) {
         PrimeFaces.clearSelection();
 
         if($(event.target).is(':not(.ui-tree-toggler)')) {
@@ -543,16 +543,16 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
             }
         }
         return false;
-    },
+    }
 
     /**
      * A sub class may perform any setup related to registering event handlers in this method, such as listening to
      * mouse clicks or keyboard presses.
      * @protected
      */
-    bindEvents: function() {
+    bindEvents() {
         throw "Unsupported Operation";
-    },
+    }
 
     /**
      * This method must select the given node. When `silent` is set to `true`, no events should be triggered in response
@@ -560,9 +560,9 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery} node A node of this tree to select.
      * @param {boolean} [silent] `true` if no events should be triggered, or `false` otherwise. 
      */
-    selectNode: function(node, silent) {
+    selectNode(node, silent) {
         throw "Unsupported Operation";
-    },
+    }
 
     /**
      * This method must unselect the given node. When `silent` is set to `true`, no events should be triggered in
@@ -570,53 +570,53 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery} node A node of this tree to unselect.
      * @param {boolean} [silent] `true` if no events should be triggered, or `false` otherwise. 
      */
-    unselectNode: function(node, silent) {
+    unselectNode(node, silent) {
         throw "Unsupported Operation";
-    },
+    }
 
     /**
      * This method must unselect all nodes of this tree that are selected.
      */
-    unselectAllNodes: function() {
+    unselectAllNodes() {
         throw "Unsupported Operation";
-    },
+    }
 
     /**
      * Called once during widget initialization if this tree has got nodes with selectable checkboxes.
      * @protected
      */
-    preselectCheckbox: function() {
+    preselectCheckbox() {
         throw "Unsupported Operation";
-    },
+    }
 
     /**
      * Called when the nodes of this tree are selected via checkboxes. Must select the checkbox of the given node.
      * @protected
      * @param {JQuery} node Node with a checkbox to toggle.
      */
-    toggleCheckboxNode: function(node) {
+    toggleCheckboxNode(node) {
         throw "Unsupported Operation";
-    },
+    }
 
     /**
      * Checks whether this tree is empty, that is, whether it contains any nodes.
      * @return {boolean} `true` if this tree has got no nodes, or `false` otherwise.
      */
-    isEmpty: function() {
+    isEmpty() {
         throw "Unsupported Operation";
-    },
+    }
 
     /**
      * When this tree has got selectable nodes with checkboxes, checks or unchecks the given checkbox.
      * @param {JQuery} checkbox A checkbox of a node to check or uncheck.
      * @param {boolean} checked `true` to check the given node, `false` to uncheck it.
      */
-    toggleCheckboxState: function(checkbox, checked) {
+    toggleCheckboxState(checkbox, checked) {
         if(checked)
             this.uncheck(checkbox);
         else
             this.check(checkbox);
-    },
+    }
 
     /**
      * When this tree has got selectable nodes with checkboxes, partially selects the given checkbox. Does nothing
@@ -624,7 +624,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
      * @protected
      * @param {JQuery} checkbox Checkbox of a node to check partially.
      */
-    partialCheck: function(checkbox) {
+    partialCheck(checkbox) {
         var box = checkbox.children('.ui-chkbox-box'),
         icon = box.children('.ui-chkbox-icon'),
         treeNode = checkbox.closest('.ui-treenode'),
@@ -637,14 +637,14 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
         treeNode.removeClass('ui-treenode-selected ui-treenode-unselected').addClass('ui-treenode-hasselected').attr('aria-checked', false).attr('aria-selected', false);
 
         this.removeFromSelection(rowKey);
-    },
+    }
 
     /**
      * When this tree has got selectable nodes with checkboxes, selects the given checkbox. Does nothing otherwise.
      * @protected
      * @param {JQuery} checkbox Checkbox of a node to check.
      */
-    check: function(checkbox) {
+    check(checkbox) {
         var box = checkbox.children('.ui-chkbox-box'),
         icon = box.children('.ui-chkbox-icon'),
         treeNode = checkbox.closest('.ui-treenode'),
@@ -655,14 +655,14 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
         treeNode.removeClass('ui-treenode-hasselected ui-treenode-unselected').addClass('ui-treenode-selected').attr('aria-checked', true).attr('aria-selected', true);
 
         this.addToSelection(rowKey);
-    },
+    }
 
     /**
      * When this tree has got selectable nodes with checkboxes, unselects the given checkbox. Does nothing otherwise.
      * @protected
      * @param {JQuery} checkbox Checkbox of a node to uncheck.
      */
-    uncheck: function(checkbox) {
+    uncheck(checkbox) {
         var box = checkbox.children('.ui-chkbox-box'),
         icon = box.children('.ui-chkbox-icon'),
         treeNode = checkbox.closest('.ui-treenode'),
@@ -673,24 +673,24 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
         treeNode.removeClass('ui-treenode-hasselected ui-treenode-selected').addClass('ui-treenode-unselected').attr('aria-checked', false).attr('aria-selected', false);
 
         this.removeFromSelection(rowKey);
-    },
+    }
 
     /**
      * Checks whether the given node is currently expanded, that is, whether its children are visible.
      * @param {JQuery} node Node to check. 
      * @return {boolean} `true` if the node is expanded, or `false` otherwise.
      */
-    isExpanded: function(node) {
+    isExpanded(node) {
         return this.getNodeChildrenContainer(node).is(':visible');
-    },
+    }
 
     /**
      * Puts focus on the given node.
      * @protected
      * @param {JQuery} node A node on which to put focus.
      */
-    focusNode: function(node) {
+    focusNode(node) {
         throw "Unsupported Operation";
     }
 
-});
+}

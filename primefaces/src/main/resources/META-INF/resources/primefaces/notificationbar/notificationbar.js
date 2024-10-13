@@ -24,15 +24,15 @@
  * is shown or hidden.
  * @prop {PrimeFaces.widget.NotificationBar.Position} cfg.position Position of the bar, either top or bottom.
  */
-PrimeFaces.widget.NotificationBar = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.NotificationBar = class NotificationBar extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         var $this = this;
 
@@ -50,7 +50,7 @@ PrimeFaces.widget.NotificationBar = PrimeFaces.widget.BaseWidget.extend({
         this.jq.children('.ui-notificationbar-close').on("click", function() {
             $this.hide();
         });
-    },
+    }
 
     /**
      * Shows the notification bar.
@@ -65,7 +65,7 @@ PrimeFaces.widget.NotificationBar = PrimeFaces.widget.BaseWidget.extend({
      * @see http://api.jquery.com/fadein/
      * @see http://api.jquery.com/show/
      */
-    show: function(a1, a2, a3) {
+    show(a1, a2, a3) {
         if (this.cfg.effect === 'slide') {
             this.jq.slideDown(a1, a2, a3);
         }
@@ -75,12 +75,12 @@ PrimeFaces.widget.NotificationBar = PrimeFaces.widget.BaseWidget.extend({
         else if (this.cfg.effect === 'none') {
             this.jq.show(a1, a2, a3);
         }
-    },
+    }
 
     /**
      * Hides the notification bar.
      */
-    hide: function() {
+    hide() {
         if (this.cfg.effect === 'slide') {
             this.jq.slideUp(this.cfg.effect);
         }
@@ -90,20 +90,20 @@ PrimeFaces.widget.NotificationBar = PrimeFaces.widget.BaseWidget.extend({
         else if (this.cfg.effect === 'none') {
             this.jq.hide();
         }
-    },
+    }
 
     /**
      * Checks whether the notification bar is currently displayed.
      * @return {boolean} `true` if the notification bar is currently visible, `false` otherwise.
      */
-    isVisible: function() {
+    isVisible() {
         return this.jq.is(':visible');
-    },
+    }
 
     /**
      * Shows the notification bar it is currently hidden, or hides it if it is currently displayed.
      */
-    toggle: function() {
+    toggle() {
         if (this.isVisible()) {
             this.hide();
         }
@@ -112,4 +112,4 @@ PrimeFaces.widget.NotificationBar = PrimeFaces.widget.BaseWidget.extend({
         }
     }
 
-});
+}

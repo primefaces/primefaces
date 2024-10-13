@@ -14,15 +14,15 @@
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  */
-PrimeFaces.widget.SelectManyButton = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.SelectManyButton = class SelectManyButton extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         this.buttons = this.jq.children('div:not(.ui-state-disabled)');
         this.inputs = this.jq.find(':checkbox:not(:disabled)');
@@ -30,13 +30,13 @@ PrimeFaces.widget.SelectManyButton = PrimeFaces.widget.BaseWidget.extend({
 
         //pfs metadata
         this.inputs.data(PrimeFaces.CLIENT_ID_DATA, this.id);
-    },
+    }
 
     /**
      * Sets up all event listeners required by this widget.
      * @private
      */
-    bindEvents: function() {
+    bindEvents() {
         var $this = this;
 
         this.buttons.on('mouseover', function() {
@@ -85,38 +85,38 @@ PrimeFaces.widget.SelectManyButton = PrimeFaces.widget.BaseWidget.extend({
         .on('click', function(e) {
             e.stopPropagation();
         });
-    },
+    }
 
     /**
      * Selects the given button option.
      * @param {JQuery} button A button of this widget to select.
      */
-    select: function(button) {
+    select(button) {
         button.children(':checkbox').prop('checked', true).trigger('change');
-    },
+    }
 
     /**
      * Unselects the given button option.
      * @param {JQuery} button A button of this widget to unselect.
      */
-    unselect: function(button) {
+    unselect(button) {
         button.children(':checkbox').prop('checked', false).trigger('change');
-    },
+    }
 
     /**
      * Enables this input so that the user can enter a value.
      */
-    enable: function() {
+    enable() {
         PrimeFaces.utils.enableInputWidget(this.jq, this.inputs);
         this.disabled = false;
-    },
+    }
 
     /**
      * Disables this input so that the user cannot enter a value anymore.
      */
-    disable: function() {
+    disable() {
         PrimeFaces.utils.disableInputWidget(this.jq, this.inputs);
         this.disabled = true;
     }
 
-});
+}

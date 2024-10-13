@@ -12,15 +12,15 @@
  *
  @prop {boolean} cfg.validateClientDynamic When set to `true` this button is only enabled after successful client side validation, otherwise classic behaviour. Used together with p:clientValidator.
  */
-PrimeFaces.widget.CommandButton = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.CommandButton = class CommandButton extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         PrimeFaces.skinButton(this.jq);
 
@@ -35,39 +35,39 @@ PrimeFaces.widget.CommandButton = PrimeFaces.widget.BaseWidget.extend({
             // update enabled/disabled-state after ajax-updates
             PrimeFaces.validation.bindAjaxComplete();
         }
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    refresh: function(cfg) {
+    refresh(cfg) {
         $(document).off('pfAjaxSend.' + this.id + ' pfAjaxComplete.' + this.id);
 
-        this._super(cfg);
-    },
+        super.refresh(cfg);
+    }
 
     /**
      * Sets up the global event listeners on the button.
      * @private
      */
-    bindTriggers: function() {
+    bindTriggers() {
         PrimeFaces.bindButtonInlineAjaxStatus(this, this.jq);
-    },
+    }
 
     /**
      * Disables this button so that the user cannot press the button anymore.
      */
-    disable: function() {
+    disable() {
         PrimeFaces.utils.disableButton(this.jq);
-    },
+    }
 
     /**
      * Enables this button so that the user can press the button.
      */
-    enable: function() {
+    enable() {
         PrimeFaces.utils.enableButton(this.jq);
     }
 
-});
+}

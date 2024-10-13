@@ -27,15 +27,15 @@
  * @prop {PrimeFaces.widget.Draggable.OnStopCallback} cfg.onStop Callback for when dragging ends.
  * @prop {string} cfg.target ID of the target of this draggable.
  */
-PrimeFaces.widget.Draggable = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Draggable = class Draggable extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         this.jqTarget = $(PrimeFaces.escapeClientId(this.cfg.target));
         this.cfg.cancel = this.cfg.cancel || "input,textarea,button,select,option";
@@ -67,7 +67,7 @@ PrimeFaces.widget.Draggable = PrimeFaces.widget.BaseWidget.extend({
         });
     }
 
-});
+}
 
 /**
  * __PrimeFaces Droppable Widget__
@@ -91,15 +91,15 @@ PrimeFaces.widget.Draggable = PrimeFaces.widget.BaseWidget.extend({
  * @prop {PrimeFaces.widget.Droppable.OnDropCallback} cfg.onDrop Callback for when an items is dropped.
  * @prop {string} cfg.target ID of the target of this droppable.
  */
-PrimeFaces.widget.Droppable = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Droppable = class Droppable extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
         this.jqTarget = $(PrimeFaces.escapeClientId(this.cfg.target));
 
         this.bindDropListener();
@@ -112,13 +112,13 @@ PrimeFaces.widget.Droppable = PrimeFaces.widget.BaseWidget.extend({
                 $this.jqTarget.droppable('destroy');
             }
         });
-    },
+    }
 
     /**
      * Sets up the vent listener for when an item is dropped.
      * @private
      */
-    bindDropListener: function() {
+    bindDropListener() {
         var $this = this;
 
         this.cfg.drop = function(event, ui) {
@@ -142,4 +142,4 @@ PrimeFaces.widget.Droppable = PrimeFaces.widget.BaseWidget.extend({
         };
     }
 
-});
+}

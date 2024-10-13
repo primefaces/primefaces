@@ -19,29 +19,29 @@
  * items.
  * @prop {boolean} cfg.showCheckbox When set to `true`, a checkbox is displayed next to each item.
  */
-PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
+PrimeFaces.widget.SelectManyMenu = class SelectManyMenu extends PrimeFaces.widget.SelectListbox {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
         this.cfg.metaKeySelection = this.cfg.metaKeySelection != undefined ? this.cfg.metaKeySelection : true;
 
         this.allItems.filter('.ui-state-highlight').find('> .ui-chkbox > .ui-chkbox-box').addClass('ui-state-active');
         // Checkbox is inside TD element when using custom content
         this.allItems.filter('.ui-state-highlight').find('> td > .ui-chkbox > .ui-chkbox-box').addClass('ui-state-active');
-    },
+    }
 
     /**
      * @override
      * @protected
      * @inheritdoc
      */
-    bindEvents: function() {
-        this._super();
+    bindEvents() {
+        super.bindEvents();
         var $this = this;
 
         if (!this.cfg.disabled) {
@@ -122,14 +122,14 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
                     });
             }
         }
-    },
+    }
 
     /**
      * Handle keyboard events.
      * @param {Event} event the DOM onKeyDown event
      * @private
      */
-    onKeyDown: function(event) {
+    onKeyDown(event) {
         var $this = this,
             item = $(event.currentTarget),
             isMetaKey = (event.metaKey || event.ctrlKey),
@@ -182,21 +182,21 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
                 event.preventDefault();
                 break;
         }
-    },
+    }
 
     /**
      * Focus the item.
      * @param {JQuery} item The item to focus.
      */
-    focus: function(item) {
+    focus(item) {
         this.cursorItem = item;
         item.trigger('focus');
-    },
+    }
 
     /**
      * Selects all available items of this select many menu.
      */
-    selectAll: function() {
+    selectAll() {
         // ~~~ PERF ~~~
         // See https://github.com/primefaces/primefaces/issues/2089
         //
@@ -228,13 +228,13 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
         for (var i = 0; i < this.options.length; i++) {
             this.options[i].selected = true;
         }
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      */
-    unselectAll: function() {
+    unselectAll() {
         // ~~~ PERF ~~~
         // See https://github.com/primefaces/primefaces/issues/2089
         //
@@ -264,47 +264,47 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
         for (var i = 0; i < this.options.length; i++) {
             this.options[i].selected = false;
         }
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      * @param {JQuery} item
      */
-    selectItem: function(item) {
-        this._super(item);
+    selectItem(item) {
+        super.selectItem(item);
 
         if (this.cfg.showCheckbox) {
             this.selectCheckbox(item.find('div.ui-chkbox-box'));
         }
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      * @param {JQuery} item
      */
-    unselectItem: function(item) {
-        this._super(item);
+    unselectItem(item) {
+        super.unselectItem(item);
 
         if (this.cfg.showCheckbox) {
             this.unselectCheckbox(item.find('div.ui-chkbox-box'));
         }
-    },
+    }
 
     /**
      * Select the given checkbox. Does not unselect any other checkboxes that are currently selected.
      * @param {JQuery} chkbox A CHECKBOX element to select.
      */
-    selectCheckbox: function(chkbox) {
+    selectCheckbox(chkbox) {
         chkbox.addClass('ui-state-active').children('span.ui-chkbox-icon').removeClass('ui-icon-blank').addClass('ui-icon-check');
-    },
+    }
 
     /**
      * Unselects the given checkbox. Does not modify any other checkboxes.
      * @param {JQuery} chkbox A CHECKBOX element to unselect.
      */
-    unselectCheckbox: function(chkbox) {
+    unselectCheckbox(chkbox) {
         chkbox.removeClass('ui-state-active').children('span.ui-chkbox-icon').addClass('ui-icon-blank').removeClass('ui-icon-check');
     }
-});
+}

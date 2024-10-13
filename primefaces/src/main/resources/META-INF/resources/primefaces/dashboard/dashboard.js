@@ -19,15 +19,15 @@
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  * @extends {JQueryUI.SortableOptions} cfg
  */
-PrimeFaces.widget.Dashboard = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Dashboard = class Dashboard extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         if (this.cfg.responsive) {
             this.renderResponsive();
@@ -35,24 +35,24 @@ PrimeFaces.widget.Dashboard = PrimeFaces.widget.BaseWidget.extend({
         else {
             this.renderSortable();
         }
-    },
+    }
 
     /**
      * Sets up the responsive drag drop for the dashboard.
      * @private
      */
-    renderResponsive: function() {
+    renderResponsive() {
         this.cfg.draggable = this.jqId + ' .ui-dashboard-panel';
         this.cfg.panels = this.jqId + ' .ui-panel';
         this.bindDraggable();
         this.bindDroppable();
-    },
+    }
 
     /**
      * Sets up all draggable panels.
      * @private
      */
-    bindDraggable: function() {
+    bindDraggable() {
         // draggable panels by their title bar
         $(this.cfg.panels).draggable({
             scope: 'dashboard',
@@ -61,13 +61,13 @@ PrimeFaces.widget.Dashboard = PrimeFaces.widget.BaseWidget.extend({
             zIndex: 9999,
             opacity: 0.7
         });
-    },
+    }
 
     /**
      * Sets up all droppable panels.
      * @private
      */
-    bindDroppable: function() {
+    bindDroppable() {
         var $this = this;
         // droppable on other panels in the dashboard
         $(this.cfg.panels).droppable({
@@ -84,7 +84,7 @@ PrimeFaces.widget.Dashboard = PrimeFaces.widget.BaseWidget.extend({
                 }
             }
         });
-    },
+    }
 
     /**
      * Sets up the sortable for the legacy dashboard.
@@ -92,18 +92,18 @@ PrimeFaces.widget.Dashboard = PrimeFaces.widget.BaseWidget.extend({
      * @param {HTMLElement} b the second panel
      * @private
      */
-    swapPanels: function(a, b) {
+    swapPanels(a, b) {
         var aparent = a.parentNode;
         var asibling = a.nextSibling === b ? a : a.nextSibling;
         b.parentNode.insertBefore(a, b);
         aparent.insertBefore(b, asibling);
-    },
+    }
 
     /**
       * Sets up the sortable for the legacy dashboard.
       * @private
       */
-    renderSortable: function() {
+    renderSortable() {
         this.cfg.connectWith = this.jqId + ' .ui-dashboard-column';
         this.cfg.placeholder = 'ui-state-hover';
         this.cfg.forcePlaceholderSize = true;
@@ -111,13 +111,13 @@ PrimeFaces.widget.Dashboard = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.handle = '.ui-panel-titlebar';
         this.bindSortableEvents();
         $(this.cfg.connectWith).sortable(this.cfg);
-    },
+    }
 
     /**
      * Sets up all event listeners required by this widget.
      * @private
      */
-    bindSortableEvents: function() {
+    bindSortableEvents() {
         var $this = this;
         if (this.hasBehavior('reorder')) {
             this.cfg.update = function(event, ui) {
@@ -126,7 +126,7 @@ PrimeFaces.widget.Dashboard = PrimeFaces.widget.BaseWidget.extend({
                 }
             };
         }
-    },
+    }
 
     /**
      * Handle dropping a panel either from legacy sortable or responsive draggable.
@@ -134,7 +134,7 @@ PrimeFaces.widget.Dashboard = PrimeFaces.widget.BaseWidget.extend({
      * @param {Event} e Event that occurred.
      * @param {JQuery} ui the UI element that was dragged
      */
-    handleDrop: function(widget, e, ui) {
+    handleDrop(widget, e, ui) {
         var item = ui.item || ui.draggable;
         var isResponsive = ui.draggable;
         var parent = item.parent();
@@ -167,20 +167,20 @@ PrimeFaces.widget.Dashboard = PrimeFaces.widget.BaseWidget.extend({
         }
 
         widget.callBehavior('reorder', ext);
-    },
+    }
 
     /**
      * Disables this dashboard so that it cannot be modified.
      */
-    disable: function() {
+    disable() {
         this.jq.addClass('ui-state-disabled');
-    },
+    }
 
     /**
      * Enables this dashboard so that it can be modified.
      */
-    enable: function() {
+    enable() {
         this.jq.removeClass('ui-state-disabled');
     }
 
-});
+}

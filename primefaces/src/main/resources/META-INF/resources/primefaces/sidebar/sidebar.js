@@ -31,15 +31,15 @@
  *
  * @prop {JQuery} content DOM element of the container for the content of this sidebar.
  */
-PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
+PrimeFaces.widget.Sidebar = class Sidebar extends PrimeFaces.widget.DynamicOverlayWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         this.cfg.modal = (this.cfg.modal === true || this.cfg.modal === undefined);
         this.cfg.showCloseIcon = (this.cfg.showCloseIcon === true || this.cfg.showCloseIcon === undefined);
@@ -59,24 +59,24 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
         }
 
         this.bindEvents();
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    refresh: function(cfg) {
-        this._super(cfg);
+    refresh(cfg) {
+        super.refresh(cfg);
 
         this.loaded = false;
-    },
+    }
 
     /**
      * Sets up all event listeners that are required by this widget.
      * @private
      */
-    bindEvents: function() {
+    bindEvents() {
         var $this = this;
 
         if(this.cfg.showCloseIcon) {
@@ -93,13 +93,13 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 e.preventDefault();
             });
         }
-    },
+    }
 
     /**
      * Brings up this sidebar in case is is not already visible.
      * @param {boolean} reload If the dynamic content should be reloaded.
      */
-    show: function(reload = false) {
+    show(reload = false) {
         if(this.isVisible()) {
             return;
         }
@@ -110,13 +110,13 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
         else {
             this._show();
         }
-    },
+    }
 
     /**
      * Makes the sidebar panel visible.
      * @private
      */
-    _show: function() {
+    _show() {
         this.jq.addClass('ui-sidebar-active');
         this.jq.css('z-index', String(this.cfg.baseZIndex + (++PrimeFaces.zindex)));
 
@@ -125,13 +125,13 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
         if(this.cfg.modal) {
             this.enableModality();
         }
-    },
+    }
 
     /**
      * Callback function that is invoked when this sidebar is hidden.
      * @private
      */
-    postShow: function() {
+    postShow() {
         this.callBehavior('open');
 
         PrimeFaces.invokeDeferredRenders(this.id);
@@ -140,12 +140,12 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
         if(this.cfg.onShow) {
             this.cfg.onShow.call(this);
         }
-    },
+    }
 
     /**
      * Hides this sidebara in case it is not already hidden.
      */
-    hide: function() {
+    hide() {
         if(!this.isVisible()) {
             return;
         }
@@ -156,15 +156,15 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
         if(this.cfg.modal) {
             this.disableModality();
         }
-    },
+    }
 
     /**
      * Checks whether this sidebar is currently visible.
      * @return {boolean} `true` if this sideplay is visible, or `false` otherwise.
      */
-    isVisible: function() {
+    isVisible() {
         return this.jq.hasClass('ui-sidebar-active');
-    },
+    }
 
     /**
      * Callback function that is invoked when this sidebar is hidden.
@@ -172,51 +172,51 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
      * @param {JQuery.TriggeredEvent} event Currently unused.
      * @param {unknown} ui Currently unused.
      */
-    onHide: function(event, ui) {
+    onHide(event, ui) {
         this.callBehavior('close');
 
         if(this.cfg.onHide) {
             this.cfg.onHide.call(this, event, ui);
         }
-    },
+    }
 
     /**
      * Hides this sidebar if it is visible or brings it up if it is hidden.
      */
-    toggle: function() {
+    toggle() {
         if(this.isVisible())
             this.hide();
         else
             this.show();
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      */
-    enableModality: function() {
-        this._super();
+    enableModality() {
+        super.enableModality();
 
         var $this = this;
         this.modalOverlay.one('click.sidebar', function() {
             $this.hide();
         });
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      * @return {JQuery}
      */
-    getModalTabbables: function(){
+    getModalTabbables(){
         return this.jq.find(':tabbable');
-    },
+    }
 
     /**
      * Sets all ARIA attributes on the elements and the icons.
      * @private
      */
-    applyARIA: function() {
+    applyARIA() {
         this.jq.attr({
             'role': 'dialog'
             ,'aria-hidden': !this.cfg.visible
@@ -226,13 +226,13 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
         if(this.cfg.showCloseIcon) {
             PrimeFaces.skinCloseAction(this.closeIcon);
         }
-    },
+    }
 
     /**
      * Loads the contents of this sidebar panel dynamically via AJAX, if dynamic loading is enabled.
      * @private
      */
-    loadContents: function() {
+    loadContents() {
         var $this = this,
         options = {
             source: this.id,
@@ -266,4 +266,4 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
         }
     }
 
-});
+}

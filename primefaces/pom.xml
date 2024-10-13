@@ -488,7 +488,7 @@
                     <useDataUri>false</useDataUri>
                     <failOnWarning>true</failOnWarning>
                     <imagesDir>${project.build.directory}/classes/META-INF/resources</imagesDir>
-                    <languageIn>ECMASCRIPT_2020</languageIn>
+                    <languageIn>UNSTABLE</languageIn>
                     <languageOut>ECMASCRIPT5</languageOut>
                     <resourcesSets>
                         <resourcesSet>

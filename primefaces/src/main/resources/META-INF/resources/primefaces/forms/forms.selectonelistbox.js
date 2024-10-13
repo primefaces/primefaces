@@ -14,15 +14,15 @@
  * 
  * @prop {boolean} cfg.disabled Whether this widget is currently disabled.
  */
-PrimeFaces.widget.SelectOneListbox = PrimeFaces.widget.SelectListbox.extend({
+PrimeFaces.widget.SelectOneListbox = class SelectOneListbox extends PrimeFaces.widget.SelectListbox {
 
     /**
      * @override
      * @protected
      * @inheritdoc
      */
-    bindEvents: function () {
-        this._super();
+    bindEvents() {
+        super.bindEvents();
         var $this = this;
 
         if (!this.cfg.disabled) {
@@ -53,13 +53,13 @@ PrimeFaces.widget.SelectOneListbox = PrimeFaces.widget.SelectListbox.extend({
         }
 
         this.bindKeyEvents();
-    },
+    }
 
     /**
      * Sets up the event listeners for keyboard related events.
      * @private
      */
-    bindKeyEvents: function () {
+    bindKeyEvents() {
         var $this = this;
 
         this.input.off('focus.selectListbox blur.selectListbox keydown.selectListbox')
@@ -115,13 +115,13 @@ PrimeFaces.widget.SelectOneListbox = PrimeFaces.widget.SelectListbox.extend({
                 };
             });
 
-    },
+    }
 
     /**
      * Select the item.
      * @param {JQuery} item The item to focus.
      */
-    select: function (item) {
+    select(item) {
         if (!this.focusedItem.hasClass('ui-state-highlight')) {
             this.focusedItem.trigger('click.selectListbox');
         }
@@ -131,15 +131,15 @@ PrimeFaces.widget.SelectOneListbox = PrimeFaces.widget.SelectListbox.extend({
                 PrimeFaces.scrollInView(this.listContainer, item);
             }
         }
-    },
+    }
 
     /**
      * Removes the outline around the listbox with the select options.
      * @private
      */
-    removeOutline: function () {
+    removeOutline() {
         if (this.focusedItem && this.focusedItem.hasClass('ui-listbox-outline')) {
             this.focusedItem.removeClass('ui-listbox-outline');
         }
     }
-});
+}

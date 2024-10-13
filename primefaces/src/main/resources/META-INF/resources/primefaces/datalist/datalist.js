@@ -19,15 +19,15 @@
  * @prop {Partial<PrimeFaces.widget.PaginatorCfg>} cfg.paginator When pagination is enabled: The paginator configuration
  * for the paginator.
  */
-PrimeFaces.widget.DataList = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.DataList = class DataList extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         this.cfg.formId = this.jq.parents('form:first').attr('id');
         this.content = $(this.jqId + '_content');
@@ -35,13 +35,13 @@ PrimeFaces.widget.DataList = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.paginator) {
             this.setupPaginator();
         }
-    },
+    }
 
     /**
      * Initializes the paginator, called during widget initialization.
      * @private
      */
-    setupPaginator: function() {
+    setupPaginator() {
         var $this = this;
         this.cfg.paginator.paginate = function(newState) {
             $this.handlePagination(newState);
@@ -49,14 +49,14 @@ PrimeFaces.widget.DataList = PrimeFaces.widget.BaseWidget.extend({
 
         this.paginator = new PrimeFaces.widget.Paginator(this.cfg.paginator);
         this.paginator.bindSwipeEvents(this.jq, this.cfg);
-    },
+    }
 
     /**
      * Handles a pagination event by updating the data grid and invoking the appropriate behaviors.
      * @private
      * @param {PrimeFaces.widget.Paginator.PaginationState} newState The new pagination state to apply. 
      */
-    handlePagination: function(newState) {
+    handlePagination(newState) {
         var $this = this,
         options = {
             source: this.id,
@@ -91,7 +91,7 @@ PrimeFaces.widget.DataList = PrimeFaces.widget.BaseWidget.extend({
         else {
             PrimeFaces.ajax.Request.handle(options);
         }
-    },
+    }
 
     /**
      * Retrieves the paginator widget used by this data grid for pagination. You can use this widget to switch to a
@@ -99,8 +99,8 @@ PrimeFaces.widget.DataList = PrimeFaces.widget.BaseWidget.extend({
      * @return {PrimeFaces.widget.Paginator | undefined} The paginator widget, or `undefined` when pagination is not
      * enabled.
      */
-    getPaginator: function() {
+    getPaginator() {
         return this.paginator;
     }
 
-});
+}

@@ -14,15 +14,15 @@
  * @prop {string} cfg.counter ID of the label component to display remaining and entered characters.
  * @prop {string} cfg.counterTemplate Template text to display in counter, default value is `{0}`.
  */
-PrimeFaces.widget.InputText = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.InputText = class InputText extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         PrimeFaces.skinInput(this.jq);
 
@@ -39,28 +39,28 @@ PrimeFaces.widget.InputText = PrimeFaces.widget.BaseWidget.extend({
                 });
             }
         }
-    },
+    }
 
     /**
      * Disables this input so that the user cannot enter a value anymore.
      */
-    disable: function() {
+    disable() {
         PrimeFaces.utils.disableInputWidget(this.jq);
-    },
+    }
 
     /**
      * Enables this input so that the user can enter a value.
      */
-    enable: function() {
+    enable() {
         PrimeFaces.utils.enableInputWidget(this.jq);
-    },
+    }
 
     /**
      * Updates the counter value that keeps count of how many more characters the user can enter before they reach the
      * limit.
      * @private
      */
-    updateCounter: function() {
+    updateCounter() {
         var value = this.normalizeNewlines(this.jq.val()),
         length = this.cfg.countBytesAsChars ? PrimeFaces.utils.countBytes(value) : value.length;
 
@@ -77,7 +77,7 @@ PrimeFaces.widget.InputText = PrimeFaces.widget.BaseWidget.extend({
 
             this.counter.text(counterText);
         }
-    },
+    }
 
     /**
      * Replaces all line breaks with a Window-style line break (carriage return + line feed).
@@ -85,7 +85,7 @@ PrimeFaces.widget.InputText = PrimeFaces.widget.BaseWidget.extend({
      * @param {string} text Text to normalize.
      * @return {string} The given text, with all line breaks replaced with carriage return + line feed.
      */
-    normalizeNewlines: function(text) {
+    normalizeNewlines(text) {
         return text.replace(/(\r\n|\r|\n)/g, '\r\n');
     }
-});
+}

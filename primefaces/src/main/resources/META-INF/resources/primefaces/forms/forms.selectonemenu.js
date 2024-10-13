@@ -86,15 +86,15 @@
  * @prop {boolean} cfg.syncTooltip Updates the title of the component with the description of the selected item.
  * @prop {boolean} cfg.renderPanelContentOnClient Renders panel content on client.
  */
-PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
+PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.DeferredWidget {
 
 	/**
 	 * @override
 	 * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
 	 */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         this.panelId = this.jqId + '_panel';
         this.input = $(this.jqId + '_input');
@@ -174,13 +174,13 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         this.renderDeferred();
-    },
+    }
 
     /**
      * Finds and initializes the DOM elements that make up this widget.
      * @private
      */
-    initContents: function() {
+    initContents() {
         this.itemsContainer = this.itemsWrapper.children('.ui-selectonemenu-items');
         this.items = this.itemsContainer.find('.ui-selectonemenu-item');
         this.optGroupsSize = this.itemsContainer.find('li.ui-selectonemenu-item-group').length;
@@ -228,7 +228,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             .attr('aria-disabled', this.disabled);
 
         this.itemsContainer.attr('aria-activedescendant', highlightedItemId);
-    },
+    }
 
     /**
      * @include
@@ -236,7 +236,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * @protected
      * @inheritdoc
      */
-    _render: function() {
+    _render() {
         if (this.cfg.autoWidth != 'false') {
             var contentStyle = this.jq.attr('style');
             var hasWidth = contentStyle && contentStyle.indexOf('width') != -1;
@@ -256,25 +256,25 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 }
             }
         }
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    refresh: function(cfg) {
+    refresh(cfg) {
         this.panelWidthAdjusted = false;
         this.items = null;
 
-        this._super(cfg);
-    },
+        super.refresh(cfg);
+    }
 
     /**
      * Adjust the width of the overlay panel.
      * @private
      */
-    alignPanelWidth: function() {
+    alignPanelWidth() {
         //align panel and container
         if(!this.panelWidthAdjusted) {
             var jqWidth = this.jq.outerWidth();
@@ -287,22 +287,22 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
             this.panelWidthAdjusted = true;
         }
-    },
+    }
 
     /**
      * Handles floating label CSS if wrapped in a floating label.
      * @private
      * @param {JQuery | undefined} input the input
      */
-    updateFloatLabel: function(input) {
+    updateFloatLabel(input) {
         PrimeFaces.utils.updateFloatLabel(this.jq, input, this.hasFloatLabel);
-    },
+    }
 
     /**
      * Sets up all event listeners required by this widget.
      * @private
      */
-    bindEvents: function() {
+    bindEvents() {
         var $this = this;
 
         //Triggers
@@ -391,13 +391,13 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
             this.bindFilterEvents();
         }
-    },
+    }
     
     /**
      * Sets up the event listeners if this is bound to a floating label.
      * @private
      */
-    bindFloatLabel: function() {
+    bindFloatLabel() {
         if (!this.hasFloatLabel) {
             return;
         }
@@ -421,13 +421,13 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 $this.updateFloatLabel($(this));
             });
         }
-    },
+    }
 
     /**
      * Sets up the event listeners for the selectable items.
      * @private
      */
-    bindItemEvents: function() {
+    bindItemEvents() {
         var $this = this;
         if(!this.items) {
             return;
@@ -448,13 +448,13 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             $this.selectItem($(this));
             $this.changeAriaValue($(this));
         });
-    },
+    }
 
     /**
      * Sets up all panel event listeners
      * @private
      */
-    bindPanelEvents: function() {
+    bindPanelEvents() {
         var $this = this;
 
         this.hideOverlayHandler = PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', this.panel,
@@ -477,7 +477,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         this.scrollHandler = PrimeFaces.utils.registerConnectedOverlayScrollHandler(this, 'scroll.' + this.id + '_hide', this.jq, function() {
             $this.handleViewportChange();
         });
-    },
+    }
 
     /**
      * Fired when the browser viewport is resized or scrolled.  In Mobile environment we don't want to hider the overlay
@@ -485,19 +485,19 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * resize immediately and close the overlay. See GitHub #7075.
      * @private
      */
-    handleViewportChange: function() {
+    handleViewportChange() {
         if (PrimeFaces.env.mobile || PrimeFaces.hideOverlaysOnViewportChange === false) {
             this.alignPanel();
         } else {
             this.hide();
         }
-    },
+    }
 
     /**
      * Unbind all panel event listeners
      * @private
      */
-    unbindPanelEvents: function() {
+    unbindPanelEvents() {
         if (this.hideOverlayHandler) {
             this.hideOverlayHandler.unbind();
         }
@@ -509,13 +509,13 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         if (this.scrollHandler) {
             this.scrollHandler.unbind();
         }
-    },
+    }
 
     /**
      * Removes some event listeners when this widget was disabled.
      * @private
      */
-    unbindEvents: function() {
+    unbindEvents() {
         if (this.items) {
             this.items.off();
         }
@@ -528,12 +528,12 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         if (this.labeledBy) {
             this.labeledBy.off();
         }
-    },
+    }
 
     /**
      * Unselect the selected item, if any, and select the `please select` option.
      */
-    revert: function() {
+    revert() {
         if(this.cfg.editable && this.customInput) {
             this.setLabel(this.customInputVal);
             this.items.filter('.ui-state-active').removeClass('ui-state-active');
@@ -542,14 +542,14 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         else {
             this.highlightItem(this.selectItemFromOption(this.preShowValue));
         }
-    },
+    }
 
     /**
      * Highlight the given selectable option.
      * @private
      * @param {JQuery} item Option to highlight.
      */
-    highlightItem: function(item) {
+    highlightItem(item) {
         this.items.attr('aria-selected', false);
         this.items.filter('.ui-state-highlight').removeClass('ui-state-highlight');
 
@@ -558,14 +558,14 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             item.attr('aria-selected', true);
             this.setLabel(item.data('label'));
         }
-    },
+    }
 
     /**
      * Triggers the event listeners when the value of this widget changed.
      * @private
      * @param {boolean} edited Whether the value was edited by the user. If it was, checks which option is now selected.
      */
-    triggerChange: function(edited) {
+    triggerChange(edited) {
         this.changed = false;
 
         this.input.trigger('change');
@@ -573,7 +573,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         if(!edited) {
             this.value = this.options.filter(':selected').val();
         }
-    },
+    }
 
     /**
      * Callback for when the user selects an item with the mouse.
@@ -581,7 +581,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * @param {JQuery} item The option to select.
      * @param {boolean} [silent] `true` to suppress triggering event listeners, or `false` otherwise.
      */
-    selectItem: function(item, silent) {
+    selectItem(item, silent) {
         var selectedOption = this.selectOptionFromItem(item),
         currentOption = this.options.filter(':selected'),
         sameOption = selectedOption.val() == currentOption.val(),
@@ -621,27 +621,27 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         if(this.panel.is(':visible')) {
             this.hide();
         }
-    },
+    }
 
     /**
      * Adjust the value of the title attribute to match selected option.
      * @private
      * @param {JQuery} option The option that was selected.
      */
-    syncTitle: function(option) {
+    syncTitle(option) {
         var optionTitle = this.selectItemFromOption(option).attr('title');
         if(optionTitle)
             this.jq.attr('title', optionTitle);
         else
             this.jq.removeAttr('title');
-    },
+    }
 
     /**
      * Sets up the event listeners for all keyboard related events other than the overlay panel, such as pressing space
      * to bring up the overlay panel.
      * @private
      */
-    bindKeyEvents: function() {
+    bindKeyEvents() {
         var $this = this;
 
         this.keyboardTarget.on('keydown.ui-selectonemenu', function(e) {
@@ -754,7 +754,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 }
             }, 1000);
         });
-    },
+    }
 
     /**
      * Finds all options that match the given search string.
@@ -762,7 +762,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * @param {string} text The search string against which to match the options.
      * @return {JQuery} All selectable options that match (contain) the given search string.
      */
-    matchOptions: function(text) {
+    matchOptions(text) {
         if(!text) {
             return false;
         }
@@ -773,13 +773,13 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             }
             return true;
         });
-    },
+    }
 
     /**
      * Sets up the event listeners for the filter input in the overlay panel.
      * @private
      */
-    bindFilterEvents: function() {
+    bindFilterEvents() {
         var $this = this;
 
         this.filterInput.on('keyup.ui-selectonemenu', function(e) {
@@ -826,14 +826,14 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 $this.filter($this.filterInput.val());
             });
 		});
-    },
+    }
 
     /**
      * Highlights the next option after the currently highlighted option in the overlay panel.
      * @private
      * @param {JQuery.TriggeredEvent} event The event of the keypress.
      */
-    highlightNext: function(event) {
+    highlightNext(event) {
         // Get the currently active item
         var activeItem = this.getActiveItem();
         
@@ -869,14 +869,14 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         event.preventDefault();
-    },
+    }
 
     /**
      * Highlights the previous option before the currently highlighted option in the overlay panel.
      * @private
      * @param {JQuery.TriggeredEvent} event The event of the keypress.
      */
-    highlightPrev: function(event) {
+    highlightPrev(event) {
         // Get the currently active item
         var activeItem = this.getActiveItem();
         
@@ -910,14 +910,14 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         event.preventDefault();
-    },
+    }
 
     /**
      * Callback for when the enter key was pressed. Brings up the overlay panel or accepts the highlighted option.
      * @private
      * @param {JQuery.TriggeredEvent} event The event of the keypress.
      */
-    handleEnterKey: function(event) {
+    handleEnterKey(event) {
         if(this.panel.is(':visible')) {
             this.selectItem(this.getActiveItem());
             // #8308 prevent Default Command while panel is open
@@ -925,14 +925,14 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         event.preventDefault();
-    },
+    }
 
     /**
      * Callback for when the space key was pressed. Brings up or hides the overlay panel.
      * @private
      * @param {JQuery.TriggeredEvent} event The event of the keypress.
      */
-    handleSpaceKey: function(event) {
+    handleSpaceKey(event) {
         var target = $(event.target);
 
         if(target.is('input') && target.hasClass('ui-selectonemenu-filter')) {
@@ -950,58 +950,58 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         event.preventDefault();
-    },
+    }
 
     /**
      * Callback for when the escape key was pressed. Hides the overlay panel.
      * @private
      * @param {JQuery.TriggeredEvent} event The event of the keypress.
      */
-    handleEscapeKey: function(event) {
+    handleEscapeKey(event) {
         if(this.panel.is(':visible')) {
             this.revert();
             this.hide();
             event.preventDefault();
         }
-    },
+    }
 
     /**
      * Callback for when the tab key was pressed. Selects the next option.
      * @private
      * @param {JQuery.TriggeredEvent} event The keyboard event for the TAB.
      */
-    handleTabKey: function(event) {
+    handleTabKey(event) {
         this.isTabbing = this.panel.is(':visible');
         if(this.isTabbing) {
             this.selectItem(this.getActiveItem());
         }
-    },
+    }
 
     /**
      * Callback that adjusts the label, invoked when the selected option has changed.
      * @private
      * @param {JQuery.TriggeredEvent} event The event that triggered the change.
      */
-    handleLabelChange: function(event) {
+    handleLabelChange(event) {
         this.customInput = true;
         this.customInputVal = $(event.target).val();
         this.items.filter('.ui-state-active').removeClass('ui-state-active');
         this.items.eq(0).addClass('ui-state-active');
-    },
+    }
 
     /**
      * Brings up the overlay panel with the available selectable options.
      */
-    show: function() {
+    show() {
         this.callHandleMethod(this._show, null);
-    },
+    }
 
     /**
      * Brings up the overlay panel with the available selectable options. Compared this `show`, this does not ensure
      * the the overlay panel is loaded already (when dynamic loading is enabled).
      * @private
      */
-    _show: function() {
+    _show() {
         var $this = this;
 
         if (this.transition) {
@@ -1025,12 +1025,12 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 }
             });
         }
-    },
+    }
 
     /**
      * Hides the overlay panel with the available selectable options.
      */
-    hide: function() {
+    hide() {
         if (this.panel.is(':visible') && this.transition) {
             var $this = this;
             this.searchValue = '';
@@ -1054,20 +1054,20 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 }
             });
         }
-    },
+    }
 
     /**
      * Puts focus on this widget.
      */
-    focus: function() {
+    focus() {
         this.keyboardTarget.trigger('focus');
-    },
+    }
 
     /**
      * Puts focus on the filter input in the overlay panel.
      * @param {number} [timeout] Amount of time in milliseconds to wait before attempting to focus the input.
      */
-    focusFilter: function(timeout) {
+    focusFilter(timeout) {
         if(timeout) {
             var $this = this;
             PrimeFaces.queueTask(function() {
@@ -1077,22 +1077,22 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         else {
             this.filterInput.trigger('focus');
         }
-    },
+    }
 
     /**
      * Removes focus from this widget.
      */
-    blur: function() {
+    blur() {
         this.keyboardTarget.trigger("blur");
         this.searchValue = '';
 
         this.callBehavior('blur');
-    },
+    }
 
     /**
      * Disables this widget so that the user cannot select any option.
      */
-    disable: function() {
+    disable() {
     	if (!this.disabled) {
 	        this.disabled = true;
 	        this.jq.addClass('ui-state-disabled');
@@ -1102,12 +1102,12 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 	        }
 	        this.unbindEvents();
     	}
-    },
+    }
 
     /**
      * Enables this widget so that the user can select an option.
      */
-    enable: function() {
+    enable() {
     	if (this.disabled) {
 	        this.disabled = false;
 	        this.jq.removeClass('ui-state-disabled');
@@ -1119,12 +1119,12 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             this.bindEvents();
             this.bindItemEvents();
     	}
-    },
+    }
 
     /**
      * Align the overlay panel with the available selectable options so that is is positioned next to the the button.
      */
-    alignPanel: function() {
+    alignPanel() {
         this.alignPanelWidth();
 
         if(this.panel.parent().is(this.jq)) {
@@ -1145,14 +1145,14 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 }
             });
         }
-    },
+    }
 
     /**
      * Sets the label text that indicates the currently selected item to the item with the given value.
      * @private
      * @param {string} value Value of the item that was selected.
      */
-    setLabel: function(value) {
+    setLabel(value) {
         var displayedLabel = this.getLabelToDisplay(value);
         var valueEmpty = value === '&nbsp;' || value === '\xa0';
         if (this.cfg.editable) {
@@ -1202,13 +1202,13 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 this.label.attr('aria-label', displayedLabel);
             }
         }
-    },
+    }
 
     /**
      * Selects the option with the given value.
      * @param {string} value Value of the option to select.
      */
-    selectValue: function(value) {
+    selectValue(value) {
         if(!this.items || this.items.length === 0) {
            this.callHandleMethod(null, null);
         }
@@ -1222,14 +1222,14 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             item = this.items.filter('[data-value="' + $.escapeSelector(value) + '"]');
         }
         this.selectItem(item, true);
-    },
+    }
 
     /**
      * Selects the item corresponding to the given option.
      * @param {JQuery} option The option element to select.
      * @return {JQuery} The selected item element.
      */
-    selectItemFromOption: function(option) {
+    selectItemFromOption(option) {
         var item;
         if (this.optGroupsSize === 0) {
             item = this.items.eq(option.index());
@@ -1238,14 +1238,14 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             item = this.items.filter('[data-value="' + $.escapeSelector(option.val()) + '"]');
         }
         return item;
-    },
+    }
 
     /**
      * Selects the option corresponding to the given item.
      * @param {JQuery} item The item element to select.
      * @return {JQuery} The selected option element.
      */
-    selectOptionFromItem: function(item) {
+    selectOptionFromItem(item) {
         var option;
         if (this.optGroupsSize === 0) {
             option = this.options.eq(item.index());
@@ -1254,13 +1254,13 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             option = this.options.filter('[value="' + $.escapeSelector(item.attr('data-value')) + '"]');
         }
         return option;
-    },
+    }
 
     /**
      * Resets the input.
      * @param {boolean} [silent] `true` to suppress triggering event listeners, or `false` otherwise.
      */
-    resetValue: function(silent) {
+    resetValue(silent) {
         if(!this.items || this.items.length === 0) {
            this.callHandleMethod(null, null);
         }
@@ -1271,21 +1271,21 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             option = this.options.eq(0);
         }
         this.selectItem(this.selectItemFromOption(option), silent);
-    },
+    }
 
     /**
      * Finds the element for the currently select option of this select one menu.
      * @return {JQuery} The DOM element that represents the currently selected option.
      */
-    getActiveItem: function() {
+    getActiveItem() {
         return this.items.filter('.ui-state-highlight');
-    },
+    }
 
     /**
      * Finds and stores the filter function which is to be used for filtering the options of this select one menu.
      * @private
      */
-    setupFilterMatcher: function() {
+    setupFilterMatcher() {
         this.cfg.filterMatchMode = this.cfg.filterMatchMode||'startsWith';
         this.filterMatchers = {
             'startsWith': this.startsWithFilter
@@ -1295,7 +1295,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         this.filterMatcher = this.filterMatchers[this.cfg.filterMatchMode];
-    },
+    }
 
     /**
      * Implementation of a `PrimeFaces.widget.SelectOneMenu.FilterFunction` that matches the given option when it starts
@@ -1304,9 +1304,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * @param {string} filter Value of the filter.
      * @return {boolean} `true` when the text of the options starts with the filter value, or `false` otherwise.
      */
-    startsWithFilter: function(value, filter) {
+    startsWithFilter(value, filter) {
         return value.indexOf(filter) === 0;
-    },
+    }
 
     /**
      * Implementation of a `PrimeFaces.widget.SelectOneMenu.FilterFunction` that matches the given option when it
@@ -1315,9 +1315,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * @param {string} filter Value of the filter.
      * @return {boolean} `true` when the text of the contains the filter value, or `false` otherwise.
      */
-    containsFilter: function(value, filter) {
+    containsFilter(value, filter) {
         return value.indexOf(filter) !== -1;
-    },
+    }
 
     /**
      * Implementation of a `PrimeFaces.widget.SelectOneMenu.FilterFunction` that matches the given option when it ends
@@ -1326,16 +1326,16 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * @param {string} filter Value of the filter.
      * @return {boolean} `true` when the text of the options ends with the filter value, or `false` otherwise.
      */
-    endsWithFilter: function(value, filter) {
+    endsWithFilter(value, filter) {
         return value.indexOf(filter, value.length - filter.length) !== -1;
-    },
+    }
 
     /**
      * Filters the available options in the overlay panel by the given search value. Note that this does not bring up
      * the overlay panel, use `show` for that.
      * @param {string} value A value against which the available options are matched.
      */
-    filter: function(value) {
+    filter(value) {
         this.cfg.initialHeight = this.cfg.initialHeight||this.itemsWrapper.height();
         var lowercase = !this.cfg.caseSensitive,
                 normalize = this.cfg.filterNormalize,
@@ -1413,23 +1413,23 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         this.alignPanel();
-    },
+    }
 
     /**
      * Finds the value of the currently selected item, if any.
      * @return {string} The value of the currently selected item. Empty string if none is selected.
      */
-    getSelectedValue: function() {
+    getSelectedValue() {
         return this.input.val();
-    },
+    }
 
     /**
      * Finds the label of the currently selected item, if any.
      * @return {string} The label of the currently selected item. Empty string if none is selected.
      */
-    getSelectedLabel: function() {
+    getSelectedLabel() {
         return this.options.filter(':selected').text();
-    },
+    }
 
     /**
      * Finds the label of the option with the given value.
@@ -1437,30 +1437,30 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * @param {string} value The value of a selectable option.
      * @return {string} The label of the option with the given value.
      */
-    getLabelToDisplay: function(value) {
+    getLabelToDisplay(value) {
         if(this.cfg.labelTemplate && value !== '&nbsp;') {
             return this.cfg.labelTemplate.replace('{0}', value);
         }
         return String(value);
-    },
+    }
 
     /**
      * Adjusts the value of the aria attributes for the given selectable option.
      * @private
      * @param {JQuery} item An option for which to set the aria attributes.
      */
-    changeAriaValue: function (item) {
+    changeAriaValue(item) {
         var itemId = item.attr('id');
 
         this.keyboardTarget.attr('aria-activedescendant', itemId);
         this.itemsContainer.attr('aria-activedescendant', itemId);
-    },
+    }
 
     /**
      * Loads the overlay panel with the selectable options, if dynamic mode is enabled.
      * @private
      */
-    dynamicPanelLoad: function() {
+    dynamicPanelLoad() {
         var $this = this;
         $this.setQuerying(true);
         
@@ -1501,7 +1501,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         PrimeFaces.ajax.Request.handle(options);
-    },
+    }
 
     /**
      * Invokes the given method after making sure that the overlay panel was loaded (in case dynamic mode is enabled).
@@ -1510,7 +1510,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * invoke after the dynamic overlay panel was loaded.
      * @param {JQuery.TriggeredEvent} event An event that is passed to the callback.
      */
-    callHandleMethod: function(handleMethod, event) {
+    callHandleMethod(handleMethod, event) {
         var $this = this;
         if(this.cfg.dynamic && !this.isDynamicLoaded) {
             this.dynamicPanelLoad();
@@ -1532,14 +1532,14 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 handleMethod.call(this, event);
             }
         }
-    },
+    }
 
     /**
      * Sets the querying state.
      * @param {boolean} state Querying state to set.
      * @private
      */
-    setQuerying: function(state) {
+    setQuerying(state) {
         if (state && !this.querying) {
             this.jq.addClass('ui-state-loading');
             this.menuIcon.prepend('<span class="ui-icon-loading pi pi-spin pi-spinner"></span>');
@@ -1550,7 +1550,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             this.menuIcon.find('.ui-icon-loading').remove();
         }
         this.querying = state;
-    },
+    }
 
     /**
      * Renders panel content based on hidden select.
@@ -1558,7 +1558,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * @param {boolean} initContentsAndBindItemEvents `true` to call {@link initContents} and {@link bindItemEvents}
      * after rendering, `false` otherwise.
      */
-    renderPanelContentFromHiddenSelect: function(initContentsAndBindItemEvents) {
+    renderPanelContentFromHiddenSelect(initContentsAndBindItemEvents) {
          if (this.cfg.renderPanelContentOnClient && this.itemsWrapper.children().length === 0) {
              var panelContent = '<div id="' + this.id + '_items" class="ui-selectonemenu-items ui-widget-content ui-widget ui-corner-all ui-helper-reset" role="listbox">';
              panelContent += this.renderSelectItems(this.input);
@@ -1571,7 +1571,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                  this.bindItemEvents();
              }
          }
-    },
+    }
 
     /**
      * Renders panel HTML-code for all select items.
@@ -1580,7 +1580,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * @param {boolean} [isGrouped] Indicated whether the elements of the parent item should be marked as grouped.
      * @return {string} The rendered HTML string.
      */
-    renderSelectItems: function(parentItem, isGrouped) {
+    renderSelectItems(parentItem, isGrouped) {
         var $this = this;
         var content = "";
         isGrouped = isGrouped || false;
@@ -1601,7 +1601,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         }
         
         return content;
-    },
+    }
 
     /**
      * Renders panel HTML code for one select item (group).
@@ -1610,7 +1610,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * @param {boolean} [isGrouped] Indicates whether the item is part of a group.
      * @return {string} The rendered HTML string.
      */
-    renderSelectItem: function(item, isGrouped) {
+    renderSelectItem(item, isGrouped) {
         var $item = $(item);
         var isOptgroup = item.tagName === "OPTGROUP";
         var id = PrimeFaces.uuid();
@@ -1647,13 +1647,13 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         return content;
-    },
+    }
 
     /**
      * Updates the style class of the label that indicates the currently selected item.
      * @param {boolean} add `true` if a placeholder should be displayed, or `false` otherwise.
      */
-    updatePlaceholderClass: function(add) {
+    updatePlaceholderClass(add) {
         if (add) {
             this.label.addClass('ui-selectonemenu-label-placeholder');
         }
@@ -1662,4 +1662,4 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         }
     }
 
-});
+}

@@ -21,15 +21,15 @@
  * @prop {boolean} cfg.dynamic `true` to load the content via AJAX when the fieldset panel is opened, `false` to load
  * the content immediately.
  */
-PrimeFaces.widget.Fieldset = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Fieldset = class Fieldset extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         this.legend = this.jq.children('.ui-fieldset-legend');
 
@@ -69,24 +69,24 @@ PrimeFaces.widget.Fieldset = PrimeFaces.widget.BaseWidget.extend({
                 }
             });
         }
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    refresh: function(cfg) {
-        this._super(cfg);
+    refresh(cfg) {
+        super.refresh(cfg);
 
         this.loaded = false;
-    },
+    }
 
     /**
      * Toggles the content of this fieldset (collapsed or expanded).
      * @param {JQuery.TriggeredEvent} [e] Optional event that triggered the toggling.
      */
-    toggle: function(e) {
+    toggle(e) {
         var $this = this,
             collapsed = this.cfg.collapsed;
 
@@ -102,14 +102,14 @@ PrimeFaces.widget.Fieldset = PrimeFaces.widget.BaseWidget.extend({
         });
 
         PrimeFaces.invokeDeferredRenders(this.id);
-    },
+    }
 
     /**
      * Updates the visual toggler state and saves its state
      * @private
      * @param {boolean} collapsed If this fieldset is now collapsed or expanded.
      */
-    updateToggleState: function(collapsed) {
+    updateToggleState(collapsed) {
         if(collapsed) {
             this.toggler.removeClass('ui-icon-plusthick').addClass('ui-icon-minusthick');
         }
@@ -120,13 +120,13 @@ PrimeFaces.widget.Fieldset = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.collapsed = !collapsed;
 
         this.stateHolder.val(!collapsed);
-    },
+    }
 
     /**
      * Loads the contents of this fieldset panel dynamically via AJAX, if dynamic loading is enabled.
      * @private
      */
-    loadContents: function() {
+    loadContents() {
         var $this = this,
         options = {
             source: this.id,
@@ -155,4 +155,4 @@ PrimeFaces.widget.Fieldset = PrimeFaces.widget.BaseWidget.extend({
         PrimeFaces.ajax.Request.handle(options);
     }
 
-});
+}

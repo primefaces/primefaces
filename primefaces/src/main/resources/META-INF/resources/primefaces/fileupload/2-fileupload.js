@@ -109,21 +109,21 @@
  * ...)
  * @prop {string} cfg.resumeContextPath Server-side path which provides information to resume chunked file upload.
  */
-PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.FileUpload = class FileUpload extends PrimeFaces.widget.BaseWidget {
 
     /**
      * Regular expression that matches image files for which a preview can be shown.
      * @type {RegExp}
      */
-    IMAGE_TYPES: /([./])(gif|jpe?g|png)$/i,
+    static IMAGE_TYPES= /([./])(gif|jpe?g|png)$/i;
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
         if(this.cfg.disabled) {
             return;
         }
@@ -405,21 +405,21 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         };
 
         this.jq.fileupload(this.ucfg);
-    },
+    }
     
     /**
      * @override
      * @inheritdoc
      */
-    destroy: function() {
+    destroy() {
         try {
             this.jq.fileupload("destroy");
         } catch (err) {
             // this can throw file upload not initialized yet if an upload was never performed.
             PrimeFaces.debug("Could not destroy FileUpload: " + err);
         }
-        this._super();
-    },
+        super.destroy();
+    }
 
     /**
      * Adds a file selected by the user to this upload widget.
@@ -427,7 +427,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
      * @param {File} file A file to add.
      * @param {JQueryFileUpload.AddCallbackData} data The data from the selected file.
      */
-    addFileToRow: function(file, data) {
+    addFileToRow(file, data) {
         var $this = this,
             row = $('<div class="ui-fileupload-row"></div>')
                 .append('<div class="ui-fileupload-preview"></td>')
@@ -442,7 +442,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         }
 
         //preview
-        if(window.File && window.FileReader && $this.IMAGE_TYPES.test(file.name)) {
+        if(window.File && window.FileReader && FileUpload.IMAGE_TYPES.test(file.name)) {
             var imageCanvas = $('<canvas></canvas>')
                                     .appendTo(row.children('div.ui-fileupload-preview')),
             context = imageCanvas.get(0).getContext('2d'),
@@ -485,14 +485,14 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         }
 
         this.postSelectFile(data);
-    },
+    }
 
     /**
      * Called after a file was added to this upload widget. Takes care of the UI buttons.
      * @private
      * @param {JQueryFileUpload.AddCallbackData} data Data of the selected file.
      */
-    postSelectFile: function(data) {
+    postSelectFile(data) {
         if(this.files.length > 0) {
             this.enableButton(this.uploadButton);
             this.enableButton(this.cancelButton);
@@ -502,13 +502,13 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         if(this.fileAddIndex === (data.originalFiles.length)) {
             this.fileAddIndex = 0;
         }
-    },
+    }
 
     /**
      * Sets up all events listeners for this file upload widget.
      * @private
      */
-    bindEvents: function() {
+    bindEvents() {
         var $this = this;
 
         PrimeFaces.skinButton(this.buttonBar.children('button'));
@@ -664,13 +664,13 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                         $this.dropZone.removeClass('ui-state-drag');
                     });
         }
-    },
+    }
 
     /**
      * Uploads the selected files to the server.
      * @private
      */
-    upload: function() {
+    upload() {
         if(this.cfg.global) {
             $(document).trigger('pfAjaxStart');
         }
@@ -679,14 +679,14 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             file.ajaxRequest = file.row.data('filedata');
             file.ajaxRequest.submit();
         }
-    },
+    }
 
     /**
      * Creates the HTML post data for uploading the selected files.
      * @private
      * @return {PrimeFaces.ajax.RequestParameter} Parameters to post when upload the files.
      */
-    createPostData: function() {
+    createPostData() {
         var process = this.cfg.process
             ? this.id + ' ' + PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(this.jq, this.cfg.process).join(' ')
             : this.id;
@@ -705,7 +705,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         }
 
         return params;
-    },
+    }
 
 
     /**
@@ -715,27 +715,27 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
      * @param {File} file A file for which to create an identifier.
      * @return {string} An identifier for the given file.
      */
-    createXFileId: function(file) {
+    createXFileId(file) {
         return [file.name, file.lastModified, file.type, file.size].join();
-    },
+    }
 
     /**
      * Removes the given uploaded file from this upload widget.
      * @private
      * @param {PrimeFaces.widget.FileUpload.UploadFile[]} files Files to remove from this widget.
      */
-    removeFiles: function(files) {
+    removeFiles(files) {
         for (const file of files) {
             this.removeFile(file);
         }
-    },
+    }
 
     /**
      * Removes the given uploaded file from this upload widget.
      * @private
      * @param {PrimeFaces.widget.FileUpload.UploadFile} file File to remove from this widget.
      */
-    removeFile: function(file) {
+    removeFile(file) {
         var $this = this;
 
         this.files = $.grep(this.files, function(value) {
@@ -744,14 +744,14 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
         $this.removeFileRow(file.row);
         file.row = null;
-    },
+    }
 
     /**
      * Removes a row with an uploaded file form this upload widget.
      * @private
      * @param {JQuery} row Row of an uploaded file to remove.
      */
-    removeFileRow: function(row) {
+    removeFileRow(row) {
         if(row) {
             this.disableButton(row.find('> div:last-child').children('.ui-fileupload-cancel'));
 
@@ -759,12 +759,12 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                 $(this).remove();
             });
         }
-    },
+    }
 
     /**
      * Clears this file upload field, i.e. removes all uploaded files.
      */
-    clear: function() {
+    clear() {
         for (const file of this.files) {
             this.removeFileRow(file.row);
             file.row = null;
@@ -773,13 +773,13 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         this.clearMessages();
 
         this.files = [];
-    },
+    }
 
     /**
      * Displays the current error messages on this widget.
      * @private
      */
-    renderMessages: function() {
+    renderMessages() {
         var markup = '<div class="ui-messages ui-widget ui-helper-hidden ui-fileupload-messages"><div class="ui-messages-error ui-corner-all">' +
                 '<a class="ui-messages-close" href="#"><span class="ui-icon ui-icon-close"></span></a>' +
                 '<span class="ui-messages-error-icon"></span>' +
@@ -789,22 +789,22 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         this.messageContainer = $(markup).prependTo(this.content);
         this.messageList = this.messageContainer.find('> .ui-messages-error > ul');
         this.clearMessageLink = this.messageContainer.find('> .ui-messages-error > a.ui-messages-close');
-    },
+    }
 
     /**
      * Removes all error messages that are shown for this widget.
      */
-    clearMessages: function() {
+    clearMessages() {
         this.messageContainer.hide();
         this.messageList.children().remove();
-    },
+    }
 
     /**
      * Shows the given error message
      * @param {PrimeFaces.widget.FileUpload.UploadMessage} msg Error message to show.
      * @private
      */
-    showMessage: function(msg) {
+    showMessage(msg) {
         var summary = msg.summary,
         detail = '';
 
@@ -814,30 +814,30 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
         this.messageList.append('<li><span class="ui-messages-error-summary">' + PrimeFaces.escapeHTML(summary) + '</span><span class="ui-messages-error-detail">' + PrimeFaces.escapeHTML(detail) + '</span></li>');
         this.messageContainer.show();
-    },
+    }
 
     /**
      * Disabled the given file upload button.
      * @param {JQuery} btn Button to disabled.
      * @private
      */
-    disableButton: function(btn) {
+    disableButton(btn) {
         btn.prop('disabled', true).attr('aria-disabled', true).addClass('ui-state-disabled').removeClass('ui-state-hover ui-state-active ui-state-focus');
-    },
+    }
 
     /**
      * Enables the given file upload button.
      * @param {JQuery} btn Button to enable.
      * @private
      */
-    enableButton: function(btn) {
+    enableButton(btn) {
         btn.prop('disabled', false).attr('aria-disabled', false).removeClass('ui-state-disabled');
-    },
+    }
 
     /**
      * Brings up the native file selection dialog.
      */
-    show: function() {
+    show() {
         this.chooseButton.children('input').trigger('click');
     }
-});
+}

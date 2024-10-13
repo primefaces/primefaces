@@ -44,18 +44,18 @@
  * @prop {(google.maps.Rectangle & PrimeFaces.widget.GMap.IdProviding)[]} cfg.rectangles List of overlay rectangular
  * shapes added to this map.
  */
-PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
+PrimeFaces.widget.GMap = class GMap extends PrimeFaces.widget.DeferredWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         this.renderDeferred();
-    },
+    }
 
     /**
      * @include
@@ -63,7 +63,7 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
      * @protected
      * @inheritdoc
      */
-    _render: function() {
+    _render() {
         this.map = new google.maps.Map(document.getElementById(this.id), this.cfg);
         this.cfg.fitBounds = !(this.cfg.fitBounds === false);
         this.viewport = this.map.getBounds();
@@ -107,32 +107,32 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
                 _self.loadWindow(_self.cfg.infoWindowContent);
             });
         }
-    },
+    }
 
     /**
      * Returns the current google maps instance.
      * @return {google.maps.Map} The current map instance.
      */
-    getMap: function() {
+    getMap() {
         return this.map;
-    },
+    }
 
     /**
      * The info window that can be displayed to provide detailed information when a marker is selected.
      * @return {google.maps.InfoWindow | undefined} The current info window instance, if any exists.
      */
-    getInfoWindow: function() {
+    getInfoWindow() {
         return this.cfg.infoWindow;
-    },
+    }
 
     /**
      * Writes the given HTML content into the info window.
      * @private
      * @param {string} content HTML content for the info window. 
      */
-    loadWindow: function(content){
+    loadWindow(content){
         this.jq.find(PrimeFaces.escapeClientId(this.getInfoWindow().id + '_content')).html(content||'');
-    },
+    }
 
     /**
      * Loads the contents of the info window from the server and open the info window.
@@ -141,7 +141,7 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
      * info window. 
      * @return {boolean} `true` if the info window load was initiated successfully, or `false` otherwise.
      */
-    openWindow: function(responseXML) {
+    openWindow(responseXML) {
         var infoWindow = this.getInfoWindow();
         var $this = this;
 
@@ -156,13 +156,13 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
         });
 
         return true;
-    },
+    }
 
     /**
      * Adds and sets up all configured markers for the gmap.
      * @private
      */
-    configureMarkers: function() {
+    configureMarkers() {
         var _self = this;
 
         for(var i=0; i < this.cfg.markers.length; i++) {
@@ -186,7 +186,7 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
                 _self.fireMarkerDragEvent(event, this);
             });
         }
-    },
+    }
 
     /**
      * Calls the behavior for when a marker was dragged.
@@ -194,7 +194,7 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
      * @param {google.maps.MapMouseEvent | google.maps.IconMouseEvent} event Event that occurred.
      * @param {google.maps.MarkerOptions} marker The marker that was dragged.
      */
-    fireMarkerDragEvent: function(event, marker) {
+    fireMarkerDragEvent(event, marker) {
         if(this.hasBehavior('markerDrag')) {
             var ext = {
                 params: [
@@ -206,7 +206,7 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
 
             this.callBehavior('markerDrag', ext);
         }
-    },
+    }
 
     /**
      * Finds the geocode for the given address and calls the server-side `geocode` behavior, if such a behavior exists.
@@ -214,7 +214,7 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
      * behavior.
      * @param {string} address Address for which to find a geocode.
      */
-    geocode: function(address) {
+    geocode(address) {
         var $this = this;
 
         if(this.hasBehavior('geocode')) {
@@ -252,7 +252,7 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
             });
 
         }
-    },
+    }
 
     /**
      * Attempts to find an address for the given lattitude and longitude, and calls the `reverseGeocode` behavior with
@@ -261,7 +261,7 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
      * @param {number} lat Latitude to look up, specified in degrees within the range `[-90, 90]`.
      * @param {number} lng Longitude to look up, specified in degrees within the range `[-180, 180]`.
      */
-    reverseGeocode: function(lat, lng) {
+    reverseGeocode(lat, lng) {
         var $this = this;
 
         if(this.hasBehavior('reverseGeocode')) {
@@ -299,39 +299,39 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
            });
 
         }
-    },
+    }
 
     /**
      * Adds the overlay for a polyline shape.
      * @private
      */
-    configurePolylines: function() {
+    configurePolylines() {
         this.addOverlays(this.cfg.polylines);
-    },
+    }
 
     /**
      * Adds the overlay for a circle shape.
      * @private
      */
-    configureCircles: function() {
+    configureCircles() {
         this.addOverlays(this.cfg.circles);
-    },
+    }
 
     /**
      * Adds the overlay for a rectangular shape.
      * @private
      */
-    configureRectangles: function() {
+    configureRectangles() {
         this.addOverlays(this.cfg.rectangles);
-    },
+    }
 
     /**
      * Adds the overlay for a polygonal shape.
      * @private
      */
-    configurePolygons: function() {
+    configurePolygons() {
         this.addOverlays(this.cfg.polygons);
-    },
+    }
 
     /**
      * Triggers the behavior for when an overlay shape was selected.
@@ -340,7 +340,7 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
      * @param {PrimeFaces.widget.GMap.Overlay} overlay The shape that was selected.
      * @param {number} clickCount whether it was single or double click
      */
-    fireOverlaySelectEvent: function(event, overlay, clickCount) {
+    fireOverlaySelectEvent(event, overlay, clickCount) {
         this.selectedOverlay = overlay;
         
         var ext = {
@@ -355,13 +355,13 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
         if (clickCount === 2 && this.hasBehavior('overlayDblSelect')) {
             this.callBehavior('overlayDblSelect', ext);
         }
-    },
+    }
 
     /**
      * Adds some event listeners for click events and sets up some behaviors.
      * @private
      */
-    configureEventListeners: function() {
+    configureEventListeners() {
         var _self = this;
 
         this.cfg.formId = $(PrimeFaces.escapeClientId(this.id)).parents('form:first').attr('id');
@@ -376,13 +376,13 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
         //behaviors
         this.configureStateChangeListener();
         this.configurePointSelectListener();
-    },
+    }
 
     /**
      * Sets up the event listeners for when the state of this map has changed.
      * @private
      */
-    configureStateChangeListener: function() {
+    configureStateChangeListener() {
         var _self = this,
         onStateChange = function(event) {
             _self.fireStateChangeEvent(event);
@@ -390,14 +390,14 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
 
         google.maps.event.addListener(this.map, 'zoom_changed', onStateChange);
         google.maps.event.addListener(this.map, 'dragend', onStateChange);
-    },
+    }
 
     /**
      * Triggers the behavior for when the state of this map has changed.
      * @private
      * @param {never} event The event that triggered the state change.
      */
-    fireStateChangeEvent: function(event) {
+    fireStateChangeEvent(event) {
         if(this.hasBehavior('stateChange')) {
             var bounds = this.map.getBounds();
 
@@ -412,13 +412,13 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
 
             this.callBehavior('stateChange', ext);
         }
-    },
+    }
 
     /**
      * Sets up the event listeners for when a point on the map was selected.
      * @private
      */
-    configurePointSelectListener: function() {
+    configurePointSelectListener() {
         var _self = this;
 
         google.maps.event.addListener(this.map, 'click', function(event) {
@@ -427,7 +427,7 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
         google.maps.event.addListener(this.map, 'dblclick', function(event) {
             _self.firePointSelectEvent(event, 2);
         });
-    },
+    }
 
     /**
      * Triggers the behavior for when a point on the map was selected.
@@ -435,7 +435,7 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
      * @param {google.maps.MapMouseEvent | google.maps.IconMouseEvent} event The event that triggered the point selection.
      * @param {number} clickCount whether it was single or double click
      */
-    firePointSelectEvent: function(event, clickCount) {
+    firePointSelectEvent(event, clickCount) {
         var ext = {
                 params: [
                     {name: this.id + '_pointLatLng', value: event.latLng.lat() + ',' + event.latLng.lng()}
@@ -448,22 +448,22 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
         if (clickCount === 2 && this.hasBehavior('pointDblSelect')) {
             this.callBehavior('pointDblSelect', ext);
         }
-    },
+    }
 
     /**
      * Adds an overlay shape (circle, polyline, or polygon) to this map.
      * @private
      * @param {PrimeFaces.widget.GMap.Overlay} overlay Overlay shape to add to this map.
      */
-    addOverlay: function(overlay) {
+    addOverlay(overlay) {
         overlay.setMap(this.map);
-    },
+    }
 
     /**
      * Adds all overlay shapes (circle, polyline, or polygon) to this map.
      * @param {PrimeFaces.widget.GMap.Overlay[]} overlays A list of overlay shapes to add to this map.
      */
-    addOverlays: function(overlays) {
+    addOverlays(overlays) {
         var _self = this;
 
         $.each(overlays, function(index, item){
@@ -480,14 +480,14 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
                 _self.fireOverlaySelectEvent(event, item, 2);
             });
         })
-    },
+    }
 
     /**
      * Adjusts (zooms out) the viewport of this map so that it fully shows the given shape.
      * @private
      * @param {PrimeFaces.widget.GMap.Overlay} overlay A shape for which to adjust the viewport.
      */
-    extendView: function(overlay){
+    extendView(overlay){
         if( this.cfg.fitBounds && overlay){
             var _self = this;
             this.viewport = this.viewport || new google.maps.LatLngBounds();
@@ -502,16 +502,16 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
                     _self.viewport.extend(item);
                 });
         }
-    },
+    }
 
     /**
      * Triggers a resize event and reapplies the current zoom level, redrawing the map. Useful when the browser viewport
      * was resized etc.
      */
-    checkResize: function() {
+    checkResize() {
         google.maps.event.trigger(this.map, 'resize');
         this.map.setZoom(this.map.getZoom());
-    },
+    }
 
     /**
      * Sets the map viewport to contain the given bounds.
@@ -521,7 +521,7 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
      * @param {google.maps.LatLngBounds | google.maps.LatLngBoundsLiteral} bounds The new bounds
      * @param {number | google.maps.Padding} [padding] Optional padding around the bounds. 
      */
-    fitBounds: function(bounds, padding) {
+    fitBounds(bounds, padding) {
         //remember the property set by PrimeFaces
         var original = this.map.fitBounds;
 
@@ -534,4 +534,4 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
         //restore PrimeFaces property
         this.map.fitBounds = original;
     }
-});
+}
