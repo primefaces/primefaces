@@ -129,10 +129,13 @@ PrimeFaces.widget.Droppable = PrimeFaces.widget.BaseWidget.extend({
                 var dropBehavior = $this.cfg.behaviors['drop'];
 
                 if (dropBehavior) {
+                    var rk = $(ui.draggable).parents().eq(1).attr("data-rk");
                     var ext = {
                         params: [
                             { name: $this.id + '_dragId', value: ui.draggable.attr('id') },
-                            { name: $this.id + '_dropId', value: $this.cfg.target }
+                            { name: $this.id + '_dropId', value: $this.cfg.target },
+                            {name: "droppedRowKey", value: rk}
+
                         ]
                     };
 
