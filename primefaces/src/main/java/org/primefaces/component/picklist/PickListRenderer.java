@@ -410,7 +410,7 @@ public class PickListRenderer extends InputRenderer {
 
     protected DualListModel getModelValueToRender(FacesContext context, PickList pickList) {
         Object submittedValue = pickList.getSubmittedValue();
-        if (submittedValue != null) {
+        if (submittedValue != null && submittedValue instanceof String[][]) {
             return (DualListModel) getConvertedValue(context, pickList, submittedValue);
         }
 
