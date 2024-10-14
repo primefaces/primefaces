@@ -46,6 +46,7 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         cellEditMode,
         cellSeparator,
         clientCache,
+        multiSelectWithoutCtrl,
         dataLocale,
         dir,
         disableContextMenuIfEmpty,
@@ -644,6 +645,14 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
 
     public void setDraggableRowsFunction(javax.el.MethodExpression draggableRowsFunction) {
         getStateHelper().put(PropertyKeys.draggableRowsFunction, draggableRowsFunction);
+    }
+
+    public Boolean isMultiSelectWithoutCtrl() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.multiSelectWithoutCtrl, false);
+    }
+
+    public void setMultiSelectWithoutCtrl(Boolean multiSelectWithoutCtrl) {
+        getStateHelper().put(PropertyKeys.multiSelectWithoutCtrl, multiSelectWithoutCtrl);
     }
 
     public String getOnRowClick() {

@@ -8439,6 +8439,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Enables multi selection without CTRL key.]]>
+            </description>
+            <name>multiSelectWithoutCtrl</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Reference to the selection data.]]>
             </description>
             <name>selection</name>
