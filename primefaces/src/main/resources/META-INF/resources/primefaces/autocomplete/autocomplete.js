@@ -274,6 +274,17 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             }
             $this.removeItem($(this).parent());
         });
+
+        // AASYS for "single mode with chips" setting permit only ONE chips
+        var attribute = this.input[0].attributes["swc"];
+        var isSingleModeWithChips = attribute != null && attribute.value == 'T';
+        if(isSingleModeWithChips && this.hinput[0].value.length > 0) {
+            var maxLength = document.createAttribute("maxlength")
+            maxLength.value = 0;
+            this.input[0].attributes.setNamedItem(maxLength);
+            this.cfg.active = false;
+        }
+        // AASYS
     },
 
     /**
@@ -559,8 +570,11 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         break;
 
                     case 'Backspace':
-                        if ($this.cfg.multiple && !$this.input.val().length) {
-
+                        // AASYS permit bakcspace in single mode with chips
+                        var attribute = this.attributes['swc'];
+                        var singleModeWithChip = attribute != null && attribute.value == 'T';
+                        if (($this.cfg.multiple && !$this.input.val().length) || singleModeWithChip) {
+                            // AASYS
                             if (e.metaKey || e.ctrlKey || e.shiftKey) {
                                 $this.removeAllItems();
                             } else {
@@ -764,6 +778,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
      * @param {string} query Keyword for the search.
      */
     showSuggestions: function(query) {
+        //AASYS hide suggestion when input is not focus
+        if(!this.input.is(':focus'))
+            return;
+        //AASYS
         this.items = this.panel.find('.ui-autocomplete-item');
         this.items.attr('role', 'option');
 
@@ -862,11 +880,12 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Initiates a search with given value, that is, look for matching options and present the options that were found
      * to the user.
+     * AASYS Disables searching empty string
      * @param {string} query Keyword for the search.
      */
     search: function(query) {
         //allow empty string but not undefined or null
-        if (!this.cfg.active || query === undefined || query === null) {
+        if (!this.cfg.active || query === undefined || query === null || (this.isSearchingDisabled(this, query))) {
             return;
         }
 
@@ -1008,6 +1027,11 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 PrimeFaces.ajax.Request.handle(options);
             }
         }
+    },
+
+    //AASYS - for pure autocomplete when user enter empty string (f.e. backspacing string) - do not search
+    isSearchingDisabled: function (autocomplete, c) {
+        return autocomplete.dropdown.length == 0 && c == "";
     },
 
     /**
