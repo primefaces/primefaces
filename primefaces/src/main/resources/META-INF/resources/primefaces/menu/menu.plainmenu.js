@@ -169,7 +169,7 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
 
         items.filter('.ui-submenu-child').hide();
 
-        if(stateful) {
+        if(stateful && this.collapsedIds.indexOf(header.attr('id')) === -1) {
             this.collapsedIds.push(header.attr('id'));
             this.saveState();
         }
