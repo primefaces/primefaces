@@ -88,7 +88,9 @@ public abstract class PickListBase extends UIInput implements Widget, ClientBeha
         transferOnDblclick,
         transferOnCheckboxClick,
         filterNormalize,
-        renderButtons
+        renderButtons,
+        renderSource,
+        renderTarget
     }
 
     public PickListBase() {
@@ -427,4 +429,19 @@ public abstract class PickListBase extends UIInput implements Widget, ClientBeha
     public void setFilterNormalize(boolean filterNormalize) {
         getStateHelper().put(PropertyKeys.filterNormalize, filterNormalize);
     }
+
+    public boolean isRenderSource() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.renderSource, true);
+    }
+    public void setRenderSource(boolean renderSource) {
+        getStateHelper().put(PropertyKeys.renderSource, renderSource);
+    }
+
+    public boolean isRenderTarget() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.renderTarget, true);
+    }
+    public void setRenderTarget(boolean renderTarget) {
+        getStateHelper().put(PropertyKeys.renderTarget, renderTarget);
+    }
+
 }

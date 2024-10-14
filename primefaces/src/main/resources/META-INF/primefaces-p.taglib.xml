@@ -19609,6 +19609,22 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[When false, source is not rendered. Default is true]]>
+            </description>
+            <name>renderSource</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[When false, target is not rendered. Default is true]]>
+            </description>
+            <name>renderTarget</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>

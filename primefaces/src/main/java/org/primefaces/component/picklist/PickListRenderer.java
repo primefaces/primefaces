@@ -98,8 +98,10 @@ public class PickListRenderer extends InputRenderer {
         }
 
         //Source List
-        encodeList(context, pickList, clientId + "_source", PickList.SOURCE_CLASS, model.getSource(),
-                pickList.getFacet("sourceCaption"), pickList.isShowSourceFilter(), true);
+        if (pickList.isRenderSource()) {
+            encodeList(context, pickList, clientId + "_source", PickList.SOURCE_CLASS, model.getSource(),
+                    pickList.getFacet("sourceCaption"), pickList.isShowSourceFilter(), true);
+        }
 
         if(pickList.isRenderButtons()) {
         //Buttons
@@ -124,8 +126,10 @@ public class PickListRenderer extends InputRenderer {
         }
 
         //Target List
-        encodeList(context, pickList, clientId + "_target", PickList.TARGET_CLASS, model.getTarget(),
-                pickList.getFacet("targetCaption"), pickList.isShowTargetFilter(), false);
+        if (pickList.isRenderTarget()) {
+            encodeList(context, pickList, clientId + "_target", PickList.TARGET_CLASS, model.getTarget(),
+                    pickList.getFacet("targetCaption"), pickList.isShowTargetFilter(), false);
+        }
 
         //Target List Reorder Buttons
         if (pickList.isShowTargetControls()) {
