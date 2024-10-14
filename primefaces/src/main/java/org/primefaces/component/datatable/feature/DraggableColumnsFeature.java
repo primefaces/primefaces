@@ -31,6 +31,7 @@ public class DraggableColumnsFeature implements DataTableFeature {
 
     @Override
     public void decode(FacesContext context, DataTable table) {
+        table.setRowIndex(-1);
         table.decodeColumnDisplayOrderState(context);
     }
 
