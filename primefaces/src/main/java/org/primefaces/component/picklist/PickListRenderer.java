@@ -101,6 +101,7 @@ public class PickListRenderer extends InputRenderer {
         encodeList(context, pickList, clientId + "_source", PickList.SOURCE_CLASS, model.getSource(),
                 pickList.getFacet("sourceCaption"), pickList.isShowSourceFilter(), true);
 
+        if(pickList.isRenderButtons()) {
         //Buttons
         writer.startElement("div", null);
         writer.writeAttribute("class", PickList.BUTTONS_CLASS, null);
@@ -120,6 +121,7 @@ public class PickListRenderer extends InputRenderer {
         }
         writer.endElement("div");
         writer.endElement("div");
+        }
 
         //Target List
         encodeList(context, pickList, clientId + "_target", PickList.TARGET_CLASS, model.getTarget(),
