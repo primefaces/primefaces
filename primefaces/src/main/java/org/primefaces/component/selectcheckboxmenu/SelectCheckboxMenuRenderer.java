@@ -690,6 +690,10 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
                 .attr("renderPanelContentOnClient", menu.getVar() == null,  false)
                 .attr("appendTo", SearchExpressionFacade.resolveClientId(context, menu, menu.getAppendTo(),
                         SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null);
+        // AASYS
+        wb.attr("emptyMultipleLabel", (String) menu.getAttributes().get("emptyMultipleLabel"), null)
+                .attr("fullMultipleLabel", (String) menu.getAttributes().get("fullMultipleLabel"), null);
+        // AASYS
 
         if (menu.isFilter()) {
             wb.attr("filter", true)

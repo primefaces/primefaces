@@ -724,6 +724,10 @@ button.ui-button::-moz-focus-inner {
     padding: 0em 2.1em 0em 0.5em;
 }
 
+.ui-selectcheckboxmenu-custom-token .ui-selectcheckboxmenu-token-label {
+    padding: 0em 0.5em 0em 0.5em !important;
+}
+
 .ui-selectcheckboxmenu-token-icon {
     margin-top: -9px;
     position: absolute;

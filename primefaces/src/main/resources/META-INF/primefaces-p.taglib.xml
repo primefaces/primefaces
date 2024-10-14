@@ -23619,6 +23619,16 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
+            <name>emptyMultipleLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>fullMultipleLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
             <description>
                 <![CDATA[Label to be shown in updateLabel mode when no item is selected. If not set the label is shown.]]>
             </description>
