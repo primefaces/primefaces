@@ -856,9 +856,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 }
                 this.changeAriaValue(next);
             }
+            event.preventDefault();
         }
 
-        event.preventDefault();
     },
 
     /**
