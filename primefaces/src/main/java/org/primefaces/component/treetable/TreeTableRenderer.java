@@ -118,6 +118,7 @@ public class TreeTableRenderer extends DataRenderer {
                 .attr("selectionMode", selectionMode, null)
                 .attr("resizableColumns", tt.isResizableColumns(), false)
                 .attr("liveResize", tt.isLiveResize(), false)
+                .attr("resizeMode", tt.isResizeMode(), false)
                 .attr("scrollable", tt.isScrollable(), false)
                 .attr("scrollHeight", tt.getScrollHeight(), null)
                 .attr("scrollWidth", tt.getScrollWidth(), null)

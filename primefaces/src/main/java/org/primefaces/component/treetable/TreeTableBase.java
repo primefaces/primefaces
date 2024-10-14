@@ -88,6 +88,7 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
         saveOnCellBlur,
         showGridlines,
         size,
+        resizeMode,
         exportTag,
         exportRowTag
     }
@@ -302,6 +303,14 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
 
     public void setPaginator(boolean paginator) {
         getStateHelper().put(PropertyKeys.paginator, paginator);
+    }
+
+    public Boolean isResizeMode() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.resizeMode, false);
+    }
+
+    public Boolean setResizeMode(boolean resizeMode) {
+        return (Boolean) getStateHelper().put(PropertyKeys.resizeMode, resizeMode);
     }
 
     @Override

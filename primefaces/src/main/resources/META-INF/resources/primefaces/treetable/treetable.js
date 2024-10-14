@@ -1836,7 +1836,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             this.resizerHelper = $('<div class="ui-column-resizer-helper ui-state-highlight"></div>').appendTo(this.jq);
         }
 
-        this.thead.find('> tr > th.ui-resizable-column:not(:last-child)').prepend('<span class="ui-column-resizer">&nbsp;</span>');
+        this.thead.find('> tr > th.ui-resizable-column').prepend('<span class="ui-column-resizer">&nbsp;</span>');
         var resizers = this.thead.find('> tr > th > span.ui-column-resizer'),
         $this = this;
 
@@ -1915,7 +1915,8 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             table = this.thead.parent(),
             change = null,
             newWidth = null,
-            nextColumnWidth = null;
+            nextColumnWidth = null,
+            expandMode = (this.cfg.resizeMode === 'expand');
 
         if(this.cfg.liveResize) {
             change = columnHeader.outerWidth() - (event.pageX - columnHeader.offset().left),
@@ -1927,15 +1928,40 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             newWidth = (columnHeader.width() + change),
             nextColumnWidth = (nextColumnHeader.width() - change);
         }
-
-        if(newWidth > 15 && nextColumnWidth > 15) {
-            columnHeader.width(newWidth);
-            nextColumnHeader.width(nextColumnWidth);
-            this.updateResizableState(columnHeader, nextColumnHeader, table, newWidth, nextColumnWidth);
-
+        var tableWidthChange = change > 0 ? -change : change;
+        if(newWidth > 15 && nextColumnWidth > 15 || (expandMode && newWidth > 15)) {
+            if (expandMode) {
+                table.width(table.width() + tableWidthChange);
+                setTimeout(function () {
+                    columnHeader.width(newWidth);
+                }, 1);
+            }
+            else {
+                columnHeader.width(newWidth);
+                nextColumnHeader.width(nextColumnWidth);
+                this.updateResizableState(columnHeader, nextColumnHeader, table, newWidth, nextColumnWidth);
+            }
             var colIndex = columnHeader.index();
 
             if(this.cfg.scrollable) {
+                var cloneTable = this.theadClone.parent(),
+                    colIndex = columnHeader.index();
+
+                if (expandMode) {
+                    var $this = this;
+
+                    //body
+                    cloneTable.width(cloneTable.width() + tableWidthChange);
+
+                    //footer
+                    this.footerTable.width(this.footerTable.width() + change);
+
+                    setTimeout(function () {
+                        $this.theadClone.find(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).width(newWidth);   //body
+                        $this.footerCols.eq(colIndex).width(newWidth);                                                          //footer
+                    }, 1);
+                }
+                else {
                 this.theadClone.find(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).width(newWidth);
                 this.theadClone.find(PrimeFaces.escapeClientId(nextColumnHeader.attr('id') + '_clone')).width(nextColumnWidth);
 
@@ -1946,6 +1972,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                     footerCol.width(newWidth);
                     nextFooterCol.width(nextColumnWidth);
                 }
+            }
             }
         }
     },
