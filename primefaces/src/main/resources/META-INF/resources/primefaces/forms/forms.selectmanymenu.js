@@ -45,6 +45,36 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
         var $this = this;
 
         if(!this.cfg.disabled) {
+            //aasys add select row on rightclick so context menu options work (they don't work unless row is selected)
+            this.items.on('contextmenu.selectListbox', function(e) {
+                var item = $(this),
+                    selectedItems = $this.items.filter('.ui-state-highlight'),
+                    metaKey = (e.metaKey||e.ctrlKey),
+                    unchanged = (!metaKey && selectedItems.length === 1 && selectedItems.index() === item.index());
+
+                if(!e.shiftKey) {
+                    if(!metaKey) {
+                        $this.unselectAll();
+                    }
+
+                    if(metaKey && item.hasClass('ui-state-highlight')) {
+                        $this.unselectItem(item);
+                    }
+                    else {
+                        $this.selectItem(item);
+                        $this.cursorItem = item;
+                    }
+                }
+
+                if(!unchanged) {
+                    $this.input.trigger('change');
+                }
+
+                $this.input.trigger('click');
+                PrimeFaces.clearSelection();
+                e.preventDefault();
+            });
+
             this.items.on('click.selectListbox', function(e) {
                 //stop propagation
                 if($this.checkboxClick) {
