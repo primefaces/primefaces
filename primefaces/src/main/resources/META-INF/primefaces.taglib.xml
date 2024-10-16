@@ -363,7 +363,7 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description>Client side callback execute before ajax request is begins.</description>
+            <description>Client side callback execute before ajax request begins.</description>
             <name>onstart</name>
             <required>false</required>
             <type>java.lang.String</type>
@@ -6553,7 +6553,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Client side callback to execute before ajax request is begins.]]>
+                <![CDATA[Client side callback to execute before ajax request begins.]]>
             </description>
             <name>onstart</name>
             <required>false</required>
@@ -7037,7 +7037,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Client side callback to execute before ajax request is begins.]]>
+                <![CDATA[Client side callback to execute before ajax request begins.]]>
             </description>
             <name>onstart</name>
             <required>false</required>
@@ -12305,7 +12305,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Javascript handler to execute before ajax request is begins.]]>
+                <![CDATA[Javascript handler to execute before ajax request begins.]]>
             </description>
             <name>onstart</name>
             <required>false</required>
@@ -17774,7 +17774,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Javascript handler to execute before ajax request is begins.]]>
+                <![CDATA[Javascript handler to execute before ajax request begins.]]>
             </description>
             <name>onstart</name>
             <required>false</required>
@@ -21156,7 +21156,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Javascript handler to execute before ajax request is begins.]]>
+                <![CDATA[Javascript handler to execute before ajax request begins.]]>
             </description>
             <name>onstart</name>
             <required>false</required>
@@ -21831,7 +21831,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Javascript handler to execute before ajax request is begins.]]>
+                <![CDATA[Javascript handler to execute before ajax request begins.]]>
             </description>
             <name>onstart</name>
             <required>false</required>
@@ -26841,7 +26841,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Client side callback to execute before ajax request is begins.]]>
+                <![CDATA[Client side callback to execute before ajax request begins.]]>
             </description>
             <name>onstart</name>
             <required>false</required>

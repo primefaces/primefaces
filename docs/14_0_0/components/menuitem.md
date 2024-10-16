@@ -32,7 +32,7 @@ async | false | Boolean | When set to true, ajax requests are not queued.
 process | @all | String | Components to process partially instead of whole view.
 update | @none | String | Components to update after ajax request.
 disabled | false | Boolean | Disables the menuitem.
-onstart | null | String | Javascript handler to execute before ajax request is begins.
+onstart | null | String | Javascript handler to execute before ajax request begins.
 oncomplete | null | String | Javascript handler to execute when ajax request is completed.
 onsuccess | null | String | Javascript handler to execute when ajax request succeeds.
 onerror | null | String | Javascript handler to execute when ajax request fails.
