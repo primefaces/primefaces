@@ -38,7 +38,7 @@ What does that mean?
 
 Version | JSF version | Java version | Binary | Source | Documentation
 ------------ | ------------- | ------------- | -------------  | ------------- | ------------- |
-![14.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=14&color=cyan)| ![JSF23](https://img.shields.io/badge/JSF-2.3-purple.svg) -  ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) | ![Java](https://img.shields.io/badge/Java%2011+-blue.svg) | [JAR](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/14.0.5/primefaces-14.0.5.jar)  | [Sources](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/14.0.5/primefaces-14.0.5-sources.jar)| [14.0.5 Documentation](https://primefaces.github.io/primefaces/14_0_0/#/)
+![14.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=14&color=cyan)| ![JSF23](https://img.shields.io/badge/JSF-2.3-purple.svg) -  ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) | ![Java](https://img.shields.io/badge/Java%2011+-blue.svg) | [JAR](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/14.0.6/primefaces-14.0.6.jar)  | [Sources](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/14.0.6/primefaces-14.0.6-sources.jar)| [14.0.6 Documentation](https://primefaces.github.io/primefaces/14_0_0/#/)
 ![13.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=13&color=cyan)| ![JSF20](https://img.shields.io/badge/JSF-2.0-yellow.svg) -  ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) |  ![Java](https://img.shields.io/badge/Java%208+-blue.svg) | [JAR](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/13.0.10/primefaces-13.0.10.jar)  | [Sources](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/13.0.10/primefaces-13.0.10-sources.jar) | [13.0.10 Documentation](https://primefaces.github.io/primefaces/13_0_0/#/)
 ![12.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=12&color=cyan)| ![JSF20](https://img.shields.io/badge/JSF-2.0-yellow.svg) -  ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) | ![Java](https://img.shields.io/badge/Java%208+-blue.svg) | [JAR](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/12.0.0/primefaces-12.0.0.jar)  | [Sources](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/12.0.0/primefaces-12.0.0-sources.jar) | [12.0.0 Documentation](https://primefaces.github.io/primefaces/12_0_0/#/)
 
@@ -73,14 +73,14 @@ For a full list of the available downloads, please visit the [download page](htt
   <dependency>
       <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
-      <version>14.0.5</version>
+      <version>14.0.6</version>
   </dependency>
 
   <!-- Jakarta EE / jakarta.* / Faces 4.0+  -->	
   <dependency>
       <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
-      <version>14.0.5</version>
+      <version>14.0.6</version>
       <classifier>jakarta</classifier>
   </dependency>
   ```
@@ -159,9 +159,9 @@ Visit the [contribution](./CONTRIBUTING.md) page for detailed information.
 
 ### Release Instructions
 ***
-- Run `mvn versions:set -DgenerateBackupPoms=false -DnewVersion=14.0.5` to update all modules versions
+- Run `mvn versions:set -DgenerateBackupPoms=false -DnewVersion=14.0.6` to update all modules versions
 - Commit and push the changes to GitHub
-- In GitHub create a new Release titled `14.0.5` to tag this release
+- In GitHub create a new Release titled `14.0.6` to tag this release
 - Run `mvn clean deploy -Prelease` to push to Maven Central
 - Rename Milestone in GitHub Issues and close it
 - Create a new Milestone
