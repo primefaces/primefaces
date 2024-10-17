@@ -1070,11 +1070,11 @@ if (!PrimeFaces.utils) {
             // stop all pollers and idle monitors
             for (var item in PrimeFaces.widgets) {
                 widget = PrimeFaces.widgets[item];
-                if (widget instanceof PrimeFaces.widget.Poll) {
+                if (PrimeFaces.widget.Poll && widget instanceof PrimeFaces.widget.Poll) {
                     PrimeFaces.warn("Stopping Poll");
                     widget.stop();
                 }
-                if (widget instanceof PrimeFaces.widget.IdleMonitor) {
+                if (PrimeFaces.widget.IdleMonitor && widget instanceof PrimeFaces.widget.IdleMonitor) {
                     PrimeFaces.warn("Stopping IdleMonitor");
                     widget.pause();
                 }
