@@ -747,9 +747,6 @@
                     }
                     var newWidget = new this.widget[widgetName](cfg);
                     this.widgets[widgetVar] = newWidget;
-                    if(this.settings.legacyWidgetNamespace) {
-                        window[widgetVar] = newWidget;
-                    }
                     if (cfg.postConstruct) {
                        cfg.postConstruct.call(newWidget, newWidget);
                     }

@@ -219,10 +219,6 @@ public class HeadRenderer extends Renderer {
         writer.write("PrimeFaces.settings.validateEmptyFields=" + applicationContext.getConfig().isValidateEmptyFields() + ";");
         writer.write("PrimeFaces.settings.considerEmptyStringNull=" + applicationContext.getConfig().isInterpretEmptyStringAsNull() + ";");
 
-        if (applicationContext.getConfig().isLegacyWidgetNamespace()) {
-            writer.write("PrimeFaces.settings.legacyWidgetNamespace=true;");
-        }
-
         if (applicationContext.getConfig().isEarlyPostParamEvaluation()) {
             writer.write("PrimeFaces.settings.earlyPostParamEvaluation=true;");
         }
