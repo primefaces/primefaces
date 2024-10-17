@@ -24,15 +24,15 @@
  * @prop {[number, number, number, number]} cfg.initialCoords Initial coordinates of the cropper area (x, y, width,
  * height).
  */
-PrimeFaces.widget.ImageCropper = PrimeFaces.widget.DeferredWidget.extend({
+PrimeFaces.widget.ImageCropper = class ImageCropper extends PrimeFaces.widget.DeferredWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init : function (cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
         this.image = $(PrimeFaces.escapeClientId(this.cfg.image));
         this.jqCoords = $(this.jqId + '_coords');
 
@@ -50,7 +50,7 @@ PrimeFaces.widget.ImageCropper = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         this.renderDeferred();
-    },
+    }
 
     /**
      * @include
@@ -58,7 +58,7 @@ PrimeFaces.widget.ImageCropper = PrimeFaces.widget.DeferredWidget.extend({
      * @inheritdoc
      * @protected
      */
-    _render : function () {
+    _render() {
         var $this = this;
 
         // initialize the cropper
@@ -83,27 +83,27 @@ PrimeFaces.widget.ImageCropper = PrimeFaces.widget.DeferredWidget.extend({
 
         // Get the Cropper.js instance after initialized
         this.cropper = this.image.data('cropper');
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      */
-    destroy: function() {
-        this._super();
+    destroy() {
+        super.destroy();
 
         // clean up memory
         if (this.cropper) {
             this.cropper.destroy();
         }
-    },
+    }
 
     /**
      * Callback for when a crop was performed.
      * @private
      * @param {JQueryCropper.CropEvent} event The crop event that occurred.
      */
-    onCrop : function (event) {
+    onCrop(event) {
         if (this.cropping) {
             return;
         }
@@ -131,41 +131,41 @@ PrimeFaces.widget.ImageCropper = PrimeFaces.widget.DeferredWidget.extend({
         var cropCoords = event.detail.x + "_" + event.detail.y + "_" + width + "_" + height;
         this.jqCoords.val(cropCoords);
         this.cropping = false;
-    },
+    }
 
     /**
      * Reset the image and crop box to their initial states.
      */
-    reset: function() {
+    reset() {
         if (this.cropper) {
             this.cropper.reset();
         }
-    },
+    }
 
     /**
      * Clears the crop box.
      */
-    clear: function() {
+    clear() {
         if (this.cropper) {
             this.cropper.clear();
         }
-    },
+    }
 
     /**
      * Enables (unfreezes) the cropper.
      */
-    enable: function() {
+    enable() {
         if (this.cropper) {
             this.cropper.enable();
         }
-    },
+    }
 
     /**
      * Disables (freezes) the cropper.
      */
-    disable: function() {
+    disable() {
         if (this.cropper) {
             this.cropper.disable();
         }
     }
-});
+}

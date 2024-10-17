@@ -1,67 +1,3 @@
-/* Simple JavaScript Inheritance
- * By John Resig http://ejohn.org/
- * MIT Licensed.
- */
-// Inspired by base2 and Prototype
-(function(){
-  var initializing = false, fnTest = /xyz/.test(function(){xyz;}) ? /\b_super\b/ : /.*/;
-  // The base Class implementation (does nothing)
-  this.Class = function(){};
-
-  // Create a new Class that inherits from this class
-  Class.extend = function(prop) {
-    var _super = this.prototype;
-
-    // Instantiate a base class (but only create the instance,
-    // don't run the init constructor)
-    initializing = true;
-    var prototype = new this();
-    initializing = false;
-
-    // Copy the properties over onto the new prototype
-    for (var name in prop) {
-      // Check if we're overwriting an existing function
-      prototype[name] = typeof prop[name] == "function" &&
-        typeof _super[name] == "function" && fnTest.test(prop[name]) ?
-        (function(name, fn){
-          return function() {
-            var tmp = this._super;
-
-            // Add a new ._super() method that is the same method
-            // but on the super-class
-            this._super = _super[name];
-
-            // The method only need to be bound temporarily, so we
-            // remove it when we're done executing
-            var ret = fn.apply(this, arguments);
-            this._super = tmp;
-
-            return ret;
-          };
-        })(name, prop[name]) :
-        prop[name];
-    }
-
-    // The dummy class constructor
-    function Class() {
-      // All construction is actually done in the init method
-      if ( !initializing && this.init )
-        this.init.apply(this, arguments);
-    }
-
-    // Populate our constructed prototype object
-    Class.prototype = prototype;
-
-    // Enforce the constructor to be what we expect
-    Class.prototype.constructor = Class;
-
-    // And make this class extendable
-    Class.extend = arguments.callee;
-
-    return Class;
-  };
-})();
-
 if (!PrimeFaces.widget) {
 
     /**
@@ -72,10 +8,10 @@ if (!PrimeFaces.widget) {
      * There are a few base classes defined by PrimeFaces that you can use when writing the client-side part of your
      * custom widget:
      *
-     * - {@link BaseWidget}: Base class that you should extend if you do not required any advanced functionality.
-     * - {@link DeferredWidget}: When you widget needs to be initialized on the client in a way does required the
+     * - {@link BaseWidget}: Base class that you should extend if you do not require any advanced functionality.
+     * - {@link DeferredWidget}: When you widget needs to be initialized on the client in a way that requires the
      * element to be visible, you can use this class as a base. A widget may not be visible, for example, when it is
-     * inside a dialog or tab. The deferred widget provides the the method {@link DeferredWidget.addDeferredRender}
+     * inside a dialog or tab. The deferred widget provides the method {@link DeferredWidget.addDeferredRender}
      * (to register a listener) and {@link DeferredWidget.renderDeferred} (to render the widget once it is visible).
      * - {@link DynamicOverlayWidget}: When your widget is an overlay with dynamically loaded content, you can use this
      * base class.
@@ -158,7 +94,7 @@ if (!PrimeFaces.widget) {
      * BaseWidget for the PrimeFaces widgets framework.
      *
      * It provides some common functionality for other widgets. All widgets should inherit from this class, or an
-     * appropriate sub class in the following manner:
+     * appropriate subclass in the following manner:
      *
      * ```javascript
      * class MyWidget extends PrimeFaces.widget.BaseWidget {
@@ -171,16 +107,6 @@ if (!PrimeFaces.widget) {
      *   // more methods required by your widget
      *
      * }
-     * ```
-     *
-     * Or, alternatively, if you need to support old browsers and do not wish to transpile your code:
-     *
-     * ```javascript
-     * PrimeFaces.widget.MyWidget = PrimeFaces.widget.BaseWidget.extend({
-     *   init: function(cfg) {
-     *     this._super(cfg);
-     *   }
-     * });
      * ```
      *
      * If your widget needs to be visible before it can be rendered, consider using the {@link DeferredWidget} as a
@@ -252,14 +178,6 @@ if (!PrimeFaces.widget) {
      * access a widget instance by calling `PF('myWidgetVar')`.
      * @prop {string} key The key of the JSON object.
      * 
-     * @method constructor Creates a new instance of this widget. Please note that you should __NOT__ override this
-     * constructor. Instead, override the {@link init} method, which is called at the end of the constructor once the
-     * instance is created.
-     * @constructor constructor
-     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} constructor.cfg The widget configuration to be used for this widget
-     * instance. This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for
-     * this component.
-     *
      * @interface {PrimeFaces.widget.BaseWidgetCfg} cfg The configuration for the {@link  BaseWidget| BaseWidget widget}.
      * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
      * configuration is usually meant to be read-only and should not be modified. This configuration is
@@ -289,7 +207,22 @@ if (!PrimeFaces.widget) {
      * @prop {string} cfg.widgetVar The name of the widget variables of this widget. The widget variable can be used to
      * access a widget instance by calling `PF("myWidgetVar")`.
      */
-    PrimeFaces.widget.BaseWidget = Class.extend({
+    class BaseWidget {
+        /**
+         * Creates a new instance of this widget. Please note that you should __NOT__ override this constructor.
+         * Instead, override the {@link init} method, which is called by the framework once the widget instance was
+         * created.
+         *
+         * Note: This is mainly due to legacy concerns. We may remove the init method in the future and simply use the
+         * constructor.
+         *
+         * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg The widget configuration to be used for this widget
+         * instance. This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for
+         * this component.
+         */
+        constructor(cfg) {
+            this.init(cfg);
+        }
 
         /**
          * A widget class should not declare an explicit constructor, the default constructor provided by this base
@@ -301,19 +234,19 @@ if (!PrimeFaces.widget) {
          * Please make sure to call the super method first before adding your own custom logic to the init method:
          *
          * ```javascript
-         * PrimeFaces.widget.MyWidget = PrimeFaces.widget.BaseWidget.extend({
+         * class MyWidget extends PrimeFaces.widget.BaseWidget {
          *   init: function(cfg) {
-         *     this._super(cfg);
+         *     super.init(cfg);
          *     // custom initialization
          *   }
-         * });
+         * }
          * ```
          *
          * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg The widget configuration to be used for this widget instance.
          * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
          * component.
          */
-        init: function(cfg) {
+        init(cfg) {
             this.cfg = cfg;
             this.id = cfg.id;
             if (Array.isArray(this.id)) {
@@ -340,7 +273,7 @@ if (!PrimeFaces.widget) {
                     }
                 });
             }
-        },
+        }
 
         /**
          * Used in ajax updates, reloads the widget configuration.
@@ -360,7 +293,7 @@ if (!PrimeFaces.widget) {
          * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg The new widget configuration from the server.
          * @return {unknown} The value as returned by the `init` method, which is often `undefined`.
          */
-        refresh: function(cfg) {
+        refresh(cfg) {
             this.destroyListeners = [];
 
             if (this.refreshListeners) {
@@ -373,7 +306,7 @@ if (!PrimeFaces.widget) {
 
             var returnValue = this.init(cfg);
             return returnValue;
-        },
+        }
 
         /**
          * Will be called after an AJAX request if the widget container will be detached.
@@ -388,7 +321,7 @@ if (!PrimeFaces.widget) {
          *
          * By default, this method just calls all destroy listeners.
          */
-        destroy: function() {
+        destroy() {
             if (this.cfg.preDestroy) {
                 this.cfg.preDestroy.call(this, this);
             }
@@ -416,7 +349,7 @@ if (!PrimeFaces.widget) {
                     // this[key] = null; DO NOT ENABLE THIS
                 }
             }
-        },
+        }
 
         /**
          * Checks if this widget is detached, ie whether the HTML element of this widget is currently contained within
@@ -424,23 +357,23 @@ if (!PrimeFaces.widget) {
          * detached in case the update removed this component from the component tree.
          * @return {boolean} `true` if this widget is currently detached, or `false` otherwise.
          */
-        isDetached: function() {
+        isDetached() {
             var element = document.getElementById(this.id);
             if (typeof(element) !== 'undefined' && element !== null) {
                 return false;
             }
 
             return true;
-        },
+        }
 
         /**
          * Each widget has got a container element, this method returns that container. This container element is
          * usually also the element whose ID is the client-side ID of the JSF component.
          * @return {JQuery} The jQuery instance representing the main HTML container element of this widget.
          */
-        getJQ: function(){
+        getJQ(){
             return this.jq;
-        },
+        }
 
         /**
          * Removes the widget's script block from the DOM. Currently, the ID of this script block consists of the
@@ -448,7 +381,7 @@ if (!PrimeFaces.widget) {
          *
          * @param {string | string[]} clientId The client-side ID of the widget.
          */
-        removeScriptElement: function(clientId) {
+        removeScriptElement(clientId) {
             if (Array.isArray(clientId)) {
                 $.each(clientId, function(_, id) {
                     $(PrimeFaces.escapeClientId(id) + '_s').remove();
@@ -457,7 +390,7 @@ if (!PrimeFaces.widget) {
             else {
                 $(PrimeFaces.escapeClientId(clientId) + '_s').remove();
             }
-        },
+        }
 
         /**
          * Each widget may have one or several behaviors attached to it. This method checks whether this widget has got
@@ -475,13 +408,13 @@ if (!PrimeFaces.widget) {
          * @param {string} event The name of an event to check.
          * @return {boolean} `true` if this widget has the given behavior, `false` otherwise.
          */
-        hasBehavior: function(event) {
+        hasBehavior(event) {
             if(this.cfg.behaviors) {
                 return this.cfg.behaviors[event] != undefined;
             }
 
             return false;
-        },
+        }
 
         /**
          * Each widget may have one or several behaviors attached to it. This method calls all attached behaviors for
@@ -501,11 +434,11 @@ if (!PrimeFaces.widget) {
          * AJAX request for the server-side callback.
          * @since 7.0
          */
-        callBehavior: function(event, ext) {
+        callBehavior(event, ext) {
             if(this.hasBehavior(event)) {
                 this.cfg.behaviors[event].call(this, ext);
             }
-        },
+        }
 
         /**
          * Each widget may have one or several behaviors attached to it. This method returns the callback function for
@@ -527,9 +460,9 @@ if (!PrimeFaces.widget) {
          * @return {PrimeFaces.Behavior | null} The behavior with the given name, or `null` if no such behavior
          * exists.
          */
-        getBehavior: function(name) {
+        getBehavior(name) {
             return this.cfg.behaviors ? this.cfg.behaviors[name] : null;
-        },
+        }
 
         /**
          * Lets you register a listener that is called before the component is destroyed.
@@ -548,12 +481,12 @@ if (!PrimeFaces.widget) {
          * @param {PrimeFaces.widget.DestroyListener<this>} listener A destroy listener to be registered.
          * @since 7.0
          */
-        addDestroyListener: function(listener) {
+        addDestroyListener(listener) {
             if (!this.destroyListeners) {
                 this.destroyListeners = [];
             }
             this.destroyListeners.push(listener);
-        },
+        }
 
         /**
          * When an AJAX call is made and this component is updated, the DOM element is replaced with the newly rendered
@@ -572,12 +505,12 @@ if (!PrimeFaces.widget) {
          * @param {PrimeFaces.widget.RefreshListener<this>} listener A refresh listener to be registered.
          * @since 7.0.0
          */
-        addRefreshListener: function(listener) {
+        addRefreshListener(listener) {
             if (!this.refreshListeners) {
                 this.refreshListeners = [];
             }
             this.refreshListeners.push(listener);
-        },
+        }
 
         /**
          * Gets the closest parent form for this widget.
@@ -586,9 +519,9 @@ if (!PrimeFaces.widget) {
          * the form could not be found.
          * @since 10.0.0
          */
-        getParentForm: function() {
+        getParentForm() {
             return this.jq.closest('form');
-        },
+        }
 
         /**
          * Gets the closest parent form ID for this widget lazily so it can be used in AJAX requests.
@@ -596,7 +529,7 @@ if (!PrimeFaces.widget) {
          * @return {string | undefined} Either the form ID or `undefined` if no form can be found.
          * @since 10.0.0
          */
-        getParentFormId: function() {
+        getParentFormId() {
             if(this.cfg.formId) {
                 return this.cfg.formId;
             }
@@ -609,7 +542,7 @@ if (!PrimeFaces.widget) {
             
             return this.cfg.formId;
         }
-    });
+    }
 
     /**
      * __PrimeFaces DynamicOverlay Widget__
@@ -628,7 +561,7 @@ if (!PrimeFaces.widget) {
      *
      * @prop {boolean} cfg.blockScroll `true` to prevent the body from being scrolled, `false` otherwise.
      */
-    PrimeFaces.widget.DynamicOverlayWidget = PrimeFaces.widget.BaseWidget.extend({
+    class DynamicOverlayWidget extends BaseWidget {
 
 	    /**
          * @override
@@ -638,8 +571,8 @@ if (!PrimeFaces.widget) {
          * @param {string} [overlayId] The ID of the overlay, usually the widget ID.
          * @param {JQuery} [target] The DOM element that is the target of this overlay
          */
-        init: function(cfg, overlay, overlayId, target) {
-            this._super(cfg);
+        init(cfg, overlay, overlayId, target) {
+            super.init(cfg);
 
             // do not bind overlay if widget disabled
             if(this.cfg.disabled === true) {
@@ -664,7 +597,7 @@ if (!PrimeFaces.widget) {
             }
 
             PrimeFaces.utils.registerDynamicOverlay(this, overlay, overlayId);
-        },
+        }
 
 
         /**
@@ -672,27 +605,27 @@ if (!PrimeFaces.widget) {
          * @inheritdoc
          * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
          */
-        refresh: function(cfg) {
+        refresh(cfg) {
             PrimeFaces.utils.removeModal(this, this.modalOverlay);
 
             this.appendTo = null;
             this.modalOverlay = null;
 
-            this._super(cfg);
-        },
+            super.refresh(cfg);
+        }
 
         /**
          * @override
          * @inheritdoc
          */
-        destroy: function() {
-            this._super();
+        destroy() {
+            super.destroy();
 
             PrimeFaces.utils.removeModal(this);
 
             this.appendTo = null;
             this.modalOverlay = null;
-        },
+        }
 
         /**
          * Enables modality for this widget and creates the modal overlay element, but does not change whether the
@@ -700,14 +633,14 @@ if (!PrimeFaces.widget) {
          * @param {JQuery | null} [overlay] The target overlay, if not given default to
          * {@link PrimeFaces.widget.BaseWidget.jq | this.jq}.
          */
-        enableModality: function(overlay) {
+        enableModality(overlay) {
             var target = overlay||this.jq;
             this.modalOverlay = PrimeFaces.utils.addModal(this,
                 target,
                 $.proxy(function() {
                     return this.getModalTabbables();
                 }, this));
-        },
+        }
 
         /**
          * Disabled modality for this widget and removes the modal overlay element, but does not change whether the
@@ -715,11 +648,11 @@ if (!PrimeFaces.widget) {
          * @param {JQuery | null} [overlay] The target overlay, if not given default to
          * {@link PrimeFaces.widget.BaseWidget.jq | this.jq}.
          */
-        disableModality: function(overlay){
+        disableModality(overlay){
             var target = overlay||this.jq;
             PrimeFaces.utils.removeModal(this, target);
             this.modalOverlay = null;
-        },
+        }
 
         /**
          * This class makes sure a user cannot tab out of the modal and it stops events from targets outside of the
@@ -729,10 +662,10 @@ if (!PrimeFaces.widget) {
          * @return {JQuery} The DOM elements which are allowed to be focused via tabbing. May be an empty `jQuery`
          * instance when the modal contains no tabbable elements, but must not be `undefined`.
          */
-        getModalTabbables: function(){
+        getModalTabbables(){
             return null;
         }
-    });
+    }
 
     /**
      * __PrimeFaces Deferred Widget__
@@ -770,13 +703,13 @@ if (!PrimeFaces.widget) {
      * this configuration is usually meant to be read-only and should not be modified.
      * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
      */
-    PrimeFaces.widget.DeferredWidget = PrimeFaces.widget.BaseWidget.extend({
+    class DeferredWidget extends BaseWidget {
 
         /**
          * Call this method in the {@link init} method if you want deferred rendering support. This method checks
          * whether the container of this widget is visible and call {@link _render} only once it is.
          */
-        renderDeferred: function() {
+        renderDeferred() {
             if(this.jq.is(':visible')) {
                 this._render();
                 this.postRender();
@@ -793,7 +726,7 @@ if (!PrimeFaces.widget) {
                     }
                 }
             }
-        },
+        }
 
         /**
          * This render method to check whether the widget container is visible. Do not override this method, or the
@@ -802,7 +735,7 @@ if (!PrimeFaces.widget) {
          * @return {PrimeFaces.ReturnOrVoid<boolean|undefined>} `true` if the widget container is visible, `false` or
          * `undefined` otherwise.
          */
-        render: function() {
+        render() {
             if(this.jq.is(':visible')) {
                 this._render();
                 this.postRender();
@@ -811,7 +744,7 @@ if (!PrimeFaces.widget) {
             else {
                 return false;
             }
-        },
+        }
 
         /**
          * This render method is called by this deferred widget once the widget container has become visible. You may
@@ -822,28 +755,28 @@ if (!PrimeFaces.widget) {
          * @include
          * @protected
          */
-        _render: function() {
+        _render() {
             throw 'Unsupported Operation';
-        },
+        }
 
         /**
          * Called after the widget has become visible and after it was rendered. May be overridden, the default
          * implementation is a no-op.
          * @protected
          */
-        postRender: function() {
+        postRender() {
 
-        },
+        }
 
         /**
          * Cleans up deferred render tasks. When you extend this class and override this method, make sure to call
          * `super`.
          * @override
          */
-        destroy: function() {
-            this._super();
+        destroy() {
+            super.destroy();
             PrimeFaces.removeDeferredRenders(this.id);
-        },
+        }
 
         /**
          * Adds a deferred rendering task for the given widget to the queue.
@@ -854,7 +787,7 @@ if (!PrimeFaces.widget) {
          * Should return `true` when the widget was rendered, or `false` when the widget still needs to be rendered
          * later.
          */
-        addDeferredRender: function(widgetId, container, callback) {
+        addDeferredRender(widgetId, container, callback) {
             PrimeFaces.addDeferredRender(widgetId, container.attr('id'), callback);
 
             if(container.is(':hidden')) {
@@ -865,5 +798,9 @@ if (!PrimeFaces.widget) {
                 }
             }
         }
-    });
+    }
+
+    PrimeFaces.widget.BaseWidget = BaseWidget;
+    PrimeFaces.widget.DynamicOverlayWidget = DynamicOverlayWidget;
+    PrimeFaces.widget.DeferredWidget = DeferredWidget;
 }

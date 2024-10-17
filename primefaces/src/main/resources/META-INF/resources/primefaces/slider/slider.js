@@ -35,15 +35,15 @@
  * @prop {PrimeFaces.widget.Slider.SliderCallback} cfg.onSlideStart Client side callback that is invoked when a slider
  * handle starts moving.
  */
-PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Slider = class Slider extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         this.cfg.displayTemplate = this.cfg.displayTemplate || (this.cfg.range === true ? '{min} - {max}' : '{value}');
 
@@ -68,13 +68,13 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
         if (PrimeFaces.env.isTouchable(this.cfg)) {
             this.bindTouchEvents();
         }
-    },
+    }
 
     /**
      * Sets up all event listeners that are required by this widget.
      * @private
      */
-    bindEvents: function() {
+    bindEvents() {
         var $this = this;
 
         this.jq.on('slide', function(event, ui) {
@@ -144,13 +144,13 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
                 $this.setValue($this.input.val());
             });
         }
-    },
+    }
 
     /**
      * Sets up all touch and mouse related event listeners that are required by this widget.
      * @private
      */
-    bindTouchEvents: function() {
+    bindTouchEvents() {
         var eventMapping = {
             touchstart: 'mousedown',
             touchmove: 'mousemove',
@@ -182,7 +182,7 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
             touch.target.dispatchEvent(targetEvent);
             e.preventDefault();
         });
-    },
+    }
 
     /**
      * Callback that is invoked when the user moves a slider handle.
@@ -190,7 +190,7 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery.TriggeredEvent} event The event that triggered the slider handle to move.
      * @param {JQueryUI.SliderUIParams} ui Details about the slider.
      */
-    onSlide: function(event, ui) {
+    onSlide(event, ui) {
         if (this.cfg.onSlide) {
             this.cfg.onSlide.call(this, event, ui);
         }
@@ -210,7 +210,7 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
                 this.output.text(this.cfg.displayTemplate.replace('{value}', ui.value));
             }
         }
-    },
+    }
 
     /**
      * Stores the given slider handle value in the given hidden input field.
@@ -218,7 +218,7 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery} input A hidden input field that should store the value.
      * @param {number} inputValue A value of a slider handle to store.
      */
-    setInputValue: function(input, inputValue) {
+    setInputValue(input, inputValue) {
         if (input.parent().hasClass('ui-inputnumber') || (this.cfg.range === true && input.hasClass('ui-inputnumber'))) {
             var inputNumberId = input.closest('.ui-inputnumber').attr('id');
             var inputNumberWidget = PrimeFaces.getWidgetById(inputNumberId);
@@ -232,21 +232,21 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
         else {
             input.val(inputValue);
         }
-    },
+    }
 
     /**
      * Triggers the change event on the hidden input.
      * @private
      * @param {JQuery} input The slider input element.
      */
-    triggerOnchange: function(input) {
+    triggerOnchange(input) {
         if (input.parent().hasClass('ui-inputnumber')) {
             input.trigger('change');
         }
         else if (input.hasClass('ui-spinner-input')) {
             input.trigger('change');
         }
-    },
+    }
 
     /**
      * Callback that is invoked when the user is done moving a slider handle.
@@ -254,7 +254,7 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery.TriggeredEvent} event The event that triggered the slide to end.
      * @param {JQueryUI.SliderUIParams} ui Details about the slider.
      */
-    onSlideEnd: function(event, ui) {
+    onSlideEnd(event, ui) {
         if (this.cfg.onSlideEnd) {
             this.cfg.onSlideEnd.call(this, event, ui);
         }
@@ -276,53 +276,53 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
 
             this.callBehavior('slideEnd', ext);
         }
-    },
+    }
 
     /**
      * Determines the value of the slider, if there is only one handle. If there is more than one handle, determines the
      * value of the first handle.
      * @return {number} value The value of the first slider handler. 
      */
-    getValue: function() {
+    getValue() {
         return this.jq.slider('value');
-    },
+    }
 
     /**
      * Sets the value of the slider, if there is only one handle. If there is more than one handle, sets the
      * value of the first handle.
      * @param {number} value The value for the first slider handler. 
      */
-    setValue: function(value) {
+    setValue(value) {
         this.jq.slider('value', value);
-    },
+    }
 
     /**
      * Finds the values of all slider handles.
      * @return {number[]} A list with the values of all handles.
      */
-    getValues: function() {
+    getValues() {
         return this.jq.slider('values');
-    },
+    }
 
     /**
      * Sets the values of all slider handlers.
      * @param {number[]} values The new values for the handles.
      */
-    setValues: function(values) {
+    setValues(values) {
         this.jq.slider('values', values);
-    },
+    }
 
     /**
      * Enables this slider widget so that the user can move the slider.
      */
-    enable: function() {
+    enable() {
         this.jq.slider('enable');
-    },
+    }
 
     /**
      * Disables this slider widget so that the user cannot move the slider anymore.
      */
-    disable: function() {
+    disable() {
         this.jq.slider('disable');
     }
-});
+}

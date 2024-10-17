@@ -26,15 +26,15 @@
  * idle.
  * @prop {number} cfg.timeout Time to wait in milliseconds until deciding if the user is idle. Default is 5 minutes.
  */
-PrimeFaces.widget.IdleMonitor = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.IdleMonitor = class IdleMonitor extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         var $this = this;
 
@@ -91,13 +91,13 @@ PrimeFaces.widget.IdleMonitor = PrimeFaces.widget.BaseWidget.extend({
 
             }, 2000);
         }
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      */
-    destroy: function() {
+    destroy() {
         if (this.cfg.multiWindowSupport) {
             clearInterval(this.timer);
         }
@@ -105,28 +105,28 @@ PrimeFaces.widget.IdleMonitor = PrimeFaces.widget.BaseWidget.extend({
         $(document).off("active.idleTimer" + this.cfg.id);
         $.idleTimer('destroy', document, this.cfg.id);
 
-        this._super();
-    },
+        super.destroy();
+    }
 
     /**
      * Pauses the monitor, saving the remaining time.
      */
-    pause: function() {
+    pause() {
         $.idleTimer('pause', document, this.cfg.id);
-    },
+    }
 
     /**
      * Resumes the monitor, with the remaining time as it was saved when the monitor was paused.
      */
-    resume: function() {
+    resume() {
         $.idleTimer('resume', document, this.cfg.id);
-    },
+    }
 
     /**
      * Resets the monitor and restarts the timer.
      */
-    reset: function() {
+    reset() {
         $.idleTimer('reset', document, this.cfg.id);
     }
 
-});
+}

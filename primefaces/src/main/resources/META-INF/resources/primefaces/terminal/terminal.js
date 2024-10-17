@@ -18,15 +18,15 @@
  * 
  * @prop {string} cfg.prompt The current prompt text, i.e. the prefix at the beginning of the line.
  */
-PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Terminal = class Terminal extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         this.promptContainer = this.jq.find('> div:last-child > span.ui-terminal-prompt');
         this.cfg.prompt = this.promptContainer.text();
@@ -37,13 +37,13 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
         this.promptContainerParent = this.promptContainer.parent();
 
         this.bindEvents();
-    },
+    }
 
     /**
      * Sets up all event listeners that are required by this widget.
      * @private
      */
-    bindEvents: function() {
+    bindEvents() {
         var $this = this;
 
         this.input.on('keydown.terminal', function(e) {
@@ -86,13 +86,13 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
         this.jq.on('click', function() {
             $this.focus();
         });
-    },
+    }
 
     /**
      * Callback that is invoked when the enter key is pressed. Takes the entered command and executes it.
      * @private
      */
-    processCommand: function() {
+    processCommand() {
         if (this.input.val() != '') {
             this.commands.push(this.input.val());
             this.commandIndex = this.commands.length;
@@ -140,13 +140,13 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
         else {
             PrimeFaces.ajax.Request.handle(options);
         }
-    },
+    }
 
     /**
      * Callback that is invoked when the tab key is pressed. Computes the available commands and offers autocompletion.
      * @private
      */
-    autoCompleteCommand: function() {
+    autoCompleteCommand() {
 
         var $this = this,
         options = {
@@ -226,22 +226,22 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
         };
 
         PrimeFaces.ajax.Request.handle(options);
-    },
+    }
 
     /**
      * Puts focus on this terminal input.
      */
-    focus: function() {
+    focus() {
         this.input.trigger('focus');
-    },
+    }
 
     /**
      * Clears the console output.
      */
-    clear: function() {
+    clear() {
         this.content.html('');
         this.input.val('');
-    },
+    }
 
     /**
      * Internally used to add the content from the AJAX response to the terminal. Can also be used for example by a
@@ -249,10 +249,10 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
      * @private
      * @param {string} content HTML escaped content to display.
      */
-    processResponse: function(content) {
+    processResponse(content) {
         $('<div>' + content + '</div>').appendTo(this.content.children().last());
 
         // always scroll down to the last item
         this.jq.scrollTop(this.jq[0].scrollHeight);
     }
-});
+}

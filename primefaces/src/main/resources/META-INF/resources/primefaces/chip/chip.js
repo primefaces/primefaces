@@ -11,26 +11,26 @@
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  */
-PrimeFaces.widget.Chip = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Chip = class Chip extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         this.removeIcon = this.jq.children('.ui-chip-remove-icon');
 
         this.bindEvents();
-    },
+    }
 
     /**
      * Sets up all event listeners required for this widget.
      * @private
      */
-    bindEvents: function() {
+    bindEvents() {
         var $this = this;
         
         this.jq.on("click.chip", function() {
@@ -45,14 +45,14 @@ PrimeFaces.widget.Chip = PrimeFaces.widget.BaseWidget.extend({
         }).on("click.chip", function() {
             $this.close();
         });
-    },
+    }
 
     /**
      * Closes the chip.
      * @private
      */
-    close: function() {
+    close() {
         this.jq.remove();
         this.callBehavior("close");
     }
-});
+}

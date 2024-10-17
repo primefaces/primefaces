@@ -14,15 +14,15 @@
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  */
-PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.SelectBooleanCheckbox = class SelectBooleanCheckbox extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         this.input = $(this.jqId + '_input');
         this.box = this.jq.find('.ui-chkbox-box');
@@ -34,7 +34,7 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
 
         this.bindEvents();
-    },
+    }
 
 
     /**
@@ -43,7 +43,7 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
      * change events, and label clicks if the checkbox is not disabled.
      * @private
      */
-    bindEvents: function() {
+    bindEvents() {
         if (this.disabled) {
             return;
         }
@@ -82,30 +82,30 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
                 $this.toggle();
                 $this.input.trigger('focus');
             });
-    },
+    }
 
     /**
      * Toggles the state of the checkbox.
      * If the checkbox is currently checked, it will be unchecked.
      * If the checkbox is currently unchecked, it will be checked.
      */
-    toggle: function() {
+    toggle() {
         this.isChecked() ? this.uncheck() : this.check();
-    },
+    }
 
     /**
      * Checks whether this checkbox is currently checked.
      * @return {boolean} `true` if this checkbox is checked, or `false` otherwise.
      */
-    isChecked: function() {
+    isChecked() {
         return this.input.prop('checked');
-    },
+    }
 
     /**
      * Checks this checkbox, if it is not checked already.
      * @param {boolean} [silent] `true` to suppress triggering event listeners, or `false` otherwise.
      */
-    check: function(silent) {
+    check(silent) {
         if (!this.isChecked()) {
             this.input.prop('checked', true).attr('aria-checked', true);
             this.box.addClass('ui-state-active')
@@ -117,13 +117,13 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
                 this.input.trigger('change');
             }
         }
-    },
+    }
 
     /**
      * Unchecks this checkbox, if it is not unchecked already .
      * @param {boolean} [silent] `true` to suppress triggering event listeners, or `false` otherwise.
      */
-    uncheck: function(silent) {
+    uncheck(silent) {
         if (this.isChecked()) {
             this.input.prop('checked', false).attr('aria-checked', false);
             this.box.removeClass('ui-state-active')
@@ -135,30 +135,30 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
                 this.input.trigger('change');
             }
         }
-    },
+    }
 
     /**
      * Enables this input so that the user can enter a value.
      */
-    enable: function() {
+    enable() {
         this.disabled = false;
         PrimeFaces.utils.enableInputWidget(this.jq, this.input);
         this.bindEvents();
-    },
+    }
 
     /**
      * Disables this input so that the user cannot enter a value anymore.
      */
-    disable: function() {
+    disable() {
         PrimeFaces.utils.disableInputWidget(this.jq, this.input);
         this.disabled = true;
-    },
+    }
 
     /**
      * Resets the input.
      * @param {boolean} [silent] `true` to suppress triggering event listeners, or `false` otherwise.
      */
-    resetValue: function(silent) {
+    resetValue(silent) {
         this.uncheck(silent);
     }
-});
+}

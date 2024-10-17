@@ -111,15 +111,15 @@
  * @prop {boolean} cfg.updateLabel When enabled, the selected items are displayed on the label.
  * @prop {boolean} cfg.renderPanelContentOnClient Renders panel content on client.
  */
-PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.SelectCheckboxMenu = class SelectCheckboxMenu extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         this.labelContainer = this.jq.find('.ui-selectcheckboxmenu-label-container');
         this.label = this.jq.find('.ui-selectcheckboxmenu-label');
@@ -159,23 +159,23 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
         //pfs metadata
         this.inputs.data(PrimeFaces.CLIENT_ID_DATA, this.id);
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    refresh: function(cfg) {
-        this._super(cfg);
-    },
+    refresh(cfg) {
+        super.refresh(cfg);
+    }
 
     /**
      * Creates the overlay panel with the checkboxes for the selectable option, and also sets up the event listeners
      * for the panel.
      * @private
      */
-    _renderPanel: function() {
+    _renderPanel() {
         this.renderPanel();
 
         this.panel.find('a, input').attr('tabindex', this.tabindex);
@@ -187,13 +187,13 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         this.bindPanelKeyEvents();
 
         this.isDynamicLoaded = true;
-    },
+    }
 
     /**
      * Creates the overlay panel with the checkboxes for the selectable option.
      * @private
      */
-    renderPanel: function() {
+    renderPanel() {
         //init panel content rendered by SelectCheckboxMenuRenderer
         this.header = this.panel.children('.ui-selectcheckboxmenu-header');
         this.toggler = this.header.children('.ui-chkbox');
@@ -227,13 +227,13 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         this.transition = PrimeFaces.utils.registerCSSTransition(this.panel, 'ui-connected-overlay');
 
         this.keyboardTarget.attr('aria-controls', this.itemContainer.attr('id'));
-    },
+    }
 
     /**
      * Create the label to display values
      * @private
      */
-    renderLabel: function() {
+    renderLabel() {
         if (!this.cfg.updateLabel) {
             this.registerTrigger();
             return;
@@ -257,23 +257,23 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         }
         
         this.registerTrigger();
-    },
+    }
     
     /**
      * Mark trigger and descandants of trigger as a trigger for a primefaces overlay.
      * @private
      */
-    registerTrigger: function() {
+    registerTrigger() {
         if (!this.disabled) {
             this.triggers.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
         }
-    },
+    }
 
     /**
      * Creates the individual checkboxes for each selectable option in the overlay panel.
      * @private
      */
-    renderItems: function() {
+    renderItems() {
         var $this = this;
 
         this.itemContainer = $('<ul id="'+this.id+'_list" class="ui-selectcheckboxmenu-items ui-selectcheckboxmenu-list ui-widget-content ui-widget ui-corner-all ui-helper-reset"></ul>')
@@ -352,13 +352,13 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
         this.items = this.itemContainer.children('li.ui-selectcheckboxmenu-item');
         this.groupHeaders = this.itemContainer.children('li.ui-selectcheckboxmenu-item-group');
-    },
+    }
 
     /**
      * Sets up all event listeners required by this widget.
      * @private
      */
-    bindEvents: function() {
+    bindEvents() {
         var $this = this;
 
         //Events to show/hide the panel
@@ -397,13 +397,13 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         if (this.cfg.behaviors) {
             PrimeFaces.attachBehaviors(this.inputs, this.cfg.behaviors);
         }
-    },
+    }
 
     /**
      * Sets up the event listeners for the overlay panel with the selectable checkbox options.
      * @private
      */
-    bindPanelContentEvents: function() {
+    bindPanelContentEvents() {
         var $this = this;
 
         //Events for checkboxes
@@ -453,13 +453,13 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             PrimeFaces.clearSelection();
             e.preventDefault();
         });
-    },
+    }
 
     /**
      * Sets up all panel event listeners
      * @private
      */
-    bindPanelEvents: function() {
+    bindPanelEvents() {
         var $this = this;
 
         this.hideOverlayHandler = PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', this.panel,
@@ -477,7 +477,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         this.scrollHandler = PrimeFaces.utils.registerConnectedOverlayScrollHandler(this, 'scroll.' + this.id + '_hide', this.jq, function() {
             $this.handleViewportChange();
         });
-    },
+    }
 
     /**
      * Fired when the browser viewport is resized or scrolled.  In Mobile environment we don't want to hider the overlay
@@ -485,19 +485,19 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
      * resize immediately and close the overlay. See GitHub #7075.
      * @private
      */
-    handleViewportChange: function() {
+    handleViewportChange() {
         if (PrimeFaces.env.mobile || PrimeFaces.hideOverlaysOnViewportChange === false) {
             this.alignPanel();
         } else {
             this.hide();
         }
-    },
+    }
 
     /**
      * Unbind all panel event listeners
      * @private
      */
-    unbindPanelEvents: function() {
+    unbindPanelEvents() {
         if (this.hideOverlayHandler) {
             this.hideOverlayHandler.unbind();
         }
@@ -509,14 +509,14 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         if (this.scrollHandler) {
             this.scrollHandler.unbind();
         }
-    },
+    }
 
     /**
      * Sets up the event listeners for all keyboard related events other than the overlay panel, such as pressing space
      * to bring up the overlay panel.
      * @private
      */
-    bindKeyEvents: function() {
+    bindKeyEvents() {
         var $this = this;
 
         this.keyboardTarget.on('focus.selectCheckboxMenu', function() {
@@ -572,14 +572,14 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                     break;
             };
         });
-    },
+    }
     
     /**
      * Sets up the keyboard event listeners for the given checkbox options.
      * @private
      * @param {JQuery} items Checkbox options for which to add the event listeners.
      */
-    bindCheckboxKeyEvents: function(items) {
+    bindCheckboxKeyEvents(items) {
         var $this = this;
 
         items.on('focus.selectCheckboxMenu', function(e) {
@@ -653,26 +653,26 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                     break;
             }
         });
-    },
+    }
     
     /**
      * Configures the ARIA label for the select all checkbox.
      * @private
      */
-    configureSelectAllAria: function() {
+    configureSelectAllAria() {
         if (this.selectAllTogglerCheckbox) {
            var ariaLabel = this.selectAllTogglerCheckbox.prop('checked') ? PrimeFaces.getAriaLabel('selectAll') : PrimeFaces.getAriaLabel('unselectAll');
            this.selectAllTogglerCheckbox.attr('aria-label', ariaLabel);
            this.selectAllTogglerCheckbox.removeAttr('aria-selected');
         }
-    },
+    }
 
     /**
      * Sets up the event listeners for all keyboard related events of the overlay panel, such as pressing space to
      * toggle a checkbox.
      * @private
      */
-    bindPanelKeyEvents: function() {
+    bindPanelKeyEvents() {
         var $this = this;
 
         if (this.cfg.showHeader) {
@@ -765,13 +765,13 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                 box = input.parent().next();
             $this.toggleItem(box, input);
         });
-    },
+    }
 
     /**
      * When multi select mode is enabled: Sets up the event listeners for the overlay panel.
      * @private
      */
-    bindMultipleModeEvents: function() {
+    bindMultipleModeEvents() {
         var $this = this;
         this.multiItemContainer = this.jq.children('.ui-selectcheckboxmenu-multiple-container');
 
@@ -790,14 +790,14 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
             e.stopPropagation();
         });
-    },
+    }
 
     /**
      * Sets up the event listeners for hovering over the checkboxes. Adds the appropriate hover style classes.
      * @private
      * @param {JQuery} item A checkbox for which to add the event listeners.
      */
-    bindCheckboxHover: function(item) {
+    bindCheckboxHover(item) {
         item.on('mouseenter.selectCheckboxMenu', function() {
             var item = $(this);
             if (!item.hasClass('ui-state-disabled')) {
@@ -806,14 +806,14 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         }).on('mouseleave.selectCheckboxMenu', function() {
             $(this).removeClass('ui-state-hover');
         });
-    },
+    }
 
     /**
      * Filters the available options in the overlay panel by the given search value. Note that this does not bring up
      * the overlay panel, use `show` for that.
      * @param {string} value A value against which the available options are matched.
      */
-    filter: function(value) {
+    filter(value) {
         this.cfg.initialHeight = this.cfg.initialHeight||this.itemContainerWrapper.height();
         var lowercase = !this.cfg.caseSensitive,
                 normalize = this.cfg.filterNormalize,
@@ -881,13 +881,13 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
         this.updateToggler();
         this.alignPanel();
-    },
+    }
 
     /**
      * Finds and stores the filter function which is to be used for filtering the options of this select checkbox menu.
      * @private
      */
-    setupFilterMatcher: function() {
+    setupFilterMatcher() {
         this.cfg.filterMatchMode = this.cfg.filterMatchMode || 'startsWith';
         this.filterMatchers = {
             'startsWith': this.startsWithFilter
@@ -897,7 +897,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         };
 
         this.filterMatcher = this.filterMatchers[this.cfg.filterMatchMode];
-    },
+    }
 
     /**
      * Implementation of a `PrimeFaces.widget.SelectCheckboxMenu.FilterFunction` that matches the given option when it
@@ -906,9 +906,9 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
      * @param {string} filter Value of the filter.
      * @return {boolean} `true` when the text of the options starts with the filter value, or `false` otherwise.
      */
-    startsWithFilter: function(value, filter) {
+    startsWithFilter(value, filter) {
         return value.indexOf(filter) === 0;
-    },
+    }
 
     /**
      * Implementation of a `PrimeFaces.widget.SelectCheckboxMenu.FilterFunction` that matches the given option when it
@@ -917,9 +917,9 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
      * @param {string} filter Value of the filter.
      * @return {boolean} `true` when the text of the contains the filter value, or `false` otherwise.
      */
-    containsFilter: function(value, filter) {
+    containsFilter(value, filter) {
         return value.indexOf(filter) !== -1;
-    },
+    }
 
     /**
      * Implementation of a `PrimeFaces.widget.SelectCheckboxMenu.FilterFunction` that matches the given option when it
@@ -928,15 +928,15 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
      * @param {string} filter Value of the filter.
      * @return {boolean} `true` when the text of the options ends with the filter value, or `false` otherwise.
      */
-    endsWithFilter: function(value, filter) {
+    endsWithFilter(value, filter) {
         return value.indexOf(filter, value.length - filter.length) !== -1;
-    },
+    }
 
     /**
      * Toggles either selecting all items or unselecting all items.
      * @param {boolean} selectAll true to select all items and false to uncheck all items
      */
-    toggleSelection: function(selectAll) {
+    toggleSelection(selectAll) {
         if (selectAll) {
             this.checkAll();
         }
@@ -944,13 +944,13 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             this.uncheckAll();
         }
         this.configureSelectAllAria();
-    },
+    }
 
     /**
      * Selects all available options.
      * @param {boolean} [silent] `true` to suppress triggering event listeners, or `false` otherwise.
      */
-    checkAll: function(silent) {
+    checkAll(silent) {
         if (!this.isLoaded()) {
             this._renderPanel();
         }
@@ -992,13 +992,13 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
             this.fireToggleSelectEvent(true);
         }
-    },
+    }
 
     /**
      * Unselects all available options.
      * @param {boolean} [silent] `true` to suppress triggering event listeners, or `false` otherwise.
      */
-    uncheckAll: function(silent) {
+    uncheckAll(silent) {
         if (!this.isLoaded()) {
             this._renderPanel();
         }
@@ -1042,14 +1042,14 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         }
         
         this.renderLabel();
-    },
+    }
 
     /**
      * Triggers the select behavior, if any, when a checkbox option was selected or unselected.
      * @private
      * @param {boolean} checked Whether the checkbox option is now checked.
      */
-    fireToggleSelectEvent: function(checked) {
+    fireToggleSelectEvent(checked) {
         if (this.hasBehavior('toggleSelect')) {
             var ext = {
                 params: [{ name: this.id + '_checked', value: checked }]
@@ -1057,7 +1057,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
             this.callBehavior('toggleSelect', ext);
         }
-    },
+    }
 
     /**
      * Selects the given checkbox option.
@@ -1065,7 +1065,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery} checkbox Checkbox option to select.
      * @param {boolean} updateInput If `true`, update the hidden input field with the current value of this widget.
      */
-    check: function(checkbox, updateInput) {
+    check(checkbox, updateInput) {
         if (!checkbox.hasClass('ui-state-disabled')) {
             var checkedInput = checkbox.prev().children('input'),
                 item = checkbox.closest('.ui-selectcheckboxmenu-item');
@@ -1103,7 +1103,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
             this.updateLabel();
         }
-    },
+    }
 
     /**
      * Unselects the given checkbox option.
@@ -1111,7 +1111,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery} checkbox Checkbox option to unselect.
      * @param {boolean} updateInput If `true`, update the hidden input field with the current value of this widget.
      */
-    uncheck: function(checkbox, updateInput) {
+    uncheck(checkbox, updateInput) {
         if (!checkbox.hasClass('ui-state-disabled')) {
             var uncheckedInput = checkbox.prev().children('input'),
                 item = checkbox.closest('.ui-selectcheckboxmenu-item');
@@ -1144,7 +1144,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
             this.updateLabel();
         }
-    },
+    }
 
     /**
      * Focuses the first focusable item in the select checkbox menu panel.
@@ -1152,29 +1152,29 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
      * @param {string} [focusSelector] The selector to use to focus the first item in the panel.
      * @param {number} [delay] Delay in ms before focusing
      */
-    focusFirstItem: function(focusSelector, delay = 0) {
+    focusFirstItem(focusSelector, delay = 0) {
         var $this = this;
         focusSelector = focusSelector || '.ui-selectcheckboxmenu-item-input:focusable:first';
         PrimeFaces.queueTask(() => $this.panel.find(focusSelector).trigger('focus'), delay);
-    },
+    }
 
     /**
      * Bring up the overlay panel if its not showing or hide it if it is showing.
      */
-    togglePanel: function() {
+    togglePanel() {
         if (this.panel.is(":hidden")) {
             this.show();
         }
         else {
             this.hide();
         }
-    },
+    }
 
     /**
      * Brings up the overlay panel with the available checkbox options.
      * @param {string} [focusSelector] The selector to use to focus the first item in the panel.
      */
-    show: function(focusSelector) {
+    show(focusSelector) {
         var $this = this;
 
         if (this.panel.is(":hidden") && this.transition) {
@@ -1191,12 +1191,12 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                 }
             });
         }
-    },
+    }
 
     /**
      * Hides the overlay panel with the available checkbox options.
      */
-    hide: function() {
+    hide() {
         if (this.panel.is(':visible') && this.transition) {
             var $this = this;
 
@@ -1212,32 +1212,32 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
             this.keyboardTarget.trigger('focus');
         }
-    },
+    }
 
     /**
      * Callback that is invoked after the overlay panel with the checkbox options was made visible.
      * @private
      */
-    postShow: function() {
+    postShow() {
         if (this.cfg.onShow) {
             this.cfg.onShow.call(this);
         }
-    },
+    }
 
     /**
      * Callback that is invoked after the overlay panel with the checkbox options was hidden.
      * @private
      */
-    postHide: function() {
+    postHide() {
         if (this.cfg.onHide) {
             this.cfg.onHide.call(this);
         }
-    },
+    }
 
     /**
      * Align the overlay panel with the available checkbox options so that is is positioned next to the the button.
      */
-    alignPanel: function() {
+    alignPanel() {
         var fixedPosition = this.panel.css('position') == 'fixed',
             positionOffset = fixedPosition ? '-' + $(window).scrollLeft() + ' -' + $(window).scrollTop() : null,
             panelStyle = this.panel.attr('style');
@@ -1272,14 +1272,14 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             this.panel.width(this.jq.width());
             this.widthAligned = true;
         }
-    },
+    }
 
     /**
      * Select or unselect the given checkbox option.
      * @param {JQuery} checkbox One of the checkbox options of this widget to toggle.
      * @param {JQuery} input (optional) input element representing the value of the checkbox
      */
-    toggleItem: function(checkbox, input) {
+    toggleItem(checkbox, input) {
         if (!checkbox.hasClass('ui-state-disabled')) {
             var isChecked = !input || input.prop('checked');
             if (checkbox.hasClass('ui-state-active') && isChecked) {
@@ -1289,13 +1289,13 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                 this.check(checkbox, true);
             }
         }
-    },
+    }
 
     /**
      * Updates the `select all` / `unselect all` toggler so that it reflects the currently selected options.
      * @private
      */
-    updateToggler: function() {
+    updateToggler() {
         if (this.cfg.showHeader) {
             var visibleItems = this.items.filter(':visible');
 
@@ -1306,13 +1306,13 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                 this.uncheck(this.togglerBox);
             }
         }
-    },
+    }
 
     /**
      * When multi mode is disabled: Upates the label that indicates the currently selected item.
      * @private
      */
-    updateLabel: function() {
+    updateLabel() {
         var checkedItems = this.jq.find(':checked'),
             labelText = '';
 
@@ -1342,14 +1342,14 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
              this.labelContainer.attr('title', labelText);
         }
         this.registerTrigger();
-    },
+    }
 
     /**
      * When multi mode is enabled: Creates a tag for the given item that was checked.
      * @private
      * @param {JQuery} item The checkbox item that was checked. 
      */
-    createMultipleItem: function(item) {
+    createMultipleItem(item) {
         var items = this.multiItemContainer.children();
         var itemCount = !items.length ? 0 : items.filter('[data-item-value="' + $.escapeSelector(item.data('item-value')) + '"]').length;
         if (itemCount > 0) {
@@ -1377,27 +1377,27 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             this.multiItemContainer.empty();
         }
         this.multiItemContainer.append(itemDisplayMarkup);
-    },
+    }
 
     /**
      * When multi mode is enabled: Removes all visible tags with the same value as the given checkbox item.
      * @private
      * @param {JQuery} item Checkbox item that was unchecked.
      */
-    removeMultipleItem: function(item) {
+    removeMultipleItem(item) {
         var items = this.multiItemContainer.children();
         if (items.length) {
             items.filter('[data-item-value="' + $.escapeSelector(item.data('item-value')) + '"]').remove();
         }
         // update the label if there are no more items to display empty
         this.renderLabel();
-    },
+    }
 
     /**
      * Checks the checkbox option with the given value.
      * @param {string} value Value of the option to check.
      */
-    selectValue: function(value) {
+    selectValue(value) {
         var idx = -1;
         // find input-index
         for (var i = 0; i < this.inputs.length; i++) {
@@ -1420,40 +1420,40 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         if (this.cfg.multiple) {
             this.createMultipleItem(item);
         }
-    },
+    }
 
     /**
      * Enables this input so that the user can enter a value.
      */
-    enable: function() {
+    enable() {
         PrimeFaces.utils.enableInputWidget(this.jq, this.inputs);
         this.disabled = false;
-    },
+    }
 
     /**
      * Disables this input so that the user cannot enter a value anymore.
      */
-    disable: function() {
+    disable() {
         PrimeFaces.utils.disableInputWidget(this.jq, this.inputs);
         this.disabled = true;
-    },
+    }
 
     /**
      * Has the panel been loaded with checkbox data yet?
      * @return {boolean} `true` when the panel has been loaded with checkbox items 
      */
-    isLoaded: function() {
+    isLoaded() {
         return this.cfg.dynamic === false || this.isDynamicLoaded;
-    },
+    }
 
     /**
      * Resets the input.
      * @param {boolean} [silent] `true` to suppress triggering event listeners, or `false` otherwise.
      */
-    resetValue: function(silent) {
+    resetValue(silent) {
         if (this.isLoaded()) {
             this.uncheckAll(silent);
         }
     }
 
-});
+}

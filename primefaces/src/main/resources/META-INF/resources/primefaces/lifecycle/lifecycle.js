@@ -12,15 +12,15 @@
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  */
-PrimeFaces.widget.Lifecycle = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Lifecycle = class Lifecycle extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init : function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         if (!this.initialized) {
             this.initialized = true;
@@ -56,13 +56,13 @@ PrimeFaces.widget.Lifecycle = PrimeFaces.widget.BaseWidget.extend({
                 }
             });
         }
-    },
+    }
 
     /**
      * Updates this lifecycle widget after an AJAX request.
      * @private
      */
-    update: function() {
+    update() {
         this.updating = true;
 
         var $this = this;
@@ -81,4 +81,4 @@ PrimeFaces.widget.Lifecycle = PrimeFaces.widget.BaseWidget.extend({
 
         PrimeFaces.ajax.Request.handle(options);
     }
-});
+}

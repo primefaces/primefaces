@@ -14,26 +14,26 @@
  * @prop {string} cfg.target Target element of the scroll top widget.
  * @prop {number} cfg.threshold Value of the vertical scroll position of the target to toggle the visibility.
  */
-PrimeFaces.widget.ScrollTop = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.ScrollTop = class ScrollTop extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         this.scrollElement = this.cfg.target === 'window' ? $(window) : this.jq.parent();
         
         this.bindEvents();
-    },
+    }
 
     /**
      * Sets up all event listeners required for this widget.
      * @private
      */
-    bindEvents: function() {
+    bindEvents() {
         var $this = this,
         scrollNS = 'scroll.scrollTop' + this.id,
         zIndex = $this.jq.css('zIndex');
@@ -70,4 +70,4 @@ PrimeFaces.widget.ScrollTop = PrimeFaces.widget.BaseWidget.extend({
             }
         });
     }
-});
+}

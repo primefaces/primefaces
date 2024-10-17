@@ -29,15 +29,15 @@
  * @prop {string} cfg.event Name of the client side event to display inline content.
  * @prop {boolean} cfg.toggleable Defines if inplace content is toggleable or not.
  */
-PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Inplace = class Inplace extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         this.display = $(this.jqId + '_display');
         this.content = $(this.jqId + '_content');
@@ -112,21 +112,21 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
                 }
             });
         }
-    },
+    }
 
     /**
      * Switches to editing mode and displays the inplace editor.
      */
-    show: function() {
+    show() {
         this.toggle(this.content, this.display);
-    },
+    }
 
     /**
      * Leaves editing mode and hides the inplace editor.
      */
-    hide: function() {
+    hide() {
         this.toggle(this.display, this.content);
-    },
+    }
 
     /**
      * Hides the label and shows the inline content or inplace editor; or vice versa.
@@ -134,7 +134,7 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery} elToShow Element to show, either the label or the inplace editor.
      * @param {JQuery} elToHide Element to hide, either the label or the inplace editor.
      */
-    toggle: function(elToShow, elToHide) {
+    toggle(elToShow, elToHide) {
         var $this = this;
 
         if(this.cfg.effect === 'fade') {
@@ -154,42 +154,42 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
             elToShow.show();
             $this.postShow();
         }
-    },
+    }
 
     /**
      * Callback that is invoked when the inline content or inplace editor is shown or hidden. Puts focus on the
      * appropriate element and makes sure the inline content is rendered correctly.
      * @private
      */
-    postShow: function() {
+    postShow() {
         this.content.find('input:text,textarea').filter(':visible:enabled:first').trigger('focus').trigger('select');
 
         PrimeFaces.invokeDeferredRenders(this.id);
-    },
+    }
 
     /**
      * Fetches the display element, which is the container with the label or description shown when the inline content
      * is not displayed.
      * @return {JQuery} The display element or label when the editor is not shown.
      */
-    getDisplay: function() {
+    getDisplay() {
         return this.display;
-    },
+    }
 
     /**
      * Fetches the content element, which is the container element with the inline content or inplace editor.
      * @return {JQuery} The content element with the inplace editor.
      */
-    getContent: function() {
+    getContent() {
         return this.content;
-    },
+    }
 
     /**
      * When an inplace editor exists and it is currently active: saves the content of the editor and hides the inplace
      * editor.
      * @param {JQuery.TriggeredEvent} [e] The (click) event which triggered the saving. Currently unused.
      */
-    save: function(e) {
+    save(e) {
         var options = {
             source: this.id,
             update: this.id,
@@ -203,14 +203,14 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
         else {
             PrimeFaces.ajax.Request.handle(options);
         }
-    },
+    }
 
     /**
      * When an inplace editor exists and it is currently active: discard changes that were made and hides the inplace
      * editor.
      * @param {JQuery.TriggeredEvent} [e] The (click) event which triggered the cancellation. Currently unused.
      */
-    cancel: function(e) {
+    cancel(e) {
         var options = {
             source: this.id,
             update: this.id,
@@ -230,4 +230,4 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
         }
     }
 
-});
+}

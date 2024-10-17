@@ -19,24 +19,24 @@
  * @prop {number} cfg.leafNodeConnectorHeight The height of the connector line for leaf nodes.
  * @prop {boolean} cfg.zoom Whether zooming is enabled.
  */
-PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Organigram = class Organigram extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         this.draw();
-    },
+    }
 
     /**
      * Draws (renders) the organigram with the current nodes.
      * @private
      */
-    draw : function() {
+    draw() {
         this.source = this.jq.children('ul');
         this.target = this.jq.children('div');
         this.target.empty();
@@ -46,13 +46,13 @@ PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
         this.setupSelection();
         this.setupDragAndDrop();
         this.setupControls();
-    },
+    }
 
     /**
      * Sets up the event listeners for when a node is selected.
      * @private
      */
-    setupSelection : function() {
+    setupSelection() {
         var widget = this;
 
         var selectableNodes = this.target.find(".ui-organigram-node.selectable");
@@ -63,16 +63,16 @@ PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
         if (this.cfg.autoScrollToSelection === true) {
             this.scrollToSelection();
         }
-    },
+    }
 
     /**
      * Selects the given organigram node.
      * @private
-     * @param {PrimeFaces.widget.Organigram} widget This widget instance. 
-     * @param {JQuery} node The node to select, with the class `.ui-organigram-node`. 
-     * @param {string} event Name of the event that triggered the selection, usually `select` or `contextmenu`. 
+     * @param {PrimeFaces.widget.Organigram} widget This widget instance.
+     * @param {JQuery} node The node to select, with the class `.ui-organigram-node`.
+     * @param {string} event Name of the event that triggered the selection, usually `select` or `contextmenu`.
      */
-    selectNode : function(widget, node, event) {
+    selectNode(widget, node, event) {
         if (!node.hasClass("selected")) {
             widget.target.find(".ui-organigram-node.selected").removeClass("selected");
             node.addClass("selected");
@@ -86,13 +86,13 @@ PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
                 widget.cfg.behaviors[event].call(widget, options);
             }
         }
-    },
+    }
 
     /**
      * Sets up the event listeners for dragging and dropping nodes.
      * @private
      */
-    setupDragAndDrop : function() {
+    setupDragAndDrop() {
         var widget = this;
 
         var nodes = this.target.find(".ui-organigram-node");
@@ -233,13 +233,13 @@ PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
                 widget.redraw = false;
             }
         });
-    },
+    }
 
     /**
      * Sets up the buttons for the global controls, such as the buttons for zooming in and out.
      * @private
      */
-    setupControls : function() {
+    setupControls() {
         var widget = this;
 
         if (this.cfg.zoom) {
@@ -268,7 +268,7 @@ PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
                 widget.zoom(widget.zoomFactor);
             });
         }
-    },
+    }
 
     /**
      * Applies the given zoom factor (scaling) to the organigram.
@@ -276,7 +276,7 @@ PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
      * @param {number} zoom The zoom factor. Must be a positive number. `1.0` means no zoom, `2.0` means zoomed-in,
      * `0.5` means zoomed-out.
      */
-    zoom : function(zoom) {
+    zoom(zoom) {
         var element = this.target.find(">:first-child");
         element.css("-moz-transform", "scale(" + zoom + ")");
         element.css("-moz-transform-origin", "0 0");
@@ -286,17 +286,17 @@ PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
         element.css("-webkit-transform-origin", "0 0");
         element.css("transform", "scale(" + zoom + ")");
         element.css("transform-origin", "0 0");
-    },
+    }
 
     /**
      * Draws the given organigram node.
      * @private
      * @param {string} parentRowKey Row key of the node to draw.
      * @param {JQuery} nodeSource Element of the node to draw.
-     * @param {JQuery} appendTo Element to which the node is appended. 
+     * @param {JQuery} appendTo Element to which the node is appended.
      * @param {number} level Nesting level of the node.
      */
-    drawNode : function(parentRowKey, nodeSource, appendTo, level) {
+    drawNode(parentRowKey, nodeSource, appendTo, level) {
 
         var childNodes = nodeSource.children("ul:first").children("li");
         var isLastLevel = childNodes.length === 0;
@@ -386,16 +386,16 @@ PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
                 }
             }
         }
-    },
+    }
 
     /**
      * Adds an expander button for expanding or collapsing the given node.
      * @private
      * @param {JQuery} nodeSource Node to use as a source.
-     * @param {JQuery} node Node to collapse and expand. 
-     * @param {JQuery} bottomIconContainer Container element to which the expander button is added. 
+     * @param {JQuery} node Node to collapse and expand.
+     * @param {JQuery} bottomIconContainer Container element to which the expander button is added.
      */
-    addExpander : function(nodeSource, node, bottomIconContainer) {
+    addExpander(nodeSource, node, bottomIconContainer) {
 
         if (node.hasClass("collapsible")) {
 
@@ -455,7 +455,7 @@ PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
                 e.stopPropagation();
             });
         }
-    },
+    }
 
     /**
      * Draws the lines connecting the nodes.
@@ -463,7 +463,7 @@ PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
      * @param {number} childNodeCount Number of children in the sub table.
      * @param {JQuery} table The DOM element for the sub table for which to draw the children.
      */
-    drawLines : function(childNodeCount, table) {
+    drawLines(childNodeCount, table) {
 
         // draw vertical row
         var verticalColspan = childNodeCount * 2;
@@ -482,7 +482,7 @@ PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
         // remove the line from the first and last cell
         horizontalRow.find("td:first").removeClass("top");
         horizontalRow.find("td:last").removeClass("top");
-    },
+    }
 
     /**
      * Draws the child nodes of the given parent node.
@@ -494,7 +494,7 @@ PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery} table The DOM element for the sub table for which to draw the children.
      * @param {number} level The nesting level of the parent node.
      */
-    drawChildNodes : function(parentRowKey, leafChildNodes, nonLeafChildNodes, table, level) {
+    drawChildNodes(parentRowKey, leafChildNodes, nonLeafChildNodes, table, level) {
         var row = $("<tr></tr>").appendTo(table);
 
         // draw leaf nodes in a different way
@@ -509,7 +509,7 @@ PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
                     leafTable.append($("<tr><td><div class='line down' style='height:" + this.cfg.leafNodeConnectorHeight + "px'></div></td></tr>"));
                 }
 
-                var leafRow = $("<<tr></tr>").appendTo(leafTable);
+                var leafRow = $("<tr></tr>").appendTo(leafTable);
                 var leafCell = $("<td></td>").appendTo(leafRow);
 
                 var childNode = $(leafChildNodes[j]);
@@ -524,7 +524,7 @@ PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
             var childNode = $(nonLeafChildNodes[i]);
             this.drawNode(parentRowKey, childNode, cell, level + 1);
         }
-    },
+    }
 
     /**
      * @override
@@ -532,9 +532,9 @@ PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
      * @param {PrimeFaces.widget.ContextMenu} menuWidget
      * @param {PrimeFaces.widget.Organigram} targetWidget
      * @param {string} targetId
-     * @param {PrimeFaces.widget.ContextMenuCfg} cfg 
+     * @param {PrimeFaces.widget.ContextMenuCfg} cfg
      */
-    bindContextMenu : function(menuWidget, targetWidget, targetId, cfg) {
+    bindContextMenu(menuWidget, targetWidget, targetId, cfg) {
         var selector = targetId + " .ui-organigram-node.selectable",
         event = cfg.event + ".organigram" + this.id;
 
@@ -549,12 +549,12 @@ PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
         this.addDestroyListener(function() {
             $(document).off(event);
         });
-    },
+    }
 
     /**
      * Scrolls the organigram to the currently selected node, so that the node is in view.
      */
-    scrollToSelection : function() {
+    scrollToSelection() {
         var selection = this.target.find(".ui-organigram-node.selected");
         if (selection.length > 0) {
             var offset = selection.offset();
@@ -566,4 +566,4 @@ PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
             },1000);
         }
     }
-});
+}

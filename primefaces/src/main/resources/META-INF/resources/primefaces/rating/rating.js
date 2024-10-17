@@ -23,15 +23,15 @@
  * @prop {PrimeFaces.widget.Rating.OnRateCallback} cfg.onRate Callback that is invoked when the user gives a rating.
  * @prop {boolean} cfg.readonly Whether this widget is in read-only mode.
  */
-PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Rating = class Rating extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
         this.input = $(this.jqId + '_input');
         this.value = this.getValue();
         this.stars = this.jq.children('.ui-rating-star');
@@ -49,13 +49,13 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
             this.jq.children().css('cursor', 'default');
         }
         this.updateInput(this.value || '0');
-    },
+    }
 
     /**
      * Sets up all event listeners that are required by this widget.
      * @private
      */
-    bindEvents: function() {
+    bindEvents() {
         this.jq.attr('tabindex', this.tabindex);
         var $this = this;
 
@@ -94,14 +94,14 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
             $this.reset();
             $this.focus($(this), true);
         });
-    },
+    }
 
     /**
      * Focuses on a specified element and optionally sets focus to the input element.
      * @param {JQuery} star - The element to which the focus class will be added.
      * @param {boolean} [isInputFocus=false] - If true, also sets focus to the input element.
      */
-    focus: function(star, isInputFocus) {
+    focus(star, isInputFocus) {
         if (!this.cfg.disabled && star) {
             this.jq.children('.ui-state-focus').removeClass("ui-state-focus");
             star.addClass('ui-state-focus');
@@ -110,58 +110,58 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
                 this.input.focus();
             }
         }
-    },
+    }
     
     /**
      * Get focusable element
      * @return {JQuery} element
      * @private
      */
-    getFocusableElement: function() {
+    getFocusableElement() {
         var value = this.getValue() || 0;
         if (value === 0) {
             return this.cancel && this.cancel.length ? this.cancel : this.stars.eq(0);
         } else {
             return this.stars.eq(value - 1);
         }
-    },
+    }
 
     /**
      * Removes the event listeners that were added, called when this widget is disabled.
      * @private
      */
-    unbindEvents: function() {
+    unbindEvents() {
         this.jq.attr('tabindex', -1);
         this.jq.off('keydown.rating focus.rating blur.rating');
         this.stars.off('click.rating');
         this.cancel.off('mouseenter.rating mouseleave.rating click.rating');
-    },
+    }
 
     /**
      * Updates the input element with the new rating value and sets the appropriate ARIA label.
      * @param {number | string} value - The new rating value to update the input element with.
      * @private
      */
-    updateInput: function(value) {
+    updateInput(value) {
         var ariaLabel = value.toString() === '1' ? PrimeFaces.getAriaLabel('star') : PrimeFaces.getAriaLabel('stars', '{star} stars', {star: value})
         this.input.val(value).attr('aria-label', ariaLabel);
-    },
+    }
 
     /**
      * Finds the current rating, i.e. the number of stars selected.
      * @return {number | null} The current rating value.
      */
-    getValue: function() {
+    getValue() {
         var inputVal = this.input.val();
         return inputVal === '0' ? null : parseInt(inputVal);
-    },
+    }
 
     /**
      * Sets the rating to the given value.
      * @param {number | undefined | null} value New rating value to set (number of stars selected). Pass `undefined` or
      * a value not greater thatn 0 to reset the value.
      */
-    setValue: function(value) {
+    setValue(value) {
         if(this.isDisabled() || this.isReadOnly()) {
             return;
         }
@@ -191,30 +191,30 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
         }
 
         this.callBehavior('rate');
-    },
+    }
 
     /**
      * Checks whether this widget is currently disabled. Whe disabled, the user cannot edit the value and it will not be
      * sent to the server when the form is submitted.
      * @return {boolean} `true` if this rating widget is disabled, `false` otherwise.
      */
-    isDisabled: function() {
+    isDisabled() {
         return this.jq.hasClass('ui-state-disabled');
-    },
+    }
 
     /**
      * Checks whether this widget is currently read-only. When read-only, the user cannot edit the value, but the value
      * will be sent to the server when the form is submitted.
      * @return {boolean} `true` if this rating widget is read-only, `false` otherwise.
      */
-    isReadOnly: function() {
+    isReadOnly() {
         return this.cfg.readonly;
-    },
+    }
 
     /**
      * Enables this rating widget so the user can give a rating.
      */
-    enable: function() {
+    enable() {
         if(!this.isDisabled() || this.isReadOnly()) {
             return;
         }
@@ -223,12 +223,12 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
         this.bindEvents();
 
         PrimeFaces.utils.enableInputWidget(this.jq, this.input);
-    },
+    }
 
     /**
      * Disables this rating widget so the user cannot give a rating anymore.
      */
-    disable: function() {
+    disable() {
         if(this.isDisabled()) {
             return;
         }
@@ -237,16 +237,16 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
         this.unbindEvents();
 
         PrimeFaces.utils.disableInputWidget(this.jq, this.input);
-    },
+    }
 
     /**
      * Resets the rating so that no stars are selected.
      */
-    reset: function() {
+    reset() {
         this.updateInput('0');
 
         this.stars.filter('.ui-rating-star-on').removeClass('ui-rating-star-on');
 
         this.callBehavior('cancel');
     }
-});
+}

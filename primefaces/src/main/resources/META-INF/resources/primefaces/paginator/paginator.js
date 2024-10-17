@@ -57,15 +57,15 @@
  * @prop {number} cfg.rows The number of rows per page.
  * @prop {number} cfg.rpp The configured number of rows set per page.
  */
-PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Paginator = class Paginator extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         //elements
         this.navigator = this.jq.children('.ui-paginator-center-content');
@@ -92,13 +92,13 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         this.configureAria();
         //event bindings
         this.bindEvents();
-    },
+    }
 
     /**
      * Configures ARIA labels for screenreaders.
      * @private
      */
-    configureAria: function(){
+    configureAria(){
         this.ariaPageLabel = PrimeFaces.getAriaLabel('pageLabel');
         this.rppSelect.attr('aria-label', PrimeFaces.getAriaLabel('rowsPerPageLabel'));
         this.jtpSelect.attr('aria-label', PrimeFaces.getAriaLabel('jumpToPageDropdownLabel'));
@@ -107,13 +107,13 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         this.prevLink.attr('aria-label', PrimeFaces.getAriaLabel('previousPageLabel'));
         this.nextLink.attr('aria-label', PrimeFaces.getAriaLabel('nextPageLabel'));
         this.endLink.attr('aria-label', PrimeFaces.getAriaLabel('lastPageLabel'));
-    },
+    }
 
     /**
      * Sets up all event listeners for this widget.
      * @private
      */
-    bindEvents: function(){
+    bindEvents(){
         var $this = this;
 
         //visuals for first,prev,next,last buttons
@@ -219,13 +219,13 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
 
             e.preventDefault();
         });
-    },
+    }
 
     /**
      * Sets up the event listeners for page link buttons.
      * @private
      */
-    bindPageLinkEvents: function(){
+    bindPageLinkEvents(){
         var $this = this,
         pageLinks = this.pagesContainer.children('.ui-paginator-page');
 
@@ -270,7 +270,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
                 e.preventDefault();
             }
         });
-    },
+    }
 
     /**
      * Binds swipe events to this paginator to the JQ element passed in.
@@ -278,7 +278,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery} owner the owner JQ element of the paginator
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} ownerConfig the owner configuration to check if touch enabled or not
      */
-    bindSwipeEvents: function(owner, ownerConfig) {
+    bindSwipeEvents(owner, ownerConfig) {
         if (!PrimeFaces.env.isTouchable(ownerConfig)) {
             return;
         }
@@ -292,13 +292,13 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
             },
             excludedElements: PrimeFaces.utils.excludedSwipeElements()
         });
-    },
+    }
 
    /**
     * Removes all event listeners.
     * @private
     */
-   unbindEvents: function() {
+    unbindEvents() {
         var buttons = this.navigator.children('a.ui-state-default');
         if (buttons.length > 0) {
             buttons.off();
@@ -307,13 +307,13 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         if (pageLinks.length > 0) {
             pageLinks.off();
         }
-    },
+    }
 
     /**
      * Updates the UI so that it reflects the current pagination state.
      * @private
      */
-    updateUI: function() {
+    updateUI() {
         //boundaries
         if(this.cfg.page === 0) {
             this.disableElement(this.firstLink);
@@ -375,13 +375,13 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
 
         //page links
         this.updatePageLinks();
-    },
+    }
 
     /**
      * Updates the UI of page link button so that they reflect the current pagination state.
      * @private
      */
-    updatePageLinks: function() {
+    updatePageLinks() {
         var start, end, delta,
         focusedElement = $(document.activeElement),
         focusContainer;
@@ -425,14 +425,14 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         }
 
         this.bindPageLinkEvents();
-    },
+    }
 
     /**
      * Switches this pagination to the given page.
      * @param {number} p 0-based index of the page to switch to.
      * @param {boolean} [silent=false] `true` to not invoke any event listeners, `false` otherwise.
      */
-    setPage: function(p, silent) {
+    setPage(p, silent) {
         if(p >= 0 && p < this.cfg.pageCount && this.cfg.page != p){
             var newState = {
                 first: this.cfg.rows * p,
@@ -448,13 +448,13 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
                 this.cfg.paginate.call(this, newState);
             }
         }
-    },
+    }
 
     /**
      * Modifies the number of rows that are shown per page.
      * @param {number} rpp Number of rows per page to set.
      */
-    setRowsPerPage: function(rpp) {
+    setRowsPerPage(rpp) {
         this.rppSelect.find('option').removeAttr('selected');
         this.cfg.rpp = rpp;
         if (rpp === '*') {
@@ -482,13 +482,13 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
             this.setPage(page);
         }
         this.rppSelect.find('option[value="'+rpp+'"]').attr('selected', 'selected');
-    },
+    }
 
     /**
      * Modifies the total number of items that are available, and switches to the first page.
      * @param {number} value The total number of items to set.
      */
-    setTotalRecords: function(value) {
+    setTotalRecords(value) {
         if (this.cfg.rpp === '*') {
             this.cfg.rows = value;
         }
@@ -496,42 +496,42 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.pageCount = Math.ceil(value / this.cfg.rows)||1;
         this.cfg.page = 0;
         this.updateUI();
-    },
+    }
 
     /**
      * Modifies the total number of items that are available.
      * @param {number} value The total number of items to set.
      * @private
      */
-    updateTotalRecords: function(value) {
+    updateTotalRecords(value) {
         this.cfg.rowCount = value;
         this.cfg.pageCount = Math.ceil(value / this.cfg.rows)||1;
         this.updateUI();
-    },
+    }
 
     /**
      * Finds the index of the page that is currently displayed.
      * @return {number} 0-based index of the current page.
      */
-    getCurrentPage: function() {
+    getCurrentPage() {
         return this.cfg.page;
-    },
+    }
 
     /**
      * Finds the index of the item that is shown first on the current page.
      * @return {number} 0-based index of the first item on the current page.
      */
-    getFirst: function() {
+    getFirst() {
         return (this.cfg.rows * this.cfg.page);
-    },
+    }
 
     /**
      * Finds the current number of rows per page.
      * @return {number} The number of rows per page.
      */
-    getRows: function() {
+    getRows() {
         return this.cfg.rows;
-    },
+    }
 
     /**
      * Calculates the required height of the container with the items of the current page.
@@ -539,7 +539,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
      * @param {number} margin Additional margin in pixels to consider.
      * @return {number} The height of the items container in pixels
      */
-    getContainerHeight: function(margin) {
+    getContainerHeight(margin) {
         var height = 0;
 
         for(var i = 0; i < this.jq.length; i++) {
@@ -547,38 +547,38 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         }
 
         return height;
-    },
+    }
 
     /**
      * Disables one of the items of this pagination.
      * @private
      * @param {JQuery} element Element to disabled.
      */
-    disableElement: function(element) {
+    disableElement(element) {
         element.removeClass('ui-state-hover ui-state-focus ui-state-active').addClass('ui-state-disabled').attr('tabindex', -1);
         element.removeClass('ui-state-hover ui-state-focus ui-state-active').addClass('ui-state-disabled').attr('tabindex', -1);
-    },
+    }
 
     /**
      * Enables one of the items of this pagination.
      * @private
      * @param {JQuery} element Element to disabled.
      */
-    enableElement: function(element) {
+    enableElement(element) {
         element.removeClass('ui-state-disabled').attr('tabindex', 0);
-    },
+    }
 
     /**
      * Switches to the next page. Does nothing when this pagination is already on the last page.
      */
-    next: function() {
+    next() {
         this.setPage(this.cfg.page + 1);
-    },
+    }
 
     /**
      * Switches to the previous page. Does nothing when this pagination is already on the first page.
      */
-    prev: function() {
+    prev() {
         this.setPage(this.cfg.page - 1);
     }
-});
+}
