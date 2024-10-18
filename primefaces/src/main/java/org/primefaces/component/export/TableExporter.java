@@ -23,10 +23,32 @@
  */
 package org.primefaces.component.export;
 
+import org.primefaces.component.api.DynamicColumn;
+import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.api.UITable;
+import org.primefaces.component.celleditor.CellEditor;
+import org.primefaces.component.columngroup.ColumnGroup;
+import org.primefaces.component.overlaypanel.OverlayPanel;
+import org.primefaces.component.rowtoggler.RowToggler;
+import org.primefaces.model.ColumnMeta;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.EscapeUtils;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.IOUtils;
+import org.primefaces.util.LangUtils;
+
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.ObjIntConsumer;
 import java.util.logging.Level;
@@ -46,21 +68,6 @@ import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
-
-import org.primefaces.component.api.DynamicColumn;
-import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.api.UITable;
-import org.primefaces.component.celleditor.CellEditor;
-import org.primefaces.component.columngroup.ColumnGroup;
-import org.primefaces.component.overlaypanel.OverlayPanel;
-import org.primefaces.component.rowtoggler.RowToggler;
-import org.primefaces.model.ColumnMeta;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.EscapeUtils;
-import org.primefaces.util.FacetUtils;
-import org.primefaces.util.IOUtils;
-import org.primefaces.util.LangUtils;
 
 public abstract class TableExporter<T extends UIComponent & UITable, D, O extends ExporterOptions> implements Exporter<T> {
 
@@ -361,34 +368,33 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
         int allColumnsSize = table.getColumns().size();
         List<UIColumn> exportcolumns = new ArrayList<>(allColumnsSize);
         boolean visibleColumnsOnly = exportConfiguration.isVisibleOnly();
-        final AtomicBoolean hasNonDefaultSortPriorities = new AtomicBoolean(false);
-        final List<ColumnMeta> visibleColumnMetadata = new ArrayList<>(allColumnsSize);
         Map<String, ColumnMeta> allColumnMeta = table.getColumnMeta();
+        final List<ColumnMeta> displayPriorityColumnMetadata = new ArrayList<>(allColumnsSize);
 
         table.forEachColumn(true, true, true, column -> {
             if (column.isExportable()) {
                 String columnKey = column.getColumnKey();
                 ColumnMeta currentMeta = allColumnMeta.get(columnKey);
-                if (!visibleColumnsOnly || (visibleColumnsOnly && (currentMeta == null || currentMeta.getVisible()))) {
-                    int displayPriority = column.getDisplayPriority();
-                    ColumnMeta metaCopy = new ColumnMeta(columnKey);
-                    metaCopy.setDisplayPriority(displayPriority);
-                    visibleColumnMetadata.add(metaCopy);
-                    if (displayPriority != 0) {
-                        hasNonDefaultSortPriorities.set(true);
-                    }
+                // #9197 - if we have a column without metadata, we need to set it to 0
+                if (currentMeta == null) {
+                    currentMeta = new ColumnMeta(columnKey);
+                    currentMeta.setVisible(true);
+                    currentMeta.setDisplayPriority(column.getDisplayPriority());
+                }
+                // #7200 display visible columns only
+                if (!visibleColumnsOnly || currentMeta.getVisible()) {
+                    displayPriorityColumnMetadata.add(currentMeta);
                 }
             }
             return true;
         });
 
-        if (hasNonDefaultSortPriorities.get()) {
-            // sort by display priority
-            Comparator<Integer> sortIntegersNaturallyWithNullsLast = Comparator.nullsLast(Comparator.naturalOrder());
-            visibleColumnMetadata.sort(Comparator.comparing(ColumnMeta::getDisplayPriority, sortIntegersNaturallyWithNullsLast));
-        }
+        // #12731 sort by visible display priority
+        Comparator<Integer> sortIntegersNaturallyWithNullsLast = Comparator.nullsLast(Comparator.naturalOrder());
+        displayPriorityColumnMetadata.sort(Comparator.comparing(ColumnMeta::getDisplayPriority, sortIntegersNaturallyWithNullsLast));
 
-        for (ColumnMeta meta : visibleColumnMetadata) {
+
+        for (ColumnMeta meta : displayPriorityColumnMetadata) {
             String metaColumnKey = meta.getColumnKey();
             table.invokeOnColumn(metaColumnKey, -1, exportcolumns::add);
         }
