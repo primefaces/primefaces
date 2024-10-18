@@ -49,7 +49,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.ObjIntConsumer;
 import java.util.logging.Level;
@@ -370,34 +369,33 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
         int allColumnsSize = table.getColumns().size();
         List<UIColumn> exportcolumns = new ArrayList<>(allColumnsSize);
         boolean visibleColumnsOnly = exportConfiguration.isVisibleOnly();
-        final AtomicBoolean hasNonDefaultSortPriorities = new AtomicBoolean(false);
-        final List<ColumnMeta> visibleColumnMetadata = new ArrayList<>(allColumnsSize);
         Map<String, ColumnMeta> allColumnMeta = table.getColumnMeta();
+        final List<ColumnMeta> displayPriorityColumnMetadata = new ArrayList<>(allColumnsSize);
 
         table.forEachColumn(true, true, true, column -> {
             if (column.isExportable()) {
                 String columnKey = column.getColumnKey();
                 ColumnMeta currentMeta = allColumnMeta.get(columnKey);
-                if (!visibleColumnsOnly || (visibleColumnsOnly && (currentMeta == null || currentMeta.getVisible()))) {
-                    int displayPriority = column.getDisplayPriority();
-                    ColumnMeta metaCopy = new ColumnMeta(columnKey);
-                    metaCopy.setDisplayPriority(displayPriority);
-                    visibleColumnMetadata.add(metaCopy);
-                    if (displayPriority != 0) {
-                        hasNonDefaultSortPriorities.set(true);
-                    }
+                // #9197 - if we have a column without metadata, we need to set it to 0
+                if (currentMeta == null) {
+                    currentMeta = new ColumnMeta(columnKey);
+                    currentMeta.setVisible(true);
+                    currentMeta.setDisplayPriority(column.getDisplayPriority());
+                }
+                // #7200 display visible columns only
+                if (!visibleColumnsOnly || currentMeta.getVisible()) {
+                    displayPriorityColumnMetadata.add(currentMeta);
                 }
             }
             return true;
         });
 
-        if (hasNonDefaultSortPriorities.get()) {
-            // sort by display priority
-            Comparator<Integer> sortIntegersNaturallyWithNullsLast = Comparator.nullsLast(Comparator.naturalOrder());
-            visibleColumnMetadata.sort(Comparator.comparing(ColumnMeta::getDisplayPriority, sortIntegersNaturallyWithNullsLast));
-        }
+        // #12731 sort by visible display priority
+        Comparator<Integer> sortIntegersNaturallyWithNullsLast = Comparator.nullsLast(Comparator.naturalOrder());
+        displayPriorityColumnMetadata.sort(Comparator.comparing(ColumnMeta::getDisplayPriority, sortIntegersNaturallyWithNullsLast));
 
-        for (ColumnMeta meta : visibleColumnMetadata) {
+
+        for (ColumnMeta meta : displayPriorityColumnMetadata) {
             String metaColumnKey = meta.getColumnKey();
             table.invokeOnColumn(metaColumnKey, -1, exportcolumns::add);
         }
