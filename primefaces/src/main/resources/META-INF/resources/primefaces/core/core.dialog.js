@@ -137,9 +137,9 @@ if (!PrimeFaces.dialog) {
                             pieces.unshift(classSelector);
                         } else {
                             // Without classes, we try to work with :eq and the tag name
-                            var elems = $(e.parentNode).find(e.tagName);
-                            if (elems.length > 1) {
-                                pieces.unshift(":eq(" + elems.index(e) + ")");
+                            var tagElems = $(e.parentNode).find(e.tagName);
+                            if (tagElems.length > 1) {
+                                pieces.unshift(":eq(" + tagElems.index(e) + ")");
                             }
                             pieces.unshift(e.tagName);
                         }
@@ -340,17 +340,16 @@ if (!PrimeFaces.dialog) {
             dlg.attr('data-queuedforremoval', true);
 
             if(parentDlg) {
-                var parentDlgFrame = parentDlg.find('> .ui-dialog-content > iframe').get(0),
+                var parentDlgFrame = parentDlg.find('> .ui-dialog-content > iframe').get(0);
                 windowContext = parentDlgFrame.contentWindow||parentDlgFrame;
-                sourceWidget = windowContext.PF(sourceWidgetVar);
             }
             else {
                 // We have to resolve the frames from the root window to the source widget to invoke the dialog return behavior
                 // Each source frame element is a selector. We step into every nested frame until we are in the source widget frame.
                 windowContext = rootWindow;
                 var frames = dlgWidget.cfg.sourceFrames;
-                for (var i = 0; i < frames.length; i++) {
-                    windowContext = $(windowContext.document).find(frames[i]).get(0).contentWindow;
+                for (const frame of frames) {
+                    windowContext = $(windowContext.document).find(frame).get(0).contentWindow;
                 }
             }
 
