@@ -27,37 +27,37 @@
  * @prop {string} cfg.tabIndex The default tabIndex of this component. Default to 0.
  * @prop {string | undefined} tabIndex The default tabIndex of this component. Default to 0.
  */
-PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Menu = class Menu extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
         
         this.tabIndex = this.cfg.tabIndex || "0";
 
         if (this.cfg.overlay) {
             this.initOverlay();
         }
-    },
+    }
 
     /**
      * Gets the Menu jQuery element.  Override in subclasses to define the menu panel.
      * @returns {JQuery} The jQuery object for the menu.
      * @protected
      */
-    getMenuElement: function() {
+    getMenuElement() {
         return this.jq;
-    },
+    }
 
     /**
      * Initializes the overlay. Finds the element to which to append this menu and appends it to that element.
      * @protected
      */
-    initOverlay: function() {
+    initOverlay() {
         var $menu = this.getMenuElement();
         $menu.addClass('ui-menu-overlay');
 
@@ -77,13 +77,13 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
 
         //dialog support
         this.setupDialogSupport();
-    },
+    }
 
     /**
       * Sets up the event listener on the trigger.
       * @private
       */
-    bindTrigger: function() {
+    bindTrigger() {
         var $this = this;
         var $menu = this.getMenuElement();
         this.trigger = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector($menu, this.cfg.trigger);
@@ -117,13 +117,13 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
                 $(this).css('transform-origin', 'center ' + directions.vertical).css(pos);
             }
         };
-    },
+    }
 
     /**
       * Sets up the global event listeners on the document in case trigger has been updated in DOM
       * @private
       */
-    bindAjaxListener: function() {
+    bindAjaxListener() {
         var $this = this,
             ajaxEventName = 'pfAjaxUpdated.' + this.id;
 
@@ -137,13 +137,13 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         this.addDestroyListener(function() {
             $(document).off(ajaxEventName);
         });
-    },
+    }
 
     /**
      * Sets up all panel event listeners
      * @protected
      */
-    bindPanelEvents: function() {
+    bindPanelEvents() {
         var $this = this;
         var $menu = this.getMenuElement();
 
@@ -182,13 +182,13 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         this.scrollHandler = PrimeFaces.utils.registerConnectedOverlayScrollHandler(this, 'scroll.' + this.id + '_hide', this.trigger, function() {
             $this.handleViewportChange();
         });
-    },
+    }
 
     /**
      * Unbind all panel event listeners
      * @protected
      */
-    unbindPanelEvents: function() {
+    unbindPanelEvents() {
         if (this.hideOverlayHandler) {
             this.hideOverlayHandler.unbind();
         }
@@ -202,7 +202,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         }
 
         $(document.body).off('mouseup.' + this.id);
-    },
+    }
 
     /**
      * Fired when the browser viewport is resized or scrolled.  In Mobile environment we don't want to hider the overlay
@@ -210,30 +210,30 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
      * resize immediately and close the overlay. See GitHub #7075.
      * @private
      */
-    handleViewportChange: function() {
+    handleViewportChange() {
         if (PrimeFaces.env.mobile || PrimeFaces.hideOverlaysOnViewportChange === false) {
             this.align();
         } else {
             this.hide();
         }
-    },
+    }
 
     /**
      * Performs some setup required to make this overlay menu work with dialogs.
      * @protected
      */
-    setupDialogSupport: function() {
+    setupDialogSupport() {
         var dialog = this.trigger.parents('.ui-dialog:first');
 
         if (dialog.length == 1 && dialog.css('position') === 'fixed') {
             this.getMenuElement().css('position', 'fixed');
         }
-    },
+    }
 
     /**
      * Shows (displays) this menu so that it becomes visible and can be interacted with.
      */
-    show: function() {
+    show() {
         var $this = this;
 
         if (this.transition) {
@@ -249,12 +249,12 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
                 }
             });
         }
-    },
+    }
 
     /**
      * Hides this menu so that it becomes invisible and cannot be interacted with any longer.
      */
-    hide: function() {
+    hide() {
         if (this.transition) {
             var $this = this;
 
@@ -269,20 +269,20 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
                 }
             });
         }
-    },
+    }
 
     /**
      * Aligns this menu as specified in its widget configuration (property `pos`).
      */
-    align: function() {
+    align() {
         this.getMenuElement().css({ left: '0', top: '0', 'transform-origin': 'center top' }).position(this.cfg.pos);
-    },
+    }
 
     /**
      * Resets all menu items to tabindex="0" except the first item if resetFirst
      * @param {boolean} resetFirst whether to reset to the first cell to tabindex="0"
      */
-    resetFocus: function(resetFirst) {
+    resetFocus(resetFirst) {
         // default all links to not focusable
         var $container = this.getMenuElement();
         var focusableLinks = $container.find("a.ui-menuitem-link:not(.ui-state-disabled)");
@@ -302,7 +302,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
             var focused = focusableLinks.filter(':focusable:first').first();
             focused.addClass('ui-state-hover ui-state-active').attr('tabindex', defaultTabIndex);
         }
-    },
+    }
 
     /**
      * Selects the menu item link by making it focused and setting tabindex to "0" for ARIA.
@@ -310,7 +310,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery} menulink - The menu item (`<a>`) to select.
      * @param {JQuery.TriggeredEvent} [event] - The event that triggered the focus.
      */
-    focus: function(menulink, event) {
+    focus(menulink, event) {
         if (menulink.hasClass('ui-state-disabled')) {
             return;
         }
@@ -322,14 +322,14 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
             cssClass = cssClass + ' ui-state-active';
         }
         menulink.addClass(cssClass).attr('tabindex', defaultTabIndex).trigger('focus');
-    },
+    }
 
     /**
      * Unselect the menu item link by removing focus and tabindex=-1 for ARIA.
      * @param {JQuery} menulink Menu item (`A`) to unselect.
      * @param {JQuery.TriggeredEvent} [event] - The event that triggered the unfocus.
      */
-    unfocus: function(menulink, event) {
+    unfocus(menulink, event) {
         if (menulink.hasClass('ui-state-disabled')) {
             return;
         }
@@ -341,7 +341,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         }
         menulink.removeClass(cssClass).attr('tabindex', -1);
     }
-});
+}
 
 
 

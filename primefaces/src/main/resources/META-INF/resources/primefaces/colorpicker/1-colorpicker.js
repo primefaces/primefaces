@@ -35,43 +35,43 @@
  * @prop {PrimeFaces.widget.ColorPicker.DisplayMode} cfg.mode Whether the color picker is displayed inline or as a popup.
  * @prop {string} cfg.instance The instance of for configuring in popup mode
  */
-PrimeFaces.widget.ColorPicker = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.ColorPicker = class ColorPicker extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
         this.setupGlobalDefaults();
         this.setupPopup();
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    refresh: function(cfg) {
+    refresh(cfg) {
         this._cleanup();
-        this._super(cfg);
-    },
+        super.refresh(cfg);
+    }
 
     /**
      * @override
      * @inheritdoc
      */
-    destroy: function() {
-        this._super();
+    destroy() {
+        super.destroy();
         this._cleanup();
-    },
+    }
 
     /**
     * Clean up this widget and remove events from the DOM.
     * @private
     */
-    _cleanup: function() {
+    _cleanup() {
         if (this.input) {
             this.input.removeClass('ui-colorpicker');
             this.input.parent().find('button').remove();
@@ -81,13 +81,13 @@ PrimeFaces.widget.ColorPicker = PrimeFaces.widget.BaseWidget.extend({
             // remove the inline from the DOM
             this.jq.empty();
         }
-    },
+    }
 
     /**
      * Only one instance of Coloris is allowed so ensure it only loads defaults once.
      * @private
      */
-    setupGlobalDefaults: function() {
+    setupGlobalDefaults() {
         this.popup = this.cfg.mode === 'popup';
         if (colorisInitialized) {
             return;
@@ -122,13 +122,13 @@ PrimeFaces.widget.ColorPicker = PrimeFaces.widget.BaseWidget.extend({
             }
             colorisInitialized = false;
         });
-    },
+    }
 
     /**
      * Localizes the ARIA accessibility labels for the color picker.
      * @private
      */
-    configureLocale: function() {
+    configureLocale() {
         var lang = PrimeFaces.getLocaleSettings(this.cfg.locale);
         if (!lang) {
             return;
@@ -151,7 +151,7 @@ PrimeFaces.widget.ColorPicker = PrimeFaces.widget.BaseWidget.extend({
             this.configureAriaLabel('colorpicker.INSTRUCTION', a11y, 'instruction');
             this.cfg.a11y = a11y;
         }
-    },
+    }
     
     /**
      * Configures a single ARIA label from PF locale to Coloris a11y.
@@ -160,18 +160,18 @@ PrimeFaces.widget.ColorPicker = PrimeFaces.widget.BaseWidget.extend({
      * @param {string} property the JSON property to set in a11y
      * @private
      */
-    configureAriaLabel: function(label, a11y, property) {
+    configureAriaLabel(label, a11y, property) {
         var ariaLabel = PrimeFaces.getAriaLabel(label);
         if (ariaLabel) {
             a11y[property] = ariaLabel;
         }
-    },
+    }
 
     /**
      * Configure the color picker for popup mode.
      * @private
      */
-    setupPopup: function() {
+    setupPopup() {
         if (!this.popup) {
             return;
         }
@@ -199,13 +199,13 @@ PrimeFaces.widget.ColorPicker = PrimeFaces.widget.BaseWidget.extend({
                 triggerButton.addClass('ui-inputfield ui-state-error');
             }
         });
-    },
+    }
 
     /**
      * Sets up the event listeners required by this widget for inline mode.
      * @private
      */
-    bindInlineCallbacks: function() {
+    bindInlineCallbacks() {
         var $this = this;
         if ($this.hasBehavior('change')) {
             var pickNS = 'coloris:pick';
@@ -221,13 +221,13 @@ PrimeFaces.widget.ColorPicker = PrimeFaces.widget.BaseWidget.extend({
                 $(document).off(pickNS);
             });
         }
-    },
+    }
 
     /**
      * Sets up the event listeners required by this widget.
      * @private
      */
-    bindInputCallbacks: function() {
+    bindInputCallbacks() {
         var $this = this;
         if ($this.hasBehavior('change')) {
             $this.input.on('coloris:pick', function(e) {
@@ -267,74 +267,74 @@ PrimeFaces.widget.ColorPicker = PrimeFaces.widget.BaseWidget.extend({
                 $this.input.parent().addClass('ui-inputwrapper-focus');
             });
         }
-    },
+    }
 
     /**
      * Sets up support for using the overlay color picker within an overlay dialog.
      * @private
      */
-    setupDialogSupport: function() {
+    setupDialogSupport() {
         var dialog = this.input[0].closest('.ui-dialog');
         if (dialog) {
             this.cfg.parent = PrimeFaces.escapeClientId(dialog.id);
         }
-    },
+    }
 
     /**
       * Gets the current color
       * @return {string} the current color
       */
-    getColor: function() {
+    getColor() {
         var input = this.popup ? this.input : this.jq.find('#clr-color-value');
         return input.val();
-    },
+    }
 
     /**
       * Sets the current color
       * @param {string} color the color to set
       */
-    setColor: function(color) {
+    setColor(color) {
         if (!color) {
             return;
         }
         var newColor = color.toLowerCase();
         var input = this.popup ? this.input : this.jq.find('#clr-color-value');
         Coloris.setColor(newColor, input[0]);
-    },
+    }
 
     /**
      * Shows the popup panel.
      */
-    show: function() {
+    show() {
         if (this.input) {
             this.input.trigger('click');
         }
-    },
+    }
 
     /**
      * Close the dialog and revert the color to its original value.
      * @param {boolean | undefined} revert true to revert the color to its original value
      */
-    hide: function(revert) {
+    hide(revert) {
         if (this.input) {
             Coloris.close(revert);
         }
-    },
+    }
 
     /**
      * Disables this input so that the user cannot enter a value anymore.
      */
-    disable: function() {
+    disable() {
         PrimeFaces.utils.disableInputWidget(this.jq, this.input);
-    },
+    }
 
     /**
      * Enables this input so that the user can enter a value.
      */
-    enable: function() {
+    enable() {
         PrimeFaces.utils.enableInputWidget(this.jq, this.input);
     }
-});
+}
 
 // Global variable so Coloris is only initialized once
 var colorisInitialized = false;

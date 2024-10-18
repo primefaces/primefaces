@@ -36,15 +36,15 @@
  * @prop {string} cfg.effect Animation effect to use when showing and hiding wizard.
  * @prop {number} cfg.effectDuration Duration of the animation effect in milliseconds.
  */
-PrimeFaces.widget.Wizard = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Wizard = class Wizard extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         this.content = $(this.jqId + '_content');
         this.backNav = $(this.jqId + '_back');
@@ -79,12 +79,12 @@ PrimeFaces.widget.Wizard = PrimeFaces.widget.BaseWidget.extend({
             else if(currentStepIndex == this.cfg.steps.length - 1)
                 this.nextNav.hide();
         }
-    },
+    }
 
     /**
      * Returns to the previous wizard step.
      */
-    back: function() {
+    back() {
         var $this = this;
         if(this.cfg.onback) {
             var value = this.cfg.onback.call(this);
@@ -105,12 +105,12 @@ PrimeFaces.widget.Wizard = PrimeFaces.widget.BaseWidget.extend({
                 this.loadStep(stepToGo, "back");
             }
         }
-    },
+    }
 
     /**
      * Advances to the next wizard step.
      */
-    next: function() {
+    next() {
         var $this = this;
         if(this.cfg.onnext) {
             var value = this.cfg.onnext.call(this);
@@ -131,7 +131,7 @@ PrimeFaces.widget.Wizard = PrimeFaces.widget.BaseWidget.extend({
                 this.loadStep(stepToGo, "next");
             }
         }
-    },
+    }
 
     /**
      * Loads the given wizard step via AJAX, if not already loaded.
@@ -139,7 +139,7 @@ PrimeFaces.widget.Wizard = PrimeFaces.widget.BaseWidget.extend({
      * @param {string} stepToGo ID of the wizard step tab to load. 
      * @param {string} event Type of event that triggered the loading, `back` or `next`. 
      */
-    loadStep: function(stepToGo, event) {
+    loadStep(stepToGo, event) {
         var $this = this,
         options = {
             source: this.id,
@@ -194,83 +194,83 @@ PrimeFaces.widget.Wizard = PrimeFaces.widget.BaseWidget.extend({
         else {
             PrimeFaces.ajax.Request.handle(options);
         }
-    },
+    }
 
     /**
      * Finds the index of the given wizard step.
      * @param {string} step ID of the wizard step tab to check.
      * @return {number} The 0-based index of the given wizard step tab.
      */
-    getStepIndex: function(step) {
+    getStepIndex(step) {
         for(var i=0; i < this.cfg.steps.length; i++) {
             if(this.cfg.steps[i] == step)
                 return i;
         }
 
         return -1;
-    },
+    }
 
     /**
      * Shows the button for navigating to the next wizard step.
      */
-    showNextNav: function() {
+    showNextNav() {
         this.nextNav.fadeIn();
-    },
+    }
 
     /**
      * Hides the button for navigating to the next wizard step.
      */
-    hideNextNav: function() {
+    hideNextNav() {
         this.nextNav.fadeOut();
-    },
+    }
 
     /**
      * Enables the button for navigating to the next wizard step.
      */
-    enableNextNav: function() {
+    enableNextNav() {
         PrimeFaces.utils.enableButton(this.nextNav);
-    },
+    }
 
     /**
      * Disables the button for navigating to the next wizard step.
      */
-    disableNextNav: function() {
+    disableNextNav() {
         PrimeFaces.utils.disableButton(this.nextNav);
-    },
+    }
 
     /**
      * Shows the button for navigating to the previous wizard step.
      */
-    showBackNav: function() {
+    showBackNav() {
         this.backNav.fadeIn();
-    },
+    }
 
     /**
      * Hides the button for navigating to the previous wizard step.
      */
-    hideBackNav: function() {
+    hideBackNav() {
         this.backNav.fadeOut();
-    },
+    }
 
     /**
      * Enables the button for navigating to the previous wizard step.
      */
-    enableBackNav: function() {
+    enableBackNav() {
         PrimeFaces.utils.enableButton(this.backNav);
-    },
+    }
 
     /**
      * Disables the button for navigating to the previous wizard step.
      */
-    disableBackNav: function() {
+    disableBackNav() {
         PrimeFaces.utils.disableButton(this.backNav);
-    },
+    }
 
     /**
      * Sets up the global event listeners on the navigation buttons.
      * @private
      */
-    bindTriggers: function() {
+    bindTriggers() {
         var $this = this;
 
         $(document).on('pfAjaxSend.' + this.id, function(e, xhr, settings) {
@@ -287,6 +287,6 @@ PrimeFaces.widget.Wizard = PrimeFaces.widget.BaseWidget.extend({
         this.addDestroyListener(function() {
             $(document).off('.' + this.id);
         });
-    },
+    }
 
-});
+}

@@ -41,15 +41,15 @@
  * @prop {string} cfg.filterEvent Client side event to invoke filtering. Default is keyup.
  * @prop {number} cfg.filterDelay Delay to wait in milliseconds before sending each filter query. Default is 300.
  */
-PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
+PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.BaseTree {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         this.container = this.jq.children('.ui-tree-container');
         this.cfg.rtl = this.jq.hasClass('ui-tree-rtl');
@@ -67,14 +67,14 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         }
 
         this.restoreScrollState();
-    },
+    }
 
     /**
      * @override
      * @protected
      * @inheritdoc
      */
-    bindEvents: function() {
+    bindEvents() {
         var $this = this,
         togglerSelector = '.ui-tree-toggler',
         nodeContentSelector = '.ui-treenode-content';
@@ -153,13 +153,13 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         });
 
         this.bindKeyEvents();
-    },
+    }
 
     /**
      * Sets up all event listeners for keyboard interactions.
      * @private
      */
-    bindKeyEvents: function() {
+    bindKeyEvents() {
         var $this = this,
         pressTab = false;
 
@@ -337,7 +337,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         this.addDestroyListener(function() {
             $(document.body).off(namespace);
         });
-    },
+    }
 
     /**
      * Returns the previous node, skipping droppoints (if present), starting at the given node.
@@ -345,13 +345,13 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
      * @param {JQuery} node Node where to start the search.
      * @return {JQuery} The previous node.
      */
-    previousNode: function(node) {
+    previousNode(node) {
         var prevNode = node.prev();
         if (prevNode.length && (prevNode.hasClass("ui-tree-droppoint") || prevNode.hasClass("ui-treenode-hidden"))) {
             prevNode = prevNode.prev();
         }
         return prevNode;
-    },
+    }
 
     /**
      * Returns the next node, skipping droppoints (if present), starting at the given node.
@@ -359,13 +359,13 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
      * @param {JQuery} node Node where to start the search.
      * @return {JQuery} The next node.
      */
-    nextNode: function(node) {
+    nextNode(node) {
         var nextNode = node.next();
         if (nextNode.length && (nextNode.hasClass("ui-tree-droppoint") || nextNode.hasClass("ui-treenode-hidden"))) {
             nextNode = nextNode.next();
         }
         return nextNode;
-    },
+    }
 
     /**
      * Searches for a node to focus, starting at the given node.
@@ -373,7 +373,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
      * @param {JQuery} node Node where to start the search.
      * @return {JQuery} A node to focus.
      */
-    searchDown: function(node) {
+    searchDown(node) {
         var nextOfParent = this.nextNode(node.closest('ul').parent('li')),
         nodeToFocus = null;
 
@@ -392,14 +392,14 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         }
 
         return nodeToFocus;
-    },
+    }
 
     /**
      * Collapses the given node, as if the user had clicked on the `-` icon of the node. The children of the node will
      * now be visible.
      * @param {JQuery} node Node to collapse.
      */
-    collapseNode: function(node) {
+    collapseNode(node) {
         var _self = this,
         nodeContent = node.find('> .ui-treenode-content'),
         toggleIcon = nodeContent.find('> .ui-tree-toggler'),
@@ -426,7 +426,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
             childrenContainer.hide();
             this.postCollapse(node, childrenContainer);
         }
-    },
+    }
 
     /**
      * Callback that is invoked after a node was collapsed.
@@ -434,7 +434,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
      * @param {JQuery} node The node that was collapsed.
      * @param {JQuery} childrenContainer The container element with the children of the collapsed node.
      */
-    postCollapse: function(node, childrenContainer) {
+    postCollapse(node, childrenContainer) {
         if(this.cfg.dynamic && !this.cfg.cache) {
             childrenContainer.empty();
         }
@@ -442,7 +442,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         if(!this.cfg.cache) {
             this.fireCollapseEvent(node);
         }
-    },
+    }
 
     /**
      * @override
@@ -451,9 +451,9 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
      * @param {JQuery} node
      * @return {JQuery}
      */
-    getNodeChildrenContainer: function(node) {
+    getNodeChildrenContainer(node) {
         return node.children('.ui-treenode-children');
-    },
+    }
 
     /**
      * @override
@@ -461,7 +461,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
      * @inheritdoc
      * @param {JQuery} node
      */
-    showNodeChildren: function(node) {
+    showNodeChildren(node) {
         var nodeContent = node.find('> .ui-treenode-content'),
         toggleIcon = nodeContent.find('> .ui-tree-toggler'),
         nodeType = node.data('nodetype'),
@@ -483,18 +483,18 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         else {
             node.children('.ui-treenode-children').show();
         }
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      */
-    unselectAllNodes: function() {
+    unselectAllNodes() {
         this.selections = [];
         this.jq.find('.ui-treenode-content.ui-state-highlight').each(function() {
             $(this).removeClass('ui-state-highlight').closest('.ui-treenode').attr('aria-selected', false).removeClass('ui-treenode-selected').addClass('ui-treenode-unselected');
         });
-    },
+    }
 
     /**
      * @override
@@ -502,7 +502,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
      * @param {JQuery} node
      * @param {boolean} [silent]
      */
-    selectNode: function(node, silent) {
+    selectNode(node, silent) {
         node.attr('aria-selected', true).removeClass('ui-treenode-unselected').addClass('ui-treenode-selected')
             .find('> .ui-treenode-content').addClass('ui-state-highlight');
 
@@ -511,7 +511,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
 
         if(!silent)
             this.fireNodeSelectEvent(node);
-    },
+    }
 
     /**
      * @override
@@ -519,7 +519,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
      * @param {JQuery} node
      * @param {boolean} [silent]
      */
-    unselectNode: function(node, silent) {
+    unselectNode(node, silent) {
         var rowKey = this.getRowKey(node);
 
         node.attr('aria-selected', false).removeClass('ui-treenode-selected').addClass('ui-treenode-unselected')
@@ -530,7 +530,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
 
         if(!silent)
             this.fireNodeUnselectEvent(node);
-    },
+    }
 
     /**
      * @override
@@ -538,7 +538,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
      * @inheritdoc
      * @param {JQuery} node
      */
-    toggleCheckboxNode: function(node) {
+    toggleCheckboxNode(node) {
         var $this = this,
         checkbox = node.find('> .ui-treenode-content > .ui-chkbox'),
         checked = checkbox.find('> .ui-chkbox-box > .ui-chkbox-icon').hasClass('ui-icon-check');
@@ -595,14 +595,14 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
             this.fireNodeUnselectEvent(node);
         else
             this.fireNodeSelectEvent(node);
-    },
+    }
 
     /**
      * @override
      * @protected
      * @inheritdoc
      */
-    preselectCheckbox: function() {
+    preselectCheckbox() {
         this.jq.find('.ui-chkbox-icon').not('.ui-icon-check').each(function() {
             var icon = $(this),
             node = icon.closest('li');
@@ -612,7 +612,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 icon.removeClass('ui-icon-blank').addClass('ui-icon-minus');
             }
         });
-    },
+    }
 
     /**
      * @override
@@ -620,10 +620,10 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
      * @inheritdoc
      * @param {JQuery} checkbox
      */
-    check: function(checkbox) {
-        this._super(checkbox);
+    check(checkbox) {
+        super.check(checkbox);
         checkbox.parent().addClass('ui-state-highlight');
-    },
+    }
 
     /**
      * @override
@@ -631,35 +631,35 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
      * @inheritdoc
      * @param {JQuery} checkbox
      */
-    uncheck: function(checkbox) {
-        this._super(checkbox);
+    uncheck(checkbox) {
+        super.uncheck(checkbox);
         checkbox.parent().removeClass('ui-state-highlight');
-    },
+    }
 
     /**
      * Sets up the drag functionality.
      * @private
      */
-    initDraggable: function() {
+    initDraggable() {
         this.makeDraggable(this.jq.find('.ui-treenode-content'));
-    },
+    }
 
     /**
      * Sets up the drop functionality.
      * @private
      */
-    initDroppable: function() {
+    initDroppable() {
         this.makeDropPoints(this.jq.find('li.ui-tree-droppoint'));
         this.makeDropNodes(this.jq.find('.ui-treenode-droppable'));
         this.initDropScrollers();
-    },
+    }
 
     /**
      * Sets up the JQuery UI draggable for the given elements.
      * @private
      * @param {JQuery} elements A list of draggable nodes to set up.
      */
-    makeDraggable: function(elements) {
+    makeDraggable(elements) {
         var $this = this,
         dragdropScope = this.cfg.dragdropScope||this.id;
 
@@ -693,14 +693,14 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
             'dragsourceid': this.jqId,
             'dragmode': this.cfg.dragMode
         });
-    },
+    }
 
     /**
      * Sets up the JQuery UI drop points for the given elements.
      * @private
      * @param {JQuery} elements A list of drop points to set up.
      */
-    makeDropPoints: function(elements) {
+    makeDropPoints(elements) {
         var $this = this,
         dragdropScope = this.cfg.dragdropScope||this.id;
 
@@ -791,7 +791,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 }
             }
         });
-    },
+    }
 
     /**
      * Callback for when a node was dropped on a drop point.
@@ -804,7 +804,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
      * @param {JQuery} dropNode The node on which the dragged node was dropped.
      * @param {boolean} transfer Whether a transfer should occur, i.e. whether the node was not dropped on itself.
      */
-    onDropPoint: function(ui, dragSource, dragNode, targetDragNode, dropPoint, dropNode, transfer) {
+    onDropPoint(ui, dragSource, dragNode, targetDragNode, dropPoint, dropNode, transfer) {
         var dragNodeDropPoint = targetDragNode.next('li.ui-tree-droppoint'),
         oldParentNode = targetDragNode.parent().closest('li.ui-treenode-parent');
 
@@ -848,14 +848,14 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         if(transfer) {
             dragSource.syncDragDrop();
         }
-    },
+    }
 
     /**
      * Sets up the JQuery UI dropables for the droppable nodes.
      * @private
      * @param {JQuery} elements List of elements to make droppable.
      */
-    makeDropNodes: function(elements) {
+    makeDropNodes(elements) {
         var $this = this,
         dragdropScope = this.cfg.dragdropScope||this.id;
 
@@ -955,7 +955,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 }
             }
         });
-    },
+    }
 
     /**
      * Callback for when a node was dropped.
@@ -968,7 +968,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
      * @param {JQuery} dropNode The node on which the dragged node was dropped.
      * @param {boolean} transfer Whether a transfer should occur.
      */
-    onDropNode: function(ui, dragSource, dragNode, targetDragNode, droppable, dropNode, transfer) {
+    onDropNode(ui, dragSource, dragNode, targetDragNode, droppable, dropNode, transfer) {
         var dragNodeDropPoint = targetDragNode.next('li.ui-tree-droppoint'),
         oldParentNode = targetDragNode.parent().closest('li.ui-treenode-parent'),
         childrenContainer = dropNode.children('.ui-treenode-children');
@@ -1018,7 +1018,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         if(transfer) {
             dragSource.syncDragDrop();
         }
-    },
+    }
 
     /**
      * Filters the given array of row keys and removes child nodes of parent node in the array.
@@ -1026,7 +1026,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
      * @param {string[]} arr A list of row keys to check.
      * @return {string[]} A list of parent row keys.
      */
-    findSelectedParentKeys: function(arr) {
+    findSelectedParentKeys(arr) {
         for(var i = 0; i < arr.length; i++) {
             var key = arr[i];
             for(var j = 0; j < arr.length && key !== -1; j++) {
@@ -1040,13 +1040,13 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         return arr.filter(function(item) {
             return item !== -1;
         });
-    },
+    }
 
     /**
      * Initializes all drop scrollers of this tree.
      * @private
      */
-    initDropScrollers: function() {
+    initDropScrollers() {
         var $this = this,
         dragdropScope = this.cfg.dragdropScope||this.id;
 
@@ -1067,22 +1067,22 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 clearInterval($this.scrollInterval);
             }
         });
-    },
+    }
 
     /**
      * Scrolls this tree by the given amount.
      * @param {number} step Amount by which to scroll.
      */
-    scroll: function(step) {
+    scroll(step) {
         this.container.scrollTop(this.container.scrollTop() + step);
-    },
+    }
 
     /**
      * Updates the drag&drop settings for the given node.
      * @private
      * @param {JQuery} node Node to update.
      */
-    updateDragDropBindings: function(node) {
+    updateDragDropBindings(node) {
         //self droppoint
         node.after('<li class="ui-tree-droppoint ui-droppable"></li>');
         this.makeDropPoints(node.next('li.ui-tree-droppoint'));
@@ -1107,7 +1107,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 'dragmode': this.cfg.dragMode
             });
         }
-    },
+    }
 
     /**
      * Locates the target drag node, depending on the given drag mode.
@@ -1116,7 +1116,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
      * @param {PrimeFaces.widget.BaseTree.DragMode} dragMode The current drag mode of this tree.
      * @return {JQuery} The resolved target drag node.
      */
-    findTargetDragNode: function(dragNode, dragMode) {
+    findTargetDragNode(dragNode, dragMode) {
         var targetDragNode = null;
 
         if(dragMode === 'self') {
@@ -1132,30 +1132,30 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         }
 
         return targetDragNode;
-    },
+    }
 
     /**
      * Finds the nodes with the given row keys.
      * @param {string[]} rowkeys A list of row keys.
      * @return {JQuery[]} A list of nodes corresponding to the given row keys, in that order.
      */
-    findNodes: function(rowkeys) {
+    findNodes(rowkeys) {
         var nodes = [];
         for(var i = 0; i < rowkeys.length; i++) {
             nodes.push($(this.jqId + '\\:' + rowkeys[i]));
         }
 
         return nodes;
-    },
+    }
 
     /**
      * Updates the row keys of all nodes.
      * @private
      */
-    updateRowKeys: function() {
+    updateRowKeys() {
         var children = this.jq.find('> ul.ui-tree-container > li.ui-treenode');
         this.updateChildrenRowKeys(children, null);
-    },
+    }
 
     /**
      * Updates the row keys of all given children.
@@ -1163,7 +1163,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
      * @param {JQuery} children List of children to update.
      * @param {string | null} rowkey Base prefix for the new rowkey.
      */
-    updateChildrenRowKeys: function(children, rowkey) {
+    updateChildrenRowKeys(children, rowkey) {
         var $this = this;
 
         children.each(function(i) {
@@ -1180,7 +1180,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 $this.updateChildrenRowKeys(childNode.find('> ul.ui-treenode-children > li.ui-treenode'), newRowKey);
             }
         });
-    },
+    }
 
     /**
      * After a drag&drop, validates if the drop is allowed.
@@ -1189,7 +1189,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
      * @param {JQuery} dropPoint Element where the node was dropped.
      * @return {boolean} Whether the drop is allowed.
      */
-    validateDropPoint: function(dragNode, dropPoint) {
+    validateDropPoint(dragNode, dropPoint) {
         //dropped before or after
         if(dragNode.next().get(0) === dropPoint.get(0)||dragNode.prev().get(0) === dropPoint.get(0)) {
             return false;
@@ -1208,7 +1208,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         }
 
         return true;
-    },
+    }
 
     /**
      * After a drag&drop, validates if the drop is allowed.
@@ -1218,7 +1218,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
      * @param {JQuery} oldParentNode Old parent of the dragged node.
      * @return {boolean} Whether the drop is allowed.
      */
-    validateDropNode: function(dragNode, dropNode, oldParentNode) {
+    validateDropNode(dragNode, dropNode, oldParentNode) {
         //dropped on parent
         if(oldParentNode.get(0) === dropNode.get(0))
             return false;
@@ -1236,37 +1236,37 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         }
 
         return true;
-    },
+    }
 
     /**
      * Turns the given node into a leaf node.
      * @private
      * @param {JQuery} node A new leaf node to convert.
      */
-    makeLeaf: function(node) {
+    makeLeaf(node) {
         node.removeClass('ui-treenode-parent').addClass('ui-treenode-leaf');
         node.find('> .ui-treenode-content > .ui-tree-toggler').addClass('ui-treenode-leaf-icon').removeClass('ui-tree-toggler ui-icon ui-icon-triangle-1-s');
         node.children('.ui-treenode-children').hide().children().remove();
-    },
+    }
 
     /**
      * Turns the given node into a parent node.
      * @private
      * @param {JQuery} node A new parent node to convert.
      */
-    makeParent: function(node) {
+    makeParent(node) {
         node.removeClass('ui-treenode-leaf').addClass('ui-treenode-parent');
         node.find('> .ui-treenode-content > span.ui-treenode-leaf-icon').removeClass('ui-treenode-leaf-icon').addClass('ui-tree-toggler ui-icon ' + this.cfg.collapsedIcon);
         node.children('.ui-treenode-children').append('<li class="ui-tree-droppoint ui-droppable"></li>');
 
         this.makeDropPoints(node.find('> ul.ui-treenode-children > li.ui-tree-droppoint'));
-    },
+    }
 
     /**
      * Updates the tree after a drag&drop event.
      * @private
      */
-    syncDragDrop: function() {
+    syncDragDrop() {
         var $this = this;
 
         if(this.cfg.selectionMode) {
@@ -1282,7 +1282,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         else {
             this.updateRowKeys();
         }
-    },
+    }
 
     /**
      * Updates all checkboxes after a drag&drop.
@@ -1292,7 +1292,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
      * @param {JQuery} oldParentNode Old node that was parent of the dropped node.
      * @param {JQuery} newParentNode New node that is to be the parent of the dropped node.
      */
-    syncDNDCheckboxes: function(dragSource, oldParentNode, newParentNode) {
+    syncDNDCheckboxes(dragSource, oldParentNode, newParentNode) {
         if(oldParentNode.length) {
             dragSource.propagateDNDCheckbox(oldParentNode);
         }
@@ -1300,13 +1300,13 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         if(newParentNode.length) {
             this.propagateDNDCheckbox(newParentNode);
         }
-    },
+    }
 
     /**
      * Unselects the node and all child nodes.
      * @param {JQuery} node Node to unselect.
      */
-    unselectSubtree: function(node) {
+    unselectSubtree(node) {
         var $this = this;
 
         if(this.isCheckboxSelection()) {
@@ -1323,14 +1323,14 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 $(this).removeClass('ui-state-highlight').closest('li.ui-treenode').attr('aria-selected', false).removeClass('ui-treenode-selected').addClass('ui-treenode-unselected');
             });
         }
-    },
+    }
 
     /**
      * Updates the drag&drop checkboxes.
      * @private
      * @param {JQuery} node Node to which to limit the update.
      */
-    propagateDNDCheckbox: function(node) {
+    propagateDNDCheckbox(node) {
         var checkbox = node.find('> .ui-treenode-content > .ui-chkbox'),
         children = node.find('> .ui-treenode-children > .ui-treenode');
 
@@ -1347,14 +1347,14 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         if(parent.length) {
             this.propagateDNDCheckbox(parent);
         }
-    },
+    }
 
     /**
      * Callback for when a drag&drop occurred. Invokes the appropriate behaviors.
      * @private
      * @param {JQuery.TriggeredEvent} event Event that triggered the drag&drop.
      */
-    fireDragDropEvent: function(event) {
+    fireDragDropEvent(event) {
         var $this = this,
         options = {
             source: this.id,
@@ -1390,33 +1390,33 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         else {
             PrimeFaces.ajax.Request.handle(options);
         }
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      * @return {boolean}
      */
-    isEmpty: function() {
+    isEmpty() {
         return (this.container.children().length === 0);
-    },
+    }
 
     /**
      * Finds the first node.
      * @return {JQuery} The first node of this tree.
      */
-    getFirstNode: function() {
+    getFirstNode() {
         return this.jq.find("> ul.ui-tree-container > li.ui-treenode").first();
-    },
+    }
 
     /**
      * Finds the content element for the given node.
      * @param {JQuery} node Node for which to find the corresponding content.
      * @return {JQuery} The element with the content for the given node.
      */
-    getNodeContent: function(node) {
+    getNodeContent(node) {
         return node.find('> .ui-treenode-content');
-    },
+    }
 
     /**
      * @override
@@ -1424,19 +1424,19 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
      * @inheritdoc
      * @param {JQuery} node
      */
-    focusNode: function(node) {
+    focusNode(node) {
         if(this.focusedNode) {
             this.getNodeContent(this.focusedNode).removeClass('ui-treenode-outline');
         }
 
         this.getNodeContent(node).addClass('ui-treenode-outline').trigger('focus');
         this.focusedNode = node;
-    },
+    }
 
     /**
      * Applies the current filter value by sending an AJAX to the server.
      */
-    filter: function() {
+    filter() {
         var $this = this,
         options = {
             source: this.id,
@@ -1487,36 +1487,36 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
             PrimeFaces.ajax.Request.handle(options);
         }
 
-    },
+    }
 
     /**
      * Reads the saved scroll position from the hidden input field and applies it.
      * @private
      */
-    restoreScrollState: function() {
+    restoreScrollState() {
         var scrollState = this.scrollStateHolder.val(),
         scrollValues = scrollState.split(',');
 
         this.jq.scrollLeft(scrollValues[0]);
         this.jq.scrollTop(scrollValues[1]);
-    },
+    }
 
     /**
      * Saves the current scroll position to the hidden input field.
      * @private
      */
-    saveScrollState: function() {
+    saveScrollState() {
         var scrollState = this.jq.scrollLeft() + ',' + this.jq.scrollTop();
 
         this.scrollStateHolder.val(scrollState);
-    },
+    }
 
     /**
      * Resets the value of the hidden input field with the current scroll position.
      * @private
      */
-    clearScrollState: function() {
+    clearScrollState() {
         this.scrollStateHolder.val('0,0');
     }
 
-});
+}

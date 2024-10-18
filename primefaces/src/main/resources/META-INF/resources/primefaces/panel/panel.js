@@ -33,27 +33,27 @@
  * @prop {PrimeFaces.widget.Panel.ToggleOrientation} cfg.toggleOrientation Defines the orientation of the toggling.
  * @prop {number} cfg.toggleSpeed Speed of toggling in milliseconds.
  */
-PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Panel = class Panel extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
         this.header = this.jq.children('div.ui-panel-titlebar');
         this.title = this.header.children('span.ui-panel-title');
         this.content = $(this.jqId + '_content');
 
         this.bindEvents();
-    },
+    }
 
     /**
      * Sets up all event listeners that are required by this widget.
      * @private
      */
-    bindEvents: function() {
+    bindEvents() {
         var $this = this;
 
         if(this.cfg.toggleable) {
@@ -95,12 +95,12 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
 
             $this.isTitlebarClicked = true;
         });
-    },
+    }
 
     /**
      * Expands this panel if it is currently collapsed, or collapses it if it is currently expanded.
      */
-    toggle: function() {
+    toggle() {
         if(this.cfg.collapsed) {
             this.expand();
             PrimeFaces.invokeDeferredRenders(this.id);
@@ -108,12 +108,12 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
         else {
             this.collapse();
         }
-    },
+    }
 
     /**
      * Expands this panel, if not already expanded.
      */
-    expand: function() {
+    expand() {
         this.header.attr('aria-expanded', true);
         this.toggleState(false, 'ui-icon-plusthick', 'ui-icon-minusthick');
 
@@ -121,12 +121,12 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
             this.slideDown();
         else if(this.cfg.toggleOrientation === 'horizontal')
             this.slideRight();
-    },
+    }
 
     /**
      * Collapses this panel, if not already collapsed.
      */
-    collapse: function() {
+    collapse() {
         this.header.attr('aria-expanded', false);
         this.toggleState(true, 'ui-icon-minusthick', 'ui-icon-plusthick');
 
@@ -134,33 +134,33 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
             this.slideUp();
         else if(this.cfg.toggleOrientation === 'horizontal')
             this.slideLeft();
-    },
+    }
 
     /**
      * Closes this panel by sliding it up.
      * @private
      */
-    slideUp: function() {
+    slideUp() {
         var $this = this;
         this.content.slideUp(this.cfg.toggleSpeed, 'easeInOutCirc', function() {
             $this.jq.addClass('ui-panel-collapsed');
         });
-    },
+    }
 
     /**
      * Opens this panel by sliding it down.
      * @private
      */
-    slideDown: function() {
+    slideDown() {
         this.jq.removeClass('ui-panel-collapsed');
         this.content.slideDown(this.cfg.toggleSpeed, 'easeInOutCirc');
-    },
+    }
 
     /**
      * Closes this panel by sliding it to the left.
      * @private
      */
-    slideLeft: function() {
+    slideLeft() {
         var $this = this;
 
         this.originalWidth = this.jq.width();
@@ -175,13 +175,13 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
             $this.toggler.show();
             $this.jq.addClass('ui-panel-collapsed-h');
         });
-    },
+    }
 
     /**
      * Opens this panel by sliding it to the right.
      * @private
      */
-    slideRight: function() {
+    slideRight() {
         var $this = this,
         expandWidth = this.originalWidth||'100%';
 
@@ -200,7 +200,7 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
                 ,'height': 'auto'
             });
         });
-    },
+    }
 
     /**
      * Toggles the expansion state of this panel.
@@ -209,7 +209,7 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery} removeIcon Icon for closing this panel. 
      * @param {JQuery} addIcon Icon for opening this panel.
      */
-    toggleState: function(collapsed, removeIcon, addIcon) {
+    toggleState(collapsed, removeIcon, addIcon) {
         this.toggler.children('span.ui-icon').removeClass(removeIcon).addClass(addIcon);
         this.cfg.collapsed = collapsed;
         this.toggleStateHolder.val(collapsed);
@@ -233,12 +233,12 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
 
             PrimeFaces.ajax.Request.handle(options);
         }
-    },
+    }
 
     /**
      * Closes this panel, if not already closed.
      */
-    close: function() {
+    close() {
         if(this.visibleStateHolder) {
             this.visibleStateHolder.val(false);
         }
@@ -249,12 +249,12 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
                 $this.callBehavior('close');
             }
         });
-    },
+    }
 
     /**
      * Shows this panel, if not already shown.
      */
-    show: function() {
+    show() {
         var $this = this;
         this.jq.fadeIn(this.cfg.closeSpeed, function() {
             PrimeFaces.invokeDeferredRenders($this.id);
@@ -263,13 +263,13 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
         if(this.visibleStateHolder) {
             this.visibleStateHolder.val(true);
         }
-    },
+    }
 
     /**
      * Sets up the event listeners for the button that toggles this panel between opened and closes.
      * @private
      */
-    bindToggler: function() {
+    bindToggler() {
         var $this = this;
 
         this.toggler = $(this.jqId + '_toggler');
@@ -280,13 +280,13 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
 
             return false;
         });
-    },
+    }
 
     /**
      * Sets up the event listeners for the button that closes this panel.
      * @private
      */
-    bindCloser: function() {
+    bindCloser() {
         var $this = this;
 
         this.closer = $(this.jqId + '_closer');
@@ -301,4 +301,4 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
         });
     }
 
-});
+}

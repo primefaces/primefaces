@@ -47,18 +47,18 @@
  * @prop {number} cfg.maxConnections Maximum number of allowed connections (per node).
  * @prop {import("jsplumb").PaintStyle} cfg.paintStyle Paint style to use when not hovering.
  */
-PrimeFaces.widget.Diagram = PrimeFaces.widget.DeferredWidget.extend({
+PrimeFaces.widget.Diagram = class Diagram extends PrimeFaces.widget.DeferredWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         this.renderDeferred();
-    },
+    }
 
     /**
      * @include
@@ -66,7 +66,7 @@ PrimeFaces.widget.Diagram = PrimeFaces.widget.DeferredWidget.extend({
      * @protected
      * @inheritdoc
      */
-    _render: function() {
+    _render() {
         var $this = this;
 
         jsPlumb.ready(function() {
@@ -98,37 +98,37 @@ PrimeFaces.widget.Diagram = PrimeFaces.widget.DeferredWidget.extend({
 
             $this.bindEvents();
         });
-    },
+    }
 
     /**
      * Initializes the end points of the lines connection diagram nodes.
      * @private
      */
-    initEndPoints: function() {
+    initEndPoints() {
         for(var i = 0; i < this.cfg.endPoints.length; i++) {
             var endPoint = this.cfg.endPoints[i];
 
             this.canvas.addEndpoint(endPoint.element, endPoint);
         }
-    },
+    }
 
     /**
      * Initializes the lines connecting the diagram nodes.
      * @private
      */
-    initConnections: function() {
+    initConnections() {
         if(this.cfg.connections) {
             for(var i = 0; i < this.cfg.connections.length; i++) {
                 this.canvas.connect(this.cfg.connections[i]);
             }
         }
-    },
+    }
 
     /**
      * Sets up all event listeners for this widget.
      * @private
      */
-    bindEvents: function() {
+    bindEvents() {
         var $this = this;
 
         this.canvas.bind('connection', function(info) {
@@ -144,14 +144,14 @@ PrimeFaces.widget.Diagram = PrimeFaces.widget.DeferredWidget.extend({
         this.canvas.bind('connectionMoved', function(info) {
             $this.onConnectionChange(info);
         });
-    },
+    }
 
     /**
      * Callback for the event when two nodes are connected with each other.
      * @private
      * @param {PrimeFaces.widget.Diagram.ConnectionInfo} info Details about the connection that was made.
      */
-    onConnect: function(info) {
+    onConnect(info) {
         var options = {
             source: this.id,
             process: this.id,
@@ -175,14 +175,14 @@ PrimeFaces.widget.Diagram = PrimeFaces.widget.DeferredWidget.extend({
         else {
             PrimeFaces.ajax.Request.handle(options);
         }
-    },
+    }
 
     /**
      * Callback for the event when two nodes are disconnected from each other.
      * @private
      * @param {PrimeFaces.widget.Diagram.ConnectionInfo} info Details about the connection that was severed.
      */
-    onDisconnect: function(info) {
+    onDisconnect(info) {
         var options = {
             source: this.id,
             process: this.id,
@@ -201,14 +201,14 @@ PrimeFaces.widget.Diagram = PrimeFaces.widget.DeferredWidget.extend({
         else {
             PrimeFaces.ajax.Request.handle(options);
         }
-    },
+    }
 
     /**
      * Callback for the event when the connection between two nodes was changed.
      * @private
      * @param {PrimeFaces.widget.Diagram.UpdateConnectionInfo} info Details about the connection that was changed.
      */
-    onConnectionChange: function(info) {
+    onConnectionChange(info) {
         this.connectionChanged = true;
 
         var options = {
@@ -233,14 +233,14 @@ PrimeFaces.widget.Diagram = PrimeFaces.widget.DeferredWidget.extend({
         else {
             PrimeFaces.ajax.Request.handle(options);
         }
-    },
+    }
     
     /**
      * Callback for when the location of a diagram element has changed.
      * @private
      * @param {PrimeFaces.widget.Diagram.UpdateElementInfo} info Details about the element that was changed.
      */
-    onUpdateElementPosition: function(info) {
+    onUpdateElementPosition(info) {
         var options = {
             source: this.id,
             process: this.id,
@@ -259,4 +259,4 @@ PrimeFaces.widget.Diagram = PrimeFaces.widget.DeferredWidget.extend({
         }
     }
 
-});
+}

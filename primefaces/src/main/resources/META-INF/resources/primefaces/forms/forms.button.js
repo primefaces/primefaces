@@ -8,31 +8,31 @@
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  */
-PrimeFaces.widget.Button = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Button = class Button extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         PrimeFaces.skinButton(this.jq);
-    },
+    }
 
     /**
      * Enables this button so that the user cannot press it.
      */
-    disable: function() {
+    disable() {
         PrimeFaces.utils.disableButton(this.jq);
-    },
+    }
 
     /**
      * Enables this button so that the user can press it.
      */
-    enable: function() {
+    enable() {
         PrimeFaces.utils.enableButton(this.jq);
     }
 
-});
+}

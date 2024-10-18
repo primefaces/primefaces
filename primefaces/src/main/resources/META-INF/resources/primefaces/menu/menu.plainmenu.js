@@ -18,29 +18,29 @@
  * @prop {boolean} cfg.statefulGlobal When enabled, menu state is saved globally across pages. If disabled then state 
  * is stored per view/page.
  */
-PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
+PrimeFaces.widget.PlainMenu = class PlainMenu extends PrimeFaces.widget.Menu {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         this.menuitemLinks = this.jq.find('.ui-menuitem-link:not(.ui-state-disabled)');
 
         this.bindEvents();
         this.bindToggleable();
         this.bindOverlay();
-    },
+    }
 
     /**
      * Binds the necessary events for the menu if it is toggleable. This includes setting up the state management
      * by initializing the storage key and restoring the state from storage.
      * @private
      */
-    bindToggleable: function() {
+    bindToggleable() {
         if (!this.cfg.toggleable) return;
 
         this.cfg.statefulGlobal = Boolean(this.cfg.statefulGlobal);
@@ -68,14 +68,14 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
             PrimeFaces.clearSelection();
             e.preventDefault();
         });
-    },
+    }
 
     /**
      * Binds overlay-specific event handlers if the overlay configuration is enabled.
      * This includes hiding the menu on certain key presses or clicks, and managing focus.
      * @private
      */
-    bindOverlay: function() {
+    bindOverlay() {
         var $this = this;
 
         if (this.cfg.overlay) {
@@ -116,7 +116,7 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
                 }
             });
         }
-    },
+    }
  
     /**
      * Binds event handlers to menu item links for interaction via mouse and keyboard.
@@ -124,7 +124,7 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
      * and keyboard navigation using arrow keys, space, and enter.
      * @private
      */
-    bindEvents: function() {
+    bindEvents() {
         var $this = this;
 
         // Set the first focusable menu item
@@ -173,14 +173,14 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
                     break;
             }
         });
-    },
+    }
 
     /**
      * Resets the focus state of the menu.
      * This method sets the first focusable menu item and removes hover and active states for non-overlay menus.
      * @private
      */
-    resetFocusState: function() {
+    resetFocusState() {
         // Set the first focusable menu item
         this.resetFocus(true);
 
@@ -188,7 +188,7 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
         if (!this.cfg.overlay) {
             this.menuitemLinks.removeClass('ui-state-hover ui-state-active');
         }
-    },
+    }
 
     /**
      * Navigates the menu items in the specified direction ('prev' or 'next').
@@ -198,21 +198,21 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
      * @param {string} firstOrLast The first or last item to navigate to ('first' or 'last').
      * @private
      */
-    navigateMenu: function(event, currentLink, direction, firstOrLast) {
+    navigateMenu(event, currentLink, direction, firstOrLast) {
         var targetItem = currentLink.parent()[direction + 'All']('.ui-menuitem:not(:has(.ui-state-disabled)):' + firstOrLast);
         if (targetItem.length) {
             this.unfocus(currentLink, event);
             this.focus(targetItem.children('.ui-menuitem-link'), event);
         }
-    },
+    }
 
     /**
      * Create the key where the state for this component is stored.  By default it is stored per view. Override this 
      * method to change the behavior to be global.
      */
-    createStorageKey: function() {
+    createStorageKey() {
         this.stateKey = PrimeFaces.createStorageKey(this.id, 'PlainMenu', this.cfg.statefulGlobal);
-    },
+    }
 
     /**
      * Collapses the given sub menu so that the children of that sub menu are not visible anymore.
@@ -220,7 +220,7 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
      * @param {boolean} [stateful] `true` if the new state of this menu (which items are collapsed and expanded) should
      * be saved (in an HTML5 Local Store), `false` otherwise. 
      */
-    collapseSubmenu: function(header, stateful) {
+    collapseSubmenu(header, stateful) {
         var items = header.nextUntil('li.ui-widget-header');
 
         header.attr('aria-expanded', false)
@@ -232,7 +232,7 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
             this.collapsedIds.push(header.attr('id'));
             this.saveState();
         }
-    },
+    }
 
     /**
      * Expands the given sub menu so that the children of that sub menu become visible.
@@ -240,7 +240,7 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
      * @param {boolean} [stateful] `true` if the new state of this menu (which items are collapsed and expanded) should
      * be saved (in an HTML5 Local Store), `false` otherwise. 
      */
-    expandSubmenu: function(header, stateful) {
+    expandSubmenu(header, stateful) {
         var items = header.nextUntil('li.ui-widget-header');
 
         header.attr('aria-expanded', true)
@@ -255,22 +255,22 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
             });
             this.saveState();
         }
-    },
+    }
 
     /**
      * Saves the current state (expanded / collapsed menu items) of this plain menu. Used to preserve the state during
      * AJAX updates as well as between page reloads. The state is stored in an HTML5 Local Store.
      * @private
      */
-    saveState: function() {
+    saveState() {
         localStorage.setItem(this.stateKey, this.collapsedIds.join(','));
-    },
+    }
 
     /**
      * Restores that state as stored by `saveState`. Usually called after an AJAX update and on page load.
      * @private
      */
-    restoreState: function() {
+    restoreState() {
         var collapsedIdsAsString = localStorage.getItem(this.stateKey);
 
         if (collapsedIdsAsString) {
@@ -282,14 +282,14 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
                 }
             }
         }
-    },
+    }
 
     /**
      * Clear the saved state (collapsed / expanded menu items) of this plain menu.
      * @private
      */
-    clearState: function() {
+    clearState() {
         localStorage.removeItem(this.stateKey);
     }
 
-});
+}

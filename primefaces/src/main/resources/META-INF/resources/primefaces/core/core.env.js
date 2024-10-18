@@ -142,4 +142,4 @@ if (!PrimeFaces.env) {
 
     PrimeFaces.env.init();
 
-};
+}

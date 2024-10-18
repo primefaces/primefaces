@@ -54,15 +54,15 @@
  * @prop {string} cfg.target Search expression for the component to which the tooltip is attached.
  * @prop {boolean} cfg.trackMouse Whether the tooltip position should follow the mouse or pointer.
  */
-PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Tooltip = class Tooltip extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         this.cfg.showEvent = this.cfg.showEvent ? this.cfg.showEvent + '.tooltip' : 'mouseenter.tooltip';
         this.cfg.hideEvent = this.cfg.hideEvent ? this.cfg.hideEvent + '.tooltip' : 'mouseleave.tooltip';
@@ -80,32 +80,32 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
             this.bindTarget();
         else
             this.bindGlobal();
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    refresh: function(cfg) {
+    refresh(cfg) {
         this._cleanup();
-        this._super(cfg);
-    },
+        super.refresh(cfg);
+    }
 
     /**
      * @override
      * @inheritdoc
      */
-    destroy: function() {
-        this._super();
+    destroy() {
+        super.destroy();
         this._cleanup();
-    },
+    }
 
     /**
      * Clean up this widget and remove elements from DOM.
      * @private
      */
-    _cleanup: function() {
+    _cleanup() {
         if (this.cfg.target) {
             var targetTooltip = $(document.body).children(PrimeFaces.escapeClientId(this.cfg.id));
             if (targetTooltip.length)
@@ -114,13 +114,13 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         else {
             $(document.body).children('.ui-tooltip-global').remove();
         }
-    },
+    }
 
     /**
      * Sets up all global event listeners that are required for the tooltip.
      * @private
      */
-    bindGlobal: function() {
+    bindGlobal() {
         this.jq = $('<div class="ui-tooltip ui-tooltip-global ui-widget ui-tooltip-' + this.cfg.position + '" role="tooltip"></div>')
             .appendTo('body');
         this.jq.append('<div class="ui-tooltip-arrow"></div><div class="ui-tooltip-text ui-shadow ui-corner-all"></div>');
@@ -184,13 +184,13 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
             $this.align();
         });
 
-    },
+    }
 
     /**
      * Sets up all event listeners on the target component that are required for the tooltip.
      * @private
      */
-    bindTarget: function() {
+    bindTarget() {
         this.id = this.cfg.id;
         this.jqId = PrimeFaces.escapeClientId(this.id);
         this.jq = $(this.jqId);
@@ -270,13 +270,13 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.jq, function() {
             $this.align();
         });
-    },
+    }
 
     /**
       * Sets up mouse listeners if autoHide is disabled to keep the toolip open if tooltip has focus.
       * @private
       */
-    bindAutoHide: function() {
+    bindAutoHide() {
         if (this.isAutoHide()) {
             return;
         }
@@ -288,13 +288,13 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
             .on("mouseleave.tooltip", function(e) {
                 $this.shouldAllowHideBasedOnMouseTarget(e);
             });
-    },
+    }
     /**
      * Determines if the tooltip should be allowed to hide based on the mouse event's related target.
      * @param {JQuery.TriggeredEvent} e - The jQuery event object that triggered the mouse event.
      * @private
      */
-    shouldAllowHideBasedOnMouseTarget: function(e) {
+    shouldAllowHideBasedOnMouseTarget(e) {
         if (this.isAutoHide()) {
             this.allowHide = true;
         }
@@ -309,7 +309,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         if (this.allowHide) {
             this.hide();
         }
-    },
+    }
 
     /**
      * Aligns the position of this tooltip via the given options.
@@ -318,7 +318,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
      * @param {Record<string, string>} feedback Feedback about the position and dimensions of both elements, as well as
      * calculations to their relative position.
      */
-    alignUsing: function(position, feedback) {
+    alignUsing(position, feedback) {
         // Determine the position of the tooltip
         // If trackMouse is enabled, use cfg.position
         // Otherwise, use cfg.atPos if available, or fall back to cfg.position
@@ -345,12 +345,12 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                    left: position['left'] + 'px',
                    top: position['top'] + 'px'
                });
-    },
+    }
 
     /**
      * Aligns the position of this tooltip so that it is shown next to the target component.
      */
-    align: function() {
+    align() {
         var $this = this;
         // #10100 make sure z-Index is above any dynamically changing zindex like dialogs.
         var zIndex = (parseInt(PrimeFaces.nextZindex(), 10) + 1000);
@@ -410,12 +410,12 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                 }
             });
         }
-    },
+    }
 
     /**
      * Brings up this tooltip and displays it next to the target component.
      */
-    show: function() {
+    show() {
         if (this.isVisible()) {
             return;
         }
@@ -428,13 +428,13 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                 $this._show();
             }, this.cfg.showDelay);
         }
-    },
+    }
 
     /**
      * Callback for when the tooltip is brought up, also invokes the appropriate behaviors.
      * @private
      */
-    _show: function() {
+    _show() {
         var $this = this;
 
         if (this.cfg.beforeShow) {
@@ -464,25 +464,25 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                 $this.cfg.onShow.call();
             }
         });
-    },
+    }
 
     /**
      * Hides this tooltip so that it is not shown any longer.
      */
-    hide: function() {
+    hide() {
         var $this = this;
         this.clearTimeout();
 
         this.timeout = PrimeFaces.queueTask(function() {
             $this._hide();
         }, this.cfg.hideDelay);
-    },
+    }
 
     /**
      * Callback for when the tooltip is hidden, also invokes the appropriate behaviors.
      * @private
      */
-    _hide: function() {
+    _hide() {
         var $this = this;
 
         if (this.isVisible()) {
@@ -507,24 +507,24 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                 $this.jq.children('.ui-tooltip-text').removeClass('ui-state-error');
             }
         }
-    },
+    }
 
     /**
      * Clears the current set-timeout timer, if any.
      * @private
      */
-    clearTimeout: function() {
+    clearTimeout() {
         if (this.timeout) {
             clearTimeout(this.timeout);
         }
-    },
+    }
 
     /**
      * Adds the event listener for moving the tooltip to the current position of the mouse. Used when the tooltip is
      * brought up.
      * @private
      */
-    followMouse: function() {
+    followMouse() {
         var $this = this;
 
         this.getTarget().on('mousemove.tooltip-track', function(e) {
@@ -534,46 +534,46 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                 collision: 'flipfit'
             });
         });
-    },
+    }
 
     /**
      * Removes the event listener for moving the tooltip to the current position of the mouse. Used when the tooltip
      * is hidden.
      * @private
      */
-    unfollowMouse: function() {
+    unfollowMouse() {
         var target = this.getTarget();
         if (target) {
             target.off('mousemove.tooltip-track');
         }
-    },
+    }
 
     /**
      * Checks whether this tooltip is visible.
      * @return {boolean} Whether this tooltip is currently shown.
      */
-    isVisible: function() {
+    isVisible() {
         return this.jq.is(':visible');
-    },
+    }
 
     /**
      * Checks if the target has the autoHide property enabled or disabled to keep the tooltip open.
      * @return {boolean} Whether this tooltip should be left showing or closed.
      */
-    isAutoHide: function() {
+    isAutoHide() {
         return this.jq.data('autohide') || this.cfg.autoHide;
-    },
+    }
 
     /**
      * Finds the component for which this tooltip is shown.
      * @private
      * @return {JQuery} The target component for this tooltip.
      */
-    getTarget: function() {
+    getTarget() {
         if (this.cfg.delegate)
             return PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.target);
         else
             return this.target;
     }
 
-});
+}

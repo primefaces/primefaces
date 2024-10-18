@@ -25,15 +25,15 @@
  * @prop {string} cfg.event Event that triggers the effect. Defaults to `load` (page load).
  * @prop {PrimeFaces.widget.Effect.EffectCallback} cfg.fn Function that runs the effect when invoked.
  */
-PrimeFaces.widget.Effect = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Effect = class Effect extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         this.source = $(PrimeFaces.escapeClientId(this.cfg.source));
         var _self = this;
@@ -55,4 +55,4 @@ PrimeFaces.widget.Effect = PrimeFaces.widget.BaseWidget.extend({
         }
     }
     
-});
+}
