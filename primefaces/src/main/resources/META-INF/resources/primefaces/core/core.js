@@ -1365,7 +1365,8 @@
          * Reset any state variables on update="@all".
          */
         resetState: function() {
-            PrimeFaces.ajax.Queue.abortAll();
+            // terminate all AJAX requests, pollers, etc
+            PrimeFaces.utils.killswitch();
 
             PrimeFaces.zindex = 1000;
             PrimeFaces.detachedWidgets = [];
