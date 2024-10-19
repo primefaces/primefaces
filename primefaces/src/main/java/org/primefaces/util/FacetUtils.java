@@ -136,7 +136,7 @@ public class FacetUtils {
                 }
             }
 
-            return VisitResult.ACCEPT;
+            return VisitResult.COMPLETE;
         }
     }
 
