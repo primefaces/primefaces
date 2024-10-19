@@ -29,15 +29,15 @@
  * @prop {PrimeFaces.widget.Chart.ChartExtender} cfg.extender Extender function allows access to the underlying
  * [chart.js](https://www.chartjs.org/docs/latest/) API.
  */
-PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
+PrimeFaces.widget.Chart = class Chart extends PrimeFaces.widget.DeferredWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         this.canvas = this.jq.children('canvas');
         this.ctx = this.canvas[0].getContext('2d');
@@ -53,32 +53,32 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         this.renderDeferred();
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    refresh: function(cfg) {
+    refresh(cfg) {
         if (this.chart) {
             this.chart.destroy();
         }
 
-        this._super(cfg);
-    },
+        super.refresh(cfg);
+    }
 
     /**
      * @override
      * @inheritdoc
      */
-    destroy: function() {
-        this._super();
+    destroy() {
+        super.destroy();
 
         if (this.chart) {
             this.chart.destroy();
         }
-    },
+    }
 
     /**
      * @include
@@ -86,17 +86,17 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
      * @protected
      * @inheritdoc
      */
-    _render: function() {
+    _render() {
         this.chart = new Chart(this.ctx, this.cfg.config);
 
         this.bindItemSelect();
-    },
+    }
 
     /**
      * Setups the event listeners required by this widget when an item (data point) in the chart is selected.
      * @private
      */
-    bindItemSelect: function() {
+    bindItemSelect() {
         var $this = this;
 
         this.canvas.on('click', function(evt){   
@@ -118,22 +118,22 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
                 }
             }
         });
-    },
+    }
 
     /**
      * Return this chart as an image with a data source URL (`<img src="data:url" />`)
      * @return {HTMLImageElement} The content of this chart as an HTML IMAGE.
      */
-    exportAsImage: function() {
+    exportAsImage() {
         var img = new Image();
         img.src = this.chart.toBase64Image();
         return img;
-    },
+    }
 
     /**
      * Send this chart to the printer.
      */
-    print: function() {
+    print() {
         // Create a new image element
         var img = `<html><head><script>function s1(){setTimeout('s2()',10);}function s2(){window.print();window.close()}</script></head><body onload='s1()'><img src='${this.chart.toBase64Image()}'/></body></html>`;
 
@@ -142,4 +142,4 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
         pwa.document.write(img);
         pwa.document.close();
     }
-});
+}

@@ -18,15 +18,15 @@
  * @prop {string} cfg.scope Identifier of the ancestor component to enable multiple default commands in a form.
  * @prop {string} cfg.target Identifier of the default command component.
  */
-PrimeFaces.widget.DefaultCommand = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.DefaultCommand = class DefaultCommand extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
         this.jqTarget = $(PrimeFaces.escapeClientId(this.cfg.target));
         this.scope = this.cfg.scope ? $(PrimeFaces.escapeClientId(this.cfg.scope)) : null;
         var $this = this;
@@ -71,4 +71,4 @@ PrimeFaces.widget.DefaultCommand = PrimeFaces.widget.BaseWidget.extend({
             });
         }
     }
-});
+}

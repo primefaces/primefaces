@@ -20,15 +20,15 @@
  * @forcedProp {number} [ajaxCount] Number of concurrent active Ajax requests.
  * @prop {boolean} cfg.displayFilename Wheter the filename should be displayed.
  */
-PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.SimpleFileUpload = class SimpleFileUpload extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
         if(this.cfg.disabled) {
             return;
         }
@@ -55,13 +55,13 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
                 $this.upload();
             });
         }
-    },
+    }
 
     /**
      * Sets up all events listeners for this file upload widget.
      * @private
      */
-    bindEvents: function() {
+    bindEvents() {
         var $this = this;
 
         this.button.on('mouseover.fileupload', function(){
@@ -115,45 +115,45 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
             $this.button.removeClass('ui-state-focus');
         });
 
-    },
+    }
 
     /**
      * Sets up the global event listeners on the button.
      * @private
      */
-    bindTriggers: function() {
+    bindTriggers() {
         PrimeFaces.bindButtonInlineAjaxStatus(this, this.button);
-    },
+    }
 
     /**
      * Brings up the native file selection dialog.
      */
-    show: function() {
+    show() {
         if (this.cfg.skinSimple) {
             this.input.trigger("click");
         }
         else {
             this.jq.trigger("click");
         }
-    },
+    }
 
     /**
      * Clears the currently selected file.
      */
-    clear: function() {
+    clear() {
         if (this.input) {
             this.input.val('');
         }
         if (this.display) {
             this.display.text('');
         }
-    },
+    }
 
     /**
      * Uploads all selected files via AJAX.
      * @private
      */
-    upload: function() {
+    upload() {
         var $this = this;
         var process = this.cfg.process
             ? this.id + ' ' + PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(this.jq, this.cfg.process).join(' ')
@@ -260,6 +260,6 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
 
         PrimeFaces.ajax.Queue.addXHR(jqXhr);
 
-    },
+    }
 
-});
+}

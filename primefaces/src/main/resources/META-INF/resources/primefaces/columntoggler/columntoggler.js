@@ -36,15 +36,15 @@
  * @prop {string} cfg.trigger ID of the button that toggles this column toggler.
  * @prop {string} cfg.datasource ID of the component (table) to which this column toggler is attached.
  */
-PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
+PrimeFaces.widget.ColumnToggler = class ColumnToggler extends PrimeFaces.widget.DeferredWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
         this.table = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.datasource);
         this.trigger = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.trigger);
         this.tableId = this.table.attr('id');
@@ -67,14 +67,14 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
 
         this.render();
         this.bindEvents();
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    refresh: function(cfg) {
+    refresh(cfg) {
         var jqs = $('[id=' + cfg.id.replace(/:/g, "\\:") + ']');
         if (jqs.length > 1) {
             $(document.body).children(this.jqId).remove();
@@ -82,14 +82,14 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
 
         this.widthAligned = false;
 
-        this._super(cfg);
-    },
+        super.refresh(cfg);
+    }
 
     /**
      * @override
      * @inheritdoc
      */
-    render: function() {
+    render() {
         this.columns = this.thead.find('> tr > th:not(.ui-static-column)');
         this.panel = $(PrimeFaces.escapeClientId(this.cfg.id)).attr('role', 'dialog').addClass('ui-columntoggler ui-widget ui-widget-content ui-shadow ui-corner-all')
             .append('<ul class="ui-columntoggler-items" role="group"></ul>').appendTo(document.body);
@@ -164,13 +164,13 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
             this.panel.height(200);
         }
         this.hide();
-    },
+    }
 
     /**
      * Sets up all event listeners required by this widget.
      * @private
      */
-    bindEvents: function() {
+    bindEvents() {
         var $this = this;
 
         //trigger
@@ -228,13 +228,13 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.panel, function() {
             $this.alignPanel();
         });
-    },
+    }
 
     /**
      * Sets up the event listners for keyboard interaction.
      * @private
      */
-    bindKeyEvents: function() {
+    bindKeyEvents() {
         var $this = this,
             inputs = this.itemContainer.find('> li > div.ui-chkbox > div.ui-chkbox-box');
 
@@ -318,38 +318,38 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
                     break;
             };
         });
-    },
+    }
 
     /**
      * Checks or unchecks the given checkbox for a column, depending on whether it is currently selected. Also shows or
      * hides  the column of the table to which this column toggler is attached.
      * @param {JQuery} chkbox Checkbox (`.ui-chkbox-box`) of a column of this column toggler.
      */
-    toggle: function(chkbox) {
+    toggle(chkbox) {
         if (chkbox.hasClass('ui-state-active')) {
             this.uncheck(chkbox);
         }
         else {
             this.check(chkbox);
         }
-    },
+    }
 
     /**
      * Toggles selecting or deselecting all columns.
      */
-    toggleAll: function() {
+    toggleAll() {
         if (this.selectAllCheckbox.find('> .ui-chkbox > .ui-chkbox-box').hasClass('ui-state-active')) {
             this.uncheckAll();
         }
         else {
             this.checkAll();
         }
-    },
+    }
 
     /**
      * Checks all columns to enable all.
      */
-    checkAll: function() {
+    checkAll() {
         var $this = this;
         this.itemContainer.find('> .ui-columntoggler-item > .ui-chkbox > .ui-chkbox-box').each(function() {
             $this.check($(this));
@@ -358,24 +358,24 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         this.selectAllCheckbox.find('> .ui-chkbox > .ui-chkbox-box')
             .addClass('ui-state-active').attr('aria-label', PrimeFaces.getAriaLabel('selectAll')).attr('aria-checked', 'true')
             .children('.ui-chkbox-icon').addClass('ui-icon-check').removeClass('ui-icon-blank');
-    },
+    }
 
     /**
      * Unchecks all columns to disable all.
      */
-    uncheckAll: function() {
+    uncheckAll() {
         var $this = this;
         this.itemContainer.find('> .ui-columntoggler-item > .ui-chkbox > .ui-chkbox-box').each(function() {
             $this.uncheck($(this));
         });
-    },
+    }
 
     /**
      * Checks the given checkbox for a column, so that the column is now selected. Also display the column of the table
      * to which this column toggler is attached.
      * @param {JQuery} chkbox Checkbox (`.ui-chkbox-box`) of a column of this column toggler.
      */
-    check: function(chkbox) {
+    check(chkbox) {
         if (chkbox.hasClass('ui-state-active')) {
             return;
         }
@@ -423,14 +423,14 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         this.changeTogglerState(column, true);
         this.fireToggleEvent(true, (index - 1));
         this.updateColspan();
-    },
+    }
 
     /**
      * Unchecks the given checkbox for a column, so that the column is now not selected. Also hides the column of the
      * table to which this column toggler is attached.
      * @param {JQuery} chkbox Checkbox (`.ui-chkbox-box`) of a column of this column toggler.
      */
-    uncheck: function(chkbox) {
+    uncheck(chkbox) {
         if (!chkbox.hasClass('ui-state-active')) {
             return;
         }
@@ -482,12 +482,12 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         this.changeTogglerState(column, false);
         this.fireToggleEvent(false, (index - 1));
         this.updateColspan();
-    },
+    }
 
     /**
      * Aligns the overlay panel of this column toggler according to the current widget configuration.
      */
-    alignPanel: function() {
+    alignPanel() {
         this.panel.css({ 'left': '', 'top': '', 'z-index': PrimeFaces.nextZindex() }).position({
             my: 'left top'
             , at: 'left bottom'
@@ -506,23 +506,23 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
             this.panel.width(this.trigger.width());
             this.widthAligned = true;
         }
-    },
+    }
 
     /**
      * Brings up this column toggler so that the user can which column to hide or show.
      */
-    show: function() {
+    show() {
         this.alignPanel();
         this.panel.show();
         this.visible = true;
         this.trigger.attr('aria-expanded', true);
         this.closer.trigger('focus');
-    },
+    }
 
     /**
      * Hides this column toggler.
      */
-    hide: function() {
+    hide() {
         // only fire event if columnToggler was really shown
         if (this.visible) {
             this.fireCloseEvent();
@@ -530,7 +530,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         this.panel.fadeOut('fast');
         this.visible = false;
         this.trigger.attr('aria-expanded', false);
-    },
+    }
 
     /**
      * Triggers the events listeners and behaviors when a column was selected or unselected.
@@ -538,7 +538,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
      * @param {number} index Index of the toggled column.
      * @private
      */
-    fireToggleEvent: function(visible, index) {
+    fireToggleEvent(visible, index) {
         if (this.hasBehavior('toggle')) {
             var ext = {
                 params: [
@@ -549,13 +549,13 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
 
             this.callBehavior('toggle', ext);
         }
-    },
+    }
 
     /**
      * Triggers the events listeners and behaviors when the popup is closed.
      * @private
      */
-    fireCloseEvent: function() {
+    fireCloseEvent() {
         if (this.hasBehavior('close')) {
             var columnIds = '';
             for (var i = 0; i < this.columns.length; i++) {
@@ -580,16 +580,16 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
 
             this.callBehavior('close', ext);
         }
-    },
+    }
 
     /**
      * Computes the required `colspan` for the rows.
      * @private
      * @return {number} The calculated `colspan` for the rows.
      */
-    calculateColspan: function() {
+    calculateColspan() {
         return this.itemContainer.find('> .ui-columntoggler-item > .ui-chkbox > .ui-chkbox-box.ui-state-active').length;
-    },
+    }
 
     /**
      * Updates the `colspan` attribute fo the columns of the given row.
@@ -597,7 +597,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
      * @param {JQuery} row A row to update.
      * @param {string} colspanValue New value for the `colspan` attribute.
      */
-    updateRowColspan: function(row, colspanValue) {
+    updateRowColspan(row, colspanValue) {
         colspanValue = colspanValue || this.calculateColspan();
         if (colspanValue) {
             row.children('td').removeClass('ui-helper-hidden').attr('colspan', colspanValue);
@@ -605,14 +605,14 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         else {
             row.children('td').addClass('ui-helper-hidden');
         }
-    },
+    }
 
     /**
      * Updates the colspan attributes of the target table of this column toggler. Called after a column was selected or
      * unselected, which resulted in a column of the data table to be shown or hidden.
      * @private
      */
-    updateColspan: function() {
+    updateColspan() {
         var emptyRow = this.tbody.children('tr:first');
         if (emptyRow && emptyRow.hasClass('ui-datatable-empty-message')) {
             this.updateRowColspan(emptyRow);
@@ -624,7 +624,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
                 $this.updateRowColspan($(this), colspanValue);
             });
         }
-    },
+    }
 
     /**
      * @include
@@ -632,9 +632,9 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
      * @protected
      * @inheritdoc
      */
-    _render: function() {
+    _render() {
         throw new Error('Unsupported Operation');
-    },
+    }
 
     /**
      * Selects or unselect a column of this column toggler. Also shows or hides the corresponding colum of the table
@@ -644,7 +644,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
      * otherwise.
      * @private
      */
-    changeTogglerState: function(column, isHidden) {
+    changeTogglerState(column, isHidden) {
         if (column && column.length) {
             var stateVal = this.togglerStateHolder.val(),
                 columnId = column.attr('id'),
@@ -662,4 +662,4 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         }
     }
 
-});
+}

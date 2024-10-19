@@ -9,23 +9,23 @@
  * read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseTreeCfg} cfg
  */
-PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
+PrimeFaces.widget.HorizontalTree = class HorizontalTree extends PrimeFaces.widget.BaseTree {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
-    },
+    init(cfg) {
+        super.init(cfg);
+    }
 
     /**
      * @override
      * @protected
      * @inheritdoc
      */
-    bindEvents: function() {
+    bindEvents() {
         var $this = this,
         selectionMode = this.cfg.selectionMode,
         togglerSelector = '.ui-tree-toggler',
@@ -69,7 +69,7 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
                     $this.nodeClick(e, $(this));
                 });
 
-    },
+    }
 
     /**
      * @override
@@ -77,7 +77,7 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
      * @inheritdoc
      * @param {JQuery} node
      */
-    showNodeChildren: function(node) {
+    showNodeChildren(node) {
         node.attr('aria-expanded', true);
 
         var childrenContainer = node.next(),
@@ -92,14 +92,14 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
         toggleIcon.addClass('ui-icon-minus').removeClass('ui-icon-plus');
         node.removeClass('ui-treenode-collapsed');
         childrenContainer.show();
-    },
+    }
 
     /**
      * Collapses the given node, as if the user had clicked on the `-` icon of the node. The children of the node will
      * now be visible. 
      * @param {JQuery} node Node to collapse. 
      */
-    collapseNode: function(node) {
+    collapseNode(node) {
         var childrenContainer = node.next(),
         toggleIcon = node.find('> .ui-treenode-content > .ui-tree-toggler'),
         nodeType = node.data('nodetype'),
@@ -120,7 +120,7 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
         if(!this.cfg.cache) {
             this.fireCollapseEvent(node);
         }
-    },
+    }
 
     /**
      * @override
@@ -129,9 +129,9 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
      * @param {JQuery} node
      * @return {JQuery}
      */
-    getNodeChildrenContainer: function(node) {
+    getNodeChildrenContainer(node) {
         return node.next('.ui-treenode-children-container').children('.ui-treenode-children');
-    },
+    }
 
     /**
      * @override
@@ -139,7 +139,7 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
      * @param {JQuery} node
      * @param {boolean} [silent]
      */
-    selectNode: function(node, silent) {
+    selectNode(node, silent) {
         node.removeClass('ui-treenode-unselected').addClass('ui-treenode-selected').children('.ui-treenode-content').addClass('ui-state-highlight');
 
         this.addToSelection(this.getRowKey(node));
@@ -147,7 +147,7 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
 
         if(!silent)
             this.fireNodeSelectEvent(node);
-    },
+    }
 
     /**
      * @override
@@ -155,7 +155,7 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
      * @param {JQuery} node
      * @param {boolean} [silent]
      */
-    unselectNode: function(node, silent) {
+    unselectNode(node, silent) {
         var rowKey = this.getRowKey(node);
 
         node.removeClass('ui-treenode-selected').addClass('ui-treenode-unselected').children('.ui-treenode-content').removeClass('ui-state-highlight');
@@ -165,25 +165,25 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
 
         if(!silent)
             this.fireNodeUnselectEvent(node);
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      */
-    unselectAllNodes: function() {
+    unselectAllNodes() {
         this.selections = [];
         this.jq.find('.ui-treenode-content.ui-state-highlight').each(function() {
             $(this).removeClass('ui-state-highlight').closest('.ui-treenode').attr('aria-selected', false);
         });
-    },
+    }
 
     /**
      * @override
      * @protected
      * @inheritdoc
      */
-    preselectCheckbox: function() {
+    preselectCheckbox() {
         var _self = this;
 
         this.jq.find('.ui-chkbox-icon').not('.ui-icon-check').each(function() {
@@ -195,7 +195,7 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
                 icon.removeClass('ui-icon-blank').addClass('ui-icon-minus');
             }
         });
-    },
+    }
 
     /**
      * @override
@@ -203,7 +203,7 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
      * @inheritdoc
      * @param {JQuery} node
      */
-    toggleCheckboxNode: function(node) {
+    toggleCheckboxNode(node) {
         var $this = this,
         checkbox = node.find('> .ui-treenode-content > .ui-chkbox'),
         checked = checkbox.find('> .ui-chkbox-box > .ui-chkbox-icon').hasClass('ui-icon-check');
@@ -248,7 +248,7 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
             this.fireNodeUnselectEvent(node);
         else
             this.fireNodeSelectEvent(node);
-    },
+    }
 
     /**
      * @override
@@ -256,10 +256,10 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
      * @inheritdoc
      * @param {JQuery} checkbox
      */
-    check: function(checkbox) {
-        this._super(checkbox);
+    check(checkbox) {
+        super.check(checkbox);
         checkbox.parent('.ui-treenode-content').addClass('ui-state-highlight');
-    },
+    }
 
     /**
      * @override
@@ -267,19 +267,19 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
      * @inheritdoc
      * @param {JQuery} checkbox
      */
-    uncheck: function(checkbox) {
-        this._super(checkbox);
+    uncheck(checkbox) {
+        super.uncheck(checkbox);
         checkbox.parent('.ui-treenode-content').removeClass('ui-state-highlight');
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      * @return {boolean}
      */
-    isEmpty: function() {
+    isEmpty() {
         return this.jq.children('table').length === 0;
-    },
+    }
 
     /**
      * This implementation does nothing, focus is not supported in horizontal mode.
@@ -288,9 +288,9 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
      * @protected
      * @param {JQuery} node
      */
-    focusNode: function(node) {
+    focusNode(node) {
         //focus not supported in horizontal mode
-    },
+    }
 
     /**
      * @override
@@ -298,7 +298,7 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
      * @inheritdoc
      * @param {JQuery} checkbox
      */
-    partialCheck: function(checkbox) {
+    partialCheck(checkbox) {
         var box = checkbox.children('.ui-chkbox-box'),
         icon = box.children('.ui-chkbox-icon'),
         treeNode = checkbox.closest('.ui-treenode'),
@@ -312,4 +312,4 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
         this.removeFromSelection(rowKey);
      }
 
-});
+}

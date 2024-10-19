@@ -18,13 +18,14 @@
  * @prop {boolean} cfg.disabled Whether this text editor is initially disabled.
  * @prop {boolean} cfg.toolbarVisible Whether the editor toolbar should be displayed.
  */
-PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
+PrimeFaces.widget.TextEditor = class TextEditor extends PrimeFaces.widget.DeferredWidget {
 
     /**
-     * The default HTML template for the toolbar of the editor. Use the appopriate classes to insert a toolbar button.
+     * The default HTML template for the toolbar of the editor. Use the appropriate CSS classes to insert a toolbar
+     * button.
      * @type {string}
      */
-    toolbarTemplate: '<div class="ui-editor-toolbar">' +
+    static toolbarTemplate = '<div class="ui-editor-toolbar">' +
                 '<span class="ql-formats">' +
                     '<select class="ql-font"></select>' +
                     '<select class="ql-size"></select>' +
@@ -67,15 +68,15 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
                 '<span class="ql-formats">' +
                     '<button class="ql-clean"></button>' +
                 '</span>' +
-            '</div>',
+            '</div>';
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
         this.disabled = (cfg.disabled === undefined) ? false : cfg.disabled;
 
         this.editorContainer = $(this.jqId + '_editor');
@@ -88,7 +89,7 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         this.renderDeferred();
-    },
+    }
 
     /**
      * @include
@@ -96,13 +97,13 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
      * @protected
      * @inheritdoc
      */
-    _render: function() {
+    _render() {
         var $this = this;
 
         //toolbar
         this.toolbar = $(this.jqId + '_toolbar');
         if(!this.toolbar.length && this.cfg.toolbarVisible) {
-            this.jq.prepend(this.toolbarTemplate);
+            this.jq.prepend(TextEditor.toolbarTemplate);
             this.toolbar = this.jq.children('.ui-editor-toolbar')
             this.toolbar.attr('id', this.id + '_toolbar');
         }
@@ -163,66 +164,66 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
 
             $this.editor.blur(); // Triggers selection-change event above
         });
-    },
+    }
 
     /**
      * Sets the content of the editor, the hidden input and calls the change behavior.
      * @param {string} value New value to be set
      */
-    setValue: function(value) {
+    setValue(value) {
         this.editor.setText(value);
         this.input.val(this.getEditorValue());
         this.callBehavior('change');
-    },
+    }
 
     /**
      * Finds an returns the current contents of the editor.
      * @return {string} The current contents of the editor, as an HTML string.
      */
-    getEditorValue: function() {
+    getEditorValue() {
         var html = this.editorContainer.get(0).children[0].innerHTML;
         var value = (html == '<p><br></p>') ? '' : html;
 
         return value;
-    },
+    }
 
     /**
      * Clears the entire text of the editor.
      */
-    clear: function() {
+    clear() {
         this.editor.setText('');
-    },
+    }
 
     /**
      * Registers an event with the Quill editor and invokes the appropriate behavior when that event is triggered.
      * @private
      * @param {string} event Name of the event to register. 
      */
-    registerEvent: function(event) {
+    registerEvent(event) {
         var $this = this;
         if(this.hasBehavior(event)) {
             this.editorContainer.on(event, function () {
                 $this.callBehavior(event);
             });
         }
-    },
+    }
 
     /**
      * Enables this text editor so that text can be entered.
      */
-    enable: function () {
+    enable() {
         this.editor.enable();
         PrimeFaces.utils.enableInputWidget(this.jq, this.input);
         this.disabled = false;
-    },
+    }
 
     /**
      * Disables this text editor so that no text can be entered or removed.
      */
-    disable: function () {
+    disable() {
         this.editor.disable();
         PrimeFaces.utils.disableInputWidget(this.jq, this.input);
         this.disabled = true;
     }
 
-});
+}

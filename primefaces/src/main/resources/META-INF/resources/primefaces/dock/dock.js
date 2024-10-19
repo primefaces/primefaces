@@ -15,15 +15,15 @@
  * @prop {string} cfg.animationDuration The duration for the opening and closing animation in milliseconds.
  * @prop {boolean} cfg.blockScroll Whether to block scrolling of the document. 
  */
-PrimeFaces.widget.Dock = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Dock = class Dock extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function (cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         this.items = $('.ui-dock ul li');
         this.links = $(".ui-dock li a");
@@ -33,13 +33,13 @@ PrimeFaces.widget.Dock = PrimeFaces.widget.BaseWidget.extend({
         }
 
         this.bindAnimations();
-    },
+    }
 
     /**
      * Sets up the hover and click event listeners required for the dock.
      * @private
      */
-    bindAnimations: function () {
+    bindAnimations() {
         var $this = this;
         this.items.on('mouseenter.dock',
             function () {
@@ -67,4 +67,4 @@ PrimeFaces.widget.Dock = PrimeFaces.widget.BaseWidget.extend({
 
     }
 
-});
+}

@@ -8,15 +8,15 @@
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  */
-PrimeFaces.widget.TagCloud = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.TagCloud = class TagCloud extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
         var _self = this;
 
         this.jq.find('a').on("mouseover", function() {
@@ -33,14 +33,14 @@ PrimeFaces.widget.TagCloud = PrimeFaces.widget.BaseWidget.extend({
                 e.preventDefault();
             }
         });
-    },
+    }
 
     /**
      * Callback for when a tag was clicked. Invokes the appropriate behavior.
      * @private
      * @param {JQuery} link The link element that was clicked. 
      */
-    fireSelectEvent: function(link) {
+    fireSelectEvent(link) {
         if(this.hasBehavior('select')) {
             var ext = {
                 params: [
@@ -52,4 +52,4 @@ PrimeFaces.widget.TagCloud = PrimeFaces.widget.BaseWidget.extend({
         }
     }
 
-});
+}

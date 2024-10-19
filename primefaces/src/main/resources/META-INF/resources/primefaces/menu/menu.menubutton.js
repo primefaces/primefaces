@@ -19,15 +19,15 @@
  * alternative position. Similar to my and at, this accepts a single value or a pair for horizontal/vertical,
  * e.g., `flip`, `fit`, `fit flip`, `fit none`.
  */
-PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
+PrimeFaces.widget.MenuButton = class MenuButton extends PrimeFaces.widget.TieredMenu {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         this.menu = null;
         this.trigger = this.jq.children('button');
@@ -39,31 +39,31 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
         
         //dialog support
         this.setupDialogSupport();
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    refresh: function(cfg) {
+    refresh(cfg) {
         this.trigger.off('.menubutton');
         $(document).off('.' + this.id);
-    
-        this._super(cfg);
-    },
+
+        super.refresh(cfg);
+    }
 
     /**
      * Retrieves the jQuery object representing the menu DOM element.
      * @returns {JQuery} The jQuery object for the menu.
      * @override
      */
-    getMenuElement: function() {
+    getMenuElement() {
         if (!this.menu) {
             this.menu = this.jq.children('.ui-menu');
         }
         return this.menu;
-    },
+    }
 
     /**
      * @override
@@ -71,7 +71,7 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
      * @param {JQuery} menuitem
      * @param {JQuery} submenu
      */
-    showSubmenu: function(menuitem, submenu) {
+    showSubmenu(menuitem, submenu) {
         var pos = {
             my: 'left top',
             at: 'right top',
@@ -92,13 +92,13 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
             $link.attr('aria-expanded', 'true');
             submenu.find('a.ui-menuitem-link:focusable:first').trigger('focus');
         }, this.cfg.delay);
-    },
+    }
 
     /**
      * Sets up all event listeners that are required by this widget.
      * @private
      */
-    bindButtonEvents: function() {
+    bindButtonEvents() {
         var $this = this;
 
         //button visuals
@@ -170,13 +170,13 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
 
         //aria
         this.trigger.attr('role', 'button').attr('aria-disabled', this.cfg.disabled);
-    },
+    }
 
     /**
      * Brings up the overlay menu with the menu items, as if the menu button were pressed.
      * @override
      */
-    show: function() {
+    show() {
         if (this.cfg.disabled) {
             return;
         }
@@ -196,13 +196,13 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
                 }
             });
         }
-    },
+    }
 
     /**
      * Hides the overlay menu with the menu items, as if the user clicked outside the menu.
      * @override
      */
-    hide: function() {
+    hide() {
         if (this.transition) {
             var $this = this;
 
@@ -218,13 +218,13 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
                 }
             });
         }
-    },
+    }
 
     /**
      * Align the overlay panel with the menu items so that it is positioned next to the menu button.
      * @override
      */
-    align: function() {
+    align() {
         this.menu.css({ left: '', top: '', 'transform-origin': 'center top' });
 
         if (this.menu.parent().is(this.jq)) {
@@ -244,22 +244,22 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
                 }
             });
         }
-    },
+    }
 
     /**
      * Disables this button so that the user cannot press the button anymore.
      */
-    disable: function() {
+    disable() {
         this.cfg.disabled = true;
         this.hide();
         PrimeFaces.utils.disableButton(this.trigger);
-    },
+    }
 
     /**
      * Enables this button so that the user can press the button.
      */
-    enable: function() {
+    enable() {
         this.cfg.disabled = false;
         PrimeFaces.utils.enableButton(this.trigger);
     }
-});
+}

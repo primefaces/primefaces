@@ -22,15 +22,15 @@
  * @prop {number} cfg.tabindex Position of the input element in the tabbing order.
  * @prop {PrimeFaces.widget.Captcha.Theme} cfg.theme Theme of the captcha.
  */
-PrimeFaces.widget.Captcha = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Captcha = class Captcha extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {TCfg} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
         this.cfg.language = this.cfg.language || 'en';
         this.cfg.theme = this.cfg.theme || PrimeFaces.env.getThemeContrast();
 
@@ -41,35 +41,35 @@ PrimeFaces.widget.Captcha = PrimeFaces.widget.BaseWidget.extend({
         };
 
         this.appendScript();
-    },
+    }
 
     /**
      * Appends the script to the document body.
      * @private
      */
-    appendScript: function() {
+    appendScript() {
         var nonce = '';
         if (PrimeFaces.csp.NONCE_VALUE) {
             nonce = 'nonce="' + PrimeFaces.csp.NONCE_VALUE + '"';
         }
         $(document.body).append('<script src="' + this.cfg.sourceUrl + '?onload=' + this.getInitCallbackName() + '&render=explicit&hl='
             + this.cfg.language + '" async defer ' + nonce + '>');
-    },
+    }
 
     /**
      * Finds the name to use for the callback function set globally on the window.
      * @private
      * @return {string} Name for the global callback.
      */
-    getInitCallbackName: function() {
+    getInitCallbackName() {
         return this.cfg.widgetVar + '_initCallback';
-    },
+    }
 
     /**
      * Renders the client-side parts of this widget.
      * @private
      */
-    render: function() {
+    render() {
         var $this = this;
         var captchaExecutor = window[this.cfg.executor];
         captchaExecutor.render(this.jq.get(0), {
@@ -86,15 +86,15 @@ PrimeFaces.widget.Captcha = PrimeFaces.widget.BaseWidget.extend({
         }
 
         window[this.getInitCallbackName()] = null;
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      */
-    destroy: function() {
-        this._super();
+    destroy() {
+        super.destroy();
 
         window[this.getInitCallbackName()] = null;
     }
-});
+}

@@ -31,14 +31,14 @@
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.DataTableCfg} cfg
  */
-PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
+PrimeFaces.widget.FrozenDataTable = class FrozenDataTable extends PrimeFaces.widget.DataTable {
 
     /**
      * @override
      * @protected
      * @inheritdoc
      */
-    setupScrolling: function() {
+    setupScrolling() {
         this.scrollLayout = this.jq.find('> table > tbody > tr > td.ui-datatable-frozenlayout-right');
         this.frozenLayout = this.jq.find('> table > tbody > tr > td.ui-datatable-frozenlayout-left');
         this.scrollContainer = this.jq.find('> table > tbody > tr > td.ui-datatable-frozenlayout-right > .ui-datatable-scrollable-container');
@@ -197,14 +197,14 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
                 }
             }, 150);
         });
-    },
+    }
 
     /**
      * @override
      * @protected
      * @inheritdoc
      */
-    cloneHead: function() {
+    cloneHead() {
         if (this.frozenTheadClone) {
             this.frozenTheadClone.remove();
         }
@@ -214,7 +214,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
             this.scrollTheadClone.remove();
         }
         this.scrollTheadClone = this.cloneTableHeader(this.scrollThead, this.scrollBodyTable);
-    },
+    }
 
     /**
      * @override
@@ -222,16 +222,16 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
      * @inheritdoc
      * @return {boolean}
      */
-    hasVerticalOverflow: function() {
+    hasVerticalOverflow() {
         return this.scrollBodyTable.outerHeight() > this.scrollBody.outerHeight();
-    },
+    }
 
     /**
      * @override
      * @protected
      * @inheritdoc
      */
-    adjustScrollHeight: function() {
+    adjustScrollHeight() {
         var relativeHeight = this.jq.parent().innerHeight() * (parseInt(this.cfg.scrollHeight) / 100),
         headerChilden = this.jq.children('.ui-datatable-header'),
         footerChilden = this.jq.children('.ui-datatable-footer'),
@@ -249,19 +249,19 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
             this.scrollBody.height(height);
             this.frozenBody.height(height);
         }
-    },
+    }
 
     /**
      * @override
      * @protected
      * @inheritdoc
      */
-    adjustScrollWidth: function() {
+    adjustScrollWidth() {
         var scrollLayoutWidth = this.jq.parent().innerWidth() - this.frozenLayout.innerWidth(),
         width = parseInt((scrollLayoutWidth * (parseInt(this.cfg.scrollWidth) / 100)));
 
         this.setScrollWidth(width);
-    },
+    }
 
     /**
      * @override
@@ -269,7 +269,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
      * @inheritdoc
      * @param {number} width
      */
-    setScrollWidth: function(width) {
+    setScrollWidth(width) {
         this.scrollHeader.width(width);
         this.scrollBody.css('margin-right', '0px').width(width);
         this.scrollFooter.width(width);
@@ -280,14 +280,14 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         this.jq.children('.ui-widget-header').each(function() {
             $this.setOuterWidth($(this), headerWidth);
         });
-    },
+    }
 
     /**
      * @override
      * @protected
      * @inheritdoc
      */
-    fixColumnWidths: function() {
+    fixColumnWidths() {
         var $this = this;
         if(!this.columnWidthsFixed) {
 
@@ -306,7 +306,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
 
             this.columnWidthsFixed = true;
         }
-    },
+    }
 
     /**
      * Adjusts the width of the given columns to fit the current settings.
@@ -314,7 +314,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
      * @param {JQuery} header Header of this data table.
      * @param {JQuery} footerCols The columns to adjust.
      */
-    _fixColumnWidths: function(header, footerCols) {
+    _fixColumnWidths(header, footerCols) {
         var $this = this;
 
         header.find('> .ui-datatable-scrollable-header-box > table > thead > tr > th').each(function() {
@@ -329,7 +329,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
                 $this.applyWidthInfo(footerCol, widthInfo);
             }
         });
-    },
+    }
 
     /**
      * @override
@@ -338,7 +338,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
      * @param {string} data
      * @param {boolean | undefined} clear
      */
-    updateData: function(data, clear) {
+    updateData(data, clear) {
         var table = $('<table><tbody>' + data + '</tbody></table>'),
         rows = table.find('> tbody > tr'),
         empty = (clear === undefined) ? true: clear;
@@ -376,44 +376,44 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
 
         this.postUpdateData();
         this.fixRowHeightsAll();
-    },
+    }
     
     /**
      * Clones the given row and returns it
      * @param {JQuery} original DOM element of the original row.
      * @return {JQuery} The cloned row.
      */
-    copyRow: function(original) {
+    copyRow(original) {
         return $('<tr></tr>').attr('data-ri', original.data('ri')).attr('data-rk', original.data('rk')).addClass(original.attr('class')).
                 attr('role', 'row').attr('aria-selected', original.attr('aria-selected'));
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      * @return {JQuery}
      */
-    getThead: function() {
+    getThead() {
         return $(this.jqId + '_frozenThead,' + this.jqId + '_scrollableThead');
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      * @return {JQuery}
      */
-    getTbody: function() {
+    getTbody() {
         return $(this.jqId + '_frozenTbody,' + this.jqId + '_scrollableTbody');
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      * @return {JQuery}
      */
-    getTfoot: function() {
+    getTfoot() {
         return $(this.jqId + '_frozenTfoot,' + this.jqId + '_scrollableTfoot');
-    },
+    }
 
     /**
      * @override
@@ -421,7 +421,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
      * @inheritdoc
      * @param {string} selector
      */
-    bindRowHover: function(selector) {
+    bindRowHover(selector) {
         var $this = this;
 
         this.tbody.off('mouseenter.datatable mouseleave.datatable', selector)
@@ -439,18 +439,18 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
                         row.removeClass('ui-state-hover');
                         twinRow.removeClass('ui-state-hover');
                     });
-    },
+    }
 
     /**
      * Finds the twin row of the given row. The data table body has got two sets of rows.
      * @param {JQuery} row Row for which to find the twin
      * @return {JQuery} DOM element of the twin row.
      */
-    getTwinRow: function(row) {
+    getTwinRow(row) {
         var twinTbody = (this.tbody.index(row.parent()) === 0) ? this.tbody.eq(1) : this.tbody.eq(0);
 
         return twinTbody.children().eq(row.index());
-    },
+    }
 
     /**
      * @override
@@ -458,10 +458,10 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
      * @inheritdoc
      * @param {JQuery} row
      */
-    highlightRow: function(row) {
-        this._super(row);
-        this._super(this.getTwinRow(row));
-    },
+    highlightRow(row) {
+        super.highlightRow(row);
+        super.highlightRow(this.getTwinRow(row));
+    }
 
     /**
      * @override
@@ -469,10 +469,10 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
      * @inheritdoc
      * @param {JQuery} row
      */
-    unhighlightRow: function(row) {
-        this._super(row);
-        this._super(this.getTwinRow(row));
-    },
+    unhighlightRow(row) {
+        super.unhighlightRow(row);
+        super.unhighlightRow(this.getTwinRow(row));
+    }
 
     /**
      * @override
@@ -481,7 +481,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
      * @param {JQuery} row
      * @param {string} content
      */
-    displayExpandedRow: function(row, content) {
+    displayExpandedRow(row, content) {
         var twinRow = this.getTwinRow(row);
         row.after(content);
         this.updateRowspan(row);
@@ -491,7 +491,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
 
         twinRow.after('<tr class="ui-expanded-row-content ui-widget-content"><td></td></tr>');
         twinRow.next().children('td').attr('colspan', this.updateColspan(twinRow)).height(expansionRow.children('td').height());
-    },
+    }
 
     /**
      * @override
@@ -499,19 +499,19 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
      * @inheritdoc
      * @param {JQuery} row
      */
-    collapseRow: function(row) {
-        this._super(row);
-        this._super(this.getTwinRow(row));
-    },
+    collapseRow(row) {
+        super.collapseRow(row);
+        super.collapseRow(this.getTwinRow(row));
+    }
 
     /**
      * @override
      * @inheritdoc
      * @return {JQuery}
      */
-    getExpandedRows: function() {
+    getExpandedRows() {
         return this.frozenTbody.children('.ui-expanded-row');
-    },
+    }
 
     /**
      * @override
@@ -519,10 +519,10 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
      * @protected
      * @param {JQuery} row
      */
-    showRowEditors: function(row) {
-        this._super(row);
-        this._super(this.getTwinRow(row));
-    },
+    showRowEditors(row) {
+        super.showRowEditors(row);
+        super.showRowEditors(this.getTwinRow(row));
+    }
 
     /**
      * @override
@@ -531,7 +531,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
      * @param {JQuery} row
      * @param {string} content
      */
-    updateRow: function(row, content) {
+    updateRow(row, content) {
         var table = $('<table><tbody>' + content + '</tbody></table>'),
         newRow = table.find('> tbody > tr'),
         columns = newRow.children('td'),
@@ -544,17 +544,17 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
 
         row.replaceWith(frozenRow);
         twinRow.replaceWith(scrollableRow);
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      * @param {number} index
      */
-    invalidateRow: function(index) {
+    invalidateRow(index) {
         this.frozenTbody.children('tr').eq(index).addClass('ui-widget-content ui-row-editing ui-state-error');
         this.scrollTbody.children('tr').eq(index).addClass('ui-widget-content ui-row-editing ui-state-error');
-    },
+    }
 
     /**
      * @override
@@ -563,9 +563,9 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
      * @param {JQuery} row
      * @return {JQuery}
      */
-    getRowEditors: function(row) {
+    getRowEditors(row) {
         return row.find('div.ui-cell-editor').add(this.getTwinRow(row).find('div.ui-cell-editor'));
-    },
+    }
 
     /**
      * @override
@@ -574,7 +574,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
      * @param {JQueryUI.DraggableEventUIParams} ui Data of the drag event.
      * @return {JQuery|null}
      */
-    findGroupResizer: function(ui) {
+    findGroupResizer(ui) {
         var resizer = this._findGroupResizer(ui, this.frozenGroupResizers);
         if(resizer) {
             return resizer;
@@ -582,7 +582,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         else {
             return this._findGroupResizer(ui, this.scrollGroupResizers);
         }
-    },
+    }
 
     /**
      * Finds the resizer DOM element that matches the given draggable event params.
@@ -591,7 +591,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
      * @param {JQuery} resizers List of all available resizers.
      * @return {JQuery|null} DOM element of the resizer.
      */
-    _findGroupResizer: function(ui, resizers) {
+    _findGroupResizer(ui, resizers) {
         for(var i = 0; i < resizers.length; i++) {
             var groupResizer = resizers.eq(i);
             if(groupResizer.offset().left === ui.helper.data('originalposition').left) {
@@ -600,14 +600,14 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         }
 
         return null;
-    },
+    }
 
     /**
      * @override
      * @protected
      * @inheritdoc
      */
-    addResizers: function() {
+    addResizers() {
         var frozenColumns = this.frozenThead.find('> tr > th.ui-resizable-column'),
         scrollableColumns = this.scrollThead.find('> tr > th.ui-resizable-column');
 
@@ -623,7 +623,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
             this.frozenGroupResizers = this.frozenThead.find('> tr:first > th > .ui-column-resizer');
             this.scrollGroupResizers = this.scrollThead.find('> tr:first > th > .ui-column-resizer');
         }
-    },
+    }
 
     /**
      * @override
@@ -632,7 +632,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
      * @param {JQuery.TriggeredEvent} event
      * @param {JQueryUI.DraggableEventUIParams} ui
      */
-    resize: function(event, ui) {
+    resize(event, ui) {
         var columnHeader = null,
         change = null,
         newWidth = null,
@@ -743,7 +743,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
                 }
             }
         }
-    },
+    }
 
     /**
      * @override
@@ -751,19 +751,19 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
      * @inheritdoc
      * @return {boolean}
      */
-    hasColGroup: function() {
+    hasColGroup() {
         return this.frozenThead.children('tr').length > 1 || this.scrollThead.children('tr').length > 1;
-    },
+    }
 
     /**
      * @override
      * @protected
      * @inheritdoc
      */
-    addGhostRow: function() {
+    addGhostRow() {
         this._addGhostRow(this.frozenTbody, this.frozenThead, this.frozenTheadClone, this.frozenFooter.find('table'), 'ui-frozen-column');
         this._addGhostRow(this.scrollTbody, this.scrollThead, this.scrollTheadClone, this.scrollFooterTable);
-    },
+    }
 
     /**
      * Adds an invisible row for internal purposes.
@@ -774,7 +774,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
      * @param {JQuery} footerTable Footer of this data table.
      * @param {string} [columnClass] Optional CSS class for the ghost columns.
      */
-    _addGhostRow: function(body, header, headerClone, footerTable, columnClass) {
+    _addGhostRow(body, header, headerClone, footerTable, columnClass) {
         var dataColumns = body.find('tr:first').children('td'),
         dataColumnsCount = dataColumns.length,
         columnMarkup = '',
@@ -790,7 +790,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
             headerClone.prepend('<tr>' + columnMarkup + '</tr>');
             footerTable.children('tfoot').prepend('<tr>' + columnMarkup + '</tr>');
         }
-    },
+    }
 
     /**
      * @override
@@ -798,29 +798,29 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
      * @inheritdoc
      * @return {JQuery}
      */
-    getFocusableTbody: function() {
+    getFocusableTbody() {
         return this.tbody.eq(0);
-    },
+    }
 
     /**
      * @override
      * @protected
      * @inheritdoc
      */
-    highlightFocusedRow: function() {
-        this._super();
+    highlightFocusedRow() {
+        super.highlightFocusedRow();
         this.getTwinRow(this.focusedRow).addClass('ui-state-hover');
-    },
+    }
 
     /**
      * @override
      * @protected
      * @inheritdoc
      */
-    unhighlightFocusedRow: function() {
-        this._super();
+    unhighlightFocusedRow() {
+        super.unhighlightFocusedRow();
         this.getTwinRow(this.focusedRow).removeClass('ui-state-hover');
-    },
+    }
 
     /**
      * @override
@@ -828,20 +828,20 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
      * @inheritdoc
      * @param {JQuery} row
      */
-    assignFocusedRow: function(row) {
-        this._super(row);
+    assignFocusedRow(row) {
+        super.assignFocusedRow(row);
 
         if(!row.parent().attr('tabindex')) {
             this.frozenTbody.trigger('focus');
         }
-    },
+    }
 
     /**
      * @override
      * @protected
      * @inheritdoc
      */
-    saveColumnOrder: function() {
+    saveColumnOrder() {
         var columnIds = [],
         columns = $(this.jqId + '_frozenThead:first th,' + this.jqId + '_scrollableThead:first th');
 
@@ -850,27 +850,27 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         });
 
         this.orderStateHolder.val(columnIds.join(','));
-    },
+    }
 
     /**
      * @override
      * @protected
      * @inheritdoc
      */
-    resetVirtualScrollBody: function() {
+    resetVirtualScrollBody() {
         this.scrollBodyTable.css('top', '0px');
         this.frozenBodyTable.css('top', '0px');
         this.scrollBody.scrollTop(0);
         this.frozenBody.scrollTop(0);
         this.clearScrollState();
-    },
+    }
 
     /**
      * @override
      * @protected
      * @inheritdoc
      */
-    groupRows: function() {
+    groupRows() {
         var scrollRows = this.scrollTbody.children('tr'),
         frozenRows = this.frozenTbody.children('tr');
 
@@ -887,12 +887,12 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
 
         scrollRows.children('td.ui-duplicated-column').remove();
         frozenRows.children('td.ui-duplicated-column').remove();
-    },
+    }
 
     /**
      * Adjusts the height of all rows to fit the current settings.
      */
-    fixRowHeightsAll: function() {
+    fixRowHeightsAll() {
         this.fixRowHeights(this.scrollThead.children(), this.frozenThead.children());
         this.fixRowHeights(this.scrollTbody.children(), this.frozenTbody.children());
         var frozenFootRows = this.frozenTfoot.children();
@@ -908,7 +908,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
                 }
             }
         }
-    },
+    }
 
     /**
      * Adjusts the height of the given rows to fit the current settings.
@@ -916,7 +916,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
      * @param {JQuery} scrollRows The scrollable rows to adjust.
      * @param {JQuery} frozenRows The frozen rows to adjust.
      */
-    fixRowHeights: function(scrollRows, frozenRows) {
+    fixRowHeights(scrollRows, frozenRows) {
         frozenRows.each(function(index) {
             var frozenRow = $(this);
             var scrollRow = scrollRows.eq(index);
@@ -939,4 +939,4 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         });
     }
 	
-});
+}

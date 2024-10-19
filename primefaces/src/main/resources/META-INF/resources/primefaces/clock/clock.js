@@ -30,7 +30,7 @@
  * @prop {string} cfg.widgetVar The name of the widget variables of this widget. The widget variable can be used to
  * access a widget instance by calling `PF('myWidgetVar')`.
  */
-PrimeFaces.widget.SimpleDateFormat = Class.extend({
+PrimeFaces.widget.SimpleDateFormat = class SimpleDateFormat {
 
     /**
      * A widget class should not have an explicit constructor. Instead, this initialize method is called after the widget
@@ -40,7 +40,7 @@ PrimeFaces.widget.SimpleDateFormat = Class.extend({
      * @param {Partial<TCfg>} cfg The widget configuration to be used for this widget instance. This widget
      * configuration is usually created on the server by the `javax.faces.render.Renderer` for this component.
      */
-    init: function(cfg) {
+    init(cfg) {
         this.cfg = cfg;
         this.cfg.regex = /('[^']*')|(G+|y+|M+|w+|W+|D+|d+|F+|E+|a+|H+|k+|K+|h+|m+|s+|S+|Z+)|([a-zA-Z]+)|([^a-zA-Z']+)/
         this.cfg.TEXT2 = 0;
@@ -83,7 +83,7 @@ PrimeFaces.widget.SimpleDateFormat = Class.extend({
             this.cfg.monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
             this.cfg.dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
         }
-    },
+    }
 
     /**
      * Creates a new date object that represents midnighht of the given year, month, and day.
@@ -92,11 +92,11 @@ PrimeFaces.widget.SimpleDateFormat = Class.extend({
      * @param {number} day  A day (of the month) to set, in the range `1...31`.
      * @return {Date} A date for the given year, month, and day at at midnight.
      */
-    newDateAtMidnight: function(year, month, day) {
+    newDateAtMidnight(year, month, day) {
         var d = new Date(year, month, day, 0, 0, 0);
         d.setMilliseconds(0);
         return d;
-    },
+    }
 
     /**
      * Computes the difference between the two given dates.
@@ -104,9 +104,9 @@ PrimeFaces.widget.SimpleDateFormat = Class.extend({
      * @param  {Date} date2 Second input date
      * @return {number} Time in milliseconds between the two dates (`date1-date2`).
      */
-    getDifference : function(date1, date2) {
+    getDifference(date1, date2) {
         return date1.getTime() - date2.getTime();
-    },
+    }
 
     /**
      * Checks whether the first given date lies before the second given date.
@@ -114,9 +114,9 @@ PrimeFaces.widget.SimpleDateFormat = Class.extend({
      * @param {Date} date2 Second input date
      * @return {boolean} `true` if `date1` lies before `date2`, or `false` otherwise.
      */
-    isBefore : function(date1, date2) {
+    isBefore(date1, date2) {
         return date1.getTime() < date2.getTime();
-    },
+    }
 
     /**
      * Converts the given date to UTC time, that is, the number of milliseconds between midnight, January 1, 1970
@@ -124,12 +124,12 @@ PrimeFaces.widget.SimpleDateFormat = Class.extend({
      * @param {Date} date Date to convert to UTC.
      * @return {number} The given date, converted to UTC time.
      */
-    getUTCTime: function(date) {
+    getUTCTime(date) {
         if(date != undefined){
             return Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds());
         }
 
-    },
+    }
 
     /**
      * Finds the difference in milliseconds between the two given date (`date1-date2`).
@@ -137,9 +137,9 @@ PrimeFaces.widget.SimpleDateFormat = Class.extend({
      * @param {Date} date2 Second input date
      * @return {number} The numer of milliseconds between the two given date (`date1-date2`).
      */
-    getTimeSince: function(date1, date2) {
+    getTimeSince(date1, date2) {
         return this.getUTCTime(date1) - this.getUTCTime(date2);
-    },
+    }
 
     /**
      * Finds closest Sunday preceding the given date. If the date is already a Sunday, that day is returned.
@@ -147,13 +147,13 @@ PrimeFaces.widget.SimpleDateFormat = Class.extend({
      * @return {Date} The date at midnight of the first Sunday before the given date. If the given date is already a
      * Sunday, that day is returned.
      */
-    getPreviousSunday: function(date) {
+    getPreviousSunday(date) {
         // Using midday avoids any possibility of DST messing things up
         var midday = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 12, 0, 0);
         var previousSunday = new Date(midday.getTime() - date.getDay() * this.cfg.ONE_DAY);
 
         return this.newDateAtMidnight(previousSunday.getFullYear(), previousSunday.getMonth(), previousSunday.getDate());
-    },
+    }
 
     /**
      * Computes the ordinal index of the week of the year of the given date.
@@ -163,7 +163,7 @@ PrimeFaces.widget.SimpleDateFormat = Class.extend({
      * 2 days, as week).
      * @return {number} The week of the year of the given date, starting at `0`.
      */
-    getWeekInYear : function(date, minimalDaysInFirstWeek) {
+    getWeekInYear(date, minimalDaysInFirstWeek) {
         var previousSunday = this.getPreviousSunday(date);
         var startOfYear = this.newDateAtMidnight(date.getFullYear(), 0, 1);
         var numberOfSundays = this.isBefore(previousSunday, startOfYear) ? 0 : 1 + Math.floor(this.getTimeSince(previousSunday,startOfYear) / this.cfg.ONE_WEEK);
@@ -174,7 +174,7 @@ PrimeFaces.widget.SimpleDateFormat = Class.extend({
         }
 
         return weekInYear;
-    },
+    }
 
     /**
      * Computes the ordinal index of the week of the month of the given date.
@@ -184,7 +184,7 @@ PrimeFaces.widget.SimpleDateFormat = Class.extend({
      * 2 days, as week).
      * @return {number} The week of the month of the given date, starting at `0`.
      */
-   getWeekInMonth: function(date, minimalDaysInFirstWeek) {
+    getWeekInMonth(date, minimalDaysInFirstWeek) {
         var previousSunday = this.getPreviousSunday(date);
         var startOfMonth = this.newDateAtMidnight(date.getFullYear(), date.getMonth(), 1);
         var numberOfSundays = this.isBefore(previousSunday,startOfMonth) ? 0 : 1 + Math.floor((this.getTimeSince(previousSunday, startOfMonth)) / this.cfg.ONE_WEEK);
@@ -195,18 +195,18 @@ PrimeFaces.widget.SimpleDateFormat = Class.extend({
         }
 
         return weekInMonth;
-    },
+    }
 
     /**
      * Computes the ordinal index of the given day in the given year.
      * @param {Date} date A day to check.
      * @return {number} The ordinal index of the given day relative to the beginning of the year, starting at `1`.
      */
-    getDayInYear: function(date) {
+    getDayInYear(date) {
         var startOfYear = this.newDateAtMidnight(date.getFullYear(), 0, 1);
 
         return 1 + Math.floor(this.getTimeSince(date, startOfYear) / this.cfg.ONE_DAY);
-    },
+    }
 
     /**
      * Finds the currently configured value of how many days a week must have at least to be considered a "full" week.
@@ -214,16 +214,16 @@ PrimeFaces.widget.SimpleDateFormat = Class.extend({
      * @param {unknown} days Unused.
      * @return {number} The minimal number of days a week is allowed to have to be considered a "full" week. 
      */
-    getMinimalDaysInFirstWeek: function(days) {
+    getMinimalDaysInFirstWeek(days) {
         return this.cfg.minimalDaysInFirstWeek	? this.cfg.DEFAULT_MINIMAL_DAYS_IN_FIRST_WEEK : this.cfg.minimalDaysInFirstWeek;
-    },
+    }
 
     /**
      * Format sthe given given according to the pattern of the current widget configuration.
      * @param {Date} date A date to format
      * @return {string} The given date as a formatted string.
      */
-    format: function(date) {
+    format(date) {
         var formattedString = "";
         var result;
 
@@ -376,7 +376,7 @@ PrimeFaces.widget.SimpleDateFormat = Class.extend({
         }
         return formattedString;
     }
-});
+}
 
 /**
  * __PrimeFaces Clock Widget__
@@ -436,15 +436,15 @@ PrimeFaces.widget.SimpleDateFormat = Class.extend({
  * @prop {number} cfg.syncInterval Defines the sync in ms interval in when `autoSync` is set to `true`.
  * @prop {string} cfg.value The initial time value for the clock to display.
  */
-PrimeFaces.widget.Clock = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Clock = class Clock extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         this.cfg.pattern = this.cfg.pattern||"MM/dd/yyyy HH:mm:ss";
         this.cfg.dateFormat = new PrimeFaces.widget.SimpleDateFormat({
@@ -470,57 +470,57 @@ PrimeFaces.widget.Clock = PrimeFaces.widget.BaseWidget.extend({
                 $this.sync();
             }, this.cfg.syncInterval);
         }
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    refresh: function(cfg) {
+    refresh(cfg) {
         clearInterval(this.interval);
 
-        this._super(cfg);
-    },
+        super.refresh(cfg);
+    }
 
     /**
      * Checks whether the time of the client is used for this clock.
      * @return {boolean} `true` if the time of the client is used, or `false` if the time of the server is used.
      */
-    isClient: function() {
+    isClient() {
         return this.cfg.mode === 'client';
-    },
+    }
 
     /**
      * Starts this clock if it is not already running.
      */
-    start: function() {
+    start() {
         var $this = this;
         this.interval = setInterval(function(){
             $this.updateOutput();
         }, 1000);
-    },
+    }
 
     /**
      * Stops this clock it is currently running.
      */
-    stop: function() {
+    stop() {
         clearInterval(this.interval);
-    },
+    }
 
     /**
      * Called after a tick of the clock, updates the visual display of this clock.
      * @private
      */
-    updateOutput: function() {
+    updateOutput() {
         this.current.setSeconds(this.current.getSeconds() + 1);
         this.jq.text(this.cfg.dateFormat.format(this.current));
-    },
+    }
 
     /**
      * Synchronizes this clock so that it shows the current time. This will trigger an AJAX update of this component.
      */
-    sync: function() {
+    sync() {
         if(!this.isAnalogClock()) {
             this.stop();
         }
@@ -548,13 +548,13 @@ PrimeFaces.widget.Clock = PrimeFaces.widget.BaseWidget.extend({
         };
 
         PrimeFaces.ajax.Request.handle(options);
-    },
+    }
 
     /**
      * Draws this clock according the the current widget configuation.
      * @private
      */
-    draw: function() {
+    draw() {
 
         this.dimensions = this.getDimensions(this.jq.width());
 
@@ -601,16 +601,16 @@ PrimeFaces.widget.Clock = PrimeFaces.widget.BaseWidget.extend({
         });
 
         this.update();
-    },
+    }
 
     /**
      * Draws the hour marks for the analog clock.
      * @private
      */
-    draw_hour_signs: function() {
+    draw_hour_signs() {
         this.hour_sign = [];
 
-        for (i = 0; i < 12; i++) {
+        for (var i = 0; i < 12; i++) {
             (function (i,that){
                 var start_x = that.dimensions.half + Math.round(that.dimensions.hour_sign_min_size * Math.cos(30 * i * Math.PI / 180));
                 var start_y = that.dimensions.half + Math.round(that.dimensions.hour_sign_min_size * Math.sin(30 * i * Math.PI / 180));
@@ -620,29 +620,29 @@ PrimeFaces.widget.Clock = PrimeFaces.widget.BaseWidget.extend({
                 that.hour_sign.push(that.canvas.path("M" + start_x + " " + start_y + "L" + end_x + " " + end_y));
             })(i,this);
         }
-    },
+    }
 
     /**
      * Draws the clock hands for the analog clock.
      * @private
      */
-    draw_hands: function() {
+    draw_hands() {
         this.hour_hand = this.canvas.path("M" + this.dimensions.half + " " + this.dimensions.half + "L" + this.dimensions.half + " " + this.dimensions.hour_hand_start_position);
         this.minute_hand = this.canvas.path("M" + this.dimensions.half + " " + this.dimensions.half + "L" + this.dimensions.half + " " + this.dimensions.minute_hand_start_position);
         this.second_hand = this.canvas.path("M" + this.dimensions.half + " " + this.dimensions.half + "L" + this.dimensions.half + " " + this.dimensions.second_hand_start_position);
-    },
+    }
 
     /**
      * Called each click of the clock, animates the clock hands.
      * @private
      */
-    update: function() {
+    update() {
         this.hour_hand.animate({transform: "R" + (30 * this.current.getHours() + (this.current.getMinutes() / 2.5)) + "," + this.dimensions.half + "," + this.dimensions.half}, 1);
         this.minute_hand.animate({transform: "R" + (6 * this.current.getMinutes()) + "," + this.dimensions.half + "," + this.dimensions.half}, 1);
         this.second_hand.animate({transform: "R" + (6 * this.current.getSeconds()) + "," + this.dimensions.half + "," + this.dimensions.half}, 1);
 
         this.current.setSeconds(this.current.getSeconds() + 1);
-    },
+    }
 
     /**
      * Computes the width of the individual elements of the analog clock for the given target width.
@@ -650,7 +650,7 @@ PrimeFaces.widget.Clock = PrimeFaces.widget.BaseWidget.extend({
      * @param {number} size Target width of the clock in pixels
      * @return {PrimeFaces.widget.Clock.Dimensions} Calculated sizes for the analog clock elements.
      */
-    getDimensions: function(size) {
+    getDimensions(size) {
         return {
             'size': size,
             'half': Math.floor(size / 2),
@@ -666,14 +666,14 @@ PrimeFaces.widget.Clock = PrimeFaces.widget.BaseWidget.extend({
             'second_hand_stroke_width': Math.floor(size * 1 / 100) || 1,
             'pin_width': Math.floor(size * 2.5 / 100)
         };
-    },
+    }
 
     /**
      * Checks whether this clock is displayed as an analog or digital clock.
      * @return {boolean} `true` if this clock is displayed as an analog clock, or `false` if it is displayed in an
      * INPUT field.
      */
-    isAnalogClock: function() {
+    isAnalogClock() {
         return this.cfg.displayMode === "analog";
     }
-});
+}
