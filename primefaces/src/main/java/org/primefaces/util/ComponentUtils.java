@@ -762,13 +762,6 @@ public class ComponentUtils {
         return component.getClass().getName().endsWith("UIRepeat");
     }
 
-    public static boolean isVisitable(VisitContext context, UIComponent component) {
-        // Copy from MyFaces
-        Set<VisitHint> hints = context.getHints();
-        return (!hints.contains(VisitHint.SKIP_UNRENDERED) || component.isRendered())
-                && (!hints.contains(VisitHint.SKIP_TRANSIENT) || !component.isTransient());
-    }
-
     public static Object convertToType(Object value, Class<?> valueType, Logger logger) {
         // skip null
         if (value == null) {

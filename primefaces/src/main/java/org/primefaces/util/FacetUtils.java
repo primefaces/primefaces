@@ -25,7 +25,6 @@ package org.primefaces.util;
 
 import java.beans.BeanInfo;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 import javax.faces.FacesException;
 import javax.faces.component.ContextCallback;
@@ -103,46 +102,41 @@ public class FacetUtils {
 
         @Override
         public VisitResult visit(VisitContext context, UIComponent target) {
-            return invokeOnDeepestEditableValueHolder(context, target, callback);
-        }
-
-        public VisitResult invokeOnDeepestEditableValueHolder(VisitContext visitContext, UIComponent component, ContextCallback callback) {
-            FacesContext context = visitContext.getFacesContext();
-            if (component instanceof EditableValueHolder) {
-                if (!ComponentUtils.isVisitable(visitContext, component)) {
-                    return VisitResult.ACCEPT;
-                }
-                callback.invokeContextCallback(context, component);
+            if (target instanceof EditableValueHolder) {
+                callback.invokeContextCallback(context.getFacesContext(), target);
                 return VisitResult.COMPLETE;
             }
+            else if (UIComponent.isCompositeComponent(target)) {
+                return visitEditableValueHolderTargets(context, target);
+            }
+            return VisitResult.ACCEPT;
+        }
 
+        private VisitResult visitEditableValueHolderTargets(VisitContext visitContext, UIComponent component) {
             BeanInfo info = (BeanInfo) component.getAttributes().get(UIComponent.BEANINFO_KEY);
             List<AttachedObjectTarget> targets = (List<AttachedObjectTarget>) info.getBeanDescriptor()
                     .getValue(AttachedObjectTarget.ATTACHED_OBJECT_TARGETS_KEY);
 
             if (targets != null) {
-                AtomicReference<VisitResult> result = new AtomicReference<>(VisitResult.ACCEPT);
                 for (int i = 0; i < targets.size(); i++) {
                     AttachedObjectTarget target = targets.get(i);
                     if (target instanceof EditableValueHolderAttachedObjectTarget) {
                         List<UIComponent> children = target.getTargets(component);
-                        if (children == null || targets.isEmpty()) {
+                        if (children == null || children.isEmpty()) {
                             throw new FacesException("Cannot resolve <cc:editableValueHolder /> target in component with id: \""
                                     + component.getClientId() + "\"");
                         }
                         for (int j = 0; j < children.size(); j++) {
                             final UIComponent child = children.get(j);
-                            component.invokeOnComponent(context, component.getClientId(context),
-                                    (ctxt, comp) -> result.set(invokeOnDeepestEditableValueHolder(visitContext, child, callback)));
-                            if (result.get() != VisitResult.ACCEPT) {
-                                return result.get();
+                            if (child.visitTree(visitContext, this)) {
+                                return VisitResult.COMPLETE;
                             }
                         }
                     }
                 }
             }
 
-            return VisitResult.COMPLETE;
+            return VisitResult.ACCEPT;
         }
     }
 
