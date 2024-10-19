@@ -107,12 +107,13 @@ public class FacetUtils {
                 return VisitResult.COMPLETE;
             }
             else if (UIComponent.isCompositeComponent(target)) {
-                return visitEditableValueHolderTargets(context, target);
+                visitEditableValueHolderTargets(context, target);
+                return VisitResult.COMPLETE;
             }
             return VisitResult.ACCEPT;
         }
 
-        private VisitResult visitEditableValueHolderTargets(VisitContext visitContext, UIComponent component) {
+        private void visitEditableValueHolderTargets(VisitContext visitContext, UIComponent component) {
             BeanInfo info = (BeanInfo) component.getAttributes().get(UIComponent.BEANINFO_KEY);
             List<AttachedObjectTarget> targets = (List<AttachedObjectTarget>) info.getBeanDescriptor()
                     .getValue(AttachedObjectTarget.ATTACHED_OBJECT_TARGETS_KEY);
@@ -129,14 +130,12 @@ public class FacetUtils {
                         for (int j = 0; j < children.size(); j++) {
                             final UIComponent child = children.get(j);
                             if (child.visitTree(visitContext, this)) {
-                                return VisitResult.COMPLETE;
+                                return; // visit over
                             }
                         }
                     }
                 }
             }
-
-            return VisitResult.COMPLETE;
         }
     }
 
