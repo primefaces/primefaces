@@ -1,0 +1,32 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Charts <span class="subitem">Mixed</span>
+    </ui:define>
+
+    <ui:define name="description">
+        MixedChart demonstrates a chart that consists of a BarChart and a LineChart using <a href="https://github.com/xdev-software/chartjs-java-model" target="_blank" rel="noopener noreferrer">XDEV</a> model. When a dataset data is clicked, information can be passed to a backing bean using itemSelect ajax behavior. 
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/chart"/>
+    <ui:param name="widgetLink" value="Chart-1"/>
+
+    <ui:define name="implementation">
+        <h:form>
+            <p:growl id="growl" showDetail="true"/>
+
+            <div class="card">
+                <h5>Mixed</h5>
+                <p:chart value="#{chartView.mixedModel}" style="width: 100%; height: 500px;">
+                    <p:ajax event="itemSelect" listener="#{chartView.itemSelect}" update="growl"/>
+                </p:chart>
+            </div>
+    
+        </h:form>
+    </ui:define>
+
+</ui:composition>
