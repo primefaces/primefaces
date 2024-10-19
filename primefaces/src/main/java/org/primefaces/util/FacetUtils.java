@@ -127,7 +127,8 @@ public class FacetUtils {
                     if (target instanceof EditableValueHolderAttachedObjectTarget) {
                         List<UIComponent> children = target.getTargets(component);
                         if (children == null || targets.isEmpty()) {
-                            throw new FacesException("Cannot resolve <cc:editableValueHolder /> target in component with id: \"" + component.getClientId() + "\"");
+                            throw new FacesException("Cannot resolve <cc:editableValueHolder /> target in component with id: \""
+                                    + component.getClientId() + "\"");
                         }
                         for (int j = 0; j < children.size(); j++) {
                             final UIComponent child = children.get(j);
