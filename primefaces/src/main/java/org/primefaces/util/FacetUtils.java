@@ -26,7 +26,6 @@ package org.primefaces.util;
 import java.beans.BeanInfo;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.logging.Logger;
 
 import javax.faces.FacesException;
 import javax.faces.component.ContextCallback;
@@ -41,8 +40,6 @@ import javax.faces.view.AttachedObjectTarget;
 import javax.faces.view.EditableValueHolderAttachedObjectTarget;
 
 public class FacetUtils {
-
-    private static final Logger LOGGER = Logger.getLogger(FacetUtils.class.getName());
 
     private FacetUtils() {
     }
