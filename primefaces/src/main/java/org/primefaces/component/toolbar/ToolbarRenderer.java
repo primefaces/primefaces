@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.toolbar;
 
+import org.primefaces.model.menu.Separator;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.FacetUtils;
 
@@ -37,6 +38,9 @@ public class ToolbarRenderer extends CoreRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Toolbar toolbar = (Toolbar) component;
+        if (!shouldBeRendered(context, toolbar)) {
+            return;
+        }
         ResponseWriter writer = context.getResponseWriter();
         String style = toolbar.getStyle();
         String styleClass = toolbar.getStyleClass();
@@ -114,5 +118,20 @@ public class ToolbarRenderer extends CoreRenderer {
     @Override
     public boolean getRendersChildren() {
         return true;
+    }
+
+    protected boolean shouldBeRendered(FacesContext facesContext, Toolbar toolbar) {
+        if (toolbar.getChildCount() > 0) {
+            for (UIComponent child : toolbar.getChildren()) {
+                if (child.isRendered() && child instanceof ToolbarGroup) {
+                    ToolbarGroup toolbarGroup = (ToolbarGroup) child;
+                    return toolbarGroup.getChildren().stream().filter(me -> !(me instanceof Separator)).anyMatch(UIComponent::isRendered);
+                }
+            }
+            return false;
+        }
+        else {
+            return FacetUtils.shouldRenderFacet(toolbar.getFacet("left")) || FacetUtils.shouldRenderFacet(toolbar.getFacet("right"));
+        }
     }
 }

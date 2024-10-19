@@ -78,6 +78,28 @@
                 </p:menubar>
             </h:form>
         </div>
+
+        <div class="card">
+            <h5>Menubar without any rendered items</h5>
+            <h:form>
+                <p:growl id="messages"/>
+
+                <p:menubar hideDelay="1000">
+
+                    <p:submenu label="File" icon="pi pi-fw pi-file">
+                        <p:submenu label="New" icon="pi pi-fw pi-plus">
+                            <p:menuitem value="Bookmark" icon="pi pi-fw pi-bookmark" rendered="false"/>
+                            <p:menuitem value="Video" icon="pi pi-fw pi-video" rendered="false"/>
+                        </p:submenu>
+                        <p:divider />
+                        <p:menuitem value="Delete" icon="pi pi-fw pi-trash" rendered="false"/>
+                    </p:submenu>
+
+                    <p:menuitem value="Quit" icon="pi pi-fw pi-power-off" rendered="false"/>
+
+                </p:menubar>
+            </h:form>
+        </div>
     </ui:define>
 
 </ui:composition>
