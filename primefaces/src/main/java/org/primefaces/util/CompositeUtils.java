@@ -23,16 +23,10 @@
  */
 package org.primefaces.util;
 
-import java.beans.BeanInfo;
-import java.util.List;
-
-import javax.faces.FacesException;
 import javax.faces.component.ContextCallback;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.view.AttachedObjectTarget;
-import javax.faces.view.EditableValueHolderAttachedObjectTarget;
 
 public class CompositeUtils {
 
@@ -44,52 +38,9 @@ public class CompositeUtils {
     }
 
     /**
-     * Attention: This only supports cc:editableValueHolder which target a single component!
-     *
-     * @param context
-     * @param composite
-     * @param callback
+     * Invoke callback on the first rendered {@link EditableValueHolder} component
      */
     public static void invokeOnDeepestEditableValueHolder(FacesContext context, UIComponent composite, ContextCallback callback) {
-        if (composite instanceof EditableValueHolder) {
-            callback.invokeContextCallback(context, composite);
-            return;
-        }
-
-        BeanInfo info = (BeanInfo) composite.getAttributes().get(UIComponent.BEANINFO_KEY);
-        List<AttachedObjectTarget> targets = (List<AttachedObjectTarget>) info.getBeanDescriptor()
-                .getValue(AttachedObjectTarget.ATTACHED_OBJECT_TARGETS_KEY);
-
-        if (targets != null) {
-            for (int i = 0; i < targets.size(); i++) {
-                AttachedObjectTarget target = targets.get(i);
-                if (target instanceof EditableValueHolderAttachedObjectTarget) {
-
-                    List<UIComponent> children = target.getTargets(composite);
-                    if (children == null || children.isEmpty()) {
-                        throw new FacesException(
-                                "Cannot not resolve editableValueHolder target in composite component with id: \""
-                                + composite.getClientId() + "\"");
-                    }
-
-                    for (int j = 0; j < children.size(); j++) {
-                        final UIComponent child = children.get(j);
-
-                        composite.invokeOnComponent(context, child.getClientId(context), (ctxt, comp) -> {
-                            if (!comp.isRendered()) {
-                                return;
-                            }
-
-                            if (isComposite(comp)) {
-                                invokeOnDeepestEditableValueHolder(ctxt, comp, callback);
-                            }
-                            else {
-                                callback.invokeContextCallback(ctxt, comp);
-                            }
-                        });
-                    }
-                }
-            }
-        }
+        FacetUtils.invokeOnEditableValueHolder(context, composite, callback);
     }
 }

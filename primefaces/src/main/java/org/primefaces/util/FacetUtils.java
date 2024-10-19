@@ -23,15 +23,26 @@
  */
 package org.primefaces.util;
 
+import java.beans.BeanInfo;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.logging.Logger;
+
+import javax.faces.FacesException;
 import javax.faces.component.ContextCallback;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIPanel;
+import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
+import javax.faces.view.AttachedObjectTarget;
+import javax.faces.view.EditableValueHolderAttachedObjectTarget;
 
 public class FacetUtils {
+
+    private static final Logger LOGGER = Logger.getLogger(FacetUtils.class.getName());
 
     private FacetUtils() {
     }
@@ -81,27 +92,60 @@ public class FacetUtils {
     }
 
     public static void invokeOnEditableValueHolder(FacesContext context, UIComponent facet, ContextCallback callback) {
+        VisitContext visitContext = VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
+        facet.visitTree(visitContext, new EditableValueHolderVisitCallback(callback));
+    }
 
-        VisitContext visitContext = VisitContext.createVisitContext(context, null,
-                ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
+    private static class EditableValueHolderVisitCallback implements VisitCallback {
 
-        // loop through all facet components
-        // sometimes its not enough to check the first component as it may be wrapped in some layout-components
-        facet.visitTree(visitContext, (ctx, component) -> {
+        private final ContextCallback callback;
 
-            if (CompositeUtils.isComposite(component)) {
-                CompositeUtils.invokeOnDeepestEditableValueHolder(context, component, callback);
+        public EditableValueHolderVisitCallback(ContextCallback callback) {
+            this.callback = callback;
+        }
 
-                // skip composite subtree
-                // a user must implement EditableValueHolder or use cc:editableValueHolder
-                return VisitResult.REJECT;
-            }
-            else if (component instanceof EditableValueHolder) {
+        @Override
+        public VisitResult visit(VisitContext context, UIComponent target) {
+            return invokeOnDeepestEditableValueHolder(context, target, callback);
+        }
+
+        public VisitResult invokeOnDeepestEditableValueHolder(VisitContext visitContext, UIComponent component, ContextCallback callback) {
+            FacesContext context = visitContext.getFacesContext();
+            if (component instanceof EditableValueHolder) {
+                if (!ComponentUtils.isVisitable(visitContext, component)) {
+                    return VisitResult.ACCEPT;
+                }
                 callback.invokeContextCallback(context, component);
+                return VisitResult.COMPLETE;
             }
 
-            return VisitResult.ACCEPT;
-        });
+            BeanInfo info = (BeanInfo) component.getAttributes().get(UIComponent.BEANINFO_KEY);
+            List<AttachedObjectTarget> targets = (List<AttachedObjectTarget>) info.getBeanDescriptor()
+                    .getValue(AttachedObjectTarget.ATTACHED_OBJECT_TARGETS_KEY);
+
+            if (targets != null) {
+                AtomicReference<VisitResult> result = new AtomicReference<>(VisitResult.ACCEPT);
+                for (int i = 0; i < targets.size(); i++) {
+                    AttachedObjectTarget target = targets.get(i);
+                    if (target instanceof EditableValueHolderAttachedObjectTarget) {
+                        List<UIComponent> children = target.getTargets(component);
+                        if (children == null || targets.isEmpty()) {
+                            throw new FacesException("Cannot resolve <cc:editableValueHolder /> target in component with id: \"" + component.getClientId() + "\"");
+                        }
+                        for (int j = 0; j < children.size(); j++) {
+                            final UIComponent child = children.get(j);
+                            component.invokeOnComponent(context, component.getClientId(context),
+                                    (ctxt, comp) -> result.set(invokeOnDeepestEditableValueHolder(visitContext, child, callback)));
+                            if (result.get() != VisitResult.ACCEPT) {
+                                return result.get();
+                            }
+                        }
+                    }
+                }
+            }
+
+            return VisitResult.COMPLETE;
+        }
     }
 
 }
