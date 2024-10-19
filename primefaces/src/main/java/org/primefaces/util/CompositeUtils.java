@@ -72,22 +72,22 @@ public class CompositeUtils {
                                 + composite.getClientId() + "\"");
                     }
 
-                    if (children.size() > 1) {
-                        throw new FacesException(
-                                "Only a single editableValueHolder target is supported in composite component with id: \""
-                                + composite.getClientId() + "\"");
+                    for (int j = 0; j < children.size(); j++) {
+                        final UIComponent child = children.get(j);
+
+                        composite.invokeOnComponent(context, child.getClientId(context), (ctxt, comp) -> {
+                            if (!comp.isRendered()) {
+                                return;
+                            }
+
+                            if (isComposite(comp)) {
+                                invokeOnDeepestEditableValueHolder(ctxt, comp, callback);
+                            }
+                            else {
+                                callback.invokeContextCallback(ctxt, comp);
+                            }
+                        });
                     }
-
-                    final UIComponent child = children.get(0);
-
-                    composite.invokeOnComponent(context, composite.getClientId(context), (ctxt, comp) -> {
-                        if (isComposite(child)) {
-                            invokeOnDeepestEditableValueHolder(ctxt, child, callback);
-                        }
-                        else {
-                            callback.invokeContextCallback(ctxt, child);
-                        }
-                    });
                 }
             }
         }
