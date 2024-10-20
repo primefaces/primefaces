@@ -39,8 +39,10 @@ public class CompositeUtils {
 
     /**
      * Invoke callback on the first rendered {@link EditableValueHolder} component
+     * Use {@link ComponentUtils#invokeOnDeepestEditableValueHolder(FacesContext, UIComponent, ContextCallback)} instead
      */
+    @Deprecated
     public static void invokeOnDeepestEditableValueHolder(FacesContext context, UIComponent composite, ContextCallback callback) {
-        FacetUtils.invokeOnEditableValueHolder(context, composite, callback);
+        ComponentUtils.invokeOnDeepestEditableValueHolder(context, composite, callback);
     }
 }
