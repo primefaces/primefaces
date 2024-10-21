@@ -34,7 +34,6 @@ import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.csp.CspResponseWriter;
 import org.primefaces.renderkit.RendererUtils;
 
-import java.beans.BeanInfo;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.UncheckedIOException;
@@ -60,7 +59,6 @@ import javax.faces.FacesException;
 import javax.faces.FacesWrapper;
 import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.NavigationCase;
-import javax.faces.component.ContextCallback;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.StateHelper;
 import javax.faces.component.UIComponent;
@@ -71,18 +69,14 @@ import javax.faces.component.ValueHolder;
 import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.component.html.HtmlOutputFormat;
-import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitHint;
-import javax.faces.component.visit.VisitResult;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.render.Renderer;
-import javax.faces.view.AttachedObjectTarget;
-import javax.faces.view.EditableValueHolderAttachedObjectTarget;
 
 public class ComponentUtils {
 
@@ -816,61 +810,6 @@ public class ComponentUtils {
         catch (ConverterException e) {
             logger.log(Level.INFO, e, () -> "Could not convert '" + stringValue + "' to " + valueType + " via " + targetConverter.getClass().getName());
             return value;
-        }
-    }
-
-    /**
-     * Invoke callback on the first rendered {@link EditableValueHolder} component
-     */
-    public static void invokeOnDeepestEditableValueHolder(FacesContext context, UIComponent composite, ContextCallback callback) {
-        VisitContext visitContext = VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
-        composite.visitTree(visitContext, new EditableValueHolderVisitCallback(callback));
-    }
-
-    private static class EditableValueHolderVisitCallback implements VisitCallback {
-
-        private final ContextCallback callback;
-
-        public EditableValueHolderVisitCallback(ContextCallback callback) {
-            this.callback = callback;
-        }
-
-        @Override
-        public VisitResult visit(VisitContext context, UIComponent target) {
-            if (target instanceof EditableValueHolder) {
-                callback.invokeContextCallback(context.getFacesContext(), target);
-                return VisitResult.COMPLETE;
-            }
-            else if (UIComponent.isCompositeComponent(target)) {
-                visitEditableValueHolderTargets(context, target);
-                return VisitResult.COMPLETE;
-            }
-            return VisitResult.ACCEPT;
-        }
-
-        private void visitEditableValueHolderTargets(VisitContext visitContext, UIComponent component) {
-            BeanInfo info = (BeanInfo) component.getAttributes().get(UIComponent.BEANINFO_KEY);
-            List<AttachedObjectTarget> targets = (List<AttachedObjectTarget>) info.getBeanDescriptor()
-                    .getValue(AttachedObjectTarget.ATTACHED_OBJECT_TARGETS_KEY);
-
-            if (targets != null) {
-                for (int i = 0; i < targets.size(); i++) {
-                    AttachedObjectTarget target = targets.get(i);
-                    if (target instanceof EditableValueHolderAttachedObjectTarget) {
-                        List<UIComponent> children = target.getTargets(component);
-                        if (children == null || children.isEmpty()) {
-                            throw new FacesException("Cannot resolve <cc:editableValueHolder /> target " +
-                                    "in component with id: \"" + component.getClientId() + "\"");
-                        }
-                        for (int j = 0; j < children.size(); j++) {
-                            final UIComponent child = children.get(j);
-                            if (child.visitTree(visitContext, this)) {
-                                return; // visit over
-                            }
-                        }
-                    }
-                }
-            }
         }
     }
 }
