@@ -23,16 +23,10 @@
  */
 package org.primefaces.util;
 
-import java.beans.BeanInfo;
-import java.util.List;
-
-import javax.faces.FacesException;
 import javax.faces.component.ContextCallback;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.view.AttachedObjectTarget;
-import javax.faces.view.EditableValueHolderAttachedObjectTarget;
 
 public class CompositeUtils {
 
@@ -44,52 +38,11 @@ public class CompositeUtils {
     }
 
     /**
-     * Attention: This only supports cc:editableValueHolder which target a single component!
-     *
-     * @param context
-     * @param composite
-     * @param callback
+     * Invoke callback on the first rendered {@link EditableValueHolder} component
+     * Use {@link ComponentUtils#invokeOnDeepestEditableValueHolder(FacesContext, UIComponent, ContextCallback)} instead
      */
+    @Deprecated
     public static void invokeOnDeepestEditableValueHolder(FacesContext context, UIComponent composite, ContextCallback callback) {
-        if (composite instanceof EditableValueHolder) {
-            callback.invokeContextCallback(context, composite);
-            return;
-        }
-
-        BeanInfo info = (BeanInfo) composite.getAttributes().get(UIComponent.BEANINFO_KEY);
-        List<AttachedObjectTarget> targets = (List<AttachedObjectTarget>) info.getBeanDescriptor()
-                .getValue(AttachedObjectTarget.ATTACHED_OBJECT_TARGETS_KEY);
-
-        if (targets != null) {
-            for (int i = 0; i < targets.size(); i++) {
-                AttachedObjectTarget target = targets.get(i);
-                if (target instanceof EditableValueHolderAttachedObjectTarget) {
-
-                    List<UIComponent> children = target.getTargets(composite);
-                    if (children == null || children.isEmpty()) {
-                        throw new FacesException(
-                                "Cannot not resolve editableValueHolder target in composite component with id: \""
-                                + composite.getClientId() + "\"");
-                    }
-
-                    if (children.size() > 1) {
-                        throw new FacesException(
-                                "Only a single editableValueHolder target is supported in composite component with id: \""
-                                + composite.getClientId() + "\"");
-                    }
-
-                    final UIComponent child = children.get(0);
-
-                    composite.invokeOnComponent(context, composite.getClientId(context), (ctxt, comp) -> {
-                        if (isComposite(child)) {
-                            invokeOnDeepestEditableValueHolder(ctxt, child, callback);
-                        }
-                        else {
-                            callback.invokeContextCallback(ctxt, child);
-                        }
-                    });
-                }
-            }
-        }
+        ComponentUtils.invokeOnDeepestEditableValueHolder(context, composite, callback);
     }
 }
