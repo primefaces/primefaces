@@ -612,11 +612,20 @@ if (window.PrimeFaces) {
 
         /**
          * Adds a faces message to the given element.
-         * @param {JQuery} element Element to which to add the message.
+         * @param {string | HTMLElement | JQuery} target Element to which to add the message.
          * @param {PrimeFaces.FacesMessage} msg Message to add to the given message.
          */
-        addMessage: function(element, msg) {
-            var clientId = element.data(PrimeFaces.CLIENT_ID_DATA)||element.attr('id');
+        addMessage: function(target, msg) {
+            var clientId;
+            if (target instanceof $) {
+                clientId = target.data(PrimeFaces.CLIENT_ID_DATA)||target.attr('id');
+            }
+            else if (target instanceof HTMLElement) {
+                clientId = target.id;
+            }
+            else {
+                clientId = target;
+            }
 
             if(!this.messages[clientId]) {
                 this.messages[clientId] = [];
@@ -680,7 +689,10 @@ if (window.PrimeFaces) {
          * translation was found for the key.
          */
         getMessage: function(key) {
-            return PrimeFaces.validation.Utils.getMessage(key, arguments);
+            var params = Array.from(arguments);
+            params.shift(); // remove first param 'key'
+
+            return PrimeFaces.validation.Utils.getMessage(key, params);
         },
 
         /**
@@ -758,8 +770,7 @@ if (window.PrimeFaces) {
          * falls back to the default English locale.
          * @param {string} key The i18n key of a message, such as `javax.faces.component.UIInput.REQUIRED` or
          * `javax.faces.validator.LengthValidator.MINIMUM`.
-         * @param {string[]} params A list of parameters for the placeholders. The first item is ignored. The item at
-         * index `i` corresponds to the placeholder `{i-1}`.
+         * @param {string[]} params A list of parameters for the placeholders.
          * @return {PrimeFaces.FacesMessage | null} The localized faces message for the given key, or `null` if no
          * translation was found for the key.
          */
@@ -790,19 +801,18 @@ if (window.PrimeFaces) {
          * Given a message with placeholders, replaces the placeholders with the given parameters. The format of the
          * message is similar to, but not quite the same as, the format used by `java.text.MessageFormat`.
          * ```javascript
-         * format("Value required for element {0}", ["", "email"]) // => "Value required for element email"
-         * format("Use {0} braces like this: '{0}'", ["", "simple"]) // => "Use simple braces like this: 'simple'"
+         * format("Value required for element {0}", ["email"]) // => "Value required for element email"
+         * format("Use {0} braces like this: '{0}'", ["simple"]) // => "Use simple braces like this: 'simple'"
          * ```
          * @param {string} str A message with placeholders.
-         * @param {string[]} params A list of parameters for the placeholders. The first item is ignored. The item at
-         * index `i` corresponds to the placeholder `{i-1}`.
+         * @param {string[]} params A list of parameters for the placeholders.
          * @return {string} The string with the placeholders replaced with the given params.
          */
         format: function(str, params) {
             var s = str;
-            for(var i = 0; i < params.length - 1; i++) {
+            for(var i = 0; i < params.length; i++) {
                 var reg = new RegExp('\\{' + i + '\\}', 'gm');
-                s = s.replace(reg, params[i + 1]);
+                s = s.replace(reg, params[i]);
             }
 
             return s;
