@@ -880,70 +880,96 @@ if (window.PrimeFaces) {
          * a parent of such an element.
          */
         renderMessages: function(messages, container) {
-            var uiMessagesAll = container.is('div.ui-messages') ? container : container.find('div.ui-messages:not(.ui-fileupload-messages)'),
-                uiMessages = uiMessagesAll.filter(function(idx) { return $(uiMessagesAll[idx]).data('severity').indexOf('error') !== -1; }),
-                uiMessageCollection = container.find('div.ui-message'),
-                growlPlaceholderAll = container.is('.ui-growl-pl') ? container : container.find('.ui-growl-pl'),
-                growlComponents = growlPlaceholderAll.filter(function(idx) { return $(growlPlaceholderAll[idx]).data('severity').indexOf('error') !== -1; });
+            var messagesComponents = $();
+            container.each(function() {
+                var $this = $(this);
+                if ($this.is('div.ui-messages')) {
+                    messagesComponents = messagesComponents.add($this);
+                }
+                else {
+                    messagesComponents = messagesComponents.add($this.find('div.ui-messages'));
+                }
+            });
+            messagesComponents = messagesComponents.filter(function(idx) {
+                if ($(this).is('.ui-fileupload-messages')) {
+                    return false;
+                }
+                return $(this).data('severity').indexOf('error') !== -1;
+            });
 
-            uiMessageCollection.html('').removeClass('ui-message-error ui-message-icon-only ui-widget ui-corner-all ui-helper-clearfix');
+            var messageComponents = $();
+            container.each(function() {
+                var $this = $(this);
+                if ($this.is('div.ui-message')) {
+                    messageComponents = messageComponents.add($this);
+                }
+                else {
+                    messageComponents = messageComponents.add($this.find('div.ui-message'));
+                }
+            });
 
-            for (var i = 0; i < uiMessages.length; i++) {
-                var uiMessagesComponent = uiMessages.eq(i),
-                    globalOnly = uiMessagesComponent.data('global'),
-                    redisplay = uiMessagesComponent.data('redisplay'),
-                    showSummary = uiMessagesComponent.data('summary'),
-                    showDetail = uiMessagesComponent.data('detail');
+            var growlComponents = $();
+            container.each(function() {
+                var $this = $(this);
+                if ($this.is('.ui-growl-pl')) {
+                    growlComponents = growlComponents.add($this);
+                }
+                else {
+                    growlComponents = growlComponents.add($this.find('.ui-growl-pl'));
+                }
+            });
+            growlComponents = growlComponents.filter(function(idx) {
+                return $(this).data('severity').indexOf('error') !== -1;
+            });
 
-                uiMessagesComponent.html('');
+            messageComponents.html('').removeClass('ui-message-error ui-message-icon-only ui-widget ui-corner-all ui-helper-clearfix');
 
-                for (var clientId in messages) {
-                    var msgs = messages[clientId];
+            for (var i = 0; i < messagesComponents.length; i++) {
+                var messagesComponent = messagesComponents.eq(i),
+                    globalOnly = messagesComponent.data('global'),
+                    redisplay = messagesComponent.data('redisplay'),
+                    showSummary = messagesComponent.data('summary'),
+                    showDetail = messagesComponent.data('detail');
 
-                    for (var j = 0; j < msgs.length; j++) {
-                        var msg = msgs[j];
+                messagesComponent.html('');
 
+                for (let clientId in messages) {
+                    for (let msg of messages[clientId]) {
                         if (globalOnly || (msg.rendered && !redisplay)) {
                             continue;
                         }
 
-                        if (uiMessagesComponent.children().length === 0) {
-                            uiMessagesComponent.append('<div class="ui-messages-error ui-corner-all"><span class="ui-messages-error-icon"></span><ul></ul></div>');
+                        if (messagesComponent.children().length === 0) {
+                            messagesComponent.append('<div class="ui-messages-error ui-corner-all"><span class="ui-messages-error-icon"></span><ul></ul></div>');
                         }
 
                         var msgItem = $('<li></li>');
-
                         if (showSummary) {
                             msgItem.append('<span class="ui-messages-error-summary">' + PrimeFaces.escapeHTML(msg.summary) + '</span>');
                         }
-
                         if (showDetail) {
                             msgItem.append('<span class="ui-messages-error-detail">' + PrimeFaces.escapeHTML(msg.detail) + '</span>');
                         }
 
-                        uiMessagesComponent.find('> .ui-messages-error > ul').append(msgItem);
+                        messagesComponent.find('> .ui-messages-error > ul').append(msgItem);
                         msg.rendered = true;
                     }
                 }
             }
 
             for (var i = 0; i < growlComponents.length; i++) {
-                var growl = growlComponents.eq(i),
-                    redisplay = growl.data('redisplay'),
-                    globalOnly = growl.data('global'),
-                    showSummary = growl.data('summary'),
-                    showDetail = growl.data('detail'),
-                    growlWidget = PF(growl.data('widget'));
+                var growlComponent = growlComponents.eq(i),
+                    redisplay = growlComponent.data('redisplay'),
+                    globalOnly = growlComponent.data('global'),
+                    showSummary = growlComponent.data('summary'),
+                    showDetail = growlComponent.data('detail'),
+                    growlWidget = PF(growlComponent.data('widget'));
 
                 growlWidget.removeAll();
 
-                for (var clientId in messages) {
-                    var msgs = messages[clientId];
-
-                    for (var j = 0; j < msgs.length; j++) {
-                        var msg = msgs[j];
-
-                        if(globalOnly || (msg.rendered && !redisplay)) {
+                for (let clientId in messages) {
+                    for (let msg of messages[clientId]) {
+                        if (globalOnly || (msg.rendered && !redisplay)) {
                             continue;
                         }
 
@@ -961,24 +987,22 @@ if (window.PrimeFaces) {
                 }
             }
 
-            for(var i = 0; i < uiMessageCollection.length; i++) {
-                var uiMessage = uiMessageCollection.eq(i),
-                    target = uiMessage.data('target'),
-                    redisplay = uiMessage.data('redisplay');
+            for (var i = 0; i < messageComponents.length; i++) {
+                var messageComponent = messageComponents.eq(i),
+                    target = messageComponent.data('target'),
+                    redisplay = messageComponent.data('redisplay');
 
-                for (var clientId in messages) {
-                    if (target === clientId) {
-                        var msgs = messages[clientId];
-
-                        for (var j = 0; j < msgs.length; j++) {
-                            var msg = msgs[j];
-                            if (msg.rendered && !redisplay) {
-                                continue;
-                            }
-
-                            PrimeFaces.validation.Utils.renderUIMessage(uiMessage, msg);
-                            msg.rendered = true;
+                for (let clientId in messages) {
+                    if (target !== clientId) {
+                        continue;
+                    }
+                    for (let msg of messages[clientId]) {
+                        if (msg.rendered && !redisplay) {
+                            continue;
                         }
+
+                        PrimeFaces.validation.Utils.renderUIMessage(messageComponent, msg);
+                        msg.rendered = true;
                     }
                 }
             }
