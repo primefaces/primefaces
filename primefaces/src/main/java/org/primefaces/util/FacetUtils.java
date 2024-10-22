@@ -27,8 +27,6 @@ import javax.faces.component.ContextCallback;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIPanel;
-import javax.faces.component.visit.VisitContext;
-import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 
 public class FacetUtils {
@@ -80,28 +78,12 @@ public class FacetUtils {
         return shouldRenderFacet(facet, false);
     }
 
+    /**
+     * Invoke callback on the first rendered {@link EditableValueHolder} component
+     * Use {@link CompositeUtils#invokeOnDeepestEditableValueHolder(FacesContext, UIComponent, ContextCallback)} instead
+     */
+    @Deprecated
     public static void invokeOnEditableValueHolder(FacesContext context, UIComponent facet, ContextCallback callback) {
-
-        VisitContext visitContext = VisitContext.createVisitContext(context, null,
-                ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
-
-        // loop through all facet components
-        // sometimes its not enough to check the first component as it may be wrapped in some layout-components
-        facet.visitTree(visitContext, (ctx, component) -> {
-
-            if (CompositeUtils.isComposite(component)) {
-                CompositeUtils.invokeOnDeepestEditableValueHolder(context, component, callback);
-
-                // skip composite subtree
-                // a user must implement EditableValueHolder or use cc:editableValueHolder
-                return VisitResult.REJECT;
-            }
-            else if (component instanceof EditableValueHolder) {
-                callback.invokeContextCallback(context, component);
-            }
-
-            return VisitResult.ACCEPT;
-        });
+        CompositeUtils.invokeOnDeepestEditableValueHolder(context, facet, callback);
     }
-
 }
