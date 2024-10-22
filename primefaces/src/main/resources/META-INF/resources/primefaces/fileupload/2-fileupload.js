@@ -215,7 +215,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                 if (fileLimit && ($this.uploadedFileCount + $this.files.length + 1) > fileLimit) {
                     $this.clearMessages();
 
-                    // try to render the msg first our CSV framework
+                    // try to render the msg first with our CSV framework
                     var vc = PrimeFaces.validation.ValidationContext;
                     vc.clear();
                     vc.addMessage($this.id, PrimeFaces.validation.Utils.getMessage('primefaces.FileValidator.FILE_LIMIT', [ fileLimit ]));
