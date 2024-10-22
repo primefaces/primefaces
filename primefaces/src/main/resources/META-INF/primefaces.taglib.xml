@@ -10871,30 +10871,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Regular expression for accepted file types, e.g., /(\.|\/)(gif|jpeg|jpg|png)$/]]>
-            </description>
-            <name>allowTypes</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Maximum number of files to be uploaded. Deprecated please attach 'p:validateFile'.]]>
-            </description>
-            <name>fileLimit</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Individual file size limit in bytes. Default is unlimited. Deprecated please attach 'p:validateFile'.]]>
-            </description>
-            <name>sizeLimit</name>
-            <required>false</required>
-            <type>java.lang.Long</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[To upload large files in smaller chunks, set this option to a preferred maximum chunk size. If set to 0 (default), null or undefined, or the browser does not support the required Blob API, files will be uploaded as a whole. Only works in "advanced" mode.]]>
             </description>
             <name>maxChunkSize</name>
