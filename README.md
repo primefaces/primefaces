@@ -36,7 +36,7 @@ What does that mean?
 ### Versions
 ***
 
-Version | JSF version | Java version | Binary | Source | Documentation | Showcase
+Version | JSF version | Java version | Binary | Source | Documentation | Showcase Binary
 ------------ | ------------- | ------------- | -------------  | ------------- | ------------- | ------------- |
 ![14.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=14&color=cyan)| ![JSF23](https://img.shields.io/badge/JSF-2.3-purple.svg) -  ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) | ![Java](https://img.shields.io/badge/Java%2011+-blue.svg) | [JAR](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/14.0.6/primefaces-14.0.6.jar)  | [Sources](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/14.0.6/primefaces-14.0.6-sources.jar) | [Documentation](https://primefaces.github.io/primefaces/14_0_0/#/) | [Showcase](https://repo1.maven.org/maven2/org/primefaces/primefaces-showcase/14.0.6/primefaces-showcase-14.0.6.war)
 ![13.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=13&color=cyan)| ![JSF20](https://img.shields.io/badge/JSF-2.0-yellow.svg) -  ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) |  ![Java](https://img.shields.io/badge/Java%208+-blue.svg) | [JAR](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/13.0.10/primefaces-13.0.10.jar)  | [Sources](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/13.0.10/primefaces-13.0.10-sources.jar) | [Documentation](https://primefaces.github.io/primefaces/13_0_0/#/) | [Showcase](https://repo1.maven.org/maven2/org/primefaces/primefaces-showcase/13.0.10/primefaces-showcase-13.0.10.war)
