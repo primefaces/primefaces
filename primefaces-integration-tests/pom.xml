@@ -23,7 +23,7 @@
         <webdriver.headless>false</webdriver.headless>
         <webdriver.browser>chrome</webdriver.browser>
         <primefaces.CSP>false</primefaces.CSP>
-        <primefaces.THEME>saga</primefaces.THEME>
+        <primefaces.THEME>saga-blue</primefaces.THEME>
         <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
         <javax.faces.STATE_SAVING_METHOD>server</javax.faces.STATE_SAVING_METHOD>
 
@@ -486,7 +486,7 @@
         <profile>
             <id>theme-saga</id>
             <properties>
-                <primefaces.THEME>saga</primefaces.THEME>
+                <primefaces.THEME>saga-blue</primefaces.THEME>
             </properties>
         </profile>
         <profile>

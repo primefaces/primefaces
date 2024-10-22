@@ -29,10 +29,12 @@ import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.LocaleUtils;
+import org.primefaces.util.MapBuilder;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -71,6 +73,12 @@ public class HeadRenderer extends Renderer {
     private static final Logger LOGGER = Logger.getLogger(HeadRenderer.class.getName());
     private static final String LIBRARY = "primefaces";
 
+    private static final Map<String, String> THEME_MAPPING = MapBuilder.<String, String>builder()
+            .put("saga", "saga-blue")
+            .put("arya", "arya-blue")
+            .put("vela", "vela-blue")
+            .build();
+
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
@@ -98,10 +106,14 @@ public class HeadRenderer extends Renderer {
             theme = (String) ve.getValue(elContext);
         }
         else {
-            theme = "saga";     //default
+            theme = "saga-blue";     //default
         }
 
         if (theme != null && !"none".equals(theme)) {
+            if (THEME_MAPPING.containsKey(theme)) {
+                theme = THEME_MAPPING.get(theme);
+            }
+
             encodeCSS(context, LIBRARY + "-" + theme, "theme.css");
         }
 
