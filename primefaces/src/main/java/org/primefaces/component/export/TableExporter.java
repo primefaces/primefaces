@@ -49,7 +49,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.ObjIntConsumer;
 import java.util.logging.Level;
@@ -84,7 +83,7 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
     protected final boolean cellJoinComponents;
 
     // Because more than 1 table can be exported we cache each one for performance
-    private final Map<T, List<UIColumn>> exportableColumns = new HashMap<>();
+    private final Map<T, List<UIColumn>> exportableColumnsCache = new HashMap<>();
 
     private final O defaultOptions;
 
@@ -363,48 +362,47 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
      * @return the List<UIColumn> that are exportable
      */
     protected List<UIColumn> getExportableColumns(T table) {
-        if (exportableColumns.containsKey(table)) {
-            return exportableColumns.get(table);
+        if (exportableColumnsCache.containsKey(table)) {
+            return exportableColumnsCache.get(table);
         }
 
         int allColumnsSize = table.getColumns().size();
-        List<UIColumn> exportcolumns = new ArrayList<>(allColumnsSize);
+        List<UIColumn> exportableColumns = new ArrayList<>(allColumnsSize);
         boolean visibleColumnsOnly = exportConfiguration.isVisibleOnly();
-        final AtomicBoolean hasNonDefaultSortPriorities = new AtomicBoolean(false);
-        final List<ColumnMeta> visibleColumnMetadata = new ArrayList<>(allColumnsSize);
         Map<String, ColumnMeta> allColumnMeta = table.getColumnMeta();
+        final List<ColumnMeta> exportableColumnsMetadata = new ArrayList<>(allColumnsSize);
 
         table.forEachColumn(true, true, true, column -> {
             if (column.isExportable()) {
                 String columnKey = column.getColumnKey();
                 ColumnMeta currentMeta = allColumnMeta.get(columnKey);
-                if (!visibleColumnsOnly || (visibleColumnsOnly && (currentMeta == null || currentMeta.getVisible()))) {
-                    int displayPriority = column.getDisplayPriority();
-                    ColumnMeta metaCopy = new ColumnMeta(columnKey);
-                    metaCopy.setDisplayPriority(displayPriority);
-                    visibleColumnMetadata.add(metaCopy);
-                    if (displayPriority != 0) {
-                        hasNonDefaultSortPriorities.set(true);
-                    }
+                // #9197 - if we have a column without metadata, we need to set it to 0
+                if (currentMeta == null) {
+                    currentMeta = new ColumnMeta(columnKey);
+                    currentMeta.setVisible(true);
+                    currentMeta.setDisplayPriority(column.getDisplayPriority());
+                }
+                // #7200 display visible columns only
+                if (!visibleColumnsOnly || currentMeta.getVisible()) {
+                    exportableColumnsMetadata.add(currentMeta);
                 }
             }
             return true;
         });
 
-        if (hasNonDefaultSortPriorities.get()) {
-            // sort by display priority
-            Comparator<Integer> sortIntegersNaturallyWithNullsLast = Comparator.nullsLast(Comparator.naturalOrder());
-            visibleColumnMetadata.sort(Comparator.comparing(ColumnMeta::getDisplayPriority, sortIntegersNaturallyWithNullsLast));
-        }
+        // #12731 sort by visible display priority
+        Comparator<Integer> sortIntegersNaturallyWithNullsLast = Comparator.nullsLast(Comparator.naturalOrder());
+        exportableColumnsMetadata.sort(Comparator.comparing(ColumnMeta::getDisplayPriority, sortIntegersNaturallyWithNullsLast));
 
-        for (ColumnMeta meta : visibleColumnMetadata) {
+
+        for (ColumnMeta meta : exportableColumnsMetadata) {
             String metaColumnKey = meta.getColumnKey();
-            table.invokeOnColumn(metaColumnKey, -1, exportcolumns::add);
+            table.invokeOnColumn(metaColumnKey, -1, exportableColumns::add);
         }
 
-        exportableColumns.put(table, exportcolumns);
+        exportableColumnsCache.put(table, exportableColumns);
 
-        return exportcolumns;
+        return exportableColumns;
     }
 
     protected O options() {
