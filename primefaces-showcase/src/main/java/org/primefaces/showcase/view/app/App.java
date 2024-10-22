@@ -37,7 +37,7 @@ import jakarta.inject.Named;
 @SessionScoped
 public class App implements Serializable {
 
-    private String theme = "saga";
+    private String theme = "saga-blue";
     private boolean darkMode = false;
     private String inputStyle = "outlined";
     private Country locale = new Country(0, Locale.US);
