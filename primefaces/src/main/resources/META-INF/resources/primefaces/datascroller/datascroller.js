@@ -40,15 +40,15 @@
  * @prop {number} cfg.totalSize The total number of items that can be displayed.
  * @prop {boolean} cfg.virtualScroll Loads data on demand as the scrollbar gets close to the bottom.
  */
-PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.DataScroller = class DataScroller extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
         this.content = this.jq.children('div.ui-datascroller-content');
         this.list = this.cfg.virtualScroll ? this.content.children('div').children('ul') : this.content.children('ul');
         this.loaderContainer = this.content.children('div.ui-datascroller-loader');
@@ -67,13 +67,13 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
             this.loadTrigger = this.loaderContainer.children();
             this.bindManualLoader();
         }
-    },
+    }
 
     /**
      * Sets up the event listeners for the scroll event, to load more items on-demand.
      * @private
      */
-    bindScrollListener: function() {
+    bindScrollListener() {
         var $this = this;
 
         if(this.cfg.mode === 'document') {
@@ -153,7 +153,7 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
                 }
             });
         }
-    },
+    }
 
     /**
      * Loads more items and inserts them into the DOM so that the user can see them.
@@ -163,7 +163,7 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
      * @param {() => void} callback Callback that is invoked when the new items have been loaded and inserted into the
      * DOM.
      */
-    loadRowsWithVirtualScroll: function(page, callback) {
+    loadRowsWithVirtualScroll(page, callback) {
         if(this.virtualScrollActive) {
             return;
         }
@@ -200,7 +200,7 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
         };
 
         PrimeFaces.ajax.Request.handle(options);
-    },
+    }
 
     /**
      * Inserts newly loaded items into the DOM.
@@ -210,7 +210,7 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
      * @param {boolean} [pre] `true` to prepend the items, or `false` or `undefined` to append the items to the list of
      * items.
      */
-    updateData: function(data, clear, pre) {
+    updateData(data, clear, pre) {
         var empty = (clear === undefined) ? true: clear;
 
         if(empty)
@@ -219,26 +219,26 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
             this.list.prepend(data);
         else
             this.list.append(data);
-    },
+    }
 
     /**
      * Sets up the event listeners for the click on the `more` button.
      * @private
      */
-    bindManualLoader: function() {
+    bindManualLoader() {
         var $this = this;
 
         this.loadTrigger.on('click.dataScroller', function(e) {
             $this.load();
             e.preventDefault();
         });
-    },
+    }
 
     /**
      * Loads more items from the server. Usually triggered either when the user scrolls down or when they click on the
      * `more` button.
      */
-    load: function() {
+    load() {
         this.loading = true;
         this.cfg.offset += (this.cfg.chunkSize * (this.cfg.startAtBottom ? -1 : 1));
 
@@ -287,24 +287,24 @@ PrimeFaces.widget.DataScroller = PrimeFaces.widget.BaseWidget.extend({
         else {
             PrimeFaces.ajax.Request.handle(options);
         }
-    },
+    }
 
     /**
      * Checks whether more items can be loaded now. Item are not allowed to be loaded when an AJAX request is currently
      * in process, or when all items have been loaded already.
      * @return {boolean} `true` if more items are allowed to be loaded, `false` otherwise.
      */
-    shouldLoad: function() {
+    shouldLoad() {
         return (!this.loading && !this.allLoaded);
-    },
+    }
 
     /**
      * Finds the height of the content, excluding the padding.
      * @private
      * @return {number} The inner height of the content element.
      */
-    getInnerContentHeight: function() {
+    getInnerContentHeight() {
         return (this.content.innerHeight() - parseFloat(this.content.css('padding-top')) - parseFloat(this.content.css('padding-bottom')));
     }
 
-});
+}

@@ -76,14 +76,14 @@
  * frequently, time-consuming fetching of events. Default value is `0`.
  * @prop {string} cfg.scope `scope` option for the jQuery UI droppable overlay when using drag&drop.
  */
-PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
+PrimeFaces.widget.Timeline = class Timeline extends PrimeFaces.widget.DeferredWidget {
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function (cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
         this.cfg = cfg;
         this.id = cfg.id;
 
@@ -111,7 +111,7 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         this.renderDeferred();
-    },
+    }
 
     /**
      * Creates timeline widget with all initialization steps.
@@ -120,7 +120,7 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
      * @protected
      * @inheritdoc
      */
-    _render: function () {
+    _render() {
         // instantiate a timeline object
         var el = document.getElementById(this.id);
         var items = new vis.DataSet(this.cfg.data);
@@ -144,42 +144,42 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
 
         // bind timeline events
         this._bindTimelineEvents(el);
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    refresh: function(cfg) {
+    refresh(cfg) {
         // clean up memory
         if (this.instance) {
             this.instance.destroy();
             this.instance = null;
         }
 
-        this._super(cfg);
-    },
+        super.refresh(cfg);
+    }
 
     /**
      * @override
      * @inheritdoc
      */
-    destroy: function() {
-        this._super();
+    destroy() {
+        super.destroy();
 
         // clean up memory
         if (this.instance) {
             this.instance.destroy();
             this.instance = null;
         }
-    },
+    }
 
     /**
      * Sets up all event listeners for the timeline items.
      * @private
      */
-    _bindItemsEvents: function () {
+    _bindItemsEvents() {
         // "add" event
         if (this.cfg.opts.selectable && this.cfg.opts.editable.add && this.hasBehavior("add")) {
             this.cfg.opts.onAdd =
@@ -338,14 +338,14 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
                     }
                 }, this);
         }
-    },
+    }
 
     /**
      * Sets up all event listeners for the timeline's events.
      * @private
      * @param {HTMLElement} el Main element of this widget.
      */
-    _bindTimelineEvents: function (el) {
+    _bindTimelineEvents(el) {
         // "select" event
         if (this.cfg.opts.selectable && this.hasBehavior("select")) {
             this.instance.on('select', $.proxy(function () {
@@ -486,7 +486,7 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
             // make the timeline droppable
             $(el).droppable(droppableOpts);
         }
-    },
+    }
 
    /**
      * @override
@@ -496,13 +496,13 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
      * @param {string} targetId
      * @param {PrimeFaces.widget.ContextMenuCfg} cfg 
      */
-    bindContextMenu : function(menuWidget, targetWidget, targetId, cfg) {
+    bindContextMenu(menuWidget, targetWidget, targetId, cfg) {
         // block default context menu
         targetWidget.instance.on('contextmenu', function (properties) {
            menuWidget.show(properties.event);
            properties.event.preventDefault();
         });
-    },
+    }
 
     /**
      * Retrieves the array of current data (events) as an JSON string. This method is useful when you done some changes
@@ -511,7 +511,7 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
      *
      * @return {string} A JSON string with the current data.
      */
-    getData: function () {
+    getData() {
         var newData = this.instance.itemsData.map($.proxy(function(item) {
             var newItem = {};
             if (item.hasOwnProperty('content')) {
@@ -550,13 +550,13 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
         }, this));
 
         return JSON.stringify(newData);
-    },
+    }
 
     /**
      * Fires event for lazy loading.
      * @private
      */
-    fireLazyLoading: function() {
+    fireLazyLoading() {
         var range = this.getLazyLoadRange();
         if (range == null) {
             // don't send event
@@ -578,7 +578,7 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         this.callBehavior("lazyload", options);
-    },
+    }
 
     /**
      * Gets time range(s) for events to be lazy loaded.
@@ -588,7 +588,7 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      * @return {PrimeFaces.widget.Timeline.TimelineBiRange | null} The time range(s) for events to be lazy loaded.
      */
-    getLazyLoadRange: function() {
+    getLazyLoadRange() {
         var visibleRange = this.instance.getWindow();
 
         if (this.rangeLoadedEvents.start == null || this.rangeLoadedEvents.end == null) {
@@ -677,23 +677,23 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         return null;
-    },
+    }
 
     /**
      * Force render the timeline component.
      */
-    renderTimeline: function () {
+    renderTimeline() {
         this.instance.redraw();
-    },
+    }
 
     /**
      * Adds an event to the timeline.
      *
      * @param {import("vis-timeline").DataItem} properties Properties for the event.
      */
-    addEvent: function (properties) {
+    addEvent(properties) {
         this.instance.itemsData.add(properties);
-    },
+    }
 
     /**
      * Changes properties of an existing item in the timeline. The provided parameter properties is an object,
@@ -702,25 +702,25 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
      * @param {import("vis-data/declarations/data-interface").DeepPartial<import("vis-timeline").DataItem>} properties
      * Properties for the event.
      */
-    changeEvent: function (properties) {
+    changeEvent(properties) {
         this.instance.itemsData.update(properties);
-    },
+    }
 
     /**
      * Deletes an existing event.
      *
      * @param {import("vis-timeline").IdType} id Index of the event.
      */
-    deleteEvent: function (id) {
+    deleteEvent(id) {
         this.instance.itemsData.remove(id);
-    },
+    }
 
     /**
      * Deletes all events from the timeline.
      */
-    deleteAllEvents: function () {
+    deleteAllEvents() {
         this.instance.itemsData.clear();
-    },
+    }
 
     /**
      * Updates a group of the timeline, adding it if it does not exists.
@@ -738,40 +738,40 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
      * @param {import("vis-data/declarations/data-interface").DeepPartial<import("vis-timeline").DataGroup>} properties
      * The event's properties.
      */
-    updateGroup: function (properties) {
+    updateGroup(properties) {
         var dataset = this.instance.groupsData.getDataSet();
         dataset.update(properties);
-    },
+    }
 
     /**
      * Cancels event adding.
      */
-    cancelAdd: function () {
+    cancelAdd() {
         if (this.addCallback) {
             this.addCallback(null);
             this.addCallback = null;
         }
-    },
+    }
 
     /**
      * Cancels event changing.
      */
-    cancelChange: function () {
+    cancelChange() {
         if (this.changedCallback) {
             this.changedCallback(null);
             this.changedCallback = null;
         }
-    },
+    }
 
     /**
      * Cancels event deleting.
      */
-    cancelDelete: function () {
+    cancelDelete() {
         if (this.deleteCallback) {
             this.deleteCallback(null);
             this.deleteCallback = null;
         }
-    },
+    }
 
     /**
      * Retrieves the properties of a single event. The returned object can contain parameters `start` (Date), `end`
@@ -781,9 +781,9 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
      * @return {import("vis-data/declarations/data-interface").FullItem<import("vis-timeline").DataItem, "id"> | null}
      * The event at the given index, or `null` when no such events exists at the index.
      */
-    getEvent: function (id) {
+    getEvent(id) {
         return this.instance.itemsData.get(id);
-    },
+    }
 
     /**
      * Is the event by given id editable?
@@ -792,18 +792,18 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
      * @return {import("vis-timeline").TimelineItemEditableType} An object with properties `updateTime`,
      * `updateGroup` and `remove`.
      */
-    getEditable: function(id) {
+    getEditable(id) {
         return this.instance.itemSet.getItemById(id).editable;
-    },
+    }
 
     /**
      * The currently visible time range of the timeline.
      *
      * @return {import("vis-timeline").TimelineWindow} The time range that is currently visible.
      */
-    getVisibleRange: function () {
+    getVisibleRange() {
         return this.instance.getWindow();
-    },
+    }
 
     /**
      * Set the current visible window. The parameters `start` and `end` can be a date, number, or string.
@@ -841,9 +841,9 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
      * will be called at the end of the `setVisibleRange` function.
      * @return {undefined} Always returns `undefined`.
      */
-    setVisibleRange: function (start, end, options, callback) {
+    setVisibleRange(start, end, options, callback) {
         return this.instance.setWindow(start, end, options, callback);
-    },
+    }
 
     /**
      * Moves the timeline the given move factor to the left or right. Start and end date will be adjusted, and the
@@ -882,7 +882,7 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
      * @param {() => void} [callback] A callback function can be passed as an optional parameter. This function will be
      * called at the end of move operation.
      */
-    move: function (moveFactor, options, callback) {
+    move(moveFactor, options, callback) {
         this.initiatedByUser = true;
         var range = this.instance.getWindow();
         var interval = range.end - range.start;
@@ -890,7 +890,7 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
         var end = range.end.valueOf() + interval * moveFactor;
 
         this.instance.setWindow(start, end, options, callback);
-    },
+    }
 
     /**
      * Zooms the timeline the given zoom factor in or out.
@@ -925,23 +925,23 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
      * called at the end of the zooming operation.
      * @return {undefined} Always returns `undefined`.
      */
-    zoom: function (zoomFactor, options, callback) {
+    zoom(zoomFactor, options, callback) {
         this.initiatedByUser = true;
         if (zoomFactor >= 0) {
             return this.instance.zoomIn(zoomFactor, options, callback);
         } else {
             return this.instance.zoomOut(-zoomFactor, options, callback);
         }
-    },
+    }
 
     /**
      * Gets number of events (items in the timeline).
      *
      * @return {number} The number of event in the timeline.
      */
-    getNumberOfEvents: function () {
+    getNumberOfEvents() {
         return this.instance.itemsData.length;
-    },
+    }
 
     /**
      * Gets id of the currently selected event.
@@ -949,7 +949,7 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
      * @return {import("vis-timeline").IdType | null} The index of the currently selected event, or `null` if no event
      * is currently selected.
      */
-    getSelectedId: function () {
+    getSelectedId() {
         var selection = this.instance.getSelection();
         if (selection.length) {
             if (selection[0] != undefined) {
@@ -958,7 +958,7 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         return null;
-    },
+    }
 
     /**
      * Finds the currently selected event.
@@ -966,14 +966,14 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
      * @return {import("vis-data/declarations/data-interface").FullItem<import("vis-timeline").DataItem, "id"> | null}
      * The currently selected event, or `null` when no event is selected.
      */
-    getSelectedEvent: function () {
+    getSelectedEvent() {
         var id = this.getSelectedId();
         if (id) {
             return this.instance.itemsData.get(id);
         }
 
         return null;
-    },
+    }
 
     /**
      * Selects an event by its ID. The visible range will be moved, so that the selected event is placed in the middle.
@@ -983,21 +983,21 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
      * @param {import("vis-timeline").IdType | null} id Index of the event to select.
      * When negative, unselects all events.
      */
-    setSelection: function(id) {
+    setSelection(id) {
         if (id) {
             this.instance.setSelection(id);
         } else {
             // unselect all events
             this.instance.setSelection([]);
         }
-    },
+    }
 
     /**
      * Gets instance of the timeline object.
      *
      * @return {import("vis-timeline").Timeline} The current timeline instance.
      */
-    getInstance: function () {
+    getInstance() {
         return this.instance;
     }
-});
+}

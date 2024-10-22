@@ -24,15 +24,15 @@
  * @prop {boolean} cfg.vertical `true` if the mega menu is displayed with a vertical layout, `false` if displayed with a
  * horizontal layout.
  */
-PrimeFaces.widget.MegaMenu = PrimeFaces.widget.Menu.extend({
+PrimeFaces.widget.MegaMenu = class MegaMenu extends PrimeFaces.widget.Menu {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         this.cfg.vertical = this.jq.hasClass('ui-megamenu-vertical');
         this.rootList = this.jq.children('ul.ui-menu-list');
@@ -46,14 +46,14 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.Menu.extend({
 
         this.bindEvents();
         this.bindKeyEvents();
-    },
+    }
 
 
     /**
      * Sets up all event listeners that are required by this widget.
      * @private
      */
-    bindEvents: function() {
+    bindEvents() {
         var $this = this;
 
         this.rootLinks.on("mouseenter", function() {
@@ -145,13 +145,13 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.Menu.extend({
         this.addDestroyListener(function() {
             $(document.body).off(clickNS);
         });
-    },
+    }
 
     /**
      * Sets up all keyboard-related event listeners.
      * @private
      */
-    bindKeyEvents: function() {
+    bindKeyEvents() {
         var $this = this;
 
         // make first focusable
@@ -289,14 +289,14 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.Menu.extend({
                     break;
             }
         });
-    },
+    }
 
     /**
      * Finds the menu items that preceeded the given item.
      * @param {JQuery} menuitem One of the menu items of this mega menu, with the class `.ui-menuitem`.
      * @return {JQuery} The menu item before the given item. Empty JQuery instance if the given item is the first.
      */
-    findPrevItem: function(menuitem) {
+    findPrevItem(menuitem) {
         var previtem = menuitem.prev('.ui-menuitem');
 
         if(!previtem.length) {
@@ -311,14 +311,14 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.Menu.extend({
             }
         }
         return previtem;
-    },
+    }
 
     /**
      * Finds the menu items that succeeds the given item.
      * @param {JQuery} menuitem One of the menu items of this mega menu, with the class `.ui-menuitem`.
      * @return {JQuery} The menu item after the given item. Empty JQuery instance if the given item is the last.
      */
-    findNextItem: function(menuitem) {
+    findNextItem(menuitem) {
         var nextitem = menuitem.next('.ui-menuitem');
 
         if(!nextitem.length) {
@@ -332,31 +332,31 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.Menu.extend({
             }
         }
         return nextitem;
-    },
+    }
 
     /**
      * Finds the the menu group of the given submenu, i.e. the children of the given item.
      * @param {JQuery} submenu A submenu with children.
      * @return {JQuery} The first sub menu list, an item with the class `.ui-menu-list`.
      */
-    getFirstMenuList: function(submenu) {
+    getFirstMenuList(submenu) {
         return submenu.find('.ui-menu-list:not(.ui-state-disabled):first');
-    },
+    }
 
     /**
      * Checks whether the given menu item is the root menu item element.
      * @param {JQuery} menuitem One of the menu items of this mega menu.
      * @return {boolean} `true` if the given menu item is the root, or `false` otherwise.
      */
-    isRootLink: function(menuitem) {
+    isRootLink(menuitem) {
         var submenu = menuitem.closest('ul');
         return submenu.parent().hasClass('ui-menu');
-    },
+    }
 
     /**
      * Resets the entire mega menu, i.e. closes all opened sub menus.
      */
-    reset: function() {
+    reset() {
         var $this = this;
         this.active = false;
 
@@ -368,14 +368,14 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.Menu.extend({
             this.lastFocusedItem.children('a.ui-menuitem-link').attr('tabindex', $this.tabIndex);
         }
         this.rootLinks.removeClass('ui-state-hover');
-    },
+    }
 
     /**
      * Deactivates the menu item, i.e. closes the sub menu.
      * @param {JQuery} menuitem A menu item to close.
      * @param {boolean} [animate] If `true`, closes the sub menu with an animation, or `false` otherwise.
      */
-    deactivate: function(menuitem, animate) {
+    deactivate(menuitem, animate) {
         var $this = this;
         this.activeitem = null;
         menuitem.removeClass('ui-menuitem-active ui-menuitem-highlight');
@@ -398,17 +398,17 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.Menu.extend({
             else
                 submenu.hide();
         }
-    },
+    }
 
     /**
      * Highlight the given menu entry, as if the user were to hover it.
      * @param {JQuery} menuitem A menu entry to highlight.
      */
-    highlight: function(menuitem) {
+    highlight(menuitem) {
         this.activeitem = menuitem;
         menuitem.addClass('ui-menuitem-active ui-menuitem-highlight');
         menuitem.children('a.ui-menuitem-link').addClass('ui-state-hover');
-    },
+    }
 
     /**
      * Activates a menu item so that it can be clicked and interacted with.
@@ -416,7 +416,7 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.Menu.extend({
      * @param {JQuery} menuitem - The menu item to activate.
      * @param {boolean} [showSubMenu=true] - If false, only focuses the menu item without showing the submenu.
      */
-    activate: function(menuitem, showSubMenu = true) {
+    activate(menuitem, showSubMenu = true) {
         this.highlight(menuitem);
         
         // if this is a root menu item.
@@ -434,7 +434,7 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.Menu.extend({
                 this.showSubmenu(menuitem, submenu);
             }
         }
-    },
+    }
 
     /**
      * Opens and shows the sub menu of the given menu item.
@@ -442,7 +442,7 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.Menu.extend({
      * @param {JQuery} submenu One of the submenus of the given menu item to show.
      * @private
      */
-    showSubmenu: function(menuitem, submenu) {
+    showSubmenu(menuitem, submenu) {
         var pos = null;
 
         if(this.cfg.vertical) {
@@ -474,4 +474,4 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.Menu.extend({
         }, this.cfg.delay);
     }
 
-});
+}

@@ -21,15 +21,15 @@
  * 
  * @prop {boolean} cfg.custom Whether a custom HTML snippet needs to be used for the individual select items.
  */
-PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.SelectManyCheckbox = class SelectManyCheckbox extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         if(this.cfg.custom) {
             this.originalInputs = this.jq.find(':checkbox');
@@ -68,13 +68,13 @@ PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
 
         //pfs metadata
         this.inputs.data(PrimeFaces.CLIENT_ID_DATA, this.id);
-    },
+    }
 
     /**
      * Sets up all event listeners required by this widget.
      * @private
      */
-    bindEvents: function() {
+    bindEvents() {
         var $this = this;
     
         this.outputs.filter(':not(.ui-state-disabled)').on('mouseenter', function() {
@@ -128,7 +128,7 @@ PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
                 e.stopPropagation();
             }
         });
-    },
+    }
     
     /**
      * Toggles the given checkbox and associated input.
@@ -137,7 +137,7 @@ PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery} checkbox the checbkox.
      * @param {JQuery.TriggeredEvent} event  event that was triggered.
      */
-    toggle: function(input, checkbox, event) {
+    toggle(input, checkbox, event) {
         if (input.is(':disabled')) {
             return;
         }
@@ -152,7 +152,7 @@ PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
         this.fireClickEvent(input, event);
         input.trigger('change');
         input.trigger('focus');
-    },
+    }
 
     /**
      * Checks the given checkbox and associated input.
@@ -160,7 +160,7 @@ PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery} input the input.
      * @param {JQuery} checkbox the checbkox.
      */
-    check: function(input, checkbox) {
+    check(input, checkbox) {
         checkbox.addClass('ui-state-active');
         checkbox.children('.ui-chkbox-icon').removeClass('ui-icon-blank').addClass('ui-icon-check');
         input.attr('aria-checked', true);
@@ -170,7 +170,7 @@ PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
             var itemindex = input.data('itemindex');
             this.originalInputs.eq(itemindex).prop('checked', true);
         }
-    },
+    }
 
     /**
      * Unchecks the given checkbox and associated input.
@@ -178,7 +178,7 @@ PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery} input the input.
      * @param {JQuery} checkbox the checbkox.
      */
-    uncheck: function(input, checkbox) {
+    uncheck(input, checkbox) {
         checkbox.removeClass('ui-state-active');
         checkbox.children('.ui-chkbox-icon').addClass('ui-icon-blank').removeClass('ui-icon-check');
         input.attr('aria-checked', false);
@@ -188,29 +188,29 @@ PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
             var itemindex = input.data('itemindex');
             this.originalInputs.eq(itemindex).prop('checked', false);
         }
-    },
+    }
 
     /**
      * Enables this input so that the user can enter a value.
      */
-    enable: function() {
+    enable() {
         PrimeFaces.utils.enableInputWidget(this.jq, this.inputs);
         this.disabled = false;
-    },
+    }
 
     /**
      * Disables this input so that the user cannot enter a value anymore.
      */
-    disable: function() {
+    disable() {
         PrimeFaces.utils.disableInputWidget(this.jq, this.inputs);
         this.disabled = true;
-    },
+    }
 
     /**
      * Check all available options.
      * @param {boolean} [silent] `true` to suppress triggering event listeners, or `false` otherwise.
      */
-    checkAll: function(silent) {
+    checkAll(silent) {
         var $this = this;
         this.outputs.filter(':not(.ui-state-disabled)').each(function() {
             var checkbox = $(this),
@@ -223,13 +223,13 @@ PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
                 }
             }
         });
-    },
+    }
 
     /**
      * Uncheck all available options.
      * @param {boolean} [silent] `true` to suppress triggering event listeners, or `false` otherwise.
      */
-    uncheckAll: function(silent) {
+    uncheckAll(silent) {
         var $this = this;
         this.outputs.filter(':not(.ui-state-disabled)').each(function() {
             var checkbox = $(this),
@@ -242,15 +242,15 @@ PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
                 }
             }
         });
-    },
+    }
 
     /**
      * Resets the input.
      * @param {boolean} [silent] `true` to suppress triggering event listeners, or `false` otherwise.
      */
-    resetValue: function(silent) {
+    resetValue(silent) {
         this.uncheckAll(silent);
-    },
+    }
 
     /**
      * Calls the behavior for when a checkbox was clicked.
@@ -258,10 +258,10 @@ PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery} input Checkbox input that was clicked.
      * @param {JQuery.TriggeredEvent} event (Click) event that was triggered.
      */
-    fireClickEvent: function(input, event) {
+    fireClickEvent(input, event) {
         var userOnClick = input.prop('onclick');
         if (userOnClick) {
             userOnClick.call(this, event);
         }
     }
-});
+}

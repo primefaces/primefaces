@@ -78,15 +78,15 @@
  * @prop {boolean} cfg.showTargetControls Specifies visibility of reorder buttons of target list.
  * @prop {string} cfg.tabindex Position of the element in the tabbing order.
  */
-PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         this.cfg.transferOnDblclick = this.cfg.transferOnDblclick !== false;
         this.cfg.transferOnCheckboxClick = this.cfg.transferOnCheckboxClick || false;
@@ -199,13 +199,13 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
 
             this.updateListRole();
         }
-    },
+    }
 
     /**
      * Sets up the event listeners for selecting and transferring pick list items.
      * @private
      */
-    bindItemEvents: function() {
+    bindItemEvents() {
         var $this = this;
 
         this.items.on('mouseover.pickList', function(e) {
@@ -331,13 +331,13 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 }
             });
         }
-    },
+    }
 
     /**
      * Sets up the keyboard event listeners for navigating the pick list via keyboard keys.
      * @private
      */
-    bindKeyEvents: function() {
+    bindKeyEvents() {
         var $this = this,
             listSelector = 'ul.ui-picklist-source, ul.ui-picklist-target';
 
@@ -442,24 +442,24 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                     }
             };
         });
-    },
+    }
 
     /**
      * Removes the outline from the item that is currently focused.
      * @private
      */
-    removeOutline: function() {
+    removeOutline() {
         if(this.focusedItem && this.focusedItem.hasClass('ui-picklist-outline')) {
             this.focusedItem.removeClass('ui-picklist-outline');
         }
-    },
+    }
 
     /**
      * Select the given pick list item in the source or target list.
      * @param {JQuery} item A picklist item to select, with the class `ui-picklist-item`.
      * @param {boolean} [silent] `true` to imit triggering event listeners and behaviors, or `false` otherwise.
      */
-    selectItem: function(item, silent) {
+    selectItem(item, silent) {
         item.addClass('ui-state-highlight');
 
         if(this.cfg.showCheckbox && !this.cfg.transferOnCheckboxClick) {
@@ -471,14 +471,14 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         }
 
         this.updateButtonsState();
-    },
+    }
 
     /**
      * Unselect the given pick list item in the source or target list.
      * @param {JQuery} item A picklist item to unselect, with the class `ui-picklist-item`.
      * @param {boolean} [silent] `true` to imit triggering event listeners and behaviors, or `false` otherwise.
      */
-    unselectItem: function(item, silent) {
+    unselectItem(item, silent) {
         item.removeClass('ui-state-hover');
         item.removeClass('ui-state-highlight');
 
@@ -496,35 +496,35 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         }
 
         this.updateButtonsState();
-    },
+    }
 
     /**
      * Unselects all items in the source and target list.
      */
-    unselectAll: function() {
+    unselectAll() {
         var selectedItems = this.items.filter('.ui-state-highlight');
         for(var i = 0; i < selectedItems.length; i++) {
             this.unselectItem(selectedItems.eq(i));
         }
-    },
+    }
 
     /**
      * Selects the given checkbox that belongs to a pick list item.
      * @private
      * @param {JQuery} chkbox The hidden checkbox of a pick list item that was selected.
      */
-    selectCheckbox: function(chkbox) {
+    selectCheckbox(chkbox) {
         chkbox.addClass('ui-state-active').children('span.ui-chkbox-icon').removeClass('ui-icon-blank').addClass('ui-icon-check');
-    },
+    }
 
     /**
      * Unselects the given checkbox that belongs to a pick list item.
      * @private
      * @param {JQuery} chkbox The hidden checkbox of a pick list item that was unselected.
      */
-    unselectCheckbox: function(chkbox) {
+    unselectCheckbox(chkbox) {
         chkbox.removeClass('ui-state-active').children('span.ui-chkbox-icon').addClass('ui-icon-blank').removeClass('ui-icon-check');
-    },
+    }
 
     /**
      * Stores the current items in the given list in a hidden form field. Used for submitting the current value of this
@@ -533,7 +533,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery} list The source or target list with items to store.
      * @param {JQuery} input The hidden form field where the items are stored.
      */
-    generateItems: function(list, input) {
+    generateItems(list, input) {
         var $this = this;
         list.children('.ui-picklist-item').each(function() {
             var item = $(this),
@@ -547,13 +547,13 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             option.prop('value', itemValue).text(itemLabel);
             input.append(option);
         });
-    },
+    }
 
     /**
      * Sets tup the event listeners for when the command buttons (move up, move down etc.) are pressed.
      * @private
      */
-    bindButtonEvents: function() {
+    bindButtonEvents() {
         var $this = this;
 
         //visuals
@@ -638,13 +638,13 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 $this.moveBottom($this.targetList);
             });
         }
-    },
+    }
 
     /**
      * Sets up all event listeners for filtering the source and target lists.
      * @private
      */
-    bindFilterEvents: function() {
+    bindFilterEvents() {
         this.cfg.filterEvent = this.cfg.filterEvent||'keyup';
         this.cfg.filterDelay = this.cfg.filterDelay||300;
         this.setupFilterMatcher();
@@ -657,21 +657,21 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
 
         PrimeFaces.skinInput(this.targetFilter);
         this.bindTextFilter(this.targetFilter);
-    },
+    }
 
     /**
      * Sets up the event listeners for when text is entered into the filter input of the source or target list.
      * @private
      * @param {JQuery} filter The filter input of the source or target list.
      */
-    bindTextFilter: function(filter) {
+    bindTextFilter(filter) {
         if(this.cfg.filterEvent === 'enter') {
             this.bindEnterKeyFilter(filter);
         }
         else {
             this.bindFilterEvent(filter);
         }
-    },
+    }
 
     /**
      * Sets up the event listeners for when the enter key is pressed while inside a filter input of the source or target
@@ -679,7 +679,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
      * @private
      * @param {JQuery} filter The filter input of the source or target list.
      */
-    bindEnterKeyFilter: function(filter) {
+    bindEnterKeyFilter(filter) {
         var $this = this;
 
         filter.on('keyup', function(e) {
@@ -687,14 +687,14 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 $this.filter(this.value, $this.getFilteredList($(this)));
             }
         });
-    },
+    }
 
     /**
      * Sets up the event listeners for filtering the source and target lists.
      * @private
      * @param {JQuery} filter The filter input of the source or target list.
      */
-    bindFilterEvent: function(filter) {
+    bindFilterEvent(filter) {
         var $this = this;
 
         //prevent form submit on enter key
@@ -715,13 +715,13 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             },
             $this.cfg.filterDelay);
         });
-    },
+    }
 
     /**
      * Finds and stores the filter function which is to be used for filtering the options of this pick list.
      * @private
      */
-    setupFilterMatcher: function() {
+    setupFilterMatcher() {
         this.cfg.filterMatchMode = this.cfg.filterMatchMode||'startsWith';
         this.filterMatchers = {
             'startsWith': this.startsWithFilter
@@ -731,7 +731,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         };
 
         this.filterMatcher = this.filterMatchers[this.cfg.filterMatchMode];
-    },
+    }
 
     /**
      * Filters the available options in the source or target list.
@@ -739,7 +739,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery} list The source or target list that is to be filtered.
      * @param {boolean} [animate] If it should be animated.
      */
-    filter: function(value, list, animate) {
+    filter(value, list, animate) {
         var normalize = this.cfg.filterNormalize,
             filterValue = PrimeFaces.toSearchable(PrimeFaces.trim(value), true, normalize),
             items = list.children('li.ui-picklist-item'),
@@ -782,7 +782,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             }
         }
 
-    },
+    }
 
     /**
      * Implementation of a `PrimeFaces.widget.PickList.FilterFunction` that matches the given option when it starts with
@@ -791,9 +791,9 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
      * @param {string} filter Value of the filter.
      * @return {boolean} `true` when the text of the options starts with the filter value, or `false` otherwise.
      */
-    startsWithFilter: function(value, filter) {
+    startsWithFilter(value, filter) {
         return value.toLowerCase().indexOf(filter) === 0;
-    },
+    }
 
     /**
      * Implementation of a `PrimeFaces.widget.PickList.FilterFunction` that matches the given option when it contains
@@ -802,9 +802,9 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
      * @param {string} filter Value of the filter.
      * @return {boolean} `true` when the text of the contains the filter value, or `false` otherwise.
      */
-    containsFilter: function(value, filter) {
+    containsFilter(value, filter) {
         return value.toLowerCase().indexOf(filter) !== -1;
-    },
+    }
 
     /**
      * Implementation of a `PrimeFaces.widget.PickList.FilterFunction` that matches the given option when it ends with
@@ -813,9 +813,9 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
      * @param {string} filter Value of the filter.
      * @return {boolean} `true` when the text of the options ends with the filter value, or `false` otherwise.
      */
-    endsWithFilter: function(value, filter) {
+    endsWithFilter(value, filter) {
         return value.indexOf(filter, value.length - filter.length) !== -1;
-    },
+    }
 
     /**
      * Finds the list belonging to the given filter input.
@@ -823,51 +823,51 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery} filter The filter input of either the target or source list.
      * @return {JQuery} The list to which the given filter input applies.
      */
-    getFilteredList: function(filter) {
+    getFilteredList(filter) {
         return filter.hasClass('ui-source-filter-input') ? this.sourceList : this.targetList;
-    },
+    }
 
     /**
      * Adds all selected items in the source list by transferring them to the target list.
      */
-    add: function() {
+    add() {
         var items = this.sourceList.children('li.ui-picklist-item.ui-state-highlight');
 
         this.transfer(items, this.sourceList, this.targetList, 'command');
-    },
+    }
 
     /**
      * Adds all items to the target list by transferring all items from the source list to the target list.
      */
-    addAll: function() {
+    addAll() {
         var items = this.sourceList.children('li.ui-picklist-item:visible:not(.ui-state-disabled)');
 
         this.transfer(items, this.sourceList, this.targetList, 'command');
-    },
+    }
 
     /**
      * Removes all selected items in the target list by transferring them to the source list.
      */
-    remove: function() {
+    remove() {
         var items = this.targetList.children('li.ui-picklist-item.ui-state-highlight');
 
         this.transfer(items, this.targetList, this.sourceList, 'command');
-    },
+    }
 
     /**
      * Removes all items in the target list by transferring all items from the target list to the source list.
      */
-    removeAll: function() {
+    removeAll() {
         var items = this.targetList.children('li.ui-picklist-item:visible:not(.ui-state-disabled)');
 
         this.transfer(items, this.targetList, this.sourceList, 'command');
-    },
+    }
 
     /**
      * Moves the items that are currently selected up by one.
      * @param {JQuery} list The source or target list with items to move up.
      */
-    moveUp: function(list) {
+    moveUp(list) {
         var $this = this,
         animated = $this.isAnimated(),
         items = list.children('.ui-state-highlight'),
@@ -905,13 +905,13 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             }
         }
 
-    },
+    }
 
     /**
      * Moves the items that are currently selected to the top of the source of target list.
      * @param {JQuery} list The source or target list with items to move to the top.
      */
-    moveTop: function(list) {
+    moveTop(list) {
         var $this = this,
         animated = $this.isAnimated(),
         items = list.children('.ui-state-highlight'),
@@ -947,13 +947,13 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 this.fireReorderEvent();
             }
         }
-    },
+    }
 
     /**
      * Moves the items that are currently selected down by one.
      * @param {JQuery} list The source or target list with items to move down.
      */
-    moveDown: function(list) {
+    moveDown(list) {
         var $this = this,
         animated = $this.isAnimated(),
         items = list.children('.ui-state-highlight'),
@@ -989,13 +989,13 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 this.fireReorderEvent();
             }
         }
-    },
+    }
 
     /**
      * Moves the items that are currently selected to the bottom of the source of target list.
      * @param {JQuery} list The source or target list with items to move to the bottom.
      */
-    moveBottom: function(list) {
+    moveBottom(list) {
         var $this = this,
         animated = $this.isAnimated(),
         items = list.children('.ui-state-highlight'),
@@ -1032,21 +1032,21 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 this.fireReorderEvent();
             }
         }
-    },
+    }
 
     /**
      * Saves the current state of this widget, i.e. to which list the items are currently assigned. Clears inputs and
      * repopulates them from the list states.
      * @private
      */
-    saveState: function() {
+    saveState() {
         this.sourceInput.children().remove();
         this.targetInput.children().remove();
 
         this.generateItems(this.sourceList, this.sourceInput);
         this.generateItems(this.targetList, this.targetInput);
         this.cursorItem = null;
-    },
+    }
 
     /**
      * Transfers the given items from the source or target list to the other list.
@@ -1056,7 +1056,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
      * @param {PrimeFaces.widget.PickList.TransferType} type Type of the action that caused the items to be transferred.
      * @param {() => JQuery} callback after transfer finished.
      */
-    transfer: function(items, from, to, type, callback) {
+    transfer(items, from, to, type, callback) {
         $(this.jqId + ' ul').sortable('disable');
         var $this = this;
         var itemsCount = items.length;
@@ -1122,7 +1122,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 callback.call($this);
             }
         }
-    },
+    }
 
     /**
      * Triggers the behavior for when pick list items are transferred from the source to the target list or vice-versa.
@@ -1132,7 +1132,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery} to List to which the items were transferred.
      * @param {PrimeFaces.widget.PickList.TransferType} type Type of the action that caused the items to be transferred.
      */
-    fireTransferEvent: function(items, from, to, type) {
+    fireTransferEvent(items, from, to, type) {
         var $this = this;
 
         if(this.cfg.onTransfer) {
@@ -1172,7 +1172,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         }
 
         this.fireInputChanged();
-    },
+    }
 
     /**
      * Finds the type of the given list, i.e. whether the list represents the source or target list.
@@ -1180,16 +1180,16 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery} element A list element to check.
      * @return {PrimeFaces.widget.PickList.ListName} Whether the element represents the source or target list.
      */
-    getListName: function(element){
+    getListName(element){
         return element.parent().hasClass("ui-picklist-source") ? "source" : "target";
-    },
+    }
 
     /**
      * Triggers the behavior for when pick list items are selected.
      * @private
      * @param {JQuery} item A pick list item that was selected.
      */
-    fireItemSelectEvent: function(item) {
+    fireItemSelectEvent(item) {
         if(this.hasBehavior('select')) {
             var listName = this.getListName(item),
             inputContainer = (listName === "source") ? this.sourceInput : this.targetInput,
@@ -1207,14 +1207,14 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
 
             this.callBehavior('select', ext);
         }
-    },
+    }
 
     /**
      * Triggers the behavior for when pick list items are unselected.
      * @private
      * @param {JQuery} item A pick list item that was unselected.
      */
-    fireItemUnselectEvent: function(item) {
+    fireItemUnselectEvent(item) {
         if(this.hasBehavior('unselect')) {
             var ext = {
                 params: [
@@ -1225,61 +1225,61 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
 
             this.callBehavior('unselect', ext);
         }
-    },
+    }
 
     /**
      * Triggers the behavior for when pick list items are reordered.
      * @private
      */
-    fireReorderEvent: function() {
+    fireReorderEvent() {
         this.callBehavior('reorder');
         this.fireInputChanged();
-    },
+    }
     
     /**
      * Triggers change events on the input fields.
      * @private
      */
-    fireInputChanged: function() {
+    fireInputChanged() {
         // #11540: trigger change events on inputs for form handling
         this.targetInput.trigger("change");
         this.sourceInput.trigger("change");
-    },
+    }
 
     /**
      * Checks whether UI actions of this pick list are animated.
      * @return {boolean} `true` if this pick list is animated, or `false` otherwise.
      */
-    isAnimated: function() {
+    isAnimated() {
         return (this.cfg.effect && this.cfg.effect != 'none');
-    },
+    }
 
     /**
      * Applies the tab index to this pick list widget.
      * @private
      */
-    setTabIndex: function() {
+    setTabIndex() {
         var tabindex = (this.cfg.disabled) ? '-1' : this.getTabIndex();
         this.sourceList.attr('tabindex', tabindex);
         this.targetList.attr('tabindex', tabindex);
         $(this.jqId + ' button').attr('tabindex', tabindex);
         $(this.jqId + ' .ui-picklist-filter-container > input').attr('tabindex', tabindex);
-    },
+    }
 
     /**
      * Finds the tab index of this pick list widget.
      * @private
      * @return {string} The tab index of this pick list.
      */
-    getTabIndex: function() {
+    getTabIndex() {
         return this.cfg.tabindex||'0';
-    },
+    }
 
     /**
      * Updates the state of all buttons of this pick list, such as whether they are disabled or enabled.
      * @private
      */
-    updateButtonsState: function () {
+    updateButtonsState() {
         var addButton = $(this.jqId + ' .ui-picklist-button-add');
         var sourceListButtons = $(this.jqId + ' .ui-picklist-source-controls .ui-button');
         if (this.sourceList.find('li.ui-state-highlight').length) {
@@ -1321,65 +1321,65 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             this.disableButton(removeAllButton);
             this.targetList.attr('tabindex', '-1');
         }
-    },
+    }
 
     /**
      * Reapply filtering the current source list.
      * @private
      */
-    refilterSource: function() {
+    refilterSource() {
         this.filter(this.sourceFilter.val(), this.sourceList, false);
-    },
+    }
 
     /**
      * Reapply filtering to the current target list.
      * @private
      */
-    refilterTarget: function() {
+    refilterTarget() {
         this.filter(this.targetFilter.val(), this.targetList, false);
-    },
+    }
 
     /**
      * Disables the given button belonging to this pick list.
      * @private
      * @param {JQuery} button A button to disable.
      */
-    disableButton: function (button) {
+    disableButton(button) {
         if (button.hasClass('ui-state-focus')) {
             button.trigger("blur");
         }
 
         button.attr('disabled', 'disabled').addClass('ui-state-disabled');
         button.attr('tabindex', '-1');
-    },
+    }
 
     /**
      * Enables the given button belonging to this pick list.
      * @private
      * @param {JQuery} button A button to enable.
      */
-    enableButton: function (button) {
+    enableButton(button) {
         button.prop('disabled', false).removeClass('ui-state-disabled');
         button.attr('tabindex', this.getTabIndex());
-    },
+    }
 
     /**
      * Updates the `role` attribute of the source and target pick list items.
      * @private
      */
-    updateListRole: function() {
+    updateListRole() {
         this.sourceList.children('li:visible').length > 0 ? this.sourceList.attr('role', 'menu') : this.sourceList.removeAttr('role');
         this.targetList.children('li:visible').length > 0 ? this.targetList.attr('role', 'menu') : this.targetList.removeAttr('role');
-    },
+    }
     
     /**
      * Updates the `aria-grion` with the focused label text.
      * @private
      */
-    updateAriaRegion: function() {
+    updateAriaRegion() {
         var labelText = this.focusedItem.data('item-label');
         this.ariaRegion.attr('aria-label', labelText)
         this.ariaRegion.text(labelText);
     }
 
-});
+}

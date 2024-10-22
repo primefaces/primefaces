@@ -12,36 +12,36 @@
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  */
-PrimeFaces.widget.CommandLink = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.CommandLink = class CommandLink extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
         this.tabIndex = this.jq.attr('tabindex') || '0';
         this.bindTriggers();
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    refresh: function(cfg) {
+    refresh(cfg) {
         this.jq.off('click.commandlink');
         $(document).off('.link' + this.id);
 
-        this._super(cfg);
-    },
+        super.refresh(cfg);
+    }
 
     /**
      * Sets up the global event listeners on the link.
      * @private
      */
-    bindTriggers: function() {
+    bindTriggers() {
         var $this = this;
         $this.ajaxCount = 0;
         this.jq.on('click.commandlink', function(e, xhr, settings) {
@@ -81,35 +81,35 @@ PrimeFaces.widget.CommandLink = PrimeFaces.widget.BaseWidget.extend({
                 $(document).off(namespace);
             });
         }
-    },
+    }
 
     /**
      * Ends the AJAX disabled state.
      * @param {PrimeFaces.widget.BaseWidget} [widget] the widget.
      */
-    endAjaxDisabled: function(widget) {
+    endAjaxDisabled(widget) {
         widget.jq.removeClass('ui-state-loading');
 
         if (!widget.cfg.disabledAttr) {
             widget.enable();
         }
-    },
+    }
 
     /**
      * Disables this link so that the user cannot click the link anymore.
      */
-    disable: function() {
+    disable() {
         this.jq.removeClass('ui-state-hover ui-state-focus ui-state-active')
                 .addClass('ui-state-disabled')
                 .attr('tabindex', '-1');
-    },
+    }
 
     /**
      * Enables this link so that the user can click the link.
      */
-    enable: function() {
+    enable() {
         this.jq.removeClass('ui-state-disabled')
                 .attr('tabindex', this.tabIndex);
     }
 
-});
+}

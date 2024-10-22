@@ -46,15 +46,15 @@
  * @prop {PrimeFaces.widget.SplitButton.FilterFunction} cfg.filterFunction Custom JavaScript function for filtering the
  * available split button actions.
  */
-PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.SplitButton = class SplitButton extends PrimeFaces.widget.BaseWidget {
 
      /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+         super.init(cfg);
         this.button = $(this.jqId + '_button');
         this.menuButton = $(this.jqId + '_menuButton');
         this.menuId = this.jqId + '_menu';
@@ -72,46 +72,46 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
         //pfs metadata
         this.button.data(PrimeFaces.CLIENT_ID_DATA, this.id);
         this.menuButton.data(PrimeFaces.CLIENT_ID_DATA, this.id);
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    refresh: function(cfg) {
+    refresh(cfg) {
         this.menuButton.off('click.splitbutton');
         this.menuitems.off('mouseover.splitbutton mouseout.splitbutton click.splitbutton');
         this.menuButton.on('keydown.splitbutton keyup.splitbutton');
         $(document).off('pfAjaxSend.' + this.id + ' pfAjaxComplete.' + this.id);
 
-        this._super(cfg);
-    },
+        super.refresh(cfg);
+    }
 
     /**
      * Disables this button so that the user cannot press the button anymore.
      */
-    disable: function() {
+    disable() {
         this.cfg.disabled = true;
         this.hide();
         PrimeFaces.utils.disableButton(this.button);
         PrimeFaces.utils.disableButton(this.menuButton);
-    },
+    }
 
     /**
      * Enables this button so that the user can press the button.
      */
-    enable: function() {
+    enable() {
         this.cfg.disabled = false;
         PrimeFaces.utils.enableButton(this.button);
         PrimeFaces.utils.enableButton(this.menuButton);
-    },
+    }
 
     /**
      * Sets up all event listeners required by this widget.
      * @private
      */
-    bindEvents: function() {
+    bindEvents() {
         var $this = this;
 
         PrimeFaces.skinButton(this.button).skinButton(this.menuButton);
@@ -192,13 +192,13 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
 
             this.bindFilterEvents();
         }
-    },
+    }
 
     /**
      * Sets up all panel event listeners
      * @private
      */
-    bindPanelEvents: function() {
+    bindPanelEvents() {
         var $this = this;
 
         this.hideOverlayHandler = PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', this.menu, null,
@@ -220,13 +220,13 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
                 $this.hide();
             }
         });
-    },
+    }
 
     /**
      * Unbind all panel event listeners
      * @private
      */
-    unbindPanelEvents: function() {
+    unbindPanelEvents() {
         if (this.hideOverlayHandler) {
             this.hideOverlayHandler.unbind();
         }
@@ -238,13 +238,13 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
         if (this.scrollHandler) {
             this.scrollHandler.unbind();
         }
-    },
+    }
 
     /**
      * Sets up the event listeners for filtering the available buttons actions via a search field.
      * @private
      */
-    bindFilterEvents: function() {
+    bindFilterEvents() {
         var $this = this;
 
         this.filterInput.on('keyup.ui-splitbutton', function(e) {
@@ -293,14 +293,14 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
                 $this.filter($this.filterInput.val());
             });
 	});
-    },
+    }
 
     /**
      * Highlights the next button action, usually when the user navigates via the keyboard arrows.
      * @private
      * @param {JQuery.TriggeredEvent} event Keyboard arrow event that caused the next item to be highlighted.
      */
-    highlightNext: function(event) {
+    highlightNext(event) {
         var highlightedItem = this.menuitems.filter('.ui-state-hover'),
         nextItems = highlightedItem.length ? highlightedItem.nextAll(':not(.ui-separator, .ui-widget-header):visible') : this.menuitems.filter(':visible').eq(0);
 
@@ -310,14 +310,14 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
         }
 
         event.preventDefault();
-    },
+    }
 
     /**
      * Highlights the previous button action, usually when the user navigates via the keyboard arrows.
      * @private
      * @param {JQuery.TriggeredEvent} event Keyboard arrow event that caused the previous item to be highlighted.
      */
-    highlightPrev: function(event) {
+    highlightPrev(event) {
         var highlightedItem = this.menuitems.filter('.ui-state-hover'),
         prevItems = highlightedItem.length ? highlightedItem.prevAll(':not(.ui-separator, .ui-widget-header):visible') : null;
 
@@ -327,7 +327,7 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
         }
 
         event.preventDefault();
-    },
+    }
 
     /**
      * Callback that is invoked when the enter key is pressed. When overlay panel with the additional buttons actions is
@@ -335,7 +335,7 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
      * @private
      * @param {JQuery.TriggeredEvent} event Keyboard event of the enter press.
      */
-    handleEnterKey: function(event) {
+    handleEnterKey(event) {
         if(this.menu.is(':visible')) {
             var link = this.menuitems.filter('.ui-state-hover').children('a');
             link.trigger('click');
@@ -350,22 +350,22 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
         }
 
         event.preventDefault();
-    },
+    }
 
     /**
      * Callback that is invoked when the escape key is pressed while the overlay panel with the additional buttons
      * actions is shown. Hides that overlay panel.
      * @private
      */
-    handleEscapeKey: function() {
+    handleEscapeKey() {
         this.hide();
-    },
+    }
 
     /**
      * Creates the filter functions for filtering the button actions.
      * @private
      */
-    setupFilterMatcher: function() {
+    setupFilterMatcher() {
         this.cfg.filterMatchMode = this.cfg.filterMatchMode||'startsWith';
         this.filterMatchers = {
             'startsWith': this.startsWithFilter
@@ -375,7 +375,7 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
         };
 
         this.filterMatcher = this.filterMatchers[this.cfg.filterMatchMode];
-    },
+    }
 
     /**
      * A filter function that takes a value and a search and returns true if the value starts with the search term.
@@ -383,9 +383,9 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
      * @param {string} filter Filter or search term to apply.
      * @return {boolean} `true` if the given value starts with the search term, or `false` otherwise.
      */
-    startsWithFilter: function(value, filter) {
+    startsWithFilter(value, filter) {
         return value.indexOf(filter) === 0;
-    },
+    }
 
     /**
      * A filter function that takes a value and a search and returns true if the value contains the search term.
@@ -393,9 +393,9 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
      * @param {string} filter Filter or search term to apply.
      * @return {boolean} `true` if the given value contains the search term, or `false` otherwise.
      */
-    containsFilter: function(value, filter) {
+    containsFilter(value, filter) {
         return value.indexOf(filter) !== -1;
-    },
+    }
 
     /**
      * A filter function that takes a value and a search and returns true if the value ends with the search term.
@@ -403,16 +403,16 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
      * @param {string} filter Filter or search term to apply.
      * @return {boolean} `true` if the given value ends with the search term, or `false` otherwise.
      */
-    endsWithFilter: function(value, filter) {
+    endsWithFilter(value, filter) {
         return value.indexOf(filter, value.length - filter.length) !== -1;
-    },
+    }
 
     /**
      * Filters the overlay panel with the additional buttons actions, leaving only the buttons that match the given
      * search term.
      * @param {string} value Search term for filtering.
      */
-    filter: function(value) {
+    filter(value) {
         var normalize = this.cfg.filterNormalize,
             filterValue = PrimeFaces.toSearchable(PrimeFaces.trim(value), true, normalize);
 
@@ -468,13 +468,13 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
         }
 
         this.alignPanel();
-    },
+    }
 
     /**
      * Shows the overlay panel with the additional buttons actions.
      * @private
      */
-    show: function() {
+    show() {
         if(this.cfg.disabled) {
            return;
         }
@@ -500,13 +500,13 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
                 }
             });
         }
-    },
+    }
 
     /**
      * Hides the overlay panel with the additional buttons actions.
      * @private
      */
-    hide: function() {
+    hide() {
         if (this.transition) {
             var $this = this;
 
@@ -521,12 +521,12 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
                 }
             });
         }
-    },
+    }
 
     /**
      * Align the overlay panel with the additional buttons actions.
      */
-    alignPanel: function() {
+    alignPanel() {
         this.menu.css({ left:'', top:'', 'transform-origin': 'center top' });
 
         if(this.menu.parent().is(this.jq)) {
@@ -548,4 +548,4 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
         }
     }
 
-});
+}

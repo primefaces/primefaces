@@ -23,15 +23,15 @@
  * @prop {number} cfg.margin Margin to the top of the page during fixed scrolling.
  * @prop {string} cfg.target The client ID of the component to be made sticky.
  */
-PrimeFaces.widget.Sticky = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Sticky = class Sticky extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
         this.target = $(PrimeFaces.escapeClientId(this.cfg.target));
         this.cfg.margin = this.cfg.margin || 0;
 
@@ -41,27 +41,27 @@ PrimeFaces.widget.Sticky = PrimeFaces.widget.BaseWidget.extend({
         };
 
         this.bindEvents();
-    },
+    }
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    refresh: function(cfg) {
+    refresh(cfg) {
         this.target = $(PrimeFaces.escapeClientId(this.cfg.target));
 
         if (this.fixed) {
             this.ghost.remove();
             this.fix(true);
         }
-    },
+    }
 
     /**
      * Sets up all event listeners that are required by this widget.
      * @private
      */
-    bindEvents: function() {
+    bindEvents() {
         var $this = this;
 
         PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id + '_align', function() {
@@ -76,13 +76,13 @@ PrimeFaces.widget.Sticky = PrimeFaces.widget.BaseWidget.extend({
                 $this.target.width($this.ghost.outerWidth() - ($this.target.outerWidth() - $this.target.width()));
             }
         });
-    },
+    }
 
     /**
      * Pins this sticky to the page so that it is always visible.
      * @param {boolean} [force] If `true`, pin the sticky irrespective of whether it is pinned already.
      */
-    fix: function(force) {
+    fix(force) {
         if (!this.fixed || force) {
             var winScrollTop = $(window).scrollTop();
 
@@ -98,12 +98,12 @@ PrimeFaces.widget.Sticky = PrimeFaces.widget.BaseWidget.extend({
             this.fixed = true;
             $(window).scrollTop(winScrollTop);
         }
-    },
+    }
 
     /**
      * Unpins this sticky and returns it to its normal position.
      */
-    restore: function() {
+    restore() {
         if (this.fixed) {
             this.target.css({
                 position: 'static',
@@ -117,4 +117,4 @@ PrimeFaces.widget.Sticky = PrimeFaces.widget.BaseWidget.extend({
         }
     }
 
-});
+}

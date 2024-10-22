@@ -42,26 +42,26 @@
  * @prop {JQueryUI.ResizableEvent} cfg.stop Callback passed to JQuery UI for when a resizing event ends.
  * @prop {string} cfg.target ID of the target widget or element to be resized. 
  */
-PrimeFaces.widget.Resizable = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Resizable = class Resizable extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         this.jqTarget = $(PrimeFaces.escapeClientId(this.cfg.target));
 
         this.renderDeferred();
-    },
+    }
 
     /**
      * Renders this widget, if the target widget is already visible, or adds a deferred renderer otherwise.
      * @private
      */
-    renderDeferred: function() {
+    renderDeferred() {
         if (this.jqTarget.is(':visible')) {
             this._render();
         }
@@ -77,27 +77,27 @@ PrimeFaces.widget.Resizable = PrimeFaces.widget.BaseWidget.extend({
                 }
             }
         }
-    },
+    }
 
     /**
      * Renders the client-side parts of this widget, if this target widget to be resized is already visible.
      * @private
      * @return {boolean} `true` if the target widget is visible, or `false` otherwise.
      */
-    render: function() {
+    render() {
         if (this.jqTarget.is(':visible')) {
             this._render();
             return true;
         }
 
         return false;
-    },
+    }
 
     /**
      * Renders the client-side parts of this widget.
      * @private
      */
-    _render: function() {
+    _render() {
         if (this.cfg.ajaxResize) {
             this.cfg.formId = $(this.target).parents('form:first').attr('id');
         }
@@ -137,7 +137,7 @@ PrimeFaces.widget.Resizable = PrimeFaces.widget.BaseWidget.extend({
         });
 
         this.removeScriptElement(this.id);
-    },
+    }
 
     /**
      * Triggers the behavior for when the component was resized.
@@ -145,7 +145,7 @@ PrimeFaces.widget.Resizable = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery.TriggeredEvent} event Event that triggered the resize.
      * @param {JQueryUI.ResizableUIParams} ui Data of the resize event.
      */
-    fireAjaxResizeEvent: function(event, ui) {
+    fireAjaxResizeEvent(event, ui) {
         if (this.hasBehavior('resize')) {
             var ext = {
                 params: [
@@ -158,4 +158,4 @@ PrimeFaces.widget.Resizable = PrimeFaces.widget.BaseWidget.extend({
         }
     }
 
-});
+}

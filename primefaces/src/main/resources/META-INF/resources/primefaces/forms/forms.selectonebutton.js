@@ -19,15 +19,15 @@
  * @prop {PrimeFaces.widget.SelectOneButton.ChangeCallback} cfg.change Callback that is invoked when the value of this
  * widget has changed.
  */
-PrimeFaces.widget.SelectOneButton = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.SelectOneButton = class SelectOneButton extends PrimeFaces.widget.BaseWidget {
 
     /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
-        this._super(cfg);
+    init(cfg) {
+        super.init(cfg);
 
         this.buttons = this.jq.children('div:not(.ui-state-disabled)');
         this.inputs = this.jq.find(':radio:not(:disabled)');
@@ -37,13 +37,13 @@ PrimeFaces.widget.SelectOneButton = PrimeFaces.widget.BaseWidget.extend({
 
         //pfs metadata
         this.inputs.data(PrimeFaces.CLIENT_ID_DATA, this.id);
-    },
+    }
 
     /**
      * Sets up all event listeners required by this widget.
      * @private
      */
-    bindEvents: function() {
+    bindEvents() {
         var $this = this;
 
         this.buttons.on('mouseover', function() {
@@ -88,57 +88,57 @@ PrimeFaces.widget.SelectOneButton = PrimeFaces.widget.BaseWidget.extend({
                 e.preventDefault();
             }
         });
-    },
+    }
 
     /**
      * Selects the given button option. If another button option is selected already, it will be unselected.
      * @param {JQuery} button A button of this widget to select.
      */
-    select: function(button) {
+    select(button) {
         this.buttons.filter('.ui-state-active').removeClass('ui-state-active ui-state-hover').children(':radio').prop('checked', false);
 
         button.addClass('ui-state-active').children(':radio').prop('checked', true);
 
         this.triggerChange();
-    },
+    }
 
     /**
      * Unselects the given button option.
      * @param {JQuery} button A button of this widget to unselect.
      */
-    unselect: function(button) {
+    unselect(button) {
         if(this.cfg.unselectable) {
             button.removeClass('ui-state-active ui-state-hover').children(':radio').prop('checked', false).change();
 
             this.triggerChange();
         }
-    },
+    }
 
     /**
      * Trigger the change behavior when the value of this widget has changed.
      * @private
      */
-    triggerChange: function() {
+    triggerChange() {
         if(this.cfg.change) {
             this.cfg.change.call(this);
         }
 
         this.callBehavior('change');
-    },
+    }
 
     /**
      * Disables this input components so that the user cannot select an option anymore.
      */
-    disable: function() {
+    disable() {
         this.buttons.removeClass('ui-state-hover ui-state-focus ui-state-active')
                 .addClass('ui-state-disabled').attr('disabled', 'disabled');
-    },
+    }
 
     /**
      * Enables this input components so that the user can select an option.
      */
-    enable: function() {
+    enable() {
         this.buttons.removeClass('ui-state-disabled').removeAttr('disabled');
     }
 
-});
+}
