@@ -23,29 +23,21 @@
  */
 package org.primefaces.component.fileupload;
 
-import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.FilesUploadEvent;
 import org.primefaces.model.file.UploadedFile;
 import org.primefaces.model.file.UploadedFiles;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.FileUploadUtils;
-import org.primefaces.util.LocaleUtils;
-import org.primefaces.util.MessageFactory;
 import org.primefaces.validate.FileValidator;
-import org.primefaces.virusscan.VirusException;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
 import javax.el.MethodExpression;
-import javax.faces.application.FacesMessage;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
-import javax.faces.validator.ValidatorException;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "fileupload/fileupload.css")
@@ -89,86 +81,30 @@ public class FileUpload extends FileUploadBase {
         super.validateValue(context, newValue);
 
         if (isValid() && ComponentUtils.isRequestSource(this, context)) {
-
-            boolean hasFileValidator = Arrays.stream(getValidators()).anyMatch(v -> v instanceof FileValidator);
-            if (!hasFileValidator) {
-                try {
-                    if (newValue instanceof UploadedFile) {
-                        tryValidateFile((UploadedFile) newValue);
-                    }
-                    else if (newValue instanceof UploadedFiles) {
-                        tryValidateFiles(((UploadedFiles) newValue).getFiles());
-                    }
-                    else if (newValue != null) {
-                        throw new IllegalArgumentException("Argument of type '" + newValue.getClass().getName() + "' not supported");
-                    }
+            if (newValue instanceof UploadedFile) {
+                int totalFilesCount = 0;
+                if ("advanced".equals(getMode())) {
+                    Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+                    totalFilesCount = Integer.parseInt(params.get(this.getClientId(context) + "_totalFilesCount"));
                 }
-                catch (VirusException | ValidatorException e) {
-                    setValid(false);
 
-                    context.addMessage(getClientId(), e instanceof ValidatorException
-                            ? ((ValidatorException) e).getFacesMessage()
-                            : new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), ""));
-                }
+                queueEvent(new FileUploadEvent(this, (UploadedFile) newValue, totalFilesCount));
             }
-
-            if (isValid()) {
-                if (newValue instanceof UploadedFile) {
-                    int totalFilesCount = 0;
-                    if ("advanced".equals(getMode())) {
-                        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-                        totalFilesCount = Integer.parseInt(params.get(this.getClientId(context) + "_totalFilesCount"));
-                    }
-
-                    queueEvent(new FileUploadEvent(this, (UploadedFile) newValue, totalFilesCount));
-                }
-                else if (newValue instanceof UploadedFiles) {
-                    queueEvent(new FilesUploadEvent(this, (UploadedFiles) newValue));
-                }
+            else if (newValue instanceof UploadedFiles) {
+                queueEvent(new FilesUploadEvent(this, (UploadedFiles) newValue));
             }
         }
     }
 
-    protected void tryValidateFile(UploadedFile uploadedFile) throws ValidatorException {
-        Long sizeLimit = getSizeLimit();
-        PrimeApplicationContext appContext = PrimeApplicationContext.getCurrentInstance(getFacesContext());
-
-        if (sizeLimit != null && uploadedFile.getSize() > sizeLimit) {
-            throw new ValidatorException(
-                    MessageFactory.getFacesMessage(FileValidator.SIZE_LIMIT_MESSAGE_ID, FacesMessage.SEVERITY_ERROR,
-                            uploadedFile.getFileName(), FileUploadUtils.formatBytes(sizeLimit, LocaleUtils.getCurrentLocale(getFacesContext()))));
-        }
-
-        String accept = isValidateContentType() ? getAccept() : null;
-        if (!FileUploadUtils.isValidType(appContext, uploadedFile, getAllowTypes(), accept)) {
-            throw new ValidatorException(
-                    MessageFactory.getFacesMessage(FileValidator.ALLOW_TYPES_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, uploadedFile.getFileName(),
-                            FileUploadUtils.formatAllowTypes(getAllowTypes())));
-        }
-
-        if (isVirusScan()) {
-            FileUploadUtils.performVirusScan(getFacesContext(), uploadedFile);
-        }
+    public FileValidator getFileValidator() {
+        return Arrays.stream(getValidators())
+                .filter(v -> v instanceof FileValidator)
+                .map(v -> (FileValidator) v)
+                .findFirst().orElse(null);
     }
 
-    protected void tryValidateFiles(List<UploadedFile> files) {
-        Integer fileLimit = getFileLimit();
-        if (files != null && files.size() > fileLimit) {
-            throw new ValidatorException(
-                    MessageFactory.getFacesMessage(FileValidator.FILE_LIMIT_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, fileLimit));
-        }
-
-        long totalPartSize = 0;
-        Long sizeLimit = getSizeLimit();
-        for (UploadedFile file : files) {
-            totalPartSize += file.getSize();
-            tryValidateFile(file);
-        }
-
-        if (sizeLimit != null && totalPartSize > sizeLimit) {
-            throw new ValidatorException(
-                    MessageFactory.getFacesMessage(FileValidator.SIZE_LIMIT_MESSAGE_ID, FacesMessage.SEVERITY_ERROR,
-                            "*", FileUploadUtils.formatBytes(sizeLimit, LocaleUtils.getCurrentLocale(getFacesContext()))));
-        }
+    public Long getSizeLimit() {
+        FileValidator fileValidator = getFileValidator();
+        return fileValidator == null ? null : fileValidator.getSizeLimit();
     }
 }
