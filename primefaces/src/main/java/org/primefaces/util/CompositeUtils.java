@@ -69,13 +69,12 @@ public class CompositeUtils {
                 return VisitResult.COMPLETE;
             }
             else if (UIComponent.isCompositeComponent(target)) {
-                visitEditableValueHolderTargets(context, target);
-                return VisitResult.COMPLETE;
+                return visitEditableValueHolderTargets(context, target);
             }
             return VisitResult.ACCEPT;
         }
 
-        private void visitEditableValueHolderTargets(VisitContext visitContext, UIComponent component) {
+        private VisitResult visitEditableValueHolderTargets(VisitContext visitContext, UIComponent component) {
             BeanInfo info = (BeanInfo) component.getAttributes().get(UIComponent.BEANINFO_KEY);
             List<AttachedObjectTarget> targets = (List<AttachedObjectTarget>) info.getBeanDescriptor()
                     .getValue(AttachedObjectTarget.ATTACHED_OBJECT_TARGETS_KEY);
@@ -92,12 +91,14 @@ public class CompositeUtils {
                         for (int j = 0; j < children.size(); j++) {
                             final UIComponent child = children.get(j);
                             if (child.visitTree(visitContext, this)) {
-                                return; // visit over
+                                return VisitResult.COMPLETE;
                             }
                         }
                     }
                 }
             }
+
+            return VisitResult.ACCEPT;
         }
     }
 }
