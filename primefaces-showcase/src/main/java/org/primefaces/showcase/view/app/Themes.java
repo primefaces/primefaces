@@ -99,7 +99,7 @@ public class Themes {
                 new Theme("luna-pink", "Luna Pink", "images/themes/luna-pink.png", true));
         categories.add(legacy);
 
-        categories.stream().forEach(category -> themes.addAll(category.getThemes()));
+        categories.forEach(category -> themes.addAll(category.getThemes()));
     }
 
     public List<Category> getCategories() {
