@@ -64,6 +64,9 @@ PrimeFaces.widget.Message = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    /**
+     * Removes the current displayed message.
+     */
     clear: function() {
         this.jq.html('');
         this.jq.removeClass('ui-message-error ui-message-icon-only ui-widget ui-corner-all ui-helper-clearfix');
