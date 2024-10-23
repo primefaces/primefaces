@@ -15,31 +15,53 @@ To activate your theme simply use the `primefaces.THEME`  web.xml context parame
 ```
 
 
-## Built-In Themes
+## Theme
 
-PrimeFaces comes built-in with themes ready to use of out the box. They include:
-
-- arya-blue
-- luna-amber
-- luna-blue
-- luna-green
-- luna-pink
-- nova-colored
-- nova-dark
-- nova-light
-- saga-blue (DEFAULT)
-- vela-blue
+PrimeFaces per default only comes with the saga-blue theme.
 
 
-## Premium Themes
+## Additional Themes
 
-PrimeTek offers a full range of professionally built premium themes ready to use out of the box.
-Premium themes come with an amazing looking responsive template with a set of XHTML files including dashboard, login, error,
- 404 along with icons and images to kick-start applications quickly. 
-Each premium layout offers a compatible theme with a similar design. Although theme can be used standalone without the layout,
- we suggest using the theme of a layout for a unified look in your application.
+The primefaces-themes module contains all other themes:
 
-See the [Theme Gallery](https://www.primefaces.org/themes/) for more information.
+- primefaces-arya-blue
+- primefaces-bootstrap4-blue-dark
+- primefaces-bootstrap4-blue-light
+- primefaces-bootstrap4-dark-common
+- primefaces-bootstrap4-light-common
+- primefaces-bootstrap4-purple-dark
+- primefaces-bootstrap4-purple-light
+- primefaces-luna-amber
+- primefaces-luna-blue
+- primefaces-luna-common
+- primefaces-luna-green
+- primefaces-luna-pink
+- primefaces-material-compact-deeppurple-dark
+- primefaces-material-compact-deeppurple-light
+- primefaces-material-compact-indigo-dark
+- primefaces-material-compact-indigo-light
+- primefaces-material-dark-common
+- primefaces-material-deeppurple-dark
+- primefaces-material-deeppurple-light
+- primefaces-material-indigo-dark
+- primefaces-material-indigo-light
+- primefaces-material-light-common
+- primefaces-nova-colored
+- primefaces-nova-common
+- primefaces-nova-dark
+- primefaces-nova-light
+- primefaces-saga-blue
+- primefaces-vela-blue
+
+You can include it via:
+
+```xml
+<dependency>
+    <groupId>org.primefaces</groupId>
+    <artifactId>primefaces-themes</artifactId>
+    <version></version>
+</dependency>
+```
 
 ## Designer
 

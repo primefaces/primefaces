@@ -17,7 +17,6 @@
     <name>PrimeFaces Themes</name>
 
     <build>
-        <finalName>${project.name}</finalName>
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -68,7 +67,7 @@
                 <artifactId>maven-resources-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>copy-themes</id>
+                        <id>copy-default-theme</id>
                         <phase>process-resources</phase>
                         <goals>
                             <goal>copy-resources</goal>
@@ -79,45 +78,26 @@
                                 <resource>
                                     <directory>themes</directory>
                                     <includes>
-                                        <include>primefaces-arya-blue/theme.css</include>
-                                        <include>primefaces-luna-amber/theme.css</include>
-                                        <include>primefaces-luna-blue/theme.css</include>
-                                        <include>primefaces-luna-green/theme.css</include>
-                                        <include>primefaces-luna-pink/theme.css</include>
-                                        <include>primefaces-nova-colored/theme.css</include>
-                                        <include>primefaces-nova-dark/theme.css</include>
-                                        <include>primefaces-nova-light/theme.css</include>
                                         <include>primefaces-saga-blue/theme.css</include>
-                                        <include>primefaces-vela-blue/theme.css</include>
                                     </includes>
                                 </resource>
                             </resources>
                         </configuration>
                     </execution>
                     <execution>
-                        <id>copy-showcase-themes</id>
+                        <id>copy-themes</id>
                         <phase>process-resources</phase>
                         <goals>
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/../primefaces-showcase/src/main/webapp/resources</outputDirectory>
+                            <outputDirectory>target/classes/META-INF/resources</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>themes</directory>
                                     <includes>
-                                        <include>primefaces-bootstrap4-blue-dark/theme.css</include>
-                                        <include>primefaces-bootstrap4-blue-light/theme.css</include>
-                                        <include>primefaces-bootstrap4-purple-dark/theme.css</include>
-                                        <include>primefaces-bootstrap4-purple-light/theme.css</include>
-                                        <include>primefaces-material-compact-deeppurple-dark/theme.css</include>
-                                        <include>primefaces-material-compact-deeppurple-light/theme.css</include>
-                                        <include>primefaces-material-compact-indigo-dark/theme.css</include>
-                                        <include>primefaces-material-compact-indigo-light/theme.css</include>
-                                        <include>primefaces-material-deeppurple-dark/theme.css</include>
-                                        <include>primefaces-material-deeppurple-light/theme.css</include>
-                                        <include>primefaces-material-indigo-dark/theme.css</include>
-                                        <include>primefaces-material-indigo-light/theme.css</include>
+                                        <include>*/theme.css</include>
+                                        <include>*/fonts/*</include>
                                     </includes>
                                 </resource>
                             </resources>

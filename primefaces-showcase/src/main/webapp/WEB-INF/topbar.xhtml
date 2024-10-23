@@ -9,8 +9,8 @@
             <p:graphicImage name="images/primefaces-logo.svg" library="showcase" />
         </h:link>
         <p:outputPanel id="app-theme-logo" class="app-theme">
-            <p:graphicImage id="app-theme-image" name="images/themes/#{app.themeImage}" library="showcase" />
-            <p:tooltip for="app-theme-logo" value="#{app.theme}" position="bottom" showDelay="0" />
+            <p:graphicImage id="app-theme-image" name="#{app.themeImage}" library="showcase" />
+            <p:tooltip for="app-theme-logo" value="#{app.themeName}" position="bottom" showDelay="0" />
         </p:outputPanel>
 
         <h:form styleClass="topbar-form">
@@ -31,23 +31,18 @@
                         <li><a href="https://www.primefaces.org/designer-jsf"><i class="pi pi-fw pi-desktop"></i><span>Visual Editor</span></a></li>
                         <li><h:link outcome="/icons"><i class="pi pi-fw pi-info-circle"></i><span>Icons</span></h:link></li>
                         <li><h:link outcome="/uikit"><i class="pi pi-fw pi-pencil"></i><span>UI Kit</span></h:link></li>
-                        <li class="topbar-submenu-header">PRIMEONE</li>
-                        <li><p:commandLink actionListener="#{app.changeTheme('saga-blue', false)}" oncomplete="App.changeTheme('saga-blue', false)" update=":app-theme-logo"><h:graphicImage name="showcase/images/themes/saga.png" alt="Saga Blue"/><span>Saga Blue</span></p:commandLink></li>
-                        <li><p:commandLink actionListener="#{app.changeTheme('vela-blue', true)}" oncomplete="App.changeTheme('vela-blue', true)" update=":app-theme-logo"><h:graphicImage name="showcase/images/themes/vela.png" alt="Vela Blue"/><span>Vela Blue</span></p:commandLink></li>
-                        <li><p:commandLink actionListener="#{app.changeTheme('arya-blue', true)}" oncomplete="App.changeTheme('arya-blue', true)" update=":app-theme-logo"><h:graphicImage name="showcase/images/themes/arya.png" alt="Arya Blue"/><span>Arya Blue</span></p:commandLink></li>
-                        <li class="topbar-submenu-header">PREMIUM</li>
-                        <li><p:commandLink actionListener="#{app.changeTheme('bootstrap4-blue-light', false)}" oncomplete="App.changeTheme('bootstrap4-blue-light', false)" update=":app-theme-logo"><p:graphicImage name="images/themes/bootstrap4-light-blue.svg" library="showcase" alt="Blue Light"/><span>Bootstrap Blue Light</span></p:commandLink></li>
-                        <li><p:commandLink actionListener="#{app.changeTheme('bootstrap4-purple-light', false)}" oncomplete="App.changeTheme('bootstrap4-purple-light', false)" update=":app-theme-logo"><p:graphicImage name="images/themes/bootstrap4-light-purple.svg" library="showcase" alt="Purple Light"/><span>Bootstrap Purple Light</span></p:commandLink></li>
-                        <li><p:commandLink actionListener="#{app.changeTheme('bootstrap4-blue-dark', true)}" oncomplete="App.changeTheme('bootstrap4-blue-dark', true)" update=":app-theme-logo"><p:graphicImage name="images/themes/bootstrap4-dark-blue.svg" library="showcase" alt="Blue Dark"/><span>Bootstrap Blue Dark</span></p:commandLink></li>
-                        <li><p:commandLink actionListener="#{app.changeTheme('bootstrap4-purple-dark', true)}" oncomplete="App.changeTheme('bootstrap4-purple-dark', true)" update=":app-theme-logo"><p:graphicImage name="images/themes/bootstrap4-dark-purple.svg" library="showcase" alt="Purple Dark"/><span>Bootstrap Purple Dark</span></p:commandLink></li>
-                        <li class="topbar-submenu-header">LEGACY</li>
-                        <li><p:commandLink actionListener="#{app.changeTheme('nova-light', false)}" oncomplete="App.changeTheme('nova-light', false)" update=":app-theme-logo"><h:graphicImage name="showcase/images/themes/nova.png" alt="Nova"/><span>Nova</span></p:commandLink></li>
-                        <li><p:commandLink actionListener="#{app.changeTheme('nova-dark', true)}" oncomplete="App.changeTheme('nova-dark', true)" update=":app-theme-logo"><h:graphicImage name="showcase/images/themes/nova-alt.png" alt="Nova Alt"/><span>Nova Alt</span></p:commandLink></li>
-                        <li><p:commandLink actionListener="#{app.changeTheme('nova-colored', true)}" oncomplete="App.changeTheme('nova-colored', true)" update=":app-theme-logo"><h:graphicImage name="showcase/images/themes/nova-accent.png" alt="Nova Accent"/><span>Nova Accent</span></p:commandLink></li>
-                        <li><p:commandLink actionListener="#{app.changeTheme('luna-amber', true)}" oncomplete="App.changeTheme('luna-amber', true)" update=":app-theme-logo"><h:graphicImage name="showcase/images/themes/luna-amber.png" alt="Luna Amber"/><span>Luna Amber</span></p:commandLink></li>
-                        <li><p:commandLink actionListener="#{app.changeTheme('luna-blue', true)}" oncomplete="App.changeTheme('luna-blue', true)" update=":app-theme-logo"><h:graphicImage name="showcase/images/themes/luna-blue.png" alt="Luna Blue"/><span>Luna Blue</span></p:commandLink></li>
-                        <li><p:commandLink actionListener="#{app.changeTheme('luna-green', true)}" oncomplete="App.changeTheme('luna-green', true)" update=":app-theme-logo"><h:graphicImage name="showcase/images/themes/luna-green.png" alt="Luna Green"/><span>Luna Green</span></p:commandLink></li>
-                        <li><p:commandLink actionListener="#{app.changeTheme('luna-pink', true)}" oncomplete="App.changeTheme('luna-pink', true)" update=":app-theme-logo"><h:graphicImage name="showcase/images/themes/luna-pink.png" alt="Luna Pink"/><span>Luna Pink</span></p:commandLink></li>
+
+                        <ui:repeat value="#{themes.categories}" var="category">
+                            <li class="topbar-submenu-header">#{category.name}</li>
+                            <ui:repeat value="#{category.themes}" var="theme">
+                                <li>
+                                    <p:commandLink actionListener="#{app.changeTheme(theme)}" oncomplete="App.changeTheme('#{theme.id}', #{theme.dark})" update=":app-theme-logo">
+                                        <h:graphicImage name="#{theme.image}" library="showcase" alt="#{theme.name}"/>
+                                        <span>#{theme.name}</span>
+                                    </p:commandLink>
+                                </li>
+                            </ui:repeat>
+                        </ui:repeat>
                     </ul>
                 </li>
                 <li class="topbar-submenu">
