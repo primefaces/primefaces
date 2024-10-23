@@ -37,7 +37,7 @@ import javax.faces.component.visit.VisitContext;
 
 public class WidgetVarSearchKeywordResolver extends SearchKeywordResolver {
 
-    private static final Pattern PATTERN = Pattern.compile("widgetVar\\((\\w+)\\)");
+    private static final Pattern PATTERN = Pattern.compile("widgetVar\\(([\\w-_]+)\\)");
 
     @Override
     public boolean isResolverForKeyword(SearchExpressionContext searchExpressionContext, String keyword) {
