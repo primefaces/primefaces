@@ -28,7 +28,6 @@ import org.primefaces.component.tabview.Tab;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
 
-@Deprecated
 public class TabChangeEvent<T> extends TabEvent<T> {
 
     private static final long serialVersionUID = 1L;
