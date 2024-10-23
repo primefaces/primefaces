@@ -53,7 +53,6 @@ public class GrowlRenderer extends UINotificationRenderer {
 
         if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             writer.writeAttribute("class", "ui-growl-pl", null);
-            writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
             writer.writeAttribute("data-global", growl.isGlobalOnly(), null);
             writer.writeAttribute("data-summary", growl.isShowSummary(), null);
             writer.writeAttribute("data-detail", growl.isShowDetail(), null);

@@ -285,7 +285,7 @@ if (window.PrimeFaces) {
          * @function
          * @param {HTMLButtonElement} btn CommandButton which´s CSV-requirements should be validated.
          */
-        validateButtonCsvRequirements: function (btn) {
+        validateButtonCsvRequirements: function(btn) {
             const $source = $(btn);
             const cfg = {
                 ajax: btn.dataset.pfValidateclientAjax,
@@ -336,25 +336,27 @@ if (window.PrimeFaces) {
                 : $(el);
             var clientId = element.data(PrimeFaces.CLIENT_ID_DATA) || element.attr('id');
 
-            var uiMessageId = element.data('uimessageid');
-            var uiMessage = null;
+            var messageComponentId = element.data('uimessageid');
+            var messageComponent = null;
             if (renderMessages === true) {
-                if (uiMessageId) {
-                    uiMessage = uiMessageId === 'p-nouimessage'
+                if (messageComponentId) {
+                    messageComponent = messageComponentId === 'p-nouimessage'
                         ? null
-                        : $(PrimeFaces.escapeClientId(uiMessageId));
+                        : $(PrimeFaces.escapeClientId(messageComponentId));
                 }
                 else {
-                    uiMessage = PrimeFaces.validation.Utils.findUIMessage(clientId, element.closest('form').find('div.ui-message'));
+                    var messageComponents = element.closest('form').find('div.ui-message');
+                    messageComponent = PrimeFaces.validation.Utils.findTargetMessageComponent(clientId, messageComponents);
 
-                    if (uiMessage)
-                        element.data('uimessageid', uiMessage.attr('id'));
+                    if (messageComponent)
+                        element.data('uimessageid', messageComponent.attr('id'));
                     else
                         element.data('uimessageid', 'p-nouimessage');
                 }
 
-                if (uiMessage) {
-                    uiMessage.html('').removeClass('ui-message-error ui-message-icon-only ui-widget ui-corner-all ui-helper-clearfix');
+                if (messageComponent) {
+                    var messageWidget = PrimeFaces.getWidgetById(messageComponent.attr('id'));
+                    messageWidget.clear();
                 }
             }
 
@@ -363,8 +365,9 @@ if (window.PrimeFaces) {
             PrimeFaces.validation.validateInput(element, element, highlight);
 
             if (!vc.isEmpty()) {
-                if (uiMessage) {
-                    PrimeFaces.validation.Utils.renderUIMessage(uiMessage, vc.messages[clientId][0]);
+                if (messageComponent) {
+                    var messageWidget = PrimeFaces.getWidgetById(messageComponent.attr('id'));
+                    messageWidget.render(vc.messages[clientId][0]);
                 }
 
                 vc.clear();
@@ -738,34 +741,6 @@ if (window.PrimeFaces) {
     PrimeFaces.validation.Utils = {
 
         /**
-         * Given the container element of a ui message, renders the given message to that element.
-         * @param {JQuery} uiMessage The container element of the message, usually with the class `ui-message`.
-         * @param {PrimeFaces.FacesMessage} msg Message to render to the given element.
-         */
-        renderUIMessage: function(uiMessage, msg) {
-            var display = uiMessage.data('display');
-
-            if (display !== 'tooltip') {
-                uiMessage.addClass('ui-message-error ui-widget ui-corner-all ui-helper-clearfix');
-
-                if (display === 'both') {
-                    uiMessage.append('<div><span class="ui-message-error-icon"></span><span class="ui-message-error-detail">' + PrimeFaces.escapeHTML(msg.detail) + '</span></div>');
-                }
-                else if (display === 'text') {
-                    uiMessage.append('<span class="ui-message-error-detail">' + PrimeFaces.escapeHTML(msg.detail) + '</span>');
-                }
-                else if (display === 'icon') {
-                    uiMessage.addClass('ui-message-icon-only')
-                        .append('<span class="ui-message-error-icon" title="' + PrimeFaces.escapeHTML(msg.detail) + '"></span>');
-                }
-            }
-            else {
-                uiMessage.hide();
-                $(PrimeFaces.escapeClientId(uiMessage.data('target'))).attr('title', PrimeFaces.escapeHTML(msg.detail));
-            }
-        },
-
-        /**
          * Finds the localized text of the given message key. When the current locale does not contain a translation,
          * falls back to the default English locale.
          * @param {string} key The i18n key of a message, such as `javax.faces.component.UIInput.REQUIRED` or
@@ -856,16 +831,16 @@ if (window.PrimeFaces) {
         /**
          * For a given ID of a component, finds the DOM element with the message for that component.
          * @param {string} clientId ID of a component for which to find the ui message.
-         * @param {JQuery} uiMessageCollection A JQuery instance with a list of `ui-message`s, or `null` if no
+         * @param {JQuery} messageComponents A JQuery instance with a list of `ui-message`s, or `null` if no
          * such element exists.
          * @return {JQuery | null} The DOM element with the messages for the given component, or `null` when no such
          * element could be found.
          */
-        findUIMessage: function(clientId, uiMessageCollection) {
-            for (var i = 0; i < uiMessageCollection.length; i++) {
-                var uiMessage = uiMessageCollection.eq(i);
-                if (uiMessage.data('target') === clientId) {
-                    return uiMessage;
+        findTargetMessageComponent: function(clientId, messageComponents) {
+            for (var i = 0; i < messageComponents.length; i++) {
+                var messageComponent = messageComponents.eq(i);
+                if (messageComponent.data('target') === clientId) {
+                    return messageComponent;
                 }
             }
 
@@ -961,7 +936,7 @@ if (window.PrimeFaces) {
                     globalOnly = growlComponent.data('global'),
                     showSummary = growlComponent.data('summary'),
                     showDetail = growlComponent.data('detail'),
-                    growlWidget = PF(growlComponent.data('widget'));
+                    growlWidget = PrimeFaces.getWidgetById(growlComponent.attr('id'));
 
                 growlWidget.removeAll();
 
@@ -988,7 +963,8 @@ if (window.PrimeFaces) {
             for (var i = 0; i < messageComponents.length; i++) {
                 var messageComponent = messageComponents.eq(i),
                     target = messageComponent.data('target'),
-                    redisplay = messageComponent.data('redisplay');
+                    redisplay = messageComponent.data('redisplay'),
+                    messageWidget = PrimeFaces.getWidgetById(messageComponent.attr('id'));
 
                 for (let clientId in messages) {
                     if (target !== clientId) {
@@ -999,7 +975,7 @@ if (window.PrimeFaces) {
                             continue;
                         }
 
-                        PrimeFaces.validation.Utils.renderUIMessage(messageComponent, msg);
+                        messageWidget.render(msg);
                         msg.rendered = true;
                     }
                 }
