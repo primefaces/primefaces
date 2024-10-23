@@ -41,7 +41,7 @@ PrimeFaces.widget.Message = PrimeFaces.widget.BaseWidget.extend({
      * Renders the given msg.
      * @param {PrimeFaces.FacesMessage} msg Message to render.
      */
-    render: function(msg) {
+    renderMessage: function(msg) {
         var display = this.jq.data('display');
 
         if (display !== 'tooltip') {
@@ -67,7 +67,7 @@ PrimeFaces.widget.Message = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Removes the current displayed message.
      */
-    clear: function() {
+    clearMessage: function() {
         this.jq.html('');
         this.jq.removeClass('ui-message-error ui-message-icon-only ui-widget ui-corner-all ui-helper-clearfix');
     }

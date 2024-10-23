@@ -356,7 +356,7 @@ if (window.PrimeFaces) {
 
                 if (messageComponent) {
                     var messageWidget = PrimeFaces.getWidgetById(messageComponent.attr('id'));
-                    messageWidget.clear();
+                    messageWidget.clearMessage();
                 }
             }
 
@@ -367,7 +367,7 @@ if (window.PrimeFaces) {
             if (!vc.isEmpty()) {
                 if (messageComponent) {
                     var messageWidget = PrimeFaces.getWidgetById(messageComponent.attr('id'));
-                    messageWidget.render(vc.messages[clientId][0]);
+                    messageWidget.renderMessage(vc.messages[clientId][0]);
                 }
 
                 vc.clear();
@@ -949,7 +949,6 @@ if (window.PrimeFaces) {
                         if (!showSummary) {
                             msg.summary = '';
                         }
-
                         if (!showDetail) {
                             msg.detail = '';
                         }
@@ -975,7 +974,7 @@ if (window.PrimeFaces) {
                             continue;
                         }
 
-                        messageWidget.render(msg);
+                        messageWidget.renderMessage(msg);
                         msg.rendered = true;
                     }
                 }
