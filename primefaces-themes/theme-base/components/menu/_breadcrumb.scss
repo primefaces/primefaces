@@ -30,7 +30,11 @@ body {
         color: $breadcrumbSeparatorColor;
       }
 
-      &:not(.ui-breadcrumb-chevron) {
+      &.ui-breadcrumb-options {
+        margin-left: auto;
+      }
+
+      &:not(.ui-breadcrumb-chevron):not(.ui-breadcrumb-options) {
         @include flex();
         @include flex-align-center();
         @include icon-override-with-content("\e901") {

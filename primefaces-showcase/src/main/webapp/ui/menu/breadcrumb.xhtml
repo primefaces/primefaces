@@ -17,6 +17,7 @@
 
     <ui:define name="implementation">
         <div class="card">
+            <h5>Basic</h5>
             <h:form>
                 <p:breadCrumb>
                     <p:menuitem value="Electronics"/>
@@ -25,6 +26,25 @@
                     <p:menuitem value="Accessories"/>
                     <p:menuitem value="Backpacks"/>
                     <p:menuitem value="Item"/>
+                </p:breadCrumb>
+            </h:form>
+
+            <h5>Options</h5>
+            <h:form>
+                <p:breadCrumb>
+                    <p:menuitem value="Electronics"/>
+                    <p:menuitem value="Computer"/>
+                    <p:menuitem value="Notebook"/>
+                    <p:menuitem value="Accessories"/>
+                    <p:menuitem value="Backpacks"/>
+                    <p:menuitem value="Item"/>
+
+                    <f:facet name="options">
+                        <p:menuButton value="Options">
+                            <p:menuitem value="Home"/>
+                            <p:menuitem value="Settings" />
+                        </p:menuButton>
+                    </f:facet>
                 </p:breadCrumb>
             </h:form>
         </div>
