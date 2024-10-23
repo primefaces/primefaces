@@ -15,7 +15,7 @@ To activate your theme simply use the `primefaces.THEME`  web.xml context parame
 ```
 
 
-## Built-In Themes
+## Theme
 
 PrimeFaces per default only comes with the saga-blue theme.
 
@@ -62,17 +62,6 @@ You can include it via:
     <version></version>
 </dependency>
 ```
-
-
-## Premium Themes
-
-PrimeTek offers a full range of professionally built premium themes ready to use out of the box.
-Premium themes come with an amazing looking responsive template with a set of XHTML files including dashboard, login, error,
- 404 along with icons and images to kick-start applications quickly. 
-Each premium layout offers a compatible theme with a similar design. Although theme can be used standalone without the layout,
- we suggest using the theme of a layout for a unified look in your application.
-
-See the [Theme Gallery](https://www.primefaces.org/themes/) for more information.
 
 ## Designer
 
