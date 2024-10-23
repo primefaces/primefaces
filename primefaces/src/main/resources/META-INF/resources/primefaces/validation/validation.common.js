@@ -880,37 +880,27 @@ if (window.PrimeFaces) {
          * a parent of such an element.
          */
         renderMessages: function(messages, container) {
-            var messagesComponents = $();
+            var messagesComponents = $(),
+                messageComponents = $(),
+                growlComponents = $();
+
             container.each(function() {
                 var $this = $(this);
+
                 if ($this.is('div.ui-messages')) {
                     messagesComponents = messagesComponents.add($this);
                 }
                 else {
                     messagesComponents = messagesComponents.add($this.find('div.ui-messages'));
                 }
-            });
-            messagesComponents = messagesComponents.filter(function(idx) {
-                if ($(this).is('.ui-fileupload-messages')) {
-                    return false;
-                }
-                return $(this).data('severity').indexOf('error') !== -1;
-            });
 
-            var messageComponents = $();
-            container.each(function() {
-                var $this = $(this);
                 if ($this.is('div.ui-message')) {
                     messageComponents = messageComponents.add($this);
                 }
                 else {
                     messageComponents = messageComponents.add($this.find('div.ui-message'));
                 }
-            });
 
-            var growlComponents = $();
-            container.each(function() {
-                var $this = $(this);
                 if ($this.is('.ui-growl-pl')) {
                     growlComponents = growlComponents.add($this);
                 }
@@ -918,6 +908,14 @@ if (window.PrimeFaces) {
                     growlComponents = growlComponents.add($this.find('.ui-growl-pl'));
                 }
             });
+
+            messagesComponents = messagesComponents.filter(function(idx) {
+                if ($(this).is('.ui-fileupload-messages')) {
+                    return false;
+                }
+                return $(this).data('severity').indexOf('error') !== -1;
+            });
+
             growlComponents = growlComponents.filter(function(idx) {
                 return $(this).data('severity').indexOf('error') !== -1;
             });
