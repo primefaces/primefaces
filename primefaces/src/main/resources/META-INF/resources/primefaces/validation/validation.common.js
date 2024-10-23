@@ -285,7 +285,7 @@ if (window.PrimeFaces) {
          * @function
          * @param {HTMLButtonElement} btn CommandButton which´s CSV-requirements should be validated.
          */
-        validateButtonCsvRequirements: function (btn) {
+        validateButtonCsvRequirements: function(btn) {
             const $source = $(btn);
             const cfg = {
                 ajax: btn.dataset.pfValidateclientAjax,
@@ -336,25 +336,27 @@ if (window.PrimeFaces) {
                 : $(el);
             var clientId = element.data(PrimeFaces.CLIENT_ID_DATA) || element.attr('id');
 
-            var uiMessageId = element.data('uimessageid');
-            var uiMessage = null;
+            var messageComponentId = element.data('uimessageid');
+            var messageComponent = null;
             if (renderMessages === true) {
-                if (uiMessageId) {
-                    uiMessage = uiMessageId === 'p-nouimessage'
+                if (messageComponentId) {
+                    messageComponent = messageComponentId === 'p-nouimessage'
                         ? null
-                        : $(PrimeFaces.escapeClientId(uiMessageId));
+                        : $(PrimeFaces.escapeClientId(messageComponentId));
                 }
                 else {
-                    uiMessage = PrimeFaces.validation.Utils.findUIMessage(clientId, element.closest('form').find('div.ui-message'));
+                    var messageComponents = element.closest('form').find('div.ui-message');
+                    messageComponent = PrimeFaces.validation.Utils.findTargetMessageComponent(clientId, messageComponents);
 
-                    if (uiMessage)
-                        element.data('uimessageid', uiMessage.attr('id'));
+                    if (messageComponent)
+                        element.data('uimessageid', messageComponent.attr('id'));
                     else
                         element.data('uimessageid', 'p-nouimessage');
                 }
 
-                if (uiMessage) {
-                    uiMessage.html('').removeClass('ui-message-error ui-message-icon-only ui-widget ui-corner-all ui-helper-clearfix');
+                if (messageComponent) {
+                    var messageWidget = PrimeFaces.getWidgetById(messageComponent.attr('id'));
+                    messageWidget.clearMessage();
                 }
             }
 
@@ -363,8 +365,9 @@ if (window.PrimeFaces) {
             PrimeFaces.validation.validateInput(element, element, highlight);
 
             if (!vc.isEmpty()) {
-                if (uiMessage) {
-                    PrimeFaces.validation.Utils.renderUIMessage(uiMessage, vc.messages[clientId][0]);
+                if (messageComponent) {
+                    var messageWidget = PrimeFaces.getWidgetById(messageComponent.attr('id'));
+                    messageWidget.renderMessage(vc.messages[clientId][0]);
                 }
 
                 vc.clear();
@@ -612,11 +615,20 @@ if (window.PrimeFaces) {
 
         /**
          * Adds a faces message to the given element.
-         * @param {JQuery} element Element to which to add the message.
+         * @param {string | HTMLElement | JQuery} target Element to which to add the message.
          * @param {PrimeFaces.FacesMessage} msg Message to add to the given message.
          */
-        addMessage: function(element, msg) {
-            var clientId = element.data(PrimeFaces.CLIENT_ID_DATA)||element.attr('id');
+        addMessage: function(target, msg) {
+            var clientId;
+            if (target instanceof $) {
+                clientId = target.data(PrimeFaces.CLIENT_ID_DATA)||target.attr('id');
+            }
+            else if (target instanceof HTMLElement) {
+                clientId = target.id;
+            }
+            else {
+                clientId = target;
+            }
 
             if(!this.messages[clientId]) {
                 this.messages[clientId] = [];
@@ -680,7 +692,10 @@ if (window.PrimeFaces) {
          * translation was found for the key.
          */
         getMessage: function(key) {
-            return PrimeFaces.validation.Utils.getMessage(key, arguments);
+            var params = Array.from(arguments);
+            params.shift(); // remove first param 'key'
+
+            return PrimeFaces.validation.Utils.getMessage(key, params);
         },
 
         /**
@@ -726,40 +741,11 @@ if (window.PrimeFaces) {
     PrimeFaces.validation.Utils = {
 
         /**
-         * Given the container element of a ui message, renders the given message to that element.
-         * @param {JQuery} uiMessage The container element of the message, usually with the class `ui-message`.
-         * @param {PrimeFaces.FacesMessage} msg Message to render to the given element.
-         */
-        renderUIMessage: function(uiMessage, msg) {
-            var display = uiMessage.data('display');
-
-            if (display !== 'tooltip') {
-                uiMessage.addClass('ui-message-error ui-widget ui-corner-all ui-helper-clearfix');
-
-                if (display === 'both') {
-                    uiMessage.append('<div><span class="ui-message-error-icon"></span><span class="ui-message-error-detail">' + PrimeFaces.escapeHTML(msg.detail) + '</span></div>');
-                }
-                else if (display === 'text') {
-                    uiMessage.append('<span class="ui-message-error-detail">' + PrimeFaces.escapeHTML(msg.detail) + '</span>');
-                }
-                else if (display === 'icon') {
-                    uiMessage.addClass('ui-message-icon-only')
-                        .append('<span class="ui-message-error-icon" title="' + PrimeFaces.escapeHTML(msg.detail) + '"></span>');
-                }
-            }
-            else {
-                uiMessage.hide();
-                $(PrimeFaces.escapeClientId(uiMessage.data('target'))).attr('title', PrimeFaces.escapeHTML(msg.detail));
-            }
-        },
-
-        /**
          * Finds the localized text of the given message key. When the current locale does not contain a translation,
          * falls back to the default English locale.
          * @param {string} key The i18n key of a message, such as `javax.faces.component.UIInput.REQUIRED` or
          * `javax.faces.validator.LengthValidator.MINIMUM`.
-         * @param {string[]} params A list of parameters for the placeholders. The first item is ignored. The item at
-         * index `i` corresponds to the placeholder `{i-1}`.
+         * @param {string[]} params A list of parameters for the placeholders.
          * @return {PrimeFaces.FacesMessage | null} The localized faces message for the given key, or `null` if no
          * translation was found for the key.
          */
@@ -790,19 +776,18 @@ if (window.PrimeFaces) {
          * Given a message with placeholders, replaces the placeholders with the given parameters. The format of the
          * message is similar to, but not quite the same as, the format used by `java.text.MessageFormat`.
          * ```javascript
-         * format("Value required for element {0}", ["", "email"]) // => "Value required for element email"
-         * format("Use {0} braces like this: '{0}'", ["", "simple"]) // => "Use simple braces like this: 'simple'"
+         * format("Value required for element {0}", ["email"]) // => "Value required for element email"
+         * format("Use {0} braces like this: '{0}'", ["simple"]) // => "Use simple braces like this: 'simple'"
          * ```
          * @param {string} str A message with placeholders.
-         * @param {string[]} params A list of parameters for the placeholders. The first item is ignored. The item at
-         * index `i` corresponds to the placeholder `{i-1}`.
+         * @param {string[]} params A list of parameters for the placeholders.
          * @return {string} The string with the placeholders replaced with the given params.
          */
         format: function(str, params) {
             var s = str;
-            for(var i = 0; i < params.length - 1; i++) {
+            for(var i = 0; i < params.length; i++) {
                 var reg = new RegExp('\\{' + i + '\\}', 'gm');
-                s = s.replace(reg, params[i + 1]);
+                s = s.replace(reg, params[i]);
             }
 
             return s;
@@ -846,16 +831,16 @@ if (window.PrimeFaces) {
         /**
          * For a given ID of a component, finds the DOM element with the message for that component.
          * @param {string} clientId ID of a component for which to find the ui message.
-         * @param {JQuery} uiMessageCollection A JQuery instance with a list of `ui-message`s, or `null` if no
+         * @param {JQuery} messageComponents A JQuery instance with a list of `ui-message`s, or `null` if no
          * such element exists.
          * @return {JQuery | null} The DOM element with the messages for the given component, or `null` when no such
          * element could be found.
          */
-        findUIMessage: function(clientId, uiMessageCollection) {
-            for (var i = 0; i < uiMessageCollection.length; i++) {
-                var uiMessage = uiMessageCollection.eq(i);
-                if (uiMessage.data('target') === clientId) {
-                    return uiMessage;
+        findTargetMessageComponent: function(clientId, messageComponents) {
+            for (var i = 0; i < messageComponents.length; i++) {
+                var messageComponent = messageComponents.eq(i);
+                if (messageComponent.data('target') === clientId) {
+                    return messageComponent;
                 }
             }
 
@@ -870,77 +855,94 @@ if (window.PrimeFaces) {
          * a parent of such an element.
          */
         renderMessages: function(messages, container) {
-            var uiMessagesAll = container.is('div.ui-messages') ? container : container.find('div.ui-messages:not(.ui-fileupload-messages)'),
-                uiMessages = uiMessagesAll.filter(function(idx) { return $(uiMessagesAll[idx]).data('severity').indexOf('error') !== -1; }),
-                uiMessageCollection = container.find('div.ui-message'),
-                growlPlaceholderAll = container.is('.ui-growl-pl') ? container : container.find('.ui-growl-pl'),
-                growlComponents = growlPlaceholderAll.filter(function(idx) { return $(growlPlaceholderAll[idx]).data('severity').indexOf('error') !== -1; });
+            var messagesComponents = $(),
+                messageComponents = $(),
+                growlComponents = $();
 
-            uiMessageCollection.html('').removeClass('ui-message-error ui-message-icon-only ui-widget ui-corner-all ui-helper-clearfix');
+            container.each(function() {
+                var $this = $(this);
 
-            for (var i = 0; i < uiMessages.length; i++) {
-                var uiMessagesComponent = uiMessages.eq(i),
-                    globalOnly = uiMessagesComponent.data('global'),
-                    redisplay = uiMessagesComponent.data('redisplay'),
-                    showSummary = uiMessagesComponent.data('summary'),
-                    showDetail = uiMessagesComponent.data('detail');
-
-                uiMessagesComponent.html('');
-
-                for (var clientId in messages) {
-                    var msgs = messages[clientId];
-
-                    for (var j = 0; j < msgs.length; j++) {
-                        var msg = msgs[j];
-
-                        if (globalOnly || (msg.rendered && !redisplay)) {
-                            continue;
-                        }
-
-                        if (uiMessagesComponent.children().length === 0) {
-                            uiMessagesComponent.append('<div class="ui-messages-error ui-corner-all"><span class="ui-messages-error-icon"></span><ul></ul></div>');
-                        }
-
-                        var msgItem = $('<li></li>');
-
-                        if (showSummary) {
-                            msgItem.append('<span class="ui-messages-error-summary">' + PrimeFaces.escapeHTML(msg.summary) + '</span>');
-                        }
-
-                        if (showDetail) {
-                            msgItem.append('<span class="ui-messages-error-detail">' + PrimeFaces.escapeHTML(msg.detail) + '</span>');
-                        }
-
-                        uiMessagesComponent.find('> .ui-messages-error > ul').append(msgItem);
-                        msg.rendered = true;
-                    }
+                if ($this.is('div.ui-messages')) {
+                    messagesComponents = messagesComponents.add($this);
                 }
-            }
+                else {
+                    messagesComponents = messagesComponents.add($this.find('div.ui-messages'));
+                }
 
-            for (var i = 0; i < growlComponents.length; i++) {
-                var growl = growlComponents.eq(i),
-                    redisplay = growl.data('redisplay'),
-                    globalOnly = growl.data('global'),
-                    showSummary = growl.data('summary'),
-                    showDetail = growl.data('detail'),
-                    growlWidget = PF(growl.data('widget'));
+                if ($this.is('div.ui-message')) {
+                    messageComponents = messageComponents.add($this);
+                }
+                else {
+                    messageComponents = messageComponents.add($this.find('div.ui-message'));
+                }
 
-                growlWidget.removeAll();
+                if ($this.is('.ui-growl-pl')) {
+                    growlComponents = growlComponents.add($this);
+                }
+                else {
+                    growlComponents = growlComponents.add($this.find('.ui-growl-pl'));
+                }
+            });
 
-                for (var clientId in messages) {
-                    var msgs = messages[clientId];
+            // filter out by severity
+            messagesComponents = messagesComponents.filter(function(idx) {
+                if ($(this).is('.ui-fileupload-messages')) {
+                    return false;
+                }
+                return $(this).data('severity').indexOf('error') !== -1;
+            });
+            growlComponents = growlComponents.filter(function(idx) {
+                return $(this).data('severity').indexOf('error') !== -1;
+            });
 
-                    for (var j = 0; j < msgs.length; j++) {
-                        var msg = msgs[j];
+            for (var i = 0; i < messagesComponents.length; i++) {
+                var messagesComponent = messagesComponents.eq(i),
+                    globalOnly = messagesComponent.data('global'),
+                    redisplay = messagesComponent.data('redisplay'),
+                    showSummary = messagesComponent.data('summary'),
+                    showDetail = messagesComponent.data('detail'),
+                    messagesWidget = PrimeFaces.getWidgetById(messagesComponent.attr('id'));
 
-                        if(globalOnly || (msg.rendered && !redisplay)) {
+                messagesWidget.clearMessages();
+
+                for (let clientId in messages) {
+                    for (let msg of messages[clientId]) {
+                        if (globalOnly || (msg.rendered && !redisplay)) {
                             continue;
                         }
 
                         if (!showSummary) {
                             msg.summary = '';
                         }
+                        if (!showDetail) {
+                            msg.detail = '';
+                        }
 
+                        messagesWidget.appendMessage(msg);
+                        msg.rendered = true;
+                    }
+                }
+            }
+
+            for (var i = 0; i < growlComponents.length; i++) {
+                var growlComponent = growlComponents.eq(i),
+                    redisplay = growlComponent.data('redisplay'),
+                    globalOnly = growlComponent.data('global'),
+                    showSummary = growlComponent.data('summary'),
+                    showDetail = growlComponent.data('detail'),
+                    growlWidget = PrimeFaces.getWidgetById(growlComponent.attr('id'));
+
+                growlWidget.removeAll();
+
+                for (let clientId in messages) {
+                    for (let msg of messages[clientId]) {
+                        if (globalOnly || (msg.rendered && !redisplay)) {
+                            continue;
+                        }
+
+                        if (!showSummary) {
+                            msg.summary = '';
+                        }
                         if (!showDetail) {
                             msg.detail = '';
                         }
@@ -951,24 +953,25 @@ if (window.PrimeFaces) {
                 }
             }
 
-            for(var i = 0; i < uiMessageCollection.length; i++) {
-                var uiMessage = uiMessageCollection.eq(i),
-                    target = uiMessage.data('target'),
-                    redisplay = uiMessage.data('redisplay');
+            for (var i = 0; i < messageComponents.length; i++) {
+                var messageComponent = messageComponents.eq(i),
+                    target = messageComponent.data('target'),
+                    redisplay = messageComponent.data('redisplay'),
+                    messageWidget = PrimeFaces.getWidgetById(messageComponent.attr('id'));
 
-                for (var clientId in messages) {
-                    if (target === clientId) {
-                        var msgs = messages[clientId];
+                messageWidget.clearMessage();
 
-                        for (var j = 0; j < msgs.length; j++) {
-                            var msg = msgs[j];
-                            if (msg.rendered && !redisplay) {
-                                continue;
-                            }
-
-                            PrimeFaces.validation.Utils.renderUIMessage(uiMessage, msg);
-                            msg.rendered = true;
+                for (let clientId in messages) {
+                    if (target !== clientId) {
+                        continue;
+                    }
+                    for (let msg of messages[clientId]) {
+                        if (msg.rendered && !redisplay) {
+                            continue;
                         }
+
+                        messageWidget.renderMessage(msg);
+                        msg.rendered = true;
                     }
                 }
             }

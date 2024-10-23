@@ -152,7 +152,7 @@ class FileUpload005Test extends AbstractFileUploadTest {
 
         // Assert
         assertTrue(fileUpload.getWidgetValues().isEmpty(), fileUpload.getWidgetValues().toString());
-        assertTrue(fileUpload.getWidgetErrorMessages().toString().contains("Maximum number of files exceeded."),
+        assertTrue(page.messages.getMessage(0).getSummary().contains("Maximum number of files exceeded."),
                 fileUpload.getWidgetErrorMessages().toString());
         assertNoJavascriptErrors();
         assertUploadedFiles(page.uploadedFiles, file1, file2);

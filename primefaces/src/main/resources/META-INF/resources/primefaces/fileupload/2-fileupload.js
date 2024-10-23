@@ -199,6 +199,8 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                     $this.clearMessages();
                 }
 
+                var update = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector($this.jq, $this.cfg.update);
+
                 // we need to fake the filelimit as the jquery-fileupload input always only contains 1 file
                 var dataFileInput = data.fileInput;
                 if (dataFileInput == null) { // drag´n´drop - Github #11879
@@ -213,10 +215,22 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                 if (fileLimit && ($this.uploadedFileCount + $this.files.length + 1) > fileLimit) {
                     $this.clearMessages();
 
-                    var msg = PrimeFaces.validation.Utils.getMessage('primefaces.FileValidator.FILE_LIMIT', fileLimit);
-                    $this.showMessage({
-                        summary: msg.summary
-                    });
+                    // try to render the msg first with our CSV framework
+                    var vc = PrimeFaces.validation.ValidationContext;
+                    vc.clear();
+                    vc.addMessage($this.id, PrimeFaces.validation.Utils.getMessage('primefaces.FileValidator.FILE_LIMIT', [ fileLimit ]));
+                    PrimeFaces.validation.Utils.renderMessages(vc.messages, update);
+
+                    // if the messages hasn't been rendered, use our internal messages display
+                    for (let clientId in vc.messages) {
+                        for (let msg of vc.messages[clientId]) {
+                            if (!msg.rendered) {
+                                $this.showMessage({ summary: msg.summary, filename: null, filesize: null });
+                            }
+                        }
+                    }
+
+                    vc.clear();
 
                     return;
                 }
@@ -225,17 +239,13 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                 if (file) {
                     $this.clearMessages();
 
-                    var update = $this.cfg.update
-                        ? PrimeFaces.expressions.SearchExpressionFacade.resolveComponents($this.jq, $this.cfg.update).join(' ')
-                        : null;
-
                     // we need to pass the real invisible input, which contains the filelist
-                    var msgs = null;
                     var validationResult = PrimeFaces.validation.validate($this.jq, dataFileInput, update, true, true, true, true);
                     if (!validationResult.valid) {
+
+                        // if the messages hasn't been rendered, use our internal messages display
                         for (let clientId in validationResult.messages) {
-                            msgs = validationResult.messages[clientId];
-                            for (let msg of msgs) {
+                            for (let msg of validationResult.messages[clientId]) {
                                 if (!msg.rendered) {
                                     $this.showMessage({
                                         summary: msg.summary,
@@ -250,8 +260,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
                         if ($this.cfg.onvalidationfailure) {
                             for (let clientId in validationResult.messages) {
-                                msgs = validationResult.messages[clientId];
-                                for (let msg of msgs) {
+                                for (let msg of validationResult.messages[clientId]) {
                                     $this.cfg.onvalidationfailure({
                                         summary: msg.summary,
                                         filename: file.name,
