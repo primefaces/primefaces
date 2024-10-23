@@ -884,18 +884,16 @@ if (window.PrimeFaces) {
                 }
             });
 
+            // filter out by severity
             messagesComponents = messagesComponents.filter(function(idx) {
                 if ($(this).is('.ui-fileupload-messages')) {
                     return false;
                 }
                 return $(this).data('severity').indexOf('error') !== -1;
             });
-
             growlComponents = growlComponents.filter(function(idx) {
                 return $(this).data('severity').indexOf('error') !== -1;
             });
-
-            messageComponents.html('').removeClass('ui-message-error ui-message-icon-only ui-widget ui-corner-all ui-helper-clearfix');
 
             for (var i = 0; i < messagesComponents.length; i++) {
                 var messagesComponent = messagesComponents.eq(i),
@@ -960,6 +958,8 @@ if (window.PrimeFaces) {
                     target = messageComponent.data('target'),
                     redisplay = messageComponent.data('redisplay'),
                     messageWidget = PrimeFaces.getWidgetById(messageComponent.attr('id'));
+
+                messageWidget.clearMessage();
 
                 for (let clientId in messages) {
                     if (target !== clientId) {
