@@ -94,6 +94,35 @@
                             </resources>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>copy-showcase-themes</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/../primefaces-showcase/src/main/webapp/resources</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>themes</directory>
+                                    <includes>
+                                        <include>primefaces-bootstrap4-blue-dark/theme.css</include>
+                                        <include>primefaces-bootstrap4-blue-light/theme.css</include>
+                                        <include>primefaces-bootstrap4-purple-dark/theme.css</include>
+                                        <include>primefaces-bootstrap4-purple-light/theme.css</include>
+                                        <include>primefaces-material-compact-deeppurple-dark/theme.css</include>
+                                        <include>primefaces-material-compact-deeppurple-light/theme.css</include>
+                                        <include>primefaces-material-compact-indigo-dark/theme.css</include>
+                                        <include>primefaces-material-compact-indigo-light/theme.css</include>
+                                        <include>primefaces-material-deeppurple-dark/theme.css</include>
+                                        <include>primefaces-material-deeppurple-light/theme.css</include>
+                                        <include>primefaces-material-indigo-dark/theme.css</include>
+                                        <include>primefaces-material-indigo-light/theme.css</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
         </plugins>
