@@ -40,151 +40,20 @@
 
                     <h4>Themes</h4>
 
-                    <h5>PrimeOne</h5>
-                    <div class="grid free-themes">
-                        <div class="col-3">
-                            <p:commandLink actionListener="#{app.changeTheme('saga-blue', false)}"
-                                           oncomplete="App.changeTheme('saga-blue')" update=":app-theme-logo">
-                                <p:graphicImage name="images/themes/saga.png" library="showcase" alt="Saga Blue"/>
-                            </p:commandLink>
-                            <span>Saga Blue</span>
+                    <ui:repeat value="#{themes.categories}" var="category">
+                        <h5>#{category.name}</h5>
+                        <div class="grid free-themes">
+                            <ui:repeat value="#{category.themes}" var="theme">
+                                <div class="col-3">
+                                    <p:commandLink actionListener="#{app.changeTheme(theme)}"
+                                                   oncomplete="App.changeTheme('#{theme.id}', #{theme.dark})" update=":app-theme-logo">
+                                        <h:graphicImage name="#{theme.image}" library="showcase" alt="#{theme.name}"/>
+                                    </p:commandLink>
+                                    <span>#{theme.name}</span>
+                                </div>
+                            </ui:repeat>
                         </div>
-                        <div class="col-3">
-                            <p:commandLink actionListener="#{app.changeTheme('vela-blue', true)}"
-                                           oncomplete="App.changeTheme('vela-blue', true)" update=":app-theme-logo">
-                                <p:graphicImage name="images/themes/vela.png" library="showcase" alt="Vela Blue"/>
-                            </p:commandLink>
-                            <span>Vela Blue</span>
-                        </div>
-                        <div class="col-3">
-                            <p:commandLink actionListener="#{app.changeTheme('arya-blue', true)}"
-                                           oncomplete="App.changeTheme('arya-blue', true)" update=":app-theme-logo">
-                                <p:graphicImage name="images/themes/arya.png" library="showcase" alt="Arya Blue"/>
-                            </p:commandLink>
-                            <span>Arya Blue</span>
-                        </div>
-                        <div class="col-3"></div>
-                    </div>
-
-                    <h5>Bootstrap</h5>
-                    <div class="grid free-themes">
-                        <div class="col-3">
-                            <p:commandLink actionListener="#{app.changeTheme('bootstrap4-blue-light', false)}"
-                                           oncomplete="App.changeTheme('bootstrap4-blue-light')"
-                                           update=":app-theme-logo">
-                                <p:graphicImage name="images/themes/bootstrap4-light-blue.svg" library="showcase"
-                                                alt="bootstrap4-blue-light"/>
-                            </p:commandLink>
-                            <span>Bootstrap Blue</span>
-                        </div>
-                        <div class="col-3">
-                            <p:commandLink actionListener="#{app.changeTheme('bootstrap4-purple-light', true)}"
-                                           oncomplete="App.changeTheme('bootstrap4-purple-light')"
-                                           update=":app-theme-logo">
-                                <p:graphicImage name="images/themes/bootstrap4-light-purple.svg" library="showcase"
-                                                alt="bootstrap4-purple-light"/>
-                            </p:commandLink>
-                            <span>Bootstrap Purple</span>
-                        </div>
-                        <div class="col-3">
-                            <p:commandLink actionListener="#{app.changeTheme('bootstrap4-blue-dark', true)}"
-                                           oncomplete="App.changeTheme('bootstrap4-blue-dark', true)"
-                                           update=":app-theme-logo">
-                                <p:graphicImage name="images/themes/bootstrap4-dark-blue.svg" library="showcase"
-                                                alt="bootstrap4-blue-dark"/>
-                            </p:commandLink>
-                            <span>Bootstrap Blue</span>
-                        </div>
-                        <div class="col-3">
-                            <p:commandLink actionListener="#{app.changeTheme('bootstrap4-purple-dark', false)}"
-                                           oncomplete="App.changeTheme('bootstrap4-purple-dark', true)"
-                                           update=":app-theme-logo">
-                                <p:graphicImage name="images/themes/bootstrap4-dark-purple.svg" library="showcase"
-                                                alt="bootstrap4-purple-dark"/>
-                            </p:commandLink>
-                            <span>Bootstrap Purple</span>
-                        </div>
-                    </div>
-
-                    <h5>Material Design</h5>
-                    <div class="grid free-themes">
-                        <div class="col-3">
-                            <p:commandLink actionListener="#{app.changeTheme('material-indigo-light', false)}"
-                                           oncomplete="App.changeTheme('material-indigo-light')"
-                                           update=":app-theme-logo">
-                                <p:graphicImage name="images/themes/md-light-indigo.svg" library="showcase"
-                                                alt="material-indigo-light"/>
-                            </p:commandLink>
-                            <span>Indigo</span>
-                        </div>
-                        <div class="col-3">
-                            <p:commandLink actionListener="#{app.changeTheme('material-deeppurple-light', false)}"
-                                           oncomplete="App.changeTheme('material-deeppurple-light')"
-                                           update=":app-theme-logo">
-                                <p:graphicImage name="images/themes/md-light-deeppurple.svg" library="showcase"
-                                                alt="material-deeppurple-light'"/>
-                            </p:commandLink>
-                            <span>Deep Purple</span>
-                        </div>
-                        <div class="col-3">
-                            <p:commandLink actionListener="#{app.changeTheme('material-indigo-dark', false)}"
-                                           oncomplete="App.changeTheme('material-indigo-dark', true)"
-                                           update=":app-theme-logo">
-                                <p:graphicImage name="images/themes/md-dark-indigo.svg" library="showcase"
-                                                alt="material-indigo-dark"/>
-                            </p:commandLink>
-                            <span>Indigo</span>
-                        </div>
-                        <div class="col-3">
-                            <p:commandLink actionListener="#{app.changeTheme('material-deeppurple-dark', false)}"
-                                           oncomplete="App.changeTheme('material-deeppurple-dark', true)"
-                                           update=":app-theme-logo">
-                                <p:graphicImage name="images/themes/md-dark-deeppurple.svg" library="showcase"
-                                                alt="material-deeppurple-dark'"/>
-                            </p:commandLink>
-                            <span>Deep Purple</span>
-                        </div>
-                    </div>
-
-                    <h5>Material Design Compact</h5>
-                    <div class="grid free-themes">
-                        <div class="col-3">
-                            <p:commandLink actionListener="#{app.changeTheme('material-compact-indigo-light', false)}"
-                                           oncomplete="App.changeTheme('material-compact-indigo-light')"
-                                           update=":app-theme-logo">
-                                <p:graphicImage name="images/themes/md-light-indigo.svg" library="showcase"
-                                                alt="material-indigo-light"/>
-                            </p:commandLink>
-                            <span>Indigo</span>
-                        </div>
-                        <div class="col-3">
-                            <p:commandLink actionListener="#{app.changeTheme('material-compact-deeppurple-light', false)}"
-                                           oncomplete="App.changeTheme('material-compact-deeppurple-light')"
-                                           update=":app-theme-logo">
-                                <p:graphicImage name="images/themes/md-light-deeppurple.svg" library="showcase"
-                                                alt="material-deeppurple-light'"/>
-                            </p:commandLink>
-                            <span>Deep Purple</span>
-                        </div>
-                        <div class="col-3">
-                            <p:commandLink actionListener="#{app.changeTheme('material-compact-indigo-dark', false)}"
-                                           oncomplete="App.changeTheme('material-compact-indigo-dark', true)"
-                                           update=":app-theme-logo">
-                                <p:graphicImage name="images/themes/md-dark-indigo.svg" library="showcase"
-                                                alt="material-indigo-dark"/>
-                            </p:commandLink>
-                            <span>Indigo</span>
-                        </div>
-                        <div class="col-3">
-                            <p:commandLink actionListener="#{app.changeTheme('material-compact-deeppurple-dark', false)}"
-                                           oncomplete="App.changeTheme('material-compact-deeppurple-dark', true)"
-                                           update=":app-theme-logo">
-                                <p:graphicImage name="images/themes/md-dark-deeppurple.svg" library="showcase"
-                                                alt="material-deeppurple-dark'"/>
-                            </p:commandLink>
-                            <span>Deep Purple</span>
-                        </div>
-                    </div>
+                    </ui:repeat>
                 </h:form>
             </div>
         </div>
