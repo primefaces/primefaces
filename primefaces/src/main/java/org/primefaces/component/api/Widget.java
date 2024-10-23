@@ -41,22 +41,32 @@ public interface Widget {
     default String resolveWidgetVar() {
         return resolveWidgetVar(FacesContext.getCurrentInstance());
     }
-
+    /**
+     * Resolves the widget variable name for the component.
+     *
+     * @param context The FacesContext for the current request.
+     * @return The resolved widget variable name.
+     */
     default String resolveWidgetVar(FacesContext context) {
         UIComponent component = (UIComponent) this;
 
+        // Check if a custom widget variable name is set
         String userWidgetVar = (String) component.getAttributes().get("widgetVar");
         if (LangUtils.isNotBlank(userWidgetVar)) {
             return userWidgetVar;
         }
 
+        // Get or create the pattern for widget variable name sanitization
         Pattern pattern = (Pattern) context.getAttributes().get(ATTR_WIDGET_VAR_PATTERN);
         if (pattern == null) {
-            pattern = Pattern.compile("-|" + UINamingContainer.getSeparatorChar(context));
+            // Create a pattern to replace naming container separator with '_'
+            pattern = Pattern.compile("" + UINamingContainer.getSeparatorChar(context));
             context.getAttributes().put(ATTR_WIDGET_VAR_PATTERN, pattern);
         }
 
+        // Generate a default widget variable name based on the component's client ID
         String widgetVar = "widget_" + component.getClientId(context);
+        // Sanitize the widget variable name by replacing invalid characters with '_'
         return pattern.matcher(widgetVar).replaceAll("_");
     }
 }

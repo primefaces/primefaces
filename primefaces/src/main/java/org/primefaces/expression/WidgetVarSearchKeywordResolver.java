@@ -35,7 +35,7 @@ import org.primefaces.util.ComponentUtils;
 
 public class WidgetVarSearchKeywordResolver extends SearchKeywordResolver {
 
-    private static final Pattern PATTERN = Pattern.compile("widgetVar\\((\\w+)\\)");
+    private static final Pattern PATTERN = Pattern.compile("widgetVar\\(([\\w-_]+)\\)");
 
     @Override
     public boolean isResolverForKeyword(SearchExpressionContext searchExpressionContext, String keyword) {
