@@ -902,9 +902,10 @@ if (window.PrimeFaces) {
                     globalOnly = messagesComponent.data('global'),
                     redisplay = messagesComponent.data('redisplay'),
                     showSummary = messagesComponent.data('summary'),
-                    showDetail = messagesComponent.data('detail');
+                    showDetail = messagesComponent.data('detail'),
+                    messagesWidget = PrimeFaces.getWidgetById(messagesComponent.attr('id'));
 
-                messagesComponent.html('');
+                messagesWidget.clearMessages();
 
                 for (let clientId in messages) {
                     for (let msg of messages[clientId]) {
@@ -912,19 +913,14 @@ if (window.PrimeFaces) {
                             continue;
                         }
 
-                        if (messagesComponent.children().length === 0) {
-                            messagesComponent.append('<div class="ui-messages-error ui-corner-all"><span class="ui-messages-error-icon"></span><ul></ul></div>');
+                        if (!showSummary) {
+                            msg.summary = '';
+                        }
+                        if (!showDetail) {
+                            msg.detail = '';
                         }
 
-                        var msgItem = $('<li></li>');
-                        if (showSummary) {
-                            msgItem.append('<span class="ui-messages-error-summary">' + PrimeFaces.escapeHTML(msg.summary) + '</span>');
-                        }
-                        if (showDetail) {
-                            msgItem.append('<span class="ui-messages-error-detail">' + PrimeFaces.escapeHTML(msg.detail) + '</span>');
-                        }
-
-                        messagesComponent.find('> .ui-messages-error > ul').append(msgItem);
+                        messagesWidget.appendMessage(msg);
                         msg.rendered = true;
                     }
                 }
