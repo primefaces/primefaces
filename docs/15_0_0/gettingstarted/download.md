@@ -12,7 +12,7 @@ http://www.primefaces.org/downloads
 ## Download with Maven
 Group id is _org.primefaces_ and artifact id is _primefaces._
 
-### javax (Jakarta Faces 2.3)
+### JSF / Java Server Faces (2.3, javax namespace)
 
 ```xml
 <dependency>
@@ -22,7 +22,7 @@ Group id is _org.primefaces_ and artifact id is _primefaces._
 </dependency>
 ```
 
-### jakarta (Jakarta Faces 3.0 - Jakarta Faces 4.X)
+### Jakarta Faces (3.0 - 4.X, jakarta namespace)
 
 ```xml
 <dependency>
@@ -30,5 +30,16 @@ Group id is _org.primefaces_ and artifact id is _primefaces._
     <artifactId>primefaces</artifactId>
     <version>15.0.0</version>
     <classifier>jakarta</classifier>
+</dependency>
+```
+
+
+### Additional themes
+
+```xml
+<dependency>
+    <groupId>org.primefaces</groupId>
+    <artifactId>primefaces-themes</artifactId>
+    <version>15.0.0</version>
 </dependency>
 ```
