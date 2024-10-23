@@ -27,7 +27,6 @@ import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.UINotificationRenderer;
 import org.primefaces.util.Constants;
 import org.primefaces.util.EscapeUtils;
-import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
