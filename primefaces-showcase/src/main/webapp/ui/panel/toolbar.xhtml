@@ -43,6 +43,36 @@
                 </p:toolbar>
             </h:form>
         </div>
+
+        <div class="card">
+            <h5 style="margin-top: 0">Empty Toolbar</h5>
+
+            <p> If a toolbar does not contain any rendered children it will not be rendered at all.</p>
+            <h:form>
+                <p:growl id="messages" showDetail="true"/>
+
+                <p:toolbar>
+                    <p:toolbarGroup>
+                        <p:commandButton type="button" value="New" icon="pi pi-file" styleClass="mr-2" rendered="false" />
+                        <p:commandButton type="button" value="Open" icon="pi pi-folder-open" styleClass="ui-button-success" rendered="false" />
+
+                        <p:separator />
+
+                        <p:commandButton type="button" title="Save" icon="pi pi-save" styleClass="ui-button-help mr-2" rendered="false" />
+
+                    </p:toolbarGroup>
+
+                    <p:toolbarGroup align="right">
+                        <p:menuButton value="Options" rendered="false">
+                            <p:menuitem value="Save" action="#{toolbarView.save}" update="messages" icon="pi pi-save"/>
+                            <p:menuitem value="Update" action="#{toolbarView.update}" update="messages" icon="pi pi-refresh"/>
+                            <p:menuitem value="Delete" action="#{toolbarView.delete}" ajax="false" icon="pi pi-times"/>
+                            <p:menuitem value="Homepage" url="http://www.primefaces.org" icon="pi pi-home"/>
+                        </p:menuButton>
+                    </p:toolbarGroup>
+                </p:toolbar>
+            </h:form>
+        </div>
     </ui:define>
 
 </ui:composition>

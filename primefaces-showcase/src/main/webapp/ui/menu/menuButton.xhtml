@@ -45,6 +45,14 @@
                     <p:menuitem value="Update" action="#{menuView.sleepAndUpdate}" update="messages" icon="pi pi-refresh"/>
                     <p:menuitem value="Delete" action="#{menuView.sleepAndDelete}" update="messages" icon="pi pi-times"/>
                 </p:menuButton>
+
+                <h5>Button without any rendered MenuItems</h5>
+                <p:menuButton value="Options">
+                    <p:menuitem value="Save" action="#{menuView.sleepAndSave}" update="messages" icon="pi pi-save" rendered="false"/>
+                    <p:menuitem value="Update" action="#{menuView.sleepAndUpdate}" update="messages" icon="pi pi-refresh" rendered="false"/>
+                    <p:separator/>
+                    <p:menuitem value="Delete" action="#{menuView.sleepAndDelete}" update="messages" icon="pi pi-times" rendered="false"/>
+                </p:menuButton>
             </h:form>
         </div>
     </ui:define>
