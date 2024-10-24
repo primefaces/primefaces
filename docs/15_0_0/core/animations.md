@@ -26,3 +26,12 @@ PrimeFaces.utils.enableAnimations();
 ```
 
 This does however only work for component animations and will not influence e.g. CSS transitions of PrimeIcons.
+
+## Inline load animation
+
+Some components support an inline load animation. To avoid flickering on short loading times, a minimum animation
+duration is defined. It's 500 milliseconds by default, but you can customize it. For example
+
+```js
+PrimeFaces.ajax.minLoadAnimation = 250;
+```
