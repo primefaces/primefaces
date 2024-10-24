@@ -25,13 +25,13 @@ package org.primefaces.expression;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.search.SearchExpressionContext;
 import javax.faces.component.search.SearchKeywordContext;
 import javax.faces.component.search.SearchKeywordResolver;
 import javax.faces.component.visit.VisitContext;
-import org.primefaces.util.ComponentUtils;
 
 public class WidgetVarSearchKeywordResolver extends SearchKeywordResolver {
 
@@ -51,8 +51,7 @@ public class WidgetVarSearchKeywordResolver extends SearchKeywordResolver {
 
                 WidgetVarVisitCallback visitCallback = new WidgetVarVisitCallback(matcher.group(1));
                 context.getSearchExpressionContext().getFacesContext().getViewRoot().visitTree(
-                        VisitContext.createVisitContext(context.getSearchExpressionContext().getFacesContext(), null,
-                                ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED),
+                    VisitContext.createVisitContext(context.getSearchExpressionContext().getFacesContext(), null, null),
                         visitCallback);
 
                 if (visitCallback.getComponent() != null) {
