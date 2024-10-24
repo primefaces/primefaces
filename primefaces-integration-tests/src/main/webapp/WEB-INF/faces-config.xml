@@ -23,4 +23,9 @@
         <lifecycle-factory>org.primefaces.clientwindow.PrimeClientWindowLifecycleFactory</lifecycle-factory>
     </factory>
 
+    <system-event-listener>
+        <system-event-listener-class>org.primefaces.integrationtests.ITSystemEventListener</system-event-listener-class>
+        <system-event-class>jakarta.faces.event.PostConstructApplicationEvent</system-event-class>
+        <source-class>jakarta.faces.application.Application</source-class>
+    </system-event-listener>
 </faces-config>
