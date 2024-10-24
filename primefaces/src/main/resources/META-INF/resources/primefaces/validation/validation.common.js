@@ -29,13 +29,14 @@ if (window.PrimeFaces) {
         var focus = cfg.focus || true;
         var renderMessages = cfg.renderMessages || true;
         var validateInvisibleElements = cfg.validateInvisibleElements || false;
+        var logUnrenderedMessages = cfg.logUnrenderedMessages || renderMessages;
 
         var $source = $(cfg.source);
 
         var process = PrimeFaces.validation.Utils.resolveProcess(cfg, $source);
         var update = PrimeFaces.validation.Utils.resolveUpdate(cfg, $source);
 
-        var result = PrimeFaces.validation.validate($source, process, update, highlight, focus, renderMessages, validateInvisibleElements);
+        var result = PrimeFaces.validation.validate($source, process, update, highlight, focus, renderMessages, validateInvisibleElements, logUnrenderedMessages);
         return result.valid;
     };
 
@@ -164,9 +165,10 @@ if (window.PrimeFaces) {
          * @param {boolean} focus If the first invalid element should be focused.
          * @param {boolean} renderMessages If messages should be rendered.
          * @param {boolean} validateInvisibleElements If invisible elements should be validated.
+         * @param {boolean} logUnrenderedMessages If unrendered messages should be logged.
          * @return {PrimeFaces.validation.ValidationResult} The validation result.
          */
-        validate : function(source, process, update, highlight, focus, renderMessages, validateInvisibleElements) {
+        validate : function(source, process, update, highlight, focus, renderMessages, validateInvisibleElements, logUnrenderedMessages) {
             var vc = PrimeFaces.validation.ValidationContext;
 
             process = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(source, process);
@@ -251,7 +253,7 @@ if (window.PrimeFaces) {
                 }
             }
 
-            if (result.hasUnrenderedMessage) {
+            if (renderMessages && logUnrenderedMessages && result.hasUnrenderedMessage) {
                 PrimeFaces.warn("There are some unhandled FacesMessages, this means not every FacesMessage had a chance to be rendered. These unhandled FacesMessages are:");
 
                 for (let clientId in vc.messages) {
@@ -298,7 +300,7 @@ if (window.PrimeFaces) {
             const widget = PrimeFaces.getWidgetById(btn.id);
 
             if (widget) {
-                if (PrimeFaces.validation.validate($source, process, update, false, false, false, false).valid) {
+                if (PrimeFaces.validation.validate($source, process, update, false, false, false, false, false).valid) {
                     widget.jq.addClass('ui-state-csv-valid');
                     widget.jq.removeClass('ui-state-csv-invalid');
                     widget.enable();

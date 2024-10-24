@@ -23,8 +23,6 @@
  */
 package org.primefaces.expression;
 
-import org.primefaces.util.ComponentUtils;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -53,8 +51,7 @@ public class WidgetVarSearchKeywordResolver extends SearchKeywordResolver {
 
                 WidgetVarVisitCallback visitCallback = new WidgetVarVisitCallback(matcher.group(1));
                 context.getSearchExpressionContext().getFacesContext().getViewRoot().visitTree(
-                        VisitContext.createVisitContext(context.getSearchExpressionContext().getFacesContext(), null,
-                                ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED),
+                        VisitContext.createVisitContext(context.getSearchExpressionContext().getFacesContext(), null, null),
                         visitCallback);
 
                 if (visitCallback.getComponent() != null) {
