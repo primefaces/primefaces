@@ -221,7 +221,7 @@ PrimeFaces.widget.Signature = PrimeFaces.widget.BaseWidget.extend({
         const height = this.canvas[0].height;
         let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">
            <g fill="${this.cfg.background || 'white'}">
-           <text x="10" y="50" font-family="${this.cfg.fontFamily}" font-size="${this.cfg.fontSize}" fill="${this.cfg.color || 'black'}">${text}</text>
+            <text x="10" y="${(height + this.cfg.fontSize) / 2}" font-family="${this.cfg.fontFamily}" font-size="${this.cfg.fontSize}" fill="${this.cfg.color || 'black'}">${text}</text>
            </g>
         </svg>`;
         svg = svg.replace(/\n/g, '');
