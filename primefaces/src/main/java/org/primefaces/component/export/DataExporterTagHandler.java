@@ -49,7 +49,6 @@ public class DataExporterTagHandler extends TagHandler {
     private final TagAttribute encoding;
     private final TagAttribute options;
     private final TagAttribute onTableRender;
-    private final TagAttribute exporter;
     private final TagAttribute onRowExport;
     private final TagAttribute bufferSize;
 
@@ -68,7 +67,6 @@ public class DataExporterTagHandler extends TagHandler {
         postProcessor = getAttribute("postProcessor");
         options = getAttribute("options");
         onTableRender = getAttribute("onTableRender");
-        exporter = getAttribute("exporter");
         onRowExport = getAttribute("onRowExport");
         bufferSize = getAttribute("bufferSize");
     }
@@ -126,9 +124,6 @@ public class DataExporterTagHandler extends TagHandler {
         if (onTableRender != null) {
             onTableRenderME = onTableRender.getMethodExpression(faceletContext, null, new Class[]{Object.class, Object.class});
         }
-        if (exporter != null) {
-            exporterVE = exporter.getValueExpression(faceletContext, Object.class);
-        }
         if (onRowExport != null) {
             onRowExportME = onRowExport.getMethodExpression(faceletContext, null, new Class[]{Object.class});
         }
@@ -141,7 +136,6 @@ public class DataExporterTagHandler extends TagHandler {
                     .type(typeVE)
                     .fileName(fileNameVE)
                     .encoding(encodingVE)
-                    .exporter(exporterVE)
                     .exportFooter(exportFooterVE)
                     .exportHeader(exportHeaderVE)
                     .onTableRender(onTableRenderME)
