@@ -37,7 +37,6 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import javax.el.ELContext;
@@ -67,7 +66,6 @@ public class DataExporter implements ActionListener, StateHolder {
     private ValueExpression options;
     private MethodExpression onTableRender;
     private MethodExpression onRowExport;
-    private ValueExpression exporter;
     private ValueExpression bufferSize;
 
     public DataExporter() {
@@ -128,11 +126,6 @@ public class DataExporter implements ActionListener, StateHolder {
             exporterOptions = (ExporterOptions) options.getValue(elContext);
         }
 
-        Object customExporterInstance = null;
-        if (exporter != null) {
-            customExporterInstance = exporter.getValue(elContext);
-        }
-
         Integer bufferSizeTmp = null;
         if (bufferSize != null) {
             bufferSizeTmp = (Integer) bufferSize.getValue(elContext);
@@ -141,7 +134,7 @@ public class DataExporter implements ActionListener, StateHolder {
         try {
             List<UIComponent> components = SearchExpressionUtils.contextlessResolveComponents(context, event.getComponent(), tables);
             Class<? extends UIComponent> targetClass = guessTargetClass(components);
-            Exporter exporterInstance = getExporter(exportAs, customExporterInstance, targetClass);
+            Exporter exporterInstance = DataExporters.get(targetClass, exportAs);
 
             ExternalContext externalContext = context.getExternalContext();
             String filenameWithExtension = outputFileName + exporterInstance.getFileExtension();
@@ -203,27 +196,6 @@ public class DataExporter implements ActionListener, StateHolder {
         return classes.iterator().next();
     }
 
-    /**
-     * @deprecated use {@link DataExporters#get(Class, String)} instead
-     */
-    @Deprecated
-    protected Exporter getExporter(String exportAs, Object customExporterInstance, Class<? extends UIComponent> targetClass) {
-        if (customExporterInstance != null) {
-            Logger.getLogger(DataExporter.class.getName())
-                    .warning("DataExporter#exporter will be removed in future release. "
-                            + "Use DataExporters#register() method instead");
-            if (customExporterInstance instanceof Exporter) {
-                return (Exporter) customExporterInstance;
-            }
-            else {
-                throw new FacesException("Component " + getClass().getName() + " customExporterInstance="
-                        + customExporterInstance.getClass().getName() + " does not implement Exporter!");
-            }
-        }
-
-        return DataExporters.get(targetClass, exportAs);
-    }
-
     private void ajaxDownload(String filenameWithExtension, byte[] content, String contentType, FacesContext context) {
         String base64 = Base64.getEncoder().withoutPadding().encodeToString(content);
         String data = "data:" + contentType + ";base64," + base64;
@@ -270,9 +242,8 @@ public class DataExporter implements ActionListener, StateHolder {
         encoding = (ValueExpression) values[10];
         options = (ValueExpression) values[11];
         onTableRender = (MethodExpression) values[12];
-        exporter = (ValueExpression) values[13];
-        onRowExport = (MethodExpression) values[14];
-        bufferSize = (ValueExpression) values[15];
+        onRowExport = (MethodExpression) values[13];
+        bufferSize = (ValueExpression) values[14];
     }
 
     @Override
@@ -292,9 +263,8 @@ public class DataExporter implements ActionListener, StateHolder {
         values[10] = encoding;
         values[11] = options;
         values[12] = onTableRender;
-        values[13] = exporter;
-        values[14] = onRowExport;
-        values[15] = bufferSize;
+        values[13] = onRowExport;
+        values[14] = bufferSize;
 
         return (values);
     }
@@ -373,12 +343,6 @@ public class DataExporter implements ActionListener, StateHolder {
 
         public Builder onTableRender(MethodExpression onTableRender) {
             exporter.onTableRender = onTableRender;
-            return this;
-        }
-
-        @Deprecated
-        public Builder exporter(ValueExpression exporter) {
-            this.exporter.exporter = exporter;
             return this;
         }
 
