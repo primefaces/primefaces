@@ -135,7 +135,7 @@ public class AjaxRequestBuilder {
     }
 
     public AjaxRequestBuilder process(UIComponent component, String expressions, boolean ignoreNoResult) {
-        addExpressions(component, expressions, "p", ignoreNoResult ? HINTS_PROCESS_IGNORE_NO_RESULT : HINTS_PROCESS, false);
+        addExpressions(component, expressions, "p", ignoreNoResult ? HINTS_PROCESS_IGNORE_NO_RESULT : HINTS_PROCESS);
 
         return this;
     }
@@ -145,16 +145,15 @@ public class AjaxRequestBuilder {
     }
 
     public AjaxRequestBuilder update(UIComponent component, String expressions, boolean ignoreNoResult) {
-        addExpressions(component, expressions, "u", ignoreNoResult ? HINTS_UPDATE_IGNORE_NO_RESULT : HINTS_UPDATE, true);
+        addExpressions(component, expressions, "u", ignoreNoResult ? HINTS_UPDATE_IGNORE_NO_RESULT : HINTS_UPDATE);
 
         return this;
     }
 
-    private AjaxRequestBuilder addExpressions(UIComponent component, String expressions, String key, Set<SearchExpressionHint> hints,
-            boolean skipUnredered) {
+    private AjaxRequestBuilder addExpressions(UIComponent component, String expressions, String key, Set<SearchExpressionHint> hints) {
         if (LangUtils.isNotBlank(expressions)) {
             String resolvedExpressions = SearchExpressionUtils.resolveClientIdsAsString(context, component, expressions, hints,
-                    skipUnredered ? ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED : null);
+                    null);
             buffer.append(",").append(key).append(":\"").append(resolvedExpressions).append("\"");
         }
 

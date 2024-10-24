@@ -99,7 +99,8 @@ public class FileUploadRenderer extends CoreRenderer {
         else {
             wb.init("SimpleFileUpload", fileUpload)
                     .attr("skinSimple", fileUpload.isSkinSimple(), false)
-                    .attr("displayFilename", fileUpload.isDisplayFilename());
+                    .attr("displayFilename", fileUpload.isDisplayFilename())
+                    .attr("messageTemplate", fileUpload.getMessageTemplate(), null);
         }
 
         wb.attr("mode", fileUpload.getMode())
@@ -108,7 +109,6 @@ public class FileUploadRenderer extends CoreRenderer {
                 .attr("process", SearchExpressionUtils.resolveClientIdsForClientSide(context, fileUpload, process))
                 .attr("global", fileUpload.isGlobal(), true)
                 .attr("disabled", fileUpload.isDisabled(), false)
-                .attr("messageTemplate", fileUpload.getMessageTemplate(), null)
                 .callback("onstart", "function()", fileUpload.getOnstart())
                 .callback("onerror", "function()", fileUpload.getOnerror())
                 .callback("oncomplete", "function(args)", fileUpload.getOncomplete())
