@@ -204,6 +204,9 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                     });
                     dataFileInput[0].files = dataTransfer.files;
                 }
+                // CSV metadata
+                dataFileInput.data(PrimeFaces.CLIENT_ID_DATA, $this.id);
+
                 var fileLimit = dataFileInput ? dataFileInput.data('p-filelimit') : null;
                 if (fileLimit && ($this.uploadedFileCount + $this.files.length + 1) > fileLimit) {
                     $this.clearMessages();
