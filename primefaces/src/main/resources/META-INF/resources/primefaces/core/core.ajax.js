@@ -44,25 +44,25 @@ if (!PrimeFaces.ajax) {
          * @type {string}
          * @readonly
          */
-        VIEW_HEAD : "javax.faces.ViewHead",
+        VIEW_HEAD: "javax.faces.ViewHead",
         /**
          * Name for the ID of the BODY element, used in AJAX requests.
          * @type {string}
          * @readonly
          */
-        VIEW_BODY : "javax.faces.ViewBody",
+        VIEW_BODY: "javax.faces.ViewBody",
         /**
          * Name for the ID of a resource entry, used in AJAX requests.
          * @type {string}
          * @readonly
          */
-        RESOURCE : "javax.faces.Resource",
+        RESOURCE: "javax.faces.Resource",
 
         /**
          * Parameter shortcut mapping for the method `PrimeFaces.ab`.
          * @type {Record<string, string>}
          */
-        CFG_SHORTCUTS : {
+        CFG_SHORTCUTS: {
             's': 'source',
             'f': 'formId',
             'p': 'process',
@@ -90,7 +90,7 @@ if (!PrimeFaces.ajax) {
          * Minimum number of milliseconds to show inline Ajax load animations.
          * @type {number}
          */
-        minLoadAnimation : 500,
+        minLoadAnimation: 500,
 
         /**
          * This object contains utility methods for AJAX requests, primarily used internally.
@@ -111,8 +111,8 @@ if (!PrimeFaces.ajax) {
             getContent: function(node) {
                 var content = '';
 
-                for(var i = 0; i < node.childNodes.length; i++) {
-                    content += node.childNodes[i].nodeValue;
+                for (const child of node.childNodes) {
+                    content += child.nodeValue;
                 }
 
                 return content;
@@ -204,7 +204,7 @@ if (!PrimeFaces.ajax) {
 
                 return $.inArray(sourceId, triggers) !== -1;
             },
-            
+
             /**
              * Is this script an AJAX request?
              * @param {string} script the JS script to check
@@ -302,7 +302,7 @@ if (!PrimeFaces.ajax) {
                 var cache = $.ajaxSetup()['cache'];
                 $.ajaxSetup()['cache'] = true;
 
-                var headStartTag = new RegExp("<head[^>]*>", "gi").exec(content)[0];
+                var headStartTag = /<head[^>]*>/gi.exec(content)[0];
                 var headStartIndex = content.indexOf(headStartTag) + headStartTag.length;
                 $('head').html(content.substring(headStartIndex, content.lastIndexOf("</head>")));
 
@@ -314,7 +314,7 @@ if (!PrimeFaces.ajax) {
              * @param {string} content The content of the changeset that was returned by an AJAX request.
              */
             updateBody: function(content) {
-                var bodyStartTag = new RegExp("<body[^>]*>", "gi").exec(content)[0];
+                var bodyStartTag = /<body[^>]*>/gi.exec(content)[0];
                 var bodyStartIndex = content.indexOf(bodyStartTag) + bodyStartTag.length;
                 $('body').html(content.substring(bodyStartIndex, content.lastIndexOf("</body>")));
             },
@@ -412,21 +412,20 @@ if (!PrimeFaces.ajax) {
              * @param {Partial<PrimeFaces.ajax.Configuration>} request The request to send.
              */
             offer: function(request) {
-                if(request.delay) {
-                    var sourceId = null,
-                    $this = this,
-                    sourceId = (typeof(request.source) === 'string') ? request.source: $(request.source).attr('id'),
-                    createTimeout = function() {
+                if (request.delay) {
+                    var $this = this,
+                        sourceId = (typeof (request.source) === 'string') ? request.source : $(request.source).attr('id'),
+                        createTimeout = function() {
                             return PrimeFaces.queueTask(function() {
                                 $this.requests.push(request);
 
-                                if($this.requests.length === 1) {
+                                if ($this.requests.length === 1) {
                                     PrimeFaces.ajax.Request.send(request);
                                 }
                             }, request.delay);
-                    };
+                        };
 
-                    if(this.delays[sourceId]) {
+                    if (this.delays[sourceId]) {
                         clearTimeout(this.delays[sourceId].timeout);
                         this.delays[sourceId].timeout = createTimeout();
                     }
@@ -439,7 +438,7 @@ if (!PrimeFaces.ajax) {
                 else {
                     this.requests.push(request);
 
-                    if(this.requests.length === 1) {
+                    if (this.requests.length === 1) {
                         PrimeFaces.ajax.Request.send(request);
                     }
                 }
@@ -452,14 +451,14 @@ if (!PrimeFaces.ajax) {
              * is empty.
              */
             poll: function() {
-                if(this.isEmpty()) {
+                if (this.isEmpty()) {
                     return null;
                 }
 
                 var processed = this.requests.shift(),
-                next = this.peek();
+                    next = this.peek();
 
-                if(next) {
+                if (next) {
                     PrimeFaces.ajax.Request.send(next);
                 }
 
@@ -472,7 +471,7 @@ if (!PrimeFaces.ajax) {
              * or `null` when this queue is empty.
              */
             peek: function() {
-                if(this.isEmpty()) {
+                if (this.isEmpty()) {
                     return null;
                 }
 
@@ -502,7 +501,7 @@ if (!PrimeFaces.ajax) {
              */
             removeXHR: function(xhr) {
                 var index = $.inArray(xhr, this.xhrs);
-                if(index > -1) {
+                if (index > -1) {
                     this.xhrs.splice(index, 1);
                 }
             },
@@ -516,8 +515,7 @@ if (!PrimeFaces.ajax) {
                 this.requests = new Array();
 
                 // abort any in-flight that are not DONE(4)
-                for(var i = 0; i < this.xhrs.length; i++) {
-                    var xhr = this.xhrs[i];
+                for (const xhr of this.xhrs) {
                     if (xhr.readyState !== 4) {
                         xhr.abort();
                     }
@@ -557,7 +555,7 @@ if (!PrimeFaces.ajax) {
                     cfg.earlyPostParams = PrimeFaces.ajax.Request.collectEarlyPostParams(cfg);
                 }
 
-                if(cfg.async) {
+                if (cfg.async) {
                     PrimeFaces.ajax.Request.send(cfg);
                 }
                 else {
@@ -580,7 +578,7 @@ if (!PrimeFaces.ajax) {
                 var earlyPostParams;
 
                 var sourceElement;
-                if (typeof(cfg.source) === 'string') {
+                if (typeof (cfg.source) === 'string') {
                     sourceElement = $(PrimeFaces.escapeClientId(cfg.source));
                 }
                 else {
@@ -591,7 +589,7 @@ if (!PrimeFaces.ajax) {
 
                     if (sourceElement.is(':checkbox')) {
                         var checkboxPostParams = $("input[name='" + $.escapeSelector(sourceElement.attr('name')) + "']")
-                                .filter(':checked').serializeArray();
+                            .filter(':checked').serializeArray();
                         $.merge(earlyPostParams, checkboxPostParams);
                     }
                     else {
@@ -621,23 +619,23 @@ if (!PrimeFaces.ajax) {
 
                 PrimeFaces.customFocus = false;
 
-                var global = (cfg.global === true || cfg.global === undefined) ? true : false,
-                form = null,
-                sourceId = null,
-                retVal = null;
+                var global = cfg.global !== false,
+                    form = null,
+                    sourceId = null,
+                    retVal = null;
 
-                if(cfg.onstart) {
+                if (cfg.onstart) {
                     retVal = cfg.onstart.call(this, cfg);
                 }
-                if(cfg.ext && cfg.ext.onstart) {
+                if (cfg.ext && cfg.ext.onstart) {
                     retVal = cfg.ext.onstart.call(this, cfg);
                 }
 
-                if(retVal === false) {
+                if (retVal === false) {
                     PrimeFaces.debug('AJAX request cancelled by onstart callback.');
 
                     //remove from queue
-                    if(!cfg.async) {
+                    if (!cfg.async) {
                         PrimeFaces.ajax.Queue.poll();
                     }
 
@@ -648,12 +646,12 @@ if (!PrimeFaces.ajax) {
                     return false;  //cancel request
                 }
 
-                if(global) {
+                if (global) {
                     $(document).trigger('pfAjaxStart');
                 }
 
                 //source can be a client id or an element defined by this keyword
-                if(typeof(cfg.source) === 'string') {
+                if (typeof (cfg.source) === 'string') {
                     sourceId = cfg.source;
                 } else {
                     sourceId = $(cfg.source).attr('id');
@@ -661,7 +659,7 @@ if (!PrimeFaces.ajax) {
 
                 var $source = $(PrimeFaces.escapeClientId(sourceId));
 
-                if(cfg.formId) {
+                if (cfg.formId) {
                     //Explicit form is defined
                     form = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector($source, cfg.formId);
                 }
@@ -716,7 +714,7 @@ if (!PrimeFaces.ajax) {
 
                 //process
                 var processArray = PrimeFaces.ajax.Request.resolveComponentsForAjaxCall($source, cfg, 'process');
-                if(cfg.fragmentProcess) {
+                if (cfg.fragmentProcess) {
                     processArray.push(cfg.fragmentProcess);
                 }
                 // default == @none
@@ -738,22 +736,22 @@ if (!PrimeFaces.ajax) {
 
                 //update
                 var updateArray = PrimeFaces.ajax.Request.resolveComponentsForAjaxCall($source, cfg, 'update');
-                if(cfg.fragmentUpdate) {
+                if (cfg.fragmentUpdate) {
                     updateArray.push(cfg.fragmentUpdate);
                 }
-                if(updateArray.length > 0) {
+                if (updateArray.length > 0) {
                     PrimeFaces.ajax.Request.addParam(postParams, PrimeFaces.PARTIAL_UPDATE_PARAM, updateArray.join(' '), parameterPrefix);
                 }
 
                 //behavior event
-                if(cfg.event) {
+                if (cfg.event) {
                     PrimeFaces.ajax.Request.addParam(postParams, PrimeFaces.BEHAVIOR_EVENT_PARAM, cfg.event, parameterPrefix);
 
                     var domEvent = cfg.event;
 
-                    if(cfg.event === 'valueChange')
+                    if (cfg.event === 'valueChange')
                         domEvent = 'change';
-                    else if(cfg.event === 'action')
+                    else if (cfg.event === 'action')
                         domEvent = 'click';
 
                     PrimeFaces.ajax.Request.addParam(postParams, PrimeFaces.PARTIAL_EVENT_PARAM, domEvent, parameterPrefix);
@@ -763,10 +761,10 @@ if (!PrimeFaces.ajax) {
                 }
 
                 //params
-                if(cfg.params) {
+                if (cfg.params) {
                     PrimeFaces.ajax.Request.addParams(postParams, cfg.params, parameterPrefix);
                 }
-                if(cfg.ext && cfg.ext.params) {
+                if (cfg.ext && cfg.ext.params) {
                     PrimeFaces.ajax.Request.addParams(postParams, cfg.ext.params, parameterPrefix);
                 }
 
@@ -783,23 +781,23 @@ if (!PrimeFaces.ajax) {
                  * Only add params of process components and their children
                  * if partial submit is enabled and there are components to process partially
                  */
-                if(cfg.partialSubmit && processIds.indexOf('@all') === -1) {
+                if (cfg.partialSubmit && processIds.indexOf('@all') === -1) {
                     var formProcessed = false;
 
                     if (processIds.indexOf('@none') === -1) {
-                        var partialSubmitFilter = cfg.partialSubmitFilter||':input';
-                        for (var i = 0; i < processArray.length; i++) {
-                            var jqProcess = $(PrimeFaces.escapeClientId(processArray[i]));
+                        var partialSubmitFilter = cfg.partialSubmitFilter || ':input';
+                        for (const processId of processArray) {
+                            var jqProcess = $(PrimeFaces.escapeClientId(processId));
                             var componentPostParams = null;
 
-                            if(jqProcess.is('form')) {
+                            if (jqProcess.is('form')) {
                                 componentPostParams = jqProcess.serializeArray();
                                 formProcessed = true;
                                 if (multipart) {
                                     scanForFiles = scanForFiles.add(jqProcess);
                                 }
                             }
-                            else if(jqProcess.is(':input')) {
+                            else if (jqProcess.is(':input')) {
                                 componentPostParams = jqProcess.serializeArray();
                                 if (multipart) {
                                     scanForFiles = scanForFiles.add(jqProcess);
@@ -869,17 +867,17 @@ if (!PrimeFaces.ajax) {
                     });
 
                     fileInputs.each(function(index, value) {
-                        for (var i = 0; i < value.files.length; i++) {
-                            formData.append(value.id, value.files[i]);
+                        for (const file of value.files) {
+                            formData.append(value.id, file);
                         }
                     });
                 }
 
                 var xhrOptions = {
-                    url : postURL,
-                    type : "POST",
-                    cache : false,
-                    dataType : "xml",
+                    url: postURL,
+                    type: "POST",
+                    cache: false,
+                    dataType: "xml",
                     portletForms: PrimeFaces.ajax.Utils.getPorletForms(form, parameterPrefix),
                     source: cfg.source,
                     global: false,
@@ -888,7 +886,7 @@ if (!PrimeFaces.ajax) {
                         xhr.pfSettings = settings;
                         xhr.pfArgs = {}; // default should be an empty object
 
-                        if(global) {
+                        if (global) {
                             $(document).trigger('pfAjaxSend', [xhr, this]);
                         }
                     }
@@ -925,7 +923,7 @@ if (!PrimeFaces.ajax) {
                 var jqXhr = $.ajax(xhrOptions)
                     .fail(function(xhr, status, errorThrown) {
                         if (cfg.promise) {
-                            cfg.promise.reject({jqXHR: xhr, textStatus: status, errorThrown: errorThrown});
+                            cfg.promise.reject({ jqXHR: xhr, textStatus: status, errorThrown: errorThrown });
                         }
 
                         var location = xhr.getResponseHeader("Location");
@@ -934,10 +932,10 @@ if (!PrimeFaces.ajax) {
                             window.location = location;
                             return;
                         }
-                        if(cfg.onerror) {
+                        if (cfg.onerror) {
                             cfg.onerror.call(this, xhr, status, errorThrown);
                         }
-                        if(cfg.ext && cfg.ext.onerror) {
+                        if (cfg.ext && cfg.ext.onerror) {
                             cfg.ext.onerror.call(this, xhr, status, errorThrown);
                         }
 
@@ -953,36 +951,36 @@ if (!PrimeFaces.ajax) {
                             // Resolve promise for custom JavaScript handler
                             // Promise handlers are called asynchronously so they are run after the response was handled
                             if (cfg.promise) {
-                                cfg.promise.resolve({document: data, textStatus: status, jqXHR: xhr});
+                                cfg.promise.resolve({ document: data, textStatus: status, jqXHR: xhr });
                             }
 
                             //call user callback
-                            if(cfg.onsuccess) {
+                            if (cfg.onsuccess) {
                                 parsed = cfg.onsuccess.call(this, data, status, xhr);
                             }
 
                             //extension callback that might parse response
-                            if(cfg.ext && cfg.ext.onsuccess && !parsed) {
+                            if (cfg.ext && cfg.ext.onsuccess && !parsed) {
                                 parsed = cfg.ext.onsuccess.call(this, data, status, xhr);
                             }
 
-                            if(global) {
+                            if (global) {
                                 $(document).trigger('pfAjaxSuccess', [xhr, this]);
                             }
 
                             //do not execute default handler as response already has been parsed
-                            if(parsed) {
+                            if (parsed) {
                                 return;
                             }
                             else {
                                 PrimeFaces.ajax.Response.handle(data, status, xhr);
                             }
                         }
-                        catch(err) {
+                        catch (err) {
                             PrimeFaces.error(err);
                         }
 
-                        if(global) {
+                        if (global) {
                             $(document).trigger('pfAjaxUpdated', [xhr, this, xhr.pfArgs]);
                         }
 
@@ -990,16 +988,16 @@ if (!PrimeFaces.ajax) {
                     })
                     .always(function(data, status, xhr) {
                         // first call the extension callback (e.g. datatable paging)
-                        if(cfg.ext && cfg.ext.oncomplete) {
+                        if (cfg.ext && cfg.ext.oncomplete) {
                             cfg.ext.oncomplete.call(this, xhr, status, xhr.pfArgs, data);
                         }
 
                         // after that, call the end user's callback, which should be called when everything is ready
-                        if(cfg.oncomplete) {
+                        if (cfg.oncomplete) {
                             cfg.oncomplete.call(this, xhr, status, xhr.pfArgs, data);
                         }
 
-                        if(global) {
+                        if (global) {
                             $(document).trigger('pfAjaxComplete', [xhr, this, xhr.pfArgs]);
                         }
 
@@ -1007,7 +1005,7 @@ if (!PrimeFaces.ajax) {
 
                         PrimeFaces.ajax.Queue.removeXHR(xhr);
 
-                        if(!cfg.async) {
+                        if (!cfg.async) {
                             PrimeFaces.ajax.Queue.poll();
                         }
                     });
@@ -1064,10 +1062,10 @@ if (!PrimeFaces.ajax) {
             addParam: function(params, name, value, parameterPrefix) {
                 // add namespace if not available
                 if (parameterPrefix || !name.indexOf(parameterPrefix) === 0) {
-                    params.push({ name:parameterPrefix + name, value:value });
+                    params.push({ name: parameterPrefix + name, value: value });
                 }
                 else {
-                    params.push({ name:name, value:value });
+                    params.push({ name: name, value: value });
                 }
 
             },
@@ -1103,8 +1101,7 @@ if (!PrimeFaces.ajax) {
              */
             addParams: function(params, paramsToAdd, parameterPrefix) {
 
-                for (var i = 0; i < paramsToAdd.length; i++) {
-                    var param = paramsToAdd[i];
+                for (const param of paramsToAdd) {
                     // add namespace if not available
                     if (parameterPrefix && !param.name.indexOf(parameterPrefix) === 0) {
                         param.name = parameterPrefix + param.name;
@@ -1201,10 +1198,7 @@ if (!PrimeFaces.ajax) {
                 $.each(arr1, function(index1, param1) {
                     // loop arr2 params and remove it, if it's the same param as the arr1 param
                     arr2 = $.grep(arr2, function(param2, index2) {
-                        if (param2.name === param1.name) {
-                            return false;
-                        }
-                        return true;
+                        return param2.name !== param1.name;
                     });
                 });
 
@@ -1280,8 +1274,7 @@ if (!PrimeFaces.ajax) {
 
                 var partialResponseNode = xml.getElementsByTagName("partial-response")[0];
 
-                for (var i = 0; i < partialResponseNode.childNodes.length; i++) {
-                    var currentNode = partialResponseNode.childNodes[i];
+                for (const currentNode of partialResponseNode.childNodes) {
 
                     switch (currentNode.nodeName) {
                         case "redirect":
@@ -1297,8 +1290,7 @@ if (!PrimeFaces.ajax) {
                                 activeElementSelection = activeElement.getSelection();
                             }
 
-                            for (var j = 0; j < currentNode.childNodes.length; j++) {
-                                var currentChangeNode = currentNode.childNodes[j];
+                            for (const currentChangeNode of currentNode.childNodes) {
                                 switch (currentChangeNode.nodeName) {
                                     case "update":
                                         PrimeFaces.ajax.ResponseProcessor.doUpdate(currentChangeNode, xhr, updateHandler);
@@ -1346,7 +1338,7 @@ if (!PrimeFaces.ajax) {
              * @param {PrimeFaces.ajax.ActiveElementSelection} [activeElementSelection] The range to select, for INPUT
              * and TEXTAREA elements.
              */
-            handleReFocus : function(activeElementId, activeElementSelection) {
+            handleReFocus: function(activeElementId, activeElementSelection) {
                 // skip when customFocus is active
                 if (PrimeFaces.customFocus === true) {
                     PrimeFaces.customFocus = false;
@@ -1382,11 +1374,9 @@ if (!PrimeFaces.ajax) {
              * Destroys all widgets that are not part of the DOM anymore, usually because they were removed by an AJAX
              * update. Calls the `destroy` method on the widget and removes the widget from the global widget registry.
              */
-            destroyDetachedWidgets : function() {
+            destroyDetachedWidgets: function() {
                 // destroy detached widgets
-                for (var i = 0; i < PrimeFaces.detachedWidgets.length; i++) {
-                    var widgetVar = PrimeFaces.detachedWidgets[i];
-
+                for (const widgetVar of PrimeFaces.detachedWidgets) {
                     var widget = PF(widgetVar);
                     if (widget && widget.isDetached() === true) {
                         try {
@@ -1415,7 +1405,7 @@ if (!PrimeFaces.ajax) {
              * Handles a `redirect` AJAX action by performing a redirect to the target URL.
              * @param {Node} node The XML node of the `redirect` action.
              */
-            doRedirect : function(node) {
+            doRedirect: function(node) {
                 try {
                     window.location.assign(node.getAttribute('url'));
                 } catch (error) {
@@ -1432,9 +1422,9 @@ if (!PrimeFaces.ajax) {
              * @param {PrimeFaces.ajax.pfXHR} xhr The XHR request to which a response was received.
              * @param {PrimeFaces.ajax.UpdateHandler<TWidget>} [updateHandler] Optional handler for the update.
              */
-            doUpdate : function(node, xhr, updateHandler) {
+            doUpdate: function(node, xhr, updateHandler) {
                 var id = node.getAttribute('id'),
-                content = PrimeFaces.ajax.Utils.getContent(node);
+                    content = PrimeFaces.ajax.Utils.getContent(node);
 
                 if (updateHandler && updateHandler.widget && updateHandler.widget.id === id) {
                     updateHandler.handle.call(updateHandler.widget, content);
@@ -1448,7 +1438,7 @@ if (!PrimeFaces.ajax) {
              * @param {Node} node The XML node of the `eval` action.
              * @param {PrimeFaces.ajax.pfXHR} xhr The XHR request to which a response was received.
              */
-            doEval : function(node, xhr) {
+            doEval: function(node, xhr) {
                 var textContent = node.textContent || node.innerText || node.text;
 
                 var nonce;
@@ -1463,7 +1453,7 @@ if (!PrimeFaces.ajax) {
              * @param {Node} node The XML node of the `extension` action.
              * @param {PrimeFaces.ajax.pfXHR} xhr The XHR request to which a response was received.
              */
-            doExtension : function(node, xhr) {
+            doExtension: function(node, xhr) {
                 if (xhr) {
                     if (node.getAttribute("ln") === "primefaces" && node.getAttribute("type") === "args") {
                         var textContent = node.textContent || node.innerText || node.text;
@@ -1489,7 +1479,7 @@ if (!PrimeFaces.ajax) {
              * @param {Node} node The XML node of the `error` action.
              * @param {PrimeFaces.ajax.pfXHR} xhr The XHR request to which a response was received.
              */
-            doError : function(node, xhr) {
+            doError: function(node, xhr) {
                 // currently nothing...
             },
 
@@ -1497,7 +1487,7 @@ if (!PrimeFaces.ajax) {
              * Handles a `delete` AJAX action by remove the DOM element.
              * @param {Node} node The XML node of the `delete` action.
              */
-            doDelete : function(node) {
+            doDelete: function(node) {
                 var id = node.getAttribute('id');
                 $(PrimeFaces.escapeClientId(id)).remove();
             },
@@ -1508,13 +1498,12 @@ if (!PrimeFaces.ajax) {
              * @return {boolean | undefined} `false` if the AJAX action could not be performed, `true` or `undefined`
              * otherwise.
              */
-            doInsert : function(node) {
+            doInsert: function(node) {
                 if (!node.childNodes) {
                     return false;
                 }
 
-                for (var i = 0; i < node.childNodes.length; i++) {
-                    var childNode = node.childNodes[i];
+                for (const childNode of node.childNodes) {
                     var id = childNode.getAttribute('id');
                     var jq = $(PrimeFaces.escapeClientId(id));
                     var content = PrimeFaces.ajax.Utils.getContent(childNode);
@@ -1534,7 +1523,7 @@ if (!PrimeFaces.ajax) {
              * @return {boolean | undefined} `false` if the AJAX action could not be performed, `true` or `undefined`
              * otherwise.
              */
-            doAttributes : function(node) {
+            doAttributes: function(node) {
                 if (!node.childNodes) {
                     return false;
                 }
@@ -1542,8 +1531,7 @@ if (!PrimeFaces.ajax) {
                 var id = node.getAttribute('id');
                 var jq = $(PrimeFaces.escapeClientId(id));
 
-                for (var i = 0; i < node.childNodes.length; i++) {
-                    var attrNode = node.childNodes[i];
+                for (const attrNode of node.childNodes) {
                     var attrName = attrNode.getAttribute("name");
                     var attrValue = attrNode.getAttribute("value");
 
