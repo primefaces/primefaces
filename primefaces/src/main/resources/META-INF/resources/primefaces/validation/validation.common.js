@@ -338,11 +338,11 @@ if (window.PrimeFaces) {
                 : $(el);
             var clientId = element.data(PrimeFaces.CLIENT_ID_DATA) || element.attr('id');
 
-            var messageComponentId = element.data('uimessageid');
+            var messageComponentId = element.data('target-message');
             var messageComponent = null;
             if (renderMessages === true) {
                 if (messageComponentId) {
-                    messageComponent = messageComponentId === 'p-nouimessage'
+                    messageComponent = messageComponentId === 'unbound'
                         ? null
                         : $(PrimeFaces.escapeClientId(messageComponentId));
                 }
@@ -350,10 +350,12 @@ if (window.PrimeFaces) {
                     var messageComponents = element.closest('form').find('div.ui-message');
                     messageComponent = PrimeFaces.validation.Utils.findTargetMessageComponent(clientId, messageComponents);
 
-                    if (messageComponent)
-                        element.data('uimessageid', messageComponent.attr('id'));
-                    else
-                        element.data('uimessageid', 'p-nouimessage');
+                    if (messageComponent) {
+                        element.data('target-message', messageComponent.attr('id'));
+                    }
+                    else {
+                        element.data('target-message', 'unbound');
+                    }
                 }
 
                 if (messageComponent) {
