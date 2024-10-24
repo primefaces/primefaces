@@ -342,7 +342,7 @@ if (window.PrimeFaces) {
             var messageComponent = null;
             if (renderMessages === true) {
                 if (messageComponentId) {
-                    messageComponent = messageComponentId === 'unbound'
+                    messageComponent = messageComponentId === 'p-unbound'
                         ? null
                         : $(PrimeFaces.escapeClientId(messageComponentId));
                 }
@@ -354,7 +354,7 @@ if (window.PrimeFaces) {
                         element.data('target-message', messageComponent.attr('id'));
                     }
                     else {
-                        element.data('target-message', 'unbound');
+                        element.data('target-message', 'p-unbound');
                     }
                 }
 
