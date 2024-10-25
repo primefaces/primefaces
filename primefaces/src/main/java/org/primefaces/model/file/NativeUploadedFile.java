@@ -25,9 +25,11 @@ package org.primefaces.model.file;
 
 import java.io.*;
 import java.net.URLDecoder;
+import java.nio.charset.Charset;
 import javax.faces.FacesException;
 import javax.servlet.http.Part;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.BoundedInputStream;
 import org.primefaces.shaded.owasp.SafeFile;
 import org.primefaces.util.FileUploadUtils;
@@ -42,6 +44,8 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
     private String filename;
     private byte[] cachedContent;
     private Long sizeLimit;
+    private String title;
+    private String description;
 
     public NativeUploadedFile() {
     }
@@ -50,6 +54,25 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
         this.part = part;
         this.sizeLimit = sizeLimit;
         this.filename = resolveFilename(part);
+    }
+
+    public NativeUploadedFile(Part part, Long sizeLimit, Part titlePart, Part descriptionPart) {
+        this.part = part;
+        this.sizeLimit = sizeLimit;
+        this.filename = resolveFilename(part);
+        this.title = resolveStringPart(titlePart);
+        this.description = resolveStringPart(descriptionPart);
+    }
+
+    private String resolveStringPart(Part part) {
+        if(part != null) {
+            try {
+                String result = IOUtils.toString(part.getInputStream(), Charset.defaultCharset());
+                return result != null ? result : "";
+            } catch (IOException e) {
+            }
+        }
+        return null;
     }
 
     @Override
@@ -107,6 +130,16 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
     @Override
     public void delete() throws IOException {
         part.delete();
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public String getTitle() {
+        return title;
     }
 
     public Part getPart() {

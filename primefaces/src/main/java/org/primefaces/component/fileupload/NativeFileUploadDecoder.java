@@ -64,8 +64,11 @@ public class NativeFileUploadDecoder extends AbstractFileUploadDecoder<HttpServl
         if (part == null || LangUtils.isBlank(part.getSubmittedFileName())) {
             return null;
         }
+        Part titlePart = request.getPart(FileUpload.COMPONENT_TITLE_PART);
+        Part descriptionPart = request.getPart(FileUpload.COMPONENT_DESCRIPTION_PART);
 
-        return new NativeUploadedFile(part, fileUpload.getSizeLimit());
+
+        return new NativeUploadedFile(part, fileUpload.getSizeLimit(), titlePart, descriptionPart);
     }
 
     @Override

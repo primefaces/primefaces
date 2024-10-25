@@ -61,6 +61,8 @@ public class FileUpload extends FileUploadBase {
     public static final String CONTAINER_CLASS_SIMPLE = "ui-fileupload-simple ui-widget";
     public static final String FILENAME_CLASS = "ui-fileupload-filename";
     public static final String WITHDROPZONE_CLASS = "ui-fileupload-withdropzone";
+    public final static String COMPONENT_DESCRIPTION_PART = "org.primefaces.component.FileUpload.file_description";
+    public final static String COMPONENT_TITLE_PART = "org.primefaces.component.FileUpload.file_title";
 
     @Override
     public void broadcast(FacesEvent event) throws AbortProcessingException {

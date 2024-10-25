@@ -160,6 +160,10 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.global = (this.cfg.global === true || this.cfg.global === undefined) ? true : false;
         this.uploadedFileCount = 0;
         this.fileId = 0;
+        this.cfg.descriptionLabel = this.cfg.descriptionLabel || 'Description';
+        this.cfg.withDescription = this.cfg.withDescription || false;
+        this.cfg.titleLabel = this.cfg.titleLabel || 'Title';
+        this.cfg.withTitle = this.cfg.withTitle || false;
 
         this.renderMessages();
 
@@ -390,6 +394,9 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQueryFileUpload.AddCallbackData} data The data from the selected file.
      */
     addFileToRow: function(file, data) {
+        var titleId = null;
+        var descriptionId = null;
+
         var $this = this,
             row = $('<div class="ui-fileupload-row"></div>')
                 .append('<div class="ui-fileupload-preview"></td>')
@@ -397,8 +404,29 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                 .append('<div>' + this.formatSize(file.size) + '</div>')
                 .append('<div class="ui-fileupload-progress"></div>')
                 .append('<div><button class="ui-fileupload-cancel ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"><span class="ui-button-icon-left ui-icon ui-icon ui-icon-close"></span><span class="ui-button-text">ui-button</span></button></div>')
-                .appendTo(this.filesTbody);
 
+        if(!$this.rowSeq) {
+            $this.rowSeq = 0;
+        }
+
+        if($this.cfg.withTitle) {
+            titleId = $this.id + ":fileTitle-" + $this.rowSeq;
+        }
+
+        if($this.cfg.withDescription) {
+            descriptionId = $this.id + ":fileDescription-" + $this.rowSeq;
+        }
+
+
+        if(titleId)
+            row =  row.append('<div class="ui-fileupload-file-title-container"><label class="ui-outputlabel ui-widget ui-file-upload-title-label">' + $this.cfg.titleLabel +'</label>' +
+                '<input id="'+ titleId + '" type="text" maxlength="30" autocomplete="off" title="" onblur="return PrimeFaces.vi(this)" class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all ui-file-upload-title-input" data-p-label="' + $this.cfg.titleLabel + '" role="textbox" aria-disabled="false" aria-readonly="false"></div>');
+
+        if(descriptionId)
+            row = row.append('<div class="ui-fileupload-file-description-container"><label class="ui-outputlabel ui-widget ui-file-upload-description-label">' + $this.cfg.descriptionLabel +'</label>' +
+                '<textarea rows="2" id="'+ descriptionId + '" maxlength="255"  autocomplete="off" title="" onblur="return PrimeFaces.vi(this)" class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all ui-file-upload-description-input" data-p-label="' + $this.cfg.descriptionLabel + '" aria-disabled="false" aria-readonly="false"></textarea></div>');
+
+        row = row.appendTo($this.filesTbody);
         if(this.filesTbody.children('.ui-fileupload-row').length > 1) {
             $('<div class="ui-widget-content"></div>').prependTo(row);
         }
@@ -440,15 +468,23 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         file.row.data('fileId', this.fileId++);
         file.row.data('filedata', data);
 
+        $this.createFileInputProperties(file, "description", "withDescription", "fileDescription", "textarea");
+        $this.createFileInputProperties(file, "title", "withTitle", "fileTitle", "input");
+
         this.files.push(file);
 
         if(this.cfg.auto) {
             this.upload();
         }
+        $this.rowSeq++;
 
         this.postSelectFile(data);
     },
-
+    createFileInputProperties: function (file, propertyName, withPropertyName, id, type){
+        var input = file.row.find(type + "[id*='" + id + "']");
+        file[propertyName]= input && input[0];
+        file[withPropertyName] = this.cfg[withPropertyName];
+    },
     /**
      * Called after a file was added to this upload widget. Takes care of the UI buttons.
      * @private

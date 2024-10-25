@@ -99,4 +99,14 @@ public class NIOUploadedFile implements UploadedFile, Serializable {
     public void delete() throws IOException {
         Files.delete(file);
     }
+
+    @Override
+    public String getDescription() {
+        return "";
+    }
+
+    @Override
+    public String getTitle() {
+        return "";
+    }
 }

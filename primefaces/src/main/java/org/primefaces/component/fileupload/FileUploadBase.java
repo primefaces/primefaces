@@ -64,6 +64,10 @@ public abstract class FileUploadBase extends UIInput implements Widget {
         messageTemplate,
         previewWidth,
         skinSimple,
+        descriptionLabel,
+        withDescription,
+        titleLabel,
+        withTitle,
         accept,
         sequential,
         chooseIcon,
@@ -485,5 +489,40 @@ public abstract class FileUploadBase extends UIInput implements Widget {
 
     public void setDropZone(String dropZone) {
         getStateHelper().put(PropertyKeys.dropZone, dropZone);
+    }
+    // Getter and setter for the 'descriptionLabel' property
+    public void setDescriptionLabel(String descriptionLabel) {
+        getStateHelper().put(PropertyKeys.descriptionLabel, descriptionLabel);
+    }
+
+    public String getDescriptionLabel() {
+        return (String) getStateHelper().eval(PropertyKeys.descriptionLabel, "Description");
+    }
+
+    // Getter and setter for the 'withDescription' property
+    public void setWithDescription(boolean withDescription) {
+        getStateHelper().put(PropertyKeys.withDescription, withDescription);
+    }
+
+    public boolean isWithDescription() {
+        return (boolean) getStateHelper().eval(PropertyKeys.withDescription, false);
+    }
+
+    // Getter and setter for the 'titleLabel' property
+    public void setTitleLabel(String titleLabel) {
+        getStateHelper().put(PropertyKeys.titleLabel, titleLabel);
+    }
+
+    public String getTitleLabel() {
+        return (String) getStateHelper().eval(PropertyKeys.titleLabel, "Title");
+    }
+
+    // Getter and setter for the 'withTitle' property
+    public void setWithTitle(boolean withTitle) {
+        getStateHelper().put(PropertyKeys.withTitle, withTitle);
+    }
+
+    public boolean isWithTitle() {
+        return (boolean) getStateHelper().eval(PropertyKeys.withTitle, false);
     }
 }

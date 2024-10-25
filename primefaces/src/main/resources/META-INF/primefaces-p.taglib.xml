@@ -10948,6 +10948,30 @@
             <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
+            <name>descriptionLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description><![CDATA[Label for description input.]]></description>
+        </attribute>
+        <attribute>
+            <name>withDescription</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <description><![CDATA[Determines if show description input of file.]]></description>
+        </attribute>
+        <attribute>
+            <name>titleLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description><![CDATA[Label for title input of file.]]></description>
+        </attribute>
+        <attribute>
+            <name>withTitle</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <description><![CDATA[Determines if show title input.]]></description>
+        </attribute>
+        <attribute>
             <description>
                 <![CDATA[]]>
             </description>

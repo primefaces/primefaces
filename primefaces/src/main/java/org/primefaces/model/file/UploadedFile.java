@@ -41,4 +41,9 @@ public interface UploadedFile {
     void write(String filePath) throws Exception;
 
     void delete() throws IOException;
+
+    public String getDescription();
+
+    public String getTitle();
+
 }

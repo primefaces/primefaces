@@ -89,4 +89,14 @@ public class CommonsUploadedFile implements UploadedFile, Serializable {
     public void delete() throws IOException {
         fileItem.delete();
     }
+
+    @Override
+    public String getDescription() {
+        return "";
+    }
+
+    @Override
+    public String getTitle() {
+        return "";
+    }
 }

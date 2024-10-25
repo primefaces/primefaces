@@ -581,6 +581,12 @@
             });
           }
         }
+        if(file.withDescription) {
+          formData.append("org.primefaces.component.FileUpload.file_description", file.description.value);
+        }
+        if(file.withTitle){
+          formData.append("org.primefaces.component.FileUpload.file_title", file.title.value);
+        }
         options.data = formData;
       }
       // Blob reference is not needed anymore, free memory:
