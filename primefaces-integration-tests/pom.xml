@@ -45,6 +45,11 @@
             <artifactId>primefaces</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.primefaces</groupId>
+            <artifactId>primefaces-themes</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <!-- FeedReader -->
         <dependency>
@@ -373,7 +378,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.8.0</version>
+                <version>3.8.1</version>
             </plugin>
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
