@@ -1,3 +1,5 @@
+@use "sass:math";
+
 body {
   .ui-chip {
     background-color: $chipBg;
