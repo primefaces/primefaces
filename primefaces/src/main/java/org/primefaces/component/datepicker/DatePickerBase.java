@@ -477,7 +477,8 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
     }
 
     public boolean isShowWeek() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showWeek, "week".equals(getView()));
+        return ComponentUtils.eval(getStateHelper(), PropertyKeys.showWeek,
+                () -> "week".equals(getView()));
     }
 
     public void setShowWeek(boolean showWeek) {
