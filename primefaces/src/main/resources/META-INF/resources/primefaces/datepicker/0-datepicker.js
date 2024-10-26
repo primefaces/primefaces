@@ -547,6 +547,14 @@
 
         isSelected: function(dateMeta) {
             if (this.value) {
+                if (this.options.view === 'week') {
+                    var currentDate = this.value[0];
+                    var currentDateMeta = { day: currentDate.getDate(), month: currentDate.getMonth(), year: currentDate.getFullYear() };
+                    var w1 = this.options.weekCalculator(currentDateMeta);
+                    var w2 = this.options.weekCalculator(dateMeta);
+                    return w1 == w2;
+                }
+
                 if (this.isSingleSelection()) {
                     return this.isDateEquals(this.value, dateMeta);
                 }
@@ -666,7 +674,24 @@
 
             if (this.value) {
                 try {
-                    if (this.isSingleSelection()) {
+                    if (this.isRangeSelection()) {
+                        if (this.value && this.value.length) {
+                            var startDate = this.value[0],
+                                endDate = this.value[1];
+
+                            formattedValue = this.formatDateTime(startDate);
+                            if (endDate) {
+                                formattedValue += ' ' + this.options.rangeSeparator + ' ' + this.formatDateTime(endDate);
+                            }
+
+                            if (this.options.view === 'week') {
+                                var startDateMeta = { day: startDate.getDate(), month: startDate.getMonth(), year: startDate.getFullYear() };
+                                var week = this.options.weekCalculator(startDateMeta);
+                                formattedValue += ' (' + this.options.locale.weekHeader + ' ' + week + ')';
+                            }
+                        }
+                    }
+                    else if (this.isSingleSelection()) {
                         formattedValue = this.formatDateTime(this.value);
                     }
                     else if (this.isMultipleSelection()) {
@@ -675,17 +700,6 @@
                             formattedValue += dateAsString;
                             if (i !== (this.value.length - 1)) {
                                 formattedValue += ', ';
-                            }
-                        }
-                    }
-                    else if (this.isRangeSelection()) {
-                        if (this.value && this.value.length) {
-                            var startDate = this.value[0],
-                                endDate = this.value[1];
-
-                            formattedValue = this.formatDateTime(startDate);
-                            if (endDate) {
-                                formattedValue += ' ' + this.options.rangeSeparator + ' ' + this.formatDateTime(endDate);
                             }
                         }
                     }
@@ -755,7 +769,8 @@
                     } else {
                         switch (format.charAt(iFormat)) {
                             case 'd':
-                                output += formatNumber('d', date.getDate(), 2);
+                                var day = date.hasOwnProperty('day') ? date.day : date.getDate();
+                                output += formatNumber('d', day, 2);
                                 break;
                             case 'D':
                                 output += formatName('D', date.getDay(), this.options.locale.dayNamesShort, this.options.locale.dayNames);
@@ -767,13 +782,16 @@
                                         new Date(date.getFullYear(), 0, 0).getTime()) / 86400000), 3);
                                 break;
                             case 'm':
-                                output += formatNumber('m', date.getMonth() + 1, 2);
+                                var month = date.hasOwnProperty('month') ? date.month : date.getMonth();
+                                output += formatNumber('m', month + 1, 2);
                                 break;
                             case 'M':
-                                output += formatName('M', date.getMonth(), this.options.locale.monthNamesShort, this.options.locale.monthNames);
+                                var month = date.hasOwnProperty('month') ? date.month : date.getMonth();
+                                output += formatName('M', month, this.options.locale.monthNamesShort, this.options.locale.monthNames);
                                 break;
                             case 'y':
-                                output += lookAhead('y') ? date.getFullYear() : (date.getFullYear() % 100 < 10 ? '0' : '') + (date.getFullYear() % 100);
+                                var year = date.hasOwnProperty('year') ? date.year : date.getFullYear();
+                                output += lookAhead('y') ? year : (year % 100 < 10 ? '0' : '') + (year % 100);
                                 break;
                             case '@':
                                 output += date.getTime();
@@ -1196,6 +1214,7 @@
             this._setInitOptionValues();
 
             this._bindEvents();
+            this._bindPanelEvents();
 
             this.transition = PrimeFaces.utils.registerCSSTransition(this.panel, 'ui-connected-overlay');
         },
@@ -1284,7 +1303,7 @@
             }
 
             if (!this.options.timeOnly) {
-                if (this.options.view === 'date') {
+                if (this.options.view === 'date' || this.options.view === 'week') {
                     elementsHtml += this.renderDateView();
                 }
                 else if (this.options.view === 'month') {
@@ -1881,22 +1900,25 @@
 
             var navBackwardSelector = '.ui-datepicker-header > .ui-datepicker-prev',
                 navForwardSelector = '.ui-datepicker-header > .ui-datepicker-next';
-            this.panel.off('click.datePicker-navBackward', navBackwardSelector).on('click.datePicker-navBackward', navBackwardSelector, null, this.navBackward.bind($this));
-            this.panel.off('click.datePicker-navForward', navForwardSelector).on('click.datePicker-navForward', navForwardSelector, null, this.navForward.bind($this));
+            this.panel.off('click.datePicker-navBackward', navBackwardSelector)
+                .on('click.datePicker-navBackward', navBackwardSelector, null, this.navBackward.bind($this));
+            this.panel.off('click.datePicker-navForward', navForwardSelector)
+                .on('click.datePicker-navForward', navForwardSelector, null, this.navForward.bind($this));
 
             var monthNavigatorSelector = '.ui-datepicker-header > .ui-datepicker-title > .ui-datepicker-month',
                 yearNavigatorSelector = '.ui-datepicker-header > .ui-datepicker-title > .ui-datepicker-year';
-            this.panel.off('change.datePicker-monthNav', monthNavigatorSelector).on('change.datePicker-monthNav', monthNavigatorSelector, null, this.onMonthDropdownChange.bind($this));
+            this.panel.off('change.datePicker-monthNav', monthNavigatorSelector)
+                .on('change.datePicker-monthNav', monthNavigatorSelector, null, this.onMonthDropdownChange.bind($this));
             this.panel.off('change.datePicker-yearnav keydown.datePicker-yearnav', yearNavigatorSelector)
-            .on('change.datePicker-yearnav', yearNavigatorSelector, null, this.onYearInputChange.bind($this))
-            .on('keydown.datePicker-yearnav', yearNavigatorSelector, null, function(event) {$this.onTimeInputKeyDown(event);});
+                .on('change.datePicker-yearnav', yearNavigatorSelector, null, this.onYearInputChange.bind($this))
+                .on('keydown.datePicker-yearnav', yearNavigatorSelector, null, function(event) {$this.onTimeInputKeyDown(event);});
 
             var monthViewMonthSelector = '.ui-monthpicker > .ui-monthpicker-month';
             this.panel.off('click.datePicker-monthViewMonth', monthViewMonthSelector).on('click.datePicker-monthViewMonth', monthViewMonthSelector, null, function(e) {
                 $this.onMonthSelect(e, $(this).index());
-            })                .on('keydown.datePicker-monthViewMonth', monthViewMonthSelector, null, function(event) {
-                    $this.onMonthKeyDown(event, $(this).index());
-                });
+            }).on('keydown.datePicker-monthViewMonth', monthViewMonthSelector, null, function(event) {
+                $this.onMonthKeyDown(event, $(this).index());
+            });
 
             var timeSelector = '.ui-hour-picker > button,  .ui-minute-picker > button, .ui-second-picker > button, .ui-millisecond-picker > button',
                 ampmSelector = '.ui-ampm-picker > button';
@@ -1956,21 +1978,41 @@
             this.panel.off('click.datePicker-clearButton', clearButtonSelector).on('click.datePicker-clearButton', clearButtonSelector, null, this.onClearButtonClick.bind($this));
 
             var dateSelector = '.ui-datepicker-calendar td a';
-            this.panel.off('click.datePicker-date keydown.datePicker-date', dateSelector).on('click.datePicker-date', dateSelector, null, function(event) {
-                if ($this.monthsMetadata) {
+            this.panel.off('click.datePicker-date keydown.datePicker-date', dateSelector)
+                .on('click.datePicker-date', dateSelector, null, function(event) {
+                    if ($this.monthsMetadata) {
+                        var dayEl = $(this),
+                            calendarIndex = dayEl.closest('.ui-datepicker-group').index(),
+                            weekIndex = dayEl.closest('tr').index(),
+                            dayIndex = dayEl.closest('td').index() - ($this.options.showWeek ? 1 : 0);
+                        $this.onDateSelect(event, $this.monthsMetadata[calendarIndex].dates[weekIndex][dayIndex]);
+                    }
+                }).on('keydown.datePicker-date', dateSelector, null, function(event) {
                     var dayEl = $(this),
                         calendarIndex = dayEl.closest('.ui-datepicker-group').index(),
                         weekIndex = dayEl.closest('tr').index(),
                         dayIndex = dayEl.closest('td').index() - ($this.options.showWeek ? 1 : 0);
-                    $this.onDateSelect(event, $this.monthsMetadata[calendarIndex].dates[weekIndex][dayIndex]);
-                }
-            }).on('keydown.datePicker-date', dateSelector, null, function(event) {
-                var dayEl = $(this),
-                    calendarIndex = dayEl.closest('.ui-datepicker-group').index(),
-                    weekIndex = dayEl.closest('tr').index(),
-                    dayIndex = dayEl.closest('td').index() - ($this.options.showWeek ? 1 : 0);
-                $this.onDateKeyDown(event, $this.monthsMetadata[calendarIndex].dates[weekIndex][dayIndex]);
-            });
+                    $this.onDateKeyDown(event, $this.monthsMetadata[calendarIndex].dates[weekIndex][dayIndex]);
+                });
+        },
+
+        _bindPanelEvents: function() {
+            if (this.options.view === 'week') {
+                // Add events to highlight whole week
+                var row = this.panel.find('.ui-datepicker-calendar tr');
+                row.mousemove(function() {
+                    $(this).find('td a').addClass('ui-state-hover');
+                });
+                row.mouseleave(function() {
+                    $(this).find('td a').removeClass('ui-state-hover');
+                });
+
+                // Highlight active week
+                var activeRow = this.panel.find('.ui-state-active').closest('tr');
+                activeRow.find('td').each(function () {
+                    $(this).find('a').addClass('ui-state-active');
+                });
+            }
         },
 
         onDateKeyDown: function(event, dateMeta) {
@@ -2375,7 +2417,7 @@
             var newViewDate = new Date(this.viewDate.getTime());
             newViewDate.setDate(1);
 
-            if (this.options.view === 'date') {
+            if (this.options.view === 'date' || this.options.view === 'week') {
                 if (newViewDate.getMonth() === 0) {
                     newViewDate.setMonth(11, 1);
                     newViewDate.setFullYear(newViewDate.getFullYear() - 1);
@@ -2438,7 +2480,7 @@
             var newViewDate = new Date(this.viewDate.getTime());
             newViewDate.setDate(1);
 
-            if (this.options.view === 'date') {
+            if (this.options.view === 'date' || this.options.view === 'week') {
                 if (newViewDate.getMonth() === 11) {
                     newViewDate.setMonth(0, 1);
                     newViewDate.setFullYear(newViewDate.getFullYear() + 1);
@@ -2489,7 +2531,7 @@
         },
 
         setNavigationState: function(newViewDate) {
-            if (!newViewDate || !this.options.showMinMaxRange || this.options.view !== 'date') {
+            if (!newViewDate || !this.options.showMinMaxRange || this.options.view === 'month') {
                 return;
             }
 
@@ -2611,7 +2653,7 @@
             if ($this.options.view === 'month') {
                 focused = $this.panel.find('a.ui-monthpicker-month');
             }
-            if ($this.options.view === 'date') {
+            if ($this.options.view === 'date' || $this.options.view === 'week') {
                 // focus first selected day or today
                 focused = $this.panel.find('a.ui-state-active');
 
@@ -2890,6 +2932,23 @@
             }
         },
 
+        findWeekMetadata: function(dateMeta) {
+            for (let month of this.monthsMetadata) {
+                if (month.month === dateMeta.month && month.year === dateMeta.year) {
+                    for (let week of month.dates) {
+                        for (let day of week) {
+                            if (day.day === dateMeta.day) {
+                                return week;
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+
+            return null;
+        },
+
         onDateSelect: function(event, dateMeta) {
             if (this.options.disabled || !dateMeta.selectable) {
                 if (event) {
@@ -2900,7 +2959,17 @@
 
             var $this = this;
 
-            if (this.isMultipleSelection()) {
+            if (this.options.view === 'week') {
+                // simulate click on start and end day of the week
+                var week = this.findWeekMetadata(dateMeta);
+                this.selectDate(event, week[0]);
+                this.selectDate(event, week[week.length - 1]);
+
+                PrimeFaces.queueTask(function() {
+                    $this.hideOverlay();
+                }, 100);
+            }
+            else if (this.isMultipleSelection()) {
                 if (this.isSelected(dateMeta)) {
                     var value = this.value.filter(function(date, i) {
                         return !$this.isDateEquals(date, dateMeta);
@@ -3442,6 +3511,7 @@
             }
 
             this._setInitOptionValues();
+            this._bindPanelEvents();
         }
 
     });
