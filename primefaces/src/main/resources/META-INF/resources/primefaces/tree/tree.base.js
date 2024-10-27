@@ -99,7 +99,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
         this.selections = selectionsValue === '' ? [] : selectionsValue.split(',');
 
         if(this.cursorNode) {
-            this.cursorNode = this.jq.find('.ui-treenode[data-rowkey="' + $.escapeSelector(this.cursorNode.data('rowkey')) + '"]');
+            this.cursorNode = this.jq.find('.ui-treenode[data-rowkey="' + CSS.escape(this.cursorNode.data('rowkey')) + '"]');
         }
 
         if(this.isCheckboxSelection() && this.cfg.propagateUp) {

@@ -859,7 +859,7 @@
                     el.parent().trigger('focus');
                 }
                 else {
-                    var checkedRadio = $(':radio[name="' + $.escapeSelector(el.attr('name')) + '"]').filter(':checked');
+                    var checkedRadio = $(':radio[name="' + CSS.escape(el.attr('name')) + '"]').filter(':checked');
                     if(checkedRadio.length)
                         checkedRadio.trigger('focus');
                     else
