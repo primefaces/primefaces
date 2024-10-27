@@ -37,6 +37,7 @@ Look into [migration guide](https://primefaces.github.io/primefaces/15_0_0/#/../
 
 * DatePicker
     * Added `defaultHour`, `defaultMinute`, `defaultSecond`, `defaultMillisec` attributes to match legacy `Calendar` component
+    * Added ability to pick weeks by view="week"
 
 * FeedReader
 
