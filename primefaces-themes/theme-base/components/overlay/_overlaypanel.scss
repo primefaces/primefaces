@@ -1,3 +1,5 @@
+@use "sass:math";
+
 body {
   .ui-overlaypanel {
     background: $panelContentBg;
