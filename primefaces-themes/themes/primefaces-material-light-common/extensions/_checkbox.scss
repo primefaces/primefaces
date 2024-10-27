@@ -1,19 +1,21 @@
+@use 'sass:list';
+
 body {
   .ui-chkbox {
     border-radius: 50%;
     transition: box-shadow $transitionDuration;
 
     .ui-chkbox-box {
-      border-color: nth($checkboxBorder, 3);
+      border-color: list.nth($checkboxBorder, 3);
       border-radius: 2px;
       position: relative;
 
       &:not(.ui-state-disabled).ui-state-hover {
-        border-color: nth($checkboxBorder, 3);
+        border-color: list.nth($checkboxBorder, 3);
       }
 
       &:not(.ui-state-disabled).ui-state-focus {
-        border-color: nth($checkboxBorder, 3);
+        border-color: list.nth($checkboxBorder, 3);
       }
 
       &.ui-state-active {

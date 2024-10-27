@@ -1,3 +1,6 @@
+@use 'sass:list';
+@use 'sass:math';
+
 body {
   .ui-picklist {
     .ui-picklist-buttons {
@@ -54,14 +57,14 @@ body {
       .ui-picklist-filter {
         padding: $inputPadding;
         width: 100%;
-        padding-left: 2 * nth($inputPadding, 2) + $iconSize;
+        padding-left: 2 * list.nth($inputPadding, 2) + $iconSize;
         margin-bottom: $inlineSpacing;
       }
 
       .ui-icon {
         @include icon-override("\e908");
         position: absolute;
-        left: nth($inputPadding, 2);
+        left: list.nth($inputPadding, 2);
         top: 50%;
         right: auto;
         margin-top: math.div(-1 * $iconSize, 2) - math.div($inlineSpacing, 2);

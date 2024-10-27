@@ -1,3 +1,6 @@
+@use 'sass:list';
+@use 'sass:math';
+
 body {
   .ui-selectcheckboxmenu {
     &.ui-state-error {
@@ -8,7 +11,7 @@ body {
 
     .ui-selectcheckboxmenu-multiple-container {
       .ui-selectcheckboxmenu-token {
-        padding: math.div(nth($inputPadding, 1), 2) nth($inputPadding, 2);
+        padding: math.div(list.nth($inputPadding, 1), 2) list.nth($inputPadding, 2);
         margin-bottom: .1rem;
 
         .ui-selectcheckboxmenu-token-label {

@@ -1,3 +1,5 @@
+@use "sass:color";
+
 /// Padding of a button with only text
 /// @group button
 $buttonTextOnlyPadding: .5rem 1rem;
@@ -176,7 +178,7 @@ $infoButtonActiveBorderColor: #0288D1;
 
 /// Box shadow of an info button in focused state
 /// @group button
-$infoButtonFocusShadow: 0 0 0 0.2rem lighten($infoButtonBg, 35%);
+$infoButtonFocusShadow: 0 0 0 0.2rem color.adjust($infoButtonBg, $lightness: 35%);
 
 /// Background of a success button
 /// @group button
@@ -216,7 +218,7 @@ $successButtonActiveBorderColor: #388E3C;
 
 /// Box shadow of a success button in focused state
 /// @group button
-$successButtonFocusShadow: 0 0 0 0.2rem lighten($successButtonBg, 35%);
+$successButtonFocusShadow: 0 0 0 0.2rem color.adjust($successButtonBg, $lightness: 35%);
 
 /// Background of a warning button
 /// @group button
@@ -256,7 +258,7 @@ $warningButtonActiveBorderColor: #FFA000;
 
 /// Box shadow of a warning button in focused state
 /// @group button
-$warningButtonFocusShadow: 0 0 0 0.2rem lighten($warningButtonBg, 35%);
+$warningButtonFocusShadow: 0 0 0 0.2rem color.adjust($warningButtonBg, $lightness: 35%);
 
 /// Background of a help button
 /// @group button
@@ -336,7 +338,7 @@ $dangerButtonActiveBorderColor: #d32f2f;
 
 /// Box shadow of a danger button in focused state
 /// @group button
-$dangerButtonFocusShadow: 0 0 0 0.2rem lighten($dangerButtonBg, 35%);
+$dangerButtonFocusShadow: 0 0 0 0.2rem color.adjust($dangerButtonBg, $lightness: 35%);
 
 /// Background of a toggle button
 /// @group button

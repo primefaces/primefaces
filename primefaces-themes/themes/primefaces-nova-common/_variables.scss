@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 $colors: (
     "blue": #106EBE,
     "green": #56A641,
@@ -47,7 +49,7 @@ $actionIconHoverColor:$primaryColor !default;
 $actionIconBorderRadius:50% !default;
 
 //focus
-$focusOutlineColor:lighten($primaryColor, 35%) !default;
+$focusOutlineColor: color.scale($primaryColor, $lightness: 35%) !default;
 $focusOutline:0 none !default;
 $focusOutlineOffset:0 !default;
 $focusShadow:0 0 0 0.2rem $focusOutlineColor !default;
@@ -91,7 +93,7 @@ $inputListItemHighlightTextColor:$highlightTextColor !default;
 $inputListItemBorder:0 none !default;
 $inputListItemBorderRadius:0 !default;
 $inputListItemMargin:0 !default;
-$inputListItemFocusShadow: inset 0 0 0 .15rem lighten($primaryColor, 35%) !default;
+$inputListItemFocusShadow: inset 0 0 0 .15rem color.scale($primaryColor, $lightness: 35%) !default;
 $inputListHeaderPadding:0.429rem 0.857rem !default;
 $inputListHeaderBg:#ffffff !default;
 $inputListHeaderTextColor:#333333 !default;
@@ -162,7 +164,7 @@ $infoButtonHoverBorderColor:#116fbf !default;
 $infoButtonActiveBg:#005b9f !default;
 $infoButtonTextActiveColor:#ffffff !default;
 $infoButtonActiveBorderColor:#005b9f !default;
-$infoButtonFocusShadow:0 0 0 0.2rem lighten($infoButtonBg, 35%) !default;
+$infoButtonFocusShadow:0 0 0 0.2rem color.scale($infoButtonBg, $lightness: 35%) !default;
 
 $successButtonBg:#34A835 !default;
 $successButtonTextColor:#ffffff !default;
@@ -173,7 +175,7 @@ $successButtonHoverBorderColor:#107D11 !default;
 $successButtonActiveBg:#0C6B0D !default;
 $successButtonTextActiveColor:#ffffff !default;
 $successButtonActiveBorderColor:#0C6B0D !default;
-$successButtonFocusShadow:0 0 0 0.2rem lighten($successButtonBg, 35%) !default;
+$successButtonFocusShadow:0 0 0 0.2rem color.scale($successButtonBg, $lightness: 35%) !default;
 
 $warningButtonBg:#ffba01 !default;
 $warningButtonTextColor:#333333 !default;
@@ -184,7 +186,7 @@ $warningButtonHoverBorderColor:#ED990B !default;
 $warningButtonActiveBg:#D38B10 !default;
 $warningButtonTextActiveColor:#333333 !default;
 $warningButtonActiveBorderColor:#D38B10 !default;
-$warningButtonFocusShadow:0 0 0 0.2rem lighten($warningButtonBg, 35%) !default;
+$warningButtonFocusShadow:0 0 0 0.2rem color.scale($warningButtonBg, $lightness: 35%) !default;
 
 $helpButtonBg:#9C27B0 !default;
 $helpButtonTextColor:#ffffff !default;
@@ -206,7 +208,7 @@ $dangerButtonHoverBorderColor:#c01120 !default;
 $dangerButtonActiveBg:#a90000 !default;
 $dangerButtonTextActiveColor:#ffffff !default;
 $dangerButtonActiveBorderColor:#a90000 !default;
-$dangerButtonFocusShadow:0 0 0 0.2rem lighten($dangerButtonBg, 35%) !default;
+$dangerButtonFocusShadow:0 0 0 0.2rem color.scale($dangerButtonBg, $lightness: 35%) !default;
 
 //checkbox
 $checkboxBorderWidth:1px !default;
@@ -485,8 +487,8 @@ $dataViewListItemBorder: $divider !default;
 $dataViewListItemBorderWidth: 1px !default;
 
 //orderlist, picklist
-$orderListDropPlaceholderBg:scale-color($highlightBg, $lightness: -20%) !default;
-$pickListDropPlaceholderBg:scale-color($highlightBg, $lightness: -20%) !default;
+$orderListDropPlaceholderBg:color.scale($highlightBg, $lightness: -20%) !default;
+$pickListDropPlaceholderBg:color.scale($highlightBg, $lightness: -20%) !default;
 
 //schedule
 $scheduleCellBorderColor: #c8c8c8 !default;
