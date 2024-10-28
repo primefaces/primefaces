@@ -135,121 +135,124 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
         if (crudOperationDatas == null) {
             return;
         }
-        StringBuilder sb = new StringBuilder();
 
-        Timeline timeline = (Timeline) context.getViewRoot().findComponent(id);
-        TimelineRenderer timelineRenderer = ComponentUtils.getUnwrappedRenderer(
-                context,
-                Timeline.COMPONENT_FAMILY,
-                Timeline.DEFAULT_RENDERER);
+        context.getViewRoot().invokeOnComponent(context, id, (ctx, component) -> {
+            StringBuilder sb = new StringBuilder();
 
-        TimelineModel<Object, Object> model = timeline.getValue();
-        List<TimelineGroup<Object>> groups = timelineRenderer.calculateGroupsFromModel(model);
-        UIComponent groupFacet = timeline.getFacet("group");
-        // buffer for groups' content
-        Map<String, String> groupsContent = new HashMap<>();
-        UIComponent eventTitleFacet = timeline.getFacet("eventTitle");
+            Timeline timeline = (Timeline) component;
+            TimelineRenderer timelineRenderer = ComponentUtils.getUnwrappedRenderer(
+                    context,
+                    Timeline.COMPONENT_FAMILY,
+                    Timeline.DEFAULT_RENDERER);
 
-        ZoneId zoneId = CalendarUtils.calculateZoneId(timeline.getTimeZone());
+            TimelineModel<Object, Object> model = timeline.getValue();
+            List<TimelineGroup<Object>> groups = timelineRenderer.calculateGroupsFromModel(model);
+            UIComponent groupFacet = timeline.getFacet("group");
+            // buffer for groups' content
+            Map<String, String> groupsContent = new HashMap<>();
+            UIComponent eventTitleFacet = timeline.getFacet("eventTitle");
 
-        try (FastStringWriter fsw = new FastStringWriter();
-             FastStringWriter fswHtml = new FastStringWriter()) {
+            ZoneId zoneId = CalendarUtils.calculateZoneId(timeline.getTimeZone());
 
-            Consumer<CrudOperationData> updateGroupIfNecessary = data -> {
-                TimelineGroup<?> foundGroup = null;
-                if (data.getEvent().getGroup() != null) {
-                    Integer orderGroup = null;
-                    for (int i = 0; i < groups.size(); i++) {
-                        TimelineGroup<?> group = groups.get(i);
-                        if (group.getId() != null && group.getId().equals(data.getEvent().getGroup())) {
-                            orderGroup = i;
-                            foundGroup = group;
+            try (FastStringWriter fsw = new FastStringWriter();
+                 FastStringWriter fswHtml = new FastStringWriter()) {
+
+                Consumer<CrudOperationData> updateGroupIfNecessary = data -> {
+                    TimelineGroup<?> foundGroup = null;
+                    if (data.getEvent().getGroup() != null) {
+                        Integer orderGroup = null;
+                        for (int i = 0; i < groups.size(); i++) {
+                            TimelineGroup<?> group = groups.get(i);
+                            if (group.getId() != null && group.getId().equals(data.getEvent().getGroup())) {
+                                orderGroup = i;
+                                foundGroup = group;
+                                break;
+                            }
+                        }
+                        if (foundGroup != null) {
+                            //If groups was not set in model then order by content.
+                            orderGroup = model.getGroups() != null ? orderGroup : null;
+                            sb.append(";PF('");
+                            sb.append(widgetVar);
+                            sb.append("').updateGroup(");
+                            try {
+                                sb.append(timelineRenderer.encodeGroup(context, fsw, fswHtml, timeline, groupFacet, groupsContent, foundGroup, orderGroup));
+                            }
+                            catch (IOException e) {
+                                LOGGER.log(Level.WARNING, e, () -> "Timeline with id " + id + " could not be updated, at least one CRUD operation failed");
+                            }
+                            sb.append(")");
+                        }
+                    }
+                };
+                boolean renderComponent = false;
+                for (CrudOperationData crudOperationData : crudOperationDatas) {
+                    switch (crudOperationData.getCrudOperation()) {
+                        case ADD:
+                            updateGroupIfNecessary.accept(crudOperationData);
+
+                            sb.append(";PF('");
+                            sb.append(widgetVar);
+                            sb.append("').addEvent(");
+                            sb.append(EscapeUtils.forCDATA(timelineRenderer.encodeEvent(context, fsw, fswHtml, timeline, eventTitleFacet, zoneId,
+                                    groups, crudOperationData.getEvent())));
+                            sb.append(")");
+                            renderComponent = true;
                             break;
-                        }
-                    }
-                    if (foundGroup != null) {
-                        //If groups was not set in model then order by content.
-                        orderGroup = model.getGroups() != null ? orderGroup : null;
-                        sb.append(";PF('");
-                        sb.append(widgetVar);
-                        sb.append("').updateGroup(");
-                        try {
-                            sb.append(timelineRenderer.encodeGroup(context, fsw, fswHtml, timeline, groupFacet, groupsContent, foundGroup, orderGroup));
-                        }
-                        catch (IOException e) {
-                            LOGGER.log(Level.WARNING, e, () -> "Timeline with id " + id + " could not be updated, at least one CRUD operation failed");
-                        }
-                        sb.append(")");
+
+                        case UPDATE:
+                            updateGroupIfNecessary.accept(crudOperationData);
+
+                            sb.append(";PF('");
+                            sb.append(widgetVar);
+                            sb.append("').changeEvent(");
+                            sb.append(EscapeUtils.forCDATA(timelineRenderer.encodeEvent(context, fsw, fswHtml, timeline, eventTitleFacet, zoneId,
+                                    groups, crudOperationData.getEvent())));
+                            sb.append(")");
+                            renderComponent = true;
+                            break;
+
+                        case DELETE:
+
+                            sb.append(";PF('");
+                            sb.append(widgetVar);
+                            sb.append("').deleteEvent(\"");
+                            sb.append(EscapeUtils.forJavaScript(crudOperationData.calculateId()));
+                            sb.append("\")");
+                            renderComponent = true;
+                            break;
+
+                        case SELECT:
+
+                            sb.append(";PF('");
+                            sb.append(widgetVar);
+                            sb.append("').setSelection(\"");
+                            sb.append(EscapeUtils.forJavaScript(crudOperationData.calculateId()));
+                            sb.append("\")");
+                            break;
+
+                        case CLEAR:
+
+                            sb.append(";PF('");
+                            sb.append(widgetVar);
+                            sb.append("').deleteAllEvents()");
+                            break;
                     }
                 }
-            };
-            boolean renderComponent = false;
-            for (CrudOperationData crudOperationData : crudOperationDatas) {
-                switch (crudOperationData.getCrudOperation()) {
-                    case ADD:
-                        updateGroupIfNecessary.accept(crudOperationData);
 
-                        sb.append(";PF('");
-                        sb.append(widgetVar);
-                        sb.append("').addEvent(");
-                        sb.append(EscapeUtils.forCDATA(timelineRenderer.encodeEvent(context, fsw, fswHtml, timeline, eventTitleFacet, zoneId,
-                                groups, crudOperationData.getEvent())));
-                        sb.append(")");
-                        renderComponent = true;
-                        break;
-
-                    case UPDATE:
-                        updateGroupIfNecessary.accept(crudOperationData);
-
-                        sb.append(";PF('");
-                        sb.append(widgetVar);
-                        sb.append("').changeEvent(");
-                        sb.append(EscapeUtils.forCDATA(timelineRenderer.encodeEvent(context, fsw, fswHtml, timeline, eventTitleFacet, zoneId,
-                                groups, crudOperationData.getEvent())));
-                        sb.append(")");
-                        renderComponent = true;
-                        break;
-
-                    case DELETE:
-
-                        sb.append(";PF('");
-                        sb.append(widgetVar);
-                        sb.append("').deleteEvent(\"");
-                        sb.append(EscapeUtils.forJavaScript(crudOperationData.calculateId()));
-                        sb.append("\")");
-                        renderComponent = true;
-                        break;
-
-                    case SELECT:
-
-                        sb.append(";PF('");
-                        sb.append(widgetVar);
-                        sb.append("').setSelection(\"");
-                        sb.append(EscapeUtils.forJavaScript(crudOperationData.calculateId()));
-                        sb.append("\")");
-                        break;
-
-                    case CLEAR:
-
-                        sb.append(";PF('");
-                        sb.append(widgetVar);
-                        sb.append("').deleteAllEvents()");
-                        break;
+                if (renderComponent) {
+                    sb.append(";PF('");
+                    sb.append(widgetVar);
+                    sb.append("').renderTimeline()");
                 }
-            }
 
-            if (renderComponent) {
-                sb.append(";PF('");
-                sb.append(widgetVar);
-                sb.append("').renderTimeline()");
+                // execute JS script
+                PrimeFaces.current().executeScript(sb.toString());
             }
-
-            // execute JS script
-            PrimeFaces.current().executeScript(sb.toString());
-        }
-        catch (IOException e) {
-            LOGGER.log(Level.WARNING, e, () -> "Timeline with id " + id + " could not be updated, at least one CRUD operation failed");
-        }
+            catch (IOException e) {
+                LOGGER.log(Level.WARNING, e, () -> "Timeline with id " + id + " could not be updated, at least one CRUD operation failed");
+            }
+        });
     }
 
     @Override
