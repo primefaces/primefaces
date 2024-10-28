@@ -1,4 +1,5 @@
-@use "sass:math";
+@use 'sass:list';
+@use 'sass:math';
 
 body {
   .ui-selectcheckboxmenu {
@@ -82,7 +83,7 @@ body {
 
       .ui-selectcheckboxmenu-input-token {
         margin: 0;
-        padding: math.div(nth($inputPadding,1), 2) 0;
+        padding: math.div(list.nth($inputPadding,1), 2) 0;
 
         input {
           font-family: $fontFamily;
@@ -140,13 +141,13 @@ body {
         .ui-inputfield {
           padding: $inputPadding;
           width: 100%;
-          padding-left: 2 * nth($inputPadding, 2) + $iconSize;
+          padding-left: 2 * list.nth($inputPadding, 2) + $iconSize;
         }
 
         .ui-icon {
           @include icon-override("\e908");
           position: absolute;
-          left: nth($inputPadding, 2);
+          left: list.nth($inputPadding, 2);
           top: 50%;
           right: auto;
           bottom: auto;

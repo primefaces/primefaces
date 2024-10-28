@@ -1,3 +1,5 @@
+@use 'sass:list';
+
 body {
   .ui-treetable {
     .ui-treetable-header {
@@ -233,7 +235,7 @@ body {
       thead {
         > tr {
           > th {
-            padding: nth($datatableHeaderCellPadding,1) * $datatableScaleSm nth($datatableHeaderCellPadding,2) * $datatableScaleSm;
+            padding: list.nth($datatableHeaderCellPadding,1) * $datatableScaleSm list.nth($datatableHeaderCellPadding,2) * $datatableScaleSm;
           }
         }
       }
@@ -250,7 +252,7 @@ body {
       .ui-treetable-data {
         > tr {
           > td {
-            padding: nth($datatableBodyCellPadding,1) * $datatableScaleSm nth($datatableBodyCellPadding,2) * $datatableScaleSm;
+            padding: list.nth($datatableBodyCellPadding,1) * $datatableScaleSm list.nth($datatableBodyCellPadding,2) * $datatableScaleSm;
           }
         }
       }
@@ -258,7 +260,7 @@ body {
       tfoot {
         > tr {
           > td {
-            padding: nth($datatableFooterCellPadding,1) * $datatableScaleSm nth($datatableFooterCellPadding,2) * $datatableScaleSm;
+            padding: list.nth($datatableFooterCellPadding,1) * $datatableScaleSm list.nth($datatableFooterCellPadding,2) * $datatableScaleSm;
           }
         }
       }
@@ -268,7 +270,7 @@ body {
       thead {
         > tr {
           > th {
-            padding: nth($datatableHeaderCellPadding,1) * $datatableScaleLg nth($datatableHeaderCellPadding,2) * $datatableScaleLg;
+            padding: list.nth($datatableHeaderCellPadding,1) * $datatableScaleLg list.nth($datatableHeaderCellPadding,2) * $datatableScaleLg;
           }
         }
       }
@@ -285,7 +287,7 @@ body {
       .ui-treetable-data {
         > tr {
           > td {
-            padding: nth($datatableBodyCellPadding,1) * $datatableScaleLg nth($datatableBodyCellPadding,2) * $datatableScaleLg;
+            padding: list.nth($datatableBodyCellPadding,1) * $datatableScaleLg list.nth($datatableBodyCellPadding,2) * $datatableScaleLg;
           }
         }
       }
@@ -293,7 +295,7 @@ body {
       tfoot {
         > tr {
           > td {
-            padding: nth($datatableFooterCellPadding,1) * $datatableScaleLg nth($datatableFooterCellPadding,2) * $datatableScaleLg;
+            padding: list.nth($datatableFooterCellPadding,1) * $datatableScaleLg list.nth($datatableFooterCellPadding,2) * $datatableScaleLg;
           }
         }
       }

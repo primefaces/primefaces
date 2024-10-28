@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 $colors: (
     "blue": #106EBE,
     "green": #56A641,
@@ -47,7 +49,7 @@ $actionIconHoverColor:#dedede !default;
 $actionIconBorderRadius:50% !default;
 
 //focus
-$focusOutlineColor:lighten($primaryColor, 35%) !default;
+$focusOutlineColor:color.scale($primaryColor, $lightness: 35%) !default;
 $focusOutline:0 none !default;
 $focusOutlineOffset:0 !default;
 $focusShadow:0 0 0 0.1rem $focusOutlineColor !default;
@@ -91,7 +93,7 @@ $inputListItemHighlightTextColor:$highlightTextColor !default;
 $inputListItemBorder:0 none !default;
 $inputListItemBorderRadius:0 !default;
 $inputListItemMargin:0 !default;
-$inputListItemFocusShadow: inset 0 0 0 .15rem lighten($primaryColor, 35%) !default;
+$inputListItemFocusShadow: inset 0 0 0 .15rem color.scale($primaryColor, $lightness: 35%) !default;
 $inputListHeaderPadding:0.429rem 0.857rem !default;
 $inputListHeaderBg:#252525 !default;
 $inputListHeaderTextColor:#dedede !default;
@@ -485,8 +487,8 @@ $dataViewListItemBorder: $divider !default;
 $dataViewListItemBorderWidth: 1px !default;
 
 //orderlist, picklist
-$orderListDropPlaceholderBg:scale-color($highlightBg, $lightness: -20%) !default;
-$pickListDropPlaceholderBg:scale-color($highlightBg, $lightness: -20%) !default;
+$orderListDropPlaceholderBg:color.scale($highlightBg, $lightness: -20%) !default;
+$pickListDropPlaceholderBg:color.scale($highlightBg, $lightness: -20%) !default;
 
 //schedule
 $scheduleCellBorderColor: #191919 !default;

@@ -1,3 +1,6 @@
+@use 'sass:color';
+@use 'sass:list';
+
 @mixin icon-override($icon) {
     font-family: 'primeicons' !important;
     font-style: normal;
@@ -221,7 +224,7 @@
 }
 
 @mixin scaledPadding($val, $scale) {
-    padding: nth($val, 1) * $scale nth($val, 2) * $scale;
+    padding: list.nth($val, 1) * $scale list.nth($val, 2) * $scale;
 }
 
 @mixin scaledFontSize($val, $scale) {
@@ -243,9 +246,9 @@
 }
 
 @function tint($color, $percentage) {
-    @return mix(#fff, $color, $percentage);
+    @return color.mix(#fff, $color, $weight: $percentage, $method: null);
 }
 
 @function shade($color, $percentage) {
-    @return mix(#000, $color, $percentage);
+    @return color.mix(#000, $color, $weight: $percentage, $method: null);
 }

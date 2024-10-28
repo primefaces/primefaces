@@ -1,3 +1,5 @@
+@use 'sass:list';
+
 @mixin filled-input() {
   @include filled-input-default();
   @include filled-input-interaction();
@@ -13,7 +15,7 @@
   border-bottom-right-radius: 0;
   border: 1px solid transparent;
   background: $inputFilledBg no-repeat;
-  background-image: linear-gradient(to bottom, $inputFocusBorderColor, $inputFocusBorderColor), linear-gradient(to bottom, nth($inputBorder, 3), nth($inputBorder, 3));
+  background-image: linear-gradient(to bottom, $inputFocusBorderColor, $inputFocusBorderColor), linear-gradient(to bottom, list.nth($inputBorder, 3), list.nth($inputBorder, 3));
   background-size: 0 2px, 100% 1px;
   background-position: 50% 100%, 50% 100%;
   background-origin: border-box;
@@ -92,10 +94,10 @@
 }
 
 @mixin filled-input-float-label() {
-  @if (nth($inputPadding, 1) == 1rem) {
+  @if (list.nth($inputPadding, 1) == 1rem) {
     padding-top: 1.5rem;
     padding-bottom: .5rem;
-  } @else if (nth($inputPadding, 1) == .75rem) {
+  } @else if (list.nth($inputPadding, 1) == .75rem) {
     padding-top: 1.25rem;
     padding-bottom: .25rem;
   }
