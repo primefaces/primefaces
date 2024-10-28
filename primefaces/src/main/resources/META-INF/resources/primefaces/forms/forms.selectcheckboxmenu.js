@@ -778,7 +778,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         var closeSelector = '> li.ui-selectcheckboxmenu-token > .ui-selectcheckboxmenu-token-icon';
         this.multiItemContainer.off('click', closeSelector).on('click', closeSelector, null, function(e) {
             var itemValue = $(this).parent().data("item-value");
-            var item = $this.items.filter('[data-item-value="' + $.escapeSelector(itemValue) + '"]');
+            var item = $this.items.filter('[data-item-value="' + CSS.escape(itemValue) + '"]');
             if (item && item.length) {
                 if (!$this.isLoaded()) {
                     $this._renderPanel();
@@ -1351,7 +1351,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
      */
     createMultipleItem: function(item) {
         var items = this.multiItemContainer.children();
-        var itemCount = !items.length ? 0 : items.filter('[data-item-value="' + $.escapeSelector(item.data('item-value')) + '"]').length;
+        var itemCount = !items.length ? 0 : items.filter('[data-item-value="' + CSS.escape(item.data('item-value')) + '"]').length;
         if (itemCount > 0) {
             return;
         }
@@ -1387,7 +1387,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
     removeMultipleItem: function(item) {
         var items = this.multiItemContainer.children();
         if (items.length) {
-            items.filter('[data-item-value="' + $.escapeSelector(item.data('item-value')) + '"]').remove();
+            items.filter('[data-item-value="' + CSS.escape(item.data('item-value')) + '"]').remove();
         }
         // update the label if there are no more items to display empty
         this.renderLabel();
