@@ -29,7 +29,6 @@ import org.primefaces.component.api.UIPageableData;
 import org.primefaces.component.api.UITable;
 import org.primefaces.component.api.UITree;
 import org.primefaces.component.api.Widget;
-import org.primefaces.model.TreeNode;
 import org.primefaces.util.MessageFactory;
 
 import javax.el.MethodExpression;
@@ -378,14 +377,6 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
 
     public void setFirst(int first) {
         getStateHelper().put(PropertyKeys.first, first);
-    }
-
-    public TreeNode<?> getFilteredValue() {
-        return (TreeNode<?>) getStateHelper().eval(PropertyKeys.filteredValue, null);
-    }
-
-    public void setFilteredValue(TreeNode<?> filteredValue) {
-        getStateHelper().put(PropertyKeys.filteredValue, filteredValue);
     }
 
     public String getFilterEvent() {
