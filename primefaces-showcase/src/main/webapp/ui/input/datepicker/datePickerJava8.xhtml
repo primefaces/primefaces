@@ -68,6 +68,11 @@
                     </div>
 
                     <div class="field col-12 md:col-4">
+                        <p:outputLabel for="@next" value="Week Picker" />
+                        <p:datePicker id="week" view="week" value="#{calendarJava8View.week}" />
+                    </div>
+
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel for="month" value="Month Picker" />
                         <p:datePicker id="month" view="month" value="#{calendarJava8View.date3}" pattern="MM/yyyy" yearNavigator="true" yearRange="2000:2030" />
                     </div>

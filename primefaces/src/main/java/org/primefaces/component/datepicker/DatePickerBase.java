@@ -23,16 +23,21 @@
  */
 package org.primefaces.component.datepicker;
 
+import org.primefaces.component.api.FlexAware;
+import org.primefaces.component.api.InputHolder;
+import org.primefaces.component.api.MixedClientBehaviorHolder;
+import org.primefaces.component.api.UICalendar;
+import org.primefaces.component.api.Widget;
+import org.primefaces.model.datepicker.DateMetadataModel;
+import org.primefaces.util.CalendarUtils;
+import org.primefaces.util.ComponentUtils;
+
 import java.text.DecimalFormat;
 import java.time.chrono.IsoChronology;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
 import java.util.List;
 import java.util.Locale;
-
-import org.primefaces.component.api.*;
-import org.primefaces.model.datepicker.DateMetadataModel;
-import org.primefaces.util.CalendarUtils;
 
 public abstract class DatePickerBase extends UICalendar implements Widget, InputHolder, MixedClientBehaviorHolder, FlexAware {
 
@@ -178,7 +183,8 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
 
     @Override
     public String getSelectionMode() {
-        return (String) getStateHelper().eval(PropertyKeys.selectionMode, "single");
+        return ComponentUtils.eval(getStateHelper(), PropertyKeys.selectionMode,
+                () -> "week".equals(getView()) ? "range" : "single");
     }
 
     public void setSelectionMode(String selectionMode) {
@@ -470,7 +476,8 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
     }
 
     public boolean isShowWeek() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showWeek, false);
+        return ComponentUtils.eval(getStateHelper(), PropertyKeys.showWeek,
+                () -> "week".equals(getView()));
     }
 
     public void setShowWeek(boolean showWeek) {
@@ -587,4 +594,11 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         }
         return fractionSeparator;
     }
+
+    @Override
+    public boolean isReadonlyInput() {
+        return ComponentUtils.eval(getStateHelper(), UICalendar.PropertyKeys.readonlyInput,
+                () -> "week".equals(getView()) ? true : false);
+    }
+
 }
