@@ -142,6 +142,10 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
 
         List<Predicate> predicates = new ArrayList<>();
 
+        if (filterEnricher != null) {
+            filterEnricher.enrich(filterBy, cb, cq, root, predicates);
+        }
+
         if (filterBy != null) {
             FacesContext context = FacesContext.getCurrentInstance();
             Locale locale = LocaleUtils.getCurrentLocale(context);
@@ -168,10 +172,6 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
                 Predicate predicate = createPredicate(filter, pd, root, cb, fieldExpression, convertedFilterValue, locale);
                 predicates.add(predicate);
             }
-        }
-
-        if (filterEnricher != null) {
-            filterEnricher.enrich(filterBy, cb, cq, root, predicates);
         }
 
         if (!predicates.isEmpty()) {
