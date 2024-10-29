@@ -55,9 +55,10 @@ public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
         if (model != null && menu.getElementsCount() > 0) {
             model.generateUniqueIds();
         }
-
-        encodeMarkup(context, menu);
-        encodeScript(context, menu);
+        if (shouldBeRendered(context, menu)) {
+            encodeMarkup(context, menu);
+            encodeScript(context, menu);
+        }
     }
 
     @Override
@@ -276,4 +277,11 @@ public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
         writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
         writer.endElement("span");
     }
+
+    protected boolean shouldBeRendered(FacesContext context, AbstractMenu abstractMenu) {
+        boolean rendered = super.shouldBeRendered(context, abstractMenu);
+        rendered = rendered || abstractMenu.getFacets().values().stream().anyMatch(FacetUtils::shouldRenderFacet);
+        return rendered;
+    }
+
 }

@@ -112,7 +112,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         for (MenuElement element : elements) {
-            if (element.isRendered()) {
+            if ( element.isRendered()) {
                 if (element instanceof MenuItem) {
                     MenuItem menuItem = (MenuItem) element;
                     String containerStyle = menuItem.getContainerStyle();
@@ -134,7 +134,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
                     encodeMenuItem(context, menu, menuItem, "-1");
                     writer.endElement("li");
                 }
-                else if (element instanceof Submenu) {
+                else if (element instanceof Submenu && shouldBeRendered(context, element)) {
                     Submenu submenu = (Submenu) element;
                     String style = submenu.getStyle();
                     String styleClass = getStyleClassBuilder(context)

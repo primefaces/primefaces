@@ -87,7 +87,7 @@ public class SpeedDialRenderer extends BaseMenuRenderer {
     }
 
     protected void encodeList(FacesContext context, SpeedDial speedDial) throws IOException {
-        if (speedDial.getElementsCount() <= 0) {
+        if (speedDial.getElementsCount() <= 0 || speedDial.getElements().stream().noneMatch(me -> shouldBeRendered(context, me))) {
             return;
         }
         List<MenuElement> elements = speedDial.getElements();
@@ -287,5 +287,10 @@ public class SpeedDialRenderer extends BaseMenuRenderer {
                 .callback("onShow", "function()", speedDial.getOnShow())
                 .callback("onHide", "function()", speedDial.getOnHide());
         wb.finish();
+    }
+
+    @Override
+    protected boolean shouldBeRendered(FacesContext context, AbstractMenu abstractMenu) {
+        return true;
     }
 }

@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.splitbutton;
 
+import org.primefaces.component.api.MenuItemAware;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.menubutton.MenuButton;
@@ -100,10 +101,12 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         String styleClass = button.getStyleClass();
         styleClass = styleClass == null ? SplitButton.STYLE_CLASS : SplitButton.STYLE_CLASS + " " + styleClass;
 
+        boolean hasOverlay = shouldBeRendered(context, button);
+
         writer.startElement("div", button);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "id");
-        writer.writeAttribute(HTML.ARIA_HASPOPUP, "true", null);
+        writer.writeAttribute(HTML.ARIA_HASPOPUP, Boolean.toString(hasOverlay), null);
         writer.writeAttribute(HTML.ARIA_CONTROLS, menuId, null);
         writer.writeAttribute(HTML.ARIA_EXPANDED, "false", null);
         if (button.getStyle() != null) {
@@ -114,7 +117,9 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         OverlayPanel customOverlay = button.getCustomOverlay();
         if (customOverlay != null || button.getElementsCount() > 0) {
             encodeMenuIcon(context, button, menuButtonId);
-            encodeMenu(context, button, menuId);
+            if (hasOverlay) {
+                encodeMenu(context, button, menuId);
+            }
         }
 
         writer.endElement("div");
@@ -441,5 +446,13 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
     @Override
     public boolean getRendersChildren() {
         return true;
+    }
+
+    @Override
+    protected boolean shouldBeRendered(FacesContext context, MenuItemAware container) {
+        SplitButton button = (SplitButton) container;
+        boolean  rendered = button.getCustomOverlay() != null;
+        rendered = rendered || super.shouldBeRendered(context, button);
+        return rendered;
     }
 }
