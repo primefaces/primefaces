@@ -32331,7 +32331,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Type of view to display, valid values are "date" for datepicker and "month" for month picker.]]>
+                <![CDATA[Type of view to display, valid values are "date" for datepicker, "week" for week picker, "month" for month picker.]]>
             </description>
             <name>view</name>
             <required>false</required>

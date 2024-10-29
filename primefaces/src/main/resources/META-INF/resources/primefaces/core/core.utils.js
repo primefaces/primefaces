@@ -184,14 +184,14 @@ if (!PrimeFaces.utils) {
                         focusingRadioItem = null;
 
                         if(first.is(':radio')) {
-                            focusingRadioItem = tabbables.filter('[name="' + $.escapeSelector(first.attr('name')) + '"]').filter(':checked');
+                            focusingRadioItem = tabbables.filter('[name="' + CSS.escape(first.attr('name')) + '"]').filter(':checked');
                             if(focusingRadioItem.length > 0) {
                                 first = focusingRadioItem;
                             }
                         }
 
                         if(last.is(':radio')) {
-                            focusingRadioItem = tabbables.filter('[name="' + $.escapeSelector(last.attr('name')) + '"]').filter(':checked');
+                            focusingRadioItem = tabbables.filter('[name="' + CSS.escape(last.attr('name')) + '"]').filter(':checked');
                             if(focusingRadioItem.length > 0) {
                                 last = focusingRadioItem;
                             }

@@ -817,10 +817,10 @@ if (window.PrimeFaces) {
             var value;
 
             if (element.is(':radio')) {
-                value = $('input:radio[name="' + $.escapeSelector(element.attr('name')) + '"]:checked').val();
+                value = $('input:radio[name="' + CSS.escape(element.attr('name')) + '"]:checked').val();
             }
             else if (element.is(':checkbox')) {
-                value = element.data('p-grouped') ? $('input:checkbox[name="' + $.escapeSelector(element.attr('name')) + '"]:checked').val(): element.prop('checked').toString();
+                value = element.data('p-grouped') ? $('input:checkbox[name="' + CSS.escape(element.attr('name')) + '"]:checked').val(): element.prop('checked').toString();
             }
             else if (element.is(':file')) {
                 value = element[0].files;

@@ -1,4 +1,5 @@
-@use "sass:math";
+@use 'sass:list';
+@use 'sass:math';
 
 body {
   .ui-tree {
@@ -195,7 +196,7 @@ body {
       .ui-icon {
         @include icon-override("\e908");
         position: absolute;
-        left: nth($inputPadding, 2);
+        left: list.nth($inputPadding, 2);
         top: 50%;
         right: auto;
         bottom: auto;
@@ -206,7 +207,7 @@ body {
       .ui-inputfield {
         padding: $inputPadding;
         width: 100%;
-        padding-left: 2 * nth($inputPadding, 2) + $iconSize;
+        padding-left: 2 * list.nth($inputPadding, 2) + $iconSize;
       }
     }
 

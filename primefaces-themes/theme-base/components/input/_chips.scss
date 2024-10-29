@@ -1,9 +1,10 @@
-@use "sass:math";
+@use 'sass:list';
+@use 'sass:math';
 
 body {
   .ui-chips {
     .ui-chips-container {
-      padding: math.div(nth($inputPadding, 1), 2) nth($inputPadding, 2);
+      padding: math.div(list.nth($inputPadding, 1), 2) list.nth($inputPadding, 2);
 
       .ui-chips-token {
         padding: 1px 0;
@@ -25,7 +26,7 @@ body {
 
       .ui-chips-input-token {
         margin: 0;
-        padding: math.div(nth($inputPadding, 1), 2) 0;
+        padding: math.div(list.nth($inputPadding, 1), 2) 0;
 
         input {
           font-family: $fontFamily;

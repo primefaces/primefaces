@@ -1187,7 +1187,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
                 var option = null;
                 if (this.items) {
-                    var selectedItem = this.items.filter('[data-label="' + $.escapeSelector(value) + '"]');
+                    var selectedItem = this.items.filter('[data-label="' + CSS.escape(value) + '"]');
                     option = this.selectOptionFromItem(selectedItem);
                 }
                 else {
@@ -1215,11 +1215,11 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
         var item;
         if (this.optGroupsSize === 0) {
-            var option = this.options.filter('[value="' + $.escapeSelector(value) + '"]');
+            var option = this.options.filter('[value="' + CSS.escape(value) + '"]');
             item = this.selectItemFromOption(option);
         }
         else {
-            item = this.items.filter('[data-value="' + $.escapeSelector(value) + '"]');
+            item = this.items.filter('[data-value="' + CSS.escape(value) + '"]');
         }
         this.selectItem(item, true);
     },
@@ -1235,7 +1235,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             item = this.items.eq(option.index());
         }
         else {
-            item = this.items.filter('[data-value="' + $.escapeSelector(option.val()) + '"]');
+            item = this.items.filter('[data-value="' + CSS.escape(option.val()) + '"]');
         }
         return item;
     },
@@ -1251,7 +1251,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             option = this.options.eq(item.index());
         }
         else {
-            option = this.options.filter('[value="' + $.escapeSelector(item.attr('data-value')) + '"]');
+            option = this.options.filter('[value="' + CSS.escape(item.attr('data-value')) + '"]');
         }
         return option;
     },
