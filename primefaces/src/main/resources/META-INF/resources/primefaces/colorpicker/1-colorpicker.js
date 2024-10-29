@@ -89,9 +89,6 @@ PrimeFaces.widget.ColorPicker = PrimeFaces.widget.BaseWidget.extend({
      */
     setupGlobalDefaults: function() {
         this.popup = this.cfg.mode === 'popup';
-        if (colorisInitialized) {
-            return;
-        }
 
         var $this = this;
         this.configureLocale();
@@ -99,7 +96,6 @@ PrimeFaces.widget.ColorPicker = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.themeMode = this.cfg.themeMode || PrimeFaces.env.getThemeContrast();
         var settings = this.cfg;
         if (this.popup) {
-            colorisInitialized = true;
             settings = {
                 el: '.ui-colorpicker',
                 inline: this.cfg.inline,
@@ -109,7 +105,6 @@ PrimeFaces.widget.ColorPicker = PrimeFaces.widget.BaseWidget.extend({
             };
         }
         else {
-            colorisInitialized = false;
             settings.el = null;
             settings.parent = this.jqId;
             this.bindInlineCallbacks();
@@ -120,7 +115,6 @@ PrimeFaces.widget.ColorPicker = PrimeFaces.widget.BaseWidget.extend({
             if ($this.cfg.inline) {
                 Coloris.updatePosition();
             }
-            colorisInitialized = false;
         });
     },
 
@@ -337,5 +331,4 @@ PrimeFaces.widget.ColorPicker = PrimeFaces.widget.BaseWidget.extend({
 });
 
 // Global variable so Coloris is only initialized once
-var colorisInitialized = false;
 
