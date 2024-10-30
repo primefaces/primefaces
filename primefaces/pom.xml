@@ -1240,7 +1240,7 @@
                                 <!-- Modify the copied file -->
                                 <replace file="${project.build.directory}/classes/META-INF/primefaces.urn.taglib.xml">
                                     <replacefilter token="http://primefaces.org/ui" value="primefaces"/>
-                                    <replacefilter token="http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_3.xsd" value="https://jakarta.ee/xml/ns/jakartaee/web-facelettaglibrary_4_0.xsd"/>
+                                    <replacefilter token="http://xmlns.jcp.org/xml/ns/javaee/web-facelettaglibrary_2_3.xsd" value="https://jakarta.ee/xml/ns/jakartaee/web-facelettaglibrary_4_0.xsd"/>
                                     <replacefilter token="http://xmlns.jcp.org/xml/ns/javaee" value="https://jakarta.ee/xml/ns/jakartaee"/>
                                     <replacefilter token="version=&quot;2.3&quot;" value="version=&quot;4.0&quot;"/>
                                 </replace>
