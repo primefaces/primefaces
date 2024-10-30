@@ -103,6 +103,13 @@
                                     detail: "The extender you entered threw an error - you might want to check your browser's dev tools. The error was: " + e.message
                                 });
                             }
+                            // Callback :: eventRender // more about fullcalendar events: https://fullcalendar.io/docs/event-render-hooks
+                            this.cfg.options.eventDidMount = function(e) {
+                                //Add title as attribute of element
+                                if(e.event.title){
+                                    e.el.setAttribute('customProperty', e.event.title);
+                                }
+                            };
                         };
                     </script>
                     <script>
