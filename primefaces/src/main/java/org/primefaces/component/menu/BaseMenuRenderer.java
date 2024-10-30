@@ -71,6 +71,8 @@ public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
         return true;
     }
 
+    protected abstract void encodePlaceholder(FacesContext context, AbstractMenu abstractMenu) throws IOException;
+
     protected abstract void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException;
 
     protected abstract void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException;

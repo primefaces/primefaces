@@ -39,6 +39,7 @@ public class ToolbarRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Toolbar toolbar = (Toolbar) component;
         if (!shouldBeRendered(context, toolbar)) {
+            encodePlaceholder(context, toolbar);
             return;
         }
         ResponseWriter writer = context.getResponseWriter();
@@ -151,5 +152,13 @@ public class ToolbarRenderer extends CoreRenderer {
             component.popComponentFromEL(facesContext);
         }
 
+    }
+
+    protected void encodePlaceholder(FacesContext context, Toolbar toolbar) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("div", toolbar);
+        writer.writeAttribute("id", toolbar.getClientId(context), "id");
+        writer.writeAttribute("class", "ui-toolbar-placeholder", "styleClass");
+        writer.endElement("div");
     }
 }
