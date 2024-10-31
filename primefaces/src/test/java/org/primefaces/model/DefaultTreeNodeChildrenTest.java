@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class TreeNodeChildrenTest {
+class DefaultTreeNodeChildrenTest {
 
     @Test
     void swapRetainsParent() {
@@ -39,7 +39,7 @@ class TreeNodeChildrenTest {
         TreeNode<String> child0 = new DefaultTreeNode<>("Child 0", root);
         TreeNode<String> child1 = new DefaultTreeNode<>("Child 1", root);
 
-        List<TreeNode<String>> values = new TreeNodeChildren<>(root);
+        List<TreeNode<String>> values = new DefaultTreeNodeChildren<>(root);
 
         values.add(child0);
         values.add(child1);

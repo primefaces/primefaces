@@ -25,6 +25,7 @@ package org.primefaces.model;
 
 import java.util.ArrayList;
 
+@Deprecated
 public class TreeNodeList<T> extends ArrayList<TreeNode<T>> {
 
     private static final long serialVersionUID = 1L;
