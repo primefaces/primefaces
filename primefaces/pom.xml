@@ -22,6 +22,10 @@
         <resources.dir.compressed>${project.build.directory}/classes/META-INF/resources/primefaces</resources.dir.compressed>
         <mockito.version>5.14.1</mockito.version>
         <sonar.sources>src/main/java,src/main/resources</sonar.sources>
+        <node.version>v20.11.1</node.version>
+        <yarn.version>v1.22.22</yarn.version>
+        <frontend.directory>${basedir}/src/main/frontend</frontend.directory>
+        <frontend.node.env>production</frontend.node.env>
     </properties>
 
     <dependencies>
@@ -276,8 +280,11 @@
                 <filtering>true</filtering>
                 <excludes>
                     <exclude>META-INF/resources/primefaces/schedule/build/**/*</exclude>
-                    <exclude>META-INF/resources/test-esbuild/**/*</exclude>
                 </excludes>
+            </resource>
+            <resource>
+                <directory>target/generated-resources</directory>
+                <filtering>false</filtering>
             </resource>
         </resources>
 
@@ -323,7 +330,7 @@
                 <configuration>
                     <filesets>
                         <fileset>
-                            <directory>src/main/type-definitions/node_modules</directory>
+                            <directory>${frontend.directory}/node_modules</directory>
                             <followSymlinks>false</followSymlinks>
                         </fileset>
                     </filesets>
@@ -472,341 +479,50 @@
                 </configuration>
             </plugin>
 
+
+            <!-- Bundle and minify frontend resources (CSS and JavaScript) -->
             <plugin>
-                <groupId>org.primefaces.extensions</groupId>
-                <artifactId>resources-optimizer-maven-plugin</artifactId>
-                <version>2.6.5</version>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+                <version>1.15.1</version>
+                <configuration>
+                    <installDirectory>${project.build.directory}</installDirectory>
+                    <nodeVersion>${node.version}</nodeVersion>
+                    <yarnVersion>${yarn.version}</yarnVersion>
+                    <workingDirectory>${frontend.directory}</workingDirectory>
+                </configuration>
                 <executions>
                     <execution>
-                        <id>optimize</id>
-                        <phase>prepare-package</phase>
+                        <id>install-node-and-yarn</id>
                         <goals>
-                            <goal>optimize</goal>
+                            <goal>install-node-and-yarn</goal>
                         </goals>
+                        <phase>initialize</phase>
+                    </execution>
+                    <execution>
+                        <id>yarn-install</id>
+                        <goals>
+                            <goal>yarn</goal>
+                        </goals>
+                        <phase>initialize</phase>
+                        <configuration>
+                            <arguments>install</arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>build</id>
+                        <goals>
+                            <goal>yarn</goal>
+                        </goals>
+                        <phase>generate-resources</phase>
+                        <configuration>
+                            <arguments>run build</arguments>
+                            <environmentVariables>
+                                <NODE_ENV>${frontend.node.env}</NODE_ENV>
+                            </environmentVariables>
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <useDataUri>false</useDataUri>
-                    <failOnWarning>true</failOnWarning>
-                    <imagesDir>${project.build.directory}/classes/META-INF/resources</imagesDir>
-                    <languageIn>UNSTABLE</languageIn>
-                    <languageOut>ECMASCRIPT_2016</languageOut>
-                    <resourcesSets>
-                        <resourcesSet>
-                            <includes>
-                                <include>calendar/**</include>
-                                <include>chart/9-chartjs-widget.js</include>
-                                <include>clock/**</include>
-                                <include>colorpicker/**</include>
-                                <include>datepicker/**</include>
-                                <include>diagram/**</include>
-                                <include>dock/**</include>
-                                <include>filedownload/**</include>
-                                <include>fileupload/**</include>
-                                <include>galleria/**</include>
-                                <include>gmap/**</include>
-                                <include>hotkey/**</include>
-                                <include>idlemonitor/**</include>
-                                <include>imagecompare/**</include>
-                                <include>imagecropper/**</include>
-                                <include>imageswitch/**</include>
-                                <include>inputmask/**</include>
-                                <include>inputnumber/**</include>
-                                <include>keyboard/**</include>
-                                <include>keyfilter/**</include>
-                                <include>knob/**</include>
-                                <include>lifecycle/**</include>
-                                <include>log/**</include>
-                                <include>mindmap/**</include>
-                                <include>organigram/**</include>
-                                <include>orgchart/**</include>
-                                <include>photocam/**</include>
-                                <include>primeicons/*.css</include>
-                                <include>printer/**</include>
-                                <include>schedule/**</include>
-                                <include>scrollpanel/**</include>
-                                <include>signature/**</include>
-                                <include>stack/**</include>
-                                <include>terminal/**</include>
-                                <include>texteditor/1-texteditor.js</include>
-                                <include>texteditor/1-texteditor-theme.css</include>
-                                <include>timeline/**</include>
-                            </includes>
-                            <aggregations>
-                                <aggregation>
-                                    <inputDir>${resources.dir.compressed}</inputDir>
-                                    <subDirMode>true</subDirMode>
-                                    <withoutCompress>${minify.disabled}</withoutCompress>
-                                </aggregation>
-                            </aggregations>
-                        </resourcesSet>
-                        <!-- uncompressed widgets -->
-                        <resourcesSet>
-                            <includes>
-                                <include>chart/**</include>
-                                <include>texteditor/**</include>
-                            </includes>
-                            <aggregations>
-                                <aggregation>
-                                    <inputDir>${resources.dir.compressed}</inputDir>
-                                    <subDirMode>true</subDirMode>
-                                    <withoutCompress>true</withoutCompress>
-                                </aggregation>
-                            </aggregations>
-                        </resourcesSet>
-                        <!-- moment.js (already compressed)-->
-                        <resourcesSet>
-                            <includes>
-                                <include>moment/moment.js</include>
-                                <include>moment/moment-java-formatter.js</include>
-                            </includes>
-                            <aggregations>
-                                <aggregation>
-                                    <inputDir>${resources.dir.compressed}</inputDir>
-                                    <outputFile>${resources.dir.compressed}/moment/moment.js</outputFile>
-                                    <withoutCompress>true</withoutCompress>
-                                </aggregation>
-                            </aggregations>
-                        </resourcesSet>
-                        <resourcesSet>
-                            <includes>
-                                <include>core/core.css</include>
-                                <include>jquery/jquery.ui.css</include>
-                                <include>jquery/jquery.ui.timepicker.css</include>
-                                <include>jquery/jquery.ui.pfextensions.css</include>
-                                <include>avatar/avatar.css</include>
-                                <include>avatargroup/avatargroup.css</include>
-                                <include>badge/badge.css</include>
-                                <include>card/card.css</include>
-                                <include>chip/chip.css</include>
-                                <include>chronoline/chronoline.css</include>
-                                <include>confirmpopup/confirmpopup.css</include>
-                                <include>tag/tag.css</include>
-                                <include>skeleton/skeleton.css</include>
-                                <include>accordion/accordion.css</include>
-                                <include>autocomplete/autocomplete.css</include>
-                                <include>blockui/blockui.css</include>
-                                <include>carousel/carousel.css</include>
-                                <include>columntoggler/columntoggler.css</include>
-                                <include>dashboard/dashboard.css</include>
-                                <include>datalist/datalist.css</include>
-                                <include>datagrid/datagrid.css</include>
-                                <include>datascroller/datascroller.css</include>
-                                <include>datatable/datatable.css</include>
-                                <include>dialog/dialog.css</include>
-                                <include>divider/divider.css</include>
-                                <include>fieldset/fieldset.css</include>
-                                <include>forms/forms.css</include>
-                                <include>forms/inputgroup.css</include>
-                                <include>grid/grid.css</include>
-                                <include>growl/growl.css</include>
-                                <include>inplace/inplace.css</include>
-                                <include>menu/menu.css</include>
-                                <include>messages/messages.css</include>
-                                <include>notificationbar/notificationbar.css</include>
-                                <include>orderlist/orderlist.css</include>
-                                <include>overlaypanel/overlaypanel.css</include>
-                                <include>panel/panel.css</include>
-                                <include>panelgrid/panelgrid.css</include>
-                                <include>paginator/paginator.css</include>
-                                <include>picklist/picklist.css</include>
-                                <include>progressbar/progressbar.css</include>
-                                <include>rating/rating.css</include>
-                                <include>scrolltop/scrolltop.css</include>
-                                <include>spinner/spinner.css</include>
-                                <include>splitter/splitter.css</include>
-                                <include>speeddial/speeddial.css</include>
-                                <include>tabview/tabview.css</include>
-                                <include>tagcloud/tagcloud.css</include>
-                                <include>toolbar/toolbar.css</include>
-                                <include>tooltip/tooltip.css</include>
-                                <include>tree/tree.css</include>
-                                <include>treetable/treetable.css</include>
-                                <include>wizard/wizard.css</include>
-                                <include>chips/chips.css</include>
-                                <include>sidebar/sidebar.css</include>
-                                <include>staticmessage/staticmessage.css</include>
-                                <include>dataview/dataview.css</include>
-                                <include>datepicker/datepicker.css</include>
-                                <include>toggleswitch/toggleswitch.css</include>
-                            </includes>
-                            <aggregations>
-                                <aggregation>
-                                    <inputDir>${resources.dir.compressed}</inputDir>
-                                    <outputFile>${resources.dir.compressed}/components.css</outputFile>
-                                    <withoutCompress>${minify.disabled}</withoutCompress>
-                                </aggregation>
-                            </aggregations>
-                        </resourcesSet>
-                        <resourcesSet>
-                            <includes>
-                                <include>jquery/jquery.browser.js</include>
-                                <include>core/js.cookie.js</include>
-                                <include>core/core.js</include>
-                                <include>core/core.env.js</include>
-                                <include>core/core.ajax.js</include>
-                                <include>core/core.csp.js</include>
-                                <include>core/core.expressions.js</include>
-                                <include>core/core.utils.js</include>
-                                <include>core/core.widget.js</include>
-                                <include>core/core.resources.js</include>
-                                <include>core/core.clientwindow.js</include>
-                                <include>ajaxstatus/ajaxstatus.js</include>
-                                <include>poll/poll.js</include>
-                                <include>validation/validation.common.js</include>
-                                <include>validation/validation.converters.js</include>
-                                <include>validation/validation.validators.js</include>
-                                <include>validation/validation.highlighters.js</include>
-                            </includes>
-                            <aggregations>
-                                <aggregation>
-                                    <inputDir>${resources.dir.compressed}</inputDir>
-                                    <outputFile>${resources.dir.compressed}/core.js</outputFile>
-                                    <withoutCompress>${minify.disabled}</withoutCompress>
-                                </aggregation>
-                            </aggregations>
-                        </resourcesSet>
-                        <resourcesSet>
-                            <includes>
-                                <include>core/core.dialog.js</include>
-                                <include>accordion/accordion.js</include>
-                                <include>autocomplete/autocomplete.js</include>
-                                <include>blockui/blockui.js</include>
-                                <include>carousel/carousel.js</include>
-                                <include>confirmpopup/confirmpopup.js</include>
-                                <include>columntoggler/columntoggler.js</include>
-                                <include>dashboard/dashboard.js</include>
-                                <include>datagrid/datagrid.js</include>
-                                <include>datalist/datalist.js</include>
-                                <include>datascroller/datascroller.js</include>
-                                <include>datatable/datatable.js</include>
-                                <include>datatable/datatable.frozen.js</include>
-                                <include>dialog/dialog.js</include>
-                                <include>dragdrop/dragdrop.js</include>
-                                <include>effect/effect.js</include>
-                                <include>fieldset/fieldset.js</include>
-                                <include>forms/forms.inputtext.js</include>
-                                <include>forms/forms.inputtextarea.js</include>
-                                <include>forms/forms.selectonemenu.js</include>
-                                <include>forms/forms.selectoneradio.js</include>
-                                <include>forms/forms.selectbooleancheckbox.js</include>
-                                <include>forms/forms.selectmanycheckbox.js</include>
-                                <include>forms/forms.selectlistbox.js</include>
-                                <include>forms/forms.selectonelistbox.js</include>
-                                <include>forms/forms.selectmanymenu.js</include>
-                                <include>forms/forms.cascadeselect.js</include>
-                                <include>forms/forms.commandbutton.js</include>
-                                <include>forms/forms.commandlink.js</include>
-                                <include>forms/forms.button.js</include>
-                                <include>forms/forms.linkbutton.js</include>
-                                <include>forms/forms.selectmanybutton.js</include>
-                                <include>forms/forms.selectonebutton.js</include>
-                                <include>forms/forms.selectbooleanbutton.js</include>
-                                <include>forms/forms.selectcheckboxmenu.js</include>
-                                <include>forms/forms.password.js</include>
-                                <include>forms/forms.defaultcommand.js</include>
-                                <include>forms/forms.splitbutton.js</include>
-                                <include>forms/forms.multiselectlistbox.js</include>
-                                <include>growl/growl.js</include>
-                                <include>inplace/inplace.js</include>
-                                <include>menu/menu.base.js</include>
-                                <include>menu/menu.breadcrumb.js</include>
-                                <include>menu/menu.tieredmenu.js</include>
-                                <include>menu/menu.menubar.js</include>
-                                <include>menu/menu.slidemenu.js</include>
-                                <include>menu/menu.plainmenu.js</include>
-                                <include>menu/menu.menubutton.js</include>
-                                <include>menu/menu.contextmenu.js</include>
-                                <include>menu/menu.megamenu.js</include>
-                                <include>menu/menu.panelmenu.js</include>
-                                <include>menu/menu.tabmenu.js</include>
-                                <include>message/message.js</include>
-                                <include>messages/messages.js</include>
-                                <include>notificationbar/notificationbar.js</include>
-                                <include>panel/panel.js</include>
-                                <include>orderlist/orderlist.js</include>
-                                <include>outputpanel/outputpanel.js</include>
-                                <include>overlaypanel/overlaypanel.js</include>
-                                <include>paginator/paginator.js</include>
-                                <include>picklist/picklist.js</include>
-                                <include>progressbar/progressbar.js</include>
-                                <include>rating/rating.js</include>
-                                <include>resizable/resizable.js</include>
-                                <include>slider/slider.js</include>
-                                <include>spinner/spinner.js</include>
-                                <include>splitter/splitter.js</include>
-                                <include>spotlight/spotlight.js</include>
-                                <include>speeddial/speeddial.js</include>
-                                <include>staticmessage/staticmessage.js</include>
-                                <include>sticky/sticky.js</include>
-                                <include>tabview/tabview.js</include>
-                                <include>tagcloud/tagcloud.js</include>
-                                <include>tooltip/tooltip.js</include>
-                                <include>tree/tree.base.js</include>
-                                <include>tree/tree.vertical.js</include>
-                                <include>tree/tree.horizontal.js</include>
-                                <include>treetable/treetable.js</include>
-                                <include>wizard/wizard.js</include>
-                                <include>tristatecheckbox/tristatecheckbox.js</include>
-                                <include>chip/chip.js</include>
-                                <include>chips/chips.js</include>
-                                <include>scrolltop/scrolltop.js</include>
-                                <include>sidebar/sidebar.js</include>
-                                <include>dataview/dataview.js</include>
-                                <include>toggleswitch/toggleswitch.js</include>
-                            </includes>
-                            <aggregations>
-                                <aggregation>
-                                    <inputDir>${resources.dir.compressed}</inputDir>
-                                    <outputFile>${resources.dir.compressed}/components.js</outputFile>
-                                    <withoutCompress>${minify.disabled}</withoutCompress>
-                                </aggregation>
-                            </aggregations>
-                        </resourcesSet>
-                        <resourcesSet>
-                            <includes>
-                                <include>jquery/jquery.ui.js</include>
-                                <include>jquery/jquery.caretposition.js</include>
-                                <include>jquery/jquery.autosize.js</include>
-                                <include>jquery/jquery.mousewheel.js</include>
-                                <include>jquery/jquery.rangy.js</include>
-                                <include>jquery/jquery.ui.touch-punch.js</include>
-                                <include>jquery/jquery.ui.pfextensions.js</include>
-                            </includes>
-                            <aggregations>
-                                <aggregation>
-                                    <inputDir>${resources.dir.compressed}</inputDir>
-                                    <outputFile>${resources.dir.compressed}/jquery/jquery-plugins.js</outputFile>
-                                    <withoutCompress>${minify.disabled}</withoutCompress>
-                                </aggregation>
-                            </aggregations>
-                        </resourcesSet>
-                        <resourcesSet>
-                            <includes>
-                                <include>touch/touchswipe.js</include>
-                            </includes>
-                            <aggregations>
-                                <aggregation>
-                                    <inputDir>${resources.dir.compressed}</inputDir>
-                                    <outputFile>${resources.dir.compressed}/touch/touchswipe.js</outputFile>
-                                    <withoutCompress>${minify.disabled}</withoutCompress>
-                                </aggregation>
-                            </aggregations>
-                        </resourcesSet>
-                        <resourcesSet>
-                            <includes>
-                                <include>validation/validation.bv.js</include>
-                            </includes>
-                            <aggregations>
-                                <aggregation>
-                                    <inputDir>${resources.dir.compressed}</inputDir>
-                                    <outputFile>${resources.dir.compressed}/validation/validation.bv.js</outputFile>
-                                    <withoutCompress>${minify.disabled}</withoutCompress>
-                                </aggregation>
-                            </aggregations>
-                        </resourcesSet>
-                    </resourcesSets>
-                </configuration>
             </plugin>
 
             <plugin>
@@ -1227,6 +943,7 @@
                 <jakarta.jar.skip>false</jakarta.jar.skip>
                 <checkstyle.skip>true</checkstyle.skip>
                 <xml.formatter.skip>true</xml.formatter.skip>
+                <frontend.node.env>development</frontend.node.env>
                 <license.skipCheckLicense>true</license.skipCheckLicense>
                 <license.skipAddThirdParty>true</license.skipAddThirdParty>
                 <license.skipAggregateDownloadLicenses>true</license.skipAggregateDownloadLicenses>

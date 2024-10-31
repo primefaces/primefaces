@@ -1,0 +1,74 @@
+{
+  "name": "primefaces",
+  "version": "15.0.0-SNAPSHOT",
+  "private": true,
+  "description": "Client-side implementation for PrimeFaces",
+  "main": "src/index.js",
+  "type": "commonjs",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/primefaces/primefaces.git",
+    "directory": "src/main/web"
+  },
+  "scripts": {
+    "build": "node build/build.mjs"
+  },
+  "jsdocs": {},
+  "dependencies": {
+    "@types/jquery": "~3.5.32",
+    "chart.js": "~4.4.4",
+    "chartjs-adapter-moment": "~1.0.1",
+    "chartjs-plugin-zoom": "~2.0.1",
+    "cropperjs": "~1.5.13",
+    "hammerjs": "~2.0.8",
+    "jquery": "~4.0.0-beta.2",
+    "jquery-cropper": "patch:jquery-cropper@npm%3A1.0.0#~/.yarn/patches/jquery-cropper-npm-1.0.0-148aa161fe.patch",
+    "moment": "~2.30.1",
+    "moment-jdateformatparser": "~1.2.1",
+    "moment-timezone": "~0.5.45",
+    "raphael": "~2.3.0"
+  },
+  "devDependencies": {
+    "esbuild": "~0.24.0",
+    "typescript": "~5.6.3"
+  },
+  "contributors": [
+    {
+      "name": "Cagatay Civici",
+      "url": "https://github.com/cagataycivici",
+      "githubUsername": "cagataycivici"
+    },
+    {
+      "name": "Mert Sincan",
+      "url": "https://github.com/mertsincan",
+      "githubUsername": "mertsincan"
+    },
+    {
+      "name": "Thomas Andraschko",
+      "url": "https://github.com/tandraschko",
+      "githubUsername": "tandraschko"
+    },
+    {
+      "name": "Sébastien Lepage",
+      "url": "https://github.com/Rapster",
+      "githubUsername": "Rapster"
+    },
+    {
+      "name": "Emil Lefkof",
+      "url": "https://github.com/melloware",
+      "githubUsername": "melloware"
+    },
+    {
+      "name": "Christoph Straßer",
+      "url": "https://github.com/christophs78",
+      "githubUsername": "christophs78"
+    },
+    {
+      "name": "Jasper de Vries",
+      "url": "https://github.com/jepsar",
+      "githubUsername": "jepsar"
+    }
+  ],
+  "packageManager": "yarn@4.5.1"
+}

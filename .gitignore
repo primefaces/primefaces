@@ -13,14 +13,12 @@ nbactions.xml
 .classpath
 .
 .project
-.vscode/
+.vscode
 .checkstyle
 .factorypath
 nb-configuration.xml
 faces-config.NavData
 dependency-reduced-pom.xml
-/primefaces/src/main/type-definitions/src/PrimeFaces-modules.d.ts
-/primefaces/src/main/type-definitions/src/PrimeFaces.d.ts
 
 # Selenium Drivers
 *.exe

@@ -1,1 +1,0 @@
-import "../../primefaces/gmap/gmap.js";

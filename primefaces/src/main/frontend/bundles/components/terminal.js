@@ -1,0 +1,1 @@
+import "../../src/terminal/terminal.js";

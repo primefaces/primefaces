@@ -1,0 +1,1 @@
+import "../../src/lifecycle/lifecycle.js";

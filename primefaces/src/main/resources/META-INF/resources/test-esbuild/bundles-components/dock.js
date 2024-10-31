@@ -1,1 +1,0 @@
-import "../../primefaces/dock/dock.js";

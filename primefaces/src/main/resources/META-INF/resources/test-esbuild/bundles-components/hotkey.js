@@ -1,1 +1,0 @@
-import "../../primefaces/hotkey/hotkey.js";

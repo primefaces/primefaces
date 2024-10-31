@@ -1,1 +1,0 @@
-import "../../primefaces/organigram/organigram.js";
