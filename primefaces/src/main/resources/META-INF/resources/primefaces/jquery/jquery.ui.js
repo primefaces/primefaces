@@ -1,6 +1,6 @@
-/* jQuery UI - v1.14.0 - 2024-08-08
+/* jQuery UI - v1.14.1 - 2024-10-31
 * https://jqueryui.com
-* Includes: widget.js, position.js, data.js, disable-selection.js, focusable.js, form-reset-mixin.js, jquery-patch.js, keycode.js, labels.js, scroll-parent.js, tabbable.js, unique-id.js, widgets/draggable.js, widgets/droppable.js, widgets/resizable.js, widgets/selectable.js, widgets/sortable.js, widgets/mouse.js, widgets/slider.js, effect.js, effects/effect-blind.js, effects/effect-bounce.js, effects/effect-clip.js, effects/effect-drop.js, effects/effect-explode.js, effects/effect-fade.js, effects/effect-fold.js, effects/effect-highlight.js, effects/effect-puff.js, effects/effect-pulsate.js, effects/effect-scale.js, effects/effect-shake.js, effects/effect-size.js, effects/effect-slide.js, effects/effect-transfer.js
+* Includes: widget.js, position.js, data.js, disable-selection.js, focusable.js, form-reset-mixin.js, keycode.js, labels.js, scroll-parent.js, tabbable.js, unique-id.js, widgets/draggable.js, widgets/droppable.js, widgets/resizable.js, widgets/selectable.js, widgets/sortable.js, widgets/mouse.js, widgets/slider.js, effect.js, effects/effect-blind.js, effects/effect-bounce.js, effects/effect-clip.js, effects/effect-drop.js, effects/effect-explode.js, effects/effect-fade.js, effects/effect-fold.js, effects/effect-highlight.js, effects/effect-puff.js, effects/effect-pulsate.js, effects/effect-scale.js, effects/effect-shake.js, effects/effect-size.js, effects/effect-slide.js, effects/effect-transfer.js
 * Copyright OpenJS Foundation and other contributors; Licensed MIT */
 
 ( function( factory ) {
@@ -21,11 +21,11 @@
 $.ui = $.ui || {};
 $.uiBackCompat = true;
 
-var version = $.ui.version = "1.14.0";
+var version = $.ui.version = "1.14.1";
 
 
 /*
- * jQuery UI Widget 1.14.0
+ * jQuery UI Widget 1.14.1
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -68,6 +68,9 @@ $.widget = function( name, base, prototype ) {
 
 	var namespace = name.split( "." )[ 0 ];
 	name = name.split( "." )[ 1 ];
+	if ( name === "__proto__" || name === "constructor" ) {
+		return $.error( "Invalid widget name: " + name );
+	}
 	var fullName = namespace + "-" + name;
 
 	if ( !prototype ) {
@@ -767,7 +770,7 @@ var widget = $.widget;
 
 
 /*
- * jQuery UI Position 1.14.0
+ * jQuery UI Position 1.14.1
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -1264,7 +1267,7 @@ var position = $.ui.position;
 
 
 /*
- * jQuery UI :data 1.14.0
+ * jQuery UI :data 1.14.1
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -1287,7 +1290,7 @@ var data = $.extend( $.expr.pseudos, {
 } );
 
 /*
- * jQuery UI Disable Selection 1.14.0
+ * jQuery UI Disable Selection 1.14.1
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -1322,7 +1325,7 @@ var disableSelection = $.fn.extend( {
 
 
 /*
- * jQuery UI Focusable 1.14.0
+ * jQuery UI Focusable 1.14.1
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -1385,7 +1388,7 @@ var focusable = $.ui.focusable;
 
 
 /*
- * jQuery UI Form Reset Mixin 1.14.0
+ * jQuery UI Form Reset Mixin 1.14.1
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -1447,49 +1450,7 @@ var formResetMixin = $.ui.formResetMixin = {
 
 
 /*
- * jQuery UI Legacy jQuery Core patches 1.14.0
- * https://jqueryui.com
- *
- * Copyright OpenJS Foundation and other contributors
- * Released under the MIT license.
- * https://jquery.org/license
- *
- */
-
-//>>label: Legacy jQuery Core patches
-//>>group: Core
-//>>description: Backport `.even()`, `.odd()` and `$.escapeSelector` to older jQuery Core versions (deprecated)
-
-
-// Support: jQuery 2.2.x or older.
-// This method has been defined in jQuery 3.0.0.
-// Code from https://github.com/jquery/jquery/blob/e539bac79e666bba95bba86d690b4e609dca2286/src/selector/escapeSelector.js
-if ( !$.escapeSelector ) {
-	$.escapeSelector = function( id ) {
-		return CSS.escape( id + "" );
-	};
-}
-
-// Support: jQuery 3.4.x or older
-// These methods have been defined in jQuery 3.5.0.
-if ( !$.fn.even || !$.fn.odd ) {
-	$.fn.extend( {
-		even: function() {
-			return this.filter( function( i ) {
-				return i % 2 === 0;
-			} );
-		},
-		odd: function() {
-			return this.filter( function( i ) {
-				return i % 2 === 1;
-			} );
-		}
-	} );
-}
-
-;
-/*
- * jQuery UI Keycode 1.14.0
+ * jQuery UI Keycode 1.14.1
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -1524,7 +1485,7 @@ var keycode = $.ui.keyCode = {
 
 
 /*
- * jQuery UI Labels 1.14.0
+ * jQuery UI Labels 1.14.1
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -1578,7 +1539,7 @@ var labels = $.fn.labels = function() {
 
 
 /*
- * jQuery UI Scroll Parent 1.14.0
+ * jQuery UI Scroll Parent 1.14.1
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -1612,7 +1573,7 @@ var scrollParent = $.fn.scrollParent = function( includeHidden ) {
 
 
 /*
- * jQuery UI Tabbable 1.14.0
+ * jQuery UI Tabbable 1.14.1
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -1636,7 +1597,7 @@ var tabbable = $.extend( $.expr.pseudos, {
 
 
 /*
- * jQuery UI Unique ID 1.14.0
+ * jQuery UI Unique ID 1.14.1
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -1674,7 +1635,7 @@ var uniqueId = $.fn.extend( {
 
 
 /*
- * jQuery UI Mouse 1.14.0
+ * jQuery UI Mouse 1.14.1
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -1694,7 +1655,7 @@ $( document ).on( "mouseup", function() {
 } );
 
 var widgetsMouse = $.widget( "ui.mouse", {
-	version: "1.14.0",
+	version: "1.14.1",
 	options: {
 		cancel: "input, textarea, button, select, option",
 		distance: 1,
@@ -1912,7 +1873,7 @@ var plugin = $.ui.plugin = {
 
 
 /*
- * jQuery UI Draggable 1.14.0
+ * jQuery UI Draggable 1.14.1
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -1929,7 +1890,7 @@ var plugin = $.ui.plugin = {
 
 
 $.widget( "ui.draggable", $.ui.mouse, {
-	version: "1.14.0",
+	version: "1.14.1",
 	widgetEventPrefix: "drag",
 	options: {
 		addClasses: true,
@@ -3147,7 +3108,7 @@ var widgetsDraggable = $.ui.draggable;
 
 
 /*
- * jQuery UI Droppable 1.14.0
+ * jQuery UI Droppable 1.14.1
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -3163,7 +3124,7 @@ var widgetsDraggable = $.ui.draggable;
 
 
 $.widget( "ui.droppable", {
-	version: "1.14.0",
+	version: "1.14.1",
 	widgetEventPrefix: "drop",
 	options: {
 		accept: "*",
@@ -3630,7 +3591,7 @@ var widgetsDroppable = $.ui.droppable;
 
 
 /*
- * jQuery UI Resizable 1.14.0
+ * jQuery UI Resizable 1.14.1
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -3649,7 +3610,7 @@ var widgetsDroppable = $.ui.droppable;
 
 
 $.widget( "ui.resizable", $.ui.mouse, {
-	version: "1.14.0",
+	version: "1.14.1",
 	widgetEventPrefix: "resize",
 	options: {
 		alsoResize: false,
@@ -3690,7 +3651,10 @@ $.widget( "ui.resizable", $.ui.mouse, {
 
 	_hasScroll: function( el, a ) {
 
-		var overflow = $( el ).css( "overflow" );
+		var scroll,
+			has = false,
+			overflow = $( el ).css( "overflow" );
+
 		if ( overflow === "hidden" ) {
 			return false;
 		}
@@ -3698,8 +3662,7 @@ $.widget( "ui.resizable", $.ui.mouse, {
 			return true;
 		}
 
-		var scroll = ( a && a === "left" ) ? "scrollLeft" : "scrollTop",
-			has = false;
+		scroll = ( a && a === "left" ) ? "scrollLeft" : "scrollTop";
 
 		if ( el[ scroll ] > 0 ) {
 			return true;
@@ -3976,7 +3939,7 @@ $.widget( "ui.resizable", $.ui.mouse, {
 
 	_mouseStart: function( event ) {
 
-		var curleft, curtop, cursor,
+		var curleft, curtop, cursor, calculatedSize,
 			o = this.options,
 			el = this.element;
 
@@ -3994,8 +3957,7 @@ $.widget( "ui.resizable", $.ui.mouse, {
 
 		this.offset = this.helper.offset();
 		this.position = { left: curleft, top: curtop };
-		
-		var calculatedSize = undefined;
+
 		if ( !this._helper ) {
 			calculatedSize = this._calculateAdjustedElementDimensions( el );
 		}
@@ -4310,7 +4272,8 @@ $.widget( "ui.resizable", $.ui.mouse, {
 	},
 
 	_calculateAdjustedElementDimensions: function( element ) {
-		var ce = element.get( 0 );
+		var elWidth, elHeight, paddingBorder,
+			ce = element.get( 0 );
 
 		if ( element.css( "box-sizing" ) !== "content-box" ||
 			( !this._hasScroll( ce ) && !this._hasScroll( ce, "left" ) ) ) {
@@ -4321,10 +4284,10 @@ $.widget( "ui.resizable", $.ui.mouse, {
 		}
 
 		// Check if CSS inline styles are set and use those (usually from previous resizes)
-		var elWidth = parseFloat( ce.style.width );
-		var elHeight = parseFloat( ce.style.height );
+		elWidth = parseFloat( ce.style.width );
+		elHeight = parseFloat( ce.style.height );
 
-		var paddingBorder = this._getPaddingPlusBorderDimensions( element );
+		paddingBorder = this._getPaddingPlusBorderDimensions( element );
 		elWidth = isNaN( elWidth ) ?
 			this._getElementTheoreticalSize( element, paddingBorder, "width" ) :
 			elWidth;
@@ -4347,7 +4310,8 @@ $.widget( "ui.resizable", $.ui.mouse, {
 			0.5
 
 		// If offsetWidth/offsetHeight is unknown, then we can't determine theoretical size.
-		// Use an explicit zero to avoid NaN (gh-3964)
+		// Use an explicit zero to avoid NaN.
+		// See https://github.com/jquery/jquery/issues/3964
 		) ) || 0;
 
 		return size;
@@ -4707,8 +4671,9 @@ $.ui.plugin.add( "resizable", "alsoResize", {
 			o = that.options;
 
 		$( o.alsoResize ).each( function() {
-			var el = $( this );
-			var elSize = that._calculateAdjustedElementDimensions( el );
+			var el = $( this ),
+				elSize = that._calculateAdjustedElementDimensions( el );
+
 			el.data( "ui-resizable-alsoresize", {
 				width: elSize.width, height: elSize.height,
 				left: parseFloat( el.css( "left" ) ), top: parseFloat( el.css( "top" ) )
@@ -4880,7 +4845,7 @@ var widgetsResizable = $.ui.resizable;
 
 
 /*
- * jQuery UI Selectable 1.14.0
+ * jQuery UI Selectable 1.14.1
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -4897,7 +4862,7 @@ var widgetsResizable = $.ui.resizable;
 
 
 var widgetsSelectable = $.widget( "ui.selectable", $.ui.mouse, {
-	version: "1.14.0",
+	version: "1.14.1",
 	options: {
 		appendTo: "body",
 		autoRefresh: true,
@@ -5178,7 +5143,7 @@ var widgetsSelectable = $.widget( "ui.selectable", $.ui.mouse, {
 
 
 /*
- * jQuery UI Sortable 1.14.0
+ * jQuery UI Sortable 1.14.1
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -5195,7 +5160,7 @@ var widgetsSelectable = $.widget( "ui.selectable", $.ui.mouse, {
 
 
 var widgetsSortable = $.widget( "ui.sortable", $.ui.mouse, {
-	version: "1.14.0",
+	version: "1.14.1",
 	widgetEventPrefix: "sort",
 	ready: false,
 	options: {
@@ -6765,7 +6730,7 @@ var widgetsSortable = $.widget( "ui.sortable", $.ui.mouse, {
 
 
 /*
- * jQuery UI Slider 1.14.0
+ * jQuery UI Slider 1.14.1
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -6784,7 +6749,7 @@ var widgetsSortable = $.widget( "ui.sortable", $.ui.mouse, {
 
 
 var widgetsSlider = $.widget( "ui.slider", $.ui.mouse, {
-	version: "1.14.0",
+	version: "1.14.1",
 	widgetEventPrefix: "slide",
 
 	options: {
@@ -8185,7 +8150,7 @@ colors = jQuery.Color.names = {
 
 
 /*
- * jQuery UI Effects 1.14.0
+ * jQuery UI Effects 1.14.1
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -8548,7 +8513,7 @@ if ( $.uiBackCompat === true ) {
 }
 
 $.extend( $.effects, {
-	version: "1.14.0",
+	version: "1.14.1",
 
 	define: function( name, mode, effect ) {
 		if ( !effect ) {
@@ -9116,7 +9081,7 @@ var effect = $.effects;
 
 
 /*
- * jQuery UI Effects Blind 1.14.0
+ * jQuery UI Effects Blind 1.14.1
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -9171,7 +9136,7 @@ var effectsEffectBlind = $.effects.define( "blind", "hide", function( options, d
 
 
 /*
- * jQuery UI Effects Bounce 1.14.0
+ * jQuery UI Effects Bounce 1.14.1
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -9266,7 +9231,7 @@ var effectsEffectBounce = $.effects.define( "bounce", function( options, done ) 
 
 
 /*
- * jQuery UI Effects Clip 1.14.0
+ * jQuery UI Effects Clip 1.14.1
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -9316,7 +9281,7 @@ var effectsEffectClip = $.effects.define( "clip", "hide", function( options, don
 
 
 /*
- * jQuery UI Effects Drop 1.14.0
+ * jQuery UI Effects Drop 1.14.1
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -9370,7 +9335,7 @@ var effectsEffectDrop = $.effects.define( "drop", "hide", function( options, don
 
 
 /*
- * jQuery UI Effects Explode 1.14.0
+ * jQuery UI Effects Explode 1.14.1
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -9466,7 +9431,7 @@ var effectsEffectExplode = $.effects.define( "explode", "hide", function( option
 
 
 /*
- * jQuery UI Effects Fade 1.14.0
+ * jQuery UI Effects Fade 1.14.1
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -9498,7 +9463,7 @@ var effectsEffectFade = $.effects.define( "fade", "toggle", function( options, d
 
 
 /*
- * jQuery UI Effects Fold 1.14.0
+ * jQuery UI Effects Fold 1.14.1
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -9572,7 +9537,7 @@ var effectsEffectFold = $.effects.define( "fold", "hide", function( options, don
 
 
 /*
- * jQuery UI Effects Highlight 1.14.0
+ * jQuery UI Effects Highlight 1.14.1
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -9614,7 +9579,7 @@ var effectsEffectHighlight = $.effects.define( "highlight", "show", function( op
 
 
 /*
- * jQuery UI Effects Size 1.14.0
+ * jQuery UI Effects Size 1.14.1
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -9792,7 +9757,7 @@ var effectsEffectSize = $.effects.define( "size", function( options, done ) {
 
 
 /*
- * jQuery UI Effects Scale 1.14.0
+ * jQuery UI Effects Scale 1.14.1
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -9832,7 +9797,7 @@ var effectsEffectScale = $.effects.define( "scale", function( options, done ) {
 
 
 /*
- * jQuery UI Effects Puff 1.14.0
+ * jQuery UI Effects Puff 1.14.1
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -9858,7 +9823,7 @@ var effectsEffectPuff = $.effects.define( "puff", "hide", function( options, don
 
 
 /*
- * jQuery UI Effects Pulsate 1.14.0
+ * jQuery UI Effects Pulsate 1.14.1
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -9907,7 +9872,7 @@ var effectsEffectPulsate = $.effects.define( "pulsate", "show", function( option
 
 
 /*
- * jQuery UI Effects Shake 1.14.0
+ * jQuery UI Effects Shake 1.14.1
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -9966,7 +9931,7 @@ var effectsEffectShake = $.effects.define( "shake", function( options, done ) {
 
 
 /*
- * jQuery UI Effects Slide 1.14.0
+ * jQuery UI Effects Slide 1.14.1
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -10027,7 +9992,7 @@ var effectsEffectSlide = $.effects.define( "slide", "show", function( options, d
 
 
 /*
- * jQuery UI Effects Transfer 1.14.0
+ * jQuery UI Effects Transfer 1.14.1
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
