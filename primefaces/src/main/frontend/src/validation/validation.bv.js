@@ -374,8 +374,13 @@ if (window.PrimeFaces) {
                 };
             }
 
-            summary = PrimeFaces.validation.Utils.formatBV(summary, arguments);
-            detail = (detail) ? PrimeFaces.validation.Utils.formatBV(detail, arguments) : summary;
+            var params = Array.from(arguments);
+            params.shift(); // removes 'element'
+            params.shift(); // removes 'defaultKey'
+            params.shift(); // removes 'msg'
+
+            summary = PrimeFaces.validation.Utils.format(summary, params);
+            detail = (detail) ? PrimeFaces.validation.Utils.format(detail, params) : summary;
 
             // see #7069
             // simulate the message handling of the server side BeanValidator
@@ -387,28 +392,5 @@ if (window.PrimeFaces) {
 
             return { summary : summary, detail : detail };
         }
-    };
-
-    /**
-     * Given a message with placeholders, replaces the placeholders with the given parameters. The format of the
-     * message is similar to, but not quite the same as, the format used by `java.text.MessageFormat`.
-     * ```javascript
-     * formatBV("Value required for element {0}", ["", "", "", "email"]) // => "Value required for element email"
-     * formatBV("Use {0} braces like this: '{0}'", ["", "", "", "simple"]) // => "Use simple braces like this: 'simple'"
-     * ```
-     * @function
-     * @param {string} str A message with placeholders.
-     * @param {string[]} params A list of parameters for the placeholders. The first three items are ignored. The item
-     * at index `i` corresponds to the placeholder `{i-3}`.
-     * @return {string} The string, with the placeholders replaced by the given params.
-     */
-    PrimeFaces.validation.Utils.formatBV = function(str, params) {
-        var s = str;
-        for(var i = 3; i < params.length; i++) {
-            var reg = new RegExp('\\{' + (i - 3) + '\\}', 'gm');
-            s = s.replace(reg, params[i]);
-        }
-
-        return s;
     };
 }

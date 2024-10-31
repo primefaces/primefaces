@@ -41,6 +41,7 @@ Message usage is exactly same as standard message.
 <h:inputText id="txt" value="#{bean.text}" />
 <p:message for="txt" />
 ```
+
 ## Display Mode
 Message component has four different display modes;
 
@@ -56,6 +57,7 @@ instance, you can configure messages to only display infos and warnings.
 ```xhtml
 <p:message severity="info,warn" for="txt"/>
 ```
+
 ## Escaping
 Component escapes HTML content in messages by default, in case you need to display HTML, disable
 escape option.
@@ -63,6 +65,15 @@ escape option.
 ```xhtml
 <p:message escape="false" for="txt" />
 ```
+
+## Client Side API
+Widget: _PrimeFaces.widget.Messages_
+
+| Method               | Params | Return Type | Description                |
+|----------------------| --- | --- |----------------------------|
+| render(facesMessage) | facesMessage: see JSDoc about PrimeFaces.FacesMessage  | void | renders the message        |
+| clear()              | none  | void | clears the current message |
+
 ## Skinning
 Full list of CSS selectors of message is as follows;
 

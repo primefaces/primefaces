@@ -23,7 +23,7 @@
         <webdriver.headless>false</webdriver.headless>
         <webdriver.browser>chrome</webdriver.browser>
         <primefaces.CSP>false</primefaces.CSP>
-        <primefaces.THEME>saga</primefaces.THEME>
+        <primefaces.THEME>saga-blue</primefaces.THEME>
         <primefaces.UPLOADER>auto</primefaces.UPLOADER>
         <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
         <jakarta.faces.STATE_SAVING_METHOD>server</jakarta.faces.STATE_SAVING_METHOD>
@@ -213,7 +213,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.8.0</version>
+                <version>3.8.1</version>
             </plugin>
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
@@ -325,7 +325,7 @@
         <profile>
             <id>theme-saga</id>
             <properties>
-                <primefaces.THEME>saga</primefaces.THEME>
+                <primefaces.THEME>saga-blue</primefaces.THEME>
             </properties>
         </profile>
         <profile>

@@ -140,7 +140,7 @@ ajax selection and more.
 | validator | null | Method Expr | A method expression that refers to a method validating the input
 | validatorMessage | null | String | Message to be displayed when validation fails.
 | valueChangeListener | null | Method Expr | A method expression that refers to a method for handling a valuchangeevent
-| view | date | String | Defines the view mode, valid values are "date" for datepicker and "month" for month picker.
+| view | date | String | Defines the view mode, valid values are "date" for datepicker, "week" for week picker, and "month" for month picker.
 | weekCalculator | false | Boolean | A javascript function that is used to calculate the week number. Uses internal implementation on default when start of week is monday, sunday or saturday.
 | widgetVar | null | String | Name of the client side widget.
 | yearNavigator | false | Boolean | Whether the year should be rendered as an input number instead of text.

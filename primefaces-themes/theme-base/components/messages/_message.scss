@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 body {
   .ui-message {
     padding: $inputPadding;
@@ -93,15 +95,15 @@ body {
     }
 
     &.ui-message-fatal {
-      background: scale-color($errorMessageBg, $lightness: -20%);
-      border: solid scale-color($errorMessageBg, $lightness: -50%);
+      background: color.scale($errorMessageBg, $lightness: -20%);
+      border: solid color.scale($errorMessageBg, $lightness: -50%);
       border-width: $messageBorderWidth;
-      color: scale-color($successMessageTextColor, $lightness: -75%);
+      color: color.scale($successMessageTextColor, $lightness: -75%);
 
       .ui-message-fatal-icon {
         @include icon-override("\e935");
         margin: 0;
-        color: scale-color($errorMessageIconColor, $lightness: -75%);
+        color: color.scale($errorMessageIconColor, $lightness: -75%);
         float: none;
         width: auto;
         height: auto;

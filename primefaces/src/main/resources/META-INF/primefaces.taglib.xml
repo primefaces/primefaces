@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <facelet-taglib xmlns="http://xmlns.jcp.org/xml/ns/javaee"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_3.xsd" 
-    version="2.3">
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facelettaglibrary_2_3.xsd" 
+    version="2.0">
 
     <description>PrimeFaces UI components.</description>
     <namespace>http://primefaces.org/ui</namespace>
@@ -363,7 +363,7 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description>Client side callback execute before ajax request is begins.</description>
+            <description>Client side callback execute before ajax request begins.</description>
             <name>onstart</name>
             <required>false</required>
             <type>java.lang.String</type>
@@ -4900,7 +4900,7 @@
             </description>
             <name>pattern</name>
             <required>false</required>
-            <type>String</type>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -6553,7 +6553,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Client side callback to execute before ajax request is begins.]]>
+                <![CDATA[Client side callback to execute before ajax request begins.]]>
             </description>
             <name>onstart</name>
             <required>false</required>
@@ -7037,7 +7037,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Client side callback to execute before ajax request is begins.]]>
+                <![CDATA[Client side callback to execute before ajax request begins.]]>
             </description>
             <name>onstart</name>
             <required>false</required>
@@ -10871,30 +10871,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Regular expression for accepted file types, e.g., /(\.|\/)(gif|jpeg|jpg|png)$/]]>
-            </description>
-            <name>allowTypes</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Maximum number of files to be uploaded. Deprecated please attach 'p:validateFile'.]]>
-            </description>
-            <name>fileLimit</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Individual file size limit in bytes. Default is unlimited. Deprecated please attach 'p:validateFile'.]]>
-            </description>
-            <name>sizeLimit</name>
-            <required>false</required>
-            <type>java.lang.Long</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[To upload large files in smaller chunks, set this option to a preferred maximum chunk size. If set to 0 (default), null or undefined, or the browser does not support the required Blob API, files will be uploaded as a whole. Only works in "advanced" mode.]]>
             </description>
             <name>maxChunkSize</name>
@@ -12305,7 +12281,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Javascript handler to execute before ajax request is begins.]]>
+                <![CDATA[Javascript handler to execute before ajax request begins.]]>
             </description>
             <name>onstart</name>
             <required>false</required>
@@ -17774,7 +17750,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Javascript handler to execute before ajax request is begins.]]>
+                <![CDATA[Javascript handler to execute before ajax request begins.]]>
             </description>
             <name>onstart</name>
             <required>false</required>
@@ -21156,7 +21132,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Javascript handler to execute before ajax request is begins.]]>
+                <![CDATA[Javascript handler to execute before ajax request begins.]]>
             </description>
             <name>onstart</name>
             <required>false</required>
@@ -21831,7 +21807,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Javascript handler to execute before ajax request is begins.]]>
+                <![CDATA[Javascript handler to execute before ajax request begins.]]>
             </description>
             <name>onstart</name>
             <required>false</required>
@@ -22916,7 +22892,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Disables the component when set to true.]]>
             </description>
             <name>disabled</name>
             <required>false</required>
@@ -22924,15 +22900,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
-            </description>
-            <name>label</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[]]>
+                <![CDATA[Client side callback to execute when value changes.]]>
             </description>
             <name>onchange</name>
             <required>false</required>
@@ -22940,7 +22908,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Inline style of the component.]]>
             </description>
             <name>style</name>
             <required>false</required>
@@ -22948,7 +22916,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Style class of the component.]]>
             </description>
             <name>styleClass</name>
             <required>false</required>
@@ -26841,7 +26809,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Client side callback to execute before ajax request is begins.]]>
+                <![CDATA[Client side callback to execute before ajax request begins.]]>
             </description>
             <name>onstart</name>
             <required>false</required>
@@ -32355,7 +32323,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Type of view to display, valid values are "date" for datepicker and "month" for month picker.]]>
+                <![CDATA[Type of view to display, valid values are "date" for datepicker, "week" for week picker, "month" for month picker.]]>
             </description>
             <name>view</name>
             <required>false</required>

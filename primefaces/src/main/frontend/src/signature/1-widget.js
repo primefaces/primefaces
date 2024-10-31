@@ -144,7 +144,10 @@ PrimeFaces.widget.Signature = class Signature extends PrimeFaces.widget.BaseWidg
             .on('mouseleave', () => $this.jq.removeClass('ui-state-hover'))
             .on('mousedown', () => $this.canvas.trigger('focus'))
             .on('focus', () => $this.jq.addClass('ui-state-focus'))
-            .on('blur', () => $this.jq.removeClass('ui-state-hover ui-state-focus'))
+            .on('blur', () => {
+                $this.jq.removeClass('ui-state-hover ui-state-focus');
+                $this.updateBase64();
+            })
             .on('keydown', (event) => {
                 let printedText = $this.inputText.val() || '';
                 switch (event.code) {
@@ -183,10 +186,8 @@ PrimeFaces.widget.Signature = class Signature extends PrimeFaces.widget.BaseWidg
         this.jq.signature('clear');
         this.inputJson.val('');
         this.inputText.val('');
-        if (this.cfg.base64) {
-            this.inputBase64.val('');
-        }
-    }
+        this.updateBase64(true);
+    },
 
     /**
      * Draws the given line data to this signature widget viewport.
@@ -202,10 +203,8 @@ PrimeFaces.widget.Signature = class Signature extends PrimeFaces.widget.BaseWidg
      * Callback for when the signature has changed.
      * @private
      */
-    handleChange() {
-        if (this.cfg.base64) {
-            this.inputBase64.val(this.canvas[0].toDataURL());
-        }
+    handleChange: function () {
+        this.updateBase64();
 
         if (this.cfg.onchange) {
             this.cfg.onchange.call(this);
@@ -213,21 +212,34 @@ PrimeFaces.widget.Signature = class Signature extends PrimeFaces.widget.BaseWidg
     }
 
     /**
+     * Updates the base64 value of the signature widget.
+     * @param {boolean} clear - Whether to clear the base64 value.
+     * @private
+     */
+    updateBase64: function (clear = false) {
+        if (this.cfg.base64) {
+            this.inputBase64.val(clear ? '' : this.canvas[0].toDataURL());
+        }
+    },
+
+    /**
      * Creates a signature from the given text using SVG.
      * @param {string} text - The text to convert into a signature.
      */
-    createSignatureFromText(text) {
-        const width = this.canvas[0].width;
-        const height = this.canvas[0].height;
-        let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">
-           <g fill="${this.cfg.background || 'white'}">
-           <text x="10" y="50" font-family="${this.cfg.fontFamily}" font-size="${this.cfg.fontSize}" fill="${this.cfg.color || 'black'}">${text}</text>
-           </g>
-        </svg>`;
-        svg = svg.replace(/\n/g, '');
-        svg = `data:image/svg+xml;base64,${btoa(svg)}`;
-        this.draw(svg);
-    }
+    createSignatureFromText: function (text) {
+        const canvas = this.canvas[0];
+        const width = canvas.width;
+        const height = canvas.height;
+        const ctx = canvas.getContext("2d");
+        ctx.save()
+        ctx.clearRect(0, 0, width, height);
+        ctx.fillStyle = this.cfg.color || 'black';
+        ctx.font = `${this.cfg.fontSize}px ${this.cfg.fontFamily || 'Brush Script MT, cursive'}`;
+        ctx.fillText(text, 10, (height + this.cfg.fontSize) / 2);
+        this.handleChange();
+        ctx.restore();
+        this.draw(canvas.toDataURL());
+    },
 
     /**
      * Disables this input so that the user cannot enter a value anymore.

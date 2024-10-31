@@ -162,7 +162,7 @@ PrimeFaces.widget.SimpleFileUpload = class SimpleFileUpload extends PrimeFaces.w
             ? PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(this.jq, this.cfg.update).join(' ')
             : null;
 
-        var validationResult = PrimeFaces.validation.validate($this.jq, process, update, true, true, true, false);
+        var validationResult = PrimeFaces.validation.validate($this.jq, process, update, true, true, true, false, true);
         if (!validationResult.valid) {
             return;
         }

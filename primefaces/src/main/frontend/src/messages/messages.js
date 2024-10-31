@@ -28,20 +28,27 @@ PrimeFaces.widget.Messages = class Messages extends PrimeFaces.widget.BaseWidget
      */
     appendMessage(msg) {
         var closeLabel = PrimeFaces.getAriaLabel('close');
-        this.jq.append(
-             '<div class="ui-messages-' + msg.severity + ' ui-corner-all">' +
-                '<a href="#" class="ui-messages-close" onclick="$(this).parent().slideUp();return false;" role="button" aria-label="'+closeLabel+'">' +
-                    '<span class="ui-icon ui-icon-close"></span>' +
-                '</a>' +
-                '<span class="ui-messages-' + msg.severity + '-icon"></span>' +
-                '<ul>' +
-                    '<li>' +
-                        '<span class="ui-messages-' + msg.severity + '-summary">' + (msg.summary ? msg.summary : '') + '</span>' +
-                        '<span class="ui-messages-' + msg.severity + '-detail">' + (msg.detail ? msg.detail : '') + '</span>' +
-                    '</li>' +
-                '</ul>' +
-            '</div>');
-    }
+
+        var severityContainer =  this.jq.children('div.ui-messages-' + msg.severity);
+        if (severityContainer.length === 0) {
+            severityContainer = this.jq.append(
+                 '<div class="ui-messages-' + msg.severity + ' ui-corner-all">' +
+                    '<a href="#" class="ui-messages-close" onclick="$(this).parent().slideUp();return false;" role="button" aria-label="'+closeLabel+'">' +
+                        '<span class="ui-icon ui-icon-close"></span>' +
+                    '</a>' +
+                    '<span class="ui-messages-' + msg.severity + '-icon"></span>' +
+                    '<ul>' +
+
+                    '</ul>' +
+                '</div>');
+        }
+
+        severityContainer.find('ul').append(
+            '<li>' +
+                '<span class="ui-messages-' + msg.severity + '-summary">' + (msg.summary ? msg.summary : '') + '</span>' +
+                '<span class="ui-messages-' + msg.severity + '-detail">' + (msg.detail ? msg.detail : '') + '</span>' +
+            '</li>');
+    },
 
     /**
      * Clears all current messages from the DOM.

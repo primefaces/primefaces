@@ -5445,10 +5445,10 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
             if (filterby !== -1) {
                 columnHeader = columnHeader.substring(0, filterby);
             }
-            columnHeader = $.escapeSelector(columnHeader);
+            columnHeader = CSS.escape(columnHeader);
 
             this.reflowDD.children('option').each(function() {
-                var optionLabel = $.escapeSelector(this.text);
+                var optionLabel = CSS.escape(this.text);
                 var optionSortOrder = $(this).data('sortorder');
                 this.selected = optionLabel.startsWith(columnHeader) && optionSortOrder == sortOrder;
             });

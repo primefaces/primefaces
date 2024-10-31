@@ -71,7 +71,7 @@
         <build.output>target</build.output>
         <maven.compiler.target>11</maven.compiler.target>
         <maven.compiler.source>11</maven.compiler.source>
-        <junit.version>5.11.2</junit.version>
+        <junit.version>5.11.3</junit.version>
         <poi.version>5.3.0</poi.version>
 
         <npm.token/>
@@ -231,7 +231,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>3.5.0</version>
+                <version>3.6.0</version>
                 <configuration>
                     <consoleOutput>true</consoleOutput>
                     <failOnViolation>true</failOnViolation>

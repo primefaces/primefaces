@@ -350,7 +350,7 @@ PrimeFaces.widget.Paginator = class Paginator extends PrimeFaces.widget.BaseWidg
 
         //rows per page dropdown
         if(this.cfg.prevRows !== this.cfg.rows) {
-            this.rppSelect.filter(':not(.ui-state-focus)').children('option').filter('option[value="' + $.escapeSelector(this.cfg.rows) + '"]').prop('selected', true);
+            this.rppSelect.filter(':not(.ui-state-focus)').children('option').filter('option[value="' + CSS.escape(this.cfg.rows) + '"]').prop('selected', true);
             this.cfg.prevRows = this.cfg.rows;
         }
 

@@ -31,7 +31,7 @@ import org.primefaces.event.data.PostSortEvent;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 import org.primefaces.model.TreeNode;
-import org.primefaces.model.TreeNodeList;
+import org.primefaces.model.TreeNodeChildren;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.SortTableComparator;
 
@@ -135,7 +135,7 @@ public class SortFeature implements TreeTableFeature {
     }
 
     protected void sortNode(FacesContext context, TreeTable table, TreeNode<?> node) {
-        TreeNodeList<?> children = (TreeNodeList) node.getChildren();
+        TreeNodeChildren<?> children = node.getChildren();
 
         if (children != null && !children.isEmpty()) {
             Object[] childrenArray = children.toArray();

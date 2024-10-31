@@ -1,5 +1,7 @@
+@use "sass:meta";
+
 :root {
-    @if variable-exists(colors) {
+    @if meta.variable-exists(colors) {
         @each $name, $color in $colors {
             @for $i from 0 through 5 {
                 @if ($i == 0) {

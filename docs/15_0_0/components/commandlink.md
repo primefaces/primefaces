@@ -28,7 +28,7 @@ CommandLink extends standard Jakarta Faces commandLink with Ajax capabilities.
 | process | @all | String | Component(s) to process partially instead of whole view.
 | ajax | true | Boolean | Specifies the submit mode, when set to true(default), submit would be made with Ajax.
 | update | @none | String | Component(s) to be updated with ajax.
-| onstart | null | String | Client side callback to execute before ajax request is begins.
+| onstart | null | String | Client side callback to execute before ajax request begins.
 | oncomplete | null | String | Client side callback to execute when ajax request is completed.
 | onsuccess | null | String | Client side callback to execute when ajax request succeeds.
 | onerror | null | String | Client side callback to execute when ajax request fails.

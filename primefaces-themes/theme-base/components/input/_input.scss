@@ -1,3 +1,5 @@
+@use 'sass:list';
+
 body {
   @include placeholder {
     color: $inputPlaceholderTextColor;
@@ -12,7 +14,7 @@ body {
 
   .ui-float-label {
     > label {
-      margin-left: nth($inputPadding, 1);
+      margin-left: list.nth($inputPadding, 1);
       color: $inputPlaceholderTextColor;
     }
 
@@ -52,21 +54,21 @@ body {
   }
 
   .ui-input-icon-left > i:first-of-type {
-    left: nth($inputPadding, 2);
+    left: list.nth($inputPadding, 2);
     color: $inputIconColor;
   }
 
   .ui-input-icon-left > .ui-inputfield {
-    padding-left: 2 * nth($inputPadding, 2) + $iconSize;
+    padding-left: 2 * list.nth($inputPadding, 2) + $iconSize;
   }
 
   .ui-input-icon-right > i:last-of-type {
-    right: nth($inputPadding, 2);
+    right: list.nth($inputPadding, 2);
     color: $inputIconColor;
   }
 
   .ui-input-icon-right > .ui-inputfield {
-    padding-right: 2 * nth($inputPadding, 2) + $iconSize;
+    padding-right: 2 * list.nth($inputPadding, 2) + $iconSize;
   }
 
   .ui-inputfield {

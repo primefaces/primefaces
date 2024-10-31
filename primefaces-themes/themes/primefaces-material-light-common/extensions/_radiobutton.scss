@@ -1,10 +1,12 @@
+@use 'sass:list';
+
 body {
   .ui-radiobutton {
     .ui-radiobutton-box {
       border: $radiobuttonBorder;
 
       &:not(.ui-state-disabled):not(.ui-state-active).ui-state-hover {
-        border-color: nth($radiobuttonBorder, 3);
+        border-color: list.nth($radiobuttonBorder, 3);
         box-shadow: 0 0 1px 10px rgba($overlayColor, .04);
       }
 

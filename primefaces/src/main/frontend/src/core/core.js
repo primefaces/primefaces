@@ -747,9 +747,6 @@
                     }
                     var newWidget = new this.widget[widgetName](cfg);
                     this.widgets[widgetVar] = newWidget;
-                    if(this.settings.legacyWidgetNamespace) {
-                        window[widgetVar] = newWidget;
-                    }
                     if (cfg.postConstruct) {
                        cfg.postConstruct.call(newWidget, newWidget);
                     }
@@ -862,7 +859,7 @@
                     el.parent().trigger('focus');
                 }
                 else {
-                    var checkedRadio = $(':radio[name="' + $.escapeSelector(el.attr('name')) + '"]').filter(':checked');
+                    var checkedRadio = $(':radio[name="' + CSS.escape(el.attr('name')) + '"]').filter(':checked');
                     if(checkedRadio.length)
                         checkedRadio.trigger('focus');
                     else
@@ -1368,7 +1365,8 @@
          * Reset any state variables on update="@all".
          */
         resetState: function() {
-            PrimeFaces.ajax.Queue.abortAll();
+            // terminate all AJAX requests, pollers, etc
+            PrimeFaces.utils.killswitch();
 
             PrimeFaces.zindex = 1000;
             PrimeFaces.detachedWidgets = [];

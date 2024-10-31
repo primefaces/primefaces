@@ -20,7 +20,7 @@
         <minify.disabled>true</minify.disabled>
         <jakarta.jar.skip>false</jakarta.jar.skip>
         <resources.dir.compressed>${project.build.directory}/classes/META-INF/resources/primefaces</resources.dir.compressed>
-        <mockito.version>5.14.1</mockito.version>
+        <mockito.version>5.14.2</mockito.version>
         <sonar.sources>src/main/java,src/main/resources</sonar.sources>
         <node.version>v20.11.1</node.version>
         <yarn.version>v1.22.22</yarn.version>
@@ -912,7 +912,7 @@
                                 <!-- Modify the copied file -->
                                 <replace file="${project.build.directory}/classes/META-INF/primefaces.urn.taglib.xml">
                                     <replacefilter token="http://primefaces.org/ui" value="primefaces"/>
-                                    <replacefilter token="http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_3.xsd" value="https://jakarta.ee/xml/ns/jakartaee/web-facelettaglibrary_4_0.xsd"/>
+                                    <replacefilter token="http://xmlns.jcp.org/xml/ns/javaee/web-facelettaglibrary_2_3.xsd" value="https://jakarta.ee/xml/ns/jakartaee/web-facelettaglibrary_4_0.xsd"/>
                                     <replacefilter token="http://xmlns.jcp.org/xml/ns/javaee" value="https://jakarta.ee/xml/ns/jakartaee"/>
                                     <replacefilter token="version=&quot;2.3&quot;" value="version=&quot;4.0&quot;"/>
                                 </replace>

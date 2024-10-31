@@ -84,6 +84,7 @@ public class CalendarJava8View implements Serializable {
     private LocalDateTime dateTime7;
     private LocalDateTime dateTimeDe;
     private List<LocalDate> multi;
+    private List<LocalDate> week;
     private List<LocalDate> range;
     private List<LocalDate> invalidDates;
     private List<LocalDate> validDates;
@@ -283,6 +284,14 @@ public class CalendarJava8View implements Serializable {
 
     public void setMulti(List<LocalDate> multi) {
         this.multi = multi;
+    }
+
+    public List<LocalDate> getWeek() {
+        return week;
+    }
+
+    public void setWeek(List<LocalDate> week) {
+        this.week = week;
     }
 
     public List<LocalDate> getRange() {

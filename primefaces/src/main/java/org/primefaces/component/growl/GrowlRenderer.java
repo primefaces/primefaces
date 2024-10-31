@@ -27,7 +27,6 @@ import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.UINotificationRenderer;
 import org.primefaces.util.Constants;
 import org.primefaces.util.EscapeUtils;
-import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
@@ -53,7 +52,6 @@ public class GrowlRenderer extends UINotificationRenderer {
 
         if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             writer.writeAttribute("class", "ui-growl-pl", null);
-            writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
             writer.writeAttribute("data-global", growl.isGlobalOnly(), null);
             writer.writeAttribute("data-summary", growl.isShowSummary(), null);
             writer.writeAttribute("data-detail", growl.isShowDetail(), null);

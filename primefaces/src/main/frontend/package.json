@@ -17,7 +17,7 @@
   "jsdocs": {},
   "dependencies": {
     "@types/jquery": "~3.5.32",
-    "chart.js": "~4.4.4",
+    "chart.js": "~4.4.6",
     "chartjs-adapter-moment": "~1.0.1",
     "chartjs-plugin-zoom": "~2.0.1",
     "cropperjs": "~1.5.13",

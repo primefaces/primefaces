@@ -1,8 +1,11 @@
+@use 'sass:list';
+@use 'sass:math';
+
 body {
   .ui-chips {
     .ui-chips-container {
       .ui-chips-token {
-        padding: math.div(nth($inputPadding, 1), 2) nth($inputPadding, 2);
+        padding: math.div(list.nth($inputPadding, 1), 2) list.nth($inputPadding, 2);
 
         .ui-chips-token-icon {
           padding-right: 1rem;
