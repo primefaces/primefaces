@@ -2,7 +2,7 @@
 <facelet-taglib xmlns="http://xmlns.jcp.org/xml/ns/javaee"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facelettaglibrary_2_3.xsd" 
-    version="2.0">
+    version="2.3">
 
     <namespace>http://primefaces.org/ui</namespace>
 
