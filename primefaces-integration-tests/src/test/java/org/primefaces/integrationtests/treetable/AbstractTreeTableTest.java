@@ -25,7 +25,6 @@ package org.primefaces.integrationtests.treetable;
 
 import org.primefaces.integrationtests.AbstractTableTest;
 import org.primefaces.model.DefaultTreeNode;
-import org.primefaces.model.DefaultTreeNodeChildren;
 import org.primefaces.model.TreeNode;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.TreeTable;
@@ -80,7 +79,7 @@ public class AbstractTreeTableTest extends AbstractTableTest {
     }
 
     private List<TreeNode<Document>> flattenTreeNodes(TreeNode<Document> root) {
-        List<TreeNode<Document>> treeNodes = new DefaultTreeNodeChildren<>();
+        List<TreeNode<Document>> treeNodes = new ArrayList<>();
         for (TreeNode<Document> child : root.getChildren()) {
             treeNodes.add(child);
             if (child.isExpanded()) {

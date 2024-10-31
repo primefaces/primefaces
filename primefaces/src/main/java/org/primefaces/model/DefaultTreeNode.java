@@ -99,8 +99,13 @@ public class DefaultTreeNode<T> implements TreeNode<T>, Serializable {
     }
 
     public void setChildren(List<TreeNode<T>> children) {
-        this.children = initChildren();
-        this.children.addAll(children);
+        if (children instanceof TreeNodeChildren) {
+            this.children = (TreeNodeChildren) children;
+        }
+        else {
+            this.children = initChildren();
+            this.children.addAll(children);
+        }
     }
 
     @Override
