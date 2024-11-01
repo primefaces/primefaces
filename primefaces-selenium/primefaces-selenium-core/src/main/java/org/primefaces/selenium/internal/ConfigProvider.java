@@ -156,7 +156,7 @@ public class ConfigProvider {
                 }
 
                 String screenshotDirectory = getAndResolveProperty(properties, "screenshotDirectory");
-                if (screenshotDirectory != null && !screenshotDirectory.trim().isEmpty()) {
+                if (screenshotDirectory != null && !screenshotDirectory.trim().isEmpty() && !"${SCREENSHOT_DIRECTORY}".equalsIgnoreCase(screenshotDirectory)) {
                     this.screenshotDirectory = screenshotDirectory;
                 }
             }
