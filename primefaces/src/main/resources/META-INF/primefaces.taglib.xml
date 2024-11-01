@@ -2079,6 +2079,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[The magnification factor of the barcode. Default is 2.0.]]>
+            </description>
+            <name>magnification</name>
+            <required>false</required>
+            <type>java.lang.Double</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[The QR Code error correction level. L (default) - up to 7% damage. M - up to 15% damage. Q - up to 25% damage. H - up to 30% damage]]>
             </description>
             <name>qrErrorCorrection</name>

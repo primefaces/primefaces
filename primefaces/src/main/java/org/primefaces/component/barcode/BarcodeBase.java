@@ -39,7 +39,8 @@ public abstract class BarcodeBase extends HtmlGraphicImage {
         format,
         orientation,
         qrErrorCorrection,
-        hrp
+        hrp,
+        magnification
     }
 
     public BarcodeBase() {
@@ -97,6 +98,14 @@ public abstract class BarcodeBase extends HtmlGraphicImage {
 
     public void setHrp(String hrp) {
         getStateHelper().put(PropertyKeys.hrp, hrp);
+    }
+
+    public double getMagnification() {
+        return (Double) getStateHelper().eval(PropertyKeys.magnification, 2.0);
+    }
+
+    public void setMagnification(double magnification) {
+        getStateHelper().put(PropertyKeys.magnification, magnification);
     }
 
 }

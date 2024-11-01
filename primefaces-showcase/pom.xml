@@ -136,12 +136,8 @@
 
         <!-- Barcode -->
         <dependency>
-            <groupId>io.nayuki</groupId>
-            <artifactId>qrcodegen</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.primefaces.extensions</groupId>
-            <artifactId>barcode4j-light</artifactId>
+            <groupId>uk.org.okapibarcode</groupId>
+            <artifactId>okapibarcode</artifactId>
         </dependency>
 
         <!-- ChartJS model -->
