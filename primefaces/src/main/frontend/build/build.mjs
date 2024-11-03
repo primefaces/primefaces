@@ -29,6 +29,10 @@ const LibsChartJs = {
     "hammerjs": "window.Hammer",
 }
 
+const LibsJsCookie = {
+    "js-cookie": "window.Cookies",
+}
+
 const LibsCropperJs = {
     "cropperjs": "window.Cropper",
 };
@@ -53,6 +57,7 @@ const LibsRaphael = {
 const ExternalLibraries = {
     ...LibsChartJs,
     ...LibsCropperJs,
+    ...LibsJsCookie,
     ...LibsJQuery,
     ...LibsMoment,
     ...LibsMomentTimezone,
@@ -68,9 +73,12 @@ const ExternalLibraries = {
 const BaseOptions = {
     absWorkingDir: baseDir,
     bundle: true,
+    charset: "utf8",
     target: "es2016",
+    format: "iife",
+    platform: "browser",
     minify: isProduction,
-    sourcemap: isProduction ? false : "inline",
+    sourcemap: isProduction ? "external" : "inline",
     plugins: [
         facesResourceLoaderPlugin({
             extensions: ["png", "jpg", "jpeg", "gif", "svg", "woff", "woff2", "ttf", "eot"],
@@ -127,83 +135,84 @@ async function createLocaleBuildTasks() {
 
 /** @type {import("esbuild").BuildOptions[]} */
 const LibraryBuildTasks = [
-    buildTask("libs/jquery.js", "jquery/jquery.js", LibsJQuery),
-    buildTask("libs/moment.js", "moment/moment.js", LibsMoment),
-    buildTask("libs/moment-timezone-with-data.js", "moment/moment-timezone-with-data.js", LibsMomentTimezone),
-    buildTask("libs/raphael.js", "raphael/raphael.js", LibsRaphael),
+    buildTask("libs/jquery.ts", "jquery/jquery.js", LibsJQuery),
+    buildTask("libs/moment.ts", "moment/moment.js", LibsMoment),
+    buildTask("libs/moment-timezone-with-data.ts", "moment/moment-timezone-with-data.js", LibsMomentTimezone),
+    buildTask("libs/raphael.ts", "raphael/raphael.js", LibsRaphael),
 ];
 
 /** @type {import("esbuild").BuildOptions[]} */
 const CoreBuildTasks = [
-    buildTask("base/core.js", "core.js"),
-    buildTask("base/components.js", "components.js"),
+    buildTask("base/core.ts", "core.js", LibsJsCookie),
+    buildTask("base/components.ts", "components.js"),
     buildTask("base/components.css", "components.css"),
-    buildTask("base/jquery-plugins.js", "jquery/jquery-plugins.js"),
+    buildTask("base/jquery-plugins.ts", "jquery/jquery-plugins.js"),
 ];
 
 /** @type {import("esbuild").BuildOptions[]} */
 const ComponentsBuildTasks = [
-    buildTask("components/calendar.js", "calendar/calendar.js"),
+    buildTask("components/calendar.ts", "calendar/calendar.js"),
     buildTask("components/calendar.css", "calendar/calendar.css"),
-    buildTask("components/captcha.js", "captcha/captcha.js"),
+    buildTask("components/captcha.ts", "captcha/captcha.js"),
     buildTask("components/chart.ts", "chart/chart.js", LibsChartJs),
-    buildTask("components/clock.js", "clock/clock.js"),
+    buildTask("components/clock.ts", "clock/clock.js"),
     buildTask("components/clock.css", "clock/clock.css"),
-    buildTask("components/colorpicker.js", "colorpicker/colorpicker.js"),
+    buildTask("components/colorpicker.ts", "colorpicker/colorpicker.js"),
     buildTask("components/colorpicker.css", "colorpicker/colorpicker.css"),
-    buildTask("components/datepicker.js", "datepicker/datepicker.js"),
-    buildTask("components/diagram.js", "diagram/diagram.js"),
+    buildTask("components/datepicker.ts", "datepicker/datepicker.js"),
+    buildTask("components/diagram.ts", "diagram/diagram.js"),
     buildTask("components/diagram.css", "diagram/diagram.css"),
-    buildTask("components/dock.js", "dock/dock.js"),
+    buildTask("components/dock.ts", "dock/dock.js"),
     buildTask("components/dock.css", "dock/dock.css"),
-    buildTask("components/filedownload.js", "filedownload/filedownload.js"),
-    buildTask("components/fileupload.js", "fileupload/fileupload.js"),
+    buildTask("components/filedownload.ts", "filedownload/filedownload.js"),
+    buildTask("components/fileupload.ts", "fileupload/fileupload.js"),
     buildTask("components/fileupload.css", "fileupload/fileupload.css"),
-    buildTask("components/galleria.js", "galleria/galleria.js"),
+    buildTask("components/galleria.ts", "galleria/galleria.js"),
     buildTask("components/galleria.css", "galleria/galleria.css"),
-    buildTask("components/gmap.js", "gmap/gmap.js"),
-    buildTask("components/hotkey.js", "hotkey/hotkey.js"),
-    buildTask("components/idlemonitor.js", "idlemonitor/idlemonitor.js"),
-    buildTask("components/imagecompare.js", "imagecompare/imagecompare.js"),
+    buildTask("components/gmap.ts", "gmap/gmap.js"),
+    buildTask("components/hotkey.ts", "hotkey/hotkey.js"),
+    buildTask("components/idlemonitor.ts", "idlemonitor/idlemonitor.js"),
+    buildTask("components/imagecompare.ts", "imagecompare/imagecompare.js"),
     buildTask("components/imagecompare.css", "imagecompare/imagecompare.css"),
-    buildTask("components/imagecropper.js", "imagecropper/imagecropper.js"),
-    buildTask("components/imagecropper.css", "imagecropper/imagecropper.css"),
-    buildTask("components/imageswitch.js", "imageswitch/imageswitch.js"),
-    buildTask("components/inputmask.js", "inputmask/inputmask.js"),
-    buildTask("components/inputnumber.js", "inputnumber/inputnumber.js"),
-    buildTask("components/keyboard.js", "keyboard/keyboard.js"),
+    buildTask("components/imagecropper.ts", "imagecropper/imagecropper.js", LibsCropperJs),
+    buildTask("components/imagecropper.css", "imagecropper/imagecropper.css", LibsCropperJs),
+    buildTask("components/imageswitch.ts", "imageswitch/imageswitch.js"),
+    buildTask("components/inputmask.ts", "inputmask/inputmask.js"),
+    buildTask("components/inputnumber.ts", "inputnumber/inputnumber.js"),
+    buildTask("components/keyboard.ts", "keyboard/keyboard.js"),
     buildTask("components/keyboard.css", "keyboard/keyboard.css"),
-    buildTask("components/keyfilter.js", "keyfilter/keyfilter.js"),
-    buildTask("components/knob.js", "knob/knob.js"),
-    buildTask("components/lifecycle.js", "lifecycle/lifecycle.js"),
+    buildTask("components/keyfilter.ts", "keyfilter/keyfilter.js"),
+    buildTask("components/knob.ts", "knob/knob.js"),
+    buildTask("components/lifecycle.ts", "lifecycle/lifecycle.js"),
     buildTask("components/lifecycle.css", "lifecycle/lifecycle.css"),
-    buildTask("components/log.js", "log/log.js"),
+    buildTask("components/log.ts", "log/log.js"),
     buildTask("components/log.css", "log/log.css"),
-    buildTask("components/mindmap.js", "mindmap/mindmap.js"),
-    buildTask("components/organigram.js", "organigram/organigram.js"),
+    buildTask("components/mindmap.ts", "mindmap/mindmap.js"),
+    buildTask("components/organigram.ts", "organigram/organigram.js"),
     buildTask("components/organigram.css", "organigram/organigram.css"),
-    buildTask("components/photocam.js", "photocam/photocam.js"),
+    buildTask("components/photocam.ts", "photocam/photocam.js"),
     buildTask("components/primeicons.css", "primeicons/primeicons.css"),
-    buildTask("components/printer.js", "printer/printer.js"),
-    buildTask("components/schedule.js", "schedule/schedule.js"),
+    buildTask("components/printer.ts", "printer/printer.js"),
+    buildTask("components/schedule.ts", "schedule/schedule.js"),
     buildTask("components/schedule.css", "schedule/schedule.css"),
-    buildTask("components/scrollpanel.js", "scrollpanel/scrollpanel.js"),
+    buildTask("components/scrollpanel.ts", "scrollpanel/scrollpanel.js"),
     buildTask("components/scrollpanel.css", "scrollpanel/scrollpanel.css"),
-    buildTask("components/signature.js", "signature/signature.js"),
+    buildTask("components/signature.ts", "signature/signature.js"),
     buildTask("components/signature.css", "signature/signature.css"),
-    buildTask("components/stack.js", "stack/stack.js"),
+    buildTask("components/stack.ts", "stack/stack.js"),
     buildTask("components/stack.css", "stack/stack.css"),
-    buildTask("components/terminal.js", "terminal/terminal.js"),
+    buildTask("components/terminal.ts", "terminal/terminal.js"),
     buildTask("components/terminal.css", "terminal/terminal.css"),
-    buildTask("components/texteditor.js", "texteditor/texteditor.js"),
+    buildTask("components/texteditor.ts", "texteditor/texteditor.js"),
     buildTask("components/texteditor.css", "texteditor/texteditor.css"),
-    buildTask("components/timeline.js", "timeline/timeline.js"),
+    buildTask("components/timeline.ts", "timeline/timeline.js"),
     buildTask("components/timeline.css", "timeline/timeline.css"),
-    buildTask("components/touchswipe.js", "touch/touchswipe.js"),
-    buildTask("components/validation.bv.js", "validation/validation.bv.js"),
+    buildTask("components/touchswipe.ts", "touch/touchswipe.js"),
+    buildTask("components/validation.bv.ts", "validation/validation.bv.js"),
 ];
 
 async function main() {
+    console.log(`Building PrimeFaces resources with mode ${isProduction ? "production" : "development"}...`);
     // Start all promises and wait for them to finish.
     // This will build all tasks in parallel, speeding up the build process.
     const LocaleBuildTasks = await createLocaleBuildTasks();

@@ -1,9 +1,9 @@
+import Raphael from "raphael";
+
 /**
- * __PrimeFaces SimpleDateFormat widget__
- * 
  * Code ported from Tim Down's http://www.timdown.co.uk/code/simpledateformat.php
  * 
- * Helper widget for working with `Date`s and date formats.
+ * Helper class for working with `Date`s and date formats.
  * 
  * @template {PrimeFaces.widget.SimpleDateFormatCfg} [TCfg=PrimeFaces.widget.SimpleDateFormatCfg] Type of the configuration
  * object for this widget.
@@ -30,7 +30,7 @@
  * @prop {string} cfg.widgetVar The name of the widget variables of this widget. The widget variable can be used to
  * access a widget instance by calling `PF('myWidgetVar')`.
  */
-PrimeFaces.widget.SimpleDateFormat = class SimpleDateFormat {
+class SimpleDateFormat {
 
     /**
      * A widget class should not have an explicit constructor. Instead, this initialize method is called after the widget
@@ -40,7 +40,7 @@ PrimeFaces.widget.SimpleDateFormat = class SimpleDateFormat {
      * @param {Partial<TCfg>} cfg The widget configuration to be used for this widget instance. This widget
      * configuration is usually created on the server by the `javax.faces.render.Renderer` for this component.
      */
-    init(cfg) {
+    constructor(cfg) {
         this.cfg = cfg;
         this.cfg.regex = /('[^']*')|(G+|y+|M+|w+|W+|D+|d+|F+|E+|a+|H+|k+|K+|h+|m+|s+|S+|Z+)|([a-zA-Z]+)|([^a-zA-Z']+)/
         this.cfg.TEXT2 = 0;
@@ -447,7 +447,7 @@ PrimeFaces.widget.Clock = class Clock extends PrimeFaces.widget.BaseWidget {
         super.init(cfg);
 
         this.cfg.pattern = this.cfg.pattern||"MM/dd/yyyy HH:mm:ss";
-        this.cfg.dateFormat = new PrimeFaces.widget.SimpleDateFormat({
+        this.cfg.dateFormat = new SimpleDateFormat({
             pattern: this.cfg.pattern,
             locale: this.cfg.locale
         });
@@ -677,3 +677,7 @@ PrimeFaces.widget.Clock = class Clock extends PrimeFaces.widget.BaseWidget {
         return this.cfg.displayMode === "analog";
     }
 }
+
+// TODO SimpleDateFormat is NOT a widget, just a class, and should not be added to the PrimeFaces.widget scope
+// Add it for now to preserve backwards compatibility in case external code uses it.
+PrimeFaces.widget.SimpleDateFormat = SimpleDateFormat;

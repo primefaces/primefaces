@@ -196,7 +196,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chart.js@npm:~4.4.4":
+"chart.js@npm:~4.4.6":
   version: 4.4.6
   resolution: "chart.js@npm:4.4.6"
   dependencies:
@@ -357,6 +357,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"js-cookie@npm:~3.0.5":
+  version: 3.0.5
+  resolution: "js-cookie@npm:3.0.5"
+  checksum: 10c0/04a0e560407b4489daac3a63e231d35f4e86f78bff9d792011391b49c59f721b513411cd75714c418049c8dc9750b20fcddad1ca5a2ca616c3aca4874cce5b3a
+  languageName: node
+  linkType: hard
+
 "moment-jdateformatparser@npm:~1.2.1":
   version: 1.2.1
   resolution: "moment-jdateformatparser@npm:1.2.1"
@@ -385,7 +392,7 @@ __metadata:
   resolution: "primefaces@workspace:."
   dependencies:
     "@types/jquery": "npm:~3.5.32"
-    chart.js: "npm:~4.4.4"
+    chart.js: "npm:~4.4.6"
     chartjs-adapter-moment: "npm:~1.0.1"
     chartjs-plugin-zoom: "npm:~2.0.1"
     cropperjs: "npm:~1.5.13"
@@ -393,6 +400,7 @@ __metadata:
     hammerjs: "npm:~2.0.8"
     jquery: "npm:~4.0.0-beta.2"
     jquery-cropper: "patch:jquery-cropper@npm%3A1.0.0#~/.yarn/patches/jquery-cropper-npm-1.0.0-148aa161fe.patch"
+    js-cookie: "npm:~3.0.5"
     moment: "npm:~2.30.1"
     moment-jdateformatparser: "npm:~1.2.1"
     moment-timezone: "npm:~0.5.45"

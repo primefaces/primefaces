@@ -24,6 +24,7 @@
     "hammerjs": "~2.0.8",
     "jquery": "~4.0.0-beta.2",
     "jquery-cropper": "patch:jquery-cropper@npm%3A1.0.0#~/.yarn/patches/jquery-cropper-npm-1.0.0-148aa161fe.patch",
+    "js-cookie": "~3.0.5",
     "moment": "~2.30.1",
     "moment-jdateformatparser": "~1.2.1",
     "moment-timezone": "~0.5.45",

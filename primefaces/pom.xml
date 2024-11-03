@@ -17,7 +17,6 @@
     <name>PrimeFaces</name>
 
     <properties>
-        <minify.disabled>true</minify.disabled>
         <jakarta.jar.skip>false</jakarta.jar.skip>
         <resources.dir.compressed>${project.build.directory}/classes/META-INF/resources/primefaces</resources.dir.compressed>
         <mockito.version>5.14.2</mockito.version>
@@ -25,7 +24,7 @@
         <node.version>v20.11.1</node.version>
         <yarn.version>v1.22.22</yarn.version>
         <frontend.directory>${basedir}/src/main/frontend</frontend.directory>
-        <frontend.node.env>production</frontend.node.env>
+        <frontend.node.env>development</frontend.node.env>
     </properties>
 
     <dependencies>
@@ -330,8 +329,22 @@
                 <configuration>
                     <filesets>
                         <fileset>
-                            <directory>${frontend.directory}/node_modules</directory>
+                            <directory>${frontend.directory}</directory>
                             <followSymlinks>false</followSymlinks>
+                            <includes>
+                                <include>.pnp.*</include>
+                            </includes>
+                        </fileset>
+                        <fileset>
+                            <directory>${frontend.directory}/.yarn</directory>
+                            <followSymlinks>false</followSymlinks>
+                            <excludes>
+                                <exclude>patches/**</exclude>
+                                <exclude>plugins/**</exclude>
+                                <exclude>releases/**</exclude>
+                                <exclude>sdks/**</exclude>
+                                <exclude>versions/**</exclude>
+                            </excludes>
                         </fileset>
                     </filesets>
                 </configuration>
@@ -971,7 +984,7 @@
         <profile>
             <id>minify</id>
             <properties>
-                <minify.disabled>false</minify.disabled>
+                <frontend.node.env>production</frontend.node.env>
             </properties>
             <build>
             </build>
@@ -979,7 +992,7 @@
         <profile>
             <id>release</id>
             <properties>
-                <minify.disabled>false</minify.disabled>
+                <frontend.node.env>production</frontend.node.env>
             </properties>
         </profile>
     </profiles>

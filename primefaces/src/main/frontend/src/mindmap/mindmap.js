@@ -1,3 +1,5 @@
+import Raphael from "raphael";
+
 /**
  * __PrimeFaces Mindmap Widget__
  * 
