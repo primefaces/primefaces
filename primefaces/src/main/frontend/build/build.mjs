@@ -17,6 +17,12 @@ const srcDir = path.join(baseDir, "src");
 const resourcesDir = path.resolve(baseDir, "..", "..", "..", "target", "generated-resources", "META-INF", "resources");
 const outputDir = path.join(resourcesDir, "primefaces");
 
+// PrimeFaces consists of several source files. External libraries are included
+// as separate JavaScript files. Linking with other source files is done via global
+// variables. The following objects define the global variables that are used by
+// the external libraries. The key is the import path (name of the NPM package),
+// the value is the global variable name that contains the library.
+
 const LibsChartJs = {
     "chart.js": "window.ChartJs",
     "chart.js/helpers": "window.ChartJsHelpers",
@@ -28,7 +34,7 @@ const LibsCropperJs = {
 };
 
 const LibsJQuery = {
-    "jQuery": "window.$",
+    "jquery": "window.$",
 };
 
 const LibsMoment = {
@@ -139,6 +145,7 @@ const CoreBuildTasks = [
 const ComponentsBuildTasks = [
     buildTask("components/calendar.js", "calendar/calendar.js"),
     buildTask("components/calendar.css", "calendar/calendar.css"),
+    buildTask("components/captcha.js", "captcha/captcha.js"),
     buildTask("components/chart.ts", "chart/chart.js", LibsChartJs),
     buildTask("components/clock.js", "clock/clock.js"),
     buildTask("components/clock.css", "clock/clock.css"),
@@ -192,6 +199,8 @@ const ComponentsBuildTasks = [
     buildTask("components/texteditor.css", "texteditor/texteditor.css"),
     buildTask("components/timeline.js", "timeline/timeline.js"),
     buildTask("components/timeline.css", "timeline/timeline.css"),
+    buildTask("components/touchswipe.js", "touch/touchswipe.js"),
+    buildTask("components/validation.bv.js", "validation/validation.bv.js"),
 ];
 
 async function main() {
@@ -209,7 +218,6 @@ async function main() {
         throw new AggregateError(errors.map(r => r.reason));
     }
 }
-
 
 /**
  * Creates a new object without the given keys.
