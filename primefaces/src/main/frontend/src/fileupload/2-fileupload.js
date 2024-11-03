@@ -805,7 +805,7 @@ PrimeFaces.widget.FileUpload = class FileUpload extends PrimeFaces.widget.BaseWi
      * @param {PrimeFaces.FacesMessage} msg Error message to show.
      * @private
      */
-    showMessage: function(msg) {
+    showMessage(msg) {
         this.messageList.append('<li><span class="ui-messages-error-summary">'
             + PrimeFaces.escapeHTML(msg.summary)
             + '</span><span class="ui-messages-error-detail">'
@@ -813,7 +813,7 @@ PrimeFaces.widget.FileUpload = class FileUpload extends PrimeFaces.widget.BaseWi
             + '</span></li>');
         this.messageContainer.show();
         msg.rendered = true;
-    },
+    }
 
     /**
      * Disabled the given file upload button.

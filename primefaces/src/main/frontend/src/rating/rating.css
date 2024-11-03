@@ -11,7 +11,7 @@
     width: 16px;
     height: 15px;
     display: block;
-    background: url("#{resource['primefaces:rating/rating.png']}") no-repeat 0 0;
+    background: url("./rating.png") no-repeat 0 0;
 }
 
 .ui-rating-star a {

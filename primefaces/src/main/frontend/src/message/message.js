@@ -35,13 +35,13 @@ PrimeFaces.widget.Message = class Message extends PrimeFaces.widget.BaseWidget {
 
             target.attr('aria-describedby', msgSrc.attr('id'));
         }
-    },
+    }
 
     /**
      * Renders the given msg.
      * @param {PrimeFaces.FacesMessage} msg Message to render.
      */
-    renderMessage: function(msg) {
+    renderMessage(msg) {
         var display = this.jq.data('display');
 
         if (display !== 'tooltip') {
@@ -62,12 +62,12 @@ PrimeFaces.widget.Message = class Message extends PrimeFaces.widget.BaseWidget {
             this.jq.hide();
             $(PrimeFaces.escapeClientId(this.jq.data('target'))).attr('title', PrimeFaces.escapeHTML(msg.detail));
         }
-    },
+    }
 
     /**
      * Removes the current displayed message.
      */
-    clearMessage: function() {
+    clearMessage() {
         this.jq.html('');
         this.jq.removeClass('ui-message-error ui-message-icon-only ui-widget ui-corner-all ui-helper-clearfix');
     }

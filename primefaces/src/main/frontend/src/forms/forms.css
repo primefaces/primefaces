@@ -823,7 +823,7 @@ div.ui-button, .ui-splitbutton {
 
 .ui-password-panel .ui-password-meter {
     height: 10px;
-    background:transparent url("#{resource['primefaces:forms/password-meter.png']}") no-repeat left top;
+    background:transparent url("./password-meter.png") no-repeat left top;
     padding: 0;
     margin: 0;
 }

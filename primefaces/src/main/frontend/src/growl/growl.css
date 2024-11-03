@@ -37,7 +37,7 @@
     margin:0;
     padding:0;
     display: block;
-    background: url("#{resource['primefaces:messages/messages.png']}") no-repeat;
+    background: url("../messages/messages.png") no-repeat;
 }
 
 .ui-growl-image-info {

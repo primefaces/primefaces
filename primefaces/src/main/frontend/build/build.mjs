@@ -7,13 +7,15 @@ import fs from "node:fs/promises";
 import * as esbuild from "esbuild";
 
 import { customModuleSourcePlugin } from "./custom-module-source-plugin.mjs";
+import { facesResourceLoaderPlugin } from "./faces-resource-loader-plugin.mjs";
 
 const isProduction = process.env.NODE_ENV !== "development";
 
 const baseDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const bundlesDir = path.join(baseDir, "bundles");
-const outputDir = path.join(baseDir, "..", "..", "..", "target", "generated-resources", "META-INF", "resources", "primefaces");
-
+const srcDir = path.join(baseDir, "src");
+const resourcesDir = path.resolve(baseDir, "..", "..", "..", "target", "generated-resources", "META-INF", "resources");
+const outputDir = path.join(resourcesDir, "primefaces");
 
 const LibsChartJs = {
     "chart.js": "window.ChartJs",
@@ -63,7 +65,15 @@ const BaseOptions = {
     target: "es2016",
     minify: isProduction,
     sourcemap: isProduction ? false : "inline",
-    plugins: [],
+    plugins: [
+        facesResourceLoaderPlugin({
+            extensions: ["png", "jpg", "jpeg", "gif", "svg", "woff", "woff2", "ttf", "eot"],
+            inputDir: srcDir,
+            outputDir: outputDir,
+            resourceBase: resourcesDir,
+            useLibrary: true,
+        }),
+    ],
 };
 
 /**
@@ -96,7 +106,7 @@ function buildTask(from, to, excludes) {
  * @returns {Promise<import("esbuild").BuildOptions[]>}
  */
 async function createLocaleBuildTasks() {
-    const localeDir = path.join(baseDir, "src", "locales");
+    const localeDir = path.join(srcDir, "locales");
     const localeFiles = await fs.readdir(localeDir);
     return localeFiles.map(file => {
         const fromPath = path.join(localeDir, file);
@@ -142,8 +152,8 @@ const ComponentsBuildTasks = [
     buildTask("components/filedownload.js", "filedownload/filedownload.js"),
     buildTask("components/fileupload.js", "fileupload/fileupload.js"),
     buildTask("components/fileupload.css", "fileupload/fileupload.css"),
-    buildTask("components/galleria.js", "fileupload/galleria.js"),
-    buildTask("components/galleria.css", "fileupload/galleria.css"),
+    buildTask("components/galleria.js", "galleria/galleria.js"),
+    buildTask("components/galleria.css", "galleria/galleria.css"),
     buildTask("components/gmap.js", "gmap/gmap.js"),
     buildTask("components/hotkey.js", "hotkey/hotkey.js"),
     buildTask("components/idlemonitor.js", "idlemonitor/idlemonitor.js"),
@@ -203,11 +213,11 @@ async function main() {
 
 /**
  * Creates a new object without the given keys.
- * @template T
- * @template {keyof T} K
- * @param {T} obj 
- * @param {K[]} keys 
- * @returns {Omit<T, K>}
+ * @template T Type of the object.
+ * @template {keyof T} K Type of the keys to exclude.
+ * @param {T} obj Object from which to exclude keys.
+ * @param {K[]} keys Keys to exclude.
+ * @returns {Omit<T, K>} Object without the given keys.
  */
 function excludeKeys(obj, keys) {
     const result = { ...obj };
@@ -219,9 +229,9 @@ function excludeKeys(obj, keys) {
 
 /**
  * Returns the keys of the given object.
- * @template {{}} T
- * @param {T} obj 
- * @returns {(keyof T)[]}
+ * @template {{}} T Type of the object.
+ * @param {T} obj Object from which to get the keys.
+ * @returns {(keyof T)[]} Keys of the object.
  */
 function recordKeys(obj) {
     return /** @type {(keyof T)[]} */(Object.keys(obj));

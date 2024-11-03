@@ -1,8 +1,12 @@
 @font-face {
     font-family: 'primeicons';
     font-display: block;
-    src: url("#{resource['primefaces:primeicons/primeicons.eot']}");
-    src: url("#{resource['primefaces:primeicons/primeicons.eot']}#iefix") format('embedded-opentype'), url("#{resource['primefaces:primeicons/primeicons.woff2']}") format('woff2'), url("#{resource['primefaces:primeicons/primeicons.woff']}") format('woff'), url("#{resource['primefaces:primeicons/primeicons.ttf']}") format('truetype'), url("#{resource['primefaces:primeicons/primeicons.svg']}#primeicons") format('svg');
+    src: url("./primeicons.eot");
+    src: url("./primeicons.eot#iefix") format('embedded-opentype'),
+         url("./primeicons.woff2") format('woff2'), 
+         url("./primeicons.woff") format('woff'), 
+         url("./primeicons.ttf") format('truetype'), 
+         url("./primeicons.svg#primeicons") format('svg');
     font-weight: normal;
     font-style: normal;
 }

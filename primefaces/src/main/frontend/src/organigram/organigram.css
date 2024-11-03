@@ -17,11 +17,11 @@
 }
 
 .ui-organigram .control.zoom-in {
-    background-image: url("#{resource['primefaces:organigram/zoom-in.png']}");
+    background-image: url("./zoom-in.png");
 }
 
 .ui-organigram .control.zoom-out {
-    background-image: url("#{resource['primefaces:organigram/zoom-out.png']}");
+    background-image: url("./zoom-out.png");
 }
 
 .ui-organigram > ul {

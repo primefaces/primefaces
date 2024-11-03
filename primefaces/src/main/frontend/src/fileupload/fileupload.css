@@ -56,7 +56,7 @@
 }
 
 .ui-fileupload-content .ui-progressbar-value-legacy {
-  background: url("#{resource['primefaces:fileupload/progressbar.gif']}") repeat-x;
+  background: url("./progressbar.gif") repeat-x;
 }
 
 .ui-fileupload-files {

@@ -130,7 +130,7 @@
 }
 
 .ui-tree.ui-tree-horizontal .ui-treenode {
-    background: url("#{resource['primefaces:tree/images/line.gif']}") repeat-x scroll center center transparent;
+    background: url("./images/line.gif") repeat-x scroll center center transparent;
     padding: 5px 40px;
     position: relative;
 }
@@ -170,7 +170,7 @@
 }
 
 .ui-tree.ui-tree-horizontal .ui-treenode-connector-line {
-    background: url("#{resource['primefaces:tree/images/line.gif']}") repeat-y scroll 0 0 transparent;
+    background: url("./images/line.gif") repeat-y scroll 0 0 transparent;
     width: 1px;
 }
 

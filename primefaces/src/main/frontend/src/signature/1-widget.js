@@ -187,7 +187,7 @@ PrimeFaces.widget.Signature = class Signature extends PrimeFaces.widget.BaseWidg
         this.inputJson.val('');
         this.inputText.val('');
         this.updateBase64(true);
-    },
+    }
 
     /**
      * Draws the given line data to this signature widget viewport.
@@ -203,7 +203,7 @@ PrimeFaces.widget.Signature = class Signature extends PrimeFaces.widget.BaseWidg
      * Callback for when the signature has changed.
      * @private
      */
-    handleChange: function () {
+    handleChange() {
         this.updateBase64();
 
         if (this.cfg.onchange) {
@@ -216,17 +216,17 @@ PrimeFaces.widget.Signature = class Signature extends PrimeFaces.widget.BaseWidg
      * @param {boolean} clear - Whether to clear the base64 value.
      * @private
      */
-    updateBase64: function (clear = false) {
+    updateBase64(clear = false) {
         if (this.cfg.base64) {
             this.inputBase64.val(clear ? '' : this.canvas[0].toDataURL());
         }
-    },
+    }
 
     /**
      * Creates a signature from the given text using SVG.
      * @param {string} text - The text to convert into a signature.
      */
-    createSignatureFromText: function (text) {
+    createSignatureFromText(text) {
         const canvas = this.canvas[0];
         const width = canvas.width;
         const height = canvas.height;
@@ -239,7 +239,7 @@ PrimeFaces.widget.Signature = class Signature extends PrimeFaces.widget.BaseWidg
         this.handleChange();
         ctx.restore();
         this.draw(canvas.toDataURL());
-    },
+    }
 
     /**
      * Disables this input so that the user cannot enter a value anymore.

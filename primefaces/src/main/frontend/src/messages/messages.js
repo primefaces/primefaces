@@ -48,7 +48,7 @@ PrimeFaces.widget.Messages = class Messages extends PrimeFaces.widget.BaseWidget
                 '<span class="ui-messages-' + msg.severity + '-summary">' + (msg.summary ? msg.summary : '') + '</span>' +
                 '<span class="ui-messages-' + msg.severity + '-detail">' + (msg.detail ? msg.detail : '') + '</span>' +
             '</li>');
-    },
+    }
 
     /**
      * Clears all current messages from the DOM.

@@ -12,7 +12,7 @@
 
 .ui-messages-success-icon, .ui-messages-info-icon, .ui-messages-warn-icon, .ui-messages-error-icon, .ui-messages-fatal-icon,
 .ui-message-success-icon, .ui-message-info-icon, .ui-message-warn-icon, .ui-message-error-icon, .ui-message-fatal-icon {
-    background: url("#{resource['primefaces:messages/messages.png']}") no-repeat;
+    background: url("./messages.png") no-repeat;
     display:block;
     float:left;
     margin:0;
