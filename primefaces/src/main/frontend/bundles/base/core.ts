@@ -2,7 +2,7 @@
 import Cookies from "js-cookie";
 window.Cookies = Cookies;
 
-import "../../src/jquery/jquery.browser.js";
+import "../../src/jquery/jquery.browser.cjs";
 import "../../src/core/core.js";
 import "../../src/core/core.env.js";
 import "../../src/core/core.ajax.js";

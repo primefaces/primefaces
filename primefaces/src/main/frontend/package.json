@@ -4,7 +4,7 @@
   "private": true,
   "description": "Client-side implementation for PrimeFaces",
   "main": "src/index.js",
-  "type": "commonjs",
+  "type": "module",
   "license": "MIT",
   "repository": {
     "type": "git",
