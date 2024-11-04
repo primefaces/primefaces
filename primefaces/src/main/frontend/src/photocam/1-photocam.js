@@ -1,3 +1,5 @@
+import Webcam from "webcamjs";
+
 /**
  * __PrimeFaces PhotoCam Widget__
  *

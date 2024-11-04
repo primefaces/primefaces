@@ -549,6 +549,7 @@ __metadata:
     quill: "npm:~2.0.2"
     raphael: "npm:~2.3.0"
     typescript: "npm:~5.6.3"
+    webcamjs: "patch:webcamjs@npm%3A1.0.26#~/.yarn/patches/webcamjs-npm-1.0.26-e450e6a36f.patch"
   languageName: unknown
   linkType: soft
 
@@ -608,5 +609,19 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 10c0/7c9d2e07c81226d60435939618c91ec2ff0b75fbfa106eec3430f0fcf93a584bc6c73176676f532d78c3594fe28a54b36eb40b3d75593071a7ec91301533ace7
+  languageName: node
+  linkType: hard
+
+"webcamjs@npm:1.0.26":
+  version: 1.0.26
+  resolution: "webcamjs@npm:1.0.26"
+  checksum: 10c0/f71d567f2b29c569f7407bca898a603a624d5701eb3b4bb11f3f68573ac1f5e6ffc3234ae3593735dfd2fbdf2ab63777c8041a52eaae86528f018387b47793d0
+  languageName: node
+  linkType: hard
+
+"webcamjs@patch:webcamjs@npm%3A1.0.26#~/.yarn/patches/webcamjs-npm-1.0.26-e450e6a36f.patch":
+  version: 1.0.26
+  resolution: "webcamjs@patch:webcamjs@npm%3A1.0.26#~/.yarn/patches/webcamjs-npm-1.0.26-e450e6a36f.patch::version=1.0.26&hash=3df871"
+  checksum: 10c0/20df01468d6d3d4b6844ea96db55723194ae306e7f1af84bf5c157d292dbc6ee5446a9b67cc8a9d99933a9f4b6996da26e6ff40775b8e7d06ee3d539931a759a
   languageName: node
   linkType: hard

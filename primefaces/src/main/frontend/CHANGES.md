@@ -20,7 +20,9 @@
   we are using, and it would even be possible to generate a `thirdpartylibs` file from that.
 * For external libraries where we only made small changes are also loaded from NPM.
   Our changes are applied as a diff file, using Yarn's builtin
-  [patch protocol](https://yarnpkg.com/features/patching).
+  [patch protocol](https://yarnpkg.com/features/patching). The patches can be found
+  in `src/main/frontend/.yarn/patches`. This makes it easy for everybody to understand
+  what change we made. I also added a markdown file for each patch with a brief description.
 * Resources such as fonts and images in CSS files can now be referenced normally
   via relative paths (`./images/loader.gif`). I added an ESBuild plugin that
   converts the URLs to EL resource expression

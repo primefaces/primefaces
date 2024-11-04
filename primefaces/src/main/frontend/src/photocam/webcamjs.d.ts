@@ -6,7 +6,7 @@
  * 
  * See https://github.com/jhuckaby/webcamjs
  */
-declare namespace Webcam {
+declare module "webcamjs" {
     /**
      * Format of the images taken by the webcam.
      */
@@ -199,161 +199,167 @@ declare namespace Webcam {
          * ```
          * 
          */
-        constraints?: Partial<WebcamConstraints> | MediaTrackConstraints;
+        constraints?: MediaTrackConstraints;
+
+        /**
+         * The device to grab images from. Either `user`, `environment`, or
+         * a custom video device ID.
+         */
+        device?: string;
     }
 
-    /**
-     * Specifies the constraints applied to the video device used by webcam.
-     */
-    export interface WebcamConstraints {
+    class FlashError extends Error {}
+    class WebcamError extends Error {}
+
+    export interface Webcam {
+        errors: {
+            FlashError: typeof FlashError;
+            WebcamError: typeof WebcamError; 
+        };
+
         /**
-         * Mandatory constraints. Fail if these are not met.
+         * Updates a global webcam setting with the given new value.
+         * @typeparam K Name of the setting.
+         * @param setting Name of a settings to change.
+         * @param newValue New value for the setting.
          */
-        mandatory: MediaTrackConstraints;
+        set<K extends keyof WebcamSettings>(setting: K, newValue: WebcamSettings[K]): void;
+
         /**
-         * Optional constraints. Do not fail if these are not met.
+         * Updates the global webcam settings with the given settings.
+         * @param settings New settings for the webcam.
          */
-        optional: MediaTrackConstraints[];
+        set(settings: Partial<WebcamSettings>): void;
+    
+        /**
+         * WebcamJS is initialized and activated by attaching a live camera viewer to a DOM element. The DOM element must
+         * already be created and empty:
+         * 
+         * ```javascript
+         * Webcam.attach("#my_camera");
+         * ```
+         * 
+         * This will activate the user's webcam, ask for the appropriate permission, and begin showing a live camera image in
+         * the specified DOM element.
+         * 
+         * Note that the browser itself handles asking the user for permission to use their camera. WebcamJS has no control
+         * over this, so there is no way to style the UI. Each browser does it a little differently, typically a bar at the
+         * top of the page, and Flash does it inside the view area.
+         * 
+         * @param selector CSS selector for the DOM element to which the webcam is attached.
+         */
+        attach(selector: string): void;
+    
+        /**
+         * To snap a picture, just call the `Webcam.snap()` function, passing in a callback function. The image data will be
+         * passed to your function as a daata URI, which you can then display in your web page, or submit to a server:
+         * 
+         * ```javascript
+         * Webcam.snap(data_uri => {
+         *   document.getElementById("my_result").innerHTML = `<img src="${data_uri}">`;
+         * });
+         * ```
+         * 
+         * Your function is also passed a HTML5 Canvas and a 2D Context object, so you can gain access to the raw pixels
+         * instead of a compressed image Data URI. These are passed as the 2nd and 3rd arguments to your callback function:
+         * 
+         * ```javascript
+         * Webcam.snap( (data_uri, canvas, context) => {
+           *   // copy image to my own canvas
+           *   myContext.drawImage(canvas, 0, 0);
+         * });
+         * ```
+         * 
+         * If you would prefer that WebcamJS simply copy the image into your own canvas, it can do that instead of generating
+         * a data URI (which can be an expensive operation). To do this, simply pass your canvas object to the `Webcam.snap()`
+         * method, as the 2nd argument, right after your callback function:
+         * 
+         * ```javascript
+         * // assumes 'myCanvas' is a reference to your own canvas object, at the correct size
+         * Webcam.snap(() => {
+         *   // the webcam image is now in your own canvas
+         * }, myCanvas );
+         * ```
+         * 
+         * @param callback A callback function that is invoked with the image data once the images was taken.
+         * @param canvas Optional. If given, draws the image to this canvas.
+         */
+        snap(callback: SnapCallback, canvas?: HTMLCanvasElement): void;
+    
+        /**
+         * To shut down the live camera preview and reset the system, call `Webcam.reset()`. This removes any DOM elements we
+         * added, including a Flash movie if applicable, and resets everything in the library to the initial state.
+         * 
+         * To use the library again after resetting, you must call `Webcam.attach()` and pass it your DOM element.
+         */
+        reset(): void;
+    
+        /**
+         * Freeze the current live camera frame, allowing the user to preview before saving.
+         */
+        freeze(): void;
+    
+        /**
+         * Cancel the preview (discard image) and resume the live camera view.
+         */
+        unfreeze(): void;
+    
+        /**
+         * Register an event listener for a given event. Pass in the event name, and a callback function.
+         * @typeparam K Name of the event.
+         * @param eventName Name of the event for which to attach a listener.
+         * @param eventCallback Callback to attach.
+         */
+        on<K extends keyof WebcamEventMap>(eventName: K, eventCallback: WebcamEventMap[K]): void;
+    
+        /**
+         * Remove an event listener for a given event. Pass in the event name, and the callback function to remove. Omit the
+         * callback reference to remove all listeners.
+         * @typeparam K Name of the event.
+         * @param eventName Name of the event for which to remove a listener.
+         * @param eventCallback Callback to remove. If omitted, removes all callback for the given event.
+         */
+        off<K extends keyof WebcamEventMap>(eventName: K, eventCallback?: WebcamEventMap[K]): void;
+    
+        /**
+         * Upload a saved image to your server via binary AJAX. Fires progress events.
+         * 
+         * The `Webcam.snap()` function delivers your image by way of a client-side JavaScript Data URI. The binary image
+         * data is encoded with Base64 and stuffed into the URI. You can use this image in JavaScript and display it on your
+         * page. However, the library also provides a way to decode and submit this image data to a server API endpoint, via
+         * binary AJAX:
+         * 
+         * ```javascript
+         * Webcam.snap(data_uri => {
+         *   // snap complete, image data is in "data_uri"
+         *   Webcam.upload(data_uri, "myScript.php", (code, text) => {
+         *     // Upload complete!
+         *     // "code" will be the HTTP response code from the server, e.g., 200
+         *     // 'text' will be the raw response content
+         *   });
+         * });
+         * ```
+         * 
+         * The image data is uploaded as part of a standard multipart form post, and included as a form element named
+         * webcam. To gain access to this data, write some server-side code like this (PHP shown):
+         * 
+         * ```php
+         * // be aware of file / directory permissions on your server
+         * move_uploaded_file($_FILES['webcam']['tmp_name'], 'webcam.jpg');
+         * ```
+         * 
+         * Treat the uploaded data as if you were receiving a standard form submission with a
+         * `<input type="file" name="webcam">` element. The data is sent in the same exact way.
+         * 
+         * @param imageData Data of the image to be sent to the server, usually the data URI.
+         * @param endpointUrl URL to which the image data is sent.
+         * @param onComplete Callback that is invoked once the upload is complete. You can alternatively specify the
+         * callback using `Webcam.on("uploadComplete", callback)`.
+         */
+        upload(imageData: string, endpointUrl: string, onComplete: WebcamEventMap["uploadComplete"]): void;
     }
 
-    /**
-     * Updates a global webcam setting with the given new value.
-     * @typeparam K Name of the setting.
-     * @param setting Name of a settings to change.
-     * @param newValue New value for the setting.
-     */
-    export function set<K extends keyof WebcamSettings>(setting: K, newValue: WebcamSettings[K]): void;
+    declare const webcam: Webcam;
 
-    /**
-     * Updates the global webcam settings with the given settings.
-     * @param settings New settings for the webcam.
-     */
-    export function set(settings: Partial<WebcamSettings>): void;
-
-    /**
-     * WebcamJS is initialized and activated by attaching a live camera viewer to a DOM element. The DOM element must
-     * already be created and empty:
-     * 
-     * ```javascript
-     * Webcam.attach("#my_camera");
-     * ```
-     * 
-     * This will activate the user's webcam, ask for the appropriate permission, and begin showing a live camera image in
-     * the specified DOM element.
-     * 
-     * Note that the browser itself handles asking the user for permission to use their camera. WebcamJS has no control
-     * over this, so there is no way to style the UI. Each browser does it a little differently, typically a bar at the
-     * top of the page, and Flash does it inside the view area.
-     * 
-     * @param selector CSS selector for the DOM element to which the webcam is attached.
-     */
-    export function attach(selector: string): void;
-
-    /**
-     * To snap a picture, just call the `Webcam.snap()` function, passing in a callback function. The image data will be
-     * passed to your function as a daata URI, which you can then display in your web page, or submit to a server:
-     * 
-     * ```javascript
-     * Webcam.snap(data_uri => {
-     *   document.getElementById("my_result").innerHTML = `<img src="${data_uri}">`;
-     * });
-     * ```
-     * 
-     * Your function is also passed a HTML5 Canvas and a 2D Context object, so you can gain access to the raw pixels
-     * instead of a compressed image Data URI. These are passed as the 2nd and 3rd arguments to your callback function:
-     * 
-     * ```javascript
-     * Webcam.snap( (data_uri, canvas, context) => {
-       *   // copy image to my own canvas
-       *   myContext.drawImage(canvas, 0, 0);
-     * });
-     * ```
-     * 
-     * If you would prefer that WebcamJS simply copy the image into your own canvas, it can do that instead of generating
-     * a data URI (which can be an expensive operation). To do this, simply pass your canvas object to the `Webcam.snap()`
-     * method, as the 2nd argument, right after your callback function:
-     * 
-     * ```javascript
-     * // assumes 'myCanvas' is a reference to your own canvas object, at the correct size
-     * Webcam.snap(() => {
-     *   // the webcam image is now in your own canvas
-     * }, myCanvas );
-     * ```
-     * 
-     * @param callback A callback function that is invoked with the image data once the images was taken.
-     * @param canvas Optional. If given, draws the image to this canvas.
-     */
-    export function snap(callback: SnapCallback, canvas?: HTMLCanvasElement): void;
-
-    /**
-     * To shut down the live camera preview and reset the system, call `Webcam.reset()`. This removes any DOM elements we
-     * added, including a Flash movie if applicable, and resets everything in the library to the initial state.
-     * 
-     * To use the library again after resetting, you must call `Webcam.attach()` and pass it your DOM element.
-     */
-    export function reset(): void;
-
-    /**
-     * Freeze the current live camera frame, allowing the user to preview before saving.
-     */
-    export function freeze(): void;
-
-    /**
-     * Cancel the preview (discard image) and resume the live camera view.
-     */
-    export function unfreeze(): void;
-
-    /**
-     * Register an event listener for a given event. Pass in the event name, and a callback function.
-     * @typeparam K Name of the event.
-     * @param eventName Name of the event for which to attach a listener.
-     * @param eventCallback Callback to attach.
-     */
-    export function on<K extends keyof WebcamEventMap>(eventName: K, eventCallback: WebcamEventMap[K]): void;
-
-    /**
-     * Remove an event listener for a given event. Pass in the event name, and the callback function to remove. Omit the
-     * callback reference to remove all listeners.
-     * @typeparam K Name of the event.
-     * @param eventName Name of the event for which to remove a listener.
-     * @param eventCallback Callback to remove. If omitted, removes all callback for the given event.
-     */
-    export function off<K extends keyof WebcamEventMap>(eventName: K, eventCallback?: WebcamEventMap[K]): void;
-
-    /**
-     * Upload a saved image to your server via binary AJAX. Fires progress events.
-     * 
-     * The `Webcam.snap()` function delivers your image by way of a client-side JavaScript Data URI. The binary image
-     * data is encoded with Base64 and stuffed into the URI. You can use this image in JavaScript and display it on your
-     * page. However, the library also provides a way to decode and submit this image data to a server API endpoint, via
-     * binary AJAX:
-     * 
-     * ```javascript
-     * Webcam.snap(data_uri => {
-     *   // snap complete, image data is in "data_uri"
-     *   Webcam.upload(data_uri, "myScript.php", (code, text) => {
-     *     // Upload complete!
-     *     // "code" will be the HTTP response code from the server, e.g., 200
-     *     // 'text' will be the raw response content
-     *   });
-     * });
-     * ```
-     * 
-     * The image data is uploaded as part of a standard multipart form post, and included as a form element named
-     * webcam. To gain access to this data, write some server-side code like this (PHP shown):
-     * 
-     * ```php
-     * // be aware of file / directory permissions on your server
-     * move_uploaded_file($_FILES['webcam']['tmp_name'], 'webcam.jpg');
-     * ```
-     * 
-     * Treat the uploaded data as if you were receiving a standard form submission with a
-     * `<input type="file" name="webcam">` element. The data is sent in the same exact way.
-     * 
-     * @param imageData Data of the image to be sent to the server, usually the data URI.
-     * @param endpointUrl URL to which the image data is sent.
-     * @param onComplete Callback that is invoked once the upload is complete. You can alternatively specify the
-     * callback using `Webcam.on("uploadComplete", callback)`.
-     */
-    export function upload(imageData: string, endpointUrl: string, onComplete: WebcamEventMap["uploadComplete"]): void;
+    export = webcam;
 }

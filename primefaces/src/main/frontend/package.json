@@ -36,7 +36,8 @@
     "moment-jdateformatparser": "~1.2.1",
     "moment-timezone": "~0.5.45",
     "quill": "~2.0.2",
-    "raphael": "~2.3.0"
+    "raphael": "~2.3.0",
+    "webcamjs": "patch:webcamjs@npm%3A1.0.26#~/.yarn/patches/webcamjs-npm-1.0.26-e450e6a36f.patch"
   },
   "devDependencies": {
     "esbuild": "~0.24.0",
