@@ -17,7 +17,7 @@
   to the official version on NPM are now included via NPM. This reduces the amount
   of code in our repo, makes it easier to know which version we are using, and allows
   dependabot to bump versions. It also makes it easy to know which external libraries
-  we are using, and it would even be possible to generate a licenses file from that.
+  we are using, and it would even be possible to generate a `thirdpartylibs` file from that.
 * For external libraries where we only made small changes are also loaded from NPM.
   Our changes are applied as a diff file, using Yarn's builtin
   [patch protocol](https://yarnpkg.com/features/patching).

@@ -35,6 +35,7 @@
     "moment": "~2.30.1",
     "moment-jdateformatparser": "~1.2.1",
     "moment-timezone": "~0.5.45",
+    "quill": "~2.0.2",
     "raphael": "~2.3.0"
   },
   "devDependencies": {

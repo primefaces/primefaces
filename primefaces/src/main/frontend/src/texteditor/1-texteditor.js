@@ -1,3 +1,5 @@
+import Quill from "quill";
+
 /**
  * __PrimeFaces TextEditor Widget__
  * 
