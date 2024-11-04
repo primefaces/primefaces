@@ -1272,7 +1272,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
     createMultipleItemElement: function(value, label, closeable, additionalClass) {
         var mainClass = "ui-selectcheckboxmenu-token ui-state-active ui-corner-all" + (additionalClass ? " " + additionalClass : "");
         var multipleItem = '<li class="'+mainClass+'" data-item-value="'+value+'">';
-        if (closeable) multipleItem += '<span class="ui-selectcheckboxmenu-token-icon ui-icon ui-icon-close" />';
+        if (closeable) multipleItem += '<span class="ui-selectcheckboxmenu-token-icon ui-icon ui-icon-close"></span>';
         multipleItem += '<span class="ui-selectcheckboxmenu-token-label">' + label + '</span></li>';
         return multipleItem;
     },
