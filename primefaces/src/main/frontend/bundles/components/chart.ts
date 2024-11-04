@@ -13,7 +13,10 @@ Chart.register(...ChartJs.registerables);
 ChartJs.Chart.register(zoomPlugin);
 
 // Expose Chart.js and Hammer to global scope
-Object.assign(window, { ChartJs, ChartJsHelpers, Hammer });
+window["PrimeFacesLibs"] ??= {};
+Object.assign(window["PrimeFacesLibs"], {
+    ChartJs, ChartJsHelpers, Hammer,
+});
 
 // Probably not needed, but previously, these additional static
 // fields were defined on the the Chart class. Define these as
@@ -44,4 +47,4 @@ Object.assign(Chart, {
 });
 Object.assign(Chart, ChartJs.controllers, ChartJs.scales, ChartJs.elements, ChartJs.plugins, platforms);
 Object.assign(Chart, { Chart });
-Object.assign(window, { Chart });
+Object.assign(window, { Chart, Hammer });

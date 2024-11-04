@@ -24,9 +24,9 @@ const outputDir = path.join(resourcesDir, "primefaces");
 // the value is the global variable name that contains the library.
 
 const LibsChartJs = {
-    "chart.js": "window.ChartJs",
-    "chart.js/helpers": "window.ChartJsHelpers",
-    "hammerjs": "window.Hammer",
+    "chart.js": "window.PrimeFacesLibs.ChartJs",
+    "chart.js/helpers": "window.PrimeFacesLibs.ChartJsHelpers",
+    "hammerjs": "window.PrimeFacesLibs.Hammer",
 }
 
 const LibsJsCookie = {
@@ -37,8 +37,23 @@ const LibsCropperJs = {
     "cropperjs": "window.Cropper",
 };
 
+const LibsFullCalendar = {
+    "@fullcalendar/core": "window.PrimeFacesLibs.FullCalendarCore",
+    "@fullcalendar/interaction": "window.PrimeFacesLibs.FullCalendarInteraction",
+    "@fullcalendar/daygrid": "window.PrimeFacesLibs.FullCalendarDayGrid",
+    "@fullcalendar/timegrid": "window.PrimeFacesLibs.FullCalendarTimeGrid",
+    "@fullcalendar/list": "window.PrimeFacesLibs.FullCalendarList",
+    "@fullcalendar/moment": "window.PrimeFacesLibs.FullCalendarMoment",
+    "@fullcalendar/moment-timezone": "window.PrimeFacesLibs.FullCalendarMomentTimezone",
+    "@fullcalendar/core/locales-all": "window.PrimeFacesLibs.FullCalendarLocalesAll",
+};
+
 const LibsJQuery = {
     "jquery": "window.$",
+};
+
+const LibsJsPlumb = {
+    "jsplumb": "window.PrimeFacesLibs.jsPlumb",
 };
 
 const LibsMoment = {
@@ -50,18 +65,30 @@ const LibsMomentTimezone = {
     "moment-timezone": "window.moment",
 };
 
+const LibsQuill = {
+    "quill": "window.Quill",
+};
+
 const LibsRaphael = {
     "raphael": "window.Raphael",
+};
+
+const LibsWebcamJs = {
+    "webcamjs": "window.Webcam",
 };
 
 const ExternalLibraries = {
     ...LibsChartJs,
     ...LibsCropperJs,
+    ...LibsFullCalendar,
     ...LibsJsCookie,
     ...LibsJQuery,
+    ...LibsJsPlumb,
     ...LibsMoment,
     ...LibsMomentTimezone,
+    ...LibsQuill,
     ...LibsRaphael,
+    ...LibsWebcamJs,
     // Non-existent import used by "1-jquery.fileupload", just ignore it...
     "./vendor/jquery.ui.widget": "{}",
 };
@@ -160,7 +187,7 @@ const ComponentsBuildTasks = [
     buildTask("components/colorpicker.ts", "colorpicker/colorpicker.js"),
     buildTask("components/colorpicker.css", "colorpicker/colorpicker.css"),
     buildTask("components/datepicker.ts", "datepicker/datepicker.js"),
-    buildTask("components/diagram.ts", "diagram/diagram.js"),
+    buildTask("components/diagram.ts", "diagram/diagram.js", LibsJsPlumb),
     buildTask("components/diagram.css", "diagram/diagram.css"),
     buildTask("components/dock.ts", "dock/dock.js"),
     buildTask("components/dock.css", "dock/dock.css"),
@@ -190,10 +217,10 @@ const ComponentsBuildTasks = [
     buildTask("components/mindmap.ts", "mindmap/mindmap.js"),
     buildTask("components/organigram.ts", "organigram/organigram.js"),
     buildTask("components/organigram.css", "organigram/organigram.css"),
-    buildTask("components/photocam.ts", "photocam/photocam.js"),
+    buildTask("components/photocam.ts", "photocam/photocam.js", LibsWebcamJs),
     buildTask("components/primeicons.css", "primeicons/primeicons.css"),
     buildTask("components/printer.ts", "printer/printer.js"),
-    buildTask("components/schedule.ts", "schedule/schedule.js"),
+    buildTask("components/schedule.ts", "schedule/schedule.js", LibsFullCalendar),
     buildTask("components/schedule.css", "schedule/schedule.css"),
     buildTask("components/scrollpanel.ts", "scrollpanel/scrollpanel.js"),
     buildTask("components/scrollpanel.css", "scrollpanel/scrollpanel.css"),
@@ -203,7 +230,7 @@ const ComponentsBuildTasks = [
     buildTask("components/stack.css", "stack/stack.css"),
     buildTask("components/terminal.ts", "terminal/terminal.js"),
     buildTask("components/terminal.css", "terminal/terminal.css"),
-    buildTask("components/texteditor.ts", "texteditor/texteditor.js"),
+    buildTask("components/texteditor.ts", "texteditor/texteditor.js", LibsQuill),
     buildTask("components/texteditor.css", "texteditor/texteditor.css"),
     buildTask("components/timeline.ts", "timeline/timeline.js"),
     buildTask("components/timeline.css", "timeline/timeline.css"),

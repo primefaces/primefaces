@@ -1,3 +1,5 @@
+import { jsPlumb } from "jsplumb";
+
 /**
  * __PrimeFaces Diagram Widget__
  * 

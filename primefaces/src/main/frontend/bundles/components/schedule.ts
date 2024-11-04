@@ -1,12 +1,12 @@
-import * as Core from "@fullcalendar/core";
-import * as Interaction from "@fullcalendar/interaction";
-import * as DayGrid from "@fullcalendar/daygrid";
-import * as TimeGrid from "@fullcalendar/timegrid";
-import * as List from "@fullcalendar/list";
-import * as FcMoment from "@fullcalendar/moment";
-import * as FcMomentTimeZone from "@fullcalendar/moment-timezone";
+import * as FullCalendarCore from "@fullcalendar/core";
+import * as FullCalendarInteraction from "@fullcalendar/interaction";
+import * as FullCalendarDayGrid from "@fullcalendar/daygrid";
+import * as FullCalendarTimeGrid from "@fullcalendar/timegrid";
+import * as FullCalendarList from "@fullcalendar/list";
+import * as FullCalendarMoment from "@fullcalendar/moment";
+import * as FullCalendarMomentTimeZone from "@fullcalendar/moment-timezone";
 
-import allLocales from "@fullcalendar/core/locales-all"
+import FullCalendarCoreLocalesAll from "@fullcalendar/core/locales-all"
 
 import interactionPlugin from "@fullcalendar/interaction";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -17,21 +17,33 @@ import momentTimezonePlugin from "@fullcalendar/moment-timezone";
 
 import "../../src/schedule/1-schedule.js";
 
+window["PrimeFacesLibs"] ??= {};
+Object.assign(window["PrimeFacesLibs"], { 
+    FullCalendarCore,
+    FullCalendarInteraction,
+    FullCalendarDayGrid,
+    FullCalendarTimeGrid,
+    FullCalendarList,
+    FullCalendarMoment,
+    FullCalendarMomentTimeZone,
+    FullCalendarCoreLocalesAll,
+});
+
 // Not necessary for our code, but expose to global scope for backwards compatibility
 const FullCalendar = {
-    ...Core,
-    ...Interaction,
-    ...DayGrid,
-    ...TimeGrid,
-    ...List,
-    ...FcMoment,
-    ...FcMomentTimeZone,
+    ...FullCalendarCore,
+    ...FullCalendarInteraction,
+    ...FullCalendarDayGrid,
+    ...FullCalendarTimeGrid,
+    ...FullCalendarList,
+    ...FullCalendarMoment,
+    ...FullCalendarMomentTimeZone,
     interactionPlugin,
     dayGridPlugin,
     timeGridPlugin,
     listPlugin,
     momentPlugin,
     momentTimezonePlugin,
-    globalLocales: allLocales
+    globalLocales: FullCalendarCoreLocalesAll
 };
 Object.assign(window, { FullCalendar });
