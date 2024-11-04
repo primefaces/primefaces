@@ -760,6 +760,10 @@
          * @param {JQuery} el Element to focus
          */
         focusElement: function(el) {
+            var focusOnOpenDialog = el.attr("focus_on_open_dialog");
+            if(focusOnOpenDialog === "false") {
+                return;
+            }
             if(el.is(':radio')) {
                 // github issue: #2582
                 if(el.hasClass('ui-helper-hidden-accessible')) {
