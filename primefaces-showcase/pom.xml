@@ -39,7 +39,7 @@
         <dependency>
             <groupId>org.apache.tomee</groupId>
             <artifactId>jakartaee-api</artifactId>
-            <version>10.0-M2</version>
+            <version>10.0</version>
             <scope>provided</scope>
         </dependency>
 
