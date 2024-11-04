@@ -282,6 +282,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"autonumeric@npm:~4.10.7":
+  version: 4.10.7
+  resolution: "autonumeric@npm:4.10.7"
+  checksum: 10c0/6f04d167d768255f5f4bb8152ffabbcec575ff77aed824021e4956b4e7ad4d1a38a38fb9805cf5a04ae11a7200867438f1262141b5b6232762b7dcc31d08be47
+  languageName: node
+  linkType: hard
+
 "chart.js@npm:~4.4.6":
   version: 4.4.6
   resolution: "chart.js@npm:4.4.6"
@@ -541,6 +548,7 @@ __metadata:
     "@fullcalendar/moment-timezone": "npm:~5.11.3"
     "@fullcalendar/timegrid": "npm:~5.11.3"
     "@types/jquery": "npm:~3.5.32"
+    autonumeric: "npm:~4.10.7"
     chart.js: "npm:~4.4.6"
     chartjs-adapter-moment: "npm:~1.0.1"
     chartjs-plugin-zoom: "npm:~2.0.1"

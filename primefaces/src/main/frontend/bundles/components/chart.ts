@@ -2,7 +2,8 @@ import * as ChartJs from "chart.js";
 import * as ChartJsHelpers from "chart.js/helpers";
 import "chartjs-adapter-moment";
 import zoomPlugin from "chartjs-plugin-zoom";
-import Hammer from "hammerjs";
+import * as Hammer from "hammerjs";
+import HammerDefault from "hammerjs";
 import "../../src/chart/9-chartjs-widget.js";
 
 // Register all ChartJS components
@@ -47,4 +48,4 @@ Object.assign(Chart, {
 });
 Object.assign(Chart, ChartJs.controllers, ChartJs.scales, ChartJs.elements, ChartJs.plugins, platforms);
 Object.assign(Chart, { Chart });
-Object.assign(window, { Chart, Hammer });
+Object.assign(window, { Chart, Hammer: HammerDefault });

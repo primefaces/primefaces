@@ -23,6 +23,10 @@ const outputDir = path.join(resourcesDir, "primefaces");
 // the external libraries. The key is the import path (name of the NPM package),
 // the value is the global variable name that contains the library.
 
+const LibsAutoNumeric = {
+    "autonumeric": "window.PrimeFacesLibs.autoNumeric",
+};
+
 const LibsChartJs = {
     "chart.js": "window.PrimeFacesLibs.ChartJs",
     "chart.js/helpers": "window.PrimeFacesLibs.ChartJsHelpers",
@@ -78,6 +82,7 @@ const LibsWebcamJs = {
 };
 
 const ExternalLibraries = {
+    ...LibsAutoNumeric,
     ...LibsChartJs,
     ...LibsCropperJs,
     ...LibsFullCalendar,
@@ -205,7 +210,7 @@ const ComponentsBuildTasks = [
     buildTask("components/imagecropper.css", "imagecropper/imagecropper.css", LibsCropperJs),
     buildTask("components/imageswitch.ts", "imageswitch/imageswitch.js"),
     buildTask("components/inputmask.ts", "inputmask/inputmask.js"),
-    buildTask("components/inputnumber.ts", "inputnumber/inputnumber.js"),
+    buildTask("components/inputnumber.ts", "inputnumber/inputnumber.js", LibsAutoNumeric),
     buildTask("components/keyboard.ts", "keyboard/keyboard.js"),
     buildTask("components/keyboard.css", "keyboard/keyboard.css"),
     buildTask("components/keyfilter.ts", "keyfilter/keyfilter.js"),

@@ -1,3 +1,5 @@
+import AutoNumeric from "autonumeric";
+
 /**
  * __PrimeFaces InputNumber Widget__
  * 
