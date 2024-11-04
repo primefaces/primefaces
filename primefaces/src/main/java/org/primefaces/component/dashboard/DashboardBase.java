@@ -44,7 +44,8 @@ public abstract class DashboardBase extends UIPanel implements Widget, ClientBeh
         style,
         styleClass,
         responsive,
-        var
+        var,
+        scope
     }
 
     public DashboardBase() {
@@ -118,5 +119,13 @@ public abstract class DashboardBase extends UIPanel implements Widget, ClientBeh
 
     public void setVar(String var) {
         getStateHelper().put(PropertyKeys.var, var);
+    }
+
+    public String getScope() {
+        return (String) getStateHelper().eval(PropertyKeys.scope, null);
+    }
+
+    public void setScope(String scope) {
+        getStateHelper().put(PropertyKeys.scope, scope);
     }
 }
