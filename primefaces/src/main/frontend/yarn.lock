@@ -173,6 +173,92 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fullcalendar/common@npm:~5.11.5":
+  version: 5.11.5
+  resolution: "@fullcalendar/common@npm:5.11.5"
+  dependencies:
+    tslib: "npm:^2.1.0"
+  checksum: 10c0/320d7fcedb2a78f7d221669d2e3797abcd6f629a5b7448c33ec7f2baed6dbb02cfc8e677dc57632442c5c87952fb9db32c050e6940e50c0e91181c70082cbb15
+  languageName: node
+  linkType: hard
+
+"@fullcalendar/core@npm:~5.11.3":
+  version: 5.11.5
+  resolution: "@fullcalendar/core@npm:5.11.5"
+  dependencies:
+    "@fullcalendar/common": "npm:~5.11.5"
+    preact: "npm:~10.12.1"
+    tslib: "npm:^2.1.0"
+  checksum: 10c0/1cc8716fda4a113f2198765e18ec72a688f0afd2e362391d1f5959bf47dba47ca6e9af5db010c9be727e6b6a0e93fdc8bae9c3c78a07c3a82b0825306b646e39
+  languageName: node
+  linkType: hard
+
+"@fullcalendar/daygrid@npm:~5.11.3, @fullcalendar/daygrid@npm:~5.11.5":
+  version: 5.11.5
+  resolution: "@fullcalendar/daygrid@npm:5.11.5"
+  dependencies:
+    "@fullcalendar/common": "npm:~5.11.5"
+    tslib: "npm:^2.1.0"
+  checksum: 10c0/e66efeeeffe8603187144dca27a642b68bb165cd32bf7aead7e42747d6793af9c57acdc3e870964328939dc515aed8cf539b203f0944aa1a6c37f35ecc2b911f
+  languageName: node
+  linkType: hard
+
+"@fullcalendar/interaction@npm:~5.11.3":
+  version: 5.11.5
+  resolution: "@fullcalendar/interaction@npm:5.11.5"
+  dependencies:
+    "@fullcalendar/common": "npm:~5.11.5"
+    tslib: "npm:^2.1.0"
+  checksum: 10c0/e73a92d1d52724f0947ad1e41b397bdfe57fe528098bf61f64995308494803d3df24d4f53b78cb45ad41e58a38bddad7acd4a3e3ebf199f45f4431835dd78f88
+  languageName: node
+  linkType: hard
+
+"@fullcalendar/list@npm:~5.11.3":
+  version: 5.11.5
+  resolution: "@fullcalendar/list@npm:5.11.5"
+  dependencies:
+    "@fullcalendar/common": "npm:~5.11.5"
+    tslib: "npm:^2.1.0"
+  checksum: 10c0/5a56489b368b7f0d7343afa141c6399e76e6b5afd7be7a46c955ed28739a6530fda70737b8a269b41300d405bf7b1f47f1d94bc71fe319a97a4c39b11f548f21
+  languageName: node
+  linkType: hard
+
+"@fullcalendar/moment-timezone@npm:~5.11.3":
+  version: 5.11.5
+  resolution: "@fullcalendar/moment-timezone@npm:5.11.5"
+  dependencies:
+    "@fullcalendar/common": "npm:~5.11.5"
+    tslib: "npm:^2.1.0"
+  peerDependencies:
+    moment: ^2.29.1
+    moment-timezone: ^0.5.31
+  checksum: 10c0/c4b7caf98d2745bf3a9f7a1d03c02d1bbf4f9b8fa0f2982ada0df7ed2a1300aa7bb4f80943520c657ebd6f252f60afc21ca879554c188d9fd97c3038c9733352
+  languageName: node
+  linkType: hard
+
+"@fullcalendar/moment@npm:~5.11.3":
+  version: 5.11.5
+  resolution: "@fullcalendar/moment@npm:5.11.5"
+  dependencies:
+    "@fullcalendar/common": "npm:~5.11.5"
+    tslib: "npm:^2.1.0"
+  peerDependencies:
+    moment: ^2.29.1
+  checksum: 10c0/25e3324a5bdfe744c86118b882f55ee99ddb0d821efb64d0b17ead36b7f8086ec393b96fc1358c6210e8321d8e49c7e58f8490ab498a6b24713b732220f03dd5
+  languageName: node
+  linkType: hard
+
+"@fullcalendar/timegrid@npm:~5.11.3":
+  version: 5.11.5
+  resolution: "@fullcalendar/timegrid@npm:5.11.5"
+  dependencies:
+    "@fullcalendar/common": "npm:~5.11.5"
+    "@fullcalendar/daygrid": "npm:~5.11.5"
+    tslib: "npm:^2.1.0"
+  checksum: 10c0/c105c16d07a38d9e6f03e1fb12cae4e521cc2dc252963e2226360fc0e6fabc519e8e35976f4bf0dc549cd78ba7f8d01f4eec7701152ee8836414843b271d1a54
+  languageName: node
+  linkType: hard
+
 "@kurkle/color@npm:^0.3.0":
   version: 0.3.2
   resolution: "@kurkle/color@npm:0.3.2"
@@ -387,10 +473,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"preact@npm:~10.12.1":
+  version: 10.12.1
+  resolution: "preact@npm:10.12.1"
+  checksum: 10c0/c77a55e897dcf298b7aa13637fed29744d3cf6c083f2832856e8551dbf27303c8b6946569736de16b05cba15c0e44ad404beb236ad9e36583a6fc5e2efad7777
+  languageName: node
+  linkType: hard
+
 "primefaces@workspace:.":
   version: 0.0.0-use.local
   resolution: "primefaces@workspace:."
   dependencies:
+    "@fullcalendar/core": "npm:~5.11.3"
+    "@fullcalendar/daygrid": "npm:~5.11.3"
+    "@fullcalendar/interaction": "npm:~5.11.3"
+    "@fullcalendar/list": "npm:~5.11.3"
+    "@fullcalendar/moment": "npm:~5.11.3"
+    "@fullcalendar/moment-timezone": "npm:~5.11.3"
+    "@fullcalendar/timegrid": "npm:~5.11.3"
     "@types/jquery": "npm:~3.5.32"
     chart.js: "npm:~4.4.6"
     chartjs-adapter-moment: "npm:~1.0.1"
@@ -415,6 +515,13 @@ __metadata:
   dependencies:
     eve-raphael: "npm:0.5.0"
   checksum: 10c0/187dccb25eefba5680af5e641e73b7e5343532fc1bb7ee3910da519af87867b7d768264e2071ead68800ce1dbec59ab3a1a30fe1f2c2a546d541a16694f083c9
+  languageName: node
+  linkType: hard
+
+"tslib@npm:^2.1.0":
+  version: 2.8.1
+  resolution: "tslib@npm:2.8.1"
+  checksum: 10c0/9c4759110a19c53f992d9aae23aac5ced636e99887b51b9e61def52611732872ff7668757d4e4c61f19691e36f4da981cd9485e869b4a7408d689f6bf1f14e62
   languageName: node
   linkType: hard
 

@@ -1,3 +1,13 @@
+import { Calendar } from "@fullcalendar/core";
+import allLocales from "@fullcalendar/core/locales-all"
+
+import interactionPlugin from "@fullcalendar/interaction";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import listPlugin from "@fullcalendar/list";
+import momentPlugin from "@fullcalendar/moment";
+import momentTimezonePlugin from "@fullcalendar/moment-timezone";
+
 /**
  * __PrimeFaces Schedule Widget__
  * 
@@ -51,12 +61,12 @@ PrimeFaces.widget.Schedule = class Schedule extends PrimeFaces.widget.DeferredWi
         this.viewNameState = $(this.jqId + '_view');
         this.cfg.urlTarget = this.cfg.urlTarget || "_blank";
         this.cfg.options.plugins = [
-            FullCalendar.interactionPlugin, 
-            FullCalendar.dayGridPlugin,
-            FullCalendar.timeGridPlugin,
-            FullCalendar.listPlugin,
-            FullCalendar.momentPlugin,
-            FullCalendar.momentTimezonePlugin
+            interactionPlugin, 
+            dayGridPlugin,
+            timeGridPlugin,
+            listPlugin,
+            momentPlugin,
+            momentTimezonePlugin
         ];
 
         this.setupEventSource();
@@ -92,7 +102,7 @@ PrimeFaces.widget.Schedule = class Schedule extends PrimeFaces.widget.DeferredWi
     _render() {
         var _self = this;
         var calendarEl = document.getElementById(this.cfg.id);
-        _self.calendar = new FullCalendar.Calendar(calendarEl, this.cfg.options);
+        _self.calendar = new Calendar(calendarEl, this.cfg.options);
         _self.calendar.render();
     }
 
@@ -105,7 +115,7 @@ PrimeFaces.widget.Schedule = class Schedule extends PrimeFaces.widget.DeferredWi
         var options = this.cfg.options;
 
         // #6496 must add all locales
-        options.locales = FullCalendar.globalLocales;
+        options.locales = allLocales;
 
         var lang = PrimeFaces.locales[this.cfg.locale];
         if (lang) {
