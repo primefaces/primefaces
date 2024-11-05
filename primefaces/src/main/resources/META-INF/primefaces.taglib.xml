@@ -7778,6 +7778,13 @@
             <name>var</name>
             <required>false</required>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Scope for dashboard drag and drop behaviour. Items can be dragged between multiple dashboards with the same scope. (default: dashboard)]]>
+            </description>
+            <name>scope</name>
+            <required>false</required>
+        </attribute>
     </tag>
     <tag>
         <description>

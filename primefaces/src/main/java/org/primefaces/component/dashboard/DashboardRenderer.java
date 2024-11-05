@@ -117,7 +117,8 @@ public class DashboardRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Dashboard", dashboard)
                 .attr("responsive", dashboard.isResponsive(), false)
-                .attr("disabled", !dashboard.isReordering(), false);
+                .attr("disabled", !dashboard.isReordering(), false)
+                .attr("scope", dashboard.getScope());
 
         encodeClientBehaviors(context, dashboard);
 
