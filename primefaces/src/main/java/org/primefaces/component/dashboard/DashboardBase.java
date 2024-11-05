@@ -36,16 +36,15 @@ public abstract class DashboardBase extends UIPanel implements Widget, ClientBeh
     public static final String DEFAULT_RENDERER = "org.primefaces.component.DashboardRenderer";
 
     public enum PropertyKeys {
-
-        widgetVar,
-        model,
         disabled,
+        model,
         reordering,
+        responsive,
+        scope,
         style,
         styleClass,
-        responsive,
         var,
-        scope
+        widgetVar
     }
 
     public DashboardBase() {
