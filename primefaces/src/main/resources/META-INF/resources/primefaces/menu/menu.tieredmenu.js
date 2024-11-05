@@ -114,17 +114,12 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
             else {
                 $this.highlight(menuitem);
             }
+        }).on("mouseleave.tieredHover", function() {
+            // clear timeout of possible delayed show event if mouseleave is fired before showDelay was over
+            if (($this.cfg.autoDisplay || $this.active) && $this.cfg.showDelay > 0 && $this.timeoutId) {
+                clearTimeout($this.timeoutId);
+            }
         });
-
-        // clear timeout of possible delayed show event if mouseleave is fired before showDelay was over
-        if (($this.cfg.autoDisplay || $this.active) && this.cfg.showDelay > 0) {
-            this.links.on("mouseleave.tieredHover", function () {
-                // deactivate timeout of possible delayed show event
-                if ($this.timeoutId) {
-                    clearTimeout($this.timeoutId);
-                }
-            });
-        }
 
         this.rootLinks.on("click.tieredHover", function() {
             var link = $(this),
