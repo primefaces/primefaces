@@ -116,6 +116,16 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
             }
         });
 
+        // clear timeout of possible delayed show event if mouseleave is fired before showDelay was over
+        if (($this.cfg.autoDisplay || $this.active) && this.cfg.showDelay > 0) {
+            this.links.on("mouseleave.tieredHover", function () {
+                // deactivate timeout of possible delayed show event
+                if ($this.timeoutId) {
+                    clearTimeout($this.timeoutId);
+                }
+            });
+        }
+
         this.rootLinks.on("click.tieredHover", function() {
             var link = $(this),
                 menuitem = link.parent(),
@@ -469,6 +479,9 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
             this.timeoutId = PrimeFaces.queueTask(() => {
                 $this.reset();
             }, this.cfg.hideDelay);
+        }
+        else {
+            this.reset();
         }
 
         // Stop the propagation of the event if the event object is provided
