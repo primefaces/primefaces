@@ -62,6 +62,15 @@ public class SpeedDialRenderer extends BaseMenuRenderer {
         writer.endElement("div");
     }
 
+    @Override
+    protected void encodePlaceholder(FacesContext context, AbstractMenu menu) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("div", menu);
+        writer.writeAttribute("id", menu.getClientId(context), "id");
+        writer.writeAttribute("class", "ui-speedidal-placeholder", "styleClass");
+        writer.endElement("div");
+    }
+
     protected void encodeContainer(FacesContext context, SpeedDial speedDial) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = getStyleClassBuilder(context)
@@ -87,7 +96,7 @@ public class SpeedDialRenderer extends BaseMenuRenderer {
     }
 
     protected void encodeList(FacesContext context, SpeedDial speedDial) throws IOException {
-        if (speedDial.getElementsCount() <= 0) {
+        if (speedDial.getElementsCount() <= 0 || speedDial.getElements().stream().noneMatch(me -> shouldBeRendered(context, me))) {
             return;
         }
         List<MenuElement> elements = speedDial.getElements();
@@ -287,5 +296,10 @@ public class SpeedDialRenderer extends BaseMenuRenderer {
                 .callback("onShow", "function()", speedDial.getOnShow())
                 .callback("onHide", "function()", speedDial.getOnHide());
         wb.finish();
+    }
+
+    @Override
+    protected boolean shouldBeRendered(FacesContext context, AbstractMenu abstractMenu) {
+        return true;
     }
 }

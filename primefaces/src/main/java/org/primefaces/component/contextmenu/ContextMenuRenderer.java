@@ -35,6 +35,7 @@ import java.io.IOException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 
 public class ContextMenuRenderer extends TieredMenuRenderer {
 
@@ -73,5 +74,14 @@ public class ContextMenuRenderer extends TieredMenuRenderer {
         styleClass = styleClass == null ? ContextMenu.CONTAINER_CLASS : ContextMenu.CONTAINER_CLASS + " " + styleClass;
 
         encodeMenu(context, menu, style, styleClass, HTML.ARIA_ORIENTATION_VERTICAL);
+    }
+
+    @Override
+    protected void encodePlaceholder(FacesContext context, AbstractMenu menu) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("div", menu);
+        writer.writeAttribute("id", menu.getClientId(context), "id");
+        writer.writeAttribute("class", "ui-menu-placeholder", "styleClass");
+        writer.endElement("div");
     }
 }

@@ -186,7 +186,7 @@ class FileUploadUtilsTest {
 
         // Act
         if (os.contains("win")) {
-            absolutePath = "D:/Development/OS%20Projects/primefaces/primefaces/target/test-classes/test.png";
+            absolutePath = "C:/Development/OS%20Projects/primefaces/primefaces/target/test-classes/test.png";
             String result = FileUploadUtils.requireValidFilePath(absolutePath, false);
             assertTrue(result.endsWith("test.png"));
         }
