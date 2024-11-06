@@ -266,6 +266,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/inputmask@npm:~5.0.7":
+  version: 5.0.7
+  resolution: "@types/inputmask@npm:5.0.7"
+  checksum: 10c0/791bf836f0e7fa4d424ce10b9dd6428672043b3769371f329ed26a866adb40448714dd25bc92ff4a9676f89b69c5ba0dd67fb27a97a5eee80f3ca20db63f0001
+  languageName: node
+  linkType: hard
+
 "@types/jquery@npm:~3.5.32":
   version: 3.5.32
   resolution: "@types/jquery@npm:3.5.32"
@@ -437,6 +444,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"inputmask@npm:5.0.10-beta.5":
+  version: 5.0.10-beta.5
+  resolution: "inputmask@npm:5.0.10-beta.5"
+  checksum: 10c0/c1583a11dbf4d416d96cdf8edd0f0aa72c9917dea90d2c28c575f7af48bc74049fea1768316262107483a02fed73a3ba357af71fb9629eb5729d1843aacb5698
+  languageName: node
+  linkType: hard
+
 "jquery-cropper@npm:1.0.0":
   version: 1.0.0
   resolution: "jquery-cropper@npm:1.0.0"
@@ -547,6 +561,7 @@ __metadata:
     "@fullcalendar/moment": "npm:~5.11.3"
     "@fullcalendar/moment-timezone": "npm:~5.11.3"
     "@fullcalendar/timegrid": "npm:~5.11.3"
+    "@types/inputmask": "npm:~5.0.7"
     "@types/jquery": "npm:~3.5.32"
     autonumeric: "npm:~4.10.7"
     chart.js: "npm:~4.4.6"
@@ -555,6 +570,7 @@ __metadata:
     cropperjs: "npm:~1.5.13"
     esbuild: "npm:~0.24.0"
     hammerjs: "npm:~2.0.8"
+    inputmask: "npm:5.0.10-beta.5"
     jquery: "npm:~4.0.0-beta.2"
     jquery-cropper: "patch:jquery-cropper@npm%3A1.0.0#~/.yarn/patches/jquery-cropper-npm-1.0.0-148aa161fe.patch"
     js-cookie: "npm:~3.0.5"

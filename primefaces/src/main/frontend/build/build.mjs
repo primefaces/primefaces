@@ -52,6 +52,10 @@ const LibsFullCalendar = {
     "@fullcalendar/core/locales-all": "window.PrimeFacesLibs.FullCalendarLocalesAll",
 };
 
+const LibsInputMask = {
+    "inputmask/dist/inputmask.es6.js": "window.PrimeFacesLibs.Inputmask",
+};
+
 const LibsJQuery = {
     "jquery": "window.$",
 };
@@ -86,6 +90,7 @@ const ExternalLibraries = {
     ...LibsChartJs,
     ...LibsCropperJs,
     ...LibsFullCalendar,
+    ...LibsInputMask,
     ...LibsJsCookie,
     ...LibsJQuery,
     ...LibsJsPlumb,
@@ -193,7 +198,7 @@ const ComponentsBuildTasks = [
     buildTask("components/colorpicker.css", "colorpicker/colorpicker.css"),
     buildTask("components/datepicker.ts", "datepicker/datepicker.js"),
     buildTask("components/diagram.ts", "diagram/diagram.js", LibsJsPlumb),
-    buildTask("components/diagram.css", "diagram/diagram.css"),
+    buildTask("components/diagram.css", "diagram/diagram.css", LibsJsPlumb),
     buildTask("components/dock.ts", "dock/dock.js"),
     buildTask("components/dock.css", "dock/dock.css"),
     buildTask("components/filedownload.ts", "filedownload/filedownload.js"),
@@ -209,7 +214,7 @@ const ComponentsBuildTasks = [
     buildTask("components/imagecropper.ts", "imagecropper/imagecropper.js", LibsCropperJs),
     buildTask("components/imagecropper.css", "imagecropper/imagecropper.css", LibsCropperJs),
     buildTask("components/imageswitch.ts", "imageswitch/imageswitch.js"),
-    buildTask("components/inputmask.ts", "inputmask/inputmask.js"),
+    buildTask("components/inputmask.ts", "inputmask/inputmask.js", LibsInputMask),
     buildTask("components/inputnumber.ts", "inputnumber/inputnumber.js", LibsAutoNumeric),
     buildTask("components/keyboard.ts", "keyboard/keyboard.js"),
     buildTask("components/keyboard.css", "keyboard/keyboard.css"),
@@ -226,7 +231,7 @@ const ComponentsBuildTasks = [
     buildTask("components/primeicons.css", "primeicons/primeicons.css"),
     buildTask("components/printer.ts", "printer/printer.js"),
     buildTask("components/schedule.ts", "schedule/schedule.js", LibsFullCalendar),
-    buildTask("components/schedule.css", "schedule/schedule.css"),
+    buildTask("components/schedule.css", "schedule/schedule.css", LibsFullCalendar),
     buildTask("components/scrollpanel.ts", "scrollpanel/scrollpanel.js"),
     buildTask("components/scrollpanel.css", "scrollpanel/scrollpanel.css"),
     buildTask("components/signature.ts", "signature/signature.js"),
@@ -236,7 +241,7 @@ const ComponentsBuildTasks = [
     buildTask("components/terminal.ts", "terminal/terminal.js"),
     buildTask("components/terminal.css", "terminal/terminal.css"),
     buildTask("components/texteditor.ts", "texteditor/texteditor.js", LibsQuill),
-    buildTask("components/texteditor.css", "texteditor/texteditor.css"),
+    buildTask("components/texteditor.css", "texteditor/texteditor.css", LibsQuill),
     buildTask("components/timeline.ts", "timeline/timeline.js"),
     buildTask("components/timeline.css", "timeline/timeline.css"),
     buildTask("components/touchswipe.ts", "touch/touchswipe.js"),

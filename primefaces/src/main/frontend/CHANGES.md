@@ -28,6 +28,7 @@
   converts the URLs to EL resource expression
   (`#{resource['primefaces:fileupload/images/loader.gif']}`).
 
+---
 
 These files don't seem to be used anymore, can they be removed?
 
@@ -35,3 +36,13 @@ These files don't seem to be used anymore, can they be removed?
 * primefaces/src/main/resources/META-INF/resources/primefaces/log/panel.png
 * primefaces/src/main/resources/META-INF/resources/primefaces/rating/delete.gif
 * primefaces/src/main/resources/META-INF/resources/primefaces/rating/star.gif
+
+---
+
+Suggestion: Currently, external libs are bundled with the component where they are
+needed. That works, but it's not easy to understand what's included where. It also
+makes it a bit harder in cases where an external lib is needed by multiple components.
+My suggestion for an alternative approach:
+
+* Move all widgets into `components.js`. The widgets themselves are wrappers and pretty small.
+* Create a separate file for each library, e.g. `chart.js`, `jsplumb.js` etc.
