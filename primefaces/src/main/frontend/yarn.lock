@@ -173,7 +173,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fullcalendar/common@npm:~5.11.5":
+"@fullcalendar/common@npm:~5.11.3, @fullcalendar/common@npm:~5.11.5":
   version: 5.11.5
   resolution: "@fullcalendar/common@npm:5.11.5"
   dependencies:
@@ -293,6 +293,76 @@ __metadata:
   version: 4.10.7
   resolution: "autonumeric@npm:4.10.7"
   checksum: 10c0/6f04d167d768255f5f4bb8152ffabbcec575ff77aed824021e4956b4e7ad4d1a38a38fb9805cf5a04ae11a7200867438f1262141b5b6232762b7dcc31d08be47
+  languageName: node
+  linkType: hard
+
+"autosize@npm:~6.0.1":
+  version: 6.0.1
+  resolution: "autosize@npm:6.0.1"
+  checksum: 10c0/7d1b9823443c2cc3fc962a7c20ec60d62db6a98c889a39f71495b48decbfda2463e6561fb7a748f069d6778e419f2fa1a7ecd09baa02dc33c4a209f777da9ac8
+  languageName: node
+  linkType: hard
+
+"blueimp-canvas-to-blob@npm:3":
+  version: 3.29.0
+  resolution: "blueimp-canvas-to-blob@npm:3.29.0"
+  checksum: 10c0/6c44cf20aa8287d4b31b2a6133074add338e4b8de092d2f7072a48cd5e04dead04814ffd34607f71dd7b3a285b5c8322c2e8c17776cfa20a1357df395862d646
+  languageName: node
+  linkType: hard
+
+"blueimp-file-upload@npm:10.32.0":
+  version: 10.32.0
+  resolution: "blueimp-file-upload@npm:10.32.0"
+  dependencies:
+    blueimp-canvas-to-blob: "npm:3"
+    blueimp-load-image: "npm:5"
+    blueimp-tmpl: "npm:3"
+  peerDependencies:
+    jquery: ">=1.7"
+  dependenciesMeta:
+    blueimp-canvas-to-blob:
+      optional: true
+    blueimp-load-image:
+      optional: true
+    blueimp-tmpl:
+      optional: true
+  checksum: 10c0/1dd563f41c5cb231a94b0dc5d809b37c4fae8e83632aadd4bba74684d713a998f6330d30e217bc9dea80549d9fd8ed599078330e56f05dd6c19ff66b3c36382f
+  languageName: node
+  linkType: hard
+
+"blueimp-file-upload@patch:blueimp-file-upload@npm%3A10.32.0#~/.yarn/patches/blueimp-file-upload-npm-10.32.0-61b944a244.patch":
+  version: 10.32.0
+  resolution: "blueimp-file-upload@patch:blueimp-file-upload@npm%3A10.32.0#~/.yarn/patches/blueimp-file-upload-npm-10.32.0-61b944a244.patch::version=10.32.0&hash=c70680"
+  dependencies:
+    blueimp-canvas-to-blob: "npm:3"
+    blueimp-load-image: "npm:5"
+    blueimp-tmpl: "npm:3"
+  peerDependencies:
+    jquery: ">=1.7"
+  dependenciesMeta:
+    blueimp-canvas-to-blob:
+      optional: true
+    blueimp-load-image:
+      optional: true
+    blueimp-tmpl:
+      optional: true
+  checksum: 10c0/48a69c3a79c8f97cf53cefed6e1fee6c836db8f9ab89dfb0a74bb0eec328a9708eb70ee2e492395543bbc5204f0ffc5020c69cb0c2303853270658f18df18bfc
+  languageName: node
+  linkType: hard
+
+"blueimp-load-image@npm:5":
+  version: 5.16.0
+  resolution: "blueimp-load-image@npm:5.16.0"
+  checksum: 10c0/17d37d811ec6778f494fbaf62414ae7b470412106c17a6ebc9805d95c3cf4f88c31f5609cd51b007076e247b99088c6ed157eee9f5e247e03482cbc2951e1611
+  languageName: node
+  linkType: hard
+
+"blueimp-tmpl@npm:3":
+  version: 3.20.0
+  resolution: "blueimp-tmpl@npm:3.20.0"
+  bin:
+    tmpl.js: js/compile.js
+  checksum: 10c0/02984cf13be502fde3dc27d94af0e568e3b284c68d634fef703b4cb64a249adaabba821927987ec6c65cbf5a96ae4148725f1d5f04330a5d87a3986744806dab
   languageName: node
   linkType: hard
 
@@ -554,6 +624,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "primefaces@workspace:."
   dependencies:
+    "@fullcalendar/common": "npm:~5.11.3"
     "@fullcalendar/core": "npm:~5.11.3"
     "@fullcalendar/daygrid": "npm:~5.11.3"
     "@fullcalendar/interaction": "npm:~5.11.3"
@@ -564,6 +635,8 @@ __metadata:
     "@types/inputmask": "npm:~5.0.7"
     "@types/jquery": "npm:~3.5.32"
     autonumeric: "npm:~4.10.7"
+    autosize: "npm:~6.0.1"
+    blueimp-file-upload: "patch:blueimp-file-upload@npm%3A10.32.0#~/.yarn/patches/blueimp-file-upload-npm-10.32.0-61b944a244.patch"
     chart.js: "npm:~4.4.6"
     chartjs-adapter-moment: "npm:~1.0.1"
     chartjs-plugin-zoom: "npm:~2.0.1"

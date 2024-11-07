@@ -2,8 +2,7 @@ import * as ChartJs from "chart.js";
 import * as ChartJsHelpers from "chart.js/helpers";
 import "chartjs-adapter-moment";
 import zoomPlugin from "chartjs-plugin-zoom";
-import * as Hammer from "hammerjs";
-import HammerDefault from "hammerjs";
+import Hammer from "hammerjs";
 import "../../src/chart/9-chartjs-widget.js";
 
 // Register all ChartJS components
@@ -13,15 +12,8 @@ Chart.register(...ChartJs.registerables);
 // Zoom plugin must be registered manually
 ChartJs.Chart.register(zoomPlugin);
 
-// Expose Chart.js and Hammer to global scope
-window["PrimeFacesLibs"] ??= {};
-Object.assign(window["PrimeFacesLibs"], {
-    ChartJs, ChartJsHelpers, Hammer,
-});
-
-// Probably not needed, but previously, these additional static
-// fields were defined on the the Chart class. Define these as
-// well to avoid breaking users who may have relied on them.
+// Expose some more globals
+// Not needed for our code, but may already be used by external code
 const platforms = Object.freeze({
     __proto__: null,
     BasePlatform: ChartJs.BasePlatform,
@@ -48,4 +40,4 @@ Object.assign(Chart, {
 });
 Object.assign(Chart, ChartJs.controllers, ChartJs.scales, ChartJs.elements, ChartJs.plugins, platforms);
 Object.assign(Chart, { Chart });
-Object.assign(window, { Chart, Hammer: HammerDefault });
+Object.assign(window, { Chart, Hammer });

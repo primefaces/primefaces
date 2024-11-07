@@ -23,6 +23,9 @@
   [patch protocol](https://yarnpkg.com/features/patching). The patches can be found
   in `src/main/frontend/.yarn/patches`. This makes it easy for everybody to understand
   what change we made. I also added a markdown file for each patch with a brief description.
+  * It also makes it impossible to forget to apply these patches. For example, there was a
+    mention of a fix for `autosize` in the `extensions.txt`, but when I compared our version
+    against the NPM version, I didn't see any such fix.
 * Resources such as fonts and images in CSS files can now be referenced normally
   via relative paths (`./images/loader.gif`). I added an ESBuild plugin that
   converts the URLs to EL resource expression
@@ -36,6 +39,7 @@ These files don't seem to be used anymore, can they be removed?
 * primefaces/src/main/resources/META-INF/resources/primefaces/log/panel.png
 * primefaces/src/main/resources/META-INF/resources/primefaces/rating/delete.gif
 * primefaces/src/main/resources/META-INF/resources/primefaces/rating/star.gif
+* What about the `Calendar` component? It was deprecated in PF 10, any plans to remove it?
 
 ---
 

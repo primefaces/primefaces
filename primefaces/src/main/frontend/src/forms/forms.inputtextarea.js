@@ -1,3 +1,5 @@
+import autosize from "autosize";
+
 /**
  * __PrimeFaces InputTextarea Widget__
  *

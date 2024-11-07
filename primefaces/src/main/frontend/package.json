@@ -4,7 +4,6 @@
   "private": true,
   "description": "Client-side implementation for PrimeFaces",
   "main": "src/index.js",
-  "type": "module",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -16,6 +15,7 @@
   },
   "jsdocs": {},
   "dependencies": {
+    "@fullcalendar/common": "~5.11.3",
     "@fullcalendar/core": "~5.11.3",
     "@fullcalendar/daygrid": "~5.11.3",
     "@fullcalendar/interaction": "~5.11.3",
@@ -26,6 +26,8 @@
     "@types/inputmask": "~5.0.7",
     "@types/jquery": "~3.5.32",
     "autonumeric": "~4.10.7",
+    "autosize": "~6.0.1",
+    "blueimp-file-upload": "patch:blueimp-file-upload@npm%3A10.32.0#~/.yarn/patches/blueimp-file-upload-npm-10.32.0-61b944a244.patch",
     "chart.js": "~4.4.6",
     "chartjs-adapter-moment": "~1.0.1",
     "chartjs-plugin-zoom": "~2.0.1",

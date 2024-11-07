@@ -153,8 +153,8 @@ function createFacesResourceExpression(file, url, config) {
 }
 
 /**
- * Plugin for esbuild that loads modules from other sources, such as from a global variable.
- * Based on https://github.com/yanm1ng/esbuild-plugin-external-global
+ * Plugin for esbuild that modifies the URL of imported resources in CSS files
+ * to Faces resource expressions.
  * @param {FacesResourceLoaderPluginOptions} options 
  * @returns {import("esbuild").Plugin}
  */
@@ -178,7 +178,7 @@ export function facesResourceLoaderPlugin(options) {
                     const facesResourceExpression = createFacesResourceExpression(targetFile, sourceUrl, config);
                     return {
                         external: true,
-                        namespace: namespace,
+                        namespace,
                         path: facesResourceExpression,
                     };
                 },
