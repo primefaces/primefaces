@@ -1,3 +1,8 @@
+import Coloris from "@melloware/coloris";
+
+// Ensure Coloris is only initialized once
+let colorisInitialized = false;
+
 /**
  * __PrimeFaces Color Picker Widget__
  * 
@@ -335,7 +340,3 @@ PrimeFaces.widget.ColorPicker = class ColorPicker extends PrimeFaces.widget.Base
         PrimeFaces.utils.enableInputWidget(this.jq, this.input);
     }
 }
-
-// Global variable so Coloris is only initialized once
-var colorisInitialized = false;
-

@@ -266,6 +266,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@melloware/coloris@npm:~0.24.0":
+  version: 0.24.0
+  resolution: "@melloware/coloris@npm:0.24.0"
+  checksum: 10c0/253a24d70b4d9c3a1b13547dd143f0ce25637d9f78aa1de1bd30e398e6702f022740b34a852da31d47b30c42ffbda7966fd0377512a8f8436782109d98c1b1ef
+  languageName: node
+  linkType: hard
+
 "@types/inputmask@npm:~5.0.7":
   version: 5.0.7
   resolution: "@types/inputmask@npm:5.0.7"
@@ -632,6 +639,7 @@ __metadata:
     "@fullcalendar/moment": "npm:~5.11.3"
     "@fullcalendar/moment-timezone": "npm:~5.11.3"
     "@fullcalendar/timegrid": "npm:~5.11.3"
+    "@melloware/coloris": "npm:~0.24.0"
     "@types/inputmask": "npm:~5.0.7"
     "@types/jquery": "npm:~3.5.32"
     autonumeric: "npm:~4.10.7"

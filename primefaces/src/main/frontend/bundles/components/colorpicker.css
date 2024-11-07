@@ -1,2 +1,2 @@
-@import url("../../src/colorpicker/0-colorpicker.css");
+@import url("@melloware/coloris/dist/coloris.css");
 @import url("../../src/colorpicker/1-colorpicker.css");
