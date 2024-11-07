@@ -319,13 +319,13 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             var itemLabel = $('<label for=' + uuid + '></label>'),
                 labelHtml = label.html().trim(),
                 labelLength = labelHtml.length;
-            if (labelLength > 0 && labelHtml !== '&nbsp;')
-                if (escaped)
-                    itemLabel.text(label.text());
-                else
-                    itemLabel.html(label.html());
-            else
+            if (labelHtml === '&nbsp;') {
+                itemLabel.html('&nbsp;');
+            } else if (labelLength > 0) {
+                escaped ? itemLabel.text(label.text()) : itemLabel.html(label.html());
+            } else {
                 itemLabel.text(input.val());
+            }
 
             itemLabel.appendTo(item);
 
@@ -1363,7 +1363,9 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             labelHtml = input.next().html().trim(),
             label = '';
 
-        if (labelHtml.length > 0 && labelHtml !== '&nbsp;') {
+        if (labelHtml === '&nbsp;') {
+            label = '&nbsp;';
+        } else if (labelHtml.length > 0) {
             label = escaped ? PrimeFaces.escapeHTML(input.next().text()) : input.next().html();
         } else {
             label = PrimeFaces.escapeHTML(input.val());
