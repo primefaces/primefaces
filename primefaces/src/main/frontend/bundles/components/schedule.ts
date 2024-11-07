@@ -20,18 +20,20 @@ import momentPlugin from "@fullcalendar/moment";
 import momentTimezonePlugin from "@fullcalendar/moment-timezone";
 
 Object.assign(window, {
-    ...FullCalendarCore,
-    ...FullCalendarInteraction,
-    ...FullCalendarDayGrid,
-    ...FullCalendarTimeGrid,
-    ...FullCalendarList,
-    ...FullCalendarMoment,
-    ...FullCalendarMomentTimeZone,
-    interactionPlugin,
-    dayGridPlugin,
-    timeGridPlugin,
-    listPlugin,
-    momentPlugin,
-    momentTimezonePlugin,
-    globalLocales: FullCalendarCoreLocalesAll
+    FullCalendar: {
+        ...FullCalendarCore,
+        ...FullCalendarInteraction,
+        ...FullCalendarDayGrid,
+        ...FullCalendarTimeGrid,
+        ...FullCalendarList,
+        ...FullCalendarMoment,
+        ...FullCalendarMomentTimeZone,
+        interactionPlugin,
+        dayGridPlugin,
+        timeGridPlugin,
+        listPlugin,
+        momentPlugin,
+        momentTimezonePlugin,
+        globalLocales: FullCalendarCoreLocalesAll
+    }
 });
