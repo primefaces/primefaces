@@ -10,7 +10,6 @@ body {
       @include flex();
       @include flex-wrap(nowrap);
       position: relative;
-      overflow-x: scroll;
 
       &:before {
         position: absolute;
