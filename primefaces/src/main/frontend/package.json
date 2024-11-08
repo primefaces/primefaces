@@ -42,6 +42,7 @@
     "jquery-cropper": "patch:jquery-cropper@npm%3A1.0.0#~/.yarn/patches/jquery-cropper-npm-1.0.0-148aa161fe.patch",
     "jquery-mousewheel": "patch:jquery-mousewheel@npm%3A3.1.13#~/.yarn/patches/jquery-mousewheel-npm-3.1.13-854d2918be.patch",
     "jquery-touchswipe": "^1.6.19",
+    "jquery-ui": "^1.14.1",
     "jquery.browser": "^0.1.0",
     "js-cookie": "^3.0.5",
     "jscrollpane": "patch:jscrollpane@npm%3A2.2.3-rc.2#~/.yarn/patches/jscrollpane-npm-2.2.3-rc.2-173a004b4f.patch",

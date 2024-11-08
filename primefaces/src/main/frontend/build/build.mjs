@@ -50,7 +50,7 @@ const LinkedLibraries = {
     fullCalendar: [/^@fullcalendar\/.+$/],
     inputMask: [/^inputmask(\/.+)?$/],
     jQuery: [/^jquery$/, /^jquery.browser$/],
-    jQueryPlugins: [/^autosize$/, /^jquery-mousewheel$/, /^rangyinputs$/],
+    jQueryPlugins: [/^autosize$/, /^jquery-mousewheel$/, /^jquery-ui(\/.+)?$/, /^rangyinputs$/],
     jsPlumb: [/^jsplumb$/],
     moment: [/^moment$/, /^moment-jdateformatparser$/],
     momentTimeZone: [/^moment-timezone$/],
