@@ -23,29 +23,37 @@
  */
 package org.primefaces.component.timeline;
 
-import java.util.Map;
-
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-
 import org.primefaces.model.timeline.TimelineEvent;
+
+import java.util.EnumSet;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
+
+import javax.faces.component.search.SearchExpressionContext;
+import javax.faces.component.search.SearchExpressionHint;
+import javax.faces.context.FacesContext;
 
 public abstract class TimelineUpdater {
 
-    /**
-     * The same id of the Timeline component in terms of findComponent() as in {@link #getCurrentInstance(String)}
-     */
-    protected String id;
+    protected String clientId;
+
+    // serialization
+    public TimelineUpdater() {
+        super();
+    }
+
+    public TimelineUpdater(String clientId) {
+        this.clientId = clientId;
+    }
 
     /**
-     * Gets the current thread-safe TimelineUpdater instance by Id.
+     * Gets the current thread-safe TimelineUpdater instance.
      *
-     * @param id Id of the Timeline component in terms of findComponent()
+     * @param expression The expression to find the Timeline instance.
      * @return TimelineUpdater instance.
-     * @throws FacesException if the Timeline component can not be found by the given Id
+     * @throws javax.faces.component.search.ComponentNotFoundException if the Timeline component can not be found by the given expression.
      */
-    public static TimelineUpdater getCurrentInstance(String id) {
+    public static TimelineUpdater getCurrentInstance(String expression) {
         FacesContext context = FacesContext.getCurrentInstance();
 
         @SuppressWarnings("unchecked")
@@ -54,17 +62,19 @@ public abstract class TimelineUpdater {
             return null;
         }
 
-        UIComponent timeline = context.getViewRoot().findComponent(id);
-        if (!(timeline instanceof Timeline)) {
-            throw new FacesException("Timeline component with Id " + id + " was not found");
-        }
+        AtomicReference<String> widgetVar = new AtomicReference<>();
 
-        TimelineUpdater timelineUpdater = map.get(((Timeline) timeline).resolveWidgetVar(context));
-        if (timelineUpdater != null) {
-            timelineUpdater.id = id;
-        }
+        SearchExpressionContext sec = SearchExpressionContext.createSearchExpressionContext(context,
+                context.getViewRoot(), EnumSet.of(SearchExpressionHint.RESOLVE_SINGLE_COMPONENT), null);
+        context.getApplication().getSearchExpressionHandler().resolveComponent(
+                sec,
+                expression,
+                (ctx, target) -> {
+                    Timeline timeline = (Timeline) target;
+                    widgetVar.set(timeline.resolveWidgetVar(context));
+                });
 
-        return timelineUpdater;
+        return map.get(widgetVar.get());
     }
 
     public abstract void add(TimelineEvent<?> event);

@@ -55,6 +55,16 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
     private String widgetVar;
     private List<CrudOperationData> crudOperationDatas;
 
+    // serialization
+    public DefaultTimelineUpdater() {
+        super();
+    }
+
+    public DefaultTimelineUpdater(String clientId, String widgetVar) {
+        super(clientId);
+        this.widgetVar = widgetVar;
+    }
+
     enum CrudOperation {
 
         ADD,
@@ -133,7 +143,7 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
             return;
         }
 
-        context.getViewRoot().invokeOnComponent(context, id, (ctx, component) -> {
+        context.getViewRoot().invokeOnComponent(context, clientId, (ctx, component) -> {
             StringBuilder sb = new StringBuilder();
 
             Timeline timeline = (Timeline) component;
@@ -176,7 +186,8 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
                                 sb.append(timelineRenderer.encodeGroup(context, fsw, fswHtml, timeline, groupFacet, groupsContent, foundGroup, orderGroup));
                             }
                             catch (IOException e) {
-                                LOGGER.log(Level.WARNING, e, () -> "Timeline with id " + id + " could not be updated, at least one CRUD operation failed");
+                                LOGGER.log(Level.WARNING, e,
+                                        () -> "Timeline with clientId " + clientId + " could not be updated, at least one CRUD operation failed");
                             }
                             sb.append(")");
                         }
@@ -247,7 +258,7 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
                 PrimeFaces.current().executeScript(sb.toString());
             }
             catch (IOException e) {
-                LOGGER.log(Level.WARNING, e, () -> "Timeline with id " + id + " could not be updated, at least one CRUD operation failed");
+                LOGGER.log(Level.WARNING, e, () -> "Timeline with id " + clientId + " could not be updated, at least one CRUD operation failed");
             }
         });
     }
