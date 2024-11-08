@@ -58,6 +58,7 @@ const LinkedLibraries = {
     raphael: [/^raphael$/],
     scrollPanel: [/^jscrollpane$/],
     timeline: [/^vis-(timeline|data|util)(\/.+)?$/],
+    touchSwipe: [/^jquery-touchswipe$/],
     webcamJs: [/^webcamjs$/],
 };
 
@@ -150,6 +151,7 @@ function createLibraryBuildTasks() {
         buildTask("libs/moment.ts", "moment/moment.js", { expose: ["moment"] }),
         buildTask("libs/moment-timezone-with-data.ts", "moment/moment-timezone-with-data.js", { expose: ["momentTimeZone"] }),
         buildTask("libs/raphael.ts", "raphael/raphael.js", { expose: ["raphael"] }),
+        buildTask("libs/touchswipe.ts", "touch/touchswipe.js", { expose: ["touchSwipe"] }),
     ];
 }
 
@@ -221,7 +223,6 @@ function createComponentsBuildTasks() {
         buildTask("components/texteditor.css", "texteditor/texteditor.css"),
         buildTask("components/timeline.ts", "timeline/timeline.js", { expose: ["timeline"] }),
         buildTask("components/timeline.css", "timeline/timeline.css"),
-        buildTask("components/touchswipe.ts", "touch/touchswipe.js"),
         buildTask("components/validation.bv.ts", "validation/validation.bv.js"),
     ];
 }
