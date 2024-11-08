@@ -715,6 +715,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 filter.attr('aria-label', PrimeFaces.getLocaleLabel('filter') + " " + title.text());
             }
         });
+
+
+        if (this.cfg.filterToggleTrigger) {
+            var trigger = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.filterToggleTrigger)
+            this.bindFilterToggleEvents(trigger);
+        }
     },
 
     /**
@@ -5751,6 +5757,33 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.bodyTable.css('top', '0px');
         this.scrollBody.scrollTop(0);
         this.clearScrollState();
+    },
+
+    /**
+     * In case of a toggleable filter datatable toggle all filter input components
+     */
+    toggleFilter: function(speed, callback) {
+        if (this.thead.hasClass("ui-filter-togglable")) {
+            this.thead.find(".ui-column-filter, .ui-column-customfilter").fadeToggle(speed || 0, callback);
+
+            if (this.clone) {
+                this.clone.find(".ui-column-filter, .ui-column-customfilter").fadeToggle(speed || 0, callback);
+            }
+
+            if (this.theadClone) {
+                this.theadClone.find(".ui-column-filter, .ui-column-customfilter").fadeToggle(speed || 0, callback);
+            }
+        }
+    },
+
+    bindFilterToggleEvents: function(element) {
+        var _self = this;
+        element.off("click.filterTogglable").on("click.filterTogglable", function(e) {
+            // if trigger uses the pi-filter icon toggle it with filter-slash
+            $(this).find('.pi-filter, .pi-filter-slash').toggleClass('pi-filter pi-filter-slash');
+            _self.toggleFilter();
+            e.preventDefault();
+        });
     }
 
 });
