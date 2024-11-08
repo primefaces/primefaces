@@ -48,8 +48,8 @@ public class TimelineListener implements SystemEventListener {
         }
 
         if (!alreadyRegistred) {
-            DefaultTimelineUpdater timelineUpdater = new DefaultTimelineUpdater();
-            timelineUpdater.setWidgetVar(widgetVar);
+            DefaultTimelineUpdater timelineUpdater = new DefaultTimelineUpdater(
+                    timeline.getClientId(context), widgetVar);
             context.getViewRoot().addPhaseListener(timelineUpdater);
         }
     }
