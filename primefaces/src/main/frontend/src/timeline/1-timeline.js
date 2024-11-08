@@ -1,3 +1,7 @@
+import { Timeline as VisTimeline } from "vis-timeline/esnext/esm/vis-timeline-graph2d.js";
+import { DataSet } from "vis-data/esnext/esm/vis-data.js";
+import * as VisUtil from "vis-util/esnext/esm/vis-util.js";
+
 /**
  * __PrimeFaces Timeline Widget__
  *
@@ -100,7 +104,7 @@ PrimeFaces.widget.Timeline = class Timeline extends PrimeFaces.widget.DeferredWi
         }
 
         if (this.cfg.isMenuPresent) {
-            this.cfg.opts.onInitialDrawComplete = $.proxy(function() {
+            this.cfg.opts.onInitialDrawComplete = $.proxy(function () {
                 var el = document.getElementById(this.id);
                 $(el).find(".timeline-menu").show();
             }, this);
@@ -123,7 +127,7 @@ PrimeFaces.widget.Timeline = class Timeline extends PrimeFaces.widget.DeferredWi
     _render() {
         // instantiate a timeline object
         var el = document.getElementById(this.id);
-        var items = new vis.DataSet(this.cfg.data);
+        var items = new DataSet(this.cfg.data);
 
         // #7217 must allow HTML in elements
         this.cfg.opts.xss = {
@@ -133,9 +137,9 @@ PrimeFaces.widget.Timeline = class Timeline extends PrimeFaces.widget.DeferredWi
         // bind items events
         this._bindItemsEvents();
         if (this.cfg.groups) {
-            this.instance = new vis.Timeline(el, items, new vis.DataSet(this.cfg.groups), this.cfg.opts);
+            this.instance = new VisTimeline(el, items, new DataSet(this.cfg.groups), this.cfg.opts);
         } else {
-            this.instance = new vis.Timeline(el, items, this.cfg.opts);
+            this.instance = new VisTimeline(el, items, this.cfg.opts);
         }
 
         if (this.cfg.currentTime) {
@@ -183,7 +187,7 @@ PrimeFaces.widget.Timeline = class Timeline extends PrimeFaces.widget.DeferredWi
         // "add" event
         if (this.cfg.opts.selectable && this.cfg.opts.editable.add && this.hasBehavior("add")) {
             this.cfg.opts.onAdd =
-               $.proxy(function(item, callback) {
+                $.proxy(function (item, callback) {
                     var params = [];
                     if (!item.id) {
                         //item.undefined until https://github.com/visjs/vis-timeline/issues/97 is fixed.
@@ -216,19 +220,19 @@ PrimeFaces.widget.Timeline = class Timeline extends PrimeFaces.widget.DeferredWi
 
                     this.addCallback = callback;
 
-                    this.callBehavior("add", {params: params, item: item, callback: callback});
+                    this.callBehavior("add", { params: params, item: item, callback: callback });
 
                     if (this.addCallback) {
                         this.addCallback(item);
                         this.addCallback = null;
                     }
-               }, this);
+                }, this);
         }
 
         // "change" event
         if (this.cfg.opts.selectable && (this.cfg.opts.editable.updateTime || this.cfg.opts.editable.updateGroup) && this.hasBehavior("change")) {
             this.cfg.opts.onMoving =
-                $.proxy(function(item, callback) {
+                $.proxy(function (item, callback) {
                     var params = [];
                     params.push({
                         name: this.id + '_eventId',
@@ -254,7 +258,7 @@ PrimeFaces.widget.Timeline = class Timeline extends PrimeFaces.widget.DeferredWi
                         });
                     }
 
-                    this.callBehavior("change", {params: params, item: item, callback: callback});
+                    this.callBehavior("change", { params: params, item: item, callback: callback });
                     callback(item);
                 }, this);
         }
@@ -262,7 +266,7 @@ PrimeFaces.widget.Timeline = class Timeline extends PrimeFaces.widget.DeferredWi
         // "changed" event
         if (this.cfg.opts.selectable && (this.cfg.opts.editable.updateTime || this.cfg.groups && this.cfg.opts.editable.updateGroup) && this.hasBehavior("changed")) {
             this.cfg.opts.onMove =
-                $.proxy(function(item, callback) {
+                $.proxy(function (item, callback) {
                     var params = [];
                     params.push({
                         name: this.id + '_eventId',
@@ -289,7 +293,7 @@ PrimeFaces.widget.Timeline = class Timeline extends PrimeFaces.widget.DeferredWi
                     }
 
                     this.changedCallback = callback;
-                    this.callBehavior("changed", {params: params, item: item, callback: callback});
+                    this.callBehavior("changed", { params: params, item: item, callback: callback });
                     if (this.changedCallback) {
                         this.changedCallback(item);
                         this.changedCallback = null;
@@ -300,10 +304,10 @@ PrimeFaces.widget.Timeline = class Timeline extends PrimeFaces.widget.DeferredWi
         // "edit" event
         if (this.cfg.opts.selectable && this.cfg.opts.editable.updateTime && this.hasBehavior("edit")) {
             this.cfg.opts.onUpdate =
-                $.proxy(function(item, callback) {
+                $.proxy(function (item, callback) {
                     var options = {
                         params: [
-                            {name: this.id + '_eventId', value: item.id}
+                            { name: this.id + '_eventId', value: item.id }
                         ],
                         item: item,
                         callback: callback
@@ -321,10 +325,10 @@ PrimeFaces.widget.Timeline = class Timeline extends PrimeFaces.widget.DeferredWi
         // "delete" event
         if (this.cfg.opts.selectable && this.cfg.opts.editable.remove && this.hasBehavior("delete")) {
             this.cfg.opts.onRemove =
-                $.proxy(function(item, callback) {
+                $.proxy(function (item, callback) {
                     var options = {
                         params: [
-                            {name: this.id + '_eventId', value: item.id}
+                            { name: this.id + '_eventId', value: item.id }
                         ],
                         item: item,
                         callback: callback
@@ -356,7 +360,7 @@ PrimeFaces.widget.Timeline = class Timeline extends PrimeFaces.widget.DeferredWi
 
                 var options = {
                     params: [
-                        {name: this.id + '_eventId', value: selectedId}
+                        { name: this.id + '_eventId', value: selectedId }
                     ]
                 };
 
@@ -369,8 +373,8 @@ PrimeFaces.widget.Timeline = class Timeline extends PrimeFaces.widget.DeferredWi
             this.instance.on('rangechange', $.proxy(function (properties) {
                 var options = {
                     params: [
-                        {name: this.id + '_startDate', value: properties.start.toISOString()},
-                        {name: this.id + '_endDate', value: properties.end.toISOString()}
+                        { name: this.id + '_startDate', value: properties.start.toISOString() },
+                        { name: this.id + '_endDate', value: properties.end.toISOString() }
                     ],
                     properties: properties
                 };
@@ -384,8 +388,8 @@ PrimeFaces.widget.Timeline = class Timeline extends PrimeFaces.widget.DeferredWi
             this.instance.on('rangechanged', $.proxy(function (properties) {
                 var options = {
                     params: [
-                        {name: this.id + '_startDate', value: properties.start.toISOString()},
-                        {name: this.id + '_endDate', value: properties.end.toISOString()}
+                        { name: this.id + '_startDate', value: properties.start.toISOString() },
+                        { name: this.id + '_endDate', value: properties.end.toISOString() }
                     ],
                     properties: properties
                 };
@@ -411,7 +415,7 @@ PrimeFaces.widget.Timeline = class Timeline extends PrimeFaces.widget.DeferredWi
 
         // register this timeline as droppable if needed
         if (this.cfg.opts.selectable && this.cfg.opts.editable && this.hasBehavior("drop")) {
-            var droppableOpts = {tolerance: "pointer"};
+            var droppableOpts = { tolerance: "pointer" };
             if (this.cfg.hoverClass) {
                 droppableOpts.hoverClass = this.cfg.hoverClass;
             }
@@ -431,8 +435,8 @@ PrimeFaces.widget.Timeline = class Timeline extends PrimeFaces.widget.DeferredWi
             droppableOpts.drop = $.proxy(function (evt, ui) {
                 var inst = this.getInstance();
 
-                var x = evt.pageX - vis.util.getAbsoluteLeft(inst.dom.center);
-                var y = evt.pageY - vis.util.getAbsoluteTop(inst.dom.center);
+                var x = evt.pageX - VisUtil.getAbsoluteLeft(inst.dom.center);
+                var y = evt.pageY - VisUtil.getAbsoluteTop(inst.dom.center);
 
                 var xstart = inst._toTime(x);
                 var xend = inst._toTime(x + inst.dom.container.clientWidth / 10); // add 10% of timeline width
@@ -480,7 +484,7 @@ PrimeFaces.widget.Timeline = class Timeline extends PrimeFaces.widget.DeferredWi
                 // call the drop listener
                 // parameters event and ui can be accessible in "onstart" (p:ajax) via cfg.ext.event and cfg.ext.ui
                 // or in "execute" (pe:javascript) via ext.event and ext.ui
-                this.callBehavior("drop", {params: params, event: evt, ui: ui});
+                this.callBehavior("drop", { params: params, event: evt, ui: ui });
             }, this);
 
             // make the timeline droppable
@@ -488,19 +492,19 @@ PrimeFaces.widget.Timeline = class Timeline extends PrimeFaces.widget.DeferredWi
         }
     }
 
-   /**
-     * @override
-     * @inheritdoc
-     * @param {PrimeFaces.widget.ContextMenu} menuWidget
-     * @param {PrimeFaces.widget.Timeline} targetWidget
-     * @param {string} targetId
-     * @param {PrimeFaces.widget.ContextMenuCfg} cfg 
-     */
+    /**
+      * @override
+      * @inheritdoc
+      * @param {PrimeFaces.widget.ContextMenu} menuWidget
+      * @param {PrimeFaces.widget.Timeline} targetWidget
+      * @param {string} targetId
+      * @param {PrimeFaces.widget.ContextMenuCfg} cfg 
+      */
     bindContextMenu(menuWidget, targetWidget, targetId, cfg) {
         // block default context menu
         targetWidget.instance.on('contextmenu', function (properties) {
-           menuWidget.show(properties.event);
-           properties.event.preventDefault();
+            menuWidget.show(properties.event);
+            properties.event.preventDefault();
         });
     }
 
@@ -512,7 +516,7 @@ PrimeFaces.widget.Timeline = class Timeline extends PrimeFaces.widget.DeferredWi
      * @return {string} A JSON string with the current data.
      */
     getData() {
-        var newData = this.instance.itemsData.map($.proxy(function(item) {
+        var newData = this.instance.itemsData.map($.proxy(function (item) {
             var newItem = {};
             if (item.hasOwnProperty('content')) {
                 newItem.data = item.content;
@@ -568,13 +572,13 @@ PrimeFaces.widget.Timeline = class Timeline extends PrimeFaces.widget.DeferredWi
         };
 
         if (range.startFirst != null && range.endFirst != null) {
-            options.params[0] = {name: this.id + '_startDateFirst', value: new Date(range.startFirst).toISOString()};
-            options.params[1] = {name: this.id + '_endDateFirst', value: new Date(range.endFirst).toISOString()};
+            options.params[0] = { name: this.id + '_startDateFirst', value: new Date(range.startFirst).toISOString() };
+            options.params[1] = { name: this.id + '_endDateFirst', value: new Date(range.endFirst).toISOString() };
         }
 
         if (range.startSecond != null && range.endSecond != null) {
-            options.params[2] = {name: this.id + '_startDateSecond', value: new Date(range.startSecond).toISOString()};
-            options.params[3] = {name: this.id + '_endDateSecond', value: new Date(range.endSecond).toISOString()};
+            options.params[2] = { name: this.id + '_startDateSecond', value: new Date(range.startSecond).toISOString() };
+            options.params[3] = { name: this.id + '_endDateSecond', value: new Date(range.endSecond).toISOString() };
         }
 
         this.callBehavior("lazyload", options);

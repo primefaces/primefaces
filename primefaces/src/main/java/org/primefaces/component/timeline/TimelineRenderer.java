@@ -207,10 +207,10 @@ public class TimelineRenderer extends CoreRenderer {
         if (timeline.getClientTimeZone() != null) {
             ZoneOffset zoneOffset = CalendarUtils.calculateZoneOffset(timeline.getClientTimeZone());
             if (ZoneOffset.UTC.equals(zoneOffset)) {
-                wb.callback("moment", "function(date)", "return vis.moment(date).utc();");
+                wb.callback("moment", "function(date)", "return moment(date).utc();");
             }
             else {
-                wb.callback("moment", "function(date)", "return vis.moment(date).utcOffset('" + EscapeUtils.forJavaScript(zoneOffset.toString()) + "');");
+                wb.callback("moment", "function(date)", "return moment(date).utcOffset('" + EscapeUtils.forJavaScript(zoneOffset.toString()) + "');");
             }
         }
         if (timeline.getHeight() != null) {

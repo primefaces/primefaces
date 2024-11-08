@@ -1,6 +1,6 @@
 import "../../src/colorpicker/1-colorpicker.js";
 
 // Expose Coloris to the global scope
-// Not necessary for our code, but expose to global scope for backwards compatibility
+// Not needed for our code, but may already be used by external code
 import Coloris from "@melloware/coloris";
 Object.assign(window, { Coloris });

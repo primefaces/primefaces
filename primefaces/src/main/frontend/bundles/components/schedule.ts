@@ -2,7 +2,8 @@
 import "../../src/schedule/1-schedule.js";
 import "../../src/schedule/fullcalendar-custom.css";
 
-// Not necessary for our code, but expose to global scope for backwards compatibility
+// Expose some full calendar features to the global scope
+// Not needed for our code, but may already be used by external code
 import * as FullCalendarCore from "@fullcalendar/core";
 import * as FullCalendarInteraction from "@fullcalendar/interaction";
 import * as FullCalendarDayGrid from "@fullcalendar/daygrid";

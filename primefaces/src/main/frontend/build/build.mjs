@@ -9,6 +9,7 @@ import * as esbuild from "esbuild";
 import { globalCodeSplitPluginFactory } from "./global-code-split-plugin.mjs";
 import { facesResourceLoaderPlugin } from "./faces-resource-loader-plugin.mjs";
 import { createMetaFile } from "./create-meta-file.mjs";
+import { bannedDependenciesPlugin } from "./banned-dependencies-plugin.mjs";
 
 const isProduction = process.env.NODE_ENV !== "development";
 
@@ -27,12 +28,12 @@ const globalCodeSplitPlugin = globalCodeSplitPluginFactory();
 const LinkedLibraries = {
     autoNumeric: [/^autonumeric$/],
     autosize: [/^autosize$/],
-    chartJs: [/^chart\.js$/, /^chart\.js\/.*$/, /^hammerjs$/],
+    chartJs: [/^chart\.js(\/.+)?$/],
     coloris: [/^@melloware\/coloris$/],
     cropperJs: [/^cropperjs$/, /^jquery-cropper$/],
-    fileUpload: [/^blueimp-file-upload(\/.*)?$/],
-    fullCalendar: [/^@fullcalendar\/.*$/],
-    inputMask: [/^inputmask$/, /^inputmask\/.*$/],
+    fileUpload: [/^blueimp-file-upload(\/.+)?$/],
+    fullCalendar: [/^@fullcalendar\/.+$/],
+    inputMask: [/^inputmask(\/.+)?$/],
     jsCookie: [/^js-cookie$/],
     jQuery: [/^jquery$/],
     jsPlumb: [/^jsplumb$/],
@@ -40,42 +41,33 @@ const LinkedLibraries = {
     momentTimeZone: [/^moment-timezone$/],
     quill: [/^quill$/],
     raphael: [/^raphael$/],
+    timeline: [/^vis-(timeline|data|util)(\/.+)?$/],
     webcamJs: [/^webcamjs$/],
 };
 
-/**
- * Base options for all ESBuild tasks.
- * @type {import("esbuild").BuildOptions}
- */
-const BaseOptions = {
-    absWorkingDir: baseDir,
-    bundle: true,
-    charset: "utf8",
-    target: "es2016",
-    format: "iife",
-    platform: "browser",
-    legalComments: "external",
-    minify: isProduction,
-    sourcemap: isProduction ? "external" : "inline",
-    plugins: [
-        facesResourceLoaderPlugin({
-            extensions: ["png", "jpg", "jpeg", "gif", "svg", "woff", "woff2", "ttf", "eot"],
-            inputDir: srcDir,
-            outputDir: outputDir,
-            resourceBase: resourcesDir,
-            useLibrary: true,
-        }),
-    ],
-};
+const BannedDependencies = [
+    {
+        pattern: /^vis-(timeline|data|util)$/,
+        reason: "Do not use vis packages directly, use their ESM variant, e.g. 'vis-data/esnext/esm/vis-data.js'. Only these match the (peer) dependencies declared in their respective package.json.",
+    }
+];
 
 /**
  * Creates a new ESBuild task that compresses the given JavaScript or CSS
  * file and writes the output to the given path. The source path is relative
  * to the `bundles` directory, the target path is relative to the main output
  * directory.
+ * 
+ * Additional settings for the build task:
+ * 
+ * - `include`: External libraries to include in the bundle. By default, all
+ * external libraries (from NPM) are excluded and loaded from the global scope
+ * (`window.PrimeFacesLibs`). One bundle should include the library, so that
+ * it is actually available in the global scope.
+ *
  * @param {string} from The source file.
  * @param {string} to The target file.
- * @param {{include?: (keyof typeof LinkedLibraries)[]}} [settings] External libraries to include in the bundle.   
+ * @param {{include?: (keyof typeof LinkedLibraries)[]}} [settings] Additional settings for build task.    
  * @returns {import("esbuild").BuildOptions} The ESBuild task.
  */
 function buildTask(from, to, settings = {}) {
@@ -89,7 +81,7 @@ function buildTask(from, to, settings = {}) {
         return patterns.map(pattern => ({ mode, pattern }));
     });
 
-    const buildTask = { ...BaseOptions, entryPoints: [fromPath], outfile: toPath, };
+    const buildTask = { ...createBaseOptions(), entryPoints: [fromPath], outfile: toPath, };
     buildTask.plugins = [...buildTask.plugins ?? []];
     buildTask.plugins.push(globalCodeSplitPlugin.newPlugin({ scope: "PrimeFacesLibs", modules }));
     return buildTask;
@@ -108,12 +100,40 @@ async function createLocaleBuildTasks() {
         const fromPath = path.join(localeDir, file);
         const toPath = path.join(outputDir, "locales", file);
         return {
-            ...BaseOptions,
+            ...createBaseOptions(),
             entryPoints: [fromPath],
             outfile: toPath,
         };
     });
 }
+
+/**
+ * Base options for all ESBuild tasks.
+ * @returns {import("esbuild").BuildOptions}
+ */
+function createBaseOptions() {
+    return {
+        absWorkingDir: baseDir,
+        bundle: true,
+        charset: "utf8",
+        target: "es2016",
+        format: "iife",
+        platform: "browser",
+        legalComments: "external",
+        minify: isProduction,
+        sourcemap: isProduction ? "external" : "inline",
+        plugins: [
+            bannedDependenciesPlugin({ bannedDependencies: BannedDependencies }),
+            facesResourceLoaderPlugin({
+                extensions: ["png", "jpg", "jpeg", "gif", "svg", "woff", "woff2", "ttf", "eot"],
+                inputDir: srcDir,
+                outputDir: outputDir,
+                resourceBase: resourcesDir,
+                useLibrary: true,
+            }),
+        ],
+    };
+};
 
 /** @returns {import("esbuild").BuildOptions[]} */
 function createLibraryBuildTasks() {
@@ -191,7 +211,7 @@ function createComponentsBuildTasks() {
         buildTask("components/terminal.css", "terminal/terminal.css"),
         buildTask("components/texteditor.ts", "texteditor/texteditor.js", { include: ["quill"] }),
         buildTask("components/texteditor.css", "texteditor/texteditor.css"),
-        buildTask("components/timeline.ts", "timeline/timeline.js"),
+        buildTask("components/timeline.ts", "timeline/timeline.js", { include: ["timeline"] }),
         buildTask("components/timeline.css", "timeline/timeline.css"),
         buildTask("components/touchswipe.ts", "touch/touchswipe.js"),
         buildTask("components/validation.bv.ts", "validation/validation.bv.js"),
