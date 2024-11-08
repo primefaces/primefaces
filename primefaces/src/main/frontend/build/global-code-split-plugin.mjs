@@ -20,6 +20,12 @@ undefined;
 undefined;
 
 /**
+ * Defines how a module should be treated.
+ * 
+ * - pattern: The pattern to match against the module path.
+ * - mode: Either "link" or "expose". When set to "link", the module will be linked
+ *   via the global scope (`window[scope]`). When set to "expose", the module will
+ *   be included in the bundle, and also exposed via the global scope.
  * @typedef {{
  * pattern: RegExp;
  * mode: ModuleSplitMode;
@@ -28,6 +34,13 @@ undefined;
 undefined;
 
 /**
+ * Options for the global code split plugin.
+ * 
+ * - modules: Defines which modules should be exposed and which modules should be linked.
+ *   When there are multiple matches, the order of precedence is "expose", "link".
+ *   Any modules for which there is no match are included in the bundle normally.
+ * - scope: The global scope name to use for exposing and linking modules. E.g. when set
+ *   to Scope, `window.Scope` will be used to expose and link modules.
  * @typedef {{
  *   modules: GlobalCodeSplitModule[];
  *   scope: string;
@@ -44,6 +57,7 @@ undefined;
 undefined;
 
 const PluginName = "custom-module-source-plugin";
+
 const NamespaceExpose = "custom-module-source-plugin/expose";
 const NamespaceExposeImport = "custom-module-source-plugin/expose-import";
 const NamespaceExposeRequire = "custom-module-source-plugin/expose-require";
@@ -295,6 +309,29 @@ function registerExposeHooks(build, scope, includeModules, bundleMeta) {
 
 /**
  * Registers the plugin hooks for linking modules via the global scope.
+ * 
+ * Instead of including the module in the bundle, it is loaded from the global
+ * scope. For example, if we wish to link "jquery" and the scope was set to
+ * `Scope`, the import statement:
+ * 
+ * ```js
+ * import $ from "jquery";
+ * ```
+ * 
+ * Would be rewritten to:
+ * 
+ * ```js
+ * // ESM
+ * const Module = window.Scope["jquery"];
+ * if (!Module || !Module.esm) throw new Error("ESM module not found: jquery");
+ * $ = Module.esm.default;
+ * 
+ * // CommonJS
+ * const Module = window.Scope["jquery"];
+ * if (!Module || !Module.cjs) throw new Error("CJS module not found: jquery");
+ * $ = Module.cjs;
+ * ```
+ * 
  * @param {import("esbuild").PluginBuild} build 
  * @param {string} scope
  * @param {string[]} linkModules
@@ -344,6 +381,19 @@ function registerLinkHooks(build, scope, linkModules, bundleMeta) {
 }
 
 /**
+ * @param {GlobalCodeSplitModule[]} modules 
+ * @param {BundleMeta} bundleMeta
+ * @param {ModuleSplitMode} mode
+ * @returns {Set<string>}
+ */
+function matchPackages(modules, bundleMeta, mode) {
+    const matches = modules
+        .filter(m => m.mode === mode).map(m => m.pattern)
+        .flatMap(p => bundleMeta.allImports.filter(i => p.test(i)))
+    return new Set(matches);
+}
+
+/**
  * Plugin for esbuild that for linking code together via the global scope.
  * 
  * For each import name, you can mark it as either `link` or `include`.
@@ -377,16 +427,16 @@ export function globalCodeSplitPluginFactory() {
 
                     const bundleMeta = createBundleMeta(build.initialOptions, finalMetaFile);
 
-                    /** @type {(pattern: RegExp) => string[]} */
-                    const matchPackages = p => bundleMeta.allImports.filter(i => p.test(i));
-                    const includeModules = modules.filter(m => m.mode === "expose").map(m => m.pattern).flatMap(matchPackages);
-                    const linkModules = modules.filter(m => m.mode === "link").map(m => m.pattern).flatMap(matchPackages);
+                    const exposeModules = matchPackages(modules, bundleMeta, "expose");
+                    const linkModules = matchPackages(modules, bundleMeta, "link");
+                    // Order of precedence: expose, link
+                    exposeModules.forEach(m => linkModules.delete(m));
 
-                    if (linkModules.length > 0) {
-                        registerLinkHooks(build, scope, linkModules, bundleMeta);
+                    if (linkModules.size > 0) {
+                        registerLinkHooks(build, scope, [...linkModules], bundleMeta);
                     }
-                    if (includeModules.length > 0) {
-                        registerExposeHooks(build, scope, includeModules, bundleMeta);
+                    if (exposeModules.size > 0) {
+                        registerExposeHooks(build, scope, [...exposeModules], bundleMeta);
                     }
                 },
             }

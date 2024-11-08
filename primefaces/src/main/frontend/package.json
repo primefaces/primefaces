@@ -1,5 +1,5 @@
 {
-  "name": "primefaces",
+  "name": "@primefaces/primefaces",
   "version": "15.0.0-SNAPSHOT",
   "private": true,
   "description": "Client-side implementation for PrimeFaces",
@@ -43,6 +43,7 @@
     "jquery-mousewheel": "patch:jquery-mousewheel@npm%3A3.1.13#~/.yarn/patches/jquery-mousewheel-npm-3.1.13-854d2918be.patch",
     "jquery-touchswipe": "^1.6.19",
     "jquery-ui": "^1.14.1",
+    "jquery-ui-timepicker-addon": "patch:jquery-ui-timepicker-addon@npm%3A1.6.3#~/.yarn/patches/jquery-ui-timepicker-addon-npm-1.6.3-b43c27b305.patch",
     "jquery.browser": "^0.1.0",
     "js-cookie": "^3.0.5",
     "jscrollpane": "patch:jscrollpane@npm%3A2.2.3-rc.2#~/.yarn/patches/jscrollpane-npm-2.2.3-rc.2-173a004b4f.patch",

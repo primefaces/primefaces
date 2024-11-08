@@ -10,6 +10,7 @@ import { globalCodeSplitPluginFactory } from "./global-code-split-plugin.mjs";
 import { facesResourceLoaderPlugin } from "./faces-resource-loader-plugin.mjs";
 import { createMetaFile } from "./create-meta-file.mjs";
 import { bannedDependenciesPlugin } from "./banned-dependencies-plugin.mjs";
+import { escapeRegExp } from "./helper.mjs";
 
 /**
  * Additional settings for {@link buildTask}.
@@ -39,27 +40,32 @@ const globalCodeSplitPlugin = globalCodeSplitPluginFactory();
 // included as separate JavaScript files. Linking with other source
 // files is done via a global variable (window.PrimeFacesLibs). The
 // following defines the NPM packages which need to be linked.
+//
+// When a package name ends with a slash, it is treated as a prefix.
+// E.g. ""autonumeric/" will match "autonumeric" as well as
+// "autonumeric/dist/autoNumeric.min.js" etc.
 const LinkedLibraries = {
-    autoNumeric: [/^autonumeric$/],
-    chartJs: [/^chart\.js(\/.+)?$/],
-    coloris: [/^@melloware\/coloris$/],
-    core: [/^js-cookie$/],
-    cropperJs: [/^cropperjs$/, /^jquery-cropper$/],
-    fileDownload: [/^downloadjs$/],
-    fileUpload: [/^blueimp-file-upload(\/.+)?$/],
-    fullCalendar: [/^@fullcalendar\/.+$/],
-    inputMask: [/^inputmask(\/.+)?$/],
-    jQuery: [/^jquery$/, /^jquery.browser$/],
-    jQueryPlugins: [/^autosize$/, /^jquery-mousewheel$/, /^jquery-ui(\/.+)?$/, /^rangyinputs$/],
-    jsPlumb: [/^jsplumb$/],
-    moment: [/^moment$/, /^moment-jdateformatparser$/],
-    momentTimeZone: [/^moment-timezone$/],
-    quill: [/^quill$/],
-    raphael: [/^raphael$/],
-    scrollPanel: [/^jscrollpane$/],
-    timeline: [/^vis-(timeline|data|util)(\/.+)?$/],
-    touchSwipe: [/^jquery-touchswipe$/],
-    webcamJs: [/^webcamjs$/],
+    autoNumeric: ["autonumeric/"],
+    calendar: ["jquery-ui/ui/widgets/datepicker.js", "jquery-ui-timepicker-addon/"],
+    chartJs: ["chart.js/"],
+    coloris: ["@melloware/coloris/"],
+    core: ["js-cookie/"],
+    cropperJs: ["cropperjs/", "jquery-cropper/"],
+    fileDownload: ["downloadjs/"],
+    fileUpload: ["blueimp-file-upload/"],
+    fullCalendar: ["@fullcalendar/"],
+    inputMask: ["inputmask/"],
+    jQuery: ["jquery/", "jquery.browser/"],
+    jQueryPlugins: ["autosize/", "jquery-mousewheel/", "jquery-ui/", "rangyinputs/"],
+    jsPlumb: ["jsplumb/"],
+    moment: ["moment/", "moment-jdateformatparser/"],
+    momentTimeZone: ["moment-timezone/"],
+    quill: ["quill/"],
+    raphael: ["raphael/"],
+    scrollPanel: ["jscrollpane/"],
+    timeline: ["vis-timeline/", "vis-data/", "vis-util/"],
+    touchSwipe: ["jquery-touchswipe/"],
+    webcamJs: ["webcamjs/"],
 };
 
 const BannedDependencies = [
@@ -83,11 +89,16 @@ function buildTask(from, to, settings = {}) {
     const fromPath = path.join(bundlesDir, from);
     const toPath = path.join(outputDir, to);
 
-    const includes = settings.expose ?? []
+    const modulesToExpose = (settings.expose ?? []).flatMap(expose => LinkedLibraries[expose] ?? []);
     /** @type {import("./global-code-split-plugin.mjs").GlobalCodeSplitModule[]} */
-    const modules = Object.entries(LinkedLibraries).flatMap(([key, patterns]) => {
-        const mode = includes.some(k => k === key) ? "expose" : "link";
-        return patterns.map(pattern => ({ mode, pattern }));
+    const modules = Object.entries(LinkedLibraries).flatMap(([key, names]) => {
+        return names.map(name => {
+            const isPrefix = name.endsWith("/");
+            const baseName = isPrefix ? name.slice(0, name.length - 1) : name;
+            const pattern = new RegExp(`^${escapeRegExp(baseName)}${isPrefix ? "(/.+)?" : ""}$`);
+            const mode = modulesToExpose.includes(name) ? "expose" : "link";
+            return { mode, pattern };
+        });
     });
 
     const buildTask = { ...createBaseOptions(), entryPoints: [fromPath], outfile: toPath, };
@@ -168,7 +179,7 @@ function createCoreBuildTasks() {
 /** @returns {import("esbuild").BuildOptions[]} */
 function createComponentsBuildTasks() {
     return [
-        buildTask("components/calendar.ts", "calendar/calendar.js"),
+        buildTask("components/calendar.ts", "calendar/calendar.js", { expose: ["calendar"] }),
         buildTask("components/calendar.css", "calendar/calendar.css"),
         buildTask("components/captcha.ts", "captcha/captcha.js"),
         buildTask("components/chart.ts", "chart/chart.js", { expose: ["chartJs"] }),
