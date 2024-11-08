@@ -141,7 +141,7 @@ function createBaseOptions() {
         platform: "browser",
         legalComments: "external",
         minify: isProduction,
-        sourcemap: isProduction ? "external" : "inline",
+        sourcemap: isProduction ? false : "inline",
         plugins: [
             bannedDependenciesPlugin({ bannedDependencies: BannedDependencies }),
             facesResourceLoaderPlugin({
