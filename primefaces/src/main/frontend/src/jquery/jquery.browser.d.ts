@@ -185,3 +185,7 @@ interface JQueryStatic {
  * Contains information about the current browser environment, such as which browser the user is using etc.
  */
 declare const jQBrowser: JQueryBrowser.BrowserInspector;
+
+declare module "jquery.browser" {
+    export = jQBrowser;
+}

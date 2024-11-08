@@ -1,4 +1,3 @@
-import "../../src/jquery/jquery.browser.cjs";
 import "../../src/core/core.js";
 import "../../src/core/core.env.js";
 import "../../src/core/core.ajax.js";

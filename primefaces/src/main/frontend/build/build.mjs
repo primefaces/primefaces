@@ -43,13 +43,13 @@ const LinkedLibraries = {
     autoNumeric: [/^autonumeric$/],
     chartJs: [/^chart\.js(\/.+)?$/],
     coloris: [/^@melloware\/coloris$/],
+    core: [/^js-cookie$/],
     cropperJs: [/^cropperjs$/, /^jquery-cropper$/],
     fileDownload: [/^downloadjs$/],
     fileUpload: [/^blueimp-file-upload(\/.+)?$/],
     fullCalendar: [/^@fullcalendar\/.+$/],
     inputMask: [/^inputmask(\/.+)?$/],
-    jsCookie: [/^js-cookie$/],
-    jQuery: [/^jquery$/],
+    jQuery: [/^jquery$/, /^jquery.browser$/],
     jQueryPlugins: [/^autosize$/, /^jquery-mousewheel$/, /^rangyinputs$/],
     jsPlumb: [/^jsplumb$/],
     moment: [/^moment$/, /^moment-jdateformatparser$/],
@@ -156,7 +156,7 @@ function createLibraryBuildTasks() {
 /** @returns {import("esbuild").BuildOptions[]} */
 function createCoreBuildTasks() {
     return [
-        buildTask("base/core.ts", "core.js", { expose: ["jsCookie"] }),
+        buildTask("base/core.ts", "core.js", { expose: ["core"] }),
         buildTask("base/components.ts", "components.js"),
         buildTask("base/components.css", "components.css"),
         buildTask("base/jquery-plugins.ts", "jquery/jquery-plugins.js", { expose: ["jQueryPlugins"] }),

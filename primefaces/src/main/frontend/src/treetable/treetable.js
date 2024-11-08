@@ -1,3 +1,5 @@
+import jQBrowser from "jquery.browser";
+
 /**
  * __PrimeFaces TreeTable Widget__
  *
@@ -1839,7 +1841,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
      * @return {number} An estimate in pixels for the width of the native scrollbar.
      */
     getScrollbarWidth() {
-        return $.browser.webkit ? '15' : PrimeFaces.calculateScrollbarWidth();
+        return jQBrowser.webkit ? '15' : PrimeFaces.calculateScrollbarWidth();
     }
 
     /**

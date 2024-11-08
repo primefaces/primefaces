@@ -1,3 +1,5 @@
+import jQBrowser from "jquery.browser";
+
 if (!PrimeFaces.env) {
 
     /**
@@ -52,7 +54,7 @@ if (!PrimeFaces.env) {
          * Initializes the environment by reading the browser environment.
          */
         init : function() {
-            this.browser = $.browser;
+            this.browser = jQBrowser;
             this.mobile = this.browser.mobile;
             this.touch = 'ontouchstart' in window || window.navigator.msMaxTouchPoints || PrimeFaces.env.mobile;
             this.ios = /iPhone|iPad|iPod/i.test(window.navigator.userAgent) || (/mac/i.test(window.navigator.userAgent) && PrimeFaces.env.touch);
