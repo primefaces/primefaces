@@ -50,7 +50,7 @@ const LinkedLibraries = {
     inputMask: [/^inputmask(\/.+)?$/],
     jsCookie: [/^js-cookie$/],
     jQuery: [/^jquery$/],
-    jQueryPlugins: [/^autosize$/, /^jquery-mousewheel$/],
+    jQueryPlugins: [/^autosize$/, /^jquery-mousewheel$/, /^rangyinputs$/],
     jsPlumb: [/^jsplumb$/],
     moment: [/^moment$/, /^moment-jdateformatparser$/],
     momentTimeZone: [/^moment-timezone$/],

@@ -764,6 +764,7 @@ __metadata:
     moment-timezone: "npm:^0.5.45"
     propagating-hammerjs: "npm:^2.0.1"
     quill: "npm:^2.0.2"
+    rangyinputs: "npm:^1.2.0"
     raphael: "npm:^2.3.0"
     typescript: "npm:^5.6.3"
     uuid: "npm:^9.0.1"
@@ -804,6 +805,13 @@ __metadata:
     parchment: "npm:^3.0.0"
     quill-delta: "npm:^5.1.0"
   checksum: 10c0/6d680a87b683041524ea3dcb2a04a9620562e36367bcd0492fc4c1db66238375ac76a65c5e89ef1eb65e7aacd8c1a49b04cef48feeb5d52b4fc8d91a07d0ec8f
+  languageName: node
+  linkType: hard
+
+"rangyinputs@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "rangyinputs@npm:1.2.0"
+  checksum: 10c0/ab8cf8edeec2e8578172792f70d9d2f36053a97509cf547c8969e7dc315ed318679ae84c051b1b1ea1e3436339f917809d45a941d954b44a8ebe4c3d79ae50ae
   languageName: node
   linkType: hard
 

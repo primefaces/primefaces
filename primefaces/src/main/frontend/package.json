@@ -50,6 +50,7 @@
     "moment-timezone": "^0.5.45",
     "propagating-hammerjs": "^2.0.1",
     "quill": "^2.0.2",
+    "rangyinputs": "^1.2.0",
     "raphael": "^2.3.0",
     "uuid": "^9.0.1",
     "vis-data": "^7.1.9",
