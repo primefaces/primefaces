@@ -35,7 +35,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
+import java.util.EnumSet;
 
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
@@ -43,7 +43,7 @@ import javax.faces.context.FacesContext;
 public class TreeTableCSVExporter extends TreeTableExporter<PrintWriter, CSVOptions> {
 
     public TreeTableCSVExporter() {
-        super(CSVOptions.EXCEL, Collections.emptySet(), false);
+        super(CSVOptions.EXCEL,  EnumSet.of(FacetType.COLUMN), false);
     }
 
     @Override

@@ -25,7 +25,6 @@ package org.primefaces.model;
 
 import org.primefaces.util.Callbacks;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -56,9 +55,9 @@ public class LazyDefaultTreeNode<T> extends DefaultTreeNode<T> implements LazyTr
     }
 
     @Override
-    public List<TreeNode<T>> getChildren() {
+    public TreeNodeChildren<T> getChildren() {
         if (isLeaf()) {
-            return Collections.emptyList();
+            return null;
         }
 
         lazyLoad();
@@ -101,41 +100,8 @@ public class LazyDefaultTreeNode<T> extends DefaultTreeNode<T> implements LazyTr
     }
 
     @Override
-    protected List<TreeNode<T>> initChildren() {
-        return new LazyTreeNodeChildren(this);
+    protected LazyDefaultTreeNodeChildren<T> initChildren() {
+        return new LazyDefaultTreeNodeChildren<>(this);
     }
 
-    public static class LazyTreeNodeChildren<T> extends TreeNodeChildren<T> {
-
-        private static final long serialVersionUID = 1L;
-
-        // serialization
-        public LazyTreeNodeChildren() {
-        }
-
-        public LazyTreeNodeChildren(LazyDefaultTreeNode parent) {
-            super(parent);
-        }
-
-        @Override
-        protected void updateRowKeys(TreeNode node) {
-            if (((LazyDefaultTreeNode) node).loaded) {
-                super.updateRowKeys(node);
-            }
-        }
-
-        @Override
-        protected void updateRowKeys(int index, TreeNode node) {
-            if (((LazyDefaultTreeNode) node).loaded) {
-                super.updateRowKeys(index, node);
-            }
-        }
-
-        @Override
-        protected void updateRowKeys(TreeNode node, TreeNode childNode, int i) {
-            if (((LazyDefaultTreeNode) node).loaded) {
-                super.updateRowKeys(node, childNode, i);
-            }
-        }
-    }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <facelet-taglib xmlns="http://xmlns.jcp.org/xml/ns/javaee"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_3.xsd" 
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facelettaglibrary_2_3.xsd" 
     version="2.3">
 
     <description>PrimeFaces UI components.</description>
@@ -4900,7 +4900,7 @@
             </description>
             <name>pattern</name>
             <required>false</required>
-            <type>String</type>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -7776,6 +7776,13 @@
                 <![CDATA[Name of collection iterator which will be the value of DashboardWidget.getValue().]]>
             </description>
             <name>var</name>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Scope for dashboard drag and drop behaviour. Items can be dragged between multiple dashboards with the same scope. (default: dashboard)]]>
+            </description>
+            <name>scope</name>
             <required>false</required>
         </attribute>
     </tag>
@@ -22892,7 +22899,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Disables the component when set to true.]]>
             </description>
             <name>disabled</name>
             <required>false</required>
@@ -22900,15 +22907,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
-            </description>
-            <name>label</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[]]>
+                <![CDATA[Client side callback to execute when value changes.]]>
             </description>
             <name>onchange</name>
             <required>false</required>
@@ -22916,7 +22915,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Inline style of the component.]]>
             </description>
             <name>style</name>
             <required>false</required>
@@ -22924,7 +22923,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Style class of the component.]]>
             </description>
             <name>styleClass</name>
             <required>false</required>

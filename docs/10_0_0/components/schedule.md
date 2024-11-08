@@ -329,15 +329,9 @@ look [at their documentation](https://fullcalendar.io/docs/).
                     LLLL: "dddd, D. MMMM YYYY HH:mm"
                 }
             });
-            // Callback :: eventRender
-            this.cfg.eventRender = function (event, element, view) {
-                // show title of background events 
-                if (event.rendering === 'background' && event.title !== 'null') {
-                    element.append(event.title);
-                }
-                if (event.rendering !== 'background') {
-                    element.attr('title', event.title);
-                }
+            // Callback :: eventRender // more about fullcalendar events: https://fullcalendar.io/docs/event-render-hooks
+            this.cfg.options.eventDidMount = function(e) {
+                e.el.setAttribute('title', e.event.title);
             };
     </h:outputScript>
 </h:form>

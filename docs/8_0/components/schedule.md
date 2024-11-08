@@ -322,14 +322,9 @@ look at their documentation.
                 }
             });
             // Callback :: eventRender
-            this.cfg.eventRender = function (event, element, view) {
-                // show title of background events 
-                if (event.rendering === 'background' && event.title !== 'null') {
-                    element.append(event.title);
-                }
-                if (event.rendering !== 'background') {
-                    element.attr('title', event.title);
-                }
+            this.cfg.eventRender = function (info) {
+                // add attribute for element
+                    info.el.attr('title', info.event.title);
             };
     </h:outputScript>
 </h:form>

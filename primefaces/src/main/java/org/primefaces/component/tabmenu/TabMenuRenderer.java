@@ -89,6 +89,15 @@ public class TabMenuRenderer extends BaseMenuRenderer {
         writer.endElement("div");
     }
 
+    @Override
+    protected void encodePlaceholder(FacesContext context, AbstractMenu menu) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("div", menu);
+        writer.writeAttribute("id", menu.getClientId(context), "id");
+        writer.writeAttribute("class", "ui-tabmenu-placeholder", "styleClass");
+        writer.endElement("div");
+    }
+
     protected void encodeItem(FacesContext context, TabMenu menu, MenuItem item, boolean active) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String containerStyle = item.getContainerStyle();

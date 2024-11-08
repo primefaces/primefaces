@@ -23,8 +23,6 @@
  */
 package org.primefaces.model;
 
-import java.util.List;
-
 public interface TreeNode<T> {
 
     String getType();
@@ -33,7 +31,7 @@ public interface TreeNode<T> {
 
     T getData();
 
-    List<TreeNode<T>> getChildren();
+    TreeNodeChildren<T> getChildren();
 
     TreeNode<T> getParent();
 

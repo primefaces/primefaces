@@ -55,7 +55,7 @@ PrimeFaces.widget.Dashboard = PrimeFaces.widget.BaseWidget.extend({
     bindDraggable: function() {
         // draggable panels by their title bar
         $(this.cfg.panels).draggable({
-            scope: 'dashboard',
+            scope: this.cfg.scope || 'dashboard',
             revert: true,
             handle: '.ui-panel-titlebar',
             zIndex: 9999,
@@ -71,7 +71,7 @@ PrimeFaces.widget.Dashboard = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
         // droppable on other panels in the dashboard
         $(this.cfg.panels).droppable({
-            scope: 'dashboard',
+            scope: this.cfg.scope || 'dashboard',
             tolerance: 'pointer',
             classes: {
                 'ui-droppable-active': 'ui-dashboard-active',

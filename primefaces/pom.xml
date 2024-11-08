@@ -1265,7 +1265,7 @@
                                 <!-- Modify the copied file -->
                                 <replace file="${project.build.directory}/classes/META-INF/primefaces.urn.taglib.xml">
                                     <replacefilter token="http://primefaces.org/ui" value="primefaces"/>
-                                    <replacefilter token="http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_3.xsd" value="https://jakarta.ee/xml/ns/jakartaee/web-facelettaglibrary_4_0.xsd"/>
+                                    <replacefilter token="http://xmlns.jcp.org/xml/ns/javaee/web-facelettaglibrary_2_3.xsd" value="https://jakarta.ee/xml/ns/jakartaee/web-facelettaglibrary_4_0.xsd"/>
                                     <replacefilter token="http://xmlns.jcp.org/xml/ns/javaee" value="https://jakarta.ee/xml/ns/jakartaee"/>
                                     <replacefilter token="version=&quot;2.3&quot;" value="version=&quot;4.0&quot;"/>
                                 </replace>
@@ -1280,7 +1280,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.5.1</version>
+                <version>3.5.2</version>
             </plugin>
         </plugins>
     </build>

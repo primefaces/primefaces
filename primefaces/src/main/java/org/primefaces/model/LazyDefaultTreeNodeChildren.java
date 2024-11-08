@@ -23,8 +23,36 @@
  */
 package org.primefaces.model;
 
-import java.util.List;
+public class LazyDefaultTreeNodeChildren<T> extends DefaultTreeNodeChildren<T> {
 
-public interface TreeNodeChildren<T> extends List<TreeNode<T>> {
+    private static final long serialVersionUID = 1L;
 
+    // serialization
+    public LazyDefaultTreeNodeChildren() {
+    }
+
+    public LazyDefaultTreeNodeChildren(LazyDefaultTreeNode parent) {
+        super(parent);
+    }
+
+    @Override
+    protected void updateRowKeys(TreeNode node) {
+        if (((LazyDefaultTreeNode) node).isLoaded()) {
+            super.updateRowKeys(node);
+        }
+    }
+
+    @Override
+    protected void updateRowKeys(int index, TreeNode node) {
+        if (((LazyDefaultTreeNode) node).isLoaded()) {
+            super.updateRowKeys(index, node);
+        }
+    }
+
+    @Override
+    protected void updateRowKeys(TreeNode node, TreeNode childNode, int i) {
+        if (((LazyDefaultTreeNode) node).isLoaded()) {
+            super.updateRowKeys(node, childNode, i);
+        }
+    }
 }

@@ -74,6 +74,15 @@ public class StepsRenderer extends BaseMenuRenderer {
         writer.endElement("div");
     }
 
+    @Override
+    protected void encodePlaceholder(FacesContext context, AbstractMenu menu) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("div", menu);
+        writer.writeAttribute("id", menu.getClientId(context), "id");
+        writer.writeAttribute("class", "ui-steps-placeholder", "styleClass");
+        writer.endElement("div");
+    }
+
     protected void encodeItem(FacesContext context, Steps steps, MenuItem item, int activeIndex, int index) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String itemClass;

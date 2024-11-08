@@ -69,6 +69,15 @@ public class MenuButtonRenderer extends TieredMenuRenderer {
         writer.endElement("span");
     }
 
+    @Override
+    protected void encodePlaceholder(FacesContext context, AbstractMenu menu) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("span", menu);
+        writer.writeAttribute("id", menu.getClientId(context), "id");
+        writer.writeAttribute("class", "ui-menubutton-placeholder", "styleClass");
+        writer.endElement("span");
+    }
+
     protected void encodeButton(FacesContext context, MenuButton button, String buttonId, String menuId, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         boolean isIconLeft = button.getIconPos().equals("left");

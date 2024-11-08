@@ -24,121 +24,37 @@
 package org.primefaces.model;
 
 import java.io.Serializable;
-import java.util.List;
 
-public class CheckboxTreeNode<T> implements TreeNode<T>, Serializable {
-
-    public static final String DEFAULT_TYPE = "default";
+public class CheckboxTreeNode<T> extends DefaultTreeNode<T> implements TreeNode<T>, Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private String type;
-
-    private T data;
-
-    private List<TreeNode<T>> children;
-
-    private TreeNode parent;
-
-    private boolean expanded;
-
-    private boolean selected;
-
-    private boolean selectable = true;
-
     private boolean partialSelected;
 
-    private String rowKey;
-
     public CheckboxTreeNode() {
-        this(null);
+        super();
     }
 
     public CheckboxTreeNode(T data) {
-        this(data, null);
+        super(data);
     }
 
     public CheckboxTreeNode(T data, TreeNode parent) {
-        this(DEFAULT_TYPE, data, parent);
+        super(data, parent);
     }
 
     public CheckboxTreeNode(String type, T data, TreeNode parent) {
-        this.type = type;
-        this.data = data;
-        this.children = new CheckboxTreeNodeChildren(this);
-        if (parent != null) {
-            parent.getChildren().add(this);
-        }
+        super(type, data, parent);
     }
 
     @Override
-    public String getType() {
-        return type;
-    }
-
-    @Override
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    @Override
-    public T getData() {
-        return data;
-    }
-
-    public void setData(T data) {
-        this.data = data;
-    }
-
-    @Override
-    public List<TreeNode<T>> getChildren() {
-        return children;
-    }
-
-    public void setChildren(List<TreeNode<T>> children) {
-        if (children instanceof CheckboxTreeNodeChildren) {
-            this.children = children;
-        }
-        else {
-            CheckboxTreeNodeChildren<T> nodeChildren = new CheckboxTreeNodeChildren(this);
-            nodeChildren.addAll(children);
-            this.children = nodeChildren;
-        }
-    }
-
-    @Override
-    public TreeNode getParent() {
-        return parent;
-    }
-
-    @Override
-    public void setParent(TreeNode parent) {
-        this.parent = parent;
-    }
-
-    @Override
-    public void clearParent() {
-        this.parent = null;
-    }
-
-    @Override
-    public boolean isExpanded() {
-        return expanded;
-    }
-
-    @Override
-    public void setExpanded(boolean expanded) {
-        this.expanded = expanded;
-    }
-
-    @Override
-    public boolean isSelected() {
-        return this.selected;
+    protected TreeNodeChildren<T> initChildren() {
+        return new CheckboxTreeNodeChildren<>(this);
     }
 
     public void setSelected(boolean selected, boolean propagateDown, boolean propagateUp) {
         this.selected = selected;
-        partialSelected = false;
+        this.partialSelected = false;
 
         if (propagateDown && propagateUp) {
             setSelected(selected);
@@ -199,7 +115,7 @@ public class CheckboxTreeNode<T> implements TreeNode<T>, Serializable {
             return;
         }
         boolean allChildrenSelected = true;
-        partialSelected = false;
+        this.partialSelected = false;
 
         for (int i = 0; i < getChildCount(); i++) {
             TreeNode childNode = getChildren().get(i);
@@ -207,10 +123,10 @@ public class CheckboxTreeNode<T> implements TreeNode<T>, Serializable {
             boolean childSelected = childNode.isSelected();
             boolean childPartialSelected = childNode.isPartialSelected();
             allChildrenSelected = allChildrenSelected && childSelected;
-            partialSelected = partialSelected || childSelected || childPartialSelected;
+            this.partialSelected = partialSelected || childSelected || childPartialSelected;
         }
 
-        selected = allChildrenSelected;
+        this.selected = allChildrenSelected;
 
         if (allChildrenSelected) {
             setPartialSelected(false);
@@ -219,43 +135,6 @@ public class CheckboxTreeNode<T> implements TreeNode<T>, Serializable {
         if (getParent() != null) {
             ((CheckboxTreeNode) getParent()).propagateSelectionUp();
         }
-    }
-
-    @Override
-    public boolean isSelectable() {
-        return selectable;
-    }
-
-    @Override
-    public void setSelectable(boolean selectable) {
-        this.selectable = selectable;
-    }
-
-    @Override
-    public int getChildCount() {
-        if (children == null) {
-            return 0;
-        }
-        return children.size();
-    }
-
-    @Override
-    public String getRowKey() {
-        return rowKey;
-    }
-
-    @Override
-    public void setRowKey(String rowKey) {
-        this.rowKey = rowKey;
-    }
-
-    @Override
-    public boolean isLeaf() {
-        if (children == null) {
-            return true;
-        }
-
-        return children.isEmpty();
     }
 
     @Override

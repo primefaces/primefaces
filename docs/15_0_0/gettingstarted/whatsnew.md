@@ -28,7 +28,10 @@ Look into [migration guide](https://primefaces.github.io/primefaces/15_0_0/#/../
     * `noButtonClass`: adds given class to 'No' button (and removes it before the global confirm dialog is reused elsewhere)
     * `noButtonIcon`: overrides icon of 'No' button (and removes it before the global confirm dialog is reused elsewhere)
     * `confirmMessage`: facet on the parent component of the `p:confirm` behavior. Can be used as message content instead of the `p:confirm` `message` attribute.
- 
+  
+* Dashboard
+    *  `scope`: Scope for dashboard drag and drop behaviour. Items can be dragged between multiple dashboards with the same scope. (js default: dashboard)
+
 * DataTable 
     * Added attribute `frozenColumnsAlignment` to support alignment of frozen columns left and right
     * Added `expandIcon`/`collapseIcon` attributes for RowToggler
