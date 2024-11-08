@@ -89,3 +89,12 @@ declare namespace JQuery {
         ["mousewheel"]: JQueryMousewheel.MousewheelEvent<TDelegateTarget, TData, TCurrentTarget, TTarget>;
    }
 }
+
+declare module "jquery-mousewheel" {
+    /**
+     * Registers the jQuery mouse wheel plugin on the given jQuery instance.
+     * @param $ The jQuery instance to register the plugin on.
+     */
+    function setupMousewheel($: JQueryStatic): void;
+    export = setupMousewheel;
+}

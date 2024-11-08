@@ -11,6 +11,20 @@ import { facesResourceLoaderPlugin } from "./faces-resource-loader-plugin.mjs";
 import { createMetaFile } from "./create-meta-file.mjs";
 import { bannedDependenciesPlugin } from "./banned-dependencies-plugin.mjs";
 
+/**
+ * Additional settings for {@link buildTask}.
+ * 
+ * - expose: External libraries to include in the bundle and expose to the global
+ * scope. By default, all external libraries (from NPM) are excluded and loaded
+ * from the global scope (`window.PrimeFacesLibs`). One bundle should include the
+ * library, so that it is actually available in the global scope.
+ * 
+ * @typedef {{
+ * expose?: (keyof typeof LinkedLibraries)[];
+ * }} BuildTaskSettings
+ */
+undefined;
+
 const isProduction = process.env.NODE_ENV !== "development";
 
 const baseDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -27,7 +41,6 @@ const globalCodeSplitPlugin = globalCodeSplitPluginFactory();
 // following defines the NPM packages which need to be linked.
 const LinkedLibraries = {
     autoNumeric: [/^autonumeric$/],
-    autosize: [/^autosize$/],
     chartJs: [/^chart\.js(\/.+)?$/],
     coloris: [/^@melloware\/coloris$/],
     cropperJs: [/^cropperjs$/, /^jquery-cropper$/],
@@ -37,11 +50,13 @@ const LinkedLibraries = {
     inputMask: [/^inputmask(\/.+)?$/],
     jsCookie: [/^js-cookie$/],
     jQuery: [/^jquery$/],
+    jQueryPlugins: [/^autosize$/, /^jquery-mousewheel$/],
     jsPlumb: [/^jsplumb$/],
     moment: [/^moment$/, /^moment-jdateformatparser$/],
     momentTimeZone: [/^moment-timezone$/],
     quill: [/^quill$/],
     raphael: [/^raphael$/],
+    scrollPanel: [/^jscrollpane$/],
     timeline: [/^vis-(timeline|data|util)(\/.+)?$/],
     webcamJs: [/^webcamjs$/],
 };
@@ -58,24 +73,16 @@ const BannedDependencies = [
  * file and writes the output to the given path. The source path is relative
  * to the `bundles` directory, the target path is relative to the main output
  * directory.
- * 
- * Additional settings for the build task:
- * 
- * - `include`: External libraries to include in the bundle. By default, all
- * external libraries (from NPM) are excluded and loaded from the global scope
- * (`window.PrimeFacesLibs`). One bundle should include the library, so that
- * it is actually available in the global scope.
- *
  * @param {string} from The source file.
  * @param {string} to The target file.
- * @param {{include?: (keyof typeof LinkedLibraries)[]}} [settings] Additional settings for build task.    
+ * @param {BuildTaskSettings} [settings] Additional settings for build task.    
  * @returns {import("esbuild").BuildOptions} The ESBuild task.
  */
 function buildTask(from, to, settings = {}) {
     const fromPath = path.join(bundlesDir, from);
     const toPath = path.join(outputDir, to);
 
-    const includes = settings.include ?? []
+    const includes = settings.expose ?? []
     /** @type {import("./global-code-split-plugin.mjs").GlobalCodeSplitModule[]} */
     const modules = Object.entries(LinkedLibraries).flatMap(([key, patterns]) => {
         const mode = includes.some(k => k === key) ? "expose" : "link";
@@ -139,20 +146,20 @@ function createBaseOptions() {
 /** @returns {import("esbuild").BuildOptions[]} */
 function createLibraryBuildTasks() {
     return [
-        buildTask("libs/jquery.ts", "jquery/jquery.js", { include: ["jQuery"] }),
-        buildTask("libs/moment.ts", "moment/moment.js", { include: ["moment"] }),
-        buildTask("libs/moment-timezone-with-data.ts", "moment/moment-timezone-with-data.js", { include: ["momentTimeZone"] }),
-        buildTask("libs/raphael.ts", "raphael/raphael.js", { include: ["raphael"] }),
+        buildTask("libs/jquery.ts", "jquery/jquery.js", { expose: ["jQuery"] }),
+        buildTask("libs/moment.ts", "moment/moment.js", { expose: ["moment"] }),
+        buildTask("libs/moment-timezone-with-data.ts", "moment/moment-timezone-with-data.js", { expose: ["momentTimeZone"] }),
+        buildTask("libs/raphael.ts", "raphael/raphael.js", { expose: ["raphael"] }),
     ];
 }
 
 /** @returns {import("esbuild").BuildOptions[]} */
 function createCoreBuildTasks() {
     return [
-        buildTask("base/core.ts", "core.js", { include: ["jsCookie"] }),
+        buildTask("base/core.ts", "core.js", { expose: ["jsCookie"] }),
         buildTask("base/components.ts", "components.js"),
         buildTask("base/components.css", "components.css"),
-        buildTask("base/jquery-plugins.ts", "jquery/jquery-plugins.js", { include: ["autosize"] }),
+        buildTask("base/jquery-plugins.ts", "jquery/jquery-plugins.js", { expose: ["jQueryPlugins"] }),
     ];
 }
 
@@ -162,18 +169,18 @@ function createComponentsBuildTasks() {
         buildTask("components/calendar.ts", "calendar/calendar.js"),
         buildTask("components/calendar.css", "calendar/calendar.css"),
         buildTask("components/captcha.ts", "captcha/captcha.js"),
-        buildTask("components/chart.ts", "chart/chart.js", { include: ["chartJs"] }),
+        buildTask("components/chart.ts", "chart/chart.js", { expose: ["chartJs"] }),
         buildTask("components/clock.ts", "clock/clock.js"),
         buildTask("components/clock.css", "clock/clock.css"),
-        buildTask("components/colorpicker.ts", "colorpicker/colorpicker.js", { include: ["coloris"] }),
+        buildTask("components/colorpicker.ts", "colorpicker/colorpicker.js", { expose: ["coloris"] }),
         buildTask("components/colorpicker.css", "colorpicker/colorpicker.css"),
         buildTask("components/datepicker.ts", "datepicker/datepicker.js"),
-        buildTask("components/diagram.ts", "diagram/diagram.js", { include: ["jsPlumb"] }),
+        buildTask("components/diagram.ts", "diagram/diagram.js", { expose: ["jsPlumb"] }),
         buildTask("components/diagram.css", "diagram/diagram.css"),
         buildTask("components/dock.ts", "dock/dock.js"),
         buildTask("components/dock.css", "dock/dock.css"),
-        buildTask("components/filedownload.ts", "filedownload/filedownload.js", { include: ["fileDownload"] }),
-        buildTask("components/fileupload.ts", "fileupload/fileupload.js", { include: ["fileUpload"] }),
+        buildTask("components/filedownload.ts", "filedownload/filedownload.js", { expose: ["fileDownload"] }),
+        buildTask("components/fileupload.ts", "fileupload/fileupload.js", { expose: ["fileUpload"] }),
         buildTask("components/fileupload.css", "fileupload/fileupload.css"),
         buildTask("components/galleria.ts", "galleria/galleria.js"),
         buildTask("components/galleria.css", "galleria/galleria.css"),
@@ -182,11 +189,11 @@ function createComponentsBuildTasks() {
         buildTask("components/idlemonitor.ts", "idlemonitor/idlemonitor.js"),
         buildTask("components/imagecompare.ts", "imagecompare/imagecompare.js"),
         buildTask("components/imagecompare.css", "imagecompare/imagecompare.css"),
-        buildTask("components/imagecropper.ts", "imagecropper/imagecropper.js", { include: ["cropperJs"] }),
+        buildTask("components/imagecropper.ts", "imagecropper/imagecropper.js", { expose: ["cropperJs"] }),
         buildTask("components/imagecropper.css", "imagecropper/imagecropper.css"),
         buildTask("components/imageswitch.ts", "imageswitch/imageswitch.js"),
-        buildTask("components/inputmask.ts", "inputmask/inputmask.js", { include: ["inputMask"] }),
-        buildTask("components/inputnumber.ts", "inputnumber/inputnumber.js", { include: ["autoNumeric"] }),
+        buildTask("components/inputmask.ts", "inputmask/inputmask.js", { expose: ["inputMask"] }),
+        buildTask("components/inputnumber.ts", "inputnumber/inputnumber.js", { expose: ["autoNumeric"] }),
         buildTask("components/keyboard.ts", "keyboard/keyboard.js"),
         buildTask("components/keyboard.css", "keyboard/keyboard.css"),
         buildTask("components/keyfilter.ts", "keyfilter/keyfilter.js"),
@@ -198,11 +205,11 @@ function createComponentsBuildTasks() {
         buildTask("components/mindmap.ts", "mindmap/mindmap.js"),
         buildTask("components/organigram.ts", "organigram/organigram.js"),
         buildTask("components/organigram.css", "organigram/organigram.css"),
-        buildTask("components/photocam.ts", "photocam/photocam.js", { include: ["webcamJs"] }),
+        buildTask("components/photocam.ts", "photocam/photocam.js", { expose: ["webcamJs"] }),
         buildTask("components/primeicons.css", "primeicons/primeicons.css"),
         buildTask("components/printer.ts", "printer/printer.js"),
-        buildTask("components/schedule.ts", "schedule/schedule.js", { include: ["fullCalendar"] }),
-        buildTask("components/scrollpanel.ts", "scrollpanel/scrollpanel.js"),
+        buildTask("components/schedule.ts", "schedule/schedule.js", { expose: ["fullCalendar"] }),
+        buildTask("components/scrollpanel.ts", "scrollpanel/scrollpanel.js", { expose: ["scrollPanel"] }),
         buildTask("components/scrollpanel.css", "scrollpanel/scrollpanel.css"),
         buildTask("components/signature.ts", "signature/signature.js"),
         buildTask("components/signature.css", "signature/signature.css"),
@@ -210,9 +217,9 @@ function createComponentsBuildTasks() {
         buildTask("components/stack.css", "stack/stack.css"),
         buildTask("components/terminal.ts", "terminal/terminal.js"),
         buildTask("components/terminal.css", "terminal/terminal.css"),
-        buildTask("components/texteditor.ts", "texteditor/texteditor.js", { include: ["quill"] }),
+        buildTask("components/texteditor.ts", "texteditor/texteditor.js", { expose: ["quill"] }),
         buildTask("components/texteditor.css", "texteditor/texteditor.css"),
-        buildTask("components/timeline.ts", "timeline/timeline.js", { include: ["timeline"] }),
+        buildTask("components/timeline.ts", "timeline/timeline.js", { expose: ["timeline"] }),
         buildTask("components/timeline.css", "timeline/timeline.css"),
         buildTask("components/touchswipe.ts", "touch/touchswipe.js"),
         buildTask("components/validation.bv.ts", "validation/validation.bv.js"),

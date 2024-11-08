@@ -1,2 +1,2 @@
-import "../../src/scrollpanel/0-jquery.jscrollpane.cjs";
+import "jscrollpane";
 import "../../src/scrollpanel/1-scrollpanel.js";

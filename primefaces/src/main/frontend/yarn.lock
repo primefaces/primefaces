@@ -599,6 +599,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jquery-mousewheel@npm:3.1.13":
+  version: 3.1.13
+  resolution: "jquery-mousewheel@npm:3.1.13"
+  checksum: 10c0/acd57dfe7d2268ddddb906cfca6316fb364aeb74dc4d15379baa60c88b5fd3cc0aa7830e09cb6e702a4de9306e467519f147396e49f2f9c9f2c7118537721fab
+  languageName: node
+  linkType: hard
+
+"jquery-mousewheel@patch:jquery-mousewheel@npm%3A3.1.13#~/.yarn/patches/jquery-mousewheel-npm-3.1.13-854d2918be.patch":
+  version: 3.1.13
+  resolution: "jquery-mousewheel@patch:jquery-mousewheel@npm%3A3.1.13#~/.yarn/patches/jquery-mousewheel-npm-3.1.13-854d2918be.patch::version=3.1.13&hash=94e45a"
+  checksum: 10c0/234f722030a64eceb0ea93f46b686921e15126c4626033a8b5a205c46bf122cdfecd7891811e33031b25db4a6ac7e3c94cad1196e2a26454a3973bab8109f7cf
+  languageName: node
+  linkType: hard
+
+"jquery@npm:^3.5.1":
+  version: 3.7.1
+  resolution: "jquery@npm:3.7.1"
+  checksum: 10c0/808cfbfb758438560224bf26e17fcd5afc7419170230c810dd11f5c1792e2263e2970cca8d659eb84fcd9acc301edb6d310096e450277d54be4f57071b0c82d9
+  languageName: node
+  linkType: hard
+
 "jquery@npm:^4.0.0-beta.2":
   version: 4.0.0-beta.2
   resolution: "jquery@npm:4.0.0-beta.2"
@@ -610,6 +631,24 @@ __metadata:
   version: 3.0.5
   resolution: "js-cookie@npm:3.0.5"
   checksum: 10c0/04a0e560407b4489daac3a63e231d35f4e86f78bff9d792011391b49c59f721b513411cd75714c418049c8dc9750b20fcddad1ca5a2ca616c3aca4874cce5b3a
+  languageName: node
+  linkType: hard
+
+"jscrollpane@npm:2.2.3-rc.2":
+  version: 2.2.3-rc.2
+  resolution: "jscrollpane@npm:2.2.3-rc.2"
+  dependencies:
+    jquery: "npm:^3.5.1"
+  checksum: 10c0/a7cad13cd54f1014c6e43790c9fafd8e0946ccc1bbd85501ec2903094ae9f5d64ded85be5ddf1415c5de60b4a76043311395677b7b2f887e0178c39dfde51414
+  languageName: node
+  linkType: hard
+
+"jscrollpane@patch:jscrollpane@npm%3A2.2.3-rc.2#~/.yarn/patches/jscrollpane-npm-2.2.3-rc.2-173a004b4f.patch":
+  version: 2.2.3-rc.2
+  resolution: "jscrollpane@patch:jscrollpane@npm%3A2.2.3-rc.2#~/.yarn/patches/jscrollpane-npm-2.2.3-rc.2-173a004b4f.patch::version=2.2.3-rc.2&hash=591506"
+  dependencies:
+    jquery: "npm:^3.5.1"
+  checksum: 10c0/0fcf06990b4c32b5bd82a0a53abf8fbcdf024678fdea67b68b56eafb9a8f736abcffebb009fb125d9d0620ba4df0abfce24d427d06c3305d53dc8f1cd6d31ecc
   languageName: node
   linkType: hard
 
@@ -715,7 +754,9 @@ __metadata:
     inputmask: "npm:5.0.10-beta.5"
     jquery: "npm:^4.0.0-beta.2"
     jquery-cropper: "patch:jquery-cropper@npm%3A1.0.0#~/.yarn/patches/jquery-cropper-npm-1.0.0-148aa161fe.patch"
+    jquery-mousewheel: "patch:jquery-mousewheel@npm%3A3.1.13#~/.yarn/patches/jquery-mousewheel-npm-3.1.13-854d2918be.patch"
     js-cookie: "npm:^3.0.5"
+    jscrollpane: "patch:jscrollpane@npm%3A2.2.3-rc.2#~/.yarn/patches/jscrollpane-npm-2.2.3-rc.2-173a004b4f.patch"
     jsplumb: "npm:^2.15.6"
     keycharm: "npm:^0.4.0"
     moment: "npm:^2.30.1"
