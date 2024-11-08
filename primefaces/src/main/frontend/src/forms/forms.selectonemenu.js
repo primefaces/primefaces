@@ -821,10 +821,10 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
                 default:
                 break;
             }
-        }).on('paste.ui-selectonemenu', function() {
-            PrimeFaces.queueTask(function(){
-                $this.filter($this.filterInput.val());
-            });
+        }).on('input.ui-selectonemenu paste.ui-selectonemenu drop.ui-selectonemenu', function(e) {
+            if (e.type === 'paste' || e.type === 'drop') {                
+                PrimeFaces.queueTask(() => $this.filter($this.filterInput.val()), 10);
+            }
 		});
     }
 

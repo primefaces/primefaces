@@ -36,15 +36,15 @@ public abstract class DashboardBase extends UIPanel implements Widget, ClientBeh
     public static final String DEFAULT_RENDERER = "org.primefaces.component.DashboardRenderer";
 
     public enum PropertyKeys {
-
-        widgetVar,
-        model,
         disabled,
+        model,
         reordering,
+        responsive,
+        scope,
         style,
         styleClass,
-        responsive,
-        var
+        var,
+        widgetVar
     }
 
     public DashboardBase() {
@@ -118,5 +118,13 @@ public abstract class DashboardBase extends UIPanel implements Widget, ClientBeh
 
     public void setVar(String var) {
         getStateHelper().put(PropertyKeys.var, var);
+    }
+
+    public String getScope() {
+        return (String) getStateHelper().eval(PropertyKeys.scope, null);
+    }
+
+    public void setScope(String scope) {
+        getStateHelper().put(PropertyKeys.scope, scope);
     }
 }

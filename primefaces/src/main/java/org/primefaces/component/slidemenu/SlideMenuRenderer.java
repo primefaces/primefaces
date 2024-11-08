@@ -101,4 +101,13 @@ public class SlideMenuRenderer extends TieredMenuRenderer {
 
         writer.endElement("div");
     }
+
+    @Override
+    protected void encodePlaceholder(FacesContext context, AbstractMenu menu) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("div", menu);
+        writer.writeAttribute("id", menu.getClientId(context), "id");
+        writer.writeAttribute("class", "ui-slidemenu-placeholder", "styleClass");
+        writer.endElement("div");
+    }
 }

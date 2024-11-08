@@ -79,6 +79,15 @@ public class DockRenderer extends BaseMenuRenderer {
         writer.endElement("div");
     }
 
+    @Override
+    protected void encodePlaceholder(FacesContext context, AbstractMenu menu) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("div", menu);
+        writer.writeAttribute("id", menu.getClientId(context), "id");
+        writer.writeAttribute("class", "ui-dock-placeholder", "styleClass");
+        writer.endElement("div");
+    }
+
     protected void encodeMenuItems(FacesContext context, Dock dock) throws IOException {
         if (dock.getElementsCount() > 0) {
             ResponseWriter writer = context.getResponseWriter();

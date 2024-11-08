@@ -339,4 +339,33 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
 
         return true;
     }
+
+    protected boolean shouldBeRendered(FacesContext context, MenuItemAware abstractMenu) {
+        return abstractMenu.getElements().stream().anyMatch(me -> shouldBeRendered(context, me));
+    }
+
+    protected boolean shouldBeRendered(FacesContext context, MenuElement menuElement) {
+        if (menuElement instanceof MenuGroup) {
+            MenuGroup group = (MenuGroup) menuElement;
+            return group.getElements().stream().anyMatch(me -> shouldBeRendered(context, me));
+        }
+        else if (menuElement instanceof Separator) {
+            return false;
+        }
+        else {
+            try {
+                if (menuElement instanceof UIComponent) {
+                    UIComponent component = (UIComponent) menuElement;
+                    component.pushComponentToEL(context, component);
+                }
+                return menuElement.isRendered();
+            }
+            finally {
+                if (menuElement instanceof UIComponent) {
+                    UIComponent component = (UIComponent) menuElement;
+                    component.popComponentFromEL(context);
+                }
+            }
+        }
+    }
 }

@@ -2,7 +2,7 @@
 <facelet-taglib xmlns="http://xmlns.jcp.org/xml/ns/javaee"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facelettaglibrary_2_3.xsd" 
-    version="2.0">
+    version="2.3">
 
     <description>PrimeFaces UI components.</description>
     <namespace>http://primefaces.org/ui</namespace>
@@ -7776,6 +7776,13 @@
                 <![CDATA[Name of collection iterator which will be the value of DashboardWidget.getValue().]]>
             </description>
             <name>var</name>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Scope for dashboard drag and drop behaviour. Items can be dragged between multiple dashboards with the same scope. (default: dashboard)]]>
+            </description>
+            <name>scope</name>
             <required>false</required>
         </attribute>
     </tag>

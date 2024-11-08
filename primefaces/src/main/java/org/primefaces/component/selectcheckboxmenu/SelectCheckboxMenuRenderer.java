@@ -292,11 +292,12 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
                     writer.writeAttribute("class", SelectCheckboxMenu.TOKEN_LABEL_CLASS, null);
 
                     if (selectedItem.getLabel() != null) {
-                        if (selectedItem.isEscape()) {
-                            writer.writeText(selectedItem.getLabel(), null);
+                        String selectedItemLabel = isValueBlank(selectedItem.getLabel()) ? "&nbsp;" : selectedItem.getLabel();
+                        if (selectedItem.isEscape() && !"&nbsp;".equals(selectedItemLabel)) {
+                            writer.writeText(selectedItemLabel, null);
                         }
                         else {
-                            writer.write(selectedItem.getLabel());
+                            writer.write(selectedItemLabel);
                         }
                     }
                     else {
