@@ -447,6 +447,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"downloadjs@npm:1.4.7":
+  version: 1.4.7
+  resolution: "downloadjs@npm:1.4.7"
+  checksum: 10c0/a89af5fc0b0034402ca2d58c8a09e2baaabdd6b7be47bf227755f50bddd3463eae1abaab6bf68b9b4814ce7cc39d63af9066df8a94c5269a30e75eb57c622f38
+  languageName: node
+  linkType: hard
+
+"downloadjs@patch:downloadjs@npm%3A1.4.7#~/.yarn/patches/downloadjs-npm-1.4.7-952a4ef987.patch":
+  version: 1.4.7
+  resolution: "downloadjs@patch:downloadjs@npm%3A1.4.7#~/.yarn/patches/downloadjs-npm-1.4.7-952a4ef987.patch::version=1.4.7&hash=eac078"
+  checksum: 10c0/f8f7aa0044b6ee6a41fbcd4df0d06dbcccb2a8a040255b6ce9274149bd86ca0fed67d85e7123301245fdde4314b1467ce8f876336f223a32e0bf67b7bdb3c11b
+  languageName: node
+  linkType: hard
+
 "esbuild@npm:^0.24.0":
   version: 0.24.0
   resolution: "esbuild@npm:0.24.0"
@@ -695,6 +709,7 @@ __metadata:
     chartjs-plugin-zoom: "npm:^2.0.1"
     component-emitter: "npm:^1.3.0"
     cropperjs: "npm:^1.5.13"
+    downloadjs: "patch:downloadjs@npm%3A1.4.7#~/.yarn/patches/downloadjs-npm-1.4.7-952a4ef987.patch"
     esbuild: "npm:^0.24.0"
     hammerjs: "npm:^2.0.8"
     inputmask: "npm:5.0.10-beta.5"

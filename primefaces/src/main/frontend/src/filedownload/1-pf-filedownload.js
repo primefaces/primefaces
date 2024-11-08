@@ -1,3 +1,5 @@
+import downloadJs from 'downloadjs';
+
 if (!PrimeFaces.download) {
     /**
      * Fetches the resource at the given URL and prompts the user to download that file, without leaving the current
@@ -21,7 +23,7 @@ if (!PrimeFaces.download) {
         x.open("GET", url, true);
         x.responseType = 'blob';
         x.onload = function (e) {
-            window.download(x.response, fileName, mimeType);
+            downloadJs(x.response, fileName, mimeType);
             PrimeFaces.setCookie(cookieName, "true", {path: cookiePath});
         };
         x.send();
