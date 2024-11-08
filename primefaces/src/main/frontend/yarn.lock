@@ -947,8 +947,8 @@ __metadata:
 
 "webcamjs@patch:webcamjs@npm%3A1.0.26#~/.yarn/patches/webcamjs-npm-1.0.26-e450e6a36f.patch":
   version: 1.0.26
-  resolution: "webcamjs@patch:webcamjs@npm%3A1.0.26#~/.yarn/patches/webcamjs-npm-1.0.26-e450e6a36f.patch::version=1.0.26&hash=3df871"
-  checksum: 10c0/20df01468d6d3d4b6844ea96db55723194ae306e7f1af84bf5c157d292dbc6ee5446a9b67cc8a9d99933a9f4b6996da26e6ff40775b8e7d06ee3d539931a759a
+  resolution: "webcamjs@patch:webcamjs@npm%3A1.0.26#~/.yarn/patches/webcamjs-npm-1.0.26-e450e6a36f.patch::version=1.0.26&hash=1af1f9"
+  checksum: 10c0/98939fa1c86eab28ef353bf38d7e32357af76a20d970690027f94f5da956b25fcf1b5202446d09a41577e33b60b730907addeb9e1cf2a2c5acf27288d70f70b8
   languageName: node
   linkType: hard
 

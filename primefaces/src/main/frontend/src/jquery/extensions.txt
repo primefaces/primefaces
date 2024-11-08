@@ -12,12 +12,7 @@ List of Plugins
 - Autosize (https://github.com/jackmoore/autosize)
 - Touch Punch (https://github.com/RWAP/jquery-ui-touch-punch custom fork of https://github.com/furf/jquery-ui-touch-punch)
 
-
 Extensions:
-
-jquery.ui.timepicker.js:
-- Added fix to timepicker from https://github.com/trentrichardson/jQuery-Timepicker-Addon/issues/848
-- Fix timeOnlyTitle XSS (https://github.com/primefaces/primefaces/issues/4385)
 
 jquery.ui.pfextensions:
 - Added gotoToday selection fix (https://github.com/primefaces/primefaces/issues/1420)
