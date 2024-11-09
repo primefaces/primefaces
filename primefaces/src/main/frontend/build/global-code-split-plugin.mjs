@@ -58,11 +58,12 @@ undefined;
 
 const PluginName = "custom-module-source-plugin";
 
-const NamespaceExpose = "custom-module-source-plugin/expose";
-const NamespaceExposeImport = "custom-module-source-plugin/expose-import";
-const NamespaceExposeRequire = "custom-module-source-plugin/expose-require";
-const NamespaceLinkImport = "custom-module-source-plugin/link-import";
-const NamespaceLinkRequire = "custom-module-source-plugin/link-require";
+const NamespaceBase = PluginName;
+const NamespaceExpose = `${NamespaceBase}/expose`;
+const NamespaceExposeImport = `${NamespaceBase}/expose-import`;
+const NamespaceExposeRequire = `${NamespaceBase}/expose-require`;
+const NamespaceLinkImport = `${NamespaceBase}/link-import`;
+const NamespaceLinkRequire = `${NamespaceBase}/link-require`;
 
 /**
  * @template T
@@ -268,13 +269,12 @@ function registerExposeHooks(build, scope, includeModules, bundleMeta) {
             return { contents: "export {}", resolveDir: baseDir };
         }
 
+        const contents = [`import { exposeEsmModule } from "@global/helper";`];
         let i = 1;
-        const contents = [`const Scope = window.${scope} ??= {};`];
         for (const moduleName of moduleNames) {
             contents.push(
                 `import * as Module${i} from "${moduleName}";`,
-                `const Container${i} = Scope["${moduleName}"] = Scope["${moduleName}"] || {cjs: undefined, esm: undefined};`,
-                `Container${i}.esm = Module${i};`
+                `exposeEsmModule("${scope}", "${moduleName}", Module${i});`
             );
             i += 1;
         }
@@ -293,15 +293,9 @@ function registerExposeHooks(build, scope, includeModules, bundleMeta) {
             return { contents: "module.exports = {}", resolveDir: baseDir };
         }
 
-        let i = 1;
-        const contents = [`const Scope = window.${scope} ??= {};`];
+        const contents = [`import { exposeCommonJsModule } from "@global/helper";`];
         for (const moduleName of moduleNames) {
-            contents.push(
-                `const Module${i} = require("${moduleName}");`,
-                `const Container${i} = Scope["${moduleName}"] ??= {cjs: undefined, esm: undefined};`,
-                `Container${i}.cjs = Module${i};`
-            );
-            i += 1;
+            contents.push(`exposeCommonJsModule("${scope}", "${moduleName}", require("${moduleName}"))`);
         }
         return { contents: contents.join("\n"), resolveDir: baseDir };
     });
@@ -338,6 +332,7 @@ function registerExposeHooks(build, scope, includeModules, bundleMeta) {
  * @param {BundleMeta} bundleMeta
  */
 function registerLinkHooks(build, scope, linkModules, bundleMeta) {
+    const baseDir = build.initialOptions.absWorkingDir ?? process.cwd();
     const filterLinkModules = joinRegExp(linkModules, "^", "$");
 
     // Resolve all configured modules that should be linked via the global scope.
@@ -358,9 +353,8 @@ function registerLinkHooks(build, scope, linkModules, bundleMeta) {
         { filter: /.*/, namespace: NamespaceLinkImport },
         args => {
             const contents = [
-                `const Module = window.${scope}["${args.path}"];`,
-                `if (!Module || !Module.esm) throw new Error("ESM module not found: ${args.path}");`,
-                `module.exports = Module.esm.default;`,
+                `import { retrieveLinkedEsmModule } from "@global/helper";`,
+                `module.exports = retrieveLinkedEsmModule("${scope}", "${args.path}");`,
             ].join("\n");
             return { contents };
         }
@@ -371,9 +365,8 @@ function registerLinkHooks(build, scope, linkModules, bundleMeta) {
         { filter: /.*/, namespace: NamespaceLinkRequire },
         args => {
             const contents = [
-                `const Module = window.${scope}["${args.path}"];`,
-                `if (!Module || !Module.cjs) throw new Error("CJS module not found: ${args.path}");`,
-                `module.exports = Module.cjs;`,
+                `import { retrieveLinkedCommonJsModule } from "@global/helper";`,
+                `module.exports = retrieveLinkedCommonJsModule("${scope}", "${args.path}");`,
             ].join("\n");
             return { contents };
         }
@@ -431,6 +424,17 @@ export function globalCodeSplitPluginFactory() {
                     const linkModules = matchPackages(modules, bundleMeta, "link");
                     // Order of precedence: expose, link
                     exposeModules.forEach(m => linkModules.delete(m));
+
+                    if (linkModules.size > 0 || exposeModules.size > 0) {
+                        const baseDir = build.initialOptions.absWorkingDir ?? process.cwd();
+                        const helperPath = path.resolve(baseDir, "build", "global-code-split-plugin-helper.mjs");
+                        build.onResolve({ filter: /^@global\/helper$/ }, args => {
+                            if (args.namespace.startsWith(NamespaceBase)) {
+                                return { path: helperPath, namespace: "file" };
+                            }
+                            return undefined;
+                        });
+                    }
 
                     if (linkModules.size > 0) {
                         registerLinkHooks(build, scope, [...linkModules], bundleMeta);
