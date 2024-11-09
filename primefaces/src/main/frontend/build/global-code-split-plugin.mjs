@@ -332,14 +332,13 @@ function registerExposeHooks(build, scope, includeModules, bundleMeta) {
  * @param {BundleMeta} bundleMeta
  */
 function registerLinkHooks(build, scope, linkModules, bundleMeta) {
-    const baseDir = build.initialOptions.absWorkingDir ?? process.cwd();
     const filterLinkModules = joinRegExp(linkModules, "^", "$");
 
     // Resolve all configured modules that should be linked via the global scope.
     build.onResolve(
         { filter: filterLinkModules },
         args => {
-            if (args.kind === "import-statement" || args.kind === "dynamic-import") {
+            if (args.kind === "dynamic-import" || args.kind === "import-statement") {
                 return { path: args.path, namespace: NamespaceLinkImport };
             } else if (args.kind === "require-call" || args.kind === "require-resolve") {
                 return { path: args.path, namespace: NamespaceLinkRequire };
@@ -425,6 +424,7 @@ export function globalCodeSplitPluginFactory() {
                     // Order of precedence: expose, link
                     exposeModules.forEach(m => linkModules.delete(m));
 
+                    // Load the helper module with the functions for exposing and linking modules.
                     if (linkModules.size > 0 || exposeModules.size > 0) {
                         const baseDir = build.initialOptions.absWorkingDir ?? process.cwd();
                         const helperPath = path.resolve(baseDir, "build", "global-code-split-plugin-helper.mjs");

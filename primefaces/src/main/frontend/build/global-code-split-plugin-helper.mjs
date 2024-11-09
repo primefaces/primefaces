@@ -4,6 +4,8 @@
  * @typedef {{
  * cjs: unknown;
  * esm: Record<string, unknown>;
+ * cjsDefined: boolean;
+ * esmDefined: boolean;
  * }} ModuleContainer
  */
 undefined;
@@ -17,7 +19,7 @@ undefined;
  */
 function getModuleContainer(scopeName, moduleName) {
     const scope = window[scopeName] ??= {};
-    return scope[moduleName] ??= { cjs: {}, esm: {} }
+    return scope[moduleName] ??= { cjs: {}, esm: {}, esmDefined: false, cjsDefined: false };
 }
 
 /**
@@ -28,7 +30,10 @@ function getModuleContainer(scopeName, moduleName) {
  */
 export function exposeCommonJsModule(scopeName, moduleName, module) {
     const container = getModuleContainer(scopeName, moduleName);
-    container.cjs = module;
+    if (!container.cjsDefined) {
+        container.cjsDefined = true;
+        container.cjs = module;
+    }
 }
 
 /**
@@ -39,6 +44,9 @@ export function exposeCommonJsModule(scopeName, moduleName, module) {
  */
 export function retrieveLinkedCommonJsModule(scopeName, moduleName) {
     const container = getModuleContainer(scopeName, moduleName);
+    if (!container.cjsDefined) {
+        throw new Error(`CommonJS module ${moduleName} is not defined in the global scope window.${scopeName}. You need to first import the JavaScript file that contains that module.`);
+    }
     return container.cjs;
 }
 
@@ -50,7 +58,10 @@ export function retrieveLinkedCommonJsModule(scopeName, moduleName) {
  */
 export function exposeEsmModule(scopeName, moduleName, module) {
     const container = getModuleContainer(scopeName, moduleName);
-    container.esm = module;
+    if (!container.esmDefined) {
+        container.esmDefined = true;
+        container.esm = module;
+    }
 }
 
 /**
@@ -61,5 +72,8 @@ export function exposeEsmModule(scopeName, moduleName, module) {
  */
 export function retrieveLinkedEsmModule(scopeName, moduleName) {
     const container = getModuleContainer(scopeName, moduleName);
+    if (!container.esmDefined) {
+        throw new Error(`ESM module ${moduleName} was not yet defined in the global scope window.${scopeName}. You need to first import the JavaScript file that contains that module.`);
+    }
     return container.esm.default;
 }

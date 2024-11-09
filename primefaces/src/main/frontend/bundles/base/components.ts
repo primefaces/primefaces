@@ -16,7 +16,6 @@ import "../../src/dragdrop/dragdrop.js";
 import "../../src/effect/effect.js";
 import "../../src/fieldset/fieldset.js";
 import "../../src/forms/forms.inputtext.js";
-import "../../src/forms/forms.inputtextarea.js";
 import "../../src/forms/forms.selectonemenu.js";
 import "../../src/forms/forms.selectoneradio.js";
 import "../../src/forms/forms.selectbooleancheckbox.js";
