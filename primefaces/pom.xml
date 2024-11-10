@@ -535,6 +535,16 @@
                             </environmentVariables>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>check-duplicate-packages</id>
+                        <goals>
+                            <goal>yarn</goal>
+                        </goals>
+                        <phase>verify</phase>
+                        <configuration>
+                            <arguments>run check-duplicate-packages</arguments>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
