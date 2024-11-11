@@ -3,7 +3,7 @@
 import path from "node:path";
 
 import * as esbuild from "esbuild";
-import { filterEntryPoints } from "./esbuild-util.mjs";
+import { filterEntryPoints } from "./entry-points.mjs";
 
 /** 
  * Loaders to skip everything that is not a JavaScript / TypeScript file.

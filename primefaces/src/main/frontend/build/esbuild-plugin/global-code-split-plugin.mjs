@@ -2,8 +2,8 @@
 
 import path from "node:path";
 
-import { resolveEntryPointInput } from "./esbuild-util.mjs";
-import { joinRegExp } from "./helper.mjs";
+import { resolveEntryPointInput } from "../esbuild/entry-points.mjs";
+import { joinRegExp } from "../reg-exp.mjs";
 
 /**
  * @typedef {"link" | "expose"} ModuleSplitMode
@@ -427,7 +427,7 @@ export function globalCodeSplitPluginFactory() {
                     // Load the helper module with the functions for exposing and linking modules.
                     if (linkModules.size > 0 || exposeModules.size > 0) {
                         const baseDir = build.initialOptions.absWorkingDir ?? process.cwd();
-                        const helperPath = path.resolve(baseDir, "build", "global-code-split-plugin-helper.mjs");
+                        const helperPath = path.resolve(baseDir, "build", "esbuild-plugin", "global-code-split-plugin-helper.mjs");
                         build.onResolve({ filter: /^@global\/helper$/ }, args => {
                             if (args.namespace.startsWith(NamespaceBase)) {
                                 return { path: helperPath, namespace: "file" };

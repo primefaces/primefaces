@@ -6,11 +6,12 @@ import fs from "node:fs/promises";
 
 import * as esbuild from "esbuild";
 
-import { globalCodeSplitPluginFactory } from "./global-code-split-plugin.mjs";
-import { facesResourceLoaderPlugin } from "./faces-resource-loader-plugin.mjs";
-import { createMetaFile } from "./create-meta-file.mjs";
-import { bannedDependenciesPlugin } from "./banned-dependencies-plugin.mjs";
-import { escapeRegExp } from "./helper.mjs";
+import { globalCodeSplitPluginFactory } from "./esbuild-plugin/global-code-split-plugin.mjs";
+import { facesResourceLoaderPlugin } from "./esbuild-plugin/faces-resource-loader-plugin.mjs";
+import { bannedDependenciesPlugin } from "./esbuild-plugin/banned-dependencies-plugin.mjs";
+
+import { createMetaFile } from "./esbuild/create-meta-file.mjs";
+import { escapeRegExp } from "./reg-exp.mjs";
 
 /**
  * Additional settings for {@link buildTask}.
