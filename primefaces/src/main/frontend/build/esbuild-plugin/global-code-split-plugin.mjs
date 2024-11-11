@@ -348,7 +348,7 @@ function registerExposeHooks(build, scope, exposePaths, bundleMeta) {
             return { contents: "export {}", resolveDir: baseDir };
         }
 
-        console.log("Exposing import", filePaths);
+        console.log(JSON.stringify(build.initialOptions.entryPoints), "Exposing import", filePaths);
 
         const contents = [`import { exposeEsmModule } from ${helperPath};`];
         let i = 1;
@@ -379,7 +379,7 @@ function registerExposeHooks(build, scope, exposePaths, bundleMeta) {
             return { contents: "module.exports = {}", resolveDir: baseDir };
         }
 
-        console.log("Expose require", filePaths);
+        console.log(JSON.stringify(build.initialOptions.entryPoints), "Exposing require", filePaths);
 
         const contents = [`const { exposeCommonJsModule } = require(${helperPath});`];
         for (const filePath of filePaths) {
@@ -457,7 +457,7 @@ function registerLinkHooks(build, scope, linkPaths, bundleMeta) {
             if (fileInfo === undefined) {
                 throw new Error("Module file info not found for path: " + origPath);
             }
-            console.log(build.initialOptions.entryPoints, "Linking ESM", [fileInfo.relativePath, origPath]);
+            console.log(JSON.stringify(build.initialOptions.entryPoints), "Linking ESM", [fileInfo.relativePath, origPath]);
             return {
                 contents: [
                     `const { retrieveLinkedEsmModule } = require(${helperPath});`,
@@ -479,7 +479,7 @@ function registerLinkHooks(build, scope, linkPaths, bundleMeta) {
             if (fileInfo === undefined) {
                 throw new Error("Module file info not found for path: " + origPath);
             }
-            console.log(build.initialOptions.entryPoints, "Linking CJS", [fileInfo.relativePath, origPath]);
+            console.log(JSON.stringify(build.initialOptions.entryPoints), "Linking CJS", [fileInfo.relativePath, origPath]);
             return {
                 contents: [
                     `const { retrieveLinkedCommonJsModule } = require(${helperPath});`,
