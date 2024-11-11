@@ -296,6 +296,7 @@ __metadata:
     "@fullcalendar/moment-timezone": "npm:~5.11.3"
     "@fullcalendar/timegrid": "npm:~5.11.3"
     "@melloware/coloris": "npm:0.24.0"
+    "@rwap/jquery-ui-touch-punch": "npm:1.1.5"
     "@types/inputmask": "npm:5.0.7"
     "@types/jquery": "npm:3.5.32"
     autonumeric: "npm:4.10.7"
@@ -337,6 +338,15 @@ __metadata:
     xss: "npm:1.0.15"
   languageName: unknown
   linkType: soft
+
+"@rwap/jquery-ui-touch-punch@npm:1.1.5":
+  version: 1.1.5
+  resolution: "@rwap/jquery-ui-touch-punch@npm:1.1.5"
+  dependencies:
+    jquery-ui: "npm:>=1.8"
+  checksum: 10c0/01b880bc0292afad65e55168da00b455865aa3fa1f5310343f06e9966d2c8f8aff2eaf786a599e86f8bca447f06533b27dfc57b645e29fdd3e928f57f69ae25f
+  languageName: node
+  linkType: hard
 
 "@types/hammerjs@npm:^2.0.36":
   version: 2.0.46
@@ -690,7 +700,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jquery-ui@npm:1.14.1":
+"jquery-ui@npm:1.14.1, jquery-ui@npm:>=1.8":
   version: 1.14.1
   resolution: "jquery-ui@npm:1.14.1"
   dependencies:

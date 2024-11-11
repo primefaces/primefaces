@@ -92,8 +92,8 @@ function buildTask(from, to, settings = {}) {
     const toPath = path.join(outputDir, to);
 
     const modulesToExpose = (settings.expose ?? []).flatMap(expose => LinkedLibraries[expose] ?? []);
-    /** @type {import("./global-code-split-plugin.mjs").GlobalCodeSplitModule[]} */
-    const modules = Object.entries(LinkedLibraries).flatMap(([key, names]) => {
+    /** @type {import("./esbuild-plugin/global-code-split-plugin.mjs").GlobalCodeSplitModule[]} */
+    const modules = Object.entries(LinkedLibraries).flatMap(([_, names]) => {
         return names.map(name => {
             const isPrefix = name.endsWith("/");
             const baseName = isPrefix ? name.slice(0, name.length - 1) : name;
