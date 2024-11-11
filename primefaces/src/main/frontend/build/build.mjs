@@ -13,6 +13,8 @@ import { bannedDependenciesPlugin } from "./esbuild-plugin/banned-dependencies-p
 import { createMetaFile, mergeMetaFiles } from "./esbuild/create-meta-file.mjs";
 import { escapeRegExp } from "./reg-exp.mjs";
 
+import PackageJson from "../package.json" assert { type: "json" };
+
 /**
  * Additional settings for {@link buildTask}.
  * 
@@ -51,7 +53,27 @@ const LinkedLibraries = {
     calendar: ["jquery-ui/ui/widgets/datepicker.js", "jquery-ui-timepicker-addon/"],
     chart: ["chart.js/"],
     colorPicker: ["@melloware/coloris/"],
-    core: ["js-cookie/"],
+    core: [
+        "js-cookie/", 
+        `${PackageJson.name}/src/core.js`, 
+        `${PackageJson.name}/src/core/core.env.js`, 
+        `${PackageJson.name}/src/core/core.ajax.js`, 
+        `${PackageJson.name}/src/core/core.csp.js`, 
+        `${PackageJson.name}/src/core/core.expressions.js`, 
+        `${PackageJson.name}/src/core/core.utils.js`, 
+        `${PackageJson.name}/src/core/core.widget.js`, 
+        `${PackageJson.name}/src/core/core.resources.js`, 
+        `${PackageJson.name}/src/core/core.clientwindow.js`, 
+        `${PackageJson.name}/src/ajaxstatus/`, 
+        `${PackageJson.name}/src/poll/`, 
+        `${PackageJson.name}/src/validation/validation.common.js`,
+        `${PackageJson.name}/src/validation/validation.converters.js`,
+        `${PackageJson.name}/src/validation/validation.validators.js`,
+        `${PackageJson.name}/src/validation/validation.highlighters.js`
+    ],
+    components: [
+        `${PackageJson.name}src/core/core.dialog.js`
+    ],
     imageCropper: ["cropperjs/", "jquery-cropper/"],
     fileDownload: ["downloadjs/"],
     fileUpload: ["blueimp-file-upload/"],
@@ -97,9 +119,11 @@ function buildTask(from, to, settings = {}) {
     /** @type {import("./esbuild-plugin/global-code-split-plugin.mjs").GlobalCodeSplitModule[]} */
     const modules = Object.entries(LinkedLibraries).flatMap(([_, names]) => {
         return names.map(name => {
+            // When the name ends with a slash, it is a prefix that matches all sub paths.
             const isPrefix = name.endsWith("/");
             const baseName = isPrefix ? name.slice(0, name.length - 1) : name;
             const pattern = new RegExp(`^${escapeRegExp(baseName)}${isPrefix ? "(/.+)?" : ""}$`);
+
             const mode = modulesToExpose.includes(name) ? "expose" : "link";
             return { mode, pattern };
         });

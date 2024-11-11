@@ -10,6 +10,9 @@
  */
 undefined;
 
+const hasOwnProperty = Object.prototype.hasOwnProperty;
+const defineProperty = Object.defineProperty;
+
 /**
  * Gets the container for the contents of a module from the global scope.
  * Creates a new container if it doesn't exist.
@@ -58,6 +61,9 @@ export function retrieveLinkedCommonJsModule(scopeName, moduleName) {
  */
 export function exposeEsmModule(scopeName, moduleName, module) {
     const container = getModuleContainer(scopeName, moduleName);
+    if (!hasOwnProperty.call(module, "__esModule")) {
+        defineProperty(module, "__esModule", { value: true, enumerable: false });
+    }
     if (!container.esmDefined) {
         container.esmDefined = true;
         container.esm = module;
@@ -75,5 +81,5 @@ export function retrieveLinkedEsmModule(scopeName, moduleName) {
     if (!container.esmDefined) {
         throw new Error(`ESM module ${moduleName} was not yet defined in the global scope window.${scopeName}. You need to first import the JavaScript file that contains that module.`);
     }
-    return container.esm.default;
+    return container.esm;//.default;
 }
