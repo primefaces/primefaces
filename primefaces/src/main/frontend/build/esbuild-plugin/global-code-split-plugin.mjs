@@ -56,9 +56,11 @@ undefined;
  *   Any modules for which there is no match are included in the bundle normally.
  * - scope: The global scope name to use for exposing and linking modules. E.g. when set
  *   to Scope, `window.Scope` will be used to expose and link modules.
+ * - verbose: When set to true, the plugin will log additional information to the console.
  * @typedef {{
  *   modules: GlobalCodeSplitModule[];
  *   scope: string;
+ *   verbose?: boolean;
  * }} GlobalCodeSplitPluginOptions
  */
 undefined;
@@ -129,6 +131,23 @@ function createHelperPath(build) {
     const baseDir = build.initialOptions.absWorkingDir ?? process.cwd();
     const helperPath = path.resolve(baseDir, "build", "esbuild-plugin", "global-code-split-plugin-helper.mjs");
     return JSON.stringify(helperPath);
+}
+
+/**
+ * Finds a short descriptive name for the entry points from
+ * the given build task.
+ * @param {string} baseDir
+ * @param {import("esbuild").BuildOptions} buildTask
+ */
+function findShortBundleName(baseDir, buildTask) {
+    const inputs = resolveEntryPointInput(buildTask.entryPoints);
+    const relInputs = inputs.map(input => path.relative(baseDir, input));
+    if (relInputs.length === 0) {
+        return "<empty>";
+    }
+    return relInputs.length === 1
+        ? relInputs[0]
+        : `bundle(${relInputs[0]} and ${relInputs.length - 1} more)`;
 }
 
 /**
@@ -301,10 +320,12 @@ function createBundleMeta(baseDir, metaFile) {
  * @param {string} scope
  * @param {string[]} exposePaths
  * @param {BundleMeta} bundleMeta
+ * @param {boolean} verbose
  */
-function registerExposeHooks(build, scope, exposePaths, bundleMeta) {
+function registerExposeHooks(build, scope, exposePaths, bundleMeta, verbose) {
     const helperPath = createHelperPath(build);
     const baseDir = build.initialOptions.absWorkingDir ?? process.cwd();
+    const bundleName = findShortBundleName(baseDir, build.initialOptions)
     const entryPointInputs = resolveEntryPointInput(build.initialOptions.entryPoints).map(e => path.isAbsolute(e) ? e : `${path.sep}${e}`);
     const filterEntryPoints = joinRegExp(entryPointInputs, "", "$");
 
@@ -339,6 +360,8 @@ function registerExposeHooks(build, scope, exposePaths, bundleMeta) {
 
     // Expose the ESM variant of the modules to the global scope: windows[Scope][moduleName].esm
     build.onLoad({ filter: /^@global\/import\/.*$/, namespace: NamespaceExposeImport }, args => {
+        // Find all modules that are imported (directly or transitively) by this
+        // entry point and that are marked for exposure to the global scope.
         const entryPoint = args.path.substring("@global/expose/".length);
         const entryPointImports = bundleMeta.importsByEntryPoint.get(entryPoint) ?? new Set();
         const filePaths = exposePaths
@@ -348,8 +371,14 @@ function registerExposeHooks(build, scope, exposePaths, bundleMeta) {
             return { contents: "export {}", resolveDir: baseDir };
         }
 
-        console.log(JSON.stringify(build.initialOptions.entryPoints), "Exposing import", filePaths);
+        if (verbose) {
+            for (const filePath of filePaths) {
+                const info = bundleMeta.moduleFileInfoByPath.get(filePath);
+                console.log(`[${bundleName}] Exposing module <${info?.relativePath ?? filePath}> as ESM`);
+            }
+        }
 
+        // Import all modules and expose their contents to the global window scope.
         const contents = [`import { exposeEsmModule } from ${helperPath};`];
         let i = 1;
         for (const filePath of filePaths) {
@@ -369,18 +398,25 @@ function registerExposeHooks(build, scope, exposePaths, bundleMeta) {
 
     // Expose the CommonJS variant of the modules to the global scope: windows[Scope][moduleName].cjs
     build.onLoad({ filter: /^@global\/require\/.*$/, namespace: NamespaceExposeRequire }, args => {
+        // Find all modules that are imported (directly or transitively) by this
+        // entry point and that are marked for exposure to the global scope.
         const entryPoint = args.path.substring("@global/require/".length);
         const entryPointImports = bundleMeta.importsByEntryPoint.get(entryPoint) ?? new Set();
         const filePaths = exposePaths
             .filter(p => entryPointImports.has(p))
             .filter(p => setContainsAny(bundleMeta.importKindsByPath.get(p), "require-call", "require-resolve"));
-
         if (filePaths.length === 0) {
             return { contents: "module.exports = {}", resolveDir: baseDir };
         }
 
-        console.log(JSON.stringify(build.initialOptions.entryPoints), "Exposing require", filePaths);
+        if (verbose) {
+            for (const filePath of filePaths) {
+                const fileInfo = bundleMeta.moduleFileInfoByPath.get(filePath);
+                console.log(`[${bundleName}] Exposing module <${fileInfo?.relativePath ?? filePath}> as CommonJS`);
+            }
+        }
 
+        // Import all modules and expose their contents to the global window scope.
         const contents = [`const { exposeCommonJsModule } = require(${helperPath});`];
         for (const filePath of filePaths) {
             const fileInfo = bundleMeta.moduleFileInfoByPath.get(filePath);
@@ -423,10 +459,13 @@ function registerExposeHooks(build, scope, exposePaths, bundleMeta) {
  * @param {string} scope
  * @param {Set<string>} linkPaths
  * @param {BundleMeta} bundleMeta
+ * @param {boolean} verbose
  */
-function registerLinkHooks(build, scope, linkPaths, bundleMeta) {
+function registerLinkHooks(build, scope, linkPaths, bundleMeta, verbose) {
+    const baseDir = build.initialOptions.absWorkingDir ?? process.cwd();
     const helperPath = createHelperPath(build);
     const filterLinkPaths = joinRegExp(linkPaths, "^", "$");
+    const bundleName = findShortBundleName(baseDir, build.initialOptions)
 
     // Check if an imported or required module was configured to be linked.
     // If so, resolve the module to a virtual module that retrieves
@@ -434,8 +473,11 @@ function registerLinkHooks(build, scope, linkPaths, bundleMeta) {
     build.onResolve({ filter: /.*/, namespace: "file" }, args => {
         const isImport = args.kind === "dynamic-import" || args.kind === "import-statement";
         const isRequire = args.kind === "require-call" || args.kind === "require-resolve";
+        // Use pre-computed data from the meta file to resolve the requested module. 
         const imports = bundleMeta.importsByInput.get(args.importer);
         const resolved = imports?.get(args.path);
+        // If the imported module should be omitted from the bundle and retrieved from the global scope
+        // instead, forward to a virtual module that simply access the corresponding global variable.
         if (resolved && ScriptExtensions.has(path.extname(resolved)) && filterLinkPaths.test(resolved)) {
             if (isImport) {
                 return { path: `@global/link:${resolved}`, namespace: NamespaceLinkImport };
@@ -453,15 +495,25 @@ function registerLinkHooks(build, scope, linkPaths, bundleMeta) {
         { filter: /@global\/link:.+/, namespace: NamespaceLinkImport },
         args => {
             const origPath = args.path.substring("@global/link:".length);
+            // Don't use the absolute path from the file system as the key to
+            // store the module in the global window scope. Instead, use the
+            // relative path to the module. For example, instead of
+            // `/home/user/.yarn/berry/cache/jquery.zip/node_modules/jquery/dist/jquery.js`,
+            // use `jquery/dist/jquery.js`.
             const fileInfo = bundleMeta.moduleFileInfoByPath.get(origPath);
             if (fileInfo === undefined) {
                 throw new Error("Module file info not found for path: " + origPath);
             }
-            console.log(JSON.stringify(build.initialOptions.entryPoints), "Linking ESM", [fileInfo.relativePath, origPath]);
+            const relativeModulePath = fileInfo.relativePath;
+
+            if (verbose) {
+                console.log(`[${bundleName}] Retrieving ESM module <${relativeModulePath} from the global scope.`);
+            }
+
             return {
                 contents: [
                     `const { retrieveLinkedEsmModule } = require(${helperPath});`,
-                    `const mod = retrieveLinkedEsmModule("${scope}", "${fileInfo.relativePath}");`,
+                    `const mod = retrieveLinkedEsmModule("${scope}", "${relativeModulePath}");`,
                     `module.exports = mod;`,
                 ].join("\n"),
                 resolveDir: build.initialOptions.absWorkingDir ?? process.cwd(),
@@ -475,15 +527,26 @@ function registerLinkHooks(build, scope, linkPaths, bundleMeta) {
         { filter: /@global\/link:.+/, namespace: NamespaceLinkRequire },
         args => {
             const origPath = args.path.substring("@global/link:".length);
+
+            // Don't use the absolute path from the file system as the key to
+            // store the module in the global window scope. Instead, use the
+            // relative path to the module. For example, instead of
+            // `/home/user/.yarn/berry/cache/jquery.zip/node_modules/jquery/dist/jquery.js`,
+            // use `jquery/dist/jquery.js`.
             const fileInfo = bundleMeta.moduleFileInfoByPath.get(origPath);
             if (fileInfo === undefined) {
                 throw new Error("Module file info not found for path: " + origPath);
             }
-            console.log(JSON.stringify(build.initialOptions.entryPoints), "Linking CJS", [fileInfo.relativePath, origPath]);
+            const relativeModulePath = fileInfo.relativePath;
+
+            if (verbose) {
+                console.log(`[${bundleName}] Retrieving CommonJS module <${relativeModulePath} from the global scope.`);
+            }
+
             return {
                 contents: [
                     `const { retrieveLinkedCommonJsModule } = require(${helperPath});`,
-                    `module.exports = retrieveLinkedCommonJsModule("${scope}", "${fileInfo.relativePath}");`,
+                    `module.exports = retrieveLinkedCommonJsModule("${scope}", "${relativeModulePath}");`,
                 ].join("\n"),
                 resolveDir: build.initialOptions.absWorkingDir ?? process.cwd(),
             };
@@ -533,6 +596,7 @@ export function globalCodeSplitPluginFactory() {
         newPlugin: options => {
             const scope = options.scope;
             const modules = options.modules;
+            const verbose = options.verbose ?? false;
             return {
                 name: PluginName,
                 setup: build => {
@@ -547,10 +611,10 @@ export function globalCodeSplitPluginFactory() {
                     exposePaths.forEach(m => linkPaths.delete(m));
 
                     if (linkPaths.size > 0) {
-                        registerLinkHooks(build, scope, linkPaths, finalBundleMeta);
+                        registerLinkHooks(build, scope, linkPaths, finalBundleMeta, verbose);
                     }
                     if (exposePaths.size > 0) {
-                        registerExposeHooks(build, scope, [...exposePaths], finalBundleMeta);
+                        registerExposeHooks(build, scope, [...exposePaths], finalBundleMeta, verbose);
                     }
                 },
             }
@@ -561,3 +625,4 @@ export function globalCodeSplitPluginFactory() {
         },
     };
 };
+

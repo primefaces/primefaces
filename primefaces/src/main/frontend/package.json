@@ -44,7 +44,7 @@
     "jquery-cropper": "patch:jquery-cropper@npm%3A1.0.0#~/.yarn/patches/jquery-cropper-npm-1.0.0-148aa161fe.patch",
     "jquery-mousewheel": "patch:jquery-mousewheel@npm%3A3.1.13#~/.yarn/patches/jquery-mousewheel-npm-3.1.13-854d2918be.patch",
     "jquery-touchswipe": "1.6.19",
-    "jquery-ui": "1.14.1",
+    "jquery-ui": "patch:jquery-ui@npm%3A1.14.1#~/.yarn/patches/jquery-ui-npm-1.14.1-ce85202c00.patch",
     "jquery-ui-timepicker-addon": "patch:jquery-ui-timepicker-addon@npm%3A1.6.3#~/.yarn/patches/jquery-ui-timepicker-addon-npm-1.6.3-b43c27b305.patch",
     "jquery.browser": "0.1.0",
     "js-cookie": "3.0.5",
@@ -107,7 +107,8 @@
     }
   ],
   "resolutions": {
-    "jquery": "4.0.0-beta.2"
+    "jquery": "4.0.0-beta.2",
+    "jquery-ui@npm:>=1.8": "patch:jquery-ui@npm%3A1.14.1#~/.yarn/patches/jquery-ui-npm-1.14.1-ce85202c00.patch"
   },
   "packageManager": "yarn@4.5.1"
 }

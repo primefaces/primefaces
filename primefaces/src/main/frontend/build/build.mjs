@@ -29,6 +29,7 @@ undefined;
 
 const isProduction = process.env.NODE_ENV !== "development";
 const isAnalyze = process.argv.includes("--analyze");
+const isVerbose = process.argv.includes("--verbose");
 
 const baseDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const bundlesDir = path.join(baseDir, "bundles");
@@ -112,7 +113,11 @@ function buildTask(from, to, settings = {}) {
         metafile: isAnalyze,
     };
     buildTask.plugins = [...buildTask.plugins ?? []];
-    buildTask.plugins.push(globalCodeSplitPlugin.newPlugin({ scope: "PrimeFacesLibs", modules }));
+    buildTask.plugins.push(globalCodeSplitPlugin.newPlugin({
+        scope: "PrimeFacesLibs",
+        modules,
+        verbose: isVerbose,
+    }));
     return buildTask;
 }
 

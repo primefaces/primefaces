@@ -315,7 +315,7 @@ __metadata:
     jquery-cropper: "patch:jquery-cropper@npm%3A1.0.0#~/.yarn/patches/jquery-cropper-npm-1.0.0-148aa161fe.patch"
     jquery-mousewheel: "patch:jquery-mousewheel@npm%3A3.1.13#~/.yarn/patches/jquery-mousewheel-npm-3.1.13-854d2918be.patch"
     jquery-touchswipe: "npm:1.6.19"
-    jquery-ui: "npm:1.14.1"
+    jquery-ui: "patch:jquery-ui@npm%3A1.14.1#~/.yarn/patches/jquery-ui-npm-1.14.1-ce85202c00.patch"
     jquery-ui-timepicker-addon: "patch:jquery-ui-timepicker-addon@npm%3A1.6.3#~/.yarn/patches/jquery-ui-timepicker-addon-npm-1.6.3-b43c27b305.patch"
     jquery.browser: "npm:0.1.0"
     js-cookie: "npm:3.0.5"
@@ -700,12 +700,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jquery-ui@npm:1.14.1, jquery-ui@npm:>=1.8":
+"jquery-ui@npm:1.14.1":
   version: 1.14.1
   resolution: "jquery-ui@npm:1.14.1"
   dependencies:
     jquery: "npm:>=1.12.0 <5.0.0"
   checksum: 10c0/cf7a3c0aac369e513d78bc5864bbafb6ddf85a43513ca5d00b11d65e2890a6618ff2ef5b8cb2925db9a6b7d0c2482d717fb10cc813e419024ae8bc457e18f51d
+  languageName: node
+  linkType: hard
+
+"jquery-ui@patch:jquery-ui@npm%3A1.14.1#~/.yarn/patches/jquery-ui-npm-1.14.1-ce85202c00.patch":
+  version: 1.14.1
+  resolution: "jquery-ui@patch:jquery-ui@npm%3A1.14.1#~/.yarn/patches/jquery-ui-npm-1.14.1-ce85202c00.patch::version=1.14.1&hash=975b02"
+  dependencies:
+    jquery: "npm:>=1.12.0 <5.0.0"
+  checksum: 10c0/4b04bfd94c0400aead33099a1784b01eca93d35008a7d2a90ed939f2a253d043f5bc6ee238a6b4fbf648d78b679c7d0b99f9b35f9eb80dd0bc46fa930a14d831
   languageName: node
   linkType: hard
 

@@ -1,8 +1,10 @@
 // Custom JQuery UI bundle that includes only some components
 
-import $ from "jquery";
-
-Object.assign($, { uiBackCompat: true });
+// Separate module to set $.uiBackCompat = true
+// This needs to be done before loading the remaining
+// imports. Imports are hoisted to the top, above all
+// other code in a module file.
+import "./jquery.ui.backcompat.js";
 
 import "jquery-ui/ui/version.js";
 import "jquery-ui/ui/position.js";
