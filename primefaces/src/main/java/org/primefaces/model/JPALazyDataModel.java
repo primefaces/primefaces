@@ -143,14 +143,14 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
 
         List<Predicate> predicates = new ArrayList<>();
 
-        applyPredicatesFromFilterMetaMap(entityClass, filterBy, cb, cq, root, predicates);
+        applyFiltersFromFilterMeta(entityClass, filterBy.values(), cb, cq, root, predicates);
 
         if (filterEnricher != null) {
             filterEnricher.enrich(filterBy, cb, cq, root, predicates);
         }
 
         if (additionalFilterMeta != null) {
-            applyPredicatesFromFilterMetaMap(entityClass, additionalFilterMeta.process(), cb, cq, root, predicates);
+            applyFiltersFromFilterMeta(entityClass, additionalFilterMeta.process(), cb, cq, root, predicates);
         }
 
         if (!predicates.isEmpty()) {
@@ -159,14 +159,14 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         }
     }
 
-    protected void applyPredicatesFromFilterMetaMap(Class<T> entityClass, Map<String, FilterMeta> filterBy, CriteriaBuilder cb,
-                                                      CriteriaQuery<?> cq,
-                                                      Root<T> root, List<Predicate>predicates) {
+    protected void applyFiltersFromFilterMeta(Class<T> entityClass, Collection<FilterMeta> filterBy, CriteriaBuilder cb,
+                                              CriteriaQuery<?> cq,
+                                              Root<T> root, List<Predicate>predicates) {
         if (filterBy != null) {
             FacesContext context = FacesContext.getCurrentInstance();
             Locale locale = LocaleUtils.getCurrentLocale(context);
             PropertyDescriptorResolver propResolver = PrimeApplicationContext.getCurrentInstance(context).getPropertyDescriptorResolver();
-            for (FilterMeta filter : filterBy.values()) {
+            for (FilterMeta filter : filterBy) {
                 if (filter.getField() == null || filter.getFilterValue() == null || filter.isGlobalFilter()) {
                     continue;
                 }
@@ -518,6 +518,6 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
     @FunctionalInterface
     public interface AdditionalFilterMeta extends Serializable {
 
-        Map<String, FilterMeta> process();
+        Collection<FilterMeta> process();
     }
 }
