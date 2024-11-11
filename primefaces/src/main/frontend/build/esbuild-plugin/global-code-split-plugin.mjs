@@ -4,6 +4,7 @@ import path from "node:path";
 
 import { resolveEntryPointInput } from "../esbuild/entry-points.mjs";
 import { joinRegExp } from "../reg-exp.mjs";
+import pnpapi from "pnpapi";
 
 /**
  * @typedef {"link" | "expose"} ModuleSplitMode
@@ -12,9 +13,23 @@ undefined;
 
 /**
  * @typedef {{
- *  allImports: string[];
- *  importKinds: Map<string, Set<import("esbuild").ImportKind>>;
- *  importsByEntryPoint: Map<string, Set<string>>;
+ * moduleName: string;
+ * relativePath: string;
+ * }} ModuleFileInfo
+ */
+undefined;
+
+/**
+ * @typedef {import("esbuild").Metafile["inputs"][string]} MetaFileInput
+ */
+undefined;
+
+/**
+ * @typedef {{
+ * importKindsByPath: Map<string, Set<import("esbuild").ImportKind>>;
+ * importsByEntryPoint: Map<string, Set<string>>;
+ * moduleFileInfoByPath: Map<string, ModuleFileInfo>;
+ * importsByInput: Map<string, Map<string, string>;
  * }} BundleMeta
  */
 undefined;
@@ -51,7 +66,7 @@ undefined;
 /**
  * @typedef {{
  *   newPlugin: (options: GlobalCodeSplitPluginOptions) => import("esbuild").Plugin;
- *   setMetaFile: (metaFile: import("esbuild").Metafile) => void;
+ *   setMetaFile: (metaFile: import("esbuild").Metafile, baseDir: string) => void;
  * }} GlobalCodeSplitPluginFactory
  */
 undefined;
@@ -64,6 +79,8 @@ const NamespaceExposeImport = `${NamespaceBase}/expose-import`;
 const NamespaceExposeRequire = `${NamespaceBase}/expose-require`;
 const NamespaceLinkImport = `${NamespaceBase}/link-import`;
 const NamespaceLinkRequire = `${NamespaceBase}/link-require`;
+
+const ScriptExtensions = new Set([".js", ".cjs", ".mjs", ".ts", ".cts", ".mts"]);
 
 /**
  * @template T
@@ -83,22 +100,55 @@ function setContainsAny(set, ...values) {
 }
 
 /**
- * Collects all kinds of imports used for a module path. For example,
- * jquery is often imported both via an import statement and a require call.
+ * Resolves an absolute path to a file of a module the info regarding that file.
+ * E.g. `~/.yarn/berry/cache/package.zip/nodes_modules/moment/moment.js` refers
+ * to the module `moment`, and the file is located at the relative path
+ * `moment/moment.js`.
+ * @param {string} absPath
+ * @returns {ModuleFileInfo | undefined} 
+ */
+function findModuleFileInfoByAbsolutePath(absPath) {
+    const locator = pnpapi.findPackageLocator(absPath);
+    if (locator && locator.name) {
+        const info = pnpapi.getPackageInformation(locator);
+        const internalPath = path.relative(info.packageLocation, absPath);
+        const relativePath = path.join(locator.name, internalPath);
+        const normalizedRelativePath = relativePath.replace(/\\/g, "/");
+        return { moduleName: locator.name, relativePath: normalizedRelativePath };
+    }
+    return undefined;
+}
+
+/**
+ * Creates the path to the helper module with additional functions for exposing and linking modules.
+ * The returned path is a JavaScript string literal, i.e. with quotation marks at the beginning and end.
+ * @param {import("esbuild").PluginBuild} build Current ESBuild build.
+ * @returns {string} The path to the helper module.
+ */
+function createHelperPath(build) {
+    const baseDir = build.initialOptions.absWorkingDir ?? process.cwd();
+    const helperPath = path.resolve(baseDir, "build", "esbuild-plugin", "global-code-split-plugin-helper.mjs");
+    return JSON.stringify(helperPath);
+}
+
+/**
+ * Creates a map with the import kind of each bare module specifier.
+ * @param {string} baseDir
  * @param {import("esbuild").Metafile} metaFile 
  * @returns {Map<string, Set<import("esbuild").ImportKind>>}
  */
-function collectImportKinds(metaFile) {
+function collectImportKindsByPath(baseDir, metaFile) {
     /** @type {Map<string, Set<import("esbuild").ImportKind>>} */
     const map = new Map();
     for (const input of Object.values(metaFile.inputs)) {
         for (const _import of input.imports) {
-            const original = _import.original;
-            if (original !== undefined) {
-                if (!map.has(original)) {
-                    map.set(original, new Set());
+            const filePath = _import.path;
+            if (filePath !== undefined) {
+                const absPath = path.resolve(baseDir, filePath);
+                if (!map.has(absPath)) {
+                    map.set(absPath, new Set());
                 }
-                map.get(original)?.add(_import.kind);
+                map.get(absPath)?.add(_import.kind);
             }
         }
     }
@@ -106,14 +156,32 @@ function collectImportKinds(metaFile) {
 }
 
 /**
+ * Creates a map with the module format of each absolute path.
+ * @param {string} baseDir
+ * @param {import("esbuild").Metafile} metaFile 
+ * @returns {Map<string, ModuleFileInfo>}
+ */
+function collectModuleFileInfoByPath(baseDir, metaFile) {
+    /** @type {Map<string, ModuleFileInfo>} */
+    const map = new Map();
+    for (const filePath of Object.keys(metaFile.inputs)) {
+        const absPath = path.resolve(baseDir, filePath);
+        const modulePath = findModuleFileInfoByAbsolutePath(absPath);
+        if (modulePath !== undefined) {
+            map.set(absPath, modulePath);
+        }
+    }
+
+    return map;
+}
+
+/**
  * Collects all imports by input entry point.
- * @param {import("esbuild").BuildOptions} buildTask
+ * @param {string} baseDir
  * @param {import("esbuild").Metafile} metaFile
  * @returns {Map<string, Set<string>>} 
  */
-function collectImportsByEntryPoint(buildTask, metaFile) {
-    const baseDir = buildTask.absWorkingDir ?? process.cwd();
-
+function collectImportsByEntryPoint(baseDir, metaFile) {
     /** @type {Map<string, Set<string>>} */
     const map = new Map();
     for (const output of Object.values(metaFile.outputs)) {
@@ -121,7 +189,7 @@ function collectImportsByEntryPoint(buildTask, metaFile) {
             .map(inputPath => metaFile.inputs[inputPath])
             .filter(input => input !== undefined)
             .flatMap(input => input.imports)
-            .map(_import => _import.original)
+            .map(_import => path.resolve(baseDir, _import.path))
             .filter(original => original !== undefined);
         if (output.entryPoint !== undefined) {
             const absInput = path.normalize(path.resolve(baseDir, output.entryPoint));
@@ -132,33 +200,44 @@ function collectImportsByEntryPoint(buildTask, metaFile) {
 }
 
 /**
- * Collects all imports from all entry points.
+ * Creates a map with all imports of each input file. This is a map
+ * ```txt
+ * inputPath -> {importPath -> resolvedPath}
+ * ```
+ * Where the `inputPath` is the absolute path to the input file, the
+ * `importPath` is the path as it was used in the `import` statement,
+ * and the `resolvedPath` is the absolute resolved path to the
+ * imported file.
+ * @param {string} baseDir 
  * @param {import("esbuild").Metafile} metaFile
- * @returns {string[]} 
+ * @returns {Map<string, Map<string, string>>}
  */
-function collectAllImports(metaFile) {
-    const allImports = new Set();
-    for (const input of Object.values(metaFile.inputs)) {
+function collectImportsByInput(baseDir, metaFile) {
+    /** @type {Map<string, Map<string, string>} */
+    const map = new Map();
+    for (const [inputPath, input] of Object.entries(metaFile.inputs)) {
+        const absInputPath = path.resolve(baseDir, inputPath);
+        const imports = new Map();
         for (const _import of input.imports) {
-            const original = _import.original;
-            if (original !== undefined) {
-                allImports.add(original);
-            }
+            const absImportPath = path.resolve(baseDir, _import.path);
+            imports.set(_import.original, absImportPath);
         }
+        map.set(absInputPath, imports);
     }
-    return [...allImports];
+    return map;
 }
 
 /**
- * @param {import("esbuild").BuildOptions} buildTask
+ * @param {string} baseDir
  * @param {import("esbuild").Metafile} metaFile 
  * @returns {BundleMeta}
  */
-function createBundleMeta(buildTask, metaFile) {
+function createBundleMeta(baseDir, metaFile) {
     return {
-        allImports: collectAllImports(metaFile),
-        importKinds: collectImportKinds(metaFile),
-        importsByEntryPoint: collectImportsByEntryPoint(buildTask, metaFile),
+        importKindsByPath: collectImportKindsByPath(baseDir, metaFile),
+        importsByEntryPoint: collectImportsByEntryPoint(baseDir, metaFile),
+        importsByInput: collectImportsByInput(baseDir, metaFile),
+        moduleFileInfoByPath: collectModuleFileInfoByPath(baseDir, metaFile),
     };
 }
 
@@ -220,10 +299,11 @@ function createBundleMeta(buildTask, metaFile) {
  * 
  * @param {import("esbuild").PluginBuild} build 
  * @param {string} scope
- * @param {string[]} includeModules
+ * @param {string[]} exposePaths
  * @param {BundleMeta} bundleMeta
  */
-function registerExposeHooks(build, scope, includeModules, bundleMeta) {
+function registerExposeHooks(build, scope, exposePaths, bundleMeta) {
+    const helperPath = createHelperPath(build);
     const baseDir = build.initialOptions.absWorkingDir ?? process.cwd();
     const entryPointInputs = resolveEntryPointInput(build.initialOptions.entryPoints).map(e => path.isAbsolute(e) ? e : `${path.sep}${e}`);
     const filterEntryPoints = joinRegExp(entryPointInputs, "", "$");
@@ -246,7 +326,7 @@ function registerExposeHooks(build, scope, includeModules, bundleMeta) {
         return { path: `${prefix}${absEntryPoint}`, namespace };
     });
 
-    // Expose the ESM variant of the module to the global scope: windows[Scope][moduleName].esm
+    // Expose the module to the global scope: windows[Scope][moduleName]
     build.onLoad({ filter: /^@global\/expose\/.*$/, namespace: NamespaceExpose }, args => {
         const entryPoint = args.path.substring("@global/expose/".length);
         const contents = [
@@ -261,20 +341,26 @@ function registerExposeHooks(build, scope, includeModules, bundleMeta) {
     build.onLoad({ filter: /^@global\/import\/.*$/, namespace: NamespaceExposeImport }, args => {
         const entryPoint = args.path.substring("@global/expose/".length);
         const entryPointImports = bundleMeta.importsByEntryPoint.get(entryPoint) ?? new Set();
-        const moduleNames = includeModules
-            .filter(moduleName => entryPointImports.has(moduleName))
-            .filter(moduleName => setContainsAny(bundleMeta.importKinds.get(moduleName), "import-statement", "dynamic-import"));
-
-        if (moduleNames.length === 0) {
+        const filePaths = exposePaths
+            .filter(m => entryPointImports.has(m))
+            .filter(m => setContainsAny(bundleMeta.importKindsByPath.get(m), "import-statement", "dynamic-import"));
+        if (filePaths.length === 0) {
             return { contents: "export {}", resolveDir: baseDir };
         }
 
-        const contents = [`import { exposeEsmModule } from "@global/helper";`];
+        console.log("Exposing import", filePaths);
+
+        const contents = [`import { exposeEsmModule } from ${helperPath};`];
         let i = 1;
-        for (const moduleName of moduleNames) {
+        for (const filePath of filePaths) {
+            const fileInfo = bundleMeta.moduleFileInfoByPath.get(filePath);
+            if (fileInfo === undefined) {
+                throw new Error("Module file info not found for path: " + filePath);
+            }
+            const linkName = fileInfo.relativePath;
             contents.push(
-                `import * as Module${i} from "${moduleName}";`,
-                `exposeEsmModule("${scope}", "${moduleName}", Module${i});`
+                `import * as Module${i} from "${filePath}";`,
+                `exposeEsmModule("${scope}", "${linkName}", Module${i});`
             );
             i += 1;
         }
@@ -285,17 +371,24 @@ function registerExposeHooks(build, scope, includeModules, bundleMeta) {
     build.onLoad({ filter: /^@global\/require\/.*$/, namespace: NamespaceExposeRequire }, args => {
         const entryPoint = args.path.substring("@global/require/".length);
         const entryPointImports = bundleMeta.importsByEntryPoint.get(entryPoint) ?? new Set();
-        const moduleNames = includeModules
-            .filter(moduleName => entryPointImports.has(moduleName))
-            .filter(moduleName => setContainsAny(bundleMeta.importKinds.get(moduleName), "require-call", "require-resolve"));
+        const filePaths = exposePaths
+            .filter(p => entryPointImports.has(p))
+            .filter(p => setContainsAny(bundleMeta.importKindsByPath.get(p), "require-call", "require-resolve"));
 
-        if (moduleNames.length === 0) {
+        if (filePaths.length === 0) {
             return { contents: "module.exports = {}", resolveDir: baseDir };
         }
 
-        const contents = [`import { exposeCommonJsModule } from "@global/helper";`];
-        for (const moduleName of moduleNames) {
-            contents.push(`exposeCommonJsModule("${scope}", "${moduleName}", require("${moduleName}"))`);
+        console.log("Expose require", filePaths);
+
+        const contents = [`const { exposeCommonJsModule } = require(${helperPath});`];
+        for (const filePath of filePaths) {
+            const fileInfo = bundleMeta.moduleFileInfoByPath.get(filePath);
+            if (fileInfo === undefined) {
+                throw new Error("Module file info not found for path: " + filePath);
+            }
+            const linkName = fileInfo.relativePath;
+            contents.push(`exposeCommonJsModule("${scope}", "${linkName}", require("${filePath}"))`);
         }
         return { contents: contents.join("\n"), resolveDir: baseDir };
     });
@@ -317,57 +410,83 @@ function registerExposeHooks(build, scope, includeModules, bundleMeta) {
  * ```js
  * // ESM
  * const Module = window.Scope["jquery"];
- * if (!Module || !Module.esm) throw new Error("ESM module not found: jquery");
+ * if (!Module || !Module.esmDefined) throw new Error("ESM module not found: jquery");
  * $ = Module.esm.default;
  * 
  * // CommonJS
  * const Module = window.Scope["jquery"];
- * if (!Module || !Module.cjs) throw new Error("CJS module not found: jquery");
+ * if (!Module || !Module.cjsDefined) throw new Error("CJS module not found: jquery");
  * $ = Module.cjs;
  * ```
  * 
  * @param {import("esbuild").PluginBuild} build 
  * @param {string} scope
- * @param {string[]} linkModules
+ * @param {Set<string>} linkPaths
  * @param {BundleMeta} bundleMeta
  */
-function registerLinkHooks(build, scope, linkModules, bundleMeta) {
-    const filterLinkModules = joinRegExp(linkModules, "^", "$");
+function registerLinkHooks(build, scope, linkPaths, bundleMeta) {
+    const helperPath = createHelperPath(build);
+    const filterLinkPaths = joinRegExp(linkPaths, "^", "$");
 
-    // Resolve all configured modules that should be linked via the global scope.
-    build.onResolve(
-        { filter: filterLinkModules },
-        args => {
-            if (args.kind === "dynamic-import" || args.kind === "import-statement") {
-                return { path: args.path, namespace: NamespaceLinkImport };
-            } else if (args.kind === "require-call" || args.kind === "require-resolve") {
-                return { path: args.path, namespace: NamespaceLinkRequire };
+    // Check if an imported or required module was configured to be linked.
+    // If so, resolve the module to a virtual module that retrieves
+    // the module from the global scope.
+    build.onResolve({ filter: /.*/, namespace: "file" }, args => {
+        const isImport = args.kind === "dynamic-import" || args.kind === "import-statement";
+        const isRequire = args.kind === "require-call" || args.kind === "require-resolve";
+        const imports = bundleMeta.importsByInput.get(args.importer);
+        const resolved = imports?.get(args.path);
+        if (resolved && ScriptExtensions.has(path.extname(resolved)) && filterLinkPaths.test(resolved)) {
+            if (isImport) {
+                return { path: `@global/link:${resolved}`, namespace: NamespaceLinkImport };
             }
-            return undefined;
-        },
-    );
+            if (isRequire) {
+                return { path: `@global/link:${resolved}`, namespace: NamespaceLinkRequire };
+            }
+        }
+        return undefined;
+    });
 
-    // Load an imported module from the global scope.: windows[Scope][moduleName].esm
+    // Load an imported ESM module from the global scope:
+    // windows[Scope][moduleName].esm
     build.onLoad(
-        { filter: /.*/, namespace: NamespaceLinkImport },
+        { filter: /@global\/link:.+/, namespace: NamespaceLinkImport },
         args => {
-            const contents = [
-                `import { retrieveLinkedEsmModule } from "@global/helper";`,
-                `module.exports = retrieveLinkedEsmModule("${scope}", "${args.path}");`,
-            ].join("\n");
-            return { contents };
+            const origPath = args.path.substring("@global/link:".length);
+            const fileInfo = bundleMeta.moduleFileInfoByPath.get(origPath);
+            if (fileInfo === undefined) {
+                throw new Error("Module file info not found for path: " + origPath);
+            }
+            console.log(build.initialOptions.entryPoints, "Linking ESM", [fileInfo.relativePath, origPath]);
+            return {
+                contents: [
+                    `const { retrieveLinkedEsmModule } = require(${helperPath});`,
+                    `const mod = retrieveLinkedEsmModule("${scope}", "${fileInfo.relativePath}");`,
+                    `module.exports = mod;`,
+                ].join("\n"),
+                resolveDir: build.initialOptions.absWorkingDir ?? process.cwd(),
+            };
         }
     );
 
-    // Load a required module from the global scope: windows[Scope][moduleName].cjs
+    // Load an imported CJS module from the global scope:
+    // windows[Scope][moduleName].cjs
     build.onLoad(
-        { filter: /.*/, namespace: NamespaceLinkRequire },
+        { filter: /@global\/link:.+/, namespace: NamespaceLinkRequire },
         args => {
-            const contents = [
-                `import { retrieveLinkedCommonJsModule } from "@global/helper";`,
-                `module.exports = retrieveLinkedCommonJsModule("${scope}", "${args.path}");`,
-            ].join("\n");
-            return { contents };
+            const origPath = args.path.substring("@global/link:".length);
+            const fileInfo = bundleMeta.moduleFileInfoByPath.get(origPath);
+            if (fileInfo === undefined) {
+                throw new Error("Module file info not found for path: " + origPath);
+            }
+            console.log(build.initialOptions.entryPoints, "Linking CJS", [fileInfo.relativePath, origPath]);
+            return {
+                contents: [
+                    `const { retrieveLinkedCommonJsModule } = require(${helperPath});`,
+                    `module.exports = retrieveLinkedCommonJsModule("${scope}", "${fileInfo.relativePath}");`,
+                ].join("\n"),
+                resolveDir: build.initialOptions.absWorkingDir ?? process.cwd(),
+            };
         }
     );
 }
@@ -378,11 +497,16 @@ function registerLinkHooks(build, scope, linkModules, bundleMeta) {
  * @param {ModuleSplitMode} mode
  * @returns {Set<string>}
  */
-function matchPackages(modules, bundleMeta, mode) {
-    const matches = modules
-        .filter(m => m.mode === mode).map(m => m.pattern)
-        .flatMap(p => bundleMeta.allImports.filter(i => p.test(i)))
-    return new Set(matches);
+function matchPackagePaths(modules, bundleMeta, mode) {
+    const patterns = modules.filter(m => m.mode === mode).map(m => m.pattern);
+    const paths = new Set();
+    for (const [absPath, moduleFileInfo] of bundleMeta.moduleFileInfoByPath) {
+        const matches = patterns.some(p => p.test(moduleFileInfo.relativePath));
+        if (matches) {
+            paths.add(absPath);
+        }
+    }
+    return paths;
 }
 
 /**
@@ -403,8 +527,8 @@ function matchPackages(modules, bundleMeta, mode) {
  * @returns {GlobalCodeSplitPluginFactory}
  */
 export function globalCodeSplitPluginFactory() {
-    /** @type {import("esbuild").Metafile | undefined}*/
-    let metaFile = undefined;
+    /** @type {BundleMeta | undefined}*/
+    let bundleMeta = undefined;
     return {
         newPlugin: options => {
             const scope = options.scope;
@@ -412,43 +536,28 @@ export function globalCodeSplitPluginFactory() {
             return {
                 name: PluginName,
                 setup: build => {
-                    const finalMetaFile = metaFile;
-                    if (finalMetaFile === undefined) {
+                    const finalBundleMeta = bundleMeta;
+                    if (finalBundleMeta === undefined) {
                         throw new Error("The meta file must be set before the plugin is used.");
                     }
 
-                    const bundleMeta = createBundleMeta(build.initialOptions, finalMetaFile);
-
-                    const exposeModules = matchPackages(modules, bundleMeta, "expose");
-                    const linkModules = matchPackages(modules, bundleMeta, "link");
+                    const exposePaths = matchPackagePaths(modules, finalBundleMeta, "expose");
+                    const linkPaths = matchPackagePaths(modules, finalBundleMeta, "link");
                     // Order of precedence: expose, link
-                    exposeModules.forEach(m => linkModules.delete(m));
+                    exposePaths.forEach(m => linkPaths.delete(m));
 
-                    // Load the helper module with the functions for exposing and linking modules.
-                    if (linkModules.size > 0 || exposeModules.size > 0) {
-                        const baseDir = build.initialOptions.absWorkingDir ?? process.cwd();
-                        const helperPath = path.resolve(baseDir, "build", "esbuild-plugin", "global-code-split-plugin-helper.mjs");
-                        build.onResolve({ filter: /^@global\/helper$/ }, args => {
-                            if (args.namespace.startsWith(NamespaceBase)) {
-                                return { path: helperPath, namespace: "file" };
-                            }
-                            return undefined;
-                        });
+                    if (linkPaths.size > 0) {
+                        registerLinkHooks(build, scope, linkPaths, finalBundleMeta);
                     }
-
-                    if (linkModules.size > 0) {
-                        registerLinkHooks(build, scope, [...linkModules], bundleMeta);
-                    }
-                    if (exposeModules.size > 0) {
-                        registerExposeHooks(build, scope, [...exposeModules], bundleMeta);
+                    if (exposePaths.size > 0) {
+                        registerExposeHooks(build, scope, [...exposePaths], finalBundleMeta);
                     }
                 },
             }
         },
 
-        setMetaFile: (newMetaFile) => {
-            metaFile = newMetaFile;
+        setMetaFile: (newMetaFile, baseDir) => {
+            bundleMeta = createBundleMeta(baseDir, newMetaFile);
         },
     };
 };
-

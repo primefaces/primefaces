@@ -1,5 +1,15 @@
 import "../../src/timeline/1-timeline.js";
 
+import "moment/locale/de.js";
+import "moment/locale/es.js";
+import "moment/locale/fr.js";
+import "moment/locale/it.js";
+import "moment/locale/ja.js";
+import "moment/locale/nl.js";
+import "moment/locale/pl.js";
+import "moment/locale/ru.js";
+import "moment/locale/uk.js";
+
 // Expose some vis features to the global scope
 // Not needed for our code, but may already be used by external code
 

@@ -10,7 +10,7 @@ import { globalCodeSplitPluginFactory } from "./esbuild-plugin/global-code-split
 import { facesResourceLoaderPlugin } from "./esbuild-plugin/faces-resource-loader-plugin.mjs";
 import { bannedDependenciesPlugin } from "./esbuild-plugin/banned-dependencies-plugin.mjs";
 
-import { createMetaFile } from "./esbuild/create-meta-file.mjs";
+import { createMetaFile, mergeMetaFiles } from "./esbuild/create-meta-file.mjs";
 import { escapeRegExp } from "./reg-exp.mjs";
 
 /**
@@ -28,6 +28,7 @@ import { escapeRegExp } from "./reg-exp.mjs";
 undefined;
 
 const isProduction = process.env.NODE_ENV !== "development";
+const isAnalyze = process.argv.includes("--analyze");
 
 const baseDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const bundlesDir = path.join(baseDir, "bundles");
@@ -65,7 +66,7 @@ const LinkedLibraries = {
     momentTimeZone: ["moment-timezone/"],
     raphael: ["raphael/"],
     scrollPanel: ["jscrollpane/"],
-    timeline: ["moment/dist/locale/", "vis-timeline/", "vis-data/", "vis-util/"],
+    timeline: ["moment/locale/", "vis-timeline/", "vis-data/", "vis-util/"],
     touchSwipe: ["jquery-touchswipe/"],
     webcamJs: ["webcamjs/"],
 };
@@ -103,7 +104,13 @@ function buildTask(from, to, settings = {}) {
         });
     });
 
-    const buildTask = { ...createBaseOptions(), entryPoints: [fromPath], outfile: toPath, };
+    /** @type {import("esbuild").BuildOptions} */
+    const buildTask = {
+        ...createBaseOptions(),
+        entryPoints: [fromPath],
+        outfile: toPath,
+        metafile: isAnalyze,
+    };
     buildTask.plugins = [...buildTask.plugins ?? []];
     buildTask.plugins.push(globalCodeSplitPlugin.newPlugin({ scope: "PrimeFacesLibs", modules }));
     return buildTask;
@@ -254,7 +261,7 @@ async function main() {
 
     const t2 = Date.now();
     const metaFile = await createMetaFile(allBuildTasks);
-    globalCodeSplitPlugin.setMetaFile(metaFile);
+    globalCodeSplitPlugin.setMetaFile(metaFile, baseDir);
 
     // Start all promises and wait for them to finish.
     // This will build all tasks in parallel, speeding up the build process.
@@ -265,6 +272,15 @@ async function main() {
     const exceptions = allResults.filter(r => r.status === "rejected");
     if (exceptions.length > 0) {
         throw new AggregateError(exceptions.map(r => r.reason));
+    }
+
+    if (isAnalyze) {
+        const successResults = allResults.filter(r => r.status === "fulfilled");
+        const finalMetaFile = mergeMetaFiles(successResults.map(r => r.value.metafile).filter(m => m != null));
+        const finalMetaFilePath = path.join(baseDir, "dist", "meta.json");
+        await fs.mkdir(path.dirname(finalMetaFilePath), { recursive: true });
+        await fs.writeFile(finalMetaFilePath, JSON.stringify(finalMetaFile, null, 2));
+        console.log("Meta file written to ", finalMetaFilePath);
     }
 
     console.log(`Created all bundles in ${t2 - t1}ms`);

@@ -34,7 +34,12 @@ PrimeFaces.widget.PhotoCam = class PhotoCam extends PrimeFaces.widget.BaseWidget
      * Whether the camera is currently attached and can take photos.
      * @type {boolean}
      */
-    attached= false;
+    attached;
+
+    constructor(cfg) {
+        super(cfg, false);
+        this.init(cfg);
+    }
 
     /**
      * @override
@@ -61,7 +66,6 @@ PrimeFaces.widget.PhotoCam = class PhotoCam extends PrimeFaces.widget.BaseWidget
         if (this.cfg.autoStart) {
             this.attach();
         }
-
     }
 
     /**

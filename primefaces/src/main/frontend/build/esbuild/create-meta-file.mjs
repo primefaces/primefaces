@@ -30,7 +30,7 @@ const EmptyLoaders = {
  * @param {import("esbuild").Metafile[]} metaFiles 
  * @return {import("esbuild").Metafile}
  */
-function mergeMetaFiles(metaFiles) {
+export function mergeMetaFiles(metaFiles) {
     /** @type {import("esbuild").Metafile} */
     const merged = { inputs: {}, outputs: {} };
 

@@ -219,9 +219,18 @@ if (!PrimeFaces.widget) {
          * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg The widget configuration to be used for this widget
          * instance. This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for
          * this component.
+         * @param {boolean} [runInit] Whether to run the init method after the widget was constructed.
+         * Defaults to `true`. This exists only for legacy compatibility. If you are writing a new widget,
+         * you should always pass `false` here, and then do the initialization in you sub class constructor
+         * after the call to the super constructor completes. Technical description: As per the spec, instance
+         * fields of a class are initialized after the call to the super constructor. If the super constructor
+         * calls an instance method overridden by the sub class, any changes made by the sub class to its
+         * (not yet initialized instance) fields will be lost. This is why the `runInit` parameter exists.
          */
-        constructor(cfg) {
-            this.init(cfg);
+        constructor(cfg, runInit) {
+            if (runInit !== false) {
+                this.init(cfg);
+            }
         }
 
         /**
