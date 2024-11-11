@@ -142,6 +142,21 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
 
         List<Predicate> predicates = new ArrayList<>();
 
+        applyPredicatesFromFilterMetaMap(entityClass, filterBy, cb, cq, root, predicates);
+
+        if (filterEnricher != null) {
+            filterEnricher.enrich(filterBy, cb, cq, root, predicates);
+        }
+
+        if (!predicates.isEmpty()) {
+            cq.where(
+                cb.and(predicates.toArray(new Predicate[0])));
+        }
+    }
+
+    protected void applyPredicatesFromFilterMetaMap(Class<T> entityClass, Map<String, FilterMeta> filterBy, CriteriaBuilder cb,
+                                                      CriteriaQuery<?> cq,
+                                                      Root<T> root, List<Predicate>predicates) {
         if (filterBy != null) {
             FacesContext context = FacesContext.getCurrentInstance();
             Locale locale = LocaleUtils.getCurrentLocale(context);
@@ -168,15 +183,6 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
                 Predicate predicate = createPredicate(filter, pd, root, cb, fieldExpression, convertedFilterValue, locale);
                 predicates.add(predicate);
             }
-        }
-
-        if (filterEnricher != null) {
-            filterEnricher.enrich(filterBy, cb, cq, root, predicates);
-        }
-
-        if (!predicates.isEmpty()) {
-            cq.where(
-                cb.and(predicates.toArray(new Predicate[0])));
         }
     }
 
