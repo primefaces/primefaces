@@ -23,9 +23,24 @@
  */
 package org.primefaces.model;
 
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.util.BeanUtils;
+import org.primefaces.util.Callbacks;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.LocaleUtils;
+import org.primefaces.util.PropertyDescriptorResolver;
+
 import java.beans.PropertyDescriptor;
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -36,13 +51,17 @@ import javax.faces.convert.Converter;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Order;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.Type;
-
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.util.*;
 
 /**
  * Basic {@link LazyDataModel} implementation with JPA and Criteria API.
@@ -60,6 +79,7 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
     protected Class<?> rowKeyType;
     protected QueryEnricher<T> queryEnricher;
     protected FilterEnricher<T> filterEnricher;
+    protected AdditionalFilterMeta additionalFilterMeta;
     protected SortEnricher<T> sortEnricher;
     protected Callbacks.SerializableSupplier<EntityManager> entityManager;
     protected Callbacks.SerializableFunction<T, Object> rowKeyProvider;
@@ -121,13 +141,30 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
 
         List<Predicate> predicates = new ArrayList<>();
 
-        applyGlobalFilters(filterBy, cb, cq, root, predicates);
+        applyFiltersFromFilterMeta(entityClass, filterBy.values(), cb, cq, root, predicates);
 
+        if (filterEnricher != null) {
+            filterEnricher.enrich(filterBy, cb, cq, root, predicates);
+        }
+
+        if (additionalFilterMeta != null) {
+            applyFiltersFromFilterMeta(entityClass, additionalFilterMeta.process(), cb, cq, root, predicates);
+        }
+
+        if (!predicates.isEmpty()) {
+            cq.where(
+                cb.and(predicates.toArray(new Predicate[0])));
+        }
+    }
+
+    protected void applyFiltersFromFilterMeta(Class<T> entityClass, Collection<FilterMeta> filterBy, CriteriaBuilder cb,
+                                              CriteriaQuery<?> cq,
+                                              Root<T> root, List<Predicate> predicates) {
         if (filterBy != null) {
             FacesContext context = FacesContext.getCurrentInstance();
             Locale locale = LocaleUtils.getCurrentLocale(context);
             PropertyDescriptorResolver propResolver = PrimeApplicationContext.getCurrentInstance(context).getPropertyDescriptorResolver();
-            for (FilterMeta filter : filterBy.values()) {
+            for (FilterMeta filter : filterBy) {
                 if (filter.getField() == null || filter.getFilterValue() == null || filter.isGlobalFilter()) {
                     continue;
                 }
@@ -149,15 +186,6 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
                 Predicate predicate = createPredicate(filter, pd, root, cb, fieldExpression, convertedFilterValue, locale);
                 predicates.add(predicate);
             }
-        }
-
-        if (filterEnricher != null) {
-            filterEnricher.enrich(filterBy, cb, cq, root, predicates);
-        }
-
-        if (!predicates.isEmpty()) {
-            cq.where(
-                cb.and(predicates.toArray(new Predicate[0])));
         }
     }
 
@@ -403,6 +431,11 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
             return this;
         }
 
+        public Builder<T> additionalFilterMeta(AdditionalFilterMeta additionalFilterMeta) {
+            model.additionalFilterMeta = additionalFilterMeta;
+            return this;
+        }
+
         public Builder<T> sortEnricher(SortEnricher<T> sortEnricher) {
             model.sortEnricher = sortEnricher;
             return this;
@@ -499,5 +532,11 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
     public interface FilterEnricher<T> extends Serializable {
 
         void enrich(Map<String, FilterMeta> filterBy, CriteriaBuilder cb, CriteriaQuery<?> cq, Root<T> root, List<Predicate> predicates);
+    }
+
+    @FunctionalInterface
+    public interface AdditionalFilterMeta extends Serializable {
+
+        Collection<FilterMeta> process();
     }
 }
