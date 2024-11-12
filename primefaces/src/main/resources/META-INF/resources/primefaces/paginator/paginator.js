@@ -99,14 +99,14 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     configureAria: function(){
-        this.ariaPageLabel = PrimeFaces.getAriaLabel('pageLabel');
-        this.rppSelect.attr('aria-label', PrimeFaces.getAriaLabel('rowsPerPageLabel'));
-        this.jtpSelect.attr('aria-label', PrimeFaces.getAriaLabel('jumpToPageDropdownLabel'));
-        this.jtpInput.attr('aria-label', PrimeFaces.getAriaLabel('jumpToPageInputLabel'));
-        this.firstLink.attr('aria-label', PrimeFaces.getAriaLabel('firstPageLabel'));
-        this.prevLink.attr('aria-label', PrimeFaces.getAriaLabel('previousPageLabel'));
-        this.nextLink.attr('aria-label', PrimeFaces.getAriaLabel('nextPageLabel'));
-        this.endLink.attr('aria-label', PrimeFaces.getAriaLabel('lastPageLabel'));
+        this.ariaPageLabel = this.getAriaLabel('pageLabel');
+        this.rppSelect.attr('aria-label', this.getAriaLabel('rowsPerPageLabel'));
+        this.jtpSelect.attr('aria-label', this.getAriaLabel('jumpToPageDropdownLabel'));
+        this.jtpInput.attr('aria-label', this.getAriaLabel('jumpToPageInputLabel'));
+        this.firstLink.attr('aria-label', this.getAriaLabel('firstPageLabel'));
+        this.prevLink.attr('aria-label', this.getAriaLabel('previousPageLabel'));
+        this.nextLink.attr('aria-label', this.getAriaLabel('nextPageLabel'));
+        this.endLink.attr('aria-label', this.getAriaLabel('lastPageLabel'));
     },
 
     /**
