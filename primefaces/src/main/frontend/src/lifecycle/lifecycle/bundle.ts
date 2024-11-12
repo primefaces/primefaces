@@ -1,0 +1,1 @@
+import "./lifecycle.widget.js";

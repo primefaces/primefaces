@@ -1,0 +1,1 @@
+import "./gmap.widget.js";

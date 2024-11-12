@@ -3,7 +3,7 @@
 import path from "node:path";
 
 import { resolveEntryPointInput } from "../esbuild/entry-points.mjs";
-import { joinRegExp } from "../reg-exp.mjs";
+import { joinRegExp } from "../util/reg-exp.mjs";
 import pnpapi from "pnpapi";
 
 /**
@@ -28,8 +28,8 @@ undefined;
  * @typedef {{
  * importKindsByPath: Map<string, Set<import("esbuild").ImportKind>>;
  * importsByEntryPoint: Map<string, Set<string>>;
+ * importsByInput: Map<string, Map<string, string>>;
  * moduleFileInfoByPath: Map<string, ModuleFileInfo>;
- * importsByInput: Map<string, Map<string, string>;
  * }} BundleMeta
  */
 undefined;
@@ -38,6 +38,7 @@ undefined;
  * @typedef {{
  * readonly baseDir: string;
  * readonly bundleMeta: BundleMeta;
+ * readonly encoder: (value: string) => string;
  * readonly helperPath: string;
  * readonly logMessages: string[];
  * readonly scope: string;
@@ -68,9 +69,11 @@ undefined;
  *   Any modules for which there is no match are included in the bundle normally.
  * - scope: The global scope name to use for exposing and linking modules. E.g. when set
  *   to Scope, `window.Scope` will be used to expose and link modules.
+ * - encoder: Optional encoder for the the module names when exposing and linking modules.
  * - verbose: When set to true, the plugin will log additional information to the console.
  * @typedef {{
  *   modules: GlobalCodeSplitModule[];
+ *   encoder?: (value: string) => string;
  *   scope: string;
  *   verbose?: boolean;
  * }} GlobalCodeSplitPluginOptions
@@ -393,10 +396,11 @@ function registerExposeHooks(build, context, exposePaths) {
             if (fileInfo === undefined) {
                 throw new Error("Module file info not found for path: " + filePath);
             }
-            const linkName = fileInfo.relativePath;
+            const relativeModulePath = fileInfo.relativePath;
+            const encodedModulePath = context.encoder(relativeModulePath);
             contents.push(
                 `import * as Module${i} from "${filePath}";`,
-                `exposeEsmModule("${context.scope}", "${linkName}", Module${i});`
+                `exposeEsmModule("${context.scope}", "${encodedModulePath}", Module${i});`
             );
             i += 1;
         }
@@ -430,8 +434,9 @@ function registerExposeHooks(build, context, exposePaths) {
             if (fileInfo === undefined) {
                 throw new Error("Module file info not found for path: " + filePath);
             }
-            const linkName = fileInfo.relativePath;
-            contents.push(`exposeCommonJsModule("${context.scope}", "${linkName}", require("${filePath}"))`);
+            const relativeModulePath = fileInfo.relativePath;
+            const encodedModulePath = context.encoder(relativeModulePath);
+            contents.push(`exposeCommonJsModule("${context.scope}", "${encodedModulePath}", require("${filePath}"))`);
         }
         return { contents: contents.join("\n"), resolveDir: context.baseDir };
     });
@@ -513,10 +518,11 @@ function registerLinkHooks(build, context, externalModulesToLink) {
                 context.logMessages.push(`Retrieving ESM module <${relativeModulePath}> from the global scope.`);
             }
 
+            const encodedModulePath = context.encoder(relativeModulePath);
             return {
                 contents: [
                     `const { retrieveLinkedEsmModule } = require(${helperPath});`,
-                    `const mod = retrieveLinkedEsmModule("${context.scope}", "${relativeModulePath}");`,
+                    `const mod = retrieveLinkedEsmModule("${context.scope}", "${encodedModulePath}");`,
                     `module.exports = mod;`,
                 ].join("\n"),
                 resolveDir: build.initialOptions.absWorkingDir ?? process.cwd(),
@@ -546,10 +552,11 @@ function registerLinkHooks(build, context, externalModulesToLink) {
                 context.logMessages.push(`Retrieving CommonJS module <${relativeModulePath} from the global scope.`);
             }
 
+            const encodedModulePath = context.encoder(relativeModulePath);
             return {
                 contents: [
                     `const { retrieveLinkedCommonJsModule } = require(${helperPath});`,
-                    `module.exports = retrieveLinkedCommonJsModule("${context.scope}", "${relativeModulePath}");`,
+                    `module.exports = retrieveLinkedCommonJsModule("${context.scope}", "${encodedModulePath}");`,
                 ].join("\n"),
                 resolveDir: build.initialOptions.absWorkingDir ?? process.cwd(),
             };
@@ -612,6 +619,7 @@ export function globalCodeSplitPluginFactory() {
                     const context = {
                         baseDir: build.initialOptions.absWorkingDir ?? process.cwd(),
                         bundleMeta: finalBundleMeta,
+                        encoder: options.encoder ?? (value => value),
                         helperPath: createHelperPath(build),
                         logMessages: [],
                         scope,

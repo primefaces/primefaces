@@ -1,0 +1,1 @@
+import "./captcha.widget.js";
