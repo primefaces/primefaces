@@ -161,7 +161,7 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
 
     protected void applyFiltersFromFilterMeta(Class<T> entityClass, Collection<FilterMeta> filterBy, CriteriaBuilder cb,
                                               CriteriaQuery<?> cq,
-                                              Root<T> root, List<Predicate>predicates) {
+                                              Root<T> root, List<Predicate> predicates) {
         if (filterBy != null) {
             FacesContext context = FacesContext.getCurrentInstance();
             Locale locale = LocaleUtils.getCurrentLocale(context);
