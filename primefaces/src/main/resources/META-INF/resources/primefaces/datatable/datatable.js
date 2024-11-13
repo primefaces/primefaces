@@ -5768,7 +5768,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * */
     bindFilterToggleEvents: function(element) {
         var _self = this;
-        element.off("click.filterTogglable").on("click.filterTogglable", function(e) {
+        $(element).off("click.filterTogglable").on("click.filterTogglable", function(e) {
             // if trigger uses the pi-filter icon toggle it with filter-slash
             $(this).find('.pi-filter, .pi-filter-slash').toggleClass('pi-filter pi-filter-slash');
             _self.toggleFilter();
