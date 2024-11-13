@@ -1053,6 +1053,18 @@ JPALazyDataModel<MyEntity> lazyDataModel = JPALazyDataModel.<MyEntity> builder()
         ...
 ```
 
+#### Add additional filters
+You can add your own/custom FilterMeta to manipulate generated predicates:
+```java
+JPALazyDataModel<MyEntity> lazyDataModel = JPALazyDataModel.<MyEntity>builder()
+        ...
+        .additionalFilterMeta(() -> {
+            return new ArrayList<FilterMeta>(...);
+        })
+        ...
+```
+
+
 #### `Iterator` and performance considerations
 `JPALazyDataModel`, being an extension of `DataModel`, is iterable over the JPA values. This is accomplished lazily by paging through, and therefore querying, the data as needed (calls to `hasNext()` and `next()` from `Iterator` in turn call `load(first, pageSize, sortBy, filterBy)`).
 

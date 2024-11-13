@@ -44,6 +44,7 @@ import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.ProjectStage;
 import javax.faces.application.Resource;
+import javax.faces.application.ResourceHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
@@ -179,10 +180,16 @@ public class HeadRenderer extends Renderer {
     }
 
     protected void encodeCSS(FacesContext context, String library, String resource) throws IOException {
+        ResourceHandler resourceHandler = context.getApplication().getResourceHandler();
+        if (resourceHandler.isResourceRendered(context, resource, library)) {
+            // resource already rendered, skip
+            return;
+        }
+
         ResponseWriter writer = context.getResponseWriter();
         ExternalContext externalContext = context.getExternalContext();
 
-        Resource cssResource = context.getApplication().getResourceHandler().createResource(resource, library);
+        Resource cssResource = resourceHandler.createResource(resource, library);
         if (cssResource == null) {
             throw new FacesException("Error loading CSS, cannot find \"" + resource + "\" resource of \"" + library + "\" library");
         }
@@ -196,9 +203,15 @@ public class HeadRenderer extends Renderer {
     }
 
     protected void encodeJS(FacesContext context, String library, String script) throws IOException {
+        ResourceHandler resourceHandler = context.getApplication().getResourceHandler();
+        if (resourceHandler.isResourceRendered(context, script, library)) {
+            // resource already rendered, skip
+            return;
+        }
+
         ResponseWriter writer = context.getResponseWriter();
         ExternalContext externalContext = context.getExternalContext();
-        Resource resource = context.getApplication().getResourceHandler().createResource(script, library);
+        Resource resource = resourceHandler.createResource(script, library);
 
         if (resource == null) {
             throw new FacesException("Error loading JavaScript, cannot find \"" + script + "\" resource of \"" + library + "\" library");
