@@ -5756,7 +5756,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * In case of a toggleable filter datatable toggle all filter input components
      * @param {string | null} speed speed of fade animation. (see jquery fadeToggle method)
-     * @param {function | null} callback will be executed after animation is finished. (see jquery fadeToggle method)
+     * @param {() => void | null} callback will be executed after animation is finished. (see jquery fadeToggle method)
      */
     toggleFilter: function(speed, callback) {
         this.jq.find(".ui-column-filter, .ui-column-customfilter").fadeToggle(speed || 0, callback);
