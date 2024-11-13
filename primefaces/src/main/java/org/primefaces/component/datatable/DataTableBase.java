@@ -72,8 +72,6 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         filterDelay,
         filterEvent,
         filterNormalize,
-        filterTogglable,
-        filterToggleTrigger,
         filteredValue,
         frozenColumns,
         frozenColumnsAlignment,
@@ -802,21 +800,4 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
     public void setFilterNormalize(boolean filterNormalize) {
         getStateHelper().put(PropertyKeys.filterNormalize, filterNormalize);
     }
-
-    public boolean isFilterTogglable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.filterTogglable, false);
-    }
-
-    public void setFilterTogglable(boolean filterTogglable) {
-        getStateHelper().put(PropertyKeys.filterTogglable, filterTogglable);
-    }
-
-    public String getFilterToggleTrigger() {
-        return (String) getStateHelper().eval(PropertyKeys.filterToggleTrigger, null);
-    }
-
-    public void setFilterToggleTrigger(String filterTogglable) {
-        getStateHelper().put(PropertyKeys.filterToggleTrigger, filterTogglable);
-    }
-
 }

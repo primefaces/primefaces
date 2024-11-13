@@ -36,7 +36,6 @@ import org.primefaces.component.row.Row;
 import org.primefaces.component.subtable.SubTable;
 import org.primefaces.component.summaryrow.SummaryRow;
 import org.primefaces.event.data.PostRenderEvent;
-import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.ColumnMeta;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
@@ -180,8 +179,7 @@ public class DataTableRenderer extends DataRenderer {
         if (table.isFilteringEnabled()) {
             wb.attr("filter", true)
                     .attr("filterEvent", table.getFilterEvent(), null)
-                    .attr("filterDelay", table.getFilterDelay(), Integer.MAX_VALUE)
-                    .attr("filterToggleTrigger", SearchExpressionUtils.resolveOptionalClientIdsForClientSide(context, table, table.getFilterToggleTrigger()));
+                    .attr("filterDelay", table.getFilterDelay(), Integer.MAX_VALUE);
         }
 
         //Row expansion
@@ -958,9 +956,6 @@ public class DataTableRenderer extends DataRenderer {
 
         writer.startElement("thead", null);
         writer.writeAttribute("id", theadClientId, null);
-        if (table.isFilterTogglable() || LangUtils.isNotBlank(table.getFilterToggleTrigger())) {
-            writer.writeAttribute("class", "ui-filter-togglable", "styleClass");
-        }
 
         if (group != null && group.isRendered()) {
             context.getAttributes().put(Constants.HELPER_RENDERER, "columnGroup");

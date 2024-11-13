@@ -196,20 +196,21 @@
 
         <div class="card">
             <h5>Filter toggling</h5>
+            <p>Hide filter components initially by adding <code>ui-filter-togglable</code> as <em>styleClass</em> to the datatable. To show/hide the filter components call <code>PF('customersTable4').toggleFilter()</code>.</p>
             <h:form>
                 <p:dataTable id="customers" var="customer" value="#{dtFilterView.customers1}" widgetVar="customersTable4"
                              emptyMessage="No customers found with given criteria" stickyHeader="true" stickyTopAt=".layout-topbar"
-                             filteredValue="#{dtFilterView.filteredCustomers1}" filterTogglable="true" filterToggleTrigger="filterToggle">
+                             filteredValue="#{dtFilterView.filteredCustomers1}" styleClass="ui-filter-togglable">
 
                     <f:facet name="header">
                         <div class="flex align-items-center justify-content-between">
                             <span>List of Customers</span>
                             <div>
-                                <label>Toggle via trigger: </label>
-                                <p:commandButton id="filterToggle" type="button" title="Filter" icon="pi pi-filter-slash" />
+                                <label>Button toggle:</label>
+                                <p:commandButton id="buttonToggle" type="button" title="Filter" onclick="PF('customersTable4').toggleFilter('fast');return false;" icon="pi pi-filter-slash" />
                             </div>
                             <div>
-                                <label>Manual toggle: </label>
+                                <label>Switch toggle: </label>
                                 <p:toggleSwitch id="manualToggle" onchange="PF('customersTable4').toggleFilter()" onIcon="pi pi-filter" offIcon="pi pi-filter-slash"/>
                             </div>
                         </div>

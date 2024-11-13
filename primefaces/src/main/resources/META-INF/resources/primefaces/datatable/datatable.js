@@ -715,12 +715,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 filter.attr('aria-label', PrimeFaces.getLocaleLabel('filter') + " " + title.text());
             }
         });
-
-
-        if (this.cfg.filterToggleTrigger) {
-            var trigger = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.filterToggleTrigger)
-            this.bindFilterToggleEvents(trigger);
-        }
     },
 
     /**
@@ -5761,21 +5755,17 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * In case of a toggleable filter datatable toggle all filter input components
+     * @param {string | null} speed speed of fade animation. (see jquery fadeToggle method)
+     * @param {function | null} callback will be executed after animation is finished. (see jquery fadeToggle method)
      */
     toggleFilter: function(speed, callback) {
-        if (this.thead.hasClass("ui-filter-togglable")) {
-            this.thead.find(".ui-column-filter, .ui-column-customfilter").fadeToggle(speed || 0, callback);
-
-            if (this.clone) {
-                this.clone.find(".ui-column-filter, .ui-column-customfilter").fadeToggle(speed || 0, callback);
-            }
-
-            if (this.theadClone) {
-                this.theadClone.find(".ui-column-filter, .ui-column-customfilter").fadeToggle(speed || 0, callback);
-            }
-        }
+        this.jq.find(".ui-column-filter, .ui-column-customfilter").fadeToggle(speed || 0, callback);
     },
 
+    /**
+     * Bind click event to given jq element to show/hide filter components. Toggles between pi-filter and pi-filter-slash icon if used.
+     * @param {JQuery} element jquery object to bind click events to
+     * */
     bindFilterToggleEvents: function(element) {
         var _self = this;
         element.off("click.filterTogglable").on("click.filterTogglable", function(e) {
