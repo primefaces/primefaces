@@ -32,8 +32,8 @@ PrimeFaces.widget.SelectBooleanButton = PrimeFaces.widget.BaseWidget.extend({
         this.input = $(this.jqId + '_input');
         this.disabled = this.input.is(':disabled');
         this.icon = this.jq.children('.ui-button-icon-left');
-        this.onLabel = this.cfg.onLabel || PrimeFaces.getAriaLabel('switch.ON');
-        this.offLabel = this.cfg.offLabel || PrimeFaces.getAriaLabel('switch.OFF');
+        this.onLabel = this.cfg.onLabel || this.getAriaLabel('switch.ON');
+        this.offLabel = this.cfg.offLabel || this.getAriaLabel('switch.OFF');
         var $this = this;
 
         //bind events if not disabled

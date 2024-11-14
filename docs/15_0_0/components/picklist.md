@@ -147,6 +147,18 @@ Caption texts for lists are defined with facets named _sourceCaption_ and _targe
     <f:facet name="targetCaption">Selected</f:facet>
 </p:pickList>
 ```
+
+## Labels
+Label texts and tooltips come from the locale configuration for your language by default. If you need to override them per component you can use `widgetPreConstruct` to manually set them.
+
+```xhtml
+<p:pickList value="#{pickListBean.cities}" var="city" itemLabel="#{city}" itemValue="#{city}" onTransfer="handleTransfer(e)">
+    <f:attribute name="widgetPreConstruct" value="cfg.labels.aria.moveUp = 'Slide Up'; cfg.labels.aria.moveDown = 'Slide Down'; cfg.labels.aria.moveTop = 'Slide Top'; cfg.labels.aria.moveBottom = 'Slide Bottom'; cfg.labels.aria.moveToSource = 'Unsubscribe'; cfg.labels.aria.moveToTarget = 'Subscribe'; cfg.labels.aria.moveAllToSource = 'Unsubscribe All'; cfg.labels.aria.moveAllToTarget = 'Subscribe All';" />
+    <f:facet name="sourceCaption">Unsubscribed</f:facet>
+    <f:facet name="targetCaption">Subscribed</f:facet>
+</p:pickList>
+```
+
 ## Filtering
 PickList provides built-in client side filtering. Filtering is enabled by setting the corresponding
 filtering attribute of a list. For source list this is `showSourceFilter` and for target list it is

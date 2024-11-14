@@ -743,6 +743,12 @@
                 //page init
                 else {
                     if (cfg.preConstruct) {
+                        if (!cfg.labels) {
+                            cfg.labels = {};
+                        }
+                        if (!cfg.labels.aria) {
+                            cfg.labels.aria = {};
+                        }
                         cfg.preConstruct.call(null, cfg);
                     }
                     var newWidget = new this.widget[widgetName](cfg);

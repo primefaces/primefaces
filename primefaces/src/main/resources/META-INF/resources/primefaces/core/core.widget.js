@@ -608,6 +608,32 @@ if (!PrimeFaces.widget) {
             }
             
             return this.cfg.formId;
+        },
+
+        /**
+         * Gets a localized label text for this widget.
+         * @param {string} label The label key to look up
+         * @returns {string} The label text - either from the widget configuration if specified,
+         * or from the PrimeFaces global labels
+         */
+        getLabel: function(label) {
+            if (this.cfg.labels && this.cfg.labels[label]) {
+                return this.cfg.labels[label];
+            }
+            return PrimeFaces.getLocaleLabel(label);
+        },
+        
+        /**
+         * Creates an ARIA label for an element.
+         * @param {string} label The label key to look up
+         * @returns {string} The ARIA label text - either from the widget configuration if specified, 
+         * or from the PrimeFaces global ARIA labels
+         */
+        getAriaLabel: function(label) {
+            if (this.cfg.labels && this.cfg.labels.aria && this.cfg.labels.aria[label]) {
+                return this.cfg.labels.aria[label];
+            }
+            return PrimeFaces.getAriaLabel(label);
         }
     });
 

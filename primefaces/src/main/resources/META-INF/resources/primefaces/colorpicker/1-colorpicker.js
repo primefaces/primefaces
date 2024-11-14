@@ -161,7 +161,7 @@ PrimeFaces.widget.ColorPicker = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     configureAriaLabel: function(label, a11y, property) {
-        var ariaLabel = PrimeFaces.getAriaLabel(label);
+        var ariaLabel = this.getAriaLabel(label);
         if (ariaLabel) {
             a11y[property] = ariaLabel;
         }

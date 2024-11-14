@@ -661,7 +661,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
      */
     configureSelectAllAria: function() {
         if (this.selectAllTogglerCheckbox) {
-           var ariaLabel = this.selectAllTogglerCheckbox.prop('checked') ? PrimeFaces.getAriaLabel('selectAll') : PrimeFaces.getAriaLabel('unselectAll');
+           var ariaLabel = this.selectAllTogglerCheckbox.prop('checked') ? this.getAriaLabel('selectAll') : this.getAriaLabel('unselectAll');
            this.selectAllTogglerCheckbox.attr('aria-label', ariaLabel);
            this.selectAllTogglerCheckbox.removeAttr('aria-selected');
         }
