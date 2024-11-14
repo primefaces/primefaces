@@ -38,7 +38,7 @@ What does that mean?
 
 Version | JSF version | Java version | Binary | Source | Documentation | Showcase Binary
 ------------ | ------------- | ------------- | -------------  | ------------- | ------------- | ------------- |
-![14.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=14&color=cyan)| ![JSF23](https://img.shields.io/badge/JSF-2.3-purple.svg) -  ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) | ![Java](https://img.shields.io/badge/Java%2011+-blue.svg) | [JAR](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/14.0.6/primefaces-14.0.6.jar)  | [Sources](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/14.0.6/primefaces-14.0.6-sources.jar) | [Documentation](https://primefaces.github.io/primefaces/14_0_0/#/) | [WAR](https://repo1.maven.org/maven2/org/primefaces/primefaces-showcase/14.0.6/primefaces-showcase-14.0.6.war)
+![14.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=14&color=cyan)| ![JSF23](https://img.shields.io/badge/JSF-2.3-purple.svg) -  ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) | ![Java](https://img.shields.io/badge/Java%2011+-blue.svg) | [JAR](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/14.0.7/primefaces-14.0.7.jar)  | [Sources](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/14.0.7/primefaces-14.0.7-sources.jar) | [Documentation](https://primefaces.github.io/primefaces/14_0_0/#/) | [WAR](https://repo1.maven.org/maven2/org/primefaces/primefaces-showcase/14.0.7/primefaces-showcase-14.0.7.war)
 ![13.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=13&color=cyan)| ![JSF20](https://img.shields.io/badge/JSF-2.0-yellow.svg) -  ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) |  ![Java](https://img.shields.io/badge/Java%208+-blue.svg) | [JAR](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/13.0.10/primefaces-13.0.10.jar)  | [Sources](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/13.0.10/primefaces-13.0.10-sources.jar) | [Documentation](https://primefaces.github.io/primefaces/13_0_0/#/) | [WAR](https://repo1.maven.org/maven2/org/primefaces/primefaces-showcase/13.0.10/primefaces-showcase-13.0.10.war)
 ![12.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=12&color=cyan)| ![JSF20](https://img.shields.io/badge/JSF-2.0-yellow.svg) -  ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) | ![Java](https://img.shields.io/badge/Java%208+-blue.svg) | [JAR](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/12.0.0/primefaces-12.0.0.jar)  | [Sources](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/12.0.0/primefaces-12.0.0-sources.jar) | [Documentation](https://primefaces.github.io/primefaces/12_0_0/#/) | [WAR](https://repo1.maven.org/maven2/org/primefaces/primefaces-showcase/12.0.0/primefaces-showcase-12.0.0.war)
 
@@ -71,14 +71,14 @@ Version | JSF version | Java version | Binary | Source | Documentation
   <dependency>
       <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
-      <version>14.0.6</version>
+      <version>14.0.7</version>
   </dependency>
 
   <!-- Jakarta EE / jakarta.* / Faces 4.0+  -->	
   <dependency>
       <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
-      <version>14.0.6</version>
+      <version>14.0.7</version>
       <classifier>jakarta</classifier>
   </dependency>
   ```
@@ -157,9 +157,9 @@ Visit the [contribution](./CONTRIBUTING.md) page for detailed information.
 
 ### Release Instructions
 ***
-- Run `mvn versions:set -DgenerateBackupPoms=false -DnewVersion=14.0.6` to update all modules versions
+- Run `mvn versions:set -DgenerateBackupPoms=false -DnewVersion=14.0.7` to update all modules versions
 - Commit and push the changes to GitHub
-- In GitHub create a new Release titled `14.0.6` to tag this release
+- In GitHub create a new Release titled `14.0.7` to tag this release
 - Run `mvn clean deploy -Prelease` to push to Maven Central
 - Rename Milestone in GitHub Issues and close it
 - Create a new Milestone
