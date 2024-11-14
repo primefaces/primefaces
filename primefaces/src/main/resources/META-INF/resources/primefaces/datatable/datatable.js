@@ -456,13 +456,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      */
     bindPaginator: function() {
-        var _self = this;
+        var $this = this;
         this.cfg.paginator.paginate = function(newState) {
-            if(_self.cfg.clientCache) {
-                _self.loadDataWithCache(newState);
+            if($this.cfg.clientCache) {
+                $this.loadDataWithCache(newState);
             }
             else {
-                _self.paginate(newState);
+                $this.paginate(newState);
             }
         };
 
@@ -5767,11 +5767,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * @param {JQuery} element jquery object to bind click events to
      * */
     bindFilterToggleEvents: function(element) {
-        var _self = this;
+        var $this = this;
         $(element).off("click.filterTogglable").on("click.filterTogglable", function(e) {
             // if trigger uses the pi-filter icon toggle it with filter-slash
             $(this).find('.pi-filter, .pi-filter-slash').toggleClass('pi-filter pi-filter-slash');
-            _self.toggleFilter();
+            $this.toggleFilter();
             e.preventDefault();
         });
     }
