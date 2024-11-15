@@ -84,6 +84,8 @@ public class InputTextRenderer extends InputRenderer {
             }
         }
 
+        encodeClientBehaviors(context, inputText);
+
         wb.finish();
     }
 
