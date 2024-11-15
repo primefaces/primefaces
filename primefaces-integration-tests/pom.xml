@@ -29,7 +29,7 @@
 
         <!-- dependency versions -->
         <hibernate-validator.version>6.2.4.Final</hibernate-validator.version>
-        <lombok.version>1.18.34</lombok.version>
+        <lombok.version>1.18.36</lombok.version>
         <myfaces.version>2.3.10</myfaces.version>
         <myfaces-next.version>2.3-next-M8</myfaces-next.version>
         <tomcat.version>9.0.97</tomcat.version>
