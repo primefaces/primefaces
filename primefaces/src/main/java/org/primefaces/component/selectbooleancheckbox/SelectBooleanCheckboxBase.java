@@ -23,10 +23,10 @@
  */
 package org.primefaces.component.selectbooleancheckbox;
 
-import javax.faces.component.html.HtmlSelectBooleanCheckbox;
-
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.Widget;
+
+import javax.faces.component.html.HtmlSelectBooleanCheckbox;
 
 public abstract class SelectBooleanCheckboxBase extends HtmlSelectBooleanCheckbox implements Widget, InputHolder {
 

@@ -4,6 +4,11 @@
     "https://checkstyle.org/dtds/configuration_1_2.dtd">
 <module name="Checker">
 
+    <module name="SuppressionSingleFilter">
+        <property name="checks" value=".*"/>
+        <property name="files" value="UIDataPatch.java"/>
+    </module>
+
     <module name="FileTabCharacter"/>
 
     <module name="LineLength">
@@ -65,6 +70,19 @@
         <module name="RedundantImport"/>
         <module name="UnusedImports">
             <property name="processJavadoc" value="true"/>
+        </module>
+        <module name="AvoidStarImport">
+            <property name="excludes" value="org.primefaces.util.*"/>
+        </module>
+        <module name="AvoidStaticImport">
+            <property name="excludes" value=""/>
+        </module>
+        <module name="ImportOrder">
+            <property name="groups" value="/^org\.primefaces/,java,javax,jakarta"/>
+            <property name="ordered" value="true"/>
+            <property name="separated" value="true"/>
+            <property name="option" value="bottom" />
+            <property name="separatedStaticGroups" value="true" />
         </module>
 
         <module name="ModifierOrderCheck" />

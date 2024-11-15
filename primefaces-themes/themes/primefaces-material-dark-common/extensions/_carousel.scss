@@ -1,3 +1,5 @@
+@use 'sass:list';
+
 body {
   .ui-carousel {
     .ui-carousel-header,
@@ -15,7 +17,7 @@ body {
     .ui-carousel-dropdown {
       padding: .5rem;
       border-radius: $borderRadius;
-      border-color: nth($inputBorder, 3);
+      border-color: list.nth($inputBorder, 3);
     }
   }
 }

@@ -23,16 +23,6 @@
  */
 package org.primefaces.model;
 
-import java.io.Serializable;
-import java.lang.reflect.Array;
-import java.util.Collection;
-import java.util.Objects;
-
-import javax.el.ELContext;
-import javax.el.MethodExpression;
-import javax.el.ValueExpression;
-import javax.faces.context.FacesContext;
-
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.ColumnBase;
@@ -42,6 +32,16 @@ import org.primefaces.model.filter.FunctionFilterConstraint;
 import org.primefaces.model.filter.GlobalFilterConstraint;
 import org.primefaces.util.EditableValueHolderState;
 import org.primefaces.util.LangUtils;
+
+import java.io.Serializable;
+import java.lang.reflect.Array;
+import java.util.Collection;
+import java.util.Objects;
+
+import javax.el.ELContext;
+import javax.el.MethodExpression;
+import javax.el.ValueExpression;
+import javax.faces.context.FacesContext;
 
 public class FilterMeta implements Serializable {
 
@@ -55,22 +55,24 @@ public class FilterMeta implements Serializable {
     private Object filterValue; // should be null if empty string/collection/array/object
     private MatchMode matchMode = MatchMode.CONTAINS;
     private FilterConstraint constraint;
+    private boolean normalize = false;
 
     public FilterMeta() {
         // NOOP
     }
 
     FilterMeta(String columnKey, String field, FilterConstraint constraint,
-               ValueExpression filterBy, Object filterValue, MatchMode matchMode) {
+               ValueExpression filterBy, Object filterValue, MatchMode matchMode, boolean normalize) {
         this.field = field;
         this.columnKey = columnKey;
         this.filterBy = filterBy;
         this.constraint = constraint;
-        this.filterValue = resetToNullIfEmpty(filterValue);
         this.matchMode = matchMode;
+        this.normalize = normalize;
+        setFilterValue(filterValue);
     }
 
-    public static FilterMeta of(FacesContext context, String var, UIColumn column) {
+    public static FilterMeta of(FacesContext context, String var, UIColumn column, boolean normalize) {
         if (column instanceof DynamicColumn) {
             ((DynamicColumn) column).applyStatelessModel();
         }
@@ -106,16 +108,18 @@ public class FilterMeta implements Serializable {
                 filterValue = state.getValue();
             }
         }
+        filterValue = LangUtils.normalize(filterValue, normalize);
 
         return new FilterMeta(column.getColumnKey(),
                               field,
                               constraint,
                               filterByVE,
                               filterValue,
-                              matchMode);
+                              matchMode,
+                              normalize);
     }
 
-    public static FilterMeta of(Object globalFilterValue, MethodExpression globalFilterFunction) {
+    public static FilterMeta of(Object globalFilterValue, MethodExpression globalFilterFunction, boolean normalize) {
         FilterConstraint constraint = globalFilterFunction == null
                 ? new GlobalFilterConstraint()
                 : new FunctionFilterConstraint(globalFilterFunction);
@@ -124,8 +128,9 @@ public class FilterMeta implements Serializable {
                               GLOBAL_FILTER_KEY,
                               constraint,
                               null,
-                              globalFilterValue,
-                              MatchMode.GLOBAL);
+                              LangUtils.normalize(globalFilterValue, normalize),
+                              MatchMode.GLOBAL,
+                              normalize);
     }
 
     public static <T> T resetToNullIfEmpty(T filterValue) {
@@ -160,7 +165,7 @@ public class FilterMeta implements Serializable {
     }
 
     public void setFilterValue(Object filterValue) {
-        this.filterValue = resetToNullIfEmpty(filterValue);
+        this.filterValue = resetToNullIfEmpty(LangUtils.normalize(filterValue, isNormalize()));
     }
 
     public FilterConstraint getConstraint() {
@@ -191,7 +196,15 @@ public class FilterMeta implements Serializable {
         if (column instanceof DynamicColumn) {
             ((DynamicColumn) column).applyStatelessModel();
         }
-        return filterBy.getValue(elContext);
+        return LangUtils.normalize(filterBy.getValue(elContext), isNormalize());
+    }
+
+    public boolean isNormalize() {
+        return normalize;
+    }
+
+    public void setNormalize(boolean normalize) {
+        this.normalize = normalize;
     }
 
     public static Builder builder() {
@@ -231,6 +244,11 @@ public class FilterMeta implements Serializable {
             return this;
         }
 
+        public Builder normalize(boolean normalize) {
+            filterBy.normalize = normalize;
+            return this;
+        }
+
         public FilterMeta build() {
             if (filterBy.matchMode != null) {
                 filterBy.constraint = FilterConstraints.of(filterBy.matchMode);
@@ -251,6 +269,7 @@ public class FilterMeta implements Serializable {
                 ", filterValue=" + filterValue +
                 ", matchMode=" + matchMode +
                 ", constraint=" + constraint +
+                ", normalize=" + normalize +
                 '}';
     }
 

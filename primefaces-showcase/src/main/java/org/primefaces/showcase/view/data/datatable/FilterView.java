@@ -23,6 +23,14 @@
  */
 package org.primefaces.showcase.view.data.datatable;
 
+import org.primefaces.model.FilterMeta;
+import org.primefaces.model.MatchMode;
+import org.primefaces.showcase.domain.Customer;
+import org.primefaces.showcase.domain.CustomerStatus;
+import org.primefaces.showcase.domain.Representative;
+import org.primefaces.showcase.service.CustomerService;
+import org.primefaces.util.LangUtils;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -34,14 +42,6 @@ import jakarta.annotation.PostConstruct;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-
-import org.primefaces.model.FilterMeta;
-import org.primefaces.model.MatchMode;
-import org.primefaces.showcase.domain.Customer;
-import org.primefaces.showcase.domain.CustomerStatus;
-import org.primefaces.showcase.domain.Representative;
-import org.primefaces.showcase.service.CustomerService;
-import org.primefaces.util.LangUtils;
 
 @Named("dtFilterView")
 @ViewScoped

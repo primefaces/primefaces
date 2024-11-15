@@ -23,7 +23,6 @@
  */
 package org.primefaces.showcase.view.data.diagram;
 
-import jakarta.faces.view.ViewScoped;
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.diagram.ConnectEvent;
 import org.primefaces.event.diagram.ConnectionChangeEvent;
@@ -38,11 +37,13 @@ import org.primefaces.model.diagram.endpoint.EndPointAnchor;
 import org.primefaces.model.diagram.endpoint.RectangleEndPoint;
 import org.primefaces.model.diagram.overlay.ArrowOverlay;
 
+import java.io.Serializable;
+
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
-import java.io.Serializable;
 
 @Named("diagramEditableView")
 @ViewScoped

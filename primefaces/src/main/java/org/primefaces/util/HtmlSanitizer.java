@@ -24,6 +24,7 @@
 package org.primefaces.util;
 
 import java.util.regex.Pattern;
+
 import org.owasp.html.HtmlPolicyBuilder;
 import org.owasp.html.PolicyFactory;
 import org.owasp.html.Sanitizers;

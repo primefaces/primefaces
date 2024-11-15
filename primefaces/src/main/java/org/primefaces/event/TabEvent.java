@@ -23,12 +23,12 @@
  */
 package org.primefaces.event;
 
+import org.primefaces.component.tabview.Tab;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
 
-import org.primefaces.component.tabview.Tab;
-
-public class TabEvent<T> extends AbstractAjaxBehaviorEvent {
+public abstract class TabEvent<T> extends AbstractAjaxBehaviorEvent {
 
     private transient Tab tab;
     private T data;

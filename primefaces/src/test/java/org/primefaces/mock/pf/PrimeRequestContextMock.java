@@ -23,9 +23,10 @@
  */
 package org.primefaces.mock.pf;
 
-import javax.faces.context.FacesContext;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
+
+import javax.faces.context.FacesContext;
 
 public class PrimeRequestContextMock extends PrimeRequestContext {
 

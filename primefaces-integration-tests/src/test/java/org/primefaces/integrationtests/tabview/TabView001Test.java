@@ -23,8 +23,6 @@
  */
 package org.primefaces.integrationtests.tabview;
 
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CommandButton;
@@ -32,10 +30,13 @@ import org.primefaces.selenium.component.TabView;
 import org.primefaces.selenium.component.model.Tab;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import java.util.concurrent.atomic.AtomicInteger;
 
 class TabView001Test extends AbstractPrimePageTest {
 

@@ -23,21 +23,23 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import lombok.Data;
+import org.primefaces.model.FilterMeta;
+import org.primefaces.model.LazyDataModel;
+import org.primefaces.model.SortMeta;
 
-import javax.annotation.PostConstruct;
-import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Named;
+
+import lombok.Data;
 import lombok.Getter;
-import org.primefaces.model.FilterMeta;
-import org.primefaces.model.LazyDataModel;
-import org.primefaces.model.SortMeta;
 
 @Named
 @RequestScoped

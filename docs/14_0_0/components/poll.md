@@ -38,7 +38,7 @@ onactivated | null | String | Javascript callback to execute when the poller is 
 oncomplete | null | String | Javascript handler to execute when ajax request is completed.
 ondeactivated | null | String | Javascript callback to execute when the poller is deactivated. Return false to prevent poller from stopping.
 onerror | null | String | Javascript handler to execute when ajax request fails.
-onstart | null | String | Javascript handler to execute before ajax request is begins.
+onstart | null | String | Javascript handler to execute before ajax request begins.
 onsuccess | null | String | Javascript handler to execute when ajax request succeeds.
 partialSubmit | false | Boolean | Enables serialization of values belonging to the partially processed components only.
 partialSubmitFilter | null | String | Selector to use when partial submit is on, default is ":input" to select all descendant inputs of a partially processed components.

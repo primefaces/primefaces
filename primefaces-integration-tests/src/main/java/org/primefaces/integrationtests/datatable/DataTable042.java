@@ -23,17 +23,17 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import lombok.Data;
-
-import javax.annotation.PostConstruct;
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
-
 import org.primefaces.model.SortMeta;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.PostConstruct;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
+
+import lombok.Data;
 
 @Named
 @ViewScoped

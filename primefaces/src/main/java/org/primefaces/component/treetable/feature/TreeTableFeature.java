@@ -23,11 +23,12 @@
  */
 package org.primefaces.component.treetable.feature;
 
-import javax.faces.context.FacesContext;
-import java.io.IOException;
-
 import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.component.treetable.TreeTableRenderer;
+
+import java.io.IOException;
+
+import javax.faces.context.FacesContext;
 
 public interface TreeTableFeature {
 

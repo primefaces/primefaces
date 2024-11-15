@@ -15845,23 +15845,7 @@ declare namespace PrimeFaces.widget {
     }
 }
 declare namespace PrimeFaces.widget.FileUpload {
-    /**
-     * A error message for a file upload widget.
-     */
-    export interface UploadMessage {
-        /**
-         * The name of the uploaded file.
-         */
-        filename: string;
-        /**
-         * The size of the uploaded file in bytes.
-         */
-        filesize: number;
-        /**
-         * A short summary of this message.
-         */
-        summary: string;
-    }
+
 }
 declare namespace PrimeFaces.widget.FileUpload {
     /**

@@ -35,5 +35,40 @@ PrimeFaces.widget.Message = PrimeFaces.widget.BaseWidget.extend({
 
             target.attr('aria-describedby', msgSrc.attr('id'));
         }
+    },
+
+    /**
+     * Renders the given msg.
+     * @param {PrimeFaces.FacesMessage} msg Message to render.
+     */
+    renderMessage: function(msg) {
+        var display = this.jq.data('display');
+
+        if (display !== 'tooltip') {
+            this.jq.addClass('ui-message-error ui-widget ui-corner-all ui-helper-clearfix');
+
+            if (display === 'both') {
+                this.jq.append('<div><span class="ui-message-error-icon"></span><span class="ui-message-error-detail">' + PrimeFaces.escapeHTML(msg.detail) + '</span></div>');
+            }
+            else if (display === 'text') {
+                this.jq.append('<span class="ui-message-error-detail">' + PrimeFaces.escapeHTML(msg.detail) + '</span>');
+            }
+            else if (display === 'icon') {
+                this.jq.addClass('ui-message-icon-only')
+                    .append('<span class="ui-message-error-icon" title="' + PrimeFaces.escapeHTML(msg.detail) + '"></span>');
+            }
+        }
+        else {
+            this.jq.hide();
+            $(PrimeFaces.escapeClientId(this.jq.data('target'))).attr('title', PrimeFaces.escapeHTML(msg.detail));
+        }
+    },
+
+    /**
+     * Removes the current displayed message.
+     */
+    clearMessage: function() {
+        this.jq.html('');
+        this.jq.removeClass('ui-message-error ui-message-icon-only ui-widget ui-corner-all ui-helper-clearfix');
     }
 });

@@ -23,16 +23,6 @@
  */
 package org.primefaces.component.datepicker;
 
-import java.time.*;
-import java.util.*;
-
-import javax.faces.application.FacesMessage;
-import javax.faces.application.ResourceDependency;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.PhaseId;
-
 import org.primefaces.event.DateViewChangeEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.datepicker.DateMetadata;
@@ -40,6 +30,27 @@ import org.primefaces.model.datepicker.DateMetadataModel;
 import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.YearMonth;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TimeZone;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.application.ResourceDependency;
+import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.FacesEvent;
+import javax.faces.event.PhaseId;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -165,13 +176,13 @@ public class DatePicker extends DatePickerBase {
             //TODO: needs to be validated
         }
         else if (value instanceof List && getSelectionMode().equals("range")) {
-            List<?> rangeValues = (List) value;
+            List<?> rangeValues = (List<?>) value;
 
             if (rangeValues.get(0) instanceof Comparable) {
                 Comparable startDate = (Comparable) rangeValues.get(0);
                 validationResult = validateValueInternal(context, startDate);
 
-                if (isValid()) {
+                if (isValid() && rangeValues.size() > 1) {
                     Comparable endDate = (Comparable) rangeValues.get(1);
                     validationResult = validateValueInternal(context, endDate);
 
@@ -182,8 +193,16 @@ public class DatePicker extends DatePickerBase {
                 }
             }
             else {
-                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, rangeValues.get(0).getClass().getTypeName() + " not supported", null);
-                context.addMessage(getClientId(context), message);
+                Object firstValue = rangeValues.get(0);
+                setValid(false);
+                if (firstValue == null) {
+                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "First date in range cannot be null", null);
+                    context.addMessage(getClientId(context), message);
+                }
+                else {
+                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, firstValue.getClass().getTypeName() + " not supported", null);
+                    context.addMessage(getClientId(context), message);
+                }
             }
         }
 

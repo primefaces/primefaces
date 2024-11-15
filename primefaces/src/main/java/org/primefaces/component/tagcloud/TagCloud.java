@@ -23,6 +23,12 @@
  */
 package org.primefaces.component.tagcloud;
 
+import org.primefaces.event.SelectEvent;
+import org.primefaces.model.tagcloud.TagCloudItem;
+import org.primefaces.model.tagcloud.TagCloudModel;
+import org.primefaces.util.Constants;
+import org.primefaces.util.MapBuilder;
+
 import java.util.Collection;
 import java.util.Map;
 
@@ -31,12 +37,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
-
-import org.primefaces.event.SelectEvent;
-import org.primefaces.model.tagcloud.TagCloudItem;
-import org.primefaces.model.tagcloud.TagCloudModel;
-import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")

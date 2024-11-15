@@ -26,17 +26,22 @@ package org.primefaces.showcase.view.input;
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.SelectEvent;
 
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.YearMonth;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
 import jakarta.validation.constraints.Future;
-import java.io.Serializable;
-import java.time.*;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 
 @Named
 @ViewScoped
@@ -79,6 +84,7 @@ public class CalendarJava8View implements Serializable {
     private LocalDateTime dateTime7;
     private LocalDateTime dateTimeDe;
     private List<LocalDate> multi;
+    private List<LocalDate> week;
     private List<LocalDate> range;
     private List<LocalDate> invalidDates;
     private List<LocalDate> validDates;
@@ -278,6 +284,14 @@ public class CalendarJava8View implements Serializable {
 
     public void setMulti(List<LocalDate> multi) {
         this.multi = multi;
+    }
+
+    public List<LocalDate> getWeek() {
+        return week;
+    }
+
+    public void setWeek(List<LocalDate> week) {
+        this.week = week;
     }
 
     public List<LocalDate> getRange() {

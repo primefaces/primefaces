@@ -23,9 +23,9 @@
  */
 package org.primefaces.component.treetable.feature;
 
-import javax.faces.context.FacesContext;
-
 import org.primefaces.component.treetable.TreeTable;
+
+import javax.faces.context.FacesContext;
 
 public class ResizableColumnsFeature implements TreeTableFeature {
 

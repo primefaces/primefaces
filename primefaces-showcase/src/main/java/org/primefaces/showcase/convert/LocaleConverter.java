@@ -23,6 +23,9 @@
  */
 package org.primefaces.showcase.convert;
 
+import org.primefaces.showcase.domain.Country;
+import org.primefaces.showcase.service.CountryService;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.component.UIComponent;
@@ -32,9 +35,6 @@ import jakarta.faces.convert.ConverterException;
 import jakarta.faces.convert.FacesConverter;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-
-import org.primefaces.showcase.domain.Country;
-import org.primefaces.showcase.service.CountryService;
 
 @Named
 @ApplicationScoped

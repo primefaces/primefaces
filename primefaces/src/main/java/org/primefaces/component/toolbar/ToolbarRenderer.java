@@ -23,20 +23,25 @@
  */
 package org.primefaces.component.toolbar;
 
+import org.primefaces.model.menu.Separator;
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.FacetUtils;
+
 import java.io.IOException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.FacetUtils;
-
 public class ToolbarRenderer extends CoreRenderer {
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Toolbar toolbar = (Toolbar) component;
+        if (!shouldBeRendered(context, toolbar)) {
+            encodePlaceholder(context, toolbar);
+            return;
+        }
         ResponseWriter writer = context.getResponseWriter();
         String style = toolbar.getStyle();
         String styleClass = toolbar.getStyleClass();
@@ -114,5 +119,46 @@ public class ToolbarRenderer extends CoreRenderer {
     @Override
     public boolean getRendersChildren() {
         return true;
+    }
+
+    protected boolean shouldBeRendered(FacesContext facesContext, Toolbar toolbar) {
+        if (toolbar.getChildCount() > 0) {
+            for (UIComponent child : toolbar.getChildren()) {
+                if (child.isRendered() && child instanceof ToolbarGroup) {
+                    ToolbarGroup toolbarGroup = (ToolbarGroup) child;
+                    return toolbarGroup.getChildren().stream().anyMatch(c -> shouldBeRendered(facesContext, c));
+                }
+            }
+            return false;
+        }
+        else {
+            return FacetUtils.shouldRenderFacet(toolbar.getFacet("left")) || FacetUtils.shouldRenderFacet(toolbar.getFacet("right"));
+        }
+    }
+
+    /**
+     * Check whether toolbar has a render relevant component. Separators themselves will be rendered regularly but if they are the
+     * only components there is no need to render the toolbar.
+     */
+    protected boolean shouldBeRendered(FacesContext facesContext, UIComponent component) {
+        if (component instanceof Separator) {
+            return false;
+        }
+        try {
+            component.pushComponentToEL(facesContext, component);
+            return component.isRendered();
+        }
+        finally {
+            component.popComponentFromEL(facesContext);
+        }
+
+    }
+
+    protected void encodePlaceholder(FacesContext context, Toolbar toolbar) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("div", toolbar);
+        writer.writeAttribute("id", toolbar.getClientId(context), "id");
+        writer.writeAttribute("class", "ui-toolbar-placeholder", "styleClass");
+        writer.endElement("div");
     }
 }

@@ -28,14 +28,15 @@ import org.primefaces.model.map.Circle;
 import org.primefaces.model.map.DefaultMapModel;
 import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.MapModel;
+import org.primefaces.model.map.Overlay;
+
+import java.io.Serializable;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
-import jakarta.inject.Named;
-import java.io.Serializable;
 import jakarta.faces.view.ViewScoped;
-import org.primefaces.model.map.Overlay;
+import jakarta.inject.Named;
 
 @Named
 @ViewScoped

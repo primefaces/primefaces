@@ -24,6 +24,7 @@
 package org.primefaces.model.filter;
 
 import java.util.Locale;
+
 import javax.faces.context.FacesContext;
 
 public class NegationFilterConstraintWrapper implements FilterConstraint {

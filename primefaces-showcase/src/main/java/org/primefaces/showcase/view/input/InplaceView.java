@@ -23,9 +23,10 @@
  */
 package org.primefaces.showcase.view.input;
 
+import java.io.Serializable;
+
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Named;
-import java.io.Serializable;
 
 @Named
 @RequestScoped

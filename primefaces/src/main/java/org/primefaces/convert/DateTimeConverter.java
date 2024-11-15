@@ -23,6 +23,10 @@
  */
 package org.primefaces.convert;
 
+import org.primefaces.component.datepicker.DatePicker;
+import org.primefaces.util.CalendarUtils;
+import org.primefaces.util.HTML;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -33,12 +37,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.ConverterException;
-import org.primefaces.component.datepicker.DatePicker;
-import org.primefaces.util.CalendarUtils;
-import org.primefaces.util.HTML;
 
 public class DateTimeConverter extends javax.faces.convert.DateTimeConverter implements ClientConverter {
 

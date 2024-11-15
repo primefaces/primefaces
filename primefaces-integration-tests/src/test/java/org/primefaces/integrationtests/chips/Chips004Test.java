@@ -23,8 +23,12 @@
  */
 package org.primefaces.integrationtests.chips;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.component.Chips;
+import org.primefaces.selenium.component.CommandButton;
+import org.primefaces.selenium.component.InputText;
+import org.primefaces.selenium.component.Messages;
 
 import java.util.List;
 
@@ -34,12 +38,9 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.component.Chips;
-import org.primefaces.selenium.component.CommandButton;
-import org.primefaces.selenium.component.InputText;
-import org.primefaces.selenium.component.Messages;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class Chips004Test extends AbstractPrimePageTest {
 

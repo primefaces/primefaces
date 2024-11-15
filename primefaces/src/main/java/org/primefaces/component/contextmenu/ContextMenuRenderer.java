@@ -23,11 +23,6 @@
  */
 package org.primefaces.component.contextmenu;
 
-import java.io.IOException;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-
 import org.primefaces.component.api.Widget;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.tieredmenu.TieredMenuRenderer;
@@ -35,6 +30,12 @@ import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
+
+import java.io.IOException;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 
 public class ContextMenuRenderer extends TieredMenuRenderer {
 
@@ -73,5 +74,14 @@ public class ContextMenuRenderer extends TieredMenuRenderer {
         styleClass = styleClass == null ? ContextMenu.CONTAINER_CLASS : ContextMenu.CONTAINER_CLASS + " " + styleClass;
 
         encodeMenu(context, menu, style, styleClass, HTML.ARIA_ORIENTATION_VERTICAL);
+    }
+
+    @Override
+    protected void encodePlaceholder(FacesContext context, AbstractMenu menu) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("div", menu);
+        writer.writeAttribute("id", menu.getClientId(context), "id");
+        writer.writeAttribute("class", "ui-menu-placeholder", "styleClass");
+        writer.endElement("div");
     }
 }

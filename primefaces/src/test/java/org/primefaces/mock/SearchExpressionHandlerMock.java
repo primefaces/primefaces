@@ -23,14 +23,16 @@
  */
 package org.primefaces.mock;
 
+import org.primefaces.util.LangUtils;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.faces.component.ContextCallback;
 import javax.faces.component.UIComponent;
 import javax.faces.component.search.SearchExpressionContext;
 import javax.faces.component.search.SearchExpressionHandler;
 import javax.faces.context.FacesContext;
-import org.primefaces.util.LangUtils;
 
 public class SearchExpressionHandlerMock extends SearchExpressionHandler {
 

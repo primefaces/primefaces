@@ -142,7 +142,7 @@ PrimeFaces.widget.MultiSelectListbox = PrimeFaces.widget.BaseWidget.extend({
      */
     preselect: function(value) {
         var $this = this,
-        item = this.items.filter('[data-value="' + $.escapeSelector(value)+'"]');
+        item = this.items.filter('[data-value="' + CSS.escape(value)+'"]');
 
         if(item.length === 0) {
             return;
@@ -172,7 +172,7 @@ PrimeFaces.widget.MultiSelectListbox = PrimeFaces.widget.BaseWidget.extend({
 
         //highlight item
         var lists = this.jq.children('div.ui-multiselectlistbox-listcontainer'),
-        clonedItem = lists.find(' > ul.ui-multiselectlistbox-list > li.ui-multiselectlistbox-item').filter('[data-value="' + $.escapeSelector(value) + '"]');
+        clonedItem = lists.find(' > ul.ui-multiselectlistbox-list > li.ui-multiselectlistbox-item').filter('[data-value="' + CSS.escape(value) + '"]');
         clonedItem.addClass('ui-state-highlight');
 
         //highlight ancestors

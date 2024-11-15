@@ -23,6 +23,12 @@
  */
 package org.primefaces.context;
 
+import org.primefaces.application.resource.MoveScriptsToBottomResponseWriter;
+import org.primefaces.application.resource.MoveScriptsToBottomState;
+import org.primefaces.config.PrimeConfiguration;
+import org.primefaces.csp.CspResponseWriter;
+import org.primefaces.csp.CspState;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIInput;
 import javax.faces.context.ExternalContext;
@@ -30,11 +36,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.FacesContextWrapper;
 import javax.faces.context.ResponseWriter;
 import javax.faces.context.ResponseWriterWrapper;
-import org.primefaces.application.resource.MoveScriptsToBottomResponseWriter;
-import org.primefaces.application.resource.MoveScriptsToBottomState;
-import org.primefaces.config.PrimeConfiguration;
-import org.primefaces.csp.CspResponseWriter;
-import org.primefaces.csp.CspState;
 
 /**
  * Custom {@link FacesContextWrapper} to init and release our {@link PrimeRequestContext}.

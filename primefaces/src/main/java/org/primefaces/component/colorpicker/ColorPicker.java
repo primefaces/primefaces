@@ -23,6 +23,9 @@
  */
 package org.primefaces.component.colorpicker;
 
+import org.primefaces.util.LocaleUtils;
+import org.primefaces.util.MapBuilder;
+
 import java.util.Collection;
 import java.util.Locale;
 import java.util.Map;
@@ -30,9 +33,6 @@ import java.util.Map;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 import javax.faces.event.BehaviorEvent;
-
-import org.primefaces.util.LocaleUtils;
-import org.primefaces.util.MapBuilder;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "colorpicker/colorpicker.css")

@@ -23,10 +23,10 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import org.primefaces.model.SortOrder;
+
 import java.lang.reflect.Field;
 import java.util.Comparator;
-
-import org.primefaces.model.SortOrder;
 
 public class CustomerLazySorter implements Comparator<Customer> {
 

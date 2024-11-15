@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.separator;
 
+import org.primefaces.renderkit.CoreRenderer;
+
 import java.io.IOException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
-import org.primefaces.renderkit.CoreRenderer;
 
 @Deprecated(since = "15.0", forRemoval = true)
 public class SeparatorRenderer extends CoreRenderer {

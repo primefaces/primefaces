@@ -23,6 +23,15 @@
  */
 package org.primefaces.component.selectcheckboxmenu;
 
+import org.primefaces.component.column.Column;
+import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.renderkit.SelectManyRenderer;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.WidgetBuilder;
+
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.List;
@@ -40,11 +49,6 @@ import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 import javax.faces.render.Renderer;
-
-import org.primefaces.component.column.Column;
-import org.primefaces.expression.SearchExpressionUtils;
-import org.primefaces.renderkit.SelectManyRenderer;
-import org.primefaces.util.*;
 
 public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
 
@@ -288,11 +292,12 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
                     writer.writeAttribute("class", SelectCheckboxMenu.TOKEN_LABEL_CLASS, null);
 
                     if (selectedItem.getLabel() != null) {
-                        if (selectedItem.isEscape()) {
-                            writer.writeText(selectedItem.getLabel(), null);
+                        String selectedItemLabel = isValueBlank(selectedItem.getLabel()) ? "&nbsp;" : selectedItem.getLabel();
+                        if (selectedItem.isEscape() && !"&nbsp;".equals(selectedItemLabel)) {
+                            writer.writeText(selectedItemLabel, null);
                         }
                         else {
-                            writer.write(selectedItem.getLabel());
+                            writer.write(selectedItemLabel);
                         }
                     }
                     else {

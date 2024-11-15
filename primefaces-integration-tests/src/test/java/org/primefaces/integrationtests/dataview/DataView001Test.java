@@ -23,12 +23,6 @@
  */
 package org.primefaces.integrationtests.dataview;
 
-import org.json.JSONObject;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.integrationtests.datatable.AbstractDataTableTest;
 import org.primefaces.integrationtests.datatable.ProgrammingLanguage;
 import org.primefaces.integrationtests.datatable.ProgrammingLanguageService;
@@ -39,6 +33,13 @@ import org.primefaces.selenium.component.DataView;
 import org.primefaces.selenium.component.model.data.Paginator;
 
 import java.util.List;
+
+import org.json.JSONObject;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.*;
 

@@ -23,9 +23,9 @@
  */
 package org.primefaces.convert;
 
-import java.util.PrimitiveIterator.OfInt;
-
 import org.primefaces.util.LangUtils;
+
+import java.util.PrimitiveIterator.OfInt;
 
 /**
  * Builder for the pattern format as defined by the jquery UI datepicker, see

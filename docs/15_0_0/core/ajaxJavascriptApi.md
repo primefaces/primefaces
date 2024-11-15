@@ -110,11 +110,3 @@ $(document).on('pfAjaxComplete', function() {
 | [pfAjaxUpdated](../jsdocs/interfaces/src_PrimeFaces.JQuery.TypeToTriggeredEventMap.html#pfAjaxUpdated) | xhr, settings, args | Executed after the response was received but after the DOM elements have been updated.
 | [pfAjaxComplete](../jsdocs/interfaces/src_PrimeFaces.JQuery.TypeToTriggeredEventMap.html#pfAjaxComplete) | xhr, settings, args | Executed after the AJAX lifecycle has been completed, independent of success or error.
 
-## Inline load animation
-
-Some components support an inline load animation. To avoid flickering on short loading times, a minimum animation
-duration is defined. It's 500 milliseconds by default, but you can customize it. For example
-
-```js
-PrimeFaces.ajax.minLoadAnimation = 250;
-```

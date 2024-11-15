@@ -90,7 +90,7 @@ if (window.PrimeFaces) {
                     chkboxes;
                     
                     if(custom) {
-                        var groupedInputs = $('input[name="' + $.escapeSelector(element.attr('name')) + '"].ui-chkbox-clone');
+                        var groupedInputs = $('input[name="' + CSS.escape(element.attr('name')) + '"].ui-chkbox-clone');
                         chkboxes = groupedInputs.parent().next();
                     }
                     else {

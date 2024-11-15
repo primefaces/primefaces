@@ -23,11 +23,36 @@
  */
 package org.primefaces.renderkit;
 
+import org.primefaces.behavior.confirm.ConfirmBehavior;
+import org.primefaces.component.api.AjaxSource;
+import org.primefaces.component.api.ClientBehaviorRenderingMode;
+import org.primefaces.component.api.DialogReturnAware;
+import org.primefaces.component.api.MenuItemAware;
+import org.primefaces.component.api.UIOutcomeTarget;
+import org.primefaces.component.divider.Divider;
+import org.primefaces.component.menuitem.UIMenuItem;
+import org.primefaces.event.MenuActionEvent;
+import org.primefaces.model.menu.BaseMenuModel;
+import org.primefaces.model.menu.MenuElement;
+import org.primefaces.model.menu.MenuGroup;
+import org.primefaces.model.menu.MenuItem;
+import org.primefaces.model.menu.Separator;
+import org.primefaces.util.ComponentTraversalUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
+
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.component.behavior.ClientBehavior;
@@ -36,17 +61,6 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.PhaseId;
-
-import org.primefaces.behavior.confirm.ConfirmBehavior;
-import org.primefaces.component.api.*;
-import org.primefaces.component.divider.Divider;
-import org.primefaces.component.menuitem.UIMenuItem;
-import org.primefaces.event.MenuActionEvent;
-import org.primefaces.model.menu.*;
-import org.primefaces.util.ComponentTraversalUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.HTML;
-import org.primefaces.util.LangUtils;
 
 public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
 
@@ -324,5 +338,34 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
         }
 
         return true;
+    }
+
+    protected boolean shouldBeRendered(FacesContext context, MenuItemAware abstractMenu) {
+        return abstractMenu.getElements().stream().anyMatch(me -> shouldBeRendered(context, me));
+    }
+
+    protected boolean shouldBeRendered(FacesContext context, MenuElement menuElement) {
+        if (menuElement instanceof MenuGroup) {
+            MenuGroup group = (MenuGroup) menuElement;
+            return group.getElements().stream().anyMatch(me -> shouldBeRendered(context, me));
+        }
+        else if (menuElement instanceof Separator) {
+            return false;
+        }
+        else {
+            try {
+                if (menuElement instanceof UIComponent) {
+                    UIComponent component = (UIComponent) menuElement;
+                    component.pushComponentToEL(context, component);
+                }
+                return menuElement.isRendered();
+            }
+            finally {
+                if (menuElement instanceof UIComponent) {
+                    UIComponent component = (UIComponent) menuElement;
+                    component.popComponentFromEL(context);
+                }
+            }
+        }
     }
 }

@@ -23,24 +23,23 @@
  */
 package org.primefaces.el;
 
-import de.odysseus.el.ExpressionFactoryImpl;
-
-import javax.el.ExpressionFactory;
-
-import static org.junit.jupiter.api.Assertions.*;
-
-import javax.el.PropertyNotFoundException;
-import javax.el.ValueExpression;
-import javax.faces.context.FacesContext;
-
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.mock.FacesContextMock;
 import org.primefaces.mock.pf.PrimeApplicationContextMock;
 import org.primefaces.mock.pf.PrimeRequestContextMock;
+
+import javax.el.ExpressionFactory;
+import javax.el.PropertyNotFoundException;
+import javax.el.ValueExpression;
+import javax.faces.context.FacesContext;
+
+import de.odysseus.el.ExpressionFactoryImpl;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ValueExpressionAnalyzerTest {
 

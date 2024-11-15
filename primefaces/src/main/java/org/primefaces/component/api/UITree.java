@@ -30,22 +30,40 @@ import org.primefaces.component.tree.UITreeNode;
 import org.primefaces.model.CheckboxTreeNode;
 import org.primefaces.model.LazyTreeNode;
 import org.primefaces.model.TreeNode;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.Lazy;
 import org.primefaces.util.MessageFactory;
-import org.primefaces.util.*;
+import org.primefaces.util.SharedStringBuilder;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
+import javax.faces.component.ContextCallback;
+import javax.faces.component.EditableValueHolder;
+import javax.faces.component.NamingContainer;
 import javax.faces.component.UIColumn;
-import javax.faces.component.*;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIComponentBase;
+import javax.faces.component.UINamingContainer;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
-import javax.faces.event.*;
-import java.io.IOException;
-import java.util.*;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.FacesEvent;
+import javax.faces.event.PhaseId;
+import javax.faces.event.PostValidateEvent;
+import javax.faces.event.PreValidateEvent;
 
 public abstract class UITree extends UIComponentBase implements NamingContainer {
 
@@ -645,7 +663,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         if (treeNode != null && shouldVisitNode(treeNode) && treeNode.getChildCount() > 0) {
             int childIndex = 0;
             for (Iterator<TreeNode> iterator = treeNode.getChildren().iterator(); iterator.hasNext(); ) {
-                String childRowKey = rowKey == null ? String.valueOf(childIndex) : rowKey + SEPARATOR + childIndex;
+                String childRowKey = childRowKey(rowKey, childIndex);
 
                 processNode(context, phaseId, root, iterator.next(), childRowKey);
 
@@ -1000,7 +1018,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         if (treeNode != null && shouldVisitNode(treeNode) && treeNode.getChildCount() > 0) {
             int childIndex = 0;
             for (Iterator<TreeNode> iterator = treeNode.getChildren().iterator(); iterator.hasNext(); ) {
-                String childRowKey = rowKey == null ? String.valueOf(childIndex) : rowKey + SEPARATOR + childIndex;
+                String childRowKey = childRowKey(rowKey, childIndex);
 
                 if (visitNode(context, root, callback, iterator.next(), childRowKey)) {
                     return true;
@@ -1138,5 +1156,9 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     public boolean isCheckboxSelectionMode() {
         String selectionMode = getSelectionMode();
         return "checkbox".equals(selectionMode);
+    }
+
+    protected String childRowKey(String parentRowKey, int childIndex) {
+        return parentRowKey == null ? String.valueOf(childIndex) : parentRowKey + SEPARATOR + childIndex;
     }
 }

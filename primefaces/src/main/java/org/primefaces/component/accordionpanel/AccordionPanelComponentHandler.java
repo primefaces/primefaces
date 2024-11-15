@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.accordionpanel;
 
+import org.primefaces.event.TabEvent;
+import org.primefaces.facelets.MethodRule;
+
 import javax.faces.view.facelets.ComponentConfig;
 import javax.faces.view.facelets.ComponentHandler;
 import javax.faces.view.facelets.MetaRule;
 import javax.faces.view.facelets.MetaRuleset;
-
-import org.primefaces.event.TabEvent;
-import org.primefaces.facelets.MethodRule;
 
 public class AccordionPanelComponentHandler extends ComponentHandler {
 

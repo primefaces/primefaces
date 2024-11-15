@@ -23,6 +23,14 @@
  */
 package org.primefaces.component.selectoneradio;
 
+import org.primefaces.renderkit.SelectOneRenderer;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.GridLayoutUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.WidgetBuilder;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -36,9 +44,6 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.render.Renderer;
-
-import org.primefaces.renderkit.SelectOneRenderer;
-import org.primefaces.util.*;
 
 public class SelectOneRadioRenderer extends SelectOneRenderer {
 

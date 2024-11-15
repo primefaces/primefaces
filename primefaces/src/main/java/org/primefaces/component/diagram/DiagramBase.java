@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.diagram;
 
-import javax.faces.component.behavior.ClientBehaviorHolder;
-
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
-import org.primefaces.component.api.UIData;
+import org.primefaces.component.api.PrimeUIData;
 import org.primefaces.component.api.Widget;
 
-public abstract class DiagramBase extends UIData implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+import javax.faces.component.behavior.ClientBehaviorHolder;
+
+public abstract class DiagramBase extends PrimeUIData implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

@@ -7,8 +7,7 @@ Deployable version of **PrimeFaces Showcase** WAR file can be downloaded manuall
 
 ## Prebuilt WAR
 
-The showcase can be downloaded from [Maven](https://repo.maven.apache.org/maven2/org/primefaces/primefaces-showcase) or
-via the [PrimeFaces download page](http://www.primefaces.org/downloads) (scroll down to showcase for WAR file link)
+The showcase can be downloaded from [Maven](https://repo.maven.apache.org/maven2/org/primefaces/primefaces-showcase).
 
 ## Build from sources
 

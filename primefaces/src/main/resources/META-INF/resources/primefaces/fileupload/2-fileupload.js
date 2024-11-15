@@ -39,11 +39,6 @@
  * when a file is sent to the server. See also {@link FileUploadCfg.onstart}.
  * @this {PrimeFaces.widget.FileUpload} PrimeFaces.widget.FileUpload.OnStartCallback
  *
- * @interface {PrimeFaces.widget.FileUpload.UploadMessage} UploadMessage A error message for a file upload widget.
- * @prop {number} UploadMessage.filesize The size of the uploaded file in bytes.
- * @prop {string} UploadMessage.filename The name of the uploaded file.
- * @prop {string} UploadMessage.summary A short summary of this message.
- *
  * @interface {PrimeFaces.widget.FileUpload.UploadFile} UploadFile Represents an uploaded file added to the upload
  * widget.
  * @prop {JQuery} UploadFile.row Row of an uploaded file.
@@ -83,7 +78,6 @@
  * @prop {boolean} cfg.disabled Whether this file upload is disabled.
  * @prop {boolean} cfg.global Global AJAX requests are listened to by `ajaxStatus`. When `false`, `ajaxStatus` will not
  * get triggered.
- * @prop {string} cfg.messageTemplate Message template to use when displaying file validation errors.
  * @prop {PrimeFaces.widget.FileUpload.OnAddCallback} cfg.onAdd Callback invoked when an uploaded file is added.
  * @prop {PrimeFaces.widget.FileUpload.OnUploadCallback} cfg.onupload Callback to execute before the files are sent.
  * If this callback returns false, the file upload request is not started.
@@ -143,7 +137,6 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         this.filesTbody = this.content.find('> div.ui-fileupload-files > div');
         this.files = [];
         this.fileAddIndex = 0;
-        this.cfg.messageTemplate = this.cfg.messageTemplate || '{name} {size}';
         this.cfg.previewWidth = this.cfg.previewWidth || 80;
         this.cfg.maxRetries = this.cfg.maxRetries || 30;
         this.cfg.retryTimeout = this.cfg.retryTimeout || 1000;
@@ -199,6 +192,8 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                     $this.clearMessages();
                 }
 
+                var update = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector($this.jq, $this.cfg.update);
+
                 // we need to fake the filelimit as the jquery-fileupload input always only contains 1 file
                 var dataFileInput = data.fileInput;
                 if (dataFileInput == null) { // drag´n´drop - Github #11879
@@ -209,14 +204,29 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                     });
                     dataFileInput[0].files = dataTransfer.files;
                 }
+                // CSV metadata
+                dataFileInput.data(PrimeFaces.CLIENT_ID_DATA, $this.id);
+
                 var fileLimit = dataFileInput ? dataFileInput.data('p-filelimit') : null;
                 if (fileLimit && ($this.uploadedFileCount + $this.files.length + 1) > fileLimit) {
                     $this.clearMessages();
 
-                    var msg = PrimeFaces.validation.Utils.getMessage('primefaces.FileValidator.FILE_LIMIT', fileLimit);
-                    $this.showMessage({
-                        summary: msg.summary
-                    });
+                    // try to render the msg first with our CSV framework
+                    var vc = PrimeFaces.validation.ValidationContext;
+                    vc.clear();
+                    vc.addMessage($this.id, PrimeFaces.validation.Utils.getMessage('primefaces.FileValidator.FILE_LIMIT', [ fileLimit ]));
+                    PrimeFaces.validation.Utils.renderMessages(vc.messages, update);
+
+                    // if the messages hasn't been rendered, use our internal messages display
+                    for (let clientId in vc.messages) {
+                        for (let msg of vc.messages[clientId]) {
+                            if (!msg.rendered) {
+                                $this.showMessage(msg);
+                            }
+                        }
+                    }
+
+                    vc.clear();
 
                     return;
                 }
@@ -225,23 +235,15 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                 if (file) {
                     $this.clearMessages();
 
-                    var update = $this.cfg.update
-                        ? PrimeFaces.expressions.SearchExpressionFacade.resolveComponents($this.jq, $this.cfg.update).join(' ')
-                        : null;
-
                     // we need to pass the real invisible input, which contains the filelist
-                    var msgs = null;
-                    var validationResult = PrimeFaces.validation.validate($this.jq, dataFileInput, update, true, true, true, true);
+                    var validationResult = PrimeFaces.validation.validate($this.jq, dataFileInput, update, true, true, true, true, false);
                     if (!validationResult.valid) {
+
+                        // if the messages hasn't been rendered, use our internal messages display
                         for (let clientId in validationResult.messages) {
-                            msgs = validationResult.messages[clientId];
-                            for (let msg of msgs) {
+                            for (let msg of validationResult.messages[clientId]) {
                                 if (!msg.rendered) {
-                                    $this.showMessage({
-                                        summary: msg.summary,
-                                        filename: file.name,
-                                        filesize: file.size
-                                    });
+                                    $this.showMessage(msg);
                                 }
                             }
                         }
@@ -250,8 +252,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
                         if ($this.cfg.onvalidationfailure) {
                             for (let clientId in validationResult.messages) {
-                                msgs = validationResult.messages[clientId];
-                                for (let msg of msgs) {
+                                for (let msg of validationResult.messages[clientId]) {
                                     $this.cfg.onvalidationfailure({
                                         summary: msg.summary,
                                         filename: file.name,
@@ -801,19 +802,17 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Shows the given error message
-     * @param {PrimeFaces.widget.FileUpload.UploadMessage} msg Error message to show.
+     * @param {PrimeFaces.FacesMessage} msg Error message to show.
      * @private
      */
     showMessage: function(msg) {
-        var summary = msg.summary,
-        detail = '';
-
-        if(msg.filename && msg.filesize) {
-            detail = this.cfg.messageTemplate.replace('{name}', msg.filename).replace('{size}', PrimeFaces.utils.formatBytes(msg.filesize));
-        }
-
-        this.messageList.append('<li><span class="ui-messages-error-summary">' + PrimeFaces.escapeHTML(summary) + '</span><span class="ui-messages-error-detail">' + PrimeFaces.escapeHTML(detail) + '</span></li>');
+        this.messageList.append('<li><span class="ui-messages-error-summary">'
+            + PrimeFaces.escapeHTML(msg.summary)
+            + '</span><span class="ui-messages-error-detail">'
+            + PrimeFaces.escapeHTML(msg.detail)
+            + '</span></li>');
         this.messageContainer.show();
+        msg.rendered = true;
     },
 
     /**

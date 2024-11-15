@@ -23,6 +23,13 @@
  */
 package org.primefaces.component.api;
 
+import org.primefaces.util.CalendarUtils;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.ELUtils;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.LocaleUtils;
+import org.primefaces.util.MessageFactory;
+
 import java.time.Instant;
 import java.time.chrono.IsoChronology;
 import java.time.format.DateTimeFormatterBuilder;
@@ -35,8 +42,6 @@ import java.util.Locale;
 import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-
-import org.primefaces.util.*;
 
 public abstract class UICalendar extends AbstractPrimeHtmlInputText implements InputHolder, TouchAware {
 
@@ -56,22 +61,26 @@ public abstract class UICalendar extends AbstractPrimeHtmlInputText implements I
     private boolean conversionFailed;
 
     public enum PropertyKeys {
-        locale,
-        timeZone,
-        pattern,
-        mindate,
-        maxdate,
-        timeOnly,
-        readonlyInput,
+        defaultHour,
+        defaultMillisecond,
+        defaultMinute,
+        defaultSecond,
         inputStyle,
         inputStyleClass,
-        type,
-        rangeSeparator,
-        resolverStyle,
-        touchable,
+        locale,
         mask,
+        maskAutoClear,
         maskSlotChar,
-        maskAutoClear
+        maxdate,
+        mindate,
+        pattern,
+        rangeSeparator,
+        readonlyInput,
+        resolverStyle,
+        timeOnly,
+        timeZone,
+        touchable,
+        type
     }
 
     public Object getLocale() {
@@ -156,6 +165,38 @@ public abstract class UICalendar extends AbstractPrimeHtmlInputText implements I
 
     public void setType(String type) {
         getStateHelper().put(PropertyKeys.type, type);
+    }
+
+    public int getDefaultHour() {
+        return (Integer) getStateHelper().eval(PropertyKeys.defaultHour, 0);
+    }
+
+    public void setDefaultHour(int defaultHour) {
+        getStateHelper().put(PropertyKeys.defaultHour, defaultHour);
+    }
+
+    public int getDefaultMinute() {
+        return (Integer) getStateHelper().eval(PropertyKeys.defaultMinute, 0);
+    }
+
+    public void setDefaultMinute(int defaultMinute) {
+        getStateHelper().put(PropertyKeys.defaultMinute, defaultMinute);
+    }
+
+    public int getDefaultSecond() {
+        return (Integer) getStateHelper().eval(PropertyKeys.defaultSecond, 0);
+    }
+
+    public void setDefaultSecond(int defaultSecond) {
+        getStateHelper().put(PropertyKeys.defaultSecond, defaultSecond);
+    }
+
+    public int getDefaultMillisecond() {
+        return (Integer) getStateHelper().eval(PropertyKeys.defaultMillisecond, 0);
+    }
+
+    public void setDefaultMillisecond(int defaultMillisecond) {
+        getStateHelper().put(PropertyKeys.defaultMillisecond, defaultMillisecond);
     }
 
     public String getSelectionMode() {

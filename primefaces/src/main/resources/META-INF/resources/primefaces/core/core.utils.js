@@ -184,14 +184,14 @@ if (!PrimeFaces.utils) {
                         focusingRadioItem = null;
 
                         if(first.is(':radio')) {
-                            focusingRadioItem = tabbables.filter('[name="' + $.escapeSelector(first.attr('name')) + '"]').filter(':checked');
+                            focusingRadioItem = tabbables.filter('[name="' + CSS.escape(first.attr('name')) + '"]').filter(':checked');
                             if(focusingRadioItem.length > 0) {
                                 first = focusingRadioItem;
                             }
                         }
 
                         if(last.is(':radio')) {
-                            focusingRadioItem = tabbables.filter('[name="' + $.escapeSelector(last.attr('name')) + '"]').filter(':checked');
+                            focusingRadioItem = tabbables.filter('[name="' + CSS.escape(last.attr('name')) + '"]').filter(':checked');
                             if(focusingRadioItem.length > 0) {
                                 last = focusingRadioItem;
                             }
@@ -1068,11 +1068,11 @@ if (!PrimeFaces.utils) {
             // stop all pollers and idle monitors
             for (var item in PrimeFaces.widgets) {
                 widget = PrimeFaces.widgets[item];
-                if (widget instanceof PrimeFaces.widget.Poll) {
+                if (PrimeFaces.widget.Poll && widget instanceof PrimeFaces.widget.Poll) {
                     PrimeFaces.warn("Stopping Poll");
                     widget.stop();
                 }
-                if (widget instanceof PrimeFaces.widget.IdleMonitor) {
+                if (PrimeFaces.widget.IdleMonitor && widget instanceof PrimeFaces.widget.IdleMonitor) {
                     PrimeFaces.warn("Stopping IdleMonitor");
                     widget.pause();
                 }

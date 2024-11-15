@@ -23,14 +23,6 @@
  */
 package org.primefaces.component.speeddial;
 
-import java.io.IOException;
-import java.util.List;
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIForm;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.component.badge.BadgeRenderer;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
@@ -40,6 +32,15 @@ import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIForm;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 
 public class SpeedDialRenderer extends BaseMenuRenderer {
 
@@ -58,6 +59,15 @@ public class SpeedDialRenderer extends BaseMenuRenderer {
             encodeMask(context, speedDial);
         }
 
+        writer.endElement("div");
+    }
+
+    @Override
+    protected void encodePlaceholder(FacesContext context, AbstractMenu menu) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("div", menu);
+        writer.writeAttribute("id", menu.getClientId(context), "id");
+        writer.writeAttribute("class", "ui-speedidal-placeholder", "styleClass");
         writer.endElement("div");
     }
 
@@ -86,7 +96,7 @@ public class SpeedDialRenderer extends BaseMenuRenderer {
     }
 
     protected void encodeList(FacesContext context, SpeedDial speedDial) throws IOException {
-        if (speedDial.getElementsCount() <= 0) {
+        if (speedDial.getElementsCount() <= 0 || speedDial.getElements().stream().noneMatch(me -> shouldBeRendered(context, me))) {
             return;
         }
         List<MenuElement> elements = speedDial.getElements();
@@ -286,5 +296,10 @@ public class SpeedDialRenderer extends BaseMenuRenderer {
                 .callback("onShow", "function()", speedDial.getOnShow())
                 .callback("onHide", "function()", speedDial.getOnHide());
         wb.finish();
+    }
+
+    @Override
+    protected boolean shouldBeRendered(FacesContext context, AbstractMenu abstractMenu) {
+        return true;
     }
 }

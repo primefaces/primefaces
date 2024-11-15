@@ -23,12 +23,13 @@
  */
 package org.primefaces.selenium.component;
 
-import org.openqa.selenium.By;
 import org.primefaces.selenium.component.base.AbstractComponent;
 import org.primefaces.selenium.component.model.tree.TreeNode;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.openqa.selenium.By;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:tree}.

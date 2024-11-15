@@ -23,10 +23,10 @@
  */
 package org.primefaces.event.data;
 
+import org.primefaces.event.AbstractAjaxBehaviorEvent;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
-
-import org.primefaces.event.AbstractAjaxBehaviorEvent;
 
 public class PageEvent extends AbstractAjaxBehaviorEvent {
 

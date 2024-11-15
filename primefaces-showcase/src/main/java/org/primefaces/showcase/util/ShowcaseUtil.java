@@ -23,6 +23,9 @@
  */
 package org.primefaces.showcase.util;
 
+import org.primefaces.cache.CacheProvider;
+import org.primefaces.component.tabview.Tab;
+
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.io.InputStream;
@@ -35,9 +38,6 @@ import jakarta.faces.application.ProjectStage;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIPanel;
 import jakarta.faces.context.FacesContext;
-
-import org.primefaces.cache.CacheProvider;
-import org.primefaces.component.tabview.Tab;
 
 public class ShowcaseUtil {
 

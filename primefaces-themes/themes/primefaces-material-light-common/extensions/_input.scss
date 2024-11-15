@@ -1,3 +1,5 @@
+@use 'sass:list';
+
 body {
   .ui-inputfield {
     &:not(.ui-state-error).ui-state-focus {
@@ -23,7 +25,7 @@ body {
   }
 
   .ui-float-label > label {
-    left: nth($inputPadding, 2);
+    left: list.nth($inputPadding, 2);
     color: $inputPlaceholderTextColor;
     transition-duration: $transitionDuration;
   }

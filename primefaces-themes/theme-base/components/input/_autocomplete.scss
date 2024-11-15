@@ -1,3 +1,6 @@
+@use 'sass:list';
+@use 'sass:math';
+
 body {
   .ui-autocomplete {
     .ui-autocomplete-input {
@@ -9,12 +12,12 @@ body {
 
     &.ui-state-loading {
       .ui-icon-loading {
-        right: nth($inputPadding, 2); 
+        right: list.nth($inputPadding, 2); 
       }
 
       &.ui-autocomplete-dd {
         .ui-icon-loading {
-          right: nth($inputPadding, 2) + $buttonIconOnlyWidth;
+          right: list.nth($inputPadding, 2) + $buttonIconOnlyWidth;
         }
       }
     }
@@ -36,7 +39,7 @@ body {
     }
 
     .ui-autocomplete-multiple-container {
-      padding: math.div(nth($inputPadding, 1), 2) nth($inputPadding, 2);
+      padding: math.div(list.nth($inputPadding, 1), 2) list.nth($inputPadding, 2);
 
       .ui-autocomplete-token {
         padding: 1px 0;
@@ -61,7 +64,7 @@ body {
 
       .ui-autocomplete-input-token {
         margin: 0;
-        padding: math.div(nth($inputPadding, 1), 2) 0;
+        padding: math.div(list.nth($inputPadding, 1), 2) 0;
         display: inline-block;
         vertical-align: middle;
         float: none;

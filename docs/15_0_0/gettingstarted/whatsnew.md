@@ -9,12 +9,16 @@ This page contains a list of big features. Please check the GitHub issues for al
 Look into [migration guide](https://primefaces.github.io/primefaces/15_0_0/#/../migrationguide/15_0_0) for more enhancements and changes.
 
 * Core
+    * Added `widgetPreConstruct` attribute to support custom logic before widget creation. See [widgets](../core/widgets.md) for more information.
     
 * AutoComplete
     * Added property `highlightSelector=""` so you can delcare the jQuery selector for what to find and highlight. See https://github.com/primefaces/primefaces/issues/11822 
     
 * Captcha
     * Added [hCaptcha](https://www.hcaptcha.com/) support
+    
+* Chart
+    * Added `canvasStyle` and `canvasStyleClass` attributes to support custom styling of the canvas element
     
 * ConfirmDialog/ConfirmPopup
     * `yesButtonLabel`: overrides label of 'Yes' button (and restores it before the global confirm dialog is reused elsewhere)
@@ -24,13 +28,22 @@ Look into [migration guide](https://primefaces.github.io/primefaces/15_0_0/#/../
     * `noButtonClass`: adds given class to 'No' button (and removes it before the global confirm dialog is reused elsewhere)
     * `noButtonIcon`: overrides icon of 'No' button (and removes it before the global confirm dialog is reused elsewhere)
     * `confirmMessage`: facet on the parent component of the `p:confirm` behavior. Can be used as message content instead of the `p:confirm` `message` attribute.
- 
+  
+* Dashboard
+    *  `scope`: Scope for dashboard drag and drop behaviour. Items can be dragged between multiple dashboards with the same scope. (js default: dashboard)
+
 * DataTable 
     * Added attribute `frozenColumnsAlignment` to support alignment of frozen columns left and right
     * Added `expandIcon`/`collapseIcon` attributes for RowToggler
     * Added `rowsPerPage` in the PageEvent AJAX event
+    * Added `filterNormalize` attribute to normalize the filter values (remove accents)
+
+* DatePicker
+    * Added `defaultHour`, `defaultMinute`, `defaultSecond`, `defaultMillisec` attributes to match legacy `Calendar` component
+    * Added ability to pick weeks by view="week"
 
 * FeedReader
+
     * Added `podcast="true"` property if [Apple Itunes Podcast](https://help.apple.com/itc/podcasts_connect/#/itcb54353390) parsing and specific tags 
 
 * InputNumber
@@ -52,5 +65,8 @@ Look into [migration guide](https://primefaces.github.io/primefaces/15_0_0/#/../
 
 * Tree
     * Added `filterPlaceholder` property
+
+* TreeTable
+    * Added `filterNormalize` attribute to normalize the filter values (remove accents)
 
     

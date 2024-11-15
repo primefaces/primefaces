@@ -24,8 +24,10 @@
 package org.primefaces;
 
 import org.primefaces.component.api.MultiViewStateAware;
+import org.primefaces.component.api.Widget;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.DialogFrameworkOptions;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
@@ -33,27 +35,36 @@ import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.LangUtils;
 import org.primefaces.visit.ResetInputVisitCallback;
 
-import javax.faces.FacesException;
-import javax.faces.application.FacesMessage;
-import javax.faces.application.ProjectStage;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
-import javax.faces.component.UIViewRoot;
-import javax.faces.component.visit.VisitContext;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.faces.context.PartialViewContext;
-import javax.faces.lifecycle.ClientWindow;
 import java.io.Serializable;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+
+import javax.faces.FacesException;
+import javax.faces.application.FacesMessage;
+import javax.faces.application.ProjectStage;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
+import javax.faces.component.UIViewRoot;
 import javax.faces.component.search.ComponentNotFoundException;
-import org.primefaces.expression.SearchExpressionUtils;
+import javax.faces.component.search.SearchExpressionContext;
+import javax.faces.component.search.SearchExpressionHint;
+import javax.faces.component.visit.VisitContext;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.faces.context.PartialViewContext;
+import javax.faces.lifecycle.ClientWindow;
 
 public class PrimeFaces {
 
@@ -206,6 +217,30 @@ public class PrimeFaces {
         }
 
         resetInputs(Arrays.asList(expressions));
+    }
+
+    /**
+     * Search for a {@code Widget} by the given widgetVar and invokes the callback.
+     *
+     * @param widgetVar the widgetVar.
+     * @param callback the callback.
+     * @param <T> the type of the widget.
+     * @throws ComponentNotFoundException if the widget can't be found.
+     */
+    public <T extends UIComponent & Widget> void resolveWidget(String widgetVar, Consumer<T> callback) {
+        FacesContext facesContext = getFacesContext();
+
+        SearchExpressionContext context = SearchExpressionContext.createSearchExpressionContext(facesContext,
+                facesContext.getViewRoot(),
+                EnumSet.of(SearchExpressionHint.RESOLVE_SINGLE_COMPONENT, SearchExpressionHint.SKIP_VIRTUAL_COMPONENTS),
+                null);
+
+        facesContext.getApplication().getSearchExpressionHandler().resolveComponent(
+                context,
+                "@widgetVar(" + widgetVar + ")",
+                (ctx, target) -> {
+                    callback.accept((T) target);
+                });
     }
 
     /**

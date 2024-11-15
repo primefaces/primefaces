@@ -23,10 +23,11 @@
  */
 package org.primefaces.event;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.behavior.Behavior;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.model.Visibility;
+
+import javax.faces.component.UIComponent;
+import javax.faces.component.behavior.Behavior;
 
 public class ColumnToggleEvent extends ToggleEvent {
 

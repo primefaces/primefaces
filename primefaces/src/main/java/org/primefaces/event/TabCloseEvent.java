@@ -23,11 +23,11 @@
  */
 package org.primefaces.event;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.behavior.Behavior;
 import org.primefaces.component.tabview.Tab;
 
-@Deprecated
+import javax.faces.component.UIComponent;
+import javax.faces.component.behavior.Behavior;
+
 public class TabCloseEvent<T> extends TabEvent<T> {
 
     private static final long serialVersionUID = 1L;

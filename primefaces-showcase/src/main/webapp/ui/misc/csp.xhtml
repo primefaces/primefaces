@@ -5,37 +5,6 @@
                 xmlns:p="primefaces"
                 template="/WEB-INF/template.xhtml">
 
-    <ui:define name="head">
-        <style>
-            .label {
-                width: 20%;
-                padding: 4px;
-            }
-
-            .value {
-                width: 80%;
-                padding: 4px;
-            }
-
-            .grid {
-                width: 100%;
-            }
-
-            .error {
-                color: red;
-            }
-
-            .outputLabel {
-                font-weight: bold;
-            }
-
-            .grid {
-                width: 33%;
-                padding: 4px;
-            }
-        </style>
-    </ui:define>
-
     <ui:define name="title">
         Content Security Policy (CSP)
     </ui:define>
@@ -69,14 +38,7 @@
         <p:outputPanel rendered="#{not cspView.cspEnabled}">
             <p>
                 CSP is currently
-                <b>disabled</b> in your setup. To enable it you may add the following context parameter to your
-                <code>web.xml</code>:<br/>
-                <pre name="code" class="brush:xml">
-    &#x3C;context-param&#x3E;
-        &#x3C;param-name&#x3E;primefaces.CSP&#x3C;/param-name&#x3E;
-        &#x3C;param-value&#x3E;true&#x3C;/param-value&#x3E;
-    &#x3C;/context-param&#x3E;
-            </pre>
+                <b>disabled</b> in your setup. Please check our documentation how to enable it.
             </p>
         </p:outputPanel>
 

@@ -23,13 +23,13 @@
  */
 package org.primefaces.model.menu;
 
+import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
-import org.primefaces.util.Constants;
-import org.primefaces.util.LangUtils;
 
 /**
  * Base implementation for model of a programmatic menu

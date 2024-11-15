@@ -23,6 +23,10 @@
  */
 package org.primefaces.showcase.view.multimedia;
 
+import org.primefaces.model.CroppedImage;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
+
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -34,18 +38,15 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.UUID;
 
+import javax.imageio.ImageIO;
+import javax.imageio.stream.FileImageOutputStream;
+
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
-import javax.imageio.ImageIO;
-import javax.imageio.stream.FileImageOutputStream;
 import jakarta.inject.Named;
-
-import org.primefaces.model.CroppedImage;
-import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.StreamedContent;
 
 @Named
 @SessionScoped

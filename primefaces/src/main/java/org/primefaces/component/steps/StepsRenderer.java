@@ -23,17 +23,18 @@
  */
 package org.primefaces.component.steps;
 
+import org.primefaces.component.menu.AbstractMenu;
+import org.primefaces.component.menu.BaseMenuRenderer;
+import org.primefaces.model.menu.MenuElement;
+import org.primefaces.model.menu.MenuItem;
+import org.primefaces.util.LangUtils;
+
 import java.io.IOException;
 import java.util.List;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
-import org.primefaces.component.menu.AbstractMenu;
-import org.primefaces.component.menu.BaseMenuRenderer;
-import org.primefaces.model.menu.MenuElement;
-import org.primefaces.model.menu.MenuItem;
 
 public class StepsRenderer extends BaseMenuRenderer {
 
@@ -70,6 +71,15 @@ public class StepsRenderer extends BaseMenuRenderer {
 
         writer.endElement("ul");
 
+        writer.endElement("div");
+    }
+
+    @Override
+    protected void encodePlaceholder(FacesContext context, AbstractMenu menu) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("div", menu);
+        writer.writeAttribute("id", menu.getClientId(context), "id");
+        writer.writeAttribute("class", "ui-steps-placeholder", "styleClass");
         writer.endElement("div");
     }
 
@@ -150,7 +160,14 @@ public class StepsRenderer extends BaseMenuRenderer {
 
         writer.startElement("span", steps);
         writer.writeAttribute("class", Steps.STEP_NUMBER_CLASS, null);
-        writer.writeText((index + 1), null);
+        if (LangUtils.isNotEmpty(menuitem.getIcon())) {
+            writer.startElement("span", null);
+            writer.writeAttribute("class", Steps.STEP_NUMBER_ICON_CLASS + " " + menuitem.getIcon(), null);
+            writer.endElement("span");
+        }
+        else {
+            writer.writeText((index + 1), null);
+        }
         writer.endElement("span");
 
         Object value = menuitem.getValue();

@@ -23,6 +23,12 @@
  */
 package org.primefaces.component.graphicimage;
 
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.DynamicContentSrcBuilder;
+import org.primefaces.util.HTML;
+import org.primefaces.util.Lazy;
+import org.primefaces.util.ResourceUtils;
+
 import java.io.IOException;
 
 import javax.faces.application.Resource;
@@ -30,12 +36,6 @@ import javax.faces.application.ResourceHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.DynamicContentSrcBuilder;
-import org.primefaces.util.HTML;
-import org.primefaces.util.Lazy;
-import org.primefaces.util.ResourceUtils;
 
 public class GraphicImageRenderer extends CoreRenderer {
 

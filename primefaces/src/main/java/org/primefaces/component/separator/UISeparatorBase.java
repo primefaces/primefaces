@@ -23,9 +23,9 @@
  */
 package org.primefaces.component.separator;
 
-import javax.faces.component.UIComponentBase;
-
 import org.primefaces.model.menu.Separator;
+
+import javax.faces.component.UIComponentBase;
 
 @Deprecated(since = "15.0", forRemoval = true)
 public abstract class UISeparatorBase extends UIComponentBase implements Separator {

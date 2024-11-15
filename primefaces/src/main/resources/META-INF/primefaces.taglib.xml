@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <facelet-taglib xmlns="http://xmlns.jcp.org/xml/ns/javaee"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_3.xsd" 
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facelettaglibrary_2_3.xsd" 
     version="2.3">
 
     <description>PrimeFaces UI components.</description>
@@ -363,7 +363,7 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description>Client side callback execute before ajax request is begins.</description>
+            <description>Client side callback execute before ajax request begins.</description>
             <name>onstart</name>
             <required>false</required>
             <type>java.lang.String</type>
@@ -674,7 +674,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[The suffix mapping for a array with all enum values. Default value: ALL_VALUES.]]>
+                <![CDATA[Deprecated. Use the key ALL_VALUES to access all values, which is and was always available. The suffix mapping for an array with all enum values. Default value: ALL_VALUES.]]>
             </description>
             <name>allSuffix</name>
             <required>false</required>
@@ -3741,7 +3741,7 @@
             <description>
                 <![CDATA[Default for millisecond selection, if no date is given. Default is 0.]]>
             </description>
-            <name>defaultMillisec</name>
+            <name>defaultMillisecond</name>
             <required>false</required>
             <type>java.lang.Integer</type>
         </attribute>
@@ -4900,7 +4900,7 @@
             </description>
             <name>pattern</name>
             <required>false</required>
-            <type>String</type>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -6553,7 +6553,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Client side callback to execute before ajax request is begins.]]>
+                <![CDATA[Client side callback to execute before ajax request begins.]]>
             </description>
             <name>onstart</name>
             <required>false</required>
@@ -7037,7 +7037,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Client side callback to execute before ajax request is begins.]]>
+                <![CDATA[Client side callback to execute before ajax request begins.]]>
             </description>
             <name>onstart</name>
             <required>false</required>
@@ -7776,6 +7776,13 @@
                 <![CDATA[Name of collection iterator which will be the value of DashboardWidget.getValue().]]>
             </description>
             <name>var</name>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Scope for dashboard drag and drop behaviour. Items can be dragged between multiple dashboards with the same scope. (default: dashboard)]]>
+            </description>
+            <name>scope</name>
             <required>false</required>
         </attribute>
     </tag>
@@ -8672,6 +8679,14 @@
             <name>filterEvent</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines if filtering would be done using normalized values (accents will be removed from characters). Default is false.]]>
+            </description>
+            <name>filterNormalize</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -10863,30 +10878,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Regular expression for accepted file types, e.g., /(\.|\/)(gif|jpeg|jpg|png)$/]]>
-            </description>
-            <name>allowTypes</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Maximum number of files to be uploaded. Deprecated please attach 'p:validateFile'.]]>
-            </description>
-            <name>fileLimit</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Individual file size limit in bytes. Default is unlimited. Deprecated please attach 'p:validateFile'.]]>
-            </description>
-            <name>sizeLimit</name>
-            <required>false</required>
-            <type>java.lang.Long</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[To upload large files in smaller chunks, set this option to a preferred maximum chunk size. If set to 0 (default), null or undefined, or the browser does not support the required Blob API, files will be uploaded as a whole. Only works in "advanced" mode.]]>
             </description>
             <name>maxChunkSize</name>
@@ -12297,7 +12288,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Javascript handler to execute before ajax request is begins.]]>
+                <![CDATA[Javascript handler to execute before ajax request begins.]]>
             </description>
             <name>onstart</name>
             <required>false</required>
@@ -14197,11 +14188,11 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Controls padding of the decimal places. If true, always pads the decimal with zeros.]]>
+                <![CDATA[Allow padding the decimal places with zeros. If set to 'floats', padding is only done when there are some decimals (up to the number of decimal places from the decimalPlaces variable). If set to an integer, padding will use that number for adding the zeros. If set to "true" it will always pad the decimal places with zeroes, and never if set to "false". Default is "true"]]>
             </description>
             <name>padControl</name>
             <required>false</required>
-            <type>java.lang.Boolean</type>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -17766,7 +17757,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Javascript handler to execute before ajax request is begins.]]>
+                <![CDATA[Javascript handler to execute before ajax request begins.]]>
             </description>
             <name>onstart</name>
             <required>false</required>
@@ -19433,7 +19424,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Event to show the overlay panel, default is "click".]]>
+                <![CDATA[Event to show the overlay panel if 'none', the overlay panel will only be displayed by `show()` or `toggle()`. default is "click".]]>
             </description>
             <name>showEvent</name>
             <required>false</required>
@@ -21148,7 +21139,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Javascript handler to execute before ajax request is begins.]]>
+                <![CDATA[Javascript handler to execute before ajax request begins.]]>
             </description>
             <name>onstart</name>
             <required>false</required>
@@ -21823,7 +21814,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Javascript handler to execute before ajax request is begins.]]>
+                <![CDATA[Javascript handler to execute before ajax request begins.]]>
             </description>
             <name>onstart</name>
             <required>false</required>
@@ -22908,7 +22899,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Disables the component when set to true.]]>
             </description>
             <name>disabled</name>
             <required>false</required>
@@ -22916,15 +22907,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
-            </description>
-            <name>label</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[]]>
+                <![CDATA[Client side callback to execute when value changes.]]>
             </description>
             <name>onchange</name>
             <required>false</required>
@@ -22932,7 +22915,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Inline style of the component.]]>
             </description>
             <name>style</name>
             <required>false</required>
@@ -22940,7 +22923,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Style class of the component.]]>
             </description>
             <name>styleClass</name>
             <required>false</required>
@@ -23346,7 +23329,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Disables the component when set to true.]]>
             </description>
             <name>disabled</name>
             <required>false</required>
@@ -23354,7 +23337,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[User presentable name of the component.]]>
             </description>
             <name>label</name>
             <required>false</required>
@@ -23362,7 +23345,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Client side callback to execute when value changes.]]>
             </description>
             <name>onchange</name>
             <required>false</required>
@@ -23370,7 +23353,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Inline style of the component.]]>
             </description>
             <name>style</name>
             <required>false</required>
@@ -23378,7 +23361,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Style class of the component.]]>
             </description>
             <name>styleClass</name>
             <required>false</required>
@@ -23535,6 +23518,14 @@
             <name>emptyLabel</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Label to be shown in updateLabel mode when one or more items are selected. If not set the label is shown.]]>
+            </description>
+            <name>selectedLabel</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -24769,9 +24760,17 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Flag indicating whether the component should be disabled.]]>
             </description>
             <name>disabled</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Flag indicating that this input element will prevent changes by the user.]]>
+            </description>
+            <name>readonly</name>
             <required>false</required>
             <type>boolean</type>
         </attribute>
@@ -24801,7 +24800,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Client side callback to execute when the value changes.]]>
             </description>
             <name>onchange</name>
             <required>false</required>
@@ -24809,7 +24808,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Inline style of the component.]]>
             </description>
             <name>style</name>
             <required>false</required>
@@ -24817,7 +24816,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Style class of the component.]]>
             </description>
             <name>styleClass</name>
             <required>false</required>
@@ -24856,7 +24855,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Position of the element in the tabbing order.]]>
             </description>
             <name>tabindex</name>
             <required>false</required>
@@ -24864,7 +24863,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[When true, allows the user to edit the dropdown value by typing directly into the input field.]]>
             </description>
             <name>editable</name>
             <required>false</required>
@@ -24872,7 +24871,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Client side callback to execute when a key is pressed down.]]>
             </description>
             <name>onkeydown</name>
             <required>false</required>
@@ -24880,7 +24879,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Client side callback to execute when a key is released.]]>
             </description>
             <name>onkeyup</name>
             <required>false</required>
@@ -26817,7 +26816,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Client side callback to execute before ajax request is begins.]]>
+                <![CDATA[Client side callback to execute before ajax request begins.]]>
             </description>
             <name>onstart</name>
             <required>false</required>
@@ -30653,6 +30652,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Defines if filtering would be done using normalized values (accents will be removed from characters). Default is false.]]>
+            </description>
+            <name>filterNormalize</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Delay to wait in milliseconds before sending each filter query. Default is 300.]]>
             </description>
             <name>filterDelay</name>
@@ -31422,6 +31429,22 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Inline style of the canvas element.]]>
+            </description>
+            <name>canvasStyle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class of the canvas element.]]>
+            </description>
+            <name>canvasStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]>
             </description>
             <name>ariaLabel</name>
@@ -32163,6 +32186,38 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Default for hour selection, if no date is given. Default is 0.]]>
+            </description>
+            <name>defaultHour</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Default for minute selection, if no date is given. Default is 0.]]>
+            </description>
+            <name>defaultMinute</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Default for second selection, if no date is given. Default is 0.]]>
+            </description>
+            <name>defaultSecond</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Default for millisecond selection, if no date is given. Default is 0.]]>
+            </description>
+            <name>defaultMillisecond</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Whether to show the seconds in time picker. Default is false.]]>
             </description>
             <name>showSeconds</name>
@@ -32275,7 +32330,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Type of view to display, valid values are "date" for datepicker and "month" for month picker.]]>
+                <![CDATA[Type of view to display, valid values are "date" for datepicker, "week" for week picker, "month" for month picker.]]>
             </description>
             <name>view</name>
             <required>false</required>

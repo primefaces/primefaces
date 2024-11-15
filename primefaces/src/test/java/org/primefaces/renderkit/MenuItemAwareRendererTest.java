@@ -23,11 +23,12 @@
  */
 package org.primefaces.renderkit;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.primefaces.model.menu.DefaultMenuItem;
 
 import org.junit.jupiter.api.Test;
-import org.primefaces.model.menu.DefaultMenuItem;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MenuItemAwareRendererTest extends MenuItemAwareRenderer {
 

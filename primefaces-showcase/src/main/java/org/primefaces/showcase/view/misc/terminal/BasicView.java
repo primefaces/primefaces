@@ -23,11 +23,11 @@
  */
 package org.primefaces.showcase.view.misc.terminal;
 
-import jakarta.faces.view.ViewScoped;
-
-import jakarta.inject.Named;
 import java.io.Serializable;
 import java.util.Date;
+
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
 
 @Named("terminalBasicView")
 @ViewScoped

@@ -23,6 +23,12 @@
  */
 package org.primefaces.component.selectonelistbox;
 
+import org.primefaces.component.column.Column;
+import org.primefaces.renderkit.SelectOneRenderer;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.WidgetBuilder;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -34,12 +40,6 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.render.Renderer;
-
-import org.primefaces.component.column.Column;
-import org.primefaces.renderkit.SelectOneRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.WidgetBuilder;
 
 public class SelectOneListboxRenderer extends SelectOneRenderer {
 
@@ -140,6 +140,7 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         writer.writeAttribute("class", SelectOneListbox.LIST_CONTAINER_CLASS, null);
         writer.writeAttribute("style", "height:" + calculateWrapperHeight(listbox, countSelectItems(selectItems)), null);
 
+        int totalItems = selectItems.size();
         if (customContent) {
             writer.startElement("table", null);
             writer.writeAttribute("class", SelectOneListbox.LIST_CLASS, null);
@@ -148,7 +149,10 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
             writer.startElement("tbody", null);
             for (int i = 0; i < selectItems.size(); i++) {
                 SelectItem selectItem = selectItems.get(i);
-                encodeItem(context, listbox, selectItem, values, submittedValues, converter, customContent);
+                String selectedId = encodeItem(context, listbox, selectItem, values, submittedValues, converter, customContent, totalItems, i);
+                if (selectedId != null) {
+                    writer.writeAttribute(HTML.ARIA_ACTIVEDESCENDANT, selectedId, null);
+                }
             }
             writer.endElement("tbody");
             writer.endElement("table");
@@ -160,7 +164,10 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
             writer.writeAttribute(HTML.ARIA_MULITSELECTABLE, "false", null);
             for (int i = 0; i < selectItems.size(); i++) {
                 SelectItem selectItem = selectItems.get(i);
-                encodeItem(context, listbox, selectItem, values, submittedValues, converter, customContent);
+                String selectedId = encodeItem(context, listbox, selectItem, values, submittedValues, converter, customContent, totalItems, i);
+                if (selectedId != null) {
+                    writer.writeAttribute(HTML.ARIA_ACTIVEDESCENDANT, selectedId, null);
+                }
             }
             writer.endElement("ul");
         }
@@ -168,13 +175,15 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeItem(FacesContext context, SelectOneListbox listbox, SelectItem option, Object values, Object submittedValues,
-                              Converter converter, boolean customContent) throws IOException {
+    protected String encodeItem(FacesContext context, SelectOneListbox listbox, SelectItem option, Object values, Object submittedValues,
+                              Converter converter, boolean customContent, int totalItems, int index) throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
         String itemValueAsString = getOptionAsString(context, listbox, converter, option.getValue());
         boolean disabled = option.isDisabled() || listbox.isDisabled();
         String itemClass = disabled ? SelectOneListbox.ITEM_CLASS + " ui-state-disabled" : SelectOneListbox.ITEM_CLASS;
+        int currentIndex = index + 1;
+        String id = listbox.getClientId(context) + "_option" + currentIndex;
 
         Object valuesArray;
         Object itemValue;
@@ -189,7 +198,7 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
 
         boolean selected = isSelected(context, listbox, itemValue, valuesArray, converter);
         if (option.isNoSelectionOption() && values != null && !selected) {
-            return;
+            return null;
         }
 
         if (selected) {
@@ -202,10 +211,13 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
 
             writer.startElement("tr", null);
             writer.writeAttribute("class", itemClass, null);
+            writer.writeAttribute("id", id, null);
             writer.writeAttribute(HTML.ARIA_ROLE, "option", null);
             writer.writeAttribute(HTML.ARIA_LABEL, option.getLabel(), null);
             writer.writeAttribute(HTML.ARIA_DISABLED, "" + option.isDisabled(), null);
             writer.writeAttribute(HTML.ARIA_SELECTED, "" + selected, null);
+            writer.writeAttribute(HTML.ARIA_SET_SIZE, totalItems, null);
+            writer.writeAttribute(HTML.ARIA_SET_POSITION, currentIndex, null);
 
             if (option.getDescription() != null) {
                 writer.writeAttribute("title", option.getDescription(), null);
@@ -228,10 +240,13 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         else {
             writer.startElement("li", null);
             writer.writeAttribute("class", itemClass, null);
+            writer.writeAttribute("id", id, null);
             writer.writeAttribute(HTML.ARIA_ROLE, "option", null);
             writer.writeAttribute(HTML.ARIA_LABEL, option.getLabel(), null);
             writer.writeAttribute(HTML.ARIA_DISABLED, "" + option.isDisabled(), null);
             writer.writeAttribute(HTML.ARIA_SELECTED, "" + selected, null);
+            writer.writeAttribute(HTML.ARIA_SET_SIZE, totalItems, null);
+            writer.writeAttribute(HTML.ARIA_SET_POSITION, currentIndex, null);
 
             writer.startElement("span", null);
             if (option.isEscape()) {
@@ -245,6 +260,11 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
             writer.endElement("li");
         }
 
+        if (selected) {
+            return id;
+        }
+
+        return null;
     }
 
     protected void encodeSelectItems(FacesContext context, SelectOneListbox listbox, List<SelectItem> selectItems) throws IOException {

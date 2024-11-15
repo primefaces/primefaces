@@ -23,15 +23,15 @@
         <webdriver.headless>false</webdriver.headless>
         <webdriver.browser>chrome</webdriver.browser>
         <primefaces.CSP>false</primefaces.CSP>
-        <primefaces.THEME>saga</primefaces.THEME>
+        <primefaces.THEME>saga-blue</primefaces.THEME>
         <primefaces.UPLOADER>auto</primefaces.UPLOADER>
         <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
         <jakarta.faces.STATE_SAVING_METHOD>server</jakarta.faces.STATE_SAVING_METHOD>
 
         <!-- dependency versions -->
         <lombok.version>1.18.34</lombok.version>
-        <tomcat.version>10.1.28</tomcat.version>
-        <jetty.version>9.4.55.v20240627</jetty.version>
+        <tomcat.version>10.1.31</tomcat.version>
+        <jetty.version>9.4.56.v20240826</jetty.version>
     </properties>
 
     <dependencies>
@@ -140,22 +140,6 @@
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
-
-        <!-- add dependencies which get shaded by PrimeFaces so IDE´s like IntelliJ can run und debug multimoduled integration-tests -->
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.owasp.encoder</groupId>
-            <artifactId>encoder</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <build>
@@ -229,7 +213,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.8.0</version>
+                <version>3.8.1</version>
             </plugin>
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
@@ -341,7 +325,7 @@
         <profile>
             <id>theme-saga</id>
             <properties>
-                <primefaces.THEME>saga</primefaces.THEME>
+                <primefaces.THEME>saga-blue</primefaces.THEME>
             </properties>
         </profile>
         <profile>

@@ -23,13 +23,15 @@
  */
 package org.primefaces.integrationtests.menubar;
 
-import lombok.Data;
 import org.primefaces.integrationtests.general.utilities.TestUtils;
+
+import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import java.io.Serializable;
+
+import lombok.Data;
 
 @Named
 @ViewScoped

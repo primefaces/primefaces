@@ -23,11 +23,11 @@
  */
 package org.primefaces.component.terminal;
 
-import javax.faces.component.UIPanel;
-import javax.faces.component.behavior.ClientBehaviorHolder;
-
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
+
+import javax.faces.component.UIPanel;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class TerminalBase extends UIPanel implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 

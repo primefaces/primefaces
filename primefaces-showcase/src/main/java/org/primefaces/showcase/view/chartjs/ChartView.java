@@ -23,6 +23,8 @@
  */
 package org.primefaces.showcase.view.chartjs;
 
+import org.primefaces.event.ItemSelectEvent;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
@@ -33,17 +35,47 @@ import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Named;
 
-import org.primefaces.event.ItemSelectEvent;
-
-import software.xdev.chartjs.model.charts.*;
-import software.xdev.chartjs.model.color.Color;
-import software.xdev.chartjs.model.data.*;
+import software.xdev.chartjs.model.charts.BarChart;
+import software.xdev.chartjs.model.charts.BubbleChart;
+import software.xdev.chartjs.model.charts.DoughnutChart;
+import software.xdev.chartjs.model.charts.LineChart;
+import software.xdev.chartjs.model.charts.MixedChart;
+import software.xdev.chartjs.model.charts.PieChart;
+import software.xdev.chartjs.model.charts.PolarChart;
+import software.xdev.chartjs.model.charts.RadarChart;
+import software.xdev.chartjs.model.charts.ScatterChart;
+import software.xdev.chartjs.model.color.RGBAColor;
+import software.xdev.chartjs.model.data.BarData;
+import software.xdev.chartjs.model.data.BubbleData;
+import software.xdev.chartjs.model.data.DoughnutData;
+import software.xdev.chartjs.model.data.LineData;
+import software.xdev.chartjs.model.data.MixedData;
+import software.xdev.chartjs.model.data.PieData;
+import software.xdev.chartjs.model.data.PolarData;
+import software.xdev.chartjs.model.data.RadarData;
+import software.xdev.chartjs.model.data.ScatterData;
 import software.xdev.chartjs.model.datapoint.BubbleDataPoint;
 import software.xdev.chartjs.model.datapoint.ScatterDataPoint;
-import software.xdev.chartjs.model.dataset.*;
+import software.xdev.chartjs.model.dataset.BarDataset;
+import software.xdev.chartjs.model.dataset.BubbleDataset;
+import software.xdev.chartjs.model.dataset.DoughnutDataset;
+import software.xdev.chartjs.model.dataset.LineDataset;
+import software.xdev.chartjs.model.dataset.PieDataset;
+import software.xdev.chartjs.model.dataset.PolarDataset;
+import software.xdev.chartjs.model.dataset.RadarDataset;
+import software.xdev.chartjs.model.dataset.ScatterDataset;
 import software.xdev.chartjs.model.enums.FontStyle;
+import software.xdev.chartjs.model.enums.IndexAxis;
 import software.xdev.chartjs.model.enums.ScalesPosition;
-import software.xdev.chartjs.model.options.*;
+import software.xdev.chartjs.model.options.BarOptions;
+import software.xdev.chartjs.model.options.DoughnutOptions;
+import software.xdev.chartjs.model.options.Font;
+import software.xdev.chartjs.model.options.LineOptions;
+import software.xdev.chartjs.model.options.Options;
+import software.xdev.chartjs.model.options.Plugins;
+import software.xdev.chartjs.model.options.RadarOptions;
+import software.xdev.chartjs.model.options.Title;
+import software.xdev.chartjs.model.options.Tooltip;
 import software.xdev.chartjs.model.options.elements.Fill;
 import software.xdev.chartjs.model.options.scale.Scales;
 import software.xdev.chartjs.model.options.scale.cartesian.CartesianScaleOptions;
@@ -72,6 +104,7 @@ public class ChartView implements Serializable {
     private String radarModel;
     private String scatterModel;
     private String stackedBarModel;
+    private String mixedModel;
 
     @PostConstruct
     public void init() {
@@ -81,6 +114,7 @@ public class ChartView implements Serializable {
         createDonutModel();
         createJsonModel();
         createLineModel();
+        createMixedModel();
         createPieModel();
         createPolarAreaModel();
         createRadarModel();
@@ -94,7 +128,7 @@ public class ChartView implements Serializable {
                 .addDataset(new PieDataset()
                         .setData(BigDecimal.valueOf(300), BigDecimal.valueOf(50), BigDecimal.valueOf(100))
                         .setLabel("My First Dataset")
-                        .addBackgroundColors(new Color(255, 99, 132), new Color(54, 162, 235), new Color(255, 205, 86))
+                        .addBackgroundColors(new RGBAColor(255, 99, 132), new RGBAColor(54, 162, 235), new RGBAColor(255, 205, 86))
                 )
                 .setLabels("Red", "Blue", "Yellow"))
                 .toJson();
@@ -111,11 +145,11 @@ public class ChartView implements Serializable {
                                 BigDecimal.valueOf(14))
                         .setLabel("My First Dataset")
                         .addBackgroundColors(
-                                new Color(255, 99, 132),
-                                new Color(75, 192, 192),
-                                new Color(255, 205, 86),
-                                new Color(201, 203, 207),
-                                new Color(54, 162, 235)
+                                new RGBAColor(255, 99, 132),
+                                new RGBAColor(75, 192, 192),
+                                new RGBAColor(255, 205, 86),
+                                new RGBAColor(201, 203, 207),
+                                new RGBAColor(54, 162, 235)
                         )
                 )
                 .setLabels("Red", "Green", "Yellow", "Grey", "Blue" ))
@@ -128,7 +162,7 @@ public class ChartView implements Serializable {
                 .addDataset(new LineDataset()
                         .setData(65, 59, 80, 81, 56, 55, 40)
                         .setLabel("My First Dataset")
-                        .setBorderColor(new Color(75, 192, 192))
+                        .setBorderColor(new RGBAColor(75, 192, 192))
                         .setLineTension(0.1f)
                         .setFill(new Fill<Boolean>(false)))
                 .setLabels("January", "February", "March", "April", "May", "June", "July"))
@@ -154,7 +188,7 @@ public class ChartView implements Serializable {
                         .addData(new ScatterDataPoint(13, 7))
                         .addData(new ScatterDataPoint(6, 9))
                         .setLabel("Red Dataset")
-                        .setBorderColor(new Color(249, 24, 24))
+                        .setBorderColor(new RGBAColor(249, 24, 24))
                         .setShowLine(Boolean.FALSE)
                         .setFill(new Fill<Boolean>(true)))
                 )
@@ -207,14 +241,14 @@ public class ChartView implements Serializable {
                 .addDataset(new BarDataset()
                         .setData(65, 59, 80, 81, 56, 55, 40)
                         .setLabel("My First Dataset")
-                        .setBackgroundColor(new Color(255, 99, 132, 0.2))
-                        .setBorderColor(new Color(255, 99, 132))
+                        .setBackgroundColor(new RGBAColor(255, 99, 132, 0.2))
+                        .setBorderColor(new RGBAColor(255, 99, 132))
                         .setBorderWidth(1))
                 .addDataset(new BarDataset()
                         .setData(85, 69, 20, 51, 76, 75, 10)
                         .setLabel("My Second Dataset")
-                        .setBackgroundColor(new Color(255, 159, 64, 0.2))
-                        .setBorderColor(new Color(255, 159, 64))
+                        .setBackgroundColor(new RGBAColor(255, 159, 64, 0.2))
+                        .setBorderColor(new RGBAColor(255, 159, 64))
                         .setBorderWidth(1)
                 )
                 .setLabels("January", "February", "March", "April", "May", "June", "July"))
@@ -241,15 +275,15 @@ public class ChartView implements Serializable {
                 .addDataset(new BarDataset()
                         .setData(62, -58, -49, 25, 4, 77, -41)
                         .setLabel("Dataset 1")
-                        .setBackgroundColor(new Color(255, 99, 132)))
+                        .setBackgroundColor(new RGBAColor(255, 99, 132)))
                 .addDataset(new BarDataset()
                         .setData(-1, 32, -52, 11, 97, 76, -78)
                         .setLabel("Dataset 2")
-                        .setBackgroundColor(new Color(54, 162, 235)))
+                        .setBackgroundColor(new RGBAColor(54, 162, 235)))
                 .addDataset(new BarDataset()
                         .setData(-44, 25, 15, 92, 80, -25, -11)
                         .setLabel("Dataset 3")
-                        .setBackgroundColor(new Color(75, 192, 192)))
+                        .setBackgroundColor(new RGBAColor(75, 192, 192)))
                 .setLabels("January", "February", "March", "April", "May", "June", "July"))
                 .setOptions(new BarOptions()
                         .setResponsive(true)
@@ -281,13 +315,13 @@ public class ChartView implements Serializable {
                                 BigDecimal.valueOf(3))
                         .setLabel("P.Practitioner")
                         .setLineTension(0.1f)
-                        .setBackgroundColor(new Color(102, 153, 204, 0.2))
-                        .setBorderColor(new Color(102, 153, 204, 1))
-                        .setPointBackgroundColor(List.of(new Color(102, 153, 204, 1)))
-                        .setPointBorderColor(List.of(Color.WHITE))
+                        .setBackgroundColor(new RGBAColor(102, 153, 204, 0.2))
+                        .setBorderColor(new RGBAColor(102, 153, 204, 1))
+                        .setPointBackgroundColor(List.of(new RGBAColor(102, 153, 204, 1)))
+                        .setPointBorderColor(List.of(RGBAColor.WHITE))
                         .setPointHoverRadius(List.of(5))
-                        .setPointHoverBackgroundColor(List.of(Color.WHITE))
-                        .setPointHoverBorderColor(List.of(new Color(102, 153, 204, 1))))
+                        .setPointHoverBackgroundColor(List.of(RGBAColor.WHITE))
+                        .setPointHoverBorderColor(List.of(new RGBAColor(102, 153, 204, 1))))
                 .addDataset(new RadarDataset()
                         .setData(BigDecimal.valueOf(2.1),
                                 BigDecimal.valueOf(3),
@@ -296,13 +330,13 @@ public class ChartView implements Serializable {
                                 BigDecimal.valueOf(3))
                         .setLabel("P.Manager")
                         .setLineTension(0.1f)
-                        .setBackgroundColor(new Color(255, 204, 102, 0.2))
-                        .setBorderColor(new Color(255, 204, 102, 1))
-                        .setPointBackgroundColor(List.of(new Color(255, 204, 102, 1)))
-                        .setPointBorderColor(List.of(Color.WHITE))
+                        .setBackgroundColor(new RGBAColor(255, 204, 102, 0.2))
+                        .setBorderColor(new RGBAColor(255, 204, 102, 1))
+                        .setPointBackgroundColor(List.of(new RGBAColor(255, 204, 102, 1)))
+                        .setPointBorderColor(List.of(RGBAColor.WHITE))
                         .setPointHoverRadius(List.of(5))
-                        .setPointHoverBackgroundColor(List.of(Color.WHITE))
-                        .setPointHoverBorderColor(List.of(new Color(255, 204, 102, 1))))
+                        .setPointHoverBackgroundColor(List.of(RGBAColor.WHITE))
+                        .setPointHoverBorderColor(List.of(new RGBAColor(255, 204, 102, 1))))
                 .setLabels("Process Excellence", "Problem Solving", "Facilitation", "Project Mgmt", "Change Mgmt"))
                 .setOptions(new RadarOptions()
                         .setResponsive(true)
@@ -311,12 +345,12 @@ public class ChartView implements Serializable {
                                 .setAngleLines(new AngleLines()
                                         .setDisplay(Boolean.TRUE)
                                         .setLineWidth(BigDecimal.valueOf(0.5))
-                                        .setColor(new Color(128, 128, 128, 0.2)))
+                                        .setColor(new RGBAColor(128, 128, 128, 0.2)))
                                 .setPointLabels(new PointLabels().setFont(new Font()
                                         .setSize(BigDecimal.valueOf(14))
                                         .setStyle(FontStyle.NORMAL)
                                         .setFamily("Lato, sans-serif"))
-                                        .setColor(new Color(204, 204, 204, 1)))
+                                        .setColor(new RGBAColor(204, 204, 204, 1)))
                                 .setTicks(new RadialTickOptions()
                                         .setDisplay(false)
                                         .setStepSize(BigDecimal.valueOf(0.2))
@@ -337,8 +371,8 @@ public class ChartView implements Serializable {
                         .addData(new BubbleDataPoint(BigDecimal.valueOf(20), BigDecimal.valueOf(30), BigDecimal.valueOf(15)))
                         .addData(new BubbleDataPoint(BigDecimal.valueOf(40), BigDecimal.valueOf(10), BigDecimal.valueOf(10)))
                         .setLabel("My First Dataset")
-                        .setBackgroundColor(new Color(255, 99, 132))
-                        .setBorderColor(new Color(255, 99, 132))
+                        .setBackgroundColor(new RGBAColor(255, 99, 132))
+                        .setBorderColor(new RGBAColor(255, 99, 132))
                 )).toJson();
     }
 
@@ -350,13 +384,54 @@ public class ChartView implements Serializable {
                                 BigDecimal.valueOf(50),
                                 BigDecimal.valueOf(100))
                         .addBackgroundColors(
-                                new Color(255, 99, 132),
-                                new Color(54, 162, 235),
-                                new Color(255, 205, 86))
+                                new RGBAColor(255, 99, 132),
+                                new RGBAColor(54, 162, 235),
+                                new RGBAColor(255, 205, 86))
                 )
                 .setLabels("Red", "Blue", "Yellow"))
                 .setOptions(new DoughnutOptions().setMaintainAspectRatio(Boolean.FALSE))
                 .toJson();
+    }
+
+    public void createMixedModel() {
+        MixedData mixedData = new MixedData();
+
+        BarDataset barDataset = new BarDataset()
+                .setType("bar")
+                .setData(120, 113, 175, 143, 118, 159, 110)
+                .setLabel("Bar data")
+                .setBorderColor(new RGBAColor(255, 99, 132, 1.0))
+                .setBackgroundColor(new RGBAColor(255, 99, 132, 0.5))
+                .setBorderWidth(1);
+
+        LineDataset lineDataset = new LineDataset()
+                .setType("line")
+                .setData(119, 144, 179, 165, 195, 170, 135)
+                .setLabel("Line data")
+                .setStepped(true)
+                .setBorderColor(new RGBAColor(75, 192, 192, 1.0))
+                .setBackgroundColor(new RGBAColor(75, 192, 192, 0.5))
+                .setLineTension(0.1f)
+                .setFill(new Fill<Boolean>(false));
+
+        mixedData.addDataset(barDataset);
+        mixedData.addDataset(lineDataset);
+
+        mixedData.setLabels("January", "February", "March", "April", "May", "June", "July");
+
+        mixedModel = new MixedChart()
+                .setData(mixedData)
+                .setOptions(new Options<>()
+                        .setResponsive(true)
+                        .setMaintainAspectRatio(false)
+                        .setPlugins(new Plugins()
+                                .setTooltip(new Tooltip().setMode("index"))
+                                .setTitle(new Title()
+                                        .setDisplay(true)
+                                        .setText("Mixed Chart")
+                                )
+                        )
+                ).toJson();
     }
 
     public void createJsonModel() {
@@ -559,6 +634,14 @@ public class ChartView implements Serializable {
 
     public void setScatterModel(String scatterModel) {
         this.scatterModel = scatterModel;
+    }
+
+    public String getMixedModel() {
+        return mixedModel;
+    }
+
+    public void setMixedModel(String mixedModel) {
+        this.mixedModel = mixedModel;
     }
 
     public String getJson() {

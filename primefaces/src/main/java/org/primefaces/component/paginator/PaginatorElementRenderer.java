@@ -23,11 +23,11 @@
  */
 package org.primefaces.component.paginator;
 
+import org.primefaces.component.api.Pageable;
+
 import java.io.IOException;
 
 import javax.faces.context.FacesContext;
-
-import org.primefaces.component.api.Pageable;
 
 public interface PaginatorElementRenderer {
 

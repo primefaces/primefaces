@@ -46,6 +46,7 @@ DataTable displays data in tabular format.
 | filterDelay               | 300                | Integer          | Delay in milliseconds before sending an ajax filter query.
 | filterEvent               | keyup              | String           | Event triggering filter for input filters. If "enter" it will only filter after ENTER key is pressed.
 | filteredValue             | null               | List             | List to keep filtered data.
+| filterNormalize           | false              | Boolean          | Defines if filtering would be done using normalized values (accents will be removed from characters). Default is false.
 | first                     | 0                  | Integer          | Index of the first row to be displayed
 | frozenColumns             | 0                  | Integer          | Number of columns to freeze from start index 0.
 | frozenColumnsAlignment    | left               | String           | Defines Alignment of frozen columns, valid values are `left` (default) and `right` 
@@ -1051,6 +1052,18 @@ JPALazyDataModel<MyEntity> lazyDataModel = JPALazyDataModel.<MyEntity> builder()
         })
         ...
 ```
+
+#### Add additional filters
+You can add your own/custom FilterMeta to manipulate generated predicates:
+```java
+JPALazyDataModel<MyEntity> lazyDataModel = JPALazyDataModel.<MyEntity>builder()
+        ...
+        .additionalFilterMeta(() -> {
+            return new ArrayList<FilterMeta>(...);
+        })
+        ...
+```
+
 
 #### `Iterator` and performance considerations
 `JPALazyDataModel`, being an extension of `DataModel`, is iterable over the JPA values. This is accomplished lazily by paging through, and therefore querying, the data as needed (calls to `hasNext()` and `next()` from `Iterator` in turn call `load(first, pageSize, sortBy, filterBy)`).

@@ -23,7 +23,28 @@
  */
 package org.primefaces.component.api;
 
-import java.util.*;
+import org.primefaces.component.column.ColumnBase;
+import org.primefaces.component.headerrow.HeaderRow;
+import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.model.ColumnMeta;
+import org.primefaces.model.FilterMeta;
+import org.primefaces.model.SortMeta;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.EditableValueHolderState;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.LocaleUtils;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -37,14 +58,6 @@ import javax.faces.component.ValueHolder;
 import javax.faces.component.search.SearchExpressionHint;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.ConverterException;
-
-import org.primefaces.component.column.ColumnBase;
-import org.primefaces.component.headerrow.HeaderRow;
-import org.primefaces.expression.SearchExpressionUtils;
-import org.primefaces.model.ColumnMeta;
-import org.primefaces.model.FilterMeta;
-import org.primefaces.model.SortMeta;
-import org.primefaces.util.*;
 
 public interface UITable<T extends UITableState> extends ColumnAware, MultiViewStateAware<T> {
 
@@ -63,7 +76,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
         // build columns filterBy
         forEachColumn(c -> {
-            FilterMeta meta = FilterMeta.of(context, getVar(), c);
+            FilterMeta meta = FilterMeta.of(context, getVar(), c, isFilterNormalize());
             if (meta != null) {
                 filterBy.put(meta.getColumnKey(), meta);
             }
@@ -148,7 +161,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
             if (globalFilterComponent instanceof ValueHolder) {
                 ((ValueHolder) globalFilterComponent).setValue(globalFilterDefaultValue);
             }
-            FilterMeta globalFilterBy = FilterMeta.of(globalFilterDefaultValue, getGlobalFilterFunction());
+            FilterMeta globalFilterBy = FilterMeta.of(globalFilterDefaultValue, getGlobalFilterFunction(), isFilterNormalize());
             filterBy.put(globalFilterBy.getColumnKey(), globalFilterBy);
         }
     }
@@ -160,7 +173,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         }
 
         // lazy init - happens in cases where the column is initially not rendered
-        FilterMeta f = FilterMeta.of(context, getVar(), column);
+        FilterMeta f = FilterMeta.of(context, getVar(), column, isFilterNormalize());
         if (f != null) {
             filterBy.put(f.getColumnKey(), f);
         }
@@ -267,6 +280,8 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
     boolean isGlobalFilterOnly();
 
     void setGlobalFilterOnly(boolean globalFilterOnly);
+
+    boolean isFilterNormalize();
 
     default Map<String, SortMeta> initSortBy(FacesContext context) {
         Map<String, SortMeta> sortBy = new LinkedHashMap<>();

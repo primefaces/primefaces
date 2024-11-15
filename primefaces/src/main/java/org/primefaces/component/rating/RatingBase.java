@@ -23,11 +23,11 @@
  */
 package org.primefaces.component.rating;
 
-import javax.faces.component.UIInput;
-import javax.faces.component.behavior.ClientBehaviorHolder;
-
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
+
+import javax.faces.component.UIInput;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class RatingBase extends UIInput implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 

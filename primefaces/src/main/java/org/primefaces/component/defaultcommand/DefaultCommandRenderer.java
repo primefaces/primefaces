@@ -23,14 +23,14 @@
  */
 package org.primefaces.component.defaultcommand;
 
+import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.WidgetBuilder;
+
 import java.io.IOException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-
-import org.primefaces.expression.SearchExpressionUtils;
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.WidgetBuilder;
 
 public class DefaultCommandRenderer extends CoreRenderer {
 

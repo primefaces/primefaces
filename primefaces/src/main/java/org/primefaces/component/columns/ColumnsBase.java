@@ -23,12 +23,12 @@
  */
 package org.primefaces.component.columns;
 
+import org.primefaces.component.api.PrimeUIData;
 import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.api.UIData;
 import org.primefaces.model.SortMeta;
 
 
-public abstract class ColumnsBase extends UIData implements UIColumn {
+public abstract class ColumnsBase extends PrimeUIData implements UIColumn {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

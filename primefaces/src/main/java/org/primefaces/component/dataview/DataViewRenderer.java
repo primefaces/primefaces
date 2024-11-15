@@ -23,6 +23,14 @@
  */
 package org.primefaces.component.dataview;
 
+import org.primefaces.renderkit.DataRenderer;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.GridLayoutUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.WidgetBuilder;
+
 import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Level;
@@ -31,9 +39,6 @@ import java.util.logging.Logger;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
-import org.primefaces.renderkit.DataRenderer;
-import org.primefaces.util.*;
 
 public class DataViewRenderer extends DataRenderer {
 
@@ -136,16 +141,16 @@ public class DataViewRenderer extends DataRenderer {
         ResponseWriter writer = context.getResponseWriter();
         UIComponent fHeader = dataview.getFacet("header");
 
-        writer.startElement("div", dataview);
-        writer.writeAttribute("class", DataView.HEADER_CLASS, null);
+        if (FacetUtils.shouldRenderFacet(fHeader) || hasLayoutOptions(context, dataview)) {
+            writer.startElement("div", dataview);
+            writer.writeAttribute("class", DataView.HEADER_CLASS, null);
 
-        if (FacetUtils.shouldRenderFacet(fHeader)) {
             fHeader.encodeAll(context);
+
+            encodeLayoutOptions(context, dataview);
+
+            writer.endElement("div");
         }
-
-        encodeLayoutOptions(context, dataview);
-
-        writer.endElement("div");
     }
 
     protected void encodeContent(FacesContext context, DataView dataview) throws IOException {
@@ -160,10 +165,14 @@ public class DataViewRenderer extends DataRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeLayoutOptions(FacesContext context, DataView dataview) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
+    protected boolean hasLayoutOptions(FacesContext context, DataView dataview) {
         boolean hasGridItem = (dataview.getGridItem() != null);
         boolean hasListItem = (dataview.getListItem() != null);
+        return hasGridItem && hasListItem;
+    }
+
+    protected void encodeLayoutOptions(FacesContext context, DataView dataview) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
         String layout = dataview.getLayout();
         boolean isGridLayout = layout.contains("grid");
         String containerClass = DataView.BUTTON_CONTAINER_CLASS;
@@ -171,7 +180,7 @@ public class DataViewRenderer extends DataRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", containerClass, null);
 
-        if (hasGridItem && hasListItem) {
+        if (hasLayoutOptions(context, dataview)) {
             String listIcon = dataview.getListIcon() != null ? dataview.getListIcon() : "ui-icon-grip-dotted-horizontal";
             encodeButton(context, dataview, "list", listIcon, !isGridLayout);
 

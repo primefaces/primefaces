@@ -23,14 +23,18 @@
  */
 package org.primefaces.model.menu;
 
-import java.io.Serializable;
-import java.util.*;
-
-import javax.faces.component.UIComponent;
-
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.util.Callbacks;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.faces.component.UIComponent;
 
 public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, Serializable {
 

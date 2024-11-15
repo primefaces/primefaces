@@ -23,9 +23,10 @@
  */
 package org.primefaces.selenium.component;
 
+import org.primefaces.selenium.component.base.AbstractMessage;
+
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.component.base.AbstractMessage;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:staticMessage}.

@@ -23,6 +23,9 @@
  */
 package org.primefaces.component.importconstants;
 
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.util.LangUtils;
+
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -37,9 +40,6 @@ import javax.faces.view.facelets.FaceletContext;
 import javax.faces.view.facelets.TagAttribute;
 import javax.faces.view.facelets.TagConfig;
 import javax.faces.view.facelets.TagHandler;
-
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.util.LangUtils;
 
 /**
  * {@link TagHandler} for the <code>ImportConstants</code> component.

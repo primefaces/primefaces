@@ -23,17 +23,9 @@
  */
 package org.primefaces.renderkit;
 
-import java.io.IOException;
-import java.util.Map;
-
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIPanel;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.component.api.Pageable;
+import org.primefaces.component.api.PrimeUIData;
 import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.api.UIData;
 import org.primefaces.component.api.UIPageableData;
 import org.primefaces.component.paginator.CurrentPageReportRenderer;
 import org.primefaces.component.paginator.FirstPageLinkRenderer;
@@ -45,7 +37,18 @@ import org.primefaces.component.paginator.PageLinksRenderer;
 import org.primefaces.component.paginator.PaginatorElementRenderer;
 import org.primefaces.component.paginator.PrevPageLinkRenderer;
 import org.primefaces.component.paginator.RowsPerPageDropdownRenderer;
-import org.primefaces.util.*;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.MapBuilder;
+import org.primefaces.util.WidgetBuilder;
+
+import java.io.IOException;
+import java.util.Map;
+
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIPanel;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 
 public class DataRenderer extends CoreRenderer {
 
@@ -190,7 +193,7 @@ public class DataRenderer extends CoreRenderer {
         wb.append("}");
     }
 
-    public void encodeFacet(FacesContext context, UIData data, String facet, String styleClass) throws IOException {
+    public void encodeFacet(FacesContext context, PrimeUIData data, String facet, String styleClass) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         UIComponent component = data.getFacet(facet);
 

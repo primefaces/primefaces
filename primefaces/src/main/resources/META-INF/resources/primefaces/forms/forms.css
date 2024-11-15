@@ -1006,7 +1006,7 @@ body .ui-cascadeselect-item-content .ui-cascadeselect-group-icon {
 }
 
 /** Calendar **/
-.ui-fluid .ui-calendar, .ui-fluid .ui-calendar input {
+.ui-fluid .ui-calendar, .ui-fluid .ui-calendar > input {
     width: 100%;
 }
 

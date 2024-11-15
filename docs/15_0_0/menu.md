@@ -26,6 +26,7 @@
         - [JavaScript API](/core/csvJavascriptAPI.md)
 
   - [Accessibility](/core/accessibility.md)
+  - [Animations](/core/animations.md)
   - [BeanValidation Transformation](/core/beanvalidationtransformation.md)
   - [Client Window](/core/clientwindow.md)
   - [Content Security Policy](/core/contentsecuritypolicy.md)

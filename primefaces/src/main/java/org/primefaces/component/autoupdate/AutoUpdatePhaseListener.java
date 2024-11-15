@@ -27,12 +27,13 @@ import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
-import java.util.List;
-import java.util.Map;
 
 public class AutoUpdatePhaseListener implements PhaseListener {
 

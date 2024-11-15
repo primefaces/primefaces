@@ -1,3 +1,5 @@
+@use "mixins";
+
 .layout-content {
     margin-left: 250px;
     padding-top: 70px;
@@ -26,12 +28,12 @@
                 }
 
                 a {
-                    @include navlink();
+                    @include mixins.navlink();
                 }
             }
 
             .documentation-link {
-                @include navlink();
+                @include mixins.navlink();
                 display: flex;
                 align-items: center;
                 margin: 1rem 0;
@@ -65,7 +67,7 @@
             }
 
             a {
-                @include navlink();
+                @include mixins.navlink();
             }
 
             .doc-tablewrapper {

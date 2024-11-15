@@ -23,15 +23,16 @@
  */
 package org.primefaces.integrationtests.texteditor;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.AccordionPanel;
 import org.primefaces.selenium.component.CommandButton;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 class TextEditor002Test extends AbstractPrimePageTest {
 

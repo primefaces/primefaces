@@ -23,9 +23,9 @@
  */
 package org.primefaces.component.datatable.feature;
 
-import javax.faces.context.FacesContext;
-
 import org.primefaces.component.datatable.DataTable;
+
+import javax.faces.context.FacesContext;
 
 public class DraggableColumnsFeature implements DataTableFeature {
 

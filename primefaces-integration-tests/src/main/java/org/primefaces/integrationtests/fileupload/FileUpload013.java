@@ -23,9 +23,10 @@
  */
 package org.primefaces.integrationtests.fileupload;
 
+import java.io.Serializable;
+
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import java.io.Serializable;
 
 @Named
 @ViewScoped

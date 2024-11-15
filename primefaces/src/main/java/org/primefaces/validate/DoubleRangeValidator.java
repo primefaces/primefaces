@@ -23,9 +23,10 @@
  */
 package org.primefaces.validate;
 
+import org.primefaces.util.HTML;
+
 import java.util.HashMap;
 import java.util.Map;
-import org.primefaces.util.HTML;
 
 public class DoubleRangeValidator extends javax.faces.validator.DoubleRangeValidator implements ClientValidator {
 

@@ -47,10 +47,10 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 /**
  *               AutoNumeric.js
  *
- * @version      4.10.4
- * @date         2024-01-18 UTC 19:36
+ * @version      4.10.6
+ * @date         2024-10-14 UTC 01:11
  *
- * @authors      2016-2023 Alexandre Bonneau <alexandre.bonneau@linuxfr.eu>
+ * @authors      2016-2024 Alexandre Bonneau <alexandre.bonneau@linuxfr.eu>
  *               2009-2016 Bob Knothe <bob.knothe@gmail.com>
  * @contributors Sokolov Yura and others, cf. AUTHORS
  * @copyright    Alexandre Bonneau & Robert J. Knothe
@@ -3120,7 +3120,7 @@ var AutoNumeric = /*#__PURE__*/function () {
         return [];
       }
       var elementsInside = _toConsumableArray(formElement.querySelectorAll('[contenteditable=true]'));
-      var elementsOutside = _toConsumableArray(document.querySelectorAll("*:not(input)[form=".concat(formElement.id, "][contenteditable=true]")));
+      var elementsOutside = _toConsumableArray(document.querySelectorAll("*:not(input)[form=".concat(formElement.getAttribute('id'), "][contenteditable=true]")));
       return _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].arrayUnique(elementsInside, elementsOutside);
     }
 
@@ -4802,7 +4802,7 @@ var AutoNumeric = /*#__PURE__*/function () {
       }
 
       // Manage the Cut event
-      if ((e.ctrlKey || e.metaKey) && this.eventKey === _AutoNumericEnum__WEBPACK_IMPORTED_MODULE_1__["default"].keyName.x) {
+      if ((e.ctrlKey || e.metaKey) && (this.eventKey === _AutoNumericEnum__WEBPACK_IMPORTED_MODULE_1__["default"].keyName.X || this.eventKey === _AutoNumericEnum__WEBPACK_IMPORTED_MODULE_1__["default"].keyName.x)) {
         // Save the caret position at the start of the selection
         var caretPosition = _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].getElementSelection(this.domElement).start;
         // Convert the remaining 'formatted' numbers in a Js number
@@ -6955,7 +6955,7 @@ var AutoNumeric = /*#__PURE__*/function () {
      * @returns {string}
      */
     function version() {
-      return '4.10.4';
+      return '4.10.6';
     }
   }, {
     key: "_setArgumentsValues",

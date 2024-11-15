@@ -23,15 +23,15 @@
  */
 package org.primefaces.component.celleditor;
 
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.treetable.TreeTable;
+import org.primefaces.renderkit.CoreRenderer;
+
 import java.io.IOException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
-import org.primefaces.component.datatable.DataTable;
-import org.primefaces.component.treetable.TreeTable;
-import org.primefaces.renderkit.CoreRenderer;
 
 public class CellEditorRenderer extends CoreRenderer {
 

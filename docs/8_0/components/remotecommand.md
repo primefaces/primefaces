@@ -27,7 +27,7 @@ name | null | String | Name of the command
 async | false | Boolean | When set to true, ajax requests are not queued.
 process | @all | String | Component(s) to process partially instead of whole view.
 update | @none | String | Component(s) to update with ajax.
-onstart | null | String | Javascript handler to execute before ajax request is begins.
+onstart | null | String | Javascript handler to execute before ajax request begins.
 oncomplete | null | String | Javascript handler to execute when ajax request is completed.
 onsuccess | null | String | Javascript handler to execute when ajax request succeeds.
 onerror | null | String | Javascript handler to execute when ajax request fails.

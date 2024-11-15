@@ -31,7 +31,7 @@ ajax | true | Boolean | Specifies the submit mode, when set to true(default), su
 async | false | Boolean | When set to true, ajax requests are not queued.
 process | @all | String | Component(s) to process partially instead of whole view.
 update | @none | String | Component(s) to be updated with ajax.
-onstart | null | String | Client side callback to execute before ajax request is begins.
+onstart | null | String | Client side callback to execute before ajax request begins.
 oncomplete | null | String | Client side callback to execute when ajax request is completed.
 onsuccess | null | String | Client side callback to execute when ajax request succeeds.
 onerror | null | String | Client side callback to execute when ajax request fails.

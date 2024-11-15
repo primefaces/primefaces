@@ -23,9 +23,9 @@
  */
 package org.primefaces.component.imageswitch;
 
-import javax.faces.component.UIComponentBase;
-
 import org.primefaces.component.api.Widget;
+
+import javax.faces.component.UIComponentBase;
 
 public abstract class ImageSwitchBase extends UIComponentBase implements Widget {
 

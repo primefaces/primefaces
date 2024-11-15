@@ -23,15 +23,15 @@
  */
 package org.primefaces.showcase.view.input;
 
-import jakarta.enterprise.context.RequestScoped;
-import jakarta.faces.application.FacesMessage;
-import jakarta.faces.context.FacesContext;
-import jakarta.inject.Named;
-
 import org.primefaces.event.SelectEvent;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
+import jakarta.inject.Named;
 
 @Named
 @RequestScoped

@@ -320,7 +320,7 @@ if (!PrimeFaces.dialog) {
          */
         closeDialog: function(cfg) {
             var rootWindow = this.findRootWindow(),
-            dlgs = $(rootWindow.document.body).children('div.ui-dialog[data-pfdlgcid="' + $.escapeSelector(cfg.pfdlgcid) +'"]').not('[data-queuedforremoval]'),
+            dlgs = $(rootWindow.document.body).children('div.ui-dialog[data-pfdlgcid="' + CSS.escape(cfg.pfdlgcid) +'"]').not('[data-queuedforremoval]'),
             dlgsLength = dlgs.length,
             dlg = dlgs.eq(dlgsLength - 1),
             parentDlg = dlgsLength > 1 ? dlgs.eq(dlgsLength - 2) : null,

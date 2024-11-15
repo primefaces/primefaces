@@ -23,12 +23,6 @@
  */
 package org.primefaces.component.tieredmenu;
 
-import java.io.IOException;
-import java.util.List;
-
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.component.badge.BadgeRenderer;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
@@ -41,6 +35,12 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 
 public class TieredMenuRenderer extends BaseMenuRenderer {
 
@@ -74,6 +74,15 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
                 .build();
 
         encodeMenu(context, menu, style, styleClass, HTML.ARIA_ORIENTATION_VERTICAL);
+    }
+
+    @Override
+    protected void encodePlaceholder(FacesContext context, AbstractMenu menu) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("div", menu);
+        writer.writeAttribute("id", menu.getClientId(context), "id");
+        writer.writeAttribute("class", "ui-tieredmenu-placeholder", "styleClass");
+        writer.endElement("div");
     }
 
     protected void encodeMenu(FacesContext context, AbstractMenu menu, String style, String styleClass, String orientation) throws IOException {
@@ -112,7 +121,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         for (MenuElement element : elements) {
-            if (element.isRendered()) {
+            if ( element.isRendered()) {
                 if (element instanceof MenuItem) {
                     MenuItem menuItem = (MenuItem) element;
                     String containerStyle = menuItem.getContainerStyle();
@@ -134,7 +143,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
                     encodeMenuItem(context, menu, menuItem, "-1");
                     writer.endElement("li");
                 }
-                else if (element instanceof Submenu) {
+                else if (element instanceof Submenu && shouldBeRendered(context, element)) {
                     Submenu submenu = (Submenu) element;
                     String style = submenu.getStyle();
                     String styleClass = getStyleClassBuilder(context)

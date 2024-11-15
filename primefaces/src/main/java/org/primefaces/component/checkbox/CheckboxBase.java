@@ -23,9 +23,9 @@
  */
 package org.primefaces.component.checkbox;
 
-import javax.faces.component.UIComponentBase;
-
 import org.primefaces.component.api.Widget;
+
+import javax.faces.component.UIComponentBase;
 
 public abstract class CheckboxBase extends UIComponentBase implements Widget {
 

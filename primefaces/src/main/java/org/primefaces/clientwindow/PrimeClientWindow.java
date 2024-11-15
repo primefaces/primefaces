@@ -23,6 +23,8 @@
  */
 package org.primefaces.clientwindow;
 
+import org.primefaces.util.LangUtils;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -32,13 +34,13 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.faces.FacesException;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.lifecycle.ClientWindow;
 import javax.faces.render.ResponseStateManager;
 import javax.servlet.http.HttpServletResponse;
-import org.primefaces.util.LangUtils;
 
 public class PrimeClientWindow extends ClientWindow {
 

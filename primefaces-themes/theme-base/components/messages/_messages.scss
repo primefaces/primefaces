@@ -1,3 +1,5 @@
+@use "sass:color";
+
 body {
   .ui-messages {
     padding: 0;
@@ -62,7 +64,7 @@ body {
         color: $infoMessageIconColor;
 
         &:hover {
-          background: darken($infoMessageBg, 5%);
+          background: color.adjust($infoMessageBg, $lightness: -5%);
         }
       }
     }
@@ -85,7 +87,7 @@ body {
         color: $warnMessageIconColor;
 
         &:hover {
-          background: darken($warnMessageBg, 5%);
+          background: color.adjust($warnMessageBg, $lightness: -5%);
         }
       }
     }
@@ -109,7 +111,7 @@ body {
         color: $errorMessageIconColor;
 
         &:hover {
-          background: darken($errorMessageBg, 5%);
+          background: color.adjust($errorMessageBg, $lightness: -5%);
         }
       }
     }

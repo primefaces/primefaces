@@ -496,13 +496,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.sortableColumns.attr('tabindex', this.cfg.tabindex);
 
         //aria messages
-        this.ascMessage = PrimeFaces.getAriaLabel('datatable.sort.ASC');
-        this.descMessage = PrimeFaces.getAriaLabel('datatable.sort.DESC');
+        this.ascMessage = this.getAriaLabel('datatable.sort.ASC');
+        this.descMessage = this.getAriaLabel('datatable.sort.DESC');
         if (this.cfg.allowUnsorting) {
-            this.otherMessage = PrimeFaces.getAriaLabel('datatable.sort.NONE');
+            this.otherMessage = this.getAriaLabel('datatable.sort.NONE');
         }
         else {
-            this.otherMessage = PrimeFaces.getAriaLabel('datatable.sort.ASC');
+            this.otherMessage = this.getAriaLabel('datatable.sort.ASC');
         }
 
         //reflow dropdown
@@ -712,7 +712,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             var title = filterColumn.find('.ui-column-title')
 
             if (filter && title) {
-                filter.attr('aria-label', PrimeFaces.getLocaleLabel('filter') + " " + title.text());
+                filter.attr('aria-label', $this.getLabel('filter') + " " + title.text());
             }
         });
     },
@@ -1485,7 +1485,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             var row = toggler.closest('tr');
             var rowMeta = this.getRowMeta(row);
             var expanded = toggler.attr('aria-expanded') === "true";
-            var ariaLabel = expanded ? PrimeFaces.getAriaLabel('collapseLabel') : PrimeFaces.getAriaLabel('expandLabel');
+            var ariaLabel = expanded ? this.getAriaLabel('collapseLabel') : this.getAriaLabel('expandLabel');
             if (rowMeta && rowMeta.key) {
                 ariaLabel += " " + rowMeta.key;
             }
@@ -2943,7 +2943,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             if (jq) {
                 var rowMeta = this.getRowMeta(row);
                 var checked = row.attr('aria-selected') === "true"
-                var ariaLabel = checked ? PrimeFaces.getAriaLabel('unselectLabel') : PrimeFaces.getAriaLabel('selectLabel');
+                var ariaLabel = checked ? this.getAriaLabel('unselectLabel') : this.getAriaLabel('selectLabel');
                 ariaLabel += " " + rowMeta.key;
                 jq.attr('aria-label', ariaLabel);
             }
@@ -3198,7 +3198,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     configureSelectAllAria: function() {
         if (this.checkAllToggler) {
            var checked = this.checkAllToggler.attr('aria-checked') === "true" || this.checkAllToggler.prop('checked');
-           var ariaLabel = checked ? PrimeFaces.getAriaLabel('selectAll') : PrimeFaces.getAriaLabel('unselectAll');
+           var ariaLabel = checked ? this.getAriaLabel('selectAll') : this.getAriaLabel('unselectAll');
            this.checkAllToggler.attr('aria-label', ariaLabel);
         }
     },
@@ -3576,9 +3576,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             var rowEditorSelector = '> tr > td > div.ui-row-editor > a';
             
             // add aria to buttons
-            this.tbody.find('a.ui-row-editor-pencil').attr('aria-label', PrimeFaces.getAriaLabel('editRow'));
-            this.tbody.find('a.ui-row-editor-check').attr('aria-label', PrimeFaces.getAriaLabel('saveEdit'));
-            this.tbody.find('a.ui-row-editor-close').attr('aria-label', PrimeFaces.getAriaLabel('cancelEdit'));
+            this.tbody.find('a.ui-row-editor-pencil').attr('aria-label', this.getAriaLabel('editRow'));
+            this.tbody.find('a.ui-row-editor-check').attr('aria-label', this.getAriaLabel('saveEdit'));
+            this.tbody.find('a.ui-row-editor-close').attr('aria-label', this.getAriaLabel('cancelEdit'));
 
             this.tbody.off('click.datatable focus.datatable blur.datatable', rowEditorSelector)
                         .on('click.datatable', rowEditorSelector, null, function(e) {
@@ -3738,7 +3738,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             cellIndex = cell.index();
 
         if(this.cfg.scrollable && this.cfg.frozenColumns) {
-            cellIndex = (this.scrollTbody.is(cell.closest('tbody'))) ? (cellIndex + $this.cfg.frozenColumns) : cellIndex;
+            cellIndex = (this.scrollTbody.is(cell.closest('tbody'))) ? (cellIndex + this.cfg.frozenColumns) : cellIndex;
         }
 
         if (rowMeta === undefined || rowMeta.index === undefined) {
@@ -3955,7 +3955,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         if(inputContainer.length) {
             var inputs = inputContainer.find(':input[type!=hidden]'),
-            disabledInputs = inputs.filter(':disabled');
+            disabledInputs = inputs.filter(':disabled:not([data-disabled-by-editor="true"])');
 
             if(inputs.length === disabledInputs.length) {
                 this.tabCell(targetCell, forward);
@@ -4050,7 +4050,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         $this = this;
 
         if(this.cfg.scrollable && this.cfg.frozenColumns) {
-            cellIndex = (this.scrollTbody.is(cell.closest('tbody'))) ? (cellIndex + $this.cfg.frozenColumns) : cellIndex;
+            cellIndex = (this.scrollTbody.is(cell.closest('tbody'))) ? (cellIndex + this.cfg.frozenColumns) : cellIndex;
         }
 
         var cellInfo = rowMeta.index + ',' + cellIndex;
@@ -4112,7 +4112,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         $this = this;
 
         if(this.cfg.scrollable && this.cfg.frozenColumns) {
-            cellIndex = (this.scrollTbody.is(cell.closest('tbody'))) ? (cellIndex + $this.cfg.frozenColumns) : cellIndex;
+            cellIndex = (this.scrollTbody.is(cell.closest('tbody'))) ? (cellIndex + this.cfg.frozenColumns) : cellIndex;
         }
 
         var cellInfo = rowMeta.index + ',' + cellIndex;
@@ -5445,10 +5445,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             if (filterby !== -1) {
                 columnHeader = columnHeader.substring(0, filterby);
             }
-            columnHeader = $.escapeSelector(columnHeader);
+            columnHeader = CSS.escape(columnHeader);
 
             this.reflowDD.children('option').each(function() {
-                var optionLabel = $.escapeSelector(this.text);
+                var optionLabel = CSS.escape(this.text);
                 var optionSortOrder = $(this).data('sortorder');
                 this.selected = optionLabel.startsWith(columnHeader) && optionSortOrder == sortOrder;
             });
@@ -5534,12 +5534,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
            parentRow = link.closest('tr.ui-rowgroup-header');
 
            if(togglerIcon.hasClass('ui-icon-circle-triangle-s')) {
-               link.attr('aria-expanded', false).attr('aria-label', PrimeFaces.getAriaLabel('expandLabel'));
+               link.attr('aria-expanded', false).attr('aria-label', $this.getAriaLabel('expandLabel'));
                togglerIcon.addClass('ui-icon-circle-triangle-e').removeClass('ui-icon-circle-triangle-s');
                parentRow.nextUntil('tr.ui-rowgroup-header').hide();
            }
            else {
-               link.attr('aria-expanded', true).attr('aria-label', PrimeFaces.getAriaLabel('collapseLabel'));
+               link.attr('aria-expanded', true).attr('aria-label', $this.getAriaLabel('collapseLabel'));
                togglerIcon.addClass('ui-icon-circle-triangle-s').removeClass('ui-icon-circle-triangle-e');
                parentRow.nextUntil('tr.ui-rowgroup-header').show();
            }

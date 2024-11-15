@@ -23,13 +23,6 @@
  */
 package org.primefaces.component.menubutton;
 
-import java.io.IOException;
-import java.util.List;
-import javax.faces.FacesException;
-import javax.faces.component.UIForm;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.tieredmenu.TieredMenuRenderer;
@@ -39,6 +32,14 @@ import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.faces.FacesException;
+import javax.faces.component.UIForm;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 
 public class MenuButtonRenderer extends TieredMenuRenderer {
 
@@ -65,6 +66,15 @@ public class MenuButtonRenderer extends TieredMenuRenderer {
         encodeButton(context, button, clientId + "_button", menuId, disabled);
         encodeMenu(context, button, menuId);
 
+        writer.endElement("span");
+    }
+
+    @Override
+    protected void encodePlaceholder(FacesContext context, AbstractMenu menu) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("span", menu);
+        writer.writeAttribute("id", menu.getClientId(context), "id");
+        writer.writeAttribute("class", "ui-menubutton-placeholder", "styleClass");
         writer.endElement("span");
     }
 

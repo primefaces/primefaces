@@ -23,6 +23,13 @@
  */
 package org.primefaces.component.datatable.feature;
 
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.datatable.DataTableRenderer;
+import org.primefaces.component.datatable.DataTableState;
+import org.primefaces.component.rowexpansion.RowExpansion;
+import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.util.LangUtils;
+
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
@@ -30,13 +37,6 @@ import java.util.Set;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
-import org.primefaces.component.datatable.DataTable;
-import org.primefaces.component.datatable.DataTableRenderer;
-import org.primefaces.component.datatable.DataTableState;
-import org.primefaces.component.rowexpansion.RowExpansion;
-import org.primefaces.context.PrimeRequestContext;
-import org.primefaces.util.LangUtils;
 
 public class RowExpandFeature implements DataTableFeature {
 

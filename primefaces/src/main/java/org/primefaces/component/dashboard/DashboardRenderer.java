@@ -23,14 +23,6 @@
  */
 package org.primefaces.component.dashboard;
 
-import java.io.IOException;
-import java.util.List;
-
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.component.panel.Panel;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.dashboard.DashboardModel;
@@ -39,6 +31,14 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.GridLayoutUtils;
 import org.primefaces.util.WidgetBuilder;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 
 public class DashboardRenderer extends CoreRenderer {
 
@@ -117,7 +117,8 @@ public class DashboardRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Dashboard", dashboard)
                 .attr("responsive", dashboard.isResponsive(), false)
-                .attr("disabled", !dashboard.isReordering(), false);
+                .attr("disabled", !dashboard.isReordering(), false)
+                .attr("scope", dashboard.getScope());
 
         encodeClientBehaviors(context, dashboard);
 

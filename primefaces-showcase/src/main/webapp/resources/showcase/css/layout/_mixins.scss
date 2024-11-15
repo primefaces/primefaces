@@ -1,6 +1,8 @@
+@use "core";
+
 @mixin navlink {
     text-decoration: none;
-    color: $linkColor;
+    color: core.$linkColor;
     font-weight: 600;
 
     &:hover {

@@ -45,7 +45,7 @@ powered rich solution with graceful degradation for legacy browsers.
 | listener | null                                         | MethodExpr | Method to invoke when a file is uploaded.
 | maxChunkSize | 0                                            | Long | To upload large files in smaller chunks, set this option to a preferred maximum chunk size. If set to 0 (default), null or undefined, or the browser does not support the required Blob API, files will be uploaded as a whole. Only works in "advanced" mode.
 | maxRetries | 30                                           | Integer | Only for chunked file upload: Amount of retries when upload get´s interrupted due to e.g. unstable network connection.
-| messageTemplate | {name} {size}                                | String | Message template to use when displaying file in simple upload mode and some client side validation messages in advanced mode.
+| messageTemplate | {name} {size}                                | String | Message template to use when displaying file in simple upload mode.
 | mode | advanced                                     | String | Mode of the fileupload, can be _simple_ or _advanced_.
 | multiple | false                                        | Boolean | Allows choosing of multi file uploads from native file browse dialog
 | onAdd | null                                         | String | Advanced Mode Only. Callback to execute before adding a file.

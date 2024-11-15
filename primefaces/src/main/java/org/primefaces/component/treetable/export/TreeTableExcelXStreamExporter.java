@@ -23,14 +23,16 @@
  */
 package org.primefaces.component.treetable.export;
 
+import org.primefaces.component.export.ExcelOptions;
+
 import java.io.IOException;
+
 import javax.faces.context.FacesContext;
 
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-import org.primefaces.component.export.ExcelOptions;
 
 /**
  * Different implementation of ExcelXExporter using the POI streaming API:

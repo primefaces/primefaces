@@ -23,25 +23,35 @@
  */
 package org.primefaces.component.splitbutton;
 
+import org.primefaces.component.api.MenuItemAware;
+import org.primefaces.component.menu.AbstractMenu;
+import org.primefaces.component.menu.Menu;
+import org.primefaces.component.menubutton.MenuButton;
+import org.primefaces.component.overlaypanel.OverlayPanel;
+import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.model.menu.MenuElement;
+import org.primefaces.model.menu.MenuItem;
+import org.primefaces.model.menu.MenuModel;
+import org.primefaces.model.menu.Separator;
+import org.primefaces.model.menu.Submenu;
+import org.primefaces.renderkit.MenuItemAwareRenderer;
+import org.primefaces.util.ComponentTraversalUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.SharedStringBuilder;
+import org.primefaces.util.WidgetBuilder;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
-
-import org.primefaces.component.menu.AbstractMenu;
-import org.primefaces.component.menu.Menu;
-import org.primefaces.component.menubutton.MenuButton;
-import org.primefaces.component.overlaypanel.OverlayPanel;
-import org.primefaces.expression.SearchExpressionUtils;
-import org.primefaces.model.menu.*;
-import org.primefaces.renderkit.MenuItemAwareRenderer;
-import org.primefaces.util.*;
 
 public class SplitButtonRenderer extends MenuItemAwareRenderer {
 
@@ -91,10 +101,12 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         String styleClass = button.getStyleClass();
         styleClass = styleClass == null ? SplitButton.STYLE_CLASS : SplitButton.STYLE_CLASS + " " + styleClass;
 
+        boolean hasOverlay = shouldBeRendered(context, button);
+
         writer.startElement("div", button);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "id");
-        writer.writeAttribute(HTML.ARIA_HASPOPUP, "true", null);
+        writer.writeAttribute(HTML.ARIA_HASPOPUP, Boolean.toString(hasOverlay), null);
         writer.writeAttribute(HTML.ARIA_CONTROLS, menuId, null);
         writer.writeAttribute(HTML.ARIA_EXPANDED, "false", null);
         if (button.getStyle() != null) {
@@ -105,7 +117,9 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         OverlayPanel customOverlay = button.getCustomOverlay();
         if (customOverlay != null || button.getElementsCount() > 0) {
             encodeMenuIcon(context, button, menuButtonId);
-            encodeMenu(context, button, menuId);
+            if (hasOverlay) {
+                encodeMenu(context, button, menuId);
+            }
         }
 
         writer.endElement("div");
@@ -432,5 +446,13 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
     @Override
     public boolean getRendersChildren() {
         return true;
+    }
+
+    @Override
+    protected boolean shouldBeRendered(FacesContext context, MenuItemAware container) {
+        SplitButton button = (SplitButton) container;
+        boolean  rendered = button.getCustomOverlay() != null;
+        rendered = rendered || super.shouldBeRendered(context, button);
+        return rendered;
     }
 }

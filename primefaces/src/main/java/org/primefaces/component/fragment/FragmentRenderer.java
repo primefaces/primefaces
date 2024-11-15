@@ -23,15 +23,15 @@
  */
 package org.primefaces.component.fragment;
 
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.Constants;
+
 import java.io.IOException;
 import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.Constants;
 
 public class FragmentRenderer extends CoreRenderer {
 

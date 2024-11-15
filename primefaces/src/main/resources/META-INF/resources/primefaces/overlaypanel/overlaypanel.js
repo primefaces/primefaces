@@ -49,7 +49,7 @@
  * hidden.
  * @prop {boolean} cfg.showCloseIcon Displays a close icon to hide the overlay, default is `false`.
  * @prop {number} cfg.showDelay Delay in milliseconds applied when the overlay panel is shown.
- * @prop {string} cfg.showEvent Event on target to hide the panel.
+ * @prop {string} cfg.showEvent Event on target to hide the panel. If showEvent is 'none', the overlay panel will only be displayed by `show()` or `toggle()`.
  * @prop {string} cfg.target Search expression for target component to display panel next to.
  */
 PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
@@ -181,11 +181,13 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
             });
         }
 
-        $this.target.off('keyup.ui-overlaypanel').on('keyup.ui-overlaypanel', function(e) {
-            if (PrimeFaces.utils.blockEnterKey(e)) {
-                $this.toggle();
-            }
-        });
+        if (this.cfg.showEvent !== 'none') {
+            $this.target.off('keyup.ui-overlaypanel').on('keyup.ui-overlaypanel', function(e) {
+                if (PrimeFaces.utils.blockEnterKey(e)) {
+                    $this.toggle();
+                }
+            });
+        }
 
         this.bindAutoHide();
     },

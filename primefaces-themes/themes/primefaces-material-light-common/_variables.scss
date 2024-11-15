@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 $colors: (
     "blue": #2196F3,
     "green": #689F38,
@@ -498,12 +500,12 @@ $dataViewListItemBorder: solid rgba(0, 0, 0, .12) !default;
 $dataViewListItemBorderWidth: 0 0 1px 0 !default;
 
 //orderlist, picklist
-$orderListDropPlaceholderBg:scale-color($highlightBg, $lightness: -20%) !default;
-$pickListDropPlaceholderBg:scale-color($highlightBg, $lightness: -20%) !default;
+$orderListDropPlaceholderBg:color.scale($highlightBg, $lightness: -20%) !default;
+$pickListDropPlaceholderBg:color.scale($highlightBg, $lightness: -20%) !default;
 
 //schedule
 $scheduleCellBorderColor: $panelContentBorder !default;
-$scheduleTodayBg: lighten($highlightBg, 10%) !default;
+$scheduleTodayBg: color.scale($highlightBg, $lightness: 10%) !default;
 $scheduleEventBg: $highlightBg !default;
 $scheduleEventBorder: 1px solid $highlightBg !default;
 $scheduleEventTextColor: $highlightTextColor !default;

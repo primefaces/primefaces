@@ -23,13 +23,14 @@
  */
 package org.primefaces.component.inputmask;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.primefaces.mock.FacesContextMock;
 
 import java.util.regex.Pattern;
 
 import org.junit.jupiter.api.Test;
-import org.primefaces.mock.FacesContextMock;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class InputMaskTest {
 

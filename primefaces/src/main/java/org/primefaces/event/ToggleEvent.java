@@ -23,10 +23,10 @@
  */
 package org.primefaces.event;
 
+import org.primefaces.model.Visibility;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
-
-import org.primefaces.model.Visibility;
 
 public class ToggleEvent extends AbstractAjaxBehaviorEvent {
 

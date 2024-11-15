@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.api;
 
+import org.primefaces.util.DynamicContentSrcBuilder;
+import org.primefaces.util.Lazy;
+
 import java.io.IOException;
 
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
-
-import org.primefaces.util.DynamicContentSrcBuilder;
-import org.primefaces.util.Lazy;
 
 /**
  * Base class for HTML5 audio and video components.

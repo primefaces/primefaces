@@ -25,13 +25,15 @@ package org.primefaces.showcase.view.multimedia;
 
 import org.primefaces.model.CroppedImage;
 
+import java.io.File;
+
+import javax.imageio.stream.FileImageOutputStream;
+
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
-import javax.imageio.stream.FileImageOutputStream;
 import jakarta.inject.Named;
-import java.io.File;
 
 @Named
 @RequestScoped

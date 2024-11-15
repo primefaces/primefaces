@@ -23,9 +23,18 @@
  */
 package org.primefaces.renderkit;
 
+import org.primefaces.clientwindow.PrimeClientWindow;
+import org.primefaces.clientwindow.PrimeClientWindowUtils;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.LocaleUtils;
+import org.primefaces.util.MapBuilder;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -35,6 +44,7 @@ import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.ProjectStage;
 import javax.faces.application.Resource;
+import javax.faces.application.ResourceHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
@@ -44,13 +54,6 @@ import javax.faces.lifecycle.ClientWindow;
 import javax.faces.render.Renderer;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-
-import org.primefaces.clientwindow.PrimeClientWindow;
-import org.primefaces.clientwindow.PrimeClientWindowUtils;
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.context.PrimeRequestContext;
-import org.primefaces.util.FacetUtils;
-import org.primefaces.util.LocaleUtils;
 
 /**
  * Renders head content based on the following order
@@ -70,6 +73,12 @@ public class HeadRenderer extends Renderer {
 
     private static final Logger LOGGER = Logger.getLogger(HeadRenderer.class.getName());
     private static final String LIBRARY = "primefaces";
+
+    private static final Map<String, String> THEME_MAPPING = MapBuilder.<String, String>builder()
+            .put("saga", "saga-blue")
+            .put("arya", "arya-blue")
+            .put("vela", "vela-blue")
+            .build();
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
@@ -98,10 +107,14 @@ public class HeadRenderer extends Renderer {
             theme = (String) ve.getValue(elContext);
         }
         else {
-            theme = "saga";     //default
+            theme = "saga-blue";     //default
         }
 
         if (theme != null && !"none".equals(theme)) {
+            if (THEME_MAPPING.containsKey(theme)) {
+                theme = THEME_MAPPING.get(theme);
+            }
+
             encodeCSS(context, LIBRARY + "-" + theme, "theme.css");
         }
 
@@ -167,10 +180,16 @@ public class HeadRenderer extends Renderer {
     }
 
     protected void encodeCSS(FacesContext context, String library, String resource) throws IOException {
+        ResourceHandler resourceHandler = context.getApplication().getResourceHandler();
+        if (resourceHandler.isResourceRendered(context, resource, library)) {
+            // resource already rendered, skip
+            return;
+        }
+
         ResponseWriter writer = context.getResponseWriter();
         ExternalContext externalContext = context.getExternalContext();
 
-        Resource cssResource = context.getApplication().getResourceHandler().createResource(resource, library);
+        Resource cssResource = resourceHandler.createResource(resource, library);
         if (cssResource == null) {
             throw new FacesException("Error loading CSS, cannot find \"" + resource + "\" resource of \"" + library + "\" library");
         }
@@ -184,9 +203,15 @@ public class HeadRenderer extends Renderer {
     }
 
     protected void encodeJS(FacesContext context, String library, String script) throws IOException {
+        ResourceHandler resourceHandler = context.getApplication().getResourceHandler();
+        if (resourceHandler.isResourceRendered(context, script, library)) {
+            // resource already rendered, skip
+            return;
+        }
+
         ResponseWriter writer = context.getResponseWriter();
         ExternalContext externalContext = context.getExternalContext();
-        Resource resource = context.getApplication().getResourceHandler().createResource(script, library);
+        Resource resource = resourceHandler.createResource(script, library);
 
         if (resource == null) {
             throw new FacesException("Error loading JavaScript, cannot find \"" + script + "\" resource of \"" + library + "\" library");
@@ -218,10 +243,6 @@ public class HeadRenderer extends Renderer {
 
         writer.write("PrimeFaces.settings.validateEmptyFields=" + applicationContext.getConfig().isValidateEmptyFields() + ";");
         writer.write("PrimeFaces.settings.considerEmptyStringNull=" + applicationContext.getConfig().isInterpretEmptyStringAsNull() + ";");
-
-        if (applicationContext.getConfig().isLegacyWidgetNamespace()) {
-            writer.write("PrimeFaces.settings.legacyWidgetNamespace=true;");
-        }
 
         if (applicationContext.getConfig().isEarlyPostParamEvaluation()) {
             writer.write("PrimeFaces.settings.earlyPostParamEvaluation=true;");

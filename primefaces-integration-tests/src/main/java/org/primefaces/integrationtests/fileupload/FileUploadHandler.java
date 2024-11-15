@@ -23,17 +23,18 @@
  */
 package org.primefaces.integrationtests.fileupload;
 
-import java.io.Serializable;
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
-
-import javax.inject.Named;
-
-import lombok.Data;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.FilesUploadEvent;
 import org.primefaces.model.file.UploadedFile;
 import org.primefaces.model.file.UploadedFiles;
+
+import java.io.Serializable;
+
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
+
+import lombok.Data;
 
 @Named
 @RequestScoped

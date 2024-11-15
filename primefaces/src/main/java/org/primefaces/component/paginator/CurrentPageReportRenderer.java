@@ -23,14 +23,14 @@
  */
 package org.primefaces.component.paginator;
 
+import org.primefaces.component.api.Pageable;
+import org.primefaces.component.api.UIPageableData;
+
 import java.io.IOException;
 import java.util.regex.Pattern;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
-import org.primefaces.component.api.Pageable;
-import org.primefaces.component.api.UIPageableData;
 
 public class CurrentPageReportRenderer implements PaginatorElementRenderer {
 

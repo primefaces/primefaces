@@ -23,18 +23,18 @@
  */
 package org.primefaces.component.stack;
 
+import org.primefaces.component.menu.AbstractMenu;
+import org.primefaces.component.menu.BaseMenuRenderer;
+import org.primefaces.model.menu.MenuElement;
+import org.primefaces.model.menu.MenuItem;
+import org.primefaces.util.WidgetBuilder;
+
 import java.io.IOException;
 import java.util.List;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
-import org.primefaces.component.menu.AbstractMenu;
-import org.primefaces.component.menu.BaseMenuRenderer;
-import org.primefaces.model.menu.MenuElement;
-import org.primefaces.model.menu.MenuItem;
-import org.primefaces.util.WidgetBuilder;
 
 public class StackRenderer extends BaseMenuRenderer {
 
@@ -96,6 +96,15 @@ public class StackRenderer extends BaseMenuRenderer {
     }
 
     @Override
+    protected void encodePlaceholder(FacesContext context, AbstractMenu menu) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("div", menu);
+        writer.writeAttribute("id", menu.getClientId(context), "id");
+        writer.writeAttribute("class", "ui-stack-placeholder", "styleClass");
+        writer.endElement("div");
+    }
+
+    @Override
     protected void encodeMenuItemContent(FacesContext context, AbstractMenu menu, MenuItem menuitem) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
@@ -118,6 +127,11 @@ public class StackRenderer extends BaseMenuRenderer {
 
     @Override
     public boolean getRendersChildren() {
+        return true;
+    }
+
+    @Override
+    protected boolean shouldBeRendered(FacesContext context, AbstractMenu abstractMenu) {
         return true;
     }
 }

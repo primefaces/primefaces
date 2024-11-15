@@ -66,10 +66,10 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
         //config
         this.cfg.showEvent = this.cfg.showEvent ? this.cfg.showEvent + '.password' : 'focus.password';
         this.cfg.hideEvent = this.cfg.hideEvent ? this.cfg.hideEvent + '.password' : 'blur.password';
-        this.cfg.promptLabel = this.cfg.promptLabel || PrimeFaces.getLocaleLabel('passwordPrompt');
-        this.cfg.weakLabel = this.cfg.weakLabel || PrimeFaces.getLocaleLabel('weak');
-        this.cfg.goodLabel = this.cfg.goodLabel || PrimeFaces.getLocaleLabel('medium');
-        this.cfg.strongLabel = this.cfg.strongLabel || PrimeFaces.getLocaleLabel('strong');
+        this.cfg.promptLabel = this.cfg.promptLabel || this.getLabel('passwordPrompt');
+        this.cfg.weakLabel = this.cfg.weakLabel || this.getLabel('weak');
+        this.cfg.goodLabel = this.cfg.goodLabel || this.getLabel('medium');
+        this.cfg.strongLabel = this.cfg.strongLabel || this.getLabel('strong');
 
         var panelStyle = this.cfg.inline ? 'ui-password-panel-inline' : 'ui-password-panel-overlay';
 
@@ -179,7 +179,7 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
         // add ARIA accessibility
         this.icon.attr('role', 'switch')
             .attr('aria-checked', 'true')
-            .attr('aria-label', PrimeFaces.getAriaLabel('passwordShow', 'Show Password'))
+            .attr('aria-label', this.getAriaLabel('passwordShow', 'Show Password'))
             .attr('tabindex', this.jq.attr('tabindex') || '0');
 
         // add keyboard support
@@ -205,11 +205,11 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
 
         if (this.jq.attr('type') === 'password') {
             this.jq.attr('type', 'text').parent().removeClass('ui-password-masked').addClass('ui-password-unmasked');
-            this.icon.attr('aria-checked', 'false').attr('aria-label', PrimeFaces.getAriaLabel('passwordHide', 'Hide Password'));;
+            this.icon.attr('aria-checked', 'false').attr('aria-label', this.getAriaLabel('passwordHide', 'Hide Password'));;
         }
         else {
             this.jq.attr('type', 'password').parent().removeClass('ui-password-unmasked').addClass('ui-password-masked');
-            this.icon.attr('aria-checked', 'true').attr('aria-label', PrimeFaces.getAriaLabel('passwordShow', 'Show Password'));
+            this.icon.attr('aria-checked', 'true').attr('aria-label', this.getAriaLabel('passwordShow', 'Show Password'));
         }
     },
 

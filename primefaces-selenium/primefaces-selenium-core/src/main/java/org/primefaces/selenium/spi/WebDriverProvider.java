@@ -23,17 +23,18 @@
  */
 package org.primefaces.selenium.spi;
 
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverException;
-import org.openqa.selenium.support.events.EventFiringDecorator;
-import org.openqa.selenium.support.events.WebDriverListener;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.internal.ConfigProvider;
 import org.primefaces.selenium.internal.OnloadScriptsEventListener;
 import org.primefaces.selenium.internal.ScrollElementIntoViewClickListener;
 
 import java.util.ArrayList;
+
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.support.events.EventFiringDecorator;
+import org.openqa.selenium.support.events.WebDriverListener;
 
 public class WebDriverProvider {
 

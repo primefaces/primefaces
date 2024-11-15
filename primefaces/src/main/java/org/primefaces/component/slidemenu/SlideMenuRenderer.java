@@ -23,16 +23,16 @@
  */
 package org.primefaces.component.slidemenu;
 
-import java.io.IOException;
-
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.tieredmenu.TieredMenuRenderer;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
+
+import java.io.IOException;
+
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 
 public class SlideMenuRenderer extends TieredMenuRenderer {
 
@@ -99,6 +99,15 @@ public class SlideMenuRenderer extends TieredMenuRenderer {
         //wrapper
         writer.endElement("div");
 
+        writer.endElement("div");
+    }
+
+    @Override
+    protected void encodePlaceholder(FacesContext context, AbstractMenu menu) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("div", menu);
+        writer.writeAttribute("id", menu.getClientId(context), "id");
+        writer.writeAttribute("class", "ui-slidemenu-placeholder", "styleClass");
         writer.endElement("div");
     }
 }

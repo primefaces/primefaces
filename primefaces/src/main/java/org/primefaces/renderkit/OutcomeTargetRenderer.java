@@ -23,7 +23,15 @@
  */
 package org.primefaces.renderkit;
 
-import java.util.*;
+import org.primefaces.component.api.UIOutcomeTarget;
+import org.primefaces.util.LangUtils;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.faces.FacesException;
 import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.NavigationCase;
@@ -33,9 +41,6 @@ import javax.faces.event.ActionListener;
 import javax.faces.flow.FlowHandler;
 import javax.faces.lifecycle.ClientWindow;
 import javax.servlet.http.HttpServletRequest;
-
-import org.primefaces.component.api.UIOutcomeTarget;
-import org.primefaces.util.LangUtils;
 
 public class OutcomeTargetRenderer extends CoreRenderer {
 

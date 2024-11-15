@@ -129,6 +129,7 @@ PrimeFaces.widget.SelectListbox = PrimeFaces.widget.BaseWidget.extend({
      */
     selectItem: function(item) {
         item.addClass('ui-state-highlight').removeClass('ui-state-hover').attr('aria-selected', 'true');
+        this.listElement.attr('aria-activedescendant', item.attr('id'));
         var itemSelected = this.options.eq(item.index());
         itemSelected.prop('selected', true);
         if (this.hasBehavior('itemSelect')) {
@@ -146,6 +147,7 @@ PrimeFaces.widget.SelectListbox = PrimeFaces.widget.BaseWidget.extend({
      */
     unselectItem: function(item) {
         item.removeClass('ui-state-highlight').attr('aria-selected', 'false');
+        this.listElement.removeAttr('aria-activedescendant');
         this.options.eq(item.index()).prop('selected', false);
         var itemUnselected = this.options.eq(item.index());
         itemUnselected.prop('selected', false);

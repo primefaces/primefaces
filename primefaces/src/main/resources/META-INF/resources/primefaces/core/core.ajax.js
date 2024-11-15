@@ -244,7 +244,7 @@ if (!PrimeFaces.ajax) {
                     var form = forms.eq(i);
 
                     if (form.attr('method') === 'post') {
-                        var input = form.children("input[name='" + $.escapeSelector(parameterPrefix + name) + "']");
+                        var input = form.children("input[name='" + CSS.escape(parameterPrefix + name) + "']");
 
                         if (input.length > 0) {
                             input.val(trimmedValue);
@@ -588,8 +588,8 @@ if (!PrimeFaces.ajax) {
                     earlyPostParams = [];
 
                     if (sourceElement.is(':checkbox')) {
-                        var checkboxPostParams = $("input[name='" + $.escapeSelector(sourceElement.attr('name')) + "']")
-                            .filter(':checked').serializeArray();
+                        var checkboxPostParams = $("input[name='" + CSS.escape(sourceElement.attr('name')) + "']")
+                                .filter(':checked').serializeArray();
                         $.merge(earlyPostParams, checkboxPostParams);
                     }
                     else {
@@ -911,7 +911,7 @@ if (!PrimeFaces.ajax) {
                     xhrOptions.data = postData;
                 }
 
-                var nonce = form.children("input[name='" + $.escapeSelector(PrimeFaces.csp.NONCE_INPUT) + "']");
+                var nonce = form.children("input[name='" + CSS.escape(PrimeFaces.csp.NONCE_INPUT) + "']");
                 if (nonce.length > 0) {
                     xhrOptions.nonce = nonce.val();
                 }
@@ -1123,7 +1123,7 @@ if (!PrimeFaces.ajax) {
              */
             addParamFromInput: function(params, name, form, parameterPrefix) {
                 var input = null,
-                    escapedName = $.escapeSelector(name);
+                    escapedName = CSS.escape(name);
                 if (parameterPrefix) {
                     input = form.children("input[name*='" + escapedName + "']");
                 }
@@ -1149,7 +1149,7 @@ if (!PrimeFaces.ajax) {
              */
             addFormDataFromInput: function(formData, name, form, parameterPrefix) {
                 var input = null,
-                    escapedName = $.escapeSelector(name);
+                    escapedName = CSS.escape(name);
                 if (parameterPrefix) {
                     input = form.children("input[name*='" + escapedName + "']");
                 }

@@ -23,6 +23,12 @@
  */
 package org.primefaces.component.growl;
 
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.renderkit.UINotificationRenderer;
+import org.primefaces.util.Constants;
+import org.primefaces.util.EscapeUtils;
+import org.primefaces.util.WidgetBuilder;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
@@ -31,13 +37,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.renderkit.UINotificationRenderer;
-import org.primefaces.util.Constants;
-import org.primefaces.util.EscapeUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.WidgetBuilder;
 
 public class GrowlRenderer extends UINotificationRenderer {
 
@@ -53,7 +52,6 @@ public class GrowlRenderer extends UINotificationRenderer {
 
         if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             writer.writeAttribute("class", "ui-growl-pl", null);
-            writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
             writer.writeAttribute("data-global", growl.isGlobalOnly(), null);
             writer.writeAttribute("data-summary", growl.isShowSummary(), null);
             writer.writeAttribute("data-detail", growl.isShowDetail(), null);

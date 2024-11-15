@@ -24,14 +24,20 @@
 package org.primefaces.showcase.view.data.gmap;
 
 import org.primefaces.event.map.OverlaySelectEvent;
-import org.primefaces.model.map.*;
+import org.primefaces.model.map.DefaultMapModel;
+import org.primefaces.model.map.LatLng;
+import org.primefaces.model.map.LatLngBounds;
+import org.primefaces.model.map.MapModel;
+import org.primefaces.model.map.Overlay;
+import org.primefaces.model.map.Rectangle;
+
+import java.io.Serializable;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
-import jakarta.inject.Named;
-import java.io.Serializable;
 import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
 
 @Named
 @ViewScoped

@@ -24,11 +24,12 @@
 package org.primefaces.showcase.view.menu;
 
 
+import org.primefaces.model.badge.BadgeModel;
+import org.primefaces.model.badge.DefaultBadgeModel;
+
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Named;
-import org.primefaces.model.badge.BadgeModel;
-import org.primefaces.model.badge.DefaultBadgeModel;
 
 
 @Named

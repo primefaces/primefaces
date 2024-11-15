@@ -36,6 +36,10 @@ ajax selection and more.
 | converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id
 | converterMessage | null | String | Message to be displayed when conversion fails.
 | dateTemplate | null | Function | Javascript function that takes a date object and returns the content for the date cell.
+| defaultHour | 0 | Integer | Default for hour selection, if no date is given. Default is 0.
+| defaultMillisecond | 0 | Integer | Default for millisecond selection, if no date is given. Default is 0.
+| defaultMinute | 0 | Integer | Default for minute selection, if no date is given. Default is 0.
+| defaultSecond | 0 | Integer | Default for second selection, if no date is given. Default is 0.
 | dir | null | String | Direction indication for text that does not inherit directionality. Valid values are LTR and RTL.
 | disabled | false | Boolean | Disables input field
 | disabledDates | null | List<java.time.LocalDate>, List<java.util.Date> (deprecated) | List of dates that should be disabled.
@@ -140,7 +144,7 @@ ajax selection and more.
 | validator | null | Method Expr | A method expression that refers to a method validating the input
 | validatorMessage | null | String | Message to be displayed when validation fails.
 | valueChangeListener | null | Method Expr | A method expression that refers to a method for handling a valuchangeevent
-| view | date | String | Defines the view mode, valid values are "date" for datepicker and "month" for month picker.
+| view | date | String | Defines the view mode, valid values are "date" for datepicker, "week" for week picker, and "month" for month picker.
 | weekCalculator | false | Boolean | A javascript function that is used to calculate the week number. Uses internal implementation on default when start of week is monday, sunday or saturday.
 | widgetVar | null | String | Name of the client side widget.
 | yearNavigator | false | Boolean | Whether the year should be rendered as an input number instead of text.

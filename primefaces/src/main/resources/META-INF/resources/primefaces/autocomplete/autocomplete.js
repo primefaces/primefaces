@@ -219,10 +219,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     configureLocale: function() {
-        this.emptyMessage = PrimeFaces.getLocaleLabel('emptySearchMessage');
-        this.resultsMessage = PrimeFaces.getLocaleLabel('searchMessage');
+        this.emptyMessage = this.getLabel('emptySearchMessage');
+        this.resultsMessage = this.getLabel('searchMessage');
         if (this.dropdown) {
-            this.dropdown.attr('aria-label', PrimeFaces.getLocaleLabel('choose'));
+            this.dropdown.attr('aria-label', this.getLabel('choose'));
         }
     },
 
@@ -1181,7 +1181,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         if ($this.cfg.multiple) {
             var found = false;
             if ($this.cfg.unique) {
-                found = $this.multiItemContainer.children("li[data-token-value='" + $.escapeSelector(itemValue) + "']").length != 0;
+                found = $this.multiItemContainer.children("li[data-token-value='" + CSS.escape(itemValue) + "']").length != 0;
             }
 
             if (!found) {
@@ -1252,7 +1252,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             itemValue = item.attr('data-token-value');
         }
 
-        var foundItem = this.multiItemContainer.children("li.ui-autocomplete-token[data-token-value='" + $.escapeSelector(itemValue) + "']");
+        var foundItem = this.multiItemContainer.children("li.ui-autocomplete-token[data-token-value='" + CSS.escape(itemValue) + "']");
         if (!foundItem.length) {
             return;
         }
@@ -1304,7 +1304,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 valid = $this.isValid(value, isNotPanel);
 
             if ($this.cfg.autoSelection && valid && $this.checkMatchedItem && $this.items && !$this.isTabPressed && !$this.itemSelectedWithEnter && isNotPanel) {
-                var selectedItem = $this.items.filter('[data-item-label="' + $.escapeSelector(value) + '"]');
+                var selectedItem = $this.items.filter('[data-item-label="' + CSS.escape(value) + '"]');
                 if (selectedItem.length) {
                     selectedItem.trigger("click");
                 }

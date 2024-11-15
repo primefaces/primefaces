@@ -23,13 +23,14 @@
  */
 package org.primefaces.integrationtests.inputnumber;
 
-import lombok.Data;
+import java.io.Serializable;
+import java.math.BigDecimal;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import java.io.Serializable;
-import java.math.BigDecimal;
+
+import lombok.Data;
 
 @Named
 @ViewScoped

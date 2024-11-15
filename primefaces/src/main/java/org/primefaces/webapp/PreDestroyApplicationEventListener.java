@@ -23,11 +23,12 @@
  */
 package org.primefaces.webapp;
 
+import org.primefaces.context.PrimeApplicationContext;
+
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
-import org.primefaces.context.PrimeApplicationContext;
 
 public class PreDestroyApplicationEventListener implements SystemEventListener {
 

@@ -23,11 +23,12 @@
  */
 package org.primefaces.integrationtests.datatable.dt028;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
-import java.util.ArrayList;
-import java.util.List;
 
 @Named
 @ApplicationScoped

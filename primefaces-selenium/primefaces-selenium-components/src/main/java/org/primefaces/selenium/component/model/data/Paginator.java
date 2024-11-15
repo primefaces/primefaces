@@ -23,12 +23,13 @@
  */
 package org.primefaces.selenium.component.model.data;
 
+import org.primefaces.selenium.PrimeSelenium;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.primefaces.selenium.PrimeSelenium;
 
 public class Paginator {
 

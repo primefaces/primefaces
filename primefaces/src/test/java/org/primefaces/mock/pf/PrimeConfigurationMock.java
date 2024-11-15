@@ -23,10 +23,12 @@
  */
 package org.primefaces.mock.pf;
 
-import java.util.Map;
-import javax.faces.context.FacesContext;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.config.PrimeEnvironment;
+
+import java.util.Map;
+
+import javax.faces.context.FacesContext;
 
 public class PrimeConfigurationMock extends PrimeConfiguration {
 
@@ -38,7 +40,6 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
     private String  theme = null;
     private boolean clientSideValidationEnabled = false;
     private boolean transformMetadataEnabled = false;
-    private boolean legacyWidgetNamespace = false;
     private boolean beanValidationDisabled = false;
     private boolean interpolateClientSideValidationMessages = false;
     private boolean earlyPostParamEvaluation = false;
@@ -114,15 +115,6 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
 
     public void setTransformMetadataEnabled(boolean transformMetadataEnabled) {
         this.transformMetadataEnabled = transformMetadataEnabled;
-    }
-
-    @Override
-    public boolean isLegacyWidgetNamespace() {
-        return legacyWidgetNamespace;
-    }
-
-    public void setLegacyWidgetNamespace(boolean legacyWidgetNamespace) {
-        this.legacyWidgetNamespace = legacyWidgetNamespace;
     }
 
     public boolean isBeanValidationDisabled() {

@@ -23,6 +23,15 @@
  */
 package org.primefaces.component.selectonemenu;
 
+import org.primefaces.component.column.Column;
+import org.primefaces.config.PrimeConfiguration;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.MessageFactory;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -37,15 +46,6 @@ import javax.faces.event.FacesEvent;
 import javax.faces.render.Renderer;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
-
-import org.primefaces.component.column.Column;
-import org.primefaces.config.PrimeConfiguration;
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.event.SelectEvent;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.MessageFactory;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")

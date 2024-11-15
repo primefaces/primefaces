@@ -23,15 +23,15 @@
  */
 package org.primefaces.integrationtests.colorpicker;
 
+import org.primefaces.component.colorpicker.ColorPicker;
+import org.primefaces.integrationtests.general.utilities.TestUtils;
+
 import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-
-import org.primefaces.component.colorpicker.ColorPicker;
-import org.primefaces.integrationtests.general.utilities.TestUtils;
 
 import lombok.Data;
 

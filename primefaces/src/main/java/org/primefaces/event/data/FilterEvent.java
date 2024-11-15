@@ -26,9 +26,10 @@ package org.primefaces.event.data;
 import org.primefaces.event.AbstractAjaxBehaviorEvent;
 import org.primefaces.model.FilterMeta;
 
+import java.util.Map;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
-import java.util.Map;
 
 public class FilterEvent extends AbstractAjaxBehaviorEvent {
 

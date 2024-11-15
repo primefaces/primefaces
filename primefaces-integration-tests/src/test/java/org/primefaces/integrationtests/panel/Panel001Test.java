@@ -23,17 +23,18 @@
  */
 package org.primefaces.integrationtests.panel;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.component.Messages;
+import org.primefaces.selenium.component.Panel;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.component.Messages;
-import org.primefaces.selenium.component.Panel;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class Panel001Test extends AbstractPrimePageTest {
 

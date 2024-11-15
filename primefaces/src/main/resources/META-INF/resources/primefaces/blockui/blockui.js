@@ -157,7 +157,17 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
                     $this.content.show(duration);
             }
 
-            $this.target.attr('aria-busy', true);
+            // prevent mouse events
+            $this.target.attr('aria-busy', true).css({
+                'pointer-events': 'none',
+                'user-select': 'none'
+            });
+            // prevent keyboard focus from entering the blocked area
+            $this.target.find(':tabbable').each(function() {
+                var $element = $(this);
+                var currentTabIndex = $element.attr('tabindex');
+                $element.attr('data-bui-tabindex', currentTabIndex || 0).attr('tabindex', -1);
+            });
         }, delay);
     },
 
@@ -203,7 +213,17 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
                 this.content.hide(duration || 0, resetPositionCallback);
         }
 
-        this.target.attr('aria-busy', false);
+        // restore mouse events on the target
+        this.target.attr('aria-busy', false).css({
+            'pointer-events': 'auto',
+            'user-select': 'auto'
+        });
+        // restore keyboard focus on the blocked area
+        this.target.find('[data-bui-tabindex]').each(function() {
+            var $element = $(this);
+            var originalTabIndex = $element.attr('data-bui-tabindex');
+            $element.attr('tabindex', originalTabIndex).removeAttr('data-bui-tabindex');
+        });
     },
 
     /**

@@ -23,6 +23,8 @@
  */
 package org.primefaces.integrationtests.datepicker;
 
+import org.primefaces.integrationtests.general.utilities.TestUtils;
+
 import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
@@ -33,7 +35,6 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
 import lombok.Data;
-import org.primefaces.integrationtests.general.utilities.TestUtils;
 
 @Named
 @ViewScoped

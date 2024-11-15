@@ -23,11 +23,11 @@
  */
 package org.primefaces.component.celleditor;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.treetable.TreeTable;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 
 public class CellEditor extends CellEditorBase {
 

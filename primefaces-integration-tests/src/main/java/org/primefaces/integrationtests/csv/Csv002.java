@@ -23,14 +23,15 @@
  */
 package org.primefaces.integrationtests.csv;
 
-import lombok.Data;
+import java.io.Serializable;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.validation.constraints.AssertTrue;
-import java.io.Serializable;
-import java.util.List;
+
+import lombok.Data;
 
 @Named
 @ViewScoped

@@ -23,7 +23,13 @@
  */
 package org.primefaces.integrationtests.dialog;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.component.CommandButton;
+import org.primefaces.selenium.component.DatePicker;
+import org.primefaces.selenium.component.Dialog;
+import org.primefaces.selenium.component.InputText;
+import org.primefaces.selenium.component.Messages;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
@@ -32,9 +38,8 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.component.*;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class Dialog001Test extends AbstractPrimePageTest {
 

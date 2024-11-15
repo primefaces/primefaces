@@ -26,9 +26,14 @@ package org.primefaces.csp;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 
-import javax.faces.context.FacesContext;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
+
+import javax.faces.context.FacesContext;
 
 public class CspState {
 

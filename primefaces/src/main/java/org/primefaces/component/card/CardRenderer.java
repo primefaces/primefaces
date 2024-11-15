@@ -23,14 +23,15 @@
  */
 package org.primefaces.component.card;
 
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.LangUtils;
+
+import java.io.IOException;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 
 public class CardRenderer extends CoreRenderer {
 

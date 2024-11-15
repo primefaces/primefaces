@@ -23,17 +23,6 @@
  */
 package org.primefaces.component.treetable;
 
-import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
-
-import java.io.IOException;
-import java.util.List;
-
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.api.UITree;
@@ -50,7 +39,20 @@ import org.primefaces.model.SortOrder;
 import org.primefaces.model.TreeNode;
 import org.primefaces.renderkit.DataRenderer;
 import org.primefaces.renderkit.RendererUtils;
-import org.primefaces.util.*;
+import org.primefaces.util.Constants;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.WidgetBuilder;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 
 public class TreeTableRenderer extends DataRenderer {
 
@@ -186,7 +188,7 @@ public class TreeTableRenderer extends DataRenderer {
         }
 
         if (root.getRowKey() == null) {
-            root.setRowKey(ROOT_ROW_KEY);
+            root.setRowKey(UITree.ROOT_ROW_KEY);
             tt.buildRowKeys(root);
             tt.initPreselection();
         }
@@ -596,7 +598,15 @@ public class TreeTableRenderer extends DataRenderer {
                     }
                 }
 
-                column.renderChildren(context);
+                if (hasColumnDefaultRendering(tt, column)) {
+                    encodeDefaultFieldCell(context, tt, column, writer);
+                }
+                else if (column instanceof DynamicColumn) {
+                    encodeDynamicCell(context, tt, column);
+                }
+                else {
+                    column.renderChildren(context);
+                }
 
                 writer.endElement("td");
             }
@@ -952,6 +962,17 @@ public class TreeTableRenderer extends DataRenderer {
         writer.endElement("td");
     }
 
+    protected void encodeDynamicCell(FacesContext context, TreeTable table, UIColumn column) throws IOException {
+        column.encodeAll(context);
+    }
+
+    protected void encodeDefaultFieldCell(FacesContext context, TreeTable table, UIColumn column, ResponseWriter writer) throws IOException {
+        Object value = table.getConvertedFieldValue(context, column);
+        if (value != null) {
+            writer.writeText(value, null);
+        }
+    }
+
     @Override
     public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
         //Do nothing
@@ -982,5 +1003,13 @@ public class TreeTableRenderer extends DataRenderer {
         }
 
         writer.endElement("input");
+    }
+
+    protected boolean hasColumnDefaultRendering(TreeTable table, UIColumn column) {
+        return column.getChildren().isEmpty()
+                && (table.getSortByAsMap().containsKey(column.getColumnKey())
+                || table.getFilterByAsMap().containsKey(column.getColumnKey())
+                || LangUtils.isNotBlank(column.getField()));
+
     }
 }

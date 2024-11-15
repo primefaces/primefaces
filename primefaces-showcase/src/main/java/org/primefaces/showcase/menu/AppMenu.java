@@ -364,6 +364,7 @@ public class AppMenu {
         treeTableMenuItems.add(new MenuItem("Gridlines", "/ui/data/treetable/gridlines"));
         treeTableMenuItems.add(new MenuItem("Selection", "/ui/data/treetable/selection"));
         treeTableMenuItems.add(new MenuItem("Events", "/ui/data/treetable/events"));
+        dataTableMenuItems.add(new MenuItem("Field", "/ui/data/treetable/field"));
         treeTableMenuItems.add(new MenuItem("ContextMenu", "/ui/data/treetable/contextMenu"));
         treeTableMenuItems.add(new MenuItem("Scroll", "/ui/data/treetable/scroll"));
         treeTableMenuItems.add(new MenuItem("Resize", "/ui/data/treetable/resize"));
@@ -453,6 +454,7 @@ public class AppMenu {
         chartMenuItems.add(new MenuItem("Bubble", "/ui/chart/bubble"));
         chartMenuItems.add(new MenuItem("Doughnut", "/ui/chart/doughnut"));
         chartMenuItems.add(new MenuItem("Line", "/ui/chart/line"));
+        chartMenuItems.add(new MenuItem("Mixed", "/ui/chart/mixed"));
         chartMenuItems.add(new MenuItem("Pie", "/ui/chart/pie"));
         chartMenuItems.add(new MenuItem("Scatter", "/ui/chart/scatter"));
         chartMenuItems.add(new MenuItem("PolarArea", "/ui/chart/polararea"));

@@ -23,6 +23,16 @@
  */
 package org.primefaces.showcase.view.data.timeline;
 
+import org.primefaces.event.timeline.TimelineAddEvent;
+import org.primefaces.event.timeline.TimelineDragDropEvent;
+import org.primefaces.event.timeline.TimelineLazyLoadEvent;
+import org.primefaces.event.timeline.TimelineModificationEvent;
+import org.primefaces.event.timeline.TimelineRangeEvent;
+import org.primefaces.event.timeline.TimelineSelectEvent;
+import org.primefaces.model.timeline.TimelineEvent;
+import org.primefaces.model.timeline.TimelineModel;
+import org.primefaces.showcase.domain.Event;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -32,11 +42,6 @@ import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
-
-import org.primefaces.event.timeline.*;
-import org.primefaces.model.timeline.TimelineEvent;
-import org.primefaces.model.timeline.TimelineModel;
-import org.primefaces.showcase.domain.Event;
 
 @Named("allEventsTimelineView")
 @ViewScoped

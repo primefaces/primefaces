@@ -23,6 +23,8 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import org.primefaces.component.datatable.DataTable;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +34,6 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-
-import org.primefaces.component.datatable.DataTable;
 
 import lombok.Data;
 import lombok.Value;

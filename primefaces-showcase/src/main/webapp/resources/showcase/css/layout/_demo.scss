@@ -1,3 +1,5 @@
+@use "mixins";
+
 .customer-badge {
     border-radius: 2px;
     padding: .25em .5rem;
@@ -177,8 +179,8 @@
     }
 
     .product-list-item {
-        @include flex();
-        @include flex-align-center();
+        @include mixins.flex();
+        @include mixins.flex-align-center();
         padding: 1rem;
 
         &.border-1 {
@@ -208,8 +210,8 @@
         }
 
         .product-list-action {
-            @include flex();
-            @include flex-direction-column();
+            @include mixins.flex();
+            @include mixins.flex-direction-column();
         }
 
         .ui-button {
@@ -224,9 +226,9 @@
 
         .product-grid-item-top,
         .product-grid-item-bottom {
-            @include flex();
-            @include flex-align-center();
-            @include flex-justify-between();
+            @include mixins.flex();
+            @include mixins.flex-align-center();
+            @include mixins.flex-justify-between();
         }
 
         img {
@@ -253,8 +255,8 @@
 @media screen and (max-width: 576px) {
     .product {
         .product-list-item {
-            @include flex-direction-column();
-            @include flex-align-center();
+            @include mixins.flex-direction-column();
+            @include mixins.flex-align-center();
 
             img {
                 width: 75%;
@@ -270,15 +272,15 @@
             }
 
             .product-list-action {
-                @include flex();
-                @include flex-direction-column();
+                @include mixins.flex();
+                @include mixins.flex-direction-column();
             }
 
             .product-list-action {
                 margin-top: 2rem;
-                @include flex-direction-row();
-                @include flex-justify-between();
-                @include flex-align-center();
+                @include mixins.flex-direction-row();
+                @include mixins.flex-justify-between();
+                @include mixins.flex-align-center();
                 width: 100%;
             }
         }
@@ -310,10 +312,10 @@
     }
 
     .products-table-header {
-        @include flex();
-        @include flex-align-center();
-        @include flex-justify-between();
-        @include flex-wrap(wrap);
+        @include mixins.flex();
+        @include mixins.flex-align-center();
+        @include mixins.flex-justify-between();
+        @include mixins.flex-wrap(wrap);
     }
 
     .edit-button.ui-button {
@@ -344,7 +346,7 @@
     }
 
     .products-buttonbar {
-        @include flex-direction-column();
+        @include mixins.flex-direction-column();
 
         > div {
             &:last-child {

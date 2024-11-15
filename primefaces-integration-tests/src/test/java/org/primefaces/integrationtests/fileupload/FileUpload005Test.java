@@ -23,11 +23,6 @@
  */
 package org.primefaces.integrationtests.fileupload;
 
-import org.json.JSONObject;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.FileUpload;
@@ -35,10 +30,13 @@ import org.primefaces.selenium.component.Messages;
 
 import java.io.File;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.json.JSONObject;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests advanced single file upload.
@@ -154,7 +152,7 @@ class FileUpload005Test extends AbstractFileUploadTest {
 
         // Assert
         assertTrue(fileUpload.getWidgetValues().isEmpty(), fileUpload.getWidgetValues().toString());
-        assertTrue(fileUpload.getWidgetErrorMessages().toString().contains("Maximum number of files exceeded."),
+        assertTrue(page.messages.getMessage(0).getSummary().contains("Maximum number of files exceeded."),
                 fileUpload.getWidgetErrorMessages().toString());
         assertNoJavascriptErrors();
         assertUploadedFiles(page.uploadedFiles, file1, file2);

@@ -23,10 +23,11 @@
  */
 package org.primefaces.component.outputpanel;
 
-import javax.faces.component.UIPanel;
-import javax.faces.component.behavior.ClientBehaviorHolder;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
+
+import javax.faces.component.UIPanel;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class OutputPanelBase extends UIPanel implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 

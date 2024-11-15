@@ -313,7 +313,8 @@
                 //animationstart is to fix autofill issue https://github.com/primefaces/primefaces/issues/12444
                 $(this).removeClass('ui-state-focus');
 
-                if(input.hasClass('hasDatepicker')) {
+                // if the input is a datepicker or a number input, wait a bit before updating the filled state
+                if(input.hasClass('hasDatepicker') || input.attr('inputmode') === 'numeric') {
                     setTimeout(function() {
                         updateFilledStateOnBlur();
                     }, 150);
@@ -741,11 +742,17 @@
                 }
                 //page init
                 else {
-		            var newWidget = new this.widget[widgetName](cfg);
-                    this.widgets[widgetVar] = newWidget;
-                    if(this.settings.legacyWidgetNamespace) {
-                        window[widgetVar] = newWidget;
+                    if (cfg.preConstruct) {
+                        if (!cfg.labels) {
+                            cfg.labels = {};
+                        }
+                        if (!cfg.labels.aria) {
+                            cfg.labels.aria = {};
+                        }
+                        cfg.preConstruct.call(null, cfg);
                     }
+                    var newWidget = new this.widget[widgetName](cfg);
+                    this.widgets[widgetVar] = newWidget;
                     if (cfg.postConstruct) {
                        cfg.postConstruct.call(newWidget, newWidget);
                     }
@@ -852,7 +859,7 @@
                     el.parent().trigger('focus');
                 }
                 else {
-                    var checkedRadio = $(':radio[name="' + $.escapeSelector(el.attr('name')) + '"]').filter(':checked');
+                    var checkedRadio = $(':radio[name="' + CSS.escape(el.attr('name')) + '"]').filter(':checked');
                     if(checkedRadio.length)
                         checkedRadio.trigger('focus');
                     else
@@ -1355,7 +1362,8 @@
          * Reset any state variables on update="@all".
          */
         resetState: function() {
-            PrimeFaces.ajax.Queue.abortAll();
+            // terminate all AJAX requests, pollers, etc
+            PrimeFaces.utils.killswitch();
 
             PrimeFaces.zindex = 1000;
             PrimeFaces.detachedWidgets = [];

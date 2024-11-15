@@ -23,8 +23,8 @@
  */
 package org.primefaces.util;
 
-import java.text.DecimalFormat;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.Locale;
 
 /**

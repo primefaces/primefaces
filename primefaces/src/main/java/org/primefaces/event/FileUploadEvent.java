@@ -24,11 +24,11 @@
 package org.primefaces.event;
 
 
+import org.primefaces.model.file.UploadedFile;
+
 import javax.faces.component.UIComponent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.FacesListener;
-
-import org.primefaces.model.file.UploadedFile;
 
 public class FileUploadEvent extends FacesEvent {
 

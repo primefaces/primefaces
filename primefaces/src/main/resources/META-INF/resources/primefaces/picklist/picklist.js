@@ -561,37 +561,37 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         
         //events
         var moveToTarget = $(this.jqId + ' .ui-picklist-button-add');
-        var moveToTargetAria = PrimeFaces.getAriaLabel('moveToTarget');
+        var moveToTargetAria = $this.getAriaLabel('moveToTarget');
         moveToTarget.attr('title', moveToTargetAria).find('.ui-button-text').text(moveToTargetAria);
         moveToTarget.on("click", function() {
             $this.add();
         });
 
         var moveAllToTarget = $(this.jqId + ' .ui-picklist-button-add-all');
-        var moveAllToTargetAria = PrimeFaces.getAriaLabel('moveAllToTarget');
+        var moveAllToTargetAria = $this.getAriaLabel('moveAllToTarget');
         moveAllToTarget.attr('title', moveAllToTargetAria).find('.ui-button-text').text(moveAllToTargetAria);
         moveAllToTarget.on("click", function() {
             $this.addAll();
         });
 
         var moveToSource = $(this.jqId + ' .ui-picklist-button-remove');
-        var moveToSourceAria = PrimeFaces.getAriaLabel('moveToSource');
+        var moveToSourceAria = $this.getAriaLabel('moveToSource');
         moveToSource.attr('title', moveToSourceAria).find('.ui-button-text').text(moveToSourceAria);
         moveToSource.on("click", function() {
             $this.remove();
         });
         
         var moveAllToSource = $(this.jqId + ' .ui-picklist-button-remove-all');
-        var moveAllToSourceAria = PrimeFaces.getAriaLabel('moveAllToSource');
+        var moveAllToSourceAria = $this.getAriaLabel('moveAllToSource');
         moveAllToSource.attr('title', moveAllToSourceAria).find('.ui-button-text').text(moveAllToSourceAria);
         moveAllToSource.on("click", function() {
             $this.removeAll();
         });
         
-        var moveUpAria = PrimeFaces.getAriaLabel('moveUp');
-        var moveDownAria = PrimeFaces.getAriaLabel('moveDown');
-        var moveTopAria = PrimeFaces.getAriaLabel('moveTop');
-        var moveBottomAria = PrimeFaces.getAriaLabel('moveBottom');
+        var moveUpAria = $this.getAriaLabel('moveUp');
+        var moveDownAria = $this.getAriaLabel('moveDown');
+        var moveTopAria = $this.getAriaLabel('moveTop');
+        var moveBottomAria = $this.getAriaLabel('moveBottom');
 
         if(this.cfg.showSourceControls) {
             var moveUpSource = $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-up');

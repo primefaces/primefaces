@@ -23,6 +23,9 @@
  */
 package org.primefaces.config;
 
+import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
+
 import java.util.Map;
 import java.util.Objects;
 
@@ -30,9 +33,6 @@ import javax.faces.component.UIInput;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
-
-import org.primefaces.util.Constants;
-import org.primefaces.util.LangUtils;
 
 /**
  * Container for all config parameters.
@@ -49,7 +49,6 @@ public class PrimeConfiguration {
     private final boolean clientSideLocalizationEnabled;
     private final boolean clientSideValidationEnabled;
     private final boolean transformMetadataEnabled;
-    private final boolean legacyWidgetNamespace;
     private final boolean interpolateClientSideValidationMessages;
     private final boolean earlyPostParamEvaluation;
     private final boolean moveScriptsToBottom;
@@ -104,9 +103,6 @@ public class PrimeConfiguration {
 
         value = externalContext.getInitParameter(Constants.ContextParams.TRANSFORM_METADATA);
         transformMetadataEnabled = Boolean.parseBoolean(value);
-
-        value = externalContext.getInitParameter(Constants.ContextParams.LEGACY_WIDGET_NAMESPACE);
-        legacyWidgetNamespace = Boolean.parseBoolean(value);
 
         value = externalContext.getInitParameter(Constants.ContextParams.BEAN_VALIDATION_DISABLED);
         beanValidationEnabled = environment.isBeanValidationAvailable() && !Boolean.parseBoolean(value);
@@ -246,10 +242,6 @@ public class PrimeConfiguration {
 
     public boolean isTransformMetadataEnabled() {
         return transformMetadataEnabled;
-    }
-
-    public boolean isLegacyWidgetNamespace() {
-        return legacyWidgetNamespace;
     }
 
     public boolean isInterpolateClientSideValidationMessages() {

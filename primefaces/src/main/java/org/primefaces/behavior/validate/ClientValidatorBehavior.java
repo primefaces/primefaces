@@ -23,18 +23,18 @@
  */
 package org.primefaces.behavior.validate;
 
+import org.primefaces.behavior.base.AbstractBehavior;
+import org.primefaces.behavior.base.BehaviorAttribute;
+import org.primefaces.component.api.InputHolder;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.util.Constants;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehaviorContext;
-
-import org.primefaces.behavior.base.AbstractBehavior;
-import org.primefaces.behavior.base.BehaviorAttribute;
-import org.primefaces.component.api.InputHolder;
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.util.Constants;
 
 public class ClientValidatorBehavior extends AbstractBehavior {
 

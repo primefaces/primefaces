@@ -23,18 +23,29 @@
  */
 package org.primefaces.model;
 
-import java.io.Serializable;
-import java.util.*;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
-
 import org.primefaces.component.api.UITable;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.model.filter.FilterConstraint;
-import org.primefaces.util.*;
+import org.primefaces.util.Callbacks;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.LocaleUtils;
+import org.primefaces.util.PropertyDescriptorResolver;
+import org.primefaces.util.SortTableComparator;
+
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
 
 /**
  * Default implementation of the {@link LazyDataModel}, which implements sorting and filtering via reflection.

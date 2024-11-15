@@ -23,13 +23,6 @@
  */
 package org.primefaces.component.treetable.feature;
 
-import javax.faces.FacesException;
-import javax.faces.context.FacesContext;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.component.treetable.TreeTableRenderer;
@@ -37,6 +30,14 @@ import org.primefaces.model.TreeNode;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.SharedStringBuilder;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
+import javax.faces.FacesException;
+import javax.faces.context.FacesContext;
 
 public class SelectionFeature implements TreeTableFeature {
 

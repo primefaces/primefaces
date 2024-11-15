@@ -23,6 +23,10 @@
  */
 package org.primefaces.component.paginator;
 
+import org.primefaces.component.api.Pageable;
+import org.primefaces.component.api.UIPageableData;
+import org.primefaces.util.HTML;
+
 import java.io.IOException;
 import java.util.regex.Pattern;
 
@@ -30,10 +34,6 @@ import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
-import org.primefaces.component.api.Pageable;
-import org.primefaces.component.api.UIPageableData;
-import org.primefaces.util.HTML;
 
 public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
 

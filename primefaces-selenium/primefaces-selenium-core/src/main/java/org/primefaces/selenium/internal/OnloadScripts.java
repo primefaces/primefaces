@@ -23,9 +23,9 @@
  */
 package org.primefaces.selenium.internal;
 
-import java.util.List;
-
 import org.primefaces.selenium.PrimeSelenium;
+
+import java.util.List;
 
 public class OnloadScripts {
 

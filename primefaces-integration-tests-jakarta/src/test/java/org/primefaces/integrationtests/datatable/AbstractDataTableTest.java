@@ -23,14 +23,15 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import org.primefaces.integrationtests.AbstractTableTest;
+import org.primefaces.selenium.component.DataTable;
+import org.primefaces.selenium.component.model.datatable.Row;
+
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Assertions;
-import org.primefaces.integrationtests.AbstractTableTest;
-import org.primefaces.selenium.component.DataTable;
-import org.primefaces.selenium.component.model.datatable.Row;
 
 public abstract class AbstractDataTableTest extends AbstractTableTest {
 

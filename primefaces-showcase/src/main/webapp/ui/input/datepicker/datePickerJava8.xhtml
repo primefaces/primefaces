@@ -64,6 +64,11 @@
                     </div>
 
                     <div class="field col-12 md:col-4">
+                        <p:outputLabel for="@next" value="Week Picker" />
+                        <p:datePicker id="week" view="week" value="#{calendarJava8View.week}" />
+                    </div>
+
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel for="month" value="Month Picker" />
                         <p:datePicker id="month" view="month" value="#{calendarJava8View.date3}" pattern="MM/yyyy" yearNavigator="true" yearRange="2000:2030" />
                     </div>
@@ -170,6 +175,11 @@
                     <div class="field col-12 md:col-4">
                         <p:outputLabel for="time5" value="Time (with seconds)" />
                         <p:datePicker id="time5" value="#{calendarJava8View.dateTime5}" showSeconds="true" showButtonBar="true" timeZone="UTC"/>
+                    </div>
+
+                    <div class="field col-12 md:col-4">
+                        <p:outputLabel for="timeDefaults" value="Time (with defaults)" />
+                        <p:datePicker id="timeDefaults" value="#{calendarJava8View.dateTime5}" showSeconds="true" showMilliseconds="true" defaultHour="12" defaultMinute="30" defaultSecond="5" defaultMillisecond="25" timeZone="UTC"/>
                     </div>
 
                     <div class="field col-12 md:col-4">

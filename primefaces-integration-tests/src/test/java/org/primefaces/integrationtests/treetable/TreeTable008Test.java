@@ -23,7 +23,9 @@
  */
 package org.primefaces.integrationtests.treetable;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.component.TreeTable;
+import org.primefaces.selenium.component.model.treetable.Row;
 
 import java.util.List;
 
@@ -31,9 +33,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.component.TreeTable;
-import org.primefaces.selenium.component.model.treetable.Row;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TreeTable008Test extends AbstractTreeTableTest {
 

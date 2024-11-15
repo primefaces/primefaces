@@ -23,9 +23,10 @@
  */
 package org.primefaces.component.submenu;
 
+import org.primefaces.model.menu.MenuElement;
+
 import java.util.List;
 import java.util.stream.Collectors;
-import org.primefaces.model.menu.MenuElement;
 
 
 public class UISubmenu extends UISubmenuBase {

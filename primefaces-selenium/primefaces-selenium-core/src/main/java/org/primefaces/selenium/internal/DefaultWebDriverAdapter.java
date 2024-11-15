@@ -23,9 +23,12 @@
  */
 package org.primefaces.selenium.internal;
 
+import org.primefaces.selenium.spi.WebDriverAdapter;
+
 import java.util.HashMap;
 import java.util.Map;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -37,9 +40,6 @@ import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
-import org.primefaces.selenium.spi.WebDriverAdapter;
-
-import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class DefaultWebDriverAdapter implements WebDriverAdapter {
 
@@ -100,6 +100,9 @@ public class DefaultWebDriverAdapter implements WebDriverAdapter {
                 chromeOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
                 if (config.isWebdriverHeadless()) {
                     chromeOptions.addArguments("--headless=new");
+                    // Chrome 128 /129 - see https://stackoverflow.com/questions/78996364/chrome-129-headless-shows-blank-window,
+                    // https://issues.chromium.org/issues/359921643
+                    // Should be fixed for Chrome 130
                 }
                 chromeOptions.setCapability(ChromeOptions.LOGGING_PREFS, logPrefs);
 
