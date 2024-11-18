@@ -627,6 +627,7 @@ public class TreeTableRenderer extends DataRenderer {
         ResponseWriter writer = context.getResponseWriter();
         UIComponent header = column.getFacet("header");
         String headerText = column.getHeaderText();
+        String title = column.getTitle();
         String ariaHeaderText = column.getAriaHeaderText();
         headerText = LangUtils.isNotBlank(headerText) ? headerText : ariaHeaderText;
 
@@ -705,6 +706,9 @@ public class TreeTableRenderer extends DataRenderer {
         }
         else if (headerText != null) {
             writer.writeText(headerText, "headerText");
+            if (LangUtils.isNotBlank(title)) {
+                writer.writeAttribute("title", title, null);
+            }
         }
 
         writer.endElement("span");
