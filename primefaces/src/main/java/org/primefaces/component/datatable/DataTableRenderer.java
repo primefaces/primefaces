@@ -767,6 +767,10 @@ public class DataTableRenderer extends DataRenderer {
             header.encodeAll(context);
         }
         else if (headerText != null) {
+            String title = column.getTitle();
+            if (LangUtils.isNotBlank(title)) {
+                writer.writeAttribute("title", title, null);
+            }
             if (table.isEscapeText()) {
                 writer.writeText(headerText, "headerText");
             }
