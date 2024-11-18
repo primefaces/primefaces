@@ -46,7 +46,12 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -55,12 +60,13 @@ class FileUploadUtilsTest {
     private FileUpload fileUpload;
     private InputStream inputStream;
     private PrimeApplicationContext appContext;
+    private FacesContext context;
 
     @BeforeEach
     void setup() {
         fileUpload = mock(FileUpload.class);
         inputStream = mock(InputStream.class);
-        FacesContext context = mock(FacesContext.class);
+        context = mock(FacesContext.class);
         Application app = mock(Application.class);
         when(context.getApplication()).thenReturn(app);
         ExternalContext externalContext = mock(ExternalContext.class);
@@ -362,58 +368,71 @@ class FileUploadUtilsTest {
 
     @Test
     void requireValidFilename_EncodedChars() {
-        try (MockedStatic<FileUploadUtils> fileUploadUtilsMockedStatic = Mockito.mockStatic(FileUploadUtils.class, Mockito.CALLS_REAL_METHODS)) {
-            fileUploadUtilsMockedStatic.when(FileUploadUtils::isSystemWindows).thenReturn(false);
+        try (MockedStatic<FacesContext> facesContext = Mockito.mockStatic(FacesContext.class)) {
+            facesContext.when(FacesContext::getCurrentInstance).thenReturn(context);
 
-            // Check each invalid character individually
-            String[] invalidCharacters = {"%20", "%21"};
-            for (String ch : invalidCharacters) {
-                String invalidFileName = "filename_with_" + ch;
-                ValidatorException ex = assertThrows(ValidatorException.class, () -> FileUploadUtils.requireValidFilename(invalidFileName));
-                assertEquals("Invalid filename: (filename_with_" + ch + ") contains invalid character: " + ch, ex.getFacesMessage().getDetail());
+            try (MockedStatic<FileUploadUtils> fileUploadUtilsMockedStatic = Mockito.mockStatic(FileUploadUtils.class, Mockito.CALLS_REAL_METHODS)) {
+                fileUploadUtilsMockedStatic.when(FileUploadUtils::isSystemWindows).thenReturn(false);
+
+                // Check each invalid character individually
+                String[] invalidCharacters = {"%20", "%21"};
+                for (String ch : invalidCharacters) {
+                    String invalidFileName = "filename_with_" + ch;
+                    ValidatorException ex = assertThrows(ValidatorException.class, () -> FileUploadUtils.requireValidFilename(invalidFileName));
+                    assertEquals("Invalid filename: filename_with_" + ch + " contains invalid character: " + ch, ex.getFacesMessage().getDetail());
+                }
             }
         }
     }
 
     @Test
     void requireValidFilename_NotNull() {
-        // Arrange
-        String invalidFileName = null;
+        try (MockedStatic<FacesContext> facesContext = Mockito.mockStatic(FacesContext.class)) {
+            facesContext.when(FacesContext::getCurrentInstance).thenReturn(context);
+            // Arrange
+            String invalidFileName = null;
 
-        // Act
-        ValidatorException ex = assertThrows(ValidatorException.class, () -> FileUploadUtils.requireValidFilename(invalidFileName));
+            // Act
+            ValidatorException ex = assertThrows(ValidatorException.class, () -> FileUploadUtils.requireValidFilename(invalidFileName));
 
-        // Assert
-        assertEquals("Filename cannot be empty or null", ex.getFacesMessage().getDetail());
+            // Assert
+            assertEquals("Filename cannot be empty or null", ex.getFacesMessage().getDetail());
+        }
     }
 
     @Test
     void requireValidFilename_NotBlank() {
-        // Arrange
-        String invalidFileName = " ";
+        try (MockedStatic<FacesContext> facesContext = Mockito.mockStatic(FacesContext.class)) {
+            facesContext.when(FacesContext::getCurrentInstance).thenReturn(context);
+            // Arrange
+            String invalidFileName = " ";
 
-        // Act
-        ValidatorException ex = assertThrows(ValidatorException.class, () -> FileUploadUtils.requireValidFilename(invalidFileName));
+            // Act
+            ValidatorException ex = assertThrows(ValidatorException.class, () -> FileUploadUtils.requireValidFilename(invalidFileName));
 
-        // Assert
-        assertEquals("Filename cannot be empty or null", ex.getFacesMessage().getDetail());
+            // Assert
+            assertEquals("Filename cannot be empty or null", ex.getFacesMessage().getDetail());
+        }
     }
 
     @Test
     void requireValidFilename_InvalidCharacters() {
-        // Arrange
-        String invalidFileName = "file:*";
-        String os = System.getProperty("os.name").toLowerCase();
+        try (MockedStatic<FacesContext> facesContext = Mockito.mockStatic(FacesContext.class)) {
+            facesContext.when(FacesContext::getCurrentInstance).thenReturn(context);
+            // Arrange
+            String invalidFileName = "file:*";
+            String os = System.getProperty("os.name").toLowerCase();
 
-        // Act
-        ValidatorException ex = assertThrows(ValidatorException.class, () -> FileUploadUtils.requireValidFilename(invalidFileName));
+            // Act
+            ValidatorException ex = assertThrows(ValidatorException.class, () -> FileUploadUtils.requireValidFilename(invalidFileName));
 
-        // Assert
-        if (os.contains("win")) {
-            assertEquals("Invalid filename: (file:*) contains invalid character: :", ex.getFacesMessage().getDetail());
-        }
-        else {
-            assertEquals("Invalid Linux filename: file:*", ex.getFacesMessage().getDetail());
+            // Assert
+            if (os.contains("win")) {
+                assertEquals("Invalid filename: file:* contains invalid character: :", ex.getFacesMessage().getDetail());
+            }
+            else {
+                assertEquals("Invalid Linux filename: file:*", ex.getFacesMessage().getDetail());
+            }
         }
     }
 

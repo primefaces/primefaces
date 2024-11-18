@@ -69,6 +69,12 @@ public class FileUploadUtils {
 
     private static final Logger LOGGER = Logger.getLogger(FileUploadUtils.class.getName());
 
+    // Message keys
+    private static final String FILENAME_EMPTY = "primefaces.FileValidator.FILENAME_EMPTY";
+    private static final String FILENAME_INVALID_CHAR = "primefaces.FileValidator.FILENAME_INVALID_CHAR";
+    private static final String FILENAME_INVALID_WINDOWS = "primefaces.FileValidator.FILENAME_INVALID_WINDOWS";
+    private static final String FILENAME_INVALID_LINUX = "primefaces.FileValidator.FILENAME_INVALID_LINUX";
+
     // https://owasp.org/www-community/OWASP_Validation_Regex_Repository
     private static final Pattern INVALID_FILENAME_WINDOWS =
             Pattern.compile("^(?!^(PRN|AUX|CLOCK\\$|NUL|CON|COM\\d|LPT\\d|\\..*)(\\..+)?$)[^\\x00-\\x1f\\\\?*:\\\";|/<>]+$");
@@ -86,29 +92,29 @@ public class FileUploadUtils {
      */
     public static String requireValidFilename(String filename) {
         if (LangUtils.isBlank(filename)) {
-            throw validationError("Filename cannot be empty or null");
+            throw validationError(MessageFactory.getMessage(FILENAME_EMPTY));
         }
 
         // use java.nio Paths to detect a bad character
         Character ch = containsInvalidCharacters(filename);
         if (ch != null) {
-            throw validationError("Invalid filename: (" + filename + ") contains invalid character: " + ch);
+            throw validationError(MessageFactory.getMessage(FILENAME_INVALID_CHAR, filename, ch));
         }
 
         // Windows and Linux have different allowed characters
         if (isSystemWindows()) {
             if (!INVALID_FILENAME_WINDOWS.matcher(filename).find()) {
-                throw validationError("Invalid Windows filename: " + filename);
+                throw validationError(MessageFactory.getMessage(FILENAME_INVALID_WINDOWS, filename));
             }
         }
         else if (INVALID_FILENAME_LINUX.matcher(filename).find()) {
-            throw validationError("Invalid Linux filename: " + filename);
+            throw validationError(MessageFactory.getMessage(FILENAME_INVALID_LINUX, filename));
         }
 
         // URL encoded characters like %20 are invalid
         Matcher encodedMatcher = ENCODED_CHARS_PAT.matcher(filename);
         if (encodedMatcher.find() ) {
-            throw validationError( "Invalid filename: (" + filename + ") contains invalid character: " + encodedMatcher.group());
+            throw validationError(MessageFactory.getMessage(FILENAME_INVALID_CHAR, filename, encodedMatcher.group()));
         }
 
         return FilenameUtils.getName(filename);

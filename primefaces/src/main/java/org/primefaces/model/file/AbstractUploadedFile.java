@@ -49,7 +49,7 @@ public abstract class AbstractUploadedFile<T> implements UploadedFile, Serializa
 
     protected AbstractUploadedFile(T source, String filename, Long sizeLimit, String webKitRelativePath) {
         this.source = source;
-        this.filename = FileUploadUtils.requireValidFilename(filename);
+        this.filename = filename;
         this.sizeLimit = sizeLimit;
         this.webKitRelativePath = webKitRelativePath;
     }
