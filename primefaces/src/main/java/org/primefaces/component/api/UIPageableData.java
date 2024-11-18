@@ -81,7 +81,7 @@ public class UIPageableData extends PrimeUIData implements Pageable, TouchAware 
     }
 
     public String getEmptyMessage() {
-        return (String) getStateHelper().eval(PropertyKeys.emptyMessage, MessageFactory.getMessage(EMPTY_MESSAGE));
+        return (String) getStateHelper().eval(PropertyKeys.emptyMessage, MessageFactory.getMessage(getFacesContext(), EMPTY_MESSAGE));
     }
 
     public void setEmptyMessage(String emptyMessage) {

@@ -376,19 +376,19 @@ public abstract class UICalendar extends AbstractPrimeHtmlInputText implements I
                 case OK:
                     break;
                 case INVALID_DISABLED_DATE:
-                    msg = MessageFactory.getFacesMessage(DATE_INVALID_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
+                    msg = MessageFactory.getFacesMessage(context, DATE_INVALID_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
                     break;
                 case INVALID_RANGE_DATES_SEQUENTIAL:
-                    msg = MessageFactory.getFacesMessage(DATE_INVALID_RANGE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
+                    msg = MessageFactory.getFacesMessage(context, DATE_INVALID_RANGE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
                     break;
                 case INVALID_MIN_DATE:
-                    msg = MessageFactory.getFacesMessage(DATE_MIN_DATE_ID, FacesMessage.SEVERITY_ERROR, params);
+                    msg = MessageFactory.getFacesMessage(context, DATE_MIN_DATE_ID, FacesMessage.SEVERITY_ERROR, params);
                     break;
                 case INVALID_MAX_DATE:
-                    msg = MessageFactory.getFacesMessage(DATE_MAX_DATE_ID, FacesMessage.SEVERITY_ERROR, params);
+                    msg = MessageFactory.getFacesMessage(context, DATE_MAX_DATE_ID, FacesMessage.SEVERITY_ERROR, params);
                     break;
                 case INVALID_OUT_OF_RANGE:
-                    msg = MessageFactory.getFacesMessage(DATE_OUT_OF_RANGE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
+                    msg = MessageFactory.getFacesMessage(context, DATE_OUT_OF_RANGE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
                     break;
             }
         }

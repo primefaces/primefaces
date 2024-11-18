@@ -558,7 +558,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
                     msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, requiredMessage, requiredMessage);
                 }
                 else {
-                    msg = MessageFactory.getFacesMessage(REQUIRED_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, getClientId(context));
+                    msg = MessageFactory.getFacesMessage(context, REQUIRED_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, getClientId(context));
                 }
 
                 context.addMessage(getClientId(context), msg);
