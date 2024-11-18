@@ -505,6 +505,10 @@ if (!PrimeFaces.widget) {
             if(this.hasBehavior(event)) {
                 this.cfg.behaviors[event].call(this, ext);
             }
+            else if (this.cfg.behaviors === undefined && this.jq.length > 0) {
+                // #12887 if no behavior is defined, try to call the DOM event
+                this.jq.trigger(event, ext);
+            }
         },
 
         /**
