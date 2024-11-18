@@ -112,7 +112,7 @@ public class FileUpload extends FileUploadBase {
 
     public void validateFilename(FacesContext context, UploadedFile file) {
         try {
-            FileUploadUtils.requireValidFilename(file.getFileName());
+            FileUploadUtils.requireValidFilename(context, file.getFileName());
         }
         catch (ValidatorException ve) {
             setValid(false);

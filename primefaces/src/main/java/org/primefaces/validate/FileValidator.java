@@ -108,7 +108,7 @@ public class FileValidator extends AbstractPrimeValidator implements ClientValid
         Integer fileLimit = getFileLimit();
         if (fileLimit != null && uploadedFiles.getFiles().size() > fileLimit) {
             throw new ValidatorException(
-                    MessageFactory.getFacesMessage(FILE_LIMIT_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, fileLimit));
+                    MessageFactory.getFacesMessage(context, FILE_LIMIT_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, fileLimit));
         }
 
         long totalSize = 0;
@@ -120,7 +120,7 @@ public class FileValidator extends AbstractPrimeValidator implements ClientValid
         Long sizeLimit = getSizeLimit();
         if (sizeLimit != null && totalSize > sizeLimit) {
             throw new ValidatorException(
-                    MessageFactory.getFacesMessage(SIZE_LIMIT_MESSAGE_ID, FacesMessage.SEVERITY_ERROR,
+                    MessageFactory.getFacesMessage(context, SIZE_LIMIT_MESSAGE_ID, FacesMessage.SEVERITY_ERROR,
                             "*", FileUploadUtils.formatBytes(sizeLimit, LocaleUtils.getCurrentLocale(context))));
         }
     }
@@ -131,14 +131,14 @@ public class FileValidator extends AbstractPrimeValidator implements ClientValid
         Long sizeLimit = getSizeLimit();
         if (sizeLimit != null && uploadedFile.getSize() > sizeLimit) {
             throw new ValidatorException(
-                    MessageFactory.getFacesMessage(SIZE_LIMIT_MESSAGE_ID, FacesMessage.SEVERITY_ERROR,
+                    MessageFactory.getFacesMessage(context, SIZE_LIMIT_MESSAGE_ID, FacesMessage.SEVERITY_ERROR,
                             uploadedFile.getFileName(), FileUploadUtils.formatBytes(sizeLimit, LocaleUtils.getCurrentLocale(context))));
         }
 
         String allowTypes = getAllowTypes();
         if (!FileUploadUtils.isValidType(applicationContext, uploadedFile, allowTypes, accept)) {
             throw new ValidatorException(
-                    MessageFactory.getFacesMessage(ALLOW_TYPES_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, uploadedFile.getFileName(),
+                    MessageFactory.getFacesMessage(context, ALLOW_TYPES_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, uploadedFile.getFileName(),
                             FileUploadUtils.formatAllowTypes(allowTypes)));
         }
 

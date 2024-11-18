@@ -90,31 +90,31 @@ public class FileUploadUtils {
      * @param filename the name of the file to check
      * @return the extracted file name
      */
-    public static String requireValidFilename(String filename) {
+    public static String requireValidFilename(FacesContext context, String filename) {
         if (LangUtils.isBlank(filename)) {
-            throw validationError(MessageFactory.getMessage(FILENAME_EMPTY));
+            throw validationError(MessageFactory.getMessage(context, FILENAME_EMPTY));
         }
 
         // use java.nio Paths to detect a bad character
         Character ch = containsInvalidCharacters(filename);
         if (ch != null) {
-            throw validationError(MessageFactory.getMessage(FILENAME_INVALID_CHAR, filename, ch));
+            throw validationError(MessageFactory.getMessage(context, FILENAME_INVALID_CHAR, filename, ch));
         }
 
         // Windows and Linux have different allowed characters
         if (isSystemWindows()) {
             if (!INVALID_FILENAME_WINDOWS.matcher(filename).find()) {
-                throw validationError(MessageFactory.getMessage(FILENAME_INVALID_WINDOWS, filename));
+                throw validationError(MessageFactory.getMessage(context, FILENAME_INVALID_WINDOWS, filename));
             }
         }
         else if (INVALID_FILENAME_LINUX.matcher(filename).find()) {
-            throw validationError(MessageFactory.getMessage(FILENAME_INVALID_LINUX, filename));
+            throw validationError(MessageFactory.getMessage(context, FILENAME_INVALID_LINUX, filename));
         }
 
         // URL encoded characters like %20 are invalid
         Matcher encodedMatcher = ENCODED_CHARS_PAT.matcher(filename);
         if (encodedMatcher.find() ) {
-            throw validationError(MessageFactory.getMessage(FILENAME_INVALID_CHAR, filename, encodedMatcher.group()));
+            throw validationError(MessageFactory.getMessage(context, FILENAME_INVALID_CHAR, filename, encodedMatcher.group()));
         }
 
         return FilenameUtils.getName(filename);

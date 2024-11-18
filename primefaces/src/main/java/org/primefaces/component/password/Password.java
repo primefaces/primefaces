@@ -74,7 +74,7 @@ public class Password extends PasswordBase {
                     params[0] = ComponentUtils.getLabel(context, this);
                     params[1] = ComponentUtils.getLabel(context, matchWith);
 
-                    msg = MessageFactory.getFacesMessage(Password.INVALID_MATCH_KEY, FacesMessage.SEVERITY_ERROR, params);
+                    msg = MessageFactory.getFacesMessage(context, Password.INVALID_MATCH_KEY, FacesMessage.SEVERITY_ERROR, params);
                 }
 
                 context.addMessage(getClientId(context), msg);

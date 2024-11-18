@@ -139,7 +139,7 @@ public class PickList extends PickListBase {
                 message = new FacesMessage(FacesMessage.SEVERITY_ERROR, requiredMessage, requiredMessage);
             }
             else {
-                message = MessageFactory.getFacesMessage(REQUIRED_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, label);
+                message = MessageFactory.getFacesMessage(facesContext, REQUIRED_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, label);
             }
             facesContext.addMessage(clientId, message);
             setValid(false);
@@ -173,7 +173,7 @@ public class PickList extends PickListBase {
             Object targetItem = targetEntries.get(i);
             // Check if target item exists in source list
             if (!oldSource.contains(targetItem) && !oldTarget.contains(targetItem)) {
-                FacesMessage message = MessageFactory.getFacesMessage(UPDATE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, label);
+                FacesMessage message = MessageFactory.getFacesMessage(facesContext, UPDATE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, label);
                 facesContext.addMessage(clientId, message);
                 setValid(false);
                 break;
@@ -207,7 +207,7 @@ public class PickList extends PickListBase {
             boolean itemDisabled = isItemDisabled();
             // Check if disabled item has been moved from its former/original list
             if (itemDisabled && !oldEntries.contains(item)) {
-                FacesMessage message = MessageFactory.getFacesMessage(UPDATE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, label);
+                FacesMessage message = MessageFactory.getFacesMessage(facesContext, UPDATE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, label);
                 facesContext.addMessage(clientId, message);
                 setValid(false);
                 break;
