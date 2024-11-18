@@ -161,9 +161,7 @@
 /** Accessibility **/
 .ui-datatable-data td[role="gridcell"]:focus,
 .ui-datatable-data td[role="grid"] [tabindex="0"]:focus {
-  outline: var(--primary-color, #90caf9);
-  outline-style: solid;
-  outline-width: 2px;
+  outline: 2px solid var(--primary-color, #90caf9);
   outline-offset: -2px;
   border: none;
 }
