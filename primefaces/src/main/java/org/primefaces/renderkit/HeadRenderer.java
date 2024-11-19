@@ -292,16 +292,22 @@ public class HeadRenderer extends Renderer {
             boolean moveScriptsToBottom = PrimeRequestContext.getCurrentInstance().getApplicationContext().getConfig().isMoveScriptsToBottom();
 
             if (!moveScriptsToBottom) {
-                writer.write("$(function(){");
-            }
+                writer.write("(function(){const pfInit=() => {");
 
-            for (int i = 0; i < scripts.size(); i++) {
-                writer.write(scripts.get(i));
-                writer.write(';');
-            }
+                for (int i = 0; i < scripts.size(); i++) {
+                    writer.write(scripts.get(i));
+                    writer.write(';');
+                }
 
-            if (!moveScriptsToBottom) {
-                writer.write("});");
+                writer.write("};if(window.$){$(function(){pfInit()})}");
+                writer.write("else if(document.readyState==='complete'){pfInit()}");
+                writer.write("else{document.addEventListener('DOMContentLoaded', pfInit)}})();");
+            }
+            else {
+                for (int i = 0; i < scripts.size(); i++) {
+                    writer.write(scripts.get(i));
+                    writer.write(';');
+                }
             }
 
             writer.endElement("script");

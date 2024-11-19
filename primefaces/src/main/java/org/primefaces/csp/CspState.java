@@ -36,6 +36,15 @@ import java.util.UUID;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Manages Content Security Policy (CSP) state for PrimeFaces applications.
+ * <p>
+ * This class handles nonce generation and validation for CSP headers, as well as tracking event handlers.
+ * The nonce is a cryptographically secure random value used to whitelist inline scripts.
+ * </p>
+ *
+ * @since 7.0
+ */
 public class CspState {
 
     private FacesContext context;
@@ -88,14 +97,14 @@ public class CspState {
                 // in case of a forward, we might create a new nonce here
                 // but it also means that the request had NO CSP request param... is this valid?
                 if (LangUtils.isBlank(nonce) && isForward(context)) {
-                    nonce = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
+                    nonce = generateNonce();
                 }
 
                 validate(nonce);
             }
             // otherwise create a new nonce
             else {
-                nonce = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
+                nonce = generateNonce();
                 if (!context.getViewRoot().isTransient()) {
                     context.getViewRoot().getViewMap(true).put(Constants.RequestParams.NONCE_PARAM, nonce);
                 }
@@ -105,6 +114,23 @@ public class CspState {
         return nonce;
     }
 
+    /**
+     * Generates a random nonce value for Content Security Policy.
+     * Creates a UUID, converts it to a string, gets its bytes in UTF-8 encoding,
+     * and encodes those bytes as a Base64 string.
+     *
+     * @return Base64 encoded nonce string
+     */
+    public String generateNonce() {
+        return Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
+    }
+
+    /**
+     * Checks if the current request is a forward.
+     *
+     * @param context The FacesContext
+     * @return true if request is forwarded, false otherwise
+     */
     protected boolean isForward(FacesContext context) {
         Object request = context.getExternalContext().getRequest();
         if (request instanceof HttpServletRequest) {
