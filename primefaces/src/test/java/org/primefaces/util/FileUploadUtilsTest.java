@@ -68,6 +68,7 @@ class FileUploadUtilsTest {
         inputStream = mock(InputStream.class);
         context = mock(FacesContext.class);
         Application app = mock(Application.class);
+        when(app.getDefaultLocale()).thenReturn(Locale.US);
         when(context.getApplication()).thenReturn(app);
         ExternalContext externalContext = mock(ExternalContext.class);
         when(context.getExternalContext()).thenReturn(externalContext);
