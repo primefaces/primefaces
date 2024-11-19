@@ -549,6 +549,7 @@ public class AutoCompleteRenderer extends InputRenderer {
 
         writer.startElement("table", ac);
         writer.writeAttribute("class", AutoComplete.TABLE_CLASS, null);
+        writer.writeAttribute("role", HTML.ARIA_ROLE_LISTBOX, null);
 
         if (hasHeader) {
             writer.startElement("thead", ac);
