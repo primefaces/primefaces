@@ -27,6 +27,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
@@ -68,6 +69,12 @@ public class CspState {
 
                 nonce = LangUtils.isNotBlank(nonceViewState) ? nonceViewState : nonceRequest;
 
+                // in case of a forward, we might create a new nonce here
+                // but it also means that the request had NO CSP request param... is this valid?
+                if (LangUtils.isBlank(nonce) && isForward(context)) {
+                    nonce = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
+                }
+
                 validate(nonce);
             }
             else {
@@ -79,6 +86,14 @@ public class CspState {
         }
 
         return nonce;
+    }
+
+    protected boolean isForward(FacesContext context) {
+        Object request = context.getExternalContext().getRequest();
+        if (request instanceof HttpServletRequest) {
+            return ((HttpServletRequest) request).getAttribute("javax.servlet.forward.request_uri") != null;
+        }
+        return false;
     }
 
     /**
