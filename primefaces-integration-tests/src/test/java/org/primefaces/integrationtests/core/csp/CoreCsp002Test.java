@@ -23,37 +23,39 @@
  */
 package org.primefaces.integrationtests.core.csp;
 
-import java.io.Serializable;
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.AbstractPrimePageTest;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
-import lombok.Data;
+public class CoreCsp002Test  extends AbstractPrimePageTest {
 
-@Named
-@ViewScoped
-@Data
-public class CoreCsp001 implements Serializable {
+    @Test
+    @Order(1)
+    @DisplayName("Core-CSP: #12901 No PrimeFaces components on page fails initScripts() because jQuery is not loaded")
+    void cspInNewPage(Page page) {
+        // Arrange
+        assertNoJavascriptErrors();
 
-    private static final long serialVersionUID = 8797995450720503195L;
+        // Act
+        page.submit.click();
 
-    private String firstname;
-    private String lastname;
-
-    public String openInNewPage() {
-        return "coreCsp001-page2.xhtml";
+        // Assert
+        assertNoJavascriptErrors();
     }
 
-    public void save() {
-        FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage("Welcome " + firstname + " " + lastname));
-    }
+    public static class Page extends AbstractPrimePage {
 
-    public void action() {
-        FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage("Action method called"));
-    }
+        @FindBy(id = "form:submit")
+        WebElement submit;
 
+        @Override
+        public String getLocation() {
+            return "core/csp/coreCsp002.xhtml";
+        }
+    }
 }

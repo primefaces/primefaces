@@ -75,14 +75,17 @@ public class BodyRenderer extends CoreRenderer {
             writer.startElement("script", null);
             RendererUtils.encodeScriptTypeIfNecessary(context);
 
-            writer.write("$(function(){");
+            writer.write("(function(){const pfLoad=() => {");
 
             for (int i = 0; i < scripts.size(); i++) {
                 writer.write(scripts.get(i));
                 writer.write(';');
             }
 
-            writer.write("});");
+            writer.write("};if(window.$){$(function(){pfLoad()})}");
+            writer.write("else if(document.readyState==='complete'){pfLoad()}");
+            writer.write("else{document.addEventListener('DOMContentLoaded', pfLoad)}})();");
+
             writer.endElement("script");
         }
     }
