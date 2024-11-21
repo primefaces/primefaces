@@ -176,8 +176,8 @@ PrimeFaces.widget.MultiSelectListbox = PrimeFaces.widget.BaseWidget.extend({
         clonedItem.addClass('ui-state-highlight');
 
         //highlight ancestors
-        for(var i = 0; i < selectedIndexMap.length; i++) {
-            lists.eq(i).find('> .ui-multiselectlistbox-list > li.ui-multiselectlistbox-item').eq(selectedIndexMap[i]).addClass('ui-state-highlight');
+        for(var j = 0; j < selectedIndexMap.length; j++) {
+            lists.eq(j).find('> .ui-multiselectlistbox-list > li.ui-multiselectlistbox-item').eq(selectedIndexMap[j]).addClass('ui-state-highlight');
         }
 
         $this.jq.children('div.ui-multiselectlistbox-listcontainer:hidden').show();

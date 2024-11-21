@@ -161,8 +161,8 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
             }
         }
         else {
-            var event = this.cfg.event + '.' + this.id + '_contextmenu';
-            $(document).off(event, this.jqTargetId);
+            var eventCustom = this.cfg.event + '.' + this.id + '_contextmenu';
+            $(document).off(eventCustom, this.jqTargetId);
             if (PrimeFaces.env.isTouchable(this.cfg)) {
                 this.jqTarget.swipe('destroy');
             }

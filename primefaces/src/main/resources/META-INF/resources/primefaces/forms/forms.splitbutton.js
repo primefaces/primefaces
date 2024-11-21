@@ -447,12 +447,10 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
                     else
                         group.show();
                 }
-                else {
-                    if(group.nextUntil('.ui-widget-header').filter(':visible').length === 0)
-                        group.hide();
-                    else
-                        group.show();
-                }
+                else if(group.nextUntil('.ui-widget-header').filter(':visible').length === 0)
+                    group.hide();
+                else
+                    group.show();
             }
 
             var separators = this.menuitemContainer.children('.ui-separator');

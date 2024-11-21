@@ -61,7 +61,7 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
 
         this.jq.slider(this.cfg);
 
-        this.decimalStep = !(this.cfg.step % 1 === 0);
+        this.decimalStep = this.cfg.step % 1 !== 0;
 
         this.bindEvents();
 
@@ -240,10 +240,7 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery} input The slider input element.
      */
     triggerOnchange: function(input) {
-        if (input.parent().hasClass('ui-inputnumber')) {
-            input.trigger('change');
-        }
-        else if (input.hasClass('ui-spinner-input')) {
+        if (input.parent().hasClass('ui-inputnumber') || input.hasClass('ui-spinner-input')) {
             input.trigger('change');
         }
     },
