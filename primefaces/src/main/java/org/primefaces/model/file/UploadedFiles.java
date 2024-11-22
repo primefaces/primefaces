@@ -23,6 +23,7 @@
  */
 package org.primefaces.model.file;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.List;
 
@@ -50,9 +51,10 @@ public class UploadedFiles implements Serializable {
         return size;
     }
 
-    public void write(String path) throws Exception {
+    public File write(String directoryPath) throws Exception {
         for (UploadedFile file : files) {
-            file.write(path);
+            file.write(directoryPath);
         }
+        return null;
     }
 }
