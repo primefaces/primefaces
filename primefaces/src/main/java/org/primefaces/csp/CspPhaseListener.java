@@ -29,6 +29,7 @@ import org.primefaces.context.PrimeFacesContext;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.Lazy;
 
+import javax.faces.application.ProjectStage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
@@ -96,7 +97,10 @@ public class CspPhaseListener implements PhaseListener {
             externalContext.addResponseHeader("Content-Security-Policy", policy);
         }
 
-        String init = "if(window.PrimeFaces){PrimeFaces.csp.init('" + Encode.forJavaScript(state.getNonce()) + "');};";
+        String init = "if(window.PrimeFaces){PrimeFaces.csp.init('" + Encode.forJavaScript(state.getNonce()) + "');}";
+        if (context.isProjectStage(ProjectStage.Development)) {
+            init += "else{console.log('CSP active but PrimeFaces not included in current view!');}";
+        }
         PrimeFaces.current().executeInitScript(init);
     }
 

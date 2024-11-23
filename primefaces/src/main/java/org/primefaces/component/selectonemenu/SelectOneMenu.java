@@ -149,7 +149,7 @@ public class SelectOneMenu extends SelectOneMenuBase {
                             requiredMessageStr);
                 }
                 else {
-                    message = MessageFactory.getFacesMessage(REQUIRED_MESSAGE_ID,
+                    message = MessageFactory.getFacesMessage(context, REQUIRED_MESSAGE_ID,
                             FacesMessage.SEVERITY_ERROR,
                             ComponentUtils.getLabel(context, this));
                 }

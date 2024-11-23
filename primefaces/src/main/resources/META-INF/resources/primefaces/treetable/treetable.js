@@ -265,7 +265,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             var title = filterColumn.find('.ui-column-title')
 
             if (filter && title) {
-                filter.attr('aria-label', PrimeFaces.getLocaleLabel('filter') + " " + title.text());
+                filter.attr('aria-label', $this.getLabel('filter') + " " + title.text());
             }
         });
     },
@@ -545,13 +545,13 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         this.sortMeta = [];
 
         //aria messages
-        this.ascMessage = PrimeFaces.getAriaLabel('datatable.sort.ASC');
-        this.descMessage = PrimeFaces.getAriaLabel('datatable.sort.DESC');
+        this.ascMessage = this.getAriaLabel('datatable.sort.ASC');
+        this.descMessage = this.getAriaLabel('datatable.sort.DESC');
         if (this.cfg.allowUnsorting) {
-            this.otherMessage = PrimeFaces.getAriaLabel('datatable.sort.NONE');
+            this.otherMessage = this.getAriaLabel('datatable.sort.NONE');
         }
         else {
-            this.otherMessage = PrimeFaces.getAriaLabel('datatable.sort.ASC');
+            this.otherMessage = this.getAriaLabel('datatable.sort.ASC');
         }
 
         this.sortableColumns = this.thead.find('> tr > th.ui-sortable-column');

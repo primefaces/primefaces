@@ -21,40 +21,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.model.file;
+package org.primefaces.integrationtests.core.csp;
 
-import java.io.File;
-import java.io.Serializable;
-import java.util.List;
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.AbstractPrimePageTest;
 
-public class UploadedFiles implements Serializable {
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
-    private static final long serialVersionUID = 1L;
+public class CoreCsp002Test  extends AbstractPrimePageTest {
 
-    private long size;
-    private List<UploadedFile> files;
+    @Test
+    @Order(1)
+    @DisplayName("Core-CSP: #12901 No PrimeFaces components on page fails initScripts() because jQuery is not loaded")
+    void cspInNewPage(Page page) {
+        // Arrange
+        assertNoJavascriptErrors();
 
-    public UploadedFiles() {
-        // NOOP
+        // Act
+        page.submit.click();
+
+        // Assert
+        assertNoJavascriptErrors();
     }
 
-    public UploadedFiles(List<UploadedFile> files) {
-        this.files = files;
-        size = files.stream().mapToLong(UploadedFile::getSize).sum();
-    }
+    public static class Page extends AbstractPrimePage {
 
-    public List<UploadedFile> getFiles() {
-        return files;
-    }
+        @FindBy(id = "form:submit")
+        WebElement submit;
 
-    public long getSize() {
-        return size;
-    }
-
-    public File write(String directoryPath) throws Exception {
-        for (UploadedFile file : files) {
-            file.write(directoryPath);
+        @Override
+        public String getLocation() {
+            return "core/csp/coreCsp002.xhtml";
         }
-        return null;
     }
 }

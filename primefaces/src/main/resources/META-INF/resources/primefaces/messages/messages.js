@@ -27,7 +27,7 @@ PrimeFaces.widget.Messages = PrimeFaces.widget.BaseWidget.extend({
      * @param {PrimeFaces.FacesMessage} msg A message to translate into an HTML element.
      */
     appendMessage: function(msg) {
-        var closeLabel = PrimeFaces.getAriaLabel('close');
+        var closeLabel = this.getAriaLabel('close');
 
         var severityContainer =  this.jq.children('div.ui-messages-' + msg.severity);
         if (severityContainer.length === 0) {

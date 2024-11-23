@@ -23,6 +23,7 @@
  */
 package org.primefaces.model.file;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.List;
 
@@ -81,7 +82,7 @@ public class UploadedFilesWrapper extends UploadedFiles implements FacesWrapper<
     }
 
     @Override
-    public void write(String path) throws Exception {
-        getWrapped().write(path);
+    public File write(String path) throws Exception {
+        return getWrapped().write(path);
     }
 }

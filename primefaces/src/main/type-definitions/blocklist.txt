@@ -15,6 +15,7 @@ touch/touchswipe.js
 locales/locale-ar.js
 locales/locale-bg.js
 locales/locale-bn.js
+locales/locale-bs.js
 locales/locale-ca.js
 locales/locale-ckb.js
 locales/locale-cs.js

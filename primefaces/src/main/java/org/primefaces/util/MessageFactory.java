@@ -55,16 +55,15 @@ public class MessageFactory {
         // NOOP
     }
 
-    public static FacesMessage getFacesMessage(String messageId, FacesMessage.Severity severity, Object... params) {
-        FacesMessage facesMessage = getFacesMessage(LocaleUtils.getCurrentLocale(), messageId, params);
+    public static FacesMessage getFacesMessage(FacesContext context, String messageId, FacesMessage.Severity severity, Object... params) {
+        FacesMessage facesMessage = getFacesMessage(context, LocaleUtils.getCurrentLocale(context), messageId, params);
         facesMessage.setSeverity(severity);
         return facesMessage;
     }
 
-    public static FacesMessage getFacesMessage(Locale locale, String messageId, Object... params) {
+    public static FacesMessage getFacesMessage(FacesContext facesContext, Locale locale, String messageId, Object... params) {
         String summary = null;
         String detail = null;
-        FacesContext facesContext = FacesContext.getCurrentInstance();
         Application application = facesContext.getApplication();
         String userBundleName = application.getMessageBundle();
         ResourceBundle bundle = null;
@@ -132,13 +131,12 @@ public class MessageFactory {
         return new FacesMessage(summary, detail);
     }
 
-    public static String getMessage(String messageId, Object... params) {
-        return getMessage(LocaleUtils.getCurrentLocale(), messageId, params);
+    public static String getMessage(FacesContext facesContext, String messageId, Object... params) {
+        return getMessage(facesContext, LocaleUtils.getCurrentLocale(facesContext), messageId, params);
     }
 
-    public static String getMessage(Locale locale, String messageId, Object... params) {
+    public static String getMessage(FacesContext facesContext, Locale locale, String messageId, Object... params) {
         String summary = null;
-        FacesContext facesContext = FacesContext.getCurrentInstance();
         Application application = facesContext.getApplication();
         String userBundleName = application.getMessageBundle();
         ResourceBundle bundle = null;

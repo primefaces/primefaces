@@ -219,10 +219,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     configureLocale: function() {
-        this.emptyMessage = PrimeFaces.getLocaleLabel('emptySearchMessage');
-        this.resultsMessage = PrimeFaces.getLocaleLabel('searchMessage');
+        this.emptyMessage = this.getLabel('emptySearchMessage');
+        this.resultsMessage = this.getLabel('searchMessage');
         if (this.dropdown) {
-            this.dropdown.attr('aria-label', PrimeFaces.getLocaleLabel('choose'));
+            this.dropdown.attr('aria-label', this.getLabel('choose'));
         }
     },
 
@@ -1045,7 +1045,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         if (this.transition) {
             this.transition.show({
                 onEnter: function() {
-                    $this.panel.css('z-index', PrimeFaces.nextZindex());
+                    PrimeFaces.nextZindex($this.panel);
                     $this.alignPanel();
                 },
                 onEntered: function() {

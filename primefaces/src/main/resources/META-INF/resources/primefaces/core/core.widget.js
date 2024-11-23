@@ -364,8 +364,7 @@ if (!PrimeFaces.widget) {
             this.destroyListeners = [];
 
             if (this.refreshListeners) {
-                for (var i = 0; i < this.refreshListeners.length; i++) {
-                    var refreshListener = this.refreshListeners[i];
+                for (const refreshListener of this.refreshListeners) {
                     refreshListener.call(this, this);
                 }
             }
@@ -396,8 +395,7 @@ if (!PrimeFaces.widget) {
             PrimeFaces.debug("Destroyed detached widget: " + this.widgetVar);
 
             if (this.destroyListeners) {
-                for (var i = 0; i < this.destroyListeners.length; i++) {
-                    var destroyListener = this.destroyListeners[i];
+                for (const destroyListener of this.destroyListeners) {
                     destroyListener.call(this, this);
                 }
             }
@@ -425,12 +423,7 @@ if (!PrimeFaces.widget) {
          * @return {boolean} `true` if this widget is currently detached, or `false` otherwise.
          */
         isDetached: function() {
-            var element = document.getElementById(this.id);
-            if (typeof(element) !== 'undefined' && element !== null) {
-                return false;
-            }
-
-            return true;
+            return document.getElementById(this.id) === null;
         },
 
         /**
@@ -504,6 +497,10 @@ if (!PrimeFaces.widget) {
         callBehavior: function(event, ext) {
             if(this.hasBehavior(event)) {
                 this.cfg.behaviors[event].call(this, ext);
+            }
+            else if (this.cfg.behaviors === undefined && this.jq.length > 0) {
+                // #12887 if no behavior is defined, try to call the DOM event
+                this.jq.trigger(event, ext);
             }
         },
 
@@ -608,6 +605,32 @@ if (!PrimeFaces.widget) {
             }
             
             return this.cfg.formId;
+        },
+
+        /**
+         * Gets a localized label text for this widget.
+         * @param {string} label The label key to look up
+         * @returns {string} The label text - either from the widget configuration if specified,
+         * or from the PrimeFaces global labels
+         */
+        getLabel: function(label) {
+            if (this.cfg.labels && this.cfg.labels[label]) {
+                return this.cfg.labels[label];
+            }
+            return PrimeFaces.getLocaleLabel(label);
+        },
+        
+        /**
+         * Creates an ARIA label for an element.
+         * @param {string} label The label key to look up
+         * @returns {string} The ARIA label text - either from the widget configuration if specified, 
+         * or from the PrimeFaces global ARIA labels
+         */
+        getAriaLabel: function(label) {
+            if (this.cfg.labels && this.cfg.labels.aria && this.cfg.labels.aria[label]) {
+                return this.cfg.labels.aria[label];
+            }
+            return PrimeFaces.getAriaLabel(label);
         }
     });
 
@@ -823,7 +846,7 @@ if (!PrimeFaces.widget) {
          * @protected
          */
         _render: function() {
-            throw 'Unsupported Operation';
+            throw new Error("Unsupported Operation");
         },
 
         /**

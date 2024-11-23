@@ -103,7 +103,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         // select all checkbox
         this.selectAllCheckbox = $('<li class="ui-columntoggler-all">' +
             '<div class="ui-chkbox ui-widget">' +
-            '<div role="checkbox" tabindex="0" aria-checked="true" aria-label="' + PrimeFaces.getAriaLabel('selectAll') + '" class="ui-chkbox-box ui-widget ui-corner-all ui-state-default">' +
+            '<div role="checkbox" tabindex="0" aria-checked="true" aria-label="' + this.getAriaLabel('selectAll') + '" class="ui-chkbox-box ui-widget ui-corner-all ui-state-default">' +
             '<span class="ui-chkbox-icon ui-icon ui-icon-check"></span></div></div>' +
             '</li>');
         this.selectAllCheckbox.appendTo(this.itemContainer);
@@ -145,7 +145,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
 
             if (hidden) {
                 this.selectAllCheckbox.find('> .ui-chkbox > .ui-chkbox-box')
-                    .removeClass('ui-state-active').attr('aria-label', PrimeFaces.getAriaLabel('unselectAll')).attr('aria-checked', 'false')
+                    .removeClass('ui-state-active').attr('aria-label', this.getAriaLabel('unselectAll')).attr('aria-checked', 'false')
                     .children('.ui-chkbox-icon').addClass('ui-icon-blank').removeClass('ui-icon-check');
             }
 
@@ -356,7 +356,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         });
 
         this.selectAllCheckbox.find('> .ui-chkbox > .ui-chkbox-box')
-            .addClass('ui-state-active').attr('aria-label', PrimeFaces.getAriaLabel('selectAll')).attr('aria-checked', 'true')
+            .addClass('ui-state-active').attr('aria-label', this.getAriaLabel('selectAll')).attr('aria-checked', 'true')
             .children('.ui-chkbox-icon').addClass('ui-icon-check').removeClass('ui-icon-blank');
     },
 
@@ -437,7 +437,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         chkbox.removeClass('ui-state-active').children('.ui-chkbox-icon').addClass('ui-icon-blank').removeClass('ui-icon-check');
 
         this.selectAllCheckbox.find('> .ui-chkbox > .ui-chkbox-box')
-            .removeClass('ui-state-active').attr('aria-label', PrimeFaces.getAriaLabel('unselectAll')).attr('aria-checked', 'false')
+            .removeClass('ui-state-active').attr('aria-label', this.getAriaLabel('unselectAll')).attr('aria-checked', 'false')
             .children('.ui-chkbox-icon').addClass('ui-icon-blank').removeClass('ui-icon-check');
 
         var column = $(document.getElementById(chkbox.closest('li.ui-columntoggler-item').data('column'))),

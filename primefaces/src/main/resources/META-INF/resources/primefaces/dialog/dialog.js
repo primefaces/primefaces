@@ -635,7 +635,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
      * Moves this dialog to the top so that it is positioned above other elements and overlays.
      */
     moveToTop: function() {
-        this.jq.css('z-index', PrimeFaces.nextZindex());
+        PrimeFaces.nextZindex(this.jq);
     },
 
     /**

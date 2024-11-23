@@ -143,7 +143,7 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     updateInput: function(value) {
-        var ariaLabel = value.toString() === '1' ? PrimeFaces.getAriaLabel('star') : PrimeFaces.getAriaLabel('stars', '{star} stars', {star: value})
+        var ariaLabel = value.toString() === '1' ? this.getAriaLabel('star') : this.getAriaLabel('stars', '{star} stars', {star: value})
         this.input.val(value).attr('aria-label', ariaLabel);
     },
 

@@ -19424,7 +19424,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Event to show the overlay panel, default is "click".]]>
+                <![CDATA[Event to show the overlay panel if 'none', the overlay panel will only be displayed by `show()` or `toggle()`. default is "click".]]>
             </description>
             <name>showEvent</name>
             <required>false</required>
