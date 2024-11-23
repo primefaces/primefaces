@@ -198,7 +198,7 @@ PrimeFaces.widget.SlideMenu = PrimeFaces.widget.Menu.extend({
                     if (!$this.rendered) {
                         $this.render();
                     }
-                    $this.jq.css('z-index', PrimeFaces.nextZindex());
+                    PrimeFaces.nextZindex($this.jq);
                     $this.align();
                 },
                 onEntered: function() {

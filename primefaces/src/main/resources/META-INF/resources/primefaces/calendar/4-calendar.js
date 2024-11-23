@@ -163,7 +163,7 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
 
                 //display on top
                 setTimeout(function() {
-                    $('#ui-datepicker-div').addClass('ui-input-overlay').css('z-index', PrimeFaces.nextZindex());
+                    PrimeFaces.nextZindex($('#ui-datepicker-div').addClass('ui-input-overlay'));
 
                     if ($this.cfg.showTodayButton === false) {
                         $(input).datepicker("widget").find(".ui-datepicker-current").hide();

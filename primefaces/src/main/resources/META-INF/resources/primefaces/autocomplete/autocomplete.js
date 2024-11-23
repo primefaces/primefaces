@@ -1045,7 +1045,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         if (this.transition) {
             this.transition.show({
                 onEnter: function() {
-                    $this.panel.css('z-index', PrimeFaces.nextZindex());
+                    PrimeFaces.nextZindex($this.panel);
                     $this.alignPanel();
                 },
                 onEntered: function() {

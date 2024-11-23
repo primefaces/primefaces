@@ -116,7 +116,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
                     return false;
                 }
 
-                this.panel.css('z-index', PrimeFaces.nextZindex());
+                PrimeFaces.nextZindex(this.panel);
 
                 var inst = this; // the instance of prime.datePicker API
 
