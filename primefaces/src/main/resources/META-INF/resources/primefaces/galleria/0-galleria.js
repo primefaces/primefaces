@@ -132,7 +132,7 @@
                             $(document.body).addClass('ui-overflow-hidden');
                         },
                         onEntering: function () {
-                            $this.mask.addClass('ui-widget-overlay').css('z-index', PrimeFaces.nextZindex());
+                            PrimeFaces.nextZindex($this.mask.addClass('ui-widget-overlay'));
                         },
                         onEntered: function () {
                             if ($this.options.onShow) {

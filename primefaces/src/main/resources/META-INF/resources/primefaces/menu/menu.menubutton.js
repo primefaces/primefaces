@@ -185,7 +185,7 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
         if (this.transition) {
             this.transition.show({
                 onEnter: function() {
-                    $this.menu.css('z-index', PrimeFaces.nextZindex());
+                    PrimeFaces.nextZindex($this.menu);
                     $this.align();
                 },
                 onEntered: function() {

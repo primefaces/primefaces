@@ -346,7 +346,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
             var showWithCSSTransition = function() {
                 $this.transition.show({
                     onEnter: function() {
-                        $this.jq.css('z-index', PrimeFaces.nextZindex());
+                        PrimeFaces.nextZindex($this.jq);
                         $this.align(target);
                     },
                     onEntered: function() {

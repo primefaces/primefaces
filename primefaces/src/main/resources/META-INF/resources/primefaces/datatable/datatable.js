@@ -4806,7 +4806,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             scope: this.id,
             cancel: ':input,.ui-column-resizer',
             start: function(event, ui) {
-                ui.helper.css('z-index', PrimeFaces.nextZindex());
+                PrimeFaces.nextZindex(ui.helper);
             },
             drag: function(event, ui) {
                 var droppable = ui.helper.data('droppable-column');
@@ -4991,7 +4991,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             handle: draggableHandle,
             appendTo: document.body,
             start: function(event, ui) {
-                ui.helper.css('z-index', PrimeFaces.nextZindex());
+                PrimeFaces.nextZindex(ui.helper);
             },
             helper: function(event, ui) {
                 var cells = ui.children(),

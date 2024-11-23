@@ -1322,13 +1322,19 @@
         },
 
         /**
-         * Increment and return the next `z-index` for CSS as a string.
+         * Increment and return the next `z-index` for CSS as a string. If an element is provided, apply the new
+         * `z-index` to it.
          * Note that jQuery will no longer accept numeric values in {@link JQuery.css | $.fn.css} as of version 4.0.
          *
+         * @param {JQuery} element Element to apply new `z-index` to.
          * @return {string} the next `z-index` as a string.
          */
-        nextZindex: function() {
-            return String(++PrimeFaces.zindex);
+        nextZindex: function(element) {
+            var zIndex = String(++PrimeFaces.zindex);
+            if (element) {
+                element.css('z-index', zIndex);
+            }
+            return zIndex;
         },
 
        /**
