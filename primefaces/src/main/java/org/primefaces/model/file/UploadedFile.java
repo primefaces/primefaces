@@ -23,6 +23,7 @@
  */
 package org.primefaces.model.file;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -40,7 +41,7 @@ public interface UploadedFile {
 
     long getSize();
 
-    void write(String filePath) throws Exception;
+    File write(String directoryPath) throws Exception;
 
     void delete() throws IOException;
 }
