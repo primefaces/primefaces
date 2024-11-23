@@ -86,6 +86,10 @@
         <listener-class>org.apache.webbeans.servlet.WebBeansConfigurationListener</listener-class>
     </listener>
 
+    <listener>
+        <listener-class>${jsfListener}</listener-class>
+    </listener>
+
     <error-page>
         <exception-type>java.lang.Throwable</exception-type>
         <location>/error.xhtml</location>
