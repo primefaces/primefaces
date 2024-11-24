@@ -661,7 +661,7 @@ PrimeFaces.widget.SelectCheckboxMenu = class SelectCheckboxMenu extends PrimeFac
      */
     configureSelectAllAria() {
         if (this.selectAllTogglerCheckbox) {
-           var ariaLabel = this.selectAllTogglerCheckbox.prop('checked') ? PrimeFaces.getAriaLabel('selectAll') : PrimeFaces.getAriaLabel('unselectAll');
+           var ariaLabel = this.selectAllTogglerCheckbox.prop('checked') ? this.getAriaLabel('selectAll') : this.getAriaLabel('unselectAll');
            this.selectAllTogglerCheckbox.attr('aria-label', ariaLabel);
            this.selectAllTogglerCheckbox.removeAttr('aria-selected');
         }
@@ -1180,7 +1180,7 @@ PrimeFaces.widget.SelectCheckboxMenu = class SelectCheckboxMenu extends PrimeFac
         if (this.panel.is(":hidden") && this.transition) {
             this.transition.show({
                 onEnter: function() {
-                    $this.panel.css('z-index', PrimeFaces.nextZindex());
+                    PrimeFaces.nextZindex($this.panel);
                     $this.alignPanel();
                 },
                 onEntered: function() {

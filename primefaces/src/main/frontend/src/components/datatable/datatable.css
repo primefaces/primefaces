@@ -1,6 +1,7 @@
 .ui-datatable table {
     width: 100%;
     table-layout: fixed;
+    border-collapse: collapse;
 }
 
 .ui-datatable-tablewrapper {
@@ -130,7 +131,7 @@
 }
 
 .ui-datatable-scrollable-theadclone th.ui-state-default {
-    height:0px;
+    height:0px !important; /* #12908 */
     border-bottom-width: 0px;
     border-top-width: 0px;
     padding-top: 0px;
@@ -160,9 +161,8 @@
 /** Accessibility **/
 .ui-datatable-data td[role="gridcell"]:focus,
 .ui-datatable-data td[role="grid"] [tabindex="0"]:focus {
-  outline: var(--primary-color, #90caf9);
-  outline-style: solid;
-  outline-width: 2px;
+  outline: 2px solid var(--primary-color, #90caf9);
+  outline-offset: -2px;
   border: none;
 }
 

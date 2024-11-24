@@ -48,7 +48,7 @@ public class FileUploadRenderer extends CoreRenderer {
         }
         if (!context.getExternalContext().getRequestContentType().toLowerCase().startsWith("multipart/")) {
             logDevelopmentWarning(context, this,
-                    "Decoding FileUpload requires contentType \"multipart/form-data\" for clientId: " + component.getClientId(context));
+                    "Decoding FileUpload requires enctype \"multipart/form-data\" for clientId: " + component.getClientId(context));
             // skip further processing as servlet fileupload decoding would throw a exception because of wrong contentType
             return;
         }

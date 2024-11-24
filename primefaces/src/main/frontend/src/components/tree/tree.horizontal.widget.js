@@ -105,6 +105,9 @@ PrimeFaces.widget.HorizontalTree = class HorizontalTree extends PrimeFaces.widge
         nodeType = node.data('nodetype'),
         iconState = this.cfg.iconStates[nodeType];
 
+        //aria
+        node.attr('aria-expanded', false);
+
         if(iconState) {
             toggleIcon.nextAll('span.ui-treenode-icon').removeClass(iconState.expandedIcon).addClass(iconState.collapsedIcon);
         }

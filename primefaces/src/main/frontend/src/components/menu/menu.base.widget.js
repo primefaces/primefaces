@@ -239,7 +239,7 @@ PrimeFaces.widget.Menu = class Menu extends PrimeFaces.widget.BaseWidget {
         if (this.transition) {
             this.transition.show({
                 onEnter: function() {
-                    $this.getMenuElement().css('z-index', PrimeFaces.nextZindex());
+                    PrimeFaces.nextZindex($this.getMenuElement());
                     $this.align();
                 },
                 onEntered: function() {

@@ -115,7 +115,7 @@ PrimeFaces.widget.Signature = class Signature extends PrimeFaces.widget.BaseWidg
 
         // accessibility
         this.canvas.attr({
-            'aria-label': PrimeFaces.getAriaLabel('signatureLabel', this.cfg.ariaLabel || 'Sign here'),
+            'aria-label': this.getAriaLabel('signatureLabel', this.cfg.ariaLabel || 'Sign here'),
             'aria-labelledby': this.cfg.ariaLabelledBy,
             'id': this.id + '_canvas',
             'role': 'img',

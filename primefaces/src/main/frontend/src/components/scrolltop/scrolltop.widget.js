@@ -53,7 +53,7 @@ PrimeFaces.widget.ScrollTop = class ScrollTop extends PrimeFaces.widget.BaseWidg
                     duration: 150,
                     start: function() {
                         if (zIndex === 'auto' && $this.jq.css('zIndex') === 'auto') {
-                            $this.jq.css('zIndex', PrimeFaces.nextZindex());
+                            PrimeFaces.nextZindex($this.jq);
                         }
                     }
                 });

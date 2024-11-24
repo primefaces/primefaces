@@ -648,7 +648,7 @@ import Cookies from "js-cookie";
          * @return {string} The given value, escaped to be used as a text-literal within an HTML document.
          */
         escapeHTML: function(value, preventDoubleEscaping) {
-            var regex = preventDoubleEscaping ? /[<>"'`=\/]/g : /[&<>"'`=\/]/g;
+            var regex = preventDoubleEscaping ? /[<>"'`=/]/g : /[&<>"'`=/]/g;
             return String(value).replace(regex, function (s) {
                 return PrimeFaces.entityMap[s];
             });
@@ -745,6 +745,12 @@ import Cookies from "js-cookie";
                 //page init
                 else {
                     if (cfg.preConstruct) {
+                        if (!cfg.labels) {
+                            cfg.labels = {};
+                        }
+                        if (!cfg.labels.aria) {
+                            cfg.labels.aria = {};
+                        }
                         cfg.preConstruct.call(null, cfg);
                     }
                     var newWidget = new this.widget[widgetName](cfg);
@@ -770,13 +776,7 @@ import Cookies from "js-cookie";
          * @return {boolean} `true` if the given item is in the given array, `false` otherwise.
          */
         inArray: function(arr, item) {
-            for(var i = 0; i < arr.length; i++) {
-                if(arr[i] === item) {
-                    return true;
-                }
-            }
-
-            return false;
+            return arr.includes(item);
         },
 
         /**
@@ -1009,8 +1009,8 @@ import Cookies from "js-cookie";
          */
         bcn: function(element, event, functions) {
             if(functions) {
-                for(var i = 0; i < functions.length; i++) {
-                    var retVal = functions[i].call(element, event);
+                for(const fn of functions) {
+                    var retVal = fn.call(element, event);
                     if(retVal === false) {
                         if(event.preventDefault) {
                             event.preventDefault();
@@ -1035,10 +1035,9 @@ import Cookies from "js-cookie";
          * A list of callback functions. If any returns `false`, the other callbacks are not invoked.
          */
         bcnu: function(ext, event, fns) {
-            if(fns) {
-                for(var i = 0; i < fns.length; i++) {
-                    var retVal = fns[i].call(this, ext, event);
-                    if(retVal === false) {
+            if (fns) {
+                for (const fn of fns) {
+                    if (fn.call(this, ext, event) === false) {
                         break;
                     }
                 }
@@ -1166,8 +1165,7 @@ import Cookies from "js-cookie";
          */
         invokeDeferredRenders: function(containerId) {
             var widgetsToRemove = [];
-            for(var i = 0; i < this.deferredRenders.length; i++) {
-                var deferredRender = this.deferredRenders[i];
+            for (const deferredRender of this.deferredRenders) {
 
                 if(deferredRender.container === containerId) {
                     var rendered = deferredRender.callback.call();
@@ -1177,8 +1175,8 @@ import Cookies from "js-cookie";
                 }
             }
 
-            for(var j = 0; j < widgetsToRemove.length; j++) {
-                this.removeDeferredRenders(widgetsToRemove[j]);
+            for (const widget of widgetsToRemove) {
+                this.removeDeferredRenders(widget);
             }
         },
         
@@ -1205,10 +1203,10 @@ import Cookies from "js-cookie";
 
             // try and strip specific language from nl_BE to just nl
             if (!locale) {
-                var localeKey = cfgLocale ? cfgLocale : PrimeFaces.settings.locale;
-                var strippedLocaleKey = localeKey ? localeKey.split('_')[0] : null;
-                if (strippedLocaleKey) {
-                    locale = PrimeFaces.locales[strippedLocaleKey];
+                var fullLocaleKey = cfgLocale || PrimeFaces.settings.locale;
+                var splitLocaleKey = fullLocaleKey ? fullLocaleKey.split('_')[0] : null;
+                if (splitLocaleKey) {
+                    locale = PrimeFaces.locales[splitLocaleKey];
                 }
             }
 
@@ -1269,11 +1267,10 @@ import Cookies from "js-cookie";
                     if (typeof locale[key] === 'object') {
                         // If the value is an object, call the function recursively
                         iterateLocale(locale[key], lkey, lvalue);
-                    } else {
-                        // Otherwise, set the new value if found
-                        if (key === lkey) {
-                            locale[key] = lvalue;
-                        }
+                    } 
+                    // Otherwise, set the new value if found
+                    else if (key === lkey) {
+                        locale[key] = lvalue;
                     }
                 }
             }
@@ -1327,13 +1324,19 @@ import Cookies from "js-cookie";
         },
 
         /**
-         * Increment and return the next `z-index` for CSS as a string.
+         * Increment and return the next `z-index` for CSS as a string. If an element is provided, apply the new
+         * `z-index` to it.
          * Note that jQuery will no longer accept numeric values in {@link JQuery.css | $.fn.css} as of version 4.0.
          *
+         * @param {JQuery} element Element to apply new `z-index` to.
          * @return {string} the next `z-index` as a string.
          */
-        nextZindex: function() {
-            return String(++PrimeFaces.zindex);
+        nextZindex: function(element) {
+            var zIndex = String(++PrimeFaces.zindex);
+            if (element) {
+                element.css('z-index', zIndex);
+            }
+            return zIndex;
         },
 
        /**

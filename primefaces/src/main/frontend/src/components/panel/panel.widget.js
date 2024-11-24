@@ -76,7 +76,7 @@ PrimeFaces.widget.Panel = class Panel extends PrimeFaces.widget.BaseWidget {
 
         if(this.cfg.hasMenu) {
             var menu = $(this.jqId + '_menu');
-            menu.attr('arial-label', PrimeFaces.getLocaleLabel('choose'));
+            menu.attr('arial-label', this.getLabel('choose'));
             menu.on('click.panel', function(e) {
                 e.preventDefault();
             });
@@ -213,7 +213,7 @@ PrimeFaces.widget.Panel = class Panel extends PrimeFaces.widget.BaseWidget {
         this.toggler.children('span.ui-icon').removeClass(removeIcon).addClass(addIcon);
         this.cfg.collapsed = collapsed;
         this.toggleStateHolder.val(collapsed);
-        this.toggler.attr('aria-label', collapsed ? PrimeFaces.getAriaLabel('collapseRow') : PrimeFaces.getAriaLabel('expandRow'))
+        this.toggler.attr('aria-label', collapsed ? this.getAriaLabel('collapseRow') : this.getAriaLabel('expandRow'))
 
         if (this.hasBehavior('toggle')) {
             this.callBehavior('toggle');

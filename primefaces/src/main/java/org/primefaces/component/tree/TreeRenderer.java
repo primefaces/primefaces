@@ -402,9 +402,6 @@ public class TreeRenderer extends CoreRenderer {
         writer.startElement("div", tree);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", containerClass, null);
-        writer.writeAttribute("role", "tree", null);
-
-        writer.writeAttribute(HTML.ARIA_MULITSELECTABLE, String.valueOf(multipleSelectionMode), null);
         if (tree.getStyle() != null) {
             writer.writeAttribute("style", tree.getStyle(), null);
         }
@@ -414,6 +411,8 @@ public class TreeRenderer extends CoreRenderer {
         }
 
         writer.startElement("ul", null);
+        writer.writeAttribute("role", "tree", null);
+        writer.writeAttribute(HTML.ARIA_MULITSELECTABLE, String.valueOf(multipleSelectionMode), null);
         if (!isDisabled) {
             writer.writeAttribute("tabindex", tree.getTabindex(), null);
         }
@@ -739,6 +738,14 @@ public class TreeRenderer extends CoreRenderer {
         writer.writeAttribute("data-nodetype", uiTreeNode.getType(), null);
         writer.writeAttribute("class", containerClass, null);
 
+        writer.writeAttribute("role", "treeitem", null);
+        writer.writeAttribute(HTML.ARIA_LABEL, uiTreeNode.getAriaLabel(), null);
+        writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(expanded), null);
+        writer.writeAttribute(HTML.ARIA_SELECTED, String.valueOf(selected), null);
+        if (checkbox) {
+            writer.writeAttribute(HTML.ARIA_CHECKED, String.valueOf(selected), null);
+        }
+
         if (datakey != null) {
             writer.writeAttribute("data-datakey", datakey, null);
         }
@@ -752,15 +759,8 @@ public class TreeRenderer extends CoreRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("class", contentClass, null);
-        writer.writeAttribute("role", "treeitem", null);
         if (!tree.isDisabled()) {
             writer.writeAttribute("tabindex", "-1", null);
-        }
-        writer.writeAttribute(HTML.ARIA_LABEL, uiTreeNode.getAriaLabel(), null);
-        writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(expanded), null);
-        writer.writeAttribute(HTML.ARIA_SELECTED, String.valueOf(selected), null);
-        if (checkbox) {
-            writer.writeAttribute(HTML.ARIA_CHECKED, String.valueOf(selected), null);
         }
 
         //state icon

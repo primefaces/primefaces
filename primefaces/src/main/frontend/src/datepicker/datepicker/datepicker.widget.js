@@ -116,7 +116,7 @@ PrimeFaces.widget.DatePicker = class DatePicker extends PrimeFaces.widget.BaseWi
                     return false;
                 }
 
-                this.panel.css('z-index', PrimeFaces.nextZindex());
+                PrimeFaces.nextZindex(this.panel);
 
                 var inst = this; // the instance of prime.datePicker API
 
@@ -164,7 +164,7 @@ PrimeFaces.widget.DatePicker = class DatePicker extends PrimeFaces.widget.BaseWi
         //extensions
         if(!this.cfg.inline && this.cfg.showIcon) {
             this.triggerButton = this.jqEl.siblings('.ui-datepicker-trigger:button');
-            this.triggerButton.attr('aria-label',PrimeFaces.getLocaleLabel('chooseDate')).attr('aria-haspopup', true);
+            this.triggerButton.attr('aria-label',this.getLabel('chooseDate')).attr('aria-haspopup', true);
 
             var title = this.jqEl.attr('title');
             if(title) {

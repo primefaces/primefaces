@@ -767,6 +767,10 @@ public class DataTableRenderer extends DataRenderer {
             header.encodeAll(context);
         }
         else if (headerText != null) {
+            String title = column.getTitle();
+            if (LangUtils.isNotBlank(title)) {
+                writer.writeAttribute("title", title, null);
+            }
             if (table.isEscapeText()) {
                 writer.writeText(headerText, "headerText");
             }
@@ -1649,7 +1653,7 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("id", reflowId + "_label", null);
             writer.writeAttribute("for", reflowId, null);
             writer.writeAttribute("class", "ui-reflow-label", null);
-            writer.writeText(MessageFactory.getMessage(DataTable.SORT_LABEL), null);
+            writer.writeText(MessageFactory.getMessage(context, DataTable.SORT_LABEL), null);
             writer.endElement("label");
 
             writer.startElement("select", null);
@@ -1661,8 +1665,8 @@ public class DataTableRenderer extends DataRenderer {
             for (Map.Entry<SortMeta, String> header : headers.entrySet()) {
                 for (int sortOrder = 0; sortOrder < 2; sortOrder++) {
                     String sortOrderLabel = (sortOrder == 0)
-                                      ? MessageFactory.getMessage(DataTable.SORT_ASC)
-                                      : MessageFactory.getMessage(DataTable.SORT_DESC);
+                                      ? MessageFactory.getMessage(context, DataTable.SORT_ASC)
+                                      : MessageFactory.getMessage(context, DataTable.SORT_DESC);
 
                     writer.startElement("option", null);
                     writer.writeAttribute("value", header.getKey().getColumnKey() + "_" + sortOrder, null);

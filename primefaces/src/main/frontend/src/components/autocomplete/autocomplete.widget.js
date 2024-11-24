@@ -219,10 +219,10 @@ PrimeFaces.widget.AutoComplete = class AutoComplete extends PrimeFaces.widget.Ba
      * @private
      */
     configureLocale() {
-        this.emptyMessage = PrimeFaces.getLocaleLabel('emptySearchMessage');
-        this.resultsMessage = PrimeFaces.getLocaleLabel('searchMessage');
+        this.emptyMessage = this.getLabel('emptySearchMessage');
+        this.resultsMessage = this.getLabel('searchMessage');
         if (this.dropdown) {
-            this.dropdown.attr('aria-label', PrimeFaces.getLocaleLabel('choose'));
+            this.dropdown.attr('aria-label', this.getLabel('choose'));
         }
     }
 
@@ -1045,7 +1045,7 @@ PrimeFaces.widget.AutoComplete = class AutoComplete extends PrimeFaces.widget.Ba
         if (this.transition) {
             this.transition.show({
                 onEnter: function() {
-                    $this.panel.css('z-index', PrimeFaces.nextZindex());
+                    PrimeFaces.nextZindex($this.panel);
                     $this.alignPanel();
                 },
                 onEntered: function() {

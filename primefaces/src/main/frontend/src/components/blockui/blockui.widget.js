@@ -284,7 +284,7 @@ PrimeFaces.widget.BlockUI = class BlockUI extends PrimeFaces.widget.BaseWidget {
     alignOverlay() {
         this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.block);
         if (this.blocker) {
-            this.blocker.css('z-index', PrimeFaces.nextZindex());
+            PrimeFaces.nextZindex(this.blocker);
         }
 
         //center position of content

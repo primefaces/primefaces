@@ -43,8 +43,14 @@ Look into [migration guide](https://primefaces.github.io/primefaces/15_0_0/#/../
     * Added ability to pick weeks by view="week"
 
 * FeedReader
-
     * Added `podcast="true"` property if [Apple Itunes Podcast](https://help.apple.com/itc/podcasts_connect/#/itcb54353390) parsing and specific tags 
+
+* FileUpload
+    * Added new messages to support localization
+        * `primefaces.FileValidator.FILENAME_INVALID_CHAR=Invalid filename: {0} contains invalid character: {1}`
+        * `primefaces.FileValidator.FILENAME_INVALID_LINUX=Invalid Linux filename: {0}`
+        * `primefaces.FileValidator.FILENAME_INVALID_WINDOWS=Invalid Windows filename: {0}`
+        * `primefaces.FileValidator.FILENAME_EMPTY=Filename cannot be empty or null`
 
 * InputNumber
     * Added `modifyValueOnUpDownArrow` which allows the user to increment or decrement the element value with the up and down arrow keys. Default is true.

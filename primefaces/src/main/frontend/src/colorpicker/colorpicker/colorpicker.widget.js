@@ -166,7 +166,7 @@ PrimeFaces.widget.ColorPicker = class ColorPicker extends PrimeFaces.widget.Base
      * @private
      */
     configureAriaLabel(label, a11y, property) {
-        var ariaLabel = PrimeFaces.getAriaLabel(label);
+        var ariaLabel = this.getAriaLabel(label);
         if (ariaLabel) {
             a11y[property] = ariaLabel;
         }

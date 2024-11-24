@@ -251,9 +251,12 @@ PrimeFaces.widget.CascadeSelect = class CascadeSelect extends PrimeFaces.widget.
             $this.handleViewportChange();
         });
 
-        this.scrollHandler = PrimeFaces.utils.registerConnectedOverlayScrollHandler(this, 'scroll.' + this.id + '_hide', this.jq, function() {
-            $this.handleViewportChange();
-        });
+        // #12008 - Only register scroll handler if there is a small number of items
+        if (this.items.length < 10) {
+            this.scrollHandler = PrimeFaces.utils.registerConnectedOverlayScrollHandler(this, 'scroll.' + this.id + '_hide', this.jq, function() {
+                $this.handleViewportChange();
+            });
+        }
     }
 
     /**
@@ -297,7 +300,7 @@ PrimeFaces.widget.CascadeSelect = class CascadeSelect extends PrimeFaces.widget.
         if (this.transition) {
             this.transition.show({
                 onEnter: function() {
-                    $this.panel.css('z-index', PrimeFaces.nextZindex());
+                    PrimeFaces.nextZindex($this.panel);
                     $this.alignPanel();
                 },
                 onEntered: function() {

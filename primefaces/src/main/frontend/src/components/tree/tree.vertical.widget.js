@@ -409,7 +409,7 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
         childrenContainer = node.children('.ui-treenode-children');
 
         //aria
-        nodeContent.find('> .ui-treenode-content').attr('aria-expanded', false);
+        node.attr('aria-expanded', false);
 
         toggleIcon.removeClass('ui-icon-triangle-1-s').addClass(_self.cfg.collapsedIcon);
 
@@ -469,7 +469,7 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
         iconState = this.cfg.iconStates[nodeType];
 
         //aria
-        nodeContent.find('> .ui-treenode-content').attr('aria-expanded', true);
+        node.attr('aria-expanded', true);
 
         toggleIcon.removeClass(this.cfg.collapsedIcon).addClass('ui-icon-triangle-1-s');
 

@@ -49,7 +49,7 @@ public abstract class AbstractUploadedFile<T> implements UploadedFile, Serializa
 
     protected AbstractUploadedFile(T source, String filename, Long sizeLimit, String webKitRelativePath) {
         this.source = source;
-        this.filename = FileUploadUtils.requireValidFilename(filename);
+        this.filename = filename;
         this.sizeLimit = sizeLimit;
         this.webKitRelativePath = webKitRelativePath;
     }
@@ -92,10 +92,12 @@ public abstract class AbstractUploadedFile<T> implements UploadedFile, Serializa
     }
 
     @Override
-    public void write(String filePath) throws Exception {
-        File file = new File(filePath, filename);
-        FileUploadUtils.requireValidFilePath(file.getCanonicalPath(), true);
-        write(file);
+    public File write(String directoryPath) throws Exception {
+        File directory = new File(directoryPath);
+        FileUploadUtils.requireValidFilePath(directory.getCanonicalPath(), true);
+        File outputFile = new File(directory, filename);
+        write(outputFile);
+        return outputFile;
     }
 
     protected abstract InputStream getSourceInputStream() throws IOException;

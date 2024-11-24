@@ -178,7 +178,7 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
     }
 
     public String getEmptyMessage() {
-        return (String) getStateHelper().eval(PropertyKeys.emptyMessage, MessageFactory.getMessage(UIPageableData.EMPTY_MESSAGE));
+        return (String) getStateHelper().eval(PropertyKeys.emptyMessage, MessageFactory.getMessage(getFacesContext(), UIPageableData.EMPTY_MESSAGE));
     }
 
     public void setEmptyMessage(String emptyMessage) {

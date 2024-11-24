@@ -202,7 +202,7 @@ PrimeFaces.widget.ConfirmPopup = class ConfirmPopup extends PrimeFaces.widget.Dy
 
             this.transition.show({
                 onEnter: function() {
-                    $this.jq.css('z-index', PrimeFaces.nextZindex());
+                    PrimeFaces.nextZindex($this.jq);
                     $this.align(target);
                 },
                 onEntered: function() {

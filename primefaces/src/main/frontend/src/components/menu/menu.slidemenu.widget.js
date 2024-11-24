@@ -198,7 +198,7 @@ PrimeFaces.widget.SlideMenu = class SlideMenu extends PrimeFaces.widget.Menu {
                     if (!$this.rendered) {
                         $this.render();
                     }
-                    $this.jq.css('z-index', PrimeFaces.nextZindex());
+                    PrimeFaces.nextZindex($this.jq);
                     $this.align();
                 },
                 onEntered: function() {

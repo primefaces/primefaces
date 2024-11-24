@@ -163,7 +163,7 @@ PrimeFaces.widget.Calendar = class Calendar extends PrimeFaces.widget.BaseWidget
 
                 //display on top
                 setTimeout(function() {
-                    $('#ui-datepicker-div').addClass('ui-input-overlay').css('z-index', PrimeFaces.nextZindex());
+                    PrimeFaces.nextZindex($('#ui-datepicker-div').addClass('ui-input-overlay'));
 
                     if ($this.cfg.showTodayButton === false) {
                         $(input).datepicker("widget").find(".ui-datepicker-current").hide();
@@ -218,7 +218,7 @@ PrimeFaces.widget.Calendar = class Calendar extends PrimeFaces.widget.BaseWidget
         //extensions
         if(this.cfg.popup && this.cfg.showOn) {
             var triggerButton = this.jqEl.siblings('.ui-datepicker-trigger:button');
-            triggerButton.attr('aria-label',PrimeFaces.getLocaleLabel('chooseDate')).attr('aria-haspopup', true).html('').addClass('ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only')
+            triggerButton.attr('aria-label',this.getLabel('chooseDate')).attr('aria-haspopup', true).html('').addClass('ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only')
                         .append('<span class="ui-button-icon-left ui-icon ui-icon-calendar"></span><span class="ui-button-text">ui-button</span>');
 
             var title = this.jqEl.attr('title');
