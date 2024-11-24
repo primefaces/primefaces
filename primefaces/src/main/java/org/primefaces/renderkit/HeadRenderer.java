@@ -30,8 +30,10 @@ import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.LocaleUtils;
 import org.primefaces.util.MapBuilder;
+import org.primefaces.util.ResourceUtils;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -43,11 +45,8 @@ import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.ProjectStage;
-import javax.faces.application.Resource;
-import javax.faces.application.ResourceHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.lifecycle.ClientWindow;
@@ -59,7 +58,7 @@ import javax.servlet.http.HttpServletResponse;
  * Renders head content based on the following order
  * - First Facet
  * - Theme CSS
- * - FontAwesome
+ * - PrimeIcons CSS
  * - Middle Facet
  * - Registered Resources
  * - Client Validation Scripts
@@ -129,14 +128,6 @@ public class HeadRenderer extends Renderer {
             middle.encodeAll(context);
         }
 
-        //Registered Resources
-        UIViewRoot viewRoot = context.getViewRoot();
-        List<UIComponent> resources = viewRoot.getComponentResources(context, "head");
-        for (int i = 0; i < resources.size(); i++) {
-            UIComponent resource = resources.get(i);
-            resource.encodeAll(context);
-        }
-
         if (applicationContext.getConfig().isClientSideValidationEnabled()) {
             // moment is needed for Date validation
             encodeJS(context, LIBRARY, "moment/moment.js");
@@ -160,6 +151,17 @@ public class HeadRenderer extends Renderer {
             }
         }
 
+        //Registered Resources
+        UIViewRoot viewRoot = context.getViewRoot();
+        List<UIComponent> resources = new ArrayList<>(viewRoot.getComponentResources(context, "head"));
+        moveResourceToTop(resources, "primeicons/primeicons.css");
+        moveResourceToTop(resources, "theme.css");
+        for (int i = 0; i < resources.size(); i++) {
+            UIComponent resource = resources.get(i);
+            LOGGER.log(Level.FINE, () -> "HeadRenderer resource: " + resource.getAttributes().get("name"));
+            resource.encodeAll(context);
+        }
+
         encodeSettingScripts(context, applicationContext, requestContext, writer);
 
         // encode initialization scripts
@@ -180,47 +182,11 @@ public class HeadRenderer extends Renderer {
     }
 
     protected void encodeCSS(FacesContext context, String library, String resource) throws IOException {
-        ResourceHandler resourceHandler = context.getApplication().getResourceHandler();
-        if (resourceHandler.isResourceRendered(context, resource, library)) {
-            // resource already rendered, skip
-            return;
-        }
-
-        ResponseWriter writer = context.getResponseWriter();
-        ExternalContext externalContext = context.getExternalContext();
-
-        Resource cssResource = resourceHandler.createResource(resource, library);
-        if (cssResource == null) {
-            throw new FacesException("Error loading CSS, cannot find \"" + resource + "\" resource of \"" + library + "\" library");
-        }
-        else {
-            writer.startElement("link", null);
-            writer.writeAttribute("type", "text/css", null);
-            writer.writeAttribute("rel", "stylesheet", null);
-            writer.writeAttribute("href", externalContext.encodeResourceURL(cssResource.getRequestPath()), null);
-            writer.endElement("link");
-        }
+        ResourceUtils.addStyleSheetResource(context, library, resource);
     }
 
     protected void encodeJS(FacesContext context, String library, String script) throws IOException {
-        ResourceHandler resourceHandler = context.getApplication().getResourceHandler();
-        if (resourceHandler.isResourceRendered(context, script, library)) {
-            // resource already rendered, skip
-            return;
-        }
-
-        ResponseWriter writer = context.getResponseWriter();
-        ExternalContext externalContext = context.getExternalContext();
-        Resource resource = resourceHandler.createResource(script, library);
-
-        if (resource == null) {
-            throw new FacesException("Error loading JavaScript, cannot find \"" + script + "\" resource of \"" + library + "\" library");
-        }
-        else {
-            writer.startElement("script", null);
-            writer.writeAttribute("src", externalContext.encodeResourceURL(resource.getRequestPath()), null);
-            writer.endElement("script");
-        }
+        ResourceUtils.addJavascriptResource(context, library, script);
     }
 
     protected void encodeSettingScripts(FacesContext context, PrimeApplicationContext applicationContext, PrimeRequestContext requestContext,
@@ -312,5 +278,22 @@ public class HeadRenderer extends Renderer {
 
             writer.endElement("script");
         }
+    }
+
+    /**
+     * Moves a resource component to the top of the resources list based on its name.
+     * This is used to ensure certain resources like theme.css and primeicons.css are loaded first.
+     *
+     * @param resources The list of UIComponent resources to sort
+     * @param resource The resource name suffix to move to the top
+     */
+    protected void moveResourceToTop(List<UIComponent> resources, String resource) {
+        resources.sort((a, b) -> {
+            String nameA = (String) a.getAttributes().get("name");
+            String nameB = (String) b.getAttributes().get("name");
+            if (nameA != null && nameA.endsWith(resource)) return -1;
+            if (nameB != null && nameB.endsWith(resource)) return 1;
+            return 0;
+        });
     }
 }

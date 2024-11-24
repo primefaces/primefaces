@@ -59,7 +59,7 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
     private ValueExpression store;
 
     public FileDownloadActionListener() {
-        ResourceUtils.addComponentResource(FacesContext.getCurrentInstance(), "filedownload/filedownload.js");
+        ResourceUtils.addJavascriptResource(FacesContext.getCurrentInstance(), "filedownload/filedownload.js");
     }
 
     public FileDownloadActionListener(ValueExpression value, ValueExpression contentDisposition, ValueExpression monitorKey, ValueExpression store) {
