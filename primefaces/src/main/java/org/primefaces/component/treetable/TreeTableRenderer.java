@@ -598,7 +598,15 @@ public class TreeTableRenderer extends DataRenderer {
                     }
                 }
 
-                column.renderChildren(context);
+                if (hasColumnDefaultRendering(tt, column)) {
+                    encodeDefaultFieldCell(context, tt, column, writer);
+                }
+                else if (column instanceof DynamicColumn) {
+                    encodeDynamicCell(context, tt, column);
+                }
+                else {
+                    column.renderChildren(context);
+                }
 
                 writer.endElement("td");
             }
@@ -958,6 +966,17 @@ public class TreeTableRenderer extends DataRenderer {
         writer.endElement("td");
     }
 
+    protected void encodeDynamicCell(FacesContext context, TreeTable table, UIColumn column) throws IOException {
+        column.encodeAll(context);
+    }
+
+    protected void encodeDefaultFieldCell(FacesContext context, TreeTable table, UIColumn column, ResponseWriter writer) throws IOException {
+        Object value = table.getConvertedFieldValue(context, column);
+        if (value != null) {
+            writer.writeText(value, null);
+        }
+    }
+
     @Override
     public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
         //Do nothing
@@ -988,5 +1007,13 @@ public class TreeTableRenderer extends DataRenderer {
         }
 
         writer.endElement("input");
+    }
+
+    protected boolean hasColumnDefaultRendering(TreeTable table, UIColumn column) {
+        return column.getChildren().isEmpty()
+                && (table.getSortByAsMap().containsKey(column.getColumnKey())
+                || table.getFilterByAsMap().containsKey(column.getColumnKey())
+                || LangUtils.isNotBlank(column.getField()));
+
     }
 }
