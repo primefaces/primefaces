@@ -513,6 +513,11 @@
                     <scope>compile</scope>
                 </dependency>
             </dependencies>
+            <build>
+                <filters>
+                    <filter>${basedir}/src/main/resources/filters/myfaces.properties</filter>
+                </filters>
+            </build>
         </profile>
         <profile>
             <id>myfaces-next-2.3</id>
@@ -530,6 +535,11 @@
                     <scope>compile</scope>
                 </dependency>
             </dependencies>
+            <build>
+                <filters>
+                    <filter>${basedir}/src/main/resources/filters/myfaces.properties</filter>
+                </filters>
+            </build>
         </profile>
         <profile>
             <id>mojarra-2.3</id>
@@ -539,6 +549,11 @@
                     <artifactId>jakarta.faces</artifactId>
                 </dependency>
             </dependencies>
+            <build>
+                <filters>
+                    <filter>${basedir}/src/main/resources/filters/mojarra.properties</filter>
+                </filters>
+            </build>
         </profile>
     </profiles>
 </project>
