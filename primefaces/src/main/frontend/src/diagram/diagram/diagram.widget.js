@@ -78,7 +78,7 @@ PrimeFaces.widget.Diagram = class Diagram extends PrimeFaces.widget.DeferredWidg
                 PaintStyle: $this.cfg.paintStyle,
                 HoverPaintStyle: $this.cfg.hoverPaintStyle,
                 ConnectionOverlays: $this.cfg.connectionOverlays,
-                ConnectionsDetachable: ($this.cfg.connectionsDetachable === false) ? false : true,
+                ConnectionsDetachable: $this.cfg.connectionsDetachable !== false,
                 MaxConnections: $this.cfg.maxConnections
             });
 

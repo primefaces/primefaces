@@ -293,13 +293,17 @@ PrimeFaces.widget.SpeedDial = class SpeedDial extends PrimeFaces.widget.Deferred
      */
     calculatePointStyle(index) {
         var type = this.cfg.type;
+        var step = 0;
+        var direction = this.cfg.direction;
+        var x = '';
+        var y = '';
 
         if (type !== 'linear') {
             var length = this.itemsCount;
             var radius = this.cfg.radius || (length * 20);
 
             if (type === 'circle') {
-                var step = 2 * Math.PI / length;
+                step = 2 * Math.PI / length;
 
                 return {
                     left: 'calc(' + (radius * Math.cos(step * index)) + 'px + var(--item-diff-x, 0px))',
@@ -307,10 +311,9 @@ PrimeFaces.widget.SpeedDial = class SpeedDial extends PrimeFaces.widget.Deferred
                 }
             }
             else if (type === 'semi-circle') {
-                var direction = this.cfg.direction;
-                var step = Math.PI / (length - 1);
-                var x = 'calc(' + (radius * Math.cos(step * index)) + 'px + var(--item-diff-x, 0px))';
-                var y = 'calc(' + (radius * Math.sin(step * index)) + 'px + var(--item-diff-y, 0px))';
+                step = Math.PI / (length - 1);
+                x = 'calc(' + (radius * Math.cos(step * index)) + 'px + var(--item-diff-x, 0px))';
+                y = 'calc(' + (radius * Math.sin(step * index)) + 'px + var(--item-diff-y, 0px))';
                 if (direction === 'up') {
                     return { left: x, bottom: y };
                 }
@@ -325,10 +328,9 @@ PrimeFaces.widget.SpeedDial = class SpeedDial extends PrimeFaces.widget.Deferred
                 }
             }
             else if (type === 'quarter-circle') {
-                var direction = this.cfg.direction;
-                var step = Math.PI / (2 * (length - 1));
-                var x = 'calc(' + (radius * Math.cos(step * index)) + 'px + var(--item-diff-x, 0px))';
-                var y = 'calc(' + (radius * Math.sin(step * index)) + 'px + var(--item-diff-y, 0px))';
+                step = Math.PI / (2 * (length - 1));
+                x = 'calc(' + (radius * Math.cos(step * index)) + 'px + var(--item-diff-x, 0px))';
+                y = 'calc(' + (radius * Math.sin(step * index)) + 'px + var(--item-diff-y, 0px))';
                 if (direction === 'up-left') {
                     return { right: x, bottom: y };
                 }

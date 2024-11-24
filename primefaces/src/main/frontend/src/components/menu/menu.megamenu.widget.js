@@ -197,16 +197,14 @@ PrimeFaces.widget.MegaMenu = class MegaMenu extends PrimeFaces.widget.Menu {
 
                         e.preventDefault();
                     }
-                    else {
-                        if (currentitem.hasClass('ui-menu-parent') && currentitem.children('.ui-menu-child').is(':visible')) {
-                            $this.deactivate(currentitem);
-                            $this.highlight(currentitem);
-                        }
-                        else if (parentItem.length) {
-                            $this.deactivate(currentitem);
-                            $this.deactivate(parentItem);
-                            $this.highlight(parentItem);
-                        }
+                    else if (currentitem.hasClass('ui-menu-parent') && currentitem.children('.ui-menu-child').is(':visible')) {
+                        $this.deactivate(currentitem);
+                        $this.highlight(currentitem);
+                    }
+                    else if (parentItem.length) {
+                        $this.deactivate(currentitem);
+                        $this.deactivate(parentItem);
+                        $this.highlight(parentItem);
                     }
                     break;
 

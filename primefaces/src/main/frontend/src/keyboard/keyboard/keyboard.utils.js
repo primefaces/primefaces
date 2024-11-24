@@ -127,23 +127,23 @@
      */
     function createLayoutFromTemplate(template) {
         // GitHub #3487: Unicode conversion
-        template =  decodeURIComponent(JSON.parse('"' + template.replace(/\"/g, '\\"') + '"'));
+        template =  decodeURIComponent(JSON.parse('"' + template.replace(/"/g, '\\"') + '"'));
         var lines = template.split(','),
-            template = new Array(lines.length);
+            newTemplate = new Array(lines.length);
 
         for(var i = 0; i < lines.length;i++) {
-            template[i] = "";
+            newTemplate[i] = "";
             var lineControls = lines[i].split('-');
 
             for(var j = 0; j < lineControls.length;j++) {
-                if(isDefinedControl(lineControls[j]))
-                    template[i] = template[i] + getPresetControl(lineControls[j])
+                if(this.isDefinedControl(lineControls[j]))
+                    newTemplate[i] = newTemplate[i] + this.getPresetControl(lineControls[j])
                 else
-                    template[i] = template[i] + lineControls[j];
+                    newTemplate[i] = newTemplate[i] + lineControls[j];
             }
         }
 
-        return template;
+        return newTemplate;
     }
 
     /**

@@ -455,17 +455,15 @@ PrimeFaces.widget.TabView = class TabView extends PrimeFaces.widget.DeferredWidg
                         $this.enableScrollerButton($this.navcrollerLeft);
                 });
         }
-        else {
-            if(newMarginLeft <= 0) {
-                this.navContainer.animate({'margin-left': newMarginLeft + 'px'}, 'fast', 'easeInOutCirc', function() {
-                    $this.saveScrollState(newMarginLeft);
+        else if(newMarginLeft <= 0) {
+            this.navContainer.animate({'margin-left': newMarginLeft + 'px'}, 'fast', 'easeInOutCirc', function() {
+                $this.saveScrollState(newMarginLeft);
 
-                    if(newMarginLeft === 0)
-                        $this.disableScrollerButton($this.navcrollerLeft);
-                    if($this.navcrollerRight.hasClass('ui-state-disabled'))
-                        $this.enableScrollerButton($this.navcrollerRight);
-                });
-            }
+                if(newMarginLeft === 0)
+                    $this.disableScrollerButton($this.navcrollerLeft);
+                if($this.navcrollerRight.hasClass('ui-state-disabled'))
+                    $this.enableScrollerButton($this.navcrollerRight);
+            });
         }
     }
 

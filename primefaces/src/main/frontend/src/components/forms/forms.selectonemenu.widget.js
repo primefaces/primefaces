@@ -768,10 +768,7 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
         }
         return this.options.filter(function() {
             var option = $(this);
-            if(option.is(':disabled') || option.text().toLowerCase().indexOf(text.toLowerCase()) !== 0) {
-                return false;
-            }
-            return true;
+            return !option.is(':disabled') && option.text().toLowerCase().indexOf(text.toLowerCase()) === 0;
         });
     }
 

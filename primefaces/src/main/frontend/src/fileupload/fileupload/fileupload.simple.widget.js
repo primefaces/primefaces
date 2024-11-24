@@ -34,7 +34,7 @@ PrimeFaces.widget.SimpleFileUpload = class SimpleFileUpload extends PrimeFaces.w
         }
 
         this.cfg.messageTemplate = this.cfg.messageTemplate || '{name} {size}';
-        this.cfg.global = (this.cfg.global === true || this.cfg.global === undefined) ? true : false;
+        this.cfg.global = this.cfg.global !== false;
 
         this.form = this.jq.closest('form');
         this.input = $(this.jqId);

@@ -65,7 +65,7 @@ PrimeFaces.widget.GMap = class GMap extends PrimeFaces.widget.DeferredWidget {
      */
     _render() {
         this.map = new google.maps.Map(document.getElementById(this.id), this.cfg);
-        this.cfg.fitBounds = !(this.cfg.fitBounds === false);
+        this.cfg.fitBounds = this.cfg.fitBounds !== false;
         this.viewport = this.map.getBounds();
 
         //conf markers

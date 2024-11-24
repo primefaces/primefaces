@@ -237,10 +237,7 @@ PrimeFaces.widget.Password = class Password extends PrimeFaces.widget.BaseWidget
             nonWords: /\W/.test(password)
         }
 
-        var variationCount = 0;
-        for (var check in variations) {
-            variationCount += (variations[check] == true) ? 1 : 0;
-        }
+        var variationCount = Object.values(variations).filter(Boolean).length;
         score += variationCount * 28;
 
         return parseInt(score);

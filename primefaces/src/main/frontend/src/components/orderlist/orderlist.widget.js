@@ -26,7 +26,7 @@ PrimeFaces.widget.OrderList = class OrderList extends PrimeFaces.widget.BaseWidg
     init(cfg) {
         super.init(cfg);
 
-        this.list = this.jq.find('.ui-orderlist-list'),
+        this.list = this.jq.find('.ui-orderlist-list');
         this.items = this.list.children('.ui-orderlist-item');
         this.input = $(this.jqId + '_values');
         this.cfg.effect = this.cfg.effect||'fade';
@@ -117,15 +117,13 @@ PrimeFaces.widget.OrderList = class OrderList extends PrimeFaces.widget.BaseWidg
 
                 $this.fireItemSelectEvent(element, e);
             }
+            else if(element.hasClass('ui-state-highlight')) {
+                element.removeClass('ui-state-highlight');
+                $this.fireItemUnselectEvent(element);
+            }
             else {
-                if(element.hasClass('ui-state-highlight')) {
-                    element.removeClass('ui-state-highlight');
-                    $this.fireItemUnselectEvent(element);
-                }
-                else {
-                    element.removeClass('ui-state-hover').addClass('ui-state-highlight');
-                    $this.fireItemSelectEvent(element, e);
-                }
+                element.removeClass('ui-state-hover').addClass('ui-state-highlight');
+                $this.fireItemSelectEvent(element, e);
             }
         });
     }

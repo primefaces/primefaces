@@ -37,8 +37,6 @@ PrimeFaces.widget.SelectManyButton = class SelectManyButton extends PrimeFaces.w
      * @private
      */
     bindEvents() {
-        var $this = this;
-
         this.buttons.on('mouseover', function() {
             var button = $(this);
             if(!button.hasClass('ui-state-active')) {

@@ -77,8 +77,6 @@ PrimeFaces.widget.DataScroller = class DataScroller extends PrimeFaces.widget.Ba
         var $this = this;
 
         if(this.cfg.mode === 'document') {
-            var $this = this;
-
             PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id + '_align', function() {
                 if ($(window).scrollTop() >= (($(document).height() * $this.cfg.buffer) - $(window).height()) && $this.shouldLoad()) {
                     $this.load();

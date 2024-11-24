@@ -38,8 +38,8 @@ PrimeFaces.widget.SelectManyCheckbox = class SelectManyCheckbox extends PrimeFac
             this.labels = $();
 
             //labels
-            for(var i=0; i < this.outputs.length; i++) {
-                this.labels = this.labels.add('label[for="' + this.outputs.eq(i).parent().find('input').attr('id') + '"]');
+            for(var j=0; j < this.outputs.length; j++) {
+                this.labels = this.labels.add('label[for="' + this.outputs.eq(j).parent().find('input').attr('id') + '"]');
             }
 
             //update checkbox state

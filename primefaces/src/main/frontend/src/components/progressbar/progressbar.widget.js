@@ -36,7 +36,7 @@ PrimeFaces.widget.ProgressBar = class ProgressBar extends PrimeFaces.widget.Base
         this.jqValue = this.jq.children('.ui-progressbar-value');
         this.jqLabel = this.jq.children('.ui-progressbar-label');
         this.value = this.cfg.initialValue;
-        this.cfg.global = (this.cfg.global === false) ? false : true;
+        this.cfg.global = this.cfg.global !== false;
 
         this.enableARIA();
     }

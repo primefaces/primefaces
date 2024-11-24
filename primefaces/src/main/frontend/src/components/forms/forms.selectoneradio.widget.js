@@ -45,9 +45,9 @@ PrimeFaces.widget.SelectOneRadio = class SelectOneRadio extends PrimeFaces.widge
 
             //labels
             var base = this.facet ? this.inputs : this.outputs;
-            for(var i=0; i < base.length; i++) {
+            for(var j=0; j < base.length; j++) {
                 this.labels = this.labels.add('label[for="' +
-                    (this.facet ? base.eq(i).attr('id') : base.eq(i).prev().find('.ui-radio-clone').attr('id')) + '"]');
+                    (this.facet ? base.eq(j).attr('id') : base.eq(j).prev().find('.ui-radio-clone').attr('id')) + '"]');
             }
 
             //update radio state
@@ -147,10 +147,8 @@ PrimeFaces.widget.SelectOneRadio = class SelectOneRadio extends PrimeFaces.widge
                     $this.unselect($this.checkedRadio);
                     $this.select(radio);
                 }
-                else {
-                    if ($this.cfg.unselectable) {
-                        $this.unselect($this.checkedRadio);
-                    }
+                else if ($this.cfg.unselectable) {
+                    $this.unselect($this.checkedRadio);
                 }
 
                 $this.fireClickEvent(input, e);

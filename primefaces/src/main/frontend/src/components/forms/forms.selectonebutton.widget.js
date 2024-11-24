@@ -31,7 +31,7 @@ PrimeFaces.widget.SelectOneButton = class SelectOneButton extends PrimeFaces.wid
 
         this.buttons = this.jq.children('div:not(.ui-state-disabled)');
         this.inputs = this.jq.find(':radio:not(:disabled)');
-        this.cfg.unselectable = this.cfg.unselectable === false ? false : true;
+        this.cfg.unselectable = this.cfg.unselectable !== false;
 
         this.bindEvents();
 

@@ -138,9 +138,10 @@ PrimeFaces.widget.Dashboard = class Dashboard extends PrimeFaces.widget.BaseWidg
         var item = ui.item || ui.draggable;
         var isResponsive = ui.draggable;
         var parent = item.parent();
+        var grid;
         var itemIndex, receiverColumnIndex;
         if (isResponsive) {
-            var grid = parent.parent();
+            grid = parent.parent();
             itemIndex = 0;
             receiverColumnIndex = grid.children().filter(':not(script):visible').index(parent);
         }

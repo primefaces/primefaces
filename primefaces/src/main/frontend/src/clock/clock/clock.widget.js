@@ -246,7 +246,6 @@ class SimpleDateFormat {
 
         var searchString = this.cfg.pattern;
         while ((result = this.cfg.regex.exec(searchString))) {
-            var matchedString = result[0];
             var quotedString = result[1];
             var patternLetters = result[2];
             var otherLetters = result[3];
@@ -610,7 +609,7 @@ PrimeFaces.widget.Clock = class Clock extends PrimeFaces.widget.BaseWidget {
     draw_hour_signs() {
         this.hour_sign = [];
 
-        for (var i = 0; i < 12; i++) {
+        for (let i = 0; i < 12; i++) {
             (function (i,that){
                 var start_x = that.dimensions.half + Math.round(that.dimensions.hour_sign_min_size * Math.cos(30 * i * Math.PI / 180));
                 var start_y = that.dimensions.half + Math.round(that.dimensions.hour_sign_min_size * Math.sin(30 * i * Math.PI / 180));
