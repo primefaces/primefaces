@@ -76,7 +76,7 @@ PrimeFaces.widget.Diagram = PrimeFaces.widget.DeferredWidget.extend({
                 PaintStyle: $this.cfg.paintStyle,
                 HoverPaintStyle: $this.cfg.hoverPaintStyle,
                 ConnectionOverlays: $this.cfg.connectionOverlays,
-                ConnectionsDetachable: ($this.cfg.connectionsDetachable === false) ? false : true,
+                ConnectionsDetachable: $this.cfg.connectionsDetachable !== false,
                 MaxConnections: $this.cfg.maxConnections
             });
 
