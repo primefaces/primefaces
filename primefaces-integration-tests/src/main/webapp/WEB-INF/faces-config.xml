@@ -12,6 +12,13 @@
             <default-locale>en</default-locale>
         </locale-config>
         <el-resolver>org.primefaces.application.exceptionhandler.PrimeExceptionHandlerELResolver</el-resolver>
+
+        <system-event-listener>
+            <system-event-listener-class>org.primefaces.integrationtests.ITSystemEventListener
+            </system-event-listener-class>
+            <system-event-class>javax.faces.event.PostConstructApplicationEvent</system-event-class>
+            <source-class>javax.faces.application.Application</source-class>
+        </system-event-listener>
     </application>
 
     <lifecycle>
@@ -22,5 +29,4 @@
         <exception-handler-factory>org.primefaces.application.exceptionhandler.PrimeExceptionHandlerFactory</exception-handler-factory>
         <lifecycle-factory>org.primefaces.clientwindow.PrimeClientWindowLifecycleFactory</lifecycle-factory>
     </factory>
-
 </faces-config>
