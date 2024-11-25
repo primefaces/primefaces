@@ -154,16 +154,10 @@
 
         <!-- Barcode -->
         <dependency>
-            <groupId>io.nayuki</groupId>
-            <artifactId>qrcodegen</artifactId>
+            <groupId>uk.org.okapibarcode</groupId>
+            <artifactId>okapibarcode</artifactId>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>org.primefaces.extensions</groupId>
-            <artifactId>barcode4j-light</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
         <!-- Test  -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>

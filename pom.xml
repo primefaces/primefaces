@@ -375,14 +375,15 @@
 
             <!-- Barcode -->
             <dependency>
-                <groupId>io.nayuki</groupId>
-                <artifactId>qrcodegen</artifactId>
-                <version>1.8.0</version>
-            </dependency>
-            <dependency>
-                <groupId>org.primefaces.extensions</groupId>
-                <artifactId>barcode4j-light</artifactId>
-                <version>2.3.0</version>
+                <groupId>uk.org.okapibarcode</groupId>
+                <artifactId>okapibarcode</artifactId>
+                <version>0.4.9</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.beust</groupId>
+                        <artifactId>jcommander</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <!-- JUnit -->

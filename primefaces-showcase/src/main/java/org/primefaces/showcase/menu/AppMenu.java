@@ -476,8 +476,8 @@ public class AppMenu {
         //MULTIMEDIA CATEGORY START
         List<MenuItem> multimediaMenuItems = new ArrayList<>();
         multimediaMenuItems.add(new MenuItem("Audio", "/ui/multimedia/audio"));
-        multimediaMenuItems.add(new MenuItem("Barcode", "/ui/multimedia/barcode"));
-        multimediaMenuItems.add(new MenuItem("QRCode", "/ui/multimedia/qrcode"));
+        multimediaMenuItems.add(new MenuItem("Barcode", "/ui/multimedia/barcode", "Updated"));
+        multimediaMenuItems.add(new MenuItem("QRCode", "/ui/multimedia/qrcode", "Updated"));
         multimediaMenuItems.add(new MenuItem("Image Compare", "/ui/multimedia/compare"));
 
         //Cropper Nested MenuItem
@@ -589,7 +589,7 @@ public class AppMenu {
 
         miscMenuItems.add(new MenuItem("Effect", "/ui/misc/effect"));
         miscMenuItems.add(new MenuItem("ExceptionHandler", "/ui/misc/exceptionHandler"));
-        miscMenuItems.add(new MenuItem("FeedReader", "/ui/misc/feedReader"));
+        miscMenuItems.add(new MenuItem("FeedReader", "/ui/misc/feedReader", "Updated"));
         miscMenuItems.add(new MenuItem("IdleMonitor", "/ui/misc/idleMonitor"));
         miscMenuItems.add(new MenuItem("ImportConstants", "/ui/misc/importConstants"));
         miscMenuItems.add(new MenuItem("ImportEnum", "/ui/misc/importEnum"));
