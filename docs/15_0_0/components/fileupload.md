@@ -274,9 +274,8 @@ FileLimit restricts the number of maximum files that can be uploaded.
 
 
 ## Custom Drop Zone
-With the `dropZone` attribute your can specify which component should be used as the drop zone for the
-upload component.
-The component will automatically add/remove the `ui-state-drag` class to the target HTML element, so you can apply styling.
+The `dropZone` attribute allows you to specify a component that will serve as a custom drop zone for file uploads. 
+When a file is dragged over the specified component, the `ui-state-drag` CSS class is automatically added to the target element and removed when the file is no longer being dragged. This allows you to apply custom styling to indicate when files are being dragged over the drop zone.
 
 
 ## Size Limit
