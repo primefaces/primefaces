@@ -10,6 +10,9 @@
             body .ui-inputfield.ui-state-drag {
                 background: #ffffd6;
             }
+            body .card.ui-state-drag {
+                background-color: #ffffd6;
+            }
         </style>
     </ui:define>
 
@@ -18,7 +21,8 @@
     </ui:define>
 
     <ui:define name="description">
-        In supported browsers, a file can be selected by dragdrop from filesystem. FileUpload component itself is the drop zone.
+        Per default, the advanced FileUpload itself is the drop zone. <br/>
+        In addition, both simple and advanced FileUpload supports a custom dropZone.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/fileupload"/>
@@ -26,16 +30,24 @@
 
     <ui:define name="implementation">
         <div class="card">
+            <h5>Advanced FileUpload</h5>
+
             <h:form>
-                <p:growl id="messages" showDetail="true"/>
+                <p:growl id="growl" showDetail="true"/>
 
-                <h5>Basic</h5>
                 <p:fileUpload listener="#{fileUploadView.handleFileUpload}" mode="advanced" dragDropSupport="true"
-                              update="messages">
-                        <p:validateFile sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpeg|jpg|png)$/" />
+                              update="@form">
+                    <p:validateFile sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpeg|jpg|png)$/" />
                 </p:fileUpload>
+            </h:form>
+        </div>
 
-                <h5>Drop Zone</h5>
+        <div class="card">
+            <h5>Advanced FileUpload: custom drop zone</h5>
+
+            <h:form>
+                <p:growl id="growl" showDetail="true"/>
+
                 <div class="ui-fluid">
                     <div class="field">
                         <p:inputTextarea id="customDropZone" widgetVar="textarea"
@@ -47,8 +59,29 @@
                     </div>
                 </div>
                 <p:fileUpload widgetVar="uploadDnd" listener="#{fileUploadView.handleFileUploadTextarea}"
-                              sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpeg|jpg|png)$/" dropZone="customDropZone"
-                              style="display: none"/>
+                              mode="advanced" auto="true"
+                              dropZone="customDropZone"
+                              update="@form"
+                              style="display: none">
+                    <p:validateFile allowTypes="/(\.|\/)(gif|jpeg|jpg|png)$/" sizeLimit="100000" />
+                </p:fileUpload>
+            </h:form>
+        </div>
+
+        <div class="card" jsf:id="dropzone">
+            <h5>Simple FileUpload: custom drop zone</h5>
+
+            <h:form>
+                <p:growl id="growl" showDetail="true"/>
+
+                <p:fileUpload listener="#{fileUploadView.handleFileUpload}"
+                              mode="simple"
+                              dropZone="@form:@parent"
+                              skinSimple="true"
+                              auto="true"
+                              update="@form">
+                    <p:validateFile allowTypes="/(\.|\/)(gif|jpeg|jpg|png)$/" sizeLimit="100000" />
+                </p:fileUpload>
             </h:form>
         </div>
     </ui:define>
