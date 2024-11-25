@@ -23,8 +23,11 @@
  */
 package org.primefaces.integrationtests.selectoneradio;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.component.CommandButton;
+import org.primefaces.selenium.component.OutputLabel;
+import org.primefaces.selenium.component.SelectOneRadio;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
@@ -33,10 +36,9 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.component.CommandButton;
-import org.primefaces.selenium.component.SelectOneRadio;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class SelectOneRadio001Test extends AbstractPrimePageTest {
 
@@ -163,6 +165,24 @@ class SelectOneRadio001Test extends AbstractPrimePageTest {
         assertConfiguration(selectOneRadio.getWidgetConfiguration());
     }
 
+    @Test
+    @Order(1)
+    @DisplayName("SelectOneRadio: ensure aria-labelledby is set from OutputLabel")
+    void ariaLabelledBy(Page page) {
+        // Arrange
+        SelectOneRadio selectOneRadio = page.selectOneRadio;
+        OutputLabel outputLabel = page.outputLabel;
+        assertEquals(4, selectOneRadio.getItemsSize());
+        assertEquals("Lewis", selectOneRadio.getSelectedLabel());
+
+        // Act
+
+
+        // Assert
+        assertEquals(outputLabel.getId(), selectOneRadio.getDomAttribute("aria-labelledby"));
+        assertConfiguration(selectOneRadio.getWidgetConfiguration());
+    }
+
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("SelectOneRadio Config = " + cfg);
@@ -170,6 +190,9 @@ class SelectOneRadio001Test extends AbstractPrimePageTest {
     }
 
     public static class Page extends AbstractPrimePage {
+        @FindBy(id = "form:outputlabel")
+        OutputLabel outputLabel;
+
         @FindBy(id = "form:selectoneradio")
         SelectOneRadio selectOneRadio;
 
