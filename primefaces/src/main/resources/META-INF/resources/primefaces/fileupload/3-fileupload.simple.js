@@ -55,12 +55,14 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
             if (!this.input.prop('disabled')) {
                 this.bindEvents();
                 this.bindTriggers();
+                this.bindDropZone();
             }
         }
         else if (this.cfg.auto) {
             this.input.on('change.fileupload', function() {
                 $this.upload();
             });
+            this.bindDropZone();
         }
     },
 
@@ -121,8 +123,16 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
         .on('blur.fileupload', function() {
             $this.button.removeClass('ui-state-focus');
         });
+    },
 
+    /**
+     * Sets up the event handling for the dropZone.
+     * @private
+     */
+    bindDropZone: function() {
         if (this.dropZone) {
+            var $this = this;
+
             this.dropZone.on("dragenter dragover dragleave drop", function(event) {
                 event.preventDefault();
                 event.stopPropagation();
