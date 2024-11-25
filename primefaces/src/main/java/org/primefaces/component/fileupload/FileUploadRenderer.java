@@ -63,12 +63,6 @@ public class FileUploadRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         FileUpload fileUpload = (FileUpload) component;
 
-        if (fileUpload.getDropZone() != null) {
-            fileUpload.setMode("advanced");
-            fileUpload.setAuto(true);
-            fileUpload.setDragDropSupport(true);
-        }
-
         encodeMarkup(context, fileUpload);
         encodeScript(context, fileUpload);
     }
@@ -89,7 +83,6 @@ public class FileUploadRenderer extends CoreRenderer {
                     .attr("maxRetries", fileUpload.getMaxRetries(), 30)
                     .attr("retryTimeout", fileUpload.getRetryTimeout(), 1000)
                     .attr("resumeContextPath", pfContext.getFileUploadResumeUrl(), null)
-                    .attr("dropZone", SearchExpressionUtils.resolveClientIdsForClientSide(context, fileUpload, fileUpload.getDropZone()))
                     .callback("onAdd", "function(file, callback)", fileUpload.getOnAdd())
                     .callback("oncancel", "function()", fileUpload.getOncancel())
                     .callback("onupload", "function()", fileUpload.getOnupload());
@@ -108,6 +101,7 @@ public class FileUploadRenderer extends CoreRenderer {
                 .attr("process", SearchExpressionUtils.resolveClientIdsForClientSide(context, fileUpload, process))
                 .attr("global", fileUpload.isGlobal(), true)
                 .attr("disabled", fileUpload.isDisabled(), false)
+                .attr("dropZone", SearchExpressionUtils.resolveClientIdsForClientSide(context, fileUpload, fileUpload.getDropZone()))
                 .callback("onstart", "function()", fileUpload.getOnstart())
                 .callback("onerror", "function()", fileUpload.getOnerror())
                 .callback("oncomplete", "function(args)", fileUpload.getOncomplete())
