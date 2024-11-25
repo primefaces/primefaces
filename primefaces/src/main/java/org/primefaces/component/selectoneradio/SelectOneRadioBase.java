@@ -24,11 +24,12 @@
 package org.primefaces.component.selectoneradio;
 
 import org.primefaces.component.api.FlexAware;
+import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.Widget;
 
 import javax.faces.component.html.HtmlSelectOneRadio;
 
-public abstract class SelectOneRadioBase extends HtmlSelectOneRadio implements Widget, FlexAware {
+public abstract class SelectOneRadioBase extends HtmlSelectOneRadio implements Widget, FlexAware, InputHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
