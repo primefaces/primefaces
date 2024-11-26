@@ -50,12 +50,12 @@ public class SelectOneRadio extends SelectOneRadioBase {
 
     @Override
     public String getInputClientId() {
-        return getRadioButtonId(FacesContext.getCurrentInstance(), 0);
+        return getRadioButtonId(getFacesContext(), 0);
     }
 
     @Override
     public String getValidatableInputClientId() {
-        return getRadioButtonId(FacesContext.getCurrentInstance(), 0);
+        return getRadioButtonId(getFacesContext(), 0);
     }
 
     @Override
