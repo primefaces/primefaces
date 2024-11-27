@@ -47,4 +47,24 @@ public class SelectOneRadio extends SelectOneRadioBase {
     public String getRadioButtonId(FacesContext context, int index) {
         return this.getClientId(context) + UINamingContainer.getSeparatorChar(context) + index;
     }
+
+    @Override
+    public String getInputClientId() {
+        return getRadioButtonId(getFacesContext(), 0);
+    }
+
+    @Override
+    public String getValidatableInputClientId() {
+        return getRadioButtonId(getFacesContext(), 0);
+    }
+
+    @Override
+    public String getLabelledBy() {
+        return (String) getStateHelper().get("labelledby");
+    }
+
+    @Override
+    public void setLabelledBy(String labelledBy) {
+        getStateHelper().put("labelledby", labelledBy);
+    }
 }
