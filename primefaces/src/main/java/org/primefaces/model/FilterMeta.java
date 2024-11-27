@@ -34,8 +34,6 @@ import org.primefaces.util.EditableValueHolderState;
 import org.primefaces.util.LangUtils;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
-import java.util.Collection;
 import java.util.Objects;
 
 import javax.el.ELContext;
@@ -135,10 +133,7 @@ public class FilterMeta implements Serializable {
 
     public static <T> T resetToNullIfEmpty(T filterValue) {
         if (filterValue != null
-                && ((filterValue instanceof String && LangUtils.isBlank((String) filterValue))
-                || (filterValue instanceof Collection && ((Collection) filterValue).isEmpty())
-                || (filterValue instanceof Iterable && !((Iterable) filterValue).iterator().hasNext())
-                || (filterValue.getClass().isArray() && Array.getLength(filterValue) == 0))) {
+                && ((filterValue instanceof String && LangUtils.isBlank((String) filterValue)))) {
             filterValue = null;
         }
         return filterValue;
