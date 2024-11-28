@@ -137,6 +137,19 @@ public class FileUploadRenderer extends CoreRenderer {
             writer.writeAttribute("style", style, "style");
         }
 
+
+        writer.startElement("div", null);
+        writer.writeAttribute("class", FileUpload.DRAG_OVERLAY_CLASS, null);
+
+        writer.startElement("div", null);
+        writer.writeAttribute("class", FileUpload.DRAG_OVERLAY_CONTENT_CLASS, null);
+        writer.startElement("i", null);
+        writer.writeAttribute("class", "pi pi-upload", null);
+        writer.endElement("i");
+        writer.endElement("div");
+
+        writer.endElement("div");
+
         //buttonbar
         writer.startElement("div", fileUpload);
         writer.writeAttribute("class", FileUpload.BUTTON_BAR_CLASS, null);
