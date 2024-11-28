@@ -86,6 +86,7 @@ public class TreeTable extends TreeTableBase {
     public static final String SORTABLE_COLUMN_HEADER_CLASS = "ui-state-default ui-sortable-column";
     public static final String ROW_CLASS = "ui-widget-content";
     public static final String SELECTED_ROW_CLASS = "ui-widget-content ui-state-highlight ui-selected";
+    public static final String COLUMN_CONTENT_WRAPPER = "ui-tt-c";
     public static final String EXPAND_ICON = "ui-treetable-toggler ui-icon ui-icon-triangle-1-e ui-c";
     public static final String COLLAPSE_ICON = "ui-treetable-toggler ui-icon ui-icon-triangle-1-s ui-c";
     public static final String SCROLLABLE_CONTAINER_CLASS = "ui-treetable-scrollable";
@@ -267,26 +268,13 @@ public class TreeTable extends TreeTableBase {
     public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
         super.processEvent(event);
 
-        // restored filter-state if it was filtered in the previous request
+        // restore "value" from "filteredValue"
         if (event instanceof PostRestoreStateEvent
-                && this == event.getComponent()
                 && isFilteringEnabled()
-                && isFilteringCurrentlyActive()) {
-
-            // restore "value" from "filteredValue" - we must work on filtered data
-            // in future we might remember filtered rowKeys and skip them while rendering instead of doing it this way
-            ValueExpression ve = getValueExpression(PropertyKeys.filteredValue.name());
-            if (ve != null) {
-                TreeNode filteredValue = getFilteredValue();
-                if (filteredValue != null) {
-                    setValue(filteredValue);
-                }
-            }
-            else {
-                // trigger filter as previous requests were filtered
-                // in older PF versions, we stored the filtered data in the viewstate but this blows up memory
-                // and caused bugs with editing and serialization like #7999
-                filterAndSort();
+                && this == event.getComponent()) {
+            TreeNode<?> filteredValue = getFilteredValue();
+            if (filteredValue != null) {
+                setValue(filteredValue);
             }
         }
     }
@@ -472,6 +460,17 @@ public class TreeTable extends TreeTableBase {
         }
     }
 
+    public void updateFilteredValue(FacesContext context, TreeNode node) {
+        ValueExpression ve = getValueExpression(PropertyKeys.filteredValue.name());
+
+        if (ve != null) {
+            ve.setValue(context.getELContext(), node);
+        }
+        else {
+            setFilteredValue(node);
+        }
+    }
+
     public List<String> getFilteredRowKeys() {
         return filteredRowKeys;
     }
@@ -635,18 +634,4 @@ public class TreeTable extends TreeTableBase {
         }
     }
 
-    public TreeNode getFilteredValue() {
-        ValueExpression ve = getValueExpression(PropertyKeys.filteredValue.name());
-        if (ve != null) {
-            return (TreeNode) ve.getValue(getFacesContext().getELContext());
-        }
-        return null;
-    }
-
-    public void setFilteredValue(TreeNode filteredValue) {
-        ValueExpression ve = getValueExpression(PropertyKeys.filteredValue.name());
-        if (ve != null) {
-            ve.setValue(getFacesContext().getELContext(), filteredValue);
-        }
-    }
 }
