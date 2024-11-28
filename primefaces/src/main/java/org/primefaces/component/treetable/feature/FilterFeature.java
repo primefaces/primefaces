@@ -60,7 +60,7 @@ public class FilterFeature implements TreeTableFeature {
         table.updateFilterByValuesWithFilterRequest(context, filterBy);
 
         // reset state
-        table.setFilteredValue(null);
+        table.updateFilteredValue(context, null);
         table.setValue(null);
         table.setFirst(0);
 
@@ -111,7 +111,7 @@ public class FilterFeature implements TreeTableFeature {
         TreeNode filteredValue = cloneTreeNode(root, root.getParent());
         createFilteredValueFromRowKeys(tt, root, filteredValue, filteredRowKeys);
 
-        tt.setFilteredValue( filteredValue);
+        tt.updateFilteredValue(context, filteredValue);
         tt.setValue(filteredValue);
         tt.setRowKey(root, null);
 
