@@ -324,8 +324,9 @@ public class ResourceUtils {
      * @param resourceName The name of the JavaScript resource
      */
     public static void addJavascriptResource(FacesContext context, String libraryName, String resourceName) {
-        addResource(context, RENDERER_SCRIPT, libraryName, resourceName);
+        addResource(context, RENDERER_SCRIPT, libraryName, resourceName, "head");
     }
+
     /**
      * Adds a JavaScript resource from the default PrimeFaces library to the view.
      *
@@ -337,6 +338,16 @@ public class ResourceUtils {
     }
 
     /**
+     * Adds a JavaScript resource from the default PrimeFaces library to the view.
+     *
+     * @param context The FacesContext
+     * @param resourceName The name of the JavaScript resource
+     */
+    public static void addJavascriptResourceToBody(FacesContext context, String resourceName) {
+        addResource(context, RENDERER_SCRIPT, Constants.LIBRARY, resourceName, "body");
+    }
+
+    /**
      * Adds a CSS resource to the view.
      *
      * @param context The FacesContext
@@ -344,7 +355,7 @@ public class ResourceUtils {
      * @param resourceName The name of the CSS resource
      */
     public static void addStyleSheetResource(FacesContext context, String libraryName, String resourceName) {
-        addResource(context, RENDERER_STYLESHEET, libraryName, resourceName);
+        addResource(context, RENDERER_STYLESHEET, libraryName, resourceName, "head");
     }
 
     /**
@@ -364,11 +375,17 @@ public class ResourceUtils {
      * @param type The renderer type (CSS or JS)
      * @param libraryName The library name containing the resource
      * @param resourceName The name of the resource
+     * @param target The target location ("head" or "body")
      */
-    public static void addResource(FacesContext context, String type, String libraryName, String resourceName) {
+    public static void addResource(FacesContext context, String type, String libraryName, String resourceName, String target) {
         boolean isRendered = context.getApplication().getResourceHandler().isResourceRendered(context, resourceName, libraryName);
         if (!isRendered) {
-            addResourceToHead(context, type, libraryName, resourceName);
+            if ("head".equals(target)) {
+                addResourceToHead(context, type, libraryName, resourceName);
+            }
+            else {
+                addResourceToBody(context, type, libraryName, resourceName);
+            }
         }
     }
 

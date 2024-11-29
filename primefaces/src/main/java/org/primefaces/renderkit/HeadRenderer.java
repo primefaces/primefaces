@@ -29,21 +29,13 @@ import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.LocaleUtils;
-import org.primefaces.util.MapBuilder;
-import org.primefaces.util.ResourceUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.el.ELContext;
-import javax.el.ExpressionFactory;
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
 import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
@@ -71,13 +63,7 @@ import javax.servlet.http.HttpServletResponse;
 public class HeadRenderer extends Renderer {
 
     private static final Logger LOGGER = Logger.getLogger(HeadRenderer.class.getName());
-    private static final String LIBRARY = "primefaces";
 
-    private static final Map<String, String> THEME_MAPPING = MapBuilder.<String, String>builder()
-            .put("saga", "saga-blue")
-            .put("arya", "arya-blue")
-            .put("vela", "vela-blue")
-            .build();
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
@@ -94,68 +80,15 @@ public class HeadRenderer extends Renderer {
             first.encodeAll(context);
         }
 
-        //Theme
-        String theme;
-        String themeParamValue = applicationContext.getConfig().getTheme();
-
-        if (themeParamValue != null) {
-            ELContext elContext = context.getELContext();
-            ExpressionFactory expressionFactory = context.getApplication().getExpressionFactory();
-            ValueExpression ve = expressionFactory.createValueExpression(elContext, themeParamValue, String.class);
-
-            theme = (String) ve.getValue(elContext);
-        }
-        else {
-            theme = "saga-blue";     //default
-        }
-
-        if (theme != null && !"none".equals(theme)) {
-            if (THEME_MAPPING.containsKey(theme)) {
-                theme = THEME_MAPPING.get(theme);
-            }
-
-            encodeCSS(context, LIBRARY + "-" + theme, "theme.css");
-        }
-
-        //Icons
-        if (applicationContext.getConfig().isPrimeIconsEnabled()) {
-            encodeCSS(context, LIBRARY, "primeicons/primeicons.css");
-        }
-
         //Middle facet
         UIComponent middle = component.getFacet("middle");
         if (FacetUtils.shouldRenderFacet(middle)) {
             middle.encodeAll(context);
         }
 
-        if (applicationContext.getConfig().isClientSideValidationEnabled()) {
-            // moment is needed for Date validation
-            encodeJS(context, LIBRARY, "moment/moment.js");
-
-            // BV CSV is optional and must be enabled by config
-            if (applicationContext.getConfig().isBeanValidationEnabled()) {
-                encodeJS(context, LIBRARY, "validation/validation.bv.js");
-            }
-        }
-
-        if (applicationContext.getConfig().isClientSideLocalizationEnabled()) {
-            try {
-                Locale locale = LocaleUtils.getCurrentLocale(context);
-                encodeJS(context, LIBRARY, "locales/locale-" + locale.getLanguage() + ".js");
-            }
-            catch (FacesException e) {
-                if (context.isProjectStage(ProjectStage.Development)) {
-                    LOGGER.log(Level.WARNING,
-                            "Failed to load client side locale.js. {0}", e.getMessage());
-                }
-            }
-        }
-
         //Registered Resources
         UIViewRoot viewRoot = context.getViewRoot();
         List<UIComponent> resources = new ArrayList<>(viewRoot.getComponentResources(context, "head"));
-        moveResourceToTop(resources, "primeicons/primeicons.css");
-        moveResourceToTop(resources, "theme.css");
         for (int i = 0; i < resources.size(); i++) {
             UIComponent resource = resources.get(i);
             LOGGER.log(Level.FINE, () -> "HeadRenderer resource: " + resource.getAttributes().get("name"));
@@ -179,14 +112,6 @@ public class HeadRenderer extends Renderer {
         }
 
         writer.endElement("head");
-    }
-
-    protected void encodeCSS(FacesContext context, String library, String resource) throws IOException {
-        ResourceUtils.addStyleSheetResource(context, library, resource);
-    }
-
-    protected void encodeJS(FacesContext context, String library, String script) throws IOException {
-        ResourceUtils.addJavascriptResource(context, library, script);
     }
 
     protected void encodeSettingScripts(FacesContext context, PrimeApplicationContext applicationContext, PrimeRequestContext requestContext,
@@ -278,22 +203,5 @@ public class HeadRenderer extends Renderer {
 
             writer.endElement("script");
         }
-    }
-
-    /**
-     * Moves a resource component to the top of the resources list based on its name.
-     * This is used to ensure certain resources like theme.css and primeicons.css are loaded first.
-     *
-     * @param resources The list of UIComponent resources to sort
-     * @param resource The resource name suffix to move to the top
-     */
-    protected void moveResourceToTop(List<UIComponent> resources, String resource) {
-        resources.sort((a, b) -> {
-            String nameA = (String) a.getAttributes().get("name");
-            String nameB = (String) b.getAttributes().get("name");
-            if (nameA != null && nameA.endsWith(resource)) return -1;
-            if (nameB != null && nameB.endsWith(resource)) return 1;
-            return 0;
-        });
     }
 }

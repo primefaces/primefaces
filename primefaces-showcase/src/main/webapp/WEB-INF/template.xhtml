@@ -28,9 +28,9 @@
         <h:outputStylesheet name="css/primeflex3.css" library="showcase"/><!-- latest primeflex -->
         <h:outputStylesheet name="css/flags/flags.css" library="showcase"/>
 
-        <h:outputScript name="jquery/jquery.js" library="primefaces"/>
-        <h:outputScript name="jquery/jquery-plugins.js" library="primefaces"/>
-        <h:outputScript name="locales/locale-#{app.locale.language}.js" library="primefaces"/>
+        <h:outputScript name="jquery/jquery.js" library="primefaces" target="head"/>
+        <h:outputScript name="jquery/jquery-plugins.js" library="primefaces" target="head"/>
+        <h:outputScript name="locales/locale-#{app.locale.language}.js" library="primefaces" target="head"/>
 
         <ui:insert name="head"/>
         

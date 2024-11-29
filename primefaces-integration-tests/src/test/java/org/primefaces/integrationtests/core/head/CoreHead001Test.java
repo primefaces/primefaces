@@ -48,9 +48,22 @@ public class CoreHead001Test extends AbstractPrimePageTest {
         WebElement head = page.head;
         WebElement body = page.body;
         List<WebElement> headElements = head.findElements(By.tagName("*"));
+        List<WebElement> headScriptElements = head.findElements(By.tagName("script"));
         List<WebElement> scriptElements = body.findElements(By.tagName("script"));
 
         // Act & Assert
+        System.out.println("Head sources: " + headElements.size());
+        for (WebElement elem : headElements) {
+            System.out.println(elem.getTagName() + " " + elem.getDomAttribute("href"));
+        }
+        System.out.println("Head Script sources: " + headScriptElements.size());
+        for (WebElement script : headScriptElements) {
+            System.out.println(script.getDomAttribute("href"));
+        }
+        System.out.println("Body Script sources: " + scriptElements.size());
+        for (WebElement script : scriptElements) {
+            System.out.println(script.getDomAttribute("src"));
+        }
 
         // <f:facet name="first">
         WebElement viewportMeta = headElements.get(0);
@@ -84,16 +97,17 @@ public class CoreHead001Test extends AbstractPrimePageTest {
         // Scripts in order
         assertEquals(11, scriptElements.size());
         assertTrue(scriptElements.get(0).getDomAttribute("src").contains("jquery/jquery.js"));
-        assertTrue(scriptElements.get(1).getDomAttribute("src").contains("jquery/jquery-plugins.js"));
-        assertTrue(scriptElements.get(2).getDomAttribute("src").contains("core.js"));
+
+        assertTrue(scriptElements.get(1).getDomAttribute("src").contains("core.js"));
+        assertTrue(scriptElements.get(2).getDomAttribute("src").contains("jquery/jquery-plugins.js"));
         assertTrue(scriptElements.get(3).getDomAttribute("src").contains("components.js"));
         assertTrue(scriptElements.get(4).getDomAttribute("src").contains("inputmask/inputmask.js"));
         assertTrue(scriptElements.get(5).getDomAttribute("src").contains("datepicker/datepicker.js"));
         assertTrue(scriptElements.get(6).getDomAttribute("src").contains("locales/locale-de.js"));
-        assertTrue(scriptElements.get(7).getDomAttribute("src").contains("moment/moment.js"));
-        assertTrue(scriptElements.get(8).getDomAttribute("src").contains("validation/validation.bv.js"));
-        assertTrue(scriptElements.get(9).getDomAttribute("src").contains("locales/locale-en.js"));
-        assertTrue(scriptElements.get(10).getDomAttribute("src").contains("locales/locale-fr.js"));
+        assertTrue(scriptElements.get(7).getDomAttribute("src").contains("locales/locale-fr.js"));
+        assertTrue(scriptElements.get(8).getDomAttribute("src").contains("moment/moment.js"));
+        assertTrue(scriptElements.get(9).getDomAttribute("src").contains("validation/validation.bv.js"));
+        assertTrue(scriptElements.get(10).getDomAttribute("src").contains("locales/locale-en.js"));
         assertNoJavascriptErrors();
     }
 
