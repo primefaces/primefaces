@@ -29,13 +29,16 @@ import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.LocaleUtils;
+import org.primefaces.util.ResourceUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.faces.FacesException;
 import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
@@ -84,6 +87,29 @@ public class HeadRenderer extends Renderer {
         UIComponent middle = component.getFacet("middle");
         if (FacetUtils.shouldRenderFacet(middle)) {
             middle.encodeAll(context);
+        }
+
+        if (applicationContext.getConfig().isClientSideValidationEnabled()) {
+            // moment is needed for Date validation
+            ResourceUtils.addJavascriptResource(context,  "moment/moment.js");
+
+            // BV CSV is optional and must be enabled by config
+            if (applicationContext.getConfig().isBeanValidationEnabled()) {
+                ResourceUtils.addJavascriptResource(context, "validation/validation.bv.js");
+            }
+        }
+
+        if (applicationContext.getConfig().isClientSideLocalizationEnabled()) {
+            try {
+                Locale locale = LocaleUtils.getCurrentLocale(context);
+                ResourceUtils.addJavascriptResource(context, "locales/locale-" + locale.getLanguage() + ".js");
+            }
+            catch (FacesException e) {
+                if (context.isProjectStage(ProjectStage.Development)) {
+                    LOGGER.log(Level.WARNING,
+                                "Failed to load client side locale.js. {0}", e.getMessage());
+                }
+            }
         }
 
         //Registered Resources
