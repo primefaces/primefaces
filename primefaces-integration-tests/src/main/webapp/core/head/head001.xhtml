@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head id="head">
+         <f:facet name="first">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        </f:facet>
+        <f:facet name="last">
+            <meta name="apple-mobile-web-app-capable" content="yes"/>
+        </f:facet>
+        <title>PrimeFaces Selenium</title>
+
+        <h:outputScript name="jquery/jquery.js" library="primefaces"/> <!-- duplicate  -->
+        <h:outputScript name="jquery/jquery-plugins.js" library="primefaces"/> <!-- duplicate  -->
+        <h:outputScript id="jquery" name="jquery/jquery.js" library="primefaces"/> <!-- duplicate  -->
+        <h:outputScript id="jquery-ui" name="jquery/jquery-plugins.js" library="primefaces"/> <!-- duplicate  -->
+        <h:outputScript name="locales/locale-fr.js" library="primefaces"/> <!-- check order -->
+    </h:head>
+    <h:body>
+        <h:outputScript name="locales/locale-de.js" library="primefaces" target="head"/> <!-- added to head from body -->
+        <h:form id="form">
+            <p:datePicker /> 
+        </h:form>
+    </h:body>
+</f:view>
+
+</html>
