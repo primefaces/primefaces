@@ -1,7 +1,36 @@
 @use 'sass:math';
+@use 'sass:color';
 
 body {
   .ui-fileupload {
+
+    &.ui-state-drag .ui-fileupload-drag-overlay {
+      display: flex;
+      animation: fade-in $transitionDuration ease-in-out both;
+    }
+
+    .ui-fileupload-drag-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba($successMessageBg, 0.8);
+      z-index: 1;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      border-radius: $borderRadius;
+      border: dashed color.scale($successMessageBg, $lightness: -35%) 2px;
+
+      .ui-fileupload-drag-overlay-content {
+        i {
+          color: color.scale($successMessageBg, $lightness: -35%);
+          font-size: 3em;
+        }
+      }
+    }
+
     .ui-fileupload-buttonbar {
       border: $panelHeaderBorder;
       background: $panelHeaderBg;

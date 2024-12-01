@@ -21,14 +21,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.application.resource.barcode;
+package org.primefaces.integrationtests.core.head;
 
-import org.krysalis.barcode4j.impl.upcean.UPCEBean;
+import java.io.Serializable;
 
-public class UPCEGenerator extends BarcodeGenerator {
+import javax.annotation.PostConstruct;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 
-    public UPCEGenerator() {
-        super(new UPCEBean());
+import lombok.Data;
+
+@Named
+@ViewScoped
+@Data
+public class CoreHead003 implements Serializable {
+
+    private static final long serialVersionUID = 8797995450720503195L;
+
+    private boolean visible;
+
+    @PostConstruct
+    public void init() {
+        visible = false;
+    }
+
+    public void doShow() {
+        visible = true;
     }
 
 }

@@ -45,8 +45,7 @@
  *
  * @prop {JQuery} buttonBar The DOM element for the bar with the buttons of this widget.
  * @prop {number} dragoverCount Amount of dragover on drop zone and its children.
- * @prop {string} customDropZone Custom drop zone to use for drag and drop.
- * @prop {string} dropZone Drop zone to use for drag and drop.
+ * @prop {JQuery} dropZone Drop zone to use for drag and drop.
  * @prop {JQuery} cancelButton The DOM element for the button for canceling a file upload.
  * @prop {JQuery} chooseButton The DOM element for the button for selecting a file.
  * @prop {JQuery} clearMessageLink The DOM element for the button to clear the file upload messages (which inform the
@@ -126,10 +125,6 @@ PrimeFaces.widget.FileUpload = class FileUpload extends PrimeFaces.widget.BaseWi
         this.form = this.jq.closest('form');
         this.buttonBar = this.jq.children('.ui-fileupload-buttonbar');
         this.dragoverCount = 0;
-        this.customDropZone = this.cfg.dropZone !== undefined
-            ? PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.dropZone)
-            : null;
-        this.dropZone = (this.cfg.dnd === false) ? null : this.customDropZone || this.jq;
         this.chooseButton = this.buttonBar.children('.ui-fileupload-choose');
         this.uploadButton = this.buttonBar.children('.ui-fileupload-upload');
         this.cancelButton = this.buttonBar.children('.ui-fileupload-cancel');
@@ -143,6 +138,12 @@ PrimeFaces.widget.FileUpload = class FileUpload extends PrimeFaces.widget.BaseWi
         this.cfg.global = this.cfg.global !== false;
         this.uploadedFileCount = 0;
         this.fileId = 0;
+        this.dropZone = null;
+        if (this.cfg.dnd !== false) {
+            this.dropZone = this.cfg.dropZone !== undefined
+                ? PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.dropZone)
+                : this.jq;
+        }
 
         this.renderMessages();
 

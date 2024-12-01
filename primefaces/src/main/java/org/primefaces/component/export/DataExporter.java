@@ -69,7 +69,7 @@ public class DataExporter implements ActionListener, StateHolder {
     private ValueExpression bufferSize;
 
     public DataExporter() {
-        ResourceUtils.addComponentResource(FacesContext.getCurrentInstance(), "filedownload/filedownload.js");
+        ResourceUtils.addJavascriptResource(FacesContext.getCurrentInstance(), "filedownload/filedownload.js");
     }
 
     @Override

@@ -279,7 +279,7 @@ PrimeFaces.widget.ColorPicker = class ColorPicker extends PrimeFaces.widget.Base
      * @private
      */
     setupDialogSupport() {
-        var dialog = this.input[0].closest('.ui-dialog');
+        var dialog = this.input[0].closest('.ui-dialog, .ui-sidebar');
         if (dialog) {
             this.cfg.parent = PrimeFaces.escapeClientId(dialog.id);
         }

@@ -12,6 +12,7 @@
     <h:body>
 
         <h:form id="form">
+            <p:outputLabel id="outputlabel" value="Drivers Label" for="selectoneradio"/>
             <p:selectOneRadio id="selectoneradio" value="#{selectOneRadio001.value}">
                 <f:selectItems value="#{selectOneRadio001.drivers}" var="driver" itemLabel="#{driver.name}" itemValue="#{driver.id}"/>
                 <p:ajax process="@this"/>
