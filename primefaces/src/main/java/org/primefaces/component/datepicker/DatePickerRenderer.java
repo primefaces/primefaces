@@ -237,6 +237,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             .attr("responsiveBreakpoint", datePicker.getResponsiveBreakpoint(), DatePicker.RESPONSIVE_BREAKPOINT_SMALL)
             .attr("touchUI", datePicker.isTouchUI(), false)
             .attr("showWeek", datePicker.isShowWeek(), false)
+            .attr("showLongMonthNames", datePicker.isShowLongMonthNames(), false)
             .attr("appendTo", SearchExpressionUtils.resolveOptionalClientIdForClientSide(context, datePicker, datePicker.getAppendTo()))
             .attr("icon", datePicker.getTriggerButtonIcon(), null)
             .attr("rangeSeparator", datePicker.getRangeSeparator(), "-")

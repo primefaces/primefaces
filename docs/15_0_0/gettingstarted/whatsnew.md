@@ -40,7 +40,8 @@ Look into [migration guide](https://primefaces.github.io/primefaces/15_0_0/#/../
 
 * DatePicker
     * Added `defaultHour`, `defaultMinute`, `defaultSecond`, `defaultMillisec` attributes to match legacy `Calendar` component
-    * Added ability to pick weeks by view="week"
+    * Added ability to pick weeks by `view="week"`
+    * Added `showLongMonthNames` attribute to display long month names instead of short names in month picker and month navigator
 
 * FeedReader
     * Added `podcast="true"` property if [Apple Itunes Podcast](https://help.apple.com/itc/podcasts_connect/#/itcb54353390) parsing and specific tags 
