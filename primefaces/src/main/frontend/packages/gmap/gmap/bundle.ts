@@ -1,1 +1,0 @@
-import "./gmap.widget.js";

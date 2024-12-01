@@ -1,0 +1,42 @@
+{
+	"compilerOptions": {
+		"target": "ESNext",
+		"module": "NodeNext",
+		"moduleResolution": "nodenext",
+		"lib": ["dom", "ES2016"],
+		"useDefineForClassFields": false,
+
+		"types": [],
+		
+		"declaration": true,
+		"emitDeclarationOnly": true,
+		"noErrorTruncation": true,
+
+		"resolvePackageJsonExports": true,
+		"noResolve": false,
+		"esModuleInterop": true,
+		"isolatedDeclarations": true,
+		"isolatedModules": true,
+		"verbatimModuleSyntax": true,
+
+		"skipDefaultLibCheck": true,
+		"skipLibCheck": true,
+		
+		"alwaysStrict": false,
+		"strict": true,
+		"strictBindCallApply": true,
+		"strictBuiltinIteratorReturn": true,
+		"strictNullChecks": true,
+		"strictFunctionTypes": true,
+		"strictPropertyInitialization": true,
+		
+		"noFallthroughCasesInSwitch": true,
+		"noImplicitOverride": true,
+		"noImplicitAny": true,
+		"noImplicitReturns": true,
+		"noImplicitThis": true,
+		"noUncheckedIndexedAccess": true,
+		"noUnusedLocals": true,
+		"useUnknownInCatchVariables": true,
+	}
+}

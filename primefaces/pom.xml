@@ -21,7 +21,7 @@
         <resources.dir.compressed>${project.build.directory}/classes/META-INF/resources/primefaces</resources.dir.compressed>
         <mockito.version>5.14.2</mockito.version>
         <sonar.sources>src/main/java,src/main/resources</sonar.sources>
-        <node.version>v20.11.1</node.version>
+        <node.version>v22.11.0</node.version>
         <yarn.version>v1.22.22</yarn.version>
         <frontend.directory>${basedir}/src/main/frontend</frontend.directory>
         <frontend.node.env>development</frontend.node.env>

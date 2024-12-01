@@ -1,6 +1,7 @@
 {
   "name": "@primefaces/primefaces",
   "version": "15.0.0-SNAPSHOT",
+  "type": "module",
   "private": true,
   "description": "Client-side implementation for PrimeFaces",
   "main": "src/index.js",
@@ -11,7 +12,7 @@
     "directory": "src/main/web"
   },
   "scripts": {
-    "build": "node build/build.mjs",
+    "build:bundle": "node build/bin/build.mjs",
     "check-duplicate-packages": "node build/check-duplicate-packages.mjs"
   },
   "jsdocs": {},
@@ -27,8 +28,10 @@
     "@fullcalendar/timegrid": "~5.11.3",
     "@melloware/coloris": "0.24.0",
     "@rwap/jquery-ui-touch-punch": "1.1.5",
+    "@types/autosize": "^4.0.3",
     "@types/inputmask": "5.0.7",
     "@types/jquery": "3.5.32",
+    "@types/jquery.browser": "^0.1.4",
     "autonumeric": "4.10.7",
     "autosize": "6.0.1",
     "blueimp-file-upload": "patch:blueimp-file-upload@npm%3A10.32.0#~/.yarn/patches/blueimp-file-upload-npm-10.32.0-61b944a244.patch",
@@ -66,6 +69,7 @@
     "xss": "1.0.15"
   },
   "devDependencies": {
+    "@types/node": "^22.10.1",
     "esbuild": "0.24.0",
     "typescript": "5.6.3"
   },
