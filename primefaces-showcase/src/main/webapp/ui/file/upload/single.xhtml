@@ -19,7 +19,7 @@
     <ui:define name="implementation">
         <div class="card">
             <h:form enctype="multipart/form-data">
-                <p:fileUpload listener="#{fileUploadView.handleFileUpload}" mode="advanced" dragDropSupport="false"
+                <p:fileUpload listener="#{fileUploadView.handleFileUpload}" mode="advanced" dragDrop="false"
                               update="messages" accept=".gif,.jpg,.jpeg,.png"
                               onupload="return confirm('Are you sure?')">
                         <p:validateFile sizeLimit="100000" fileLimit="3" allowTypes="/(\.|\/)(gif|jpeg|jpg|png)$/" contentType="true" />

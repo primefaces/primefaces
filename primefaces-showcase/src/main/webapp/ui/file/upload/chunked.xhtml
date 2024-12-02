@@ -18,7 +18,7 @@
     <ui:define name="implementation">
         <div class="card">
             <h:form>
-                <p:fileUpload listener="#{fileUploadView.handleFileUpload}" mode="advanced" dragDropSupport="false"
+                <p:fileUpload listener="#{fileUploadView.handleFileUpload}" mode="advanced" dragDrop="false"
                               multiple="true" update="messages" maxChunkSize="1000000">
                     <p:validateFile sizeLimit="10000000" fileLimit="3" allowTypes="/(\.|\/)(gif|jpeg|jpg|png)$/" />
                 </p:fileUpload>

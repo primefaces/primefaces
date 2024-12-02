@@ -76,7 +76,7 @@ public class FileUploadRenderer extends CoreRenderer {
             PrimeApplicationContext pfContext = PrimeApplicationContext.getCurrentInstance(context);
 
             wb.init("FileUpload", fileUpload)
-                    .attr("dnd", fileUpload.isDragDropSupport(), true)
+                    .attr("dnd", fileUpload.isDragDrop(), true)
                     .attr("previewWidth", fileUpload.getPreviewWidth(), 80)
                     .attr("sequentialUploads", fileUpload.isSequential(), false)
                     .attr("maxChunkSize", fileUpload.getMaxChunkSize(), 0)

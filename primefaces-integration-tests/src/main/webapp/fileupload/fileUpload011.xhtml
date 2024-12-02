@@ -15,7 +15,7 @@
 
             <p:fileUpload id="fileupload" widgetVar="fileUpload"
                           listener="#{fileUploadHandler.handleFileUpload}"
-                          mode="advanced" dragDropSupport="false" maxChunkSize="65536"
+                          mode="advanced" dragDrop="false" maxChunkSize="65536"
                           update="uploadedfiles">
                   <p:validateFile fileLimit="2" sizeLimit="2097152" virusScan="true" allowTypes="/(\.|\/)(.ar)$/" />
             </p:fileUpload>

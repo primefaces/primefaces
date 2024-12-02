@@ -36,7 +36,7 @@
             <h:form>
                 <p:growl id="growl" showDetail="true"/>
 
-                <p:fileUpload listener="#{fileUploadView.handleFileUpload}" mode="advanced" dragDropSupport="true"
+                <p:fileUpload listener="#{fileUploadView.handleFileUpload}" mode="advanced"
                               update="@form">
                     <p:validateFile sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpeg|jpg|png)$/" />
                 </p:fileUpload>
