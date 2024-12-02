@@ -3466,6 +3466,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Displays long month names instead of short names in month picker and month navigator. Default is false.]]>
+            </description>
+            <name>showLongMonthNames</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Enables selection of days belonging to other months. Default is false.]]>
             </description>
             <name>selectOtherMonths</name>

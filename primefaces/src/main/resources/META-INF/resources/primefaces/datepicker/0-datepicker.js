@@ -124,6 +124,7 @@
             maxDateCount: null,
             showMinMaxRange: true,
             showOtherMonths: false,
+            showLongMonthNames: false,
             selectOtherMonths: false,
             autoMonthFormat: true,
             showButtonBar: false,
@@ -1407,7 +1408,7 @@
         },
 
         renderMonthViewMonth: function(index) {
-            var monthName = this.options.locale.monthNamesShort[index],
+            var monthName = this.options.showLongMonthNames ? this.options.locale.monthNames[index] : this.options.locale.monthNamesShort[index],
                 content = this.options.dateTemplate ? this.options.dateTemplate.call(this, monthName) : this.escapeHTML(monthName),
                 compareDate = new Date(this.viewDate.getFullYear(), index, 1),
                 minDate = this.options.minDate,
@@ -1481,7 +1482,8 @@
 
         renderTitleMonthElement: function(month, index) {
             if (this.options.monthNavigator && this.options.view !== 'month' && index === 0) {
-                return '<select class="ui-datepicker-month" tabindex="0" aria-label="' + this.options.locale.month + '">' + this.renderTitleOptions('month', this.options.locale.monthNamesShort, month) + '</select>';
+                const monthNames = this.options.showLongMonthNames ? this.options.locale.monthNames : this.options.locale.monthNamesShort;
+                return '<select class="ui-datepicker-month" tabindex="0" aria-label="' + this.options.locale.month + '">' + this.renderTitleOptions('month', monthNames, month) + '</select>';
             }
             else {
                 return '<span class="ui-datepicker-month">' + this.escapeHTML(this.options.locale.monthNames[month]) + '</span>';

@@ -60,7 +60,7 @@
 
                     <div class="field col-12 md:col-4">
                         <p:outputLabel for="navigator" value="Navigator" />
-                        <p:datePicker id="navigator" value="#{calendarJava8View.date2}" monthNavigator="true" yearNavigator="true" showWeek="true" />
+                        <p:datePicker id="navigator" value="#{calendarJava8View.date2}" monthNavigator="true" yearNavigator="true" showWeek="true" showLongMonthNames="true" />
                     </div>
 
                     <div class="field col-12 md:col-4">
@@ -69,12 +69,12 @@
                     </div>
 
                     <div class="field col-12 md:col-4">
-                        <p:outputLabel for="month" value="Month Picker" />
-                        <p:datePicker id="month" view="month" value="#{calendarJava8View.date3}" pattern="MM/yyyy" yearNavigator="true" yearRange="2000:2030" />
+                        <p:outputLabel for="month" value="Month Picker (Long Month Names)" />
+                        <p:datePicker id="month" view="month" value="#{calendarJava8View.date3}" pattern="MM/yyyy" yearNavigator="true" yearRange="2000:2030" showLongMonthNames="true" />
                     </div>
 
                     <div class="field col-12 md:col-4">
-                        <p:outputLabel for="yearMonth" value="Month Picker (java.time.YearMonth)" />
+                        <p:outputLabel for="yearMonth" value="Month Picker (java.time.YearMonth with Short Month Names)" />
                         <p:datePicker id="yearMonth" view="month" value="#{calendarJava8View.yearMonth}" pattern="MM/yyyy" yearNavigator="true"
                             yearRange="2000:2030" />
                     </div>
@@ -114,12 +114,12 @@
 
                     <div class="field col-12 md:col-4">
                         <p:outputLabel for="spanish" value="Spanish" />
-                        <p:datePicker id="spanish" value="#{calendarJava8View.date9}" locale="es" monthNavigator="true" pattern="yyyy-MMM-dd" />
+                        <p:datePicker id="spanish" value="#{calendarJava8View.date9}" locale="es" monthNavigator="true" showLongMonthNames="true" pattern="yyyy-MMM-dd" />
                     </div>
 
                     <div class="field col-12 md:col-4">
                         <p:outputLabel for="german" value="German" />
-                        <p:datePicker id="german" widgetVar="german" value="#{calendarJava8View.dateDe}" locale="de" monthNavigator="true"
+                        <p:datePicker id="german" widgetVar="german" value="#{calendarJava8View.dateDe}" locale="de" monthNavigator="true" showLongMonthNames="true"
                             pattern="dd.MM.yyyy" />
                     </div>
 
