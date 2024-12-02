@@ -26,6 +26,7 @@ package org.primefaces.component.fileupload;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.StyleClassBuilder;
@@ -177,8 +178,21 @@ public class FileUploadRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", FileUpload.CONTENT_CLASS, null);
 
+        UIComponent emptyFacet = fileUpload.getFacet("empty");
+        if (FacetUtils.shouldRenderFacet(emptyFacet)) {
+            writer.startElement("div", null);
+            writer.writeAttribute("class", FileUpload.EMPTY_CLASS, null);
+
+            emptyFacet.encodeAll(context);
+
+            writer.endElement("div");
+        }
+
         writer.startElement("div", null);
         writer.writeAttribute("class", FileUpload.FILES_CLASS, null);
+        if (FacetUtils.shouldRenderFacet(emptyFacet)) {
+            writer.writeAttribute("style", "display: none", null);
+        }
         writer.startElement("div", null);
         writer.endElement("div");
         writer.endElement("div");
