@@ -2,10 +2,8 @@
 // Exits with a non-zero exit code if it finds such packages.
 
 import fs from "node:fs/promises";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
 
-const baseDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+import { PnPDataPath } from "../common/environment.mjs";
 
 /**
  * @typedef {{
@@ -59,8 +57,7 @@ async function readPnpData(pnpDataPath) {
 }
 
 async function main() {
-    const pnpDataPath = path.resolve(baseDir, ".pnp.data.json");
-    const pnpData = await readPnpData(pnpDataPath);
+    const pnpData = await readPnpData(PnPDataPath);
     const duplicatePackages = pnpData.packageRegistryData
         .filter(entry => entry[0] !== null)
         .filter(([, references]) => resolveReferences(references.map(([reference]) => reference)).size > 1);

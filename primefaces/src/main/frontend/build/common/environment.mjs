@@ -9,6 +9,8 @@ export const PackagesDir = path.resolve(RootDir, "packages");
 export const DistDir = path.resolve(RootDir, "dist");
 export const DocsDir = path.resolve(RootDir, "docs");
 
+export const PnPDataPath = path.resolve(RootDir, ".pnp.data.json");
+
 export const TargetResourceDir = path.resolve(RootDir, "..", "..", "..", "target", "generated-resources", "META-INF", "resources");
 export const TargetPrimeFacesResourceDir = path.join(TargetResourceDir, "primefaces");
 

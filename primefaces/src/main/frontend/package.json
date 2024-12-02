@@ -14,7 +14,7 @@
   "scripts": {
     "build:bundle": "node build/bin/bundle.mjs",
     "clean": "node build/bin/clean.mjs",
-    "verify": "node build/verify.mjs"
+    "verify": "node build/bin/verify.mjs"
   },
   "jsdocs": {},
   "dependencies": {
