@@ -1,3 +1,5 @@
+import Cookies from "js-cookie";
+
 import "./src/core/core.js";
 import "./src/core/core.env.js";
 import "./src/core/core.ajax.js";
@@ -14,7 +16,11 @@ import "./src/validation/validation.converters.js";
 import "./src/validation/validation.validators.js";
 import "./src/validation/validation.highlighters.js";
 
+declare global {
+    interface Window {
+        Cookies: typeof Cookies;
+    }
+}
+
 // Expose js-cookie to the global scope
-// Not needed for our code, but may already be used by external code
-import Cookies from "js-cookie";
 Object.assign(window, { Cookies });

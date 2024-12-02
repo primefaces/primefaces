@@ -12,6 +12,7 @@
 		"emitDeclarationOnly": true,
 		"noErrorTruncation": true,
 
+		"allowUmdGlobalAccess": true,
 		"resolvePackageJsonExports": true,
 		"noResolve": false,
 		"esModuleInterop": true,

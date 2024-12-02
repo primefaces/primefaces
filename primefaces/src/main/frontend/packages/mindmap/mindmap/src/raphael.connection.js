@@ -1,5 +1,3 @@
-import Raphael from "raphael";
-
 // Documented in raphael.connection.d.ts
 Raphael.fn.connection = function(obj1, obj2, line, bg, effectSpeed) {
     if (obj1.line && obj1.from && obj1.to) {

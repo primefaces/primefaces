@@ -523,20 +523,20 @@
                         </goals>
                         <phase>generate-resources</phase>
                         <configuration>
-                            <arguments>run build</arguments>
+                            <arguments>run build:bundle</arguments>
                             <environmentVariables>
                                 <NODE_ENV>${frontend.node.env}</NODE_ENV>
                             </environmentVariables>
                         </configuration>
                     </execution>
                     <execution>
-                        <id>check-duplicate-packages</id>
+                        <id>verify</id>
                         <goals>
                             <goal>yarn</goal>
                         </goals>
                         <phase>verify</phase>
                         <configuration>
-                            <arguments>run check-duplicate-packages</arguments>
+                            <arguments>run verify</arguments>
                         </configuration>
                     </execution>
                 </executions>

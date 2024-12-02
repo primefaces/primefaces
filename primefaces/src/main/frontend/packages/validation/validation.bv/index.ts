@@ -1,1 +1,1 @@
-import "./validation.bv.js";
+import "./src/validation.bv.js";

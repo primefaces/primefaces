@@ -1,5 +1,3 @@
-import Raphael from "raphael";
-
 /**
  * Code ported from Tim Down's http://www.timdown.co.uk/code/simpledateformat.php
  * 

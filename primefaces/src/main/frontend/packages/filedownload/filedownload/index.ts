@@ -1,5 +1,12 @@
+import _download from 'downloadjs';
 import "./src/pf.filedownload.js";
 
+declare global {
+    const download: typeof _download;
+    interface Window {
+        download: typeof _download;
+    }
+}
+
 // Expose download to the global scope
-import download from 'downloadjs';
-Object.assign(window, { download });
+Object.assign(window, { download: _download });

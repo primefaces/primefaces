@@ -1,5 +1,3 @@
-import jQBrowser from "jquery.browser";
-
 if (!PrimeFaces.env) {
 
     /**

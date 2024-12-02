@@ -1,5 +1,3 @@
-import jQBrowser from "jquery.browser";
-
 /**
  * __PrimeFaces TreeTable Widget__
  *

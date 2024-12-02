@@ -1,5 +1,5 @@
 /**
- * Merges all given meta files into a single meta file.
+ * Merges all given ESBuild meta files into a single meta file.
  * @param {import("esbuild").Metafile[]} metaFiles 
  * @return {import("esbuild").Metafile}
  */

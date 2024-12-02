@@ -87,5 +87,11 @@ import "./src/sidebar/sidebar.widget.js";
 import "./src/dataview/dataview.widget.js";
 import "./src/toggleswitch/toggleswitch.widget.js";
 
+declare global {
+    interface Window {
+        autosize: typeof autosize;
+    }
+}
+
 // Expose autosize to the global scope
 Object.assign(window, { autosize });

@@ -1,6 +1,12 @@
 import "./src/texteditor.widget.js";
+import _Quill from "quill";
+
+declare global{
+    const Quill: typeof _Quill;
+    interface Window {
+        Quill: typeof _Quill;
+    }
+}
 
 // Expose Quill to the global scope
-// Not needed for our code, but may already be used by external code
-import Quill from "quill";
-Object.assign(window, { Quill });
+Object.assign(window, { Quill: _Quill });

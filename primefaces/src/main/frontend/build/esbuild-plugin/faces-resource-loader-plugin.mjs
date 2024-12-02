@@ -1,44 +1,6 @@
-// @ts-check
-
 import fs from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL, fileURLToPath, URL } from "node:url";
-
-// ESBuild plugin for Faces resources. Jakarta Faces uses a custom
-// resource loading mechanism via the Faces servlet. When a CSS file
-// wishes to reference e.g. an image or font, it must use a special
-// EL expression to refer to the resource, e.g. `#{resource['library:file/path.txt']}`.
-//
-// This plugin adjust the URL of referenced resources accordingly. This allows
-// authors to use normal relative paths in CSS files, such as `url(../images/image.png)`,
-// and have them automatically adjusted to the Faces resource expression during build time. 
-//
-// Usage:
-//
-// import { facesResourceLoaderPlugin } from "path/to/faces-resource-loader-plugin.mjs";
-// esbuild.build({
-//     entryPoints: ["src/index.js"],
-//     ...,
-//     plugins: [
-//         facesResourceLoaderPlugin({
-//             // Resources to which the plugin should apply 
-//             extensions: ["png", "gif", "jpg", "jpeg", "svg", "woff", "woff2", "ttf", "eot"],
-//
-//             // Directory for input and output files. Used to construct the relative path
-//             // when copying files to the output directory.
-//             inputDir: "src/main/frontend/src",
-//             outputDir: "target/generated-resources/META-INF/resources/library",
-//
-//             // Base directory of the webapp resources, used to create the resource expression.
-//             resourceBase: "target/generated-resources/META-INF/resources",
-//
-//             // Whether to use the library name in the resource expression.
-//             // true:  #{resource['library:file/path.txt']}
-//             // false: #{resource['library/file/path.txt']}
-//             useLibrary: true,
-//         }),
-//     ],
-// });
 
 /**
  * @typedef {{
@@ -155,6 +117,45 @@ function createFacesResourceExpression(file, url, config) {
 /**
  * Plugin for esbuild that modifies the URL of imported resources in CSS files
  * to Faces resource expressions.
+ * 
+ * ESBuild plugin for Faces resources. Jakarta Faces uses a custom resource loading
+ * mechanism via the Faces servlet. When a CSS file wishes to reference e.g. an image
+ * or font, it must use a special EL expression to refer to the resource, e.g.
+ * `#{resource['library:file/path.txt']}`.
+ * 
+ * This plugin adjust the URL of referenced resources accordingly. This allows authors
+ * to use normal relative paths in CSS files, such as `url(../images/image.png)`, and
+ * have them automatically adjusted to the Faces resource expression during build time. 
+ * 
+ * Usage:
+ * 
+ * ```js
+ * import { facesResourceLoaderPlugin } from "path/to/faces-resource-loader-plugin.mjs";
+ * esbuild.build({
+ *     entryPoints: ["src/index.js"],
+ *     ...,
+ *     plugins: [
+ *         facesResourceLoaderPlugin({
+ *              * Resources to which the plugin should apply 
+ *             extensions: ["png", "gif", "jpg", "jpeg", "svg", "woff", "woff2", "ttf", "eot"],
+ * 
+ *             // Directory for input and output files. Used to construct the relative path
+ *             // when copying files to the output directory.
+ *             inputDir: "src/main/frontend/src",
+ *             outputDir: "target/generated-resources/META-INF/resources/library",
+ * 
+ *             // Base directory of the webapp resources, used to create the resource expression.
+ *             resourceBase: "target/generated-resources/META-INF/resources",
+ * 
+ *             // Whether to use the library name in the resource expression.
+ *             // true:  #{resource['library:file/path.txt']}
+ *             // false: #{resource['library/file/path.txt']}
+ *             useLibrary: true,
+ *         }),
+ *     ],
+ * });
+ * ```
+ *
  * @param {FacesResourceLoaderPluginOptions} options 
  * @returns {import("esbuild").Plugin}
  */

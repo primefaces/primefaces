@@ -12,8 +12,9 @@
     "directory": "src/main/web"
   },
   "scripts": {
-    "build:bundle": "node build/bin/build.mjs",
-    "check-duplicate-packages": "node build/check-duplicate-packages.mjs"
+    "build:bundle": "node build/bin/bundle.mjs",
+    "clean": "node build/bin/clean.mjs",
+    "verify": "node build/verify.mjs"
   },
   "jsdocs": {},
   "dependencies": {
@@ -28,10 +29,15 @@
     "@fullcalendar/timegrid": "~5.11.3",
     "@melloware/coloris": "0.24.0",
     "@rwap/jquery-ui-touch-punch": "1.1.5",
-    "@types/autosize": "^4.0.3",
+    "@types/autosize": "4.0.3",
+    "@types/hammerjs": "2.0.46",
     "@types/inputmask": "5.0.7",
     "@types/jquery": "3.5.32",
-    "@types/jquery.browser": "^0.1.4",
+    "@types/jquery-mousewheel": "3.1.12",
+    "@types/jquery.browser": "0.1.4",
+    "@types/js-cookie": "3.0.6",
+    "@types/jscrollpane": "2.0.35",
+    "@types/raphael": "2.3.9",
     "autonumeric": "4.10.7",
     "autosize": "6.0.1",
     "blueimp-file-upload": "patch:blueimp-file-upload@npm%3A10.32.0#~/.yarn/patches/blueimp-file-upload-npm-10.32.0-61b944a244.patch",
@@ -43,7 +49,7 @@
     "downloadjs": "patch:downloadjs@npm%3A1.4.7#~/.yarn/patches/downloadjs-npm-1.4.7-952a4ef987.patch",
     "hammerjs": "2.0.8",
     "inputmask": "5.0.10-beta.5",
-    "jquery": "^4.0.0-beta.2",
+    "jquery": "4.0.0-beta.2",
     "jquery-cropper": "patch:jquery-cropper@npm%3A1.0.0#~/.yarn/patches/jquery-cropper-npm-1.0.0-148aa161fe.patch",
     "jquery-mousewheel": "patch:jquery-mousewheel@npm%3A3.1.13#~/.yarn/patches/jquery-mousewheel-npm-3.1.13-854d2918be.patch",
     "jquery-touchswipe": "1.6.19",
@@ -69,7 +75,8 @@
     "xss": "1.0.15"
   },
   "devDependencies": {
-    "@types/node": "^22.10.1",
+    "@types/node": "22.10.1",
+    "@types/pnpapi": "^0.0.5",
     "esbuild": "0.24.0",
     "typescript": "5.6.3"
   },

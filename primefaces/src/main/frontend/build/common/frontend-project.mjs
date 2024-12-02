@@ -9,7 +9,7 @@ import { PackagesDir } from "./environment.mjs";
  * Each frontend project gets bundles into a single JavaScript
  * and CSS file.
  * @typedef {{
- * readonly buildExtension?: string;
+ * readonly buildSettings?: string;
  * readonly dist: string;
  * readonly indexScript?: string;
  * readonly indexStyle?: string;
@@ -42,7 +42,7 @@ async function createFrontendProject(root) {
     const tsConfig = path.resolve(root, "tsconfig.json");
     const indexJs = path.resolve(root, "index.ts");
     const indexCss = path.resolve(root, "index.css");
-    const buildExtension = await undefinedIfNotFile(path.resolve(root, "build-extension.js"));
+    const buildSettings = await undefinedIfNotFile(path.resolve(root, "build-settings.json"));
 
     const indexScript = await undefinedIfNotFile(indexJs);
     const indexStyle = await undefinedIfNotFile(indexCss);
@@ -56,7 +56,7 @@ async function createFrontendProject(root) {
         assertExistsAndIsFile(tsConfig),
     ]);
 
-    return { buildExtension, dist, indexScript, indexStyle, name, root, tsConfig };
+    return { buildSettings, dist, indexScript, indexStyle, name, root, tsConfig };
 }
 
 /**

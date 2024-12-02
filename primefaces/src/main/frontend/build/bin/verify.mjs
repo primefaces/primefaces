@@ -1,5 +1,3 @@
-// @ts-check
-
 // Script that checks whether multiple versions of the same package are installed in the project.
 // Exits with a non-zero exit code if it finds such packages.
 
@@ -53,7 +51,7 @@ function resolveReferences(refs) {
 
 /**
  * @param {string} pnpDataPath
- * @return {Promise<import("../pnp-manifest").PnpData>}
+ * @return {Promise<import("../common/pnp-manifest.js").PnpData>}
  */
 async function readPnpData(pnpDataPath) {
     const pnpDataContent = await fs.readFile(pnpDataPath, "utf8");

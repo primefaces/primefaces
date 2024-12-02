@@ -13,8 +13,8 @@ import { mergeMetaFiles } from "../common/create-meta-file.mjs";
 import { ensureDirectoryExists } from "../lang/file.mjs";
 import { IsProduction, IsVerbose, MavenRootDir, PackagesDir, RootDir, TargetPrimeFacesResourceDir, TargetResourceDir } from "../common/environment.mjs";
 import { findFrontendProjects } from "../common/frontend-project.mjs";
-import { loadBuildExtension } from "../common/build-extensions.mjs";
-import { newLoadFromExpressionPlugin } from "../esbuild-plugin/load-from-expression-plugin.mjs";
+import { loadBuildSettings } from "../common/build-settings.mjs";
+import { loadFromExpressionPlugin } from "../esbuild-plugin/load-from-expression-plugin.mjs";
 import { logError } from "../lang/error.mjs";
 
 const isAnalyze = process.argv.includes("--analyze");
@@ -23,77 +23,6 @@ const isAnalyze = process.argv.includes("--analyze");
  * @typedef {esbuild.BuildOptions & Required<Pick<esbuild.BuildOptions, "plugins">>} BaseBuildOptions
  */
 undefined;
-
-/**
- * PrimeFaces consists of several source files. External libraries are
- * included as separate JavaScript files. Linking with other source
- * files is done via a global variable (window.PrimeFacesLibs). The
- * following defines the NPM packages which need to be linked.
- * 
- * When a package name ends with a slash, it is treated as a prefix.
- * 
- * E.g. ""autonumeric/" will match "autonumeric" as well as
- * "autonumeric/dist/autoNumeric.min.js" etc.
- */
-const LinkedLibraries = {
-    "calendar/calendar": ["jquery-ui/ui/widgets/datepicker.js", "jquery-ui-timepicker-addon/"],
-    "chart/chart": ["chart.js/"],
-    "colorpicker/colorpicker": ["@melloware/coloris/"],
-    "core": ["js-cookie/"],
-    "diagram/diagram": ["jsplumb/"],
-    "filedownload/filedownload": ["downloadjs/"],
-    "fileupload/fileupload": ["blueimp-file-upload/"],
-    "imagecropper/imagecropper": ["cropperjs/", "jquery-cropper/"],
-    "inputmask/inputmask": ["inputmask/"],
-    "inputnumber/inputnumber": ["autonumeric/"],
-    "inputtextarea/inputtextarea": ["autosize/"],
-    "jquery/jquery": ["jquery/", "jquery.browser/"],
-    "jquery/jquery-plugins": ["jquery-mousewheel/", "jquery-ui/", "rangyinputs/"],
-    "moment/moment": ["moment/", "moment-jdateformatparser/"],
-    "moment/moment-timezone-with-data": ["moment-timezone/"],
-    "photocam/photocam": ["webcamjs/"],
-    "raphael/raphael": ["raphael/"],
-    "schedule/schedule": ["@fullcalendar/"],
-    "scrollpanel/scrollpanel": ["jscrollpane/"],
-    "texteditor/texteditor": ["quill/"],
-    "timeline/timeline": ["moment/locale/", "vis-timeline/", "vis-data/", "vis-util/"],
-    "touch/touchswipe": ["jquery-touchswipe/"],
-};
-
-/**
- * Settings for the bundles. A bundle is a folder with a `bundle.ts`
- * or `bundle.css` file, within the `src` directory. These folders
- * are read automatically by findBundleFolders. You can use
- * this object to customize the build process for specific bundles.
- * The key is the name of the bundle folder, relative to the `src`
- * directory. The value is an object with additional settings for
- * the bundle build task.
- * @type {Record<string, BuildTaskSettings>}
- */
-const BundleSettings = {
-    "calendar/calendar": { expose: ["calendar/calendar"] },
-    "chart/chart": { expose: ["chart/chart"] },
-    "colorpicker/colorpicker": { expose: ["colorpicker/colorpicker"] },
-    "core": { expose: ["core"] },
-    "diagram/diagram": { expose: ["diagram/diagram"] },
-    "filedownload/filedownload": { expose: ["filedownload/filedownload"] },
-    "fileupload/fileupload": { expose: ["fileupload/fileupload"] },
-    "imagecropper/imagecropper": { expose: ["imagecropper/imagecropper"] },
-    "inputmask/inputmask": { expose: ["inputmask/inputmask"] },
-    "inputnumber/inputnumber": { expose: ["inputnumber/inputnumber"] },
-    "inputtextarea/inputtextarea": { expose: ["inputtextarea/inputtextarea"] },
-    "jquery/jquery": { expose: ["jquery/jquery"] },
-    "jquery/jquery-plugins": { expose: ["jquery/jquery-plugins"] },
-    "moment/moment": { expose: ["moment/moment"] },
-    "moment/moment-timezone-with-data": { expose: ["moment/moment-timezone-with-data"] },
-    "raphael/raphael": { expose: ["raphael/raphael"] },
-    "photocam/photocam": { expose: ["photocam/photocam"] },
-    "schedule/schedule": { expose: ["schedule/schedule"] },
-    "scrollpanel/scrollpanel": { expose: ["scrollpanel/scrollpanel"] },
-    "texteditor/texteditor": { expose: ["texteditor/texteditor"] },
-    "timeline/timeline": { expose: ["timeline/timeline"] },
-    "touch/touchswipe": { expose: ["touch/touchswipe"] },
-};
 
 /**
  * List of dependencies that are banned from being imported in the source code.
@@ -119,7 +48,7 @@ function createBaseOptions() {
         format: "iife",
         platform: "browser",
         legalComments: "external",
-        metafile: isAnalyze,
+        metafile: true,
         minify: IsProduction,
         sourcemap: IsProduction ? false : "inline",
         write: true,
@@ -175,7 +104,7 @@ async function createLocaleBuildTasks() {
  * @returns {Promise<esbuild.BuildOptions[]>} The ESBuild tasks.
  */
 async function createFrontendBuildTask(project) {
-    const buildExtension = await loadBuildExtension(project);
+    const buildSettings = await loadBuildSettings(project);
 
     const fromRelative = path.relative(PackagesDir, project.root);
     const targetPath = path.resolve(TargetPrimeFacesResourceDir, fromRelative);
@@ -188,11 +117,11 @@ async function createFrontendBuildTask(project) {
         const buildOptions = {
             ...createBaseOptions(),
             entryPoints: [project.indexScript],
-            outfile: `${targetPath}/index.js`,
+            outfile: `${targetPath}.js`,
         };
-        if (buildExtension.importExpressions !== undefined) {
-            buildOptions.plugins.push(newLoadFromExpressionPlugin({
-                expressions: buildExtension.importExpressions,
+        if (buildSettings.loadFromExpression !== undefined) {
+            buildOptions.plugins.push(loadFromExpressionPlugin({
+                expressions: buildSettings.loadFromExpression,
             }));
         }
         buildTasks.push(buildOptions);
@@ -203,7 +132,7 @@ async function createFrontendBuildTask(project) {
         const buildOptions = {
             ...createBaseOptions(),
             entryPoints: [project.indexStyle],
-            outfile: `${targetPath}/index.css`,
+            outfile: `${targetPath}.css`,
         };
         buildTasks.push(buildOptions);
     }
@@ -225,19 +154,58 @@ async function createFrontendBuildTasks() {
 }
 
 /**
- * Combines the meta files from each individual build result into a single
- * meta file, and writes it to the dist dir This is useful for analyzing
- * the bundle contents.
+ * Analyze the meta file for duplicate modules in different outputs.
+ * Fails if the same module is written to multiple outputs. Only
+ * one output file should contain the module and expose it to the global
+ * scope. The other output files should use the module from the global
+ * scope.
+ * 
+ * For example, jquery is already provided by the `jquery/jquery` package.
+ * All other packages should use `window.$` to access the jquery module.
+ *
+ * @param {esbuild.Metafile} metaFile Meta file with the build results
+ * to analyze for duplicate modules.
+ */
+async function failOnDuplicateModulesInOutputs(metaFile) {
+    /** @type {Map<string, string>} */
+    const entryPointByInput = new Map();
+    for (const {entryPoint, inputs} of Object.values(metaFile.outputs)) {
+        if (entryPoint === undefined) {
+            continue;
+        }
+        for (const input of Object.keys(inputs)) {
+            // This is our ESBuild plugin that loads resources from the global scope.
+            if (input.startsWith("load-from-expression/bare:") || input.startsWith("load-from-expression/modulePath:")) {
+                continue;
+            }
+
+            const otherEntryPoint = entryPointByInput.get(input);
+            if (otherEntryPoint !== undefined && entryPoint !== otherEntryPoint) {
+                const message = [
+                    `Both <${entryPoint}> and <${otherEntryPoint}> import and include module <${input}>.`,
+                    `One package should import the module and expose it to the global scope,`,
+                    `the other package should use the module from the global scope.`,
+                ].join(" ");
+                throw new Error(message);
+            }
+
+            entryPointByInput.set(input, entryPoint);
+        }
+    }
+}
+
+/**
+ * Write the combined meta file from each individual build result to the dist dir.
+ * This is useful for analyzing the bundle contents.
  * 
  * You can upload and visualize the meta file at https://esbuild.github.io/analyze/
  * 
- * @param {esbuild.BuildResult[]} successResults 
+ * @param {esbuild.Metafile} metaFile Meta file to write to the dist dir.
  */
-async function writeCombinedMetaFile(successResults) {
-    const finalMetaFile = mergeMetaFiles(successResults.map(r => r.metafile).filter(m => m != null));
+async function writeCombinedMetaFile(metaFile) {
     const finalMetaFilePath = path.join(RootDir, "dist", "meta.json");
     await fs.mkdir(path.dirname(finalMetaFilePath), { recursive: true });
-    await fs.writeFile(finalMetaFilePath, JSON.stringify(finalMetaFile, null, 2));
+    await fs.writeFile(finalMetaFilePath, JSON.stringify(metaFile, null, 2));
     console.log("Meta file written to ", finalMetaFilePath);
 }
 
@@ -264,10 +232,14 @@ async function main() {
         throw new AggregateError(exceptions.map(r => r.reason));
     }
 
+    const successResults = allResults.filter(r => r.status === "fulfilled").map(r => r.value);
+    const finalMetaFile = mergeMetaFiles(successResults.map(r => r.metafile).filter(m => m != null));
+
     if (isAnalyze) {
-        const successResults = allResults.filter(r => r.status === "fulfilled").map(r => r.value);
-        await writeCombinedMetaFile(successResults);
+        await writeCombinedMetaFile(finalMetaFile);
     }
+
+    failOnDuplicateModulesInOutputs(finalMetaFile)
 
     console.log(`Created all bundles in ${t2 - t1}ms`);
     console.log(`Built all bundles in ${t3 - t2}ms`);

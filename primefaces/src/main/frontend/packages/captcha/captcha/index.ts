@@ -1,1 +1,1 @@
-import "./src/captcha.widget.js/index.js";
+import "./src/captcha.widget.js";

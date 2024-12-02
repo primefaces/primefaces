@@ -109,10 +109,10 @@ package `moment/moment`. We can't modify the source code of the Full Calendar
 library. Instead, we use an ESBuild plugin that replaces the `import "moment"`
 and loads moment from the global scope instead.
 
-For that, each package may contain an optional `build-extension.js` file, next
+For that, each package may contain an optional `build-settings.json` file, next
 to the `index.ts` file. Here you can specify the name of the third-party library
 and the window global from which to load the library. See e.g.
-`dist/schedule/schedule/build-extension.js` for an example.
+`dist/schedule/schedule/build-settings.json` for an example.
 
 # Building
 
@@ -126,7 +126,8 @@ If you ever need to build the frontend projects manually, take a look at the
 - `build:bundle` - Run ESBuild to bundle up all code.
 - `bundle:types` - Run TypeScript to generate the type declarations file.
 - `bundle:docs` - Run TypeDoc to generate the doc pages. Requires `bundle:types` to have run.
-- `validate` - Run various checks that prevent common mistakes.
+- `clean` - Remove all build artifacts.
+- `verify` - Run various checks that prevent common mistakes.
 
 So for example, open a CLI, go to the directory that contains this README, and
 run `yarn install` (if you haven't done so yet), and then `yarn run build:bundle`

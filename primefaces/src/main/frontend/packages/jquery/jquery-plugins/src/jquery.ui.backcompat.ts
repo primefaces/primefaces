@@ -1,5 +1,3 @@
-import $ from "jquery";
-
 // Separate module to set $.uiBackCompat = true
 // This needs to be done before loading code from
 // other imports. Imports are hoisted to the top,

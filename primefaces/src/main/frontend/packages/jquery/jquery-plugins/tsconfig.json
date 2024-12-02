@@ -6,7 +6,7 @@
 		"outDir": "dist",
 		"types": ["../jquery/dist"],
 	},
-    "include": ["index.ts"],
+    "include": ["src", "index.ts"],
 	"references": [
 		{ "path": "../jquery" },
 	]
