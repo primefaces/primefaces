@@ -55,7 +55,7 @@
  * @prop {string} fileId ID of the current file.
  * @prop {File[]} files List of currently selected files.
  * @prop {JQuery} emptyFacet The facet to be shown, when the current amount of files is empty.
- * @prop {JQuery} filesTbody The DOM element for the table tbody with the files.
+ * @prop {JQuery} filesFacet The DOM element for the table tbody with the files.
  * @prop {JQuery} form The DOM element for the form containing this upload widget.
  * @prop {JQuery} messageContainer The DOM element of the container with the file upload messages which inform the user
  * about whether a file was uploaded.
