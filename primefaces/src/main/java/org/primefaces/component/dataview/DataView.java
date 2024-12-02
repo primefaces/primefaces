@@ -57,8 +57,8 @@ public class DataView extends DataViewBase {
     public static final String DATAVIEW_CLASS = "ui-dataview ui-widget";
     public static final String LIST_LAYOUT_CLASS = "ui-dataview-list";
     public static final String GRID_LAYOUT_CLASS = "ui-dataview-grid";
-    public static final String HEADER_CLASS = "ui-dataview-header ui-widget-header ui-helper-clearfix ui-corner-top";
-    public static final String FOOTER_CLASS = "ui-dataview-footer ui-widget-header ui-corner-bottom";
+    public static final String HEADER_CLASS = "ui-dataview-header ui-widget-header ui-helper-clearfix";
+    public static final String FOOTER_CLASS = "ui-dataview-footer ui-widget-header";
     public static final String CONTENT_CLASS = "ui-dataview-content ui-widget-content";
     public static final String BUTTON_CONTAINER_CLASS = "ui-dataview-layout-options ui-selectonebutton ui-buttonset";
     public static final String BUTTON_CLASS = "ui-button ui-button-icon-only ui-state-default";

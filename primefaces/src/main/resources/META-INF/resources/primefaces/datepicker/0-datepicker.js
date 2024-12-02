@@ -1256,7 +1256,7 @@
         renderTriggerButton: function() {
             var panelId = this.container.attr('id') + '_panel';
             var aria = ' aria-haspopup="dialog" aria-expanded="false" aria-controls="' + panelId + '" ';
-            this.triggerButton = $('<button type="button" ' + aria + ' class="ui-datepicker-trigger ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only' + (this.options.disabled ? ' ui-state-disabled' : '') + '" tabindex="0">' +
+            this.triggerButton = $('<button type="button" ' + aria + ' class="ui-datepicker-trigger ui-button ui-widget ui-state-default  ui-button-icon-only' + (this.options.disabled ? ' ui-state-disabled' : '') + '" tabindex="0">' +
                 '<span class="ui-button-icon-left ' + this.options.icon + '"></span>' +
                 '<span class="ui-button-text">ui-button</span>' +
                 '</button>');
@@ -1278,7 +1278,7 @@
 
             var panelId = this.container.attr('id') + '_panel';
             var _aria = ' role="dialog" aria-modal="true" aria-label="' + this.options.locale.chooseDate + '" ';
-            this.panel = $('<div id="' + panelId + '"' + _aria + ' class="ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all ' + _classes + '"></div>');
+            this.panel = $('<div id="' + panelId + '"' + _aria + ' class="ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ' + _classes + '"></div>');
 
             //render inner elements
             this.panel.get(0).innerHTML = this.renderPanelElements();
@@ -1336,7 +1336,7 @@
                 yearElement = this.renderTitleYearElement(this.viewDate.getFullYear()),
                 months = this.renderMonthViewMonths();
 
-            return ('<div class="ui-datepicker-header ui-widget-header ui-helper-clearfix ui-corner-all">' +
+            return ('<div class="ui-datepicker-header ui-widget-header ui-helper-clearfix">' +
                 backwardNavigator +
                 forwardNavigator +
                 '<div class="ui-datepicker-title">' +
@@ -1350,7 +1350,7 @@
         },
 
         renderTimePicker: function() {
-            var timepicker = '<div class="ui-timepicker ui-widget-header ui-corner-all' + (this.options.timeInput ? ' ui-timepicker-timeinput' : '') + '">';
+            var timepicker = '<div class="ui-timepicker ui-widget-header ' + (this.options.timeInput ? ' ui-timepicker-timeinput' : '') + '">';
 
             //hour
             timepicker += this.renderHourPicker();
@@ -1383,7 +1383,7 @@
             var now = this.getNow();
             var minDate = this.options.minDate;
             var maxDate = this.options.maxDate;
-            var todayStyleClass = 'ui-today-button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only ' + this.options.todayButtonStyleClass;
+            var todayStyleClass = 'ui-today-button ui-button ui-widget ui-state-default  ui-button-text-only ' + this.options.todayButtonStyleClass;
 
             if (this.options.showTime){
                todayLabel = this.options.locale.now;
@@ -1401,7 +1401,7 @@
                 '<button type="button" class="' + todayStyleClass + '"><span class="ui-button-text">' + todayLabel + '</span></button>' +
                 '</div>' +
                 '<div class="' + clear + '">' +
-                '<button type="button" class="ui-clear-button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only ' + this.options.clearButtonStyleClass + '"><span class="ui-button-text">' + this.options.locale.clear + '</span></button>' +
+                '<button type="button" class="ui-clear-button ui-button ui-widget ui-state-default  ui-button-text-only ' + this.options.clearButtonStyleClass + '"><span class="ui-button-text">' + this.options.locale.clear + '</span></button>' +
                 '</div>' +
                 '</div>' +
                 '</div>';
@@ -1459,7 +1459,7 @@
                 dateViewGrid = this.renderDateViewGrid(monthMetadata, weekDaysMin, weekDays);
 
             return ('<div class="ui-datepicker-group ui-widget-content">' +
-                '<div class="ui-datepicker-header ui-widget-header ui-helper-clearfix ui-corner-all">' +
+                '<div class="ui-datepicker-header ui-widget-header ui-helper-clearfix">' +
                 backwardNavigator +
                 forwardNavigator +
                 title +
@@ -1469,13 +1469,13 @@
         },
 
         renderBackwardNavigator: function(ariaLabel) {
-            return '<button type="button" aria-label="' + ariaLabel + '" class="ui-datepicker-prev ui-corner-all" tabindex="0">' +
+            return '<button type="button" aria-label="' + ariaLabel + '" class="ui-datepicker-prev " tabindex="0">' +
                 '<span class="ui-icon ui-icon-circle-triangle-w"></span>' +
                 '</button>';
         },
 
         renderForwardNavigator: function(ariaLabel) {
-            return '<button type="button" aria-label="' + ariaLabel + '" class="ui-datepicker-next ui-corner-all" tabindex="0">' +
+            return '<button type="button" aria-label="' + ariaLabel + '" class="ui-datepicker-next " tabindex="0">' +
                 '<span class="ui-icon ui-icon-circle-triangle-e"></span>' +
                 '</button>';
         },

@@ -87,14 +87,6 @@ public class DataRenderer extends CoreRenderer {
         String styleClass = isTop ? UIPageableData.PAGINATOR_TOP_CONTAINER_CLASS : UIPageableData.PAGINATOR_BOTTOM_CONTAINER_CLASS;
         String id = pageable.getClientId(context) + "_paginator_" + position;
 
-        //add corners
-        if (!isTop && pageable.getFooter() == null) {
-            styleClass = styleClass + " ui-corner-bottom";
-        }
-        else if (isTop && pageable.getHeader() == null) {
-            styleClass = styleClass + " ui-corner-top";
-        }
-
         // start main container
         writer.startElement("div", null);
         writer.writeAttribute("id", id, null);

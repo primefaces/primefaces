@@ -37,8 +37,8 @@ public class Signature extends SignatureBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Signature";
 
-    public static final String STYLE_CLASS = "ui-inputfield ui-inputtextarea ui-widget ui-state-default ui-corner-all";
-    public static final String READONLY_STYLE_CLASS = "ui-widget ui-widget-content ui-corner-all";
+    public static final String STYLE_CLASS = "ui-inputfield ui-inputtextarea ui-widget ui-state-default";
+    public static final String READONLY_STYLE_CLASS = "ui-widget ui-widget-content";
 
     @Override
     public void processUpdates(FacesContext context) {

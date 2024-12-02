@@ -51,14 +51,14 @@ public class Dialog extends DialogBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Dialog";
 
-    public static final String CONTAINER_CLASS = "ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow ui-hidden-container";
-    public static final String TITLE_BAR_CLASS = "ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top";
+    public static final String CONTAINER_CLASS = "ui-dialog ui-widget ui-widget-content  ui-shadow ui-hidden-container";
+    public static final String TITLE_BAR_CLASS = "ui-dialog-titlebar ui-widget-header ui-helper-clearfix";
     public static final String TITLE_CLASS = "ui-dialog-title";
-    public static final String TITLE_BAR_CLOSE_CLASS = "ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all";
+    public static final String TITLE_BAR_CLOSE_CLASS = "ui-dialog-titlebar-icon ui-dialog-titlebar-close ";
     public static final String CLOSE_ICON_CLASS = "ui-icon ui-icon-closethick";
-    public static final String TITLE_BAR_MINIMIZE_CLASS = "ui-dialog-titlebar-icon ui-dialog-titlebar-minimize ui-corner-all";
+    public static final String TITLE_BAR_MINIMIZE_CLASS = "ui-dialog-titlebar-icon ui-dialog-titlebar-minimize ";
     public static final String MINIMIZE_ICON_CLASS = "ui-icon ui-icon-minus";
-    public static final String TITLE_BAR_MAXIMIZE_CLASS = "ui-dialog-titlebar-icon ui-dialog-titlebar-maximize ui-corner-all";
+    public static final String TITLE_BAR_MAXIMIZE_CLASS = "ui-dialog-titlebar-icon ui-dialog-titlebar-maximize ";
     public static final String MAXIMIZE_ICON_CLASS = "ui-icon ui-icon-extlink";
     public static final String CONTENT_CLASS = "ui-dialog-content ui-widget-content";
     public static final String FOOTER_CLASS = "ui-dialog-footer ui-widget-content";

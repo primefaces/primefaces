@@ -1557,7 +1557,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      */
     renderPanelContentFromHiddenSelect: function(initContentsAndBindItemEvents) {
          if (this.cfg.renderPanelContentOnClient && this.itemsWrapper.children().length === 0) {
-             var panelContent = '<div id="' + this.id + '_items" class="ui-selectonemenu-items ui-widget-content ui-widget ui-corner-all ui-helper-reset" role="listbox">';
+             var panelContent = '<div id="' + this.id + '_items" class="ui-selectonemenu-items ui-widget-content ui-widget ui-helper-reset" role="listbox">';
              panelContent += this.renderSelectItems(this.input);
              panelContent += '</div>';
 
@@ -1586,7 +1586,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         var hasOptgroup = opts.filter("optgroup").length > 0;
         
         if (!hasOptgroup && !isGrouped) {
-            content += '<ul role="group" class="ui-selectonemenu-list ui-widget-content ui-widget ui-corner-all ui-helper-reset">';
+            content += '<ul role="group" class="ui-selectonemenu-list ui-widget-content ui-widget ui-helper-reset">';
         }
 
         content += opts.map(function(index, element) {
@@ -1619,12 +1619,12 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             label = label === "&nbsp;" ? " " : label;
         }
 
-        var cssClass = isOptgroup ? "ui-selectonemenu-item-group ui-corner-all" : 
-                       "ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all" + 
+        var cssClass = isOptgroup ? "ui-selectonemenu-item-group " : 
+                       "ui-selectonemenu-item ui-selectonemenu-list-item " + 
                        (isGrouped ? " ui-selectonemenu-item-group-children" : "") +
                        ($item.data("noselection-option") ? " ui-noselection-option" : "");
 
-        var content = isOptgroup ? '<ul role="group" class="ui-selectonemenu-list ui-widget-content ui-widget ui-corner-all ui-helper-reset" aria-labelledby="' + id + '">' : '';
+        var content = isOptgroup ? '<ul role="group" class="ui-selectonemenu-list ui-widget-content ui-widget ui-helper-reset" aria-labelledby="' + id + '">' : '';
         
         content += '<li id="' + id + '" class="' + cssClass + '" tabindex="-1" role="' + (isOptgroup ? "presentation" : "option") + '"';
         

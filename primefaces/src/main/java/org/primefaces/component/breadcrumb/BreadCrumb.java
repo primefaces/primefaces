@@ -33,7 +33,7 @@ public class BreadCrumb extends BreadCrumbBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.BreadCrumb";
 
-    public static final String CONTAINER_CLASS = "ui-breadcrumb ui-module ui-widget ui-widget-header ui-helper-clearfix ui-corner-all";
+    public static final String CONTAINER_CLASS = "ui-breadcrumb ui-module ui-widget ui-widget-header ui-helper-clearfix";
     public static final String ITEMS_CLASS = "ui-breadcrumb-items";
     public static final String OPTIONS_CLASS = "ui-breadcrumb-options";
 }

@@ -231,10 +231,6 @@ public class PickListRenderer extends InputRenderer {
 
         if (FacetUtils.shouldRenderFacet(caption)) {
             encodeCaption(context, caption);
-            styleClass += " ui-corner-bottom";
-        }
-        else {
-            styleClass += " ui-corner-all";
         }
 
         writer.startElement("ul", null);

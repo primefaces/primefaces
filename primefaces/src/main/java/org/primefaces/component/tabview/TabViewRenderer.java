@@ -239,7 +239,6 @@ public class TabViewRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = getStyleClassBuilder(context)
                 .add(active, TabView.ACTIVE_TAB_HEADER_CLASS, TabView.INACTIVE_TAB_HEADER_CLASS)
-                .add("ui-corner-" + tabView.getOrientation())
                 .add(tab.isDisabled(), "ui-state-disabled")
                 .add(tab.getTitleStyleClass())
                 .build();

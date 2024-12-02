@@ -451,7 +451,7 @@
                 });
     
                 return (
-                    '<button type="button" class="ui-galleria-thumbnail-prev ui-corner-all ui-galleria-link">' +
+                    '<button type="button" class="ui-galleria-thumbnail-prev  ui-galleria-link">' +
                         '<span class="' + iconStyleClass + '"></span>' +
                     '</button>'
                 );
@@ -468,7 +468,7 @@
                 });
     
                 return (
-                    '<button type="button" class="ui-galleria-thumbnail-next ui-corner-all ui-galleria-link">' +
+                    '<button type="button" class="ui-galleria-thumbnail-next  ui-galleria-link">' +
                         '<span class="' + iconStyleClass + '"></span>' +
                     '</button>'
                 );

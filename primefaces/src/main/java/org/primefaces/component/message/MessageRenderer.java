@@ -100,7 +100,7 @@ public class MessageRenderer extends UINotificationRenderer {
 
             if (shouldRender(uiMessage, msg, severityName)) {
 
-                styleClassBuilder.add("ui-message-" + severityName + " ui-widget ui-corner-all");
+                styleClassBuilder.add("ui-message-" + severityName + " ui-widget");
                 styleClassBuilder.add(iconOnly, "ui-message-icon-only ui-helper-clearfix");
 
                 writer.writeAttribute("class", styleClassBuilder.build(), null);

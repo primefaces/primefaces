@@ -322,7 +322,7 @@
                 // select methods
                 select: {
                         create: function (tp_inst, obj, unit, val, min, max, step) {
-                                var sel = '<select class="ui-timepicker-select ui-state-default ui-corner-all" data-unit="' + unit + '" data-min="' + min + '" data-max="' + max + '" data-step="' + step + '" aria-label="select ' + unit + '">',
+                                var sel = '<select class="ui-timepicker-select ui-state-default" data-unit="' + unit + '" data-min="' + min + '" data-max="' + max + '" data-step="' + step + '" aria-label="select ' + unit + '">',
                                         format = tp_inst._defaults.pickerTimeFormat || tp_inst._defaults.timeFormat;
 
                                 for (var i = min; i <= max; i += step) {
