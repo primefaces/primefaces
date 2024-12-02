@@ -39,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests advanced auto single file upload.
- * p:fileUpload mode=advanced auto=true multiple=false dragDropSupport=false
+ * p:fileUpload mode=advanced auto=true multiple=false dragDrop=false
  */
 // Selenium SafariDriver does not support file uploads
 @Tag("SafariExclude")

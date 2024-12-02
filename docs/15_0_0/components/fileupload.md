@@ -36,7 +36,7 @@ powered rich solution with graceful degradation for legacy browsers.
 | converterMessage | null                                         | String | Message to be displayed when conversion fails.
 | disabled | false                                        | Boolean | Disables component when set true.
 | displayFilename | true, false when mode='simple' && auto='true' | Boolean | Simple Mode: if the filename should be displayed. 
-| dragDropSupport | true                                         | Boolean | Specifies dragdrop based file selection from filesystem, default is true and works only on supported browsers.
+| dragDrop | true                                         | Boolean | Specifies dragdrop based file selection from filesystem, default is true and works only on supported browsers.
 | dropZone | null                                         | String | Component that should be used as custom drop zone.
 | ~~fileLimit~~ | null                                         | Integer | ~~Maximum number of files allowed to upload. Deprecated please attach `p:validateFile` to the `p:fileUpload` component.~~
 | global | true                                         | Boolean | Global AJAX requests are listened by ajaxStatus component, setting global to false will not trigger ajaxStatus. Default is false.

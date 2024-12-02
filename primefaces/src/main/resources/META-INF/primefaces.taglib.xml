@@ -10944,7 +10944,7 @@
             <description>
                 <![CDATA[Specifies dragdrop based file selection from filesystem, default is true and works only on supported browsers.]]>
             </description>
-            <name>dragDropSupport</name>
+            <name>dragDrop</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
