@@ -34,7 +34,7 @@ PrimeFaces.widget.ProgressBar = PrimeFaces.widget.BaseWidget.extend({
         this._super(cfg);
 
         this.jqValue = this.jq.children('.ui-progressbar-value');
-        this.jqLabel = this.jq.children('.ui-progressbar-label');
+        this.jqLabel = this.jqValue.children('.ui-progressbar-label');
         this.value = this.cfg.initialValue;
         this.cfg.global = this.cfg.global !== false;
 

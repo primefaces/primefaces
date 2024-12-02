@@ -94,8 +94,6 @@ public class ProgressBarRenderer extends CoreRenderer {
         if (value != 0) {
             writer.writeAttribute("style", "display:block;width:" + value + "%", style);
         }
-        writer.endElement("div");
-
         //label
         writer.startElement("div", progressBar);
         writer.writeAttribute("class", ProgressBar.LABEL_CLASS, null);
@@ -103,7 +101,10 @@ public class ProgressBarRenderer extends CoreRenderer {
             writer.writeAttribute("style", "display:block", style);
             writer.writeText(labelTemplate.replace("{value}", String.valueOf(value)), null);
         }
-        writer.endElement("div");
+        writer.endElement("div"); // label end
+
+        writer.endElement("div"); // value end
+
 
         writer.endElement("div");
     }
