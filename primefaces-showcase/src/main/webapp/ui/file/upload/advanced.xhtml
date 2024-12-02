@@ -1,0 +1,180 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style>
+            body .ui-inputfield.ui-state-drag {
+                background: #ffffd6;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        FileUpload <span class="subitem">Advanced</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Advanced FileUpload is an advanced uploader with dragdrop support, multi file uploads, auto uploading, progress tracking and validations.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/fileupload"/>
+    <ui:param name="widgetLink" value="FileUpload-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h5>Single</h5>
+
+            <p>Single mode allows only one file to be selected at a time from the native file dialog.</p>
+
+            <h:form id="single" enctype="multipart/form-data">
+                <p:fileUpload id="upload" listener="#{fileUploadView.handleFileUpload}"
+                              mode="advanced" multiple="false"
+                              accept=".gif,.jpg,.jpeg,.png"
+                              update="growl"
+                              onupload="return confirm('Are you sure?')">
+                    <p:validateFile sizeLimit="1000000" fileLimit="3" allowTypes="/(\.|\/)(gif|jpeg|jpg|png)$/" contentType="true" />
+                </p:fileUpload>
+
+                <p:growl id="growl" showDetail="true" keepAlive="true"/>
+            </h:form>
+        </div>
+
+        <div class="card">
+            <h5>Multiple</h5>
+
+            <p>Multiple mode allows multiple files to be selected from the native file dialog if supported by the browser.</p>
+
+            <h:form id="multiple"  enctype="multipart/form-data">
+                <p:fileUpload id="upload" listener="#{fileUploadView.handleFileUpload}"
+                              mode="advanced" multiple="true"
+                              accept=".gif,.jpg,.jpeg,.png"
+                              update="growl">
+                    <p:validateFile sizeLimit="1000000" fileLimit="3" allowTypes="/(\.|\/)(gif|jpeg|jpg|png)$/"/>
+                </p:fileUpload>
+
+                <p:growl id="growl" showDetail="true" keepAlive="true"/>
+            </h:form>
+        </div>
+
+        <div class="card">
+            <h5>Auto</h5>
+
+            <p>Upload process begins once the file is selected in auto mode.</p>
+
+            <h:form id="auto" enctype="multipart/form-data">
+                <p:fileUpload id="upload" listener="#{fileUploadView.handleFileUpload}" mode="advanced"
+                              update="growl" auto="true">
+                    <p:validateFile sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpeg|jpg|png)$/" />
+                </p:fileUpload>
+
+                <p:growl id="growl" showDetail="true" keepAlive="true"/>
+            </h:form>
+        </div>
+
+        <div class="card">
+            <h5>Chunked</h5>
+
+            <p>Chunked mode uploads files in (small) chunks to allow resume-functionality.</p>
+
+            <h:form id="chunked" enctype="multipart/form-data">
+                <p:fileUpload id="upload" listener="#{fileUploadView.handleFileUpload}" mode="advanced"
+                              multiple="true"
+                              update="growl"
+                              maxChunkSize="1000000">
+                    <p:validateFile sizeLimit="10000000" fileLimit="3" allowTypes="/(\.|\/)(gif|jpeg|jpg|png)$/" />
+                </p:fileUpload>
+
+                <p:growl id="growl" showDetail="true" keepAlive="true"/>
+            </h:form>
+        </div>
+
+
+        <div class="card">
+            <h5>Custom Drag&amp;Drop</h5>
+
+            <p>Per default, the FileUpload itself is the drop zone. In addition FileUpload supports a custom dropZone.</p>
+
+            <h:form id="dropZone" enctype="multipart/form-data">
+                <div class="ui-fluid">
+                    <div class="field">
+                        <p:inputTextarea id="customDropZone" widgetVar="textarea"
+                                         rows="5" value="#{fileUploadView.dropZoneText}"/>
+                        <small>
+                            Drop on the text area to upload, or
+                            <p:link value="choose" onclick="PF('uploadDnd').show();return false" style="font-size:inherit"/>.
+                        </small>
+                    </div>
+                </div>
+
+                <p:fileUpload id="upload" widgetVar="uploadDnd" listener="#{fileUploadView.handleFileUploadTextarea}"
+                              mode="advanced" auto="true"
+                              dropZone="customDropZone"
+                              update="@form"
+                              style="display: none">
+                    <p:validateFile allowTypes="/(\.|\/)(gif|jpeg|jpg|png)$/" sizeLimit="100000" />
+                </p:fileUpload>
+
+                <p:growl id="growl" showDetail="true" keepAlive="true"/>
+            </h:form>
+        </div>
+
+        <div class="card">
+            <h5>Empty Facet</h5>
+
+            <p>The empty-facet is rendered when no files are added yet.</p>
+
+            <h:form id="empty" enctype="multipart/form-data">
+                <p:fileUpload id="upload" listener="#{fileUploadView.handleFileUpload}" mode="advanced"
+                              multiple="true"
+                              update="growl">
+                    <f:facet name="empty">
+                        Drag and drop files to here to upload.
+                    </f:facet>
+                    <p:validateFile sizeLimit="100000" fileLimit="3" allowTypes="/(\.|\/)(gif|jpeg|jpg|png)$/" />
+                </p:fileUpload>
+
+                <p:growl id="growl" showDetail="true" keepAlive="true"/>
+            </h:form>
+        </div>
+
+        <div class="card">
+            <h5>Tooltips</h5>
+
+            <p>Tooltips can be attached to each one of FileUpload buttons in advanced mode using PFS. Moreover, you can use plain html browser native titles as well.</p>
+
+            <h:form id="tooltips" enctype="multipart/form-data">
+
+                <p:fileUpload id="uploader1" mode="advanced" styleClass="block mb-5"/>
+
+                <p:outputPanel id="tooltipsPanel">
+                    <p:tooltip id="uploaderChooseFileBeforeUploadToolTip"
+                               widgetVar="chooseWV" position="top"
+                               for="@(#tooltips\:uploader1 > .ui-fileupload-buttonbar > .ui-fileupload-choose)"
+                               value="Choose button tooltip"/>
+
+                    <p:tooltip id="uploaderUploadButtonToolTip"
+                               position="right"
+                               for="@(#tooltips\:uploader1 > .ui-fileupload-buttonbar > .ui-fileupload-upload)"
+                               value="Upload button tooltip" showEffect="clip"
+                               hideEffect="explode"/>
+
+                    <p:tooltip id="uploaderCancelButtonToolTip"
+                               position="bottom"
+                               for="@(#tooltips\:uploader1 > .ui-fileupload-buttonbar > .ui-fileupload-cancel)"
+                               value="Cancel button tooltip"/>
+                </p:outputPanel>
+
+                <p:fileUpload id="uploader2" mode="advanced" styleClass="block mb-5"
+                              chooseButtonTitle="Choose button tooltip"
+                              uploadButtonTitle="Upload button tooltip"
+                              cancelButtonTitle="Cancel button tooltip"/>
+            </h:form>
+        </div>
+
+    </ui:define>
+
+</ui:composition>
