@@ -35,7 +35,7 @@ public class SlideMenu extends SlideMenuBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.SlideMenu";
 
     public static final String STATIC_CONTAINER_CLASS = "ui-menu ui-slidemenu ui-widget ui-widget-content ui-helper-clearfix";
-    public static final String DYNAMIC_CONTAINER_CLASS = "ui-menu ui-slidemenu ui-menu-dynamic ui-widget ui-widget-content ui-helper-clearfix";
+    public static final String DYNAMIC_CONTAINER_CLASS = "ui-menu ui-slidemenu ui-menu-dynamic ui-widget ui-widget-content ui-helper-clearfix ui-shadow";
     public static final String WRAPPER_CLASS = "ui-slidemenu-wrapper";
     public static final String CONTENT_CLASS = "ui-slidemenu-content";
     public static final String BACKWARD_CLASS = "ui-slidemenu-backward ui-widget-header ui-helper-clearfix";
