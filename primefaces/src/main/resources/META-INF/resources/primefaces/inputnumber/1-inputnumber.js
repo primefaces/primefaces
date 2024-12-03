@@ -114,63 +114,58 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         // get the current attached events if using CSP
         var events = this.input[0] ? $._data(this.input[0], "events") : null;
 
-        // use DOM if non-CSP and JQ event if CSP
-        var originalOnkeyup = this.input.prop('onkeyup');
-        if (!originalOnkeyup && events && events.keyup) {
-            originalOnkeyup = events.keyup[0].handler;
-        }
-        this.input.prop('onkeyup', null).off('keyup').on('keyup.inputnumber', function(e) {
+        // Helper to get original handler
+        var getOriginalHandler = function(eventName) {
+            var originalProp = $this.input.prop('on' + eventName);
+            return !originalProp && events && events[eventName] ? events[eventName][0].handler : originalProp;
+        };
 
-            var oldValue;
+        // Helper to wrap event handler
+        var wrapEventHandler = function(eventName, additionalLogic) {
+            var originalHandler = getOriginalHandler(eventName);
+            $this.input.prop('on' + eventName, null)
+                      .off(eventName)
+                      .on(eventName + '.inputnumber', function(e) {
+                var oldValue;
+                if (additionalLogic) {
+                    oldValue = additionalLogic.call(this, e);
+                } else {
+                    oldValue = $this.copyValueToHiddenInput();
+                }
+                
+                if (originalHandler && originalHandler.call(this, e) === false) {
+                    if (oldValue) {
+                        $this.setValueToHiddenInput(oldValue);
+                    }
+                    return false;
+                }
+            });
+        };
+
+        // Keyup handler with special key checks
+        wrapEventHandler('keyup', function(e) {
             var key = e.key;
-
-            // #11652 Check if Cut/Copy/Paste
             var cutCopyPaste = (e.ctrlKey && ['KeyX', 'KeyC', 'KeyV'].includes(e.code));
             if (cutCopyPaste || ['Backspace', 'Enter', 'Delete'].includes(key) || PrimeFaces.utils.isPrintableKey(e)) {
-                oldValue = $this.copyValueToHiddenInput();
-            }
-
-            if (originalOnkeyup && originalOnkeyup.call(this, e) === false) {
-                if (oldValue) {
-                    $this.setValueToHiddenInput(oldValue);
-                }
-                return false;
+                return $this.copyValueToHiddenInput();
             }
         });
 
-        // use DOM if non-CSP and JQ event if CSP
-        var originalOnchange = this.input.prop('onchange');
-        if (!originalOnchange && events && events.change) {
-            originalOnchange = events.change[0].handler;
-        }
-        this.input.prop('onchange', null).off('change').on('change.inputnumber', function(e) {
-
+        // Change handler with value comparison
+        wrapEventHandler('change', function(e) {
             var newValue = $this.copyValueToHiddenInput();
             // #10046 do not call on Change if the value has not changed
             if (newValue === $this.initialValue || 
                 ($this.initialValue !== '' && newValue !== '' && Number(newValue) === Number($this.initialValue))) {
                 return false;
             }
-            if (originalOnchange && originalOnchange.call(this, e) === false) {
-                $this.setValueToHiddenInput(newValue);
-                return false;
-            }
             $this.initialValue = newValue;
+            return newValue;
         });
 
-        // use DOM if non-CSP and JQ event if CSP 
-        var originalOnkeydown = this.input.prop('onkeydown');
-        if (!originalOnkeydown && events && events.keydown) {
-            originalOnkeydown = events.keydown[0].handler;
-        }
-        this.input.prop('onkeydown', null).off('keydown').on('keydown.inputnumber', function(e) {
-
-            var oldValue = $this.copyValueToHiddenInput();
-            if (originalOnkeydown && originalOnkeydown.call(this, e) === false) {
-                $this.setValueToHiddenInput(oldValue);
-                return false;
-            }
-        });
+        // Simple input and keydown handlers
+        wrapEventHandler('input');
+        wrapEventHandler('keydown');
 
         this.bindInputEvents();
     },
