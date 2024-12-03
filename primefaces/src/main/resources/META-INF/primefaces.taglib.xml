@@ -23650,14 +23650,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Label to be shown in updateLabel mode when one or more items are selected. If not set the label is shown.]]>
-            </description>
-            <name>multipleLabel</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Placeholder text to show when filter input is empty.]]>
             </description>
             <name>filterPlaceholder</name>
