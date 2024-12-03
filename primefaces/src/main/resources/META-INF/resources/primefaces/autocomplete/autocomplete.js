@@ -1192,7 +1192,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 var itemLabelEscaped = PrimeFaces.escapeHTML(itemLabel);
                 var itemValueEscaped = PrimeFaces.escapeHTML(itemValue);
                 var itemDisplayMarkup = '<li data-token-value="' + itemValueEscaped;
-                itemDisplayMarkup += '"class="ui-autocomplete-token ui-state-active  ui-helper-hidden';
+                itemDisplayMarkup += '"class="ui-autocomplete-token ui-state-active ui-helper-hidden';
                 itemDisplayMarkup += (itemStyleClass === '' ? '' : ' ' + itemStyleClass) + '" '
                 itemDisplayMarkup += 'role="option" aria-label="' + itemLabelEscaped + '" ';
                 itemDisplayMarkup += 'aria-selected="true">';

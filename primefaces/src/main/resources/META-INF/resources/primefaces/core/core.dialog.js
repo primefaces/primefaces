@@ -167,15 +167,15 @@ if (!PrimeFaces.dialog) {
 
             var titlebar = dialogDOM.children('.ui-dialog-titlebar');
             if(cfg.options.closable !== false) {
-                titlebar.append('<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-close " href="#" role="button"><span class="ui-icon ui-icon-closethick"></span></a>');
+                titlebar.append('<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-close" href="#" role="button"><span class="ui-icon ui-icon-closethick"></span></a>');
             }
 
             if(cfg.options.minimizable) {
-                titlebar.append('<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-minimize " href="#" role="button"><span class="ui-icon ui-icon-minus"></span></a>');
+                titlebar.append('<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-minimize" href="#" role="button"><span class="ui-icon ui-icon-minus"></span></a>');
             }
 
             if(cfg.options.maximizable) {
-                titlebar.append('<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-maximize " href="#" role="button"><span class="ui-icon ui-icon-extlink"></span></a>');
+                titlebar.append('<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-maximize" href="#" role="button"><span class="ui-icon ui-icon-extlink"></span></a>');
             }
 
             var iframeStyleClass = cfg.options.iframeStyleClass||'';
@@ -389,7 +389,7 @@ if (!PrimeFaces.dialog) {
          */
         showMessageInDialog: function(msg) {
             if(!this.messageDialog) {
-                $('<div id="primefacesmessagedlg" class="ui-message-dialog ui-dialog ui-widget ui-widget-content  ui-shadow ui-hidden-container"></div>')
+                $('<div id="primefacesmessagedlg" class="ui-message-dialog ui-dialog ui-widget ui-widget-content ui-shadow ui-hidden-container"></div>')
                             .append('<div class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix"><span class="ui-dialog-title"></span>' +
                             '<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-close " href="#" role="button"><span class="ui-icon ui-icon-closethick"></span></a></div>' +
                             '<div class="ui-dialog-content ui-widget-content" style="height: auto;"></div>')

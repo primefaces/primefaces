@@ -161,7 +161,7 @@ PrimeFaces.widget.MultiSelectListbox = PrimeFaces.widget.BaseWidget.extend({
 
                 if(this.cfg.showHeaders) {
                    groupContainer.prepend('<div class="ui-multiselectlistbox-header ui-widget-header">' + PrimeFaces.escapeHTML(ancestor.prev('span').text()) + '</div>')
-                           .children('.ui-multiselectlistbox-list').addClass('').removeClass('');
+                           .children('.ui-multiselectlistbox-list');
                 }
 
                 $this.jq.append(groupContainer);

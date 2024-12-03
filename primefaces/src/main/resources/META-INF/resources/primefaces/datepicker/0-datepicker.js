@@ -1256,7 +1256,7 @@
         renderTriggerButton: function() {
             var panelId = this.container.attr('id') + '_panel';
             var aria = ' aria-haspopup="dialog" aria-expanded="false" aria-controls="' + panelId + '" ';
-            this.triggerButton = $('<button type="button" ' + aria + ' class="ui-datepicker-trigger ui-button ui-widget ui-state-default  ui-button-icon-only' + (this.options.disabled ? ' ui-state-disabled' : '') + '" tabindex="0">' +
+            this.triggerButton = $('<button type="button" ' + aria + ' class="ui-datepicker-trigger ui-button ui-widget ui-state-default ui-button-icon-only' + (this.options.disabled ? ' ui-state-disabled' : '') + '" tabindex="0">' +
                 '<span class="ui-button-icon-left ' + this.options.icon + '"></span>' +
                 '<span class="ui-button-text">ui-button</span>' +
                 '</button>');

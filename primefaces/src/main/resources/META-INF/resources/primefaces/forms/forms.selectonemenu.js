@@ -1619,8 +1619,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             label = label === "&nbsp;" ? " " : label;
         }
 
-        var cssClass = isOptgroup ? "ui-selectonemenu-item-group " : 
-                       "ui-selectonemenu-item ui-selectonemenu-list-item " + 
+        var cssClass = isOptgroup ? "ui-selectonemenu-item-group" : 
+                       "ui-selectonemenu-item ui-selectonemenu-list-item" + 
                        (isGrouped ? " ui-selectonemenu-item-group-children" : "") +
                        ($item.data("noselection-option") ? " ui-noselection-option" : "");
 
