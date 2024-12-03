@@ -48,12 +48,12 @@ public class SelectOneListbox extends SelectOneListboxBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SelectOneListbox";
 
-    public static final String CONTAINER_CLASS = "ui-selectonelistbox ui-inputfield ui-widget ui-widget-content ui-corner-all";
+    public static final String CONTAINER_CLASS = "ui-selectonelistbox ui-inputfield ui-widget ui-widget-content";
     public static final String LIST_CONTAINER_CLASS = "ui-selectlistbox-listcontainer";
     public static final String LIST_CLASS = "ui-selectlistbox-list";
-    public static final String ITEM_CLASS = "ui-selectlistbox-item ui-corner-all";
+    public static final String ITEM_CLASS = "ui-selectlistbox-item";
     public static final String FILTER_CONTAINER_CLASS = "ui-selectlistbox-filter-container";
-    public static final String FILTER_CLASS = "ui-selectlistbox-filter ui-inputfield ui-widget ui-state-default ui-corner-all";
+    public static final String FILTER_CLASS = "ui-selectlistbox-filter ui-inputfield ui-widget ui-state-default";
     public static final String FILTER_ICON_CLASS = "ui-icon ui-icon-search";
     public static final List<String> DOM_EVENTS = LangUtils.unmodifiableList("onchange", "onclick", "ondblclick");
 

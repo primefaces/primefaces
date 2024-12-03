@@ -79,7 +79,6 @@ public class DataScrollerRenderer extends CoreRenderer {
         UIComponent header = ds.getFacet("header");
         UIComponent loader = ds.getFacet("loader");
         UIComponent loading = ds.getFacet("loading");
-        String contentCornerClass = null;
         String containerClass = inline ? DataScroller.INLINE_CONTAINER_CLASS : DataScroller.CONTAINER_CLASS;
 
         String style = ds.getStyle();
@@ -99,14 +98,10 @@ public class DataScrollerRenderer extends CoreRenderer {
             header.encodeAll(context);
             writer.endElement("div");
 
-            contentCornerClass = "ui-corner-bottom";
-        }
-        else {
-            contentCornerClass = "ui-corner-all";
         }
 
         writer.startElement("div", ds);
-        writer.writeAttribute("class", DataScroller.CONTENT_CLASS + " " + contentCornerClass, null);
+        writer.writeAttribute("class", DataScroller.CONTENT_CLASS, null);
         if (inline) {
             writer.writeAttribute("style", "height:" + ds.getScrollHeight() + "px", null);
         }

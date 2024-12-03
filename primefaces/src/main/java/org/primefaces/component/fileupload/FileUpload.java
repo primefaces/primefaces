@@ -54,8 +54,8 @@ public class FileUpload extends FileUploadBase {
     public static final String CONTAINER_CLASS = "ui-fileupload ui-widget ui-fileupload-responsive";
     public static final String DRAG_OVERLAY_CLASS = "ui-fileupload-drag-overlay";
     public static final String DRAG_OVERLAY_CONTENT_CLASS = "ui-fileupload-drag-overlay-content";
-    public static final String BUTTON_BAR_CLASS = "ui-fileupload-buttonbar ui-widget-header ui-corner-top";
-    public static final String CONTENT_CLASS = "ui-fileupload-content ui-widget-content ui-corner-bottom";
+    public static final String BUTTON_BAR_CLASS = "ui-fileupload-buttonbar ui-widget-header";
+    public static final String CONTENT_CLASS = "ui-fileupload-content ui-widget-content";
     public static final String EMPTY_CLASS = "ui-fileupload-empty";
     public static final String FILES_CLASS = "ui-fileupload-files";
     public static final String CHOOSE_BUTTON_CLASS = "ui-fileupload-choose";

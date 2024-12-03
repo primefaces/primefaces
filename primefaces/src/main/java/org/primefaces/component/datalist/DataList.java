@@ -65,8 +65,8 @@ public class DataList extends DataListBase {
     public static final String LIST_CLASS = "ui-datalist-data";
     public static final String NO_BULLETS_CLASS = "ui-datalist-nobullets";
     public static final String LIST_ITEM_CLASS = "ui-datalist-item";
-    public static final String HEADER_CLASS = "ui-datalist-header ui-widget-header ui-corner-top";
-    public static final String FOOTER_CLASS = "ui-datalist-footer ui-widget-header ui-corner-bottom";
+    public static final String HEADER_CLASS = "ui-datalist-header ui-widget-header";
+    public static final String FOOTER_CLASS = "ui-datalist-footer ui-widget-header";
     public static final String DATALIST_EMPTY_MESSAGE_CLASS = "ui-datalist-empty-message";
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()

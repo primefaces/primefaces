@@ -58,8 +58,8 @@ public class AccordionPanel extends AccordionPanelBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.AccordionPanel";
 
     public static final String CONTAINER_CLASS = "ui-accordion ui-widget ui-helper-reset ui-hidden-container";
-    public static final String ACTIVE_TAB_HEADER_CLASS = "ui-accordion-header ui-helper-reset ui-state-default ui-state-active ui-corner-top";
-    public static final String TAB_HEADER_CLASS = "ui-accordion-header ui-helper-reset ui-state-default ui-corner-all";
+    public static final String ACTIVE_TAB_HEADER_CLASS = "ui-accordion-header ui-helper-reset ui-state-default ui-state-active";
+    public static final String TAB_HEADER_CLASS = "ui-accordion-header ui-helper-reset ui-state-default";
     public static final String TAB_HEADER_ICON_CLASS = "ui-icon ui-icon-triangle-1-e";
     public static final String TAB_HEADER_ICON_RTL_CLASS = "ui-icon ui-icon-triangle-1-w";
     public static final String ACTIVE_TAB_HEADER_ICON_CLASS = "ui-icon ui-icon-triangle-1-s";

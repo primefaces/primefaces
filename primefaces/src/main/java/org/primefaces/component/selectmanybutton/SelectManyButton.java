@@ -39,7 +39,7 @@ public class SelectManyButton extends SelectManyButtonBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SelectManyButton";
 
-    public static final String STYLE_CLASS = "ui-selectmanybutton ui-buttonset ui-widget ui-corner-all";
+    public static final String STYLE_CLASS = "ui-selectmanybutton ui-buttonset ui-widget";
 
     private static final String DEFAULT_EVENT = "change";
 

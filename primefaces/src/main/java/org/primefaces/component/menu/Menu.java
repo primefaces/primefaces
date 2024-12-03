@@ -34,10 +34,10 @@ public class Menu extends MenuBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Menu";
 
-    public static final String STATIC_CONTAINER_CLASS = "ui-menu ui-widget ui-widget-content ui-corner-all ui-helper-clearfix";
-    public static final String DYNAMIC_CONTAINER_CLASS = "ui-menu ui-menu-dynamic ui-widget ui-widget-content ui-corner-all ui-helper-clearfix ui-shadow";
+    public static final String STATIC_CONTAINER_CLASS = "ui-menu ui-widget ui-widget-content ui-helper-clearfix";
+    public static final String DYNAMIC_CONTAINER_CLASS = "ui-menu ui-menu-dynamic ui-widget ui-widget-content ui-helper-clearfix ui-shadow";
     public static final String CONTAINER_MAXHEIGHT_CLASS = "ui-menu-dynamic-maxheight";
-    public static final String SUBMENU_TITLE_CLASS = "ui-widget-header ui-corner-all";
+    public static final String SUBMENU_TITLE_CLASS = "ui-widget-header";
     public static final String EXPANDED_SUBMENU_HEADER_ICON_CLASS = "ui-icon ui-icon-triangle-1-s";
     public static final String COLLAPSED_SUBMENU_HEADER_ICON_CLASS = "ui-icon ui-icon-triangle-1-e";
     public static final String TOGGLEABLE_MENU_CLASS = "ui-menu-toggleable";

@@ -879,7 +879,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                                     .attr('aria-label', $this.getSortMessage(ariaLabel, $this.descMessage));
                             } else {
                                 sortIcon.removeClass('ui-icon-triangle-1-s').addClass('ui-icon-carat-2-n-s');
-                                columnHeader.removeClass('ui-state-active ').attr('aria-sort', 'other')
+                                columnHeader.removeClass('ui-state-active').attr('aria-sort', 'other')
                                     .attr('aria-label', $this.getSortMessage(ariaLabel, $this.ascMessage));
                                 $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).attr('aria-sort', 'other')
                                     .attr('aria-label', $this.getSortMessage(ariaLabel, $this.ascMessage));

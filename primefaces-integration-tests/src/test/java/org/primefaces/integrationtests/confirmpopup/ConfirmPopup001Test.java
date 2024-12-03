@@ -89,7 +89,7 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
         CommandButton noButton = popup.getNoButton();
         assertEquals("No", noButton.getText());
         assertCss(noButton,
-                "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left ui-confirm-popup-no ui-button-flat");
+                "ui-button ui-widget ui-state-default ui-button-text-icon-left ui-confirm-popup-no ui-button-flat");
         assertCss(noButton.findElement(By.className("ui-icon")), "ui-button-icon-left ui-icon ui-c pi pi-times");
 
         // Act
@@ -111,7 +111,7 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
         page.confirm.click();
         CommandButton yesButton = popup.getYesButton();
         assertEquals("Yes", yesButton.getText());
-        assertCss(yesButton, "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left ui-confirm-popup-yes ui-state-focus");
+        assertCss(yesButton, "ui-button ui-widget ui-state-default ui-button-text-icon-left ui-confirm-popup-yes ui-state-focus");
         assertCss(yesButton.findElement(By.className("ui-icon")), "ui-button-icon-left ui-icon ui-c pi pi-check");
 
         // Act
@@ -134,7 +134,7 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
         CommandButton noButton = popup.getNoButton();
         assertEquals("Keep this!", noButton.getText());
         assertCss(noButton,
-                "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left ui-confirm-popup-no ui-button-flat bg-green-600 text-white");
+                "ui-button ui-widget ui-state-default ui-button-text-icon-left ui-confirm-popup-no ui-button-flat bg-green-600 text-white");
         assertCss(noButton.findElement(By.className("ui-icon")), "ui-button-icon-left ui-icon ui-c pi pi-heart");
 
         // Act
@@ -160,7 +160,7 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
         CommandButton yesButton = popup.getYesButton();
         assertEquals("Delete Me!", yesButton.getText());
         assertCss(yesButton,
-                "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left ui-confirm-popup-yes bg-red-600 text-white ui-state-focus");
+                "ui-button ui-widget ui-state-default ui-button-text-icon-left ui-confirm-popup-yes bg-red-600 text-white ui-state-focus");
         assertCss(yesButton.findElement(By.className("ui-icon")), "ui-button-icon-left ui-icon ui-c pi pi-trash");
 
         // Act

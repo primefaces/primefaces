@@ -443,7 +443,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                 .append('<div class="ui-fileupload-filename">' + PrimeFaces.escapeHTML(file.name) + '</div>')
                 .append('<div>' + PrimeFaces.utils.formatBytes(file.size) + '</div>')
                 .append('<div class="ui-fileupload-progress"></div>')
-                .append('<div><button class="ui-fileupload-cancel ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"><span class="ui-button-icon-left ui-icon ui-icon ui-icon-close"></span><span class="ui-button-text">ui-button</span></button></div>')
+                .append('<div><button class="ui-fileupload-cancel ui-button ui-widget ui-state-default ui-button-icon-only"><span class="ui-button-icon-left ui-icon ui-icon ui-icon-close"></span><span class="ui-button-text">ui-button</span></button></div>')
                 .appendTo(this.filesFacet);
 
         if(this.filesFacet.children('.ui-fileupload-row').length > 1) {
@@ -481,7 +481,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
         //progress
         row.children('div.ui-fileupload-progress')
-                .append('<div class="ui-progressbar ui-widget ui-widget-content ui-corner-all" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="ui-progressbar-value ui-widget-header ui-corner-left" style="display: none; width: 0%;"></div></div>');
+                .append('<div class="ui-progressbar ui-widget ui-widget-content" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="ui-progressbar-value ui-widget-header" style="display: none; width: 0%;"></div></div>');
 
         file.row = row;
         file.row.data('fileId', this.fileId++);
@@ -794,7 +794,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     renderMessages: function() {
-        var markup = '<div class="ui-messages ui-widget ui-helper-hidden ui-fileupload-messages"><div class="ui-messages-error ui-corner-all">' +
+        var markup = '<div class="ui-messages ui-widget ui-helper-hidden ui-fileupload-messages"><div class="ui-messages-error">' +
                 '<a class="ui-messages-close" href="#"><span class="ui-icon ui-icon-close"></span></a>' +
                 '<span class="ui-messages-error-icon"></span>' +
                 '<ul></ul>' +

@@ -91,7 +91,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
      */
     render: function() {
         this.columns = this.thead.find('> tr > th:not(.ui-static-column)');
-        this.panel = $(PrimeFaces.escapeClientId(this.cfg.id)).attr('role', 'dialog').addClass('ui-columntoggler ui-widget ui-widget-content ui-shadow ui-corner-all')
+        this.panel = $(PrimeFaces.escapeClientId(this.cfg.id)).attr('role', 'dialog').addClass('ui-columntoggler ui-widget ui-widget-content ui-shadow')
             .append('<ul class="ui-columntoggler-items" role="group"></ul>').appendTo(document.body);
         this.itemContainer = this.panel.children('ul');
 
@@ -103,7 +103,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         // select all checkbox
         this.selectAllCheckbox = $('<li class="ui-columntoggler-all">' +
             '<div class="ui-chkbox ui-widget">' +
-            '<div role="checkbox" tabindex="0" aria-checked="true" aria-label="' + this.getAriaLabel('selectAll') + '" class="ui-chkbox-box ui-widget ui-corner-all ui-state-default">' +
+            '<div role="checkbox" tabindex="0" aria-checked="true" aria-label="' + this.getAriaLabel('selectAll') + '" class="ui-chkbox-box ui-widget ui-state-default">' +
             '<span class="ui-chkbox-icon ui-icon ui-icon-check"></span></div></div>' +
             '</li>');
         this.selectAllCheckbox.appendTo(this.itemContainer);
@@ -112,7 +112,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         for (var i = 0; i < this.columns.length; i++) {
             var column = this.columns.eq(i),
                 hidden = column.hasClass('ui-helper-hidden'),
-                boxClass = hidden ? 'ui-chkbox-box ui-widget ui-corner-all ui-state-default' : 'ui-chkbox-box ui-widget ui-corner-all ui-state-default ui-state-active',
+                boxClass = hidden ? 'ui-chkbox-box ui-widget ui-state-default' : 'ui-chkbox-box ui-widget ui-state-default ui-state-active',
                 iconClass = (hidden) ? 'ui-chkbox-icon ui-icon ui-icon-blank' : 'ui-chkbox-icon ui-icon ui-icon-check',
                 columnChildren = column.children('.ui-column-title').clone(),
                 columnTogglerCheckboxId = this.tableId + "_columnTogglerChkbx" + i;
