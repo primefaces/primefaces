@@ -521,7 +521,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
                 }
 
                 String headerText = column.getHeaderText();
-                String styleClass = column.getStyleClass() == null ? "ui-state-default" : "ui-state-default" + column.getStyleClass();
+                String styleClass = column.getStyleClass() == null ? "ui-state-default" : "ui-state-default " + column.getStyleClass();
 
                 writer.startElement("th", null);
                 writer.writeAttribute("class", styleClass, null);

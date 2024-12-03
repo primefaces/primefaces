@@ -54,7 +54,7 @@ public class SelectCheckboxMenu extends SelectCheckboxMenuBase {
 
     public static final String STYLE_CLASS = "ui-selectcheckboxmenu ui-widget ui-state-default";
     public static final String LABEL_CONTAINER_CLASS = "ui-selectcheckboxmenu-label-container";
-    public static final String LABEL_CLASS = "ui-selectcheckboxmenu-label ";
+    public static final String LABEL_CLASS = "ui-selectcheckboxmenu-label";
     public static final String TRIGGER_CLASS = "ui-selectcheckboxmenu-trigger ui-state-default";
     public static final String PANEL_CLASS = "ui-selectcheckboxmenu-panel ui-widget ui-widget-content ui-helper-hidden ui-input-overlay";
     public static final String HEADER_CLASS = "ui-widget-header ui-selectcheckboxmenu-header ui-helper-clearfix";
