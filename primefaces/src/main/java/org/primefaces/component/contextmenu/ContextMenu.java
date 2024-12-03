@@ -35,5 +35,5 @@ public class ContextMenu extends ContextMenuBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.ContextMenu";
 
-    public static final String CONTAINER_CLASS = "ui-menu ui-menu-dynamic ui-contextmenu ui-widget ui-widget-content ui-helper-clearfix ui-shadow";
+    public static final String CONTAINER_CLASS = "ui-menu ui-menu-dynamic ui-contextmenu ui-widget ui-widget-content ui-helper-clearfix";
 }

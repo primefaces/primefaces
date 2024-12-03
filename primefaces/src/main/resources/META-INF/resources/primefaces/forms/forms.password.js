@@ -83,10 +83,6 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
         this.meter = this.panel.children('div.ui-password-meter');
         this.infoText = this.panel.children('div.ui-password-info');
 
-        if (!this.cfg.inline) {
-            this.panel.addClass('ui-shadow');
-        }
-
         //events
         this.jq.off(this.cfg.showEvent + ' ' + this.cfg.hideEvent + ' keyup.password')
             .on(this.cfg.showEvent, function() {

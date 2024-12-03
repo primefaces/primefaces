@@ -44,7 +44,7 @@ public abstract class AbstractMenu extends UIPanel implements MenuItemAware, RTL
     public static final String MENUITEM_TEXT_CLASS = "ui-menuitem-text";
     public static final String MENUITEM_ICON_CLASS = "ui-menuitem-icon ui-icon";
     public static final String TIERED_SUBMENU_CLASS = "ui-widget ui-menuitem ui-menu-parent";
-    public static final String TIERED_CHILD_SUBMENU_CLASS = "ui-widget-content ui-menu-list ui-helper-clearfix ui-menu-child ui-shadow";
+    public static final String TIERED_CHILD_SUBMENU_CLASS = "ui-widget-content ui-menu-list ui-helper-clearfix ui-menu-child";
     public static final String SUBMENU_RIGHT_ICON_CLASS = "ui-icon ui-icon-triangle-1-e";
     public static final String SUBMENU_LEFT_ICON_CLASS = "ui-icon ui-icon-triangle-1-w";
     public static final String SUBMENU_DOWN_ICON_CLASS = "ui-icon ui-icon-triangle-1-s";

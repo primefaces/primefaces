@@ -91,7 +91,7 @@ PrimeFaces.widget.Sticky = PrimeFaces.widget.BaseWidget.extend({
                 'top': this.cfg.margin + 'px',
                 'z-index': PrimeFaces.utils.nextStickyZindex()
             })
-            .addClass('ui-shadow ui-sticky');
+            .addClass('ui-sticky');
 
             this.ghost = $('<div class="ui-sticky-ghost"></div>').height(this.target.outerHeight()).insertBefore(this.target);
             this.target.width(this.ghost.outerWidth() - (this.target.outerWidth() - this.target.width()));
@@ -110,7 +110,7 @@ PrimeFaces.widget.Sticky = PrimeFaces.widget.BaseWidget.extend({
                 top: 'auto',
                 width: 'auto'
             })
-            .removeClass('ui-shadow ui-sticky');
+            .removeClass('ui-sticky');
 
             this.ghost.remove();
             this.fixed = false;

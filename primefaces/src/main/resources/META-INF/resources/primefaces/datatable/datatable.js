@@ -5236,13 +5236,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 tableOffset = table.offset();
 
             if (scrollTop + fixedElementsHeight > tableOffset.top) {
-                if (!$this.stickyContainer.hasClass('ui-shadow ui-sticky')) {
+                if (!$this.stickyContainer.hasClass('ui-sticky')) {
                     $this.stickyContainer.css({ 'z-index': PrimeFaces.utils.nextStickyZindex() });
                 }
                 $this.stickyContainer.css({
                     position: 'fixed',
                     top: fixedElementsHeight
-                }).addClass('ui-shadow ui-sticky');
+                }).addClass('ui-sticky');
 
                 if ($this.cfg.resizableColumns) {
                     $this.relativeHeight = (scrollTop + fixedElementsHeight) - tableOffset.top;
@@ -5257,7 +5257,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 $this.stickyContainer.css({
                     position: 'absolute',
                     top: tableOffset.top
-                }).removeClass('ui-shadow ui-sticky');
+                }).removeClass('ui-sticky');
 
                 if ($this.stickyContainer.is(':hidden')) {
                     $this.stickyContainer.css({ 'z-index': PrimeFaces.utils.nextStickyZindex() });

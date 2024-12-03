@@ -60,7 +60,7 @@ public class SelectOneMenu extends SelectOneMenuBase {
     public static final String RTL_CLASS = "ui-selectonemenu-rtl";
     public static final String LABEL_CLASS = "ui-selectonemenu-label ui-inputfield";
     public static final String TRIGGER_CLASS = "ui-selectonemenu-trigger ui-state-default";
-    public static final String PANEL_CLASS = "ui-selectonemenu-panel ui-widget ui-widget-content ui-helper-hidden ui-shadow ui-input-overlay";
+    public static final String PANEL_CLASS = "ui-selectonemenu-panel ui-widget ui-widget-content ui-helper-hidden ui-input-overlay";
     public static final String FOOTER_CLASS = "ui-selectonemenu-footer";
     public static final String RTL_PANEL_CLASS = "ui-selectonemenu-panel-rtl";
     public static final String ITEMS_WRAPPER_CLASS = "ui-selectonemenu-items-wrapper";

@@ -700,7 +700,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                                         'position': 'fixed',
                                         'top': '0px'
                                     })
-                                    .addClass('ui-shadow ui-sticky');
+                                    .addClass('ui-sticky');
 
                 if($this.cfg.resizableColumns) {
                     $this.relativeHeight = scrollTop - tableOffset.top;
@@ -716,7 +716,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                                         'position': 'absolute',
                                         'top': tableOffset.top + 'px'
                                     })
-                                    .removeClass('ui-shadow ui-sticky');
+                                    .removeClass('ui-sticky');
 
                 if($this.stickyContainer.is(':hidden')) {
                     $this.stickyContainer.show();

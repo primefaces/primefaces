@@ -68,7 +68,7 @@ public class TooltipRenderer extends CoreRenderer {
             writer.endElement("div");
 
             writer.startElement("div", tooltip);
-            writer.writeAttribute("class", "ui-tooltip-text ui-shadow", null);
+            writer.writeAttribute("class", "ui-tooltip-text", null);
 
             if (tooltip.getChildCount() > 0) {
                 renderChildren(context, tooltip);

@@ -44,7 +44,7 @@ public class Sidebar extends SidebarBase implements ClientBehaviorHolder, PrimeC
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Sidebar";
 
-    public static final String STYLE_CLASS = "ui-sidebar ui-widget ui-widget-content ui-shadow";
+    public static final String STYLE_CLASS = "ui-sidebar ui-widget ui-widget-content";
     public static final String CONTENT_CLASS = "ui-sidebar-content ui-widget-content";
     public static final String TITLE_BAR_CLOSE_CLASS = "ui-sidebar-close";
     public static final String CLOSE_ICON_CLASS = "ui-icon ui-icon-closethick";

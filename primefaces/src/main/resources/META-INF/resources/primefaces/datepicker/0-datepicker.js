@@ -1266,7 +1266,6 @@
             //add classes according to conditions
             var _classes = this.getClassesToAdd({
                 'ui-datepicker-inline': this.options.inline,
-                'ui-shadow': !this.options.inline,
                 'ui-input-overlay': !this.options.inline,
                 'ui-state-disabled': this.options.disabled,
                 'ui-state-error': this.options.inline && !this.options.valid,
