@@ -313,7 +313,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
         if (!this.cfg.multiple) {
             var oldHeader = this.headers.filter('.ui-state-active');
             oldHeader.children('.ui-icon').removeClass(this.cfg.expandedIcon).addClass(this.cfg.collapsedIcon);
-            oldHeader.attr('aria-expanded', false).removeClass('ui-state-active').addClass('')
+            oldHeader.attr('aria-expanded', false).removeClass('ui-state-active')
                 .next().attr('aria-hidden', true).slideUp(this.cfg.toggleSpeed, function() {
                     if ($this.cfg.onTabClose)
                         $this.cfg.onTabClose.call($this, panel);
@@ -322,7 +322,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
 
         //activate selected
         var newHeader = panel.prev();
-        newHeader.attr('aria-expanded', true).addClass('ui-state-active').removeClass('ui-state-hover ')
+        newHeader.attr('aria-expanded', true).addClass('ui-state-active').removeClass('ui-state-hover')
             .children('.ui-icon').removeClass(this.cfg.collapsedIcon).addClass(this.cfg.expandedIcon);
 
         panel.attr('aria-hidden', false).slideDown(this.cfg.toggleSpeed, function() {
@@ -341,7 +341,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
             header = panel.prev();
 
         header.attr('aria-expanded', false).children('.ui-icon').removeClass(this.cfg.expandedIcon).addClass(this.cfg.collapsedIcon);
-        header.removeClass('ui-state-active').addClass('');
+        header.removeClass('ui-state-active');
         panel.attr('aria-hidden', true).slideUp(this.cfg.toggleSpeed, function() {
             if ($this.cfg.onTabClose)
                 $this.cfg.onTabClose.call($this, panel);

@@ -1350,7 +1350,7 @@
         },
 
         renderTimePicker: function() {
-            var timepicker = '<div class="ui-timepicker ui-widget-header ' + (this.options.timeInput ? ' ui-timepicker-timeinput' : '') + '">';
+            var timepicker = '<div class="ui-timepicker ui-widget-header' + (this.options.timeInput ? ' ui-timepicker-timeinput' : '') + '">';
 
             //hour
             timepicker += this.renderHourPicker();
