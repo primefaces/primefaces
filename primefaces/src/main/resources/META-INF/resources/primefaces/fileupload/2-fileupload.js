@@ -794,7 +794,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     renderMessages: function() {
-        var markup = '<div class="ui-messages ui-widget ui-helper-hidden ui-fileupload-messages"><div class="ui-messages-error ">' +
+        var markup = '<div class="ui-messages ui-widget ui-helper-hidden ui-fileupload-messages"><div class="ui-messages-error">' +
                 '<a class="ui-messages-close" href="#"><span class="ui-icon ui-icon-close"></span></a>' +
                 '<span class="ui-messages-error-icon"></span>' +
                 '<ul></ul>' +

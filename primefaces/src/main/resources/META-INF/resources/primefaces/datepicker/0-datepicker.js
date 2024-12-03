@@ -1383,7 +1383,7 @@
             var now = this.getNow();
             var minDate = this.options.minDate;
             var maxDate = this.options.maxDate;
-            var todayStyleClass = 'ui-today-button ui-button ui-widget ui-state-default  ui-button-text-only ' + this.options.todayButtonStyleClass;
+            var todayStyleClass = 'ui-today-button ui-button ui-widget ui-state-default ui-button-text-only ' + this.options.todayButtonStyleClass;
 
             if (this.options.showTime){
                todayLabel = this.options.locale.now;
@@ -1401,7 +1401,7 @@
                 '<button type="button" class="' + todayStyleClass + '"><span class="ui-button-text">' + todayLabel + '</span></button>' +
                 '</div>' +
                 '<div class="' + clear + '">' +
-                '<button type="button" class="ui-clear-button ui-button ui-widget ui-state-default  ui-button-text-only ' + this.options.clearButtonStyleClass + '"><span class="ui-button-text">' + this.options.locale.clear + '</span></button>' +
+                '<button type="button" class="ui-clear-button ui-button ui-widget ui-state-default ui-button-text-only ' + this.options.clearButtonStyleClass + '"><span class="ui-button-text">' + this.options.locale.clear + '</span></button>' +
                 '</div>' +
                 '</div>' +
                 '</div>';
@@ -1469,13 +1469,13 @@
         },
 
         renderBackwardNavigator: function(ariaLabel) {
-            return '<button type="button" aria-label="' + ariaLabel + '" class="ui-datepicker-prev " tabindex="0">' +
+            return '<button type="button" aria-label="' + ariaLabel + '" class="ui-datepicker-prev" tabindex="0">' +
                 '<span class="ui-icon ui-icon-circle-triangle-w"></span>' +
                 '</button>';
         },
 
         renderForwardNavigator: function(ariaLabel) {
-            return '<button type="button" aria-label="' + ariaLabel + '" class="ui-datepicker-next " tabindex="0">' +
+            return '<button type="button" aria-label="' + ariaLabel + '" class="ui-datepicker-next" tabindex="0">' +
                 '<span class="ui-icon ui-icon-circle-triangle-e"></span>' +
                 '</button>';
         },
