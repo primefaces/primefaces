@@ -87,7 +87,7 @@ AJAX uploads are not supported in simple upload, however AJAX is used to automat
 
 You can enable `skinSimple` option to style the simple uploader, to have a themed look, that works the same across different environments.
 
-#### Single
+### Single
 In single mode, you can use `UploadedFile` as `value` binding or `FileUploadEvent` via `listener`.
 
 ```xhtml
@@ -110,7 +110,7 @@ public class FileUploadView {
 }
 ```
 
-#### Multiple
+### Multiple
 Multiple file selection and upload can be enabled by setting `multiple=true`.
 
 !> This is not supported by legacy browsers!
@@ -152,7 +152,7 @@ public class FileUploadView {
 ## Advanced FileUpload
 Advanced FileUpload provies a more complex UI compared to the Simple FileUpload.
 
-#### Single
+### Single
 In single mode, you can use `UploadedFile` as `value` binding or `FileUploadEvent` via `listener`.
 
 ```xhtml
@@ -169,7 +169,7 @@ public class FileUploadView {
 }
 ```
 
-#### Multiple
+### Multiple
 Multiple file selection and upload can be enabled by setting `multiple=true`.
 As advanced mode does _not_ send all files in one request, you must use the `listener` with `FileUploadEvent`, which will be called multiple times:
 
@@ -200,7 +200,7 @@ which is called from client side after _all_ files are uploaded by checking the 
     oncomplete="if (!PF('fileUpload').files.length) updateAfterAllFilesUploaded();"/>
 ```
 
-#### Partial Page Update
+### Partial Page Update
 After the upload process completes, you can use the PrimeFaces PPR to update any component on the page.
 FileUpload is equipped with the `update` attribute for this purpose.
 Following example displays a "File Uploaded" message using the Growl component after upload:
@@ -218,7 +218,7 @@ public class FileUploadView {
 }
 ```
 
-#### Confirmation Before Upload
+### Confirmation Before Upload
 You can add a client side callback, if you want a confirmation dialog before the uploads begin.
 Any return of `false` from the `onupload` callback will not send the files:
 
@@ -226,7 +226,7 @@ Any return of `false` from the `onupload` callback will not send the files:
 <p:fileUpload listener="#{fileUploadView.handleFileUpload}" onupload="return confirm('Are you sure?')"/>
 ```
 
-#### Validate Files Before Adding
+### Validate Files Before Adding
 You can add a client side callback, if you want to use a custom function to approve a file before adding using `onAdd`.
 For example only add a file if its named exactly `primefaces.pdf`.
 
@@ -243,6 +243,15 @@ function onAddFile(file, callback) {
 <p:fileUpload listener="#{fileUploadView.handleFileUpload}" onAdd="onAddFile(file, callback);"/>
 ```
 
+### Empty Facet
+
+The empty-facet is rendered when no files are added yet. It's rendered in `div` classed `ui-fileupload-empty`.
+
+```xhtml
+<p:fileUpload ...>
+    <f:facet name="empty">Drag and drop files to here to upload.</f:facet>
+</p:fileUpload>
+```
 
 ## Auto Upload
 Default behavior requires a user to trigger the upload process, you can change this way by setting `auto` to `true`.
@@ -345,7 +354,7 @@ contents yourself in your backing bean.
 ## Chunking and Resume
 FileUpload supports chunked upload using the `maxChunkSize` attribute but only in advanced mode!
 
-#### Resuming chunked file uploads
+### Resuming chunked file uploads
 FileUpload is able to resume uploads that have been canceled (e.g. user abort, lost of connection etc.)
 At first, you'll need to enable chunking and add this servlet:
 
@@ -363,7 +372,7 @@ At first, you'll need to enable chunking and add this servlet:
 > You're free to choose `url-pattern` mapping, as long it doesn't conflict with an existing page
 **Note** that resuming chunked file uploads is not supported with commons uploader.
 
-#### Deleting aborted chunked uploads
+### Deleting aborted chunked uploads
 For Servlet 3.0 and later versions, uploaded files are automatically removed from the internal
 upload directory after the request is destroyed.
 
@@ -382,11 +391,11 @@ Though it is recommended to run a cron-job that deletes incomplete uploaded file
 
 ## More secure file upload
 
-#### Introduction
+### Introduction
 
 File uploads per se introduce some security risks, for best practices you should consult OWASP's recommendations: https://www.owasp.org/index.php/Unrestricted_File_Upload
 
-#### Measures
+### Measures
 
 Here are some measures that can be taken into account when using PrimeFaces's `fileUpload` component:
 1. Consider **limiting the size** of uploaded files. As of PrimeFaces 6.2 this will be double-checked at server side as well: `p:fileUpload sizeLimit="1024"`. See https://github.com/primefaces/primefaces/issues/3290.
