@@ -12,10 +12,11 @@
 		"emitDeclarationOnly": true,
 		"noErrorTruncation": true,
 
+		"allowSyntheticDefaultImports": false,
 		"allowUmdGlobalAccess": true,
 		"resolvePackageJsonExports": true,
 		"noResolve": false,
-		"esModuleInterop": true,
+		"esModuleInterop": false,
 		"isolatedDeclarations": true,
 		"isolatedModules": true,
 		"verbatimModuleSyntax": true,

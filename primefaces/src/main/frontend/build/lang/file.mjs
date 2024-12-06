@@ -1,5 +1,5 @@
-import fs from "node:fs/promises";
-import path from "node:path";
+import * as fs from "node:fs/promises";
+import * as path from "node:path";
 
 /**
  * Gets the stats of a file or directory, if it exists.

@@ -1,4 +1,4 @@
-import path from "node:path";
+import * as path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const dirName = path.dirname(fileURLToPath(import.meta.url));
@@ -9,6 +9,7 @@ export const PackagesDir = path.resolve(RootDir, "packages");
 export const DistDir = path.resolve(RootDir, "dist");
 export const DocsDir = path.resolve(RootDir, "docs");
 
+export const PackageJsonPath = path.resolve(RootDir, "package.json");
 export const PnPDataPath = path.resolve(RootDir, ".pnp.data.json");
 
 export const TargetResourceDir = path.resolve(RootDir, "..", "..", "..", "target", "generated-resources", "META-INF", "resources");

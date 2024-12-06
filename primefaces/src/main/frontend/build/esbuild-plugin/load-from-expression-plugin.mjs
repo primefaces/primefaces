@@ -1,4 +1,4 @@
-import path from "node:path";
+import * as path from "node:path";
 import pnpApi from "pnpapi";
 
 import { escapeRegExp } from "../lang/reg-exp.mjs";

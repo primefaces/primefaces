@@ -1,5 +1,5 @@
-import path from "node:path";
-import fs from "node:fs/promises";
+import * as path from "node:path";
+import * as fs from "node:fs/promises";
 
 import { assertExistsAndIsFile, ensureDirectoryExists, existsAndIsFile } from "../lang/file.mjs";
 import { PackagesDir } from "./environment.mjs";

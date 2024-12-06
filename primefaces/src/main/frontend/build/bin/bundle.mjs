@@ -1,7 +1,7 @@
 /** @import { FrontendProject} from "../common/frontend-project.mjs" */
 
-import path from "node:path";
-import fs from "node:fs/promises";
+import * as path from "node:path";
+import * as fs from "node:fs/promises";
 
 import * as esbuild from "esbuild";
 
@@ -11,7 +11,7 @@ import { bannedDependenciesPlugin } from "../esbuild-plugin/banned-dependencies-
 import { mergeMetaFiles } from "../common/create-meta-file.mjs";
 
 import { ensureDirectoryExists } from "../lang/file.mjs";
-import { IsProduction, IsVerbose, MavenRootDir, PackagesDir, RootDir, TargetPrimeFacesResourceDir, TargetResourceDir } from "../common/environment.mjs";
+import { IsProduction, IsVerbose, MavenRootDir, PackageJsonPath, PackagesDir, RootDir, TargetPrimeFacesResourceDir, TargetResourceDir } from "../common/environment.mjs";
 import { findFrontendProjects } from "../common/frontend-project.mjs";
 import { loadBuildSettings } from "../common/build-settings.mjs";
 import { loadFromExpressionPlugin } from "../esbuild-plugin/load-from-expression-plugin.mjs";
@@ -209,6 +209,35 @@ async function writeCombinedMetaFile(metaFile) {
     console.log("Meta file written to ", finalMetaFilePath);
 }
 
+/**
+ * Runs all ESBuild tasks in parallel and waits for them to finish.
+ * 
+ * This method temporarily removes the `type` field from the `package.json`.
+ * This is needed to make ESBuild use Babel's interpretation for default exports
+ * from CommonJS modules, i.e. so that it treats exports as ESM when marked
+ * with the special `__esModule` flag. This will hopefully stop being necessary
+ * in the future when all dependencies are ESM. 
+ * 
+ * See also 
+ * - https://esbuild.github.io/content-types/#default-interop
+ * - https://github.com/evanw/esbuild/issues/2480
+ * - https://github.com/evanw/esbuild/issues/3852
+ * @param {esbuild.BuildOptions[]} buildTasks 
+ * @returns {Promise<PromiseSettledResult<esbuild.BuildResult>[]>}
+ */
+async function runEsBuild(buildTasks) {
+    const original = await fs.readFile(PackageJsonPath, "utf-8");
+    try {
+        const packageJson = JSON.parse(original);
+        delete packageJson.type;
+        await fs.writeFile(PackageJsonPath, JSON.stringify(packageJson, null, 2), "utf-8");
+        const result = await Promise.allSettled(buildTasks.map(task => esbuild.build(task)));
+        return result;
+    } finally {
+        await fs.writeFile(PackageJsonPath, original, "utf-8");
+    }
+}
+
 async function main() {
     console.log(`Building PrimeFaces resources with mode ${IsProduction ? "production" : "development"}...`);
 
@@ -224,7 +253,7 @@ async function main() {
     // Start all promises and wait for them to finish.
     // This will build all tasks in parallel, speeding up the build process.
     const t2 = Date.now();
-    const allResults = await Promise.allSettled(allBuildTasks.map(task => esbuild.build(task)));
+    const allResults = await runEsBuild(allBuildTasks);
 
     const t3 = Date.now();
     const exceptions = allResults.filter(r => r.status === "rejected");
@@ -249,4 +278,3 @@ main().catch(e => {
     logError(e);
     process.exit(1);
 });
-

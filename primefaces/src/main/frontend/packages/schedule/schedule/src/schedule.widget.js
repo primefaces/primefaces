@@ -1,5 +1,5 @@
 import { Calendar } from "@fullcalendar/core";
-import allLocales from "@fullcalendar/core/locales-all"
+import allLocales from "@fullcalendar/core/locales-all.js"
 
 import interactionPlugin from "@fullcalendar/interaction";
 import dayGridPlugin from "@fullcalendar/daygrid";

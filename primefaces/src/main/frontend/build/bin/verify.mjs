@@ -1,7 +1,7 @@
 // Script that checks whether multiple versions of the same package are installed in the project.
 // Exits with a non-zero exit code if it finds such packages.
 
-import fs from "node:fs/promises";
+import * as fs from "node:fs/promises";
 
 import { PnPDataPath } from "../common/environment.mjs";
 
