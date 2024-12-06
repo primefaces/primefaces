@@ -279,11 +279,12 @@ public class FilterMeta implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         FilterMeta that = (FilterMeta) o;
         return Objects.equals(field, that.field) &&
-                Objects.equals(columnKey, that.columnKey);
+                Objects.equals(columnKey, that.columnKey) &&
+                Objects.equals(filterValue, that.filterValue);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(field, columnKey);
+        return Objects.hash(field, columnKey, filterValue);
     }
 }
