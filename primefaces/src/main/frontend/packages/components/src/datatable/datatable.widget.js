@@ -3860,7 +3860,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
             if (!inputs.length) {
                 inputs = inputContainer.find(':input:enabled:not([type="hidden"])');
             }
-            multi = inputs.length > 1;
+            var multi = inputs.length > 1;
 
             cell.addClass('ui-state-highlight ui-cell-editing');
             displayContainer.hide();

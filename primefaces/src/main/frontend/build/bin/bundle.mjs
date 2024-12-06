@@ -216,7 +216,9 @@ async function writeCombinedMetaFile(metaFile) {
  * This is needed to make ESBuild use Babel's interpretation for default exports
  * from CommonJS modules, i.e. so that it treats exports as ESM when marked
  * with the special `__esModule` flag. This will hopefully stop being necessary
- * in the future when all dependencies are ESM. 
+ * in the future when all dependencies are ESM (or are true CommonJS). For now,
+ * this seems to affect only `@fullcalendar`, and the new version 6 of
+ * FullCalendar is ESM already (we are still using version 5).
  * 
  * See also 
  * - https://esbuild.github.io/content-types/#default-interop
