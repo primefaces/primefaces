@@ -1,0 +1,147 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style>
+            body .card.ui-state-drag {
+                background-color: #ffffd6;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        FileUpload <span class="subitem">Simple</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Simple uploader uses native browser file upload.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/fileupload"/>
+    <ui:param name="widgetLink" value="FileUpload-1"/>
+
+    <ui:define name="implementation">
+
+        <p:growl id="growl" showDetail="true" keepAlive="true"/>
+
+        <div class="card">
+            <h5>Unskinned</h5>
+
+            <p>Per default, simple FileUpload just renders the native HTML markup.</p>
+
+            <h:form id="unskinned" enctype="multipart/form-data">
+                <p:fileUpload id="upload" value="#{fileUploadView.file}" mode="simple" />
+
+                <p:commandButton id="submit" value="Submit" ajax="false" action="#{fileUploadView.upload}" styleClass="mt-3 ui-button-outlined block"/>
+            </h:form>
+        </div>
+
+        <div class="card">
+            <h5>Single</h5>
+
+            <p>Single mode allows only one file to be selected at a time from the native file dialog.</p>
+
+            <h:form id="single" enctype="multipart/form-data">
+                <p:fileUpload id="upload" value="#{fileUploadView.file}" mode="simple" skinSimple="true"/>
+
+                <p:commandButton id="submit" value="Submit" ajax="false" action="#{fileUploadView.upload}" styleClass="mt-3 ui-button-outlined block"/>
+            </h:form>
+        </div>
+
+        <div class="card">
+            <h5>Multiple</h5>
+
+            <p>Multiple mode allows multiple files to be selected from the native file dialog, if supported by the browser.</p>
+
+            <h:form id="multiple" enctype="multipart/form-data">
+                <p:fileUpload id="upload" value="#{fileUploadView.files}" mode="simple" skinSimple="true" multiple="true"/>
+                <p:commandButton id="submit" value="Submit" ajax="false" action="#{fileUploadView.uploadMultiple}" styleClass="mt-3 ui-button-outlined block"/>
+            </h:form>
+        </div>
+
+        <div class="card">
+            <h5>Single &amp; Validation</h5>
+
+            <p>FileUpload integrates p:validateFile for validation. Even Client-Side-Validation is supported.</p>
+
+            <h:form id="singleValidation" enctype="multipart/form-data">
+                <p:fileUpload id="upload" value="#{fileUploadView.file}" mode="simple" skinSimple="true">
+                    <p:validateFile allowTypes="/(\.|\/)(pdf)$/" />
+                </p:fileUpload>
+
+                <p:commandButton id="submit" value="Submit" action="#{fileUploadView.upload}" styleClass="mt-3 ui-button-outlined block"
+                                 validateClient="false" process="@form" update=":growl"/>
+
+                <p:commandButton id="submitCSV" value="Submit (+ validateClient)" action="#{fileUploadView.upload}" styleClass="mt-3 ui-button-outlined block"
+                                 validateClient="true" process="@form" update=":growl"/>
+            </h:form>
+        </div>
+
+
+        <div class="card">
+            <h5>Auto &amp; Single</h5>
+
+            <p>Auto-Mode uploads the file immediately via AJAX.</p>
+
+            <h:form id="autoSingle">
+                <p:fileUpload id="upload" value="#{fileUploadView.file}"
+                              mode="simple" skinSimple="true" auto="true"
+                              process="@this" update=":growl"
+                              listener="#{fileUploadView.handleFileUpload}" />
+            </h:form>
+        </div>
+
+        <div class="card">
+            <h5>Auto &amp; Single &amp; allowTyes validation</h5>
+
+            <p>Use Case to demonstrate the integrity for multiple features.</p>
+
+            <h:form id="autoSingleValidation">
+                <p:fileUpload id="upload" value="#{fileUploadView.file}"
+                              mode="simple" skinSimple="true" auto="true"
+                              process="@this" update=":growl"
+                              listener="#{fileUploadView.handleFileUpload}">
+                    <p:validateFile allowTypes="/(\.|\/)(pdf)$/" sizeLimit="100" />
+                </p:fileUpload>
+            </h:form>
+        </div>
+
+        <div class="card">
+            <h5>Auto &amp; Multiple</h5>
+
+            <p>Use Case to demonstrate the integrity for multiple features.</p>
+
+            <h:form id="autoMultiple">
+                <p:fileUpload id="upload" value="#{fileUploadView.files}"
+                              mode="simple" skinSimple="true" multiple="true" auto="true"
+                              process="@this" update=":growl"
+                              listener="#{fileUploadView.handleFilesUpload}"/>
+            </h:form>
+        </div>
+
+        <div class="card" jsf:id="dropzone">
+            <h5>Custom Drag&amp;Drop</h5>
+
+            <p>Per default, the FileUpload itself is the drop zone. In addition FileUpload supports a custom dropZone.</p>
+
+            <h:form>
+                <p:growl id="growl" showDetail="true"/>
+
+                <p:fileUpload listener="#{fileUploadView.handleFileUpload}"
+                              mode="simple"
+                              dropZone="@form:@parent"
+                              skinSimple="true"
+                              auto="true"
+                              update="@form">
+                    <p:validateFile allowTypes="/(\.|\/)(gif|jpeg|jpg|png)$/" sizeLimit="100000" />
+                </p:fileUpload>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

@@ -246,9 +246,6 @@ PrimeFaces.widget.BlockUI = class BlockUI extends PrimeFaces.widget.BaseWidget {
             if (this.cfg.styleClass) {
                 currentBlocker.addClass(this.cfg.styleClass);
             }
-            if (currentTarget.hasClass('ui-corner-all')) {
-                currentBlocker.addClass('ui-corner-all');
-            }
 
             // when more than 1 target need to clone the content for each target
             if (shouldClone) {

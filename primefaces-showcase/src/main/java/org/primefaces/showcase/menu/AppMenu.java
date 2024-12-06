@@ -521,14 +521,8 @@ public class AppMenu {
 
         //Upload Nested MenuItem
         List<MenuItem> uploadMenuItems = new ArrayList<>();
-        uploadMenuItems.add(new MenuItem("Basic", "/ui/file/upload/basic"));
-        uploadMenuItems.add(new MenuItem("Basic Auto", "/ui/file/upload/basicAuto"));
-        uploadMenuItems.add(new MenuItem("Single", "/ui/file/upload/single"));
-        uploadMenuItems.add(new MenuItem("Multiple", "/ui/file/upload/multiple"));
-        uploadMenuItems.add(new MenuItem("Auto", "/ui/file/upload/auto"));
-        uploadMenuItems.add(new MenuItem("DragDrop", "/ui/file/upload/dnd"));
-        uploadMenuItems.add(new MenuItem("Chunked", "/ui/file/upload/chunked"));
-        uploadMenuItems.add(new MenuItem("Tooltips", "/ui/file/upload/tooltips"));
+        uploadMenuItems.add(new MenuItem("Simple", "/ui/file/upload/simple"));
+        uploadMenuItems.add(new MenuItem("Advanced", "/ui/file/upload/advanced"));
         fileMenuItems.add(new MenuItem("File Upload", uploadMenuItems));
 
         fileMenuItems.add(new MenuItem("File Download", "/ui/file/download"));

@@ -25,6 +25,7 @@ package org.primefaces.renderkit;
 
 import org.primefaces.clientwindow.PrimeClientWindow;
 import org.primefaces.clientwindow.PrimeClientWindowUtils;
+import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.util.FacetUtils;
@@ -47,6 +48,7 @@ import javax.faces.FacesException;
 import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.lifecycle.ClientWindow;
@@ -84,6 +86,7 @@ public class HeadRenderer extends Renderer {
         ResponseWriter writer = context.getResponseWriter();
         PrimeRequestContext requestContext = PrimeRequestContext.getCurrentInstance(context);
         PrimeApplicationContext applicationContext = requestContext.getApplicationContext();
+        PrimeConfiguration configuration = applicationContext.getConfig();
 
         writer.startElement("head", component);
         writer.writeAttribute("id", component.getClientId(context), "id");
@@ -128,28 +131,11 @@ public class HeadRenderer extends Renderer {
             middle.encodeAll(context);
         }
 
-        if (applicationContext.getConfig().isClientSideValidationEnabled()) {
-            // moment is needed for Date validation
-            encodeJS(context, LIBRARY, "moment/moment.js");
+        // normal CSV is a required dependency for some special components like fileupload
+        encodeValidationResources(context, configuration);
 
-            // BV CSV is optional and must be enabled by config
-            if (applicationContext.getConfig().isBeanValidationEnabled()) {
-                encodeJS(context, LIBRARY, "validation/validation.bv.js");
-            }
-        }
-
-        if (applicationContext.getConfig().isClientSideLocalizationEnabled()) {
-            try {
-                Locale locale = LocaleUtils.getCurrentLocale(context);
-                encodeJS(context, LIBRARY, "locales/locale-" + locale.getLanguage() + ".js");
-            }
-            catch (FacesException e) {
-                if (context.isProjectStage(ProjectStage.Development)) {
-                    LOGGER.log(Level.WARNING,
-                            "Failed to load client side locale.js. {0}", e.getMessage());
-                }
-            }
-        }
+        // encode client side locale
+        encodeLocaleResources(context, configuration);
 
         //Registered Resources
         UIViewRoot viewRoot = context.getViewRoot();
@@ -162,10 +148,10 @@ public class HeadRenderer extends Renderer {
             resource.encodeAll(context);
         }
 
-        encodeSettingScripts(context, applicationContext, requestContext, writer);
+        encodeSettingScripts(context, requestContext, configuration, writer);
 
         // encode initialization scripts
-        encodeInitScripts(context, writer);
+        encodeInitScripts(context, requestContext, configuration, writer);
     }
 
     @Override
@@ -189,41 +175,72 @@ public class HeadRenderer extends Renderer {
         ResourceUtils.addJavascriptResource(context, library, script);
     }
 
-    protected void encodeSettingScripts(FacesContext context, PrimeApplicationContext applicationContext, PrimeRequestContext requestContext,
-            ResponseWriter writer) throws IOException {
+    protected void encodeValidationResources(FacesContext context, PrimeConfiguration configuration) {
+        if (configuration.isClientSideValidationEnabled()) {
+            // moment is needed for Date validation
+            ResourceUtils.addJavascriptResource(context, "moment/moment.js");
+
+            // BV CSV is optional and must be enabled by config
+            if (configuration.isBeanValidationEnabled()) {
+                ResourceUtils.addJavascriptResource(context, "validation/validation.bv.js");
+            }
+        }
+    }
+
+    protected void encodeLocaleResources(FacesContext context, PrimeConfiguration configuration) {
+        if (!configuration.isClientSideLocalizationEnabled()) {
+            return;
+        }
+
+        try {
+            final Locale locale = LocaleUtils.getCurrentLocale(context);
+            ResourceUtils.addJavascriptResource(context, "locales/locale-" + locale.getLanguage() + ".js");
+        }
+        catch (FacesException e) {
+            if (context.isProjectStage(ProjectStage.Development)) {
+                LOGGER.log(Level.WARNING, "Failed to load client side locale.js. {0}", e.getMessage());
+            }
+        }
+    }
+
+    protected void encodeSettingScripts(FacesContext context, PrimeRequestContext requestContext,
+                                       PrimeConfiguration configuration, ResponseWriter writer) throws IOException {
 
         ProjectStage projectStage = context.getApplication().getProjectStage();
+        ExternalContext externalContext = context.getExternalContext();
 
         writer.startElement("script", null);
         RendererUtils.encodeScriptTypeIfNecessary(context);
         writer.write("if(window.PrimeFaces){");
 
-        writer.write("PrimeFaces.settings.locale='" + LocaleUtils.getCurrentLocale(context) + "';");
-        writer.write("PrimeFaces.settings.viewId='" + context.getViewRoot().getViewId() + "';");
-        writer.write("PrimeFaces.settings.contextPath='" + context.getExternalContext().getRequestContextPath() + "';");
+        writer.write("PrimeFaces.settings={");
+        writer.write("locale:'" + LocaleUtils.getCurrentLocale(context) + "',");
+        writer.write("viewId:'" + context.getViewRoot().getViewId() + "',");
+        writer.write("contextPath:'" + externalContext.getRequestContextPath() + "',");
+        writer.write("cookiesSecure:" + (requestContext.isSecure() && configuration.isCookiesSecure()));
 
-        writer.write("PrimeFaces.settings.cookiesSecure=" + (requestContext.isSecure() && applicationContext.getConfig().isCookiesSecure()) + ";");
-        if (applicationContext.getConfig().getCookiesSameSite() != null) {
-            writer.write("PrimeFaces.settings.cookiesSameSite='" + applicationContext.getConfig().getCookiesSameSite() + "';");
+        if (configuration.getCookiesSameSite() != null) {
+            writer.write(",cookiesSameSite:'" + configuration.getCookiesSameSite() + "'");
         }
 
-        writer.write("PrimeFaces.settings.validateEmptyFields=" + applicationContext.getConfig().isValidateEmptyFields() + ";");
-        writer.write("PrimeFaces.settings.considerEmptyStringNull=" + applicationContext.getConfig().isInterpretEmptyStringAsNull() + ";");
+        writer.write(",validateEmptyFields:" + configuration.isValidateEmptyFields());
+        writer.write(",considerEmptyStringNull:" + configuration.isInterpretEmptyStringAsNull());
 
-        if (applicationContext.getConfig().isEarlyPostParamEvaluation()) {
-            writer.write("PrimeFaces.settings.earlyPostParamEvaluation=true;");
+        if (configuration.isEarlyPostParamEvaluation()) {
+            writer.write(",earlyPostParamEvaluation:true");
         }
 
-        if (applicationContext.getConfig().isPartialSubmitEnabled()) {
-            writer.write("PrimeFaces.settings.partialSubmit=true;");
+        if (configuration.isPartialSubmitEnabled()) {
+            writer.write(",partialSubmit:true");
         }
 
         if (projectStage != ProjectStage.Production) {
-            writer.write("PrimeFaces.settings.projectStage='" + projectStage.toString() + "';");
+            writer.write(",projectStage:'" + projectStage.toString() + "'");
         }
+        writer.write("};");
 
-        if (context.getExternalContext().getClientWindow() != null) {
-            ClientWindow clientWindow = context.getExternalContext().getClientWindow();
+        if (externalContext.getClientWindow() != null) {
+            ClientWindow clientWindow = externalContext.getClientWindow();
             if (clientWindow instanceof PrimeClientWindow) {
 
                 boolean initialRedirect = false;
@@ -235,7 +252,7 @@ public class HeadRenderer extends Renderer {
 
                     // expire/remove cookie
                     servletCookie.setMaxAge(0);
-                    ((HttpServletResponse) context.getExternalContext().getResponse()).addCookie(servletCookie);
+                    ((HttpServletResponse) externalContext.getResponse()).addCookie(servletCookie);
                 }
                 writer.write(
                         String.format("PrimeFaces.clientwindow.init('%s', %s);",
@@ -248,36 +265,32 @@ public class HeadRenderer extends Renderer {
         writer.endElement("script");
     }
 
-    protected void encodeInitScripts(FacesContext context, ResponseWriter writer) throws IOException {
-        List<String> scripts = PrimeRequestContext.getCurrentInstance().getInitScriptsToExecute();
+    protected void encodeInitScripts(FacesContext context, PrimeRequestContext requestContext, PrimeConfiguration configuration,
+                                    ResponseWriter writer) throws IOException {
+        List<String> scripts = requestContext.getInitScriptsToExecute();
 
-        if (!scripts.isEmpty()) {
-            writer.startElement("script", null);
-            RendererUtils.encodeScriptTypeIfNecessary(context);
-
-            boolean moveScriptsToBottom = PrimeRequestContext.getCurrentInstance().getApplicationContext().getConfig().isMoveScriptsToBottom();
-
-            if (!moveScriptsToBottom) {
-                writer.write("(function(){const pfInit=() => {");
-
-                for (int i = 0; i < scripts.size(); i++) {
-                    writer.write(scripts.get(i));
-                    writer.write(';');
-                }
-
-                writer.write("};if(window.$){$(function(){pfInit()})}");
-                writer.write("else if(document.readyState==='complete'){pfInit()}");
-                writer.write("else{document.addEventListener('DOMContentLoaded', pfInit)}})();");
-            }
-            else {
-                for (int i = 0; i < scripts.size(); i++) {
-                    writer.write(scripts.get(i));
-                    writer.write(';');
-                }
-            }
-
-            writer.endElement("script");
+        if (scripts.isEmpty()) {
+            return;
         }
+
+        writer.startElement("script", null);
+        RendererUtils.encodeScriptTypeIfNecessary(context);
+
+        boolean moveScriptsToBottom = configuration.isMoveScriptsToBottom();
+
+        if (!moveScriptsToBottom) {
+            writer.write("(function(){const pfInit=()=>{");
+            writer.write(String.join(";", scripts));
+            writer.write("};if(window.$)$(pfInit);");
+            writer.write("else if(document.readyState==='complete')pfInit();");
+            writer.write("else document.addEventListener('DOMContentLoaded',pfInit)})();");
+        }
+        else {
+            writer.write(String.join(";", scripts));
+            writer.write(';');
+        }
+
+        writer.endElement("script");
     }
 
     /**

@@ -40,7 +40,7 @@ public class SelectOneButton extends SelectOneButtonBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SelectOneButton";
 
-    public static final String STYLE_CLASS = "ui-selectonebutton ui-buttonset ui-widget ui-corner-all";
+    public static final String STYLE_CLASS = "ui-selectonebutton ui-buttonset ui-widget";
 
     private static final String DEFAULT_EVENT = "change";
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()

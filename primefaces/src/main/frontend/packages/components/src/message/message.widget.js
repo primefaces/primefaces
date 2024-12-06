@@ -45,7 +45,7 @@ PrimeFaces.widget.Message = class Message extends PrimeFaces.widget.BaseWidget {
         var display = this.jq.data('display');
 
         if (display !== 'tooltip') {
-            this.jq.addClass('ui-message-error ui-widget ui-corner-all ui-helper-clearfix');
+            this.jq.addClass('ui-message-error ui-widget ui-helper-clearfix');
 
             if (display === 'both') {
                 this.jq.append('<div><span class="ui-message-error-icon"></span><span class="ui-message-error-detail">' + PrimeFaces.escapeHTML(msg.detail) + '</span></div>');
@@ -69,6 +69,6 @@ PrimeFaces.widget.Message = class Message extends PrimeFaces.widget.BaseWidget {
      */
     clearMessage() {
         this.jq.html('');
-        this.jq.removeClass('ui-message-error ui-message-icon-only ui-widget ui-corner-all ui-helper-clearfix');
+        this.jq.removeClass('ui-message-error ui-message-icon-only ui-widget ui-helper-clearfix');
     }
 }

@@ -110,6 +110,7 @@ $.widget("prime.datePicker", {
         maxDateCount: null,
         showMinMaxRange: true,
         showOtherMonths: false,
+        showLongMonthNames: false,
         selectOtherMonths: false,
         autoMonthFormat: true,
         showButtonBar: false,
@@ -1241,7 +1242,7 @@ $.widget("prime.datePicker", {
     renderTriggerButton: function() {
         var panelId = this.container.attr('id') + '_panel';
         var aria = ' aria-haspopup="dialog" aria-expanded="false" aria-controls="' + panelId + '" ';
-        this.triggerButton = $('<button type="button" ' + aria + ' class="ui-datepicker-trigger ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only' + (this.options.disabled ? ' ui-state-disabled' : '') + '" tabindex="0">' +
+        this.triggerButton = $('<button type="button" ' + aria + ' class="ui-datepicker-trigger ui-button ui-widget ui-state-default ui-button-icon-only' + (this.options.disabled ? ' ui-state-disabled' : '') + '" tabindex="0">' +
             '<span class="ui-button-icon-left ' + this.options.icon + '"></span>' +
             '<span class="ui-button-text">ui-button</span>' +
             '</button>');
@@ -1263,7 +1264,7 @@ $.widget("prime.datePicker", {
 
         var panelId = this.container.attr('id') + '_panel';
         var _aria = ' role="dialog" aria-modal="true" aria-label="' + this.options.locale.chooseDate + '" ';
-        this.panel = $('<div id="' + panelId + '"' + _aria + ' class="ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all ' + _classes + '"></div>');
+        this.panel = $('<div id="' + panelId + '"' + _aria + ' class="ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ' + _classes + '"></div>');
 
         //render inner elements
         this.panel.get(0).innerHTML = this.renderPanelElements();
@@ -1321,7 +1322,7 @@ $.widget("prime.datePicker", {
             yearElement = this.renderTitleYearElement(this.viewDate.getFullYear()),
             months = this.renderMonthViewMonths();
 
-        return ('<div class="ui-datepicker-header ui-widget-header ui-helper-clearfix ui-corner-all">' +
+        return ('<div class="ui-datepicker-header ui-widget-header ui-helper-clearfix">' +
             backwardNavigator +
             forwardNavigator +
             '<div class="ui-datepicker-title">' +
@@ -1335,7 +1336,7 @@ $.widget("prime.datePicker", {
     },
 
     renderTimePicker: function() {
-        var timepicker = '<div class="ui-timepicker ui-widget-header ui-corner-all' + (this.options.timeInput ? ' ui-timepicker-timeinput' : '') + '">';
+        var timepicker = '<div class="ui-timepicker ui-widget-header' + (this.options.timeInput ? ' ui-timepicker-timeinput' : '') + '">';
 
         //hour
         timepicker += this.renderHourPicker();
@@ -1368,10 +1369,10 @@ $.widget("prime.datePicker", {
         var now = this.getNow();
         var minDate = this.options.minDate;
         var maxDate = this.options.maxDate;
-        var todayStyleClass = 'ui-today-button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only ' + this.options.todayButtonStyleClass;
+        var todayStyleClass = 'ui-today-button ui-button ui-widget ui-state-default ui-button-text-only ' + this.options.todayButtonStyleClass;
 
         if (this.options.showTime){
-            todayLabel = this.options.locale.now;
+           todayLabel = this.options.locale.now;
         }
         else {
             // only use date at 00:00 for comparison
@@ -1386,14 +1387,14 @@ $.widget("prime.datePicker", {
             '<button type="button" class="' + todayStyleClass + '"><span class="ui-button-text">' + todayLabel + '</span></button>' +
             '</div>' +
             '<div class="' + clear + '">' +
-            '<button type="button" class="ui-clear-button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only ' + this.options.clearButtonStyleClass + '"><span class="ui-button-text">' + this.options.locale.clear + '</span></button>' +
+            '<button type="button" class="ui-clear-button ui-button ui-widget ui-state-default ui-button-text-only ' + this.options.clearButtonStyleClass + '"><span class="ui-button-text">' + this.options.locale.clear + '</span></button>' +
             '</div>' +
             '</div>' +
             '</div>';
     },
 
     renderMonthViewMonth: function(index) {
-        var monthName = this.options.locale.monthNamesShort[index],
+        var monthName = this.options.showLongMonthNames ? this.options.locale.monthNames[index] : this.options.locale.monthNamesShort[index],
             content = this.options.dateTemplate ? this.options.dateTemplate.call(this, monthName) : this.escapeHTML(monthName),
             compareDate = new Date(this.viewDate.getFullYear(), index, 1),
             minDate = this.options.minDate,
@@ -1444,7 +1445,7 @@ $.widget("prime.datePicker", {
             dateViewGrid = this.renderDateViewGrid(monthMetadata, weekDaysMin, weekDays);
 
         return ('<div class="ui-datepicker-group ui-widget-content">' +
-            '<div class="ui-datepicker-header ui-widget-header ui-helper-clearfix ui-corner-all">' +
+            '<div class="ui-datepicker-header ui-widget-header ui-helper-clearfix">' +
             backwardNavigator +
             forwardNavigator +
             title +
@@ -1454,20 +1455,21 @@ $.widget("prime.datePicker", {
     },
 
     renderBackwardNavigator: function(ariaLabel) {
-        return '<button type="button" aria-label="' + ariaLabel + '" class="ui-datepicker-prev ui-corner-all" tabindex="0">' +
+        return '<button type="button" aria-label="' + ariaLabel + '" class="ui-datepicker-prev" tabindex="0">' +
             '<span class="ui-icon ui-icon-circle-triangle-w"></span>' +
             '</button>';
     },
 
     renderForwardNavigator: function(ariaLabel) {
-        return '<button type="button" aria-label="' + ariaLabel + '" class="ui-datepicker-next ui-corner-all" tabindex="0">' +
+        return '<button type="button" aria-label="' + ariaLabel + '" class="ui-datepicker-next" tabindex="0">' +
             '<span class="ui-icon ui-icon-circle-triangle-e"></span>' +
             '</button>';
     },
 
     renderTitleMonthElement: function(month, index) {
         if (this.options.monthNavigator && this.options.view !== 'month' && index === 0) {
-            return '<select class="ui-datepicker-month" tabindex="0" aria-label="' + this.options.locale.month + '">' + this.renderTitleOptions('month', this.options.locale.monthNamesShort, month) + '</select>';
+            const monthNames = this.options.showLongMonthNames ? this.options.locale.monthNames : this.options.locale.monthNamesShort;
+            return '<select class="ui-datepicker-month" tabindex="0" aria-label="' + this.options.locale.month + '">' + this.renderTitleOptions('month', monthNames, month) + '</select>';
         }
         else {
             return '<span class="ui-datepicker-month">' + this.escapeHTML(this.options.locale.monthNames[month]) + '</span>';
@@ -2322,6 +2324,8 @@ $.widget("prime.datePicker", {
 
     onPanelKeyDown: function(event) {
         if (event.key === 'Escape') {
+            event.preventDefault();
+            event.stopPropagation();
             this.onEscapeKey(event);
         }
     },
@@ -2544,7 +2548,7 @@ $.widget("prime.datePicker", {
             }
         }
         
-            // next (check last day of month at 11:59:59)
+         // next (check last day of month at 11:59:59)
         if (this.options.maxDate) {
             let lastDayOfMonth = new Date(newViewDate.getTime());
 

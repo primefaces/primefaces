@@ -55,7 +55,7 @@ public class StaticMessageRenderer extends UINotificationRenderer {
         severity = severity == null ? "info" : severity.toLowerCase();
 
         String styleClass = getStyleClassBuilder(context)
-                .add("ui-message ui-staticmessage ui-message-" + severity + " ui-widget ui-corner-all")
+                .add("ui-message ui-staticmessage ui-message-" + severity + " ui-widget")
                 .add(iconOnly, "ui-message-icon-only ui-helper-clearfix")
                 .add(staticMessage.getStyleClass())
                 .build();

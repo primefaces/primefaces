@@ -74,7 +74,7 @@ PrimeFaces.widget.Schedule = class Schedule extends PrimeFaces.widget.DeferredWi
         this.configureLocale();
 
         if(this.cfg.tooltip) {
-            this.tip = $('<div class="ui-tooltip ui-widget ui-widget-content ui-shadow ui-corner-all"></div>').appendTo(document.body);
+            this.tip = $('<div class="ui-tooltip ui-widget ui-widget-content ui-shadow"></div>').appendTo(document.body);
             this.addDestroyListener(function(){this.tip.remove();});
             this.addRefreshListener(function(){this.tip.remove();});
         }

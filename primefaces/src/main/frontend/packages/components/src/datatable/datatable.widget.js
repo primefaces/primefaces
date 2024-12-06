@@ -2490,7 +2490,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
                                 .attr('aria-label', $this.getSortMessage(ariaLabel, $this.descMessage));
                         } else {
                             sortIcon.removeClass('ui-icon-triangle-1-s').addClass('ui-icon-carat-2-n-s');
-                            columnHeader.removeClass('ui-state-active ').attr('aria-sort', 'other')
+                            columnHeader.removeClass('ui-state-active').attr('aria-sort', 'other')
                                 .attr('aria-label', $this.getSortMessage(ariaLabel, $this.ascMessage));
                             $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).attr('aria-sort', 'other')
                                 .attr('aria-label', $this.getSortMessage(ariaLabel, $this.ascMessage));
@@ -3855,7 +3855,11 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
             displayContainer = cellEditor.children('div.ui-cell-editor-output'),
             inputContainer = cellEditor.children('div.ui-cell-editor-input');
             this.enableCellEditors(inputContainer);
-            var inputs = inputContainer.find(':input:enabled[type!=hidden]'),
+            // Look for selectonemenu inputs first since they have special DOM structure, otherwise find any enabled visible inputs
+            var inputs = inputContainer.find('.ui-selectonemenu .ui-inputfield');
+            if (!inputs.length) {
+                inputs = inputContainer.find(':input:enabled:not([type="hidden"])');
+            }
             multi = inputs.length > 1;
 
             cell.addClass('ui-state-highlight ui-cell-editing');
@@ -3908,9 +3912,17 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
                         }
                         else if(key === 'Tab') {
                             if(multi) {
+                                // Calculate next/prev input index based on shift key
                                 var focusIndex = shiftKey ? input.index() - 1 : input.index() + 1;
 
-                                if(focusIndex < 0 || (focusIndex === inputs.length) || input.parent().hasClass('ui-inputnumber') || input.parent().hasClass('ui-helper-hidden-accessible')) {
+                                var parent = input.parent();
+                                // Move to next/prev cell if:
+                                // - Index out of bounds
+                                // - Parent is special input component that handles its own tab behavior
+                                if(focusIndex < 0 || focusIndex === inputs.length || 
+                                   parent.hasClass('ui-inputnumber') ||
+                                   parent.hasClass('ui-selectonemenu') ||
+                                   parent.hasClass('ui-helper-hidden-accessible')) {
                                     $this.tabCell(cell, !shiftKey);
                                 } else {
                                     inputs.eq(focusIndex).trigger('focus');

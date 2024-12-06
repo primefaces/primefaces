@@ -408,7 +408,7 @@ PrimeFaces.widget.Paginator = class Paginator extends PrimeFaces.widget.BaseWidg
         //update dom
         this.pagesContainer.children().remove();
         for(var i = start; i <= end; i++) {
-            var styleClass = 'ui-paginator-page ui-state-default ui-corner-all',
+            var styleClass = 'ui-paginator-page ui-state-default',
             ariaLabel = this.ariaPageLabel.replace('{page}', (i+1)),
             ariaCurrentPage = '';
 

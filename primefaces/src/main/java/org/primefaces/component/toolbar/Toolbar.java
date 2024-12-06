@@ -30,5 +30,5 @@ public class Toolbar extends ToolbarBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Toolbar";
 
-    public static final String CONTAINER_CLASS = "ui-toolbar ui-widget ui-widget-header ui-corner-all";
+    public static final String CONTAINER_CLASS = "ui-toolbar ui-widget ui-widget-header";
 }

@@ -45,7 +45,7 @@ public class ColorPicker extends ColorPickerBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.ColorPicker";
 
-    public static final String POPUP_STYLE_CLASS = "ui-colorpicker ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
+    public static final String POPUP_STYLE_CLASS = "ui-colorpicker ui-inputfield ui-inputtext ui-widget ui-state-default";
     public static final String INLINE_STYLE_CLASS = "ui-colorpicker ui-widget ui-state-default";
 
     private static final String DEFAULT_EVENT = "change";

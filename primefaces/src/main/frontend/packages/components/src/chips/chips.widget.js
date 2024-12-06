@@ -158,7 +158,7 @@ PrimeFaces.widget.Chips = class Chips extends PrimeFaces.widget.BaseWidget {
                     }
                 }
 
-                var itemDisplayMarkup = '<li class="ui-chips-token ui-state-active ui-corner-all">';
+                var itemDisplayMarkup = '<li class="ui-chips-token ui-state-active">';
                 itemDisplayMarkup += '<span class="ui-chips-token-icon ui-icon ui-icon-close"></span>';
                 itemDisplayMarkup += '<span class="ui-chips-token-label">' + escapedValue + '</span></li>';
 

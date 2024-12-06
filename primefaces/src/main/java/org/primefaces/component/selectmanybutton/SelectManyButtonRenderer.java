@@ -121,16 +121,6 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
         }
 
         String buttonStyle = HTML.BUTTON_TEXT_ONLY_BUTTON_FLAT_CLASS;
-        if (size == 0) {
-            buttonStyle = buttonStyle + " ui-corner-all";
-        }
-        else if (idx == 0) {
-            buttonStyle = buttonStyle + " ui-corner-left";
-        }
-        else if (idx == (size - 1)) {
-            buttonStyle = buttonStyle + " ui-corner-right";
-        }
-
         buttonStyle = selected ? buttonStyle + " ui-state-active" : buttonStyle;
         buttonStyle = disabled ? buttonStyle + " ui-state-disabled" : buttonStyle;
 

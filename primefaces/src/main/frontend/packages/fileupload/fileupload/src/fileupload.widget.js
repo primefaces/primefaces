@@ -54,7 +54,8 @@
  * @prop {number} fileAddIndex Current index where to add files.
  * @prop {string} fileId ID of the current file.
  * @prop {File[]} files List of currently selected files.
- * @prop {JQuery} filesTbody The DOM element for the table tbody with the files.
+ * @prop {JQuery} emptyFacet The facet to be shown, when the current amount of files is empty.
+ * @prop {JQuery} filesFacet The DOM element for the table tbody with the files.
  * @prop {JQuery} form The DOM element for the form containing this upload widget.
  * @prop {JQuery} messageContainer The DOM element of the container with the file upload messages which inform the user
  * about whether a file was uploaded.
@@ -129,7 +130,8 @@ PrimeFaces.widget.FileUpload = class FileUpload extends PrimeFaces.widget.BaseWi
         this.uploadButton = this.buttonBar.children('.ui-fileupload-upload');
         this.cancelButton = this.buttonBar.children('.ui-fileupload-cancel');
         this.content = this.jq.children('.ui-fileupload-content');
-        this.filesTbody = this.content.find('> div.ui-fileupload-files > div');
+        this.emptyFacet = this.content.find('> .ui-fileupload-empty');
+        this.filesFacet = this.content.find('> div.ui-fileupload-files > div');
         this.files = [];
         this.fileAddIndex = 0;
         this.cfg.previewWidth = this.cfg.previewWidth || 80;
@@ -430,16 +432,21 @@ PrimeFaces.widget.FileUpload = class FileUpload extends PrimeFaces.widget.BaseWi
      * @param {JQueryFileUpload.AddCallbackData} data The data from the selected file.
      */
     addFileToRow(file, data) {
+        if (this.emptyFacet.length > 0) {
+            this.emptyFacet.hide();
+            this.filesFacet.parent().show();
+        }
+
         var $this = this,
             row = $('<div class="ui-fileupload-row"></div>')
                 .append('<div class="ui-fileupload-preview"></td>')
                 .append('<div class="ui-fileupload-filename">' + PrimeFaces.escapeHTML(file.name) + '</div>')
                 .append('<div>' + PrimeFaces.utils.formatBytes(file.size) + '</div>')
                 .append('<div class="ui-fileupload-progress"></div>')
-                .append('<div><button class="ui-fileupload-cancel ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"><span class="ui-button-icon-left ui-icon ui-icon ui-icon-close"></span><span class="ui-button-text">ui-button</span></button></div>')
-                .appendTo(this.filesTbody);
+                .append('<div><button class="ui-fileupload-cancel ui-button ui-widget ui-state-default ui-button-icon-only"><span class="ui-button-icon-left ui-icon ui-icon ui-icon-close"></span><span class="ui-button-text">ui-button</span></button></div>')
+                .appendTo(this.filesFacet);
 
-        if(this.filesTbody.children('.ui-fileupload-row').length > 1) {
+        if(this.filesFacet.children('.ui-fileupload-row').length > 1) {
             $('<div class="ui-widget-content"></div>').prependTo(row);
         }
 
@@ -474,7 +481,7 @@ PrimeFaces.widget.FileUpload = class FileUpload extends PrimeFaces.widget.BaseWi
 
         //progress
         row.children('div.ui-fileupload-progress')
-                .append('<div class="ui-progressbar ui-widget ui-widget-content ui-corner-all" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="ui-progressbar-value ui-widget-header ui-corner-left" style="display: none; width: 0%;"></div></div>');
+                .append('<div class="ui-progressbar ui-widget ui-widget-content" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="ui-progressbar-value ui-widget-header" style="display: none; width: 0%;"></div></div>');
 
         file.row = row;
         file.row.data('fileId', this.fileId++);
@@ -635,6 +642,11 @@ PrimeFaces.widget.FileUpload = class FileUpload extends PrimeFaces.widget.BaseWi
                         if ($this.files.length === 0) {
                             $this.disableButton($this.uploadButton);
                             $this.disableButton($this.cancelButton);
+
+                            if ($this.emptyFacet.length > 0) {
+                                $this.emptyFacet.show();
+                                $this.filesFacet.parent().hide();
+                            }
                         }
                     }
 
@@ -782,7 +794,7 @@ PrimeFaces.widget.FileUpload = class FileUpload extends PrimeFaces.widget.BaseWi
      * @private
      */
     renderMessages() {
-        var markup = '<div class="ui-messages ui-widget ui-helper-hidden ui-fileupload-messages"><div class="ui-messages-error ui-corner-all">' +
+        var markup = '<div class="ui-messages ui-widget ui-helper-hidden ui-fileupload-messages"><div class="ui-messages-error">' +
                 '<a class="ui-messages-close" href="#"><span class="ui-icon ui-icon-close"></span></a>' +
                 '<span class="ui-messages-error-icon"></span>' +
                 '<ul></ul>' +

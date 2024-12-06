@@ -32,7 +32,7 @@ PrimeFaces.widget.Messages = class Messages extends PrimeFaces.widget.BaseWidget
         var severityContainer =  this.jq.children('div.ui-messages-' + msg.severity);
         if (severityContainer.length === 0) {
             severityContainer = this.jq.append(
-                 '<div class="ui-messages-' + msg.severity + ' ui-corner-all">' +
+                 '<div class="ui-messages-' + msg.severity + '">' +
                     '<a href="#" class="ui-messages-close" onclick="$(this).parent().slideUp();return false;" role="button" aria-label="'+closeLabel+'">' +
                         '<span class="ui-icon ui-icon-close"></span>' +
                     '</a>' +

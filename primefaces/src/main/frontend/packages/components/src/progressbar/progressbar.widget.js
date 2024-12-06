@@ -34,7 +34,7 @@ PrimeFaces.widget.ProgressBar = class ProgressBar extends PrimeFaces.widget.Base
         super.init(cfg);
 
         this.jqValue = this.jq.children('.ui-progressbar-value');
-        this.jqLabel = this.jq.children('.ui-progressbar-label');
+        this.jqLabel = this.jqValue.children('.ui-progressbar-label');
         this.value = this.cfg.initialValue;
         this.cfg.global = this.cfg.global !== false;
 
@@ -46,9 +46,9 @@ PrimeFaces.widget.ProgressBar = class ProgressBar extends PrimeFaces.widget.Base
      * @param {number} value New value for this progress bar, between `0` and `100`.
      */
     setValue(value) {
-        if(value >= 0 && value<=100) {
-            if(value == 0) {
-                this.jqValue.hide().css('width', '0%').removeClass('ui-corner-right');
+        if (value >= 0 && value <= 100) {
+            if (value == 0) {
+                this.jqValue.hide().css('width', '0%');
 
                 this.jqLabel.hide();
             }
@@ -57,7 +57,7 @@ PrimeFaces.widget.ProgressBar = class ProgressBar extends PrimeFaces.widget.Base
                     'width': value + '%'
                 }, this.cfg.animationDuration, 'easeInOutCirc');
 
-                if(this.cfg.labelTemplate) {
+                if (this.cfg.labelTemplate) {
                     var formattedLabel = this.cfg.labelTemplate.replace(/{value}/gi, value);
                     this.jqLabel.text(formattedLabel).show();
                 }
@@ -82,21 +82,21 @@ PrimeFaces.widget.ProgressBar = class ProgressBar extends PrimeFaces.widget.Base
     start() {
         var $this = this;
 
-        if(this.cfg.ajax) {
+        if (this.cfg.ajax) {
 
-            this.progressPoll = setInterval(function() {
+            this.progressPoll = setInterval(function () {
                 var options = {
                     source: $this.id,
                     process: $this.id,
                     formId: $this.getParentFormId(),
                     global: $this.cfg.global,
                     async: true,
-                    oncomplete: function(xhr, status, args, data) {
+                    oncomplete: function (xhr, status, args, data) {
                         var value = args[$this.id + '_value'];
                         $this.setValue(value);
 
                         //trigger complete listener
-                        if(value === 100) {
+                        if (value === 100) {
                             $this.fireCompleteEvent();
                         }
                     }
@@ -132,9 +132,9 @@ PrimeFaces.widget.ProgressBar = class ProgressBar extends PrimeFaces.widget.Base
      */
     enableARIA() {
         this.jq.attr('role', 'progressbar')
-                .attr('aria-valuemin', 0)
-                .attr('aria-valuenow', this.value)
-                .attr('aria-valuemax', 100);
+            .attr('aria-valuemin', 0)
+            .attr('aria-valuenow', this.value)
+            .attr('aria-valuemax', 100);
     }
 
 }

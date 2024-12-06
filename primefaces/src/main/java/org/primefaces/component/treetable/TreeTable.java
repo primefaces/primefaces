@@ -79,9 +79,9 @@ public class TreeTable extends TreeTableBase {
 
     public static final String CONTAINER_CLASS = "ui-treetable ui-widget";
     public static final String RESIZABLE_CONTAINER_CLASS = "ui-treetable ui-treetable-resizable ui-widget";
-    public static final String HEADER_CLASS = "ui-treetable-header ui-widget-header ui-corner-top";
+    public static final String HEADER_CLASS = "ui-treetable-header ui-widget-header";
     public static final String DATA_CLASS = "ui-treetable-data ui-widget-content";
-    public static final String FOOTER_CLASS = "ui-treetable-footer ui-widget-header ui-corner-bottom";
+    public static final String FOOTER_CLASS = "ui-treetable-footer ui-widget-header";
     public static final String COLUMN_HEADER_CLASS = "ui-state-default";
     public static final String SORTABLE_COLUMN_HEADER_CLASS = "ui-state-default ui-sortable-column";
     public static final String ROW_CLASS = "ui-widget-content";
@@ -106,7 +106,7 @@ public class TreeTable extends TreeTableBase {
     public static final String SORTABLE_PRIORITY_CLASS = "ui-sortable-column-badge ui-helper-hidden";
     public static final String REFLOW_CLASS = "ui-treetable-reflow";
     public static final String FILTER_COLUMN_CLASS = "ui-filter-column";
-    public static final String COLUMN_INPUT_FILTER_CLASS = "ui-column-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
+    public static final String COLUMN_INPUT_FILTER_CLASS = "ui-column-filter ui-inputfield ui-inputtext ui-widget ui-state-default";
     public static final String COLUMN_CUSTOM_FILTER_CLASS = "ui-column-customfilter";
     public static final String HIDDEN_COLUMN_CLASS = "ui-helper-hidden";
     public static final String STATIC_COLUMN_CLASS = "ui-static-column";

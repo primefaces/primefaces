@@ -200,7 +200,7 @@ $.widget("prime.galleriaItem", {
     _renderBackwardNavigator: function () {
         if (this.options.showItemNavigators) {
             return (
-                '<button type="button" class="ui-galleria-item-prev ui-galleria-item-nav ui-corner-all ui-galleria-link">' +
+                '<button type="button" class="ui-galleria-item-prev ui-galleria-item-nav ui-galleria-link">' +
                     '<span class="ui-galleria-item-prev-icon ui-icon ui-icon-circle-triangle-w"></span>' +
                 '</button>'
             );
@@ -212,7 +212,7 @@ $.widget("prime.galleriaItem", {
     _renderForwardNavigator: function () {
         if (this.options.showItemNavigators) {
             return (
-                '<button type="button" class="ui-galleria-item-next ui-galleria-item-nav ui-corner-all ui-galleria-link">' +
+                '<button type="button" class="ui-galleria-item-next ui-galleria-item-nav ui-galleria-link">' +
                     '<span class="ui-galleria-item-next-icon ui-icon ui-icon-circle-triangle-e"></span>' +
                 '</button>'
             );

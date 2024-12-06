@@ -3466,6 +3466,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Displays long month names instead of short names in month picker and month navigator. Default is false.]]>
+            </description>
+            <name>showLongMonthNames</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Enables selection of days belonging to other months. Default is false.]]>
             </description>
             <name>selectOtherMonths</name>
@@ -10936,7 +10944,7 @@
             <description>
                 <![CDATA[Specifies dragdrop based file selection from filesystem, default is true and works only on supported browsers.]]>
             </description>
-            <name>dragDropSupport</name>
+            <name>dragDrop</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -23534,14 +23542,6 @@
             <name>selectedLabel</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Label to be shown in updateLabel mode when one or more items are selected. If not set the label is shown.]]>
-            </description>
-            <name>multipleLabel</name>
-            <required>false</required>
-            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>

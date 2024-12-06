@@ -102,7 +102,7 @@ PrimeFaces.widget.Growl = class Growl extends PrimeFaces.widget.BaseWidget {
      * @param {PrimeFaces.FacesMessage} msg A message to translate into an HTML element.
      */
     renderMessage(msg) {
-        var markup = '<div class="ui-growl-item-container ui-state-highlight ui-corner-all ui-helper-hidden ui-shadow ui-growl-' + msg.severity + '">';
+        var markup = '<div class="ui-growl-item-container ui-state-highlight ui-helper-hidden ui-shadow ui-growl-' + msg.severity + '">';
         markup += '<div role="alert" class="ui-growl-item">';
         markup += '<div class="ui-growl-icon-close ui-icon ui-icon-closethick" style="display:none"></div>';
         markup += '<span class="ui-growl-image ui-growl-image-' + msg.severity + '" ></span>';

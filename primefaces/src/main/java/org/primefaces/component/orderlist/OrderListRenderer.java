@@ -123,10 +123,6 @@ public class OrderListRenderer extends CoreRenderer {
 
         if (FacetUtils.shouldRenderFacet(caption)) {
             encodeCaption(context, caption);
-            listStyleClass += " ui-corner-bottom";
-        }
-        else {
-            listStyleClass += " ui-corner-all";
         }
 
         writer.startElement("ul", null);

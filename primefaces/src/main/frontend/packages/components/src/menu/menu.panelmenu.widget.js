@@ -349,7 +349,7 @@ PrimeFaces.widget.PanelMenu = class PanelMenu extends PrimeFaces.widget.BaseWidg
     collapseRootSubmenu(header) {
         var panel = header.next();
 
-        header.attr('aria-expanded', false).removeClass('ui-state-active ui-corner-top').addClass('ui-state-hover ui-corner-all')
+        header.attr('aria-expanded', false).removeClass('ui-state-active').addClass('ui-state-hover')
                             .children('.ui-icon').removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-e');
 
         panel.attr('aria-hidden', true).slideUp('normal', 'easeInOutCirc');
@@ -365,7 +365,7 @@ PrimeFaces.widget.PanelMenu = class PanelMenu extends PrimeFaces.widget.BaseWidg
     expandRootSubmenu(header, restoring) {
         var panel = header.next();
 
-        header.attr('aria-expanded', true).addClass('ui-state-active ui-corner-top').removeClass('ui-state-hover ui-corner-all')
+        header.attr('aria-expanded', true).addClass('ui-state-active').removeClass('ui-state-hover')
                 .children('.ui-icon').removeClass('ui-icon-triangle-1-e').addClass('ui-icon-triangle-1-s');
 
         if(restoring) {
