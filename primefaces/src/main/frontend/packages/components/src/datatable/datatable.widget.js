@@ -466,7 +466,8 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
             }
         };
 
-        this.paginator = new PrimeFaces.widget.Paginator(this.cfg.paginator);
+        this.paginator = new PrimeFaces.widget.Paginator();
+        this.paginator.init(this.cfg.paginator);
         this.paginator.bindSwipeEvents(this.jq, this.cfg);
 
         if(this.cfg.clientCache) {

@@ -53,7 +53,8 @@ PrimeFaces.widget.DataView = class DataView extends PrimeFaces.widget.BaseWidget
             $this.handlePagination(newState);
         };
 
-        this.paginator = new PrimeFaces.widget.Paginator(this.cfg.paginator);
+        this.paginator = new PrimeFaces.widget.Paginator();
+        this.paginator.init(this.cfg.paginator);
         this.paginator.bindSwipeEvents(this.jq, this.cfg);
     }
 

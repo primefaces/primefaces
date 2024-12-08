@@ -231,7 +231,8 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
                 $this.handlePagination(newState);
             };
 
-            this.paginator = new PrimeFaces.widget.Paginator(this.cfg.paginator);
+            this.paginator = new PrimeFaces.widget.Paginator();
+            this.paginator.init(this.cfg.paginator);
             this.paginator.bindSwipeEvents(this.jq, this.cfg);
         }
     }

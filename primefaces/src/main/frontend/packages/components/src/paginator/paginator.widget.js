@@ -6,7 +6,8 @@
  * the `paginate` property to an appropriate callback function.
  * 
  * ```javascript
- * const paginator = new PrimeFaces.widget.Paginator(paginatorCfg);
+ * const paginator = new PrimeFaces.widget.Paginator();
+ * paginator.init(paginatorCfg);
  * paginator.paginator = newState => {
  *  // handle pagination
  * };
