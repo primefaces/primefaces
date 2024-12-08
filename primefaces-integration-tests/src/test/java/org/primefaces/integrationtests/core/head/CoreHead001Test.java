@@ -48,8 +48,7 @@ public class CoreHead001Test extends AbstractPrimePageTest {
         WebElement head = page.head;
         WebElement body = page.body;
         List<WebElement> headElements = head.findElements(By.tagName("*"));
-        List<WebElement> scriptElements = body.findElements(By.tagName("script"));
-
+        List<WebElement> scriptElements = body.findElements(By.cssSelector("script[src]"));
         // Act & Assert
 
         // <f:facet name="first">

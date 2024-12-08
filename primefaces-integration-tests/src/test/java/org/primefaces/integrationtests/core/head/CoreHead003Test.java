@@ -66,8 +66,8 @@ public class CoreHead003Test extends AbstractPrimePageTest {
 
     private void assertHeader(WebElement head, WebElement body, boolean isChartJsIncluded) {
         List<WebElement> headElements = head.findElements(By.tagName("*"));
-        List<WebElement> headScriptElements = head.findElements(By.tagName("script"));
-        List<WebElement> scriptElements = body.findElements(By.tagName("script"));
+        List<WebElement> headScriptElements = head.findElements(By.cssSelector("script[src]"));
+        List<WebElement> scriptElements = body.findElements(By.cssSelector("script[src]"));
         int expectedHeadElementsSize = isChartJsIncluded ? 8 : 7;
         assertEquals(expectedHeadElementsSize, headElements.size(), "Header elements not expected size");
 

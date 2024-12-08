@@ -48,7 +48,8 @@ public class CoreHead002Test extends AbstractPrimePageTest {
         WebElement head = page.head;
         WebElement body = page.body;
         List<WebElement> headElements = head.findElements(By.tagName("*"));
-        List<WebElement> scriptElements = body.findElements(By.tagName("script"));
+        List<WebElement> headScriptElements = head.findElements(By.cssSelector("script[src]"));
+        List<WebElement> scriptElements = body.findElements(By.cssSelector("script[src]"));
 
         // Act & Assert
         assertEquals(6, headElements.size());
@@ -79,6 +80,14 @@ public class CoreHead002Test extends AbstractPrimePageTest {
         assertEquals("yes", webMeta.getDomAttribute("content"));
 
         // Scripts in order
+        System.out.println("Head Script sources: " + headScriptElements.size());
+        for (WebElement script : headScriptElements) {
+            System.out.println(script.getDomAttribute("src"));
+        }
+        System.out.println("Body Script sources: " + scriptElements.size());
+        for (WebElement script : scriptElements) {
+            System.out.println(script.getDomAttribute("src"));
+        }
         assertEquals(7, scriptElements.size());
         assertTrue(scriptElements.get(0).getDomAttribute("src").contains("jquery/jquery.js"));
         assertTrue(scriptElements.get(1).getDomAttribute("src").contains("core.js"));
