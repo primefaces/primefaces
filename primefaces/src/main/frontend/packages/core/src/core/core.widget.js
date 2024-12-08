@@ -212,26 +212,11 @@ if (!PrimeFaces.widget) {
          * Creates a new instance of this widget. Please note that you should __NOT__ override this constructor.
          * Instead, override the {@link init} method, which is called by the framework once the widget instance was
          * created.
-         *
-         * Note: This is mainly due to legacy concerns. We may remove the init method in the future and simply use the
-         * constructor.
-         *
-         * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg The widget configuration to be used for this widget
-         * instance. This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for
-         * this component.
-         * @param {boolean} [runInit] Whether to run the init method after the widget was constructed.
-         * Defaults to `true`. This exists only for legacy compatibility. If you are writing a new widget,
-         * you should always pass `false` here, and then do the initialization in you sub class constructor
-         * after the call to the super constructor completes. Technical description: As per the spec, instance
-         * fields of a class are initialized after the call to the super constructor. If the super constructor
-         * calls an instance method overridden by the sub class, any changes made by the sub class to its
-         * (not yet initialized instance) fields will be lost. This is why the `runInit` parameter exists.
+         * 
+         * In addition, the `init` method is also called when the page is refreshed via AJAX. In that case, the
+         * widget instance is reused, and only its `init` method gets called again.
          */
-        constructor(cfg, runInit) {
-            if (runInit !== false) {
-                this.init(cfg);
-            }
-        }
+        constructor() {}
 
         /**
          * A widget class should not declare an explicit constructor, the default constructor provided by this base

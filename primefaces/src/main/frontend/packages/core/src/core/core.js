@@ -753,7 +753,8 @@ import Cookies from "js-cookie";
                         }
                         cfg.preConstruct.call(null, cfg);
                     }
-                    var newWidget = new this.widget[widgetName](cfg);
+                    var newWidget = new this.widget[widgetName]();
+                    newWidget.init(cfg);
                     this.widgets[widgetVar] = newWidget;
                     if (cfg.postConstruct) {
                        cfg.postConstruct.call(newWidget, newWidget);

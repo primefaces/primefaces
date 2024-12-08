@@ -36,11 +36,6 @@ PrimeFaces.widget.PhotoCam = class PhotoCam extends PrimeFaces.widget.BaseWidget
      */
     attached;
 
-    constructor(cfg) {
-        super(cfg, false);
-        this.init(cfg);
-    }
-
     /**
      * @override
      * @inheritdoc
