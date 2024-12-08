@@ -175,7 +175,7 @@ async function failOnDuplicateModulesInOutputs(metaFile) {
         }
         for (const input of Object.keys(inputs)) {
             // This is our ESBuild plugin that loads resources from the global scope.
-            if (input.startsWith("load-from-expression/bare:") || input.startsWith("load-from-expression/modulePath:")) {
+            if (input.startsWith("load-from-expression/bare:") || input.startsWith("load-from-expression/module-path:")) {
                 continue;
             }
 
