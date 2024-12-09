@@ -53,7 +53,7 @@
             <div class="card">
                 <h5>Single with Row Click</h5>
                 <p:dataTable id="singleDT" var="product" value="#{dtSelectionView.products2}" selectionMode="single"
-                             selection="#{dtSelectionView.selectedProduct}" rowKey="#{product.id}" cellNavigation="true">
+                             selection="#{dtSelectionView.selectedProduct}" rowKey="#{product.code}" cellNavigation="true">
                     <p:column headerText="Code">
                         <h:outputText value="#{product.code}" />
                     </p:column>
@@ -80,7 +80,7 @@
             <div class="card">
                 <h5>Select Events</h5>
                 <p:dataTable id="eventsDT" var="product" value="#{dtSelectionView.products3}" selectionMode="single"
-                             selection="#{dtSelectionView.selectedProduct}" rowKey="#{product.id}" cellNavigation="true">
+                             selection="#{dtSelectionView.selectedProduct}" rowKey="#{product.code}" cellNavigation="true">
                     <p:ajax event="rowSelect" listener="#{dtSelectionView.onRowSelect}" update=":form:msgs"/>
                     <p:ajax event="rowUnselect" listener="#{dtSelectionView.onRowUnselect}" update=":form:msgs"/>
                     <p:column headerText="Code">
@@ -104,7 +104,7 @@
             <div class="card">
                 <h5>Multiple with Meta and Shift keys</h5>
                 <p:dataTable id="multipleDT" var="product" value="#{dtSelectionView.products4}" selectionMode="multiple"
-                             selection="#{dtSelectionView.selectedProducts}" rowKey="#{product.id}" cellNavigation="true">
+                             selection="#{dtSelectionView.selectedProducts}" rowKey="#{product.code}" cellNavigation="true">
                     <p:column headerText="Code">
                         <h:outputText value="#{product.code}" />
                     </p:column>
@@ -126,7 +126,7 @@
             <div class="card">
                 <h5>RadioButton</h5>
                 <p:dataTable id="radioDT" var="product" value="#{dtSelectionView.products5}"
-                             selection="#{dtSelectionView.selectedProduct}" rowKey="#{product.id}" cellNavigation="true">
+                             selection="#{dtSelectionView.selectedProduct}" rowKey="#{product.code}" cellNavigation="true">
                     <p:column selectionBox="true" style="width:16px;text-align:center"/>
                     <p:column headerText="Code">
                         <h:outputText value="#{product.code}" />
@@ -153,7 +153,7 @@
             <div class="card">
                 <h5>Checkbox</h5>
                 <p:dataTable id="checkboxDT" var="product" value="#{dtSelectionView.products6}"
-                             selection="#{dtSelectionView.selectedProducts}" rowKey="#{product.id}"
+                             selection="#{dtSelectionView.selectedProducts}" rowKey="#{product.code}"
                              style="margin-bottom:0" paginator="true" rows="5" selectionPageOnly="false" selectionRowMode="none" cellNavigation="true">
                     <p:column selectionBox="true" style="width:16px;text-align:center"/>
                     <p:column headerText="Code">
