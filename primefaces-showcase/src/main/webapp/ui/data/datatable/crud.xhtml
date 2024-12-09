@@ -59,7 +59,7 @@
                     <p:ajax event="rowUnselectCheckbox" update=":form:delete-products-button" />
                     <p:ajax event="toggleSelect" update=":form:delete-products-button" />
 
-                    <p:column selectionMode="multiple" exportable="false"></p:column>
+                    <p:column selectionBox="true" exportable="false"></p:column>
 
                     <p:column headerText="Code" sortBy="#{product.code}" filterBy="#{product.code}">
                         <h:outputText value="#{product.code}" />
