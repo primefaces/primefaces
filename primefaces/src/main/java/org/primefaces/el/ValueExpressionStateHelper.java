@@ -111,6 +111,7 @@ public class ValueExpressionStateHelper implements StateHelper {
         return ve.getValue(FacesContext.getCurrentInstance().getELContext());
     }
 
+    // @Override (we can't actually override right now because this is a new method in Faces 4.0)
     public Object eval(Serializable key, Supplier<Object> defaultValueSupplier) {
         Object result = eval(key, UNKNOWN_VALUE);
         if (result == UNKNOWN_VALUE) {
