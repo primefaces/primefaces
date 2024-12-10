@@ -192,13 +192,23 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         });
 
         //select all
-        this.itemContainer.find('> .ui-columntoggler-all > .ui-chkbox > .ui-chkbox-box').on('mouseenter.columnToggler', function() {
+        this.selectAllCheckbox.find('> .ui-chkbox > .ui-chkbox-box').on('mouseenter.columnToggler', function() {
             $(this).addClass('ui-state-hover');
         }).on('mouseleave.columnToggler', function() {
             $(this).removeClass('ui-state-hover');
+        }).on('focus.columnToggler', function() {
+            $(this).addClass('ui-state-focus');
+        }).on('blur.columnToggler', function(e) {
+            $(this).removeClass('ui-state-focus');
         }).on('click.columnToggler', function(e) {
             $this.toggleAll();
             e.preventDefault();
+        }).on('keydown.columnToggler', function(e) {
+            if (PrimeFaces.utils.isActionKey(e)) {
+                $this.toggleAll();
+                e.preventDefault();
+                e.stopPropagation();
+            }
         });
 
         //labels
@@ -236,7 +246,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
      */
     bindKeyEvents: function() {
         var $this = this,
-            inputs = this.itemContainer.find('> li > div.ui-chkbox > div.ui-chkbox-box');
+            inputs = this.itemContainer.find('> li:not(.ui-columntoggler-all) > div.ui-chkbox > div.ui-chkbox-box');
 
         this.trigger.on('focus.columnToggler', function() {
             $(this).addClass('ui-state-focus');
@@ -516,7 +526,12 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         this.panel.show();
         this.visible = true;
         this.trigger.attr('aria-expanded', true);
-        this.closer.trigger('focus');
+        if (this.closer.is(':visible')) {
+            this.closer.trigger('focus');
+        }
+        else if (this.selectAllCheckbox.is(':visible')) {
+            this.selectAllCheckbox.find('> .ui-chkbox > .ui-chkbox-box').trigger('focus');
+        }
     },
 
     /**
@@ -539,7 +554,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      */
     fireToggleEvent: function(visible, index) {
-        if (this.hasBehavior('toggle')) {
+        if (index >= 0 && this.hasBehavior('toggle')) {
             var ext = {
                 params: [
                     { name: this.id + '_visibility', value: visible ? 'VISIBLE' : 'HIDDEN' },
