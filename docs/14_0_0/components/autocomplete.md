@@ -91,6 +91,7 @@ AutoComplete provides live suggestions while an input is being typed.
 | onwheel | null | String | Client side callback to execute when the mouse wheel rolls up or down over an element.
 | panelStyle | null | String | Inline style of the items container element.
 | panelStyleClass | null | String | Style class of the items container element.
+| placeholder | null | String | The placeholder attribute specifies a short hint that describes the expected value of an input field.
 | queryDelay | 300 | Integer | Delay to wait in milliseconds before sending each query to the server.
 | queryMode | server | String | Specifies query mode, valid values are "server" (default), "client" and "hybrid". [more](https://github.com/primefaces/primefaces/issues/5298)
 | rendered | true | Boolean | Boolean value to specify the rendering of the component.
