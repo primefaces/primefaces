@@ -21,7 +21,7 @@
         <mojarra.version>4.0.9</mojarra.version>
         <myfaces.version>4.0.2</myfaces.version>
         <resteasy.version>6.2.8.Final</resteasy.version>
-        <jetty.version>12.0.15</jetty.version>
+        <jetty.version>12.0.16</jetty.version>
         <weld.version>5.1.3.Final</weld.version>
         <jsf.project.stage>Production</jsf.project.stage>
     </properties>
