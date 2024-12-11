@@ -107,6 +107,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
             '<span class="ui-chkbox-icon ui-icon ui-icon-check"></span></div></div>' +
             '</li>');
         this.selectAllCheckbox.appendTo(this.itemContainer);
+        this.selectAllCheckbox = this.selectAllCheckbox.find('> .ui-chkbox > .ui-chkbox-box');
 
         //items
         for (var i = 0; i < this.columns.length; i++) {
@@ -144,7 +145,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
             }
 
             if (hidden) {
-                this.selectAllCheckbox.find('> .ui-chkbox > .ui-chkbox-box')
+                this.selectAllCheckbox
                     .removeClass('ui-state-active').attr('aria-label', this.getAriaLabel('unselectAll')).attr('aria-checked', 'false')
                     .children('.ui-chkbox-icon').addClass('ui-icon-blank').removeClass('ui-icon-check');
             }
@@ -192,7 +193,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         });
 
         //select all
-        this.selectAllCheckbox.find('> .ui-chkbox > .ui-chkbox-box').on('mouseenter.columnToggler', function() {
+        this.selectAllCheckbox.on('mouseenter.columnToggler', function() {
             $(this).addClass('ui-state-hover');
         }).on('mouseleave.columnToggler', function() {
             $(this).removeClass('ui-state-hover');
@@ -204,10 +205,33 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
             $this.toggleAll();
             e.preventDefault();
         }).on('keydown.columnToggler', function(e) {
-            if (PrimeFaces.utils.isActionKey(e)) {
-                $this.toggleAll();
-                e.preventDefault();
-                e.stopPropagation();
+            switch (e.code) {
+                case 'Tab':
+                    var inputs = $this.itemContainer.find('> .ui-columntoggler-item > .ui-chkbox > .ui-chkbox-box');
+                    var index = $(this).closest('li').index() - 1;
+                    var targetIndex = e.shiftKey ? index - 1 : index + 1;
+
+                    if (e.shiftKey) {
+                        if ($this.closer.is(':visible')) {
+                            $this.closer.trigger('focus');
+                        } else {
+                            inputs.eq($this.columns.length - 1).trigger('focus');
+                        }
+                    } else {
+                        inputs.eq(targetIndex).trigger('focus');
+                    }
+                    e.preventDefault();
+                    break;
+                case 'Enter':
+                case 'NumpadEnter':
+                case 'Space':
+                    $this.toggleAll();
+                    e.preventDefault();
+                    break;
+                case 'Escape':
+                    $this.closer.trigger('click');
+                    e.preventDefault();
+                    break;
             }
         });
 
@@ -281,11 +305,12 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         }).on('keydown.columnToggler', function(e) {
             switch (e.code) {
                 case 'Tab':
-                    var index = $(this).closest('li').index();
+                    // subtract 1 because the select all checkbox is the first item
+                    var index = $(this).closest('li').index() - 1;
                     var targetIndex = e.shiftKey ? index - 1 : index + 1;
 
                     if (e.shiftKey && index === 0 || !e.shiftKey && index === $this.columns.length - 1) {
-                        $this.closer.trigger('focus');
+                        $this.selectAllCheckbox.trigger('focus');
                     } else {
                         inputs.eq(targetIndex).trigger('focus');
                     }
@@ -295,6 +320,10 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
                 case 'NumpadEnter':
                 case 'Space':
                     $this.toggle($(this));
+                    e.preventDefault();
+                    break;
+                case 'Escape':
+                    $this.closer.trigger('click');
                     e.preventDefault();
                     break;
             }
@@ -313,6 +342,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
                 case 'Enter':
                 case 'NumpadEnter':
                 case 'Space':
+                case 'Escape':
                     $this.hide();
                     $this.trigger.trigger('focus');
                     e.preventDefault();
@@ -322,7 +352,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
                     if (e.shiftKey)
                         inputs.eq($this.columns.length - 1).trigger('focus');
                     else
-                        inputs.eq(0).trigger('focus');
+                        $this.selectAllCheckbox.trigger('focus');
 
                     e.preventDefault();
                     break;
@@ -348,7 +378,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
      * Toggles selecting or deselecting all columns.
      */
     toggleAll: function() {
-        if (this.selectAllCheckbox.find('> .ui-chkbox > .ui-chkbox-box').hasClass('ui-state-active')) {
+        if (this.selectAllCheckbox.hasClass('ui-state-active')) {
             this.uncheckAll();
         }
         else {
@@ -365,7 +395,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
             $this.check($(this));
         });
 
-        this.selectAllCheckbox.find('> .ui-chkbox > .ui-chkbox-box')
+        this.selectAllCheckbox
             .addClass('ui-state-active').attr('aria-label', this.getAriaLabel('selectAll')).attr('aria-checked', 'true')
             .children('.ui-chkbox-icon').addClass('ui-icon-check').removeClass('ui-icon-blank');
     },
@@ -446,7 +476,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         }
         chkbox.removeClass('ui-state-active').children('.ui-chkbox-icon').addClass('ui-icon-blank').removeClass('ui-icon-check');
 
-        this.selectAllCheckbox.find('> .ui-chkbox > .ui-chkbox-box')
+        this.selectAllCheckbox
             .removeClass('ui-state-active').attr('aria-label', this.getAriaLabel('unselectAll')).attr('aria-checked', 'false')
             .children('.ui-chkbox-icon').addClass('ui-icon-blank').removeClass('ui-icon-check');
 
@@ -530,7 +560,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
             this.closer.trigger('focus');
         }
         else if (this.selectAllCheckbox.is(':visible')) {
-            this.selectAllCheckbox.find('> .ui-chkbox > .ui-chkbox-box').trigger('focus');
+            this.selectAllCheckbox.trigger('focus');
         }
     },
 
