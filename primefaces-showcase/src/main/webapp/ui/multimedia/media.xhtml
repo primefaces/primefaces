@@ -27,6 +27,13 @@
             </p:media>
         </div>
 
+        <div class="card">
+            <h5>PDF via StreamedContent</h5>
+            <p:media value="#{mediaView.pdf}" width="100%" height="300px" player="pdf">
+                Your browser can't display pdf, <h:outputLink
+                    value="#{request.contextPath}/resources/demo/media/guide.pdf">click</h:outputLink> to download pdf instead.
+            </p:media>
+        </div>
     </ui:define>
 
 </ui:composition>
