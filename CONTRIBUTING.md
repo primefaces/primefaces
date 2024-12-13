@@ -59,7 +59,9 @@ About the code you contribute
 
 ### Performance guidelines:
 
-#### Use index-loop over for-each over ArrayLists, especially for looping through the Faces component tree
+#### Use index-loop over for-each over ArrayLists (especially for looping through the Faces component tree)
+See:  https://issues.apache.org/jira/browse/MYFACES-3130
+
 Our loops ususally looks like:
 ```
 for (int i = 0; i < component.getChildCount(); i++) {
@@ -70,7 +72,6 @@ for (int i = 0; i < component.getChildCount(); i++) {
 This has 2 benefits:
 1) Avoid a internal List instance when there are no childs, as they are initialized lazy by the Faces implementation (because we do `component.getChildCount()` over `component.getChildren().size()`)
 2) Avoid a new iterator instance on each loop. This isn't faster but reduces GC a lot.
-More details can be found here: https://issues.apache.org/jira/browse/MYFACES-3130
 
 ### Detailed Java code quality standards:
 
