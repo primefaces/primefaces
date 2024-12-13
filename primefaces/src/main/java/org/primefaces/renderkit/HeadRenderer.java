@@ -237,6 +237,27 @@ public class HeadRenderer extends Renderer {
         if (projectStage != ProjectStage.Production) {
             writer.write(",projectStage:'" + projectStage.toString() + "'");
         }
+
+        Map<String, String> errorPages = PrimeApplicationContext.getCurrentInstance(context).getConfig().getErrorPages();
+        if (!errorPages.isEmpty()) {
+            int i = 0;
+            writer.write(",errorPages:{");
+            for (Map.Entry<String, String> entry : errorPages.entrySet()) {
+                if (i > 0) {
+                    writer.write(',');
+                }
+
+                String errorPageUrl = context.getExternalContext().getRequestContextPath() + entry.getValue();
+                errorPageUrl = context.getApplication().evaluateExpressionGet(context, errorPageUrl, String.class);
+                errorPageUrl = context.getExternalContext().encodeActionURL(errorPageUrl);
+
+                writer.write("'" + (entry.getKey() == null ? "" : entry.getKey()) + "':'" + errorPageUrl + "'");
+
+                i++;
+            }
+            writer.write("}");
+        }
+
         writer.write("};");
 
         if (externalContext.getClientWindow() != null) {

@@ -111,8 +111,10 @@ if (!PrimeFaces.ajax) {
             getContent: function(node) {
                 var content = '';
 
-                for (const child of node.childNodes) {
-                    content += child.nodeValue;
+                if (node) {
+                    for (const child of node.childNodes) {
+                        content += child.nodeValue;
+                    }
                 }
 
                 return content;
@@ -1480,7 +1482,43 @@ if (!PrimeFaces.ajax) {
              * @param {PrimeFaces.ajax.pfXHR} xhr The XHR request to which a response was received.
              */
             doError: function(node, xhr) {
-                // currently nothing...
+
+                var errorName = PrimeFaces.ajax.Utils.getContent(node.getElementsByTagName("error-name")[0]);
+                var errorMessage = PrimeFaces.ajax.Utils.getContent(node.getElementsByTagName("error-message")[0]);
+
+                if (PrimeFaces.settings.errorPages) {
+                    var errorPageUrl = null;
+                    if (errorName) {
+                        // strip off 'class ' prefix, which is logged with exception class
+                        if (errorName.startsWith('class ')) {
+                            errorPageUrl = PrimeFaces.settings.errorPages[errorName.replace('class ', '')];
+                        }
+                        else {
+                            errorPageUrl = PrimeFaces.settings.errorPages[errorName];
+                        }
+                    }
+                    if (!errorPageUrl) {
+                        errorPageUrl = PrimeFaces.settings.errorPages['java.lang.Throwable'];
+                    }
+                    if (!errorPageUrl) {
+                        errorPageUrl = PrimeFaces.settings.errorPages[''];
+                    }
+
+                    if (errorPageUrl) {
+                        try {
+                            PrimeFaces.debug("Redirect to error page: " + errorPageUrl)
+                            window.location.assign(errorPageUrl);
+                        } catch (error) {
+                            PrimeFaces.warn('Error redirecting to URL: ' + errorPageUrl);
+                        }
+                    }
+                    return;
+                }
+
+                PrimeFaces.error("No default error page (Status 500 or java.lang.Throwable) and no error page for type '" + errorName + "' defined!");
+                if (errorMessage) {
+                    PrimeFaces.error(errorMessage);
+                }
             },
 
             /**

@@ -1559,6 +1559,27 @@
      * @prop {boolean} considerEmptyStringNull `true` if the empty string and `null` should be treated the same way, or
      * `false` otherwise.
      * @readonly considerEmptyStringNull
+     *
+     * @prop {string} contextPath The current servlet-context path.
+     * @readonly contextPath
+     *
+     * @prop {boolean} cookiesSecure If cookies are secured.
+     * @readonly cookiesSecure
+     *
+     * @prop {string} cookiesSameSite The cookies same site.
+     * @readonly cookiesSameSite
+     *
+     * @prop {boolean} earlyPostParamEvaluation If AJAX post params are evaluated early.
+     * @readonly earlyPostParamEvaluation
+     *
+     * @prop {boolean} partialSubmit If AJAX partial-submit is enabled.
+     * @readonly partialSubmit
+     *
+     * @prop {string} projectStage The Faces ProjectStage.
+     * @readonly projectStage
+     *
+     * @prop {Object} errorPages The error pages (error-name and the error page location).
+     * @readonly errorPages
      */
     PrimeFaces.settings = {};
     PrimeFaces.util = {};
