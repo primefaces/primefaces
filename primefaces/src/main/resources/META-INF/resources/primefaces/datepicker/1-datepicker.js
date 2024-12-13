@@ -88,6 +88,8 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
 
         //Client behaviors, input skinning and z-index
         if(!this.cfg.inline) {
+            this.applyMask(); // must be before datepicker and skinInput #6445/#7176/#13012
+
             PrimeFaces.skinInput(this.jqEl);
 
             if(this.cfg.behaviors) {
@@ -158,7 +160,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         }
         
 
-        this.applyMask(); // must be before datepicker see #6445 and #7176
+        
         this.jq.datePicker(this.cfg);
 
         //extensions
