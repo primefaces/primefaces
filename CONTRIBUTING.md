@@ -64,7 +64,8 @@ See:  https://issues.apache.org/jira/browse/MYFACES-3130
 
 Our loops ususally looks like:
 ```
-for (int i = 0; i < component.getChildCount(); i++) {
+int childCount = component.getChildCount();
+for (int i = 0; i < childCount; i++) {
     UIComponent child = component.getChildren().get(i);
     ...
 }
