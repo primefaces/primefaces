@@ -19,7 +19,7 @@ treetable and more.
 | id | null | String | Unique identifier of the component
 | rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 | binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-| ariaHeaderText | null | String | Label to read by screen readers, when not specified headerText is used.
+| ariaHeaderText | null | String | Accessible label for screen readers. IMPORTANT: Overrides headerText and headerFacet if specified. Only necessary when the column header is not human readable (e.g. empty header or icon-only header).
 | caseSensitiveSort         | false              | Boolean          | Case sensitivity for sorting, insensitive by default.
 | colspan | 1 | Integer | Defines the number of columns the column spans.
 | displayPriority           | 0                  | Integer          | Defines the display priority, in which order the columns should be displayed. Lower values have more priority.

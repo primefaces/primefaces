@@ -140,12 +140,15 @@ public class DataViewRenderer extends DataRenderer {
     protected void encodeHeader(FacesContext context, DataView dataview) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         UIComponent fHeader = dataview.getFacet("header");
+        boolean isRenderFacet = FacetUtils.shouldRenderFacet(fHeader);
 
-        if (FacetUtils.shouldRenderFacet(fHeader) || hasLayoutOptions(context, dataview)) {
+        if (isRenderFacet || hasLayoutOptions(context, dataview)) {
             writer.startElement("div", dataview);
             writer.writeAttribute("class", DataView.HEADER_CLASS, null);
 
-            fHeader.encodeAll(context);
+            if (isRenderFacet) {
+                fHeader.encodeAll(context);
+            }
 
             encodeLayoutOptions(context, dataview);
 

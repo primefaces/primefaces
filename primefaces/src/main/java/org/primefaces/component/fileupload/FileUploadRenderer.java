@@ -26,6 +26,7 @@ package org.primefaces.component.fileupload;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.StyleClassBuilder;
@@ -48,7 +49,7 @@ public class FileUploadRenderer extends CoreRenderer {
         }
         if (!context.getExternalContext().getRequestContentType().toLowerCase().startsWith("multipart/")) {
             logDevelopmentWarning(context, this,
-                    "Decoding FileUpload requires contentType \"multipart/form-data\" for clientId: " + component.getClientId(context));
+                    "Decoding FileUpload requires enctype \"multipart/form-data\" for clientId: " + component.getClientId(context));
             // skip further processing as servlet fileupload decoding would throw a exception because of wrong contentType
             return;
         }
@@ -63,12 +64,6 @@ public class FileUploadRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         FileUpload fileUpload = (FileUpload) component;
 
-        if (fileUpload.getDropZone() != null) {
-            fileUpload.setMode("advanced");
-            fileUpload.setAuto(true);
-            fileUpload.setDragDropSupport(true);
-        }
-
         encodeMarkup(context, fileUpload);
         encodeScript(context, fileUpload);
     }
@@ -82,14 +77,13 @@ public class FileUploadRenderer extends CoreRenderer {
             PrimeApplicationContext pfContext = PrimeApplicationContext.getCurrentInstance(context);
 
             wb.init("FileUpload", fileUpload)
-                    .attr("dnd", fileUpload.isDragDropSupport(), true)
+                    .attr("dnd", fileUpload.isDragDrop(), true)
                     .attr("previewWidth", fileUpload.getPreviewWidth(), 80)
                     .attr("sequentialUploads", fileUpload.isSequential(), false)
                     .attr("maxChunkSize", fileUpload.getMaxChunkSize(), 0)
                     .attr("maxRetries", fileUpload.getMaxRetries(), 30)
                     .attr("retryTimeout", fileUpload.getRetryTimeout(), 1000)
                     .attr("resumeContextPath", pfContext.getFileUploadResumeUrl(), null)
-                    .attr("dropZone", SearchExpressionUtils.resolveClientIdsForClientSide(context, fileUpload, fileUpload.getDropZone()))
                     .callback("onAdd", "function(file, callback)", fileUpload.getOnAdd())
                     .callback("oncancel", "function()", fileUpload.getOncancel())
                     .callback("onupload", "function()", fileUpload.getOnupload());
@@ -108,6 +102,7 @@ public class FileUploadRenderer extends CoreRenderer {
                 .attr("process", SearchExpressionUtils.resolveClientIdsForClientSide(context, fileUpload, process))
                 .attr("global", fileUpload.isGlobal(), true)
                 .attr("disabled", fileUpload.isDisabled(), false)
+                .attr("dropZone", SearchExpressionUtils.resolveClientIdsForClientSide(context, fileUpload, fileUpload.getDropZone()))
                 .callback("onstart", "function()", fileUpload.getOnstart())
                 .callback("onerror", "function()", fileUpload.getOnerror())
                 .callback("oncomplete", "function(args)", fileUpload.getOncomplete())
@@ -143,6 +138,19 @@ public class FileUploadRenderer extends CoreRenderer {
             writer.writeAttribute("style", style, "style");
         }
 
+
+        writer.startElement("div", null);
+        writer.writeAttribute("class", FileUpload.DRAG_OVERLAY_CLASS, null);
+
+        writer.startElement("div", null);
+        writer.writeAttribute("class", FileUpload.DRAG_OVERLAY_CONTENT_CLASS, null);
+        writer.startElement("i", null);
+        writer.writeAttribute("class", "pi pi-upload", null);
+        writer.endElement("i");
+        writer.endElement("div");
+
+        writer.endElement("div");
+
         //buttonbar
         writer.startElement("div", fileUpload);
         writer.writeAttribute("class", FileUpload.BUTTON_BAR_CLASS, null);
@@ -170,8 +178,21 @@ public class FileUploadRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", FileUpload.CONTENT_CLASS, null);
 
+        UIComponent emptyFacet = fileUpload.getFacet("empty");
+        if (FacetUtils.shouldRenderFacet(emptyFacet)) {
+            writer.startElement("div", null);
+            writer.writeAttribute("class", FileUpload.EMPTY_CLASS, null);
+
+            emptyFacet.encodeAll(context);
+
+            writer.endElement("div");
+        }
+
         writer.startElement("div", null);
         writer.writeAttribute("class", FileUpload.FILES_CLASS, null);
+        if (FacetUtils.shouldRenderFacet(emptyFacet)) {
+            writer.writeAttribute("style", "display: none", null);
+        }
         writer.startElement("div", null);
         writer.endElement("div");
         writer.endElement("div");

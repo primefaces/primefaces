@@ -49,7 +49,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
         this.bindEvents();
 
         if(this.cfg.stateful) {
-            this.cfg.statefulGlobal = this.cfg.statefulGlobal === true ? true : false;
+            this.cfg.statefulGlobal = !!this.cfg.statefulGlobal;
             this.createStorageKey();
         }
 
@@ -150,6 +150,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
             if(!$this.focusedItem) {
                 return;
             }
+            var itemToFocus = null;
 
             switch(e.code) {
                 case 'ArrowLeft':
@@ -175,8 +176,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
                 break;
 
                 case 'ArrowUp':
-                    var itemToFocus = null,
-                    prevItem = $this.focusedItem.prev();
+                    var prevItem = $this.focusedItem.prev();
 
                     if(prevItem.length) {
                         itemToFocus = prevItem.find('li.ui-menuitem:visible:last');
@@ -196,8 +196,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
                 break;
 
                 case 'ArrowDown':
-                    var itemToFocus = null,
-                    firstVisibleChildItem = $this.focusedItem.find('> ul > li:visible:first');
+                    var firstVisibleChildItem = $this.focusedItem.find('> ul > li:visible:first');
 
                     if(firstVisibleChildItem.length) {
                         itemToFocus = firstVisibleChildItem;
@@ -205,10 +204,8 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
                     else if($this.focusedItem.next().length) {
                         itemToFocus = $this.focusedItem.next();
                     }
-                    else {
-                        if($this.focusedItem.next().length === 0) {
-                            itemToFocus = $this.searchDown($this.focusedItem);
-                        }
+                    else if($this.focusedItem.next().length === 0) {
+                        itemToFocus = $this.searchDown($this.focusedItem);
                     }
 
                     if(itemToFocus && itemToFocus.length) {
@@ -352,7 +349,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
     collapseRootSubmenu: function(header) {
         var panel = header.next();
 
-        header.attr('aria-expanded', false).removeClass('ui-state-active ui-corner-top').addClass('ui-state-hover ui-corner-all')
+        header.attr('aria-expanded', false).removeClass('ui-state-active').addClass('ui-state-hover')
                             .children('.ui-icon').removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-e');
 
         panel.attr('aria-hidden', true).slideUp('normal', 'easeInOutCirc');
@@ -368,7 +365,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
     expandRootSubmenu: function(header, restoring) {
         var panel = header.next();
 
-        header.attr('aria-expanded', true).addClass('ui-state-active ui-corner-top').removeClass('ui-state-hover ui-corner-all')
+        header.attr('aria-expanded', true).addClass('ui-state-active').removeClass('ui-state-hover')
                 .children('.ui-icon').removeClass('ui-icon-triangle-1-e').addClass('ui-icon-triangle-1-s');
 
         if(restoring) {
@@ -454,12 +451,12 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
             var activeHeaders = this.headers.filter('.ui-state-active'),
             activeTreeSubmenus = this.jq.find('.ui-menu-parent > .ui-menu-list:not(.ui-helper-hidden)');
 
-            for(var i = 0; i < activeHeaders.length; i++) {
-                this.expandedNodes.push(activeHeaders.eq(i).next().attr('id'));
+            for(var j = 0; j < activeHeaders.length; j++) {
+                this.expandedNodes.push(activeHeaders.eq(j).next().attr('id'));
             }
 
-            for(var i = 0; i < activeTreeSubmenus.length; i++) {
-                this.expandedNodes.push(activeTreeSubmenus.eq(i).parent().attr('id'));
+            for(var k = 0; k < activeTreeSubmenus.length; k++) {
+                this.expandedNodes.push(activeTreeSubmenus.eq(k).parent().attr('id'));
             }
         }
     },

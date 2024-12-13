@@ -33,6 +33,6 @@ import javax.faces.application.ResourceDependency;
 public class MegaMenu extends MegaMenuBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.MegaMenu";
-    public static final String CONTAINER_CLASS = "ui-menu ui-menubar ui-megamenu ui-widget ui-widget-content ui-corner-all ui-helper-clearfix";
+    public static final String CONTAINER_CLASS = "ui-menu ui-menubar ui-megamenu ui-widget ui-widget-content ui-helper-clearfix";
     public static final String VERTICAL_CLASS = "ui-megamenu-vertical";
 }

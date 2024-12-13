@@ -8,6 +8,14 @@
  * Licensed under the MIT license:
  * http://creativecommons.org/licenses/MIT/
  */
+.ui-fileupload {
+    position: relative;
+}
+
+.ui-fileupload .ui-fileupload-drag-overlay {
+    display: none;
+}
+
 .ui-fileupload-buttonbar .ui-fileupload-choose input {
     position: absolute;
     top: 0;

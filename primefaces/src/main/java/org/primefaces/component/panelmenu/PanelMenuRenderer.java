@@ -81,15 +81,6 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
         writer.endElement("div");
     }
 
-    @Override
-    protected void encodePlaceholder(FacesContext context, AbstractMenu menu) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        writer.startElement("div", menu);
-        writer.writeAttribute("id", menu.getClientId(context), "id");
-        writer.writeAttribute("class", "ui-panelmenu-placeholder", "styleClass");
-        writer.endElement("div");
-    }
-
     protected void encodeRootSubmenu(FacesContext context, PanelMenu menu, Submenu submenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String style = submenu.getStyle();

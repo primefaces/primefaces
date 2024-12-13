@@ -49,7 +49,7 @@
  * hidden.
  * @prop {boolean} cfg.showCloseIcon Displays a close icon to hide the overlay, default is `false`.
  * @prop {number} cfg.showDelay Delay in milliseconds applied when the overlay panel is shown.
- * @prop {string} cfg.showEvent Event on target to hide the panel.
+ * @prop {string} cfg.showEvent Event on target to hide the panel. If showEvent is 'none', the overlay panel will only be displayed by `show()` or `toggle()`.
  * @prop {string} cfg.target Search expression for target component to display panel next to.
  */
 PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
@@ -76,10 +76,10 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.cfg.collision = this.cfg.collision || 'flip';
         this.cfg.showEvent = this.cfg.showEvent || 'click.ui-overlaypanel';
         this.cfg.hideEvent = this.cfg.hideEvent || 'click.ui-overlaypanel';
-        this.cfg.dismissable = (this.cfg.dismissable === false) ? false : true;
+        this.cfg.dismissable = this.cfg.dismissable !== false;
         this.cfg.showDelay = PrimeFaces.utils.defaultNumeric(this.cfg.showDelay, 0);
-        this.cfg.autoHide = (this.cfg.autoHide === undefined) ? true : this.cfg.autoHide;
-        this.cfg.cache = this.cfg.cache === false ? false : true;
+        this.cfg.autoHide = this.cfg.autoHide !== false;
+        this.cfg.cache = this.cfg.cache !== false;
         this.allowHide = true;
 
         if (this.cfg.showCloseIcon) {
@@ -181,11 +181,13 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
             });
         }
 
-        $this.target.off('keyup.ui-overlaypanel').on('keyup.ui-overlaypanel', function(e) {
-            if (PrimeFaces.utils.blockEnterKey(e)) {
-                $this.toggle();
-            }
-        });
+        if (this.cfg.showEvent !== 'none') {
+            $this.target.off('keyup.ui-overlaypanel').on('keyup.ui-overlaypanel', function(e) {
+                if (PrimeFaces.utils.blockEnterKey(e)) {
+                    $this.toggle();
+                }
+            });
+        }
 
         this.bindAutoHide();
     },
@@ -344,7 +346,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
             var showWithCSSTransition = function() {
                 $this.transition.show({
                     onEnter: function() {
-                        $this.jq.css('z-index', PrimeFaces.nextZindex());
+                        PrimeFaces.nextZindex($this.jq);
                         $this.align(target);
                     },
                     onEntered: function() {

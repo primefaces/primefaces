@@ -225,8 +225,8 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
             }
         }
 
-        for (var i = 0; i < this.options.length; i++) {
-            this.options[i].selected = true;
+        for (var j = 0; j < this.options.length; j++) {
+            this.options[j].selected = true;
         }
     },
 
@@ -261,8 +261,8 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
             }
         }
 
-        for (var i = 0; i < this.options.length; i++) {
-            this.options[i].selected = false;
+        for (var j = 0; j < this.options.length; j++) {
+            this.options[j].selected = false;
         }
     },
 

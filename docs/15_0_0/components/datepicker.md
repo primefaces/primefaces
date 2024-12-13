@@ -123,6 +123,7 @@ ajax selection and more.
 | showMinMaxRange | true | Boolean | Only display valid dates within the min/max range.
 | autoMonthFormat | true | Boolean | Whether to format the month. Default is true.
 | showOtherMonths | false | Boolean | Displays days belonging to other months.
+| showLongMonthNames | false | Boolean | Displays long month names instead of short names in month picker and month navigator.. Default is false.
 | showSeconds | false | Boolean | Whether to show the seconds in time picker. Default is false.
 | showTime | false * | Boolean | Specifies if the timepicker should be displayed.  (* Defaults to true, when value is bound to java.time.LocalDateTime)
 | showWeek | false | Boolean | Displays the week number next to each week.

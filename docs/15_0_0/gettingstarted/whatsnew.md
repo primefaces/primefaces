@@ -41,11 +41,19 @@ Look into [migration guide](https://primefaces.github.io/primefaces/15_0_0/#/../
 
 * DatePicker
     * Added `defaultHour`, `defaultMinute`, `defaultSecond`, `defaultMillisec` attributes to match legacy `Calendar` component
-    * Added ability to pick weeks by view="week"
+    * Added ability to pick weeks by `view="week"`
+    * Added `showLongMonthNames` attribute to display long month names instead of short names in month picker and month navigator
 
 * FeedReader
-
     * Added `podcast="true"` property if [Apple Itunes Podcast](https://help.apple.com/itc/podcasts_connect/#/itcb54353390) parsing and specific tags 
+
+* FileUpload
+    * Added new messages to support localization
+        * `primefaces.FileValidator.FILENAME_INVALID_CHAR=Invalid filename: {0} contains invalid character: {1}`
+        * `primefaces.FileValidator.FILENAME_INVALID_LINUX=Invalid Linux filename: {0}`
+        * `primefaces.FileValidator.FILENAME_INVALID_WINDOWS=Invalid Windows filename: {0}`
+        * `primefaces.FileValidator.FILENAME_EMPTY=Filename cannot be empty or null`
+    * Added `empty` facet to add placeholder content
 
 * InputNumber
     * Added `modifyValueOnUpDownArrow` which allows the user to increment or decrement the element value with the up and down arrow keys. Default is true.

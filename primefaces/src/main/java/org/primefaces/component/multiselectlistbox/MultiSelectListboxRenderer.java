@@ -89,15 +89,10 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
         writer.writeAttribute("class", MultiSelectListbox.LIST_CONTAINER_CLASS, null);
 
         if (header != null) {
-            listStyleClass = listStyleClass + " ui-corner-bottom";
-
             writer.startElement("div", listbox);
             writer.writeAttribute("class", MultiSelectListbox.LIST_HEADER_CLASS, null);
             writer.writeText(header, null);
             writer.endElement("div");
-        }
-        else {
-            listStyleClass = listStyleClass + " ui-corner-all";
         }
 
         writer.startElement("ul", listbox);

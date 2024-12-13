@@ -16,7 +16,7 @@
             <p:remoteCommand name="updateUploadedFiles" update="uploadedfiles"/>
             <p:fileUpload id="fileupload" widgetVar="fileUpload"
                           listener="#{fileUploadHandler.handleFileUpload}"
-                          mode="advanced" dragDropSupport="false" auto="true"
+                          mode="advanced" dragDrop="false" auto="true"
                           oncomplete="if ( !PF('fileUpload').files.length ) updateUploadedFiles();">
                 <p:validateFile fileLimit="2" sizeLimit="100" virusScan="true" allowTypes="/(\.|\/)(csv)$/" />
             </p:fileUpload>

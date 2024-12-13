@@ -47,7 +47,7 @@ treetable and more.
 | filterable | true | Boolean | Boolean value to mark column as filterable.
 | visible | true | Boolean | Controls the visibilty of the column.
 | selectRow | true | Boolean | Whether clicking the column selects the row when parent component has row selection enabled, default is true.
-| ariaHeaderText | null | String | Label to read by screen readers, when not specified headerText is used.
+| ariaHeaderText | null | String | Accessible label for screen readers. IMPORTANT: Overrides headerText and headerFacet if specified. Only necessary when the column header is not human readable (e.g. empty header or icon-only header).
 | exportFunction | null | MethodExpr | Custom pluggable exportFunction for data exporter.
 | groupRow | false | Boolean | Speficies whether to group rows based on the column data.
 | exportHeaderValue | null | String | Defines if the header value of column to be exported.

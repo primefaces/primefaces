@@ -132,7 +132,7 @@
                             $(document.body).addClass('ui-overflow-hidden');
                         },
                         onEntering: function () {
-                            $this.mask.addClass('ui-widget-overlay').css('z-index', PrimeFaces.nextZindex());
+                            PrimeFaces.nextZindex($this.mask.addClass('ui-widget-overlay'));
                         },
                         onEntered: function () {
                             if ($this.options.onShow) {
@@ -257,7 +257,7 @@
         _renderCloseButton: function () {
             if (this.options.fullScreen) {
                 return (
-                    '<button type="button" class="ui-galleria-close ui-corner-all ui-galleria-link" aria-label="'+PrimeFaces.getAriaLabel('close')+'">' +
+                    '<button type="button" class="ui-galleria-close ui-galleria-link" aria-label="'+PrimeFaces.getAriaLabel('close')+'">' +
                         '<span class="ui-button-icon-left ui-galleria-close-icon ' + this.options.closeIcon + '"></span>' +
                     '</button>'
                 );

@@ -89,22 +89,12 @@ public class TabMenuRenderer extends BaseMenuRenderer {
         writer.endElement("div");
     }
 
-    @Override
-    protected void encodePlaceholder(FacesContext context, AbstractMenu menu) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        writer.startElement("div", menu);
-        writer.writeAttribute("id", menu.getClientId(context), "id");
-        writer.writeAttribute("class", "ui-tabmenu-placeholder", "styleClass");
-        writer.endElement("div");
-    }
-
     protected void encodeItem(FacesContext context, TabMenu menu, MenuItem item, boolean active) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String containerStyle = item.getContainerStyle();
         String containerStyleClass = getStyleClassBuilder(context)
                 .add(item.getContainerStyleClass())
                 .add(active, TabMenu.ACTIVE_TAB_HEADER_CLASS, TabMenu.INACTIVE_TAB_HEADER_CLASS)
-                .add("ui-corner-" + menu.getOrientation())
                 .add(item.isDisabled(), "ui-state-disabled", "ui-state-default")
                 .add(item.getIcon() != null, "ui-tabmenuitem-hasicon")
                 .add(item.getBadge() != null, "ui-overlay-badge")

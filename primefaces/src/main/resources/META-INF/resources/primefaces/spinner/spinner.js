@@ -387,8 +387,8 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
         if(this.input.prop('readonly'))
             this.input.attr('aria-readonly', true);
         
-        this.upButton.attr('aria-label', PrimeFaces.getAriaLabel('spinner.INCREASE'));
-        this.downButton.attr('aria-label', PrimeFaces.getAriaLabel('spinner.DECREASE'));
+        this.upButton.attr('aria-label', this.getAriaLabel('spinner.INCREASE'));
+        this.downButton.attr('aria-label', this.getAriaLabel('spinner.DECREASE'));
     },
 
     /**

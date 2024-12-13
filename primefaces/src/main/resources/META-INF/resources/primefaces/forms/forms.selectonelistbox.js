@@ -125,11 +125,9 @@ PrimeFaces.widget.SelectOneListbox = PrimeFaces.widget.SelectListbox.extend({
         if (!this.focusedItem.hasClass('ui-state-highlight')) {
             this.focusedItem.trigger('click.selectListbox');
         }
-        else {
-            if (item && item.length) {
-                item.trigger('click.selectListbox');
-                PrimeFaces.scrollInView(this.listContainer, item);
-            }
+        else if (item && item.length) {
+            item.trigger('click.selectListbox');
+            PrimeFaces.scrollInView(this.listContainer, item);
         }
     },
 

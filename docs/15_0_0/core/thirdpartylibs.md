@@ -6,7 +6,7 @@ are many other third party libraries and plugins used to support features.
 | Library | Version | URL |
 | --- | --- | --- |
 | [AutoNumeric](../jsdocs/classes/node_modules_autonumeric.export_-1.html) | 4.10.6 | https://github.com/autoNumeric/autoNumeric |
-| [Chart.js](../jsdocs/classes/node_modules__types_chart_js.export_-1.html) | 4.4.6 | https://www.chartjs.org |
+| [Chart.js](../jsdocs/classes/node_modules__types_chart_js.export_-1.html) | 4.4.7 | https://www.chartjs.org |
 | [Coloris](../jsdocs/interfaces/src_PrimeFaces.Coloris.html) | 0.24.0 | https://github.com/mdbassit/Coloris |
 | [Cookie](../jsdocs/modules/node_modules__types_js_cookie.html) | 3.0.5 | https://github.com/js-cookie/js-cookie |
 | [Cropper.js](../jsdocs/classes/node_modules_cropperjs_types.Cropper-1.html) | 1.5.13 | https://github.com/fengyuanchen/cropperjs |
@@ -32,7 +32,7 @@ are many other third party libraries and plugins used to support features.
 | [Keypad](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#keypad) | 2.1.1 | http://keith-wood.name/keypad.html |
 | [Moment](../jsdocs/modules/node_modules_moment_ts3_1_typings_moment.html) | 2.30.1 | https://github.com/moment/moment |
 | [Moment Timezone](../jsdocs/modules/node_modules_moment_ts3_1_typings_moment.html#tz) | 0.5.45 | https://github.com/moment/moment-timezone |
-| [Quill Editor](../jsdocs/modules/node_modules__types_quill.html) | 2.0.2 | https://quilljs.com/ |
+| [Quill Editor](../jsdocs/modules/node_modules__types_quill.html) | 2.0.3 | https://quilljs.com/ |
 | [Raphaël](../jsdocs/interfaces/node_modules__types_raphael.RaphaelStatic.html) | 2.3.0 | http://raphaeljs.com |
 | [Signature](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#signature) | 1.2.1 | http://keith-wood.name/signature.html |
 | [Timeline](../jsdocs/modules/node_modules_vis_timeline_declarations.html) | 7.7.2 | https://github.com/visjs/vis-timeline |

@@ -51,4 +51,9 @@ public class CoreCsp001 implements Serializable {
                 new FacesMessage("Welcome " + firstname + " " + lastname));
     }
 
+    public void action() {
+        FacesContext.getCurrentInstance().addMessage(null,
+                new FacesMessage("Action method called"));
+    }
+
 }

@@ -88,6 +88,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
 
         //Client behaviors, input skinning and z-index
         if(!this.cfg.inline) {
+            this.applyMask(); // must be before datepicker/input see #6445/#7176/#13059
             PrimeFaces.skinInput(this.jqEl);
 
             if(this.cfg.behaviors) {
@@ -116,7 +117,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
                     return false;
                 }
 
-                this.panel.css('z-index', PrimeFaces.nextZindex());
+                PrimeFaces.nextZindex(this.panel);
 
                 var inst = this; // the instance of prime.datePicker API
 
@@ -157,14 +158,12 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
             this.cfg.viewDate = this.cfg.defaultDate;
         }
         
-
-        this.applyMask(); // must be before datepicker see #6445 and #7176
         this.jq.datePicker(this.cfg);
 
         //extensions
         if(!this.cfg.inline && this.cfg.showIcon) {
             this.triggerButton = this.jqEl.siblings('.ui-datepicker-trigger:button');
-            this.triggerButton.attr('aria-label',PrimeFaces.getLocaleLabel('chooseDate')).attr('aria-haspopup', true);
+            this.triggerButton.attr('aria-label',this.getLabel('chooseDate')).attr('aria-haspopup', true);
 
             var title = this.jqEl.attr('title');
             if(title) {

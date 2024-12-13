@@ -21,14 +21,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.application.resource.barcode;
+package org.primefaces.showcase.view.multimedia;
 
-import org.krysalis.barcode4j.impl.code39.Code39Bean;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
-public class Code39Generator extends BarcodeGenerator {
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.faces.context.FacesContext;
+import jakarta.inject.Named;
 
-    public Code39Generator() {
-        super(new Code39Bean());
+@Named
+@RequestScoped
+public class MediaView {
+
+    public StreamedContent getPdf() {
+        return DefaultStreamedContent.builder()
+                .contentType("application/pdf")
+                .stream(() -> {
+                    try {
+                        FacesContext facesContext = FacesContext.getCurrentInstance();
+                        return facesContext.getExternalContext().getResourceAsStream("/resources/demo/media/guide.pdf");
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                        return null;
+                    }
+                })
+                .build();
     }
-
 }

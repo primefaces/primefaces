@@ -91,6 +91,7 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         showMinMaxRange,
         showOnFocus,
         showOtherMonths,
+        showLongMonthNames,
         showSeconds,
         showTime,
         showWeek,
@@ -523,6 +524,14 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
 
     public void setAutoMonthFormat(boolean autoMonthFormat) {
         getStateHelper().put(PropertyKeys.autoMonthFormat, autoMonthFormat);
+    }
+
+    public boolean isShowLongMonthNames() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showLongMonthNames, false);
+    }
+
+    public void setShowLongMonthNames(boolean showLongMonthNames) {
+        getStateHelper().put(PropertyKeys.showLongMonthNames, showLongMonthNames);
     }
 
     @Override

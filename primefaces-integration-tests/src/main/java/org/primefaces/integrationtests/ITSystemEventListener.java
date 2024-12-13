@@ -21,30 +21,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.application.resource.barcode;
+package org.primefaces.integrationtests;
 
-import java.io.IOException;
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.export.DataExporters;
+import org.primefaces.integrationtests.dataexporter.TextExporter;
 
-import org.krysalis.barcode4j.impl.AbstractBarcodeBean;
-import org.krysalis.barcode4j.output.CanvasProvider;
+import javax.faces.application.Application;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.SystemEvent;
+import javax.faces.event.SystemEventListener;
 
-public class BarcodeGenerator {
+public class ITSystemEventListener implements SystemEventListener {
 
-    private AbstractBarcodeBean barcodeBean;
-
-    public BarcodeGenerator() {
-        super();
+    @Override
+    public void processEvent(SystemEvent event) throws AbortProcessingException {
+        DataExporters.register(DataTable.class, TextExporter.class, "txt");
     }
 
-    public BarcodeGenerator(AbstractBarcodeBean bean) {
-        this.barcodeBean = bean;
-    }
-
-    public void generate(CanvasProvider canvasProvider, String value) throws IOException {
-        barcodeBean.generateBarcode(canvasProvider, value);
-    }
-
-    public AbstractBarcodeBean getBarcodeBean() {
-        return barcodeBean;
+    @Override
+    public boolean isListenerForSource(Object source) {
+        return source instanceof Application;
     }
 }

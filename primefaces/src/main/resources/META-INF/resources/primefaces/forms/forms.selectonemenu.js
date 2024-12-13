@@ -768,10 +768,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         }
         return this.options.filter(function() {
             var option = $(this);
-            if(option.is(':disabled') || option.text().toLowerCase().indexOf(text.toLowerCase()) !== 0) {
-                return false;
-            }
-            return true;
+            return !option.is(':disabled') && option.text().toLowerCase().indexOf(text.toLowerCase()) === 0;
         });
     },
 
@@ -1007,7 +1004,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         if (this.transition) {
             this.transition.show({
                 onEnter: function() {
-                    $this.panel.css('z-index', PrimeFaces.nextZindex());
+                    PrimeFaces.nextZindex($this.panel);
                     $this.alignPanel();
                 },
                 onEntered: function() {
@@ -1560,7 +1557,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      */
     renderPanelContentFromHiddenSelect: function(initContentsAndBindItemEvents) {
          if (this.cfg.renderPanelContentOnClient && this.itemsWrapper.children().length === 0) {
-             var panelContent = '<div id="' + this.id + '_items" class="ui-selectonemenu-items ui-widget-content ui-widget ui-corner-all ui-helper-reset" role="listbox">';
+             var panelContent = '<div id="' + this.id + '_items" class="ui-selectonemenu-items ui-widget-content ui-widget ui-helper-reset" role="listbox">';
              panelContent += this.renderSelectItems(this.input);
              panelContent += '</div>';
 
@@ -1589,7 +1586,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         var hasOptgroup = opts.filter("optgroup").length > 0;
         
         if (!hasOptgroup && !isGrouped) {
-            content += '<ul role="group" class="ui-selectonemenu-list ui-widget-content ui-widget ui-corner-all ui-helper-reset">';
+            content += '<ul role="group" class="ui-selectonemenu-list ui-widget-content ui-widget ui-helper-reset">';
         }
 
         content += opts.map(function(index, element) {
@@ -1622,12 +1619,12 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             label = label === "&nbsp;" ? " " : label;
         }
 
-        var cssClass = isOptgroup ? "ui-selectonemenu-item-group ui-corner-all" : 
-                       "ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all" + 
+        var cssClass = isOptgroup ? "ui-selectonemenu-item-group" : 
+                       "ui-selectonemenu-item ui-selectonemenu-list-item" + 
                        (isGrouped ? " ui-selectonemenu-item-group-children" : "") +
                        ($item.data("noselection-option") ? " ui-noselection-option" : "");
 
-        var content = isOptgroup ? '<ul role="group" class="ui-selectonemenu-list ui-widget-content ui-widget ui-corner-all ui-helper-reset" aria-labelledby="' + id + '">' : '';
+        var content = isOptgroup ? '<ul role="group" class="ui-selectonemenu-list ui-widget-content ui-widget ui-helper-reset" aria-labelledby="' + id + '">' : '';
         
         content += '<li id="' + id + '" class="' + cssClass + '" tabindex="-1" role="' + (isOptgroup ? "presentation" : "option") + '"';
         
@@ -1640,6 +1637,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         }
         
         var dataLabel = escape ? label.replaceAll('"', '&quot;') : PrimeFaces.escapeHTML(label, true);
+        label = label === "&amp;nbsp;" ? "&nbsp;" : label;
         content += ' data-label="' + dataLabel + '" data-value="' + $item.val() + '">' + label + '</li>';
 
         if (isOptgroup) {

@@ -116,7 +116,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
                 .add(SelectOneRadio.STYLE_CLASS)
                 .add(radio.isReadonly(), "ui-state-readonly")
                 .build();
-        String labelledBy = radio.getLabel();
+        String labelledBy = radio.getLabelledBy();
 
         writer.startElement("div", radio);
         writer.writeAttribute("id", clientId, "id");
@@ -166,8 +166,6 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
 
                 writer.startElement("div", null);
                 writer.writeAttribute("class", columnClass, null);
-                writer.writeAttribute("role", "radio", null);
-                writer.writeAttribute(HTML.ARIA_CHECKED, Boolean.toString(selected), null);
                 encodeOption(context, radio, selectItem, id, name, converter, selected, disabled);
                 writer.endElement("div");
 
@@ -200,7 +198,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
                     .add(SelectOneRadio.STYLE_CLASS)
                     .add(radio.isReadonly(), "ui-state-readonly")
                     .build();
-            String labelledBy = radio.getLabel();
+            String labelledBy = radio.getLabelledBy();
             writer.startElement("span", radio);
             writer.writeAttribute("id", radio.getClientId(context), "id");
             writer.writeAttribute("role", "radiogroup", null);

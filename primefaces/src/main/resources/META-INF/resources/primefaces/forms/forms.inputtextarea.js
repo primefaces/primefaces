@@ -149,7 +149,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      */
     setupAutoComplete: function() {
-        var panelMarkup = '<div id="' + this.id + '_panel" class="ui-autocomplete-panel ui-widget-content ui-corner-all ui-helper-hidden ui-shadow"></div>',
+        var panelMarkup = '<div id="' + this.id + '_panel" class="ui-autocomplete-panel ui-widget-content ui-helper-hidden ui-shadow"></div>',
         _self = this;
 
         this.panel = $(panelMarkup).appendTo(document.body);
@@ -191,13 +191,13 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
 
         }).on("keydown", function(e) {
             var overlayVisible = _self.panel.is(':visible');
+            var highlightedItem = _self.items.filter('.ui-state-highlight')
 
             switch(e.key) {
                 case 'ArrowUp':
                 case 'ArrowLeft':
                     if(overlayVisible) {
-                        var highlightedItem = _self.items.filter('.ui-state-highlight'),
-                        prev = highlightedItem.length == 0 ? _self.items.eq(0) : highlightedItem.prev();
+                        var prev = highlightedItem.length == 0 ? _self.items.eq(0) : highlightedItem.prev();
 
                         if(prev.length == 1) {
                             highlightedItem.removeClass('ui-state-highlight');
@@ -218,8 +218,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
                 case 'ArrowDown':
                 case 'ArrowRight':
                     if(overlayVisible) {
-                        var highlightedItem = _self.items.filter('.ui-state-highlight'),
-                        next = highlightedItem.length == 0 ? _self.items.eq(0) : highlightedItem.next();
+                        var next = highlightedItem.length == 0 ? _self.items.eq(0) : highlightedItem.next();
 
                         if(next.length == 1) {
                             highlightedItem.removeClass('ui-state-highlight');

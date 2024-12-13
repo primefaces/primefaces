@@ -77,7 +77,7 @@ PrimeFaces.widget.Growl = PrimeFaces.widget.BaseWidget.extend({
     show: function(msgs) {
         var $this = this;
 
-        this.jq.css('z-index', PrimeFaces.nextZindex());
+        PrimeFaces.nextZindex(this.jq);
 
         if (!this.cfg.keepAlive) {
             //clear previous messages
@@ -102,12 +102,12 @@ PrimeFaces.widget.Growl = PrimeFaces.widget.BaseWidget.extend({
      * @param {PrimeFaces.FacesMessage} msg A message to translate into an HTML element.
      */
     renderMessage: function(msg) {
-        var markup = '<div class="ui-growl-item-container ui-state-highlight ui-corner-all ui-helper-hidden ui-shadow ui-growl-' + msg.severity + '">';
+        var markup = '<div class="ui-growl-item-container ui-state-highlight ui-helper-hidden ui-shadow ui-growl-' + msg.severity + '">';
         markup += '<div role="alert" class="ui-growl-item">';
         markup += '<div class="ui-growl-icon-close ui-icon ui-icon-closethick" style="display:none"></div>';
         markup += '<span class="ui-growl-image ui-growl-image-' + msg.severity + '" ></span>';
         // GitHub #5153 for screen readers
-        markup += '<span class="ui-growl-severity ui-helper-hidden-accessible">' + PrimeFaces.getAriaLabel('messages.' + msg.severity.toUpperCase()) + '</span>';
+        markup += '<span class="ui-growl-severity ui-helper-hidden-accessible">' + this.getAriaLabel('messages.' + msg.severity.toUpperCase()) + '</span>';
         markup += '<div class="ui-growl-message">';
         markup += '<span class="ui-growl-title"></span>';
         markup += '<p></p>';

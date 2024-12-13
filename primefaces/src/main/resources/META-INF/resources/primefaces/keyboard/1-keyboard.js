@@ -42,7 +42,7 @@
             this.cfg.layout = PrimeFaces.widget.KeyboardUtils.getPresetLayout(this.cfg.layoutName);
 
         this.cfg.beforeShow = function(div, inst) {
-            $(div).addClass('ui-input-overlay').css('z-index', PrimeFaces.nextZindex());
+            PrimeFaces.nextZindex($(div).addClass('ui-input-overlay'));
             $this.bindPanelEvents();
         };
 
@@ -222,23 +222,23 @@ PrimeFaces.widget.KeyboardUtils = {
      */
     createLayoutFromTemplate : function(template) {
         // GitHub #3487: Unicode conversion
-        template =  decodeURIComponent(JSON.parse('"' + template.replace(/\"/g, '\\"') + '"'));
+        template =  decodeURIComponent(JSON.parse('"' + template.replace(/"/g, '\\"') + '"'));
         var lines = template.split(','),
-        template = new Array(lines.length);
+            newTemplate = new Array(lines.length);
 
         for(var i = 0; i < lines.length;i++) {
-            template[i] = "";
+            newTemplate[i] = "";
             var lineControls = lines[i].split('-');
 
             for(var j = 0; j < lineControls.length;j++) {
                 if(this.isDefinedControl(lineControls[j]))
-                    template[i] = template[i] + this.getPresetControl(lineControls[j])
+                    newTemplate[i] = newTemplate[i] + this.getPresetControl(lineControls[j])
                 else
-                    template[i] = template[i] + lineControls[j];
+                    newTemplate[i] = newTemplate[i] + lineControls[j];
             }
         }
 
-        return template;
+        return newTemplate;
     }
 
 };

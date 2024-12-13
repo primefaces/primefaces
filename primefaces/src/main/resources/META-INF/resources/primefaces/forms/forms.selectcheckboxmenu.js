@@ -276,7 +276,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
     renderItems: function() {
         var $this = this;
 
-        this.itemContainer = $('<ul id="'+this.id+'_list" class="ui-selectcheckboxmenu-items ui-selectcheckboxmenu-list ui-widget-content ui-widget ui-corner-all ui-helper-reset"></ul>')
+        this.itemContainer = $('<ul id="'+this.id+'_list" class="ui-selectcheckboxmenu-items ui-selectcheckboxmenu-list ui-widget-content ui-widget ui-helper-reset"></ul>')
             .appendTo(this.itemContainerWrapper);
 
         //check if inputs must be grouped
@@ -289,13 +289,13 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                 disabled = input.is(':disabled'),
                 checked = input.is(':checked'),
                 title = input.attr('title'),
-                boxClass = 'ui-chkbox-box ui-widget ui-corner-all ui-state-default',
-                itemClass = 'ui-selectcheckboxmenu-item ui-selectcheckboxmenu-list-item ui-corner-all',
+                boxClass = 'ui-chkbox-box ui-widget ui-state-default',
+                itemClass = 'ui-selectcheckboxmenu-item ui-selectcheckboxmenu-list-item',
                 escaped = input.data('escaped');
 
             if (grouped.length && currentGroupName !== input.attr('data-group-label')) {
                 currentGroupName = input.attr('data-group-label');
-                var itemGroup = $('<li class="ui-selectcheckboxmenu-item-group ui-selectcheckboxmenu-group-list-item ui-corner-all"></li>');
+                var itemGroup = $('<li class="ui-selectcheckboxmenu-item-group ui-selectcheckboxmenu-group-list-item"></li>');
                 itemGroup.text(currentGroupName);
                 $this.itemContainer.append(itemGroup);
             }
@@ -661,7 +661,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
      */
     configureSelectAllAria: function() {
         if (this.selectAllTogglerCheckbox) {
-           var ariaLabel = this.selectAllTogglerCheckbox.prop('checked') ? PrimeFaces.getAriaLabel('selectAll') : PrimeFaces.getAriaLabel('unselectAll');
+           var ariaLabel = this.selectAllTogglerCheckbox.prop('checked') ? this.getAriaLabel('selectAll') : this.getAriaLabel('unselectAll');
            this.selectAllTogglerCheckbox.attr('aria-label', ariaLabel);
            this.selectAllTogglerCheckbox.removeAttr('aria-selected');
         }
@@ -1180,7 +1180,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         if (this.panel.is(":hidden") && this.transition) {
             this.transition.show({
                 onEnter: function() {
-                    $this.panel.css('z-index', PrimeFaces.nextZindex());
+                    PrimeFaces.nextZindex($this.panel);
                     $this.alignPanel();
                 },
                 onEntered: function() {
@@ -1371,7 +1371,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             label = PrimeFaces.escapeHTML(input.val());
         }
 
-        var itemDisplayMarkup = `<li class="ui-selectcheckboxmenu-token ui-state-active ui-corner-all" data-item-value="${PrimeFaces.escapeHTML(input.val())}">` +
+        var itemDisplayMarkup = `<li class="ui-selectcheckboxmenu-token ui-state-active" data-item-value="${PrimeFaces.escapeHTML(input.val())}">` +
                                 `<span class="ui-selectcheckboxmenu-token-icon ui-icon ui-icon-close"></span>` +
                                 `<span class="ui-selectcheckboxmenu-token-label">${label}</span></li>`;
 

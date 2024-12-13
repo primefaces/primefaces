@@ -21,7 +21,7 @@
         <mojarra.version>4.0.9</mojarra.version>
         <myfaces.version>4.0.2</myfaces.version>
         <resteasy.version>6.2.8.Final</resteasy.version>
-        <jetty.version>12.0.15</jetty.version>
+        <jetty.version>12.0.16</jetty.version>
         <weld.version>5.1.3.Final</weld.version>
         <jsf.project.stage>Production</jsf.project.stage>
     </properties>
@@ -136,26 +136,22 @@
 
         <!-- Barcode -->
         <dependency>
-            <groupId>io.nayuki</groupId>
-            <artifactId>qrcodegen</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.primefaces.extensions</groupId>
-            <artifactId>barcode4j-light</artifactId>
+            <groupId>uk.org.okapibarcode</groupId>
+            <artifactId>okapibarcode</artifactId>
         </dependency>
 
         <!-- ChartJS model -->
         <dependency>
            <groupId>software.xdev</groupId>
            <artifactId>chartjs-java-model</artifactId>
-           <version>2.3.1</version>
+           <version>2.6.0</version>
         </dependency>
 
         <!-- Conflict with resteasy-jackson2-provider -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.18.1</version>
+            <version>2.18.2</version>
         </dependency>
 
         <!-- Cache -->

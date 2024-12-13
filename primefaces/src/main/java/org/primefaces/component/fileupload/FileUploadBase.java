@@ -49,7 +49,7 @@ public abstract class FileUploadBase extends UIInput implements Widget {
         mode,
         uploadLabel,
         cancelLabel,
-        dragDropSupport,
+        dragDrop,
         onstart,
         oncomplete,
         onerror,
@@ -187,12 +187,12 @@ public abstract class FileUploadBase extends UIInput implements Widget {
         getStateHelper().put(PropertyKeys.cancelLabel, cancelLabel);
     }
 
-    public boolean isDragDropSupport() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.dragDropSupport, true);
+    public boolean isDragDrop() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.dragDrop, true);
     }
 
-    public void setDragDropSupport(boolean dragDropSupport) {
-        getStateHelper().put(PropertyKeys.dragDropSupport, dragDropSupport);
+    public void setDragDrop(boolean dragDrop) {
+        getStateHelper().put(PropertyKeys.dragDrop, dragDrop);
     }
 
     public String getOnstart() {

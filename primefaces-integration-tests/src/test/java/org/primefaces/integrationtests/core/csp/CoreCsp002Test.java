@@ -21,14 +21,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.application.resource.barcode;
+package org.primefaces.integrationtests.core.csp;
 
-import org.krysalis.barcode4j.impl.upcean.UPCEBean;
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.AbstractPrimePageTest;
 
-public class UPCEGenerator extends BarcodeGenerator {
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
-    public UPCEGenerator() {
-        super(new UPCEBean());
+public class CoreCsp002Test  extends AbstractPrimePageTest {
+
+    @Test
+    @Order(1)
+    @DisplayName("Core-CSP: #12901 No PrimeFaces components on page fails initScripts() because jQuery is not loaded")
+    void cspInNewPage(Page page) {
+        // Arrange
+        assertNoJavascriptErrors();
+
+        // Act
+        page.submit.click();
+
+        // Assert
+        assertNoJavascriptErrors();
     }
 
+    public static class Page extends AbstractPrimePage {
+
+        @FindBy(id = "form:submit")
+        WebElement submit;
+
+        @Override
+        public String getLocation() {
+            return "core/csp/coreCsp002.xhtml";
+        }
+    }
 }

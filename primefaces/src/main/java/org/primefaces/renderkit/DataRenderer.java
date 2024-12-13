@@ -38,7 +38,9 @@ import org.primefaces.component.paginator.PaginatorElementRenderer;
 import org.primefaces.component.paginator.PrevPageLinkRenderer;
 import org.primefaces.component.paginator.RowsPerPageDropdownRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
 import org.primefaces.util.FacetUtils;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.MapBuilder;
 import org.primefaces.util.WidgetBuilder;
 
@@ -46,7 +48,6 @@ import java.io.IOException;
 import java.util.Map;
 
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIPanel;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
@@ -86,14 +87,6 @@ public class DataRenderer extends CoreRenderer {
 
         String styleClass = isTop ? UIPageableData.PAGINATOR_TOP_CONTAINER_CLASS : UIPageableData.PAGINATOR_BOTTOM_CONTAINER_CLASS;
         String id = pageable.getClientId(context) + "_paginator_" + position;
-
-        //add corners
-        if (!isTop && pageable.getFooter() == null) {
-            styleClass = styleClass + " ui-corner-bottom";
-        }
-        else if (isTop && pageable.getHeader() == null) {
-            styleClass = styleClass + " ui-corner-top";
-        }
 
         // start main container
         writer.startElement("div", null);
@@ -205,38 +198,64 @@ public class DataRenderer extends CoreRenderer {
         }
     }
 
-
-    protected String getHeaderLabel(FacesContext context, UIColumn column) {
-        String ariaHeaderText = column.getAriaHeaderText();
-
-        // for headerText of column
-        if (ariaHeaderText == null) {
-            ariaHeaderText = column.getHeaderText();
-        }
-
-        // for header facet
-        if (ariaHeaderText == null) {
-            UIComponent header = column.getFacet("header");
-            if (FacetUtils.shouldRenderFacet(header)) {
-                if (header instanceof UIPanel) {
-                    for (UIComponent child : header.getChildren()) {
-                        if (child.isRendered()) {
-                            String value = ComponentUtils.getValueToRender(context, child);
-
-                            if (value != null) {
-                                ariaHeaderText = value;
-                                break;
-                            }
-                        }
-                    }
-                }
-                else {
-                    ariaHeaderText = ComponentUtils.getValueToRender(context, header);
-                }
-            }
-        }
-
-        return ariaHeaderText;
+    protected boolean isColumnAriaHeaderTextDefined(FacesContext context, UIColumn column) {
+        return LangUtils.isNotBlank(column.getAriaHeaderText());
     }
 
+    protected String resolveColumnAriaHeaderText(FacesContext context, UIColumn column) {
+        if (column instanceof UIComponent) {
+            UIComponent component = (UIComponent) column;
+            component.pushComponentToEL(context, component);
+        }
+
+        try {
+            String ariaHeaderText = column.getAriaHeaderText();
+
+            // for headerText of column
+            if (ariaHeaderText == null) {
+                ariaHeaderText = column.getHeaderText();
+            }
+
+            // for header facet
+            if (ariaHeaderText == null) {
+                UIComponent headerFacet = column.getFacet("header");
+                if (FacetUtils.shouldRenderFacet(headerFacet)) {
+                    // encode and strip all HTML tags
+                    ariaHeaderText = ComponentUtils.encodeComponent(headerFacet, context).replaceAll("\\<.*?\\>", Constants.EMPTY_STRING);
+                }
+            }
+
+            return ariaHeaderText;
+        }
+        finally {
+            if (column instanceof UIComponent) {
+                UIComponent component = (UIComponent) column;
+                component.popComponentFromEL(context);
+            }
+        }
+    }
+
+    protected String resolveColumnHeaderText(FacesContext context, UIColumn column) {
+        if (column instanceof UIComponent) {
+            UIComponent component = (UIComponent) column;
+            component.pushComponentToEL(context, component);
+        }
+
+        try {
+            String headerText = column.getHeaderText();
+
+            // for ariaHeaderText of column
+            if (headerText == null) {
+                headerText = column.getAriaHeaderText();
+            }
+
+            return headerText;
+        }
+        finally {
+            if (column instanceof UIComponent) {
+                UIComponent component = (UIComponent) column;
+                component.popComponentFromEL(context);
+            }
+        }
+    }
 }

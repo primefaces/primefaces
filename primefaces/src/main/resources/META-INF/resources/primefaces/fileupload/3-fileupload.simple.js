@@ -1,10 +1,11 @@
 /**
  * __PrimeFaces Simple FileUpload Widget__
  *
- * @prop {JQuery} button The DOM element for the button for selecting a file.
- * @prop {JQuery} display The DOM element for the UI display.
+ * @prop {[] | JQuery} button The DOM element for the button for selecting a file.
+ * @prop {[] | JQuery} display The DOM element for the UI display.
  * @prop {JQuery} form The DOM element of the (closest) form that contains this file upload.
  * @prop {JQuery} input The DOM element for the file input element.
+ * @prop {JQuery} dropZone Drop zone to use for drag and drop.
  *
  * @interface {PrimeFaces.widget.SimpleFileUploadCfg} cfg The configuration for the
  * {@link  SimpleFileUpload| SimpleFileUpload widget}.
@@ -19,6 +20,7 @@
  * @prop {boolean} cfg.skinSimple Whether to apply theming to the simple upload widget.
  * @forcedProp {number} [ajaxCount] Number of concurrent active Ajax requests.
  * @prop {boolean} cfg.displayFilename Wheter the filename should be displayed.
+ * @prop {string} cfg.dropZone Custom drop zone to use for drag and drop.
  */
 PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
 
@@ -34,10 +36,16 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
         }
 
         this.cfg.messageTemplate = this.cfg.messageTemplate || '{name} {size}';
-        this.cfg.global = (this.cfg.global === true || this.cfg.global === undefined) ? true : false;
+        this.cfg.global = this.cfg.global !== false;
 
         this.form = this.jq.closest('form');
         this.input = $(this.jqId);
+
+        var $this = this;
+
+        if (this.cfg.dropZone) {
+            this.dropZone = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.dropZone);
+        }
 
         if (this.cfg.skinSimple) {
             this.input = $(this.jqId + '_input');
@@ -47,13 +55,14 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
             if (!this.input.prop('disabled')) {
                 this.bindEvents();
                 this.bindTriggers();
+                this.bindDropZone();
             }
         }
         else if (this.cfg.auto) {
-            var $this = this;
             this.input.on('change.fileupload', function() {
                 $this.upload();
             });
+            this.bindDropZone();
         }
     },
 
@@ -114,7 +123,36 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
         .on('blur.fileupload', function() {
             $this.button.removeClass('ui-state-focus');
         });
+    },
 
+    /**
+     * Sets up the event handling for the dropZone.
+     * @private
+     */
+    bindDropZone: function() {
+        if (this.dropZone) {
+            var $this = this;
+
+            this.dropZone.on("dragenter dragover dragleave drop", function(event) {
+                event.preventDefault();
+                event.stopPropagation();
+            });
+
+            this.dropZone.on("dragenter dragover", function(event) {
+                $this.dropZone.addClass('ui-state-drag');
+            });
+            this.dropZone.on("dragleave drop", function(event) {
+                $this.dropZone.removeClass('ui-state-drag');
+            });
+
+            this.dropZone.on("drop", function(event) {
+                var dataTransfer = event.originalEvent.dataTransfer;
+                if (dataTransfer && dataTransfer.files && dataTransfer.files.length > 0) {
+                    $this.input[0].files = dataTransfer.files;
+                    $this.input.trigger('change.fileupload');
+                }
+            });
+        }
     },
 
     /**

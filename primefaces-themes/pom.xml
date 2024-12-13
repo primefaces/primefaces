@@ -1,21 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <parent>
         <groupId>org.primefaces</groupId>
         <artifactId>primefaces-parent</artifactId>
         <version>15.0.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-
     <artifactId>primefaces-themes</artifactId>
     <packaging>jar</packaging>
-
     <name>PrimeFaces Themes</name>
-
     <build>
         <pluginManagement>
             <plugins>
@@ -24,8 +18,8 @@
                     <artifactId>dart-sass-maven-plugin</artifactId>
                     <version>1.4.0</version>
                     <configuration>
-                        <inputFolder>${basedir}</inputFolder>
-                        <outputFolder>${basedir}</outputFolder>
+                        <inputFolder>${project.basedir}</inputFolder>
+                        <outputFolder>${project.basedir}</outputFolder>
                         <update>true</update>
                         <noSourceMap>true</noSourceMap>
                         <style>COMPRESSED</style>
@@ -53,8 +47,8 @@
                             <goal>compile-sass</goal>
                         </goals>
                         <configuration>
-                            <inputFolder>${basedir}</inputFolder>
-                            <outputFolder>${basedir}</outputFolder>
+                            <inputFolder>${project.basedir}</inputFolder>
+                            <outputFolder>${project.basedir}</outputFolder>
                             <update>true</update>
                             <noSourceMap>true</noSourceMap>
                             <style>COMPRESSED</style>
@@ -63,7 +57,29 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- Add the directories as source roots -->
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.7.1</version>
+                <executions>
+                    <execution>
+                        <id>source-jar</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>src/main/assembly/source-jar.xml</descriptor>
+                            </descriptors>
+                            <finalName>${project.artifactId}-${project.version}</finalName>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
                 <executions>
                     <execution>
@@ -73,7 +89,7 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/../primefaces/src/main/resources/META-INF/resources</outputDirectory>
+                            <outputDirectory>${project.basedir}/../primefaces/src/main/resources/META-INF/resources</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>themes</directory>

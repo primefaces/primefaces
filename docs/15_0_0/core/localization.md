@@ -14,6 +14,16 @@ Source code bundles:  [GitHub Server Message Bundle Files](https://github.com/pr
 ### Default Messages.properties
 
 ```
+primefaces.FileValidator.ALLOW_TYPES = Invalid file type.
+primefaces.FileValidator.ALLOW_TYPES_detail = Invalid file type: ''{0}''. Allowed types: ''{1}''.
+primefaces.FileValidator.FILENAME_EMPTY=Filename cannot be empty or null
+primefaces.FileValidator.FILENAME_INVALID_CHAR=Invalid filename: {0} contains invalid character: {1}
+primefaces.FileValidator.FILENAME_INVALID_LINUX=Invalid Linux filename: {0}
+primefaces.FileValidator.FILENAME_INVALID_WINDOWS=Invalid Windows filename: {0}
+primefaces.FileValidator.FILE_LIMIT = Maximum number of files exceeded.
+primefaces.FileValidator.FILE_LIMIT_detail = Maximum number: {0}.
+primefaces.FileValidator.SIZE_LIMIT = Invalid file size.
+primefaces.FileValidator.SIZE_LIMIT_detail = File ''{0}'' must not be larger than {1}.
 primefaces.calendar.DATE_INVALID_RANGE_MESSAGE_ID = {0}: Validation Error: Start date is greater than the end date.
 primefaces.calendar.INVALID = {0}: Validation Error: Value is not valid.
 primefaces.calendar.MAX_DATE = {0}: Validation Error: Value must be {2} or before.
@@ -32,7 +42,6 @@ primefaces.password.INVALID_MATCH_detail = {0} should match with {1}.
 primefaces.slider.OUT_OF_RANGE = {0}: Validation Error: Value is out of range.
 primefaces.tree.REQUIRED = {0}: Validation Error.
 primefaces.tree.REQUIRED_detail = Selection is required.
-
 ```
 
 ## Client Localization

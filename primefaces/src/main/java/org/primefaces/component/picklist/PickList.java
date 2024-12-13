@@ -67,9 +67,9 @@ public class PickList extends PickListBase {
     public static final String BUTTONS_CELL_CLASS = "ui-picklist-buttons-cell";
     public static final String SOURCE_CONTROLS = "ui-picklist-source-controls ui-picklist-buttons";
     public static final String TARGET_CONTROLS = "ui-picklist-target-controls ui-picklist-buttons";
-    public static final String ITEM_CLASS = "ui-picklist-item ui-corner-all";
+    public static final String ITEM_CLASS = "ui-picklist-item";
     public static final String ITEM_DISABLED_CLASS = "ui-state-disabled";
-    public static final String CAPTION_CLASS = "ui-picklist-caption ui-widget-header ui-corner-tl ui-corner-tr";
+    public static final String CAPTION_CLASS = "ui-picklist-caption ui-widget-header";
     public static final String ADD_BUTTON_CLASS = "ui-picklist-button-add";
     public static final String ADD_ALL_BUTTON_CLASS = "ui-picklist-button-add-all";
     public static final String REMOVE_BUTTON_CLASS = "ui-picklist-button-remove";
@@ -90,7 +90,7 @@ public class PickList extends PickListBase {
     public static final String MOVE_DOWN_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrow-1-s";
     public static final String MOVE_TOP_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrowstop-1-n";
     public static final String MOVE_BOTTOM_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrowstop-1-s";
-    public static final String FILTER_CLASS = "ui-picklist-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
+    public static final String FILTER_CLASS = "ui-picklist-filter ui-inputfield ui-inputtext ui-widget ui-state-default";
     public static final String FILTER_CONTAINER = "ui-picklist-filter-container";
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
@@ -139,7 +139,7 @@ public class PickList extends PickListBase {
                 message = new FacesMessage(FacesMessage.SEVERITY_ERROR, requiredMessage, requiredMessage);
             }
             else {
-                message = MessageFactory.getFacesMessage(REQUIRED_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, label);
+                message = MessageFactory.getFacesMessage(facesContext, REQUIRED_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, label);
             }
             facesContext.addMessage(clientId, message);
             setValid(false);
@@ -173,7 +173,7 @@ public class PickList extends PickListBase {
             Object targetItem = targetEntries.get(i);
             // Check if target item exists in source list
             if (!oldSource.contains(targetItem) && !oldTarget.contains(targetItem)) {
-                FacesMessage message = MessageFactory.getFacesMessage(UPDATE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, label);
+                FacesMessage message = MessageFactory.getFacesMessage(facesContext, UPDATE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, label);
                 facesContext.addMessage(clientId, message);
                 setValid(false);
                 break;
@@ -207,7 +207,7 @@ public class PickList extends PickListBase {
             boolean itemDisabled = isItemDisabled();
             // Check if disabled item has been moved from its former/original list
             if (itemDisabled && !oldEntries.contains(item)) {
-                FacesMessage message = MessageFactory.getFacesMessage(UPDATE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, label);
+                FacesMessage message = MessageFactory.getFacesMessage(facesContext, UPDATE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, label);
                 facesContext.addMessage(clientId, message);
                 setValid(false);
                 break;

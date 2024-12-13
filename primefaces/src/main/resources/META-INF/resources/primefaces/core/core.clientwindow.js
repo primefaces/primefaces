@@ -106,20 +106,18 @@ if (!PrimeFaces.clientwindow) {
                     this.requestNewClientWindowId();
                 }
             }
-            else {
+            else if (sessionStorageClientWindowId === this.TEMP_CLIENT_WINDOW_ID) {
                 // we triggered the windowId recreation last request
-                if (sessionStorageClientWindowId === this.TEMP_CLIENT_WINDOW_ID) {
-                    sessionStorage.setItem(this.CLIENT_WINDOW_SESSION_STORAGE, this.clientWindowId);
-                }
+                sessionStorage.setItem(this.CLIENT_WINDOW_SESSION_STORAGE, this.clientWindowId);
+            }
+            else if (sessionStorageClientWindowId.length !== this.LENGTH_CLIENT_WINDOW_ID) {
                 // security check length
-                else if (sessionStorageClientWindowId.length !== this.LENGTH_CLIENT_WINDOW_ID) {
-                    this.requestNewClientWindowId();
-                }
+                this.requestNewClientWindowId();
+            }
+            else if (sessionStorageClientWindowId !== urlClientWindowId || sessionStorageClientWindowId !== this.clientWindowId) {
                 // session storage windowId doesn't match requested windowId
                 // -> redirect to the same view with current windowId from the window name
-                else if (sessionStorageClientWindowId !== urlClientWindowId || sessionStorageClientWindowId !== this.clientWindowId) {
-                    window.location = this.replaceUrlParam(window.location.href, this.CLIENT_WINDOW_URL_PARAM, sessionStorageClientWindowId);
-                }
+                window.location = this.replaceUrlParam(window.location.href, this.CLIENT_WINDOW_URL_PARAM, sessionStorageClientWindowId);
             }
         },
         
@@ -152,8 +150,8 @@ if (!PrimeFaces.clientwindow) {
              if (queryString && queryString.length > 0) {
                  // create an array of query parameters - substring(1) removes the ? at the beginning of the query
                  var queryParameters = queryString.substring(1).split("&");
-                 for (var i = 0; i < queryParameters.length; i++) {
-                     var queryParameter = queryParameters[i].split("=");
+                 for (const queryParameterString of queryParameters) {
+                     const queryParameter = queryParameterString.split("=");
                      if (queryParameter[0] === name) {
                          return queryParameter.length > 1 ? decodeURIComponent(queryParameter[1]) : "";
                      }
@@ -203,9 +201,7 @@ if (!PrimeFaces.clientwindow) {
             newParameters.push(parameterName + "=" + encodeURIComponent(parameterValue));
 
             // loop old parameters, remove empty ones and remove the parameter with the same name as the new one
-            for (var i = 0; i < oldParameters.length; i++) {
-                var oldParameterPair = oldParameters[i];
-
+            for (const oldParameterPair of oldParameters) {
                 if (oldParameterPair.length > 0) {
                     var oldParameterName = oldParameterPair.split('=')[0];
                     var oldParameterValue = oldParameterPair.split('=')[1];

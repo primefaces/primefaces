@@ -34,5 +34,5 @@ public class Menubar extends MenubarBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Menubar";
 
-    public static final String CONTAINER_CLASS = "ui-menu ui-menubar ui-widget ui-widget-content ui-corner-all ui-helper-clearfix";
+    public static final String CONTAINER_CLASS = "ui-menu ui-menubar ui-widget ui-widget-content ui-helper-clearfix";
 }

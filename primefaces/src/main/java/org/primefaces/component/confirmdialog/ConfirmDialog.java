@@ -34,7 +34,7 @@ public class ConfirmDialog extends ConfirmDialogBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.ConfirmDialog";
 
-    public static final String CONTAINER_CLASS = "ui-confirm-dialog ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow ui-hidden-container";
+    public static final String CONTAINER_CLASS = "ui-confirm-dialog ui-dialog ui-widget ui-widget-content ui-shadow ui-hidden-container";
     public static final String BUTTONPANE_CLASS = "ui-dialog-buttonpane ui-dialog-footer ui-widget-content ui-helper-clearfix";
     public static final String SEVERITY_ICON_CLASS = "ui-confirm-dialog-severity";
     public static final String MESSAGE_CLASS = "ui-confirm-dialog-message";

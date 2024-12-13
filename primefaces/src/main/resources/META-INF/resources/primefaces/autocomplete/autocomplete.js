@@ -193,7 +193,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
         //itemtip
         if (this.cfg.itemtip) {
-            this.itemtip = $('<div id="' + this.id + '_itemtip" class="ui-autocomplete-itemtip ui-state-highlight ui-widget ui-corner-all ui-shadow"></div>').appendTo(document.body);
+            this.itemtip = $('<div id="' + this.id + '_itemtip" class="ui-autocomplete-itemtip ui-state-highlight ui-widget ui-shadow"></div>').appendTo(document.body);
             this.cfg.itemtipMyPosition = this.cfg.itemtipMyPosition || 'left top';
             this.cfg.itemtipAtPosition = this.cfg.itemtipAtPosition || 'right bottom';
             this.cfg.checkForScrollbar = (this.cfg.itemtipAtPosition.indexOf('right') !== -1);
@@ -219,10 +219,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     configureLocale: function() {
-        this.emptyMessage = PrimeFaces.getLocaleLabel('emptySearchMessage');
-        this.resultsMessage = PrimeFaces.getLocaleLabel('searchMessage');
+        this.emptyMessage = this.getLabel('emptySearchMessage');
+        this.resultsMessage = this.getLabel('searchMessage');
         if (this.dropdown) {
-            this.dropdown.attr('aria-label', PrimeFaces.getLocaleLabel('choose'));
+            this.dropdown.attr('aria-label', this.getLabel('choose'));
         }
     },
 
@@ -990,18 +990,18 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 data: { query: query },
                 dataType: 'json'
             }).done(function(suggestions) {
-                var html = '<ul class="ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-corner-all ui-helper-reset" role="listbox">';
+                var html = '<ul class="ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-helper-reset" role="listbox">';
                 suggestions.suggestions.forEach(function(suggestion, index) {
                     var labelEncoded = $("<div>").text(suggestion.label).html();
                     var itemValue = labelEncoded;
                     if (suggestion.value) {
                         itemValue = $("<div>").text(suggestion.value).html();
                     }
-                    html += '<li id="' + $this.id + '_item_' + index + '" class="ui-autocomplete-item ui-autocomplete-list-item ui-corner-all" data-item-value="' + PrimeFaces.escapeHTML(itemValue) + '" data-item-label="' + PrimeFaces.escapeHTML(labelEncoded) + '" role="option">' + PrimeFaces.escapeHTML(labelEncoded) + '</li>';
+                    html += '<li id="' + $this.id + '_item_' + index + '" class="ui-autocomplete-item ui-autocomplete-list-item" data-item-value="' + PrimeFaces.escapeHTML(itemValue) + '" data-item-label="' + PrimeFaces.escapeHTML(labelEncoded) + '" role="option">' + PrimeFaces.escapeHTML(labelEncoded) + '</li>';
                 });
                 if (suggestions.moreAvailable && $this.cfg.moreText) {
                     var moreTextEncoded = $("<div>").text($this.cfg.moreText).html();
-                    html += '<li id="' + $this.id + '_item_more' + '" class="ui-autocomplete-item ui-autocomplete-moretext ui-corner-all" role="option">' + PrimeFaces.escapeHTML(moreTextEncoded) + '</li>';
+                    html += '<li id="' + $this.id + '_item_more' + '" class="ui-autocomplete-item ui-autocomplete-moretext" role="option">' + PrimeFaces.escapeHTML(moreTextEncoded) + '</li>';
                 }
                 html += '</ul>';
 
@@ -1045,7 +1045,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         if (this.transition) {
             this.transition.show({
                 onEnter: function() {
-                    $this.panel.css('z-index', PrimeFaces.nextZindex());
+                    PrimeFaces.nextZindex($this.panel);
                     $this.alignPanel();
                 },
                 onEntered: function() {
@@ -1192,7 +1192,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 var itemLabelEscaped = PrimeFaces.escapeHTML(itemLabel);
                 var itemValueEscaped = PrimeFaces.escapeHTML(itemValue);
                 var itemDisplayMarkup = '<li data-token-value="' + itemValueEscaped;
-                itemDisplayMarkup += '"class="ui-autocomplete-token ui-state-active ui-corner-all ui-helper-hidden';
+                itemDisplayMarkup += '"class="ui-autocomplete-token ui-state-active ui-helper-hidden';
                 itemDisplayMarkup += (itemStyleClass === '' ? '' : ' ' + itemStyleClass) + '" '
                 itemDisplayMarkup += 'role="option" aria-label="' + itemLabelEscaped + '" ';
                 itemDisplayMarkup += 'aria-selected="true">';
@@ -1633,12 +1633,12 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
      */
     findWrapperTag: function(wrapper) {
         if (wrapper.is('ul')) {
-            this.wrapperStartTag = '<ul class="ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-corner-all ui-helper-reset" role="listbox">';
+            this.wrapperStartTag = '<ul class="ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-helper-reset" role="listbox">';
             this.wrapperEndTag = '</ul>';
         }
         else {
             var header = wrapper.find('> table > thead');
-            this.wrapperStartTag = '<table class="ui-autocomplete-items ui-autocomplete-table ui-widget-content ui-widget ui-corner-all ui-helper-reset" role="listbox">' +
+            this.wrapperStartTag = '<table class="ui-autocomplete-items ui-autocomplete-table ui-widget-content ui-widget ui-helper-reset" role="listbox">' +
                 (header.length ? header.eq(0).outherHTML : '') +
                 '<tbody>';
             this.wrapperEndTag = '</tbody></table>';

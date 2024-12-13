@@ -2079,6 +2079,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[The magnification factor of the barcode. Default is 2.0.]]>
+            </description>
+            <name>magnification</name>
+            <required>false</required>
+            <type>java.lang.Double</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[The QR Code error correction level. L (default) - up to 7% damage. M - up to 15% damage. Q - up to 25% damage. H - up to 30% damage]]>
             </description>
             <name>qrErrorCorrection</name>
@@ -3453,6 +3461,14 @@
                 <![CDATA[Displays days belonging to other months. Default is false.]]>
             </description>
             <name>showOtherMonths</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Displays long month names instead of short names in month picker and month navigator. Default is false.]]>
+            </description>
+            <name>showLongMonthNames</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -5847,7 +5863,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Label to read by screen readers, when not specified headerText is used.]]>
+                <![CDATA[Accessible label for screen readers. IMPORTANT: Overrides headerText and headerFacet if specified. Only necessary when the column header is not human readable (e.g. empty header or icon-only header).]]>
             </description>
             <name>ariaHeaderText</name>
             <required>false</required>
@@ -6299,7 +6315,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Label to read by screen readers, when not specified headerText is used.]]>
+                <![CDATA[Accessible label for screen readers. IMPORTANT: Overrides headerText and headerFacet if specified. Only necessary when the column header is not human readable (e.g. empty header or icon-only header).]]>
             </description>
             <name>ariaHeaderText</name>
             <required>false</required>
@@ -10928,7 +10944,7 @@
             <description>
                 <![CDATA[Specifies dragdrop based file selection from filesystem, default is true and works only on supported browsers.]]>
             </description>
-            <name>dragDropSupport</name>
+            <name>dragDrop</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -19424,7 +19440,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Event to show the overlay panel, default is "click".]]>
+                <![CDATA[Event to show the overlay panel if 'none', the overlay panel will only be displayed by `show()` or `toggle()`. default is "click".]]>
             </description>
             <name>showEvent</name>
             <required>false</required>
@@ -23526,14 +23542,6 @@
             <name>selectedLabel</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Label to be shown in updateLabel mode when one or more items are selected. If not set the label is shown.]]>
-            </description>
-            <name>multipleLabel</name>
-            <required>false</required>
-            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>

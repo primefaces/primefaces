@@ -34,11 +34,11 @@ public class Spinner extends SpinnerBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Spinner";
 
-    public static final String CONTAINER_CLASS = "ui-spinner ui-widget ui-corner-all";
+    public static final String CONTAINER_CLASS = "ui-spinner ui-widget";
     public static final String BUTTONS_CLASS_PREFIX = "ui-spinner-";
-    public static final String INPUT_CLASS = "ui-spinner-input ui-inputfield ui-state-default ui-corner-all";
-    public static final String UP_BUTTON_CLASS = "ui-spinner-button ui-spinner-up ui-corner-tr ui-button ui-widget ui-state-default ui-button-text-only";
-    public static final String DOWN_BUTTON_CLASS = "ui-spinner-button ui-spinner-down ui-corner-br ui-button ui-widget ui-state-default ui-button-text-only";
+    public static final String INPUT_CLASS = "ui-spinner-input ui-inputfield ui-state-default";
+    public static final String UP_BUTTON_CLASS = "ui-spinner-button ui-spinner-up ui-button ui-widget ui-state-default ui-button-text-only";
+    public static final String DOWN_BUTTON_CLASS = "ui-spinner-button ui-spinner-down ui-button ui-widget ui-state-default ui-button-text-only";
     public static final String ICON_BASE_CLASS = "ui-icon ui-c";
     public static final String STACKED_UP_ICON_CLASS = "ui-icon-triangle-1-n";
     public static final String STACKED_DOWN_ICON_CLASS = "ui-icon-triangle-1-s";

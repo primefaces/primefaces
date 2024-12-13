@@ -137,9 +137,9 @@ if (!PrimeFaces.dialog) {
                             pieces.unshift(classSelector);
                         } else {
                             // Without classes, we try to work with :eq and the tag name
-                            var elems = $(e.parentNode).find(e.tagName);
-                            if (elems.length > 1) {
-                                pieces.unshift(":eq(" + elems.index(e) + ")");
+                            var tagElems = $(e.parentNode).find(e.tagName);
+                            if (tagElems.length > 1) {
+                                pieces.unshift(":eq(" + tagElems.index(e) + ")");
                             }
                             pieces.unshift(e.tagName);
                         }
@@ -161,21 +161,21 @@ if (!PrimeFaces.dialog) {
             }
 
             var styleClass = cfg.options.styleClass||'',
-            dialogDOM = $('<div id="' + dialogId + '" class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow ui-hidden-container ui-overlay-hidden ' + styleClass + '"' +
+            dialogDOM = $('<div id="' + dialogId + '" class="ui-dialog ui-widget ui-widget-content ui-shadow ui-hidden-container ui-overlay-hidden ' + styleClass + '"' +
                     ' data-pfdlgcid="' + PrimeFaces.escapeHTML(cfg.pfdlgcid) + '" data-widget="' + dialogWidgetVar + '"></div>')
-                    .append('<div class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top"><span id="' + dialogId + '_title" class="ui-dialog-title"></span></div>');
+                    .append('<div class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix"><span id="' + dialogId + '_title" class="ui-dialog-title"></span></div>');
 
             var titlebar = dialogDOM.children('.ui-dialog-titlebar');
             if(cfg.options.closable !== false) {
-                titlebar.append('<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all" href="#" role="button"><span class="ui-icon ui-icon-closethick"></span></a>');
+                titlebar.append('<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-close" href="#" role="button"><span class="ui-icon ui-icon-closethick"></span></a>');
             }
 
             if(cfg.options.minimizable) {
-                titlebar.append('<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-minimize ui-corner-all" href="#" role="button"><span class="ui-icon ui-icon-minus"></span></a>');
+                titlebar.append('<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-minimize" href="#" role="button"><span class="ui-icon ui-icon-minus"></span></a>');
             }
 
             if(cfg.options.maximizable) {
-                titlebar.append('<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-maximize ui-corner-all" href="#" role="button"><span class="ui-icon ui-icon-extlink"></span></a>');
+                titlebar.append('<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-maximize" href="#" role="button"><span class="ui-icon ui-icon-extlink"></span></a>');
             }
 
             var iframeStyleClass = cfg.options.iframeStyleClass||'';
@@ -340,17 +340,16 @@ if (!PrimeFaces.dialog) {
             dlg.attr('data-queuedforremoval', true);
 
             if(parentDlg) {
-                var parentDlgFrame = parentDlg.find('> .ui-dialog-content > iframe').get(0),
+                var parentDlgFrame = parentDlg.find('> .ui-dialog-content > iframe').get(0);
                 windowContext = parentDlgFrame.contentWindow||parentDlgFrame;
-                sourceWidget = windowContext.PF(sourceWidgetVar);
             }
             else {
                 // We have to resolve the frames from the root window to the source widget to invoke the dialog return behavior
                 // Each source frame element is a selector. We step into every nested frame until we are in the source widget frame.
                 windowContext = rootWindow;
                 var frames = dlgWidget.cfg.sourceFrames;
-                for (var i = 0; i < frames.length; i++) {
-                    windowContext = $(windowContext.document).find(frames[i]).get(0).contentWindow;
+                for (const frame of frames) {
+                    windowContext = $(windowContext.document).find(frame).get(0).contentWindow;
                 }
             }
 
@@ -390,9 +389,9 @@ if (!PrimeFaces.dialog) {
          */
         showMessageInDialog: function(msg) {
             if(!this.messageDialog) {
-                $('<div id="primefacesmessagedlg" class="ui-message-dialog ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow ui-hidden-container"></div>')
-                            .append('<div class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top"><span class="ui-dialog-title"></span>' +
-                            '<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all" href="#" role="button"><span class="ui-icon ui-icon-closethick"></span></a></div>' +
+                $('<div id="primefacesmessagedlg" class="ui-message-dialog ui-dialog ui-widget ui-widget-content ui-shadow ui-hidden-container"></div>')
+                            .append('<div class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix"><span class="ui-dialog-title"></span>' +
+                            '<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-close" href="#" role="button"><span class="ui-icon ui-icon-closethick"></span></a></div>' +
                             '<div class="ui-dialog-content ui-widget-content" style="height: auto;"></div>')
                             .appendTo(document.body);
 

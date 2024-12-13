@@ -496,13 +496,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.sortableColumns.attr('tabindex', this.cfg.tabindex);
 
         //aria messages
-        this.ascMessage = PrimeFaces.getAriaLabel('datatable.sort.ASC');
-        this.descMessage = PrimeFaces.getAriaLabel('datatable.sort.DESC');
+        this.ascMessage = this.getAriaLabel('datatable.sort.ASC');
+        this.descMessage = this.getAriaLabel('datatable.sort.DESC');
         if (this.cfg.allowUnsorting) {
-            this.otherMessage = PrimeFaces.getAriaLabel('datatable.sort.NONE');
+            this.otherMessage = this.getAriaLabel('datatable.sort.NONE');
         }
         else {
-            this.otherMessage = PrimeFaces.getAriaLabel('datatable.sort.ASC');
+            this.otherMessage = this.getAriaLabel('datatable.sort.ASC');
         }
 
         //reflow dropdown
@@ -712,7 +712,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             var title = filterColumn.find('.ui-column-title')
 
             if (filter && title) {
-                filter.attr('aria-label', PrimeFaces.getLocaleLabel('filter') + " " + title.text());
+                filter.attr('aria-label', $this.getLabel('filter') + " " + title.text());
             }
         });
     },
@@ -1485,7 +1485,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             var row = toggler.closest('tr');
             var rowMeta = this.getRowMeta(row);
             var expanded = toggler.attr('aria-expanded') === "true";
-            var ariaLabel = expanded ? PrimeFaces.getAriaLabel('collapseLabel') : PrimeFaces.getAriaLabel('expandLabel');
+            var ariaLabel = expanded ? this.getAriaLabel('collapseLabel') : this.getAriaLabel('expandLabel');
             if (rowMeta && rowMeta.key) {
                 ariaLabel += " " + rowMeta.key;
             }
@@ -2490,7 +2490,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                                 .attr('aria-label', $this.getSortMessage(ariaLabel, $this.descMessage));
                         } else {
                             sortIcon.removeClass('ui-icon-triangle-1-s').addClass('ui-icon-carat-2-n-s');
-                            columnHeader.removeClass('ui-state-active ').attr('aria-sort', 'other')
+                            columnHeader.removeClass('ui-state-active').attr('aria-sort', 'other')
                                 .attr('aria-label', $this.getSortMessage(ariaLabel, $this.ascMessage));
                             $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).attr('aria-sort', 'other')
                                 .attr('aria-label', $this.getSortMessage(ariaLabel, $this.ascMessage));
@@ -2943,7 +2943,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             if (jq) {
                 var rowMeta = this.getRowMeta(row);
                 var checked = row.attr('aria-selected') === "true"
-                var ariaLabel = checked ? PrimeFaces.getAriaLabel('unselectLabel') : PrimeFaces.getAriaLabel('selectLabel');
+                var ariaLabel = checked ? this.getAriaLabel('unselectLabel') : this.getAriaLabel('selectLabel');
                 ariaLabel += " " + rowMeta.key;
                 jq.attr('aria-label', ariaLabel);
             }
@@ -3198,7 +3198,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     configureSelectAllAria: function() {
         if (this.checkAllToggler) {
            var checked = this.checkAllToggler.attr('aria-checked') === "true" || this.checkAllToggler.prop('checked');
-           var ariaLabel = checked ? PrimeFaces.getAriaLabel('selectAll') : PrimeFaces.getAriaLabel('unselectAll');
+           var ariaLabel = checked ? this.getAriaLabel('selectAll') : this.getAriaLabel('unselectAll');
            this.checkAllToggler.attr('aria-label', ariaLabel);
         }
     },
@@ -3576,9 +3576,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             var rowEditorSelector = '> tr > td > div.ui-row-editor > a';
             
             // add aria to buttons
-            this.tbody.find('a.ui-row-editor-pencil').attr('aria-label', PrimeFaces.getAriaLabel('editRow'));
-            this.tbody.find('a.ui-row-editor-check').attr('aria-label', PrimeFaces.getAriaLabel('saveEdit'));
-            this.tbody.find('a.ui-row-editor-close').attr('aria-label', PrimeFaces.getAriaLabel('cancelEdit'));
+            this.tbody.find('a.ui-row-editor-pencil').attr('aria-label', this.getAriaLabel('editRow'));
+            this.tbody.find('a.ui-row-editor-check').attr('aria-label', this.getAriaLabel('saveEdit'));
+            this.tbody.find('a.ui-row-editor-close').attr('aria-label', this.getAriaLabel('cancelEdit'));
 
             this.tbody.off('click.datatable focus.datatable blur.datatable', rowEditorSelector)
                         .on('click.datatable', rowEditorSelector, null, function(e) {
@@ -3855,7 +3855,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             displayContainer = cellEditor.children('div.ui-cell-editor-output'),
             inputContainer = cellEditor.children('div.ui-cell-editor-input');
             this.enableCellEditors(inputContainer);
-            var inputs = inputContainer.find(':input:enabled[type!=hidden]'),
+            // Look for selectonemenu inputs first since they have special DOM structure, otherwise find any enabled visible inputs
+            var inputs = inputContainer.find('.ui-selectonemenu .ui-inputfield');
+            if (!inputs.length) {
+                inputs = inputContainer.find(':input:enabled:not([type="hidden"])');
+            }
             multi = inputs.length > 1;
 
             cell.addClass('ui-state-highlight ui-cell-editing');
@@ -3908,9 +3912,17 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         }
                         else if(key === 'Tab') {
                             if(multi) {
+                                // Calculate next/prev input index based on shift key
                                 var focusIndex = shiftKey ? input.index() - 1 : input.index() + 1;
 
-                                if(focusIndex < 0 || (focusIndex === inputs.length) || input.parent().hasClass('ui-inputnumber') || input.parent().hasClass('ui-helper-hidden-accessible')) {
+                                var parent = input.parent();
+                                // Move to next/prev cell if:
+                                // - Index out of bounds
+                                // - Parent is special input component that handles its own tab behavior
+                                if(focusIndex < 0 || focusIndex === inputs.length || 
+                                   parent.hasClass('ui-inputnumber') ||
+                                   parent.hasClass('ui-selectonemenu') ||
+                                   parent.hasClass('ui-helper-hidden-accessible')) {
                                     $this.tabCell(cell, !shiftKey);
                                 } else {
                                     inputs.eq(focusIndex).trigger('focus');
@@ -4806,7 +4818,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             scope: this.id,
             cancel: ':input,.ui-column-resizer',
             start: function(event, ui) {
-                ui.helper.css('z-index', PrimeFaces.nextZindex());
+                PrimeFaces.nextZindex(ui.helper);
             },
             drag: function(event, ui) {
                 var droppable = ui.helper.data('droppable-column');
@@ -4991,7 +5003,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             handle: draggableHandle,
             appendTo: document.body,
             start: function(event, ui) {
-                ui.helper.css('z-index', PrimeFaces.nextZindex());
+                PrimeFaces.nextZindex(ui.helper);
             },
             helper: function(event, ui) {
                 var cells = ui.children(),
@@ -5534,12 +5546,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
            parentRow = link.closest('tr.ui-rowgroup-header');
 
            if(togglerIcon.hasClass('ui-icon-circle-triangle-s')) {
-               link.attr('aria-expanded', false).attr('aria-label', PrimeFaces.getAriaLabel('expandLabel'));
+               link.attr('aria-expanded', false).attr('aria-label', $this.getAriaLabel('expandLabel'));
                togglerIcon.addClass('ui-icon-circle-triangle-e').removeClass('ui-icon-circle-triangle-s');
                parentRow.nextUntil('tr.ui-rowgroup-header').hide();
            }
            else {
-               link.attr('aria-expanded', true).attr('aria-label', PrimeFaces.getAriaLabel('collapseLabel'));
+               link.attr('aria-expanded', true).attr('aria-label', $this.getAriaLabel('collapseLabel'));
                togglerIcon.addClass('ui-icon-circle-triangle-s').removeClass('ui-icon-circle-triangle-e');
                parentRow.nextUntil('tr.ui-rowgroup-header').show();
            }

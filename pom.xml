@@ -153,7 +153,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.11.1</version>
+                <version>3.11.2</version>
                 <configuration>
                     <sourcepath>${basedir}/src/main/java;</sourcepath>
                     <doclint>none</doclint>
@@ -363,7 +363,7 @@
             <dependency>
                 <groupId>com.apptasticsoftware</groupId>
                 <artifactId>rssreader</artifactId>
-                <version>3.8.2</version>
+                <version>3.9.1</version>
             </dependency>
 
             <!-- File Upload -->
@@ -375,14 +375,15 @@
 
             <!-- Barcode -->
             <dependency>
-                <groupId>io.nayuki</groupId>
-                <artifactId>qrcodegen</artifactId>
-                <version>1.8.0</version>
-            </dependency>
-            <dependency>
-                <groupId>org.primefaces.extensions</groupId>
-                <artifactId>barcode4j-light</artifactId>
-                <version>2.3.0</version>
+                <groupId>uk.org.okapibarcode</groupId>
+                <artifactId>okapibarcode</artifactId>
+                <version>0.4.9</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.beust</groupId>
+                        <artifactId>jcommander</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <!-- JUnit -->

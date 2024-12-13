@@ -101,7 +101,7 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
         page.confirm.click();
         CommandButton noButton = dialog.getNoButton();
         assertEquals("No", noButton.getText());
-        assertCss(noButton, "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left ui-confirmdialog-no ui-button-flat");
+        assertCss(noButton, "ui-button ui-widget ui-state-default ui-button-text-icon-left ui-confirmdialog-no ui-button-flat");
         assertCss(noButton.findElement(By.className("ui-icon")), "ui-button-icon-left ui-icon ui-c pi pi-times");
 
         // Act
@@ -122,7 +122,7 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
         assertTrue(dialog.isVisible());
         CommandButton yesButton = dialog.getYesButton();
         assertEquals("Yes", yesButton.getText());
-        assertCss(yesButton, "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left ui-confirmdialog-yes");
+        assertCss(yesButton, "ui-button ui-widget ui-state-default ui-button-text-icon-left ui-confirmdialog-yes");
         assertCss(yesButton.findElement(By.className("ui-icon")), "ui-button-icon-left ui-icon ui-c pi pi-check");
 
         // Act
@@ -144,7 +144,7 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
         CommandButton noButton = dialog.getNoButton();
         assertEquals("Keep this!", noButton.getText());
         assertCss(noButton,
-                "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left ui-confirmdialog-no ui-button-flat bg-green-600 text-white");
+                "ui-button ui-widget ui-state-default ui-button-text-icon-left ui-confirmdialog-no ui-button-flat bg-green-600 text-white");
         assertCss(noButton.findElement(By.className("ui-icon")), "ui-button-icon-left ui-icon ui-c pi pi-heart");
 
         // Act
@@ -168,7 +168,7 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
         page.delete.click();
         CommandButton yesButton = dialog.getYesButton();
         assertEquals("Delete Me!", yesButton.getText());
-        assertCss(yesButton, "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left ui-confirmdialog-yes bg-red-600 text-white");
+        assertCss(yesButton, "ui-button ui-widget ui-state-default ui-button-text-icon-left ui-confirmdialog-yes bg-red-600 text-white");
         assertCss(yesButton.findElement(By.className("ui-icon")), "ui-button-icon-left ui-icon ui-c pi pi-trash");
 
         // Act

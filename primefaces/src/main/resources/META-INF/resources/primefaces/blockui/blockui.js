@@ -246,9 +246,6 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
             if (this.cfg.styleClass) {
                 currentBlocker.addClass(this.cfg.styleClass);
             }
-            if (currentTarget.hasClass('ui-corner-all')) {
-                currentBlocker.addClass('ui-corner-all');
-            }
 
             // when more than 1 target need to clone the content for each target
             if (shouldClone) {
@@ -284,7 +281,7 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
     alignOverlay: function() {
         this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.block);
         if (this.blocker) {
-            this.blocker.css('z-index', PrimeFaces.nextZindex());
+            PrimeFaces.nextZindex(this.blocker);
         }
 
         //center position of content

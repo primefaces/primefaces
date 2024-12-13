@@ -34,18 +34,6 @@ Browsers will report CSP violations to a user-defined HTTP endpoint using `repor
 </context-param>
 ```
 
-When using PrimeFaces in a component (like portlets for instance), the platform hosting the component might need to
-manage the CSP headers and nonce on scripts. For instance in a CMS where different kinds of components can be used
-and all need to have the same nonce. In these cases the option `policyProvided` can be used. This will make
-PrimeFaces CSP compliant, while not setting the CSP Header and add the nonce to JavaScripts.
-
-```xml
-<context-param>
-    <param-name>primefaces.CSP</param-name>
-    <param-value>policyProvided</param-value>
-</context-param>
-```
-
 ## Policy
 There are many ways to configure CSP for different levels of security. Currently, PrimeFaces has chosen to
 support the NONCE (number used once) based checking for script evaluation only. Nonce attributes are automatically
@@ -158,4 +146,18 @@ the Javascript **eval()** function to execute arbitrary code.
 It is also possible that you have detected an issue with one of the Javascript plugins that PrimeFaces
 uses.  If this is the case, please report it to the GitHub Issues page.
 
+## Policy Provided (Liferay Portlets)
+!> Caution: Using `policyProvided` is not recommended for most users and has a special use case for Liferay Portlets as it does not support CSP.
 
+See: https://github.com/primefaces/primefaces/issues/12812#issuecomment-2505572989
+When using PrimeFaces in a component (like portlets for instance), the platform hosting the component might need to
+manage the CSP headers and nonce on scripts. For instance in a CMS where different kinds of components can be used
+and all need to have the same nonce. In these cases the option `policyProvided` can be used. This will make
+PrimeFaces CSP compliant, while not setting the CSP Header and add the nonce to JavaScripts.
+
+```xml
+<context-param>
+    <param-name>primefaces.CSP</param-name>
+    <param-value>policyProvided</param-value>
+</context-param>
+```

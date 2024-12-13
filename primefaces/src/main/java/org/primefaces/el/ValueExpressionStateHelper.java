@@ -29,12 +29,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Supplier;
 
 import javax.el.ValueExpression;
 import javax.faces.component.StateHelper;
 import javax.faces.context.FacesContext;
 
 public class ValueExpressionStateHelper implements StateHelper {
+    private static final Object UNKNOWN_VALUE = new Object();
+
     protected Map<String, Object> literals;
     protected Map<String, ValueExpression> bindings;
 
@@ -106,6 +109,20 @@ public class ValueExpressionStateHelper implements StateHelper {
         }
 
         return ve.getValue(FacesContext.getCurrentInstance().getELContext());
+    }
+
+    // @Override (we can't actually override right now because this is a new method in Faces 4.0)
+    public Object eval(Serializable key, Supplier<Object> defaultValueSupplier) {
+        Object result = eval(key, UNKNOWN_VALUE);
+        if (result == UNKNOWN_VALUE) {
+            result = null;
+
+            if (defaultValueSupplier != null) {
+                result = defaultValueSupplier.get();
+            }
+        }
+
+        return result;
     }
 
     @Override
