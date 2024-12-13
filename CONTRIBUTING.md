@@ -72,7 +72,7 @@ for (int i = 0; i < childCount; i++) {
 ```
 This has 2 benefits:
 1) Avoid a internal List instance when there are no childs, as they are initialized lazy by the Faces implementation (because we do `component.getChildCount()` over `component.getChildren().size()`)
-2) Avoid a new iterator instance on each loop. This might not be faster but reduces GC a lot.
+2) Avoid a new iterator instance on each loop. This is faster and also reduces GC a lot.
 
 ### Detailed Java code quality standards:
 
