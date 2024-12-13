@@ -456,13 +456,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      */
     bindPaginator: function() {
-        var _self = this;
+        var $this = this;
         this.cfg.paginator.paginate = function(newState) {
-            if(_self.cfg.clientCache) {
-                _self.loadDataWithCache(newState);
+            if($this.cfg.clientCache) {
+                $this.loadDataWithCache(newState);
             }
             else {
-                _self.paginate(newState);
+                $this.paginate(newState);
             }
         };
 
@@ -5763,6 +5763,15 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.bodyTable.css('top', '0px');
         this.scrollBody.scrollTop(0);
         this.clearScrollState();
+    },
+
+    /**
+     * In case of a toggleable filter datatable toggle all filter input components
+     * @param {string | null} speed speed of fade animation. (see jquery fadeToggle method)
+     * @param {(() => void) | null} callback will be executed after animation is finished. (see jquery fadeToggle method)
+     */
+    toggleFilter: function(speed, callback) {
+        this.jq.find(".ui-column-filter, .ui-column-customfilter").fadeToggle(speed || 0, callback);
     }
 
 });
