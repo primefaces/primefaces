@@ -29,16 +29,6 @@ public class QuickTimePlayer implements MediaPlayer {
         "mp4", "m4a", "psd", "qt", "qtif", "qif", "qti", "snd", "tif", "tiff", "wav", "3g2", "3pg"};
 
     @Override
-    public String getClassId() {
-        return "clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B";
-    }
-
-    @Override
-    public String getCodebase() {
-        return "http://www.apple.com/qtactivex/qtplugin.cab";
-    }
-
-    @Override
     public String getSourceParam() {
         return "src";
     }

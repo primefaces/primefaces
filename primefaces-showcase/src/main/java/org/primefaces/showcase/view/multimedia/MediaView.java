@@ -37,6 +37,7 @@ public class MediaView {
     public StreamedContent getPdf() {
         return DefaultStreamedContent.builder()
                 .contentType("application/pdf")
+                .name("guide.pdf")
                 .stream(() -> {
                     try {
                         FacesContext facesContext = FacesContext.getCurrentInstance();
