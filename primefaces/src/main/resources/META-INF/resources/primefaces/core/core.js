@@ -1578,7 +1578,7 @@
      * @prop {string} projectStage The Faces ProjectStage.
      * @readonly projectStage
      *
-     * @prop {key: string} errorPages The error pages (error-name and the error page location).
+     * @prop errorPages The error pages (error-name and the error page location).
      * @readonly errorPages
      */
     PrimeFaces.settings = {};
