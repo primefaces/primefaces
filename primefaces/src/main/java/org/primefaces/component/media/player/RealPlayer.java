@@ -28,16 +28,6 @@ public class RealPlayer implements MediaPlayer {
     private static final String[] SUPPORTED_TYPES = new String[]{"ra", "ram", "rm", "rpm", "rv", "smi", "smil"};
 
     @Override
-    public String getClassId() {
-        return "clsid:CFCDAA03-8BE4-11cf-B84B-0020AFBBCCFA";
-    }
-
-    @Override
-    public String getCodebase() {
-        return null;
-    }
-
-    @Override
     public String getSourceParam() {
         return "src";
     }

@@ -29,16 +29,6 @@ public class PDFPlayer implements MediaPlayer {
     private static final String[] SUPPORTED_TYPES = new String[]{"pdf"};
 
     @Override
-    public String getClassId() {
-        return null;
-    }
-
-    @Override
-    public String getCodebase() {
-        return null;
-    }
-
-    @Override
     public String getSourceParam() {
         return null;
     }
