@@ -1288,23 +1288,22 @@ Moreover `org.primefaces.event.data.PostSortEvent`, `org.primefaces.event.data.P
 ## Client Side API
 Widget: `PrimeFaces.widget.DataTable`
 
-| Method                         | Params                                                                                                            | Return Type | Description |
+| Method | Params | Return Type | Description |
 | --- | --- | --- | --- |
-| addRow()                       | -                                                                                                                 | void | Fetches the last row from the backend and inserts a row instead of updating the table itself.
-| clearFilters()                 | -                                                                                                                 | void | Clears all column filters
-| collapseAllRows()              | -                                                                                                                 | void | Collapses all rows that are currently expanded.
-| filter()                       | -                                                                                                                 | void | Filters the data.
-| getPaginator()                 | -                                                                                                                 | Paginator | Returns the paginator insance.
-| getSelectedRowsCount()         | -                                                                                                                 | Number | Returns number of selected rows.
-| selectAllRows()                | -                                                                                                                 | void | Select all rows.
-| selectAllRowsOnPage()          | -                                                                                                                 | void | Select all rows on current page.
-| selectRow(r, silent)           | r : number or tr element as jQuery object, silent : flag to fire row select ajax behavior                         | void | Selects the given row.
-| toggleCheckAll()               | -                                                                                                                 | void | Toggles header checkbox state.
-| unselectAllRows()              | -                                                                                                                 | void | Unselects all rows.
-| unselectAllRowsOnPage()        | -                                                                                                                 | void | Unselect all rows on current page.
-| unselectRow(r, silent)         | r : number or tr element as jQuery object, silent : flag to fire row select ajax behavior                         | void | Unselects the given row.
+| addRow() | - | void | Fetches the last row from the backend and inserts a row instead of updating the table itself.
+| clearFilters() | - | void | Clears all column filters
+| collapseAllRows() | - | void | Collapses all rows that are currently expanded.
+| filter() | - | void | Filters the data.
+| getPaginator() | - | Paginator | Returns the paginator insance.
+| getSelectedRowsCount() | - | Number | Returns number of selected rows.
+| selectAllRows() | - | void | Select all rows.
+| selectAllRowsOnPage() | - | void | Select all rows on current page.
+| selectRow(r, silent) | r : number or tr element as jQuery object, silent : flag to fire row select ajax behavior | void | Selects the given row.
+| toggleCheckAll() | - | void | Toggles header checkbox state.
+| unselectAllRows() | - | void | Unselects all rows.
+| unselectAllRowsOnPage() | - | void | Unselect all rows on current page.
+| unselectRow(r, silent) | r : number or tr element as jQuery object, silent : flag to fire row select ajax behavior | void | Unselects the given row.
 | toggleFilter(speed, callback)  | speed : speed argument for nested jQuery fadeToggle call, callback : to be executed after animation has completed | void | Show/Hide the filter components in the header row.
-| bindFilterToggleEvents(jquery) | jquery : jquery object/selector to bind click event for toggling                                                  | void | Binds a listener to the given element that calls toggleFilter.
 
 
 

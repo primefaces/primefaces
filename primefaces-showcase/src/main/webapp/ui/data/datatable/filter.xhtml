@@ -197,7 +197,7 @@
         <div class="card">
             <h5>Filter toggling</h5>
             <p>1. Hide filter components initially by adding <code>ui-filter-togglable</code> as <em>styleClass</em> to the datatable. <br/>
-                2. To show/hide the filter components call <code>PF('customersTable4').toggleFilter()</code> or bind a click listener to a given element via <code>bindFilterToggleEvents()</code>.</p>
+                2. To show/hide the filter components call <code>PF('customersTable4').toggleFilter()</code>.</p>
             <h:form id="customersForm4">
                 <p:dataTable id="customers" var="customer" value="#{dtFilterView.customers1}" widgetVar="customersTable4"
                              emptyMessage="No customers found with given criteria" stickyHeader="true" stickyTopAt=".layout-topbar"
@@ -207,19 +207,8 @@
                         <div class="flex align-items-center justify-content-between">
                             <span>List of Customers</span>
                             <div align="right">
-                                <div class="mb-3">
-                                    <span><em>Variant A</em>: Button toggle via bindFilterToggleEvents()</span>
-                                    <p:commandButton id="bindToggle" styleClass="ml-3" type="button" title="Filter" icon="pi pi-filter-slash" />
-                                    <h:outputScript>
-                                        $(function() {
-                                            PF('customersTable4').bindFilterToggleEvents('#customersForm4\\:customers\\:bindToggle');
-                                        });
-                                    </h:outputScript>
-                                </div>
-                                <div>
-                                    <span><em>Variant B</em>: Switch toggle with manual toggleFilter()</span>
-                                    <p:toggleSwitch id="manualToggle" styleClass="vertical-align-middle ml-3" onchange="PF('customersTable4').toggleFilter()" onIcon="pi pi-filter" offIcon="pi pi-filter-slash"/>
-                                </div>
+                                <span>Switch toggle with manual toggleFilter()</span>
+                                <p:toggleSwitch id="manualToggle" styleClass="vertical-align-middle ml-3" onchange="PF('customersTable4').toggleFilter()" onIcon="pi pi-filter" offIcon="pi pi-filter-slash"/>
                             </div>
                         </div>
 

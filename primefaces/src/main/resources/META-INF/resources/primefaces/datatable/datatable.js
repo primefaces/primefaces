@@ -5772,20 +5772,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     toggleFilter: function(speed, callback) {
         this.jq.find(".ui-column-filter, .ui-column-customfilter").fadeToggle(speed || 0, callback);
-    },
-
-    /**
-     * Bind click event to given jq element to show/hide filter components. Toggles between pi-filter and pi-filter-slash icon if used.
-     * @param {JQuery} element jquery object to bind click events to
-     * */
-    bindFilterToggleEvents: function(element) {
-        var $this = this;
-        $(element).off("click.filterTogglable").on("click.filterTogglable", function(e) {
-            // if trigger uses the pi-filter icon toggle it with filter-slash
-            $(this).find('.pi-filter, .pi-filter-slash').toggleClass('pi-filter pi-filter-slash');
-            $this.toggleFilter();
-            e.preventDefault();
-        });
     }
 
 });
