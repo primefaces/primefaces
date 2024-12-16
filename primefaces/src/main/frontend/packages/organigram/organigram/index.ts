@@ -1,0 +1,1 @@
+import "./src/organigram.widget.js";

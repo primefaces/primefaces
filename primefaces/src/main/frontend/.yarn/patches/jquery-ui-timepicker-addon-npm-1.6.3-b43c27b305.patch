@@ -1,0 +1,352 @@
+diff --git a/dist/jquery-ui-timepicker-addon.js b/dist/jquery-ui-timepicker-addon.js
+index d37bc02b4859b717d311d4dbd3b69ab4f58b8175..05e8213acdefb129be4f66faf43edd8f8774db9c 100644
+--- a/dist/jquery-ui-timepicker-addon.js
++++ b/dist/jquery-ui-timepicker-addon.js
+@@ -187,14 +187,14 @@
+ 
+ 			overrides = {
+ 				beforeShow: function (input, dp_inst) {
+-					if ($.isFunction(tp_inst._defaults.evnts.beforeShow)) {
++					if (typeof tp_inst._defaults.evnts.beforeShow === "function") {
+ 						return tp_inst._defaults.evnts.beforeShow.call($input[0], input, dp_inst, tp_inst);
+ 					}
+ 				},
+ 				onChangeMonthYear: function (year, month, dp_inst) {
+ 					// Update the time as well : this prevents the time from disappearing from the $input field.
+ 					// tp_inst._updateDateTime(dp_inst);
+-					if ($.isFunction(tp_inst._defaults.evnts.onChangeMonthYear)) {
++					if (typeof tp_inst._defaults.evnts.onChangeMonthYear === "function") {
+ 						tp_inst._defaults.evnts.onChangeMonthYear.call($input[0], year, month, dp_inst, tp_inst);
+ 					}
+ 				},
+@@ -202,7 +202,7 @@
+ 					if (tp_inst.timeDefined === true && $input.val() !== '') {
+ 						tp_inst._updateDateTime(dp_inst);
+ 					}
+-					if ($.isFunction(tp_inst._defaults.evnts.onClose)) {
++					if (typeof tp_inst._defaults.evnts.onClose === "function") {
+ 						tp_inst._defaults.evnts.onClose.call($input[0], dateText, dp_inst, tp_inst);
+ 					}
+ 				}
+@@ -278,7 +278,7 @@
+ 				if (tp_inst._defaults.altRedirectFocus === true) {
+ 					tp_inst.$altInput.css({
+ 						cursor: 'pointer'
+-					}).focus(function () {
++					}).on("focus", function () {
+ 						$input.trigger("focus");
+ 					});
+ 				}
+@@ -304,7 +304,7 @@
+ 			if (tp_inst._defaults.maxDateTime !== undefined && tp_inst._defaults.maxDateTime instanceof Date) {
+ 				tp_inst._defaults.maxDate = new Date(tp_inst._defaults.maxDateTime.getTime());
+ 			}
+-			tp_inst.$input.bind('focus', function () {
++			tp_inst.$input.on('focus', function () {
+ 				tp_inst._onFocus();
+ 			});
+ 
+@@ -315,7 +315,7 @@
+ 		* add our sliders to the calendar
+ 		*/
+ 		_addTimePicker: function (dp_inst) {
+-			var currDT = $.trim((this.$altInput && this._defaults.altFieldTimeOnly) ? this.$input.val() + ' ' + this.$altInput.val() : this.$input.val());
++			var currDT = PrimeFaces.trim((this.$altInput && this._defaults.altFieldTimeOnly) ? this.$input.val() + ' ' + this.$altInput.val() : this.$input.val());
+ 
+ 			this.timeDefined = this._parseTime(currDT);
+ 			this._limitMinMaxDateTime(dp_inst, false);
+@@ -362,7 +362,7 @@
+ 		*/
+ 		_afterInject: function() {
+ 			var o = this.inst.settings;
+-			if ($.isFunction(o.afterInject)) {
++			if (typeof o.afterInject === "function") {
+ 				o.afterInject.call(this);
+ 			}
+ 		},
+@@ -387,7 +387,7 @@
+ 			if ($dp.find("div.ui-timepicker-div").length === 0 && o.showTimepicker) {
+ 				var noDisplay = ' ui_tpicker_unit_hide',
+ 					html = '<div class="ui-timepicker-div' + (o.isRTL ? ' ui-timepicker-rtl' : '') + (o.oneLine && o.controlType === 'select' ? ' ui-timepicker-oneLine' : '') + '"><dl>' + '<dt class="ui_tpicker_time_label' + ((o.showTime) ? '' : noDisplay) + '">' + o.timeText + '</dt>' +
+-								'<dd class="ui_tpicker_time '+ ((o.showTime) ? '' : noDisplay) + '"><input class="ui_tpicker_time_input" ' + (o.timeInput ? '' : 'disabled') + '/></dd>';
++								'<dd class="ui_tpicker_time '+ ((o.showTime) ? '' : noDisplay) + '"><input class="ui_tpicker_time_input" ' + (o.timeInput ? '' : 'disabled') + '></input></dd>';
+ 
+ 				// Create the markup
+ 				for (i = 0, l = this.units.length; i < l; i++) {
+@@ -437,7 +437,7 @@
+ 
+ 				// if we only want time picker...
+ 				if (o.timeOnly === true) {
+-					$tp.prepend('<div class="ui-widget-header ui-helper-clearfix ui-corner-all">' + '<div class="ui-datepicker-title">' + o.timeOnlyTitle + '</div>' + '</div>');
++					$tp.prepend('<div class="ui-widget-header ui-helper-clearfix ui-corner-all">' + '<div class="ui-datepicker-title">' + PrimeFaces.escapeHTML(o.timeOnlyTitle) + '</div>' + '</div>');
+ 					$dp.find('.ui-datepicker-header, .ui-datepicker-calendar').hide();
+ 				}
+ 
+@@ -456,9 +456,9 @@
+ 						$tp.find('.ui_tpicker_' + litem + ' table').css({
+ 							width: size + "%",
+ 							marginLeft: o.isRTL ? '0' : ((size / (-2 * gridSize[litem])) + "%"),
+-							marginRight: o.isRTL ? ((size / (-2 * gridSize[litem])) + "%") : '0',
++							marginRight: o.isRTL ? ((size / (-2 * gridSize[litem])) + "%") : '0px',
+ 							borderCollapse: 'collapse'
+-						}).find("td").click(function (e) {
++						}).find("td").on("click", function (e) {
+ 								var $t = $(this),
+ 									h = $t.html(),
+ 									n = parseInt(h.replace(/[^0-9]/g), 10),
+@@ -493,7 +493,7 @@
+ 				this.timezone_select = $tp.find('.ui_tpicker_timezone').append('<select></select>').find("select");
+ 				$.fn.append.apply(this.timezone_select,
+ 				$.map(o.timezoneList, function (val, idx) {
+-					return $("<option />").val(typeof val === "object" ? val.value : val).text(typeof val === "object" ? val.label : val);
++					return $("<option></option>").val(typeof val === "object" ? val.value : val).text(typeof val === "object" ? val.label : val);
+ 				}));
+ 				if (typeof(this.timezone) !== "undefined" && this.timezone !== null && this.timezone !== "") {
+ 					var local_timezone = (new Date(this.inst.selectedYear, this.inst.selectedMonth, this.inst.selectedDay, 12)).getTimezoneOffset() * -1;
+@@ -509,7 +509,7 @@
+ 						selectLocalTimezone(tp_inst);
+ 					}
+ 				}
+-				this.timezone_select.change(function () {
++				this.timezone_select.on('change', function () {
+ 					tp_inst._onTimeChange();
+ 					tp_inst._onSelectHandler();
+ 					tp_inst._afterInject();
+@@ -525,7 +525,7 @@
+ 				}
+ 
+ 				this.$timeObj = $tp.find('.ui_tpicker_time_input');
+-				this.$timeObj.change(function () {
++				this.$timeObj.on('change', function () {
+ 					var timeFormat = tp_inst.inst.settings.timeFormat;
+ 					var parsedTime = $.datepicker.parseTime(timeFormat, this.value);
+ 					var update = new Date();
+@@ -536,7 +536,7 @@
+ 						$.datepicker._setTime(tp_inst.inst, update);
+ 					} else {
+ 						this.value = tp_inst.formattedTime;
+-						this.blur();
++						this.trigger('blur');
+ 					}
+ 				});
+ 
+@@ -565,7 +565,7 @@
+ 										oldMarginLeft = $g.css(rtl ? 'marginRight' : 'marginLeft').toString().replace('%', ''),
+ 										newWidth = oldWidth - sliderAccessWidth,
+ 										newMarginLeft = ((oldMarginLeft * newWidth) / oldWidth) + '%',
+-										css = { width: newWidth, marginRight: 0, marginLeft: 0 };
++										css = { width: newWidth + 'px', marginRight: '0px', marginLeft: '0px' };
+ 									css[rtl ? 'marginRight' : 'marginLeft'] = newMarginLeft;
+ 									$g.css(css);
+ 								});
+@@ -885,14 +885,14 @@
+ 				if (this.$timeObj[0].setSelectionRange) {
+ 					var sPos = this.$timeObj[0].selectionStart;
+ 					var ePos = this.$timeObj[0].selectionEnd;
+-					this.$timeObj[0].setSelectionRange(sPos, ePos);
++					//this.$timeObj[0].setSelectionRange(sPos, ePos); // PrimeFaces github issue; #1421
+ 				}
+ 			}
+ 
+ 			this.timeDefined = true;
+ 			if (hasChanged) {
+ 				this._updateDateTime();
+-				//this.$input.focus(); // may automatically open the picker on setDate
++				//this.$input.trigger('focus'); // may automatically open the picker on setDate
+ 			}
+ 		},
+ 
+@@ -1077,7 +1077,7 @@
+ 					for (var i = min; i <= max; i += step) {
+ 						sel += '<option value="' + i + '"' + (i === val ? ' selected' : '') + '>';
+ 						if (unit === 'hour') {
+-							sel += $.datepicker.formatTime($.trim(format.replace(/[^ht ]/ig, '')), {hour: i}, tp_inst._defaults);
++							sel += $.datepicker.formatTime(PrimeFaces.trim(format.replace(/[^ht ]/ig, '')), {hour: i}, tp_inst._defaults);
+ 						}
+ 						else if (unit === 'millisec' || unit === 'microsec' || i >= 10) { sel += i; }
+ 						else {sel += '0' + i.toString(); }
+@@ -1087,7 +1087,7 @@
+ 
+ 					obj.children('select').remove();
+ 
+-					$(sel).appendTo(obj).change(function (e) {
++					$(sel).appendTo(obj).on('change', function (e) {
+ 						tp_inst._onTimeChange();
+ 						tp_inst._onSelectHandler();
+ 						tp_inst._afterInject();
+diff --git a/src/jquery-ui-timepicker-addon.js b/src/jquery-ui-timepicker-addon.js
+index 9bbb21f2939c8832434b878119bc20d2e512176e..cf9a7b89618927d02e7ceee0eadf5835f49b359d 100644
+--- a/src/jquery-ui-timepicker-addon.js
++++ b/src/jquery-ui-timepicker-addon.js
+@@ -193,14 +193,14 @@
+ 
+ 			overrides = {
+ 				beforeShow: function (input, dp_inst) {
+-					if ($.isFunction(tp_inst._defaults.evnts.beforeShow)) {
++					if (typeof tp_inst._defaults.evnts.beforeShow === "function") {
+ 						return tp_inst._defaults.evnts.beforeShow.call($input[0], input, dp_inst, tp_inst);
+ 					}
+ 				},
+ 				onChangeMonthYear: function (year, month, dp_inst) {
+ 					// Update the time as well : this prevents the time from disappearing from the $input field.
+ 					// tp_inst._updateDateTime(dp_inst);
+-					if ($.isFunction(tp_inst._defaults.evnts.onChangeMonthYear)) {
++					if (typeof tp_inst._defaults.evnts.onChangeMonthYear === "function") {
+ 						tp_inst._defaults.evnts.onChangeMonthYear.call($input[0], year, month, dp_inst, tp_inst);
+ 					}
+ 				},
+@@ -208,7 +208,7 @@
+ 					if (tp_inst.timeDefined === true && $input.val() !== '') {
+ 						tp_inst._updateDateTime(dp_inst);
+ 					}
+-					if ($.isFunction(tp_inst._defaults.evnts.onClose)) {
++					if (typeof tp_inst._defaults.evnts.onClose === "function") {
+ 						tp_inst._defaults.evnts.onClose.call($input[0], dateText, dp_inst, tp_inst);
+ 					}
+ 				}
+@@ -284,7 +284,7 @@
+ 				if (tp_inst._defaults.altRedirectFocus === true) {
+ 					tp_inst.$altInput.css({
+ 						cursor: 'pointer'
+-					}).focus(function () {
++					}).on("focus", function () {
+ 						$input.trigger("focus");
+ 					});
+ 				}
+@@ -310,7 +310,7 @@
+ 			if (tp_inst._defaults.maxDateTime !== undefined && tp_inst._defaults.maxDateTime instanceof Date) {
+ 				tp_inst._defaults.maxDate = new Date(tp_inst._defaults.maxDateTime.getTime());
+ 			}
+-			tp_inst.$input.bind('focus', function () {
++			tp_inst.$input.on('focus', function () {
+ 				tp_inst._onFocus();
+ 			});
+ 
+@@ -321,7 +321,7 @@
+ 		* add our sliders to the calendar
+ 		*/
+ 		_addTimePicker: function (dp_inst) {
+-			var currDT = $.trim((this.$altInput && this._defaults.altFieldTimeOnly) ? this.$input.val() + ' ' + this.$altInput.val() : this.$input.val());
++			var currDT = PrimeFaces.trim((this.$altInput && this._defaults.altFieldTimeOnly) ? this.$input.val() + ' ' + this.$altInput.val() : this.$input.val());
+ 
+ 			this.timeDefined = this._parseTime(currDT);
+ 			this._limitMinMaxDateTime(dp_inst, false);
+@@ -368,7 +368,7 @@
+ 		*/
+ 		_afterInject: function() {
+ 			var o = this.inst.settings;
+-			if ($.isFunction(o.afterInject)) {
++			if (typeof o.afterInject === "function") {
+ 				o.afterInject.call(this);
+ 			}
+ 		},
+@@ -393,7 +393,7 @@
+ 			if ($dp.find("div.ui-timepicker-div").length === 0 && o.showTimepicker) {
+ 				var noDisplay = ' ui_tpicker_unit_hide',
+ 					html = '<div class="ui-timepicker-div' + (o.isRTL ? ' ui-timepicker-rtl' : '') + (o.oneLine && o.controlType === 'select' ? ' ui-timepicker-oneLine' : '') + '"><dl>' + '<dt class="ui_tpicker_time_label' + ((o.showTime) ? '' : noDisplay) + '">' + o.timeText + '</dt>' +
+-								'<dd class="ui_tpicker_time '+ ((o.showTime) ? '' : noDisplay) + '"><input class="ui_tpicker_time_input" ' + (o.timeInput ? '' : 'disabled') + '/></dd>';
++								'<dd class="ui_tpicker_time '+ ((o.showTime) ? '' : noDisplay) + '"><input class="ui_tpicker_time_input" ' + (o.timeInput ? '' : 'disabled') + '></input></dd>';
+ 
+ 				// Create the markup
+ 				for (i = 0, l = this.units.length; i < l; i++) {
+@@ -443,7 +443,7 @@
+ 
+ 				// if we only want time picker...
+ 				if (o.timeOnly === true) {
+-					$tp.prepend('<div class="ui-widget-header ui-helper-clearfix ui-corner-all">' + '<div class="ui-datepicker-title">' + o.timeOnlyTitle + '</div>' + '</div>');
++					$tp.prepend('<div class="ui-widget-header ui-helper-clearfix ui-corner-all">' + '<div class="ui-datepicker-title">' + PrimeFaces.escapeHTML(o.timeOnlyTitle) + '</div>' + '</div>');
+ 					$dp.find('.ui-datepicker-header, .ui-datepicker-calendar').hide();
+ 				}
+ 
+@@ -462,9 +462,9 @@
+ 						$tp.find('.ui_tpicker_' + litem + ' table').css({
+ 							width: size + "%",
+ 							marginLeft: o.isRTL ? '0' : ((size / (-2 * gridSize[litem])) + "%"),
+-							marginRight: o.isRTL ? ((size / (-2 * gridSize[litem])) + "%") : '0',
++							marginRight: o.isRTL ? ((size / (-2 * gridSize[litem])) + "%") : '0px',
+ 							borderCollapse: 'collapse'
+-						}).find("td").click(function (e) {
++						}).find("td").on("click", function (e) {
+ 								var $t = $(this),
+ 									h = $t.html(),
+ 									n = parseInt(h.replace(/[^0-9]/g), 10),
+@@ -499,7 +499,7 @@
+ 				this.timezone_select = $tp.find('.ui_tpicker_timezone').append('<select></select>').find("select");
+ 				$.fn.append.apply(this.timezone_select,
+ 				$.map(o.timezoneList, function (val, idx) {
+-					return $("<option />").val(typeof val === "object" ? val.value : val).text(typeof val === "object" ? val.label : val);
++					return $("<option></option>").val(typeof val === "object" ? val.value : val).text(typeof val === "object" ? val.label : val);
+ 				}));
+ 				if (typeof(this.timezone) !== "undefined" && this.timezone !== null && this.timezone !== "") {
+ 					var local_timezone = (new Date(this.inst.selectedYear, this.inst.selectedMonth, this.inst.selectedDay, 12)).getTimezoneOffset() * -1;
+@@ -515,7 +515,7 @@
+ 						selectLocalTimezone(tp_inst);
+ 					}
+ 				}
+-				this.timezone_select.change(function () {
++				this.timezone_select.on('change', function () {
+ 					tp_inst._onTimeChange();
+ 					tp_inst._onSelectHandler();
+ 					tp_inst._afterInject();
+@@ -531,7 +531,7 @@
+ 				}
+ 
+ 				this.$timeObj = $tp.find('.ui_tpicker_time_input');
+-				this.$timeObj.change(function () {
++				this.$timeObj.on('change', function () {
+ 					var timeFormat = tp_inst.inst.settings.timeFormat;
+ 					var parsedTime = $.datepicker.parseTime(timeFormat, this.value);
+ 					var update = new Date();
+@@ -542,7 +542,7 @@
+ 						$.datepicker._setTime(tp_inst.inst, update);
+ 					} else {
+ 						this.value = tp_inst.formattedTime;
+-						this.blur();
++						this.trigger('blur');
+ 					}
+ 				});
+ 
+@@ -571,7 +571,7 @@
+ 										oldMarginLeft = $g.css(rtl ? 'marginRight' : 'marginLeft').toString().replace('%', ''),
+ 										newWidth = oldWidth - sliderAccessWidth,
+ 										newMarginLeft = ((oldMarginLeft * newWidth) / oldWidth) + '%',
+-										css = { width: newWidth, marginRight: 0, marginLeft: 0 };
++										css = { width: newWidth + 'px', marginRight: '0px', marginLeft: '0px' };
+ 									css[rtl ? 'marginRight' : 'marginLeft'] = newMarginLeft;
+ 									$g.css(css);
+ 								});
+@@ -891,14 +891,14 @@
+ 				if (this.$timeObj[0].setSelectionRange) {
+ 					var sPos = this.$timeObj[0].selectionStart;
+ 					var ePos = this.$timeObj[0].selectionEnd;
+-					this.$timeObj[0].setSelectionRange(sPos, ePos);
++					//this.$timeObj[0].setSelectionRange(sPos, ePos); // PrimeFaces github issue; #1421
+ 				}
+ 			}
+ 
+ 			this.timeDefined = true;
+ 			if (hasChanged) {
+ 				this._updateDateTime();
+-				//this.$input.focus(); // may automatically open the picker on setDate
++				//this.$input.trigger('focus'); // may automatically open the picker on setDate
+ 			}
+ 		},
+ 
+@@ -1083,7 +1083,7 @@
+ 					for (var i = min; i <= max; i += step) {
+ 						sel += '<option value="' + i + '"' + (i === val ? ' selected' : '') + '>';
+ 						if (unit === 'hour') {
+-							sel += $.datepicker.formatTime($.trim(format.replace(/[^ht ]/ig, '')), {hour: i}, tp_inst._defaults);
++							sel += $.datepicker.formatTime(PrimeFaces.trim(format.replace(/[^ht ]/ig, '')), {hour: i}, tp_inst._defaults);
+ 						}
+ 						else if (unit === 'millisec' || unit === 'microsec' || i >= 10) { sel += i; }
+ 						else {sel += '0' + i.toString(); }
+@@ -1093,7 +1093,7 @@
+ 
+ 					obj.children('select').remove();
+ 
+-					$(sel).appendTo(obj).change(function (e) {
++					$(sel).appendTo(obj).on('change', function (e) {
+ 						tp_inst._onTimeChange();
+ 						tp_inst._onSelectHandler();
+ 						tp_inst._afterInject();

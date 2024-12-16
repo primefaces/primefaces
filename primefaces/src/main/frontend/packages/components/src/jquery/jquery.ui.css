@@ -1,0 +1,30 @@
+@import url("jquery-ui/themes/base/draggable.css");
+@import url("jquery-ui/themes/base/core.css");
+@import url("jquery-ui/themes/base/resizable.css");
+@import url("jquery-ui/themes/base/selectable.css");
+@import url("jquery-ui/themes/base/sortable.css");
+@import url("jquery-ui/themes/base/datepicker.css");
+@import url("jquery-ui/themes/base/slider.css");
+
+.ui-slider .ui-slider-handle {
+  cursor: default;
+}
+
+/* TODO -- is this still needed? I don't think we still support IE */
+/* support: IE8 - See #6727 */
+.ui-helper-zfix {
+  filter: Alpha(Opacity=0); /* support: IE8 */
+}
+
+.ui-draggable-handle,
+.ui-resizable-handle,
+.ui-selectable,
+.ui-sortable-handle,
+.ui-slider .ui-slider-handle {
+  -ms-touch-action: none;
+}
+
+.ui-slider.ui-state-disabled .ui-slider-handle,
+.ui-slider.ui-state-disabled .ui-slider-range {
+  filter: inherit;
+}

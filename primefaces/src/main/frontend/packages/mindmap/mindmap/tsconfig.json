@@ -1,0 +1,21 @@
+{
+	"extends": "../../../tsconfig-base.json",
+	"compilerOptions": {
+		"composite": true,
+		"rootDir": ".",
+		"outDir": "dist",
+		"types": [
+			"../../jquery/jquery/dist",
+			"../../core/dist",
+			"../../components/dist",
+			"../../raphael/raphael/dist"
+		],
+	},
+    "include": ["src", "index.ts"],
+	"references": [
+		{ "path": "../../jquery/jquery" },
+		{ "path": "../../core" },
+		{ "path": "../../components" },
+		{ "path": "../../raphael/raphael" }
+	]
+}

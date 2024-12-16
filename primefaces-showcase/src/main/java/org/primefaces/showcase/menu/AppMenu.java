@@ -323,7 +323,7 @@ public class AppMenu {
         scheduleMenuItems.add(new MenuItem("Basic", "/ui/data/schedule/basic"));
         scheduleMenuItems.add(new MenuItem("Configuration", "/ui/data/schedule/configuration"));
         scheduleMenuItems.add(new MenuItem("Lazy", "/ui/data/schedule/lazy"));
-        scheduleMenuItems.add(new MenuItem("Locale IL8N", "/ui/data/schedule/localization"));
+        scheduleMenuItems.add(new MenuItem("Locale I18N", "/ui/data/schedule/localization"));
         scheduleMenuItems.add(new MenuItem("Extender", "/ui/data/schedule/extender"));
         dataMenuItems.add(new MenuItem("Schedule", scheduleMenuItems));
 

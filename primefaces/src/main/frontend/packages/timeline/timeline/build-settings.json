@@ -1,0 +1,11 @@
+{
+    "$schema": "../../../build-settings.schema.json", 
+    "loadFromExpression": {
+        "importSpecifier": {
+            "moment": "window.moment"
+        },
+        "modulePath": {
+            "moment/moment.js": "window.moment"
+        }
+    }
+}
