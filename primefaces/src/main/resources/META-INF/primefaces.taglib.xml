@@ -882,6 +882,7 @@
         <tag-name>ajaxExceptionHandler</tag-name>
         <component>
             <component-type>org.primefaces.component.AjaxExceptionHandler</component-type>
+            <renderer-type>org.primefaces.component.AjaxExceptionHandlerRenderer</renderer-type>
         </component>
         <attribute>
             <description>
@@ -906,6 +907,14 @@
             <name>binding</name>
             <required>false</required>
             <type>javax.faces.component.UIComponent</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Name of the client side widget.]]>
+            </description>
+            <name>widgetVar</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>

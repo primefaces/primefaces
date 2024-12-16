@@ -1017,6 +1017,11 @@
         </renderer>
         <renderer>
             <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.AjaxExceptionHandlerRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandlerRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
             <renderer-type>org.primefaces.component.AjaxStatusRenderer</renderer-type>
             <renderer-class>org.primefaces.component.ajaxstatus.AjaxStatusRenderer</renderer-class>
         </renderer>
