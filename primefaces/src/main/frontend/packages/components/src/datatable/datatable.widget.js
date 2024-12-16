@@ -455,7 +455,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
      * Binds the change event listener and renders the paginator
      * @private
      */
-    bindPaginator:() {
+    bindPaginator() {
         var $this = this;
         this.cfg.paginator.paginate = function(newState) {
             if($this.cfg.clientCache) {
@@ -5764,14 +5764,14 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
         this.bodyTable.css('top', '0px');
         this.scrollBody.scrollTop(0);
         this.clearScrollState();
-    },
+    }
 
     /**
      * In case of a toggleable filter datatable toggle all filter input components
      * @param {string | null} speed speed of fade animation. (see jquery fadeToggle method)
      * @param {(() => void) | null} callback will be executed after animation is finished. (see jquery fadeToggle method)
      */
-    toggleFilter: function(speed, callback) {
+    toggleFilter(speed, callback) {
         this.jq.find(".ui-column-filter, .ui-column-customfilter").fadeToggle(speed || 0, callback);
     }
 
