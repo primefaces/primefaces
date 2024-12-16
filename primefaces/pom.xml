@@ -714,6 +714,7 @@
                                 <include>core/core.widget.js</include>
                                 <include>core/core.resources.js</include>
                                 <include>core/core.clientwindow.js</include>
+                                <include>ajaxexceptionhandler/ajaxexceptionhandler.js</include>
                                 <include>ajaxstatus/ajaxstatus.js</include>
                                 <include>poll/poll.js</include>
                                 <include>validation/validation.common.js</include>

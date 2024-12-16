@@ -1486,6 +1486,22 @@ if (!PrimeFaces.ajax) {
                 var errorName = PrimeFaces.ajax.Utils.getContent(node.getElementsByTagName("error-name")[0]);
                 var errorMessage = PrimeFaces.ajax.Utils.getContent(node.getElementsByTagName("error-message")[0]);
 
+                // try to invoke specific AjaxExceptionHandler
+                var exceptionHandlers = PrimeFaces.getWidgetsByType(PrimeFaces.widget.AjaxExceptionHandler);
+                for (var exceptionHandler of exceptionHandlers) {
+                    if (exceptionHandler.handles(errorName)) {
+                        exceptionHandler.handle(errorName, errorMessage);
+                        return;
+                    }
+                }
+
+                // try to invoke global AjaxExceptionHandler
+                var globalExceptionHandler = exceptionHandlers.find(widget => widget.isGlobal());
+                if (globalExceptionHandler) {
+                    globalExceptionHandler.handle(errorName, errorMessage);
+                    return;
+                }
+
                 if (PrimeFaces.settings.errorPages) {
                     var errorPageUrl = null;
                     if (errorName) {
@@ -1511,11 +1527,12 @@ if (!PrimeFaces.ajax) {
                         } catch (error) {
                             PrimeFaces.warn('Error redirecting to URL: ' + errorPageUrl);
                         }
+
+                        return;
                     }
-                    return;
                 }
 
-                PrimeFaces.error("No default error page (Status 500 or java.lang.Throwable) and no error page for type '" + errorName + "' defined!");
+                PrimeFaces.error("No ajaxExceptionHandler or error page found for '" + errorName + "' defined!");
                 if (errorMessage) {
                     PrimeFaces.error(errorMessage);
                 }
