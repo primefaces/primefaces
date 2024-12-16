@@ -110,10 +110,10 @@
     </function>
 
     <tag>
-        <tag-name>validateFile</tag-name>
         <description>
             <![CDATA[`p:validateFile` is a validator which can be used to validate single and mulitple files, either of `p:fileUpload` or `h:inputFile`.]]>
         </description>
+        <tag-name>validateFile</tag-name>
         <validator>
             <validator-id>primefaces.File</validator-id>
             <handler-class>org.primefaces.validate.base.PrimeValidatorHandler</handler-class>
