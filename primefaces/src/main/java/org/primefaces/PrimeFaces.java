@@ -391,7 +391,7 @@ public class PrimeFaces {
                 catch (ComponentNotFoundException e) {
                     if (facesContext.isProjectStage(ProjectStage.Development)) {
                         LOGGER.log(Level.WARNING,
-                                "PrimeFaces.current().ajax().update() called but component can't be resolved!"
+                                "PrimeFaces.current().ajax().update() called but component can not be resolved!"
                                 + " Expression will just be added to the renderIds: {0}", expression);
                     }
 

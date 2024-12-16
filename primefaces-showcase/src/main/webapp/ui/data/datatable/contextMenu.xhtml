@@ -19,7 +19,7 @@
     <ui:define name="implementation">
         <div class="card">
             <h:form id="form">
-                <p:dataTable id="products" var="product" value="#{dtContextMenuView.products}" rowKey="#{product.id}"
+                <p:dataTable id="products" var="product" value="#{dtContextMenuView.products}" rowKey="#{product.code}"
                              selection="#{dtContextMenuView.selectedProduct}" selectionMode="single">
                     <f:facet name="header">
                         RightClick to View Options

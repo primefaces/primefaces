@@ -144,15 +144,6 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
     }
 
     @Override
-    protected void encodePlaceholder(FacesContext context, AbstractMenu menu) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        writer.startElement("nav", menu);
-        writer.writeAttribute("id", menu.getClientId(context), "id");
-        writer.writeAttribute("class", "ui-breadcrumb-placeholder", "styleClass");
-        writer.endElement("nav");
-    }
-
-    @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         // Do nothing
     }

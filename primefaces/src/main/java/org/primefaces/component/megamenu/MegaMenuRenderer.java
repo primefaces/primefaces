@@ -99,15 +99,6 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         writer.endElement("div");
     }
 
-    @Override
-    protected void encodePlaceholder(FacesContext context, AbstractMenu menu) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        writer.startElement("div", menu);
-        writer.writeAttribute("id", menu.getClientId(context), "id");
-        writer.writeAttribute("class", "ui-megamenu-placeholder", "styleClass");
-        writer.endElement("div");
-    }
-
     protected void encodeRootItems(FacesContext context, MegaMenu menu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         List<MenuElement> elements = menu.getElements();

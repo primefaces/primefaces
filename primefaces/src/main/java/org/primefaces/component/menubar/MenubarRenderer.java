@@ -67,15 +67,6 @@ public class MenubarRenderer extends TieredMenuRenderer {
     }
 
     @Override
-    protected void encodePlaceholder(FacesContext context, AbstractMenu menu) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        writer.startElement("div", menu);
-        writer.writeAttribute("id", menu.getClientId(context), "id");
-        writer.writeAttribute("class", "ui-menubar-placeholder", "styleClass");
-        writer.endElement("div");
-    }
-
-    @Override
     protected void encodeSubmenuIcon(FacesContext context, Submenu submenu, boolean isRtl, boolean isVertical) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Object parent = submenu.getParent();

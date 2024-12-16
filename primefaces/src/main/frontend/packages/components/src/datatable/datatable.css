@@ -69,6 +69,11 @@
     margin: .5rem auto auto auto;
 }
 
+.ui-datatable.ui-filter-togglable thead .ui-column-customfilter,
+.ui-datatable.ui-filter-togglable thead .ui-column-filter {
+    display:none;
+}
+
 .ui-datatable .ui-row-toggler {
     cursor: pointer;
 }

@@ -96,15 +96,6 @@ public class StackRenderer extends BaseMenuRenderer {
     }
 
     @Override
-    protected void encodePlaceholder(FacesContext context, AbstractMenu menu) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        writer.startElement("div", menu);
-        writer.writeAttribute("id", menu.getClientId(context), "id");
-        writer.writeAttribute("class", "ui-stack-placeholder", "styleClass");
-        writer.endElement("div");
-    }
-
-    @Override
     protected void encodeMenuItemContent(FacesContext context, AbstractMenu menu, MenuItem menuitem) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 

@@ -30,10 +30,6 @@ public interface MediaPlayer {
     String REAL = "real";
     String PDF = "pdf";
 
-    String getClassId();
-
-    String getCodebase();
-
     String getSourceParam();
 
     String getType();

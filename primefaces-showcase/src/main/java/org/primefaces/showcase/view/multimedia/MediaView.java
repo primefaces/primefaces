@@ -21,25 +21,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.media.player;
+package org.primefaces.showcase.view.multimedia;
 
-public class QuickTimePlayer implements MediaPlayer {
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
-    private static final String[] SUPPORTED_TYPES = new String[]{"aif", "aiff", "aac", "au", "bmp", "gsm", "mov", "mid", "midi", "mpg", "mpeg",
-        "mp4", "m4a", "psd", "qt", "qtif", "qif", "qti", "snd", "tif", "tiff", "wav", "3g2", "3pg"};
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.faces.context.FacesContext;
+import jakarta.inject.Named;
 
-    @Override
-    public String getSourceParam() {
-        return "src";
-    }
+@Named
+@RequestScoped
+public class MediaView {
 
-    @Override
-    public String getType() {
-        return null;
-    }
-
-    @Override
-    public String[] getSupportedTypes() {
-        return SUPPORTED_TYPES;
+    public StreamedContent getPdf() {
+        return DefaultStreamedContent.builder()
+                .contentType("application/pdf")
+                .name("guide.pdf")
+                .stream(() -> {
+                    try {
+                        FacesContext facesContext = FacesContext.getCurrentInstance();
+                        return facesContext.getExternalContext().getResourceAsStream("/resources/demo/media/guide.pdf");
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                        return null;
+                    }
+                })
+                .build();
     }
 }

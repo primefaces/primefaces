@@ -627,15 +627,14 @@ public class TreeTableRenderer extends DataRenderer {
         ColumnMeta columnMeta = tt.getColumnMeta().get(column.getColumnKey());
 
         ResponseWriter writer = context.getResponseWriter();
-        UIComponent header = column.getFacet("header");
-        String headerText = column.getHeaderText();
+        UIComponent headerFacet = column.getFacet("header");
+        String headerText = resolveColumnHeaderText(context, column);
+        String ariaHeaderText = resolveColumnAriaHeaderText(context, column);
         String title = column.getTitle();
-        String ariaHeaderText = column.getAriaHeaderText();
-        headerText = LangUtils.isNotBlank(headerText) ? headerText : ariaHeaderText;
 
         String titlestyleClass = getStyleClassBuilder(context)
                 .add("ui-column-title")
-                .add(LangUtils.isNotBlank(ariaHeaderText), "ui-helper-hidden-accessible")
+                .add(isColumnAriaHeaderTextDefined(context, column), "ui-helper-hidden-accessible")
                 .build();
 
         boolean columnVisible = column.isVisible();
@@ -684,12 +683,10 @@ public class TreeTableRenderer extends DataRenderer {
             }
         }
 
-        String ariaHeaderLabel = getHeaderLabel(context, column);
-
         writer.startElement("th", null);
         writer.writeAttribute("id", column.getContainerClientId(context), null);
         writer.writeAttribute("class", columnClass, null);
-        writer.writeAttribute(HTML.ARIA_LABEL, ariaHeaderLabel, null);
+        writer.writeAttribute(HTML.ARIA_LABEL, ariaHeaderText, null);
         if (style != null) {
             writer.writeAttribute("style", style, null);
         }
@@ -703,8 +700,8 @@ public class TreeTableRenderer extends DataRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", titlestyleClass, null);
 
-        if (FacetUtils.shouldRenderFacet(header)) {
-            header.encodeAll(context);
+        if (FacetUtils.shouldRenderFacet(headerFacet)) {
+            headerFacet.encodeAll(context);
         }
         else if (headerText != null) {
             writer.writeText(headerText, "headerText");

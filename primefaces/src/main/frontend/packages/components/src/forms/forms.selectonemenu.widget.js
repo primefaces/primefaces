@@ -1637,6 +1637,7 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
         }
         
         var dataLabel = escape ? label.replaceAll('"', '&quot;') : PrimeFaces.escapeHTML(label, true);
+        label = label === "&amp;nbsp;" ? "&nbsp;" : label;
         content += ' data-label="' + dataLabel + '" data-value="' + $item.val() + '">' + label + '</li>';
 
         if (isOptgroup) {

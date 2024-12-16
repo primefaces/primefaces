@@ -28,16 +28,6 @@ public class WindowsPlayer implements MediaPlayer {
     private static final String[] SUPPORTED_TYPES = new String[]{"asx", "asf", "avi", "wma", "wmv"};
 
     @Override
-    public String getClassId() {
-        return "clsid:6BF52A52-394A-11D3-B153-00C04F79FAA6";
-    }
-
-    @Override
-    public String getCodebase() {
-        return "http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab#Version=6,4,7,1112";
-    }
-
-    @Override
     public String getSourceParam() {
         return "url";
     }

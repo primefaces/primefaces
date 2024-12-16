@@ -37,6 +37,7 @@ Look into [migration guide](https://primefaces.github.io/primefaces/15_0_0/#/../
     * Added `expandIcon`/`collapseIcon` attributes for RowToggler
     * Added `rowsPerPage` in the PageEvent AJAX event
     * Added `filterNormalize` attribute to normalize the filter values (remove accents)
+    * Added `toggleFilter()` JS Widget function to show/hide filter components (see showcase example for usage).
 
 * DatePicker
     * Added `defaultHour`, `defaultMinute`, `defaultSecond`, `defaultMillisec` attributes to match legacy `Calendar` component

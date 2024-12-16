@@ -1303,6 +1303,7 @@ Widget: `PrimeFaces.widget.DataTable`
 | unselectAllRows() | - | void | Unselects all rows.
 | unselectAllRowsOnPage() | - | void | Unselect all rows on current page.
 | unselectRow(r, silent) | r : number or tr element as jQuery object, silent : flag to fire row select ajax behavior | void | Unselects the given row.
+| toggleFilter(speed, callback)  | speed : speed argument for nested jQuery fadeToggle call, callback : to be executed after animation has completed | void | Show/Hide the filter components in the header row.
 
 
 
@@ -1346,4 +1347,4 @@ structural style classes;
 | .ui-datatable-scrollable-footer | Footer wrapper of a scrollable table.
 | .ui-datatable-scrollable-footer-box | Footer container of a scrollable table.
 | .ui-datatable-resizable | Main container element of a resizable table.
-| .ui-datatable-frozencolumn | Frozen columns.
+| .ui-datatable-frozencolumn | Frozen columns. 
