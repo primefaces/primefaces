@@ -1,10 +1,9 @@
 name: IT
 
-on: [push, pull_request, workflow_dispatch]
-#on:
-#  workflow_dispatch:
-#  schedule:
-#    - cron: '0 6 * * *'
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 6 * * *'
 
 env:
   SCREENSHOT_DIRECTORY: '/tmp/pf_it/'
@@ -14,7 +13,7 @@ permissions:
 
 jobs:
   nightly:
-#    if: github.repository == 'primefaces/primefaces' && github.ref == 'refs/heads/master'
+    if: github.repository == 'primefaces/primefaces' && github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     name: Java ${{ matrix.java }}, ${{ matrix.profile }}
     strategy:
