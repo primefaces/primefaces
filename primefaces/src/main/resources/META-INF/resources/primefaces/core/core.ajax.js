@@ -376,8 +376,8 @@ if (!PrimeFaces.ajax) {
 
             /**
              * Handle the error either by calling the p:ajaxExceptionHandlers, trying to redirect to the error-page or by logging.
-             * @param errorName The error name.
-             * @param errorMessage The error message.
+             * @param {string} errorName The error name.
+             * @param {string} errorMessage The error message.
              */
             handleError: function(errorName, errorMessage) {
                 if (errorName) {
