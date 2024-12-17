@@ -56,19 +56,21 @@ On both cases the exceptions are logged.
 
 
 ### Integration with PrimeFaces
-When using `p:ajax`, PrimeFaces handles client-side error management.  
+PrimeFaces handles client-side error management of both `f:ajax` and `p:ajax`.
 The `error` from the response is passed to the `p:ajaxExceptionHandler`. If no specific `p:ajaxExceptionHandler` or global `p:ajaxExceptionHandler` is defined, PrimeFaces attempts to redirect to the configured `error-page` specified in the `web/web-fragment.xml`.
 If neither a `p:ajaxExceptionHandler` nor an `error-page` is found, the error is simply logged to the console.
 
 
 ## PrimeFaces ExceptionHandler implementation
 
-PrimeFaces provides another ExceptionHandler implementation with the following differences and additions:
+PrimeFaces provides another ExceptionHandler implementation with the following advantages and disadvantages:
 
-- It redirects (instead of forward) to the error-page in NON-AJAX mode
-- It even redirects to error-page in AJAX mode when _f:ajax_ is used. With the default Faces ExceptionHandler only _p:ajax_ is supported.
-- It adds to ability to use exception informations, even after the redirect via EL (`pfExceptionHandler`)
+Advantages:
+- It adds to ability to use exception informations, even in a AJAX request or after the redirect via EL (`pfExceptionHandler`)
 - Adds the ability to skip logging of specific exceptions via the `primefaces.EXCEPTION_TYPES_TO_IGNORE_IN_LOGGING` config
+
+Disadvantages:
+- It redirects (instead of forward) to the error-page in NON-AJAX mode, therefore the error informations are not accessible from the Servlet-Container (e.g. `#{requestScope['jakarta.servlet.error.exception_type']}`)
 
 ### Configuration
 
