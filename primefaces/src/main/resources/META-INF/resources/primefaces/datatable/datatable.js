@@ -4327,7 +4327,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     invalidateRow: function(index) {
         var i = (this.paginator) ? (index % this.paginator.getRows()) : index;
-        this.tbody.children('tr[data-ri]').eq(i).addClass('ui-widget-content ui-row-editing ui-state-error');
+        var row =  this.tbody.children('tr[data-ri]').eq(i);
+        row.addClass('ui-widget-content ui-row-editing ui-state-error');
+        this.enableCellEditors(row);
     },
 
     /**
