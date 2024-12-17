@@ -50,6 +50,44 @@ public class ImageView {
 As the resource is streamed in a second request, which is not bound to any viewstate, _@ViewScoped_ beans are not supported.
 A common pattern is to pass the information, which is probably stored in your _@ViewScoped_ bean, via request parameters as you can see in the next chapter.
 
+### Composite Components support
+
+In case when a _ValueExpression_ is passed to a composite component, we need some unwrapping.
+
+```
+<myLib:myMedia streamedContent="#{myBean.streamedContent}" />
+```
+
+```
+<composite:interface>
+    <composite:attribute name="streamedContent" required="true" />
+</composite:interface>
+<composite:implementation>
+    <p:media value="#{cc.attrs.streamedContent}" />
+</composite:implementation>
+```
+
+In the example above, we need to extract `#{myBean.streamedContent}` from `#{cc.attrs.streamedContent}` as the resource request is completely unrelated to any composite or Faces view.
+
+In this case there are some unsupported features:
+1) reusing a variable from JSTL (e.g. `<c:set ... />`)
+2) passing a partial expression like:
+    ```
+    <myLib:myMedia controller="#{myBean}" />
+    ```
+    ```
+    <composite:interface>
+        <composite:attribute name="controller" required="true" />
+    </composite:interface>
+    <composite:implementation>
+        <p:media value="#{cc.attrs.controller.streamedContent}" />
+    </composite:implementation>
+    ```
+3) referencing the streamed as _MethodExpression_
+   ```
+   <p:media value="#{cc.attrs.controller.getStreamedContent()}" />
+   ```
+
 ### MethodExpression support
 
 As the _ValueExpression_ is evaluated in the second request, not when rendering the view, a _MethodExpression_ and method parameters are **NOT** supported.
