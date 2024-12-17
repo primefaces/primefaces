@@ -49,13 +49,17 @@ PrimeFaces.widget.AjaxExceptionHandler = PrimeFaces.widget.BaseWidget.extend({
                 process: $this.id,
                 update: $this.cfg.update,
                 ignoreAutoUpdate: true,
-                global: false
+                global: false,
+                oncomplete: function(xhr, status, args, data) {
+                    if ($this.cfg.onexception) {
+                        $this.cfg.onexception.call($this, errorName, errorMessage);
+                    }
+                }
             };
             PrimeFaces.ajax.Request.handle(options);
         }
-
-        if (this.cfg.onexception) {
-            this.cfg.onexception.call(this, errorName, errorMessage);
+        else if (this.cfg.onexception) {
+            this.cfg.onexception.call($this, errorName, errorMessage);
         }
     },
 
