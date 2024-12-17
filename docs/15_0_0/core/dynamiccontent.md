@@ -52,7 +52,8 @@ A common pattern is to pass the information, which is probably stored in your _@
 
 ### Composite Components support
 
-In case when a _ValueExpression_ is passed to a composite component, we need some unwrapping.
+In case when a _ValueExpression_ is passed to a composite component, we need some additional transformation, as the resource request is completely unrelated to any composite or Faces view.
+In the example above, we need to transform `#{cc.attrs.streamedContent}` to `#{myBean.streamedContent}`: 
 
 ```
 <myLib:myMedia streamedContent="#{myBean.streamedContent}" />
@@ -67,9 +68,7 @@ In case when a _ValueExpression_ is passed to a composite component, we need som
 </composite:implementation>
 ```
 
-In the example above, we need to extract `#{myBean.streamedContent}` from `#{cc.attrs.streamedContent}` as the resource request is completely unrelated to any composite or Faces view.
-
-In this case there are some unsupported features:
+In this case there are some not supported features:
 1) reusing a variable from JSTL (e.g. `<c:set ... />`)
 2) passing a partial expression like:
     ```
