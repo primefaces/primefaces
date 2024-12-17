@@ -82,7 +82,7 @@ In this case there are some not supported features:
         <p:media value="#{cc.attrs.controller.streamedContent}" />
     </composite:implementation>
     ```
-3) referencing the streamed as _MethodExpression_
+3) referencing the StreamedContent as _MethodExpression_
    ```
    <p:media value="#{cc.attrs.controller.getStreamedContent()}" />
    ```
