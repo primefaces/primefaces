@@ -67,7 +67,7 @@ PrimeFaces provides another ExceptionHandler implementation with the following a
 
 Advantages:
 - It adds to ability to use exception informations, even in a AJAX request or after the redirect via EL (`pfExceptionHandler`)
-- Adds the ability to skip logging of specific exceptions via the `primefaces.EXCEPTION_TYPES_TO_IGNORE_IN_LOGGING` config
+- Only for Mojarra users, MyFaces has the same option: Adds the ability to skip logging of specific exceptions via the `primefaces.EXCEPTION_TYPES_TO_IGNORE_IN_LOGGING` config.
 
 Disadvantages:
 - It redirects (instead of forward) to the error-page in NON-AJAX mode, therefore the error informations are not accessible from the Servlet-Container (e.g. `#{requestScope['jakarta.servlet.error.exception_type']}`)
