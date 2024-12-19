@@ -182,11 +182,14 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         this.input.off('blur.inputnumber').on('blur.inputnumber', function(e) {
             var element = AutoNumeric.getAutoNumericElement(this);
             if (element && this.value && this.value.length > 0) {
-                var newValue = this.value.trim();
+                var newValue = this.value;
                 if ($this.cfg.digitGroupSeparator) {
                     newValue = newValue.replaceAll($this.cfg.digitGroupSeparator, '');
                 }
-                element.set(newValue, null, true);
+                if ($this.cfg.currencySymbol) {
+                    newValue = newValue.replaceAll($this.cfg.currencySymbol, '');
+                }
+                element.set(newValue.trim(), null, true);
 
                 // GitHub #8610: reset the raw values so we don't fire change event if 1.0 == 1.00
                 if (element.rawValueOnFocus !== '' && Number(element.rawValue) === Number(element.rawValueOnFocus)) {
