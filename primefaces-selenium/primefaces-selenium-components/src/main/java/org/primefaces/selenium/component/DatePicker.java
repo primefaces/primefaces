@@ -36,6 +36,7 @@ import java.time.ZoneId;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -313,8 +314,15 @@ public abstract class DatePicker extends AbstractInputComponent {
      * @param year the year to select
      */
     public void selectYear(int year) {
-        WebElement yearInput = showPanel().findElement(By.cssSelector("input.ui-datepicker-year"));
-        yearInput.sendKeys(Integer.toString(year));
+        WebElement panel = showPanel();
+        try {
+            WebElement yearInput = panel.findElement(By.cssSelector("input.ui-datepicker-year"));
+            yearInput.sendKeys(Integer.toString(year));
+        }
+        catch (NoSuchElementException e) {
+            Select yearDropDown = new Select(showPanel().findElement(By.cssSelector("select.ui-datepicker-year")));
+            yearDropDown.selectByValue(Integer.toString(year));
+        }
     }
 
     /**

@@ -32171,11 +32171,11 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Whether the year should be rendered as a dropdown instead of text. Default is false.]]>
+                <![CDATA[Display the year navigator. When set to 'true' or 'input', the year is shown as a numeric input, which is accessible for visually impaired users. If set to 'select', it appears as a dropdown menu. Default is 'false'.]]>
             </description>
             <name>yearNavigator</name>
             <required>false</required>
-            <type>java.lang.Boolean</type>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>

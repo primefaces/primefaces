@@ -233,11 +233,11 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         getStateHelper().put(PropertyKeys.monthNavigator, monthNavigator);
     }
 
-    public boolean isYearNavigator() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.yearNavigator, false);
+    public String getYearNavigator() {
+        return (String) getStateHelper().eval(PropertyKeys.yearNavigator, "false");
     }
 
-    public void setYearNavigator(boolean yearNavigator) {
+    public void setYearNavigator(String yearNavigator) {
         getStateHelper().put(PropertyKeys.yearNavigator, yearNavigator);
     }
 

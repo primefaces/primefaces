@@ -223,7 +223,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             .attr("showOnFocus", datePicker.isShowOnFocus())
             .attr("shortYearCutoff", datePicker.getShortYearCutoff(), null)
             .attr("monthNavigator", datePicker.isMonthNavigator(), false)
-            .attr("yearNavigator", datePicker.isYearNavigator(), false)
+            .attr("yearNavigator", datePicker.getYearNavigator().toLowerCase(Locale.ROOT), "false")
             .attr("showButtonBar", datePicker.isShowButtonBar(), false)
             .attr("showMinMaxRange", datePicker.isShowMinMaxRange(), true)
             .attr("autoMonthFormat", datePicker.isAutoMonthFormat(), true)
