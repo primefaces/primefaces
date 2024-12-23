@@ -268,10 +268,18 @@
                 return;
             }
 
-            if (value.length) {
+            // normal inputs just check for a value
+            var isFilled = value.length > 0;
+
+            // #11974: Autocomplete multiple mode must be handled differently
+            if(parent.hasClass('ui-autocomplete-multiple')) {
+                isFilled = parent.find('li.ui-autocomplete-token').length > 0;
+            }
+
+            if (isFilled) {
                 input.addClass('ui-state-filled');
 
-                if(parent.is("span:not('.ui-float-label')")) {
+                if(parent.is("div, span:not('.ui-float-label')")) {
                     parent.addClass('ui-inputwrapper-filled');
                 }
             } else {
@@ -289,8 +297,14 @@
          * @return {typeof PrimeFaces} this for chaining
          */
         skinInput : function(input) {
-            var parent = input.parent(),
-            updateFilledStateOnBlur = function () {
+            let parent = input.parent();
+
+            // #11974: Autocomplete multiple mode must be handled differently
+            if(parent.hasClass('ui-autocomplete-input-token')) {
+                parent = parent.parent().parent();
+            }
+
+            const updateFilledStateOnBlur = function () {
                 if(parent.hasClass('ui-inputwrapper-focus')) {
                     parent.removeClass('ui-inputwrapper-focus');
                 }
@@ -306,7 +320,7 @@
             }).on("focus", function() {
                 $(this).addClass('ui-state-focus');
 
-                if(parent.is("span:not('.ui-float-label')")) {
+                if(parent.is("div, span:not('.ui-float-label')")) {
                     parent.addClass('ui-inputwrapper-focus');
                 }
             }).on("blur animationstart", function() {
