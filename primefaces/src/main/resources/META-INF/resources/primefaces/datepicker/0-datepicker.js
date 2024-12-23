@@ -114,7 +114,7 @@
             panelStyle: null,
             panelStyleClass: null,
             monthNavigator: false,
-            yearNavigator: false,
+            yearNavigator: "false",
             dateStyleClasses: null,
             disabledDates: null,
             enabledDates: null,
@@ -1221,7 +1221,7 @@
         },
 
         _setInitOptionValues: function() {
-            if (this.options.yearNavigator) {
+            if (this.isYearNavigator()) {
                 var year = this.viewDate.getFullYear();
                 var month = this.viewDate.getMonth();
                 var yearElts = this.panel.find('.ui-datepicker-header > .ui-datepicker-title > .ui-datepicker-year');
@@ -1491,7 +1491,7 @@
         },
 
         renderTitleYearElement: function(year, index) {
-            if (this.options.yearNavigator && index === 0) {
+            if (this.isYearNavigator() && index === 0) {
                 this.updateYearNavigator();
                 var years = this.options.yearRange.split(':'),
                     yearStart = parseInt(years[0], 10),
@@ -1507,7 +1507,16 @@
                     maxYear = Math.min(maxDate.getFullYear(), yearEnd);
                 }
 
-                return '<input class="ui-datepicker-year" size="6" maxlength="4" tabindex="0" aria-label="' + this.options.locale.year + '" type="number" min="' + minYear + '" max="' + maxYear + '" step="1" value="' + year + '"' + '></input>';
+                if (this.isYearNavigatorInput()) {
+                    return '<input class="ui-datepicker-year" size="6" maxlength="4" tabindex="0" aria-label="' + this.options.locale.year + '" type="number" min="' + minYear + '" max="' + maxYear + '" step="1" value="' + year + '"' + '></input>';
+                }
+                else {
+                    var yearOptions = [];
+                    for (var i = yearStart; i <= yearEnd; i++) {
+                        yearOptions.push(i);
+                    }
+                    return '<select class="ui-datepicker-year" tabindex="0" aria-label="' + this.options.locale.year + '">' + this.renderTitleOptions('year', yearOptions, year) + '</select>';
+                }
             }
             else {
                 return '<span class="ui-datepicker-year">' + year + '</span>';
@@ -2453,7 +2462,7 @@
                 var currentYear = newViewDate.getFullYear(),
                     newYear = currentYear - 1;
 
-                if (this.options.yearNavigator) {
+                if (this.isYearNavigator()) {
                     var minYear = parseInt(this.options.yearRange.split(':')[0], 10);
 
                     if (newYear < minYear) {
@@ -2513,7 +2522,7 @@
                 var currentYear = newViewDate.getFullYear(),
                     newYear = currentYear + 1;
 
-                if (this.options.yearNavigator) {
+                if (this.isYearNavigator()) {
                     var maxYear = parseInt(this.options.yearRange.split(':')[1], 10);
 
                     if (newYear > maxYear) {
@@ -2872,6 +2881,14 @@
 
         isDate: function(value) {
             return value && Object.prototype.toString.call(value) === "[object Date]" && !isNaN(value);
+        },
+
+        isYearNavigator: function() {
+            return ["input", "select", "true"].includes(this.options.yearNavigator);
+        },
+
+        isYearNavigatorInput: function() {
+            return ["input", "true"].includes(this.options.yearNavigator);
         },
 
         alignPanel: function() {
@@ -3465,12 +3482,14 @@
         },
 
         updateYearNavigator: function() {
-            if (this.hasCustomYearRange || this.options.yearRange) {
+            var isYearInput = this.isYearNavigatorInput();
+            if (this.hasCustomYearRange || (isYearInput && this.options.yearRange)) {
                 return;
             }
-            if (this.options.yearNavigator) {
+            if (this.isYearNavigator()) {
                 var viewYear = this.viewDate.getFullYear();
-                this.options.yearRange = (viewYear - 1000) + ':' + (viewYear + 1000);
+                var yearIncrement = isYearInput ? 1000 : 10;
+                this.options.yearRange = (viewYear - yearIncrement) + ':' + (viewYear + yearIncrement);
             }
         },
 

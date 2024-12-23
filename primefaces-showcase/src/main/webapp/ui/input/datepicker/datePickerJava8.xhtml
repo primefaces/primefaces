@@ -59,8 +59,13 @@
                     </div>
 
                     <div class="field col-12 md:col-4">
-                        <p:outputLabel for="navigator" value="Navigator" />
-                        <p:datePicker id="navigator" value="#{calendarJava8View.date2}" monthNavigator="true" yearNavigator="true" showWeek="true" showLongMonthNames="true" />
+                        <p:outputLabel for="navigatorInput" value="Navigator (Year Input)" />
+                        <p:datePicker id="navigatorInput" value="#{calendarJava8View.date2}" monthNavigator="true" yearNavigator="input" showWeek="true" showLongMonthNames="true" />
+                    </div>
+
+                    <div class="field col-12 md:col-4">
+                        <p:outputLabel for="navigatorSelect" value="Navigator (Year Select)" />
+                        <p:datePicker id="navigatorSelect" value="#{calendarJava8View.date1}" monthNavigator="true" yearNavigator="select" showWeek="true" showLongMonthNames="true" />
                     </div>
 
                     <div class="field col-12 md:col-4">
