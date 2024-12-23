@@ -93,7 +93,7 @@ class InputNumber006Test extends AbstractPrimePageTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("InputNumber Config = " + cfg);
-        assertEquals("0", cfg.get("decimalPlaces"));
+        assertEquals(0, cfg.get("decimalPlaces"));
     }
 
     public static class Page extends AbstractPrimePage {

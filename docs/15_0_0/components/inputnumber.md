@@ -82,6 +82,7 @@ valueChangeListener | null | MethodExpr | A method binding expression that refer
 widgetVar | null | String | Name of the client side widget.
 caretPositionOnFocus | null | String | Defines where should be positioned the caret on focus. Values 'start', 'end', 'decimalLeft', 'decimalRight'.
 decimalPlaces | 2 | String | Number of decimal places. If value is Integer/Long/Short/BigInteger number defaults to 0 else defaults to 2 only if the initial value is not `null`.
+decimalPlacesRawValue | null | Integer | Specifies the number of decimal places to retain for the raw value and `decimalPlaces` will be used for display values. If this option is left as `null` (the default), the `decimalPlaces` value will be used. Note: Setting this to fewer decimal places than those displayed may cause user confusion.
 decimalSeparator | *1 | String | Decimal separator char.
 decimalSeparatorAlternative | null | String | Allow to declare an alternative decimal separator which is automatically replaced by `decimalCharacter` when typed.
 emptyValue | focus | String | Defines what to display when the input value is empty (possible options are null, focus, press, always, min, max, zero, number, or a string representing a number)

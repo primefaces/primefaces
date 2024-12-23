@@ -21,44 +21,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.selenium.component;
-
-import org.primefaces.selenium.PrimeSelenium;
-import org.primefaces.selenium.component.base.AbstractInputComponent;
-import org.primefaces.selenium.component.base.ComponentUtils;
+package org.primefaces.integrationtests.inputnumber;
 
 import java.io.Serializable;
 
-import org.openqa.selenium.Keys;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 
-/**
- * Component wrapper for the PrimeFaces {@code p:inputText}.
- */
-public abstract class InputText extends AbstractInputComponent {
+import lombok.Data;
 
-    public String getValue() {
-        return getInput().getDomProperty("value");
-    }
+@ViewScoped
+@Named
+@Data
+public class InputNumber008 implements Serializable {
 
-    public void setValue(Serializable value) {
-        boolean ajaxified = isOnchangeAjaxified();
-        String oldValue = getValue();
-        if (oldValue != null && oldValue.length() > 0) {
-            if (ajaxified) {
-                PrimeSelenium.guardAjax(getInput()).clear();
-            }
-            else {
-                getInput().clear();
-            }
-        }
+    private Double value = Double.valueOf(12.345678d);
 
-        ComponentUtils.sendKeys(getInput(), value.toString());
+    public void setValue(Double value) {
+        this.value = value;
 
-        if (ajaxified) {
-            PrimeSelenium.guardAjax(getInput()).sendKeys(Keys.TAB);
-        }
-        else {
-            getInput().sendKeys(Keys.TAB);
-        }
+        String message = value != null ? value.toString() : "null";
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, message, message));
     }
 }

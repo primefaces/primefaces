@@ -57,6 +57,7 @@ Look into [migration guide](https://primefaces.github.io/primefaces/15_0_0/#/../
 
 * InputNumber
     * Added `modifyValueOnUpDownArrow` which allows the user to increment or decrement the element value with the up and down arrow keys. Default is true.
+    * Added `decimalPlacesRawValue` Specifies the number of decimal places to retain for the raw value and `decimalPlaces` will be used for display values. If this option is left as `null` (the default), the `decimalPlaces` value will be used. Note: Setting this to fewer decimal places than those displayed may cause user confusion.
 
 * Paginator 
     * Added `rowsPerPage` in the PageEvent AJAX event

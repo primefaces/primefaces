@@ -79,7 +79,8 @@ class InputNumber003Test extends AbstractPrimePageTest {
     private void assertConfiguration(JSONObject cfg, boolean allowDecimalPadding) {
         assertNoJavascriptErrors();
         System.out.println("InputNumber Config = " + cfg);
-        assertEquals("6", cfg.get("decimalPlaces"));
+        assertEquals(6, cfg.get("decimalPlaces"));
+        assertEquals(6, cfg.get("decimalPlacesRawValue"));
         if (cfg.has("allowDecimalPadding")) {
             assertEquals(allowDecimalPadding, cfg.getBoolean("allowDecimalPadding"));
         }
