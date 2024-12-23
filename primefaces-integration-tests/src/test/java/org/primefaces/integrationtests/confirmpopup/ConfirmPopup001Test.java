@@ -39,7 +39,9 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.FindBy;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ConfirmPopup001Test extends AbstractPrimePageTest {
 
@@ -151,6 +153,25 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(6)
+    @DisplayName("ConfirmPopup: Default icon to the one set on the global")
+    void defaultIcon(Page page) {
+        // Arrange
+        ConfirmPopup popup = page.popup;
+        assertFalse(popup.isVisible());
+
+
+        // Act
+        page.question.click();
+
+        // Assert
+        assertTrue(popup.isVisible());
+        assertTrue(page.messages.isEmpty());
+        assertCss(popup.getIcon(), "ui-confirm-popup-icon pi pi-question-circle");
+        assertConfiguration(popup.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(6)
     @DisplayName("ConfirmPopup: Delete button pressing YES")
     void deleteYes(Page page) {
         // Arrange
@@ -202,6 +223,9 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
 
         @FindBy(id = "form:delete")
         CommandButton delete;
+
+        @FindBy(id = "form:question")
+        CommandButton question;
 
         @Override
         public String getLocation() {

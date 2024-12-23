@@ -51,6 +51,10 @@ public class ConfirmDialog001 implements Serializable {
         addMessage("Non AJAX", "Full page submitted");
     }
 
+    public void question() {
+        addMessage("Question", "Are you sure you want to proceed?");
+    }
+
     public void addMessage(String summary, String detail) {
         TestUtils.addMessage(summary, detail);
     }
