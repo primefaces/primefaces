@@ -60,7 +60,7 @@ public interface Widget {
         Pattern pattern = (Pattern) context.getAttributes().get(ATTR_WIDGET_VAR_PATTERN);
         if (pattern == null) {
             // Create a pattern to replace naming container separator with '_'
-            pattern = Pattern.compile("" + UINamingContainer.getSeparatorChar(context));
+            pattern = Pattern.compile("-|" + UINamingContainer.getSeparatorChar(context));
             context.getAttributes().put(ATTR_WIDGET_VAR_PATTERN, pattern);
         }
 
