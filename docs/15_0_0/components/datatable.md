@@ -1244,6 +1244,14 @@ DataTable has two responsive modes: `responsivePriority` and `reflow`.
 In priority mode, responsiveness is based on column `responsivePriority` that vary between 1 and 6. Lower value means higher priority.
 On the other hand in reflow mode that is enabled by setting reflow to true, all columns will be visible but displayed as stacked.
 
+## Customizing emptyMessage
+By default, a standard `emptyMessage` is displayed, which is translated using [PrimeFaces Localization](../core/localization.md)
+Alternatively, a custom message can be defined using the `emptyMessage` attribute. If you wish to display HTML content, the `emptyMessage` facet can be utilized:
+```
+<f:facet name="emptyMessage">
+   ....
+</f:facet>
+```
 
 ## Ajax Behavior Events
 
