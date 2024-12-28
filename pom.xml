@@ -73,6 +73,7 @@
         <maven.compiler.source>11</maven.compiler.source>
         <junit.version>5.11.4</junit.version>
         <poi.version>5.3.0</poi.version>
+        <jacoco.version>0.8.12</jacoco.version>
 
         <npm.token/>
         <npm.username/>
@@ -99,6 +100,7 @@
         <module>primefaces-integration-tests</module>
         <module>primefaces-integration-tests-jakarta</module>
         <module>primefaces-cli</module>
+        <module>primefaces-coverage</module>
     </modules>
 
     <build>
@@ -275,6 +277,20 @@
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.6.0</version>
             </plugin>
+
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.version}</version>
+                <executions>
+                    <execution>
+                        <id>prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
@@ -321,6 +337,39 @@
                 <build.output>target-ide</build.output>
             </properties>
         </profile>
+        <profile>
+            <id>coverage</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <version>0.8.12</version>
+                        <executions>
+                            <execution>
+                                <id>prepare-agent</id>
+                                <goals>
+                                    <goal>prepare-agent</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>report</id>
+                                <goals>
+                                    <goal>report</goal>
+                                </goals>
+                                <configuration>
+                                    <formats>
+                                        <format>XML</format>
+                                        <format>HTML</format>
+                                    </formats>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
     </profiles>
 
     <dependencyManagement>

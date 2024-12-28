@@ -16,6 +16,10 @@
 
     <name>PrimeFaces Selenium - Components</name>
 
+    <properties>
+        <sonar.skip>true</sonar.skip>
+    </properties>
+
     <build>
         <plugins>
             <plugin>

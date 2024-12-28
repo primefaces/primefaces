@@ -10,6 +10,11 @@
     <artifactId>primefaces-themes</artifactId>
     <packaging>jar</packaging>
     <name>PrimeFaces Themes</name>
+
+    <properties>
+        <sonar.skip>true</sonar.skip>
+    </properties>
+
     <build>
         <pluginManagement>
             <plugins>
