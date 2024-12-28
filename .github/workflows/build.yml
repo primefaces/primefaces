@@ -27,6 +27,7 @@ jobs:
       - name: Build
         run: mvn clean install -T1C -Pjsdoc,minify --batch-mode --show-version
       - name: Sonar Cloud - simulate (without sonar:sonar)
+        if: matrix.java == 21
         run: mvn clean install -Pquick -pl !primefaces-integration-tests-jakarta
       - name: Sonar Cloud
         if: github.repository == 'primefaces/primefaces' && github.ref == 'refs/heads/master' && matrix.java == 21
