@@ -22,6 +22,7 @@
         <resources.dir.compressed>${project.build.directory}/classes/META-INF/resources/primefaces</resources.dir.compressed>
         <mockito.version>5.14.2</mockito.version>
         <sonar.sources>src/main/java,src/main/resources</sonar.sources>
+        <sonar.skip>false</sonar.skip>
     </properties>
 
     <dependencies>
