@@ -26,9 +26,9 @@ jobs:
           cache: 'maven'
       - name: Build
         run: mvn clean install -T1C -Pjsdoc,minify --batch-mode --show-version
-      - name: Sonar Cloud - simulate (without sonar:sonar)
-        if: matrix.java == 21
-        run: mvn clean install -Pintegration-tests,parallel-execution,headless,chrome,theme-saga,csp,mojarra-2.3 -pl !primefaces-integration-tests-jakarta
+#      - name: Sonar Cloud - simulate (without sonar:sonar)
+#        if: matrix.java == 21
+#        run: mvn clean install -Pintegration-tests,parallel-execution,headless,chrome,theme-saga,csp,mojarra-2.3 -pl !primefaces-integration-tests-jakarta
       - name: Sonar Cloud
         if: github.repository == 'primefaces/primefaces' && github.ref == 'refs/heads/master' && matrix.java == 21
         run: mvn clean install sonar:sonar -Pintegration-tests,parallel-execution,headless,chrome,theme-saga,csp,mojarra-2.3 -pl !primefaces-integration-tests-jakarta -Dsonar.organization=primefaces -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=${{secrets.SONAR_TOKEN}}
