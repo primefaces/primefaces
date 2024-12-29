@@ -28,6 +28,8 @@
         <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
         <jakarta.faces.STATE_SAVING_METHOD>server</jakarta.faces.STATE_SAVING_METHOD>
 
+        <sonar.skip>true</sonar.skip>
+
         <!-- dependency versions -->
         <lombok.version>1.18.36</lombok.version>
         <tomcat.version>10.1.31</tomcat.version>

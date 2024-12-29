@@ -34,7 +34,6 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CommandButton001Test extends AbstractPrimePageTest {
 
@@ -50,13 +49,8 @@ public class CommandButton001Test extends AbstractPrimePageTest {
         page.button.click();
 
         // Assert
-        /*
-         * Very slow CI-infrastructure may interfere with this test.
-         * If necessary it may be an alternative using implicit wait.
-         * Maybe something like
-         * page.getWebDriver().findElement(("#" + button.getId().replace(":", "\\:") + " span.ui-icon-loading"));
-         */
-        assertTrue(PrimeSelenium.hasCssClass(button, "ui-state-loading"));
+        // we use an approach which should be more tolerant when CI-infrastructure is slow
+        PrimeSelenium.waitGui().until(driver -> PrimeSelenium.hasCssClass(button, "ui-state-loading"));
 
         // Wait out min Ajax loading animation
         PrimeSelenium.wait(1000);
