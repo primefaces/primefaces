@@ -23,16 +23,17 @@ well:
 
 | Method | Description |
 | --- | --- |
-[PrimeFaces.escapeClientId(id)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#escapeClientId) | Escaped Jakarta Faces ids with semi colon to work with jQuery.
 [PrimeFaces.addSubmitParam(el, name, param)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#addSubmitParam) | Adds request parameters dynamically to the element.
-[PrimeFaces.getCookie(name)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#getCookie) | Returns cookie with given name.
-[PrimeFaces.setCookie(name, value, cfg)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#setCookie) | Sets a cookie with given name, value and options. e.g. PrimeFaces.setCookie('name', 'test'); PrimeFaces.setCookie('name','test',{expires:7, path:'/'}) Second example creates cookie for entire site that expires in 7 days.
-[PrimeFaces.deleteCookie(name, cfg)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#deleteCookie) | Deletes a cookie with given and and options.
-[PrimeFaces.skinInput(input)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#skinInput) | Progressively enhances an input element with theming.
-[PrimeFaces.info(msg)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#info), [debug(msg)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#debug), [warn(msg)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#warn), [error(msg)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#error) | Client side log API.
 [PrimeFaces.changeTheme(theme)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#changeTheme) | Changes theme on the fly with no page refresh.
+[PrimeFaces.deleteCookie(name, cfg)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#deleteCookie) | Deletes a cookie with given and and options.
+[PrimeFaces.escapeClientId(id)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#escapeClientId) | Escaped Jakarta Faces ids with semi colon to work with jQuery.
+[PrimeFaces.getCookie(name)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#getCookie) | Returns cookie with given name.
 [PrimeFaces.getWidgetById(clientid)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#getWidgetById) | Returns the widget instance from the client id
 [PrimeFaces.getWidgetsByType(type)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#getWidgetsByType) | Returns an array of widget instances of the specified type, where type is any concrete class of [`PrimeFaces.widget.*`](../jsdocs/modules/src_PrimeFaces.PrimeFaces.widget.html).
+[PrimeFaces.info(msg)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#info), [debug(msg)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#debug), [warn(msg)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#warn), [error(msg)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#error) | Client side log API.
+[PrimeFaces.scrollTo(scrollTarget, duration, topOffset)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#scrollTo) | Scrolls to a component with given client id or jQuery element. The scroll animation can be customized with a duration and an optional offset from the top of the target element.
+[PrimeFaces.setCookie(name, value, cfg)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#setCookie) | Sets a cookie with given name, value and options. e.g. PrimeFaces.setCookie('name', 'test'); PrimeFaces.setCookie('name','test',{expires:7, path:'/'}) Second example creates cookie for entire site that expires in 7 days.
+[PrimeFaces.skinInput(input)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#skinInput) | Progressively enhances an input element with theming.
 
 ## PrimeFaces Environment (PrimeFaces.env.*)
 

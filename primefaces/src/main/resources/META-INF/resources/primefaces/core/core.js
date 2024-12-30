@@ -949,20 +949,28 @@
         },
 
         /**
-         * Scrolls to a component with given client id
-         * @param {string} id The ID of an element to scroll to.
-         * @param {string | number | undefined} duration string or number determining how long the animation will run. Default to 400
+         * Scrolls to a component with given client id or jQuery element. The scroll animation can be customized with a duration
+         * and an optional offset from the top of the target element.
+         * @param {string | JQuery} scrollTarget The ID of an element or jQuery element to scroll to
+         * @param {string | number} [duration=400] Duration of the scroll animation in milliseconds or a string like 'slow', 'fast'
+         * @param {number} [topOffset=0] Additional offset in pixels from the top of the target element
+         * @example
+         * // Scroll to element with ID 'myElement' over 1 second
+         * PrimeFaces.scrollTo('myElement', 1000);
+         * 
+         * // Scroll to jQuery element with 50px offset from top
+         * PrimeFaces.scrollTo($('#myElement'), 'slow', 50);
          */
-        scrollTo: function(id, duration) {
-            var offset = $(PrimeFaces.escapeClientId(id)).offset();
+        scrollTo: function(scrollTarget, duration = 400, topOffset = 0) {
+            var element = typeof scrollTarget === 'string' ? $(PrimeFaces.escapeClientId(scrollTarget)) : scrollTarget;
+            var offset = element.offset();
             var scrollBehavior = 'scroll-behavior';
             var target = $('html,body');
             var sbValue = target.css(scrollBehavior);
-            var animationDuration = duration || 400;
             target.css(scrollBehavior, 'auto');
             target.animate(
-                    { scrollTop: offset.top, scrollLeft: offset.left },
-                    animationDuration,
+                    { scrollTop: offset.top - topOffset, scrollLeft: offset.left },
+                    duration,
                     'easeInCirc',
                     function(){ target.css(scrollBehavior, sbValue) }
             );
