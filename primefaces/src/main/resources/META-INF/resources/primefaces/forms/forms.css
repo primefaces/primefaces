@@ -990,6 +990,11 @@ body .ui-cascadeselect-item-content .ui-cascadeselect-group-icon {
     width: 100%;
 }
 
+/** SelectBooleanCheckbox **/
+.ui-fluid .ui-selectbooleancheckbox {
+    width: 100%;
+}
+
 /** SelectOneMenu **/
 .ui-fluid .ui-selectonemenu {
     width: 100%;
