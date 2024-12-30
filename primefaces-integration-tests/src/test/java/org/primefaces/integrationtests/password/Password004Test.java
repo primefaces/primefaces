@@ -86,7 +86,7 @@ class Password004Test extends AbstractPrimePageTest {
         Msg message1 = page.messages.getMessage(0);
         assertNotNull(message1);
         assertEquals("Password 1: Validation Error.", message1.getSummary());
-        assertEquals("Password 1 should match with Password 2.", message1.getDetail());
+        assertEquals("'Password 1' should match with 'Password 2'.", message1.getDetail());
         assertEquals("", pwd1.getValue());
         assertEquals("", pwd2.getValue());
         assertCss(pwd1, "ui-state-error");
