@@ -27,6 +27,8 @@
         <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
         <javax.faces.STATE_SAVING_METHOD>server</javax.faces.STATE_SAVING_METHOD>
 
+        <sonar.skip>true</sonar.skip>
+
         <!-- dependency versions -->
         <hibernate-validator.version>6.2.4.Final</hibernate-validator.version>
         <lombok.version>1.18.36</lombok.version>

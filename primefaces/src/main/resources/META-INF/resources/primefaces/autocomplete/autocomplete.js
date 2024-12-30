@@ -154,6 +154,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
         this.placeholder = this.input.attr('placeholder');
 
+        // visuals and float label handling
+        PrimeFaces.skinInput(this.input);
+
         if (this.cfg.multiple) {
             this.setupMultipleMode();
 
@@ -165,9 +168,6 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             }
         }
         else {
-            //visuals
-            PrimeFaces.skinInput(this.input);
-
             this.input.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
             this.dropdown.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
         }
