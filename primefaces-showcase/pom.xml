@@ -231,7 +231,7 @@
             <plugin>
                 <groupId>io.github.cleydyr</groupId>
                 <artifactId>dart-sass-maven-plugin</artifactId>
-                <version>1.4.0</version>
+                <version>1.5.0</version>
                 <executions>
                     <execution>
                         <id>generate-css-using-sass</id>
