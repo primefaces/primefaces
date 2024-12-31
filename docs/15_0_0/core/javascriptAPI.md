@@ -34,6 +34,18 @@ well:
 [PrimeFaces.getWidgetById(clientid)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#getWidgetById) | Returns the widget instance from the client id
 [PrimeFaces.getWidgetsByType(type)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#getWidgetsByType) | Returns an array of widget instances of the specified type, where type is any concrete class of [`PrimeFaces.widget.*`](../jsdocs/modules/src_PrimeFaces.PrimeFaces.widget.html).
 
+## PrimeFaces Utilities (PrimeFaces.utils.*)
+
+[PrimeFaces.utils](../jsdocs/modules/src_PrimeFaces.PrimeFaces.utils.html) is the namespace for various utilities needed by PrimeFaces.
+
+| Method | Description |
+| --- | --- |
+[PrimeFaces.utils.isVisibleInViewport(element, offset)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.utils.html#isVisibleInViewport) | Checks if an element is currently visible within the browser viewport, with an optional offset. Returns true if the element is visible within the viewport, false otherwise.
+[PrimeFaces.utils.disableAnimations()](../jsdocs/modules/src_PrimeFaces.PrimeFaces.utils.html#disableAnimations) | Disables all CSS and jQuery animations.
+[PrimeFaces.utils.enableAnimations()](../jsdocs/modules/src_PrimeFaces.PrimeFaces.utils.html#enableAnimations) | Enables all CSS and jQuery animations.
+[PrimeFaces.utils.killswitch()](../jsdocs/modules/src_PrimeFaces.PrimeFaces.utils.html#killswitch) | Killswitch that stops all AJAX requests, running Pollers and IdleMonitors.
+
+
 ## PrimeFaces Environment (PrimeFaces.env.*)
 
 [PrimeFaces.env](../jsdocs/modules/src_PrimeFaces.PrimeFaces.env.html) is the namespace for detecting the used client and features.
@@ -43,8 +55,14 @@ well:
 [PrimeFaces.env.mobile](../jsdocs/modules/src_PrimeFaces.PrimeFaces.env.html#mobile) | If the used client is a mobile browes
 [PrimeFaces.env.touch](../jsdocs/modules/src_PrimeFaces.PrimeFaces.env.html#touch) | If the client supports touch
 [PrimeFaces.env.ios](../jsdocs/modules/src_PrimeFaces.PrimeFaces.env.html#ios) | If the client is iOS
-[PrimeFaces.env.isIE(version)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.env.html#isIE) | If the client is IE and the version matches the parameter
-[PrimeFaces.env.isLtIE(version)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.env.html#isLtIE) | If the client is IE and the version is lesser than the parameter
+[PrimeFaces.env.android](../jsdocs/modules/src_PrimeFaces.PrimeFaces.env.html#android) | If the client is Android
+[PrimeFaces.env.browser](../jsdocs/modules/src_PrimeFaces.PrimeFaces.env.html#browser) | The browser name
+[PrimeFaces.env.prefersReducedMotion](../jsdocs/modules/src_PrimeFaces.PrimeFaces.env.html#prefersReducedMotion) | If the client prefers reduced motion
+[PrimeFaces.env.preferredColorSchemeDark](../jsdocs/modules/src_PrimeFaces.PrimeFaces.env.html#preferredColorSchemeDark) | If the client prefers dark color scheme
+[PrimeFaces.env.preferredColorSchemeLight](../jsdocs/modules/src_PrimeFaces.PrimeFaces.env.html#preferredColorSchemeLight) | If the client prefers light color scheme
+[PrimeFaces.env.getTheme()](../jsdocs/modules/src_PrimeFaces.PrimeFaces.env.html#getTheme) | Gets the currently loaded PrimeFaces theme
+[PrimeFaces.env.getThemeContrast()](../jsdocs/modules/src_PrimeFaces.PrimeFaces.env.html#getThemeContrast) | Gets the current theme contrast mode (light or dark)
+
 
 ## PrimeFaces Widget (PrimeFaces.widget.*)
 
