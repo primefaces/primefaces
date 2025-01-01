@@ -4314,13 +4314,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Updates a row with the given content
+     * Updates a row with the given content and ensures it is visible.
      * @protected
      * @param {JQuery} row Row to update.
      * @param {string} content HTML string to set on the row.
      */
     updateRow: function(row, content) {
-        row.replaceWith(content);
+        const $content = $(content).show();
+        row.replaceWith($content);
     },
 
     /**
