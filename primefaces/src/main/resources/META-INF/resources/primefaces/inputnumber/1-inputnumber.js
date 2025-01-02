@@ -38,6 +38,8 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         this.plugOptArray = cfg.pluginOptions;
         this.initialValue = cfg.valueToRender;
         this.disabled = cfg.disabled;
+        this.cfg.decimalPlaces = Number(this.cfg.decimalPlaces);
+        this.cfg.decimalPlacesRawValue = Number(this.cfg.decimalPlacesRawValue || this.cfg.decimalPlaces);
 
         // GitHub #8125 minValue>0 shows js warning and quirky behavior
         if (this.cfg.minimumValue > 0.0000001 || this.cfg.maximumValue < 0) {
@@ -181,14 +183,30 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         // GitHub #6447: browser auto fill fix
         this.input.off('blur.inputnumber').on('blur.inputnumber', function(e) {
             var element = AutoNumeric.getAutoNumericElement(this);
-            if (element && this.value && this.value.length > 0) {
-                var newValue = this.value;
+            if (!element) {
+                return;
+            }
+
+            // Get the numeric value
+            var newValue = '';
+            if ($this.cfg.decimalPlacesRawValue > $this.cfg.decimalPlaces) {
+                // if using raw decimal places we need to get the numeric string
+                newValue = element.getNumericString();
+            } else {
+                // if using decimal places we can use the input value
+                newValue = this.value;
+            }
+
+            // Process the value if it exists, remove formatting characters
+            if (newValue && newValue.length > 0) {
                 if ($this.cfg.digitGroupSeparator) {
                     newValue = newValue.replaceAll($this.cfg.digitGroupSeparator, '');
                 }
                 if ($this.cfg.currencySymbol) {
                     newValue = newValue.replaceAll($this.cfg.currencySymbol, '');
                 }
+                
+                // Set the cleaned value
                 element.set(newValue.trim(), null, true);
 
                 // GitHub #8610: reset the raw values so we don't fire change event if 1.0 == 1.00

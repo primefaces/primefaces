@@ -14181,6 +14181,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Specifies the number of decimal places to retain for the raw value and `decimalPlaces` will be used for display values. If this option is left as `null` (the default), the `decimalPlaces` value will be used. Note: Setting this to fewer decimal places than those displayed may cause user confusion.]]>
+            </description>
+            <name>decimalPlacesRawValue</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Defines what to display when the input value is empty (possible options are null, focus, press, always, min, max, zero, number, or a string representing a number). Default is focus.]]>
             </description>
             <name>emptyValue</name>

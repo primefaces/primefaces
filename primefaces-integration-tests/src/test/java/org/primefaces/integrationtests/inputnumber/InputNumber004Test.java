@@ -185,7 +185,7 @@ class InputNumber004Test extends AbstractPrimePageTest {
     private void assertConfiguration(JSONObject cfg, String decimalPlaces, String minValue, String maxValue) {
         assertNoJavascriptErrors();
         System.out.println("InputNumber Config = " + cfg);
-        assertEquals(decimalPlaces, cfg.get("decimalPlaces"));
+        assertEquals(Integer.valueOf(decimalPlaces), cfg.get("decimalPlaces"));
         assertEquals(minValue, cfg.get("minimumValue"));
         assertEquals(maxValue, cfg.get("maximumValue"));
     }

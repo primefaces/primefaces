@@ -50,6 +50,7 @@ class InputNumber001Test extends AbstractPrimePageTest {
         inputNumber.setValue("33");
 
         // Assert
+        assertEquals("33", inputNumber.getWidgetValue());
         assertEquals("33", inputNumber.getValue());
         assertConfiguration(inputNumber.getWidgetConfiguration());
     }
@@ -90,7 +91,8 @@ class InputNumber001Test extends AbstractPrimePageTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("InputNumber Config = " + cfg);
-        assertEquals("0", cfg.get("decimalPlaces"));
+        assertEquals(0, cfg.get("decimalPlaces"));
+        assertEquals(0, cfg.get("decimalPlacesRawValue"));
     }
 
     public static class Page extends AbstractPrimePage {

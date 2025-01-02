@@ -38,6 +38,7 @@ public abstract class InputNumberBase extends AbstractPrimeHtmlInputText impleme
     public enum PropertyKeys {
         caretPositionOnFocus,
         decimalPlaces,
+        decimalPlacesRawValue,
         decimalSeparator,
         decimalSeparatorAlternative,
         emptyValue,
@@ -147,6 +148,14 @@ public abstract class InputNumberBase extends AbstractPrimeHtmlInputText impleme
 
     public void setDecimalPlaces(String decimalPlaces) {
         getStateHelper().put(PropertyKeys.decimalPlaces, decimalPlaces);
+    }
+
+    public Integer getDecimalPlacesRawValue() {
+        return (Integer) getStateHelper().eval(PropertyKeys.decimalPlacesRawValue, null);
+    }
+
+    public void setDecimalPlacesRawValue(Integer decimalPlacesRawValue) {
+        getStateHelper().put(PropertyKeys.decimalPlacesRawValue, decimalPlacesRawValue);
     }
 
     public String getDecimalSeparator() {
