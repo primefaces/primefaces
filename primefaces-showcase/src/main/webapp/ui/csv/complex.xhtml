@@ -33,7 +33,7 @@
 
 
     <ui:define name="title">
-        Client Side Validation <span class="subitem">Complex</span>
+        Client Side Validation <span class="subitem">Complex / Multi-Field</span>
     </ui:define>
 
     <ui:define name="description">
@@ -46,7 +46,7 @@
     <ui:define name="implementation">
         <div class="card">
             <h:form id="form">
-                <p:panel header="Validate" pt:data-p-val="MyComplexValidator">
+                <p:outputPanel pt:data-p-val="MyComplexValidator">
                     <p:messages showDetail="true">
                         <p:autoUpdate/>
                     </p:messages>
@@ -72,7 +72,7 @@
                     <p:commandButton value="Ajax" id="btnAjax" update="grid" icon="pi pi-check" validateClient="true"
                                      style="margin-right:10px"/>
                     <p:commandButton value="Disabled" ajax="false" icon="pi pi-check" style="margin-right:10px"/>
-                </p:panel>
+                </p:outputPanel>
             </h:form>
         </div>
     </ui:define>
