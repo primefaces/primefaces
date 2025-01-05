@@ -71,4 +71,9 @@ public class ComplexValidationView {
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Non-Ajax-action", "Hello from the server side!");
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
+
+    public void doNonAjaxWithoutCsv() {
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Non-Ajax-action", "Hello from the server side, we skipped the CSV!");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
 }

@@ -75,7 +75,8 @@
                                      action="#{complexValidationView.doNonAjax()}" style="margin-right:10px"/>
                     <p:commandButton value="Ajax" id="btnAjax" update="grid" icon="pi pi-check" validateClient="true"
                                      action="#{complexValidationView.doAjax()}" style="margin-right:10px"/>
-                    <p:commandButton value="Disabled (without CSV)" ajax="false" icon="pi pi-check" style="margin-right:10px"/>
+                    <p:commandButton value="Disabled (without CSV)" ajax="false" icon="pi pi-check"
+                                     action="#{complexValidationView.doNonAjaxWithoutCsv()}"  style="margin-right:10px"/>
                 </p:outputPanel>
             </h:form>
         </div>
