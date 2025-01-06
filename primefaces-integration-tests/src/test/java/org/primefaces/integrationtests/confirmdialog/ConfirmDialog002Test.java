@@ -38,7 +38,10 @@ import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.support.FindBy;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 class ConfirmDialog002Test extends AbstractPrimePageTest {
 
@@ -56,7 +59,7 @@ class ConfirmDialog002Test extends AbstractPrimePageTest {
         // Assert
         assertDialog(page, true);
         assertEquals("Are you sure you want to proceed?", dialog.getMessage().getText());
-        assertEquals("ui-icon ui-confirm-dialog-severity pi pi-exclamation-triangle", dialog.getIcon().getAttribute("class"));
+        assertEquals("ui-icon ui-confirm-dialog-severity pi pi-exclamation-triangle", dialog.getIcon().getDomAttribute("class"));
     }
 
     @Test
@@ -97,6 +100,8 @@ class ConfirmDialog002Test extends AbstractPrimePageTest {
         ConfirmDialog dialog = page.dialog;
         assertFalse(dialog.isVisible());
         page.confirm.click();
+        assertEquals("Are you sure you want to proceed?", dialog.getMessage().getText());
+        assertEquals("ui-icon ui-confirm-dialog-severity pi pi-exclamation-triangle", dialog.getIcon().getDomAttribute("class"));
 
         // Act
         dialog.getNoButton().click();
@@ -114,6 +119,8 @@ class ConfirmDialog002Test extends AbstractPrimePageTest {
         ConfirmDialog dialog = page.dialog;
         page.confirm.click();
         assertTrue(dialog.isVisible());
+        assertEquals("Are you sure you want to proceed?", dialog.getMessage().getText());
+        assertEquals("ui-icon ui-confirm-dialog-severity pi pi-exclamation-triangle", dialog.getIcon().getDomAttribute("class"));
 
         // Act
         PrimeSelenium.guardAjax(dialog.getYesButton()).click();
@@ -131,6 +138,8 @@ class ConfirmDialog002Test extends AbstractPrimePageTest {
         ConfirmDialog dialog = page.dialog;
         assertFalse(dialog.isVisible());
         page.delete.click();
+        assertEquals("Do you want to delete this record?", dialog.getMessage().getText());
+        assertEquals("ui-icon ui-confirm-dialog-severity pi pi-info-circle", dialog.getIcon().getDomAttribute("class"));
 
         // Act
         dialog.getNoButton().click();
@@ -148,6 +157,8 @@ class ConfirmDialog002Test extends AbstractPrimePageTest {
         ConfirmDialog dialog = page.dialog;
         assertFalse(dialog.isVisible());
         page.delete.click();
+        assertEquals("Do you want to delete this record?", dialog.getMessage().getText());
+        assertEquals("ui-icon ui-confirm-dialog-severity pi pi-info-circle", dialog.getIcon().getDomAttribute("class"));
 
         // Act
         PrimeSelenium.guardAjax(dialog.getYesButton()).click();
@@ -189,6 +200,24 @@ class ConfirmDialog002Test extends AbstractPrimePageTest {
         // Assert
         assertEquals("Full page submitted", page.message.getMessage(0).getDetail());
         assertDialog(page, false);
+    }
+
+    @Test
+    @Order(9)
+    @DisplayName("ConfirmDialog: Default icon to the one set on the global")
+    void defaultIcon(Page page) {
+        // Arrange
+        ConfirmDialog dialog = page.dialog;
+        assertFalse(dialog.isVisible());
+
+        // Act
+        page.question.click();
+
+        // Assert
+        assertDialog(page, true);
+        assertEquals("Do you like cats?", dialog.getMessage().getText());
+        assertEquals("ui-icon ui-confirm-dialog-severity ui-icon-alert", dialog.getIcon().getDomAttribute("class"));
+        assertConfiguration(dialog.getWidgetConfiguration());
     }
 
     private void assertDialog(Page page, boolean visible) {
@@ -246,6 +275,9 @@ class ConfirmDialog002Test extends AbstractPrimePageTest {
 
         @FindBy(id = "form:nonAjax")
         CommandLink nonAjax;
+
+        @FindBy(id = "form:question")
+        CommandLink question;
 
         @Override
         public String getLocation() {

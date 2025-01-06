@@ -47,6 +47,10 @@ public class ConfirmPopup001 implements Serializable {
         addMessage("Deleted", "Record deleted");
     }
 
+    public void question() {
+        addMessage("Question", "Are you sure you want to proceed?");
+    }
+
     public void addMessage(String summary, String detail) {
         TestUtils.addMessage(summary, detail);
     }

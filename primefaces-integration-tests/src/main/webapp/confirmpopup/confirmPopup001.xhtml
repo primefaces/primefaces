@@ -30,7 +30,11 @@
                     noButtonIcon="pi pi-heart"/>
             </p:commandButton>
 
-            <p:confirmPopup id="confirmpopup" global="true" showEffect="fade" hideEffect="fade">
+            <p:commandButton id="question" value="Question" action="#{confirmPopup001.question}" update="message" styleClass="p-mr-2">
+                <p:confirm type="popup" header="Question" message="Are you sure you want to proceed?"/>
+            </p:commandButton>
+
+            <p:confirmPopup id="confirmpopup" global="true" showEffect="fade" hideEffect="fade" icon="pi pi-question-circle">
                 <p:commandButton value="Yes" type="button" styleClass="ui-confirm-popup-yes" icon="pi pi-check"/>
                 <p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no ui-button-flat" icon="pi pi-times"/>
             </p:confirmPopup>

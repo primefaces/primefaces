@@ -40,7 +40,10 @@ import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.support.FindBy;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 class ConfirmDialog001Test extends AbstractPrimePageTest {
 
@@ -58,7 +61,7 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
         // Assert
         assertDialog(page, true);
         assertEquals("Are you sure you want to proceed?", dialog.getMessage().getText());
-        assertEquals("ui-icon ui-confirm-dialog-severity pi pi-exclamation-triangle", dialog.getIcon().getAttribute("class"));
+        assertEquals("ui-icon ui-confirm-dialog-severity pi pi-exclamation-triangle", dialog.getIcon().getDomAttribute("class"));
     }
 
     @Test

@@ -130,7 +130,7 @@ public class ConfirmDialogRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String messageText = dialog.getMessage();
         UIComponent messageFacet = dialog.getFacet("message");
-        String defaultIcon = dialog.isGlobal() ? "ui-icon" : "ui-icon ui-icon-" + dialog.getSeverity();
+        String defaultIcon = "ui-icon ui-icon-" + dialog.getSeverity();
         String severityIcon = defaultIcon + " " + ConfirmDialog.SEVERITY_ICON_CLASS;
 
         writer.startElement("div", null);

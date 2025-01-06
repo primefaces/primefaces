@@ -951,6 +951,9 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
         if(this.cfg.global) {
             PrimeFaces.confirmDialog = this;
             
+            this.title.data('p-text', this.title.text());
+            this.message.data('p-text', this.message.text());
+            this.icon.data('p-icon', this.icon.removeClass('ui-icon ui-confirm-dialog-severity').attr('class'));
             this.yesButton = this.jq.find('.ui-confirmdialog-yes');
             this.noButton = this.jq.find('.ui-confirmdialog-no');
             this.yesButton.data('p-text', this.yesButton.children('.ui-button-text').text());
@@ -1029,6 +1032,15 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
 
         // Remove added classes and reset button labels to their original values
         if (this.cfg.global) {
+            if (this.title.data('p-text')) {
+                this.title.text(this.title.data('p-text'));
+            }
+            if (this.message.data('p-text')) {
+                this.message.text(this.message.data('p-text'));
+            }
+            if (this.icon.data('p-icon')) {
+                this.icon.attr('class', 'ui-icon ui-confirm-dialog-severity ' + this.icon.data('p-icon'));
+            }
             this.yesButton.removeClass(this.yesButton.data('p-class'));
             this.noButton.removeClass(this.noButton.data('p-class'));
             this.yesButton.children('.ui-button-text').text(this.yesButton.data('p-text'));
@@ -1049,8 +1061,9 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
         }
 
         // Set icon if provided, or hide it otherwise
-        if (msg.icon) {
-            this.icon.removeClass().addClass('ui-icon ui-confirm-dialog-severity ' + msg.icon);
+        var iconClass = msg.icon || this.icon.data('p-icon');
+        if (iconClass) {
+            this.icon.removeClass().addClass('ui-icon ui-confirm-dialog-severity ' + iconClass);
             this.icon.show();
         } else {
             this.icon.hide();
