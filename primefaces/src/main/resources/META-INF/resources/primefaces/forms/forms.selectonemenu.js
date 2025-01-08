@@ -280,12 +280,21 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     alignPanelWidth: function() {
         if(!this.panelWidthAdjusted) {
             var jqWidth = this.jq.outerWidth();
+
+            /* Ensures that the width of a potential scrollbar is considered in the following panel width calculation */
+            let hasVerticalScrollbar = this.itemsWrapper[0].scrollHeight > this.itemsWrapper[0].clientHeight;
+            if (hasVerticalScrollbar) {
+                this.itemsWrapper.css({'overflow': 'scroll'});
+            }
+
             if(this.panel.outerWidth() < jqWidth) {
                 this.panel.outerWidth(jqWidth);
             }
             else {
                 this.panel.outerWidth(this.panel.outerWidth());
             }
+
+            this.itemsWrapper.css({'overflow': ''});
 
             this.panelWidthAdjusted = true;
         }
