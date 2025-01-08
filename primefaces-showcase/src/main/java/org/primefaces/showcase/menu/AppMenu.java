@@ -543,6 +543,7 @@ public class AppMenu {
         clientSideValidationMenuItems.add(new MenuItem("Basic", "/ui/csv/basic"));
         clientSideValidationMenuItems.add(new MenuItem("Bean", "/ui/csv/bean"));
         clientSideValidationMenuItems.add(new MenuItem("Custom", "/ui/csv/custom"));
+        clientSideValidationMenuItems.add(new MenuItem("Complex", "/ui/csv/complex"));
         clientSideValidationMenuItems.add(new MenuItem("Event", "/ui/csv/event"));
         clientSideValidationMenuItems.add(new MenuItem("Immediate", "/ui/csv/immediate"));
         menuCategories.add(new MenuCategory("Client Side Validation", clientSideValidationMenuItems));
