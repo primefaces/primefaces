@@ -2293,6 +2293,11 @@
 
             this.inputfield.removeClass('ui-state-focus');
             this.container.removeClass('ui-inputwrapper-focus');
+
+            // #12754 if mask is used, fire the change event
+            if (this.options.mask) {
+                this.onInputChange(event);
+            }
         },
 
         onInputChange: function(event) {
