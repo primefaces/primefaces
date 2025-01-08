@@ -103,6 +103,53 @@
         },
 
         /**
+         * Resolves the given target as $.
+         *
+         * @param {string | HTMLElement | JQuery | PrimeFaces.widget.BaseWidget} target Either id, element, jQuery object or PF widget.
+         * @return {JQuery} The resolved $.
+         */
+        resolveAs$: function(target) {
+            if (target instanceof PrimeFaces.widget.BaseWidget) {
+                return target.getJQ();
+            }
+            else if (target instanceof $) {
+                return target;
+            }
+            else if (target instanceof HTMLElement) {
+                return $(target)
+            }
+            else if (typeof target === 'string') {
+                return $(document.getElementById(target));
+            }
+
+            throw new Error("Unsupported type: " + (typeof target));
+        },
+
+        /**
+         * Resolves the given target as id.
+         *
+         * @param {string | HTMLElement | JQuery | PrimeFaces.widget.BaseWidget} target Either id, element, jQuery object or PF widget.
+         * @return {string} The id of the target.
+         */
+        resolveAsId: function(target) {
+            if (target instanceof PrimeFaces.widget.BaseWidget) {
+                var widgetJq = target.getJQ();
+                return widgetJq.data(PrimeFaces.CLIENT_ID_DATA)||widgetJq.attr('id');
+            }
+            else if (target instanceof $) {
+                return target.data(PrimeFaces.CLIENT_ID_DATA)||target.attr('id');
+            }
+            else if (target instanceof HTMLElement) {
+                return target.id;
+            }
+            else if (typeof target === 'string') {
+                return target;
+            }
+
+            throw new Error("Unsupported type: " + (typeof target));
+        },
+
+        /**
          * Gets the form by id or the closest form if the id is not a form itself.
          * In AJAX we also have a fallback for the first form in DOM, this should not be used here.
          *

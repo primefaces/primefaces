@@ -11,23 +11,15 @@
             //<![CDATA[
             PrimeFaces.validator['MyComplexValidator'] = {
 
-                validate: function (element) {
-                    // element is the button that triggered the validation
-                    // let nameRequiredJq = element.parent('.ui-outputpanel').find('#form\\:nameRequired');
-                    // let nameJq = element.parent('.ui-outputpanel').find('#form\\:name');
-
-                    /*
-                     * Instead of wrestling with jQuery parent/find-methods we could also use widgetVar-mechanism (eg PF('nameRequired') and PF('name'))
-                     * for straight-forward scenarios without e.g. some kind of ui:repeat, within p:dataTable or similar.
-                     */
+                validate: function(element) {
                     let nameRequiredPf = PF('nameRequired');
                     let namePf = PF('name');
 
-                    if (nameRequiredPf.isChecked() && namePf.jq.val().length === 0) {
-                        PrimeFaces.validator.Highlighter.types['default'].highlight(namePf.jq);
-                        PrimeFaces.validation.ValidationContext.addMessage(namePf.jq, { summary: 'Validation Error', detail: 'A name is required!' });
+                    if (nameRequiredPf.isChecked() && namePf.getValue().length === 0) {
+                        PrimeFaces.validation.ValidationContext.highlight(namePf);
+                        PrimeFaces.validation.ValidationContext.addMessage(namePf, { summary: 'Validation Error', detail: 'A name is required!' });
                     } else {
-                        PrimeFaces.validator.Highlighter.types['default'].unhighlight(namePf.jq);
+                        PrimeFaces.validation.ValidationContext.unhighlight(namePf);
                     }
                 }
             };
@@ -73,7 +65,7 @@
 
                     <p:commandButton value="Non-Ajax" ajax="false" icon="pi pi-check" validateClient="true"
                                      action="#{complexValidationView.doNonAjax()}" style="margin-right:10px"/>
-                    <p:commandButton value="Ajax" id="btnAjax" update="grid" icon="pi pi-check" validateClient="true"
+                    <p:commandButton value="Ajax" id="btnAjax" update="@form" icon="pi pi-check" validateClient="true"
                                      action="#{complexValidationView.doAjax()}" style="margin-right:10px"/>
                     <p:commandButton value="Disabled (without CSV)" ajax="false" icon="pi pi-check"
                                      action="#{complexValidationView.doNonAjaxWithoutCsv()}"  style="margin-right:10px"/>
