@@ -38,6 +38,10 @@ body {
 
     .ui-state-disabled {
         opacity: $disabledOpacity;
+
+        .ui-state-disabled {
+            opacity: 1;
+        }
     }
 
     .ui-widget-overlay {
