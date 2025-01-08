@@ -101,9 +101,10 @@ public class Bean {
 Widget: _PrimeFaces.widget.InputText_
 
 | Method | Params | Return Type | Description |
-| --- | --- | --- | --- |
-enable() | - | void | Enables the input field.
-disable() | - | void | Disables the input field.
+| --- | --- |-------------| --- |
+enable() | - | void        | Enables the input field.
+disable() | - | void        | Disables the input field.
+getValue() | - | string      | Gets the current value.
 
 ## Ajax Behavior Events
 
