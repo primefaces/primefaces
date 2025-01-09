@@ -3546,6 +3546,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
         else {
             $(".ui-cell-editor-input :input:enabled").attr('disabled', 'disabled').attr("data-disabled-by-editor", "true");
+            //#13159: re-enable for all rows that are rowEditing="true"
+            this.enableCellEditors($('.ui-row-editing'));
+            
         }
     },
     
