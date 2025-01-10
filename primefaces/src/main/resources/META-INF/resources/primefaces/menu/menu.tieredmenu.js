@@ -464,7 +464,6 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
 
     /**
      * Deactivates the current active menu item and resets the menu state after a delay.
-     * Optionally stops the propagation of the event.
      * 
      * @param {Event} [e] - The event object (optional).
      */
@@ -484,11 +483,6 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
         }
         else {
             this.reset();
-        }
-
-        // Stop the propagation of the event if the event object is provided
-        if (e) {
-            e.stopPropagation();
         }
     }
 
