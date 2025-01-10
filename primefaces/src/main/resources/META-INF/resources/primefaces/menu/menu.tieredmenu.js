@@ -90,14 +90,20 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
         firstLink.removeClass('ui-state-hover ui-state-active');
 
         // Build event string based on toggle mode
-        var linkEvents = "mouseenter.tieredFocus" + (this.cfg.toggleEvent === 'click' ? " click.tieredFocus" : "");
+        var focusOnClick = this.cfg.toggleEvent === 'click';
+        var linkEvents = "mouseenter.tieredFocus" + (focusOnClick ? " click.tieredFocus" : "");
         
         // Bind mouse/click events to manage focus
         this.links.on(linkEvents, function() {
             var $link = $(this),
                 $menuitem = $link.parent();
             $this.deactivate($menuitem);
-            $link.trigger('focus');
+            if (focusOnClick) {
+                $link.trigger('focus');
+            }
+            else {
+                $this.highlight($menuitem);
+            }
         }).on("focusin.tieredFocus", function() {
             var menuitem = $(this).parent();
             $this.highlight(menuitem);
