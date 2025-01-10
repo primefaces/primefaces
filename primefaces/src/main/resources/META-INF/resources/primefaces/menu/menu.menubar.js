@@ -20,8 +20,9 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
      * @inheritdoc
      * @param {JQuery} menuitem
      * @param {JQuery} submenu
+     * @param {boolean} [focus=true] - If false, does not focus the submenu.
      */
-    showSubmenu: function(menuitem, submenu) {
+    showSubmenu: function(menuitem, submenu, focus) {
         var pos = null;
 
         if (menuitem.parent().hasClass('ui-menu-child')) {
@@ -52,7 +53,9 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
                 .position(pos);
             var $link = menuitem.children('a.ui-menuitem-link');
             $link.attr('aria-expanded', 'true');
-            submenu.find('a.ui-menuitem-link:focusable:first').trigger('focus');
+            if (focus) {
+                submenu.find('a.ui-menuitem-link:focusable:first').trigger('focus');
+            }
         }, this.cfg.showDelay);
     }
 

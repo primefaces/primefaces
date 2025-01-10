@@ -90,14 +90,20 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
         firstLink.removeClass('ui-state-hover ui-state-active');
 
         // Build event string based on toggle mode
-        var linkEvents = "mouseenter.tieredFocus" + (this.cfg.toggleEvent === 'click' ? " click.tieredFocus" : "");
+        var focusOnClick = this.cfg.toggleEvent === 'click';
+        var linkEvents = "mouseenter.tieredFocus" + (focusOnClick ? " click.tieredFocus" : "");
         
         // Bind mouse/click events to manage focus
-        this.links.on(linkEvents, function() {
+        this.links.on(linkEvents, function(e) {
             var $link = $(this),
                 $menuitem = $link.parent();
             $this.deactivate($menuitem);
-            $link.trigger('focus');
+            if (e.type === 'mouseenter') {
+                $this.highlight($menuitem);
+            }
+            else {
+                $link.trigger('focus');
+            }
         }).on("focusin.tieredFocus", function() {
             var menuitem = $(this).parent();
             $this.highlight(menuitem);
@@ -116,7 +122,7 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
                 menuitem = link.parent();
 
             if ($this.cfg.autoDisplay || $this.active) {
-                $this.activate(menuitem);
+                $this.activate(menuitem, false, true);
             }
             else {
                 $this.highlight(menuitem);
@@ -208,7 +214,7 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
             function navigateTo(item) {
                 if (item.length && item.children('a.ui-menuitem-link').length) {
                     $this.deactivate(menuitem);
-                    $this.activate(item, false);
+                    $this.activate(item, true, false);
                 }
             }
 
@@ -218,7 +224,7 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
                 if (submenu.length === 1) {
                     $this.deactivate(menuitem);
                     $this.deactivate(submenu);
-                    $this.activate(submenu, false);
+                    $this.activate(submenu, true,false);
                 }
             }
 
@@ -380,9 +386,10 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
      * Activates a menu item so that it can be clicked and interacted with.
      * 
      * @param {JQuery} menuitem - The menu item to activate.
-     * @param {boolean} [showSubMenu=true] - If false, only focuses the menu item without showing the submenu.
+     * @param {boolean} [focus=true] - If false, does not focus the menu item.
+     * @param {boolean} [showSubMenu=true] - If false, does not show the submenu.
      */
-    activate: function(menuitem, showSubMenu = true) {
+    activate: function(menuitem, focus = true, showSubMenu = true) {
         this.highlight(menuitem);
 
         // if this is a root menu item.
@@ -391,12 +398,14 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
         }
 
         // focus the menu item when activated
-        this.focus(menuitem.children('a.ui-menuitem-link'));
+        if (focus) {
+            this.focus(menuitem.children('a.ui-menuitem-link'));
+        }
 
         if (showSubMenu) {
             var submenu = menuitem.children('ul.ui-menu-child');
             if (submenu.length == 1) {
-                this.showSubmenu(menuitem, submenu);
+                this.showSubmenu(menuitem, submenu, focus);
             }
         }
     },
@@ -416,8 +425,9 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
      * Shows the given submenu of a menu item.
      * @param {JQuery} menuitem A menu item (`LI`) with children.
      * @param {JQuery} submenu A child of the menu item.
+     * @param {boolean} [focus=true] - If false, does not focus the submenu.
      */
-    showSubmenu: function(menuitem, submenu) {
+    showSubmenu: function(menuitem, submenu, focus = true) {
         var pos = {
             my: this.isRTL ? 'right top' : 'left top',
             at: this.isRTL ? 'left top' : 'right top',
@@ -440,7 +450,9 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
                 .position(pos);
             var $link = menuitem.children('a.ui-menuitem-link');
             $link.attr('aria-expanded', 'true');
-            submenu.find('a.ui-menuitem-link:focusable:first').trigger('focus');
+            if (focus) {
+                submenu.find('a.ui-menuitem-link:focusable:first').trigger('focus');
+            }
         }, this.cfg.showDelay);
     },
 
