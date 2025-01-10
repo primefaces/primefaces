@@ -2284,6 +2284,7 @@
             }
             this.inputfield.addClass('ui-state-focus');
             this.container.addClass('ui-inputwrapper-focus');
+            this.valueOnFocus = this.getDate();
         },
 
         onInputBlur: function(event) {
@@ -2295,7 +2296,8 @@
             this.container.removeClass('ui-inputwrapper-focus');
 
             // #12754 if mask is used, fire the change event
-            if (this.options.mask) {
+            if (this.options.mask && this.valueOnFocus !== this.getDate()) {
+                this.valueOnFocus = undefined;
                 this.onInputChange(event);
             }
         },
