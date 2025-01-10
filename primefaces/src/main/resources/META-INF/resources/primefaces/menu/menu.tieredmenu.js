@@ -74,19 +74,26 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
     },
 
     /**
-     * Sets up all event listners required for focus interactions.
+     * Sets up all event listeners required for focus interactions. This includes:
+     * - Making the first menu item focusable by setting its tabindex
+     * - Handling mouse enter and click events to manage focus state
+     * - Handling focus events to highlight active menu items
      * @protected
      */
     bindFocusEvents: function() {
         var $this = this;
 
-        // make first focusable
+        // Make first menu item focusable
         var firstLink = this.links.filter(':not([disabled])').first();
         firstLink.attr("tabindex", $this.tabIndex);
         this.resetFocus(true);
         firstLink.removeClass('ui-state-hover ui-state-active');
 
-        this.links.on("mouseenter.tieredFocus click.tieredFocus", function() {
+        // Build event string based on toggle mode
+        var linkEvents = "mouseenter.tieredFocus" + (this.cfg.toggleEvent === 'click' ? " click.tieredFocus" : "");
+        
+        // Bind mouse/click events to manage focus
+        this.links.on(linkEvents, function() {
             var $link = $(this),
                 $menuitem = $link.parent();
             $this.deactivate($menuitem);
@@ -457,7 +464,6 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
 
     /**
      * Deactivates the current active menu item and resets the menu state after a delay.
-     * Optionally stops the propagation of the event.
      * 
      * @param {Event} [e] - The event object (optional).
      */
@@ -477,11 +483,6 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
         }
         else {
             this.reset();
-        }
-
-        // Stop the propagation of the event if the event object is provided
-        if (e) {
-            e.stopPropagation();
         }
     }
 
