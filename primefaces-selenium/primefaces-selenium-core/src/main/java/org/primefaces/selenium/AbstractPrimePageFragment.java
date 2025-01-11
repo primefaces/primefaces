@@ -59,7 +59,7 @@ public abstract class AbstractPrimePageFragment implements WebElement, WrapsElem
     }
 
     public String getId() {
-        return getRoot().getAttribute("id");
+        return getRoot().getDomAttribute("id");
     }
 
 }

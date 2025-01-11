@@ -56,7 +56,7 @@ public abstract class Messages extends AbstractComponent {
         List<WebElement> messagesSeverities = findElements(By.tagName("div"));
         for (WebElement messageSeverity : messagesSeverities) {
 
-            Severity severity = Severity.toSeverity(messageSeverity.getAttribute("class"));
+            Severity severity = Severity.toSeverity(messageSeverity.getDomAttribute("class"));
 
             for (WebElement message : messageSeverity.findElements(By.cssSelector("li"))) {
                 Msg msg = new Msg();

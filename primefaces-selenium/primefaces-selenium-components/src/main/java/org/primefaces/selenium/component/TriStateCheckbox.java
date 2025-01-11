@@ -67,7 +67,7 @@ public abstract class TriStateCheckbox extends AbstractInputComponent {
     }
 
     public String getValue() {
-        return input.getAttribute("value");
+        return input.getDomProperty("value");
     }
 
     /**

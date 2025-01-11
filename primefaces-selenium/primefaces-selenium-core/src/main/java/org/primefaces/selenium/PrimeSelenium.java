@@ -214,7 +214,7 @@ public final class PrimeSelenium {
      * @return true if this element has the CSS class
      */
     public static boolean hasCssClass(WebElement element, String... cssClass) {
-        String elementClass = element.getAttribute("class");
+        String elementClass = element.getDomAttribute("class");
         if (elementClass == null) {
             return false;
         }
@@ -364,7 +364,7 @@ public final class PrimeSelenium {
         return isElementDisplayed(element) &&
                     isElementEnabled(element) &&
                     !hasCssClass(element, "ui-state-disabled") &&
-                    !Boolean.parseBoolean(element.getAttribute("aria-busy"));
+                    !Boolean.parseBoolean(element.getDomAttribute("aria-busy"));
     }
 
     /**
@@ -502,7 +502,7 @@ public final class PrimeSelenium {
      * @see <a href="https://stackoverflow.com/questions/11858366/how-to-type-some-text-in-hidden-field-in-selenium-webdriver-using-java">Stack Overflow</a>
      */
     public static void setHiddenInput(WebElement input, String value) {
-        executeScript(" document.getElementById('" + input.getAttribute("id") + "').value='" + value + "'");
+        executeScript(" document.getElementById('" + input.getDomAttribute("id") + "').value='" + value + "'");
     }
 
     /**
@@ -515,7 +515,7 @@ public final class PrimeSelenium {
     public static void clearInput(WebElement input, boolean isAjaxified) {
         if (PrimeSelenium.isSafari()) {
             // Safari hack https://stackoverflow.com/a/64067604/502366
-            String inputText = input.getAttribute("value");
+            String inputText = input.getDomProperty("value");
             if (inputText != null && inputText.length() > 0) {
                 CharSequence[] clearText = new CharSequence[inputText.length()];
                 for (int i = 0; i < inputText.length(); i++) {

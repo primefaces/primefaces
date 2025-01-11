@@ -97,6 +97,6 @@ public abstract class TabView extends AbstractComponent {
     }
 
     private Integer getIndexOfHeader(WebElement headerElt) {
-        return Integer.parseInt(headerElt.getAttribute("data-index"));
+        return Integer.parseInt(headerElt.getDomAttribute("data-index"));
     }
 }

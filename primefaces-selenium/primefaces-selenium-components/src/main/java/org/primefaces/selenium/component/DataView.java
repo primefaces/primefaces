@@ -70,8 +70,8 @@ public abstract class DataView extends AbstractPageableData {
         List<WebElement> layoutButtons = getLayoutOptionsWebElement().findElements(By.className("ui-button"));
         for (WebElement layoutButton: layoutButtons) {
             WebElement layoutButtonInputHidden = layoutButton.findElement(By.tagName("input"));
-            if ("true".equals(layoutButtonInputHidden.getAttribute("checked"))) {
-                if ("list".equals(layoutButtonInputHidden.getAttribute("value"))) {
+            if ("true".equals(layoutButtonInputHidden.getDomProperty("checked"))) {
+                if ("list".equals(layoutButtonInputHidden.getDomProperty("value"))) {
                     return Layout.LIST;
                 }
                 else {
@@ -87,10 +87,10 @@ public abstract class DataView extends AbstractPageableData {
         List<WebElement> layoutButtons = getLayoutOptionsWebElement().findElements(By.className("ui-button"));
         for (WebElement layoutButton: layoutButtons) {
             WebElement layoutButtonInputHidden = layoutButton.findElement(By.tagName("input"));
-            if (layout == Layout.LIST && "list".equals(layoutButtonInputHidden.getAttribute("value"))) {
+            if (layout == Layout.LIST && "list".equals(layoutButtonInputHidden.getDomProperty("value"))) {
                 PrimeSelenium.guardAjax(layoutButton).click();
             }
-            else if (layout == Layout.GRID && "grid".equals(layoutButtonInputHidden.getAttribute("value"))) {
+            else if (layout == Layout.GRID && "grid".equals(layoutButtonInputHidden.getDomProperty("value"))) {
                 PrimeSelenium.guardAjax(layoutButton).click();
             }
         }

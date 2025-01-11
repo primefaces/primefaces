@@ -288,7 +288,7 @@ public abstract class PickList extends AbstractComponent {
      */
     public List<String> getSourceListValues() {
         return getSourceListElements().stream()
-                    .map(e -> e.getAttribute(ITEM_VALUE_ATTR)).collect(Collectors.toList());
+                    .map(e -> e.getDomAttribute(ITEM_VALUE_ATTR)).collect(Collectors.toList());
     }
 
     /**
@@ -298,7 +298,7 @@ public abstract class PickList extends AbstractComponent {
      */
     public List<String> getSourceListLabels() {
         return getSourceListElements().stream()
-                    .map(e -> e.getAttribute(ITEM_LABEL_ATTR)).collect(Collectors.toList());
+                    .map(e -> e.getDomAttribute(ITEM_LABEL_ATTR)).collect(Collectors.toList());
     }
 
     /**
@@ -318,7 +318,7 @@ public abstract class PickList extends AbstractComponent {
      */
     public List<String> getTargetListValues() {
         return getTargetListElements().stream()
-                    .map(e -> e.getAttribute(ITEM_VALUE_ATTR)).collect(Collectors.toList());
+                    .map(e -> e.getDomAttribute(ITEM_VALUE_ATTR)).collect(Collectors.toList());
     }
 
     /**
@@ -328,7 +328,7 @@ public abstract class PickList extends AbstractComponent {
      */
     public List<String> getTargetListLabels() {
         return getTargetListElements().stream()
-                    .map(e -> e.getAttribute(ITEM_LABEL_ATTR)).collect(Collectors.toList());
+                    .map(e -> e.getDomAttribute(ITEM_LABEL_ATTR)).collect(Collectors.toList());
     }
 
     /**
@@ -457,8 +457,8 @@ public abstract class PickList extends AbstractComponent {
      */
     private WebElement findListItem(final WebElement listElement, final String item) {
         final Optional<WebElement> listItem = listElement.findElements(By.tagName("li")).stream().filter(e -> {
-            final String value = e.getAttribute(ITEM_VALUE_ATTR);
-            final String label = e.getAttribute(ITEM_LABEL_ATTR);
+            final String value = e.getDomAttribute(ITEM_VALUE_ATTR);
+            final String label = e.getDomAttribute(ITEM_LABEL_ATTR);
             return value.equals(item) || label.equals(item);
         }).findFirst();
 

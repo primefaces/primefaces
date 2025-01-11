@@ -299,7 +299,7 @@ public abstract class AbstractPrimePageTest {
      * @param cssClasses the CSS class or classes to look for
      */
     protected void assertCss(WebElement element, String... cssClasses) {
-        String elementClass = element.getAttribute("class");
+        String elementClass = element.getDomAttribute("class");
         if (elementClass == null) {
             Assertions.fail("Element did not have CSS 'class' attribute.");
             return;

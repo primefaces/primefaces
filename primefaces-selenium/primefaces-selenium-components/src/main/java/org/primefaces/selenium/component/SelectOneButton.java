@@ -64,7 +64,7 @@ public abstract class SelectOneButton extends AbstractInputComponent {
         if (PrimeSelenium.isElementDisplayed(label)) {
             return label.getText();
         }
-        return label.getAttribute("textContent");
+        return label.getDomProperty("textContent");
     }
 
     public boolean isSelected(String label) {

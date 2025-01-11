@@ -102,7 +102,7 @@ public abstract class AccordionPanel extends AbstractComponent {
      */
     public void expandTab(int index) {
         WebElement tab = getHeaders().get(index);
-        if (tab.getAttribute("aria-expanded").equalsIgnoreCase("false")) {
+        if (tab.getDomAttribute("aria-expanded").equalsIgnoreCase("false")) {
             toggleTab(index);
         }
     }
@@ -114,7 +114,7 @@ public abstract class AccordionPanel extends AbstractComponent {
      */
     public void collapseTab(int index) {
         WebElement tab = getHeaders().get(index);
-        if (tab.getAttribute("aria-expanded").equalsIgnoreCase("true")) {
+        if (tab.getDomAttribute("aria-expanded").equalsIgnoreCase("true")) {
             toggleTab(index);
         }
     }
@@ -126,7 +126,7 @@ public abstract class AccordionPanel extends AbstractComponent {
      */
     public List<Tab> getSelectedTabs() {
         return getTabs().stream()
-                    .filter(tab -> tab.getHeader().getAttribute("class").contains("ui-state-active"))
+                    .filter(tab -> tab.getHeader().getDomAttribute("class").contains("ui-state-active"))
                     .collect(Collectors.toList());
     }
 }

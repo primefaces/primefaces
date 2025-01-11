@@ -71,7 +71,7 @@ public abstract class AutoComplete extends AbstractInputComponent {
     }
 
     public String getValue() {
-        return getInput().getAttribute("value");
+        return getInput().getDomProperty("value");
     }
 
     /**

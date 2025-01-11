@@ -43,7 +43,7 @@ public class Row extends org.primefaces.selenium.component.model.datatable.Row {
     }
 
     public int getLevel() {
-        String cssClasses = getWebElement().getAttribute("class");
+        String cssClasses = getWebElement().getDomAttribute("class");
         Optional<String> levelClassOpt = Arrays.stream(cssClasses.split(" ")).filter(c -> c.startsWith("ui-node-level")).findFirst();
         if (levelClassOpt.isPresent()) {
             String levelClass = levelClassOpt.get();
