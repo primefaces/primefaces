@@ -152,12 +152,12 @@ public abstract class SelectManyMenu extends AbstractInputComponent {
         if (widgetConfiguration.has("filter") && widgetConfiguration.getBoolean("filter")) {
             return getSelectlistbox().findElements(By.cssSelector("li.ui-selectlistbox-item")).stream()
                     .filter(listElt -> listElt.isDisplayed())
-                    .map(e -> e.getAttribute("innerHTML"))
+                    .map(e -> e.getDomProperty("innerHTML"))
                     .collect(Collectors.toList());
         }
         else {
             return getInput().findElements(By.tagName("option")).stream()
-                    .map(e -> e.getAttribute("innerHTML"))
+                    .map(e -> e.getDomProperty("innerHTML"))
                     .collect(Collectors.toList());
         }
     }

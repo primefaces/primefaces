@@ -87,7 +87,8 @@ public abstract class AbstractToggleComponent extends AbstractInputComponent {
      * @return true for checked, false for unchecked
      */
     public boolean getValue() {
-        return getInput().getAttribute("checked") != null;
+        WebElement input = getInput();
+        return "true".equals(input.getDomProperty("checked")) || "true".equals(input.getDomAttribute("checked"));
     }
 
     /**

@@ -90,13 +90,13 @@ public abstract class AbstractComponent extends AbstractPrimePageFragment {
         }
 
         // first check normal path if component is AJAXified
-        boolean isAjaxScript = ComponentUtils.isAjaxScript(element.getAttribute(event));
+        boolean isAjaxScript = ComponentUtils.isAjaxScript(element.getDomProperty(event));
         if (isAjaxScript) {
             return true;
         }
 
         // now check for CSP events
-        String id = element.getAttribute("id");
+        String id = element.getDomAttribute("id");
         String cspScript = String.format(CSP_SCRIPT, id, event);
         Boolean csp = PrimeSelenium.executeScript(cspScript);
         return csp != null && csp;

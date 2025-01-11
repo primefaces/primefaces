@@ -57,7 +57,7 @@ public class FindByParentPartialIdElementLocator implements ElementLocator {
     public List<WebElement> findElements() {
         WebElement parent = parentLocator.findElement();
 
-        String parentId = parent.getAttribute("id");
+        String parentId = parent.getDomAttribute("id");
         if (parentId == null || parentId.trim().isEmpty()) {
             throw new WebDriverException("Id of parent element is null or empty!");
         }

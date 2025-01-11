@@ -42,10 +42,10 @@ public abstract class Link extends AbstractComponent {
     }
 
     public String getHref() {
-        return getRoot().getAttribute("href");
+        return getRoot().getDomAttribute("href");
     }
 
     public String getTarget() {
-        return getRoot().getAttribute("target");
+        return getRoot().getDomAttribute("target");
     }
 }

@@ -38,7 +38,7 @@ public final class ComponentUtils {
             return false;
         }
 
-        String id = element.getAttribute("id");
+        String id = element.getDomAttribute("id");
         String result = PrimeSelenium.executeScript("return " + getWidgetByIdScript(id) + ".getBehavior('" + behavior + "').toString();");
         return isAjaxScript(result);
     }
@@ -48,12 +48,12 @@ public final class ComponentUtils {
             return false;
         }
 
-        String id = element.getAttribute("id");
+        String id = element.getDomAttribute("id");
         return PrimeSelenium.executeScript("return " + getWidgetByIdScript(id) + ".hasBehavior('" + behavior + "');");
     }
 
     public static boolean isWidget(WebElement element) {
-        String id = element.getAttribute("id");
+        String id = element.getDomAttribute("id");
         if (id == null || id.isEmpty()) {
             return false;
         }
@@ -73,7 +73,7 @@ public final class ComponentUtils {
     }
 
     public static String getWidgetConfiguration(WebElement element) {
-        String id = element.getAttribute("id");
+        String id = element.getDomAttribute("id");
         return PrimeSelenium.executeScript("return JSON.stringify(" + getWidgetByIdScript(id) + ".cfg, function(key, value) {\n" +
                     "  if (typeof value === 'function') {\n" +
                     "    return value.toString();\n" +

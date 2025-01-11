@@ -50,7 +50,7 @@ public abstract class Tree extends AbstractComponent {
 
     public List<TreeNode> getChildren() {
         return findElements(By.cssSelector(CHILD_SELECTOR)).stream()
-                .map(e -> new TreeNode(this, e.getAttribute("data-rowkey"), null))
+                .map(e -> new TreeNode(this, e.getDomAttribute("data-rowkey"), null))
                 .collect(Collectors.toList());
     }
 

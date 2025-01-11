@@ -60,7 +60,7 @@ public class Row {
     }
 
     public boolean isExpanded() {
-        return Boolean.parseBoolean(getToggler().getAttribute("aria-expanded"));
+        return Boolean.parseBoolean(getToggler().getDomAttribute("aria-expanded"));
     }
 
     public void expand() {

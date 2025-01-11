@@ -44,7 +44,7 @@ public abstract class SelectBooleanButton extends AbstractToggleComponent {
         if (PrimeSelenium.isElementDisplayed(label)) {
             return label.getText();
         }
-        return label.getAttribute("textContent");
+        return label.getDomProperty("textContent");
     }
 
 }

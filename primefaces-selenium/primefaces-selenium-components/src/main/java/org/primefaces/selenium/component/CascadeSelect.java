@@ -98,10 +98,8 @@ public abstract class CascadeSelect extends AbstractInputComponent {
             toggleDropdown();
         }
 
-        boolean isLeaf = false;
         for (WebElement element : getItems()) {
-            if (element.getAttribute("data-label").equalsIgnoreCase(label)) {
-                isLeaf = !PrimeSelenium.hasCssClass(element, "ui-cascadeselect-item-group");
+            if (element.getDomAttribute("data-label").equalsIgnoreCase(label)) {
                 click(element);
                 break;
             }
@@ -125,13 +123,13 @@ public abstract class CascadeSelect extends AbstractInputComponent {
 
     public List<String> getLabels() {
         return getItems().stream()
-                    .map(e -> e.getAttribute("data-label"))
+                    .map(e -> e.getDomAttribute("data-label"))
                     .collect(Collectors.toList());
     }
 
     public List<String> getValues() {
         return getItems().stream()
-                    .map(e -> e.getAttribute("data-value"))
+                    .map(e -> e.getDomAttribute("data-value"))
                     .collect(Collectors.toList());
     }
 

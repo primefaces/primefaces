@@ -41,13 +41,13 @@ public abstract class CommandLink extends Link {
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(link));
         PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(link));
 
-        if (link.getAttribute("data-pfconfirmcommand") != null) {
+        if (link.getDomAttribute("data-pfconfirmcommand") != null) {
             // Confirm Dialog/Popup we don't want to guard for AJAX
         }
         else if (isAjaxified("onclick")) {
             link = PrimeSelenium.guardAjax(link);
         }
-        else if ("_blank".equals(link.getAttribute("target"))) {
+        else if ("_blank".equals(link.getDomAttribute("target"))) {
             link = PrimeSelenium.guardHttp(link);
         }
 

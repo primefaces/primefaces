@@ -124,13 +124,13 @@ public abstract class SelectOneRadio extends AbstractComponent {
         int idx = 0;
         for (WebElement radiobutton : getRadioButtons()) {
             WebElement input = radiobutton.findElement(By.tagName("input"));
-            WebElement label = getRoot().findElement(By.cssSelector("label[for='" + input.getAttribute("id") + "']"));
+            WebElement label = getRoot().findElement(By.cssSelector("label[for='" + input.getDomAttribute("id") + "']"));
             WebElement box = radiobutton.findElement(By.className("ui-radiobutton-box"));
 
             SelectItem item = new SelectItem();
             item.setIndex(idx);
             item.setLabel(label.getText());
-            item.setValue(input.getAttribute("value"));
+            item.setValue(input.getDomProperty("value"));
             item.setSelected(PrimeSelenium.hasCssClass(box, "ui-state-active"));
             items.add(item);
 
