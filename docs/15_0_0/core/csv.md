@@ -236,19 +236,15 @@ Just make sure that the container element is processed.
 ```js
 PrimeFaces.validator['MyComplexValidator'] = {
 
-    validate: function (element) {
-        var nameRequired = element.find('#form\\:nameRequired');
-        var name = element.find('#form\\:name');
+    validate: function(element) {
+        let nameRequiredPf = PF('nameRequired');
+        let namePf = PF('name');
 
-        if (nameRequired.find('.ui-chkbox-icon').hasClass('ui-icon-check') && name.val().length === 0) {
-            PrimeFaces.validator.Highlighter.types['default'].highlight(name);
-
-            throw {
-                summary: 'Validation Error',
-                detail: 'A name is required!'
-            };
+        if (nameRequiredPf.isChecked() && namePf.getValue().length === 0) {
+            PrimeFaces.validation.ValidationContext.highlight(namePf);
+            PrimeFaces.validation.ValidationContext.addMessage(namePf, { summary: 'Validation Error', detail: 'A name is required!' });
         } else {
-            PrimeFaces.validator.Highlighter.types['default'].unhighlight(name);
+            PrimeFaces.validation.ValidationContext.unhighlight(namePf);
         }
     }
 };
@@ -263,11 +259,11 @@ PrimeFaces.validator['MyComplexValidator'] = {
 
         <h:panelGrid id="grid" columns="3" cellpadding="5">
             <p:outputLabel for="@next" value="Name required"/>
-            <p:selectBooleanCheckbox id="nameRequired" value="#{complexValidationView.nameRequired}"/>
+            <p:selectBooleanCheckbox id="nameRequired" widgetVar="nameRequired" value="#{complexValidationView.nameRequired}"/>
             <p:message for="@previous"/>
 
             <p:outputLabel for="@next" value="Name"/>
-            <p:inputText id="name" value="#{complexValidationView.name}" label="Name"/>
+            <p:inputText id="name" widgetVar="name" value="#{complexValidationView.name}" label="Name"/>
             <p:message for="@previous"/>
 
             <p:outputLabel for="@next" value="Accept Terms And Conditions"/>
