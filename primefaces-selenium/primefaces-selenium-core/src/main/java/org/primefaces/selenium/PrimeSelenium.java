@@ -42,7 +42,6 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.html5.WebStorage;
 import org.openqa.selenium.support.decorators.WebDriverDecorator;
 import org.openqa.selenium.support.pagefactory.ElementLocator;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -607,27 +606,6 @@ public final class PrimeSelenium {
                 Thread.currentThread().interrupt();
             }
         }
-    }
-
-    /**
-     * Get WebStorage of WebDriver.
-     *
-     * @return Returns WebStorage of WebDriver when this feature is supported by the browser. Some browsers like Safari (as of january 2021) do not support
-     *         WebStorage via WebDriver. In this case null is returned.
-     */
-    public static WebStorage getWebStorage() {
-        WebDriver webDriver = getWebDriver();
-
-        if (webDriver instanceof WebDriverDecorator) {
-            WebDriverDecorator driver = (WebDriverDecorator) webDriver;
-            webDriver = (WebDriver) driver.getDecoratedDriver().getOriginal();
-        }
-
-        if (webDriver instanceof WebStorage) {
-            return (WebStorage) webDriver;
-        }
-
-        return null;
     }
 
     /**
