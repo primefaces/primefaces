@@ -90,7 +90,7 @@ public abstract class AbstractComponent extends AbstractPrimePageFragment {
         }
 
         // first check normal path if component is AJAXified
-        boolean isAjaxScript = ComponentUtils.isAjaxScript(element.getDomProperty(event));
+        boolean isAjaxScript = ComponentUtils.isAjaxScript(element.getDomAttribute(event));
         if (isAjaxScript) {
             return true;
         }
