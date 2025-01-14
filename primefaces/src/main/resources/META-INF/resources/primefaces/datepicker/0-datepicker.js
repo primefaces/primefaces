@@ -2199,12 +2199,56 @@
 
             switch (event.key) {
                 case 'ArrowDown':
+                case 'ArrowLeft':
+                case 'ArrowRight':
                 case 'ArrowUp':
-                case 'Tab':
-                case 'Delete':
                 case 'Backspace':
+                case 'Delete':
+                case 'End':
+                case 'Home':
+                case 'Shift':
+                case 'Tab':
                     // allow these keys
                     return true;
+            }
+
+            const selection = document.getSelection();
+
+            if (selection && selection.rangeCount == 1) {
+                const selectionEnd = selection.toString().length;
+
+                if (selectionEnd > 0) {
+                    let selectionStart = 0;
+
+                    if (selectionEnd < 2) {
+                        // input type="number" doesn't support element.selectionStart/End, hence this trick, see also https://stackoverflow.com/a/32855335
+                        selection.modify('extend', 'forward', 'character');
+                        let forwards = true;
+
+                        if (selection.toString().length == 0) {
+                            // it was selected backwards (right to left) instead of forwards (left to right)
+                            forwards = false;
+                            selection.modify('extend', 'backward', 'character');
+                            selection.modify('extend', 'backward', 'character');
+                        }
+
+                        if (selection.toString().length == (forwards ? 1 : 2)) {
+                            selectionStart = 1;
+                        }
+                    }
+
+                    const input = event.currentTarget;
+                    input.value = input.value.slice(0, selectionStart) + input.value.slice(selectionStart + selectionEnd);
+
+                    if (0 <= event.key && event.key <= 9) {
+                        if (selectionStart == 0) {
+                            input.value = event.key + input.value; // because default impl does input.value + event.key
+                            event.preventDefault();
+                            event.stopPropagation();
+                            return;
+                        }
+                    }
+                }
             }
 
             switch (event.key) {
@@ -2220,29 +2264,29 @@
                 case '9':
                     var input = event.currentTarget;
                     var newValue = input.value + event.key;
-                    
+
                     // If input is for year and already full, reset value
                     if (input.maxLength === 4 && input.value.length === 4) {
                         newValue = event.key;
                         input.value = "";
                     }
-                    
+
                     // Prevent adding more characters if input is at max length
                     if (input.value.length >= input.maxLength) {
                         event.preventDefault();
                         event.stopPropagation();
                         return;
                     }
-                    
+
                     // For year input, only evaluate if the input is 4 digits long
                     if (input.maxLength === 4 && newValue.length < 4) {
                         return;
                     }
-                    
+
                     // Parse new value and min/max limits for comparison
                     newValue = parseInt(newValue, 10);
-                    var inputMin =  parseInt(input.min, 10);
-                    var inputMax =  parseInt(input.max, 10);
+                    var inputMin = parseInt(input.min, 10);
+                    var inputMax = parseInt(input.max, 10);
 
                     // Prevent input if new value is outside the min/max range
                     if (isNaN(newValue) || newValue < inputMin || newValue > inputMax) {
