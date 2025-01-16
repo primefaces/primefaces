@@ -26,7 +26,6 @@ package org.primefaces.selenium;
 import org.primefaces.selenium.spi.WebDriverProvider;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.html5.WebStorage;
 
 public abstract class AbstractPrimePage {
 
@@ -52,15 +51,5 @@ public abstract class AbstractPrimePage {
 
     public void setWebDriver(WebDriver webDriver) {
         this.webDriver = webDriver;
-    }
-
-    /**
-     * Get WebStorage of WebDriver.
-     *
-     * @return Returns WebStorage of WebDriver when this feature is supported by the browser. Some browsers like Safari (as of january 2021) do not support
-     *         WebStorage via WebDriver. In this case null is returned.
-     */
-    public WebStorage getWebStorage() {
-        return PrimeSelenium.getWebStorage();
     }
 }
