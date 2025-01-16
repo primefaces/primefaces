@@ -52,7 +52,7 @@ if (!PrimeFaces.expressions) {
                         }
                         // @widget
                         else if (expression.indexOf("@widgetVar(") == 0) {
-                            var widgetVar = expression.substring(11, expression.length - 1);
+                            var widgetVar = expression.substring("@widgetVar(".length, expression.length - 1);
                             var widget = PrimeFaces.widgets[widgetVar];
 
                             if (widget) {
