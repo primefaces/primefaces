@@ -32,6 +32,7 @@ import javax.faces.component.search.SearchExpressionContext;
 import javax.faces.component.search.SearchKeywordContext;
 import javax.faces.component.search.SearchKeywordResolver;
 import javax.faces.component.visit.VisitContext;
+import javax.faces.context.FacesContext;
 
 public class WidgetVarSearchKeywordResolver extends SearchKeywordResolver {
 
@@ -48,10 +49,16 @@ public class WidgetVarSearchKeywordResolver extends SearchKeywordResolver {
             Matcher matcher = PATTERN.matcher(keyword);
 
             if (matcher.matches()) {
+                FacesContext facesContext = context.getSearchExpressionContext().getFacesContext();
 
-                WidgetVarVisitCallback visitCallback = new WidgetVarVisitCallback(matcher.group(1));
-                context.getSearchExpressionContext().getFacesContext().getViewRoot().visitTree(
-                        VisitContext.createVisitContext(context.getSearchExpressionContext().getFacesContext(), null, null),
+                VisitContext visitContext = VisitContext.createVisitContext(context.getSearchExpressionContext().getFacesContext(), null,
+                        context.getSearchExpressionContext().getVisitHints());
+
+                String widgetVar = matcher.group(1);
+
+                WidgetVarVisitCallback visitCallback = new WidgetVarVisitCallback(widgetVar);
+                facesContext.getViewRoot().visitTree(
+                        visitContext,
                         visitCallback);
 
                 if (visitCallback.getComponent() != null) {
@@ -66,5 +73,10 @@ public class WidgetVarSearchKeywordResolver extends SearchKeywordResolver {
         catch (Exception e) {
             throw new FacesException("Expression does not match following pattern @widgetVar(var). Expression: \"" + keyword + "\"", e);
         }
+    }
+
+    @Override
+    public boolean isPassthrough(SearchExpressionContext searchExpressionContext, String keyword) {
+        return true;
     }
 }

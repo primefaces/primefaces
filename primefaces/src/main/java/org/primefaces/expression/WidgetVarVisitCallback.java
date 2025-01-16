@@ -46,7 +46,8 @@ public class WidgetVarVisitCallback implements VisitCallback {
     public VisitResult visit(VisitContext context, UIComponent target) {
 
         if (target instanceof Widget) {
-            if (widgetVar.equalsIgnoreCase(((Widget) target).resolveWidgetVar(context.getFacesContext()))) {
+            String targetWidgetVar = ((Widget) target).resolveWidgetVar(context.getFacesContext());
+            if (widgetVar.equalsIgnoreCase(targetWidgetVar)) {
                 component = target;
                 return VisitResult.COMPLETE;
             }
