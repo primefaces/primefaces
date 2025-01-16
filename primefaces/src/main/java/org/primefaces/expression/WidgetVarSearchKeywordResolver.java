@@ -67,4 +67,9 @@ public class WidgetVarSearchKeywordResolver extends SearchKeywordResolver {
             throw new FacesException("Expression does not match following pattern @widgetVar(var). Expression: \"" + keyword + "\"", e);
         }
     }
+
+    @Override
+    public boolean isPassthrough(SearchExpressionContext searchExpressionContext, String keyword) {
+        return true;
+    }
 }
