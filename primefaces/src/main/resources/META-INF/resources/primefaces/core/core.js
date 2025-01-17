@@ -1459,6 +1459,29 @@
         },
 
         /**
+         * Creates a debounced version of the provided function that delays invoking the function until after the specified delay.
+         * The debounced function will only execute once the delay has elapsed and no additional function calls were made.
+         * Each new function call resets the delay timer.
+         * 
+         * @param {() => void} fn The function to debounce
+         * @param {number} [delay=400] The number of milliseconds to delay. Defaults to 400ms. Negative values are coerced to 400ms.
+         */
+        debounce: function(fn, delay = 400) {
+            if (delay < 0) {
+                delay = 400;
+            }
+
+            if (PrimeFaces.debounceTimer) {
+                clearTimeout(PrimeFaces.debounceTimer);
+            }
+
+            PrimeFaces.debounceTimer = PrimeFaces.queueTask(function() {
+                fn();
+                PrimeFaces.debounceTimer = null;
+            }, delay);
+        },
+
+        /**
          * Logs the current PrimeFaces and jQuery version to console.
          */
         version: function() {

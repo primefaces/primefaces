@@ -39,7 +39,6 @@
  * @prop {JQuery} currentCell The DOM element for the currently selected cell, when using inline editing.
  * @prop {JQuery} cursorNode The DOM element for the row at the cursor position, used for selecting multiple rows when
  * holding the shift key.
- * @prop {number} filterTimeout The set-timeout timer ID for the timer used for the delay during filtering.
  * @prop {JQuery} footerCols The DOM element for the TD columns in the table footer.
  * @prop {JQuery} footerTable The DOM element for the TABLE element of the footer.
  * @prop {JQuery} headerCols The DOM element for the TH columns in the header.
@@ -386,15 +385,8 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             if (e.key && (PrimeFaces.utils.ignoreFilterKey(e) || PrimeFaces.utils.blockEnterKey(e))) {
                 return;
             }
-            if($this.filterTimeout) {
-                clearTimeout($this.filterTimeout);
-            }
 
-            $this.filterTimeout = PrimeFaces.queueTask(function() {
-                $this.filter();
-                $this.filterTimeout = null;
-            },
-            $this.cfg.filterDelay);
+            PrimeFaces.debounce(() => $this.filter(), $this.cfg.filterDelay);
         });
     },
 

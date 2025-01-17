@@ -374,7 +374,7 @@ Following is a basic filtering datatable with these options demonstrated:
 
     <f:facet name="header">
         <h:outputText value="Search all fields:" />
-        <h:inputText id="globalFilter" onkeyup="PF('carsTable').filter()" />
+        <h:inputText id="globalFilter" onkeyup="PrimeFaces.debounce(() => PF('carsTable').filter())" />
     </f:facet>
 
     <p:column field="model" headerText="Model" filterMatchMode="contains" />
@@ -396,9 +396,7 @@ Following is a basic filtering datatable with these options demonstrated:
 
 </p:dataTable>
 ```
-Filter located at header is a global one applying on all fields, this is implemented by calling client
-side API method called `filter()`, important part is to specify the id of the input text as `globalFilter`
-which is a reserved identifier for datatable.
+The filter in the header acts as a global filter that searches across all fields. This is achieved by calling the client-side API method `filter()`. The input text must have the id `globalFilter`, which is a special reserved identifier for DataTable. Note the use of `PrimeFaces.debounce(() => PF('carsTable').filter())` - this debounces the filter method to prevent excessive server requests by only triggering 400ms after the last keyup event.
 
 ### Custom filters
 

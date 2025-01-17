@@ -38,7 +38,7 @@
                         <div class="flex align-items-center justify-content-between">
                             <span>List of Customers</span>
                             <div>
-                            <p:inputText id="globalFilter" onkeyup="PF('customersTable').filter()" style="width:10rem"
+                            <p:inputText id="globalFilter" onkeyup="PrimeFaces.debounce(() => PF('customersTable').filter())" style="width:10rem"
                                          placeholder="Enter keyword" />
                             <p:commandButton value="Global Filter Only" update="@form" styleClass="ml-2"
                                              action="#{dtFilterView.toggleGlobalFilter()}"/>
@@ -163,7 +163,7 @@
 
                     <f:facet name="header">
                         <div class="flex justify-content-end">
-                            <p:inputText id="globalFilter" onkeyup="PF('customersTable3').filter()" style="width:300px"
+                            <p:inputText id="globalFilter" onkeyup="PrimeFaces.debounce(() => PF('customersTable3').filter())" style="width:300px"
                                          placeholder="Search all fields using global function" />
                         </div>
                     </f:facet>
