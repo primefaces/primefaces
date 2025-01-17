@@ -33,5 +33,5 @@ public interface FlexAware {
      *
      * @return true to use PrimeFlex instead of Grid CSS.
      */
-    boolean isFlex();
+    Boolean getFlex();
 }
