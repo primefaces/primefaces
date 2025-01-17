@@ -34,6 +34,7 @@ import java.util.List;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.PhaseId;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
@@ -53,6 +54,10 @@ public class DynamicGalleriaView implements Serializable {
 
     public StreamedContent getPhotoAsStreamedContent() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
+        if (facesContext.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+            return DefaultStreamedContent.DUMMY; // might get invoked already during rendering, check the docs
+        }
+
         String photoId = facesContext.getExternalContext().getRequestParameterMap().get("photoId");
         Photo photo = photos.stream()
                 .filter(p -> p.getId().equals(photoId))

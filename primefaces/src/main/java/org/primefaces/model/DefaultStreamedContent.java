@@ -38,6 +38,8 @@ import javax.faces.FacesException;
  */
 public class DefaultStreamedContent implements StreamedContent, Serializable {
 
+    public static final DefaultStreamedContent DUMMY = new DefaultStreamedContent();
+
     private static final long serialVersionUID = 1L;
     private Callbacks.SerializableSupplier<InputStream> stream;
     private String contentType;

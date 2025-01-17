@@ -103,13 +103,40 @@ public class ImageView {
                     .stream(() -> {
                         FacesContext context = FacesContext.getCurrentInstance();
                         String userId = context.getExternalContext().getRequestParameterMap().get("user");
-                        return this.getClass().getResourceAsStream("user" + userId + ".jpg")
+                        return this.getClass().getResourceAsStream("user" + userId + ".jpg");
                     })
                     .build();
     }
 
     public StreamedContent getImage() {
         return image;
+    }
+}
+```
+
+In case you need to access URL parameters to construct a `StreamedContent`, you need to make sure to skip the `RENDER_RESPONSE` phase:
+
+```java
+@Named
+@RequestScoped
+public class ImageView {
+
+    public StreamedContent getImage() {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        if (facesContext.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+            return DefaultStreamedContent.DUMMY; // might get invoked already during rendering, check the docs
+        }
+        
+        String userId = facesContext.getExternalContext().getRequestParameterMap().get("user");
+        User user = userRepository.load(userId);
+ 
+        return DefaultStreamedContent.builder()
+            .name(user.getName() + ".png")
+            .contentType("image/jpeg")
+            .stream(() -> {
+                return new FileInputStream(userRepository.getImagePath(user));
+            })
+            .build();
     }
 }
 ```
