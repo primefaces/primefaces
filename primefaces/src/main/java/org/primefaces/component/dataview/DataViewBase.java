@@ -148,7 +148,7 @@ public abstract class DataViewBase extends UIPageableData
         return (Boolean) getStateHelper().eval(PropertyKeys.flex, null);
     }
 
-    public void setFlex(boolean flex) {
+    public void setFlex(Boolean flex) {
         getStateHelper().put(PropertyKeys.flex, flex);
     }
 }

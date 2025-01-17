@@ -539,7 +539,7 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         return (Boolean) getStateHelper().eval(PropertyKeys.flex, null);
     }
 
-    public void setFlex(boolean flex) {
+    public void setFlex(Boolean flex) {
         getStateHelper().put(PropertyKeys.flex, flex);
     }
 
