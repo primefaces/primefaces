@@ -535,8 +535,8 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
     }
 
     @Override
-    public boolean isFlex() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.flex, false);
+    public Boolean getFlex() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.flex, null);
     }
 
     public void setFlex(boolean flex) {

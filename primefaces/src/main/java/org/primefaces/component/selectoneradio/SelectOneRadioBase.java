@@ -78,8 +78,8 @@ public abstract class SelectOneRadioBase extends HtmlSelectOneRadio implements W
     }
 
     @Override
-    public boolean isFlex() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.flex, false);
+    public Boolean getFlex() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.flex, null);
     }
 
     public void setFlex(boolean flex) {

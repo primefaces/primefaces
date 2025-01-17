@@ -302,7 +302,10 @@ public class ComponentUtils {
     }
 
     public static boolean isFlex(FacesContext context, FlexAware component) {
-        return component.isFlex() || PrimeRequestContext.getCurrentInstance(context).isFlex();
+        if (component.getFlex() == null) {
+            return PrimeRequestContext.getCurrentInstance(context).isFlex();
+        }
+        return component.getFlex();
     }
 
     public static void processDecodesOfFacetsAndChilds(UIComponent component, FacesContext context) {

@@ -126,8 +126,8 @@ public abstract class DataGridBase extends UIPageableData
     }
 
     @Override
-    public boolean isFlex() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.flex, false);
+    public Boolean getFlex() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.flex, null);
     }
 
     public void setFlex(boolean flex) {
