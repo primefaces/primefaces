@@ -148,13 +148,6 @@
            <version>2.6.0</version>
         </dependency>
 
-        <!-- Conflict with resteasy-jackson2-provider -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.18.2</version>
-        </dependency>
-
         <!-- Cache -->
         <dependency>
             <groupId>org.ehcache</groupId>

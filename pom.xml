@@ -438,6 +438,15 @@
                 </exclusions>
             </dependency>
 
+            <!-- Jackson for Integration Tests / Selenium -->
+            <dependency>
+                <groupId>com.fasterxml.jackson</groupId>
+                <artifactId>jackson-bom</artifactId>
+                <version>2.18.2</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>   
+
             <!-- JUnit -->
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
