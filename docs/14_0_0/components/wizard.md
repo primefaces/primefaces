@@ -50,7 +50,7 @@ back | javax.faces.event.AjaxBehaviorEvent | When "back" is triggered
 ## Getting Started with Wizard
 Each step in the flow is represented with a tab. As an example following wizard is used to create a
 new user in a total of 4 steps where last step is for confirmation of the information provided in first
-3 steps. To begin with create your backing bean, it’s important that the bean lives across multiple
+3 steps. To begin with create your backing bean, it's important that the bean lives across multiple
 requests so avoid a request scope bean. Optimal scope for wizard is viewScope.
 
 ```java
@@ -149,7 +149,7 @@ that last tab contains read-only data for confirmation and the submit button.
 ## AJAX and Partial Validations
 Switching between steps is based on ajax, meaning each step is loaded dynamically with ajax.
 Partial validation is also built-in, by this way when you click next, only the current step is validated,
-if the current step is valid, next tab’s contents are loaded with ajax. Validations are not executed
+if the current step is valid, next tab's contents are loaded with ajax. Validations are not executed
 when flow goes back.
 
 ## Navigations
@@ -171,7 +171,7 @@ with your own UI, set _showNavBar_ to false and use the provided the client side
 </p:outputPanel>
 ```
 ## FlowListener
-If you’d like get notified on server side when wizard attempts to go back or forward, define a
+If you'd like get notified on server side when wizard attempts to go back or forward, define a
 flowListener.
 
 ```xhtml
@@ -199,7 +199,7 @@ javascript after wizard goes back or forth. You just need to provide the names o
 as the values of these attributes.
 
 ```xhtml
-<p:wizard onnext="alert(‘Next’)" onback="alert(‘Back’)">
+<p:wizard onnext="alert('Next')" onback="alert('Back')">
     ...
 </p:wizard>
 ```
@@ -211,6 +211,7 @@ Widget: _PrimeFaces.widget.Wizard_
 | --- | --- | --- | --- |
 next() | - | void | Proceeds to next step.
 back() | - | void | Goes back in flow.
+reset() | - | void | Resets the wizard to its initial state.
 getStepIndex() | - | Number | Returns the index of current step.
 showNextNav() | - | void | Shows next button.
 hideNextNav() | - | void | Hides next button.
