@@ -1920,9 +1920,10 @@
                 yearNavigatorSelector = '.ui-datepicker-header > .ui-datepicker-title > .ui-datepicker-year';
             this.panel.off('change.datePicker-monthNav', monthNavigatorSelector)
                 .on('change.datePicker-monthNav', monthNavigatorSelector, null, this.onMonthDropdownChange.bind($this));
-            this.panel.off('change.datePicker-yearnav keydown.datePicker-yearnav', yearNavigatorSelector)
+            this.panel.off('change.datePicker-yearnav keydown.datePicker-yearnav keyup.datePicker-yearnav', yearNavigatorSelector)
                 .on('change.datePicker-yearnav', yearNavigatorSelector, null, this.onYearInputChange.bind($this))
-                .on('keydown.datePicker-yearnav', yearNavigatorSelector, null, function(event) {$this.onTimeInputKeyDown(event);});
+                .on('keydown.datePicker-yearnav', yearNavigatorSelector, null, function(event) {$this.onTimeInputKeyDown(event);})
+                .on('keyup.datePicker-yearnav', yearNavigatorSelector, null, function(event) {$this.onTimeInputKeyUp(event);});
 
             var monthViewMonthSelector = '.ui-monthpicker > .ui-monthpicker-month';
             this.panel.off('click.datePicker-monthViewMonth', monthViewMonthSelector).on('click.datePicker-monthViewMonth', monthViewMonthSelector, null, function(e) {
@@ -1968,18 +1969,26 @@
                     $this.handleHoursInput(this, event);
                 }).off('keydown', '.ui-hour-picker input').on('keydown', '.ui-hour-picker input', null, function(event) {
                     $this.onTimeInputKeyDown(event);
+                }).off('keyup', '.ui-hour-picker input').on('keyup', '.ui-hour-picker input', null, function(event) {
+                    $this.onTimeInputKeyUp(event);
                 }).off('change', '.ui-minute-picker input').on('change', '.ui-minute-picker input', null, function(event) {
                     $this.handleMinutesInput(this, event);
                 }).off('keydown', '.ui-minute-picker input').on('keydown', '.ui-minute-picker input', null, function(event) {
                     $this.onTimeInputKeyDown(event);
+                }).off('keyup', '.ui-minute-picker input').on('keyup', '.ui-minute-picker input', null, function(event) {
+                    $this.onTimeInputKeyUp(event);
                 }).off('change', '.ui-second-picker input').on('change', '.ui-second-picker input', null, function(event) {
                     $this.handleSecondsInput(this, event);
                 }).off('keydown', '.ui-second-picker input').on('keydown', '.ui-second-picker input', null, function(event) {
                     $this.onTimeInputKeyDown(event);
+                }).off('keyup', '.ui-second-picker input').on('keyup', '.ui-second-picker input', null, function(event) {
+                    $this.onTimeInputKeyUp(event);
                 }).off('change', '.ui-millisecond-picker input').on('change', '.ui-millisecond-picker input', null, function(event) {
                     $this.handleMillisecondsInput(this, event);
                 }).off('keydown', '.ui-millisecond-picker input').on('keydown', '.ui-millisecond-picker input', null, function(event) {
                     $this.onTimeInputKeyDown(event);
+                }).off('keyup', '.ui-millisecond-picker input').on('keyup', '.ui-millisecond-picker input', null, function(event) {
+                    $this.onTimeInputKeyUp(event);
                 });
             }
 
@@ -2188,117 +2197,92 @@
             };
         },
 
-        onTimeInputKeyDown: function(event) {
-            if (PrimeFaces.env.android) {
-                return;
-            }
+        onTimeInputKeyDown: function (event) {
             if (this.options.disabled) {
                 event.preventDefault();
+                return false;
+            }
+
+            if (PrimeFaces.env.android) {
+                return true;
+            }
+
+            // Allow text selection and cut, copy, paste
+            const allowedControlKeys = [
+                "a",
+                "c",
+                "v",
+                "x",
+            ];
+            if (event.ctrlKey && allowedControlKeys.includes(event.key)) {
+                return true;
+            }
+                    
+
+            // Allow navigation keys, control keys, and numeric keys
+            const allowedKeys = [
+                "ArrowDown",
+                "ArrowLeft",
+                "ArrowRight",
+                "ArrowUp",
+                "Backspace",
+                "Delete",
+                "End",
+                "Home",
+                "Shift",
+                "Tab",
+            ];
+
+            // Allow numeric keys (0-9)
+            const isNumericKey = /^[0-9]$/.test(event.key);
+        
+            if (!isNumericKey && !allowedKeys.includes(event.key)) {
+                event.preventDefault(); // Block all other keys
+            }
+
+            var input = event.currentTarget;
+            var newValue = input.value + event.key;
+
+            // If input is for year and already full, reset value
+            if (input.maxLength === 4 && input.value.length === 4) {
+                newValue = event.key;
+                input.value = "";
+            }
+        },
+        
+        onTimeInputKeyUp: function (event) {
+            const input = event.currentTarget;
+            let newValue = input.value;
+
+            // Validate the input value after the key is released
+            // Remove non-numeric characters
+            newValue = newValue.replace(/[^0-9]/g, "");
+
+            // For year input, only evaluate if the input is 4 digits long
+            if (input.maxLength === 4 && newValue.length < 4) {
                 return;
             }
 
-            switch (event.key) {
-                case 'ArrowDown':
-                case 'ArrowLeft':
-                case 'ArrowRight':
-                case 'ArrowUp':
-                case 'Backspace':
-                case 'Delete':
-                case 'End':
-                case 'Home':
-                case 'Shift':
-                case 'Tab':
-                    // allow these keys
-                    return true;
+            // Check min and max constraints
+            const inputMin = parseInt(input.min, 10);
+            const inputMax = parseInt(input.max, 10);
+
+            if (newValue.length > input.maxLength) {
+                // Truncate to maxLength
+                newValue = newValue.substring(0, input.maxLength);
             }
 
-            const selection = document.getSelection();
-
-            if (selection && selection.rangeCount == 1) {
-                const selectionEnd = selection.toString().length;
-
-                if (selectionEnd > 0) {
-                    let selectionStart = 0;
-
-                    if (selectionEnd < 2) {
-                        // input type="number" doesn't support element.selectionStart/End, hence this trick, see also https://stackoverflow.com/a/32855335
-                        selection.modify('extend', 'forward', 'character');
-                        let forwards = true;
-
-                        if (selection.toString().length == 0) {
-                            // it was selected backwards (right to left) instead of forwards (left to right)
-                            forwards = false;
-                            selection.modify('extend', 'backward', 'character');
-                            selection.modify('extend', 'backward', 'character');
-                        }
-
-                        if (selection.toString().length == (forwards ? 1 : 2)) {
-                            selectionStart = 1;
-                        }
-                    }
-
-                    const input = event.currentTarget;
-                    input.value = input.value.slice(0, selectionStart) + input.value.slice(selectionStart + selectionEnd);
-
-                    if (0 <= event.key && event.key <= 9) {
-                        if (selectionStart == 0) {
-                            input.value = event.key + input.value; // because default impl does input.value + event.key
-                            event.preventDefault();
-                            event.stopPropagation();
-                            return;
-                        }
-                    }
+            if (newValue && (parseInt(newValue, 10) < inputMin || parseInt(newValue, 10) > inputMax)) {
+                // If the value is outside the min/max range, reset to the closest valid value
+                if (parseInt(newValue, 10) < inputMin) {
+                    newValue = inputMin.toString();
+                } else if (parseInt(newValue, 10) > inputMax) {
+                    newValue = inputMax.toString();
                 }
             }
 
-            switch (event.key) {
-                case '0':
-                case '1':
-                case '2':
-                case '3':
-                case '4':
-                case '5':
-                case '6':
-                case '7':
-                case '8':
-                case '9':
-                    var input = event.currentTarget;
-                    var newValue = input.value + event.key;
-
-                    // If input is for year and already full, reset value
-                    if (input.maxLength === 4 && input.value.length === 4) {
-                        newValue = event.key;
-                        input.value = "";
-                    }
-
-                    // Prevent adding more characters if input is at max length
-                    if (input.value.length >= input.maxLength) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                        return;
-                    }
-
-                    // For year input, only evaluate if the input is 4 digits long
-                    if (input.maxLength === 4 && newValue.length < 4) {
-                        return;
-                    }
-
-                    // Parse new value and min/max limits for comparison
-                    newValue = parseInt(newValue, 10);
-                    var inputMin = parseInt(input.min, 10);
-                    var inputMax = parseInt(input.max, 10);
-
-                    // Prevent input if new value is outside the min/max range
-                    if (isNaN(newValue) || newValue < inputMin || newValue > inputMax) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                    }
-                    break;
-
-                default:
-                    event.preventDefault();
-                    event.stopPropagation();
-            }
+            // Update the input field value
+            input.value = newValue;
         },
 
         focusDate: function(jq, selector) {
