@@ -211,6 +211,19 @@ PrimeFaces.widget.Wizard = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
+     * Resets the wizard to its initial state by navigating back to the first step.
+     * Only performs the navigation if the wizard has steps and is not already on the first step.
+     */
+    reset: function() {
+        if (this.cfg.steps.length > 0) {
+            var firstStep = this.cfg.steps[0];
+            if (this.currentStep !== firstStep) {
+                this.loadStep(firstStep, "back");
+            }
+        }
+    },
+
+    /**
      * Shows the button for navigating to the next wizard step.
      */
     showNextNav: function() {
