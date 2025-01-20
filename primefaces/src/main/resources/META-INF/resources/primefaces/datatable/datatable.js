@@ -75,7 +75,6 @@
  * @prop {JQuery} [expansionHolder] DOM element of the hidden input that holds the row keys of the rows that
  * are expanded. Used to preserve the expansion state during AJAX updates.
  * @prop {number[]} expansionProcess List of row indices to expand.
- * @prop {number} filterTimeout ID as returned by `setTimeout` used during filtering.
  * @prop {JQuery | null} focusedRow DOM element of the currently focused row.
  * @prop {boolean} focusedRowWithCheckbox Whether the focused row includes the checkbox for selecting the row.
  * @prop {JQuery} footerCols The DOM elements for the footer columns.
@@ -799,14 +798,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 return;
             }
 
-            if($this.filterTimeout) {
-                clearTimeout($this.filterTimeout);
-            }
-
-            $this.filterTimeout = PrimeFaces.queueTask(function() {
-                $this.filter();
-                $this.filterTimeout = null;
-            }, $this.cfg.filterDelay);
+            PrimeFaces.debounce(() => $this.filter(), $this.cfg.filterDelay);
         })
         .on('keydown', function(e) {
             // #12327 do not submit form on ENTER

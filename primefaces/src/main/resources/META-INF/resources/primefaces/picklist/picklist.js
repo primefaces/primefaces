@@ -40,8 +40,6 @@
  * @prop {boolean} checkboxClick UI state indicating whether a checkbox was just clicked.
  * @prop {JQuery} cursorItem The currently selected item.
  * @prop {boolean} dragging Whether the user is currently transferring an item via drag&drop.
- * @prop {number} filterTimeout The set-timeout timer ID of the timer for the delay when filtering the source or target
- * list.
  * @prop {PrimeFaces.widget.PickList.FilterFunction} filterMatcher The filter that was selected and is currently used.
  * @prop {Record<PrimeFaces.widget.PickList.FilterMatchMode, PrimeFaces.widget.PickList.FilterFunction>} filterMatchers
  * Map between the available filter types and the filter implementation.
@@ -718,15 +716,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
 
             var input = $(this);
 
-            if($this.filterTimeout) {
-                clearTimeout($this.filterTimeout);
-            }
-
-            $this.filterTimeout = PrimeFaces.queueTask(function() {
-                $this.filter(input.val(), $this.getFilteredList(input));
-                $this.filterTimeout = null;
-            },
-            $this.cfg.filterDelay);
+            PrimeFaces.debounce(() => $this.filter(input.val(), $this.getFilteredList(input)), $this.cfg.filterDelay);
         });
     },
 

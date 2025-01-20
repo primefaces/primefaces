@@ -48,7 +48,7 @@
                         <div class="products-table-header">
                             <span style="font-weight: bold">PRODUCTS</span>
                             <span class="filter-container ui-input-icon-left"> <i class="pi pi-search"></i>
-                                <p:inputText id="globalFilter" onkeyup="PF('dtProducts').filter()" placeholder="Search" />
+                                <p:inputText id="globalFilter" onkeyup="PrimeFaces.debounce(() => PF('dtProducts').filter())" placeholder="Search" />
                             </span>
                         </div>
                     </f:facet>
