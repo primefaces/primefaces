@@ -2184,6 +2184,14 @@
                 return true;
             }
 
+            var input = event.currentTarget;
+
+            if (input.maxLength === 2 && event.key == 'Enter') {
+                this.hideOverlay();
+                event.preventDefault();
+                return false;
+            }
+
             // Allow text selection and cut, copy, paste
             const allowedControlKeys = [
                 "a",
@@ -2217,12 +2225,8 @@
                 event.preventDefault(); // Block all other keys
             }
 
-            var input = event.currentTarget;
-            var newValue = input.value + event.key;
-
             // If input is for year and already full, reset value
-            if (input.maxLength === 4 && input.value.length === 4) {
-                newValue = event.key;
+            if (isNumericKey && input.maxLength === 4 && input.value.length === 4) {
                 input.value = "";
             }
         },
