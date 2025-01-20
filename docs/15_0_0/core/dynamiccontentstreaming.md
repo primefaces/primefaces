@@ -176,3 +176,19 @@ public class ImageView {
     }
 }
 ```
+
+## Dynamic Content Limit / View
+
+PrimeFaces limits the number of dynamic contents per view to 200 by default to avoid session blow up.  
+This means only 200 dynamic items (such as images or other files) can be streamed during requesting a view.
+
+Once this limit is reached, dynamic content may fail to display correctly. In such cases, placeholders might appear, or content may not load.
+
+The limit can be adjusted using the `primefaces.DYNAMIC_CONTENT_LIMIT` parameter in the `web.xml`:
+
+```xml
+<context-param>
+    <param-name>primefaces.DYNAMIC_CONTENT_LIMIT</param-name>
+    <param-value>500</param-value>
+</context-param>
+```

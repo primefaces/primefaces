@@ -61,6 +61,7 @@ public class PrimeConfiguration {
     private String[] exceptionTypesToIgnoreInLogging;
     private final String multiViewStateStore;
     private final boolean markInputAsInvalidOnErrorMsg;
+    private int dynamicContentLimit;
 
     // internal config
     private final boolean stringConverterAvailable;
@@ -115,6 +116,9 @@ public class PrimeConfiguration {
 
         value = externalContext.getInitParameter(Constants.ContextParams.CLIENT_SIDE_LOCALISATION);
         clientSideLocalizationEnabled = Boolean.parseBoolean(Objects.toString(value, "true"));
+
+        value = externalContext.getInitParameter(Constants.ContextParams.DYNAMIC_CONTENT_LIMIT);
+        dynamicContentLimit = Integer.parseInt(Objects.toString(value, "200"));
 
         value = Objects.toString(externalContext.getInitParameter(Constants.ContextParams.MOVE_SCRIPTS_TO_BOTTOM));
         switch (value) {
@@ -310,5 +314,9 @@ public class PrimeConfiguration {
 
     public String getCookiesSameSite() {
         return cookiesSameSite;
+    }
+
+    public int getDynamicContentLimit() {
+        return dynamicContentLimit;
     }
 }

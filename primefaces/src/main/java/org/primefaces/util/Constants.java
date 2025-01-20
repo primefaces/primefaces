@@ -55,6 +55,7 @@ public class Constants {
         public static final String THEME = "primefaces.THEME";
         public static final String TOUCHABLE = "primefaces.TOUCHABLE";
         public static final String TRANSFORM_METADATA = "primefaces.TRANSFORM_METADATA";
+        public static final String DYNAMIC_CONTENT_LIMIT = "primefaces.DYNAMIC_CONTENT_LIMIT";
 
         private ContextParams() {
 
