@@ -167,7 +167,7 @@ if (window.PrimeFaces) {
       "messages.FATAL": "Závažná chyba",
       "messages.INFO": "Informace",
       "messages.WARN": "Varování",
-      "spinner.DECREASE": "Snížut hodnotu",
+      "spinner.DECREASE": "Snížit hodnotu",
       "spinner.INCREASE": "Zvýšit hodnotu",
       "switch.OFF": "Vypnuto",
       "switch.ON": "Zapnuto",
