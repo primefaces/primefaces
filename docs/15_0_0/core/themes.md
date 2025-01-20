@@ -63,6 +63,13 @@ You can include it via:
 </dependency>
 ```
 
+### Creating your own Theme
+You can fork and customize theme sources in the [`primefaces-themes`](https://github.com/primefaces/primefaces/tree/master/primefaces-themes) module. There you'll find two folders:
+* `theme-base` contains base styling for the layout of all components
+* `themes` defines `.scss` variables (e.g. colors, fonts, additional styles, etc.) that will be used by `theme-base`.
+
+See [PrimeFaces Theme template](https://github.com/jungm/primefaces-theme-template) for a community-built template to create your own theme that does not require you to fork the entire base theme.
+
 ## Designer
 
 PrimeTek also offers a [Theme Designer](https://www.primefaces.org/designer/primefaces) tool. 
