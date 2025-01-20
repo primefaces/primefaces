@@ -68,7 +68,7 @@ You can fork and customize theme sources in the [`primefaces-themes`](https://gi
 * `theme-base` contains base styling for the layout of all components
 * `themes` defines `.scss` variables (e.g. colors, fonts, additional styles, etc.) that will be used by `theme-base`.
 
-See [primefaces-theme-template](https://github.com/jungm/primefaces-theme-template) for a community-built template to create your own theme that does not require you to fork the entire base theme.
+See [PrimeFaces Theme template](https://github.com/jungm/primefaces-theme-template) for a community-built template to create your own theme that does not require you to fork the entire base theme.
 
 ## Designer
 

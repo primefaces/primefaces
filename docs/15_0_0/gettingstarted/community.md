@@ -10,4 +10,4 @@ PrimeFaces has a vibrant community that enhances its functionality. The list bel
   fully integrates with Jakarta EE and `@Inject`able
 * [OptimusFaces](https://github.com/omnifaces/optimusfaces) service-based implementation of `JPALazyDataModel`
 * [QuarkusFaces](https://github.com/melloware/quarkus-faces) run PrimeFaces Showcase on Quarkus
-* [primefaces-theme-template](https://github.com/jungm/primefaces-theme-template) Lean template repository to create your own Themes
+* [PrimeFaces Theme template](https://github.com/jungm/primefaces-theme-template) Lean template repository to create your own Themes
