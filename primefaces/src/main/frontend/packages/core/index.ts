@@ -9,6 +9,7 @@ import "./src/core/core.utils.js";
 import "./src/core/core.widget.js";
 import "./src/core/core.resources.js";
 import "./src/core/core.clientwindow.js";
+import "./src/ajaxexceptionhandler/ajaxexceptionhandler.js";
 import "./src/ajaxstatus/ajaxstatus.js";
 import "./src/poll/poll.js";
 import "./src/validation/validation.common.js";

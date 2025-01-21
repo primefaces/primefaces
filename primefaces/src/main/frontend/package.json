@@ -38,7 +38,7 @@
     "@types/js-cookie": "3.0.6",
     "@types/jscrollpane": "2.0.35",
     "@types/raphael": "2.3.9",
-    "autonumeric": "4.10.7",
+    "autonumeric": "patch:autonumeric@npm%3A4.10.7#~/.yarn/patches/autonumeric-npm-4.10.7-09183d353f.patch",
     "autosize": "6.0.1",
     "blueimp-file-upload": "patch:blueimp-file-upload@npm%3A10.32.0#~/.yarn/patches/blueimp-file-upload-npm-10.32.0-61b944a244.patch",
     "chart.js": "4.4.7",

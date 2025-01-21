@@ -372,6 +372,66 @@ if (!PrimeFaces.ajax) {
                         PrimeFaces.utils.cleanseDomElement(removedContent);
                     }
                 }
+            },
+
+            /**
+             * Handle the error either by calling the p:ajaxExceptionHandlers, trying to redirect to the error-page or by logging.
+             * @param {string} errorName The error name.
+             * @param {string} errorMessage The error message.
+             */
+            handleError: function(errorName, errorMessage) {
+                if (errorName) {
+                    // try to invoke specific AjaxExceptionHandler
+                    var exceptionHandlers = PrimeFaces.getWidgetsByType(PrimeFaces.widget.AjaxExceptionHandler);
+                    for (var exceptionHandler of exceptionHandlers) {
+                        if (exceptionHandler.handles(errorName)) {
+                            exceptionHandler.handle(errorName, errorMessage);
+                            return;
+                        }
+                    }
+                }
+
+                // try to invoke global AjaxExceptionHandler
+                var globalExceptionHandler = exceptionHandlers.find(widget => widget.isGlobal());
+                if (globalExceptionHandler) {
+                    globalExceptionHandler.handle(errorName, errorMessage);
+                    return;
+                }
+
+                if (PrimeFaces.settings.errorPages) {
+                    var errorPageUrl = null;
+                    if (errorName) {
+                        // strip off 'class ' prefix, which is logged with exception class
+                        if (errorName.startsWith('class ')) {
+                            errorPageUrl = PrimeFaces.settings.errorPages[errorName.replace('class ', '')];
+                        }
+                        else {
+                            errorPageUrl = PrimeFaces.settings.errorPages[errorName];
+                        }
+                    }
+                    if (!errorPageUrl) {
+                        errorPageUrl = PrimeFaces.settings.errorPages['java.lang.Throwable'];
+                    }
+                    if (!errorPageUrl) {
+                        errorPageUrl = PrimeFaces.settings.errorPages[''];
+                    }
+
+                    if (errorPageUrl) {
+                        try {
+                            PrimeFaces.debug("Redirect to error page: " + errorPageUrl)
+                            window.location.assign(errorPageUrl);
+                        } catch (error) {
+                            PrimeFaces.warn('Error redirecting to URL: ' + errorPageUrl);
+                        }
+
+                        return;
+                    }
+                }
+
+                PrimeFaces.error("No ajaxExceptionHandler or error page found for '" + errorName + "' defined!");
+                if (errorMessage) {
+                    PrimeFaces.error(errorMessage);
+                }
             }
         },
 
@@ -1482,43 +1542,10 @@ if (!PrimeFaces.ajax) {
              * @param {PrimeFaces.ajax.pfXHR} xhr The XHR request to which a response was received.
              */
             doError: function(node, xhr) {
-
                 var errorName = PrimeFaces.ajax.Utils.getContent(node.getElementsByTagName("error-name")[0]);
                 var errorMessage = PrimeFaces.ajax.Utils.getContent(node.getElementsByTagName("error-message")[0]);
 
-                if (PrimeFaces.settings.errorPages) {
-                    var errorPageUrl = null;
-                    if (errorName) {
-                        // strip off 'class ' prefix, which is logged with exception class
-                        if (errorName.startsWith('class ')) {
-                            errorPageUrl = PrimeFaces.settings.errorPages[errorName.replace('class ', '')];
-                        }
-                        else {
-                            errorPageUrl = PrimeFaces.settings.errorPages[errorName];
-                        }
-                    }
-                    if (!errorPageUrl) {
-                        errorPageUrl = PrimeFaces.settings.errorPages['java.lang.Throwable'];
-                    }
-                    if (!errorPageUrl) {
-                        errorPageUrl = PrimeFaces.settings.errorPages[''];
-                    }
-
-                    if (errorPageUrl) {
-                        try {
-                            PrimeFaces.debug("Redirect to error page: " + errorPageUrl)
-                            window.location.assign(errorPageUrl);
-                        } catch (error) {
-                            PrimeFaces.warn('Error redirecting to URL: ' + errorPageUrl);
-                        }
-                    }
-                    return;
-                }
-
-                PrimeFaces.error("No default error page (Status 500 or java.lang.Throwable) and no error page for type '" + errorName + "' defined!");
-                if (errorMessage) {
-                    PrimeFaces.error(errorMessage);
-                }
+                PrimeFaces.ajax.Utils.handleError(errorName, errorMessage);
             },
 
             /**
@@ -1605,4 +1632,21 @@ if (!PrimeFaces.ajax) {
         PrimeFaces.ajax.Queue.abortAll();
     });
 
+    $(function() {
+        if (window.jsf && jsf.ajax) {
+            jsf.ajax.addOnError(function (data) {
+
+                // serverError means a real server-side exception where a p:ajaxExceptionHandler or error-page mapping might exist
+                if (data.status === "serverError") {
+                    PrimeFaces.ajax.Utils.handleError(data.errorName, data.errorMessage);
+                }
+                // malformedXML, emptyResponse, httpError, clientError, timeout
+                else {
+                    // this are very likely very strange errors or client connection errors
+                    // just invoke the same logic, this will likely result in a global p:ajaxExceptionHandler or global error-page
+                    PrimeFaces.ajax.Utils.handleError(data.errorName, data.errorMessage);
+                }
+            });
+        }
+    });
 }

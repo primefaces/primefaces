@@ -21,7 +21,6 @@
  * @prop {PrimeFaces.widget.VerticalTree.DroppedNodeParams[]} droppedNodeParams List of parameter describing the drag &
  * drop operations.
  * @prop {JQuery} filterInput The DOM element for the filter input field that lets the user search the tree.
- * @prop {number} filterTimeout The set-timeout timer ID of the timer for the filter delay.
  * @prop {string[]} invalidSourceKeys A list of row keys for rows that are not valid drag sources.
  * @prop {number} scrollInterval The set-interval time ID of the timer for scrolling.
  * @prop {JQuery} scrollStateHolder Form element that holds the current scroll state.
@@ -137,13 +136,7 @@ PrimeFaces.widget.VerticalTree = class VerticalTree extends PrimeFaces.widget.Ba
                 if (isEnterKeyFilter) {
                     $this.filter();
                 } else {
-                    if ($this.filterTimeout) {
-                        clearTimeout($this.filterTimeout);
-                    }
-                    $this.filterTimeout = PrimeFaces.queueTask(function() {
-                        $this.filter();
-                        $this.filterTimeout = null;
-                    }, $this.cfg.filterDelay);
+                    PrimeFaces.debounce(() => $this.filter(), $this.cfg.filterDelay);
                 }
             });
         }

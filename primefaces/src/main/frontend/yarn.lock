@@ -308,7 +308,7 @@ __metadata:
     "@types/node": "npm:22.10.1"
     "@types/pnpapi": "npm:^0.0.5"
     "@types/raphael": "npm:2.3.9"
-    autonumeric: "npm:4.10.7"
+    autonumeric: "patch:autonumeric@npm%3A4.10.7#~/.yarn/patches/autonumeric-npm-4.10.7-09183d353f.patch"
     autosize: "npm:6.0.1"
     blueimp-file-upload: "patch:blueimp-file-upload@npm%3A10.32.0#~/.yarn/patches/blueimp-file-upload-npm-10.32.0-61b944a244.patch"
     chart.js: "npm:4.4.7"
@@ -455,6 +455,13 @@ __metadata:
   version: 4.10.7
   resolution: "autonumeric@npm:4.10.7"
   checksum: 10c0/6f04d167d768255f5f4bb8152ffabbcec575ff77aed824021e4956b4e7ad4d1a38a38fb9805cf5a04ae11a7200867438f1262141b5b6232762b7dcc31d08be47
+  languageName: node
+  linkType: hard
+
+"autonumeric@patch:autonumeric@npm%3A4.10.7#~/.yarn/patches/autonumeric-npm-4.10.7-09183d353f.patch":
+  version: 4.10.7
+  resolution: "autonumeric@patch:autonumeric@npm%3A4.10.7#~/.yarn/patches/autonumeric-npm-4.10.7-09183d353f.patch::version=4.10.7&hash=c4d4e7"
+  checksum: 10c0/71345e6538fb75ff5be8f956a5e055254c9c02de1f25b3ac358294f0fd38e8dfdf036c49a4463c68c0c079092cfd103f3374f74bce1da8faf986c8a844ae2b2f
   languageName: node
   linkType: hard
 

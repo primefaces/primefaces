@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -79,7 +79,8 @@ class InputNumber003Test extends AbstractPrimePageTest {
     private void assertConfiguration(JSONObject cfg, boolean allowDecimalPadding) {
         assertNoJavascriptErrors();
         System.out.println("InputNumber Config = " + cfg);
-        assertEquals("6", cfg.get("decimalPlaces"));
+        assertEquals(6, cfg.get("decimalPlaces"));
+        assertEquals(6, cfg.get("decimalPlacesRawValue"));
         if (cfg.has("allowDecimalPadding")) {
             assertEquals(allowDecimalPadding, cfg.getBoolean("allowDecimalPadding"));
         }

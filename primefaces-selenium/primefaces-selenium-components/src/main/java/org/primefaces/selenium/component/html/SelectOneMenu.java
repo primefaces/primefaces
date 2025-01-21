@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -44,7 +44,7 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
         }
 
         WebElement option = getOptions().stream()
-                .filter(e -> Objects.equals(e.getAttribute("innerHTML"), label) && e.isSelected())
+                .filter(e -> Objects.equals(e.getDomProperty("innerHTML"), label) && e.isSelected())
                 .findFirst()
                 .orElse(null);
         if (option != null) {
@@ -61,7 +61,7 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
         }
 
         WebElement option = getOptions().stream()
-                .filter(e -> Objects.equals(e.getAttribute("innerHTML"), label) && !e.isSelected())
+                .filter(e -> Objects.equals(e.getDomProperty("innerHTML"), label) && !e.isSelected())
                 .findFirst()
                 .orElse(null);
         if (option != null) {
@@ -77,7 +77,7 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
                 .filter(e -> e.isSelected())
                 .findFirst()
                 .orElse(null);
-        return option == null ? null : option.getAttribute("innerHTML");
+        return option == null ? null : option.getDomProperty("innerHTML");
     }
 
     public boolean isSelected(String label) {
@@ -97,7 +97,7 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
      */
     public List<String> getLabels() {
         return getOptions().stream()
-                .map(e -> e.getAttribute("innerHTML"))
+                .map(e -> e.getDomProperty("innerHTML"))
                 .collect(Collectors.toList());
     }
 

@@ -63,3 +63,4 @@ node_modules/
 /primefaces-integration-tests-jakarta/target/
 /primefaces-theme/*.css
 /primefaces-theme/target/
+/primefaces-coverage/target/

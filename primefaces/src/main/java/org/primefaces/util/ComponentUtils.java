@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -302,7 +302,10 @@ public class ComponentUtils {
     }
 
     public static boolean isFlex(FacesContext context, FlexAware component) {
-        return component.isFlex() || PrimeRequestContext.getCurrentInstance(context).isFlex();
+        if (component.getFlex() == null) {
+            return PrimeRequestContext.getCurrentInstance(context).isFlex();
+        }
+        return component.getFlex();
     }
 
     public static void processDecodesOfFacetsAndChilds(UIComponent component, FacesContext context) {

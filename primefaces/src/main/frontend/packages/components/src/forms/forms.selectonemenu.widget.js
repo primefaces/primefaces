@@ -271,19 +271,30 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
     }
 
     /**
-     * Adjust the width of the overlay panel.
+     * Adjust the width of the overlay panel to match the width of the select menu.
+     * If the panel is narrower than the select menu, expands it to match.
+     * If the panel is wider, preserves its current width.
+     * Only adjusts width once per panel instance.
      * @private
      */
     alignPanelWidth() {
-        //align panel and container
         if(!this.panelWidthAdjusted) {
             var jqWidth = this.jq.outerWidth();
+
+            /* Ensures that the width of a potential scrollbar is considered in the following panel width calculation */
+            let hasVerticalScrollbar = this.itemsWrapper[0].scrollHeight > this.itemsWrapper[0].clientHeight;
+            if (hasVerticalScrollbar) {
+                this.itemsWrapper.css({'overflow': 'scroll'});
+            }
+
             if(this.panel.outerWidth() < jqWidth) {
-                this.panel.width(jqWidth);
+                this.panel.outerWidth(jqWidth);
             }
             else {
-                this.panel.width(this.panel.width());
+                this.panel.outerWidth(this.panel.outerWidth());
             }
+
+            this.itemsWrapper.css({'overflow': ''});
 
             this.panelWidthAdjusted = true;
         }

@@ -74,23 +74,36 @@ PrimeFaces.widget.TieredMenu = class TieredMenu extends PrimeFaces.widget.Menu {
     }
 
     /**
-     * Sets up all event listners required for focus interactions.
+     * Sets up all event listeners required for focus interactions. This includes:
+     * - Making the first menu item focusable by setting its tabindex
+     * - Handling mouse enter and click events to manage focus state
+     * - Handling focus events to highlight active menu items
      * @protected
      */
     bindFocusEvents() {
         var $this = this;
 
-        // make first focusable
+        // Make first menu item focusable
         var firstLink = this.links.filter(':not([disabled])').first();
         firstLink.attr("tabindex", $this.tabIndex);
         this.resetFocus(true);
         firstLink.removeClass('ui-state-hover ui-state-active');
 
-        this.links.on("mouseenter.tieredFocus click.tieredFocus", function() {
+        // Build event string based on toggle mode
+        var focusOnClick = this.cfg.toggleEvent === 'click';
+        var linkEvents = "mouseenter.tieredFocus" + (focusOnClick ? " click.tieredFocus" : "");
+        
+        // Bind mouse/click events to manage focus
+        this.links.on(linkEvents, function(e) {
             var $link = $(this),
                 $menuitem = $link.parent();
             $this.deactivate($menuitem);
-            $link.trigger('focus');
+            if (e.type === 'mouseenter') {
+                $this.highlight($menuitem);
+            }
+            else {
+                $link.trigger('focus');
+            }
         }).on("focusin.tieredFocus", function() {
             var menuitem = $(this).parent();
             $this.highlight(menuitem);
@@ -109,7 +122,7 @@ PrimeFaces.widget.TieredMenu = class TieredMenu extends PrimeFaces.widget.Menu {
                 menuitem = link.parent();
 
             if ($this.cfg.autoDisplay || $this.active) {
-                $this.activate(menuitem);
+                $this.activate(menuitem, false, true);
             }
             else {
                 $this.highlight(menuitem);
@@ -201,7 +214,7 @@ PrimeFaces.widget.TieredMenu = class TieredMenu extends PrimeFaces.widget.Menu {
             function navigateTo(item) {
                 if (item.length && item.children('a.ui-menuitem-link').length) {
                     $this.deactivate(menuitem);
-                    $this.activate(item, false);
+                    $this.activate(item, true, false);
                 }
             }
 
@@ -211,7 +224,7 @@ PrimeFaces.widget.TieredMenu = class TieredMenu extends PrimeFaces.widget.Menu {
                 if (submenu.length === 1) {
                     $this.deactivate(menuitem);
                     $this.deactivate(submenu);
-                    $this.activate(submenu, false);
+                    $this.activate(submenu, true,false);
                 }
             }
 
@@ -373,9 +386,10 @@ PrimeFaces.widget.TieredMenu = class TieredMenu extends PrimeFaces.widget.Menu {
      * Activates a menu item so that it can be clicked and interacted with.
      * 
      * @param {JQuery} menuitem - The menu item to activate.
-     * @param {boolean} [showSubMenu=true] - If false, only focuses the menu item without showing the submenu.
+     * @param {boolean} [focus=true] - If false, does not focus the menu item.
+     * @param {boolean} [showSubMenu=true] - If false, does not show the submenu.
      */
-    activate(menuitem, showSubMenu = true) {
+    activate(menuitem, focus = true, showSubMenu = true) {
         this.highlight(menuitem);
 
         // if this is a root menu item.
@@ -384,12 +398,14 @@ PrimeFaces.widget.TieredMenu = class TieredMenu extends PrimeFaces.widget.Menu {
         }
 
         // focus the menu item when activated
-        this.focus(menuitem.children('a.ui-menuitem-link'));
+        if (focus) {
+            this.focus(menuitem.children('a.ui-menuitem-link'));
+        }
 
         if (showSubMenu) {
             var submenu = menuitem.children('ul.ui-menu-child');
             if (submenu.length == 1) {
-                this.showSubmenu(menuitem, submenu);
+                this.showSubmenu(menuitem, submenu, focus);
             }
         }
     }
@@ -409,8 +425,9 @@ PrimeFaces.widget.TieredMenu = class TieredMenu extends PrimeFaces.widget.Menu {
      * Shows the given submenu of a menu item.
      * @param {JQuery} menuitem A menu item (`LI`) with children.
      * @param {JQuery} submenu A child of the menu item.
+     * @param {boolean} [focus=true] - If false, does not focus the submenu.
      */
-    showSubmenu(menuitem, submenu) {
+    showSubmenu(menuitem, submenu, focus = true) {
         var pos = {
             my: this.isRTL ? 'right top' : 'left top',
             at: this.isRTL ? 'left top' : 'right top',
@@ -433,7 +450,9 @@ PrimeFaces.widget.TieredMenu = class TieredMenu extends PrimeFaces.widget.Menu {
                 .position(pos);
             var $link = menuitem.children('a.ui-menuitem-link');
             $link.attr('aria-expanded', 'true');
-            submenu.find('a.ui-menuitem-link:focusable:first').trigger('focus');
+            if (focus) {
+                submenu.find('a.ui-menuitem-link:focusable:first').trigger('focus');
+            }
         }, this.cfg.showDelay);
     }
 
@@ -457,7 +476,6 @@ PrimeFaces.widget.TieredMenu = class TieredMenu extends PrimeFaces.widget.Menu {
 
     /**
      * Deactivates the current active menu item and resets the menu state after a delay.
-     * Optionally stops the propagation of the event.
      * 
      * @param {Event} [e] - The event object (optional).
      */
@@ -477,11 +495,6 @@ PrimeFaces.widget.TieredMenu = class TieredMenu extends PrimeFaces.widget.Menu {
         }
         else {
             this.reset();
-        }
-
-        // Stop the propagation of the event if the event object is provided
-        if (e) {
-            e.stopPropagation();
         }
     }
 

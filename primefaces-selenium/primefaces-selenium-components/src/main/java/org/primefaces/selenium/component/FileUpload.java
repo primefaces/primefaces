@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -47,7 +47,7 @@ public abstract class FileUpload extends AbstractInputComponent {
     @Override
     public WebElement getInput() {
         // in case of mode=simple skinSimple=false the input element is this element
-        boolean isInputFile = "input".equals(getTagName()) && "file".equals(getAttribute("type"));
+        boolean isInputFile = "input".equals(getTagName()) && "file".equals(getDomAttribute("type"));
         return isInputFile ? this : findElement(By.id(getId() + "_input"));
     }
 
@@ -56,7 +56,7 @@ public abstract class FileUpload extends AbstractInputComponent {
      * @return the file name
      */
     public String getValue() {
-        return getInput().getAttribute("value");
+        return getInput().getDomProperty("value");
     }
 
     /**

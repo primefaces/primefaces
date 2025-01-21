@@ -380,12 +380,7 @@ PrimeFaces.widget.OverlayPanel = class OverlayPanel extends PrimeFaces.widget.Dy
      */
     getTarget(target) {
         if (target) {
-            if (typeof target === 'string') {
-                return $(document.getElementById(target));
-            }
-            else if (target instanceof $) {
-                return target;
-            }
+            return PrimeFaces.resolveAs$(target);
         }
         else if (this.target) {
             return this.target;

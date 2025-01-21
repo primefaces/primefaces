@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -223,7 +223,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             .attr("showOnFocus", datePicker.isShowOnFocus())
             .attr("shortYearCutoff", datePicker.getShortYearCutoff(), null)
             .attr("monthNavigator", datePicker.isMonthNavigator(), false)
-            .attr("yearNavigator", datePicker.isYearNavigator(), false)
+            .attr("yearNavigator", datePicker.getYearNavigator().toLowerCase(Locale.ROOT), "false")
             .attr("showButtonBar", datePicker.isShowButtonBar(), false)
             .attr("showMinMaxRange", datePicker.isShowMinMaxRange(), true)
             .attr("autoMonthFormat", datePicker.isAutoMonthFormat(), true)

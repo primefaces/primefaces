@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -42,7 +42,6 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.html5.WebStorage;
 import org.openqa.selenium.support.decorators.WebDriverDecorator;
 import org.openqa.selenium.support.pagefactory.ElementLocator;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -214,7 +213,7 @@ public final class PrimeSelenium {
      * @return true if this element has the CSS class
      */
     public static boolean hasCssClass(WebElement element, String... cssClass) {
-        String elementClass = element.getAttribute("class");
+        String elementClass = element.getDomAttribute("class");
         if (elementClass == null) {
             return false;
         }
@@ -364,7 +363,7 @@ public final class PrimeSelenium {
         return isElementDisplayed(element) &&
                     isElementEnabled(element) &&
                     !hasCssClass(element, "ui-state-disabled") &&
-                    !Boolean.parseBoolean(element.getAttribute("aria-busy"));
+                    !Boolean.parseBoolean(element.getDomAttribute("aria-busy"));
     }
 
     /**
@@ -502,7 +501,7 @@ public final class PrimeSelenium {
      * @see <a href="https://stackoverflow.com/questions/11858366/how-to-type-some-text-in-hidden-field-in-selenium-webdriver-using-java">Stack Overflow</a>
      */
     public static void setHiddenInput(WebElement input, String value) {
-        executeScript(" document.getElementById('" + input.getAttribute("id") + "').value='" + value + "'");
+        executeScript(" document.getElementById('" + input.getDomAttribute("id") + "').value='" + value + "'");
     }
 
     /**
@@ -515,7 +514,7 @@ public final class PrimeSelenium {
     public static void clearInput(WebElement input, boolean isAjaxified) {
         if (PrimeSelenium.isSafari()) {
             // Safari hack https://stackoverflow.com/a/64067604/502366
-            String inputText = input.getAttribute("value");
+            String inputText = input.getDomProperty("value");
             if (inputText != null && inputText.length() > 0) {
                 CharSequence[] clearText = new CharSequence[inputText.length()];
                 for (int i = 0; i < inputText.length(); i++) {
@@ -607,27 +606,6 @@ public final class PrimeSelenium {
                 Thread.currentThread().interrupt();
             }
         }
-    }
-
-    /**
-     * Get WebStorage of WebDriver.
-     *
-     * @return Returns WebStorage of WebDriver when this feature is supported by the browser. Some browsers like Safari (as of january 2021) do not support
-     *         WebStorage via WebDriver. In this case null is returned.
-     */
-    public static WebStorage getWebStorage() {
-        WebDriver webDriver = getWebDriver();
-
-        if (webDriver instanceof WebDriverDecorator) {
-            WebDriverDecorator driver = (WebDriverDecorator) webDriver;
-            webDriver = (WebDriver) driver.getDecoratedDriver().getOriginal();
-        }
-
-        if (webDriver instanceof WebStorage) {
-            return (WebStorage) webDriver;
-        }
-
-        return null;
     }
 
     /**

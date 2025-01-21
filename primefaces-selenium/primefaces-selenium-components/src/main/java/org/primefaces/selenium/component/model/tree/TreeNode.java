@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -85,7 +85,7 @@ public class TreeNode {
         // we need a xpath selector as selenium doesnt support direct child selector like #findElements(">...")
         return getWebElement()
                 .findElements(By.xpath("./ul/li[contains(@class, 'ui-treenode')]")).stream()
-                .map(e -> new TreeNode(tree, e.getAttribute("data-rowkey"), this))
+                .map(e -> new TreeNode(tree, e.getDomAttribute("data-rowkey"), this))
                 .collect(Collectors.toList());
     }
 

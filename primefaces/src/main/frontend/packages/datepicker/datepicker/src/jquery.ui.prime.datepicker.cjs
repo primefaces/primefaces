@@ -5,7 +5,6 @@
 /**
  * Prime DatePicker Widget
  */
-
 $.widget("prime.datePicker", {
 
     options: {
@@ -100,7 +99,7 @@ $.widget("prime.datePicker", {
         panelStyle: null,
         panelStyleClass: null,
         monthNavigator: false,
-        yearNavigator: false,
+        yearNavigator: "false",
         dateStyleClasses: null,
         disabledDates: null,
         enabledDates: null,
@@ -1207,7 +1206,7 @@ $.widget("prime.datePicker", {
     },
 
     _setInitOptionValues: function() {
-        if (this.options.yearNavigator) {
+        if (this.isYearNavigator()) {
             var year = this.viewDate.getFullYear();
             var month = this.viewDate.getMonth();
             var yearElts = this.panel.find('.ui-datepicker-header > .ui-datepicker-title > .ui-datepicker-year');
@@ -1477,7 +1476,7 @@ $.widget("prime.datePicker", {
     },
 
     renderTitleYearElement: function(year, index) {
-        if (this.options.yearNavigator && index === 0) {
+        if (this.isYearNavigator() && index === 0) {
             this.updateYearNavigator();
             var years = this.options.yearRange.split(':'),
                 yearStart = parseInt(years[0], 10),
@@ -1493,7 +1492,16 @@ $.widget("prime.datePicker", {
                 maxYear = Math.min(maxDate.getFullYear(), yearEnd);
             }
 
-            return '<input class="ui-datepicker-year" size="6" maxlength="4" tabindex="0" aria-label="' + this.options.locale.year + '" type="number" min="' + minYear + '" max="' + maxYear + '" step="1" value="' + year + '"' + '></input>';
+            if (this.isYearNavigatorInput()) {
+                return '<input class="ui-datepicker-year" size="6" maxlength="4" tabindex="0" aria-label="' + this.options.locale.year + '" type="number" min="' + minYear + '" max="' + maxYear + '" step="1" value="' + year + '"' + '></input>';
+            }
+            else {
+                var yearOptions = [];
+                for (var i = yearStart; i <= yearEnd; i++) {
+                    yearOptions.push(i);
+                }
+                return '<select class="ui-datepicker-year" tabindex="0" aria-label="' + this.options.locale.year + '">' + this.renderTitleOptions('year', yearOptions, year) + '</select>';
+            }
         }
         else {
             return '<span class="ui-datepicker-year">' + year + '</span>';
@@ -1897,9 +1905,10 @@ $.widget("prime.datePicker", {
             yearNavigatorSelector = '.ui-datepicker-header > .ui-datepicker-title > .ui-datepicker-year';
         this.panel.off('change.datePicker-monthNav', monthNavigatorSelector)
             .on('change.datePicker-monthNav', monthNavigatorSelector, null, this.onMonthDropdownChange.bind($this));
-        this.panel.off('change.datePicker-yearnav keydown.datePicker-yearnav', yearNavigatorSelector)
+        this.panel.off('change.datePicker-yearnav keydown.datePicker-yearnav keyup.datePicker-yearnav', yearNavigatorSelector)
             .on('change.datePicker-yearnav', yearNavigatorSelector, null, this.onYearInputChange.bind($this))
-            .on('keydown.datePicker-yearnav', yearNavigatorSelector, null, function(event) {$this.onTimeInputKeyDown(event);});
+            .on('keydown.datePicker-yearnav', yearNavigatorSelector, null, function(event) {$this.onTimeInputKeyDown(event);})
+            .on('keyup.datePicker-yearnav', yearNavigatorSelector, null, function(event) {$this.onTimeInputKeyUp(event);});
 
         var monthViewMonthSelector = '.ui-monthpicker > .ui-monthpicker-month';
         this.panel.off('click.datePicker-monthViewMonth', monthViewMonthSelector).on('click.datePicker-monthViewMonth', monthViewMonthSelector, null, function(e) {
@@ -1945,18 +1954,26 @@ $.widget("prime.datePicker", {
                 $this.handleHoursInput(this, event);
             }).off('keydown', '.ui-hour-picker input').on('keydown', '.ui-hour-picker input', null, function(event) {
                 $this.onTimeInputKeyDown(event);
+            }).off('keyup', '.ui-hour-picker input').on('keyup', '.ui-hour-picker input', null, function(event) {
+                $this.onTimeInputKeyUp(event);
             }).off('change', '.ui-minute-picker input').on('change', '.ui-minute-picker input', null, function(event) {
                 $this.handleMinutesInput(this, event);
             }).off('keydown', '.ui-minute-picker input').on('keydown', '.ui-minute-picker input', null, function(event) {
                 $this.onTimeInputKeyDown(event);
+            }).off('keyup', '.ui-minute-picker input').on('keyup', '.ui-minute-picker input', null, function(event) {
+                $this.onTimeInputKeyUp(event);
             }).off('change', '.ui-second-picker input').on('change', '.ui-second-picker input', null, function(event) {
                 $this.handleSecondsInput(this, event);
             }).off('keydown', '.ui-second-picker input').on('keydown', '.ui-second-picker input', null, function(event) {
                 $this.onTimeInputKeyDown(event);
+            }).off('keyup', '.ui-second-picker input').on('keyup', '.ui-second-picker input', null, function(event) {
+                $this.onTimeInputKeyUp(event);
             }).off('change', '.ui-millisecond-picker input').on('change', '.ui-millisecond-picker input', null, function(event) {
                 $this.handleMillisecondsInput(this, event);
             }).off('keydown', '.ui-millisecond-picker input').on('keydown', '.ui-millisecond-picker input', null, function(event) {
                 $this.onTimeInputKeyDown(event);
+            }).off('keyup', '.ui-millisecond-picker input').on('keyup', '.ui-millisecond-picker input', null, function(event) {
+                $this.onTimeInputKeyUp(event);
             });
         }
 
@@ -2165,73 +2182,96 @@ $.widget("prime.datePicker", {
         };
     },
 
-    onTimeInputKeyDown: function(event) {
-        if (PrimeFaces.env.android) {
-            return;
-        }
+    onTimeInputKeyDown: function (event) {
         if (this.options.disabled) {
             event.preventDefault();
+            return false;
+        }
+
+        if (PrimeFaces.env.android) {
+            return true;
+        }
+
+        var input = event.currentTarget;
+
+        if (input.maxLength === 2 && event.key == 'Enter') {
+            this.hideOverlay();
+            event.preventDefault();
+            return false;
+        }
+
+        // Allow text selection and cut, copy, paste
+        const allowedControlKeys = [
+            "a",
+            "c",
+            "v",
+            "x",
+        ];
+        if (event.ctrlKey && allowedControlKeys.includes(event.key)) {
+            return true;
+        }
+                
+
+        // Allow navigation keys, control keys, and numeric keys
+        const allowedKeys = [
+            "ArrowDown",
+            "ArrowLeft",
+            "ArrowRight",
+            "ArrowUp",
+            "Backspace",
+            "Delete",
+            "End",
+            "Home",
+            "Shift",
+            "Tab",
+        ];
+
+        // Allow numeric keys (0-9)
+        const isNumericKey = /^[0-9]$/.test(event.key);
+    
+        if (!isNumericKey && !allowedKeys.includes(event.key)) {
+            event.preventDefault(); // Block all other keys
+        }
+
+        // If input is for year and already full, reset value
+        if (isNumericKey && input.maxLength === 4 && input.value.length === 4) {
+            input.value = "";
+        }
+    },
+    
+    onTimeInputKeyUp: function (event) {
+        const input = event.currentTarget;
+        let newValue = input.value;
+
+        // Validate the input value after the key is released
+        // Remove non-numeric characters
+        newValue = newValue.replace(/[^0-9]/g, "");
+
+        // For year input, only evaluate if the input is 4 digits long
+        if (input.maxLength === 4 && newValue.length < 4) {
             return;
         }
 
-        switch (event.key) {
-            case 'ArrowDown':
-            case 'ArrowUp':
-            case 'Tab':
-            case 'Delete':
-            case 'Backspace':
-                // allow these keys
-                return true;
+        // Check min and max constraints
+        const inputMin = parseInt(input.min, 10);
+        const inputMax = parseInt(input.max, 10);
+
+        if (newValue.length > input.maxLength) {
+            // Truncate to maxLength
+            newValue = newValue.substring(0, input.maxLength);
         }
 
-        switch (event.key) {
-            case '0':
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-            case '5':
-            case '6':
-            case '7':
-            case '8':
-            case '9':
-                var input = event.currentTarget;
-                var newValue = input.value + event.key;
-                
-                // If input is for year and already full, reset value
-                if (input.maxLength === 4 && input.value.length === 4) {
-                    newValue = event.key;
-                    input.value = "";
-                }
-                
-                // Prevent adding more characters if input is at max length
-                if (input.value.length >= input.maxLength) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    return;
-                }
-                
-                // For year input, only evaluate if the input is 4 digits long
-                if (input.maxLength === 4 && newValue.length < 4) {
-                    return;
-                }
-                
-                // Parse new value and min/max limits for comparison
-                newValue = parseInt(newValue, 10);
-                var inputMin =  parseInt(input.min, 10);
-                var inputMax =  parseInt(input.max, 10);
-
-                // Prevent input if new value is outside the min/max range
-                if (isNaN(newValue) || newValue < inputMin || newValue > inputMax) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                }
-                break;
-
-            default:
-                event.preventDefault();
-                event.stopPropagation();
+        if (newValue && (parseInt(newValue, 10) < inputMin || parseInt(newValue, 10) > inputMax)) {
+            // If the value is outside the min/max range, reset to the closest valid value
+            if (parseInt(newValue, 10) < inputMin) {
+                newValue = inputMin.toString();
+            } else if (parseInt(newValue, 10) > inputMax) {
+                newValue = inputMax.toString();
+            }
         }
+
+        // Update the input field value
+        input.value = newValue;
     },
 
     focusDate: function(jq, selector) {
@@ -2284,6 +2324,7 @@ $.widget("prime.datePicker", {
         }
         this.inputfield.addClass('ui-state-focus');
         this.container.addClass('ui-inputwrapper-focus');
+        this.valueOnFocus = this.getDate();
     },
 
     onInputBlur: function(event) {
@@ -2293,6 +2334,12 @@ $.widget("prime.datePicker", {
 
         this.inputfield.removeClass('ui-state-focus');
         this.container.removeClass('ui-inputwrapper-focus');
+
+        // #12754 if mask is used, fire the change event
+        if (this.options.mask && this.valueOnFocus !== this.getDate()) {
+            this.valueOnFocus = undefined;
+            this.onInputChange(event);
+        }
     },
 
     onInputChange: function(event) {
@@ -2439,7 +2486,7 @@ $.widget("prime.datePicker", {
             var currentYear = newViewDate.getFullYear(),
                 newYear = currentYear - 1;
 
-            if (this.options.yearNavigator) {
+            if (this.isYearNavigator()) {
                 var minYear = parseInt(this.options.yearRange.split(':')[0], 10);
 
                 if (newYear < minYear) {
@@ -2499,7 +2546,7 @@ $.widget("prime.datePicker", {
             var currentYear = newViewDate.getFullYear(),
                 newYear = currentYear + 1;
 
-            if (this.options.yearNavigator) {
+            if (this.isYearNavigator()) {
                 var maxYear = parseInt(this.options.yearRange.split(':')[1], 10);
 
                 if (newYear > maxYear) {
@@ -2858,6 +2905,14 @@ $.widget("prime.datePicker", {
 
     isDate: function(value) {
         return value && Object.prototype.toString.call(value) === "[object Date]" && !isNaN(value);
+    },
+
+    isYearNavigator: function() {
+        return ["input", "select", "true"].includes(this.options.yearNavigator);
+    },
+
+    isYearNavigatorInput: function() {
+        return ["input", "true"].includes(this.options.yearNavigator);
     },
 
     alignPanel: function() {
@@ -3451,12 +3506,14 @@ $.widget("prime.datePicker", {
     },
 
     updateYearNavigator: function() {
-        if (this.hasCustomYearRange || this.options.yearRange) {
+        var isYearInput = this.isYearNavigatorInput();
+        if (this.hasCustomYearRange || (isYearInput && this.options.yearRange)) {
             return;
         }
-        if (this.options.yearNavigator) {
+        if (this.isYearNavigator()) {
             var viewYear = this.viewDate.getFullYear();
-            this.options.yearRange = (viewYear - 1000) + ':' + (viewYear + 1000);
+            var yearIncrement = isYearInput ? 1000 : 10;
+            this.options.yearRange = (viewYear - yearIncrement) + ':' + (viewYear + yearIncrement);
         }
     },
 

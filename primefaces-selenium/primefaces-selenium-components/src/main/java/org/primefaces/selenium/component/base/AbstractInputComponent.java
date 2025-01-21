@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -66,7 +66,7 @@ public abstract class AbstractInputComponent extends AbstractComponent {
      * @return the {@link WebElement} representing the label.
      */
     public WebElement getAssignedLabel() {
-        return getWebDriver().findElement(By.cssSelector("label[for='" + getInput().getAttribute("id") + "']"));
+        return getWebDriver().findElement(By.cssSelector("label[for='" + getInput().getDomAttribute("id") + "']"));
     }
 
     /**
@@ -88,7 +88,7 @@ public abstract class AbstractInputComponent extends AbstractComponent {
         Keys command = PrimeSelenium.isMacOs() ? Keys.COMMAND : Keys.CONTROL;
         input.sendKeys(Keys.chord(command, "a")); // select everything
         input.sendKeys(Keys.chord(command, "c")); // copy
-        return input.getAttribute("value");
+        return input.getDomAttribute("value");
     }
 
     /**
@@ -101,7 +101,7 @@ public abstract class AbstractInputComponent extends AbstractComponent {
         Keys command = PrimeSelenium.isMacOs() ? Keys.COMMAND : Keys.CONTROL;
         input.sendKeys(Keys.chord(command, "a")); // select everything
         input.sendKeys(Keys.chord(command, "v")); // paste
-        return input.getAttribute("value");
+        return input.getDomAttribute("value");
     }
 
     /**

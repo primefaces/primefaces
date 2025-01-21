@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -130,7 +130,7 @@ public class ConfirmDialogRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String messageText = dialog.getMessage();
         UIComponent messageFacet = dialog.getFacet("message");
-        String defaultIcon = dialog.isGlobal() ? "ui-icon" : "ui-icon ui-icon-" + dialog.getSeverity();
+        String defaultIcon = "ui-icon ui-icon-" + dialog.getSeverity();
         String severityIcon = defaultIcon + " " + ConfirmDialog.SEVERITY_ICON_CLASS;
 
         writer.startElement("div", null);

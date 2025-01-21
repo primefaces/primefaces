@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,7 @@
 package org.primefaces.util;
 
 import org.primefaces.application.resource.DynamicContentType;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.model.StreamedContent;
 
@@ -108,7 +109,8 @@ public class DynamicContentSrcBuilder {
         Map<String, Object> session = context.getExternalContext().getSessionMap();
         Map<String, String> dynamicResourcesMapping = (Map) session.get(Constants.DYNAMIC_RESOURCES_MAPPING);
         if (dynamicResourcesMapping == null) {
-            dynamicResourcesMapping = new LimitedSizeHashMap<>(200);
+            int limit = PrimeApplicationContext.getCurrentInstance(context).getConfig().getDynamicContentLimit();
+            dynamicResourcesMapping = new LimitedSizeHashMap<>(limit);
             session.put(Constants.DYNAMIC_RESOURCES_MAPPING, dynamicResourcesMapping);
         }
 

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,6 +38,7 @@ public abstract class InputNumberBase extends AbstractPrimeHtmlInputText impleme
     public enum PropertyKeys {
         caretPositionOnFocus,
         decimalPlaces,
+        decimalPlacesRawValue,
         decimalSeparator,
         decimalSeparatorAlternative,
         emptyValue,
@@ -147,6 +148,14 @@ public abstract class InputNumberBase extends AbstractPrimeHtmlInputText impleme
 
     public void setDecimalPlaces(String decimalPlaces) {
         getStateHelper().put(PropertyKeys.decimalPlaces, decimalPlaces);
+    }
+
+    public Integer getDecimalPlacesRawValue() {
+        return (Integer) getStateHelper().eval(PropertyKeys.decimalPlacesRawValue, null);
+    }
+
+    public void setDecimalPlacesRawValue(Integer decimalPlacesRawValue) {
+        getStateHelper().put(PropertyKeys.decimalPlacesRawValue, decimalPlacesRawValue);
     }
 
     public String getDecimalSeparator() {

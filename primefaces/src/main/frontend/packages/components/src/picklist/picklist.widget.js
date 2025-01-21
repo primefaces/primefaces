@@ -40,8 +40,6 @@
  * @prop {boolean} checkboxClick UI state indicating whether a checkbox was just clicked.
  * @prop {JQuery} cursorItem The currently selected item.
  * @prop {boolean} dragging Whether the user is currently transferring an item via drag&drop.
- * @prop {number} filterTimeout The set-timeout timer ID of the timer for the delay when filtering the source or target
- * list.
  * @prop {PrimeFaces.widget.PickList.FilterFunction} filterMatcher The filter that was selected and is currently used.
  * @prop {Record<PrimeFaces.widget.PickList.FilterMatchMode, PrimeFaces.widget.PickList.FilterFunction>} filterMatchers
  * Map between the available filter types and the filter implementation.
@@ -132,60 +130,7 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
             $(this.jqId + ' .ui-picklist-filter-container').addClass('ui-state-disabled').children('input').attr('disabled', 'disabled');
         }
         else {
-            var $this = this,
-                reordered = true;
-
-            //Sortable lists
-            $(this.jqId + ' ul').sortable({
-                cancel: '.ui-state-disabled,.ui-chkbox-box',
-                connectWith: this.jqId + ' .ui-picklist-list',
-                revert: 1,
-                helper: 'clone',
-                placeholder: "ui-picklist-item ui-state-highlight",
-                forcePlaceholderSize: true,
-                update: function(event, ui) {
-                    $this.unselectItem(ui.item);
-
-                    $this.saveState();
-                    if(reordered) {
-                        $this.fireReorderEvent();
-                        reordered = false;
-                    }
-                },
-                receive: function(event, ui) {
-                    var parentList = ui.item.parents('ul.ui-picklist-list:first');
-                    var item = ui.item;
-
-                    if ($this.cfg.transferOnCheckboxClick) {
-                        if (parentList.hasClass('ui-picklist-source')) {
-                            $this.unselectCheckbox(item.find('div.ui-chkbox-box'));
-                        }
-                        else {
-                            $this.selectCheckbox(item.find('div.ui-chkbox-box'));
-                        }
-                    }
-
-                    $this.fireTransferEvent(item, ui.sender, parentList, 'dragdrop');
-                },
-
-                start: function(event, ui) {
-                    $this.itemListName = $this.getListName(ui.item);
-                    $this.dragging = true;
-                },
-
-                stop: function(event, ui) {
-                    $this.dragging = false;
-                },
-
-                beforeStop:function(event, ui) {
-                    if($this.itemListName !== $this.getListName(ui.item)) {
-                        reordered = false;
-                    }
-                    else {
-                        reordered = true;
-                    }
-                }
-            });
+            this.bindDragDopEvents();
 
             this.bindItemEvents();
 
@@ -199,6 +144,70 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
 
             this.updateListRole();
         }
+    }
+
+    /**
+     * Sets up the drag and drop event listeners for reordering and transferring pick list items between source and target lists.
+     * Only enabled for non-touch devices.
+     * @private
+     * @see PrimeFaces.env.isTouchable
+     */
+    bindDragDopEvents() {
+        var $this = this,
+            reordered = true;
+
+        //Sortable lists
+        $(this.jqId + ' ul').sortable({
+            cancel: '.ui-state-disabled,.ui-chkbox-box',
+            connectWith: this.jqId + ' .ui-picklist-list',
+            disabled: PrimeFaces.env.isTouchable($this.cfg), // #13131 disable on touch devices
+            revert: 1,
+            helper: 'clone',
+            placeholder: "ui-picklist-item ui-state-highlight",
+            forcePlaceholderSize: true,
+            update: function(event, ui) {
+                $this.unselectItem(ui.item);
+
+                $this.saveState();
+                if(reordered) {
+                    $this.fireReorderEvent();
+                    reordered = false;
+                }
+            },
+            receive: function(event, ui) {
+                var parentList = ui.item.parents('ul.ui-picklist-list:first');
+                var item = ui.item;
+
+                if ($this.cfg.transferOnCheckboxClick) {
+                    if (parentList.hasClass('ui-picklist-source')) {
+                        $this.unselectCheckbox(item.find('div.ui-chkbox-box'));
+                    }
+                    else {
+                        $this.selectCheckbox(item.find('div.ui-chkbox-box'));
+                    }
+                }
+
+                $this.fireTransferEvent(item, ui.sender, parentList, 'dragdrop');
+            },
+
+            start: function(event, ui) {
+                $this.itemListName = $this.getListName(ui.item);
+                $this.dragging = true;
+            },
+
+            stop: function(event, ui) {
+                $this.dragging = false;
+            },
+
+            beforeStop:function(event, ui) {
+                if($this.itemListName !== $this.getListName(ui.item)) {
+                    reordered = false;
+                }
+                else {
+                    reordered = true;
+                }
+            }
+        });
     }
 
     /**
@@ -350,6 +359,8 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
             else {
                 $this.focusedItem = list.children('.ui-picklist-item:visible:first');
             }
+
+            list.children('.ui-picklist-outline').removeClass('ui-picklist-outline');
 
             PrimeFaces.queueTask(function() {
                 if ($this.focusedItem) {
@@ -705,15 +716,7 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
 
             var input = $(this);
 
-            if($this.filterTimeout) {
-                clearTimeout($this.filterTimeout);
-            }
-
-            $this.filterTimeout = PrimeFaces.queueTask(function() {
-                $this.filter(input.val(), $this.getFilteredList(input));
-                $this.filterTimeout = null;
-            },
-            $this.cfg.filterDelay);
+            PrimeFaces.debounce(() => $this.filter(input.val(), $this.getFilteredList(input)), $this.cfg.filterDelay);
         });
     }
 
@@ -1057,7 +1060,7 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
      * @param {() => JQuery} callback after transfer finished.
      */
     transfer(items, from, to, type, callback) {
-        $(this.jqId + ' ul').sortable('disable');
+        this.toggleDragDrop(false);
         var $this = this;
         var itemsCount = items.length;
         var transferCount = 0;
@@ -1155,7 +1158,7 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
                 oncomplete: function() {
                     $this.refilterSource();
                     $this.refilterTarget();
-                    $($this.jqId + ' ul').sortable('enable');
+                    $this.toggleDragDrop(true);
                     $this.updateButtonsState();
                 }
             };
@@ -1167,7 +1170,7 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
             this.callBehavior('transfer', options);
         }
         else {
-            $($this.jqId + ' ul').sortable('enable');
+            $this.toggleDragDrop(true);
             $this.updateButtonsState();
         }
 
@@ -1361,6 +1364,19 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
     enableButton(button) {
         button.prop('disabled', false).removeClass('ui-state-disabled');
         button.attr('tabindex', this.getTabIndex());
+    }
+
+    /**
+     * Enables or disables drag and drop functionality for the pick list items.
+     * Has no effect on touch devices where drag and drop is always disabled.
+     * @param {boolean} [enable=false] - Set to true to enable drag and drop, false to disable
+     * @private
+     */
+    toggleDragDrop(enable = false) {
+        if (PrimeFaces.env.isTouchable(this.cfg)) {
+            return;
+        }
+        $(this.jqId + ' ul').sortable(enable ? 'enable' : 'disable');
     }
 
     /**

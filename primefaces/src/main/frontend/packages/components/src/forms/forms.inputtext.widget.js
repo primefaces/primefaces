@@ -56,6 +56,14 @@ PrimeFaces.widget.InputText = class InputText extends PrimeFaces.widget.BaseWidg
     }
 
     /**
+     * Gets the current value.
+     * @return {string} The current value.
+     */
+    getValue() {
+        return this.jq.val();
+    }
+
+    /**
      * Updates the counter value that keeps count of how many more characters the user can enter before they reach the
      * limit.
      * @private

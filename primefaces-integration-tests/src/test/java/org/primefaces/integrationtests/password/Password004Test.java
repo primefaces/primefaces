@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -86,7 +86,7 @@ class Password004Test extends AbstractPrimePageTest {
         Msg message1 = page.messages.getMessage(0);
         assertNotNull(message1);
         assertEquals("Password 1: Validation Error.", message1.getSummary());
-        assertEquals("Password 1 should match with Password 2.", message1.getDetail());
+        assertEquals("'Password 1' should match with 'Password 2'.", message1.getDetail());
         assertEquals("", pwd1.getValue());
         assertEquals("", pwd2.getValue());
         assertCss(pwd1, "ui-state-error");

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,13 +41,13 @@ public abstract class Button extends AbstractComponent {
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(button));
         PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(button));
 
-        if (button.getAttribute("data-pfconfirmcommand") != null) {
+        if (button.getDomAttribute("data-pfconfirmcommand") != null) {
             // Confirm Dialog/Popup we don't want to guard for AJAX
         }
         else if (isAjaxified("onclick")) {
             button = PrimeSelenium.guardAjax(button);
         }
-        else if ("submit".equals(button.getAttribute("type"))) {
+        else if ("submit".equals(button.getDomAttribute("type"))) {
             button = PrimeSelenium.guardHttp(button);
         }
 

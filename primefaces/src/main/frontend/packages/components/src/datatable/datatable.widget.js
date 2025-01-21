@@ -75,7 +75,6 @@
  * @prop {JQuery} [expansionHolder] DOM element of the hidden input that holds the row keys of the rows that
  * are expanded. Used to preserve the expansion state during AJAX updates.
  * @prop {number[]} expansionProcess List of row indices to expand.
- * @prop {number} filterTimeout ID as returned by `setTimeout` used during filtering.
  * @prop {JQuery | null} focusedRow DOM element of the currently focused row.
  * @prop {boolean} focusedRowWithCheckbox Whether the focused row includes the checkbox for selecting the row.
  * @prop {JQuery} footerCols The DOM elements for the footer columns.
@@ -800,14 +799,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
                 return;
             }
 
-            if($this.filterTimeout) {
-                clearTimeout($this.filterTimeout);
-            }
-
-            $this.filterTimeout = PrimeFaces.queueTask(function() {
-                $this.filter();
-                $this.filterTimeout = null;
-            }, $this.cfg.filterDelay);
+            PrimeFaces.debounce(() => $this.filter(), $this.cfg.filterDelay);
         })
         .on('keydown', function(e) {
             // #12327 do not submit form on ENTER
@@ -3547,6 +3539,9 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
         }
         else {
             $(".ui-cell-editor-input :input:enabled").attr('disabled', 'disabled').attr("data-disabled-by-editor", "true");
+            //#13159: re-enable for all rows that are rowEditing="true"
+            this.enableCellEditors($('.ui-row-editing'));
+            
         }
     }
     
@@ -4315,13 +4310,14 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
     }
 
     /**
-     * Updates a row with the given content
+     * Updates a row with the given content and ensures it is visible.
      * @protected
      * @param {JQuery} row Row to update.
      * @param {string} content HTML string to set on the row.
      */
     updateRow(row, content) {
-        row.replaceWith(content);
+        const $content = $(content).show();
+        row.replaceWith($content);
     }
 
     /**
@@ -4331,7 +4327,9 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
      */
     invalidateRow(index) {
         var i = (this.paginator) ? (index % this.paginator.getRows()) : index;
-        this.tbody.children('tr[data-ri]').eq(i).addClass('ui-widget-content ui-row-editing ui-state-error');
+        var row =  this.tbody.children('tr[data-ri]').eq(i);
+        row.addClass('ui-widget-content ui-row-editing ui-state-error');
+        this.enableCellEditors(row);
     }
 
     /**

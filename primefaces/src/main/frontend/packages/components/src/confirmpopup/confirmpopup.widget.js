@@ -57,6 +57,9 @@ PrimeFaces.widget.ConfirmPopup = class ConfirmPopup extends PrimeFaces.widget.Dy
         this.message = this.content.children('.ui-confirm-popup-message');
         this.icon = this.content.children('.ui-confirm-popup-icon');
         if (this.cfg.global) {
+            this.content.data('p-text', this.content.text());
+            this.message.data('p-text', this.message.text());
+            this.icon.data('p-icon', this.icon.removeClass('ui-confirm-popup-icon').attr('class'));
             this.yesButton = this.jq.find('.ui-confirm-popup-yes');
             this.noButton = this.jq.find('.ui-confirm-popup-no');
             this.yesButton.data('p-text', this.yesButton.children('.ui-button-text').text());
@@ -251,6 +254,15 @@ PrimeFaces.widget.ConfirmPopup = class ConfirmPopup extends PrimeFaces.widget.Dy
     restoreButtons() {
         var $this = this;
         if ($this.cfg.global) {
+            if ($this.content.data('p-text')) {
+                $this.content.text($this.content.data('p-text'));
+            }
+            if ($this.message.data('p-text')) { 
+                $this.message.text($this.message.data('p-text'));
+            }
+            if ($this.icon.data('p-icon')) {
+                $this.icon.attr('class', 'ui-confirm-popup-icon ' + $this.icon.data('p-icon'));
+            }
             $this.yesButton.removeClass($this.yesButton.data('p-class'));
             $this.noButton.removeClass($this.noButton.data('p-class'));
             $this.yesButton.children('.ui-button-text').text($this.yesButton.data('p-text'));
@@ -340,9 +352,12 @@ PrimeFaces.widget.ConfirmPopup = class ConfirmPopup extends PrimeFaces.widget.Dy
                 PrimeFaces.csp.eval(msg.beforeShow);
             }
 
-            $this.icon.removeClass().addClass('ui-confirm-popup-icon');
-            if (msg.icon !== 'null') {
-                $this.icon.addClass(msg.icon);
+            var iconClass = msg.icon || $this.icon.data('p-icon');
+            if (iconClass) {
+                $this.icon.removeClass().addClass('ui-confirm-popup-icon ' + iconClass);
+                $this.icon.show();
+            } else {
+                $this.icon.hide();
             }
 
             if (msg.message) {

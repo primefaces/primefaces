@@ -25,8 +25,13 @@
             <p:commandLink id="nonAjax" value="Non-Ajax" action="#{confirmDialog001.nonAjax}" styleClass="ui-button-warning" icon="pi pi-question" ajax="false">
                 <p:confirm header="Confirmation" message="Submit this page and reload?" icon="pi pi-question-circle"/>
             </p:commandLink>
+
+            <p:commandButton id="question" value="Question" action="#{confirmDialog001.question}" update="message" styleClass="p-mr-2">
+                <p:confirm type="popup" header="Question" message="Do you like cats?"/>
+            </p:commandButton>
+
             
-            <p:confirmDialog id="confirmdialog" global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+            <p:confirmDialog id="confirmdialog" global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350" severity="alert">
                 <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes"/>
                 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
             </p:confirmDialog>
