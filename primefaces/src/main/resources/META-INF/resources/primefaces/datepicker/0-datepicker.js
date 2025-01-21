@@ -2198,6 +2198,7 @@
                 "c",
                 "v",
                 "x",
+                "z"
             ];
             if (event.ctrlKey && allowedControlKeys.includes(event.key)) {
                 return true;
