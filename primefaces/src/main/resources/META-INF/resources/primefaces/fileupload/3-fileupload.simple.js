@@ -209,6 +209,10 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
         var parameterPrefix = PrimeFaces.ajax.Request.extractParameterNamespace(this.form);
         var formData = PrimeFaces.ajax.Request.createFacesAjaxFormData(this.form, parameterPrefix, this.id, process, update);
 
+        if (this.cfg.ignoreAutoUpdate) {
+            PrimeFaces.ajax.Request.addFormData(formData, PrimeFaces.IGNORE_AUTO_UPDATE_PARAM, true, parameterPrefix);
+        }
+
         if($this.cfg.global) {
             $(document).trigger('pfAjaxStart');
         }

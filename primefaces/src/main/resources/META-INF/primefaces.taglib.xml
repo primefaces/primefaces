@@ -11089,6 +11089,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+         <attribute>
+            <description>
+                <![CDATA[If true, components which autoUpdate="true" will not be updated for this request. If not specified, or the value is false, no such indication is made.]]>
+            </description>
+            <name>ignoreAutoUpdate</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
