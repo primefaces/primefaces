@@ -40,6 +40,7 @@ powered rich solution with graceful degradation for legacy browsers.
 | dropZone | null                                         | String | Component that should be used as custom drop zone.
 | ~~fileLimit~~ | null                                         | Integer | ~~Maximum number of files allowed to upload. Deprecated please attach `p:validateFile` to the `p:fileUpload` component.~~
 | global | true                                         | Boolean | Global AJAX requests are listened by ajaxStatus component, setting global to false will not trigger ajaxStatus. Default is false.
+| ignoreAutoUpdate | false                                        | Boolean | When set true, components which autoUpdate="true" will not be updated for this request.
 | immediate | false                                        | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
 | label | Choose                                       | String | Label of the browse button.
 | listener | null                                         | MethodExpr | Method to invoke when a file is uploaded.
