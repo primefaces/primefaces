@@ -1,0 +1,69 @@
+/** Add CSS variables for basic theming to quill editor styles */
+/** See https://github.com/primefaces/primefaces/pull/8081 */
+
+.ql-container {
+	font-family: var(--font-family);
+}
+
+.ql-editor .ql-bg-blue {
+	background-color: var(--text-color);
+}
+
+.ql-editor .ql-color-white {
+	color: var(--surface-a);
+}
+
+.ql-editor .ql-color-blue {
+	color: var(--text-color);
+}
+
+@media (pointer: coarse) {
+	.ql-snow.ql-toolbar button:hover:not(.ql-active),
+	.ql-snow .ql-toolbar button:hover:not(.ql-active) {
+		color: var(--text-color);
+	}
+
+	.ql-snow.ql-toolbar button:hover:not(.ql-active) .ql-fill,
+	.ql-snow .ql-toolbar button:hover:not(.ql-active) .ql-fill,
+	.ql-snow.ql-toolbar button:hover:not(.ql-active) .ql-stroke.ql-fill,
+	.ql-snow .ql-toolbar button:hover:not(.ql-active) .ql-stroke.ql-fill {
+		fill: var(--text-color);
+	}
+
+	.ql-snow.ql-toolbar button:hover:not(.ql-active) .ql-stroke,
+	.ql-snow .ql-toolbar button:hover:not(.ql-active) .ql-stroke,
+	.ql-snow.ql-toolbar button:hover:not(.ql-active) .ql-stroke-miter,
+	.ql-snow .ql-toolbar button:hover:not(.ql-active) .ql-stroke-miter {
+		stroke: var(--text-color);
+	}
+}
+
+.ql-snow .ql-stroke {
+	stroke: var(--text-color);
+}
+
+.ql-snow .ql-stroke-miter {
+	stroke: var(--text-color);
+}
+
+.ql-snow .ql-fill,
+.ql-snow .ql-stroke.ql-fill {
+	fill: var(--text-color);
+}
+
+.ql-snow .ql-picker {
+	color: var(--text-color);
+}
+
+.ql-snow .ql-picker-options {
+	background-color: var(--surface-a);
+}
+
+.ql-snow .ql-color-picker.ql-background .ql-picker-item {
+	background-color: var(--surface-a);
+}
+
+.ql-snow .ql-tooltip {
+	background-color: var(--surface-a);
+	color: var(--text-color);
+}
