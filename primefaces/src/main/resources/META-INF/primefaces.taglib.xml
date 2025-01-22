@@ -23513,6 +23513,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[When enabled, the "Select All" checkbox option is displayed. Default is true.]]>
+            </description>
+            <name>showSelectAll</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[When enabled, the selected items are displayed on label. Default is false.]]>
             </description>
             <name>updateLabel</name>

@@ -62,6 +62,9 @@ Look into [migration guide](https://primefaces.github.io/primefaces/15_0_0/#/../
 * Paginator 
     * Added `rowsPerPage` in the PageEvent AJAX event
 
+* SelectCheckboxMenu
+    * Added `showSelectAll` attribute to display the select all checkbox
+
 * SelectOneMenu
     * Added `clear` AJAX event when in `editable="true"` and you clear out a value with BACKSPACE/DELETE
 
