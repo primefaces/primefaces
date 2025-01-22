@@ -3533,7 +3533,7 @@
 
             // attempt to refocus the newly created version of the same element
             if (el && el.getAttribute("aria-label")) {
-                var refocus = this.panel.find("[aria-label='" + el.getAttribute("aria-label") + "']");
+                var refocus = this.panel.find("[aria-label='" + PrimeFaces.escapeHTML(el.getAttribute("aria-label")) + "']");
                 if (refocus.length) {
                     PrimeFaces.queueTask(function() { refocus.first().trigger('focus') });
                 }
