@@ -81,15 +81,15 @@ public class Csv002Test extends AbstractColorPickerTest {
         Assertions.assertEquals("", page.msgTriStateCheckbox.getText());
 
         // Act
-        page.triStateCheckbox.setValue("2");
-        page.triStateCheckbox.setValue("0");
+        page.triStateCheckbox.setValue(Boolean.FALSE);
+        page.triStateCheckbox.setValue(null);
 
         // Assert
         Assertions.assertEquals("yes/no/maybe: Validation Error: Value is required.",
                 page.msgTriStateCheckbox.getText());
 
         // Act
-        page.triStateCheckbox.setValue("1");
+        page.triStateCheckbox.setValue(Boolean.TRUE);
 
         // Assert
         Assertions.assertEquals("", page.msgTriStateCheckbox.getText());
