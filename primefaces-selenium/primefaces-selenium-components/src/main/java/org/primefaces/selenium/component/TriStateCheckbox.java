@@ -60,18 +60,28 @@ public abstract class TriStateCheckbox extends AbstractInputComponent {
         }
     }
 
-    public void setValue(String value) {
+    public void setValue(Boolean value) {
         while (!getValue().equals(value)) {
             click();
         }
     }
 
-    public String getValue() {
-        return input.getDomProperty("value");
+    public Boolean getValue() {
+        String value = input.getDomProperty("value");
+        if ("0".equals(value)) {
+            return null;
+        }
+        else if ("1".equals(value)) {
+            return Boolean.TRUE;
+        }
+        else if ("2".equals(value)) {
+            return Boolean.FALSE;
+        }
+        throw new IllegalStateException();
     }
 
     /**
-     * Toggles between its three states. (0, 1, 2)
+     * Toggles between its three states. (null, true, false)
      */
     public void toggle() {
         PrimeSelenium.executeScript(isOnchangeAjaxified(), getWidgetByIdScript() + ".toggle();");
