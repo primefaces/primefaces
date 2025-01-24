@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -61,20 +61,20 @@ public class Tree extends TreeBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Tree";
 
-    public static final String FILTER_CLASS = "ui-tree-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
+    public static final String FILTER_CLASS = "ui-tree-filter ui-inputfield ui-inputtext ui-widget ui-state-default";
     public static final String FILTER_CONTAINER = "ui-tree-filter-container";
-    public static final String CONTAINER_CLASS = "ui-tree ui-widget ui-widget-content ui-corner-all";
-    public static final String CONTAINER_RTL_CLASS = "ui-tree ui-tree-rtl ui-widget ui-widget-content ui-corner-all";
-    public static final String HORIZONTAL_CONTAINER_CLASS = "ui-tree ui-tree-horizontal ui-widget ui-widget-content ui-corner-all";
-    public static final String HORIZONTAL_CONTAINER_RTL_CLASS = "ui-tree ui-tree-horizontal ui-tree-rtl ui-widget ui-widget-content ui-corner-all";
+    public static final String CONTAINER_CLASS = "ui-tree ui-widget ui-widget-content";
+    public static final String CONTAINER_RTL_CLASS = "ui-tree ui-tree-rtl ui-widget ui-widget-content";
+    public static final String HORIZONTAL_CONTAINER_CLASS = "ui-tree ui-tree-horizontal ui-widget ui-widget-content";
+    public static final String HORIZONTAL_CONTAINER_RTL_CLASS = "ui-tree ui-tree-horizontal ui-tree-rtl ui-widget ui-widget-content";
     public static final String ROOT_NODES_CLASS = "ui-tree-container";
     public static final String PARENT_NODE_CLASS = "ui-treenode ui-treenode-parent";
     public static final String LEAF_NODE_CLASS = "ui-treenode ui-treenode-leaf";
     public static final String CHILDREN_NODES_CLASS = "ui-treenode-children";
     public static final String NODE_CONTENT_CLASS_V = "ui-treenode-content";
     public static final String SELECTABLE_NODE_CONTENT_CLASS_V = "ui-treenode-content ui-tree-selectable";
-    public static final String NODE_CONTENT_CLASS_H = "ui-treenode-content ui-state-default ui-corner-all";
-    public static final String SELECTABLE_NODE_CONTENT_CLASS_H = "ui-treenode-content ui-tree-selectable ui-state-default ui-corner-all";
+    public static final String NODE_CONTENT_CLASS_H = "ui-treenode-content ui-state-default";
+    public static final String SELECTABLE_NODE_CONTENT_CLASS_H = "ui-treenode-content ui-tree-selectable ui-state-default";
     public static final String EXPANDED_ICON_CLASS_V = "ui-tree-toggler ui-icon ui-icon-triangle-1-s";
     public static final String COLLAPSED_ICON_CLASS_V = "ui-tree-toggler ui-icon ui-icon-triangle-1-e";
     public static final String COLLAPSED_ICON_RTL_CLASS_V = "ui-tree-toggler ui-icon ui-icon-triangle-1-w";
@@ -82,7 +82,7 @@ public class Tree extends TreeBase {
     public static final String COLLAPSED_ICON_CLASS_H = "ui-tree-toggler ui-icon ui-icon-plus";
     public static final String LEAF_ICON_CLASS = "ui-treenode-leaf-icon";
     public static final String NODE_ICON_CLASS = "ui-treenode-icon ui-icon";
-    public static final String NODE_LABEL_CLASS = "ui-treenode-label ui-corner-all";
+    public static final String NODE_LABEL_CLASS = "ui-treenode-label";
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("select", NodeSelectEvent.class)

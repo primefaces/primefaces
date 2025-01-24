@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,7 +39,9 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.FindBy;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ConfirmPopup001Test extends AbstractPrimePageTest {
 
@@ -89,7 +91,7 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
         CommandButton noButton = popup.getNoButton();
         assertEquals("No", noButton.getText());
         assertCss(noButton,
-                "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left ui-confirm-popup-no ui-button-flat");
+                "ui-button ui-widget ui-state-default ui-button-text-icon-left ui-confirm-popup-no ui-button-flat");
         assertCss(noButton.findElement(By.className("ui-icon")), "ui-button-icon-left ui-icon ui-c pi pi-times");
 
         // Act
@@ -111,7 +113,7 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
         page.confirm.click();
         CommandButton yesButton = popup.getYesButton();
         assertEquals("Yes", yesButton.getText());
-        assertCss(yesButton, "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left ui-confirm-popup-yes ui-state-focus");
+        assertCss(yesButton, "ui-button ui-widget ui-state-default ui-button-text-icon-left ui-confirm-popup-yes ui-state-focus");
         assertCss(yesButton.findElement(By.className("ui-icon")), "ui-button-icon-left ui-icon ui-c pi pi-check");
 
         // Act
@@ -134,7 +136,7 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
         CommandButton noButton = popup.getNoButton();
         assertEquals("Keep this!", noButton.getText());
         assertCss(noButton,
-                "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left ui-confirm-popup-no ui-button-flat bg-green-600 text-white");
+                "ui-button ui-widget ui-state-default ui-button-text-icon-left ui-confirm-popup-no ui-button-flat bg-green-600 text-white");
         assertCss(noButton.findElement(By.className("ui-icon")), "ui-button-icon-left ui-icon ui-c pi pi-heart");
 
         // Act
@@ -151,6 +153,25 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(6)
+    @DisplayName("ConfirmPopup: Default icon to the one set on the global")
+    void defaultIcon(Page page) {
+        // Arrange
+        ConfirmPopup popup = page.popup;
+        assertFalse(popup.isVisible());
+
+
+        // Act
+        page.question.click();
+
+        // Assert
+        assertTrue(popup.isVisible());
+        assertTrue(page.messages.isEmpty());
+        assertCss(popup.getIcon(), "ui-confirm-popup-icon pi pi-question-circle");
+        assertConfiguration(popup.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(6)
     @DisplayName("ConfirmPopup: Delete button pressing YES")
     void deleteYes(Page page) {
         // Arrange
@@ -160,7 +181,7 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
         CommandButton yesButton = popup.getYesButton();
         assertEquals("Delete Me!", yesButton.getText());
         assertCss(yesButton,
-                "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left ui-confirm-popup-yes bg-red-600 text-white ui-state-focus");
+                "ui-button ui-widget ui-state-default ui-button-text-icon-left ui-confirm-popup-yes bg-red-600 text-white ui-state-focus");
         assertCss(yesButton.findElement(By.className("ui-icon")), "ui-button-icon-left ui-icon ui-c pi pi-trash");
 
         // Act
@@ -202,6 +223,9 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
 
         @FindBy(id = "form:delete")
         CommandButton delete;
+
+        @FindBy(id = "form:question")
+        CommandButton question;
 
         @Override
         public String getLocation() {

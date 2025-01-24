@@ -16,7 +16,7 @@
 
             <p:fileUpload id="fileupload" widgetVar="fileUpload"
                           listener="#{fileUploadHandler.handleFileUpload}" 
-                          mode="advanced" dragDropSupport="false"
+                          mode="advanced" dragDrop="false"
                           update="uploadedfiles msgs">
                 <p:validateFile fileLimit="2" sizeLimit="100" virusScan="true" allowTypes="/(\.|\/)(csv)$/"/>
             </p:fileUpload>

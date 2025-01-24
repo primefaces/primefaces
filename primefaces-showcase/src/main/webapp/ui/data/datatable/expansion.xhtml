@@ -19,7 +19,7 @@
     <ui:define name="implementation">
         <div class="card">
             <h:form>
-                <p:dataTable var="product" value="#{dtBasicView.products}" rowKey="#{product.id}">
+                <p:dataTable var="product" value="#{dtBasicView.products}" rowKey="#{product.code}">
                     <f:facet name="header">
                         Expand rows to see detailed information
                     </f:facet>

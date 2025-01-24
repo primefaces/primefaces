@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -234,13 +234,14 @@ public class InputNumberRenderer extends InputRenderer {
             .attr("valueToRender", valueToRender)
             .attr("decimalCharacter", decimalSeparator, ".")
             .attr("decimalCharacterAlternative", inputNumber.getDecimalSeparatorAlternative(), null)
+            .attr("decimalPlaces", getDecimalPlaces(isIntegral, inputNumber))
+            .attr("decimalPlacesRawValue", inputNumber.getDecimalPlacesRawValue())
             .attr("digitGroupSeparator", digitGroupSeparator, ",")
             .attr("currencySymbol", inputNumber.getSymbol())
             .attr("currencySymbolPlacement", inputNumber.getSymbolPosition(), "p")
             .attr("negativePositiveSignPlacement", inputNumber.getSignPosition(), null)
             .attr("minimumValue", getMinimum(isIntegral, inputNumber))
             .attr("maximumValue", getMaximum(isIntegral, inputNumber))
-            .attr("decimalPlaces", getDecimalPlaces(isIntegral, inputNumber))
             .attr("emptyInputBehavior", emptyValue, "focus")
             .attr("leadingZero", inputNumber.getLeadingZero(), "deny")
             .attr("allowDecimalPadding", inputNumber.getPadControl(), "true")

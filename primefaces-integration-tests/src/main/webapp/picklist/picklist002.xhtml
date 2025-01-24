@@ -20,7 +20,7 @@
                 const li = (value, label) => {
                     const li = document.createElement('li')
                     li.innerText = label
-                    li.classList.add('ui-picklist-item', 'ui-corner-all', 'ui-sortable-handle')
+                    li.classList.add('ui-picklist-item', 'ui-sortable-handle')
                     li.setAttribute('data-item-value', value)
                     li.setAttribute('data-item-label', label)
                     li.setAttribute('role', 'menuitem')
@@ -37,14 +37,14 @@
                 const option = (value, label) => {
                     const option = document.createElement('option')
                     option.innerText = label
-                    option.classList.add('ui-picklist-item', 'ui-corner-all', 'ui-sortable-handle')
+                    option.classList.add('ui-picklist-item', 'ui-sortable-handle')
                     option.setAttribute('selected', 'selected')
                     option.setAttribute('value', value)
                     return option
                 }
 
                 const dualList = document.querySelector("[id='form:pickListCities']")
-                const targetUl = dualList.querySelector(".ui-widget-content.ui-picklist-list.ui-picklist-target.ui-corner-all.ui-sortable")
+                const targetUl = dualList.querySelector(".ui-widget-content.ui-picklist-list.ui-picklist-target.ui-sortable")
                 targetUl.innerHTML = ''
                 for (let e of Object.entries(picklistData)) {
                     targetUl.appendChild(li(e[0], e[1]))

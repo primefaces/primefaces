@@ -43,12 +43,12 @@
 
                 <p:dataTable id="dt-products" widgetVar="dtProducts" var="product" value="#{crudView.products}"
                     reflow="true" styleClass="products-table" selectionMode="multiple" selection="#{crudView.selectedProducts}"
-                    rowKey="#{product.id}" paginator="true" rows="10" selectionRowMode="add" paginatorPosition="bottom">
+                    rowKey="#{product.code}" paginator="true" rows="10" selectionRowMode="add" paginatorPosition="bottom">
                     <f:facet name="header">
                         <div class="products-table-header">
                             <span style="font-weight: bold">PRODUCTS</span>
                             <span class="filter-container ui-input-icon-left"> <i class="pi pi-search"></i>
-                                <p:inputText id="globalFilter" onkeyup="PF('dtProducts').filter()" placeholder="Search" />
+                                <p:inputText id="globalFilter" onkeyup="PrimeFaces.debounce(() => PF('dtProducts').filter())" placeholder="Search" />
                             </span>
                         </div>
                     </f:facet>

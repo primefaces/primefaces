@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,7 @@ package org.primefaces.component.fileupload;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.StyleClassBuilder;
@@ -76,7 +77,7 @@ public class FileUploadRenderer extends CoreRenderer {
             PrimeApplicationContext pfContext = PrimeApplicationContext.getCurrentInstance(context);
 
             wb.init("FileUpload", fileUpload)
-                    .attr("dnd", fileUpload.isDragDropSupport(), true)
+                    .attr("dnd", fileUpload.isDragDrop(), true)
                     .attr("previewWidth", fileUpload.getPreviewWidth(), 80)
                     .attr("sequentialUploads", fileUpload.isSequential(), false)
                     .attr("maxChunkSize", fileUpload.getMaxChunkSize(), 0)
@@ -137,6 +138,19 @@ public class FileUploadRenderer extends CoreRenderer {
             writer.writeAttribute("style", style, "style");
         }
 
+
+        writer.startElement("div", null);
+        writer.writeAttribute("class", FileUpload.DRAG_OVERLAY_CLASS, null);
+
+        writer.startElement("div", null);
+        writer.writeAttribute("class", FileUpload.DRAG_OVERLAY_CONTENT_CLASS, null);
+        writer.startElement("i", null);
+        writer.writeAttribute("class", "pi pi-upload", null);
+        writer.endElement("i");
+        writer.endElement("div");
+
+        writer.endElement("div");
+
         //buttonbar
         writer.startElement("div", fileUpload);
         writer.writeAttribute("class", FileUpload.BUTTON_BAR_CLASS, null);
@@ -164,8 +178,21 @@ public class FileUploadRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", FileUpload.CONTENT_CLASS, null);
 
+        UIComponent emptyFacet = fileUpload.getFacet("empty");
+        if (FacetUtils.shouldRenderFacet(emptyFacet)) {
+            writer.startElement("div", null);
+            writer.writeAttribute("class", FileUpload.EMPTY_CLASS, null);
+
+            emptyFacet.encodeAll(context);
+
+            writer.endElement("div");
+        }
+
         writer.startElement("div", null);
         writer.writeAttribute("class", FileUpload.FILES_CLASS, null);
+        if (FacetUtils.shouldRenderFacet(emptyFacet)) {
+            writer.writeAttribute("style", "display: none", null);
+        }
         writer.startElement("div", null);
         writer.endElement("div");
         writer.endElement("div");

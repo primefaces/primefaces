@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -60,6 +60,7 @@ public class ResourceUtils {
     private static final Pattern RESOURCE_PATTERN = Pattern.compile("^#\\{resource\\['(.+)']}$");
 
     private ResourceUtils() {
+        // prevent instantiation
     }
 
     public static String getResourceURL(FacesContext context, String value) {
@@ -233,27 +234,6 @@ public class ResourceUtils {
         return resource.getRequestPath();
     }
 
-    public static void addComponentResource(FacesContext context, String name, String library, String target) {
-
-        Application application = context.getApplication();
-
-        UIComponent componentResource = application.createComponent(UIOutput.COMPONENT_TYPE);
-        componentResource.setRendererType(application.getResourceHandler().getRendererTypeForResourceName(name));
-        componentResource.getAttributes().put("name", name);
-        componentResource.getAttributes().put("library", library);
-        componentResource.getAttributes().put("target", target);
-
-        context.getViewRoot().addComponentResource(context, componentResource, target);
-    }
-
-    public static void addComponentResource(FacesContext context, String name, String library) {
-        addComponentResource(context, name, library, "head");
-    }
-
-    public static void addComponentResource(FacesContext context, String name) {
-        addComponentResource(context, name, Constants.LIBRARY, "head");
-    }
-
     public static boolean isScript(UIComponent component) {
         return RENDERER_SCRIPT.equals(component.getRendererType());
     }
@@ -334,5 +314,109 @@ public class ResourceUtils {
         }
 
         return !isResourceNotFound(resource) ? resource : null;
+    }
+
+    /**
+     * Adds a JavaScript resource to the view.
+     *
+     * @param context The FacesContext
+     * @param libraryName The library name containing the resource
+     * @param resourceName The name of the JavaScript resource
+     */
+    public static void addJavascriptResource(FacesContext context, String libraryName, String resourceName) {
+        addResource(context, RENDERER_SCRIPT, libraryName, resourceName);
+    }
+    /**
+     * Adds a JavaScript resource from the default PrimeFaces library to the view.
+     *
+     * @param context The FacesContext
+     * @param resourceName The name of the JavaScript resource
+     */
+    public static void addJavascriptResource(FacesContext context, String resourceName) {
+        addJavascriptResource(context, Constants.LIBRARY, resourceName);
+    }
+
+    /**
+     * Adds a CSS resource to the view.
+     *
+     * @param context The FacesContext
+     * @param libraryName The library name containing the resource
+     * @param resourceName The name of the CSS resource
+     */
+    public static void addStyleSheetResource(FacesContext context, String libraryName, String resourceName) {
+        addResource(context, RENDERER_STYLESHEET, libraryName, resourceName);
+    }
+
+    /**
+     * Adds a CSS resource from the default PrimeFaces library to the view.
+     *
+     * @param context The FacesContext
+     * @param resourceName The name of the CSS resource
+     */
+    public static void addStyleSheetResource(FacesContext context, String resourceName) {
+        addStyleSheetResource(context, Constants.LIBRARY, resourceName);
+    }
+
+    /**
+     * Adds a resource to the view if it hasn't been rendered yet.
+     *
+     * @param context The FacesContext
+     * @param type The renderer type (CSS or JS)
+     * @param libraryName The library name containing the resource
+     * @param resourceName The name of the resource
+     */
+    public static void addResource(FacesContext context, String type, String libraryName, String resourceName) {
+        boolean isRendered = context.getApplication().getResourceHandler().isResourceRendered(context, resourceName, libraryName);
+        if (!isRendered) {
+            addResourceToHead(context, type, libraryName, resourceName);
+        }
+    }
+
+    /**
+     * Adds a resource component to the specified target, avoiding duplicates based on ID.
+     *
+     * @param context The FacesContext
+     * @param type The renderer type
+     * @param libraryName The library name
+     * @param resourceName The resource name
+     * @param target The target location ("head" or "body")
+     * @return The added or existing UIComponent
+     */
+    public static UIComponent addScriptResourceToTarget(FacesContext context, String type, String libraryName, String resourceName, String target) {
+        UIOutput outputResource = createResource(type);
+
+        if (libraryName != null) {
+            outputResource.getAttributes().put("library", libraryName);
+        }
+
+        outputResource.getAttributes().put("name", resourceName);
+        context.getViewRoot().addComponentResource(context, outputResource, target);
+        return outputResource;
+    }
+
+    /**
+     * Creates a new UIOutput component with the specified renderer type.
+     *
+     * @param type The renderer type
+     * @return New UIOutput component
+     */
+    public static UIOutput createResource(String type) {
+        UIOutput outputScript = new UIOutput();
+        outputScript.setRendererType(type);
+        return outputScript;
+    }
+
+    /**
+     * Adds a resource to the head section.
+     */
+    public static void addResourceToHead(FacesContext context, String type, String libraryName, String resourceName) {
+        addScriptResourceToTarget(context, type, libraryName, resourceName, "head");
+    }
+
+    /**
+     * Adds a resource to the body section.
+     */
+    public static void addResourceToBody(FacesContext context, String type, String libraryName, String resourceName) {
+        addScriptResourceToTarget(context, type, libraryName, resourceName, "body");
     }
 }

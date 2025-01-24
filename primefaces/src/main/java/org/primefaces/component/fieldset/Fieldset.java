@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -47,10 +47,10 @@ public class Fieldset extends FieldsetBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Fieldset";
 
-    public static final String FIELDSET_CLASS = "ui-fieldset ui-widget ui-widget-content ui-corner-all ui-hidden-container";
+    public static final String FIELDSET_CLASS = "ui-fieldset ui-widget ui-widget-content ui-hidden-container";
     public static final String TOGGLEABLE_FIELDSET_CLASS = FIELDSET_CLASS + " ui-fieldset-toggleable";
     public static final String CONTENT_CLASS = "ui-fieldset-content";
-    public static final String LEGEND_CLASS = "ui-fieldset-legend ui-corner-all ui-state-default";
+    public static final String LEGEND_CLASS = "ui-fieldset-legend ui-state-default";
     public static final String TOGGLER_MINUS_CLASS = "ui-fieldset-toggler ui-icon ui-icon-minusthick";
     public static final String TOGGLER_PLUS_CLASS = "ui-fieldset-toggler ui-icon ui-icon-plusthick";
 

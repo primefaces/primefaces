@@ -7,18 +7,3 @@
     display: block;
     margin-top: 0px;
 }
-
-/* Modern override for all browsers and screenreaders */
-.ui-helper-hidden-accessible {
-    border: unset;
-    clip: unset;
-    height: unset;
-    margin: unset;
-    overflow: unset;
-    padding: unset;
-    width: unset;
-    position: absolute !important;
-    pointer-events: none !important;
-    opacity: 0 !important;
-    white-space: nowrap !important;
-}

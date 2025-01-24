@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -63,7 +63,7 @@ public interface Widget {
         Pattern pattern = (Pattern) context.getAttributes().get(ATTR_WIDGET_VAR_PATTERN);
         if (pattern == null) {
             // Create a pattern to replace naming container separator with '_'
-            pattern = Pattern.compile("" + UINamingContainer.getSeparatorChar(context));
+            pattern = Pattern.compile("-|" + UINamingContainer.getSeparatorChar(context));
             context.getAttributes().put(ATTR_WIDGET_VAR_PATTERN, pattern);
         }
 

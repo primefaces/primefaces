@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,11 +24,12 @@
 package org.primefaces.component.selectoneradio;
 
 import org.primefaces.component.api.FlexAware;
+import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.Widget;
 
 import javax.faces.component.html.HtmlSelectOneRadio;
 
-public abstract class SelectOneRadioBase extends HtmlSelectOneRadio implements Widget, FlexAware {
+public abstract class SelectOneRadioBase extends HtmlSelectOneRadio implements Widget, FlexAware, InputHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -77,11 +78,11 @@ public abstract class SelectOneRadioBase extends HtmlSelectOneRadio implements W
     }
 
     @Override
-    public boolean isFlex() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.flex, false);
+    public Boolean getFlex() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.flex, null);
     }
 
-    public void setFlex(boolean flex) {
+    public void setFlex(Boolean flex) {
         getStateHelper().put(PropertyKeys.flex, flex);
     }
 

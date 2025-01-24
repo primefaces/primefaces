@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -59,7 +59,7 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
     private ValueExpression store;
 
     public FileDownloadActionListener() {
-        ResourceUtils.addComponentResource(FacesContext.getCurrentInstance(), "filedownload/filedownload.js");
+        ResourceUtils.addJavascriptResource(FacesContext.getCurrentInstance(), "filedownload/filedownload.js");
     }
 
     public FileDownloadActionListener(ValueExpression value, ValueExpression contentDisposition, ValueExpression monitorKey, ValueExpression store) {

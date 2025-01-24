@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -119,8 +119,8 @@ public class DataTable extends DataTableBase {
     public static final String ROW_CLASS = "ui-widget-content";
     public static final String SELECTABLE_ROW_CLASS = "ui-datatable-selectable";
     public static final String EMPTY_MESSAGE_ROW_CLASS = "ui-widget-content ui-datatable-empty-message";
-    public static final String HEADER_CLASS = "ui-datatable-header ui-widget-header ui-corner-top";
-    public static final String FOOTER_CLASS = "ui-datatable-footer ui-widget-header ui-corner-bottom";
+    public static final String HEADER_CLASS = "ui-datatable-header ui-widget-header";
+    public static final String FOOTER_CLASS = "ui-datatable-footer ui-widget-header";
     public static final String SORTABLE_COLUMN_CLASS = "ui-sortable-column";
     public static final String SORTABLE_COLUMN_ICON_CLASS = "ui-sortable-column-icon ui-icon ui-icon-carat-2-n-s";
     public static final String SORTABLE_COLUMN_ASCENDING_ICON_CLASS = "ui-sortable-column-icon ui-icon ui-icon ui-icon-carat-2-n-s ui-icon-triangle-1-n";
@@ -131,8 +131,8 @@ public class DataTable extends DataTableBase {
     public static final String HIDDEN_COLUMN_CLASS = "ui-helper-hidden";
     public static final String FILTER_COLUMN_CLASS = "ui-filter-column";
     public static final String COLUMN_TITLE_CLASS = "ui-column-title";
-    public static final String COLUMN_FILTER_CLASS = "ui-column-filter ui-widget ui-state-default ui-corner-left";
-    public static final String COLUMN_INPUT_FILTER_CLASS = "ui-column-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
+    public static final String COLUMN_FILTER_CLASS = "ui-column-filter ui-widget ui-state-default";
+    public static final String COLUMN_INPUT_FILTER_CLASS = "ui-column-filter ui-inputfield ui-inputtext ui-widget ui-state-default";
     public static final String COLUMN_CUSTOM_FILTER_CLASS = "ui-column-customfilter";
     public static final String RESIZABLE_COLUMN_CLASS = "ui-resizable-column";
     public static final String DRAGGABLE_COLUMN_CLASS = "ui-draggable-column";

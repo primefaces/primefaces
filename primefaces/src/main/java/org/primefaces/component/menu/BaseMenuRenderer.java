@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -59,6 +59,9 @@ public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
             encodeMarkup(context, menu);
             encodeScript(context, menu);
         }
+        else {
+            encodePlaceholder(context, menu);
+        }
     }
 
     @Override
@@ -71,11 +74,17 @@ public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
         return true;
     }
 
-    protected abstract void encodePlaceholder(FacesContext context, AbstractMenu abstractMenu) throws IOException;
+    protected void encodePlaceholder(FacesContext context, AbstractMenu menu) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("div", menu);
+        writer.writeAttribute("id", menu.getClientId(context), "id");
+        writer.writeAttribute("style", "display:none", null);
+        writer.endElement("div");
+    }
 
-    protected abstract void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException;
+    protected abstract void encodeMarkup(FacesContext context, AbstractMenu menu) throws IOException;
 
-    protected abstract void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException;
+    protected abstract void encodeScript(FacesContext context, AbstractMenu menu) throws IOException;
 
     protected String getLinkStyleClass(MenuItem menuItem) {
         String styleClass = menuItem.getStyleClass();

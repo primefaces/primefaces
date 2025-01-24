@@ -37,10 +37,12 @@ Look into [migration guide](https://primefaces.github.io/primefaces/15_0_0/#/../
     * Added `expandIcon`/`collapseIcon` attributes for RowToggler
     * Added `rowsPerPage` in the PageEvent AJAX event
     * Added `filterNormalize` attribute to normalize the filter values (remove accents)
+    * Added `toggleFilter()` JS Widget function to show/hide filter components (see showcase example for usage).
 
 * DatePicker
     * Added `defaultHour`, `defaultMinute`, `defaultSecond`, `defaultMillisec` attributes to match legacy `Calendar` component
-    * Added ability to pick weeks by view="week"
+    * Added ability to pick weeks by `view="week"`
+    * Added `showLongMonthNames` attribute to display long month names instead of short names in month picker and month navigator
 
 * FeedReader
     * Added `podcast="true"` property if [Apple Itunes Podcast](https://help.apple.com/itc/podcasts_connect/#/itcb54353390) parsing and specific tags 
@@ -51,9 +53,11 @@ Look into [migration guide](https://primefaces.github.io/primefaces/15_0_0/#/../
         * `primefaces.FileValidator.FILENAME_INVALID_LINUX=Invalid Linux filename: {0}`
         * `primefaces.FileValidator.FILENAME_INVALID_WINDOWS=Invalid Windows filename: {0}`
         * `primefaces.FileValidator.FILENAME_EMPTY=Filename cannot be empty or null`
+    * Added `empty` facet to add placeholder content
 
 * InputNumber
     * Added `modifyValueOnUpDownArrow` which allows the user to increment or decrement the element value with the up and down arrow keys. Default is true.
+    * Added `decimalPlacesRawValue` Specifies the number of decimal places to retain for the raw value and `decimalPlaces` will be used for display values. If this option is left as `null` (the default), the `decimalPlaces` value will be used. Note: Setting this to fewer decimal places than those displayed may cause user confusion.
 
 * Paginator 
     * Added `rowsPerPage` in the PageEvent AJAX event

@@ -74,7 +74,7 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
         var panelStyle = this.cfg.inline ? 'ui-password-panel-inline' : 'ui-password-panel-overlay';
 
         //create panel element
-        var panelMarkup = '<div id="' + this.id + '_panel" class="ui-password-panel ui-widget ui-state-highlight ui-corner-all ui-helper-hidden ' + panelStyle + '">';
+        var panelMarkup = '<div id="' + this.id + '_panel" class="ui-password-panel ui-widget ui-state-highlight ui-helper-hidden ' + panelStyle + '">';
         panelMarkup += '<div class="ui-password-meter" style="background-position:0pt 0pt">&nbsp;</div>';
         panelMarkup += '<div class="ui-password-info">' + PrimeFaces.escapeHTML(this.cfg.promptLabel) + '</div>';
         panelMarkup += '</div>';
@@ -237,10 +237,7 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
             nonWords: /\W/.test(password)
         }
 
-        variationCount = 0;
-        for (var check in variations) {
-            variationCount += (variations[check] == true) ? 1 : 0;
-        }
+        var variationCount = Object.values(variations).filter(Boolean).length;
         score += variationCount * 28;
 
         return parseInt(score);

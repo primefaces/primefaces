@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -42,7 +42,7 @@ public class OverlayPanel extends OverlayPanelBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.OverlayPanel";
 
-    public static final String STYLE_CLASS = "ui-overlaypanel ui-widget ui-widget-content ui-corner-all ui-shadow ui-hidden-container";
+    public static final String STYLE_CLASS = "ui-overlaypanel ui-widget ui-widget-content ui-shadow ui-hidden-container";
     public static final String CONTENT_CLASS = "ui-overlaypanel-content";
 
     private static final String DEFAULT_EVENT = "show";

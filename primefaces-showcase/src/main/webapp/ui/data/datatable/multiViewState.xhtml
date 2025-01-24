@@ -48,7 +48,7 @@
                     <f:facet name="header">
                         <p:outputPanel>
                             <h:outputText value="Search all fields:"/>
-                            <p:inputText id="globalFilter" onkeyup="PF('customersTable').filter()" style="width:150px"
+                            <p:inputText id="globalFilter" onkeyup="PrimeFaces.debounce(() => PF('customersTable').filter())" style="width:150px"
                                          placeholder="Enter keyword"/>
                         </p:outputPanel>
                     </f:facet>

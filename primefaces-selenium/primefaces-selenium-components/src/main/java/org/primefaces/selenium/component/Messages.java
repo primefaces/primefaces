@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -56,7 +56,7 @@ public abstract class Messages extends AbstractComponent {
         List<WebElement> messagesSeverities = findElements(By.tagName("div"));
         for (WebElement messageSeverity : messagesSeverities) {
 
-            Severity severity = Severity.toSeverity(messageSeverity.getAttribute("class"));
+            Severity severity = Severity.toSeverity(messageSeverity.getDomAttribute("class"));
 
             for (WebElement message : messageSeverity.findElements(By.cssSelector("li"))) {
                 Msg msg = new Msg();

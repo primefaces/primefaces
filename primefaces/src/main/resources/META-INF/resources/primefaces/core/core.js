@@ -103,6 +103,53 @@
         },
 
         /**
+         * Resolves the given target as $.
+         *
+         * @param {string | HTMLElement | JQuery | PrimeFaces.widget.BaseWidget} target Either id, element, jQuery object or PF widget.
+         * @return {JQuery} The resolved $.
+         */
+        resolveAs$: function(target) {
+            if (target instanceof PrimeFaces.widget.BaseWidget) {
+                return target.getJQ();
+            }
+            else if (target instanceof $) {
+                return target;
+            }
+            else if (target instanceof HTMLElement) {
+                return $(target)
+            }
+            else if (typeof target === 'string') {
+                return $(document.getElementById(target));
+            }
+
+            throw new Error("Unsupported type: " + (typeof target));
+        },
+
+        /**
+         * Resolves the given target as id.
+         *
+         * @param {string | HTMLElement | JQuery | PrimeFaces.widget.BaseWidget} target Either id, element, jQuery object or PF widget.
+         * @return {string} The id of the target.
+         */
+        resolveAsId: function(target) {
+            if (target instanceof PrimeFaces.widget.BaseWidget) {
+                var widgetJq = target.getJQ();
+                return widgetJq.data(PrimeFaces.CLIENT_ID_DATA)||widgetJq.attr('id');
+            }
+            else if (target instanceof $) {
+                return target.data(PrimeFaces.CLIENT_ID_DATA)||target.attr('id');
+            }
+            else if (target instanceof HTMLElement) {
+                return target.id;
+            }
+            else if (typeof target === 'string') {
+                return target;
+            }
+
+            throw new Error("Unsupported type: " + (typeof target));
+        },
+
+        /**
          * Gets the form by id or the closest form if the id is not a form itself.
          * In AJAX we also have a fallback for the first form in DOM, this should not be used here.
          *
@@ -268,10 +315,18 @@
                 return;
             }
 
-            if (value.length) {
+            // normal inputs just check for a value
+            var isFilled = value.length > 0;
+
+            // #11974: Autocomplete multiple mode must be handled differently
+            if(parent.hasClass('ui-autocomplete-multiple')) {
+                isFilled = parent.find('li.ui-autocomplete-token').length > 0;
+            }
+
+            if (isFilled) {
                 input.addClass('ui-state-filled');
 
-                if(parent.is("span:not('.ui-float-label')")) {
+                if(parent.is("div, span:not('.ui-float-label')")) {
                     parent.addClass('ui-inputwrapper-filled');
                 }
             } else {
@@ -289,8 +344,14 @@
          * @return {typeof PrimeFaces} this for chaining
          */
         skinInput : function(input) {
-            var parent = input.parent(),
-            updateFilledStateOnBlur = function () {
+            let parent = input.parent();
+
+            // #11974: Autocomplete multiple mode must be handled differently
+            if(parent.hasClass('ui-autocomplete-input-token')) {
+                parent = parent.parent().parent();
+            }
+
+            const updateFilledStateOnBlur = function () {
                 if(parent.hasClass('ui-inputwrapper-focus')) {
                     parent.removeClass('ui-inputwrapper-focus');
                 }
@@ -306,7 +367,7 @@
             }).on("focus", function() {
                 $(this).addClass('ui-state-focus');
 
-                if(parent.is("span:not('.ui-float-label')")) {
+                if(parent.is("div, span:not('.ui-float-label')")) {
                     parent.addClass('ui-inputwrapper-focus');
                 }
             }).on("blur animationstart", function() {
@@ -935,20 +996,28 @@
         },
 
         /**
-         * Scrolls to a component with given client id
-         * @param {string} id The ID of an element to scroll to.
-         * @param {string | number | undefined} duration string or number determining how long the animation will run. Default to 400
+         * Scrolls to a component with given client id or jQuery element. The scroll animation can be customized with a duration
+         * and an optional offset from the top of the target element.
+         * @param {string | JQuery} scrollTarget The ID of an element or jQuery element to scroll to
+         * @param {string | number} [duration=400] Duration of the scroll animation in milliseconds or a string like 'slow', 'fast'
+         * @param {number} [topOffset=0] Additional offset in pixels from the top of the target element
+         * @example
+         * // Scroll to element with ID 'myElement' over 1 second
+         * PrimeFaces.scrollTo('myElement', 1000);
+         * 
+         * // Scroll to jQuery element with 50px offset from top
+         * PrimeFaces.scrollTo($('#myElement'), 'slow', 50);
          */
-        scrollTo: function(id, duration) {
-            var offset = $(PrimeFaces.escapeClientId(id)).offset();
+        scrollTo: function(scrollTarget, duration = 400, topOffset = 0) {
+            var element = typeof scrollTarget === 'string' ? $(PrimeFaces.escapeClientId(scrollTarget)) : scrollTarget;
+            var offset = element.offset();
             var scrollBehavior = 'scroll-behavior';
             var target = $('html,body');
             var sbValue = target.css(scrollBehavior);
-            var animationDuration = duration || 400;
             target.css(scrollBehavior, 'auto');
             target.animate(
-                    { scrollTop: offset.top, scrollLeft: offset.left },
-                    animationDuration,
+                    { scrollTop: offset.top - topOffset, scrollLeft: offset.left },
+                    duration,
                     'easeInCirc',
                     function(){ target.css(scrollBehavior, sbValue) }
             );
@@ -1390,6 +1459,29 @@
         },
 
         /**
+         * Creates a debounced version of the provided function that delays invoking the function until after the specified delay.
+         * The debounced function will only execute once the delay has elapsed and no additional function calls were made.
+         * Each new function call resets the delay timer.
+         * 
+         * @param {() => void} fn The function to debounce
+         * @param {number} [delay=400] The number of milliseconds to delay. Defaults to 400ms. Negative values are coerced to 400ms.
+         */
+        debounce: function(fn, delay = 400) {
+            if (delay < 0) {
+                delay = 400;
+            }
+
+            if (PrimeFaces.debounceTimer) {
+                clearTimeout(PrimeFaces.debounceTimer);
+            }
+
+            PrimeFaces.debounceTimer = PrimeFaces.queueTask(function() {
+                fn();
+                PrimeFaces.debounceTimer = null;
+            }, delay);
+        },
+
+        /**
          * Logs the current PrimeFaces and jQuery version to console.
          */
         version: function() {
@@ -1559,6 +1651,24 @@
      * @prop {boolean} considerEmptyStringNull `true` if the empty string and `null` should be treated the same way, or
      * `false` otherwise.
      * @readonly considerEmptyStringNull
+     *
+     * @prop {string} contextPath The current servlet-context path.
+     * @readonly contextPath
+     *
+     * @prop {boolean} cookiesSecure If cookies are secured.
+     * @readonly cookiesSecure
+     *
+     * @prop {string} cookiesSameSite The cookies same site.
+     * @readonly cookiesSameSite
+     *
+     * @prop {boolean} earlyPostParamEvaluation If AJAX post params are evaluated early.
+     * @readonly earlyPostParamEvaluation
+     *
+     * @prop {boolean} partialSubmit If AJAX partial-submit is enabled.
+     * @readonly partialSubmit
+     *
+     * @prop {string} projectStage The Faces ProjectStage.
+     * @readonly projectStage
      */
     PrimeFaces.settings = {};
     PrimeFaces.util = {};

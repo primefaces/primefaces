@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,16 +27,6 @@ public class QuickTimePlayer implements MediaPlayer {
 
     private static final String[] SUPPORTED_TYPES = new String[]{"aif", "aiff", "aac", "au", "bmp", "gsm", "mov", "mid", "midi", "mpg", "mpeg",
         "mp4", "m4a", "psd", "qt", "qtif", "qif", "qti", "snd", "tif", "tiff", "wav", "3g2", "3pg"};
-
-    @Override
-    public String getClassId() {
-        return "clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B";
-    }
-
-    @Override
-    public String getCodebase() {
-        return "http://www.apple.com/qtactivex/qtplugin.cab";
-    }
 
     @Override
     public String getSourceParam() {

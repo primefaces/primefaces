@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -67,9 +67,9 @@ public class PickList extends PickListBase {
     public static final String BUTTONS_CELL_CLASS = "ui-picklist-buttons-cell";
     public static final String SOURCE_CONTROLS = "ui-picklist-source-controls ui-picklist-buttons";
     public static final String TARGET_CONTROLS = "ui-picklist-target-controls ui-picklist-buttons";
-    public static final String ITEM_CLASS = "ui-picklist-item ui-corner-all";
+    public static final String ITEM_CLASS = "ui-picklist-item";
     public static final String ITEM_DISABLED_CLASS = "ui-state-disabled";
-    public static final String CAPTION_CLASS = "ui-picklist-caption ui-widget-header ui-corner-tl ui-corner-tr";
+    public static final String CAPTION_CLASS = "ui-picklist-caption ui-widget-header";
     public static final String ADD_BUTTON_CLASS = "ui-picklist-button-add";
     public static final String ADD_ALL_BUTTON_CLASS = "ui-picklist-button-add-all";
     public static final String REMOVE_BUTTON_CLASS = "ui-picklist-button-remove";
@@ -90,7 +90,7 @@ public class PickList extends PickListBase {
     public static final String MOVE_DOWN_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrow-1-s";
     public static final String MOVE_TOP_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrowstop-1-n";
     public static final String MOVE_BOTTOM_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrowstop-1-s";
-    public static final String FILTER_CLASS = "ui-picklist-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
+    public static final String FILTER_CLASS = "ui-picklist-filter ui-inputfield ui-inputtext ui-widget ui-state-default";
     public static final String FILTER_CONTAINER = "ui-picklist-filter-container";
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()

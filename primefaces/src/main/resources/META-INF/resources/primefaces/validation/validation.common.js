@@ -618,21 +618,40 @@ if (window.PrimeFaces) {
         elementGroups: [],
 
         /**
+         * Highlights the passed widget as invalid.
+         *
+         * @param {string | HTMLElement | JQuery | PrimeFaces.widget.BaseWidget} target The target widget / element.
+         */
+        highlight: function(target) {
+            var element = PrimeFaces.resolveAs$(target);
+            var highlighterType = element.data('p-hl') || 'default';
+            var highlighter = PrimeFaces.validator.Highlighter.types[highlighterType];
+
+            highlighter.highlight(element);
+            element.attr('aria-invalid', true);
+        },
+
+        /**
+         * Un-Highlights the passed widget as invalid.
+         *
+         * @param {string | HTMLElement | JQuery | PrimeFaces.widget.BaseWidget} target The target widget / element.
+         */
+        unhighlight: function(target) {
+            var element = PrimeFaces.resolveAs$(target);
+            var highlighterType = element.data('p-hl') || 'default';
+            var highlighter = PrimeFaces.validator.Highlighter.types[highlighterType];
+
+            highlighter.unhighlight(element);
+            element.attr('aria-invalid', false);
+        },
+
+        /**
          * Adds a faces message to the given element.
-         * @param {string | HTMLElement | JQuery} target Element to which to add the message.
+         * @param {string | HTMLElement | JQuery | PrimeFaces.widget.BaseWidget} target Element or widget to which to add the message.
          * @param {PrimeFaces.FacesMessage} msg Message to add to the given message.
          */
         addMessage: function(target, msg) {
-            var clientId;
-            if (target instanceof $) {
-                clientId = target.data(PrimeFaces.CLIENT_ID_DATA)||target.attr('id');
-            }
-            else if (target instanceof HTMLElement) {
-                clientId = target.id;
-            }
-            else {
-                clientId = target;
-            }
+            var clientId = PrimeFaces.resolveAsId(target);
 
             if(!this.messages[clientId]) {
                 this.messages[clientId] = [];

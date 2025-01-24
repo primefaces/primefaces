@@ -1067,7 +1067,7 @@ if (!PrimeFaces.utils) {
 
             // stop all pollers and idle monitors
             for (var item in PrimeFaces.widgets) {
-                widget = PrimeFaces.widgets[item];
+                var widget = PrimeFaces.widgets[item];
                 if (PrimeFaces.widget.Poll && widget instanceof PrimeFaces.widget.Poll) {
                     PrimeFaces.warn("Stopping Poll");
                     widget.stop();
@@ -1182,6 +1182,28 @@ if (!PrimeFaces.utils) {
                 jq.attr('class', newClasses).data('p-icon', addIcon);
             }
         },
+
+        /**
+         * Checks if an element is currently visible within the browser viewport, with an optional offset.
+         * @param {string | HTMLElement | JQuery} element The element to check visibility for. Can be either a DOM element or jQuery object.
+         * @param {number} [offset=0] Optional offset in pixels to expand/contract the viewport boundaries.
+         * @return {boolean} True if the element is visible within the viewport, false otherwise.
+         */
+        isVisibleInViewport: function(element, offset = 0) {
+            if (!element) {
+                return false;
+            }
+            
+            var $element = element instanceof jQuery ? element : $(element);
+            var elementTop = $element.offset().top;
+            var elementBottom = elementTop + $element.outerHeight();
+        
+            var $window = $(window);
+            var viewportTop = $window.scrollTop() - offset;
+            var viewportBottom = viewportTop + $window.height() + offset;
+        
+            return elementBottom > viewportTop && elementTop < viewportBottom;
+        }
     };
 
     // set animation state globally

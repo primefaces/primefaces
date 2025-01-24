@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -82,6 +82,7 @@ public class BarcodeRenderer extends CoreRenderer {
                     .append("&hrp=").append(barcode.getHrp())
                     .append("&").append(Constants.DYNAMIC_CONTENT_CACHE_PARAM).append("=").append(barcode.isCache())
                     .append("&ori=").append(barcode.getOrientation())
+                    .append("&mag=").append(barcode.getMagnification())
                     .toString();
         }
         catch (UnsupportedEncodingException ex) {

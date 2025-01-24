@@ -55,10 +55,10 @@
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{product.inventoryStatus}"/></f:facet>
                             <f:facet name="input">
-                                <h:selectOneMenu value="#{product.inventoryStatus}" style="width:100%">
+                                <p:selectOneMenu value="#{product.inventoryStatus}" style="width:100%">
                                     <f:selectItems value="#{dtEditView.inventoryStatusList}" var="status"
                                                    itemLabel="#{status.text}" itemValue="#{status}"/>
-                                </h:selectOneMenu>
+                                </p:selectOneMenu>
                             </f:facet>
                         </p:cellEditor>
                     </p:column>
@@ -117,10 +117,10 @@
                                 <h:outputText value="#{product.inventoryStatus}"/>
                             </f:facet>
                             <f:facet name="input">
-                                <h:selectOneMenu value="#{product.inventoryStatus}" style="width:100%">
+                                <p:selectOneMenu value="#{product.inventoryStatus}" style="width:100%">
                                     <f:selectItems value="#{dtEditView.inventoryStatusList}" var="status"
                                                    itemLabel="#{status.text}" itemValue="#{status}"/>
-                                </h:selectOneMenu>
+                                </p:selectOneMenu>
                             </f:facet>
                         </p:cellEditor>
                     </p:column>
@@ -175,10 +175,10 @@
                                 <h:outputText value="#{product.inventoryStatus}"/>
                             </f:facet>
                             <f:facet name="input">
-                                <h:selectOneMenu value="#{product.inventoryStatus}" style="width:100%">
+                                <p:selectOneMenu value="#{product.inventoryStatus}" style="width:100%">
                                     <f:selectItems value="#{dtEditView.inventoryStatusList}" var="status"
                                                    itemLabel="#{status.text}" itemValue="#{status}"/>
-                                </h:selectOneMenu>
+                                </p:selectOneMenu>
                             </f:facet>
                         </p:cellEditor>
                     </p:column>

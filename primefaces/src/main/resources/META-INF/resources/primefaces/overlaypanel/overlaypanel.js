@@ -76,10 +76,10 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.cfg.collision = this.cfg.collision || 'flip';
         this.cfg.showEvent = this.cfg.showEvent || 'click.ui-overlaypanel';
         this.cfg.hideEvent = this.cfg.hideEvent || 'click.ui-overlaypanel';
-        this.cfg.dismissable = (this.cfg.dismissable === false) ? false : true;
+        this.cfg.dismissable = this.cfg.dismissable !== false;
         this.cfg.showDelay = PrimeFaces.utils.defaultNumeric(this.cfg.showDelay, 0);
-        this.cfg.autoHide = (this.cfg.autoHide === undefined) ? true : this.cfg.autoHide;
-        this.cfg.cache = this.cfg.cache === false ? false : true;
+        this.cfg.autoHide = this.cfg.autoHide !== false;
+        this.cfg.cache = this.cfg.cache !== false;
         this.allowHide = true;
 
         if (this.cfg.showCloseIcon) {
@@ -380,12 +380,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
      */
     getTarget: function(target) {
         if (target) {
-            if (typeof target === 'string') {
-                return $(document.getElementById(target));
-            }
-            else if (target instanceof $) {
-                return target;
-            }
+            return PrimeFaces.resolveAs$(target);
         }
         else if (this.target) {
             return this.target;

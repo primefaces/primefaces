@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -45,7 +45,7 @@ public class ColorPicker extends ColorPickerBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.ColorPicker";
 
-    public static final String POPUP_STYLE_CLASS = "ui-colorpicker ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
+    public static final String POPUP_STYLE_CLASS = "ui-colorpicker ui-inputfield ui-inputtext ui-widget ui-state-default";
     public static final String INLINE_STYLE_CLASS = "ui-colorpicker ui-widget ui-state-default";
 
     private static final String DEFAULT_EVENT = "change";

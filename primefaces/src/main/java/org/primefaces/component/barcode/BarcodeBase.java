@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,7 +39,8 @@ public abstract class BarcodeBase extends HtmlGraphicImage {
         format,
         orientation,
         qrErrorCorrection,
-        hrp
+        hrp,
+        magnification
     }
 
     public BarcodeBase() {
@@ -97,6 +98,14 @@ public abstract class BarcodeBase extends HtmlGraphicImage {
 
     public void setHrp(String hrp) {
         getStateHelper().put(PropertyKeys.hrp, hrp);
+    }
+
+    public double getMagnification() {
+        return (Double) getStateHelper().eval(PropertyKeys.magnification, 2.0);
+    }
+
+    public void setMagnification(double magnification) {
+        getStateHelper().put(PropertyKeys.magnification, magnification);
     }
 
 }

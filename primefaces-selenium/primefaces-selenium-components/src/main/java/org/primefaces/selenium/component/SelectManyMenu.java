@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -152,12 +152,12 @@ public abstract class SelectManyMenu extends AbstractInputComponent {
         if (widgetConfiguration.has("filter") && widgetConfiguration.getBoolean("filter")) {
             return getSelectlistbox().findElements(By.cssSelector("li.ui-selectlistbox-item")).stream()
                     .filter(listElt -> listElt.isDisplayed())
-                    .map(e -> e.getAttribute("innerHTML"))
+                    .map(e -> e.getDomProperty("innerHTML"))
                     .collect(Collectors.toList());
         }
         else {
             return getInput().findElements(By.tagName("option")).stream()
-                    .map(e -> e.getAttribute("innerHTML"))
+                    .map(e -> e.getDomProperty("innerHTML"))
                     .collect(Collectors.toList());
         }
     }

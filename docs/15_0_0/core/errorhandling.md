@@ -1,9 +1,78 @@
 # Error Handling
 
-PrimeFaces provides a built-in exception handler to take care of exceptions in AJAX and AJAX-ajax
-requests easily.
+In general, a Servlet-Container supports error pages that are defined in the _web.xml_ or _web-fragment.xml_ files, as shown in the following example:
 
-## Configuration
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app
+        xmlns="https://jakarta.ee/xml/ns/jakartaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
+        version="6.0">
+    <!-- global error-page -->
+    <error-page>
+        <exception-type>java.lang.Throwable</exception-type>
+        <location>/error/error.xhtml</location>
+    </error-page>
+   <!-- specific error-page for Faces ViewExpired -->
+    <error-page>
+        <exception-type>jakarta.faces.application.ViewExpiredException</exception-type>
+        <location>/error/viewExpired.xhtml</location>
+    </error-page>
+</web-app>
+```
+
+However, since Faces operates within a sub-lifecycle of Servlets, it is not fully integrated into the standard servlet error handling mechanisms.
+
+## Render Response Exceptions
+To support exception handling in the `RENDER_RESPONSE` phase, it's required to set the
+`jakarta.faces.FACELETS_BUFFER_SIZE` parameter. Otherwise you will probably see a
+ServletException with "Response already committed" message.
+This is a limitation of every ExceptionHandler.
+
+
+## Faces ExceptionHandler implementation
+
+Per default, the Faces implementations provides different ExceptionHandler implementations for different cases.
+On both cases the exceptions are logged.
+
+1) Non-AJAX  
+   The occurred exception in the Faces lifecycle is just re-thrown and therefore the Servlet-Container will forward to the configured error-page from the web/web-fragment.xml.  
+   When the ProjectStage is set to `Development`, the Faces internal error-page will be shown.  
+
+
+2) AJAX
+   The occurred exceptions will be written in the AJAX response via:
+   ```xml
+   <partial-response>
+     <error>
+       <error-name>...</error-name>
+       <error-message>...</error-message>
+     </error>
+   </partial-response>
+   ```
+   With that information the `f:ajax onerror` handler and the `faces.ajax.addOnError` handlers are called.  
+   Depending on the Faces implementation, ProjectStage and if no global listener was added via `faces.ajax.addOnError`, the error is displayed as console.log or JS alert box.
+
+
+### Integration with PrimeFaces
+PrimeFaces handles client-side error management of both `f:ajax` and `p:ajax`.
+The `error` from the response is passed to the `p:ajaxExceptionHandler`. If no specific `p:ajaxExceptionHandler` or global `p:ajaxExceptionHandler` is defined, PrimeFaces attempts to redirect to the configured `error-page` specified in the `web/web-fragment.xml`.
+If neither a `p:ajaxExceptionHandler` nor an `error-page` is found, the error is simply logged to the console.
+
+
+## PrimeFaces ExceptionHandler implementation
+
+PrimeFaces provides another ExceptionHandler implementation with the following advantages and disadvantages:
+
+Advantages:
+- It adds to ability to use exception informations, even in a AJAX request or after the redirect via EL (`pfExceptionHandler`)
+- Only for Mojarra users, MyFaces has the same option: Adds the ability to skip logging of specific exceptions via the `primefaces.EXCEPTION_TYPES_TO_IGNORE_IN_LOGGING` config.
+
+Disadvantages:
+- It redirects (instead of forward) to the error-page in NON-AJAX mode, therefore the error informations are not accessible from the Servlet-Container (e.g. `#{requestScope['jakarta.servlet.error.exception_type']}`)
+
+### Configuration
 
 `ExceptionHandler` and an `ELResolver` configured is required via `faces-config.xml`:
 
@@ -16,33 +85,7 @@ requests easily.
 </factory>
 ```
 
-## Error Pages
-
-ExceptionHandler is integrated with error-page mechanism of Servlet API. At application startup,
-PrimeFaces parses the error pages and uses this information to find the appropriate page to redirect,
- based on the exception type. Here is an example web.xml configuration with a generic page for
-exceptions and a special page for `ViewExpiredException` type.
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<web-app
-        xmlns="https://jakarta.ee/xml/ns/jakartaee"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
-        version="6.0">
-    <!-- Other application configuration -->
-    <error-page>
-        <exception-type>java.lang.Throwable</exception-type>
-        <location>/ui/error/error.jsf</location>
-    </error-page>
-    <error-page>
-        <exception-type>jakarta.faces.application.ViewExpiredException</exception-type>
-        <location>/ui/error/viewExpired.jsf</location>
-    </error-page>
-</web-app>
-```
-
-## Exception Information
+### Exception Information
 
 In the error page, information about the exception is provided via the `pfExceptionHandler` EL keyword.
 Here is the list of exposed properties:
@@ -62,29 +105,7 @@ In error page, exception metadata is accessed using EL;
 <h:outputText value="#{pfExceptionHandler.formattedStackTrace}" escape="false" />
 ```
 
-## AjaxExceptionHandler Component
-
-A specialized exception handler component provides a way to execute callbacks on client side,
-update other components on the same page. This is quite useful in case you don't want to create a
-separate error page. Following example shows the exception in a dialog on the same page.
-
-```xhtml
-<p:ajaxExceptionHandler type="jakarta.faces.application.ViewExpiredException" update="exceptionDialog" onexception="PF('exceptionDialog').show();" />
-<p:dialog id="exceptionDialog" header="Exception: #{pfExceptionHandler.type} occured!" widgetVar="exceptionDialog" height="500px">
-    Message: #{pfExceptionHandler.message} <br/>
-    StackTrace: <h:outputText value="#{pfExceptionHandler.formattedStackTrace}" escape="false" />
-    <p:button onclick="document.location.href = document.location.href;" value="Reload!"/>
-</p:dialog>
-```
-Ideal location for `p:ajaxExceptionHandler` component is the facelets template so that it gets
-included in every page. [Refer to component documentation for the available attributes](/components/ajaxexceptionhandler.md)
-
-## Render Response Exceptions
-To support exception handling in the `RENDER_RESPONSE` phase, it's required to set the
-`jakarta.faces.FACELETS_BUFFER_SIZE` parameter. Otherwise you will probably see a
-ServletException with "Response already committed" message.
-
-## Exception Logging
+### Exception Logging
 Per default all exceptions are logged in all `ProjectStages` -  we just skip logging `ViewExpiredExceptions `in `Production`.
 You can also configure ignores via:
 

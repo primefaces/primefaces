@@ -30,13 +30,13 @@ PrimeFaces.widget.ProgressBar = PrimeFaces.widget.BaseWidget.extend({
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function(cfg) {
+    init: function (cfg) {
         this._super(cfg);
 
         this.jqValue = this.jq.children('.ui-progressbar-value');
-        this.jqLabel = this.jq.children('.ui-progressbar-label');
+        this.jqLabel = this.jqValue.children('.ui-progressbar-label');
         this.value = this.cfg.initialValue;
-        this.cfg.global = (this.cfg.global === false) ? false : true;
+        this.cfg.global = this.cfg.global !== false;
 
         this.enableARIA();
     },
@@ -45,10 +45,10 @@ PrimeFaces.widget.ProgressBar = PrimeFaces.widget.BaseWidget.extend({
      * Sets the value (progress) of this progress bar to a value between zero and a hundred percent.
      * @param {number} value New value for this progress bar, between `0` and `100`.
      */
-    setValue: function(value) {
-        if(value >= 0 && value<=100) {
-            if(value == 0) {
-                this.jqValue.hide().css('width', '0%').removeClass('ui-corner-right');
+    setValue: function (value) {
+        if (value >= 0 && value <= 100) {
+            if (value == 0) {
+                this.jqValue.hide().css('width', '0%');
 
                 this.jqLabel.hide();
             }
@@ -57,7 +57,7 @@ PrimeFaces.widget.ProgressBar = PrimeFaces.widget.BaseWidget.extend({
                     'width': value + '%'
                 }, this.cfg.animationDuration, 'easeInOutCirc');
 
-                if(this.cfg.labelTemplate) {
+                if (this.cfg.labelTemplate) {
                     var formattedLabel = this.cfg.labelTemplate.replace(/{value}/gi, value);
                     this.jqLabel.text(formattedLabel).show();
                 }
@@ -72,31 +72,31 @@ PrimeFaces.widget.ProgressBar = PrimeFaces.widget.BaseWidget.extend({
      * Finds the progress currently shown by this progress bar.
      * @return {number} The current value of this progress bar, between `0` and `100`.
      */
-    getValue: function() {
+    getValue: function () {
         return this.value;
     },
 
     /**
      * Starts the progress bar, if not already started. Does not reset its current value.
      */
-    start: function() {
+    start: function () {
         var $this = this;
 
-        if(this.cfg.ajax) {
+        if (this.cfg.ajax) {
 
-            this.progressPoll = setInterval(function() {
+            this.progressPoll = setInterval(function () {
                 var options = {
                     source: $this.id,
                     process: $this.id,
                     formId: $this.getParentFormId(),
                     global: $this.cfg.global,
                     async: true,
-                    oncomplete: function(xhr, status, args, data) {
+                    oncomplete: function (xhr, status, args, data) {
                         var value = args[$this.id + '_value'];
                         $this.setValue(value);
 
                         //trigger complete listener
-                        if(value === 100) {
+                        if (value === 100) {
                             $this.fireCompleteEvent();
                         }
                     }
@@ -112,7 +112,7 @@ PrimeFaces.widget.ProgressBar = PrimeFaces.widget.BaseWidget.extend({
      * Invokes the behavior for when the progress bar is complete.
      * @private
      */
-    fireCompleteEvent: function() {
+    fireCompleteEvent: function () {
         clearInterval(this.progressPoll);
 
         this.callBehavior('complete');
@@ -121,7 +121,7 @@ PrimeFaces.widget.ProgressBar = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Cancels the progress bar, resetting it back to zero percent.
      */
-    cancel: function() {
+    cancel: function () {
         clearInterval(this.progressPoll);
         this.setValue(0);
     },
@@ -130,11 +130,11 @@ PrimeFaces.widget.ProgressBar = PrimeFaces.widget.BaseWidget.extend({
      * Adds the appropriate aria attributes.
      * @private
      */
-    enableARIA: function() {
+    enableARIA: function () {
         this.jq.attr('role', 'progressbar')
-                .attr('aria-valuemin', 0)
-                .attr('aria-valuenow', this.value)
-                .attr('aria-valuemax', 100);
+            .attr('aria-valuemin', 0)
+            .attr('aria-valuenow', this.value)
+            .attr('aria-valuemax', 100);
     }
 
 });

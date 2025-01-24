@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -49,7 +49,7 @@ public class MultiSelectListbox extends MultiSelectListboxBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.MultiSelectListbox";
     public static final String CONTAINER_CLASS = "ui-multiselectlistbox ui-widget ui-helper-clearfix";
     public static final String LIST_CONTAINER_CLASS = "ui-multiselectlistbox-listcontainer";
-    public static final String LIST_HEADER_CLASS = "ui-multiselectlistbox-header ui-widget-header ui-corner-top";
+    public static final String LIST_HEADER_CLASS = "ui-multiselectlistbox-header ui-widget-header";
     public static final String LIST_CLASS = "ui-multiselectlistbox-list ui-inputfield ui-widget-content";
     public static final String ITEM_CLASS = "ui-multiselectlistbox-item";
 

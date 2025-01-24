@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -140,12 +140,15 @@ public class DataViewRenderer extends DataRenderer {
     protected void encodeHeader(FacesContext context, DataView dataview) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         UIComponent fHeader = dataview.getFacet("header");
+        boolean isRenderFacet = FacetUtils.shouldRenderFacet(fHeader);
 
-        if (FacetUtils.shouldRenderFacet(fHeader) || hasLayoutOptions(context, dataview)) {
+        if (isRenderFacet || hasLayoutOptions(context, dataview)) {
             writer.startElement("div", dataview);
             writer.writeAttribute("class", DataView.HEADER_CLASS, null);
 
-            fHeader.encodeAll(context);
+            if (isRenderFacet) {
+                fHeader.encodeAll(context);
+            }
 
             encodeLayoutOptions(context, dataview);
 

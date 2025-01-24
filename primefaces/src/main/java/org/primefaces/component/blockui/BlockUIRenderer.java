@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -64,7 +64,7 @@ public class BlockUIRenderer extends CoreRenderer {
 
         writer.startElement("div", blockUI);
         writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("class", "ui-blockui-content ui-widget ui-widget-content ui-corner-all ui-helper-hidden ui-shadow", null);
+        writer.writeAttribute("class", "ui-blockui-content ui-widget ui-widget-content ui-helper-hidden ui-shadow", null);
 
         renderChildren(context, blockUI);
 

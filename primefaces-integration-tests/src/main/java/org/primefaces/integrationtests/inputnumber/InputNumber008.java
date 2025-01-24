@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,14 +21,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.application.resource.barcode;
+package org.primefaces.integrationtests.inputnumber;
 
-import org.krysalis.barcode4j.impl.code39.Code39Bean;
+import java.io.Serializable;
 
-public class Code39Generator extends BarcodeGenerator {
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 
-    public Code39Generator() {
-        super(new Code39Bean());
+import lombok.Data;
+
+@ViewScoped
+@Named
+@Data
+public class InputNumber008 implements Serializable {
+
+    private Double value = Double.valueOf(12.345678d);
+
+    public void setValue(Double value) {
+        this.value = value;
+
+        String message = value != null ? value.toString() : "null";
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, message, message));
     }
-
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,30 +21,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.application.resource.barcode;
+package org.primefaces.showcase.view.multimedia;
 
-import java.io.IOException;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
-import org.krysalis.barcode4j.impl.AbstractBarcodeBean;
-import org.krysalis.barcode4j.output.CanvasProvider;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.faces.context.FacesContext;
+import jakarta.inject.Named;
 
-public class BarcodeGenerator {
+@Named
+@RequestScoped
+public class MediaView {
 
-    private AbstractBarcodeBean barcodeBean;
-
-    public BarcodeGenerator() {
-        super();
-    }
-
-    public BarcodeGenerator(AbstractBarcodeBean bean) {
-        this.barcodeBean = bean;
-    }
-
-    public void generate(CanvasProvider canvasProvider, String value) throws IOException {
-        barcodeBean.generateBarcode(canvasProvider, value);
-    }
-
-    public AbstractBarcodeBean getBarcodeBean() {
-        return barcodeBean;
+    public StreamedContent getPdf() {
+        return DefaultStreamedContent.builder()
+                .contentType("application/pdf")
+                .name("guide.pdf")
+                .stream(() -> {
+                    try {
+                        FacesContext facesContext = FacesContext.getCurrentInstance();
+                        return facesContext.getExternalContext().getResourceAsStream("/resources/demo/media/guide.pdf");
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                        return null;
+                    }
+                })
+                .build();
     }
 }

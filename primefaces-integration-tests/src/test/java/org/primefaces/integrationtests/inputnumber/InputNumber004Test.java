@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -185,7 +185,7 @@ class InputNumber004Test extends AbstractPrimePageTest {
     private void assertConfiguration(JSONObject cfg, String decimalPlaces, String minValue, String maxValue) {
         assertNoJavascriptErrors();
         System.out.println("InputNumber Config = " + cfg);
-        assertEquals(decimalPlaces, cfg.get("decimalPlaces"));
+        assertEquals(Integer.valueOf(decimalPlaces), cfg.get("decimalPlaces"));
         assertEquals(minValue, cfg.get("minimumValue"));
         assertEquals(maxValue, cfg.get("maximumValue"));
     }

@@ -38,6 +38,8 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         this.plugOptArray = cfg.pluginOptions;
         this.initialValue = cfg.valueToRender;
         this.disabled = cfg.disabled;
+        this.cfg.decimalPlaces = Number(this.cfg.decimalPlaces);
+        this.cfg.decimalPlacesRawValue = Number(this.cfg.decimalPlacesRawValue || this.cfg.decimalPlaces);
 
         // GitHub #8125 minValue>0 shows js warning and quirky behavior
         if (this.cfg.minimumValue > 0.0000001 || this.cfg.maximumValue < 0) {
@@ -114,63 +116,58 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         // get the current attached events if using CSP
         var events = this.input[0] ? $._data(this.input[0], "events") : null;
 
-        // use DOM if non-CSP and JQ event if CSP
-        var originalOnkeyup = this.input.prop('onkeyup');
-        if (!originalOnkeyup && events && events.keyup) {
-            originalOnkeyup = events.keyup[0].handler;
-        }
-        this.input.prop('onkeyup', null).off('keyup').on('keyup.inputnumber', function(e) {
+        // Helper to get original handler
+        var getOriginalHandler = function(eventName) {
+            var originalProp = $this.input.prop('on' + eventName);
+            return !originalProp && events && events[eventName] ? events[eventName][0].handler : originalProp;
+        };
 
-            var oldValue;
+        // Helper to wrap event handler
+        var wrapEventHandler = function(eventName, additionalLogic) {
+            var originalHandler = getOriginalHandler(eventName);
+            $this.input.prop('on' + eventName, null)
+                      .off(eventName)
+                      .on(eventName + '.inputnumber', function(e) {
+                var oldValue;
+                if (additionalLogic) {
+                    oldValue = additionalLogic.call(this, e);
+                } else {
+                    oldValue = $this.copyValueToHiddenInput();
+                }
+                
+                if (originalHandler && originalHandler.call(this, e) === false) {
+                    if (oldValue) {
+                        $this.setValueToHiddenInput(oldValue);
+                    }
+                    return false;
+                }
+            });
+        };
+
+        // Keyup handler with special key checks
+        wrapEventHandler('keyup', function(e) {
             var key = e.key;
-
-            // #11652 Check if Cut/Copy/Paste
             var cutCopyPaste = (e.ctrlKey && ['KeyX', 'KeyC', 'KeyV'].includes(e.code));
             if (cutCopyPaste || ['Backspace', 'Enter', 'Delete'].includes(key) || PrimeFaces.utils.isPrintableKey(e)) {
-                oldValue = $this.copyValueToHiddenInput();
-            }
-
-            if (originalOnkeyup && originalOnkeyup.call(this, e) === false) {
-                if (oldValue) {
-                    $this.setValueToHiddenInput(oldValue);
-                }
-                return false;
+                return $this.copyValueToHiddenInput();
             }
         });
 
-        // use DOM if non-CSP and JQ event if CSP
-        var originalOnchange = this.input.prop('onchange');
-        if (!originalOnchange && events && events.change) {
-            originalOnchange = events.change[0].handler;
-        }
-        this.input.prop('onchange', null).off('change').on('change.inputnumber', function(e) {
-
+        // Change handler with value comparison
+        wrapEventHandler('change', function(e) {
             var newValue = $this.copyValueToHiddenInput();
             // #10046 do not call on Change if the value has not changed
             if (newValue === $this.initialValue || 
                 ($this.initialValue !== '' && newValue !== '' && Number(newValue) === Number($this.initialValue))) {
                 return false;
             }
-            if (originalOnchange && originalOnchange.call(this, e) === false) {
-                $this.setValueToHiddenInput(newValue);
-                return false;
-            }
             $this.initialValue = newValue;
+            return newValue;
         });
 
-        // use DOM if non-CSP and JQ event if CSP 
-        var originalOnkeydown = this.input.prop('onkeydown');
-        if (!originalOnkeydown && events && events.keydown) {
-            originalOnkeydown = events.keydown[0].handler;
-        }
-        this.input.prop('onkeydown', null).off('keydown').on('keydown.inputnumber', function(e) {
-
-            var oldValue = $this.copyValueToHiddenInput();
-            if (originalOnkeydown && originalOnkeydown.call(this, e) === false) {
-                $this.setValueToHiddenInput(oldValue);
-                return false;
-            }
-        });
+        // Simple input and keydown handlers
+        wrapEventHandler('input');
+        wrapEventHandler('keydown');
 
         this.bindInputEvents();
     },
@@ -186,12 +183,31 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         // GitHub #6447: browser auto fill fix
         this.input.off('blur.inputnumber').on('blur.inputnumber', function(e) {
             var element = AutoNumeric.getAutoNumericElement(this);
-            if (element && this.value && this.value.length > 0) {
-                var newValue = this.value.trim();
+            if (!element) {
+                return;
+            }
+
+            // Get the numeric value
+            var newValue = '';
+            if ($this.cfg.decimalPlacesRawValue > $this.cfg.decimalPlaces) {
+                // if using raw decimal places we need to get the numeric string
+                newValue = element.getNumericString();
+            } else {
+                // if using decimal places we can use the input value
+                newValue = this.value;
+            }
+
+            // Process the value if it exists, remove formatting characters
+            if (newValue && newValue.length > 0) {
                 if ($this.cfg.digitGroupSeparator) {
                     newValue = newValue.replaceAll($this.cfg.digitGroupSeparator, '');
                 }
-                element.set(newValue, null, true);
+                if ($this.cfg.currencySymbol) {
+                    newValue = newValue.replaceAll($this.cfg.currencySymbol, '');
+                }
+                
+                // Set the cleaned value
+                element.set(newValue.trim(), null, true);
 
                 // GitHub #8610: reset the raw values so we don't fire change event if 1.0 == 1.00
                 if (element.rawValueOnFocus !== '' && Number(element.rawValue) === Number(element.rawValueOnFocus)) {

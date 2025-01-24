@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -299,7 +299,7 @@ public abstract class AbstractPrimePageTest {
      * @param cssClasses the CSS class or classes to look for
      */
     protected void assertCss(WebElement element, String... cssClasses) {
-        String elementClass = element.getAttribute("class");
+        String elementClass = element.getDomAttribute("class");
         if (elementClass == null) {
             Assertions.fail("Element did not have CSS 'class' attribute.");
             return;

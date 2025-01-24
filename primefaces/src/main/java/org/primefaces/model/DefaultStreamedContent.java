@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,6 +37,8 @@ import javax.faces.FacesException;
  * Default implementation of a StreamedContent
  */
 public class DefaultStreamedContent implements StreamedContent, Serializable {
+
+    public static final DefaultStreamedContent DUMMY = new DefaultStreamedContent();
 
     private static final long serialVersionUID = 1L;
     private Callbacks.SerializableSupplier<InputStream> stream;

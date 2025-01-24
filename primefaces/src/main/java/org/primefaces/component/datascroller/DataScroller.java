@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -43,7 +43,7 @@ public class DataScroller extends DataScrollerBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.DataScroller";
     public static final String CONTAINER_CLASS = "ui-datascroller ui-widget";
     public static final String INLINE_CONTAINER_CLASS = "ui-datascroller ui-datascroller-inline ui-widget";
-    public static final String HEADER_CLASS = "ui-datascroller-header ui-widget-header ui-corner-top";
+    public static final String HEADER_CLASS = "ui-datascroller-header ui-widget-header";
     public static final String CONTENT_CLASS = "ui-datascroller-content ui-widget-content";
     public static final String LIST_CLASS = "ui-datascroller-list";
     public static final String ITEM_CLASS = "ui-datascroller-item";

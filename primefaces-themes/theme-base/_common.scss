@@ -38,6 +38,10 @@ body {
 
     .ui-state-disabled {
         opacity: $disabledOpacity;
+
+        .ui-state-disabled {
+            opacity: 1;
+        }
     }
 
     .ui-widget-overlay {
@@ -49,7 +53,7 @@ body {
     }
 
     select,
-    input:not([role="combobox"], .ui-widget, .ui-inputfield) {
+    input:not([role="combobox"], [type="file"], .ui-widget, .ui-inputfield) {
         color: $inputTextColor;
         background: $inputBg;
         padding: $inputPadding;

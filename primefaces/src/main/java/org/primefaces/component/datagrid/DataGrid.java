@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -54,8 +54,8 @@ public class DataGrid extends DataGridBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.DataGrid";
 
     public static final String DATAGRID_CLASS = "ui-datagrid ui-widget";
-    public static final String HEADER_CLASS = "ui-datagrid-header ui-widget-header ui-corner-top";
-    public static final String FOOTER_CLASS = "ui-datagrid-footer ui-widget-header ui-corner-bottom";
+    public static final String HEADER_CLASS = "ui-datagrid-header ui-widget-header";
+    public static final String FOOTER_CLASS = "ui-datagrid-footer ui-widget-header";
     public static final String EMPTY_CONTENT_CLASS = "ui-datagrid-content ui-datagrid-content-empty ui-widget-content";
     public static final String TABLE_CLASS = "ui-datagrid-data";
     public static final String TABLE_ROW_CLASS = "ui-datagrid-row";

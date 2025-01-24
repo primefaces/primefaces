@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -47,9 +47,9 @@ public class CascadeSelect extends CascadeSelectBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.CascadeSelect";
 
-    public static final String STYLE_CLASS = "ui-cascadeselect ui-widget ui-state-default ui-corner-all";
-    public static final String LABEL_CLASS = "ui-cascadeselect-label ui-inputfield ui-corner-all";
-    public static final String PANEL_CLASS = "ui-cascadeselect-panel ui-widget ui-widget-content ui-corner-all ui-helper-hidden ui-shadow ui-input-overlay";
+    public static final String STYLE_CLASS = "ui-cascadeselect ui-widget ui-state-default";
+    public static final String LABEL_CLASS = "ui-cascadeselect-label ui-inputfield";
+    public static final String PANEL_CLASS = "ui-cascadeselect-panel ui-widget ui-widget-content ui-helper-hidden ui-shadow ui-input-overlay";
     public static final String ITEMS_WRAPPER_CLASS = "ui-cascadeselect-items-wrapper";
     public static final String PANEL_ITEMS_CLASS = "ui-cascadeselect-panel ui-cascadeselect-items";
     public static final String TRIGGER_CLASS = "ui-cascadeselect-trigger";

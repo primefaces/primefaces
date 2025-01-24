@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -118,16 +118,6 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
         String itemValueAsString = getOptionAsString(context, button, converter, option.getValue());
 
         String buttonStyle = HTML.BUTTON_TEXT_ONLY_BUTTON_FLAT_CLASS;
-        if (size == 1) {
-            buttonStyle = buttonStyle + " ui-corner-all";
-        }
-        else if (idx == 0) {
-            buttonStyle = buttonStyle + " ui-corner-left";
-        }
-        else if (idx == (size - 1)) {
-            buttonStyle = buttonStyle + " ui-corner-right";
-        }
-
         buttonStyle = selected ? buttonStyle + " ui-state-active" : buttonStyle;
         buttonStyle = disabled ? buttonStyle + " ui-state-disabled" : buttonStyle;
 

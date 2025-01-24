@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -90,13 +90,13 @@ public abstract class AbstractComponent extends AbstractPrimePageFragment {
         }
 
         // first check normal path if component is AJAXified
-        boolean isAjaxScript = ComponentUtils.isAjaxScript(element.getAttribute(event));
+        boolean isAjaxScript = ComponentUtils.isAjaxScript(element.getDomAttribute(event));
         if (isAjaxScript) {
             return true;
         }
 
         // now check for CSP events
-        String id = element.getAttribute("id");
+        String id = element.getDomAttribute("id");
         String cspScript = String.format(CSP_SCRIPT, id, event);
         Boolean csp = PrimeSelenium.executeScript(cspScript);
         return csp != null && csp;

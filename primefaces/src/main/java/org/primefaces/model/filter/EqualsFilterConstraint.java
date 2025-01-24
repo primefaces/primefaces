@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,6 +38,10 @@ public class EqualsFilterConstraint implements FilterConstraint {
         }
         if (value == null || filter == null) {
             return false;
+        }
+        // Handle enum values by comparing their string representations
+        if (value.getClass().isEnum() || filter.getClass().isEnum()) {
+            return value.toString().equals(filter.toString());
         }
         // If Comparable, prefer compareTo to handle BigDecimal, etc.
         if (value instanceof Comparable) {

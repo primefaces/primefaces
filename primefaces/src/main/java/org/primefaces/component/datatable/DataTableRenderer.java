@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -687,7 +687,7 @@ public class DataTableRenderer extends DataRenderer {
             }
         }
 
-        String ariaHeaderLabel = getHeaderLabel(context, column);
+        String ariaHeaderLabel = resolveColumnAriaHeaderText(context, column);
         UIComponent component = (column instanceof UIComponent) ? (UIComponent) column : null;
 
         writer.startElement("th", component);
@@ -751,20 +751,18 @@ public class DataTableRenderer extends DataRenderer {
                 SortMeta sortMeta) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        UIComponent header = column.getFacet("header");
-        String headerText = column.getHeaderText();
-        String ariaHeaderText = column.getAriaHeaderText();
+        UIComponent headerFacet = column.getFacet("header");
+        String headerText = resolveColumnHeaderText(context, column);
         String titleStyleClass = getStyleClassBuilder(context)
                 .add(DataTable.COLUMN_TITLE_CLASS)
-                .add(LangUtils.isNotBlank(ariaHeaderText), "ui-helper-hidden-accessible")
+                .add(isColumnAriaHeaderTextDefined(context, column), "ui-helper-hidden-accessible")
                 .build();
-        headerText = LangUtils.isNotBlank(headerText) ? headerText : ariaHeaderText;
 
         writer.startElement("span", null);
         writer.writeAttribute("class", titleStyleClass, null);
 
-        if (FacetUtils.shouldRenderFacet(header, table.isRenderEmptyFacets())) {
-            header.encodeAll(context);
+        if (FacetUtils.shouldRenderFacet(headerFacet, table.isRenderEmptyFacets())) {
+            headerFacet.encodeAll(context);
         }
         else if (headerText != null) {
             String title = column.getTitle();
@@ -820,7 +818,7 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected void encodeDefaultFilter(FacesContext context, DataTable table, UIColumn column,
-        ResponseWriter writer) throws IOException {
+            ResponseWriter writer) throws IOException {
         String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
         boolean disableTabbing = table.getScrollWidth() != null;
         String filterId = column.getContainerClientId(context) + separator + "filter";
@@ -1693,14 +1691,7 @@ public class DataTableRenderer extends DataRenderer {
 
             headerLabel.set(null);
             table.invokeOnColumn(sortMeta.getColumnKey(), (column) -> {
-                String label = getHeaderLabel(context, column);
-                if (LangUtils.isBlank(label)) {
-                    UIComponent headerFacet = column.getFacet("header");
-                    if (FacetUtils.shouldRenderFacet(headerFacet)) {
-                        // encode and strip all HTML tags
-                        label = ComponentUtils.encodeComponent(headerFacet, context).replaceAll("\\<.*?\\>", Constants.EMPTY_STRING);
-                    }
-                }
+                String label = resolveColumnAriaHeaderText(context, column);
                 headerLabel.set(label);
             });
             headers.put(sortMeta, headerLabel.get());

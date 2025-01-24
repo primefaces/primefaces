@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@
  */
 package org.primefaces.application.resource;
 
-import org.primefaces.application.resource.barcode.BarcodeHandler;
+import org.primefaces.component.barcode.BarcodeHandler;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 
@@ -49,12 +49,9 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
         handlers = new HashMap<>();
         handlers.put(DynamicContentType.STREAMED_CONTENT.toString(), new StreamedContentHandler());
 
-        if (LangUtils.isClassAvailable("org.krysalis.barcode4j.output.AbstractCanvasProvider")) {
+        if (LangUtils.isClassAvailable("uk.org.okapibarcode.output.SvgRenderer")) {
             handlers.put(DynamicContentType.BARCODE.toString(), new BarcodeHandler());
-        }
-
-        if (LangUtils.isClassAvailable("io.nayuki.qrcodegen.QrCode")) {
-            handlers.put(DynamicContentType.QR_CODE.toString(), new QRCodeHandler());
+            handlers.put(DynamicContentType.QR_CODE.toString(), new BarcodeHandler());
         }
     }
 

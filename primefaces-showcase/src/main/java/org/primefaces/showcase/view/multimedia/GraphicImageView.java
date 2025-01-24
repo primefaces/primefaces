@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -51,74 +51,56 @@ import org.jfree.data.general.PieDataset;
 public class GraphicImageView {
 
     public StreamedContent getGraphicText() {
-        try {
-            return DefaultStreamedContent.builder()
-                    .contentType("image/png")
-                    .stream(() -> {
-                        try {
-                            BufferedImage bufferedImg = new BufferedImage(100, 25, BufferedImage.TYPE_INT_RGB);
-                            Graphics2D g2 = bufferedImg.createGraphics();
-                            g2.drawString("This is a text", 0, 10);
-                            ByteArrayOutputStream os = new ByteArrayOutputStream();
-                            ImageIO.write(bufferedImg, "png", os);
-                            return new ByteArrayInputStream(os.toByteArray());
-                        }
-                        catch (Exception e) {
-                            e.printStackTrace();
-                            return null;
-                        }
-                    })
-                    .build();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        return DefaultStreamedContent.builder()
+                .contentType("image/png")
+                .stream(() -> {
+                    try {
+                        BufferedImage bufferedImg = new BufferedImage(100, 25, BufferedImage.TYPE_INT_RGB);
+                        Graphics2D g2 = bufferedImg.createGraphics();
+                        g2.drawString("This is a text", 0, 10);
+                        ByteArrayOutputStream os = new ByteArrayOutputStream();
+                        ImageIO.write(bufferedImg, "png", os);
+                        return new ByteArrayInputStream(os.toByteArray());
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                        return null;
+                    }
+                })
+                .build();
     }
 
     public StreamedContent getChart() {
-        try {
-            return DefaultStreamedContent.builder()
-                    .contentType("image/png")
-                    .stream(() -> {
-                        try {
-                            JFreeChart jfreechart = ChartFactory.createPieChart("Cities", createDataset(), true, true, false);
-                            File chartFile = new File("dynamichart");
-                            ChartUtils.saveChartAsPNG(chartFile, jfreechart, 375, 300);
-                            return new FileInputStream(chartFile);
-                        }
-                        catch (Exception e) {
-                            e.printStackTrace();
-                            return null;
-                        }
-                    })
-                    .build();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        return DefaultStreamedContent.builder()
+                .contentType("image/png")
+                .stream(() -> {
+                    try {
+                        JFreeChart jfreechart = ChartFactory.createPieChart("Cities", createDataset(), true, true, false);
+                        File chartFile = new File("dynamichart");
+                        ChartUtils.saveChartAsPNG(chartFile, jfreechart, 375, 300);
+                        return new FileInputStream(chartFile);
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                        return null;
+                    }
+                })
+                .build();
     }
 
     public StreamedContent getChartWithoutBuffering() {
-        try {
-            return DefaultStreamedContent.builder()
-                    .contentType("image/png")
-                    .writer((os) -> {
-                        try {
-                            JFreeChart jfreechart = ChartFactory.createPieChart("Cities", createDataset(), true, true, false);
-                            ChartUtils.writeChartAsPNG(os, jfreechart, 375, 300);
-                        }
-                        catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    })
-                    .build();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        return DefaultStreamedContent.builder()
+                .contentType("image/png")
+                .writer((os) -> {
+                    try {
+                        JFreeChart jfreechart = ChartFactory.createPieChart("Cities", createDataset(), true, true, false);
+                        ChartUtils.writeChartAsPNG(os, jfreechart, 375, 300);
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                })
+                .build();
     }
 
     public InputStream getChartAsStream() {

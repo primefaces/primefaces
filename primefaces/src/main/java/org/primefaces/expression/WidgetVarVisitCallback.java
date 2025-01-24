@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -46,7 +46,8 @@ public class WidgetVarVisitCallback implements VisitCallback {
     public VisitResult visit(VisitContext context, UIComponent target) {
 
         if (target instanceof Widget) {
-            if (widgetVar.equalsIgnoreCase(((Widget) target).resolveWidgetVar(context.getFacesContext()))) {
+            String targetWidgetVar = ((Widget) target).resolveWidgetVar(context.getFacesContext());
+            if (widgetVar.equalsIgnoreCase(targetWidgetVar)) {
                 component = target;
                 return VisitResult.COMPLETE;
             }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,13 +25,16 @@ package org.primefaces.renderkit;
 
 import org.primefaces.clientwindow.PrimeClientWindow;
 import org.primefaces.clientwindow.PrimeClientWindowUtils;
+import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.LocaleUtils;
 import org.primefaces.util.MapBuilder;
+import org.primefaces.util.ResourceUtils;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -43,8 +46,6 @@ import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.ProjectStage;
-import javax.faces.application.Resource;
-import javax.faces.application.ResourceHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
@@ -59,7 +60,7 @@ import javax.servlet.http.HttpServletResponse;
  * Renders head content based on the following order
  * - First Facet
  * - Theme CSS
- * - FontAwesome
+ * - PrimeIcons CSS
  * - Middle Facet
  * - Registered Resources
  * - Client Validation Scripts
@@ -85,6 +86,7 @@ public class HeadRenderer extends Renderer {
         ResponseWriter writer = context.getResponseWriter();
         PrimeRequestContext requestContext = PrimeRequestContext.getCurrentInstance(context);
         PrimeApplicationContext applicationContext = requestContext.getApplicationContext();
+        PrimeConfiguration configuration = applicationContext.getConfig();
 
         writer.startElement("head", component);
         writer.writeAttribute("id", component.getClientId(context), "id");
@@ -129,41 +131,27 @@ public class HeadRenderer extends Renderer {
             middle.encodeAll(context);
         }
 
+        // normal CSV is a required dependency for some special components like fileupload
+        encodeValidationResources(context, configuration);
+
+        // encode client side locale
+        encodeLocaleResources(context, configuration);
+
         //Registered Resources
         UIViewRoot viewRoot = context.getViewRoot();
-        List<UIComponent> resources = viewRoot.getComponentResources(context, "head");
+        List<UIComponent> resources = new ArrayList<>(viewRoot.getComponentResources(context, "head"));
+        moveResourceToTop(resources, "primeicons/primeicons.css");
+        moveResourceToTop(resources, "theme.css");
         for (int i = 0; i < resources.size(); i++) {
             UIComponent resource = resources.get(i);
+            LOGGER.log(Level.FINE, () -> "HeadRenderer resource: " + resource.getAttributes().get("name"));
             resource.encodeAll(context);
         }
 
-        if (applicationContext.getConfig().isClientSideValidationEnabled()) {
-            // moment is needed for Date validation
-            encodeJS(context, LIBRARY, "moment/moment.js");
-
-            // BV CSV is optional and must be enabled by config
-            if (applicationContext.getConfig().isBeanValidationEnabled()) {
-                encodeJS(context, LIBRARY, "validation/validation.bv.js");
-            }
-        }
-
-        if (applicationContext.getConfig().isClientSideLocalizationEnabled()) {
-            try {
-                Locale locale = LocaleUtils.getCurrentLocale(context);
-                encodeJS(context, LIBRARY, "locales/locale-" + locale.getLanguage() + ".js");
-            }
-            catch (FacesException e) {
-                if (context.isProjectStage(ProjectStage.Development)) {
-                    LOGGER.log(Level.WARNING,
-                            "Failed to load client side locale.js. {0}", e.getMessage());
-                }
-            }
-        }
-
-        encodeSettingScripts(context, applicationContext, requestContext, writer);
+        encodeSettingScripts(context, requestContext, configuration, writer);
 
         // encode initialization scripts
-        encodeInitScripts(context, writer);
+        encodeInitScripts(context, requestContext, configuration, writer);
     }
 
     @Override
@@ -180,84 +168,100 @@ public class HeadRenderer extends Renderer {
     }
 
     protected void encodeCSS(FacesContext context, String library, String resource) throws IOException {
-        ResourceHandler resourceHandler = context.getApplication().getResourceHandler();
-        if (resourceHandler.isResourceRendered(context, resource, library)) {
-            // resource already rendered, skip
-            return;
-        }
-
-        ResponseWriter writer = context.getResponseWriter();
-        ExternalContext externalContext = context.getExternalContext();
-
-        Resource cssResource = resourceHandler.createResource(resource, library);
-        if (cssResource == null) {
-            throw new FacesException("Error loading CSS, cannot find \"" + resource + "\" resource of \"" + library + "\" library");
-        }
-        else {
-            writer.startElement("link", null);
-            writer.writeAttribute("type", "text/css", null);
-            writer.writeAttribute("rel", "stylesheet", null);
-            writer.writeAttribute("href", externalContext.encodeResourceURL(cssResource.getRequestPath()), null);
-            writer.endElement("link");
-        }
+        ResourceUtils.addStyleSheetResource(context, library, resource);
     }
 
     protected void encodeJS(FacesContext context, String library, String script) throws IOException {
-        ResourceHandler resourceHandler = context.getApplication().getResourceHandler();
-        if (resourceHandler.isResourceRendered(context, script, library)) {
-            // resource already rendered, skip
-            return;
-        }
+        ResourceUtils.addJavascriptResource(context, library, script);
+    }
 
-        ResponseWriter writer = context.getResponseWriter();
-        ExternalContext externalContext = context.getExternalContext();
-        Resource resource = resourceHandler.createResource(script, library);
+    protected void encodeValidationResources(FacesContext context, PrimeConfiguration configuration) {
+        if (configuration.isClientSideValidationEnabled()) {
+            // moment is needed for Date validation
+            ResourceUtils.addJavascriptResource(context, "moment/moment.js");
 
-        if (resource == null) {
-            throw new FacesException("Error loading JavaScript, cannot find \"" + script + "\" resource of \"" + library + "\" library");
-        }
-        else {
-            writer.startElement("script", null);
-            writer.writeAttribute("src", externalContext.encodeResourceURL(resource.getRequestPath()), null);
-            writer.endElement("script");
+            // BV CSV is optional and must be enabled by config
+            if (configuration.isBeanValidationEnabled()) {
+                ResourceUtils.addJavascriptResource(context, "validation/validation.bv.js");
+            }
         }
     }
 
-    protected void encodeSettingScripts(FacesContext context, PrimeApplicationContext applicationContext, PrimeRequestContext requestContext,
-            ResponseWriter writer) throws IOException {
+    protected void encodeLocaleResources(FacesContext context, PrimeConfiguration configuration) {
+        if (!configuration.isClientSideLocalizationEnabled()) {
+            return;
+        }
+
+        try {
+            final Locale locale = LocaleUtils.getCurrentLocale(context);
+            ResourceUtils.addJavascriptResource(context, "locales/locale-" + locale.getLanguage() + ".js");
+        }
+        catch (FacesException e) {
+            if (context.isProjectStage(ProjectStage.Development)) {
+                LOGGER.log(Level.WARNING, "Failed to load client side locale.js. {0}", e.getMessage());
+            }
+        }
+    }
+
+    protected void encodeSettingScripts(FacesContext context, PrimeRequestContext requestContext,
+                                       PrimeConfiguration configuration, ResponseWriter writer) throws IOException {
 
         ProjectStage projectStage = context.getApplication().getProjectStage();
+        ExternalContext externalContext = context.getExternalContext();
 
         writer.startElement("script", null);
         RendererUtils.encodeScriptTypeIfNecessary(context);
         writer.write("if(window.PrimeFaces){");
 
-        writer.write("PrimeFaces.settings.locale='" + LocaleUtils.getCurrentLocale(context) + "';");
-        writer.write("PrimeFaces.settings.viewId='" + context.getViewRoot().getViewId() + "';");
-        writer.write("PrimeFaces.settings.contextPath='" + context.getExternalContext().getRequestContextPath() + "';");
+        writer.write("PrimeFaces.settings={");
+        writer.write("locale:'" + LocaleUtils.getCurrentLocale(context) + "',");
+        writer.write("viewId:'" + context.getViewRoot().getViewId() + "',");
+        writer.write("contextPath:'" + externalContext.getRequestContextPath() + "',");
+        writer.write("cookiesSecure:" + (requestContext.isSecure() && configuration.isCookiesSecure()));
 
-        writer.write("PrimeFaces.settings.cookiesSecure=" + (requestContext.isSecure() && applicationContext.getConfig().isCookiesSecure()) + ";");
-        if (applicationContext.getConfig().getCookiesSameSite() != null) {
-            writer.write("PrimeFaces.settings.cookiesSameSite='" + applicationContext.getConfig().getCookiesSameSite() + "';");
+        if (configuration.getCookiesSameSite() != null) {
+            writer.write(",cookiesSameSite:'" + configuration.getCookiesSameSite() + "'");
         }
 
-        writer.write("PrimeFaces.settings.validateEmptyFields=" + applicationContext.getConfig().isValidateEmptyFields() + ";");
-        writer.write("PrimeFaces.settings.considerEmptyStringNull=" + applicationContext.getConfig().isInterpretEmptyStringAsNull() + ";");
+        writer.write(",validateEmptyFields:" + configuration.isValidateEmptyFields());
+        writer.write(",considerEmptyStringNull:" + configuration.isInterpretEmptyStringAsNull());
 
-        if (applicationContext.getConfig().isEarlyPostParamEvaluation()) {
-            writer.write("PrimeFaces.settings.earlyPostParamEvaluation=true;");
+        if (configuration.isEarlyPostParamEvaluation()) {
+            writer.write(",earlyPostParamEvaluation:true");
         }
 
-        if (applicationContext.getConfig().isPartialSubmitEnabled()) {
-            writer.write("PrimeFaces.settings.partialSubmit=true;");
+        if (configuration.isPartialSubmitEnabled()) {
+            writer.write(",partialSubmit:true");
         }
 
         if (projectStage != ProjectStage.Production) {
-            writer.write("PrimeFaces.settings.projectStage='" + projectStage.toString() + "';");
+            writer.write(",projectStage:'" + projectStage.toString() + "'");
         }
 
-        if (context.getExternalContext().getClientWindow() != null) {
-            ClientWindow clientWindow = context.getExternalContext().getClientWindow();
+        Map<String, String> errorPages = PrimeApplicationContext.getCurrentInstance(context).getConfig().getErrorPages();
+        if (!errorPages.isEmpty()) {
+            int i = 0;
+            writer.write(",errorPages:{");
+            for (Map.Entry<String, String> entry : errorPages.entrySet()) {
+                if (i > 0) {
+                    writer.write(',');
+                }
+
+                String errorPageUrl = context.getExternalContext().getRequestContextPath() + entry.getValue();
+                errorPageUrl = context.getApplication().evaluateExpressionGet(context, errorPageUrl, String.class);
+                errorPageUrl = context.getExternalContext().encodeActionURL(errorPageUrl);
+
+                writer.write("'" + (entry.getKey() == null ? "" : entry.getKey()) + "':'" + errorPageUrl + "'");
+
+                i++;
+            }
+            writer.write("}");
+        }
+
+        writer.write("};");
+
+        if (externalContext.getClientWindow() != null) {
+            ClientWindow clientWindow = externalContext.getClientWindow();
             if (clientWindow instanceof PrimeClientWindow) {
 
                 boolean initialRedirect = false;
@@ -269,7 +273,7 @@ public class HeadRenderer extends Renderer {
 
                     // expire/remove cookie
                     servletCookie.setMaxAge(0);
-                    ((HttpServletResponse) context.getExternalContext().getResponse()).addCookie(servletCookie);
+                    ((HttpServletResponse) externalContext.getResponse()).addCookie(servletCookie);
                 }
                 writer.write(
                         String.format("PrimeFaces.clientwindow.init('%s', %s);",
@@ -282,35 +286,48 @@ public class HeadRenderer extends Renderer {
         writer.endElement("script");
     }
 
-    protected void encodeInitScripts(FacesContext context, ResponseWriter writer) throws IOException {
-        List<String> scripts = PrimeRequestContext.getCurrentInstance().getInitScriptsToExecute();
+    protected void encodeInitScripts(FacesContext context, PrimeRequestContext requestContext, PrimeConfiguration configuration,
+                                    ResponseWriter writer) throws IOException {
+        List<String> scripts = requestContext.getInitScriptsToExecute();
 
-        if (!scripts.isEmpty()) {
-            writer.startElement("script", null);
-            RendererUtils.encodeScriptTypeIfNecessary(context);
-
-            boolean moveScriptsToBottom = PrimeRequestContext.getCurrentInstance().getApplicationContext().getConfig().isMoveScriptsToBottom();
-
-            if (!moveScriptsToBottom) {
-                writer.write("(function(){const pfInit=() => {");
-
-                for (int i = 0; i < scripts.size(); i++) {
-                    writer.write(scripts.get(i));
-                    writer.write(';');
-                }
-
-                writer.write("};if(window.$){$(function(){pfInit()})}");
-                writer.write("else if(document.readyState==='complete'){pfInit()}");
-                writer.write("else{document.addEventListener('DOMContentLoaded', pfInit)}})();");
-            }
-            else {
-                for (int i = 0; i < scripts.size(); i++) {
-                    writer.write(scripts.get(i));
-                    writer.write(';');
-                }
-            }
-
-            writer.endElement("script");
+        if (scripts.isEmpty()) {
+            return;
         }
+
+        writer.startElement("script", null);
+        RendererUtils.encodeScriptTypeIfNecessary(context);
+
+        boolean moveScriptsToBottom = configuration.isMoveScriptsToBottom();
+
+        if (!moveScriptsToBottom) {
+            writer.write("(function(){const pfInit=()=>{");
+            writer.write(String.join(";", scripts));
+            writer.write("};if(window.$)$(pfInit);");
+            writer.write("else if(document.readyState==='complete')pfInit();");
+            writer.write("else document.addEventListener('DOMContentLoaded',pfInit)})();");
+        }
+        else {
+            writer.write(String.join(";", scripts));
+            writer.write(';');
+        }
+
+        writer.endElement("script");
+    }
+
+    /**
+     * Moves a resource component to the top of the resources list based on its name.
+     * This is used to ensure certain resources like theme.css and primeicons.css are loaded first.
+     *
+     * @param resources The list of UIComponent resources to sort
+     * @param resource The resource name suffix to move to the top
+     */
+    protected void moveResourceToTop(List<UIComponent> resources, String resource) {
+        resources.sort((a, b) -> {
+            String nameA = (String) a.getAttributes().get("name");
+            String nameB = (String) b.getAttributes().get("name");
+            if (nameA != null && nameA.endsWith(resource)) return -1;
+            if (nameB != null && nameB.endsWith(resource)) return 1;
+            return 0;
+        });
     }
 }

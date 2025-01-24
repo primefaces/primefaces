@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -89,15 +89,10 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
         writer.writeAttribute("class", MultiSelectListbox.LIST_CONTAINER_CLASS, null);
 
         if (header != null) {
-            listStyleClass = listStyleClass + " ui-corner-bottom";
-
             writer.startElement("div", listbox);
             writer.writeAttribute("class", MultiSelectListbox.LIST_HEADER_CLASS, null);
             writer.writeText(header, null);
             writer.endElement("div");
-        }
-        else {
-            listStyleClass = listStyleClass + " ui-corner-all";
         }
 
         writer.startElement("ul", listbox);

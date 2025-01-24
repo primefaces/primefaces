@@ -110,10 +110,10 @@
     </function>
 
     <tag>
-        <tag-name>validateFile</tag-name>
         <description>
             <![CDATA[`p:validateFile` is a validator which can be used to validate single and mulitple files, either of `p:fileUpload` or `h:inputFile`.]]>
         </description>
+        <tag-name>validateFile</tag-name>
         <validator>
             <validator-id>primefaces.File</validator-id>
             <handler-class>org.primefaces.validate.base.PrimeValidatorHandler</handler-class>
@@ -882,6 +882,7 @@
         <tag-name>ajaxExceptionHandler</tag-name>
         <component>
             <component-type>org.primefaces.component.AjaxExceptionHandler</component-type>
+            <renderer-type>org.primefaces.component.AjaxExceptionHandlerRenderer</renderer-type>
         </component>
         <attribute>
             <description>
@@ -906,6 +907,14 @@
             <name>binding</name>
             <required>false</required>
             <type>javax.faces.component.UIComponent</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Name of the client side widget.]]>
+            </description>
+            <name>widgetVar</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -2076,6 +2085,14 @@
             <name>orientation</name>
             <required>false</required>
             <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The magnification factor of the barcode. Default is 2.0.]]>
+            </description>
+            <name>magnification</name>
+            <required>false</required>
+            <type>java.lang.Double</type>
         </attribute>
         <attribute>
             <description>
@@ -3453,6 +3470,14 @@
                 <![CDATA[Displays days belonging to other months. Default is false.]]>
             </description>
             <name>showOtherMonths</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Displays long month names instead of short names in month picker and month navigator. Default is false.]]>
+            </description>
+            <name>showLongMonthNames</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -5847,7 +5872,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Label to read by screen readers, when not specified headerText is used.]]>
+                <![CDATA[Accessible label for screen readers. IMPORTANT: Overrides headerText and headerFacet if specified. Only necessary when the column header is not human readable (e.g. empty header or icon-only header).]]>
             </description>
             <name>ariaHeaderText</name>
             <required>false</required>
@@ -6299,7 +6324,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Label to read by screen readers, when not specified headerText is used.]]>
+                <![CDATA[Accessible label for screen readers. IMPORTANT: Overrides headerText and headerFacet if specified. Only necessary when the column header is not human readable (e.g. empty header or icon-only header).]]>
             </description>
             <name>ariaHeaderText</name>
             <required>false</required>
@@ -10928,7 +10953,7 @@
             <description>
                 <![CDATA[Specifies dragdrop based file selection from filesystem, default is true and works only on supported browsers.]]>
             </description>
-            <name>dragDropSupport</name>
+            <name>dragDrop</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -14153,6 +14178,14 @@
             <name>decimalPlaces</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Specifies the number of decimal places to retain for the raw value and `decimalPlaces` will be used for display values. If this option is left as `null` (the default), the `decimalPlaces` value will be used. Note: Setting this to fewer decimal places than those displayed may cause user confusion.]]>
+            </description>
+            <name>decimalPlacesRawValue</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
         </attribute>
         <attribute>
             <description>
@@ -23529,14 +23562,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Label to be shown in updateLabel mode when one or more items are selected. If not set the label is shown.]]>
-            </description>
-            <name>multipleLabel</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Placeholder text to show when filter input is empty.]]>
             </description>
             <name>filterPlaceholder</name>
@@ -32154,11 +32179,11 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Whether the year should be rendered as a dropdown instead of text. Default is false.]]>
+                <![CDATA[Display the year navigator. When set to 'true' or 'input', the year is shown as a numeric input, which is accessible for visually impaired users. If set to 'select', it appears as a dropdown menu. Default is 'false'.]]>
             </description>
             <name>yearNavigator</name>
             <required>false</required>
-            <type>java.lang.Boolean</type>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>

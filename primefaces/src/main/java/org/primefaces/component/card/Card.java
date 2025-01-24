@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,7 @@ import javax.faces.application.ResourceDependency;
 public class Card extends CardBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.Card";
 
-    public static final String STYLE_CLASS = "ui-card ui-widget ui-widget-content ui-corner-all";
+    public static final String STYLE_CLASS = "ui-card ui-widget ui-widget-content";
     public static final String HEADER_CLASS = "ui-card-header";
     public static final String BODY_CLASS = "ui-card-body";
     public static final String TITLE_CLASS = "ui-card-title";

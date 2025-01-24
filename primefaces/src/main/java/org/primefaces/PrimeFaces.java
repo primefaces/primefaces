@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -391,7 +391,7 @@ public class PrimeFaces {
                 catch (ComponentNotFoundException e) {
                     if (facesContext.isProjectStage(ProjectStage.Development)) {
                         LOGGER.log(Level.WARNING,
-                                "PrimeFaces.current().ajax().update() called but component can't be resolved!"
+                                "PrimeFaces.current().ajax().update() called but component can not be resolved!"
                                 + " Expression will just be added to the renderIds: {0}", expression);
                     }
 

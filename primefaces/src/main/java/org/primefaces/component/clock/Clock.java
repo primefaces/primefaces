@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,7 +38,7 @@ public class Clock extends ClockBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Clock";
 
-    public static final String STYLE_CLASS = "ui-clock ui-widget ui-widget-header ui-corner-all";
+    public static final String STYLE_CLASS = "ui-clock ui-widget ui-widget-header";
     public static final String ANALOG_STYLE_CLASS = "ui-analog-clock ui-widget";
 
     public boolean isSyncRequest() {

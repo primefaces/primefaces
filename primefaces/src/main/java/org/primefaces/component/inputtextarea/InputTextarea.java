@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -46,7 +46,7 @@ import javax.faces.event.FacesEvent;
 public class InputTextarea extends InputTextareaBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.InputTextarea";
-    public static final String STYLE_CLASS = "ui-inputfield ui-inputtextarea ui-widget ui-state-default ui-corner-all";
+    public static final String STYLE_CLASS = "ui-inputfield ui-inputtextarea ui-widget ui-state-default";
 
     private static final List<String> UNOBSTRUSIVE_EVENT_NAMES = LangUtils.unmodifiableList("itemSelect", "query");
     private static final Collection<String> EVENT_NAMES_COMBINED = LangUtils.concat(EVENT_NAMES, UNOBSTRUSIVE_EVENT_NAMES);

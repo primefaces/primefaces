@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,7 +40,10 @@ import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.support.FindBy;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 class ConfirmDialog001Test extends AbstractPrimePageTest {
 
@@ -58,7 +61,7 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
         // Assert
         assertDialog(page, true);
         assertEquals("Are you sure you want to proceed?", dialog.getMessage().getText());
-        assertEquals("ui-icon ui-confirm-dialog-severity pi pi-exclamation-triangle", dialog.getIcon().getAttribute("class"));
+        assertEquals("ui-icon ui-confirm-dialog-severity pi pi-exclamation-triangle", dialog.getIcon().getDomAttribute("class"));
     }
 
     @Test
@@ -101,7 +104,7 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
         page.confirm.click();
         CommandButton noButton = dialog.getNoButton();
         assertEquals("No", noButton.getText());
-        assertCss(noButton, "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left ui-confirmdialog-no ui-button-flat");
+        assertCss(noButton, "ui-button ui-widget ui-state-default ui-button-text-icon-left ui-confirmdialog-no ui-button-flat");
         assertCss(noButton.findElement(By.className("ui-icon")), "ui-button-icon-left ui-icon ui-c pi pi-times");
 
         // Act
@@ -122,7 +125,7 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
         assertTrue(dialog.isVisible());
         CommandButton yesButton = dialog.getYesButton();
         assertEquals("Yes", yesButton.getText());
-        assertCss(yesButton, "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left ui-confirmdialog-yes");
+        assertCss(yesButton, "ui-button ui-widget ui-state-default ui-button-text-icon-left ui-confirmdialog-yes");
         assertCss(yesButton.findElement(By.className("ui-icon")), "ui-button-icon-left ui-icon ui-c pi pi-check");
 
         // Act
@@ -144,7 +147,7 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
         CommandButton noButton = dialog.getNoButton();
         assertEquals("Keep this!", noButton.getText());
         assertCss(noButton,
-                "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left ui-confirmdialog-no ui-button-flat bg-green-600 text-white");
+                "ui-button ui-widget ui-state-default ui-button-text-icon-left ui-confirmdialog-no ui-button-flat bg-green-600 text-white");
         assertCss(noButton.findElement(By.className("ui-icon")), "ui-button-icon-left ui-icon ui-c pi pi-heart");
 
         // Act
@@ -168,7 +171,7 @@ class ConfirmDialog001Test extends AbstractPrimePageTest {
         page.delete.click();
         CommandButton yesButton = dialog.getYesButton();
         assertEquals("Delete Me!", yesButton.getText());
-        assertCss(yesButton, "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left ui-confirmdialog-yes bg-red-600 text-white");
+        assertCss(yesButton, "ui-button ui-widget ui-state-default ui-button-text-icon-left ui-confirmdialog-yes bg-red-600 text-white");
         assertCss(yesButton.findElement(By.className("ui-icon")), "ui-button-icon-left ui-icon ui-c pi pi-trash");
 
         // Act

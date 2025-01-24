@@ -123,6 +123,7 @@ ajax selection and more.
 | showMinMaxRange | true | Boolean | Only display valid dates within the min/max range.
 | autoMonthFormat | true | Boolean | Whether to format the month. Default is true.
 | showOtherMonths | false | Boolean | Displays days belonging to other months.
+| showLongMonthNames | false | Boolean | Displays long month names instead of short names in month picker and month navigator.. Default is false.
 | showSeconds | false | Boolean | Whether to show the seconds in time picker. Default is false.
 | showTime | false * | Boolean | Specifies if the timepicker should be displayed.  (* Defaults to true, when value is bound to java.time.LocalDateTime)
 | showWeek | false | Boolean | Displays the week number next to each week.
@@ -147,7 +148,7 @@ ajax selection and more.
 | view | date | String | Defines the view mode, valid values are "date" for datepicker, "week" for week picker, and "month" for month picker.
 | weekCalculator | false | Boolean | A javascript function that is used to calculate the week number. Uses internal implementation on default when start of week is monday, sunday or saturday.
 | widgetVar | null | String | Name of the client side widget.
-| yearNavigator | false | Boolean | Whether the year should be rendered as an input number instead of text.
+| yearNavigator | false | String | Display the year navigator. When set to 'true' or 'input', the year is shown as a numeric input, which is accessible for visually impaired users. If set to 'select', it appears as a dropdown menu. The default setting is 'false'.
 | yearRange | null | String | The range of years allowed in the year input in (nnnn:nnnn) format such as (1974:2020). Default value is "displayed_date - 1000 : displayed_date + 1000".
 
 ## Getting Started with DatePicker

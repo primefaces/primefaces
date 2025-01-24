@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -68,7 +68,7 @@ public class TooltipRenderer extends CoreRenderer {
             writer.endElement("div");
 
             writer.startElement("div", tooltip);
-            writer.writeAttribute("class", "ui-tooltip-text ui-shadow ui-corner-all", null);
+            writer.writeAttribute("class", "ui-tooltip-text ui-shadow", null);
 
             if (tooltip.getChildCount() > 0) {
                 renderChildren(context, tooltip);

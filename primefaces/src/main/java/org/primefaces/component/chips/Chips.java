@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -48,8 +48,8 @@ public class Chips extends ChipsBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Chips";
     public static final String STYLE_CLASS = "ui-chips ui-widget";
-    public static final String CONTAINER_CLASS = "ui-chips-container ui-inputfield ui-state-default ui-corner-all";
-    public static final String TOKEN_DISPLAY_CLASS = "ui-chips-token ui-state-active ui-corner-all";
+    public static final String CONTAINER_CLASS = "ui-chips-container ui-inputfield ui-state-default";
+    public static final String TOKEN_DISPLAY_CLASS = "ui-chips-token ui-state-active";
     public static final String TOKEN_LABEL_CLASS = "ui-chips-token-label";
     public static final String TOKEN_CLOSE_ICON_CLASS = "ui-chips-token-icon ui-icon ui-icon-close";
     public static final String TOKEN_INPUT_CLASS = "ui-chips-input-token";

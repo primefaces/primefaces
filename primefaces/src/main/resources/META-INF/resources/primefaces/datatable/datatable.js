@@ -75,7 +75,6 @@
  * @prop {JQuery} [expansionHolder] DOM element of the hidden input that holds the row keys of the rows that
  * are expanded. Used to preserve the expansion state during AJAX updates.
  * @prop {number[]} expansionProcess List of row indices to expand.
- * @prop {number} filterTimeout ID as returned by `setTimeout` used during filtering.
  * @prop {JQuery | null} focusedRow DOM element of the currently focused row.
  * @prop {boolean} focusedRowWithCheckbox Whether the focused row includes the checkbox for selecting the row.
  * @prop {JQuery} footerCols The DOM elements for the footer columns.
@@ -456,13 +455,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      */
     bindPaginator: function() {
-        var _self = this;
+        var $this = this;
         this.cfg.paginator.paginate = function(newState) {
-            if(_self.cfg.clientCache) {
-                _self.loadDataWithCache(newState);
+            if($this.cfg.clientCache) {
+                $this.loadDataWithCache(newState);
             }
             else {
-                _self.paginate(newState);
+                $this.paginate(newState);
             }
         };
 
@@ -799,14 +798,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 return;
             }
 
-            if($this.filterTimeout) {
-                clearTimeout($this.filterTimeout);
-            }
-
-            $this.filterTimeout = PrimeFaces.queueTask(function() {
-                $this.filter();
-                $this.filterTimeout = null;
-            }, $this.cfg.filterDelay);
+            PrimeFaces.debounce(() => $this.filter(), $this.cfg.filterDelay);
         })
         .on('keydown', function(e) {
             // #12327 do not submit form on ENTER
@@ -2490,7 +2482,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                                 .attr('aria-label', $this.getSortMessage(ariaLabel, $this.descMessage));
                         } else {
                             sortIcon.removeClass('ui-icon-triangle-1-s').addClass('ui-icon-carat-2-n-s');
-                            columnHeader.removeClass('ui-state-active ').attr('aria-sort', 'other')
+                            columnHeader.removeClass('ui-state-active').attr('aria-sort', 'other')
                                 .attr('aria-label', $this.getSortMessage(ariaLabel, $this.ascMessage));
                             $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).attr('aria-sort', 'other')
                                 .attr('aria-label', $this.getSortMessage(ariaLabel, $this.ascMessage));
@@ -3546,6 +3538,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
         else {
             $(".ui-cell-editor-input :input:enabled").attr('disabled', 'disabled').attr("data-disabled-by-editor", "true");
+            //#13159: re-enable for all rows that are rowEditing="true"
+            this.enableCellEditors($('.ui-row-editing'));
+            
         }
     },
     
@@ -3855,7 +3850,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             displayContainer = cellEditor.children('div.ui-cell-editor-output'),
             inputContainer = cellEditor.children('div.ui-cell-editor-input');
             this.enableCellEditors(inputContainer);
-            var inputs = inputContainer.find(':input:enabled[type!=hidden]'),
+            // Look for selectonemenu inputs first since they have special DOM structure, otherwise find any enabled visible inputs
+            var inputs = inputContainer.find('.ui-selectonemenu .ui-inputfield');
+            if (!inputs.length) {
+                inputs = inputContainer.find(':input:enabled:not([type="hidden"])');
+            }
             multi = inputs.length > 1;
 
             cell.addClass('ui-state-highlight ui-cell-editing');
@@ -3908,9 +3907,17 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         }
                         else if(key === 'Tab') {
                             if(multi) {
+                                // Calculate next/prev input index based on shift key
                                 var focusIndex = shiftKey ? input.index() - 1 : input.index() + 1;
 
-                                if(focusIndex < 0 || (focusIndex === inputs.length) || input.parent().hasClass('ui-inputnumber') || input.parent().hasClass('ui-helper-hidden-accessible')) {
+                                var parent = input.parent();
+                                // Move to next/prev cell if:
+                                // - Index out of bounds
+                                // - Parent is special input component that handles its own tab behavior
+                                if(focusIndex < 0 || focusIndex === inputs.length || 
+                                   parent.hasClass('ui-inputnumber') ||
+                                   parent.hasClass('ui-selectonemenu') ||
+                                   parent.hasClass('ui-helper-hidden-accessible')) {
                                     $this.tabCell(cell, !shiftKey);
                                 } else {
                                     inputs.eq(focusIndex).trigger('focus');
@@ -4302,13 +4309,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Updates a row with the given content
+     * Updates a row with the given content and ensures it is visible.
      * @protected
      * @param {JQuery} row Row to update.
      * @param {string} content HTML string to set on the row.
      */
     updateRow: function(row, content) {
-        row.replaceWith(content);
+        const $content = $(content).show();
+        row.replaceWith($content);
     },
 
     /**
@@ -4318,7 +4326,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     invalidateRow: function(index) {
         var i = (this.paginator) ? (index % this.paginator.getRows()) : index;
-        this.tbody.children('tr[data-ri]').eq(i).addClass('ui-widget-content ui-row-editing ui-state-error');
+        var row =  this.tbody.children('tr[data-ri]').eq(i);
+        row.addClass('ui-widget-content ui-row-editing ui-state-error');
+        this.enableCellEditors(row);
     },
 
     /**
@@ -5751,6 +5761,15 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.bodyTable.css('top', '0px');
         this.scrollBody.scrollTop(0);
         this.clearScrollState();
+    },
+
+    /**
+     * In case of a toggleable filter datatable toggle all filter input components
+     * @param {string | null} speed speed of fade animation. (see jquery fadeToggle method)
+     * @param {(() => void) | null} callback will be executed after animation is finished. (see jquery fadeToggle method)
+     */
+    toggleFilter: function(speed, callback) {
+        this.jq.find(".ui-column-filter, .ui-column-customfilter").fadeToggle(speed || 0, callback);
     }
 
 });

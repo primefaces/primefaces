@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -100,7 +100,7 @@ public class MessageRenderer extends UINotificationRenderer {
 
             if (shouldRender(uiMessage, msg, severityName)) {
 
-                styleClassBuilder.add("ui-message-" + severityName + " ui-widget ui-corner-all");
+                styleClassBuilder.add("ui-message-" + severityName + " ui-widget");
                 styleClassBuilder.add(iconOnly, "ui-message-icon-only ui-helper-clearfix");
 
                 writer.writeAttribute("class", styleClassBuilder.build(), null);

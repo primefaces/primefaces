@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2024 PrimeTek Informatics
+ * Copyright (c) 2009-2025 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,12 +26,15 @@ package org.primefaces.component.media;
 import org.primefaces.component.media.player.MediaPlayer;
 import org.primefaces.component.media.player.MediaPlayerFactory;
 import org.primefaces.component.media.player.PDFPlayer;
+import org.primefaces.model.StreamedContent;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.DynamicContentSrcBuilder;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.Lazy;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
@@ -119,9 +122,31 @@ public class MediaRenderer extends CoreRenderer {
         if (media.getPlayer() != null) {
             return MediaPlayerFactory.getPlayer(media.getPlayer());
         }
-        else if (media.getValue() instanceof String) {
+
+        Object value = media.getValue();
+
+        // resolve by content-type
+        if (value instanceof StreamedContent) {
             Map<String, MediaPlayer> players = MediaPlayerFactory.getPlayers();
-            String[] tokens = ((String) media.getValue()).split("\\.");
+            for (MediaPlayer mp : players.values()) {
+                if (Objects.equals(mp.getType(), ((StreamedContent) value).getContentType())) {
+                    return mp;
+                }
+            }
+        }
+
+        // resolve by filename
+        String filename = null;
+        if (value instanceof String) {
+            filename = (String) value;
+        }
+        else if (value instanceof StreamedContent) {
+            filename = ((StreamedContent) value).getName();
+        }
+
+        if (LangUtils.isNotBlank(filename)) {
+            Map<String, MediaPlayer> players = MediaPlayerFactory.getPlayers();
+            String[] tokens = filename.split("\\.");
             String type = tokens[tokens.length - 1];
 
             for (MediaPlayer mp : players.values()) {
