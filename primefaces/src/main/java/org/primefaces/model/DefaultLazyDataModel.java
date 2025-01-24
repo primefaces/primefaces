@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -121,9 +122,12 @@ public class DefaultLazyDataModel<T> extends LazyDataModel<T> {
         FacesContext context = FacesContext.getCurrentInstance();
         PropertyDescriptorResolver propResolver = PrimeApplicationContext.getCurrentInstance(context).getPropertyDescriptorResolver();
         Locale locale = LocaleUtils.getCurrentLocale(context);
+        UIComponent source = UIComponent.getCurrentComponent(context);
 
         FilterMeta globalFilter = filterBy.get(FilterMeta.GLOBAL_FILTER_KEY);
         boolean hasGlobalFilter = (globalFilter != null && globalFilter.isActive()) || filter != null;
+
+        AtomicReference<Object> fieldValueHolder = new AtomicReference<>();
 
         return values.stream()
                 .filter(obj -> {
@@ -157,7 +161,25 @@ public class DefaultLazyDataModel<T> extends LazyDataModel<T> {
                             continue;
                         }
 
-                        Object fieldValue = propResolver.getValue(obj, filterMeta.getField());
+                        fieldValueHolder.set(null);
+
+                        // in case its generated, we can just directly use reflection
+                        if (filterMeta.isFilterByGenerated()) {
+                            fieldValueHolder.set(propResolver.getValue(obj, filterMeta.getField()));
+                        }
+                        // otherwise it's a user-defined filterBy expression
+                        else {
+                            if (source instanceof UITable) {
+                                UITable table = (UITable) source;
+                                table.invokeOnColumn(filterMeta.getColumnKey(), (column) -> {
+                                    Object localValue = ComponentUtils.executeInRequestScope(context, table.getVar(), obj,
+                                            () -> filterMeta.getLocalValue(context.getELContext(), column));
+                                    fieldValueHolder.set(localValue);
+                                });
+                            }
+                        }
+
+                        Object fieldValue = fieldValueHolder.get();
                         Object filterValue = filterMeta.getFilterValue();
                         Object convertedFilterValue = null;
 
