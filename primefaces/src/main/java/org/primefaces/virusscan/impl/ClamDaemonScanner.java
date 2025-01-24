@@ -98,7 +98,7 @@ public class ClamDaemonScanner implements VirusScanner {
 
             String message = new String(reply, StandardCharsets.US_ASCII).trim();
 
-            LOGGER.log(Level.INFO, "Scanner replied with message: {0}", message);
+            LOGGER.log(Level.FINE, "Scanner replied with message: {0}", message);
 
             if (!ClamDaemonClient.isCleanReply(reply)) {
                 String error = createErrorMessage(file, message);
