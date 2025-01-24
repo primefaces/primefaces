@@ -30,7 +30,7 @@ PrimeFaces.widget.TriStateCheckbox = PrimeFaces.widget.BaseWidget.extend({
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init:function (cfg) {
+    init: function(cfg) {
         this._super(cfg);
 
         this.input = $(this.jqId + '_input');
@@ -108,7 +108,7 @@ PrimeFaces.widget.TriStateCheckbox = PrimeFaces.widget.BaseWidget.extend({
      * Toggles this tri state checkbox in the given direction. Moves between unchecked, half-checked, and fully-checked.
      * @param {-1 | 1} direction `-1` to move backwards through the states, `+1` to move forward through the states 
      */
-    toggle: function (direction) {
+    toggle: function(direction) {
         if (!this.disabled) {
             // default to switch to next state
             if (isNaN(direction)) {

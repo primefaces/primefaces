@@ -27,6 +27,8 @@ import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractInputComponent;
 import org.primefaces.selenium.findby.FindByParentPartialId;
 
+import java.util.Objects;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -61,7 +63,7 @@ public abstract class TriStateCheckbox extends AbstractInputComponent {
     }
 
     public void setValue(Boolean value) {
-        while (!getValue().equals(value)) {
+        while (!Objects.equals(getValue(), value)) {
             click();
         }
     }
