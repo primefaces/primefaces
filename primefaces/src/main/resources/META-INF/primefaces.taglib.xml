@@ -433,7 +433,7 @@
             <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
-            <description>If true, components which autoUpdate="true" will not be updated for this request. If not specified, or the value is false, no such
+            <description>If true, components which use p:autoUpdate will not be updated for this request. If not specified, or the value is false, no such
                 indication is made.
             </description>
             <name>ignoreAutoUpdate</name>
@@ -6651,7 +6651,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[If true, components which autoUpdate="true" will not be updated for this request. If not specified, or the value is false, no such indication is made.]]>
+                <![CDATA[If true, components which use p:autoUpdate will not be updated for this request. If not specified, or the value is false, no such indication is made.]]>
             </description>
             <name>ignoreAutoUpdate</name>
             <required>false</required>
@@ -7135,7 +7135,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[If true, components which autoUpdate="true" will not be updated for this request. If not specified, or the value is false, no such indication is made.]]>
+                <![CDATA[If true, components which use p:autoUpdate will not be updated for this request. If not specified, or the value is false, no such indication is made.]]>
             </description>
             <name>ignoreAutoUpdate</name>
             <required>false</required>
@@ -11173,6 +11173,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+         <attribute>
+            <description>
+                <![CDATA[If true, components which use p:autoUpdate will not be updated for this request. If not specified, or the value is false, no such indication is made.]]>
+            </description>
+            <name>ignoreAutoUpdate</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -12394,7 +12402,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[If true, components which autoUpdate="true" will not be updated for this request. If not specified, or the value is false, no such indication is made.]]>
+                <![CDATA[If true, components which use p:autoUpdate will not be updated for this request. If not specified, or the value is false, no such indication is made.]]>
             </description>
             <name>ignoreAutoUpdate</name>
             <required>false</required>
@@ -17903,7 +17911,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[If true, components which autoUpdate="true" will not be updated for this request. If not specified, or the value is false, no such indication is made.]]>
+                <![CDATA[If true, components which use p:autoUpdate will not be updated for this request. If not specified, or the value is false, no such indication is made.]]>
             </description>
             <name>ignoreAutoUpdate</name>
             <required>false</required>
@@ -21293,7 +21301,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[If true, components which autoUpdate="true" will not be updated for this request. If not specified, or the value is false, no such indication is made.]]>
+                <![CDATA[If true, components which use p:autoUpdate will not be updated for this request. If not specified, or the value is false, no such indication is made.]]>
             </description>
             <name>ignoreAutoUpdate</name>
             <required>false</required>
@@ -21936,7 +21944,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[If true, components which autoUpdate="true" will not be updated for this request. If not specified, or the value is false, no such indication is made.]]>
+                <![CDATA[If true, components which use p:autoUpdate will not be updated for this request. If not specified, or the value is false, no such indication is made.]]>
             </description>
             <name>ignoreAutoUpdate</name>
             <required>false</required>
@@ -27154,7 +27162,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[If true, components which autoUpdate="true" will not be updated for this request. If not specified, or the value is false, no such indication is made.]]>
+                <![CDATA[If true, components which use p:autoUpdate will not be updated for this request. If not specified, or the value is false, no such indication is made.]]>
             </description>
             <name>ignoreAutoUpdate</name>
             <required>false</required>

@@ -103,6 +103,7 @@ public class FileUploadRenderer extends CoreRenderer {
                 .attr("global", fileUpload.isGlobal(), true)
                 .attr("disabled", fileUpload.isDisabled(), false)
                 .attr("dropZone", SearchExpressionUtils.resolveClientIdsForClientSide(context, fileUpload, fileUpload.getDropZone()))
+                .attr("ignoreAutoUpdate", fileUpload.isIgnoreAutoUpdate(), false)
                 .callback("onstart", "function()", fileUpload.getOnstart())
                 .callback("onerror", "function()", fileUpload.getOnerror())
                 .callback("oncomplete", "function(args)", fileUpload.getOncomplete())

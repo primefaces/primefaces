@@ -36,50 +36,51 @@ public abstract class FileUploadBase extends UIInput implements Widget {
 
     public enum PropertyKeys {
 
-        widgetVar,
-        style,
-        styleClass,
-        update,
-        global,
-        process,
-        listener,
-        multiple,
-        auto,
-        label,
-        mode,
-        uploadLabel,
-        cancelLabel,
-        dragDrop,
-        onstart,
-        oncomplete,
-        onerror,
-        onupload,
-        onvalidationfailure,
-        oncancel,
-        disabled,
-        messageTemplate,
-        previewWidth,
-        skinSimple,
         accept,
-        sequential,
-        chooseIcon,
-        uploadIcon,
+        auto,
+        cancelButtonStyleClass,
+        cancelButtonTitle,
         cancelIcon,
-        onAdd,
-        validateContentType,
-        virusScan,
+        cancelLabel,
+        chooseButtonStyleClass,
+        chooseButtonTitle,
+        chooseIcon,
+        disabled,
+        displayFilename,
+        dragDrop,
+        dropZone,
+        global,
+        ignoreAutoUpdate,
+        label,
+        listener,
         maxChunkSize,
         maxRetries,
+        messageTemplate,
+        mode,
+        multiple,
+        onAdd,
+        oncancel,
+        oncomplete,
+        onerror,
+        onstart,
+        onupload,
+        onvalidationfailure,
+        previewWidth,
+        process,
         retryTimeout,
+        sequential,
+        skinSimple,
+        style,
+        styleClass,
         title,
-        chooseButtonTitle,
-        uploadButtonTitle,
-        cancelButtonTitle,
-        chooseButtonStyleClass,
+        update,
         uploadButtonStyleClass,
-        cancelButtonStyleClass,
-        dropZone,
-        displayFilename
+        uploadButtonTitle,
+        uploadIcon,
+        uploadLabel,
+        validateContentType,
+        virusScan,
+        widgetVar
     }
 
     public FileUploadBase() {
@@ -441,5 +442,13 @@ public abstract class FileUploadBase extends UIInput implements Widget {
 
     public void setDisplayFilename(boolean displayFilename) {
         getStateHelper().put(PropertyKeys.displayFilename, displayFilename);
+    }
+
+    public boolean isIgnoreAutoUpdate() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.ignoreAutoUpdate, false);
+    }
+
+    public void setIgnoreAutoUpdate(boolean ignoreAutoUpdate) {
+        getStateHelper().put(PropertyKeys.ignoreAutoUpdate, ignoreAutoUpdate);
     }
 }
