@@ -1220,9 +1220,10 @@ if (!PrimeFaces.ajax) {
              * @param {string} source The id of the request source.
              * @param {string} [process] A comma separated list of components which should be processed.
              * @param {string} [update] A comma separated list of components which should be updated.
+             * @param {boolean} [ignoreAutoUpdate] If true, components which use `p:autoUpdate` will not be updated for this request.
              * @return {FormData} The newly created form data.
              */
-            createFacesAjaxFormData: function(form, parameterPrefix, source, process, update) {
+            createFacesAjaxFormData: function(form, parameterPrefix, source, process, update, ignoreAutoUpdate) {
                 var formData = new FormData();
 
                 PrimeFaces.ajax.Request.addFormData(formData, PrimeFaces.PARTIAL_REQUEST_PARAM, true, parameterPrefix);
@@ -1232,6 +1233,9 @@ if (!PrimeFaces.ajax) {
                 }
                 if (update) {
                     PrimeFaces.ajax.Request.addFormData(formData, PrimeFaces.PARTIAL_UPDATE_PARAM, update, parameterPrefix);
+                }
+                if (ignoreAutoUpdate) {
+                    PrimeFaces.ajax.Request.addFormData(formData, PrimeFaces.IGNORE_AUTO_UPDATE_PARAM, true, parameterPrefix);
                 }
 
                 // Faces

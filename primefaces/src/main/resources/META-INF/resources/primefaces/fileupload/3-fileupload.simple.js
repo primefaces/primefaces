@@ -204,10 +204,10 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
         if (!validationResult.valid) {
             return;
         }
-
+        var ignoreAutoUpdate = this.cfg.ignoreAutoUpdate;
         var files = this.input[0].files;
         var parameterPrefix = PrimeFaces.ajax.Request.extractParameterNamespace(this.form);
-        var formData = PrimeFaces.ajax.Request.createFacesAjaxFormData(this.form, parameterPrefix, this.id, process, update);
+        var formData = PrimeFaces.ajax.Request.createFacesAjaxFormData(this.form, parameterPrefix, this.id, process, update, ignoreAutoUpdate);
 
         if($this.cfg.onstart) {
             $this.cfg.onstart.call($this);

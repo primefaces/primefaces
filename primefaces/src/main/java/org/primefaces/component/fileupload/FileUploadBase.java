@@ -85,7 +85,8 @@ public abstract class FileUploadBase extends UIInput implements Widget {
         uploadButtonStyleClass,
         cancelButtonStyleClass,
         dropZone,
-        displayFilename
+        displayFilename,
+        ignoreAutoUpdate
     }
 
     public FileUploadBase() {
@@ -477,5 +478,13 @@ public abstract class FileUploadBase extends UIInput implements Widget {
 
     public void setDisplayFilename(boolean displayFilename) {
         getStateHelper().put(PropertyKeys.displayFilename, displayFilename);
+    }
+
+    public boolean isIgnoreAutoUpdate() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.ignoreAutoUpdate, false);
+    }
+
+    public void setIgnoreAutoUpdate(boolean ignoreAutoUpdate) {
+        getStateHelper().put(PropertyKeys.ignoreAutoUpdate, ignoreAutoUpdate);
     }
 }

@@ -704,6 +704,9 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             var update = PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(this.jq, this.cfg.update).join(' ');
             PrimeFaces.ajax.Request.addParam(params, PrimeFaces.PARTIAL_UPDATE_PARAM, update, parameterPrefix);
         }
+        if (this.cfg.ignoreAutoUpdate) {
+            PrimeFaces.ajax.Request.addParam(params, PrimeFaces.IGNORE_AUTO_UPDATE_PARAM, true, parameterPrefix);
+        }
 
         return params;
     },
