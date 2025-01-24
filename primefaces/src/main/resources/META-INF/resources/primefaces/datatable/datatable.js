@@ -2814,7 +2814,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * otherwise.
      */
     selectRowsInRange: function(row, silent) {
-        var rows = this.tbody.children(),
+        var rows = this.tbody.children('.ui-datatable-selectable'),
             rowMeta = this.getRowMeta(row),
             offset = (this.cfg.paginator && this.cfg.paginator.page >= 0) ? this.cfg.paginator.rows * this.cfg.paginator.page : 0,
             newCursorIndex = offset > this.originRowMeta.index ? this.originRowMeta.index : this.originRowMeta.index - offset,
