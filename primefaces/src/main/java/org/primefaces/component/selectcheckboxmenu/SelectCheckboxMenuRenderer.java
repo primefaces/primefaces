@@ -378,33 +378,33 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", SelectCheckboxMenu.HEADER_CLASS, null);
 
-        //determine if any of the items is not selected
-        boolean notChecked = selectItems.stream()
-                .flatMap(selectItem -> {
-                    if (selectItem instanceof SelectItemGroup) {
-                        //convert children to stream
-                        final SelectItemGroup selectItemGroup = (SelectItemGroup) selectItem;
-                        return Stream.of(selectItemGroup.getSelectItems());
-                    }
-                    else {
-                        return Stream.of(selectItem);
-                    }
-                })
-                .anyMatch(selectItem -> {
-                    final Object value;
-                    if (submittedValues != null) {
-                        //use submitted string representations of values
-                        value = getOptionAsString(context, menu, converter, selectItem.getValue());
-                    }
-                    else {
-                        //use initial values
-                        value = selectItem.getValue();
-                    }
-                    return !isSelected(context, menu, value, valuesArray, converter);
-                });
+        if (menu.isShowSelectAll()) {
+            // determine if any of the items is not selected
+            boolean notChecked = selectItems.stream().flatMap(selectItem -> {
+                if (selectItem instanceof SelectItemGroup) {
+                    // convert children to stream
+                    final SelectItemGroup selectItemGroup = (SelectItemGroup) selectItem;
+                    return Stream.of(selectItemGroup.getSelectItems());
+                }
+                else {
+                    return Stream.of(selectItem);
+                }
+            }).anyMatch(selectItem -> {
+                final Object value;
+                if (submittedValues != null) {
+                    // use submitted string representations of values
+                    value = getOptionAsString(context, menu, converter, selectItem.getValue());
+                }
+                else {
+                    // use initial values
+                    value = selectItem.getValue();
+                }
+                return !isSelected(context, menu, value, valuesArray, converter);
+            });
 
-        //toggler
-        encodeCheckbox(context, null, false, !notChecked, null, null, -1, -1);
+            // toggler
+            encodeCheckbox(context, null, false, !notChecked, null, null, -1, -1);
+        }
 
         //filter
         if (menu.isFilter()) {

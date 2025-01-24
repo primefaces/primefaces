@@ -50,6 +50,7 @@ requiredMessage | null | String | Message to be displayed when required field va
 scrollHeight | null | String | Maximum height of the overlay, e.g., "200vh" or "200%". Default is "200px".
 selectedLabel | null | String | Label to be shown in updateLabel mode when one or more items are selected. If not set the label is shown.
 showHeader | true | Boolean | When enabled, the header of panel is displayed.
+showSelectAll | true | Boolean | When enabled, the select all checkbox is displayed.
 style | null | String | Inline style of the component.
 styleClass | null | String | Style class of the container.
 tabindex | null | String | Position of the element in the tabbing order.

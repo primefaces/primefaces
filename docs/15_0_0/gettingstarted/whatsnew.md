@@ -54,6 +54,7 @@ Look into [migration guide](https://primefaces.github.io/primefaces/15_0_0/#/../
         * `primefaces.FileValidator.FILENAME_INVALID_WINDOWS=Invalid Windows filename: {0}`
         * `primefaces.FileValidator.FILENAME_EMPTY=Filename cannot be empty or null`
     * Added `empty` facet to add placeholder content
+    * Added `ignoreAutoUpdate` attribute which if set to true, components which use `p:autoUpdate` will not be updated for this request.
 
 * InputNumber
     * Added `modifyValueOnUpDownArrow` which allows the user to increment or decrement the element value with the up and down arrow keys. Default is true.
@@ -61,6 +62,9 @@ Look into [migration guide](https://primefaces.github.io/primefaces/15_0_0/#/../
 
 * Paginator 
     * Added `rowsPerPage` in the PageEvent AJAX event
+
+* SelectCheckboxMenu
+    * Added `showSelectAll` attribute to display the select all checkbox
 
 * SelectOneMenu
     * Added `clear` AJAX event when in `editable="true"` and you clear out a value with BACKSPACE/DELETE

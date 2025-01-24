@@ -37,29 +37,30 @@ public abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox impl
 
     public enum PropertyKeys {
 
-        widgetVar,
-        scrollHeight,
-        onShow,
-        onHide,
-        filter,
-        filterMatchMode,
-        filterFunction,
-        filterPlaceholder,
+        appendTo,
         caseSensitive,
+        dynamic,
+        emptyLabel,
+        filter,
+        filterFunction,
+        filterMatchMode,
+        filterNormalize,
+        filterPlaceholder,
+        labelSeparator,
+        multiple,
+        onHide,
+        onShow,
         panelStyle,
         panelStyleClass,
-        var,
-        appendTo,
+        scrollHeight,
+        selectedLabel,
+        showHeader,
+        showSelectAll,
         tabindex,
         title,
-        showHeader,
         updateLabel,
-        multiple,
-        dynamic,
-        labelSeparator,
-        emptyLabel,
-        selectedLabel,
-        filterNormalize
+        var,
+        widgetVar
     }
 
     public SelectCheckboxMenuBase() {
@@ -201,6 +202,14 @@ public abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox impl
 
     public void setShowHeader(boolean showHeader) {
         getStateHelper().put(PropertyKeys.showHeader, showHeader);
+    }
+
+    public boolean isShowSelectAll() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showSelectAll, true);
+    }
+
+    public void setShowSelectAll(boolean showSelectAll) {
+        getStateHelper().put(PropertyKeys.showSelectAll, showSelectAll);
     }
 
     public boolean isUpdateLabel() {
