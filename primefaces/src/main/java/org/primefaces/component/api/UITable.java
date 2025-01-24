@@ -139,11 +139,15 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
             ValueExpression filterByVE = userFM.getFilterBy();
             if (filterByVE == null) {
                 filterByVE = UIColumn.createValueExpressionFromField(context, getVar(), userFM.getField());
+
+                intlFM.setFilterBy(filterByVE);
                 intlFM.setFilterByGenerated(true);
+            }
+            else {
+                intlFM.setFilterBy(filterByVE);
             }
 
             intlFM.setFilterValue(userFM.getFilterValue());
-            intlFM.setFilterBy(filterByVE);
             intlFM.setConstraint(userFM.getConstraint());
             intlFM.setMatchMode(userFM.getMatchMode());
         }
