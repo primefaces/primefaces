@@ -139,6 +139,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
             ValueExpression filterByVE = userFM.getFilterBy();
             if (filterByVE == null) {
                 filterByVE = UIColumn.createValueExpressionFromField(context, getVar(), userFM.getField());
+                intlFM.setFilterByGenerated(true);
             }
 
             intlFM.setFilterValue(userFM.getFilterValue());
