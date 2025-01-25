@@ -905,14 +905,14 @@ if (!PrimeFaces.utils) {
                 return allowTypes;
             }
 
-            // formats like .*\.(xls|xlsx|csv|txt)
-            let match = allowTypes.match(/\/\.\*\\\.\(?(.*?)\)?\$?\//);
+            // formats like /(\.|\/)(gif|jpeg|jpg|png)$/
+            let match = allowTypes.match(/\/\(\.\|\/\)\(?(.*?)\)?\$?\//);
             if (match) {
                 return '.' + match[1].replace(/\|/g, ', .');
             }
 
-            // formats like /(\.|\/)(gif|jpeg|jpg|png)$/
-            match = allowTypes.match(/\/(\.|\/)\(?(.*?)\)?\$?\//);
+            // formats like .*\.(xls|xlsx|csv|txt)
+            match = allowTypes.match(/\/\.\*\\\.\(?(.*?)\)?\$?\//);
             if (match) {
                 return '.' + match[1].replace(/\|/g, ', .');
             }
