@@ -911,7 +911,7 @@ if (!PrimeFaces.utils) {
             if (bytes === 0)
                 return 'N/A';
 
-            var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+            var sizes = PrimeFaces.getLocaleLabel('fileSizeTypes');
             var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
             if (i === 0)
                 return bytes + ' ' + sizes[i];

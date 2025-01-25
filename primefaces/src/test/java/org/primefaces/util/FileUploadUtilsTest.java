@@ -426,8 +426,8 @@ class FileUploadUtilsTest {
 
     @Test
     void formatBytes() {
-        assertEquals("1000 Bytes", FileUploadUtils.formatBytes(1000L, Locale.US));
-        assertEquals("1.0 KB", FileUploadUtils.formatBytes(1025L, Locale.US));
+        assertEquals("1000 B", FileUploadUtils.formatBytes(1000L, Locale.US));
+        assertEquals("1.0 kB", FileUploadUtils.formatBytes(1025L, Locale.US));
     }
 
     @Test
