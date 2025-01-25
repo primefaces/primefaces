@@ -33,6 +33,7 @@ import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.util.Locale;
+import java.util.stream.Stream;
 
 import javax.faces.FacesException;
 import javax.faces.application.Application;
@@ -43,6 +44,9 @@ import javax.faces.validator.ValidatorException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
@@ -438,5 +442,37 @@ class FileUploadUtilsTest {
         // validate fileName which contains <, which is invalid in a filename
         assertThrows(FacesException.class, () -> FileUploadUtils.requireValidFilename(context, "someFil<eWithUmlautsßöäü.txt"));
     }
+
+    private static Stream<Arguments> allowTypesTestSource() {
+        return Stream.of(
+                Arguments.of("/(\\.|\\/)(gif|jpeg|jpg|png)$/", ".gif, .jpeg, .jpg, .png"),
+                Arguments.of("/(\\.|\\/)(gif|jpe?g|png)$/", ".gif, .jpe?g, .png"),
+                Arguments.of("/(\\.|\\/)(xls|xlsx)$/", ".xls, .xlsx"),
+                Arguments.of("/(\\.|\\/)(xls|xlsx)$/i", ".xls, .xlsx"),
+                Arguments.of("/(\\.|\\/)(xls)$/", ".xls"),
+                Arguments.of("/(\\.|\\/)(xls)$/i", ".xls"),
+                Arguments.of("/(\\.|\\/)(xls)/", ".xls"),
+                Arguments.of("/.*\\.csv/", ".csv"),
+                Arguments.of("/.*\\.(txt|lnc)/", ".txt, .lnc"),
+                Arguments.of("/.*\\.(xls|xlsx|csv|txt)$/", ".xls, .xlsx, .csv, .txt"),
+                Arguments.of("/.*\\.(zip|xlsx?|csv)/", ".zip, .xlsx?, .csv"),
+                Arguments.of(null, null),
+                Arguments.of("//", "//"),
+                Arguments.of("/.*/", "/.*/"),
+                Arguments.of("", ""),
+                Arguments.of("/(?i)(.*file.*)\\.(xml)/", "/(?i)(.*file.*)\\.(xml)/"),
+                Arguments.of("/[A-Za-z0-9]{2}E[0-9]+\\.[Zz][Ii][Pp]/", "/[A-Za-z0-9]{2}E[0-9]+\\.[Zz][Ii][Pp]/"),
+                Arguments.of("/localizationsImport_[0-9]{1,2}\\.[0-9]{1,2}\\.[0-9]{4}_[0-9]{1,2}\\.[0-9]{1,2}\\.[0-9]{4}\\.zip/",
+                        "/localizationsImport_[0-9]{1,2}\\.[0-9]{1,2}\\.[0-9]{4}_[0-9]{1,2}\\.[0-9]{1,2}\\.[0-9]{4}\\.zip/")
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("allowTypesTestSource")
+    void allowTypes(String input, String expected) {
+        assertEquals(expected, FileUploadUtils.formatAllowTypes(input));
+    }
+
+
 
 }
