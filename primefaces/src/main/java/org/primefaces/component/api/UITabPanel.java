@@ -973,8 +973,8 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         else {
             // override the behavior from UIComponent to visit
             // all children once per "row"
-
-            if (ComponentUtils.isSkipIteration(context, context.getFacesContext())) {
+            // #13169 do not skip if tabs are dynamic each one needs to be visited
+            if (ComponentUtils.isSkipIteration(context, context.getFacesContext()) && !isDynamic()) {
                 return super.visitTree(context, callback);
             }
 
@@ -1035,8 +1035,18 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                                 while (i <= end && isIndexAvailable()) {
                                     for (int j = 0, childCount = getChildCount(); j < childCount; j++) {
                                         UIComponent child = getChildren().get(j);
-                                        if (child.visitTree(context, callback)) {
-                                            return true;
+                                        if (child instanceof Tab) {
+                                            Tab tab = (Tab) child;
+                                            if (tab.isLoaded()) {
+                                                if (tab.visitTree(context, callback)) {
+                                                    return true;
+                                                }
+                                            }
+                                        }
+                                        else {
+                                            if (child.visitTree(context, callback)) {
+                                                return true;
+                                            }
                                         }
                                     }
 
