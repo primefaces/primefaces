@@ -1333,7 +1333,7 @@
         renderMonthView: function() {
             var backwardNavigator = this.renderBackwardNavigator(this.options.locale.prevYear),
                 forwardNavigator = this.renderForwardNavigator(this.options.locale.nextYear),
-                yearElement = this.renderTitleYearElement(this.viewDate.getFullYear()),
+                yearElement = this.renderTitleYearElement(this.viewDate.getFullYear(), 0),
                 months = this.renderMonthViewMonths();
 
             return ('<div class="ui-datepicker-header ui-widget-header ui-helper-clearfix">' +
