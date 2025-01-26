@@ -416,6 +416,13 @@ public class FileUploadUtils {
         return allowTypes != null ? allowTypes.replace("/(\\.|\\/)(", "").replace(")$/", "") : null;
     }
 
+    /**
+     * Formats the given data size in a more human-friendly format, e.g., `1.5 MB` etc.
+     * @param bytes File size in bytes to format
+     * @param locale The locale to use for number formatting
+     * @return The given file size, formatted in a more human-friendly format. Returns empty string if bytes is null,
+     *         or "N/A" if bytes is 0.
+     */
     public static String formatBytes(Long bytes, Locale locale) {
         if (bytes == null) {
             return "";
@@ -425,7 +432,7 @@ public class FileUploadUtils {
             return "N/A";
         }
 
-        String[] sizes = new String[] {"Bytes", "KB", "MB", "GB", "TB"};
+        String[] sizes = new String[] {"B", "kB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"};
         int i = (int) Math.floor(Math.log(bytes) / Math.log(1024));
         if (i == 0) {
             return bytes + " " + sizes[i];
