@@ -906,7 +906,7 @@ if (!PrimeFaces.utils) {
             }
 
             // formats like /(\.|\/)(gif|jpeg|jpg|png)$/
-            let match = allowTypes.match(/\/\(\.\|\/\)\(?(.*?)\)?\$?\//);
+            let match = allowTypes.match(/\/\(\\\.\|\\\/\)\(?(.*?)\)?\$?\//);
             if (match) {
                 return '.' + match[1].replace(/\|/g, ', .');
             }
