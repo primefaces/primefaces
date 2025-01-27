@@ -28,6 +28,7 @@ import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.util.LangUtils;
+import org.primefaces.util.StyleClassBuilder;
 
 import java.io.IOException;
 import java.util.List;
@@ -76,38 +77,31 @@ public class StepsRenderer extends BaseMenuRenderer {
 
     protected void encodeItem(FacesContext context, Steps steps, MenuItem item, int activeIndex, int index) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String itemClass;
+
+        String containerStyle = item.getContainerStyle();
+        StyleClassBuilder containerStyleClass = getStyleClassBuilder(context)
+                .add(item.getContainerStyleClass());
 
         if (steps.isReadonly()) {
-            itemClass = (index == activeIndex) ? Steps.ACTIVE_ITEM_CLASS : Steps.INACTIVE_ITEM_CLASS;
+            containerStyleClass.add(index == activeIndex, Steps.ACTIVE_ITEM_CLASS, Steps.INACTIVE_ITEM_CLASS);
         }
         else {
             if (index == activeIndex) {
-                if (steps.isActiveStepExecutable()) {
-                    itemClass = Steps.VISITED_ITEM_CLASS;
-                }
-                else {
-                    itemClass = Steps.ACTIVE_ITEM_CLASS;
-                }
+                containerStyleClass.add(Steps.ACTIVE_ITEM_CLASS);
+
+                containerStyleClass.add(steps.isActiveStepExecutable(), Steps.EXECUTABLE_ITEM_CLASS);
             }
             else if (index < activeIndex) {
-                itemClass = Steps.VISITED_ITEM_CLASS;
+                containerStyleClass.add(Steps.VISITED_ITEM_CLASS);
             }
             else {
-                itemClass = Steps.INACTIVE_ITEM_CLASS;
+                containerStyleClass.add(Steps.INACTIVE_ITEM_CLASS);
             }
-        }
-
-        String containerStyle = item.getContainerStyle();
-        String containerStyleClass = item.getContainerStyleClass();
-
-        if (containerStyleClass != null) {
-            itemClass = itemClass + " " + containerStyleClass;
         }
 
         //header container
         writer.startElement("li", null);
-        writer.writeAttribute("class", itemClass, null);
+        writer.writeAttribute("class", containerStyleClass.build(), null);
         writer.writeAttribute("role", "tab", null);
         if (containerStyle != null) {
             writer.writeAttribute("style", containerStyle, null);
@@ -138,7 +132,7 @@ public class StepsRenderer extends BaseMenuRenderer {
             writer.writeAttribute("style", style, null);
         }
 
-        boolean isDisabled = steps.isActiveStepExecutable() ?  activeIndex < index : activeIndex <= index;
+        boolean isDisabled = steps.isActiveStepExecutable() ? activeIndex < index : activeIndex <= index;
         if (steps.isReadonly() || menuitem.isDisabled() || isDisabled) {
             writer.writeAttribute("tabindex", "-1", null);
             writer.writeAttribute("href", "#", null);
