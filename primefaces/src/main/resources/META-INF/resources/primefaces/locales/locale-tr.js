@@ -10,7 +10,7 @@ if (window.PrimeFaces) {
     chooseDate: "Tarih Seçiniz",
     chooseMonth: "Ay Seçiniz",
     chooseYear: "Yıl Seçiniz",
-    clear: "Temiz",
+    clear: "Temizle",
     completed: "Tamamlandı",
     contains: "Barındırır",
     custom: "Özel",
