@@ -515,7 +515,7 @@ body .ui-menu .ui-divider.ui-divider-horizontal {
     text-align: center;
 }
 
-.ui-steps .ui-steps-item.ui-state-highlight .ui-menuitem-link,
+.ui-steps .ui-steps-item.ui-state-highlight:not(.ui-steps-item-executable) .ui-menuitem-link,
 .ui-steps .ui-steps-item.ui-state-disabled .ui-menuitem-link {
     cursor: default;
 }

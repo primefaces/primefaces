@@ -39,6 +39,7 @@ public class Steps extends StepsBase {
     public static final String INACTIVE_ITEM_CLASS = "ui-steps-item ui-state-default ui-state-disabled";
     public static final String ACTIVE_ITEM_CLASS = "ui-steps-item ui-state-highlight";
     public static final String VISITED_ITEM_CLASS = "ui-steps-item ui-state-default";
+    public static final String EXECUTABLE_ITEM_CLASS = "ui-steps-item-executable";
     public static final String STEP_NUMBER_CLASS = "ui-steps-number";
     public static final String STEP_NUMBER_ICON_CLASS = "ui-steps-number-icon";
     public static final String STEP_TITLE_CLASS = "ui-steps-title";
