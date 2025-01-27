@@ -83,4 +83,7 @@ Look into [migration guide](https://primefaces.github.io/primefaces/15_0_0/#/../
 * TreeTable
     * Added `filterNormalize` attribute to normalize the filter values (remove accents)
 
+* Wizard
+    * Added `highlightCompletedSteps` attribute to highlight completed steps
+
     
