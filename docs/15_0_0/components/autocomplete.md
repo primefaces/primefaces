@@ -230,6 +230,21 @@ add a new item. For example:
 Note that the panel is placed at the end of the body in the DOM tree, so not in the same form as the `AutoComplete`
 component is in. So you might want to wrap the contents of this facet in a form if needed.
 
+## Empty Message
+When there are no suggestions found the empty message is localized on the client side using the `emptySearchMessage` translation key.
+
+```js
+PrimeFaces.locales['en'].emptySearchMessage = 'No suggestions found';
+```
+
+However if you want to provide a custom empty message on a specific AutoComplete component, you can use the `widgetPostConstruct` attribute to change it.
+
+```xhtml
+<p:autoComplete completeMethod="#{bean.actionAutocomplete}"  widgetVar="autoComplete" value="#{bean.selectedValue}" > 
+   <f:attribute name="widgetPostConstruct" value="widget.emptyMessage = '#{bean.myCustomEmptyMessage}';"/>
+</p:autoComplete>
+```
+
 ## Multiple Selection
 `AutoComplete` supports multiple selection as well, to use this feature set multiple option to true and
 define a list as your back-end model. Use BACKSPACE key to remove a selected item and CTRL or SHIFT+BACKSPACE
@@ -425,5 +440,4 @@ As skinning style classes are global, see the main theming section for more info
 - Do not forget to use a converter when working with pojos.
 - Enable forceSelection if you would like to accept values only from suggested list.
 - Increase query delay to avoid unnecessary load to server as a result of user typing fast.
-- Use emptyMessage option to provide feedback to the users that there are no suggestions.
 - Enable caching to avoid duplicate queries.
