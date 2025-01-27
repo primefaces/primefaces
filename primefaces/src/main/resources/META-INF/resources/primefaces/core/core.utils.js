@@ -896,7 +896,29 @@ if (!PrimeFaces.utils) {
          * @return {string} The allowTypes formatted in a more human-friendly format.
          */
         formatAllowTypes: function(allowTypes) {
-            return allowTypes === undefined ? '' : allowTypes.replace("/(\\.|\\/)(", "").replace(")$/", "");
+            if (!allowTypes) {
+                return allowTypes;
+            }
+
+            // not a correct regex pattern
+            if (!allowTypes.startsWith('/')) {
+                return allowTypes;
+            }
+
+            // formats like /(\.|\/)(gif|jpeg|jpg|png)$/
+            let match = allowTypes.match(/\/\(\\\.\|\\\/\)\(?(.*?)\)?\$?\//);
+            if (match) {
+                return '.' + match[1].replace(/\|/g, ', .');
+            }
+
+            // formats like .*\.(xls|xlsx|csv|txt)
+            match = allowTypes.match(/\/\.\*\\\.\(?(.*?)\)?\$?\//);
+            if (match) {
+                return '.' + match[1].replace(/\|/g, ', .');
+            }
+
+            // others return unchanged
+            return allowTypes;
         },
 
         /**
