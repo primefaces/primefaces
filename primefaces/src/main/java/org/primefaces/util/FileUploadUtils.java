@@ -419,7 +419,7 @@ public class FileUploadUtils {
      */
     public static String formatAllowTypes(String allowTypes) {
         // emtpy or null
-        if (allowTypes == null || allowTypes.isEmpty()) {
+        if (LangUtils.isBlank(allowTypes)) {
             return allowTypes;
         }
 
