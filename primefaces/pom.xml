@@ -784,6 +784,7 @@
                                 <include>menu/menu.contextmenu.js</include>
                                 <include>menu/menu.megamenu.js</include>
                                 <include>menu/menu.panelmenu.js</include>
+                                <include>menu/menu.steps.js</include>
                                 <include>menu/menu.tabmenu.js</include>
                                 <include>message/message.js</include>
                                 <include>messages/messages.js</include>
