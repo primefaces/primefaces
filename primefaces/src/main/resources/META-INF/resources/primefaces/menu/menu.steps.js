@@ -3,7 +3,13 @@
  * 
  * Steps is a menu component that displays steps of a workflow.
  *
- * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ * @prop {JQuery} items All menu item elements.
+ * @prop {JQuery} enabledItems All enabled manu item elements.
+ *
+ * @interface {PrimeFaces.widget.StepsCfg} cfg The configuration for the {@link  Steps| Steps widget}.
+ * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
+ * @extends {PrimeFaces.widget.StepsCfg} cfg
  */
 PrimeFaces.widget.Steps = PrimeFaces.widget.BaseWidget.extend({
 
