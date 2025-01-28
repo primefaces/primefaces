@@ -9,7 +9,7 @@
  * @interface {PrimeFaces.widget.StepsCfg} cfg The configuration for the {@link  Steps| Steps widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
- * @extends {PrimeFaces.widget.StepsCfg} cfg
+ * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  */
 PrimeFaces.widget.Steps = PrimeFaces.widget.BaseWidget.extend({
 
