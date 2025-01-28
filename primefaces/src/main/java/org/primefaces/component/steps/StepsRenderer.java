@@ -29,6 +29,7 @@ import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.StyleClassBuilder;
+import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 import java.util.List;
@@ -82,7 +83,7 @@ public class StepsRenderer extends BaseMenuRenderer {
         StyleClassBuilder containerStyleClass = getStyleClassBuilder(context)
                 .add(item.getContainerStyleClass());
 
-        if (steps.isReadonly()) {
+        if (steps.isReadonly() || item.isDisabled()) {
             containerStyleClass.add(index == activeIndex, Steps.ACTIVE_ITEM_CLASS, Steps.INACTIVE_ITEM_CLASS);
         }
         else {
@@ -92,7 +93,8 @@ public class StepsRenderer extends BaseMenuRenderer {
                 containerStyleClass.add(steps.isActiveStepExecutable(), Steps.EXECUTABLE_ITEM_CLASS);
             }
             else if (index < activeIndex) {
-                containerStyleClass.add(Steps.VISITED_ITEM_CLASS);
+                containerStyleClass.add(Steps.VISITED_ITEM_CLASS)
+                        .add(Steps.EXECUTABLE_ITEM_CLASS);
             }
             else {
                 containerStyleClass.add(Steps.INACTIVE_ITEM_CLASS);
@@ -173,7 +175,10 @@ public class StepsRenderer extends BaseMenuRenderer {
 
     @Override
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
-        //no widget
+        Steps menu = (Steps) abstractMenu;
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.init("Steps", menu);
+        wb.finish();
     }
 
 }
