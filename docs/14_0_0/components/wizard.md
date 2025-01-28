@@ -27,6 +27,7 @@ consists of several child tab components where each tab represents a step in the
 | style | null | String | Style of the main wizard container element.
 | styleClass | null | String | Style class of the main wizard container element.
 | flowListener | null | MethodExpr | Server side listener to invoke when wizard attempts to go forward or back.
+| highlightCompletedSteps | false | Boolean | If true, all completed steps are highlighted. If false, only the current step is highlighted.
 | showNavBar | true | Boolean | Specifies visibility of default navigator arrows.
 | showStepStatus | true | Boolean | Specifies visibility of default step title bar.
 | disableOnAjax | true | Boolean | If true, back and next navigation buttons will be disabled during Ajax requests triggered by the button.

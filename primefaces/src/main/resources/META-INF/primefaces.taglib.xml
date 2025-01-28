@@ -31402,6 +31402,14 @@
             <required>false</required>
             <type>java.lang.Integer</type>
         </attribute>
+        <attribute>
+            <description>
+                 <![CDATA[If true, all completed steps are highlighted. If false, only the current step is highlighted. Default is false.]]>
+            </description>
+            <name>highlightCompletedSteps</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
