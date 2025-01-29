@@ -197,17 +197,15 @@ if (!PrimeFaces.utils) {
                             }
                         }
 
-                        if(target.is(document.body)) {
-                            first.focus(1);
+                        const focusElement = (element) => {
+                            element.focus(1);
                             event.preventDefault();
-                        }
-                        else if(event.target === last[0] && !event.shiftKey) {
-                            first.focus(1);
-                            event.preventDefault();
-                        }
-                        else if (event.target === first[0] && event.shiftKey) {
-                            last.focus(1);
-                            event.preventDefault();
+                        };
+
+                        if (target.is(document.body) || ($(event.target).is(last) || last.has(event.target).length > 0) && !event.shiftKey) {
+                            focusElement(first);
+                        } else if (($(event.target).is(first) || first.has(event.target).length > 0) && event.shiftKey) {
+                            focusElement(last);
                         }
                     }
                 }
