@@ -45,11 +45,11 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
             PrimeFaces.queueTask(function() { $this.bindTriggers() }, 1);
         }
 
+        this.bindResizer();
+
         if (this.cfg.blocked) {
             this.show();
         }
-
-        this.bindResizer();
     },
 
     /**
@@ -89,8 +89,10 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
      */
     bindResizer: function() {
         var $this = this;
-        this.resizeHandler = PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_resize', this.target, function() {
-            $this.alignOverlay();
+        this.resizeHandler = PrimeFaces.utils.registerMutationObserver(this, this.target, function() {
+            if ($this.isBlocking()) {
+                $this.alignOverlay(false);
+            }
         });
     },
 
@@ -278,14 +280,13 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-    * Align the overlay so it covers its target component.
-    * @private
-    */
-    alignOverlay: function() {
+     * Align the overlay so it covers its target component. Updates the size and position of the blocker and content elements
+     * to match the target component's dimensions.
+     * @param {boolean} [forceUpdate=true] - Whether to force update the overlay dimensions even if they haven't changed
+     * @private
+     */
+    alignOverlay: function(forceUpdate = true) {
         this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.block);
-        if (this.blocker) {
-            this.blocker.css('z-index', PrimeFaces.nextZindex());
-        }
 
         //center position of content
         for (var i = 0; i < this.target.length; i++) {
@@ -303,34 +304,56 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
             var height = currentTarget.outerHeight(),
                 width = currentTarget.outerWidth(),
                 offset = currentTarget.offset();
-            var sizeAndPosition = {
-                'height': height + 'px',
-                'width': width + 'px',
-                'left': offset.left + 'px',
-                'top': offset.top + 'px'
-            };
-            blocker.css(sizeAndPosition);
+           
+            // Only update blocker CSS if dimensions changed
+            var currentBlockerHeight = blocker.height();
+            var currentBlockerWidth = blocker.width();
+            var currentBlockerOffset = blocker.offset();
 
-            var contentHeight = content.outerHeight();
-            var contentWidth = content.outerWidth();
-            // #9496 if display:none then we need to clone to get its dimensions
-            if (content.height() <= 0) {
-                var currentWidth = this.content[i].getBoundingClientRect().width;
-                var styleWidth = currentWidth ? 'width: ' + currentWidth + 'px' : '';
-                var clone = this.content[i].cloneNode(true);
-                clone.style.cssText = 'position: fixed; top: 0; left: 0; overflow: auto; visibility: hidden; pointer-events: none; height: unset; max-height: unset;' + styleWidth;
-                document.body.append(clone);
-                var jqClone = $(clone);
-                contentHeight = jqClone.outerHeight();
-                contentWidth = jqClone.outerWidth();
-                jqClone.remove();
+            if (forceUpdate || (height !== currentBlockerHeight || 
+                width !== currentBlockerWidth ||
+                offset.left !== currentBlockerOffset.left ||
+                offset.top !== currentBlockerOffset.top)) {
+
+                blocker.css({
+                    'height': height + 'px',
+                    'width': width + 'px',
+                    'left': offset.left + 'px',
+                    'top': offset.top + 'px',
+                    'z-index': PrimeFaces.nextZindex()
+                });
             }
 
-            content.css({
-                'left': ((blocker.width() - contentWidth) / 2) + 'px',
-                'top': ((blocker.height() - contentHeight) / 2) + 'px',
-                'z-index': PrimeFaces.nextZindex()
-            });
+            if (this.hasContent()) {
+                var contentHeight = content.outerHeight();
+                var contentWidth = content.outerWidth();
+
+                // #9496 if display:none then we need to clone to get its dimensions
+                if (content.height() <= 0) {
+                    var currentWidth = this.content[i].getBoundingClientRect().width;
+                    var styleWidth = currentWidth ? 'width: ' + currentWidth + 'px' : '';
+                    var clone = this.content[i].cloneNode(true);
+                    clone.style.cssText = 'position: fixed; top: 0; left: 0; overflow: auto; visibility: hidden; pointer-events: none; height: unset; max-height: unset;' + styleWidth;
+                    document.body.append(clone);
+                    var jqClone = $(clone);
+                    contentHeight = jqClone.outerHeight();
+                    contentWidth = jqClone.outerWidth();
+                    jqClone.remove();
+                }
+
+                // Only update content CSS if position changed
+                var currentContentLeft = parseFloat(content.css('left')) || 0;
+                var currentContentTop = parseFloat(content.css('top')) || 0;
+                var newContentLeft = ((blocker.width() - contentWidth) / 2);
+                var newContentTop = ((blocker.height() - contentHeight) / 2);
+                if (forceUpdate || (newContentLeft !== currentContentLeft || newContentTop !== currentContentTop)) {
+                    content.css({
+                        'left': newContentLeft + 'px',
+                        'top': newContentTop + 'px',
+                        'z-index': PrimeFaces.nextZindex()
+                    });
+                }
+            }
         }
     },
 

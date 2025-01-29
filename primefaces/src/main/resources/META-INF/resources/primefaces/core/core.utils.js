@@ -372,6 +372,75 @@ if (!PrimeFaces.utils) {
         },
 
         /**
+         * Registers a MutationObserver/ResizeObserver to watch for DOM changes that may affect element sizing/positioning.
+         * @param {PrimeFaces.widget.BaseWidget} widget The widget instance to register the observer for
+         * @param {JQuery | HTMLElement} element The element to observe for changes
+         * @param {() => void} resizeCallback Callback function to execute when relevant mutations occur
+         * @return {{bind: () => void, unbind: () => void}} Object containing bind and unbind functions for the observer
+         */
+        registerMutationObserver: function (widget, element, resizeCallback) {
+            const domElement = element instanceof jQuery ? element.get(0) : element;
+
+            const resizeObserver = new ResizeObserver(entries => {
+                const $entry = $(entries[0].target);
+                if ($entry && ($entry.is(":hidden") || $entry.css('visibility') === 'hidden')) {
+                    return;
+                }
+                resizeCallback();
+            });
+
+            const mutationObserver = new MutationObserver(mutations => {
+                // Check if mutation involves DOM position changes
+                const shouldCallback = mutations.some(mutation => {
+                    const {type, target, attributeName} = mutation;
+                    return (type === "childList" && target.id === domElement.id) ||
+                           (type === "attributes" && attributeName === "style" && target.id === domElement.id) ||
+                           (type === "attributes" && attributeName === "class");
+                });
+
+                if (shouldCallback) {
+                    // Debounce multiple mutations using requestAnimationFrame
+                    if (mutationObserver.rafId) {
+                        window.cancelAnimationFrame(mutationObserver.rafId);
+                    }
+                    mutationObserver.rafId = window.requestAnimationFrame(() => {
+                        resizeCallback();
+                    });
+                }
+            });
+
+            // Cleanup function to disconnect both observers
+            const unbindMutationObserver = function () {
+                resizeObserver.unobserve(domElement);
+                mutationObserver.disconnect();
+            };
+
+
+            // Add cleanup handlers to widget lifecycle
+            widget.addDestroyListener(unbindMutationObserver);
+            widget.addRefreshListener(unbindMutationObserver);
+
+            // Start observing DOM mutations
+            const bindMutationObserver = function () {
+                mutationObserver.observe(document.body, {
+                    childList: true,
+                    subtree: true,
+                    attributes: true
+                });
+
+                // Start observing the element for resizing
+                resizeObserver.observe(domElement);
+            };
+
+            bindMutationObserver();
+
+            return {
+                bind: bindMutationObserver,
+                unbind: unbindMutationObserver
+            };
+        },
+
+        /**
          * Sets up an overlay widget. Appends the overlay widget to the element as specified by the `appendTo`
          * attribute. Also makes sure the overlay widget is handled properly during AJAX updates.
          * @param {PrimeFaces.widget.DynamicOverlayWidget} widget An overlay widget instance.
