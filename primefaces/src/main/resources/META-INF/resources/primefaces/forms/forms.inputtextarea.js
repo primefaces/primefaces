@@ -109,14 +109,24 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      */
     applyMaxlength: function() {
-        var _self = this;
+        var $this = this;
 
         this.jq.on('keyup.inputtextarea-maxlength', function(e) {
-            var value = _self.jq.val(),
-            length = value.length;
+            var value = $this.jq.val(),
+            length = $this.cfg.countBytesAsChars ? PrimeFaces.utils.countBytes(value) : value.length;
 
-            if(length > _self.cfg.maxlength) {
-                _self.jq.val(value.slice(0, _self.cfg.maxlength));
+            if(length > $this.cfg.maxlength) {
+                // Trim by bytes if counting bytes, otherwise by chars
+                if ($this.cfg.countBytesAsChars) {
+                    // Keep removing chars from end until we're under byte limit
+                    while (PrimeFaces.utils.countBytes(value) > $this.cfg.maxlength) {
+                        value = value.slice(0, -1);
+                    }
+                    $this.jq.val(value);
+                }
+                else {
+                    $this.jq.val(value.slice(0, $this.cfg.maxlength));
+                }
             }
         });
     },
