@@ -64,7 +64,9 @@ PrimeFaces.widget.SelectListbox = PrimeFaces.widget.BaseWidget.extend({
         //scroll to selected
         var selected = this.options.filter(':selected:not(:disabled)');
         if(selected.length) {
-            PrimeFaces.scrollInView(this.listContainer, this.items.eq(selected.eq(0).index()));
+            var selectedItem = this.items.eq(selected.eq(0).index());
+            PrimeFaces.scrollInView(this.listContainer, selectedItem);
+            this.listElement.attr('aria-activedescendant', selectedItem.attr('id'));
         }
 
         this.bindEvents();
