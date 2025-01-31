@@ -16,6 +16,14 @@ if (!PrimeFaces.utils) {
     PrimeFaces.utils = {
 
         /**
+         * TextEncoder instance used for string encoding operations.
+         * Initialized as null and typically set to a TextEncoder instance when needed.
+         * @type {TextEncoder|null}
+         * @private
+         */
+        TEXT_ENCODER: null,
+
+        /**
          * Finds the element to which the overlay panel should be appended. If none is specified explicitly, append the
          * panel to the body.
          * @param {PrimeFaces.widget.DynamicOverlayWidget} widget A widget that has a panel to be appended.
@@ -874,20 +882,17 @@ if (!PrimeFaces.utils) {
         },
 
         /**
-         * Count the bytes of the inputtext.
-         * borrowed from the ckeditor wordcount plugin
+         * Count the bytes of the inputtext. Handles ASCII, UTF-8, and emojis.
          * @private
          * @param {string} text Text to count bytes from.
          * @return {number} the byte count
          */
         countBytes: function(text) {
-            var count = 0, stringLength = text.length, i;
-            text = String(text || "");
-            for (i = 0; i < stringLength; i++) {
-                var partCount = encodeURI(text[i]).split("%").length;
-                count += partCount === 1 ? 1 : partCount - 1;
+            // lazy load TextEncoder so its only created once
+            if (!PrimeFaces.utils.TEXT_ENCODER) {
+                PrimeFaces.utils.TEXT_ENCODER = new TextEncoder();
             }
-            return count;
+            return PrimeFaces.utils.TEXT_ENCODER.encode(text).length;
         },
 
         /**
