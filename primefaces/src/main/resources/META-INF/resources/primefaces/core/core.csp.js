@@ -95,7 +95,7 @@ if (!PrimeFaces.csp) {
 
                 $(element).off(jqEvent)
                     .on(jqEvent, jsWrapper)
-                    .attr('data-ajax', isAjaxified);
+                    .attr('data-ajax', String(isAjaxified));
 
                 //Collect some basic information about registered AJAXified event listeners
                 if (!PrimeFaces.isProductionProjectStage()) {
