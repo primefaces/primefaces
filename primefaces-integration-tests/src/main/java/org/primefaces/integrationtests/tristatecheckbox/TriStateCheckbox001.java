@@ -37,8 +37,8 @@ import lombok.Data;
 public class TriStateCheckbox001 implements Serializable {
 
     private static final long serialVersionUID = -7518459955779385834L;
-    private String value;
-    private String readonly;
+    private Boolean value;
+    private Boolean readonly;
 
     @PostConstruct
     public void init() {

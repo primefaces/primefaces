@@ -45,26 +45,11 @@
                         Customers
                     </f:facet>
 
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Name"/>
-                        </f:facet>
-                        <h:outputText value="#{customer.name}"/>
-                    </p:column>
+                    <p:column field="name" />
 
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Country"/>
-                        </f:facet>
-                        <h:outputText value="#{customer.country.name}"/>
-                    </p:column>
+                    <p:column field="country.name" />
 
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Company"/>
-                        </f:facet>
-                        <h:outputText value="#{customer.company}"/>
-                    </p:column>
+                    <p:column field="company" />
 
                     <p:column>
                         <f:facet name="header">

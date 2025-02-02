@@ -1318,7 +1318,7 @@ $.widget("prime.datePicker", {
     renderMonthView: function() {
         var backwardNavigator = this.renderBackwardNavigator(this.options.locale.prevYear),
             forwardNavigator = this.renderForwardNavigator(this.options.locale.nextYear),
-            yearElement = this.renderTitleYearElement(this.viewDate.getFullYear()),
+            yearElement = this.renderTitleYearElement(this.viewDate.getFullYear(), 0),
             months = this.renderMonthViewMonths();
 
         return ('<div class="ui-datepicker-header ui-widget-header ui-helper-clearfix">' +
@@ -1877,13 +1877,32 @@ $.widget("prime.datePicker", {
         }
         var $this = this;
         if (!this.options.inline) {
-            this.inputfield.off('focus.datePicker blur.datePicker change.datePicker keydown.datePicker input.datePicker click.datePicker')
-                .on('focus.datePicker', this.onInputFocus.bind($this))
-                .on('blur.datePicker', this.onInputBlur.bind($this))
-                .on('change.datePicker', this.onInputChange.bind($this))
-                .on('keydown.datePicker', this.onInputKeyDown.bind($this))
-                .on('input.datePicker', this.onUserInput.bind($this))
-                .on('click.datePicker', this.onInputClick.bind($this));
+            // #13269 delay registering events until CSP has registered
+            PrimeFaces.queueTask(function () {
+                // get the current attached events if using CSP
+                var events = $this.inputfield[0] ? $._data($this.inputfield[0], "events") : null;
+
+                // use DOM if non-CSP and JQ event if CSP
+                var originalOnchange = $this.inputfield.prop('onchange');
+                if (!originalOnchange && events && events.change) {
+                    originalOnchange = events.change[0].handler;
+                }
+                $this.inputfield.prop('onchange', null).off('change');
+
+                $this.options.onChange = function (event) {
+                    if (originalOnchange) {
+                        originalOnchange.call($this, event);
+                    }
+                };
+
+                $this.inputfield.off('focus.datePicker blur.datePicker change.datePicker keydown.datePicker input.datePicker click.datePicker')
+                    .on('focus.datePicker', $this.onInputFocus.bind($this))
+                    .on('blur.datePicker', $this.onInputBlur.bind($this))
+                    .on('change.datePicker', $this.onInputChange.bind($this))
+                    .on('keydown.datePicker', $this.onInputKeyDown.bind($this))
+                    .on('input.datePicker', $this.onUserInput.bind($this))
+                    .on('click.datePicker', $this.onInputClick.bind($this));
+            }, 1);
 
             if (this.triggerButton) {
                 this.triggerButton.off('click.datePicker-triggerButton').on('click.datePicker-triggerButton', this.onButtonClick.bind($this));
@@ -2206,6 +2225,7 @@ $.widget("prime.datePicker", {
             "c",
             "v",
             "x",
+            "z"
         ];
         if (event.ctrlKey && allowedControlKeys.includes(event.key)) {
             return true;
@@ -3551,7 +3571,7 @@ $.widget("prime.datePicker", {
 
         // attempt to refocus the newly created version of the same element
         if (el && el.getAttribute("aria-label")) {
-            var refocus = this.panel.find("[aria-label='" + el.getAttribute("aria-label") + "']");
+            var refocus = this.panel.find("[aria-label='" + PrimeFaces.escapeHTML(el.getAttribute("aria-label")) + "']");
             if (refocus.length) {
                 PrimeFaces.queueTask(function() { refocus.first().trigger('focus') });
             }

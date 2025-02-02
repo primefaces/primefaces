@@ -181,8 +181,13 @@ PrimeFaces.widget.Wizard = class Wizard extends PrimeFaces.widget.BaseWidget {
 
                     //update step status
                     if($this.cfg.showStepStatus) {
-                        $this.stepControls.removeClass('ui-state-highlight');
-                        $($this.stepControls.get(currentStepIndex)).addClass('ui-state-highlight');
+                        if($this.cfg.highlightCompletedSteps) {
+                            $this.stepControls.addClass('ui-state-highlight');
+                            $this.stepControls.slice(currentStepIndex + 1).removeClass('ui-state-highlight');
+                        } else {
+                            $this.stepControls.removeClass('ui-state-highlight');
+                            $($this.stepControls.get(currentStepIndex)).addClass('ui-state-highlight');
+                        }
                     }
                 }
             }

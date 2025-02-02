@@ -56,19 +56,22 @@ public class FilterMeta implements Serializable {
     private MatchMode matchMode = MatchMode.CONTAINS;
     private FilterConstraint constraint;
     private boolean normalize = false;
+    private boolean filterByGenerated;
 
     public FilterMeta() {
         // NOOP
     }
 
     FilterMeta(String columnKey, String field, FilterConstraint constraint,
-               ValueExpression filterBy, Object filterValue, MatchMode matchMode, boolean normalize) {
+               ValueExpression filterBy, Object filterValue, MatchMode matchMode, boolean normalize,
+               boolean filterByGenerated) {
         this.field = field;
         this.columnKey = columnKey;
         this.filterBy = filterBy;
         this.constraint = constraint;
         this.matchMode = matchMode;
         this.normalize = normalize;
+        this.filterByGenerated = filterByGenerated;
         setFilterValue(filterValue);
     }
 
@@ -87,11 +90,13 @@ public class FilterMeta implements Serializable {
             return null;
         }
 
+        boolean filterByGenerated = false;
         if (field == null) {
             field = column.resolveField(context, filterByVE);
         }
         else if (filterByVE == null) {
             filterByVE = UIColumn.createValueExpressionFromField(context, var, field);
+            filterByGenerated = true;
         }
 
         MatchMode matchMode = MatchMode.of(column.getFilterMatchMode());
@@ -116,7 +121,8 @@ public class FilterMeta implements Serializable {
                               filterByVE,
                               filterValue,
                               matchMode,
-                              normalize);
+                              normalize,
+                              filterByGenerated);
     }
 
     public static FilterMeta of(Object globalFilterValue, MethodExpression globalFilterFunction, boolean normalize) {
@@ -130,7 +136,8 @@ public class FilterMeta implements Serializable {
                               null,
                               LangUtils.normalize(globalFilterValue, normalize),
                               MatchMode.GLOBAL,
-                              normalize);
+                              normalize,
+                              false);
     }
 
     public static <T> T resetToNullIfEmpty(T filterValue) {
@@ -158,6 +165,7 @@ public class FilterMeta implements Serializable {
 
     public void setFilterBy(ValueExpression filterBy) {
         this.filterBy = filterBy;
+        this.filterByGenerated = false;
     }
 
     public Object getFilterValue() {
@@ -205,6 +213,14 @@ public class FilterMeta implements Serializable {
 
     public void setNormalize(boolean normalize) {
         this.normalize = normalize;
+    }
+
+    public boolean isFilterByGenerated() {
+        return filterByGenerated;
+    }
+
+    public void setFilterByGenerated(boolean filterByGenerated) {
+        this.filterByGenerated = filterByGenerated;
     }
 
     public static Builder builder() {

@@ -81,6 +81,11 @@ public class FileUploadUtils {
     private static final Pattern INVALID_FILENAME_LINUX = Pattern.compile(".*[/\0:*?\\\"<>|].*");
     private static final Pattern ENCODED_CHARS_PAT = Pattern.compile("(%)([0-9a-fA-F])([0-9a-fA-F])");
 
+    // pattern to format allowedTypes for FileUpload - formats like /.*\.(xls|xlsx|csv|txt)/
+    private static final Pattern ALLOW_TYPES_PATTERN =  Pattern.compile("\\/\\.\\*\\\\.\\(?(.*?)\\)?\\$?\\/");
+    // pattern to format allowedTypes for FileUpload - formats like /(\.|\/)(gif|jpeg|jpg|png)$/
+    private static final Pattern ALLOW_TYPES_PATTERN_2 = Pattern.compile("\\/\\(\\.|\\/\\)\\(?(.*?)\\)?\\$?\\/");
+
     private FileUploadUtils() {
         // private constructor to prevent instantiation
     }
@@ -413,9 +418,39 @@ public class FileUploadUtils {
      * @return The allowTypes formatted in a more human-friendly format.
      */
     public static String formatAllowTypes(String allowTypes) {
-        return allowTypes != null ? allowTypes.replace("/(\\.|\\/)(", "").replace(")$/", "") : null;
+        // emtpy or null
+        if (LangUtils.isBlank(allowTypes)) {
+            return allowTypes;
+        }
+
+        // not a correct regex pattern
+        if (!allowTypes.startsWith("/")) {
+            return allowTypes;
+        }
+
+        // pattern to format allowedTypes for FileUpload - formats like /.*\.(xls|xlsx|csv|txt)/
+        Matcher matcher1 = ALLOW_TYPES_PATTERN.matcher(allowTypes);
+        if (matcher1.find()) {
+            return "." + matcher1.group(1).replace("|", ", .");
+        }
+
+        // pattern to format allowedTypes for FileUpload - formats like /(\.|\/)(gif|jpeg|jpg|png)$/
+        Matcher matcher2 = ALLOW_TYPES_PATTERN_2.matcher(allowTypes);
+        if (matcher2.find()) {
+            return "." + matcher2.group(1).replace("|", ", .");
+        }
+
+        // rest return unchanged
+        return allowTypes;
     }
 
+    /**
+     * Formats the given data size in a more human-friendly format, e.g., `1.5 MB` etc.
+     * @param bytes File size in bytes to format
+     * @param locale The locale to use for number formatting
+     * @return The given file size, formatted in a more human-friendly format. Returns empty string if bytes is null,
+     *         or "N/A" if bytes is 0.
+     */
     public static String formatBytes(Long bytes, Locale locale) {
         if (bytes == null) {
             return "";
@@ -425,7 +460,7 @@ public class FileUploadUtils {
             return "N/A";
         }
 
-        String[] sizes = new String[] {"Bytes", "KB", "MB", "GB", "TB"};
+        String[] sizes = new String[] {"B", "kB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"};
         int i = (int) Math.floor(Math.log(bytes) / Math.log(1024));
         if (i == 0) {
             return bytes + " " + sizes[i];

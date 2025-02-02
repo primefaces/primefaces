@@ -16,6 +16,14 @@ if (!PrimeFaces.utils) {
     PrimeFaces.utils = {
 
         /**
+         * TextEncoder instance used for string encoding operations.
+         * Initialized as null and typically set to a TextEncoder instance when needed.
+         * @type {TextEncoder|null}
+         * @private
+         */
+        TEXT_ENCODER: null,
+
+        /**
          * Finds the element to which the overlay panel should be appended. If none is specified explicitly, append the
          * panel to the body.
          * @param {PrimeFaces.widget.DynamicOverlayWidget} widget A widget that has a panel to be appended.
@@ -202,9 +210,9 @@ if (!PrimeFaces.utils) {
                             event.preventDefault();
                         };
 
-                        if (target.is(document.body) || (event.target === last[0] && !event.shiftKey)) {
+                        if (target.is(document.body) || ($(event.target).is(last) || last.has(event.target).length > 0) && !event.shiftKey) {
                             focusElement(first);
-                        } else if (event.target === first[0] && event.shiftKey) {
+                        } else if (($(event.target).is(first) || first.has(event.target).length > 0) && event.shiftKey) {
                             focusElement(last);
                         }
                     }
@@ -367,6 +375,75 @@ if (!PrimeFaces.utils) {
             });
 
             return { unbind: unbindResizeHandler };
+        },
+
+        /**
+         * Registers a MutationObserver/ResizeObserver to watch for DOM changes that may affect element sizing/positioning.
+         * @param {PrimeFaces.widget.BaseWidget} widget The widget instance to register the observer for
+         * @param {JQuery | HTMLElement} element The element to observe for changes
+         * @param {() => void} resizeCallback Callback function to execute when relevant mutations occur
+         * @return {{bind: () => void, unbind: () => void}} Object containing bind and unbind functions for the observer
+         */
+        registerMutationObserver: function (widget, element, resizeCallback) {
+            const domElement = element instanceof jQuery ? element.get(0) : element;
+
+            const resizeObserver = new ResizeObserver(entries => {
+                const $entry = $(entries[0].target);
+                if ($entry && ($entry.is(":hidden") || $entry.css('visibility') === 'hidden')) {
+                    return;
+                }
+                resizeCallback();
+            });
+
+            const mutationObserver = new MutationObserver(mutations => {
+                // Check if mutation involves DOM position changes
+                const shouldCallback = mutations.some(mutation => {
+                    const {type, target, attributeName} = mutation;
+                    return (type === "childList" && target.id === domElement.id) ||
+                           (type === "attributes" && attributeName === "style" && target.id === domElement.id) ||
+                           (type === "attributes" && attributeName === "class");
+                });
+
+                if (shouldCallback) {
+                    // Debounce multiple mutations using requestAnimationFrame
+                    if (mutationObserver.rafId) {
+                        window.cancelAnimationFrame(mutationObserver.rafId);
+                    }
+                    mutationObserver.rafId = window.requestAnimationFrame(() => {
+                        resizeCallback();
+                    });
+                }
+            });
+
+            // Cleanup function to disconnect both observers
+            const unbindMutationObserver = function () {
+                resizeObserver.unobserve(domElement);
+                mutationObserver.disconnect();
+            };
+
+
+            // Add cleanup handlers to widget lifecycle
+            widget.addDestroyListener(unbindMutationObserver);
+            widget.addRefreshListener(unbindMutationObserver);
+
+            // Start observing DOM mutations
+            const bindMutationObserver = function () {
+                mutationObserver.observe(document.body, {
+                    childList: true,
+                    subtree: true,
+                    attributes: true
+                });
+
+                // Start observing the element for resizing
+                resizeObserver.observe(domElement);
+            };
+
+            bindMutationObserver();
+
+            return {
+                bind: bindMutationObserver,
+                unbind: unbindMutationObserver
+            };
         },
 
         /**
@@ -874,20 +951,17 @@ if (!PrimeFaces.utils) {
         },
 
         /**
-         * Count the bytes of the inputtext.
-         * borrowed from the ckeditor wordcount plugin
+         * Count the bytes of the inputtext. Handles ASCII, UTF-8, and emojis.
          * @private
          * @param {string} text Text to count bytes from.
          * @return {number} the byte count
          */
         countBytes: function(text) {
-            var count = 0, stringLength = text.length, i;
-            text = String(text || "");
-            for (i = 0; i < stringLength; i++) {
-                var partCount = encodeURI(text[i]).split("%").length;
-                count += partCount === 1 ? 1 : partCount - 1;
+            // lazy load TextEncoder so its only created once
+            if (!PrimeFaces.utils.TEXT_ENCODER) {
+                PrimeFaces.utils.TEXT_ENCODER = new TextEncoder();
             }
-            return count;
+            return PrimeFaces.utils.TEXT_ENCODER.encode(text).length;
         },
 
         /**
@@ -896,7 +970,29 @@ if (!PrimeFaces.utils) {
          * @return {string} The allowTypes formatted in a more human-friendly format.
          */
         formatAllowTypes: function(allowTypes) {
-            return allowTypes === undefined ? '' : allowTypes.replace("/(\\.|\\/)(", "").replace(")$/", "");
+            if (!allowTypes) {
+                return allowTypes;
+            }
+
+            // not a correct regex pattern
+            if (!allowTypes.startsWith('/')) {
+                return allowTypes;
+            }
+
+            // formats like /(\.|\/)(gif|jpeg|jpg|png)$/
+            let match = allowTypes.match(/\/\(\\\.\|\\\/\)\(?(.*?)\)?\$?\//);
+            if (match) {
+                return '.' + match[1].replace(/\|/g, ', .');
+            }
+
+            // formats like .*\.(xls|xlsx|csv|txt)
+            match = allowTypes.match(/\/\.\*\\\.\(?(.*?)\)?\$?\//);
+            if (match) {
+                return '.' + match[1].replace(/\|/g, ', .');
+            }
+
+            // others return unchanged
+            return allowTypes;
         },
 
         /**
@@ -911,7 +1007,7 @@ if (!PrimeFaces.utils) {
             if (bytes === 0)
                 return 'N/A';
 
-            var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+            var sizes = PrimeFaces.getLocaleLabel('fileSizeTypes');
             var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
             if (i === 0)
                 return bytes + ' ' + sizes[i];

@@ -184,7 +184,8 @@
 .ui-selectoneradio label {
     cursor: pointer;
     display: inline-block;
-    margin: 0 16px 0 8px;
+    margin: 0 16px 0 -8px;
+    padding-left: 16px;
     vertical-align: middle;
 }
 

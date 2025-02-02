@@ -37,21 +37,22 @@ public abstract class WizardBase extends UIComponentBase implements Widget, Clie
 
     public enum PropertyKeys {
 
-        widgetVar,
+        backLabel,
+        disableOnAjax,
+        effect,
+        effectDuration,
+        flowListener,
+        highlightCompletedSteps,
+        nextLabel,
+        onback,
+        onnext,
+        showNavBar,
+        showStepStatus,
         step,
         style,
         styleClass,
-        flowListener,
-        showNavBar,
-        showStepStatus,
-        onback,
-        onnext,
-        nextLabel,
-        backLabel,
         updateModelOnPrev,
-        effect,
-        effectDuration,
-        disableOnAjax,
+        widgetVar
     }
 
     public WizardBase() {
@@ -181,5 +182,13 @@ public abstract class WizardBase extends UIComponentBase implements Widget, Clie
 
     public void setDisableOnAjax(boolean disableOnAjax) {
         getStateHelper().put(PropertyKeys.disableOnAjax, disableOnAjax);
+    }
+
+    public boolean isHighlightCompletedSteps() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.highlightCompletedSteps, false);
+    }
+
+    public void setHighlightCompletedSteps(boolean highlightCompletedSteps) {
+        getStateHelper().put(PropertyKeys.highlightCompletedSteps, highlightCompletedSteps);
     }
 }

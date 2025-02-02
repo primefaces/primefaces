@@ -50,29 +50,29 @@ PrimeFaces.widget.ToggleSwitch = class ToggleSwitch extends PrimeFaces.widget.Ba
     _bindEvents() {
         var $this = this;
 
-        this.slider.on('click.toggleSwitch', function(e) {
+        this.slider.off('click.toggleSwitch').on('click.toggleSwitch', function(e) {
             $this.input.trigger('click').trigger('focus.toggleSwitch');
         });
 
-        this.input.on('focus.toggleSwitch', function(e) {
+        this.input.off('focus.toggleSwitch').on('focus.toggleSwitch', function(e) {
             $this.jq.addClass('ui-toggleswitch-focus');
         })
-        .on('blur.toggleSwitch', function(e) {
+        .off('blur.toggleSwitch').on('blur.toggleSwitch', function(e) {
             $this.jq.removeClass('ui-toggleswitch-focus');
         })
-        .on('keydown.toggleSwitch', function(e) {
+        .off('keydown.toggleSwitch').on('keydown.toggleSwitch', function(e) {
             if(e.key === ' ') {
                 e.preventDefault();
             }
         })
-        .on('keyup.toggleSwitch', function(e) {
+        .off('keyup.toggleSwitch').on('keyup.toggleSwitch', function(e) {
             if(e.key === ' ') {
                 $this.toggle();
 
                 e.preventDefault();
             }
         })
-        .on('change.toggleSwitch', function(e) {
+        .off('change.toggleSwitch').on('change.toggleSwitch', function(e) {
             if($this.isChecked()) {
                 $this.check(true);
             }
