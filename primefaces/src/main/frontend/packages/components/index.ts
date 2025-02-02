@@ -51,7 +51,7 @@ import "./src/menu/menu.menubutton.widget.js";
 import "./src/menu/menu.contextmenu.widget.js";
 import "./src/menu/menu.megamenu.widget.js";
 import "./src/menu/menu.panelmenu.widget.js";
-import "./src/menu/menu.steps.js";
+import "./src/menu/menu.steps.widget.js";
 import "./src/menu/menu.tabmenu.widget.js";
 import "./src/message/message.widget.js";
 import "./src/messages/messages.widget.js";
