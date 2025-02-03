@@ -1,0 +1,64 @@
+diff --git a/dist/jquery-cropper.common.js b/dist/jquery-cropper.common.js
+index 2c098e47b6b0c75a660d7ab95b84ff532e6e5fe7..231ac3b06b2417bfbc3b78acb70c6576ebc50aea 100644
+--- a/dist/jquery-cropper.common.js
++++ b/dist/jquery-cropper.common.js
+@@ -45,7 +45,7 @@ if ($.fn) {
+       if (typeof option === 'string') {
+         var fn = cropper[option];
+ 
+-        if ($.isFunction(fn)) {
++        if (typeof fn === "function") {
+           result = fn.apply(cropper, args);
+ 
+           if (result === cropper) {
+diff --git a/dist/jquery-cropper.esm.js b/dist/jquery-cropper.esm.js
+index 7fb8cad53d65f894b49916005b930a1570ce3850..082d5079851b93108b7329fe4659cc94494f01f2 100644
+--- a/dist/jquery-cropper.esm.js
++++ b/dist/jquery-cropper.esm.js
+@@ -41,7 +41,7 @@ if ($.fn) {
+       if (typeof option === 'string') {
+         var fn = cropper[option];
+ 
+-        if ($.isFunction(fn)) {
++        if (typeof fn === "function") {
+           result = fn.apply(cropper, args);
+ 
+           if (result === cropper) {
+diff --git a/dist/jquery-cropper.js b/dist/jquery-cropper.js
+index 83846446a7a0770379e06c531b3973e2b2a4312c..286425631dbc15fccbcc44822f70c352f754dbf0 100644
+--- a/dist/jquery-cropper.js
++++ b/dist/jquery-cropper.js
+@@ -47,7 +47,7 @@
+         if (typeof option === 'string') {
+           var fn = cropper[option];
+ 
+-          if ($.isFunction(fn)) {
++          if (typeof fn === "function") {
+             result = fn.apply(cropper, args);
+ 
+             if (result === cropper) {
+diff --git a/dist/jquery-cropper.min.js b/dist/jquery-cropper.min.js
+index 5274e807a8aa4de023a426faef30dce160b542af..8f08104172a2fdfa4fc4dff42c95656c11317efb 100644
+--- a/dist/jquery-cropper.min.js
++++ b/dist/jquery-cropper.min.js
+@@ -7,4 +7,4 @@
+  *
+  * Date: 2018-04-01T06:20:13.168Z
+  */
+-!function(e,r){"object"==typeof exports&&"undefined"!=typeof module?r(require("jquery"),require("cropperjs")):"function"==typeof define&&define.amd?define(["jquery","cropperjs"],r):r(e.jQuery,e.Cropper)}(this,function(c,s){"use strict";if(c=c&&c.hasOwnProperty("default")?c.default:c,s=s&&s.hasOwnProperty("default")?s.default:s,c.fn){var e=c.fn.cropper,d="cropper";c.fn.cropper=function(p){for(var e=arguments.length,a=Array(1<e?e-1:0),r=1;r<e;r++)a[r-1]=arguments[r];var u=void 0;return this.each(function(e,r){var t=c(r),n="destroy"===p,o=t.data(d);if(!o){if(n)return;var f=c.extend({},t.data(),c.isPlainObject(p)&&p);o=new s(r,f),t.data(d,o)}if("string"==typeof p){var i=o[p];c.isFunction(i)&&((u=i.apply(o,a))===o&&(u=void 0),n&&t.removeData(d))}}),void 0!==u?u:this},c.fn.cropper.Constructor=s,c.fn.cropper.setDefaults=s.setDefaults,c.fn.cropper.noConflict=function(){return c.fn.cropper=e,this}}});
+\ No newline at end of file
++!function(e,r){"object"==typeof exports&&"undefined"!=typeof module?r(require("jquery"),require("cropperjs")):"function"==typeof define&&define.amd?define(["jquery","cropperjs"],r):r(e.jQuery,e.Cropper)}(this,function(c,s){"use strict";if(c=c&&c.hasOwnProperty("default")?c.default:c,s=s&&s.hasOwnProperty("default")?s.default:s,c.fn){var e=c.fn.cropper,d="cropper";c.fn.cropper=function(p){for(var e=arguments.length,a=Array(1<e?e-1:0),r=1;r<e;r++)a[r-1]=arguments[r];var u=void 0;return this.each(function(e,r){var t=c(r),n="destroy"===p,o=t.data(d);if(!o){if(n)return;var f=c.extend({},t.data(),c.isPlainObject(p)&&p);o=new s(r,f),t.data(d,o)}if("string"==typeof p){var i=o[p];(typeof i === "function")&&((u=i.apply(o,a))===o&&(u=void 0),n&&t.removeData(d))}}),void 0!==u?u:this},c.fn.cropper.Constructor=s,c.fn.cropper.setDefaults=s.setDefaults,c.fn.cropper.noConflict=function(){return c.fn.cropper=e,this}}});
+\ No newline at end of file
+diff --git a/src/index.js b/src/index.js
+index 1f516d9ea6e8c1848018250eed2c506ae7e47e30..434e226ba709fabba2662ecb00ae222d51aeb271 100644
+--- a/src/index.js
++++ b/src/index.js
+@@ -27,7 +27,7 @@ if ($.fn) {
+       if (typeof option === 'string') {
+         const fn = cropper[option];
+ 
+-        if ($.isFunction(fn)) {
++        if (typeof fn === "function") {
+           result = fn.apply(cropper, args);
+ 
+           if (result === cropper) {

@@ -1,0 +1,9 @@
+{
+    "$schema": "../../../build-settings.schema.json", 
+    "loadFromExpression": {
+        "importSpecifier": {
+            "moment": "window.moment",
+            "moment-timezone": "window.moment"
+        }
+    }
+}

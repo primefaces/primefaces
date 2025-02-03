@@ -1,0 +1,31 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "$schema": {
+            "type": "string"
+        },
+        "loadFromExpression": {
+            "type": "object",
+            "additionalProperties": false,
+            "description": "Allows you to omit imports from the final bundle, and load the contents of the import from an expression instead. E.g. you could use this to replace import(\"jquery\") with window.$.",
+            "properties": {
+                "importSpecifier": {
+                    "type": "object",
+                    "description": "A map of import specifiers to expressions. The import specifier is the name of the module that is being imported, as used in the import statement. The expression is the expression that should be used as the module's content.",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "modulePath": {
+                    "type": "object",
+                    "description": "A map of module paths to expressions. The module path is the resolved path of a file in a module. E.g. import(\"../moment\") would be resolved to file \"moment.js\" within the module \"moment\". To target that resolved file, you would use the key \"moment/moment.js\". The expression is the expression that should be used as the module's content.",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}
