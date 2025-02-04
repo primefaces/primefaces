@@ -46,8 +46,8 @@ public class UIPageableData extends PrimeUIData implements Pageable, TouchAware 
     public static final String PAGINATOR_TOP_RIGHT_CONTENT_CLASS = "ui-paginator-top-right-content";
     public static final String PAGINATOR_BOTTOM_LEFT_CONTENT_CLASS = "ui-paginator-bottom-left-content";
     public static final String PAGINATOR_BOTTOM_RIGHT_CONTENT_CLASS = "ui-paginator-bottom-right-content";
-    public static final String PAGINATOR_PAGE_CLASS = "ui-paginator-page ui-state-default";
-    public static final String PAGINATOR_ACTIVE_PAGE_CLASS = "ui-paginator-page ui-state-default ui-state-active";
+    public static final String PAGINATOR_PAGE_CLASS = "ui-paginator-page ui-button ui-button-flat ui-state-default";
+    public static final String PAGINATOR_ACTIVE_PAGE_CLASS = "ui-paginator-page ui-button ui-button-flat ui-state-default ui-state-active";
     public static final String PAGINATOR_CURRENT_CLASS = "ui-paginator-current";
     public static final String PAGINATOR_RPP_OPTIONS_CLASS = "ui-paginator-rpp-options ui-widget ui-state-default";
     public static final String PAGINATOR_RPP_LABEL_CLASS = "ui-paginator-rpp-label ui-helper-hidden";
