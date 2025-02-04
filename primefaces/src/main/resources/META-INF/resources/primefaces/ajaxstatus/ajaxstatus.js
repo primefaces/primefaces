@@ -85,23 +85,46 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     * Listen to the relevant events on the document element.
+     * Binds event handlers to AJAX events on the document element.
+     * Handles both PrimeFaces AJAX events and native JSF AJAX events.
+     * 
+     * For PrimeFaces AJAX events:
+     * - pfAjaxStart: Triggered when AJAX request starts. After configured delay, triggers 'start' event.
+     * - pfAjaxError: Triggered when AJAX request fails. Triggers 'error' event with xhr, settings, error details.
+     * - pfAjaxSuccess: Triggered when AJAX request succeeds. Triggers 'success' event with xhr, settings.
+     * - pfAjaxComplete: Triggered after success/error. Clears timeout if no redirect. Triggers 'complete' event.
+     * 
+     * For JSF AJAX events:
+     * - begin: Triggers 'start' event after configured delay
+     * - complete: IGNORED since it fires before success/error
+     * - success: Clears timeout, triggers 'success' then 'complete' events
+     * - error: Logs error, clears timeout, triggers 'error' then 'complete' events
+     * 
+     * Events are namespaced with component ID for cleanup.
+     * Configured delay controls timing of showing AJAX status.
+     * Cleanup is handled via destroy listener that removes document event handlers.
      * @private
      */
     bind: function() {
         var $this = this;
         var namespace = '.status' + this.id;
+
+        // Handle start of AJAX request
         $(document).on('pfAjaxStart' + namespace, function() {
+            // Queue task to trigger start event after configured delay
             $this.timeout = PrimeFaces.queueTask(function() {
                 $this.trigger('start', arguments);
             }, $this.cfg.delay);
         })
+        // Handle AJAX error
         .on('pfAjaxError' + namespace, function(e, xhr, settings, error) {
             $this.trigger('error', [xhr, settings, error]);
         })
+        // Handle AJAX success
         .on('pfAjaxSuccess' + namespace, function(e, xhr, settings) {
             $this.trigger('success', [xhr, settings]);
         })
+        // Handle AJAX completion (after success/error)
         .on('pfAjaxComplete' + namespace, function(e, xhr, settings, args) {
             if($this.timeout && args && !args.redirect) {
                 $this.deleteTimeout();
@@ -112,29 +135,32 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
             $(document).off(namespace);
         });
 
-        // also bind to JSF (f:ajax) events
-        // NOTE: PF always fires "complete" as last event, whereas JSF last events are either "success" or "error"
+        // also bind to Faces (f:ajax) events
+        // NOTE: PrimeFaces fires "complete" as the final event, while Faces ends with either "success" or "error", 
+        // requiring us to manually trigger a "complete" event in those cases
         if (window.jsf && jsf.ajax) {
             jsf.ajax.addOnEvent(function(data) {
                 if(data.status === 'begin') {
+
                     $this.timeout = PrimeFaces.queueTask(function() {
                         $this.trigger('start', arguments);
                     }, $this.cfg.delay);
                 }
                 else if(data.status === 'complete') {
-                    // ignore PF complete event when JSF success/error event is fired right after
+                    // Ignore JSF complete event since it fires before success/error. We'll trigger complete manually after success/error to match PrimeFaces event order
                 }
                 else if(data.status === 'success') {
                     $this.deleteTimeout();
                     $this.trigger('success', arguments);
-                    $this.trigger('facesComplete', arguments);
+                    $this.trigger('complete', arguments);
                 }
             });
 
             jsf.ajax.addOnError(function(data) {
+                PrimeFaces.error(data);
                 $this.deleteTimeout();
                 $this.trigger('error', arguments);
-                $this.trigger('facesComplete', arguments);
+                $this.trigger('complete', arguments);
             });
         }
     },
@@ -185,14 +211,16 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
                 break;
 
             case 'complete':
-                // if the current request leads in a redirect, skip hiding the previous facet (in best case this is the start-facet)
-                // when a sucess/error-facet is defined, this wont work as expected as the 'redirect' information is not available before
-                var pfArgs = args[2];
-                if (!pfArgs || pfArgs.redirect) {
-                    return;
+                // Skip hiding the previous facet (typically the start facet) if the request results in a redirect
+                // Note: This won't work properly with success/error facets since redirect info isn't available beforehand
+                // Only check for redirect if PrimeFaces is used
+                if (args.length > 1) { // PrimeFaces passes 3 args, JSF passes 1 arg
+                    var pfArgs = args[2];
+                    if (!pfArgs || pfArgs.redirect) {
+                        return;
+                    }
                 }
-                // Fallthrough intentional to handle both PF and JSF complete events
-            case 'facesComplete':
+
                 // #11824 hide the start facet if there was no error/success facet or there is a complete facet
                 if (this.hasSuccessOrErrorFacet === false || hasFacet) {
                     facets.hide();
@@ -212,9 +240,6 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
      * @return {string} The ID of the facet element for the given event
      */
     toFacetId: function(event) {
-        if (event === 'facesComplete') {
-            event = 'complete';
-        }
         return this.jqId + '_' + event;
     },
 
