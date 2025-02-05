@@ -117,7 +117,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
 
         //visuals for first,prev,next,last buttons
-        this.navigator.children('a.ui-state-default').on('mouseover.paginator', function(){
+        this.navigator.children('button.ui-state-default').on('mouseover.paginator', function(){
             var item = $(this);
             if(!item.hasClass('ui-state-disabled')) {
                 item.addClass('ui-state-hover');
@@ -299,7 +299,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
     * @private
     */
    unbindEvents: function() {
-        var buttons = this.navigator.children('a.ui-state-default');
+        var buttons = this.navigator.children('button.ui-state-default');
         if (buttons.length > 0) {
             buttons.off();
         }
@@ -408,7 +408,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         //update dom
         this.pagesContainer.children().remove();
         for(var i = start; i <= end; i++) {
-            var styleClass = 'ui-paginator-page ui-state-default',
+            var styleClass = 'ui-paginator-page ui-button ui-button-flat ui-state-default',
             ariaLabel = this.ariaPageLabel.replace('{page}', (i+1)),
             ariaCurrentPage = '';
 
@@ -417,7 +417,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
                 ariaCurrentPage = 'aria-current="page"';
             }
 
-            this.pagesContainer.append('<a class="' + styleClass + '" aria-label="' + ariaLabel + '" ' + ariaCurrentPage + ' tabindex="0" href="#">' + (i + 1) + '</a>');
+            this.pagesContainer.append('<button class="' + styleClass + '" aria-label="' + ariaLabel + '" ' + ariaCurrentPage + ' tabindex="0" type="button">' + (i + 1) + '</button>');
         }
 
         if(focusContainer) {
