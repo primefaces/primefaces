@@ -105,7 +105,7 @@ if (window.PrimeFaces) {
       passwordHide: "پنهان کردن رمز عبور",
       passwordShow: "نمایش رمز عبور",
       previous: "قبلی",
-      previousPageLabel: "صفحه قبل",
+      prevPageLabel: "صفحه قبل",
       rotateLeft: "چرخش به سمت چپ",
       rotateRight: "چرخش به سمت راست",
       rowsPerPageLabel: "ردیف در هر صفحه",

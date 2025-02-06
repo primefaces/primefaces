@@ -165,7 +165,7 @@ if (window.PrimeFaces) {
       passwordHide: "Dölj lösenord",
       passwordShow: "Visa lösenord",
       previous: "Tidigare",
-      previousPageLabel: "Föregående sida",
+      prevPageLabel: "Föregående sida",
       removeLabel: "Avlägsna",
       rotateLeft: "Rotera vänster",
       rotateRight: "Vrid höger",

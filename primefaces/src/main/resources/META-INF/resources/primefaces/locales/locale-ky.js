@@ -105,7 +105,7 @@ if (window.PrimeFaces) {
       passwordHide: "Сырсөздү жашыруу",
       passwordShow: "Сыр сөздү көрсөтүү",
       previous: "Мурунку",
-      previousPageLabel: "Мурунку барак",
+      prevPageLabel: "Мурунку барак",
       rotateLeft: "Солго буруу",
       rotateRight: "Оңго буруу",
       rowsPerPageLabel: "Барактагы катарлар",
