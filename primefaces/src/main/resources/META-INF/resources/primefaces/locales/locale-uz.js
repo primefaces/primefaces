@@ -105,7 +105,7 @@ if (window.PrimeFaces) {
       passwordHide: "Parolni yashirish",
       passwordShow: "Parolni ko'rsatish",
       previous: "Oldingi",
-      previousPageLabel: "Oldingi sahifa",
+      prevPageLabel: "Oldingi sahifa",
       removeLabel: "O'chirish",
       rotateLeft: "Chapga aylantirish",
       rotateRight: "O'ngga aylantirish",

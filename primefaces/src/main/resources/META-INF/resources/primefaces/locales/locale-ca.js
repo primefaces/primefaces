@@ -105,7 +105,7 @@ if (window.PrimeFaces) {
       passwordHide: "Amaga la contrasenya",
       passwordShow: "Ensenya la contrasenya",
       previous: "Anterior",
-      previousPageLabel: "Pàgina anterior",
+      prevPageLabel: "Pàgina anterior",
       rotateLeft: "Girar a l'esquerra",
       rotateRight: "Girar a la dreta",
       rowsPerPageLabel: "Files per pàgina",

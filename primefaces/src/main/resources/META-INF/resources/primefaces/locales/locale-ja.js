@@ -105,7 +105,7 @@ if (window.PrimeFaces) {
       passwordHide: "パスワードを隠す",
       passwordShow: "パスワードを表示",
       previous: "前",
-      previousPageLabel: "前のページ",
+      prevPageLabel: "前のページ",
       rotateLeft: "左に回転",
       rotateRight: "右に回転",
       rowsPerPageLabel: "行/ページ",

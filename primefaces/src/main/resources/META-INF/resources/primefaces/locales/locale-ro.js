@@ -105,7 +105,7 @@ if (window.PrimeFaces) {
       passwordHide: "Ascundeți parola",
       passwordShow: "Arata parola",
       previous: "Precedent",
-      previousPageLabel: "Pagina precedentă",
+      prevPageLabel: "Pagina precedentă",
       rotateLeft: "Rotiți la stânga",
       rotateRight: "Rotiți la dreapta",
       rowsPerPageLabel: "Rânduri pe pagină",

@@ -105,7 +105,7 @@ if (window.PrimeFaces) {
       passwordHide: "Скрыть пароль",
       passwordShow: "Показать пароль",
       previous: "Предыдущий",
-      previousPageLabel: "Предыдущая страница",
+      prevPageLabel: "Предыдущая страница",
       rotateLeft: "Повернуть влево",
       rotateRight: "Повернуть вправо",
       rowsPerPageLabel: "Строк на странице",

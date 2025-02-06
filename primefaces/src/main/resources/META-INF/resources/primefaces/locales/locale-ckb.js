@@ -105,7 +105,7 @@ if (window.PrimeFaces) {
       passwordHide: "شاردنەوەی پاسۆرد",
       passwordShow: "وشەی نهێنیەکەم پیشان ده",
       previous: "پێشتر",
-      previousPageLabel: "لاپەڕەی پێشوو",
+      prevPageLabel: "لاپەڕەی پێشوو",
       rotateLeft: "بەلای چەپدا بیسووڕێنە",
       rotateRight: "بەلای ڕاستدا بیسووڕێنە",
       rowsPerPageLabel: "ڕیز بەپێی لاپەڕە",

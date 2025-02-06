@@ -105,7 +105,7 @@ if (window.PrimeFaces) {
       passwordHide: "Құпия сөзді жасыру",
       passwordShow: "Құпия сөзді көрсету",
       previous: "Алдыңғы",
-      previousPageLabel: "Алдыңғы бет",
+      prevPageLabel: "Алдыңғы бет",
       rotateLeft: "Солға бұру",
       rotateRight: "Оңға бұру",
       rowsPerPageLabel: "Әр беттегі  жолдар",

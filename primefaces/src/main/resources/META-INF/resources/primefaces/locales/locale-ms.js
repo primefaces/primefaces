@@ -105,7 +105,7 @@ if (window.PrimeFaces) {
       passwordHide: "Sembunyikan Kata Laluan",
       passwordShow: "Tunjukkan Kata Laluan",
       previous: "Sebelumnya",
-      previousPageLabel: "Muka Surat Sebelumnya",
+      prevPageLabel: "Muka Surat Sebelumnya",
       rotateLeft: "Putar Ke Kiri",
       rotateRight: "Putar Ke Kanan",
       rowsPerPageLabel: "Baris setiap halaman",

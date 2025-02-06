@@ -105,7 +105,7 @@ if (window.PrimeFaces) {
       passwordHide: "পাসওয়ার্ড লুকান",
       passwordShow: "পাসওয়ার্ড দেখান",
       previous: "পূর্ববর্তী",
-      previousPageLabel: "পূর্ববর্তী পৃষ্ঠা",
+      prevPageLabel: "পূর্ববর্তী পৃষ্ঠা",
       removeLabel: "সরান",
       rotateLeft: "বামদিকে ঘোরান",
       rotateRight: "ডানদিকে ঘোরান",

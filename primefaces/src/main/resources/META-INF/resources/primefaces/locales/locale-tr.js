@@ -105,7 +105,7 @@ if (window.PrimeFaces) {
       passwordHide: "Şifreyi gizle",
       passwordShow: "Şifreyi göster",
       previous: "Önceki",
-      previousPageLabel: "Önceki Sayfa",
+      prevPageLabel: "Önceki Sayfa",
       rotateLeft: "Sola Döndür",
       rotateRight: "Sağa Döndür",
       rowsPerPageLabel: "Sayfa başına satır",

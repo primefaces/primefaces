@@ -107,7 +107,7 @@ if (window.PrimeFaces) {
       passwordHide: "Sembunyikan Kata Sandi",
       passwordShow: "Tampilkan Kata Sandi",
       previous: "Sebelumnya",
-      previousPageLabel: "Halaman Sebelumnya",
+      prevPageLabel: "Halaman Sebelumnya",
       rotateLeft: "Putar ke Kiri",
       rotateRight: "Putar ke Kanan",
       rowsPerPageLabel: "Baris per halaman",

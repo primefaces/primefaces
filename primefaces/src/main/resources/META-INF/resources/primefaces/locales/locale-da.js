@@ -105,7 +105,7 @@ if (window.PrimeFaces) {
       passwordHide: "Skjul adgangskode",
       passwordShow: "Vis adgangskode",
       previous: "Forrige",
-      previousPageLabel: "Forrige side",
+      prevPageLabel: "Forrige side",
       rotateLeft: "Roter mod venstre",
       rotateRight: "Roter mod højre",
       rowsPerPageLabel: "Rækker pr. side",

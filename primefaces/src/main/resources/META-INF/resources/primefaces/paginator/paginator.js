@@ -104,7 +104,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         this.jtpSelect.attr('aria-label', this.getAriaLabel('jumpToPageDropdownLabel'));
         this.jtpInput.attr('aria-label', this.getAriaLabel('jumpToPageInputLabel'));
         this.firstLink.attr('aria-label', this.getAriaLabel('firstPageLabel'));
-        this.prevLink.attr('aria-label', this.getAriaLabel('previousPageLabel'));
+        this.prevLink.attr('aria-label', this.getAriaLabel('prevPageLabel'));
         this.nextLink.attr('aria-label', this.getAriaLabel('nextPageLabel'));
         this.endLink.attr('aria-label', this.getAriaLabel('lastPageLabel'));
     },

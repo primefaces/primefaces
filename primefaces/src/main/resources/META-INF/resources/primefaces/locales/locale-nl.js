@@ -105,7 +105,7 @@ if (window.PrimeFaces) {
       passwordHide: "Verberg wachtwoord",
       passwordShow: "Laat wachtwoord zien",
       previous: "Vorige",
-      previousPageLabel: "Vorige pagina",
+      prevPageLabel: "Vorige pagina",
       rotateLeft: "Draai linksom",
       rotateRight: "Draai rechtsom",
       rowsPerPageLabel: "Rijen per pagina",

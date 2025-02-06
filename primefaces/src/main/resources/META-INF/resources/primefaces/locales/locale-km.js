@@ -106,7 +106,7 @@ if (window.PrimeFaces) {
       passwordHide: "លាក់ពាក្យសម្ងាត់",
       passwordShow: "បង្ហាញពាក្យសម្ងាត់",
       previous: "មុន",
-      previousPageLabel: "ទំព័រមុន",
+      prevPageLabel: "ទំព័រមុន",
       rotateLeft: "បង្វិល​ឆ្វេង",
       rotateRight: "បង្វិលស្តាំ",
       rowsPerPageLabel: "ជួរដេកក្នុងមួយទំព័រ",

@@ -105,7 +105,7 @@ if (window.PrimeFaces) {
       passwordHide: "Jelszó elrejtése",
       passwordShow: "Mutasd a jelszót",
       previous: "Előző",
-      previousPageLabel: "Előző oldal",
+      prevPageLabel: "Előző oldal",
       rotateLeft: "Forgatás balra",
       rotateRight: "Forgatás jobbra",
       rowsPerPageLabel: "Sorok száma egy oldalon",

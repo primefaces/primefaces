@@ -157,7 +157,7 @@ if (window.PrimeFaces) {
       passwordHide: "إخفاء كلمة المرور",
       passwordShow: "عرض كلمة المرور",
       previous: "السابق",
-      previousPageLabel: "الصفحة السابقة",
+      prevPageLabel: "الصفحة السابقة",
       removeLabel: "إزالة",
       rotateLeft: "تدوير باتجاه اليسار",
       rotateRight: "تدوير باتجاه اليمين",

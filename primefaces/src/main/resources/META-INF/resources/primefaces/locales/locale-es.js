@@ -105,7 +105,7 @@ if (window.PrimeFaces) {
       passwordHide: "Contraseña oculta",
       passwordShow: "Mostrar contraseña",
       previous: "Anterior",
-      previousPageLabel: "Página Anterior",
+      prevPageLabel: "Página Anterior",
       rotateLeft: "Girar a la izquierda",
       rotateRight: "Girar a la derecha",
       rowsPerPageLabel: "Filas por página",

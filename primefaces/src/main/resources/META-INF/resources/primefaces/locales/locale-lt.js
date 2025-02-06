@@ -105,7 +105,7 @@ if (window.PrimeFaces) {
       "passwordHide": "Nerodyti slaptaéƒodéƒio",
       "passwordShow": "Rodyti slaptaéƒodáL",
       "previous": "Ankstesnis",
-      "previousPageLabel": "Ankstesnis puslapis",
+      "prevPageLabel": "Ankstesnis puslapis",
       "removeLabel": "PaéÀalinti",
       "rotateLeft": "Pasukti áL kairá?",
       "rotateRight": "Pasukti áL deéÀiná?",
