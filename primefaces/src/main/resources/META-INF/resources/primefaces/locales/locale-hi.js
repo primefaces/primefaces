@@ -105,7 +105,7 @@ if (window.PrimeFaces) {
       passwordHide: "पासवर्ड छिपाएं",
       passwordShow: "पासवर्ड दिखाए",
       previous: "पिछला",
-      previousPageLabel: "पिछला पृष्ठ",
+      prevPageLabel: "पिछला पृष्ठ",
       rotateLeft: "बाईं ओर घुमाएं",
       rotateRight: "दाईं ओर घुमाएं",
       rowsPerPageLabel: "प्रति पृष्ठ पंक्तियाँ",

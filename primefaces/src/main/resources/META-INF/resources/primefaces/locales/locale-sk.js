@@ -105,7 +105,7 @@ if (window.PrimeFaces) {
       passwordHide: "Skryť heslo",
       passwordShow: "Ukázať heslo",
       previous: "Predchádzajúci",
-      previousPageLabel: "Predchádzajúca strana",
+      prevPageLabel: "Predchádzajúca strana",
       rotateLeft: "Otočiť doľava",
       rotateRight: "Otočiť doprava",
       rowsPerPageLabel: "Riadkov na stranu",

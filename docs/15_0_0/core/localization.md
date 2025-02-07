@@ -174,7 +174,7 @@ if (window.PrimeFaces) {
       firstPageLabel: "First Page",
       lastPageLabel: "Last Page",
       nextPageLabel: "Next Page",
-      previousPageLabel: "Previous Page",
+      prevPageLabel: "Previous Page",
       rowsPerPageLabel: "Rows per page",
       jumpToPageDropdownLabel: "Jump to Page Dropdown",
       jumpToPageInputLabel: "Jump to Page Input",

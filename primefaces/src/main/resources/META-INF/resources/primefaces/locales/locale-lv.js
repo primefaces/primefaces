@@ -105,7 +105,7 @@ if (window.PrimeFaces) {
       passwordHide: "Slēpt paroli",
       passwordShow: "Rādīt paroli",
       previous: "Iepriekšējais",
-      previousPageLabel: "Iepriekšējā lapa",
+      prevPageLabel: "Iepriekšējā lapa",
       rotateLeft: "Pagriezt pa kreisi",
       rotateRight: "Pagriezt pa labi",
       rowsPerPageLabel: "Rindas lapā",
