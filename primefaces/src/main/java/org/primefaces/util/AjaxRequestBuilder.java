@@ -356,9 +356,17 @@ public class AjaxRequestBuilder {
         return this;
     }
 
+    /**
+     * Passes parameters to the ajax request. If the first argument is a plain object, it will be converted to an array of name-value pairs.
+     * Otherwise, the argument will be passed as-is.
+     *
+     * @return The current instance of AjaxRequestBuilder
+     */
     public AjaxRequestBuilder passParams() {
-        buffer.append(",pa:arguments[0]");
-
+        buffer.append(",pa:");
+        buffer.append("(typeof arguments[0] === 'object' && !Array.isArray(arguments[0]) ");
+        buffer.append("? Object.entries(arguments[0]).map(([key, value]) => ({ name: key, value })) ");
+        buffer.append(": arguments[0])");
         return this;
     }
 
