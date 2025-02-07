@@ -35,9 +35,11 @@
                 <p:commandButton type="button" value="Send" icon="pi pi-refresh" onclick="rc()"/>
 
                 <h5>Parameters</h5>
-                <p>Passing parameters to the remote method as a javascript object.</p>
-                <p:commandButton type="button" value="Send" icon="pi pi-refresh"
+                <p>Passing parameters to the remote method as a javascript object or array of objects.</p>
+                <p:commandButton type="button" value="Send Array" icon="pi pi-refresh" styleClass="mr-2"
                         onclick="rc([{name: 'param1', value: 'foo'}, {name: 'param2', value: 'bar'}])"/>
+                <p:commandButton type="button" value="Send Object" icon="pi pi-refresh"
+                        onclick="rc({param1: 'foo', param2: 'bar'})"/>
 
                 <h5>Receive Values Back</h5>
                 <p>Receiving values form the server as a serialized json object.</p>
