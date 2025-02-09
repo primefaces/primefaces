@@ -628,21 +628,6 @@
         },
 
         /**
-         * Takes an input or textarea element and sets the caret (text cursor) position to the end of the the text.
-         * @param {HTMLInputElement | HTMLTextAreaElement} element An input or textarea element.
-         */
-        setCaretToEnd: function(element) {
-            if (element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement) {
-                element.focus();
-                var length = element.value.length;
-
-                if(length > 0 && element.setSelectionRange) {
-                    element.setSelectionRange(0, length);
-                }
-            }
-        },
-
-        /**
          * Gets the currently loaded PrimeFaces theme CSS link.
          * @return {string} The full URL to the theme CSS
          */
