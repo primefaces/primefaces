@@ -12,10 +12,16 @@
     <h:body>
 
         <h:form id="form">
+            <p:selectBooleanCheckbox id="checkboxCountBytesAsChars" value="#{inputTextArea002.countBytesAsChars}" label="countBytesAsChars">
+                <p:ajax update="@form"/>
+            </p:selectBooleanCheckbox>
+            <br/>
+
             <p:outputLabel for="@next" value="MaxLength Counter"/>
             <p:inputTextarea id="inputtext" value="#{inputTextArea002.value}" counter="display" maxlength="10" counterTemplate="{0} characters remaining."
-                             cols="100" rows="3"/>
+                             cols="100" rows="3" countBytesAsChars="#{inputTextArea002.countBytesAsChars}"/>
             <br/>
+
             <h:outputText id="display"/>
 
             <p:commandButton id="button" update="@form" value="Submit"/>
