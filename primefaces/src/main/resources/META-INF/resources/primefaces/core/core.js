@@ -710,31 +710,6 @@
         },
 
         /**
-         * Finds the text currently selected by the user on the current page.
-         * @return {string | Selection} The text currently selected by the user on the current page.
-         */
-        getSelection: function() {
-            var text = '';
-            if (window.getSelection) {
-                text = window.getSelection();
-            } else if (document.getSelection) {
-                text = document.getSelection();
-            } else if (document.selection) {
-                text = document.selection.createRange().text;
-            }
-
-            return text;
-        },
-
-        /**
-         * Checks whether any text on the current page is selected by the user.
-         * @return {boolean} `true` if text is selected, `false` otherwise.
-         */
-        hasSelection: function() {
-            return this.getSelection().length > 0;
-        },
-
-        /**
          * A shortcut for {@link createWidget}.
          * @param {string} widgetName Name of the widget class, as registered in {@link PrimeFaces.widget}.
          * @param {string} widgetVar Widget variable of the widget
