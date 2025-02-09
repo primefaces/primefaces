@@ -629,24 +629,15 @@
 
         /**
          * Takes an input or textarea element and sets the caret (text cursor) position to the end of the the text.
-         * @param {JQuery} element An input or textarea element.
+         * @param {HTMLInputElement | HTMLTextAreaElement} element An input or textarea element.
          */
         setCaretToEnd: function(element) {
-            if(element) {
-                element.trigger('focus');
+            if (element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement) {
+                element.focus();
                 var length = element.value.length;
 
-                if(length > 0) {
-                    if(element.setSelectionRange) {
-                        element.setSelectionRange(0, length);
-                    }
-                    else if (element.createTextRange) {
-                      var range = element.createTextRange();
-                      range.collapse(true);
-                      range.moveEnd('character', 1);
-                      range.moveStart('character', 1);
-                      range.select();
-                    }
+                if(length > 0 && element.setSelectionRange) {
+                    element.setSelectionRange(0, length);
                 }
             }
         },
