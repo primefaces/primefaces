@@ -226,8 +226,8 @@ if (window.PrimeFaces) {
       "primefaces.FileValidator.FILE_LIMIT": "Maximale Anzahl an Dateien überschritten.",
       "primefaces.FileValidator.FILE_LIMIT_detail": "Maximale Anzahl: {0}.",
       "primefaces.FileValidator.ALLOW_TYPES": "Ungültiger Dateityp.",
-      "primefaces.FileValidator.ALLOW_TYPES_detail": "Invalider Dateityp: '{0}'. Erlaubte Dateitypen: '{1}'.",
-      "primefaces.FileValidator.SIZE_LIMIT": "Invalide Dateigröße.",
+      "primefaces.FileValidator.ALLOW_TYPES_detail": "Ungültiger Dateityp: '{0}'. Erlaubte Dateitypen: '{1}'.",
+      "primefaces.FileValidator.SIZE_LIMIT": "Ungültige Dateigröße.",
       "primefaces.FileValidator.SIZE_LIMIT_detail": "Datei '{0}' darf nicht größer als {1} sein.",
       //optional for bean validation integration in client side validation
       "javax.faces.validator.BeanValidator.MESSAGE": "{0}",
