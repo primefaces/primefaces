@@ -5049,7 +5049,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         {name: $this.id + '_rowreorder', value: true},
                         {name: $this.id + '_fromIndex', value: fromIndex},
                         {name: $this.id + '_toIndex', value: toIndex},
-                        {name: this.id + '_skipChildren', value: true}
+                        {name: $this.id + '_skipChildren', value: true}
                     ]
                 }
 
