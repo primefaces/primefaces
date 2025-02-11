@@ -1344,8 +1344,7 @@ if (!PrimeFaces.ajax) {
 
                     switch (currentNode.nodeName) {
                         case "redirect":
-                            xhr.pfArgs.redirect = true;
-                            PrimeFaces.ajax.ResponseProcessor.doRedirect(currentNode);
+                            // will be done afterwards, we execute all changes (especially 'eval') first. See #13289.
                             break;
 
                         case "changes":
@@ -1395,6 +1394,14 @@ if (!PrimeFaces.ajax) {
                             PrimeFaces.ajax.ResponseProcessor.doError(currentNode, xhr);
                             break;
                     }
+                }
+
+                // handle redirect as last step, see #13289
+                const redirectNodes = Array.from(partialResponseNode.childNodes).filter(node => node.nodeName === "redirect");
+                for (const currentNode of redirectNodes) {
+                    xhr.pfArgs.redirect = true;
+                    PrimeFaces.ajax.ResponseProcessor.doRedirect(currentNode);
+                    break;
                 }
             },
 
