@@ -1123,7 +1123,7 @@ if (!PrimeFaces.ajax) {
              */
             addParam: function(params, name, value, parameterPrefix) {
                 // add namespace if not available
-                if (parameterPrefix || !name.indexOf(parameterPrefix) === 0) {
+                if (parameterPrefix && !name.startsWith(parameterPrefix)) {
                     params.push({ name: parameterPrefix + name, value: value });
                 }
                 else {
