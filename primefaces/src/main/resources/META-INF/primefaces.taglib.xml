@@ -1870,6 +1870,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Text to display when there is no data to display. Default is "No records found."]]>
+            </description>
+            <name>emptyMessage</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Should the empty message be displayed when no items are found? Default is true.]]>
             </description>
             <name>showEmptyMessage</name>
