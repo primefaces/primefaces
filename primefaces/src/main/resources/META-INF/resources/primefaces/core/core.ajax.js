@@ -1165,7 +1165,7 @@ if (!PrimeFaces.ajax) {
 
                 for (const param of paramsToAdd) {
                     // add namespace if not available
-                    if (parameterPrefix && !param.name.indexOf(parameterPrefix) === 0) {
+                    if (parameterPrefix && !param.name.startsWith(parameterPrefix)) {
                         param.name = parameterPrefix + param.name;
                     }
 
