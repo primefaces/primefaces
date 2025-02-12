@@ -26,8 +26,10 @@ package org.primefaces.component.autocomplete;
 import org.primefaces.component.api.AbstractPrimeHtmlInputText;
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
+import org.primefaces.component.api.UIPageableData;
 import org.primefaces.component.api.Widget;
 import org.primefaces.model.LazyDataModel;
+import org.primefaces.util.MessageFactory;
 
 public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implements Widget, InputHolder, MixedClientBehaviorHolder {
 
@@ -37,51 +39,52 @@ public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implem
 
     public enum PropertyKeys {
 
-        placeholder,
-        widgetVar,
-        completeMethod,
-        var,
-        itemLabel,
-        itemValue,
-        itemStyleClass,
-        maxResults,
-        minQueryLength,
-        queryDelay,
-        forceSelection,
-        scrollHeight,
-        dropdown,
-        panelStyle,
-        panelStyleClass,
-        multiple,
-        itemtipMyPosition,
-        itemtipAtPosition,
+        active,
+        appendTo,
+        at,
+        autoHighlight,
+        autoSelection,
         cache,
         cacheTimeout,
-        appendTo,
-        groupBy,
-        queryEvent,
+        completeEndpoint,
+        completeMethod,
+        dropdown,
         dropdownMode,
-        autoHighlight,
-        selectLimit,
+        dropdownTabindex,
+        dynamic,
+        emptyMessage,
+        escape,
+        forceSelection,
+        groupBy,
+        groupByTooltip,
+        highlightSelector,
         inputStyle,
         inputStyleClass,
-        groupByTooltip,
-        my,
-        at,
-        active,
-        type,
-        moreText,
-        unique,
-        dynamic,
-        autoSelection,
-        escape,
-        queryMode,
-        dropdownTabindex,
-        completeEndpoint,
-        lazyModel,
+        itemLabel,
+        itemStyleClass,
+        itemtipAtPosition,
+        itemtipMyPosition,
+        itemValue,
         lazyField,
+        lazyModel,
+        maxResults,
+        minQueryLength,
+        moreText,
+        multiple,
+        my,
+        panelStyle,
+        panelStyleClass,
+        placeholder,
+        queryDelay,
+        queryEvent,
+        queryMode,
+        scrollHeight,
+        selectLimit,
         showEmptyMessage,
-        highlightSelector
+        type,
+        unique,
+        var,
+        widgetVar,
     }
 
     public AutoCompleteBase() {
@@ -451,5 +454,13 @@ public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implem
 
     public void setHighlightSelector(String highlightSelector) {
         getStateHelper().put(PropertyKeys.highlightSelector, highlightSelector);
+    }
+
+    public String getEmptyMessage() {
+        return (String) getStateHelper().eval(PropertyKeys.emptyMessage, MessageFactory.getMessage(getFacesContext(), UIPageableData.EMPTY_MESSAGE));
+    }
+
+    public void setEmptyMessage(String emptyMessage) {
+        getStateHelper().put(PropertyKeys.emptyMessage, emptyMessage);
     }
 }

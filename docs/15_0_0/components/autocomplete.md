@@ -40,6 +40,7 @@ AutoComplete provides live suggestions while an input is being typed.
 | dropdownTabindex | null | String | Position of the dropdown button in the tabbing order.
 | dynamic | false | Boolean | Defines if dynamic loading is enabled for the element's panel. If the value is "true", the overlay is not rendered on page load to improve performance.
 | escape | true | Boolean | Defines if autocomplete results are escaped or not.
+| emptyMessage | null | String | Text to display when there is no data to display. Default "No records found."
 | forceSelection | false | Boolean | When enabled, autoComplete only accepts input from the selection list.
 | groupByTooltip | null | String | Tooltip to display on group headers.
 | highlightSelector | span | String | jQuery selector specifies what content to identify for highlighting in search results. By default, it targets `<span>` elements.
