@@ -53,6 +53,7 @@ class SelectCheckboxMenu002Test extends AbstractPrimePageTest {
         menu.show();
         assertSelected(menu, 0);
         menu.selectValue(value);
+        menu.hide();
         page.button.click();
 
         // Assert
