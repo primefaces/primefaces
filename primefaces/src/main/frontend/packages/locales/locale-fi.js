@@ -106,7 +106,6 @@ if (window.PrimeFaces) {
       passwordShow: "Näytä salasana",
       previous: "Edellinen",
       prevPageLabel: "Edellinen sivu",
-      prevPageLabel: "Edellinen sivu",
       rotateLeft: "Pyöritä vasemmalle",
       rotateRight: "Pyöritä oikealle",
       rowsPerPageLabel: "Rivejä sivulla",
