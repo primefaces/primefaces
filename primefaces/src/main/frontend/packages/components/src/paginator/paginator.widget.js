@@ -105,7 +105,7 @@ PrimeFaces.widget.Paginator = class Paginator extends PrimeFaces.widget.BaseWidg
         this.jtpSelect.attr('aria-label', this.getAriaLabel('jumpToPageDropdownLabel'));
         this.jtpInput.attr('aria-label', this.getAriaLabel('jumpToPageInputLabel'));
         this.firstLink.attr('aria-label', this.getAriaLabel('firstPageLabel'));
-        this.prevLink.attr('aria-label', this.getAriaLabel('previousPageLabel'));
+        this.prevLink.attr('aria-label', this.getAriaLabel('prevPageLabel'));
         this.nextLink.attr('aria-label', this.getAriaLabel('nextPageLabel'));
         this.endLink.attr('aria-label', this.getAriaLabel('lastPageLabel'));
     }
@@ -118,7 +118,7 @@ PrimeFaces.widget.Paginator = class Paginator extends PrimeFaces.widget.BaseWidg
         var $this = this;
 
         //visuals for first,prev,next,last buttons
-        this.navigator.children('a.ui-state-default').on('mouseover.paginator', function(){
+        this.navigator.children('button.ui-state-default').on('mouseover.paginator', function(){
             var item = $(this);
             if(!item.hasClass('ui-state-disabled')) {
                 item.addClass('ui-state-hover');
@@ -299,8 +299,8 @@ PrimeFaces.widget.Paginator = class Paginator extends PrimeFaces.widget.BaseWidg
     * Removes all event listeners.
     * @private
     */
-    unbindEvents() {
-        var buttons = this.navigator.children('a.ui-state-default');
+   unbindEvents() {
+        var buttons = this.navigator.children('button.ui-state-default');
         if (buttons.length > 0) {
             buttons.off();
         }
@@ -409,7 +409,7 @@ PrimeFaces.widget.Paginator = class Paginator extends PrimeFaces.widget.BaseWidg
         //update dom
         this.pagesContainer.children().remove();
         for(var i = start; i <= end; i++) {
-            var styleClass = 'ui-paginator-page ui-state-default',
+            var styleClass = 'ui-paginator-page ui-button ui-button-flat ui-state-default',
             ariaLabel = this.ariaPageLabel.replace('{page}', (i+1)),
             ariaCurrentPage = '';
 
@@ -418,7 +418,7 @@ PrimeFaces.widget.Paginator = class Paginator extends PrimeFaces.widget.BaseWidg
                 ariaCurrentPage = 'aria-current="page"';
             }
 
-            this.pagesContainer.append('<a class="' + styleClass + '" aria-label="' + ariaLabel + '" ' + ariaCurrentPage + ' tabindex="0" href="#">' + (i + 1) + '</a>');
+            this.pagesContainer.append('<button class="' + styleClass + '" aria-label="' + ariaLabel + '" ' + ariaCurrentPage + ' tabindex="0" type="button">' + (i + 1) + '</button>');
         }
 
         if(focusContainer) {

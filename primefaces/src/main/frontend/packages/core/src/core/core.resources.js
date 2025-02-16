@@ -74,7 +74,7 @@ if (!PrimeFaces.resources) {
                 PrimeFaces.resources.IS_EXTENSION_MAPPING = scriptURI.charAt(scriptURI.indexOf(scriptName) + scriptName.length) === '.';
              }
 
-             return PrimeFaces.IS_EXTENSION_MAPPING;
+             return PrimeFaces.resources.IS_EXTENSION_MAPPING;
           },
 
           /**

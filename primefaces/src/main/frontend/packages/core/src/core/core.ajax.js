@@ -1123,7 +1123,7 @@ if (!PrimeFaces.ajax) {
              */
             addParam: function(params, name, value, parameterPrefix) {
                 // add namespace if not available
-                if (parameterPrefix || !name.indexOf(parameterPrefix) === 0) {
+                if (parameterPrefix && !name.startsWith(parameterPrefix)) {
                     params.push({ name: parameterPrefix + name, value: value });
                 }
                 else {
@@ -1142,7 +1142,7 @@ if (!PrimeFaces.ajax) {
              */
             addFormData: function(formData, name, value, parameterPrefix) {
                 // add namespace if not available
-                if (parameterPrefix || !name.indexOf(parameterPrefix) === 0) {
+                if (parameterPrefix && !name.startsWith(parameterPrefix)) {
                     formData.append(parameterPrefix + name, value);
                 }
                 else {
@@ -1165,7 +1165,7 @@ if (!PrimeFaces.ajax) {
 
                 for (const param of paramsToAdd) {
                     // add namespace if not available
-                    if (parameterPrefix && !param.name.indexOf(parameterPrefix) === 0) {
+                    if (parameterPrefix && !param.name.startsWith(parameterPrefix)) {
                         param.name = parameterPrefix + param.name;
                     }
 
@@ -1344,8 +1344,7 @@ if (!PrimeFaces.ajax) {
 
                     switch (currentNode.nodeName) {
                         case "redirect":
-                            xhr.pfArgs.redirect = true;
-                            PrimeFaces.ajax.ResponseProcessor.doRedirect(currentNode);
+                            // will be done afterwards, we execute all changes (especially 'eval') first. See #13289.
                             break;
 
                         case "changes":
@@ -1395,6 +1394,14 @@ if (!PrimeFaces.ajax) {
                             PrimeFaces.ajax.ResponseProcessor.doError(currentNode, xhr);
                             break;
                     }
+                }
+
+                // handle redirect as last step, see #13289
+                const redirectNodes = Array.from(partialResponseNode.childNodes).filter(node => node.nodeName === "redirect");
+                for (const currentNode of redirectNodes) {
+                    xhr.pfArgs.redirect = true;
+                    PrimeFaces.ajax.ResponseProcessor.doRedirect(currentNode);
+                    break;
                 }
             },
 

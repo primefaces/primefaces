@@ -630,30 +630,6 @@ import Cookies from "js-cookie";
         },
 
         /**
-         * Takes an input or textarea element and sets the caret (text cursor) position to the end of the the text.
-         * @param {JQuery} element An input or textarea element.
-         */
-        setCaretToEnd: function(element) {
-            if(element) {
-                element.trigger('focus');
-                var length = element.value.length;
-
-                if(length > 0) {
-                    if(element.setSelectionRange) {
-                        element.setSelectionRange(0, length);
-                    }
-                    else if (element.createTextRange) {
-                      var range = element.createTextRange();
-                      range.collapse(true);
-                      range.moveEnd('character', 1);
-                      range.moveStart('character', 1);
-                      range.select();
-                    }
-                }
-            }
-        },
-
-        /**
          * Gets the currently loaded PrimeFaces theme CSS link.
          * @return {string} The full URL to the theme CSS
          */
@@ -733,31 +709,6 @@ import Cookies from "js-cookie";
                     //ignore IE bug
                 }
             }
-        },
-
-        /**
-         * Finds the text currently selected by the user on the current page.
-         * @return {string | Selection} The text currently selected by the user on the current page.
-         */
-        getSelection: function() {
-            var text = '';
-            if (window.getSelection) {
-                text = window.getSelection();
-            } else if (document.getSelection) {
-                text = document.getSelection();
-            } else if (document.selection) {
-                text = document.selection.createRange().text;
-            }
-
-            return text;
-        },
-
-        /**
-         * Checks whether any text on the current page is selected by the user.
-         * @return {boolean} `true` if text is selected, `false` otherwise.
-         */
-        hasSelection: function() {
-            return this.getSelection().length > 0;
         },
 
         /**
@@ -1809,7 +1760,7 @@ import Cookies from "js-cookie";
                 "passwordHide": "Hide Password",
                 "passwordShow": "Show Password",
                 "previous": "Previous",
-                "previousPageLabel": "Previous Page",
+                "prevPageLabel": "Previous Page",
                 "rotateLeft": "Rotate Left",
                 "rotateRight": "Rotate Right",
                 "rowsPerPageLabel": "Rows per page",

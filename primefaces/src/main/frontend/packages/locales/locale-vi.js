@@ -105,7 +105,7 @@ if (window.PrimeFaces) {
       passwordHide: "Ẩn mật khẩu",
       passwordShow: "Hiển thị mật khẩu",
       previous: "Trước",
-      previousPageLabel: "Trang trước",
+      prevPageLabel: "Trang trước",
       rotateLeft: "Xoay trái",
       rotateRight: "Xoay phải",
       rowsPerPageLabel: "Hàng trên mỗi trang",

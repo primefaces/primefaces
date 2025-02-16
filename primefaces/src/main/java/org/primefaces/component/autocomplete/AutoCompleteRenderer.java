@@ -793,6 +793,7 @@ public class AutoCompleteRenderer extends InputRenderer {
                 .attr("highlightSelector", ac.getHighlightSelector(), null)
                 .attr("autoHighlight", ac.isAutoHighlight(), true)
                 .attr("showEmptyMessage", ac.isShowEmptyMessage(), true)
+                .attr("emptyMessage", ac.getEmptyMessage(), null)
                 .attr("myPos", ac.getMy(), null)
                 .attr("atPos", ac.getAt(), null)
                 .attr("active", ac.isActive(), true)

@@ -3280,7 +3280,7 @@ $.widget("prime.datePicker", {
             return;
         }
 
-        var newDateTime = this.isDate(this.value) ? new Date(this.value) : this.getNow();
+        var newDateTime = this.getCurrentTime();
         newDateTime.setHours(newHours);
 
         this.updateTimeAfterInput(event, newDateTime);
@@ -3306,7 +3306,7 @@ $.widget("prime.datePicker", {
             return;
         }
 
-        var newDateTime = this.isDate(this.value) ? new Date(this.value) : this.getNow();
+        var newDateTime = this.getCurrentTime();
         newDateTime.setMinutes(newMinutes);
 
         this.updateTimeAfterInput(event, newDateTime);
@@ -3332,7 +3332,7 @@ $.widget("prime.datePicker", {
             return;
         }
 
-        var newDateTime = this.isDate(this.value) ? new Date(this.value) : this.getNow();
+        var newDateTime = this.getCurrentTime();
         newDateTime.setSeconds(newSeconds);
 
         this.updateTimeAfterInput(event, newDateTime);
@@ -3358,7 +3358,7 @@ $.widget("prime.datePicker", {
             return;
         }
 
-        var newDateTime = this.isDate(this.value) ? new Date(this.value) : this.getNow();
+        var newDateTime = this.getCurrentTime();
         newDateTime.setMilliseconds(newMilliseconds);
 
         this.updateTimeAfterInput(event, newDateTime);
@@ -3394,7 +3394,7 @@ $.widget("prime.datePicker", {
     },
 
     updateTime: function(event, hour, minute, second, millisecond) {
-        var newDateTime = this.isDate(this.value) ? new Date(this.value) : this.getNow();
+        var newDateTime = this.getCurrentTime();
 
         newDateTime.setHours(hour);
         newDateTime.setMinutes(minute);
@@ -3441,6 +3441,17 @@ $.widget("prime.datePicker", {
             now = new Date(localString);
         }
         return now;
+    },
+
+    /**
+     * Gets the current time value of the datepicker.
+     * Returns a new Date object initialized with either the current value if it's a valid date,
+     * or the current view date if the value is not a valid date.
+     * 
+     * @returns {Date} A new Date object representing the current time
+     */
+    getCurrentTime: function() {
+        return this.isDate(this.value) ? new Date(this.value) : new Date(this.viewDate);
     },
 
     /**

@@ -38,4 +38,6 @@ public class InputTextArea002 implements Serializable {
     private static final long serialVersionUID = -7518459955779385834L;
     private String value;
 
+    private boolean countBytesAsChars = false;
+
 }

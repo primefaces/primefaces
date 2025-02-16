@@ -105,7 +105,7 @@ if (window.PrimeFaces) {
       passwordHide: "הסתר סיסמא",
       passwordShow: "הראה סיסמה",
       previous: "קודם",
-      previousPageLabel: "עמוד קודם",
+      prevPageLabel: "עמוד קודם",
       rotateLeft: "סובב שמאלה",
       rotateRight: "סובב ימינה",
       rowsPerPageLabel: "שורות לעמוד",

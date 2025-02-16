@@ -82,6 +82,7 @@
  * @prop {boolean} cfg.dynamic Defines if dynamic loading is enabled for the element's panel. If the value is `true`,
  * the overlay is not rendered on page load to improve performance.
  * @prop {boolean} cfg.escape Whether the text of the suggestion items is escaped for HTML.
+ * @prop {string} cfg.emptyMessage Text to display when there is no data to display.
  * @prop {boolean} cfg.hasFooter Whether a footer facet is present.
  * @prop {boolean} cfg.forceSelection Whether one of the available suggestion items is forced to be preselected.
  * @prop {boolean} cfg.grouping Whether suggestion items are grouped.
@@ -219,7 +220,7 @@ PrimeFaces.widget.AutoComplete = class AutoComplete extends PrimeFaces.widget.Ba
      * @private
      */
     configureLocale() {
-        this.emptyMessage = this.getLabel('emptySearchMessage');
+        this.emptyMessage = this.cfg.emptyMessage || this.getLabel('emptySearchMessage');
         this.resultsMessage = this.getLabel('searchMessage');
         if (this.dropdown) {
             this.dropdown.attr('aria-label', this.getLabel('choose'));

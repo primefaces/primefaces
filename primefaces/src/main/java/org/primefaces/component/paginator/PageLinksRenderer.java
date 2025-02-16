@@ -55,12 +55,12 @@ public class PageLinksRenderer implements PaginatorElementRenderer {
         for (int i = start; i <= end; i++) {
             String styleClass = currentPage == i ? UIPageableData.PAGINATOR_ACTIVE_PAGE_CLASS : UIPageableData.PAGINATOR_PAGE_CLASS;
 
-            writer.startElement("a", null);
+            writer.startElement("button", null);
             writer.writeAttribute("class", styleClass, null);
             writer.writeAttribute("tabindex", 0, null);
-            writer.writeAttribute("href", "#", null);
+            writer.writeAttribute("type", "button", null);
             writer.writeText((i + 1), null);
-            writer.endElement("a");
+            writer.endElement("button");
         }
 
         writer.endElement("span");

@@ -105,7 +105,7 @@ if (window.PrimeFaces) {
       passwordHide: "Απόκρυψη κωδικού πρόσβασης",
       passwordShow: "Δείξε τον κωδικό",
       previous: "Προηγούμενο",
-      previousPageLabel: "Προηγούμενη Σελίδα",
+      prevPageLabel: "Προηγούμενη Σελίδα",
       rotateLeft: "Περιστροφή αριστερά",
       rotateRight: "Περιστροφή δεξιά",
       rowsPerPageLabel: "Σειρές ανά σελίδα",
