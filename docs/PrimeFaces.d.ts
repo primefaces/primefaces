@@ -2007,6 +2007,81 @@ declare namespace PrimeFaces.widget {
         toggleSpeed: number;
     }
 }
+declare namespace PrimeFaces.widget {
+    /**
+     * __PrimeFaces AjaxExceptionHandler Widget__
+     * @typeparam TCfg Defaults to `AjaxExceptionHandlerCfg`. Type of the configuration object for this widget.
+     */
+    export class AjaxExceptionHandler<TCfg extends AjaxExceptionHandlerCfg = AjaxExceptionHandlerCfg> extends PrimeFaces.widget.BaseWidget<TCfg> {
+        /**
+         * Returns the exception type.
+         * @return The exception type.
+         */
+        getExceptionType(): string;
+        /**
+         * Handles the passed error.
+         * @param errorName The error name.
+         * @param errorMessage The error message.
+         */
+        handle(errorName: string, errorMessage: string): void;
+        /**
+         * If the widget handles the passed error.
+         * @param errorName The error name.
+         * @return If the widget handles the passed error.
+         */
+        handles(errorName: string): boolean;
+        /**
+         * A widget class should not declare an explicit constructor, the default constructor provided by this base
+         * widget should be used. Instead, override this initialize method which is called after the widget instance
+         * was constructed. You can use this method to perform any initialization that is required. For widgets that
+         * need to create custom HTML on the client-side this is also the place where you should call your render
+         * method.
+         *
+         * Please make sure to call the super method first before adding your own custom logic to the init method:
+         *
+         * ```javascript
+         * PrimeFaces.widget.MyWidget = PrimeFaces.widget.BaseWidget.extend({
+         *   init: function(cfg) {
+         *     this._super(cfg);
+         *     // custom initialization
+         *   }
+         * });
+         * ```
+         * @override
+         * @param cfg The widget configuration to be used for this widget instance.
+         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * component.
+         */
+        override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
+        /**
+         * Returns if the current widget is not registered to a specific exception type.
+         * Global exception handlers should be called, if no widget is available for a specific exception type.
+         * @return if global or not.
+         */
+        isGlobal(): boolean;
+    }
+}
+declare namespace PrimeFaces.widget {
+    /**
+     * The configuration for the {@link  AjaxExceptionHandler | AjaxExceptionHandler widget}.
+     * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+     * configuration is usually meant to be read-only and should not be modified.
+     */
+    export interface AjaxExceptionHandlerCfg extends PrimeFaces.widget.BaseWidgetCfg {
+        /**
+         * The exception type.
+         */
+        exceptionType: string;
+        /**
+         * The JS callback.
+         */
+        onexception: string;
+        /**
+         * The components to update.
+         */
+        update: string;
+    }
+}
 declare namespace PrimeFaces.widget.AjaxStatus {
     /**
      * Available
@@ -2076,12 +2151,33 @@ declare namespace PrimeFaces.widget {
      */
     export class AjaxStatus<TCfg extends AjaxStatusCfg = AjaxStatusCfg> extends PrimeFaces.widget.BaseWidget<TCfg> {
         /**
+         * True if this component contains a success/error facet.
+         */
+        hasSuccessOrErrorFacet: boolean;
+        /**
          * The set-timeout timer ID for the timer of the delay before the AJAX status is
          * triggered.
          */
         timeout: number | null;
         /**
-         * Listen to the relevant events on the document element.
+         * Binds event handlers to AJAX events on the document element.
+         * Handles both PrimeFaces AJAX events and native JSF AJAX events.
+         *
+         * For PrimeFaces AJAX events:
+         * - pfAjaxStart: Triggered when AJAX request starts. After configured delay, triggers 'start' event.
+         * - pfAjaxError: Triggered when AJAX request fails. Triggers 'error' event with xhr, settings, error details.
+         * - pfAjaxSuccess: Triggered when AJAX request succeeds. Triggers 'success' event with xhr, settings.
+         * - pfAjaxComplete: Triggered after success/error. Clears timeout if no redirect. Triggers 'complete' event.
+         *
+         * For JSF AJAX events:
+         * - begin: Triggers 'start' event after configured delay
+         * - complete: IGNORED since it fires before success/error
+         * - success: Clears timeout, triggers 'success' then 'complete' events
+         * - error: Logs error, clears timeout, triggers 'error' then 'complete' events
+         *
+         * Events are namespaced with component ID for cleanup.
+         * Configured delay controls timing of showing AJAX status.
+         * Cleanup is handled via destroy listener that removes document event handlers.
          */
         private bind(): void;
         /**
@@ -2716,6 +2812,10 @@ declare namespace PrimeFaces.widget {
          */
         dynamic: boolean;
         /**
+         * Text to display when there is no data to display.
+         */
+        emptyMessage: string;
+        /**
          * Whether the text of the suggestion items is escaped for HTML.
          */
         escape: boolean;
@@ -2731,6 +2831,10 @@ declare namespace PrimeFaces.widget {
          * Whether a footer facet is present.
          */
         hasFooter: boolean;
+        /**
+         * Selector specifies what content to identify for highlighting in search results.
+         */
+        highlightSelector: boolean;
         /**
          * Whether a tooltip is shown for the suggestion items.
          */
@@ -2782,6 +2886,10 @@ declare namespace PrimeFaces.widget {
          */
         selectLimit: number;
         /**
+         * Whether to display the emptyMessage or not.
+         */
+        showEmptyMessage: boolean;
+        /**
          * Ensures uniqueness of the selected items.
          */
         unique: boolean;
@@ -2821,9 +2929,11 @@ declare namespace PrimeFaces.widget {
          */
         private _cleanup(): void;
         /**
-         * Align the overlay so it covers its target component.
+         * Align the overlay so it covers its target component. Updates the size and position of the blocker and content elements
+         * to match the target component's dimensions.
+         * @param forceUpdate Defaults to `true`. - Whether to force update the overlay dimensions even if they haven't changed
          */
-        private alignOverlay(): void;
+        private alignOverlay(forceUpdate?: boolean): void;
         /**
          * Sets up the global resize listener on the document.
          */
@@ -3712,6 +3822,21 @@ declare namespace PrimeFaces.widget {
          */
         private configureTimePicker(): void;
         /**
+         * Will be called after an AJAX request if the widget container will be detached.
+         *
+         * When an AJAX call is made and this component is updated, the DOM element is replaced with the newly rendered
+         * content. When the element is removed from the DOM by the update, the DOM element is detached from the DOM and
+         * this method gets called.
+         *
+         * Please note that instead of overriding this method, you should consider adding a destroy listener instead
+         * via {@link addDestroyListener}. This has the advantage of letting you add multiple listeners, and makes it
+         * possible to add additional listeners from code outside this widget.
+         *
+         * By default, this method just calls all destroy listeners.
+         * @override
+         */
+        override destroy(): void;
+        /**
          * Disables the calendar, so that the user can no longer select any date..
          */
         disable(): void;
@@ -4573,164 +4698,6 @@ declare namespace PrimeFaces.widget {
 }
 declare namespace PrimeFaces.widget {
     /**
-     * __PrimeFaces LineChart Widget__
-     *
-     * A line chart is a way of plotting data points on a line. Often, it is used to show trend data, or the comparison of
-     * two data sets.
-     * @typeparam TCfg Defaults to `LineChartCfg`. Type of the configuration object for this widget.
-     */
-    export class LineChart<TCfg extends LineChartCfg = LineChartCfg> extends PrimeFaces.widget.Chart<TCfg> {
-    }
-}
-declare namespace PrimeFaces.widget {
-    /**
-     * The configuration for the {@link  LineChart| LineChart widget}.
-     * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
-     * configuration is usually meant to be read-only and should not be modified.
-     */
-    export interface LineChartCfg extends PrimeFaces.widget.ChartCfg {
-    }
-}
-declare namespace PrimeFaces.widget {
-    /**
-     * __PrimeFaces BarChart Widget__
-     *
-     * A bar chart provides a way of showing data values represented as vertical
-     * bars. It is sometimes used to show trend data, and the comparison of multiple
-     * data sets side by side.
-     * @typeparam TCfg Defaults to `BarChartCfg`. Type of the configuration object for this widget.
-     */
-    export class BarChart<TCfg extends BarChartCfg = BarChartCfg> extends PrimeFaces.widget.Chart<TCfg> {
-    }
-}
-declare namespace PrimeFaces.widget {
-    /**
-     * The configuration for the {@link  BarChart| BarChart widget}.
-     * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
-     * configuration is usually meant to be read-only and should not be modified.
-     */
-    export interface BarChartCfg extends PrimeFaces.widget.ChartCfg {
-    }
-}
-declare namespace PrimeFaces.widget {
-    /**
-     * __PrimeFaces PieChart Widget__
-     *
-     * Pie chart is divided into segments, the arc of each segment shows the proportional value of each piece of data.
-     * @typeparam TCfg Defaults to `PieChartCfg`. Type of the configuration object for this widget.
-     */
-    export class PieChart<TCfg extends PieChartCfg = PieChartCfg> extends PrimeFaces.widget.Chart<TCfg> {
-    }
-}
-declare namespace PrimeFaces.widget {
-    /**
-     * The configuration for the {@link  PieChart| PieChart widget}.
-     * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
-     * configuration is usually meant to be read-only and should not be modified.
-     */
-    export interface PieChartCfg extends PrimeFaces.widget.ChartCfg {
-    }
-}
-declare namespace PrimeFaces.widget {
-    /**
-     * __PrimeFaces DonutChart Widget__
-     *
-     * A Donut Chart is a variation of a Pie Chart but with a space in the center.
-     * @typeparam TCfg Defaults to `DonutChartCfg`. Type of the configuration object for this widget.
-     */
-    export class DonutChart<TCfg extends DonutChartCfg = DonutChartCfg> extends PrimeFaces.widget.Chart<TCfg> {
-    }
-}
-declare namespace PrimeFaces.widget {
-    /**
-     * The configuration for the {@link  DonutChart| DonutChart widget}.
-     * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
-     * configuration is usually meant to be read-only and should not be modified.
-     */
-    export interface DonutChartCfg extends PrimeFaces.widget.ChartCfg {
-    }
-}
-declare namespace PrimeFaces.widget {
-    /**
-     * __PrimeFaces PolarAreaChart Widget__
-     *
-     * Polar area charts are similar to pie charts, but each segment has the same angle - the radius of the segment differs
-     * depending on the value.
-     * @typeparam TCfg Defaults to `PolarAreaChartCfg`. Type of the configuration object for this widget.
-     */
-    export class PolarAreaChart<TCfg extends PolarAreaChartCfg = PolarAreaChartCfg> extends PrimeFaces.widget.Chart<TCfg> {
-    }
-}
-declare namespace PrimeFaces.widget {
-    /**
-     * The configuration for the
-     * {@link  PolarAreaChart| PolarAreaChart widget}. You can access this configuration via
-     * {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this configuration is usually meant to be
-     * read-only and should not be modified.
-     */
-    export interface PolarAreaChartCfg extends PrimeFaces.widget.ChartCfg {
-    }
-}
-declare namespace PrimeFaces.widget {
-    /**
-     * __PrimeFaces RadarChart Widget__
-     *
-     * A radar chart is a way of showing multiple data points and the variation between them.
-     * @typeparam TCfg Defaults to `RadarChartCfg`. Type of the configuration object for this widget.
-     */
-    export class RadarChart<TCfg extends RadarChartCfg = RadarChartCfg> extends PrimeFaces.widget.Chart<TCfg> {
-    }
-}
-declare namespace PrimeFaces.widget {
-    /**
-     * The configuration for the {@link  RadarChart| RadarChart widget}.
-     * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
-     * configuration is usually meant to be read-only and should not be modified.
-     */
-    export interface RadarChartCfg extends PrimeFaces.widget.ChartCfg {
-    }
-}
-declare namespace PrimeFaces.widget {
-    /**
-     * __PrimeFaces BubbleChart Widget__
-     *
-     * A bubble chart is used to display three dimensions of data at the same time. The location of the bubble is determined
-     * by the first two dimensions and the corresponding horizontal and vertical axes. The third dimension is represented by
-     * the size of the individual bubbles.
-     * @typeparam TCfg Defaults to `BubbleChartCfg`. Type of the configuration object for this widget.
-     */
-    export class BubbleChart<TCfg extends BubbleChartCfg = BubbleChartCfg> extends PrimeFaces.widget.Chart<TCfg> {
-    }
-}
-declare namespace PrimeFaces.widget {
-    /**
-     * The configuration for the {@link  BubbleChart| BubbleChart widget}.
-     * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
-     * configuration is usually meant to be read-only and should not be modified.
-     */
-    export interface BubbleChartCfg extends PrimeFaces.widget.ChartCfg {
-    }
-}
-declare namespace PrimeFaces.widget {
-    /**
-     * __PrimeFaces ScatterChart Widget__
-     * @typeparam TCfg Defaults to `ScatterChartCfg`. Type of the configuration object for this widget.
-     */
-    export class ScatterChart<TCfg extends ScatterChartCfg = ScatterChartCfg> extends PrimeFaces.widget.Chart<TCfg> {
-    }
-}
-declare namespace PrimeFaces.widget {
-    /**
-     * The configuration for the
-     * {@link  ScatterChart| ScatterChart widget}. You can access this configuration via
-     * {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this configuration is usually meant to be
-     * read-only and should not be modified.
-     */
-    export interface ScatterChartCfg extends PrimeFaces.widget.ChartCfg {
-    }
-}
-declare namespace PrimeFaces.widget {
-    /**
      * __PrimeFaces Chip Widget__
      *
      * Chip represents entities using icons, labels and images.
@@ -5565,6 +5532,10 @@ declare namespace PrimeFaces.widget {
          */
         tableId: string;
         /**
+         * Widget of the table to which this column toggle is attached.
+         */
+        tableWidget: PrimeFaces.widget.BaseWidget;
+        /**
          * The DOM element for the table body of the table to which this column toggle is attached.
          */
         tbody: JQuery;
@@ -5795,6 +5766,10 @@ declare namespace PrimeFaces.widget {
          */
         message: JQuery;
         /**
+         * DOM element of the No button.
+         */
+        noButton: JQuery;
+        /**
          * Unbind callback for the resize handler.
          */
         resizeHandler?: PrimeFaces.UnbindCallback;
@@ -5806,6 +5781,10 @@ declare namespace PrimeFaces.widget {
          * Handler for CSS transitions used by this widget.
          */
         transition?: PrimeFaces.CssTransitionHandler | null;
+        /**
+         * DOM element of the Yes button.
+         */
+        yesButton: JQuery;
         /**
          * Aligns the popup so that it is shown at the correct position.
          * @param target Jquery selector that is the target of this popup
@@ -5859,6 +5838,10 @@ declare namespace PrimeFaces.widget {
          * @return `true` if this popup is currently being shown, `false` otherwise.
          */
         isVisible(): boolean;
+        /**
+         * Restore the button text and styling to its original form.
+         */
+        private restoreButtons(): void;
         /**
          * Puts focus on the element that opened this dialog.
          * @param delay how long to delay before focusing
@@ -6158,9 +6141,10 @@ declare namespace PrimeFaces.ajax {
          * @param source The id of the request source.
          * @param process A comma separated list of components which should be processed.
          * @param update A comma separated list of components which should be updated.
+         * @param ignoreAutoUpdate If true, components which use `p:autoUpdate` will not be updated for this request.
          * @return The newly created form data.
          */
-        createFacesAjaxFormData(form: JQuery, parameterPrefix: string, source: string, process?: string, update?: string): FormData;
+        createFacesAjaxFormData(form: JQuery, parameterPrefix: string, source: string, process?: string, update?: string, ignoreAutoUpdate?: boolean): FormData;
         /**
          * Finds the namespace (prefix) for the parameters of the given form.
          * This is required for Porlets as a Portlet contains multiple JSF views and we must only process and update the forms/inputs of the current view / application.
@@ -6344,6 +6328,12 @@ declare namespace PrimeFaces.ajax {
          */
         getSourceId(settings: JQuery.AjaxSettings): string;
         /**
+         * Handle the error either by calling the p:ajaxExceptionHandlers, trying to redirect to the error-page or by logging.
+         * @param errorName The error name.
+         * @param errorMessage The error message.
+         */
+        handleError(errorName: string, errorMessage: string): void;
+        /**
          * Is this script an AJAX request?
          * @param script the JS script to check
          * @return `true` if this script contains an AJAX request
@@ -6393,6 +6383,13 @@ declare namespace PrimeFaces.ajax {
          * @param content The content of the changeset that was returned by an AJAX request.
          */
         updateHead(content: string): void;
+        /**
+         * Updates the HTML `head` element of the current document with the content received from an AJAX request.
+         * This method ensures that any new JavaScript or CSS resources are only added if they are not already present.
+         * If the content does not contain any JavaScript or CSS links, it is directly appended to the head.
+         * @param content The content of the changeset that was returned by an AJAX request.
+         */
+        updateResource(content: string): void;
     }
 }
 /**
@@ -6670,6 +6667,10 @@ declare namespace PrimeFaces.dialog {
  * The object with functionality related to the browser environment, such as information about the current browser.
  */
 declare namespace PrimeFaces.env {
+    /**
+     * `true` if the current browser is an Android browser, `false` otherwise.
+     */
+    export let android: boolean;
     /**
      * The current browser type.
      */
@@ -7072,6 +7073,14 @@ declare namespace PrimeFaces {
      */
     export function cw(widgetName: string, widgetVar: string, cfg: PrimeFaces.widget.BaseWidgetCfg): void;
     /**
+     * Creates a debounced version of the provided function that delays invoking the function until after the specified delay.
+     * The debounced function will only execute once the delay has elapsed and no additional function calls were made.
+     * Each new function call resets the delay timer.
+     * @param fn The function to debounce
+     * @param delay Defaults to `400`. The number of milliseconds to delay. Defaults to 400ms. Negative values are coerced to 400ms.
+     */
+    export function debounce(fn: () => void, delay?: number): void;
+    /**
      * Logs the given message at the `debug` level.
      * @param log Message to log
      */
@@ -7130,13 +7139,16 @@ declare namespace PrimeFaces {
      */
     export function focusElement(el: JQuery): void;
     /**
-     * Some ARIA attributes have a value that depends on the current locale. This returns the localized version for
-     * the given aria key.
-     * @param key An aria key
-     * @param defaultValue Optional default if key is not found
-     * @return The translation for the given aria key
+     * Retrieves a localized ARIA label based on the provided key. If the key is not found in the current locale,
+     * it falls back to the US English locale. If the key is still not found, it uses a default value or a placeholder
+     * indicating the missing key. This method also supports dynamic replacement of placeholders within the label
+     * string using the `options` object.
+     * @param key - The key to retrieve the ARIA label for.
+     * @param defaultValue - The default value to use if the key is not found.
+     * @param options - An object containing placeholder replacements in the format `{placeholderKey: replacementValue}`.
+     * @return - The localized ARIA label, with placeholders replaced by their corresponding values from `options` if provided.
      */
-    export function getAriaLabel(key: string, defaultValue: string): string;
+    export function getAriaLabel(key: string, defaultValue?: string, options?: unknown): string;
     /**
      * Gets the form by id or the closest form if the id is not a form itself.
      * In AJAX we also have a fallback for the first form in DOM, this should not be used here.
@@ -7174,11 +7186,6 @@ declare namespace PrimeFaces {
      */
     export function getLocaleSettings(cfgLocale?: string): PrimeFaces.Locale;
     /**
-     * Finds the text currently selected by the user on the current page.
-     * @return The text currently selected by the user on the current page.
-     */
-    export function getSelection(): string | Selection;
-    /**
      * Gets the currently loaded PrimeFaces theme.
      * @return The current theme, such as `omega` or `luna-amber`. Empty string when no theme is loaded.
      */
@@ -7204,11 +7211,6 @@ declare namespace PrimeFaces {
      * are found on the current page, an empty array will be returned.
      */
     export function getWidgetsByType<TWidget extends new (...args: never[]) => unknown>(type: TWidget): InstanceType<TWidget>[];
-    /**
-     * Checks whether any text on the current page is selected by the user.
-     * @return `true` if text is selected, `false` otherwise.
-     */
-    export function hasSelection(): boolean;
     /**
      * Checks whether an items is contained in the given array. The items is compared against the array entries
      * via the `===` operator.
@@ -7288,11 +7290,13 @@ declare namespace PrimeFaces {
      */
     export function monitorDownload(start: () => void, complete: () => void, monitorKey?: string): void;
     /**
-     * Increment and return the next `z-index` for CSS as a string.
+     * Increment and return the next `z-index` for CSS as a string. If an element is provided, apply the new
+     * `z-index` to it.
      * Note that jQuery will no longer accept numeric values in {@link JQuery.css | $.fn.css} as of version 4.0.
+     * @param element Element to apply new `z-index` to.
      * @return the next `z-index` as a string.
      */
-    export function nextZindex(): string;
+    export function nextZindex(element: JQuery): string;
     /**
      * Registeres a listener that will be called as soon as the given element was loaded completely. Please note the
      * listener may be called synchronously (immediately) or asynchronously, depending on whether the element is
@@ -7313,7 +7317,7 @@ declare namespace PrimeFaces {
      * @param delay the optional delay in milliseconds
      * @return the id associated to the timeout or undefined if no timeout used
      */
-    export function queueTask(fn: () => void, delay: number | undefined): number | undefined;
+    export function queueTask(fn: () => void, delay?: number | undefined): number | undefined;
     /**
      * Some widgets need to compute their dimensions based on their parent element(s). This requires that such
      * widgets are not rendered until they have become visible. A widget may not be visible, for example, when it
@@ -7331,32 +7335,52 @@ declare namespace PrimeFaces {
      */
     export function resetState(): void;
     /**
+     * Resolves the given target as $.
+     * @param target Either id, element, jQuery object or PF widget.
+     * @return The resolved $.
+     */
+    export function resolveAs$(target: string | HTMLElement | JQuery | PrimeFaces.widget.BaseWidget): JQuery;
+    /**
+     * Resolves the given target as id.
+     * @param target Either id, element, jQuery object or PF widget.
+     * @return The id of the target.
+     */
+    export function resolveAsId(target: string | HTMLElement | JQuery | PrimeFaces.widget.BaseWidget): string;
+    /**
      * Aligns container scrollbar to keep item in container viewport, algorithm copied from JQueryUI menu widget.
      * @param container The container with a scrollbar that contains the item.
      * @param item The item to scroll into view.
      */
     export function scrollInView(container: JQuery, item: JQuery): void;
     /**
-     * Scrolls to a component with given client id
-     * @param id The ID of an element to scroll to.
-     * @param duration string or number determining how long the animation will run. Default to 400
+     * Scrolls to a component with given client id or jQuery element. The scroll animation can be customized with a duration
+     * and an optional offset from the top of the target element.
+     * @param scrollTarget The ID of an element or jQuery element to scroll to
+     * @param duration Defaults to `400`. Duration of the scroll animation in milliseconds or a string like 'slow', 'fast'
+     * @param topOffset Defaults to `0`. Additional offset in pixels from the top of the target element
+     * @example // Scroll to element with ID 'myElement' over 1 second
+     * PrimeFaces.scrollTo('myElement', 1000);
+     *
+     * // Scroll to jQuery element with 50px offset from top
+     * PrimeFaces.scrollTo($('#myElement'), 'slow', 50);
      */
-    export function scrollTo(id: string, duration: string | number | undefined): void;
+    export function scrollTo(scrollTarget: string | JQuery, duration?: string | number, topOffset?: number): void;
     /**
-     * Takes an input or textarea element and sets the caret (text cursor) position to the end of the the text.
-     * @param element An input or textarea element.
-     */
-    export function setCaretToEnd(element: JQuery): void;
-    /**
-     * Sets the value of a given cookie.
-     * It will set secure=true, if using HTTPS and session-config/cookie-config/secure is set to true in web.xml.
-     * It will set sameSite, if secure=true, with the value of the primefaces.COOKIES_SAME_SITE parameter.
-     * @param name Name of the cookie to set
-     * @param value Value to set
+     * Sets the value of a specified cookie with additional security configurations.
+     * If the page is served over HTTPS and cookies are configured to be secure in the settings,
+     * the secure flag will be set. The SameSite attribute is set based on the settings or defaults to 'Lax'.
+     * @param name The name of the cookie.
+     * @param value The value to set for the cookie.
      * @param cfg Configuration for this cookie: when it expires, its
      * paths and domain and whether it is secure cookie.
      */
     export function setCookie(name: string, value: string, cfg?: Partial<Cookies.CookieAttributes>): void;
+    /**
+     * Loop over all locales and set the label to the new value in all locales.
+     * @param localeKey The locale key
+     * @param localeValue The locale value
+     */
+    export function setGlobalLocaleValue(localeKey: string, localeValue: string): void;
     /**
      * Deprecated, use {@link PrimeFaces.dialog.DialogHandler.showMessageInDialog} instead.
      * @param msg Message to show in a dialog.
@@ -7439,6 +7463,8 @@ declare namespace PrimeFaces {
     /**
      * Generate a RFC-4122 compliant UUID to be used as a unique identifier.
      *
+     * Uses crypto.randomUUID() if available, otherwise falls back to a custom implementation.
+     *
      * See https://www.ietf.org/rfc/rfc4122.txt
      * @return A random UUID.
      */
@@ -7497,9 +7523,33 @@ declare namespace PrimeFaces.settings {
      */
     export const considerEmptyStringNull: boolean;
     /**
+     * The current servlet-context path.
+     */
+    export const contextPath: string;
+    /**
+     * The cookies same site.
+     */
+    export const cookiesSameSite: string;
+    /**
+     * If cookies are secured.
+     */
+    export const cookiesSecure: boolean;
+    /**
+     * If AJAX post params are evaluated early.
+     */
+    export const earlyPostParamEvaluation: boolean;
+    /**
      * The current locale, such as `en`,`en_US`, or `ja`.
      */
     export const locale: string;
+    /**
+     * If AJAX partial-submit is enabled.
+     */
+    export const partialSubmit: boolean;
+    /**
+     * The Faces ProjectStage.
+     */
+    export const projectStage: string;
     /**
      * `true` if empty (input etc.) fields should be validated, or `false` otherwise.
      */
@@ -7553,6 +7603,11 @@ declare namespace PrimeFaces.resources {
  */
 declare namespace PrimeFaces.utils {
     /**
+     * TextEncoder instance used for string encoding operations.
+     * Initialized as null and typically set to a TextEncoder instance when needed.
+     */
+    export let TEXT_ENCODER: TextEncoder | null;
+    /**
      * Creates a new (empty) container for a modal overlay. A modal overlay is an overlay that blocks the content
      * below it. To remove the modal overlay, use `PrimeFaces.utils.removeModal`.
      * @param widget An overlay widget instance.
@@ -7586,6 +7641,16 @@ declare namespace PrimeFaces.utils {
      */
     export function calculateRelativeOffset(element: JQuery): JQuery.Coordinates;
     /**
+     * Deletes all events, 'on' attributes, data, and the element itself in a recursive manner,
+     * ensuring that the garbage collector does not retain any references to this element or its children.
+     * @param jq jQuery object to cleanse
+     * @param clearData Defaults to `true`. flag to clear data off elements (default to true)
+     * @param removeElement Defaults to `true`. flag to remove the element from DOM (default to true)
+     * @see {@link https://github.com/primefaces/primefaces/issues/11696|GitHub Issue 11696}
+     * @see {@link https://github.com/primefaces/primefaces/issues/11702|GitHub Issue 11702}
+     */
+    export function cleanseDomElement(jq: JQuery | undefined, clearData?: boolean, removeElement?: boolean): void;
+    /**
      * Cleanup the `detached` overlay.
      *
      * If you update a component, the overlay is rendered as specified in the component tree (XHTML view), but moved
@@ -7604,8 +7669,7 @@ declare namespace PrimeFaces.utils {
      */
     export function cleanupDynamicOverlay(widget: PrimeFaces.widget.DynamicOverlayWidget, overlay: JQuery, overlayId: string, appendTo: JQuery): void;
     /**
-     * Count the bytes of the inputtext.
-     * borrowed from the ckeditor wordcount plugin
+     * Count the bytes of the inputtext. Handles ASCII, UTF-8, and emojis.
      * @param text Text to count bytes from.
      * @return the byte count
      */
@@ -7638,7 +7702,7 @@ declare namespace PrimeFaces.utils {
      * @param jq a required jQuery element to disable
      * @param input an optional jQuery input to disable (will use jq if null)
      */
-    export function disableInputWidget(jq: JQuery, input: JQuery | undefined | null): void;
+    export function disableInputWidget(jq: JQuery, input?: JQuery | undefined | null): void;
     /**
      * Enables CSS and jQuery animation.
      */
@@ -7653,7 +7717,7 @@ declare namespace PrimeFaces.utils {
      * @param jq a required jQuery element to enable
      * @param input an optional jQuery input to enable (will use jq if null)
      */
-    export function enableInputWidget(jq: JQuery, input: JQuery | undefined | null): void;
+    export function enableInputWidget(jq: JQuery, input?: JQuery | undefined | null): void;
     /**
      * Enables scrolling again if previously disabled via `PrimeFaces.utils.preventScrolling`.
      */
@@ -7738,10 +7802,27 @@ declare namespace PrimeFaces.utils {
      */
     export function isScrollParentWindow(jq: JQuery | undefined | null): boolean;
     /**
+     * Checks if an element is currently visible within the browser viewport, with an optional offset.
+     * @param element The element to check visibility for. Can be either a DOM element or jQuery object.
+     * @param offset Defaults to `0`. Optional offset in pixels to expand/contract the viewport boundaries.
+     * @return True if the element is visible within the viewport, false otherwise.
+     */
+    export function isVisibleInViewport(element: string | HTMLElement | JQuery, offset?: number): boolean;
+    /**
      * Killswitch that kills all AJAX requests, running Pollers and IdleMonitors.
      * @see {@link https://github.com/primefaces/primefaces/issues/10299|GitHub Issue 10299}
      */
     export function killswitch(): void;
+    /**
+     * Retrieves the subsequent z-index for a sticky element. Typically, a sticky element requires a
+     * z-index higher than the current one, but certain scenarios arise, such as when an overlay mask
+     * is present or when there are multiple sticky elements on the page, necessitating a z-index
+     * one lower than the highest among them.
+     * @return the next `z-index` as a string.
+     * @see {@link https://github.com/primefaces/primefaces/issues/10299|GitHub Issue 10299}
+     * @see {@link https://github.com/primefaces/primefaces/issues/9259|GitHub Issue 9259}
+     */
+    export function nextStickyZindex(): string;
     /**
      * Helper to open a new URL and if CTRL is held down open in new browser tab.
      * @param event The click event that occurred.
@@ -7769,7 +7850,7 @@ declare namespace PrimeFaces.utils {
      * @param delay the optional delay in milliseconds
      * @return the id associated to the timeout or undefined if no timeout used
      */
-    export function queueTask(fn: () => void, delay: number | undefined): number | undefined;
+    export function queueTask(fn: () => void, delay?: number | undefined): number | undefined;
     /**
      * CSS Transition method for overlay panels such as SelectOneMenu/SelectCheckboxMenu/Datepicker's panel etc.
      * @param element An element for which to execute the transition.
@@ -7814,6 +7895,17 @@ declare namespace PrimeFaces.utils {
      */
     export function registerHideOverlayHandler(widget: PrimeFaces.widget.BaseWidget, hideNamespace: string, overlay: JQuery, resolveIgnoredElementsCallback: ((event: JQuery.TriggeredEvent) => JQuery) | undefined, hideCallback: (event: JQuery.TriggeredEvent, eventTarget: JQuery) => void): PrimeFaces.UnbindCallback;
     /**
+     * Registers a MutationObserver/ResizeObserver to watch for DOM changes that may affect element sizing/positioning.
+     * @param widget The widget instance to register the observer for
+     * @param element The element to observe for changes
+     * @param resizeCallback Callback function to execute when relevant mutations occur
+     * @return Object containing bind and unbind functions for the observer
+     */
+    export function registerMutationObserver(widget: PrimeFaces.widget.BaseWidget, element: JQuery | HTMLElement, resizeCallback: () => void): {
+        bind: () => void;
+        unbind: () => void;
+    };
+    /**
      * Registers a callback that is invoked when the window is resized.
      * @param widget A widget instance for which to register a resize handler.
      * @param resizeNamespace A resize event with a namespace to listen to, such as `resize.widgetId`.
@@ -7849,6 +7941,13 @@ declare namespace PrimeFaces.utils {
      * @param overlay The modal overlay element should be a DIV.
      */
     export function removeModal(widget: PrimeFaces.widget.BaseWidget, overlay?: JQuery | null): void;
+    /**
+     * Replaces a specific CSS icon class on an element and appends a new icon class.
+     * If the target class is found, all classes after it are removed and the new class is added.
+     * @param jq - The jQuery element to modify.
+     * @param addIcon - The new CSS icon class to add.
+     */
+    export function replaceIcon(jq: JQuery | undefined, addIcon: string): void;
     /**
      * Finds the element to which the overlay panel should be appended. If none is specified explicitly, append the
      * panel to the body.
@@ -8010,6 +8109,18 @@ declare namespace PrimeFaces.widget {
 }
 declare namespace PrimeFaces.widget {
     /**
+     * A callback for a PrimeFaces widget. An optional callback that is
+     * invoked before a widget is created, at the beginning of the {@link BaseWidget.init | init} method. This is
+     * usually specified via the `widgetPreConstruct` attribute on the JSF component.
+     */
+    export type PreConstructCallback =
+    /**
+     * @param cfg The widget configuration.
+     */
+    (this: BaseWidget, cfg: BaseWidget) => void;
+}
+declare namespace PrimeFaces.widget {
+    /**
      * An optional callback that is invoked before a widget is about to be
      * destroyed, e.g., when the component was removed at the end of an AJAX update. This is called at the beginning
      * of the {@link BaseWidget.destroy | destroy} method. This is usually specified via the `widgetPreDestroy`
@@ -8113,6 +8224,10 @@ declare namespace PrimeFaces.widget {
          */
         jqId: string;
         /**
+         * The key of the JSON object.
+         */
+        key: string;
+        /**
          * Array of registered listeners invoked
          * when this widget is refreshed. You should normally not use modify this directly, use {@link addRefreshListener}
          * instead.
@@ -8190,6 +8305,13 @@ declare namespace PrimeFaces.widget {
          */
         destroy(): void;
         /**
+         * Creates an ARIA label for an element.
+         * @param label The label key to look up
+         * @return The ARIA label text - either from the widget configuration if specified,
+         * or from the PrimeFaces global ARIA labels
+         */
+        getAriaLabel(label: string): string;
+        /**
          * Each widget may have one or several behaviors attached to it. This method returns the callback function for
          * the given event.
          *
@@ -8215,6 +8337,13 @@ declare namespace PrimeFaces.widget {
          * @return The jQuery instance representing the main HTML container element of this widget.
          */
         getJQ(): JQuery;
+        /**
+         * Gets a localized label text for this widget.
+         * @param label The label key to look up
+         * @return The label text - either from the widget configuration if specified,
+         * or from the PrimeFaces global labels
+         */
+        getLabel(label: string): string;
         /**
          * Gets the closest parent form for this widget.
          * @return A JQuery instance that either contains the form when found, or an empty JQuery instance when
@@ -9308,7 +9437,7 @@ declare namespace PrimeFaces.widget {
          */
         protected override updateData(data: string, clear: boolean | undefined): void;
         /**
-         * Updates a row with the given content
+         * Updates a row with the given content and ensures it is visible.
          * @override
          * @param row Row to update.
          * @param content HTML string to set on the row.
@@ -9494,10 +9623,6 @@ declare namespace PrimeFaces.widget {
          */
         expansionProcess: number[];
         /**
-         * ID as returned by `setTimeout` used during filtering.
-         */
-        filterTimeout: number;
-        /**
          * DOM element of the currently focused row.
          */
         focusedRow: JQuery | null;
@@ -9545,6 +9670,10 @@ declare namespace PrimeFaces.widget {
          * Whether a row toggler was clicked.
          */
         isRowTogglerClicked: boolean;
+        /**
+         * Target of the context menu, when a context menu is used.
+         */
+        jqTargetId?: Document | string;
         /**
          * Whether live scrolling is currently active.
          */
@@ -9767,6 +9896,15 @@ declare namespace PrimeFaces.widget {
          * @param row Row to set as the focused row.
          */
         protected assignFocusedRow(row: JQuery): void;
+        /**
+         * Adjusts the width of a column in a table to fit the widest cell content.
+         *
+         * This function calculates the maximum width needed for a column in a table
+         * to accommodate the widest cell content. It creates a temporary span element
+         * to measure the width of cell contents and adjusts the column header width accordingly.
+         * @param cell - A jQuery object representing a cell in the column to be resized.
+         */
+        private autosizeColumnWidth(cell: JQuery): void;
         /**
          * Sets up the change event listeners on the column filter elements.
          * @param filter DOM element of a column filter
@@ -10397,6 +10535,10 @@ declare namespace PrimeFaces.widget {
          */
         private setupFiltering(): void;
         /**
+         * Sets up WCAG keyboard navigation of cells.
+         */
+        private setupNavigableCells(): void;
+        /**
          * Sets up the event listeners to enable columns to be resized.
          */
         private setupResizableColumns(): void;
@@ -10479,6 +10621,12 @@ declare namespace PrimeFaces.widget {
          * @param toggler The row toggler of a row to expand.
          */
         private toggleExpansion(toggler: JQuery): void;
+        /**
+         * In case of a toggleable filter datatable toggle all filter input components
+         * @param speed speed of fade animation. (see jquery fadeToggle method)
+         * @param callback will be executed after animation is finished. (see jquery fadeToggle method)
+         */
+        toggleFilter(speed: string | null, callback: (() => void) | null): void;
         /**
          * Expands or collapses the given row, depending on whether it is currently collapsed or expanded, respectively.
          * @param row A row (`TR`) to expand or collapse.
@@ -10600,7 +10748,7 @@ declare namespace PrimeFaces.widget {
          */
         private updateResizableState(columnHeader: JQuery, nextColumnHeader: JQuery, table: JQuery, newWidth: number, nextColumnWidth: number | null): void;
         /**
-         * Updates a row with the given content
+         * Updates a row with the given content and ensures it is visible.
          * @param row Row to update.
          * @param content HTML string to set on the row.
          */
@@ -10709,6 +10857,10 @@ declare namespace PrimeFaces.widget {
          * The number of frozen columns.
          */
         frozenColumns: number;
+        /**
+         * The alignment of frozen columns.
+         */
+        frozenColumnsAlignment: string;
         /**
          * Columns are resized live in this mode without using a resize helper.
          */
@@ -12682,12 +12834,17 @@ declare namespace PrimeFaces.widget {
         /**
          * Sets the displayed visible calendar date. This refers to the currently displayed month page.
          * @param date The date to be shown in the calendar.
+         * @param silent Defaults to `false`. Whether to update the view date without triggering the AJAX viewChange event.
          */
-        setViewDate(date: string | Date | Date[]): void;
+        setViewDate(date: string | Date | Date[], silent?: boolean): void;
         /**
          * Shows the popup panel.
          */
         show(): void;
+        /**
+         * Triggers a viewChange event which updates the lazy model through an Ajax request using the current date.
+         */
+        updateLazyModel(): void;
         /**
          * Update panel.
          */
@@ -13424,9 +13581,17 @@ declare namespace PrimeFaces.widget {
          */
         message: JQuery;
         /**
+         * DOM element of the No button.
+         */
+        noButton: JQuery;
+        /**
          * DOM element of the title bar text.
          */
         title: JQuery;
+        /**
+         * DOM element of the Yes button.
+         */
+        yesButton: JQuery;
         /**
          * Puts focus on the first element that can be focused.
          * @override
@@ -13457,6 +13622,17 @@ declare namespace PrimeFaces.widget {
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
+        /**
+         * Called when this dialog was closed. Invokes the appropriate behaviors and event listeners.
+         * @override
+         * @param event Unused.
+         *
+         * (from super type Dialog) Unused.
+         * @param ui Unused.
+         *
+         * (from super type Dialog) Unused.
+         */
+        protected override onHide(event?: unknown, ui?: unknown): void;
         /**
          * Shows the given message in this confirmation dialog.
          * @param msg Message to show.
@@ -15577,17 +15753,17 @@ declare namespace PrimeFaces.widget {
          */
         content: JQuery;
         /**
-         * Custom drop zone to use for drag and drop.
-         */
-        customDropZone: string;
-        /**
          * Amount of dragover on drop zone and its children.
          */
         dragoverCount: number;
         /**
          * Drop zone to use for drag and drop.
          */
-        dropZone: string;
+        dropZone: JQuery;
+        /**
+         * The facet to be shown, when the current amount of files is empty.
+         */
+        emptyFacet: JQuery;
         /**
          * Current index where to add files.
          */
@@ -15603,7 +15779,7 @@ declare namespace PrimeFaces.widget {
         /**
          * The DOM element for the table tbody with the files.
          */
-        filesTbody: JQuery;
+        filesFacet: JQuery;
         /**
          * The DOM element for the form containing this upload widget.
          */
@@ -15669,6 +15845,21 @@ declare namespace PrimeFaces.widget {
          */
         private createXFileId(file: File): string;
         /**
+         * Will be called after an AJAX request if the widget container will be detached.
+         *
+         * When an AJAX call is made and this component is updated, the DOM element is replaced with the newly rendered
+         * content. When the element is removed from the DOM by the update, the DOM element is detached from the DOM and
+         * this method gets called.
+         *
+         * Please note that instead of overriding this method, you should consider adding a destroy listener instead
+         * via {@link addDestroyListener}. This has the advantage of letting you add multiple listeners, and makes it
+         * possible to add additional listeners from code outside this widget.
+         *
+         * By default, this method just calls all destroy listeners.
+         * @override
+         */
+        override destroy(): void;
+        /**
          * Disabled the given file upload button.
          * @param btn Button to disabled.
          */
@@ -15733,7 +15924,7 @@ declare namespace PrimeFaces.widget {
          * Shows the given error message
          * @param msg Error message to show.
          */
-        private showMessage(msg: PrimeFaces.widget.FileUpload.UploadMessage): void;
+        private showMessage(msg: PrimeFaces.FacesMessage): void;
         /**
          * Uploads the selected files to the server.
          */
@@ -15783,10 +15974,6 @@ declare namespace PrimeFaces.widget {
          * e.g. an unstable network connection.
          */
         maxRetries: number;
-        /**
-         * Message template to use when displaying file validation errors.
-         */
-        messageTemplate: string;
         /**
          * Callback invoked when an uploaded file is added.
          */
@@ -15845,9 +16032,6 @@ declare namespace PrimeFaces.widget {
     }
 }
 declare namespace PrimeFaces.widget.FileUpload {
-
-}
-declare namespace PrimeFaces.widget.FileUpload {
     /**
      * Represents an uploaded file added to the upload
      * widget.
@@ -15872,11 +16056,17 @@ declare namespace PrimeFaces.widget {
         /**
          * The DOM element for the button for selecting a file.
          */
-        button: JQuery;
+        button: [
+        ] | JQuery;
         /**
          * The DOM element for the UI display.
          */
-        display: JQuery;
+        display: [
+        ] | JQuery;
+        /**
+         * Drop zone to use for drag and drop.
+         */
+        dropZone: JQuery;
         /**
          * The DOM element of the (closest) form that contains this file upload.
          */
@@ -15885,6 +16075,10 @@ declare namespace PrimeFaces.widget {
          * The DOM element for the file input element.
          */
         input: JQuery;
+        /**
+         * Sets up the event handling for the dropZone.
+         */
+        private bindDropZone(): void;
         /**
          * Sets up all events listeners for this file upload widget.
          */
@@ -15946,6 +16140,10 @@ declare namespace PrimeFaces.widget {
          * Wheter the filename should be displayed.
          */
         displayFilename: boolean;
+        /**
+         * Custom drop zone to use for drag and drop.
+         */
+        dropZone: string;
         /**
          * Global AJAX requests are listened to by `ajaxStatus`. When `false`, `ajaxStatus` will not
          * get triggered.
@@ -16270,6 +16468,10 @@ declare namespace PrimeFaces.widget {
          */
         ajaxStart?: number;
         /**
+         * The link tabIndex or default to '0'.
+         */
+        tabIndex?: string;
+        /**
          * Sets up the global event listeners on the link.
          */
         private bindTriggers(): void;
@@ -16422,6 +16624,11 @@ declare namespace PrimeFaces.widget {
          * Enables this input so that the user can enter a value.
          */
         enable(): void;
+        /**
+         * Gets the current value.
+         * @return The current value.
+         */
+        getValue(): string;
         /**
          * A widget class should not declare an explicit constructor, the default constructor provided by this base
          * widget should be used. Instead, override this initialize method which is called after the widget instance
@@ -17111,6 +17318,12 @@ declare namespace PrimeFaces.widget {
          */
         itemLabel: JQuery;
         /**
+         * Binds the event handlers for the checkbox.
+         * This method sets up event listeners for mouse interactions, focus/blur events,
+         * change events, and label clicks if the checkbox is not disabled.
+         */
+        private bindEvents(): void;
+        /**
          * Checks this checkbox, if it is not checked already.
          * @param silent `true` to suppress triggering event listeners, or `false` otherwise.
          */
@@ -17157,7 +17370,9 @@ declare namespace PrimeFaces.widget {
          */
         resetValue(silent?: boolean): void;
         /**
-         * Checks this checkbox if it is currently unchecked, or unchecks it otherwise.
+         * Toggles the state of the checkbox.
+         * If the checkbox is currently checked, it will be unchecked.
+         * If the checkbox is currently unchecked, it will be checked.
          */
         toggle(): void;
         /**
@@ -17341,6 +17556,10 @@ declare namespace PrimeFaces.widget {
          */
         scrollHandler?: PrimeFaces.UnbindCallback;
         /**
+         * The DOM element for the hidden input of the Select All checkbox.
+         */
+        selectAllTogglerCheckbox?: JQuery;
+        /**
          * Tab index of this widget.
          */
         tabindex: string;
@@ -17354,10 +17573,6 @@ declare namespace PrimeFaces.widget {
          * options in the overlay panel with all selected items (when the overlay panel is shown).
          */
         togglerBox?: JQuery;
-        /**
-         * The DOM element for the hidden input of the Select All checkbox.
-         */
-        togglerCheckboxInput?: JQuery;
         /**
          * Handler for CSS transitions used by this widget.
          */
@@ -17387,7 +17602,7 @@ declare namespace PrimeFaces.widget {
         private bindCheckboxHover(item: JQuery): void;
         /**
          * Sets up the keyboard event listeners for the given checkbox options.
-         * @param items Checkbo options for which to add the event listeners.
+         * @param items Checkbox options for which to add the event listeners.
          */
         private bindCheckboxKeyEvents(items: JQuery): void;
         /**
@@ -17471,6 +17686,13 @@ declare namespace PrimeFaces.widget {
          * @param checked Whether the checkbox option is now checked.
          */
         private fireToggleSelectEvent(checked: boolean): void;
+        /**
+         * Focuses the first focusable item in the select checkbox menu panel.
+         * This method queues the focus action to ensure it is executed at the right time in the event loop.
+         * @param focusSelector The selector to use to focus the first item in the panel.
+         * @param delay Defaults to `0`. Delay in ms before focusing
+         */
+        focusFirstItem(focusSelector?: string, delay?: number): void;
         /**
          * Fired when the browser viewport is resized or scrolled.  In Mobile environment we don't want to hider the overlay
          * we want to re-align it.  This is because on some mobile browser the popup may force the browser to trigger a
@@ -17573,8 +17795,9 @@ declare namespace PrimeFaces.widget {
         private setupFilterMatcher(): void;
         /**
          * Brings up the overlay panel with the available checkbox options.
+         * @param focusSelector The selector to use to focus the first item in the panel.
          */
-        show(): void;
+        show(focusSelector?: string): void;
         /**
          * Implementation of a `PrimeFaces.widget.SelectCheckboxMenu.FilterFunction` that matches the given option when it
          * starts with the given search text.
@@ -18576,7 +18799,10 @@ declare namespace PrimeFaces.widget {
          */
         alignPanel(): void;
         /**
-         * Adjust the width of the overlay panel.
+         * Adjust the width of the overlay panel to match the width of the select menu.
+         * If the panel is narrower than the select menu, expands it to match.
+         * If the panel is wider, preserves its current width.
+         * Only adjusts width once per panel instance.
          */
         private alignPanelWidth(): void;
         /**
@@ -18812,12 +19038,6 @@ declare namespace PrimeFaces.widget {
          */
         resetValue(silent?: boolean): void;
         /**
-         * Finds the index of the given selectable option.
-         * @param item One of the available selectable options.
-         * @return The index of the given item.
-         */
-        resolveItemIndex(item: JQuery): number;
-        /**
          * Unselect the selected item, if any, and select the `please select` option.
          */
         revert(): void;
@@ -18827,6 +19047,18 @@ declare namespace PrimeFaces.widget {
          * @param silent `true` to suppress triggering event listeners, or `false` otherwise.
          */
         private selectItem(item: JQuery, silent?: boolean): void;
+        /**
+         * Selects the item corresponding to the given option.
+         * @param option The option element to select.
+         * @return The selected item element.
+         */
+        selectItemFromOption(option: JQuery): JQuery;
+        /**
+         * Selects the option corresponding to the given item.
+         * @param item The item element to select.
+         * @return The selected option element.
+         */
+        selectOptionFromItem(item: JQuery): JQuery;
         /**
          * Selects the option with the given value.
          * @param value Value of the option to select.
@@ -19448,9 +19680,11 @@ declare namespace PrimeFaces.widget {
          */
         override refresh(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
         /**
-         * Shows content on fullscreen mode.
+         * Displays content in fullscreen mode. The index will correspond to the item to be shown, otherwise,
+         * it will default to the last loaded image.
+         * @param index optional index of the item to show
          */
-        show(): void;
+        show(index?: number): void;
     }
 }
 declare namespace PrimeFaces.widget {
@@ -21475,6 +21709,21 @@ declare namespace PrimeFaces.widget {
          */
         private applyMask(): void;
         /**
+         * Will be called after an AJAX request if the widget container will be detached.
+         *
+         * When an AJAX call is made and this component is updated, the DOM element is replaced with the newly rendered
+         * content. When the element is removed from the DOM by the update, the DOM element is detached from the DOM and
+         * this method gets called.
+         *
+         * Please note that instead of overriding this method, you should consider adding a destroy listener instead
+         * via {@link addDestroyListener}. This has the advantage of letting you add multiple listeners, and makes it
+         * possible to add additional listeners from code outside this widget.
+         *
+         * By default, this method just calls all destroy listeners.
+         * @override
+         */
+        override destroy(): void;
+        /**
          * Disables this input so that the user cannot enter a value anymore.
          */
         disable(): void;
@@ -21698,129 +21947,6 @@ declare namespace PrimeFaces.widget {
          * The initial, numerical value that is displayed, such as `0.0` or `5.3`.
          */
         valueToRender: string;
-    }
-}
-declare namespace PrimeFaces.widget {
-    /**
-     * __PrimeFaces InputSwitch Widget__
-     *
-     * InputSwitch is used to select a boolean value.
-     * @typeparam TCfg Defaults to `InputSwitchCfg`. Type of the configuration object for this widget.
-     */
-    export class InputSwitch<TCfg extends InputSwitchCfg = InputSwitchCfg> extends PrimeFaces.widget.DeferredWidget<TCfg> {
-        /**
-         * The DOM element for the handle that lets the user change the state of this input switch by
-         * dragging it.
-         */
-        handle: JQuery;
-        /**
-         * The DOM element for the hidden input field storing the current value of this widget.
-         */
-        input: JQuery;
-        /**
-         * The DOM element for the container with the elements for displaying the off state.
-         */
-        offContainer: JQuery;
-        /**
-         * The DOM element for the label with the text for when this input switch is turned off.
-         */
-        offLabel: JQuery;
-        /**
-         * Offset to the left of all switch parts, depends on the handler width.
-         */
-        offset: number;
-        /**
-         * The DOM element for the container with the elements for displaying the on state.
-         */
-        onContainer: JQuery;
-        /**
-         * The DOM element for the label with the text for when this input switch is turned on.
-         */
-        onLabel: JQuery;
-        /**
-         * Sets up all event listeners required by this widget.
-         */
-        private _bindEvents(): void;
-        /**
-         * Performs the UI updates for when this input switch is turned on, such as animating the transition.
-         */
-        private _checkUI(): void;
-        /**
-         * This render method is called by this deferred widget once the widget container has become visible. You may
-         * now proceed with widget initialization.
-         *
-         * __Must be overridden__, or an error will be thrown.
-         * @override
-         */
-        protected override _render(): void;
-        /**
-         * Performs the UI updates for when this input switch is turned off, such as animating the transition.
-         */
-        private _uncheckUI(): void;
-        /**
-         * Turns this input switch on, if not already switched on.
-         */
-        check(): void;
-        /**
-         * Disables this input so that the user cannot enter a value anymore.
-         */
-        disable(): void;
-        /**
-         * Enables this input so that the user can enter a value.
-         */
-        enable(): void;
-        /**
-         * A widget class should not declare an explicit constructor, the default constructor provided by this base
-         * widget should be used. Instead, override this initialize method which is called after the widget instance
-         * was constructed. You can use this method to perform any initialization that is required. For widgets that
-         * need to create custom HTML on the client-side this is also the place where you should call your render
-         * method.
-         *
-         * Please make sure to call the super method first before adding your own custom logic to the init method:
-         *
-         * ```javascript
-         * PrimeFaces.widget.MyWidget = PrimeFaces.widget.BaseWidget.extend({
-         *   init: function(cfg) {
-         *     this._super(cfg);
-         *     // custom initialization
-         *   }
-         * });
-         * ```
-         * @override
-         * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
-         * component.
-         */
-        override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
-        /**
-         * Toggles this input switch, i.e. switch it from on to off or from off to on.
-         */
-        toggle(): void;
-        /**
-         * Turns this input switch off, if not already switched off.
-         */
-        uncheck(): void;
-    }
-}
-declare namespace PrimeFaces.widget {
-    /**
-     * The configuration for the {@link  InputSwitch| InputSwitch widget}.
-     * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
-     * configuration is usually meant to be read-only and should not be modified.
-     */
-    export interface InputSwitchCfg extends PrimeFaces.widget.DeferredWidgetCfg {
-        /**
-         * Text for off label
-         */
-        offLabel: string;
-        /**
-         * Text for on label
-         */
-        onLabel: string;
-        /**
-         * Flag to show the labels or not
-         */
-        showLabels: boolean;
     }
 }
 /**
@@ -24003,10 +24129,6 @@ declare namespace PrimeFaces.widget {
          */
         itemMouseDown: boolean;
         /**
-         * The DOM element for the form element that can be targeted via arrow or tab keys.
-         */
-        keyboardTarget: JQuery;
-        /**
          * Unbind callback for the resize handler.
          */
         resizeHandler?: PrimeFaces.UnbindCallback;
@@ -24014,6 +24136,10 @@ declare namespace PrimeFaces.widget {
          * Unbind callback for the scroll handler.
          */
         scrollHandler?: PrimeFaces.UnbindCallback;
+        /**
+         * The default tabIndex of this component. Default to 0.
+         */
+        tabIndex: string | undefined;
         /**
          * Handler for CSS transitions used by this widget.
          */
@@ -24038,6 +24164,17 @@ declare namespace PrimeFaces.widget {
          * Sets up the event listener on the trigger.
          */
         private bindTrigger(): void;
+        /**
+         * Selects the menu item link by making it focused and setting tabindex to "0" for ARIA.
+         * @param menulink - The menu item (`<a>`) to select.
+         * @param event - The event that triggered the focus.
+         */
+        focus(menulink: JQuery, event?: JQuery.TriggeredEvent): void;
+        /**
+         * Gets the Menu jQuery element.  Override in subclasses to define the menu panel.
+         * @return The jQuery object for the menu.
+         */
+        protected getMenuElement(): JQuery;
         /**
          * Fired when the browser viewport is resized or scrolled.  In Mobile environment we don't want to hider the overlay
          * we want to re-align it.  This is because on some mobile browser the popup may force the browser to trigger a
@@ -24076,6 +24213,11 @@ declare namespace PrimeFaces.widget {
          */
         protected initOverlay(): void;
         /**
+         * Resets all menu items to tabindex="0" except the first item if resetFirst
+         * @param resetFirst whether to reset to the first cell to tabindex="0"
+         */
+        resetFocus(resetFirst: boolean): void;
+        /**
          * Performs some setup required to make this overlay menu work with dialogs.
          */
         protected setupDialogSupport(): void;
@@ -24087,6 +24229,12 @@ declare namespace PrimeFaces.widget {
          * Unbind all panel event listeners
          */
         protected unbindPanelEvents(): void;
+        /**
+         * Unselect the menu item link by removing focus and tabindex=-1 for ARIA.
+         * @param menulink Menu item (`A`) to unselect.
+         * @param event - The event that triggered the unfocus.
+         */
+        unfocus(menulink: JQuery, event?: JQuery.TriggeredEvent): void;
     }
 }
 declare namespace PrimeFaces.widget {
@@ -24121,6 +24269,10 @@ declare namespace PrimeFaces.widget {
          * Describes how to align this menu.
          */
         pos: JQueryUI.JQueryPositionOptions;
+        /**
+         * The default tabIndex of this component. Default to 0.
+         */
+        tabIndex: string;
         /**
          * ID of the event which triggers this menu.
          */
@@ -24422,7 +24574,7 @@ declare namespace PrimeFaces.widget {
      * MegaMenu is a horizontal navigation component that displays sub menus together.
      * @typeparam TCfg Defaults to `MegaMenuCfg`. Type of the configuration object for this widget.
      */
-    export class MegaMenu<TCfg extends MegaMenuCfg = MegaMenuCfg> extends PrimeFaces.widget.BaseWidget<TCfg> {
+    export class MegaMenu<TCfg extends MegaMenuCfg = MegaMenuCfg> extends PrimeFaces.widget.Menu<TCfg> {
         /**
          * Whether the current menu is active and displayed.
          */
@@ -24436,9 +24588,9 @@ declare namespace PrimeFaces.widget {
          */
         isRTL: boolean;
         /**
-         * The DOM element for the input element accessible via keyboard keys.
+         * The last root menu that had focus, if any.
          */
-        keyboardTarget: JQuery;
+        lastFocusedItem?: JQuery | null;
         /**
          * The DOM elements for the root level menu links with the class `.ui-menuitem-link`.
          */
@@ -24456,10 +24608,11 @@ declare namespace PrimeFaces.widget {
          */
         timeoutId?: number;
         /**
-         * Activates the menu item, i.e. opens the sub menu.
-         * @param menuitem A menu item to open.
+         * Activates a menu item so that it can be clicked and interacted with.
+         * @param menuitem - The menu item to activate.
+         * @param showSubMenu Defaults to `true`. - If false, only focuses the menu item without showing the submenu.
          */
-        activate(menuitem: JQuery): void;
+        activate(menuitem: JQuery, showSubMenu?: boolean): void;
         /**
          * Sets up all event listeners that are required by this widget.
          */
@@ -24544,7 +24697,7 @@ declare namespace PrimeFaces.widget {
      * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
      * configuration is usually meant to be read-only and should not be modified.
      */
-    export interface MegaMenuCfg extends PrimeFaces.widget.BaseWidgetCfg {
+    export interface MegaMenuCfg extends PrimeFaces.widget.MenuCfg {
         /**
          * Index of the menu item initially active.
          */
@@ -24582,17 +24735,15 @@ declare namespace PrimeFaces.widget {
          */
         timeoutId?: number;
         /**
-         * Sets up all event listners required for keyboard interactions.
-         * @override
-         */
-        protected override bindKeyEvents(): void;
-        /**
          * Shows the given submenu of a menu item.
          * @override
          * @param menuitem A menu item (`LI`) with children.
          * @param submenu A child of the menu item.
+         * @param focus Defaults to `true`. - If false, does not focus the submenu.
+         *
+         * (from super type TieredMenu) Defaults to `true`. - If false, does not focus the submenu.
          */
-        override showSubmenu(menuitem: JQuery, submenu: JQuery): void;
+        override showSubmenu(menuitem: JQuery, submenu: JQuery, focus?: boolean): void;
     }
 }
 declare namespace PrimeFaces.widget {
@@ -24621,21 +24772,9 @@ declare namespace PrimeFaces.widget {
          */
         ajaxCount?: number;
         /**
-         * The DOM element for the menu button.
-         */
-        button: JQuery;
-        /**
          * The DOM element for the menu overlay panel.
          */
         menu: JQuery;
-        /**
-         * Client ID of the menu overlay panel.
-         */
-        menuId: string;
-        /**
-         * The DOM elements for the individual menu entries.
-         */
-        menuitems: JQuery;
         /**
          * Timeout ID used for the animation when the menu is shown.
          */
@@ -24645,18 +24784,18 @@ declare namespace PrimeFaces.widget {
          */
         transition?: PrimeFaces.CssTransitionHandler | null;
         /**
-         * Align the overlay panel with the menu items so that it is positioned next to the menu button.
+         * The DOM element for the menu button.
          */
-        alignPanel(): void;
+        trigger: JQuery;
+        /**
+         * Align the overlay panel with the menu items so that it is positioned next to the menu button.
+         * @override
+         */
+        override align(): void;
         /**
          * Sets up all event listeners that are required by this widget.
          */
         private bindButtonEvents(): void;
-        /**
-         * Sets up all panel event listeners
-         * @override
-         */
-        override bindPanelEvents(): void;
         /**
          * Disables this button so that the user cannot press the button anymore.
          */
@@ -24666,11 +24805,11 @@ declare namespace PrimeFaces.widget {
          */
         enable(): void;
         /**
-         * Fired when the browser viewport is resized or scrolled.  In Mobile environment we don't want to hider the overlay
-         * we want to re-align it.  This is because on some mobile browser the popup may force the browser to trigger a
-         * resize immediately and close the overlay. See GitHub #7075.
+         * Retrieves the jQuery object representing the menu DOM element.
+         * @return The jQuery object for the menu.
+         * @override
          */
-        private handleOverlayViewportChange(): void;
+        override getMenuElement(): JQuery;
         /**
          * Hides the overlay menu with the menu items, as if the user clicked outside the menu.
          * @override
@@ -24730,11 +24869,6 @@ declare namespace PrimeFaces.widget {
          * @param submenu A child of the menu item.
          */
         override showSubmenu(menuitem: JQuery, submenu: JQuery): void;
-        /**
-         * Unbind all panel event listeners
-         * @override
-         */
-        override unbindPanelEvents(): void;
     }
 }
 declare namespace PrimeFaces.widget {
@@ -24967,9 +25101,21 @@ declare namespace PrimeFaces.widget {
          */
         stateKey: string;
         /**
-         * Sets up all event listeners required by this widget.
+         * Binds event handlers to menu item links for interaction via mouse and keyboard.
+         * This includes setting the initial focus, handling mouse enter and leave, click events,
+         * and keyboard navigation using arrow keys, space, and enter.
          */
         private bindEvents(): void;
+        /**
+         * Binds overlay-specific event handlers if the overlay configuration is enabled.
+         * This includes hiding the menu on certain key presses or clicks, and managing focus.
+         */
+        private bindOverlay(): void;
+        /**
+         * Binds the necessary events for the menu if it is toggleable. This includes setting up the state management
+         * by initializing the storage key and restoring the state from storage.
+         */
+        private bindToggleable(): void;
         /**
          * Clear the saved state (collapsed / expanded menu items) of this plain menu.
          */
@@ -25016,6 +25162,19 @@ declare namespace PrimeFaces.widget {
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
+        /**
+         * Navigates the menu items in the specified direction ('prev' or 'next').
+         * @param event - The event that triggered the focus.
+         * @param currentLink The currently focused menu item link.
+         * @param direction The direction to navigate ('prev' or 'next').
+         * @param firstOrLast The first or last item to navigate to ('first' or 'last').
+         */
+        private navigateMenu(event: JQuery.TriggeredEvent, currentLink: JQuery, direction: string, firstOrLast: string): void;
+        /**
+         * Resets the focus state of the menu.
+         * This method sets the first focusable menu item and removes hover and active states for non-overlay menus.
+         */
+        private resetFocusState(): void;
         /**
          * Restores that state as stored by `saveState`. Usually called after an AJAX update and on page load.
          */
@@ -25167,6 +25326,60 @@ declare namespace PrimeFaces.widget {
 }
 declare namespace PrimeFaces.widget {
     /**
+     * __PrimeFaces Steps Widget__
+     *
+     * Steps is a menu component that displays steps of a workflow.
+     * @typeparam TCfg Defaults to `StepsCfg`. Type of the configuration object for this widget.
+     */
+    export class Steps<TCfg extends StepsCfg = StepsCfg> extends PrimeFaces.widget.BaseWidget<TCfg> {
+        /**
+         * All enabled manu item elements.
+         */
+        enabledItems: JQuery;
+        /**
+         * All menu item elements.
+         */
+        items: JQuery;
+        /**
+         * Sets up all event listeners that are required by this widget.
+         */
+        private bindEvents(): void;
+        /**
+         * A widget class should not declare an explicit constructor, the default constructor provided by this base
+         * widget should be used. Instead, override this initialize method which is called after the widget instance
+         * was constructed. You can use this method to perform any initialization that is required. For widgets that
+         * need to create custom HTML on the client-side this is also the place where you should call your render
+         * method.
+         *
+         * Please make sure to call the super method first before adding your own custom logic to the init method:
+         *
+         * ```javascript
+         * PrimeFaces.widget.MyWidget = PrimeFaces.widget.BaseWidget.extend({
+         *   init: function(cfg) {
+         *     this._super(cfg);
+         *     // custom initialization
+         *   }
+         * });
+         * ```
+         * @override
+         * @param cfg The widget configuration to be used for this widget instance.
+         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * component.
+         */
+        override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
+    }
+}
+declare namespace PrimeFaces.widget {
+    /**
+     * The configuration for the {@link  Steps| Steps widget}.
+     * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+     * configuration is usually meant to be read-only and should not be modified.
+     */
+    export interface StepsCfg extends PrimeFaces.widget.BaseWidgetCfg {
+    }
+}
+declare namespace PrimeFaces.widget {
+    /**
      * __PrimeFaces TabMenu Widget__
      *
      * TabMenu is a navigation component that displays menuitems as tabs.
@@ -25242,14 +25455,26 @@ declare namespace PrimeFaces.widget {
          */
         activeitem?: JQuery | null;
         /**
+         * Whether component is horizontal orientation like MenuBar.
+         */
+        isHorizontal: boolean;
+        /**
          * Whether the writing direction is set to right-to-left.
          */
         isRTL: boolean;
+        /**
+         * Whether component is vertical orientation like TieredMenu.
+         */
+        isVertical: boolean;
         /**
          * Set to `true` an item was clicked and se to `false` when the user clicks
          * outside the menu.
          */
         itemClick?: boolean;
+        /**
+         * The last root menu that had focus, if any.
+         */
+        lastFocusedItem?: JQuery | null;
         /**
          * DOM element with all links for the menu entries of this tiered menu.
          */
@@ -25264,9 +25489,11 @@ declare namespace PrimeFaces.widget {
         timeoutId?: number;
         /**
          * Activates a menu item so that it can be clicked and interacted with.
-         * @param menuitem Menu item (`LI`) to activate.
+         * @param menuitem - The menu item to activate.
+         * @param focus Defaults to `true`. - If false, does not focus the menu item.
+         * @param showSubMenu Defaults to `true`. - If false, does not show the submenu.
          */
-        activate(menuitem: JQuery): void;
+        activate(menuitem: JQuery, focus?: boolean, showSubMenu?: boolean): void;
         /**
          * Sets up all event listeners when `toggleEvent` is set to `click`.
          */
@@ -25279,6 +25506,13 @@ declare namespace PrimeFaces.widget {
          * Sets up all event listeners required by this widget.
          */
         protected bindEvents(): void;
+        /**
+         * Sets up all event listeners required for focus interactions. This includes:
+         * - Making the first menu item focusable by setting its tabindex
+         * - Handling mouse enter and click events to manage focus state
+         * - Handling focus events to highlight active menu items
+         */
+        protected bindFocusEvents(): void;
         /**
          * Sets up all event listeners when `toggleEvent` is set to `hover`.
          */
@@ -25298,8 +25532,13 @@ declare namespace PrimeFaces.widget {
          */
         deactivate(menuitem: JQuery, animate?: boolean): void;
         /**
-         * Highlights the given menu item by applying the proper CSS classes.
-         * @param menuitem Menu item to highlight.
+         * Deactivates the current active menu item and resets the menu state after a delay.
+         * @param e - The event object (optional).
+         */
+        deactivateAndReset(e?: Event): void;
+        /**
+         * Highlights the given menu item by applying the proper CSS classes and focusing the associated link.
+         * @param menuitem - The menu item to highlight.
          */
         highlight(menuitem: JQuery): void;
         /**
@@ -25326,11 +25565,6 @@ declare namespace PrimeFaces.widget {
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
         /**
-         * Reactivates the given menu item.
-         * @param menuitem Menu item (`LI`) to reactivate.
-         */
-        protected reactivate(menuitem: JQuery): void;
-        /**
          * Deactivates all items and resets the state of this widget to its orignal state such that only the top-level menu
          * items are shown.
          */
@@ -25339,8 +25573,9 @@ declare namespace PrimeFaces.widget {
          * Shows the given submenu of a menu item.
          * @param menuitem A menu item (`LI`) with children.
          * @param submenu A child of the menu item.
+         * @param focus Defaults to `true`. - If false, does not focus the submenu.
          */
-        showSubmenu(menuitem: JQuery, submenu: JQuery): void;
+        showSubmenu(menuitem: JQuery, submenu: JQuery, focus?: boolean): void;
     }
 }
 declare namespace PrimeFaces.widget {
@@ -25378,6 +25613,10 @@ declare namespace PrimeFaces.widget {
      */
     export class Message<TCfg extends MessageCfg = MessageCfg> extends PrimeFaces.widget.BaseWidget<TCfg> {
         /**
+         * Removes the current displayed message.
+         */
+        clearMessage(): void;
+        /**
          * A widget class should not declare an explicit constructor, the default constructor provided by this base
          * widget should be used. Instead, override this initialize method which is called after the widget instance
          * was constructed. You can use this method to perform any initialization that is required. For widgets that
@@ -25400,6 +25639,11 @@ declare namespace PrimeFaces.widget {
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
+        /**
+         * Renders the given msg.
+         * @param msg Message to render.
+         */
+        renderMessage(msg: PrimeFaces.FacesMessage): void;
     }
 }
 declare namespace PrimeFaces.widget {
@@ -26462,7 +26706,7 @@ declare namespace PrimeFaces.widget {
          */
         showDelay: number;
         /**
-         * Event on target to hide the panel.
+         * Event on target to hide the panel. If showEvent is 'none', the overlay panel will only be displayed by `show()` or `toggle()`.
          */
         showEvent: string;
         /**
@@ -26524,6 +26768,10 @@ declare namespace PrimeFaces.widget {
          * SELECT element for selecting a page to navigate to (`jump to page`)
          */
         jtpSelect: JQuery;
+        /**
+         * DOM element of the container for all the naivgation elements.
+         */
+        navigator: JQuery;
         /**
          * DOM element of the link to the next page.
          */
@@ -27465,11 +27713,6 @@ declare namespace PrimeFaces.widget {
          */
         filterMatchers: Record<PrimeFaces.widget.PickList.FilterMatchMode, PrimeFaces.widget.PickList.FilterFunction>;
         /**
-         * The set-timeout timer ID of the timer for the delay when filtering the source or target
-         * list.
-         */
-        filterTimeout: number;
-        /**
          * The DOM element for the currently focused pick list item, if any.
          */
         focusedItem: JQuery;
@@ -27517,6 +27760,12 @@ declare namespace PrimeFaces.widget {
          * Sets tup the event listeners for when the command buttons (move up, move down etc.) are pressed.
          */
         private bindButtonEvents(): void;
+        /**
+         * Sets up the drag and drop event listeners for reordering and transferring pick list items between source and target lists.
+         * Only enabled for non-touch devices.
+         * @see PrimeFaces.env.isTouchable
+         */
+        private bindDragDopEvents(): void;
         /**
          * Sets up the event listeners for when the enter key is pressed while inside a filter input of the source or target
          * list.
@@ -27728,6 +27977,12 @@ declare namespace PrimeFaces.widget {
          * @return `true` when the text of the options starts with the filter value, or `false` otherwise.
          */
         startsWithFilter(value: string, filter: string): boolean;
+        /**
+         * Enables or disables drag and drop functionality for the pick list items.
+         * Has no effect on touch devices where drag and drop is always disabled.
+         * @param enable Defaults to `false`. - Set to true to enable drag and drop, false to disable
+         */
+        private toggleDragDrop(enable?: boolean): void;
         /**
          * Transfers the given items from the source or target list to the other list.
          * @param items Items that were transferred from one list to the other.
@@ -28236,11 +28491,11 @@ declare namespace PrimeFaces.widget {
          */
         enable(): void;
         /**
-         * Set focus to element
-         * @param el focusable element
-         * @param isInputFocus Whether to refocus to input element
+         * Focuses on a specified element and optionally sets focus to the input element.
+         * @param star - The element to which the focus class will be added.
+         * @param isInputFocus Defaults to `false`. - If true, also sets focus to the input element.
          */
-        private focus(el: JQuery, isInputFocus: boolean): void;
+        focus(star: JQuery, isInputFocus?: boolean): void;
         /**
          * Get focusable element
          * @return element
@@ -28300,6 +28555,11 @@ declare namespace PrimeFaces.widget {
          * Removes the event listeners that were added, called when this widget is disabled.
          */
         private unbindEvents(): void;
+        /**
+         * Updates the input element with the new rating value and sets the appropriate ARIA label.
+         * @param value - The new rating value to update the input element with.
+         */
+        private updateInput(value: number | string): void;
     }
 }
 declare namespace PrimeFaces.widget {
@@ -29736,21 +29996,49 @@ declare namespace PrimeFaces.widget {
      */
     export class Signature<TCfg extends SignatureCfg = SignatureCfg> extends PrimeFaces.widget.BaseWidget<TCfg> {
         /**
-         * The DOM element for the hidden input element storing the base 64 value.
-         */
-        base64Input: JQuery;
-        /**
          * The canvas element where the signature is drawn.
          */
-        canvasEL: HTMLCanvasElement;
+        canvas: JQuery;
+        /**
+         * The DOM element for the hidden input element storing the base 64 value.
+         */
+        inputBase64: JQuery;
         /**
          * The DOM element for the hidden input storing the value of this widget.
          */
-        input: JQuery;
+        inputJson: JQuery;
+        /**
+         * The DOM element for the hidden input storing the printed text value of this widget.
+         */
+        inputText: JQuery;
+        /**
+         * Binds event handlers to the signature canvas.
+         */
+        private bindEvents(): void;
         /**
          * Clears this signature widget, removing all drawn lines.
          */
         clear(): void;
+        /**
+         * Creates a signature from the given text using SVG.
+         * @param text - The text to convert into a signature.
+         */
+        createSignatureFromText(text: string): void;
+        /**
+         * Will be called after an AJAX request if the widget container will be detached.
+         *
+         * When an AJAX call is made and this component is updated, the DOM element is replaced with the newly rendered
+         * content. When the element is removed from the DOM by the update, the DOM element is detached from the DOM and
+         * this method gets called.
+         *
+         * Please note that instead of overriding this method, you should consider adding a destroy listener instead
+         * via {@link addDestroyListener}. This has the advantage of letting you add multiple listeners, and makes it
+         * possible to add additional listeners from code outside this widget.
+         *
+         * By default, this method just calls all destroy listeners.
+         * @override
+         */
+        override destroy(): void;
         /**
          * Disables this input so that the user cannot enter a value anymore.
          */
@@ -29795,6 +30083,19 @@ declare namespace PrimeFaces.widget {
          * Renders the client-side parts of this widget.
          */
         private render(): void;
+        /**
+         * Sets up the base64 configuration for the signature widget.
+         */
+        private setupBase64(): void;
+        /**
+         * Sets up the base64 configuration for the signature widget.
+         */
+        private setupCanvas(): void;
+        /**
+         * Updates the base64 value of the signature widget.
+         * @param clear Defaults to `false`. - Whether to clear the base64 value.
+         */
+        private updateBase64(clear?: boolean): void;
     }
 }
 declare namespace PrimeFaces.widget {
@@ -30408,10 +30709,6 @@ declare namespace PrimeFaces.widget {
          */
         prefix: string;
         /**
-         * Whether this spinner is a required field.
-         */
-        required: boolean;
-        /**
          * Rotate to the minimum value when maximum value is reached and vice versa.
          */
         rotate: boolean;
@@ -30455,11 +30752,6 @@ declare namespace PrimeFaces.widget {
      * @typeparam TCfg Defaults to `SplitterCfg`. Type of the configuration object for this widget.
      */
     export class Splitter<TCfg extends SplitterCfg = SplitterCfg> extends PrimeFaces.widget.BaseWidget<TCfg> {
-        /**
-         * Whether the splitter is currently being dragged, i.e. whether an element is
-         * being resized.
-         */
-        dragging?: boolean;
         /**
          * When resizing, the DOM elements of the gutter used for resizing.
          */
@@ -30527,13 +30819,19 @@ declare namespace PrimeFaces.widget {
          */
         vertical: boolean;
         /**
-         * Bind document events
-         */
-        private bindDocumentEvents(): void;
-        /**
          * Set up event for the gutters.
          */
         private bindGutterEvent(): void;
+        /**
+         * Binds mouse event listeners for the splitter component.
+         * It listens for mousemove to handle resizing and mouseup to end resizing.
+         */
+        private bindMouseListeners(): void;
+        /**
+         * Binds touch event listeners for the splitter component.
+         * It listens for touchmove to handle resizing and touchend to end resizing.
+         */
+        private bindTouchListeners(): void;
         /**
          * Clear all variables
          */
@@ -30637,16 +30935,18 @@ declare namespace PrimeFaces.widget {
          */
         private setTimer(event: JQuery.TriggeredEvent, step: number): void;
         /**
-         * Removes document events
+         * Unbinds all document event listeners related to the splitter component.
+         * This is typically called when resizing ends.
          */
-        private unbindDocumentEvents(): void;
+        private unbindDocumentListeners(): void;
         /**
-         * Checks the new values according to the size and minimum size values
-         * @param newPrevPanelSize The new previous panel size.
-         * @param newNextPanelSize The new next panel size.
-         * @return `true` if resized, `false` if not.
+         * Validates the new sizes for the panels to ensure they are within acceptable bounds.
+         * Checks if the new sizes are within the range of 0 to 100 and not less than the minimum size specified in the dataset.
+         * @param newPrevPanelSize - The proposed new size for the previous panel.
+         * @param newNextPanelSize - The proposed new size for the next panel.
+         * @return Returns true if the new sizes are valid, otherwise false.
          */
-        private validateResize(newPrevPanelSize: number, newNextPanelSize: number): boolean;
+        validateResize(newPrevPanelSize: number, newNextPanelSize: number): boolean;
     }
 }
 declare namespace PrimeFaces.widget {
@@ -31110,6 +31410,12 @@ declare namespace PrimeFaces.widget {
          */
         private bindSwipeEvents(): void;
         /**
+         * Cleans up deferred render tasks. When you extend this class and override this method, make sure to call
+         * `super`.
+         * @override
+         */
+        override destroy(): void;
+        /**
          * Disables the tab at the given index. Disabled tabs may not be selected.
          * @param index 0-based index of the tab to disable.
          */
@@ -31456,127 +31762,6 @@ declare namespace PrimeFaces.widget {
          * The current prompt text, i.e. the prefix at the beginning of the line.
          */
         prompt: string;
-    }
-}
-/**
- * The globally available constructor for the Quill text editor used by the
- * {@link PrimeFaces.widget.TextEditor|TextEditor widget}.
- */
-declare const Quill: typeof import("quill").Quill;
-declare namespace PrimeFaces.widget.TextEditor {
-    /**
-     * Type alias for the
-     * Quill editor options, needed for technical reasons.
-     */
-    export type QuillOptionsStatic = import("quill").QuillOptionsStatic;
-}
-declare namespace PrimeFaces.widget {
-    /**
-     * __PrimeFaces TextEditor Widget__
-     *
-     * Editor is an input component with rich text editing capabilities based on [Quill](https://quilljs.com/).
-     * @typeparam TCfg Defaults to `TextEditorCfg`. Type of the configuration object for this widget.
-     */
-    export class TextEditor<TCfg extends TextEditorCfg = TextEditorCfg> extends PrimeFaces.widget.DeferredWidget<TCfg> {
-        /**
-         * Whether this text editor is disabled.
-         */
-        disabled: boolean;
-        /**
-         * The current Quill text editor instance.
-         */
-        editor: import("quill").Quill;
-        /**
-         * The DOM element for the container with the Quill editor.
-         */
-        editorContainer: JQuery;
-        /**
-         * The DOM element for the hidden input field with the current value.
-         */
-        input: JQuery;
-        /**
-         * The DOM element for the toolbar of the editor.
-         */
-        toolbar: JQuery;
-        /**
-         * The default HTML template for the toolbar of the editor. Use the appopriate classes to insert a toolbar button.
-         */
-        toolbarTemplate: string;
-        /**
-         * This render method is called by this deferred widget once the widget container has become visible. You may
-         * now proceed with widget initialization.
-         *
-         * __Must be overridden__, or an error will be thrown.
-         * @override
-         */
-        protected override _render(): void;
-        /**
-         * Clears the entire text of the editor.
-         */
-        clear(): void;
-        /**
-         * Disables this text editor so that no text can be entered or removed.
-         */
-        disable(): void;
-        /**
-         * Enables this text editor so that text can be entered.
-         */
-        enable(): void;
-        /**
-         * Finds an returns the current contents of the editor.
-         * @return The current contents of the editor, as an HTML string.
-         */
-        getEditorValue(): string;
-        /**
-         * A widget class should not declare an explicit constructor, the default constructor provided by this base
-         * widget should be used. Instead, override this initialize method which is called after the widget instance
-         * was constructed. You can use this method to perform any initialization that is required. For widgets that
-         * need to create custom HTML on the client-side this is also the place where you should call your render
-         * method.
-         *
-         * Please make sure to call the super method first before adding your own custom logic to the init method:
-         *
-         * ```javascript
-         * PrimeFaces.widget.MyWidget = PrimeFaces.widget.BaseWidget.extend({
-         *   init: function(cfg) {
-         *     this._super(cfg);
-         *     // custom initialization
-         *   }
-         * });
-         * ```
-         * @override
-         * @param cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
-         * component.
-         */
-        override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
-        /**
-         * Registers an event with the Quill editor and invokes the appropriate behavior when that event is triggered.
-         * @param event Name of the event to register.
-         */
-        private registerEvent(event: string): void;
-        /**
-         * Sets the content of the editor, the hidden input and calls the change behavior.
-         * @param value New value to be set
-         */
-        setValue(value: string): void;
-    }
-}
-declare namespace PrimeFaces.widget {
-    /**
-     * The configuration for the {@link  TextEditor| TextEditor widget}.
-     * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
-     * configuration is usually meant to be read-only and should not be modified.
-     */
-    export interface TextEditorCfg extends PrimeFaces.widget.DeferredWidgetCfg, PrimeFaces.widget.TextEditor.QuillOptionsStatic {
-        /**
-         * Whether this text editor is initially disabled.
-         */
-        disabled: boolean;
-        /**
-         * Whether the editor toolbar should be displayed.
-         */
-        toolbarVisible: boolean;
     }
 }
 declare namespace PrimeFaces.widget.Timeline {
@@ -32350,6 +32535,11 @@ declare namespace PrimeFaces.widget {
          * @return The value as returned by the `init` method, which is often `undefined`.
          */
         override refresh(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
+        /**
+         * Determines if the tooltip should be allowed to hide based on the mouse event's related target.
+         * @param e - The jQuery event object that triggered the mouse event.
+         */
+        private shouldAllowHideBasedOnMouseTarget(e: JQuery.TriggeredEvent): void;
         /**
          * Brings up this tooltip and displays it next to the target component.
          */
@@ -33496,10 +33686,6 @@ declare namespace PrimeFaces.widget {
          */
         filterInput: JQuery;
         /**
-         * The set-timeout timer ID of the timer for the filter delay.
-         */
-        filterTimeout: number;
-        /**
          * A list of row keys for rows that are not valid drag sources.
          */
         invalidSourceKeys: string[];
@@ -33838,6 +34024,14 @@ declare namespace PrimeFaces.widget {
          */
         dropRestrict: PrimeFaces.widget.VerticalTree.DropRestrictMode;
         /**
+         * Delay to wait in milliseconds before sending each filter query. Default is 300.
+         */
+        filterDelay: number;
+        /**
+         * Client side event to invoke filtering. Default is keyup.
+         */
+        filterEvent: string;
+        /**
          * `true` if text direction is right-to-left, or `false` otherwise.
          */
         rtl: boolean;
@@ -33966,10 +34160,6 @@ declare namespace PrimeFaces.widget {
          * Localized message for sorting items in descending order.
          */
         descMessage?: string;
-        /**
-         * The set-timeout timer ID for the timer used for the delay during filtering.
-         */
-        filterTimeout: number;
         /**
          * The DOM element for the TD columns in the table footer.
          */
@@ -34851,21 +35041,6 @@ declare namespace PrimeFaces.validation.Utils {
      */
     export function getMessageBV(element: JQuery, defaultKey?: string, msg?: string): PrimeFaces.FacesMessage;
 }
-declare namespace PrimeFaces.validation.Utils {
-    /**
-     * Given a message with placeholders, replaces the placeholders with the given parameters. The format of the
-     * message is similar to, but not quite the same as, the format used by `java.text.MessageFormat`.
-     * ```javascript
-     * formatBV("Value required for element {0}", ["", "", "", "email"]) // => "Value required for element email"
-     * formatBV("Use {0} braces like this: '{0}'", ["", "", "", "simple"]) // => "Use simple braces like this: 'simple'"
-     * ```
-     * @param str A message with placeholders.
-     * @param params A list of parameters for the placeholders. The first three items are ignored. The item
-     * at index `i` corresponds to the placeholder `{i-3}`.
-     * @return The string, with the placeholders replaced by the given params.
-     */
-    export function formatBV(str: string, params: string[]): string;
-}
 declare namespace PrimeFaces {
     /**
      * An object with the client-side implementation of some faces validators. Used for implementing client-side
@@ -34928,9 +35103,10 @@ declare namespace PrimeFaces.validation {
      * @param focus If the first invalid element should be focused.
      * @param renderMessages If messages should be rendered.
      * @param validateInvisibleElements If invisible elements should be validated.
+     * @param logUnrenderedMessages If unrendered messages should be logged.
      * @return The validation result.
      */
-    export function validate(source: JQuery, process: string | HTMLElement | JQuery, update: string | HTMLElement | JQuery, highlight: boolean, focus: boolean, renderMessages: boolean, validateInvisibleElements: boolean): PrimeFaces.validation.ValidationResult;
+    export function validate(source: JQuery, process: string | HTMLElement | JQuery, update: string | HTMLElement | JQuery, highlight: boolean, focus: boolean, renderMessages: boolean, validateInvisibleElements: boolean, logUnrenderedMessages: boolean): PrimeFaces.validation.ValidationResult;
     /**
      * Validates the CSV-requirements of a CommandButton.
      * @param btn CommandButton which´s CSV-requirements should be validated.
@@ -35000,10 +35176,10 @@ declare namespace PrimeFaces.validation.ValidationContext {
     export function addElementGroup(name: string): void;
     /**
      * Adds a faces message to the given element.
-     * @param element Element to which to add the message.
+     * @param target Element or widget to which to add the message.
      * @param msg Message to add to the given message.
      */
-    export function addMessage(element: JQuery, msg: PrimeFaces.FacesMessage): void;
+    export function addMessage(target: string | HTMLElement | JQuery | PrimeFaces.widget.BaseWidget, msg: PrimeFaces.FacesMessage): void;
     /**
      * Removes all messages from this validation context.
      */
@@ -35029,6 +35205,11 @@ declare namespace PrimeFaces.validation.ValidationContext {
      */
     export function getMessagesLength(): number;
     /**
+     * Highlights the passed widget as invalid.
+     * @param target The target widget / element.
+     */
+    export function highlight(target: string | HTMLElement | JQuery | PrimeFaces.widget.BaseWidget): void;
+    /**
      * Checks whether this validation context contains any messages at all.
      * @return `true` if this validation context contains zero messages, or `false` otherwise.
      */
@@ -35041,6 +35222,11 @@ declare namespace PrimeFaces.validation.ValidationContext {
      * @return `true` if the given group is to be validated, or `false` otherwise.
      */
     export function isGroupValidated(name: string): boolean;
+    /**
+     * Un-Highlights the passed widget as invalid.
+     * @param target The target widget / element.
+     */
+    export function unhighlight(target: string | HTMLElement | JQuery | PrimeFaces.widget.BaseWidget): void;
 }
 /**
  * Mostly internal utility methods used to validate data on the client.
@@ -35049,22 +35235,21 @@ declare namespace PrimeFaces.validation.Utils {
     /**
      * For a given ID of a component, finds the DOM element with the message for that component.
      * @param clientId ID of a component for which to find the ui message.
-     * @param uiMessageCollection A JQuery instance with a list of `ui-message`s, or `null` if no
+     * @param messageComponents A JQuery instance with a list of `ui-message`s, or `null` if no
      * such element exists.
      * @return The DOM element with the messages for the given component, or `null` when no such
      * element could be found.
      */
-    export function findUIMessage(clientId: string, uiMessageCollection: JQuery): JQuery | null;
+    export function findTargetMessageComponent(clientId: string, messageComponents: JQuery): JQuery | null;
     /**
      * Given a message with placeholders, replaces the placeholders with the given parameters. The format of the
      * message is similar to, but not quite the same as, the format used by `java.text.MessageFormat`.
      * ```javascript
-     * format("Value required for element {0}", ["", "email"]) // => "Value required for element email"
-     * format("Use {0} braces like this: '{0}'", ["", "simple"]) // => "Use simple braces like this: 'simple'"
+     * format("Value required for element {0}", ["email"]) // => "Value required for element email"
+     * format("Use {0} braces like this: '{0}'", ["simple"]) // => "Use simple braces like this: 'simple'"
      * ```
      * @param str A message with placeholders.
-     * @param params A list of parameters for the placeholders. The first item is ignored. The item at
-     * index `i` corresponds to the placeholder `{i-1}`.
+     * @param params A list of parameters for the placeholders.
      * @return The string with the placeholders replaced with the given params.
      */
     export function format(str: string, params: string[]): string;
@@ -35080,8 +35265,7 @@ declare namespace PrimeFaces.validation.Utils {
      * falls back to the default English locale.
      * @param key The i18n key of a message, such as `javax.faces.component.UIInput.REQUIRED` or
      * `javax.faces.validator.LengthValidator.MINIMUM`.
-     * @param params A list of parameters for the placeholders. The first item is ignored. The item at
-     * index `i` corresponds to the placeholder `{i-1}`.
+     * @param params A list of parameters for the placeholders.
      * @return The localized faces message for the given key, or `null` if no
      * translation was found for the key.
      */
@@ -35100,12 +35284,6 @@ declare namespace PrimeFaces.validation.Utils {
      * a parent of such an element.
      */
     export function renderMessages(messages: Record<string, PrimeFaces.FacesMessage[]>, container: JQuery): void;
-    /**
-     * Given the container element of a ui message, renders the given message to that element.
-     * @param uiMessage The container element of the message, usually with the class `ui-message`.
-     * @param msg Message to render to the given element.
-     */
-    export function renderUIMessage(uiMessage: JQuery, msg: PrimeFaces.FacesMessage): void;
     /**
      * Resolves process-attribute of a PrimeFaces-component. (e.g. CommandButton)
      * @param cfg Configuration of the PrimeFaces-component.
@@ -35270,6 +35448,11 @@ declare namespace PrimeFaces.widget {
          * Advances to the next wizard step.
          */
         next(): void;
+        /**
+         * Resets the wizard to its initial state by navigating back to the first step.
+         * Only performs the navigation if the wizard has steps and is not already on the first step.
+         */
+        reset(): void;
         /**
          * Shows the button for navigating to the previous wizard step.
          */
