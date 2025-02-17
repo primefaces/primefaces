@@ -325,7 +325,15 @@
                 Client side event to invoke filtering. If "enter" it will only filter after ENTER key is pressed. Default is keyup.
             </td>
                         </tr>
-                        <tr id="first" class="altColor">
+                        <tr id="filterNormalize" class="altColor">
+                            <td class="colFirst"><a href="#filterNormalize"><code>filterNormalize</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
+                                <br>
+                                (<i>must evaluate to </i><code>java.lang.Boolean</code>)
+                    </td><td class="colLast">
+                Defines if filtering would be done using normalized values (accents will be removed from characters). Default is false.
+            </td>
+                        </tr>
+                        <tr id="first" class="rowColor">
                             <td class="colFirst"><a href="#first"><code>first</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)
@@ -333,12 +341,20 @@
                 Index of the first data to display.
             </td>
                         </tr>
-                        <tr id="frozenColumns" class="rowColor">
+                        <tr id="frozenColumns" class="altColor">
                             <td class="colFirst"><a href="#frozenColumns"><code>frozenColumns</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)
                     </td><td class="colLast">
                 Number of columns to freeze, default is 0.
+            </td>
+                        </tr>
+                        <tr id="frozenColumnsAlignment" class="rowColor">
+                            <td class="colFirst"><a href="#frozenColumnsAlignment"><code>frozenColumnsAlignment</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
+                                <br>
+                                (<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td class="colLast">
+                Defines the alignment of frozen columns, valid values are 'left' and 'right', default is 'left'
             </td>
                         </tr>
                         <tr id="frozenRows" class="altColor">
