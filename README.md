@@ -73,14 +73,14 @@ Version | JSF version | Java version | Binary | Source | Documentation
   <dependency>
       <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
-      <version>14.0.12</version>
+      <version>15.0.0</version>
   </dependency>
 
   <!-- Jakarta EE / jakarta.* / Faces 4.0+  -->	
   <dependency>
       <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
-      <version>14.0.12</version>
+      <version>15.0.0</version>
       <classifier>jakarta</classifier>
   </dependency>
   ```
@@ -92,14 +92,14 @@ Version | JSF version | Java version | Binary | Source | Documentation
   <dependency>
       <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
-      <version>15.0.0-SNAPSHOT</version>
+      <version>16.0.0-SNAPSHOT</version>
   </dependency>
 
   <!-- Jakarta EE / jakarta.* / Faces 4.0+  -->
   <dependency>
       <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
-      <version>15.0.0-SNAPSHOT</version>
+      <version>16.0.0-SNAPSHOT</version>
       <classifier>jakarta</classifier>
   </dependency>
 
@@ -159,9 +159,9 @@ Visit the [contribution](./CONTRIBUTING.md) page for detailed information.
 
 ### Release Instructions
 ***
-- Run `mvn versions:set -DgenerateBackupPoms=false -DnewVersion=14.0.12` to update all modules versions
+- Run `mvn versions:set -DgenerateBackupPoms=false -DnewVersion=15.0.0` to update all modules versions
 - Commit and push the changes to GitHub
-- In GitHub create a new Release titled `14.0.12` to tag this release
+- In GitHub create a new Release titled `15.0.0` to tag this release
 - Run `mvn clean deploy -Prelease` to push to Maven Central
 - Rename Milestone in GitHub Issues and close it
 - Create a new Milestone
