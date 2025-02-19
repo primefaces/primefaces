@@ -158,7 +158,15 @@
                 Server side listener to invoke when wizard attempts to go forward or back.
             </td>
                         </tr>
-                        <tr id="id" class="rowColor">
+                        <tr id="highlightCompletedSteps" class="rowColor">
+                            <td class="colFirst"><a href="#highlightCompletedSteps"><code>highlightCompletedSteps</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
+                                <br>
+                                (<i>must evaluate to </i><code>java.lang.Boolean</code>)
+                    </td><td class="colLast">
+                 If true, all completed steps are highlighted. If false, only the current step is highlighted. Default is false.
+            </td>
+                        </tr>
+                        <tr id="id" class="altColor">
                             <td class="colFirst"><a href="#id"><code>id</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -166,7 +174,7 @@
                 Unique identifier of the component in a namingContainer.
             </td>
                         </tr>
-                        <tr id="nextLabel" class="altColor">
+                        <tr id="nextLabel" class="rowColor">
                             <td class="colFirst"><a href="#nextLabel"><code>nextLabel</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -174,7 +182,7 @@
                 Label of next navigation button. Default is "Next".
             </td>
                         </tr>
-                        <tr id="onback" class="rowColor">
+                        <tr id="onback" class="altColor">
                             <td class="colFirst"><a href="#onback"><code>onback</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -182,7 +190,7 @@
                 Javascript event handler to be invoked when flow goes back.
             </td>
                         </tr>
-                        <tr id="onnext" class="altColor">
+                        <tr id="onnext" class="rowColor">
                             <td class="colFirst"><a href="#onnext"><code>onnext</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -190,7 +198,7 @@
                 Javascript event handler to be invoked when flow goes forward.
             </td>
                         </tr>
-                        <tr id="rendered" class="rowColor">
+                        <tr id="rendered" class="altColor">
                             <td class="colFirst"><a href="#rendered"><code>rendered</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -198,7 +206,7 @@
                 Boolean value to specify the rendering of the component, when set to false component will not be rendered.
             </td>
                         </tr>
-                        <tr id="showNavBar" class="altColor">
+                        <tr id="showNavBar" class="rowColor">
                             <td class="colFirst"><a href="#showNavBar"><code>showNavBar</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -206,7 +214,7 @@
                 Specifies visibility of default navigator arrows. Default is true.
             </td>
                         </tr>
-                        <tr id="showStepStatus" class="rowColor">
+                        <tr id="showStepStatus" class="altColor">
                             <td class="colFirst"><a href="#showStepStatus"><code>showStepStatus</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -214,7 +222,7 @@
                 Specifies visibility of default step title bar. Default is true.
             </td>
                         </tr>
-                        <tr id="step" class="altColor">
+                        <tr id="step" class="rowColor">
                             <td class="colFirst"><a href="#step"><code>step</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -222,7 +230,7 @@
                 Id of the current step in flow.
             </td>
                         </tr>
-                        <tr id="style" class="rowColor">
+                        <tr id="style" class="altColor">
                             <td class="colFirst"><a href="#style"><code>style</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -230,7 +238,7 @@
                 Style of the main wizard container element.
             </td>
                         </tr>
-                        <tr id="styleClass" class="altColor">
+                        <tr id="styleClass" class="rowColor">
                             <td class="colFirst"><a href="#styleClass"><code>styleClass</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
@@ -238,7 +246,7 @@
                 Style class of the main wizard container element.
             </td>
                         </tr>
-                        <tr id="updateModelOnPrev" class="rowColor">
+                        <tr id="updateModelOnPrev" class="altColor">
                             <td class="colFirst"><a href="#updateModelOnPrev"><code>updateModelOnPrev</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
@@ -246,7 +254,7 @@
                 If yes, the model will be updated when the "Back" button is clicked. Default is false.
             </td>
                         </tr>
-                        <tr id="widgetVar" class="altColor">
+                        <tr id="widgetVar" class="rowColor">
                             <td class="colFirst"><a href="#widgetVar"><code>widgetVar</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)

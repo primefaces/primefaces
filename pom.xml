@@ -6,7 +6,7 @@
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces-parent</artifactId>
     <packaging>pom</packaging>
-    <version>15.0.0-SNAPSHOT</version>
+    <version>16.0.0-SNAPSHOT</version>
 
     <name>PrimeFaces Parent</name>
     <url>https://www.primefaces.org</url>
@@ -429,7 +429,7 @@
             <dependency>
                 <groupId>uk.org.okapibarcode</groupId>
                 <artifactId>okapibarcode</artifactId>
-                <version>0.4.9</version>
+                <version>0.5.0</version>
                 <exclusions>
                     <exclusion>
                         <groupId>com.beust</groupId>
