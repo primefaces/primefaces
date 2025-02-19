@@ -1,7 +1,6 @@
 {
   "name": "@primefaces/primefaces",
   "version": "15.0.0-SNAPSHOT",
-  "type": "module",
   "private": true,
   "description": "Client-side implementation for PrimeFaces",
   "main": "src/index.js",
