@@ -18,6 +18,7 @@
 
     <properties>
         <jakarta.jar.skip>false</jakarta.jar.skip>
+        <cyclonedx.skip>true</cyclonedx.skip>
         <resources.dir.compressed>${project.build.directory}/classes/META-INF/resources/primefaces</resources.dir.compressed>
         <mockito.version>5.15.2</mockito.version>
         <sonar.sources>src/main/java,src/main/resources</sonar.sources>
@@ -263,6 +264,19 @@
                         </dependency>
                     </dependencies>
                 </plugin>
+                <plugin>
+                    <groupId>org.cyclonedx</groupId>
+                    <artifactId>cyclonedx-maven-plugin</artifactId>
+                    <version>2.9.1</version>
+                    <executions>
+                        <execution>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>makeAggregateBom</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
             </plugins>
         </pluginManagement>
 
@@ -319,8 +333,9 @@
             </plugin>
 
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
-                <version>3.4.0</version>
+                <version>3.4.1</version>
                 <configuration>
                     <filesets>
                         <fileset>
@@ -619,10 +634,10 @@
                             <shadedClassifierName>jakarta</shadedClassifierName>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
                                 <transformer implementation="io.yupiik.maven.shade.transformer.RelocationTransformer">
                                     <delegates>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer"/>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer" />
                                         <transformer implementation="org.apache.maven.plugins.shade.resource.XmlAppendingTransformer">
                                             <resource>META-INF/faces-config.xml</resource>
                                         </transformer>
@@ -946,6 +961,25 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.cyclonedx</groupId>
+                <artifactId>cyclonedx-maven-plugin</artifactId>
+                <configuration>
+                    <skip>${cyclonedx.skip}</skip>
+                    <projectType>library</projectType>
+                    <schemaVersion>1.6</schemaVersion>
+                    <includeBomSerialNumber>true</includeBomSerialNumber>
+                    <includeCompileScope>true</includeCompileScope>
+                    <includeProvidedScope>false</includeProvidedScope>
+                    <includeRuntimeScope>true</includeRuntimeScope>
+                    <includeSystemScope>true</includeSystemScope>
+                    <includeTestScope>false</includeTestScope>
+                    <includeLicenseText>false</includeLicenseText>
+                    <outputReactorProjects>true</outputReactorProjects>
+                    <outputFormat>all</outputFormat>
+                    <verbose>false</verbose><!-- = ${cyclonedx.verbose} -->
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.5.2</version>
@@ -965,6 +999,7 @@
                 <checkstyle.skip>true</checkstyle.skip>
                 <xml.formatter.skip>true</xml.formatter.skip>
                 <frontend.node.env>development</frontend.node.env>
+                <cyclonedx.skip>true</cyclonedx.skip>
                 <license.skipCheckLicense>true</license.skipCheckLicense>
                 <license.skipAddThirdParty>true</license.skipAddThirdParty>
                 <license.skipAggregateDownloadLicenses>true</license.skipAggregateDownloadLicenses>
@@ -990,17 +1025,23 @@
             </build>
         </profile>
         <profile>
+            <id>cyclonedx</id>
+            <properties>
+                <cyclonedx.skip>false</cyclonedx.skip>
+            </properties>
+        </profile>
+        <profile>
             <id>minify</id>
             <properties>
                 <frontend.node.env>production</frontend.node.env>
             </properties>
-            <build>
-            </build>
         </profile>
         <profile>
             <id>release</id>
             <properties>
                 <frontend.node.env>production</frontend.node.env>
+                <minify.disabled>false</minify.disabled>
+                <cyclonedx.skip>false</cyclonedx.skip>
             </properties>
         </profile>
     </profiles>

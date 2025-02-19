@@ -1879,21 +1879,23 @@ $.widget("prime.datePicker", {
         if (!this.options.inline) {
             // #13269 delay registering events until CSP has registered
             PrimeFaces.queueTask(function () {
-                // get the current attached events if using CSP
-                var events = $this.inputfield[0] ? $._data($this.inputfield[0], "events") : null;
+                if (!$this.options.onChange) {
+                    // get the current attached events if using CSP
+                    var events = $this.inputfield[0] ? $._data($this.inputfield[0], "events") : null;
 
-                // use DOM if non-CSP and JQ event if CSP
-                var originalOnchange = $this.inputfield.prop('onchange');
-                if (!originalOnchange && events && events.change) {
-                    originalOnchange = events.change[0].handler;
-                }
-                $this.inputfield.prop('onchange', null).off('change');
-
-                $this.options.onChange = function (event) {
-                    if (originalOnchange) {
-                        originalOnchange.call($this, event);
+                    // use DOM if non-CSP and JQ event if CSP
+                    var originalOnchange = $this.inputfield.prop('onchange');
+                    if (!originalOnchange && events && events.change) {
+                        originalOnchange = events.change[0].handler;
                     }
-                };
+                    $this.inputfield.prop('onchange', null).off('change');
+
+                    $this.options.onChange = function (event) {
+                        if (originalOnchange) {
+                            originalOnchange.call($this, event);
+                        }
+                    };
+                }
 
                 $this.inputfield.off('focus.datePicker blur.datePicker change.datePicker keydown.datePicker input.datePicker click.datePicker')
                     .on('focus.datePicker', $this.onInputFocus.bind($this))
