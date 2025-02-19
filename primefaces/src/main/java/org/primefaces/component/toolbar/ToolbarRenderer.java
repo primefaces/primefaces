@@ -121,12 +121,24 @@ public class ToolbarRenderer extends CoreRenderer {
         return true;
     }
 
+    /**
+     * Determines whether a toolbar should be rendered based on its contents.
+     * <p>
+     * For toolbars with children, checks if any ToolbarGroup child contains renderable components.
+     * For toolbars without children, checks if either the left or right facet should be rendered.
+     *
+     * @param facesContext The current FacesContext
+     * @param toolbar The toolbar component to check
+     * @return true if the toolbar has renderable content, false otherwise
+     */
     protected boolean shouldBeRendered(FacesContext facesContext, Toolbar toolbar) {
         if (toolbar.getChildCount() > 0) {
             for (UIComponent child : toolbar.getChildren()) {
                 if (child.isRendered() && child instanceof ToolbarGroup) {
                     ToolbarGroup toolbarGroup = (ToolbarGroup) child;
-                    return toolbarGroup.getChildren().stream().anyMatch(c -> shouldBeRendered(facesContext, c));
+                    if (toolbarGroup.getChildren().stream().anyMatch(c -> shouldBeRendered(facesContext, c))) {
+                        return true;
+                    }
                 }
             }
             return false;
