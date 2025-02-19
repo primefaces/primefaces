@@ -91,7 +91,7 @@ public class Timeline003Test extends AbstractPrimePageTest {
         assertEquals(locale, options.get("locale"));
     }
 
-    private void assertMonth(Timeline timeline, String month, String il8n) {
+    private void assertMonth(Timeline timeline, String month, String i18n) {
         List<WebElement> monthElements = getMonth(timeline, month);
         for (WebElement monthElement : monthElements) {
             assertNotNull(monthElement);
@@ -101,7 +101,7 @@ public class Timeline003Test extends AbstractPrimePageTest {
             if (NumberUtils.isDigits(monthText)) {
                 continue;
             }
-            assertEquals(il8n, monthText);
+            assertEquals(i18n, monthText);
         }
     }
 

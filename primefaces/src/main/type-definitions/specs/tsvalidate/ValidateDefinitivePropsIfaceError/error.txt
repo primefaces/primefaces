@@ -1,7 +1,0 @@
-Error: Program failed to validate:
-[propDocMissing] at BarIface (${PROJECT_BASEDIR}/src/main/type-definitions/specs/tsvalidate/ValidateDefinitivePropsIfaceError/input.d.ts:3:6)
-Code for type 'BarIface' accesses property, but no doc comment exists. Add a doc comment. Missing properties:
-  Property <bar>
-    declared at BarIface (BarSource.js:1:4)
-  Property <qux>
-    declared at FooIface (FooSource.js:5:8)

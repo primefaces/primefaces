@@ -1,0 +1,242 @@
+diff --git a/js/jquery.fileupload-audio.js b/js/jquery.fileupload-audio.js
+index e5c9202f9730a846283ad1abafb4468e2e0e0b10..cd5e5bbe0f85d958741972cd78f738421784fca9 100644
+--- a/js/jquery.fileupload-audio.js
++++ b/js/jquery.fileupload-audio.js
+@@ -73,7 +73,7 @@
+         if (
+           this._audioElement.canPlayType &&
+           this._audioElement.canPlayType(file.type) &&
+-          ($.type(options.maxFileSize) !== 'number' ||
++          (typeof options.maxFileSize !== "number" ||
+             file.size <= options.maxFileSize) &&
+           (!options.fileTypes || options.fileTypes.test(file.type))
+         ) {
+diff --git a/js/jquery.fileupload-image.js b/js/jquery.fileupload-image.js
+index ac0ccf1ccae426d3bd7809648c3152ba44c7bba3..a4dad81180a5af7bc3e9a9776f1149f38810ed28 100644
+--- a/js/jquery.fileupload-image.js
++++ b/js/jquery.fileupload-image.js
+@@ -168,7 +168,7 @@
+           // eslint-disable-next-line new-cap
+           dfd = $.Deferred();
+         if (
+-          ($.type(options.maxFileSize) === 'number' &&
++          (typeof options.maxFileSize === "number" &&
+             file.size > options.maxFileSize) ||
+           (options.fileTypes && !options.fileTypes.test(file.type)) ||
+           !loadImage(
+diff --git a/js/jquery.fileupload-process.js b/js/jquery.fileupload-process.js
+index 56bf933b9d45464179206f27ac6f543f37fab789..7ba3148f72edca0f05baa363d6e288d2892dff34 100644
+--- a/js/jquery.fileupload-process.js
++++ b/js/jquery.fileupload-process.js
+@@ -103,7 +103,7 @@
+           action = this.action,
+           prefix = this.prefix === true ? action : this.prefix;
+         $.each(this, function (key, value) {
+-          if ($.type(value) === 'string' && value.charAt(0) === '@') {
++          if (typeof value === "string" && value.charAt(0) === '@') {
+             settings[key] =
+               options[
+                 value.slice(1) ||
+diff --git a/js/jquery.fileupload-ui.js b/js/jquery.fileupload-ui.js
+index 9cc3d3fd0fb1f1782011470547b67f106ffccec6..a07647d6ab24f2cc558b2293f7901c0c21f6704d 100644
+--- a/js/jquery.fileupload-ui.js
++++ b/js/jquery.fileupload-ui.js
+@@ -83,7 +83,7 @@
+ 
+       // Callback to retrieve the list of files from the server response:
+       getFilesFromResponse: function (data) {
+-        if (data.result && $.isArray(data.result.files)) {
++        if (data.result && Array.isArray(data.result.files)) {
+           return data.result.files;
+         }
+         return [];
+diff --git a/js/jquery.fileupload-validate.js b/js/jquery.fileupload-validate.js
+index 03d92abf88abe41dbd780805fdeaaa19ec3bcf3e..fecc3b16b2b09dfb7919bf101769886429dae493 100644
+--- a/js/jquery.fileupload-validate.js
++++ b/js/jquery.fileupload-validate.js
+@@ -83,7 +83,7 @@
+           fileSize = file.size;
+         }
+         if (
+-          $.type(options.maxNumberOfFiles) === 'number' &&
++          typeof options.maxNumberOfFiles === "number" &&
+           (settings.getNumberOfFiles() || 0) + data.files.length >
+             options.maxNumberOfFiles
+         ) {
+@@ -99,7 +99,7 @@
+         } else if (fileSize > options.maxFileSize) {
+           file.error = settings.i18n('maxFileSize');
+         } else if (
+-          $.type(fileSize) === 'number' &&
++          typeof fileSize === "number" &&
+           fileSize < options.minFileSize
+         ) {
+           file.error = settings.i18n('minFileSize');
+diff --git a/js/jquery.fileupload-video.js b/js/jquery.fileupload-video.js
+index 5dc78f36bb8293176465d41a27ad8841130f4785..183c571fb6e3cef39267fd2d532341d19f379c49 100644
+--- a/js/jquery.fileupload-video.js
++++ b/js/jquery.fileupload-video.js
+@@ -73,7 +73,7 @@
+         if (
+           this._videoElement.canPlayType &&
+           this._videoElement.canPlayType(file.type) &&
+-          ($.type(options.maxFileSize) !== 'number' ||
++          (typeof options.maxFileSize !== "number" ||
+             file.size <= options.maxFileSize) &&
+           (!options.fileTypes || options.fileTypes.test(file.type))
+         ) {
+diff --git a/js/jquery.fileupload.js b/js/jquery.fileupload.js
+index e56ce76f11c18b6cc597ee011efed21d6783a45c..8bbd2c45cf6621fd9d3541ea4dd7ef3286611f7a 100644
+--- a/js/jquery.fileupload.js
++++ b/js/jquery.fileupload.js
+@@ -353,13 +353,13 @@
+ 
+     _getFormData: function (options) {
+       var formData;
+-      if ($.type(options.formData) === 'function') {
++      if (typeof options.formData === "function") {
+         return options.formData(options.form);
+       }
+-      if ($.isArray(options.formData)) {
++      if (Array.isArray(options.formData)) {
+         return options.formData;
+       }
+-      if ($.type(options.formData) === 'object') {
++      if (typeof options.formData === "object") {
+         formData = [];
+         $.each(options.formData, function (name, value) {
+           formData.push({ name: name, value: value });
+@@ -510,7 +510,7 @@
+         // Ignore non-multipart setting if not supported:
+         multipart = options.multipart || !$.support.xhrFileUpload,
+         paramName =
+-          $.type(options.paramName) === 'array'
++          Array.isArray(options.paramName)
+             ? options.paramName[0]
+             : options.paramName;
+       options.headers = $.extend({}, options.headers);
+@@ -542,7 +542,7 @@
+             $.each(options.files, function (index, file) {
+               formData.push({
+                 name:
+-                  ($.type(options.paramName) === 'array' &&
++                  (Array.isArray(options.paramName) &&
+                     options.paramName[index]) ||
+                   paramName,
+                 value: file
+@@ -580,7 +580,7 @@
+                   );
+                 }
+                 formData.append(
+-                  ($.type(options.paramName) === 'array' &&
++                  (Array.isArray(options.paramName) &&
+                     options.paramName[index]) ||
+                     paramName,
+                   file,
+@@ -646,7 +646,7 @@
+         if (!paramName.length) {
+           paramName = [fileInput.prop('name') || 'files[]'];
+         }
+-      } else if (!$.isArray(paramName)) {
++      } else if (!Array.isArray(paramName)) {
+         paramName = [paramName];
+       }
+       return paramName;
+@@ -670,7 +670,7 @@
+       // The HTTP request method must be "POST" or "PUT":
+       options.type = (
+         options.type ||
+-        ($.type(options.form.prop('method')) === 'string' &&
++        (typeof options.form.prop('method') === 'string' &&
+           options.form.prop('method')) ||
+         ''
+       ).toUpperCase();
+@@ -825,7 +825,7 @@
+         !(
+           this._isXHRUpload(options) &&
+           slice &&
+-          (ub || ($.type(mcs) === 'function' ? mcs(options) : mcs) < fs)
++          (ub || (typeof mcs === "function" ? mcs(options) : mcs) < fs)
+         ) ||
+         options.data
+       ) {
+@@ -850,7 +850,7 @@
+         o.blob = slice.call(
+           file,
+           ub,
+-          ub + ($.type(mcs) === 'function' ? mcs(o) : mcs),
++          ub + (typeof mcs === "function" ? mcs(o) : mcs),
+           file.type
+         );
+         // Store the current chunk size, as the blob itself
+@@ -1480,7 +1480,7 @@
+     _isRegExpOption: function (key, value) {
+       return (
+         key !== 'url' &&
+-        $.type(value) === 'string' &&
++        typeof value === "string" &&
+         /^\/.*\/[igm]{0,3}$/.test(value)
+       );
+     },
+diff --git a/js/jquery.iframe-transport.js b/js/jquery.iframe-transport.js
+index 3e3b9a93b05df4e25ffb34b25772249a9a8ebaf5..5e1cec13cd4858348a3cf8bb905c322c4c2350ef 100644
+--- a/js/jquery.iframe-transport.js
++++ b/js/jquery.iframe-transport.js
+@@ -83,7 +83,7 @@
+               '"></iframe>'
+           ).on('load', function () {
+             var fileInputClones,
+-              paramNames = $.isArray(options.paramName)
++              paramNames = Array.isArray(options.paramName)
+                 ? options.paramName
+                 : [options.paramName];
+             iframe.off('load').on('load', function () {
+@@ -158,7 +158,7 @@
+               // Safari 13 not triggering the iframe load event after resetting
+               // the load event handler, see also:
+               // https://github.com/blueimp/jQuery-File-Upload/issues/3633
+-              form.submit();
++              form.trigger("submit");
+               // Insert the file input fields at their original location
+               // by replacing the clones with the originals:
+               if (fileInputClones && fileInputClones.length) {
+diff --git a/js/vendor/jquery.ui.widget.js b/js/vendor/jquery.ui.widget.js
+index 78e6255728ec3c8233ba6bfc3cbd3b3eb543bd73..cbee75a79d3761a11294532a5d4ba45a1b69a8ae 100644
+--- a/js/vendor/jquery.ui.widget.js
++++ b/js/vendor/jquery.ui.widget.js
+@@ -87,7 +87,7 @@
+       base = $.Widget;
+     }
+ 
+-    if ($.isArray(prototype)) {
++    if (Array.isArray(prototype)) {
+       prototype = $.extend.apply(null, [{}].concat(prototype));
+     }
+ 
+@@ -131,7 +131,7 @@
+     // inheriting from
+     basePrototype.options = $.widget.extend({}, basePrototype.options);
+     $.each(prototype, function (prop, value) {
+-      if (!$.isFunction(value)) {
++      if (typeof value !== "function") {
+         proxiedPrototype[prop] = value;
+         return;
+       }
+@@ -273,7 +273,7 @@
+               );
+             }
+ 
+-            if (!$.isFunction(instance[options]) || options.charAt(0) === '_') {
++            if (typeof instance[options] !== "function" || options.charAt(0) === '_') {
+               return $.error(
+                 "no such method '" +
+                   options +
+@@ -755,7 +755,7 @@
+ 
+       this.element.trigger(event, data);
+       return !(
+-        ($.isFunction(callback) &&
++        (typeof callback === "function" &&
+           callback.apply(this.element[0], [event].concat(data)) === false) ||
+         event.isDefaultPrevented()
+       );

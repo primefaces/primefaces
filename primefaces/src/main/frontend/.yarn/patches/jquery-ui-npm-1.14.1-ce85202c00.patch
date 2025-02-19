@@ -1,0 +1,26 @@
+diff --git a/dist/jquery-ui.js b/dist/jquery-ui.js
+index 15eb5482821df6f86cfd681144776ff5f8b4216f..e2609ff14eed9e61b844de9b50bc856a2d5a0882 100644
+--- a/dist/jquery-ui.js
++++ b/dist/jquery-ui.js
+@@ -8016,7 +8016,7 @@ $.extend( Datepicker.prototype, {
+ 	},
+ 
+ 	_shouldFocusInput: function( inst ) {
+-		return inst.input && inst.input.is( ":visible" ) && !inst.input.is( ":disabled" );
++		return inst.input && inst.input.is( ":visible" ) && !inst.input.is( ":disabled" ) && !inst.input.is( ":focus" );
+ 	},
+ 
+ 	/* Check positioning to remain on screen. */
+diff --git a/ui/widgets/datepicker.js b/ui/widgets/datepicker.js
+index 6d0767d07cd6c9078849fdfcd8f1f33d74231db1..32843420c27ba5eea68f7869ffd90c3a7889070b 100644
+--- a/ui/widgets/datepicker.js
++++ b/ui/widgets/datepicker.js
+@@ -912,7 +912,7 @@ $.extend( Datepicker.prototype, {
+ 	},
+ 
+ 	_shouldFocusInput: function( inst ) {
+-		return inst.input && inst.input.is( ":visible" ) && !inst.input.is( ":disabled" );
++		return inst.input && inst.input.is( ":visible" ) && !inst.input.is( ":disabled" ) && !inst.input.is( ":focus" );
+ 	},
+ 
+ 	/* Check positioning to remain on screen. */

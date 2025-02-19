@@ -1,0 +1,124 @@
+{
+  "name": "@primefaces/primefaces",
+  "version": "15.0.0-SNAPSHOT",
+  "private": true,
+  "description": "Client-side implementation for PrimeFaces",
+  "main": "src/index.js",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/primefaces/primefaces.git",
+    "directory": "src/main/web"
+  },
+  "scripts": {
+    "build:bundle": "node build/bin/bundle.mjs",
+    "clean": "node build/bin/clean.mjs",
+    "verify": "node build/bin/verify.mjs"
+  },
+  "jsdocs": {},
+  "dependencies": {
+    "@egjs/hammerjs": "2.0.17",
+    "@fullcalendar/common": "~5.11.3",
+    "@fullcalendar/core": "~5.11.3",
+    "@fullcalendar/daygrid": "~5.11.3",
+    "@fullcalendar/interaction": "~5.11.3",
+    "@fullcalendar/list": "~5.11.3",
+    "@fullcalendar/moment": "~5.11.3",
+    "@fullcalendar/moment-timezone": "~5.11.3",
+    "@fullcalendar/timegrid": "~5.11.3",
+    "@melloware/coloris": "0.24.0",
+    "@rwap/jquery-ui-touch-punch": "1.1.5",
+    "@types/autosize": "4.0.3",
+    "@types/hammerjs": "2.0.46",
+    "@types/inputmask": "5.0.7",
+    "@types/jquery": "3.5.32",
+    "@types/jquery-mousewheel": "3.1.12",
+    "@types/jquery.browser": "0.1.4",
+    "@types/js-cookie": "3.0.6",
+    "@types/jscrollpane": "2.0.35",
+    "@types/raphael": "2.3.9",
+    "autonumeric": "patch:autonumeric@npm%3A4.10.7#~/.yarn/patches/autonumeric-npm-4.10.7-09183d353f.patch",
+    "autosize": "6.0.1",
+    "blueimp-file-upload": "patch:blueimp-file-upload@npm%3A10.32.0#~/.yarn/patches/blueimp-file-upload-npm-10.32.0-61b944a244.patch",
+    "chart.js": "4.4.8",
+    "chartjs-adapter-moment": "1.0.1",
+    "chartjs-plugin-zoom": "2.0.1",
+    "component-emitter": "1.3.0",
+    "cropperjs": "1.5.13",
+    "downloadjs": "patch:downloadjs@npm%3A1.4.7#~/.yarn/patches/downloadjs-npm-1.4.7-952a4ef987.patch",
+    "hammerjs": "2.0.8",
+    "inputmask": "5.0.10-beta.5",
+    "jquery": "4.0.0-beta.2",
+    "jquery-cropper": "patch:jquery-cropper@npm%3A1.0.0#~/.yarn/patches/jquery-cropper-npm-1.0.0-148aa161fe.patch",
+    "jquery-mousewheel": "patch:jquery-mousewheel@npm%3A3.1.13#~/.yarn/patches/jquery-mousewheel-npm-3.1.13-854d2918be.patch",
+    "jquery-touchswipe": "1.6.19",
+    "jquery-ui": "patch:jquery-ui@npm%3A1.14.1#~/.yarn/patches/jquery-ui-npm-1.14.1-ce85202c00.patch",
+    "jquery-ui-timepicker-addon": "patch:jquery-ui-timepicker-addon@npm%3A1.6.3#~/.yarn/patches/jquery-ui-timepicker-addon-npm-1.6.3-b43c27b305.patch",
+    "jquery.browser": "0.1.0",
+    "js-cookie": "3.0.5",
+    "jscrollpane": "patch:jscrollpane@npm%3A2.2.3-rc.2#~/.yarn/patches/jscrollpane-npm-2.2.3-rc.2-173a004b4f.patch",
+    "jsplumb": "2.15.6",
+    "keycharm": "0.4.0",
+    "moment": "2.30.1",
+    "moment-jdateformatparser": "1.2.1",
+    "moment-timezone": "0.5.45",
+    "propagating-hammerjs": "2.0.1",
+    "quill": "2.0.3",
+    "rangyinputs": "1.2.0",
+    "raphael": "2.3.0",
+    "uuid": "9.0.1",
+    "vis-data": "7.1.9",
+    "vis-timeline": "7.7.3",
+    "vis-util": "5.0.7",
+    "webcamjs": "patch:webcamjs@npm%3A1.0.26#~/.yarn/patches/webcamjs-npm-1.0.26-e450e6a36f.patch",
+    "xss": "1.0.15"
+  },
+  "devDependencies": {
+    "@types/node": "22.10.1",
+    "@types/pnpapi": "^0.0.5",
+    "esbuild": "0.24.0",
+    "typescript": "5.6.3"
+  },
+  "contributors": [
+    {
+      "name": "Cagatay Civici",
+      "url": "https://github.com/cagataycivici",
+      "githubUsername": "cagataycivici"
+    },
+    {
+      "name": "Mert Sincan",
+      "url": "https://github.com/mertsincan",
+      "githubUsername": "mertsincan"
+    },
+    {
+      "name": "Thomas Andraschko",
+      "url": "https://github.com/tandraschko",
+      "githubUsername": "tandraschko"
+    },
+    {
+      "name": "Sébastien Lepage",
+      "url": "https://github.com/Rapster",
+      "githubUsername": "Rapster"
+    },
+    {
+      "name": "Emil Lefkof",
+      "url": "https://github.com/melloware",
+      "githubUsername": "melloware"
+    },
+    {
+      "name": "Christoph Straßer",
+      "url": "https://github.com/christophs78",
+      "githubUsername": "christophs78"
+    },
+    {
+      "name": "Jasper de Vries",
+      "url": "https://github.com/jepsar",
+      "githubUsername": "jepsar"
+    }
+  ],
+  "resolutions": {
+    "jquery": "4.0.0-beta.2",
+    "jquery-ui@npm:>=1.8": "patch:jquery-ui@npm%3A1.14.1#~/.yarn/patches/jquery-ui-npm-1.14.1-ce85202c00.patch"
+  },
+  "packageManager": "yarn@4.5.1"
+}
