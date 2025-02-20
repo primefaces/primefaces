@@ -66,3 +66,5 @@ node_modules/
 /primefaces-theme/*.css
 /primefaces-theme/target/
 /primefaces-coverage/target/
+/primefaces/src/main/frontend/.pnp*
+/primefaces/src/main/frontend/.yarn
