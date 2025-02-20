@@ -1879,6 +1879,7 @@ $.widget("prime.datePicker", {
         if (!this.options.inline) {
             // #13269 delay registering events until CSP has registered
             PrimeFaces.queueTask(function () {
+                if (!$this.options) return;
                 if (!$this.options.onChange) {
                     // get the current attached events if using CSP
                     var events = $this.inputfield[0] ? $._data($this.inputfield[0], "events") : null;
