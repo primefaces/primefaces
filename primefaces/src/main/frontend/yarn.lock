@@ -189,7 +189,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fullcalendar/common@npm:~5.11.3, @fullcalendar/common@npm:~5.11.5":
+"@fullcalendar/common@npm:~5.11.5":
   version: 5.11.5
   resolution: "@fullcalendar/common@npm:5.11.5"
   dependencies:
@@ -198,7 +198,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fullcalendar/core@npm:~5.11.3":
+"@fullcalendar/core@npm:~5.11.5":
   version: 5.11.5
   resolution: "@fullcalendar/core@npm:5.11.5"
   dependencies:
@@ -209,7 +209,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fullcalendar/daygrid@npm:~5.11.3, @fullcalendar/daygrid@npm:~5.11.5":
+"@fullcalendar/daygrid@npm:~5.11.5":
   version: 5.11.5
   resolution: "@fullcalendar/daygrid@npm:5.11.5"
   dependencies:
@@ -219,7 +219,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fullcalendar/interaction@npm:~5.11.3":
+"@fullcalendar/interaction@npm:~5.11.5":
   version: 5.11.5
   resolution: "@fullcalendar/interaction@npm:5.11.5"
   dependencies:
@@ -229,7 +229,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fullcalendar/list@npm:~5.11.3":
+"@fullcalendar/list@npm:~5.11.5":
   version: 5.11.5
   resolution: "@fullcalendar/list@npm:5.11.5"
   dependencies:
@@ -239,7 +239,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fullcalendar/moment-timezone@npm:~5.11.3":
+"@fullcalendar/moment-timezone@npm:~5.11.5":
   version: 5.11.5
   resolution: "@fullcalendar/moment-timezone@npm:5.11.5"
   dependencies:
@@ -252,7 +252,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fullcalendar/moment@npm:~5.11.3":
+"@fullcalendar/moment@npm:~5.11.5":
   version: 5.11.5
   resolution: "@fullcalendar/moment@npm:5.11.5"
   dependencies:
@@ -264,7 +264,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fullcalendar/timegrid@npm:~5.11.3":
+"@fullcalendar/timegrid@npm:~5.11.5":
   version: 5.11.5
   resolution: "@fullcalendar/timegrid@npm:5.11.5"
   dependencies:
@@ -294,14 +294,14 @@ __metadata:
   resolution: "@primefaces/primefaces@workspace:."
   dependencies:
     "@egjs/hammerjs": "npm:2.0.17"
-    "@fullcalendar/common": "npm:~5.11.3"
-    "@fullcalendar/core": "npm:~5.11.3"
-    "@fullcalendar/daygrid": "npm:~5.11.3"
-    "@fullcalendar/interaction": "npm:~5.11.3"
-    "@fullcalendar/list": "npm:~5.11.3"
-    "@fullcalendar/moment": "npm:~5.11.3"
-    "@fullcalendar/moment-timezone": "npm:~5.11.3"
-    "@fullcalendar/timegrid": "npm:~5.11.3"
+    "@fullcalendar/common": "npm:~5.11.5"
+    "@fullcalendar/core": "npm:~5.11.5"
+    "@fullcalendar/daygrid": "npm:~5.11.5"
+    "@fullcalendar/interaction": "npm:~5.11.5"
+    "@fullcalendar/list": "npm:~5.11.5"
+    "@fullcalendar/moment": "npm:~5.11.5"
+    "@fullcalendar/moment-timezone": "npm:~5.11.5"
+    "@fullcalendar/timegrid": "npm:~5.11.5"
     "@melloware/coloris": "npm:0.24.0"
     "@rwap/jquery-ui-touch-punch": "npm:1.1.5"
     "@types/autosize": "npm:4.0.3"
@@ -312,7 +312,7 @@ __metadata:
     "@types/jquery.browser": "npm:0.1.4"
     "@types/js-cookie": "npm:3.0.6"
     "@types/jscrollpane": "npm:2.0.35"
-    "@types/node": "npm:22.10.1"
+    "@types/node": "npm:22.13.4"
     "@types/pnpapi": "npm:^0.0.5"
     "@types/raphael": "npm:2.3.9"
     autonumeric: "patch:autonumeric@npm%3A4.10.7#~/.yarn/patches/autonumeric-npm-4.10.7-09183d353f.patch"
@@ -320,13 +320,13 @@ __metadata:
     blueimp-file-upload: "patch:blueimp-file-upload@npm%3A10.32.0#~/.yarn/patches/blueimp-file-upload-npm-10.32.0-61b944a244.patch"
     chart.js: "npm:4.4.8"
     chartjs-adapter-moment: "npm:1.0.1"
-    chartjs-plugin-zoom: "npm:2.0.1"
-    component-emitter: "npm:1.3.0"
-    cropperjs: "npm:1.5.13"
+    chartjs-plugin-zoom: "npm:2.2.0"
+    component-emitter: "npm:2.0.0"
+    cropperjs: "npm:1.6.2"
     downloadjs: "patch:downloadjs@npm%3A1.4.7#~/.yarn/patches/downloadjs-npm-1.4.7-952a4ef987.patch"
     esbuild: "npm:0.25.0"
     hammerjs: "npm:2.0.8"
-    inputmask: "npm:5.0.10-beta.5"
+    inputmask: "npm:5.0.10-beta.32"
     jquery: "npm:4.0.0-beta.2"
     jquery-cropper: "patch:jquery-cropper@npm%3A1.0.0#~/.yarn/patches/jquery-cropper-npm-1.0.0-148aa161fe.patch"
     jquery-mousewheel: "patch:jquery-mousewheel@npm%3A3.1.13#~/.yarn/patches/jquery-mousewheel-npm-3.1.13-854d2918be.patch"
@@ -340,12 +340,12 @@ __metadata:
     keycharm: "npm:0.4.0"
     moment: "npm:2.30.1"
     moment-jdateformatparser: "npm:1.2.1"
-    moment-timezone: "npm:0.5.45"
-    propagating-hammerjs: "npm:2.0.1"
+    moment-timezone: "npm:0.5.47"
+    propagating-hammerjs: "npm:3.0.0"
     quill: "npm:2.0.3"
     rangyinputs: "npm:1.2.0"
     raphael: "npm:2.3.0"
-    typescript: "npm:5.6.3"
+    typescript: "npm:5.7.3"
     uuid: "npm:9.0.1"
     vis-data: "npm:7.1.9"
     vis-timeline: "npm:7.7.3"
@@ -371,7 +371,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/hammerjs@npm:2.0.46, @types/hammerjs@npm:^2.0.36":
+"@types/hammerjs@npm:2.0.46, @types/hammerjs@npm:^2.0.36, @types/hammerjs@npm:^2.0.45":
   version: 2.0.46
   resolution: "@types/hammerjs@npm:2.0.46"
   checksum: 10c0/f3c1cb20dc2f0523f7b8c76065078544d50d8ae9b0edc1f62fed657210ed814266ff2dfa835d2c157a075991001eec3b64c88bf92e3e6e895c0db78d05711d06
@@ -428,12 +428,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:22.10.1":
-  version: 22.10.1
-  resolution: "@types/node@npm:22.10.1"
+"@types/node@npm:22.13.4":
+  version: 22.13.4
+  resolution: "@types/node@npm:22.13.4"
   dependencies:
     undici-types: "npm:~6.20.0"
-  checksum: 10c0/0fbb6d29fa35d807f0223a4db709c598ac08d66820240a2cd6a8a69b8f0bc921d65b339d850a666b43b4e779f967e6ed6cf6f0fca3575e08241e6b900364c234
+  checksum: 10c0/3a234fa7766a3efc382cf81f66f474c26cdab2f54f43f757634c81c0444eb2160c2dabbde9741e4983078a318a88515b65416b5f1ab5478548579d7b3ead1d95
   languageName: node
   linkType: hard
 
@@ -561,14 +561,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chartjs-plugin-zoom@npm:2.0.1":
-  version: 2.0.1
-  resolution: "chartjs-plugin-zoom@npm:2.0.1"
+"chartjs-plugin-zoom@npm:2.2.0":
+  version: 2.2.0
+  resolution: "chartjs-plugin-zoom@npm:2.2.0"
   dependencies:
+    "@types/hammerjs": "npm:^2.0.45"
     hammerjs: "npm:^2.0.8"
   peerDependencies:
     chart.js: ">=3.2.0"
-  checksum: 10c0/e45a2f658e536283e345227d20029c140b740c7104298ac6251e7c80f7d3acd0e9f976676962e1e80967d590fe9d2e4585ff4c85157bd9104f9c031bfc5308f1
+  checksum: 10c0/15817e912dcc0c62e66121d10c7f1af04cd788c8c831b9ed8f822e2835501b8816143e10b5b4f286a9afddc91492c3d7104b49e7226a3fb682b94412f9ee4087
   languageName: node
   linkType: hard
 
@@ -579,17 +580,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"component-emitter@npm:1.3.0":
-  version: 1.3.0
-  resolution: "component-emitter@npm:1.3.0"
-  checksum: 10c0/68774a0a3754fb6c0ba53c2e88886dfbd0c773931066abb1d7fd1b0c893b2a838d8f088ab4dca1f18cc1a4fc2e6932019eba3ded2d931b5ba2241ce40e93a24f
+"component-emitter@npm:2.0.0":
+  version: 2.0.0
+  resolution: "component-emitter@npm:2.0.0"
+  checksum: 10c0/65dfaf787ea49eb48f0ffec766bda7ec67e8dbeb3b406f08724dcae842e0aa274731fcccb9280b77d2b41693061731a9080b60d276020246a146544cd9900b83
   languageName: node
   linkType: hard
 
-"cropperjs@npm:1.5.13":
-  version: 1.5.13
-  resolution: "cropperjs@npm:1.5.13"
-  checksum: 10c0/9c66807d4fe7056747d2d284cefadf5c27075c732df9cef0902c5fd556d41903b8783fc3c05e1fcd6d4b1efe4c1022c78dded6c7873032349abee0164a16949b
+"cropperjs@npm:1.6.2":
+  version: 1.6.2
+  resolution: "cropperjs@npm:1.6.2"
+  checksum: 10c0/5002e0cc3a491ceb8a104b2cb7a7c335a03e109fe590653f3aeefa27ca7115466edae62afc8ba21105bbaad4134583f5057ebbf5e8d843c7b2c1c1f0779630e9
   languageName: node
   linkType: hard
 
@@ -728,10 +729,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"inputmask@npm:5.0.10-beta.5":
-  version: 5.0.10-beta.5
-  resolution: "inputmask@npm:5.0.10-beta.5"
-  checksum: 10c0/c1583a11dbf4d416d96cdf8edd0f0aa72c9917dea90d2c28c575f7af48bc74049fea1768316262107483a02fed73a3ba357af71fb9629eb5729d1843aacb5698
+"inputmask@npm:5.0.10-beta.32":
+  version: 5.0.10-beta.32
+  resolution: "inputmask@npm:5.0.10-beta.32"
+  checksum: 10c0/4b61a7ee905036f7519e102dffd3beb1457b21435c0dc635fb6109598a45b990c379aec0e207a0466ef848a407e5b39347bbd77da7b336ae76ef8b047635541a
   languageName: node
   linkType: hard
 
@@ -889,12 +890,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"moment-timezone@npm:0.5.45":
-  version: 0.5.45
-  resolution: "moment-timezone@npm:0.5.45"
+"moment-timezone@npm:0.5.47":
+  version: 0.5.47
+  resolution: "moment-timezone@npm:0.5.47"
   dependencies:
     moment: "npm:^2.29.4"
-  checksum: 10c0/7497f23c4b8c875dbf07c03f9a1253f79edaeedc29d5732e36bfd3c5577e25aed1924fbd84cbb713ce1920dbe822be0e21bd487851a7d13907226f289a5e568b
+  checksum: 10c0/6f7cdbebe712dcbb767a6380e097d352776b83dd7d1d797546d6ff21d813e8380633373da93aea1d24f2c3c031044fd4a18726cacad14eda3f1f428192ad955c
   languageName: node
   linkType: hard
 
@@ -919,12 +920,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"propagating-hammerjs@npm:2.0.1":
-  version: 2.0.1
-  resolution: "propagating-hammerjs@npm:2.0.1"
+"propagating-hammerjs@npm:3.0.0":
+  version: 3.0.0
+  resolution: "propagating-hammerjs@npm:3.0.0"
   peerDependencies:
     "@egjs/hammerjs": ^2.0.17
-  checksum: 10c0/c708d4fc2e11ddcc59c4d84dcb5bebc27093cbb7cab63a328b1486599be3b57a061cf58baf1f375decb62d6479589dcc5af260ee2695bcddee84785cad8eabca
+  checksum: 10c0/ac3dd6e6fdf4c84abc148d2b656bb3a66dd9eadef65daa25ea1dc632334523e7b1e4f1bbffce3256e75bf77543f94f4e6334f153a8a5e98e0ea8eb47bb02fda2
   languageName: node
   linkType: hard
 
@@ -974,23 +975,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:5.6.3":
-  version: 5.6.3
-  resolution: "typescript@npm:5.6.3"
+"typescript@npm:5.7.3":
+  version: 5.7.3
+  resolution: "typescript@npm:5.7.3"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10c0/44f61d3fb15c35359bc60399cb8127c30bae554cd555b8e2b46d68fa79d680354b83320ad419ff1b81a0bdf324197b29affe6cc28988cd6a74d4ac60c94f9799
+  checksum: 10c0/b7580d716cf1824736cc6e628ab4cd8b51877408ba2be0869d2866da35ef8366dd6ae9eb9d0851470a39be17cbd61df1126f9e211d8799d764ea7431d5435afa
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A5.6.3#optional!builtin<compat/typescript>":
-  version: 5.6.3
-  resolution: "typescript@patch:typescript@npm%3A5.6.3#optional!builtin<compat/typescript>::version=5.6.3&hash=8c6c40"
+"typescript@patch:typescript@npm%3A5.7.3#optional!builtin<compat/typescript>":
+  version: 5.7.3
+  resolution: "typescript@patch:typescript@npm%3A5.7.3#optional!builtin<compat/typescript>::version=5.7.3&hash=cef18b"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10c0/7c9d2e07c81226d60435939618c91ec2ff0b75fbfa106eec3430f0fcf93a584bc6c73176676f532d78c3594fe28a54b36eb40b3d75593071a7ec91301533ace7
+  checksum: 10c0/3b56d6afa03d9f6172d0b9cdb10e6b1efc9abc1608efd7a3d2f38773d5d8cfb9bbc68dfb72f0a7de5e8db04fc847f4e4baeddcd5ad9c9feda072234f0d788896
   languageName: node
   linkType: hard
 

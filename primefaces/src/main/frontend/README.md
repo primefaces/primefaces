@@ -18,7 +18,7 @@ emulation code structure, we had to write custom code to parse all files and ext
 classes. That was hard to maintain, as it made heavy use of the TypeScript API, which is prone to
 change between major releases.
 
-Starting with PrimeFaces 15, we instead opted to rework the code structure to make it easier
+Starting with PrimeFaces 16, we instead opted to rework the code structure to make it easier
 for TypeScript to analyze. This way, we can now generate type declarations with only a minimal
 amount of customization.
 
