@@ -103,7 +103,7 @@ PrimeFaces.widget.ColumnToggler = class ColumnToggler extends PrimeFaces.widget.
         // select all checkbox
         this.selectAllCheckbox = $('<li class="ui-columntoggler-all">' +
             '<div class="ui-chkbox ui-widget">' +
-            '<div role="checkbox" tabindex="0" aria-checked="true" aria-label="' + this.getAriaLabel('selectAll') + '" class="ui-chkbox-box ui-widget ui-state-default">' +
+            '<div role="checkbox" tabindex="0" aria-checked="true" aria-label="' + this.getAriaLabel('selectAll') + '" class="ui-chkbox-box ui-widget ui-state-default ui-state-active">' +
             '<span class="ui-chkbox-icon ui-icon ui-icon-check"></span></div></div>' +
             '</li>');
         this.selectAllCheckbox.appendTo(this.itemContainer);
