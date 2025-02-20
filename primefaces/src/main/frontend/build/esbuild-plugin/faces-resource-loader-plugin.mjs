@@ -73,13 +73,13 @@ function createConfig(buildOptions, pluginOptions) {
 }
 
 /**
- * Copies the file from the given resolve args to the output directory; and
- * returns the path of the copied file.
+ * Resolves the file to copy to the output directory; and
+ * returns the path of the input and the target file.
  * @param {import("esbuild").OnResolveArgs} resolveArgs
  * @param {PluginConfig} config 
- * @returns {Promise<{sourceUrl: URL, targetFile: string}>}
+ * @returns {Promise<{sourceUrl: URL, sourceFile: string; targetFile: string}>}
  */
-async function copyImportFileToTarget(resolveArgs, config) {
+async function resolveImportFileAndTarget(resolveArgs, config) {
     // The resolveArgs.path is a URL and may contain query params or fragments. 
     const baseUrl = pathToFileURL(appendIfMissing(resolveArgs.resolveDir, "/"));
     const sourceUrl = new URL(resolveArgs.path, baseUrl);
@@ -87,9 +87,7 @@ async function copyImportFileToTarget(resolveArgs, config) {
 
     const relativeSourceFile = path.relative(config.absInputDir, sourceFile);
     const targetFile = path.join(config.absOutputDir, relativeSourceFile);
-    await fs.mkdir(path.dirname(targetFile), { recursive: true });
-    await fs.copyFile(sourceFile, targetFile);
-    return { sourceUrl, targetFile };
+    return { sourceUrl, sourceFile, targetFile };
 }
 
 /**
@@ -165,6 +163,8 @@ export function facesResourceLoaderPlugin(options) {
         name: namespace,
         setup: build => {
             const config = createConfig(build.initialOptions, options);
+            /** @type {Map<string, string>} */
+            const filesToCopy = new Map();
             build.onResolve(
                 { filter },
                 async args => {
@@ -175,7 +175,11 @@ export function facesResourceLoaderPlugin(options) {
                     if (importerExtension !== ".css") {
                         return { warnings: [{ text: "Faces resource loader plugin only supports resources imported from CSS files" }] };
                     }
-                    const { sourceUrl, targetFile } = await copyImportFileToTarget(args, config);
+                    // Only store resources to copy, and do the copy at the end.
+                    // Otherwise, we might copy resources multiple times and simultaneously,
+                    // which is bad in general and may also fail in Windows when it locks the target file.
+                    const { sourceUrl, sourceFile, targetFile } = await resolveImportFileAndTarget(args, config);
+                    filesToCopy.set(sourceFile, targetFile);
                     const facesResourceExpression = createFacesResourceExpression(targetFile, sourceUrl, config);
                     return {
                         external: true,
@@ -184,6 +188,12 @@ export function facesResourceLoaderPlugin(options) {
                     };
                 },
             );
+            build.onEnd(async () => {
+                for (const [sourceFile, targetFile] of filesToCopy.entries()) {
+                    await fs.mkdir(path.dirname(targetFile), { recursive: true });
+                    await fs.copyFile(sourceFile, targetFile);
+                }
+            });
         },
     };
 };
