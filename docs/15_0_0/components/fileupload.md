@@ -262,6 +262,17 @@ Auto uploads are triggered as soon as files are selected from the dialog.
 <p:fileUpload listener="#{fileUploadView.handleFileUpload}" auto="true" />
 ```
 
+## Client Side Validation
+
+You can use [client side validation (CSV)](/core/csv.md) to avoid roundtrips to the server with `p:validateFile` see [Validate File Component](/components/validateFile.md).
+Especially useful if you want to prevent a huge file from being uploaded to the server if its over its size limit.
+
+```xhtml
+<p:fileUpload listener="#{fileUploadView.handleFileUpload}" >
+   <p:validateFile sizeLimit="10000" />
+</p:fileUpload>
+```
+
 ## File Filters
 Users can be restricted to only select the file types you’ve configured, example below demonstrates
 how to accept images only.

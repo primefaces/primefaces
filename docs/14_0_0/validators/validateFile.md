@@ -1,6 +1,7 @@
 # validateFile
 
 `p:validateFile` is a validator which can be used to validate single and mulitple files, either of `p:fileUpload` or `h:inputFile`.
+By default it will validate on the server side but you can enable [client side validation (CSV)](/core/csv.md) to avoid roundtrips to the server.
 
 ## Info
 
@@ -21,7 +22,7 @@
 | virusScan      | null    | Boolean | Whether virus scan should be performed. Default is false.
 
 ## Getting Started
-Either attach it to `p:fileUpload` or `h:inputFile`. Even CSV is supported:
+Either attach it to `p:fileUpload` or `h:inputFile`. Even [client side validation (CSV)](/core/csv.md) is supported:
 
 ```html
 <h:form enctype="multipart/form-data">
