@@ -315,11 +315,11 @@ export async function loadBuildSettings(frontendProject) {
     if (path === undefined) {
         return {};
     }
-    const buildSettingsJson = await import(path, { with: { type: "json" } });
-    if (typeof buildSettingsJson.default !== "object" || buildSettingsJson.default === null) {
+    const buildSettingsJson = JSON.parse(await fs.readFile(path, { encoding: "utf8"} ));
+    if (typeof buildSettingsJson !== "object" || buildSettingsJson === null) {
         throw new Error(`Build settings at ${path} must be a JSON object!`);
     }
-    return buildSettingsJson.default;
+    return buildSettingsJson;
 }
 
 
