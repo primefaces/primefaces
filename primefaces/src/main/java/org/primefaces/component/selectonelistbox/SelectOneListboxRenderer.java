@@ -149,10 +149,7 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
             writer.startElement("tbody", null);
             for (int i = 0; i < selectItems.size(); i++) {
                 SelectItem selectItem = selectItems.get(i);
-                String selectedId = encodeItem(context, listbox, selectItem, values, submittedValues, converter, customContent, totalItems, i);
-                if (selectedId != null) {
-                    writer.writeAttribute(HTML.ARIA_ACTIVEDESCENDANT, selectedId, null);
-                }
+                encodeItem(context, listbox, selectItem, values, submittedValues, converter, customContent, totalItems, i);
             }
             writer.endElement("tbody");
             writer.endElement("table");
