@@ -11,9 +11,8 @@
     "directory": "src/main/web"
   },
   "scripts": {
-    "build:bundle": "node build/bin/bundle.mjs",
-    "clean": "node build/bin/clean.mjs",
-    "verify": "node build/bin/verify.mjs"
+    "build:bundle": "node build/scripts/bundle.mjs",
+    "verify": "node build/scripts/verify.mjs"
   },
   "jsdocs": {},
   "dependencies": {
@@ -120,5 +119,5 @@
     "jquery": "4.0.0-beta.2",
     "jquery-ui@npm:>=1.8": "patch:jquery-ui@npm%3A1.14.1#~/.yarn/patches/jquery-ui-npm-1.14.1-ce85202c00.patch"
   },
-  "packageManager": "yarn@4.5.1"
+  "packageManager": "yarn@4.6.0"
 }

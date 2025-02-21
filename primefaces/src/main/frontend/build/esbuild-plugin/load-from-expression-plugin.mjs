@@ -1,8 +1,6 @@
 import * as path from "node:path";
 import pnpApi from "pnpapi";
 
-import { escapeRegExp } from "../lang/reg-exp.mjs";
-
 /**
  * @typedef {{
  * expressions: {
@@ -15,6 +13,15 @@ undefined;
 
 const NamespaceImportSpecifier = "load-from-expression/bare";
 const NamespaceModulePath = "load-from-expression/module-path";
+
+/**
+ * Creates a regexp pattern that matches the given literal text.
+ * @param {string} text A piece of literal text. 
+ * @returns {string} The resulting RegExp pattern.
+ */
+function escapeRegExp(text) {
+    return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
 
 /**
  * Resolves a request to a path using the PnP API, relative against an importer.

@@ -11,5 +11,5 @@
 		"types": ["node"],
 		"lib": ["esnext"],
 	},
-	"include": ["bin", "common", "esbuild-plugin", "lang"]
+	"include": ["esbuild-plugin", "scripts", "pnp-manifest.d.ts"]
 }
