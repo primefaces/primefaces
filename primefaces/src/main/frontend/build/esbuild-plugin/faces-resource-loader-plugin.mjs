@@ -102,7 +102,7 @@ function createFacesResourceExpression(file, url, config) {
         throw new Error("File is not in the resource base.");
     }
     const relativePath = path.relative(config.absResourceBase, file);
-    const parts = relativePath.split("/");
+    const parts = relativePath.split(/[\\/]/);
     const params = `${url.search}${url.hash}`;
     if (config.useLibrary && parts.length > 1) {
         const [library, ...pathParts] = parts;
