@@ -308,29 +308,31 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this;
 
         this.cfg.options.events = function(fetchInfo, successCallback) {
-            var options = {
-                source: $this.id,
-                process: $this.id,
-                update: $this.id,
-                formId: $this.getParentFormId(),
-                params: [
-                    {name: $this.id + '_event', value: true},
-                    {name: $this.id + '_start', value: fetchInfo.start.toISOString()},
-                    {name: $this.id + '_end', value:  fetchInfo.end.toISOString()}
-                ],
-                onsuccess: function(responseXML, status, xhr) {
-                    PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                        widget: $this,
-                        handle: function(content) {
-                            successCallback(JSON.parse(content).events);
-                        }
-                    });
-
-                    return true;
-                }
-            };
-
-            PrimeFaces.ajax.Request.handle(options);
+            // #13346 - schedule events must be called after the viewChange event is fired
+            PrimeFaces.queueTask(() => {
+                var options = {
+                    source: $this.id,
+                    process: $this.id,
+                    update: $this.id,
+                    formId: $this.getParentFormId(),
+                    params: [
+                        {name: $this.id + '_event', value: true},
+                        {name: $this.id + '_start', value: fetchInfo.start.toISOString()},
+                        {name: $this.id + '_end', value:  fetchInfo.end.toISOString()}
+                    ],
+                    onsuccess: function(responseXML, status, xhr) {
+                        PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                            widget: $this,
+                            handle: function(content) {
+                                successCallback(JSON.parse(content).events);
+                            }
+                        });
+    
+                        return true;
+                    }
+                };
+                PrimeFaces.ajax.Request.handle(options)
+            });
         };
     },
 
