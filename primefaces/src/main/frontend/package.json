@@ -75,6 +75,7 @@
   "devDependencies": {
     "@types/node": "22.13.4",
     "@types/pnpapi": "^0.0.5",
+    "@xenorange/esbuild-plugin-faces-resource-loader": "1.0.0",
     "esbuild": "0.25.0",
     "typescript": "5.7.3"
   },

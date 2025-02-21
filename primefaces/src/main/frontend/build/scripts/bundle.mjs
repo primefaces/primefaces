@@ -4,8 +4,8 @@ import * as path from "node:path";
 import * as fs from "node:fs/promises";
 
 import * as esbuild from "esbuild";
+import { facesResourceLoaderPlugin } from "@xenorange/esbuild-plugin-faces-resource-loader";
 
-import { facesResourceLoaderPlugin } from "../esbuild-plugin/faces-resource-loader-plugin.mjs";
 import { bannedDependenciesPlugin } from "../esbuild-plugin/banned-dependencies-plugin.mjs";
 import { loadFromExpressionPlugin } from "../esbuild-plugin/load-from-expression-plugin.mjs";
 
