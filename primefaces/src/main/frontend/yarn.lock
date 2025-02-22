@@ -325,7 +325,7 @@ __metadata:
     chart.js: "npm:4.4.8"
     chartjs-adapter-moment: "npm:1.0.1"
     chartjs-plugin-zoom: "npm:2.2.0"
-    component-emitter: "npm:2.0.0"
+    component-emitter: "npm:1.3.0"
     cropperjs: "npm:1.6.2"
     downloadjs: "patch:downloadjs@npm%3A1.4.7#~/.yarn/patches/downloadjs-npm-1.4.7-952a4ef987.patch"
     esbuild: "npm:0.25.0"
@@ -345,7 +345,7 @@ __metadata:
     moment: "npm:2.30.1"
     moment-jdateformatparser: "npm:1.2.1"
     moment-timezone: "npm:0.5.47"
-    propagating-hammerjs: "npm:3.0.0"
+    propagating-hammerjs: "npm:2.0.1"
     quill: "npm:2.0.3"
     rangyinputs: "npm:1.2.0"
     raphael: "npm:2.3.0"
@@ -620,10 +620,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"component-emitter@npm:2.0.0":
-  version: 2.0.0
-  resolution: "component-emitter@npm:2.0.0"
-  checksum: 10c0/65dfaf787ea49eb48f0ffec766bda7ec67e8dbeb3b406f08724dcae842e0aa274731fcccb9280b77d2b41693061731a9080b60d276020246a146544cd9900b83
+"component-emitter@npm:1.3.0":
+  version: 1.3.0
+  resolution: "component-emitter@npm:1.3.0"
+  checksum: 10c0/68774a0a3754fb6c0ba53c2e88886dfbd0c773931066abb1d7fd1b0c893b2a838d8f088ab4dca1f18cc1a4fc2e6932019eba3ded2d931b5ba2241ce40e93a24f
   languageName: node
   linkType: hard
 
@@ -960,12 +960,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"propagating-hammerjs@npm:3.0.0":
-  version: 3.0.0
-  resolution: "propagating-hammerjs@npm:3.0.0"
+"propagating-hammerjs@npm:2.0.1":
+  version: 2.0.1
+  resolution: "propagating-hammerjs@npm:2.0.1"
   peerDependencies:
     "@egjs/hammerjs": ^2.0.17
-  checksum: 10c0/ac3dd6e6fdf4c84abc148d2b656bb3a66dd9eadef65daa25ea1dc632334523e7b1e4f1bbffce3256e75bf77543f94f4e6334f153a8a5e98e0ea8eb47bb02fda2
+  checksum: 10c0/c708d4fc2e11ddcc59c4d84dcb5bebc27093cbb7cab63a328b1486599be3b57a061cf58baf1f375decb62d6479589dcc5af260ee2695bcddee84785cad8eabca
   languageName: node
   linkType: hard
 
