@@ -11,6 +11,7 @@
     "directory": "src/main/web"
   },
   "scripts": {
+    "build": "run build:bundle",
     "build:bundle": "node build/scripts/bundle.mjs",
     "verify": "node build/scripts/verify.mjs"
   },
