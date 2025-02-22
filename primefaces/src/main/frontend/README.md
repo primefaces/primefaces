@@ -86,13 +86,14 @@ first think again if you really need to and whether there is a different
 solution. If you really need to patch the package:
 
 ```sh
+# <package> is the name of the NPM package, e.g. webcamjs
 yarn patch <package>
 ```
 
 This command will cause a package to be extracted in a temporary directory
 intended to be editable at will. The temporary directory is printed to stdout.
 
-Once you're done with your changes, run `yarn patch-commit -s path` (with path
+Once you're done with your changes, run `yarn patch-commit -s <path>` (with `path`
 being the temporary directory you received) to generate a patchfile and register
 it into your top-level manifest via the [patch: protocol](https://yarnpkg.com/protocol/patch).
 
@@ -100,10 +101,13 @@ Then, run `yarn install` to ensure everything is up-to-date.
 
 ## Updating an existing patch
 
-Same as above, but add the `--update` flag to the patch command:
+Same as above, but use the following command instead (see
+[here](https://github.com/yarnpkg/berry/issues/3851#issuecomment-2676144254) and
+[here](https://github.com/blutorange/yarn-patch-package-update-squash) for why) 
 
 ```sh
-yarn patch <package> --update
+# <package> is the name of the NPM package, e.g. webcamjs
+yarn patch-update-squash <package>
 ```
 
 # Linking packages

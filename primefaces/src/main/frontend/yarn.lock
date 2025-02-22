@@ -318,6 +318,7 @@ __metadata:
     "@xenorange/esbuild-plugin-banned-dependencies": "npm:1.0.0"
     "@xenorange/esbuild-plugin-faces-resource-loader": "npm:1.0.0"
     "@xenorange/esbuild-plugin-load-from-expression": "npm:1.0.0"
+    "@xenorange/yarn-patch-package-update-squash": "npm:1.0.0"
     autonumeric: "patch:autonumeric@npm%3A4.10.7#~/.yarn/patches/autonumeric-npm-4.10.7-09183d353f.patch"
     autosize: "npm:6.0.1"
     blueimp-file-upload: "patch:blueimp-file-upload@npm%3A10.32.0#~/.yarn/patches/blueimp-file-upload-npm-10.32.0-61b944a244.patch"
@@ -485,6 +486,15 @@ __metadata:
   peerDependencies:
     esbuild: 0.x.x
   checksum: 10c0/fa2f5871d45da491561fe202b6265e488b226e65c50700f319b08281d4466968e34cf259572e14081624b13027fecb3cf67ccadfb8ada0c789c6d2cb15d06069
+  languageName: node
+  linkType: hard
+
+"@xenorange/yarn-patch-package-update-squash@npm:1.0.0":
+  version: 1.0.0
+  resolution: "@xenorange/yarn-patch-package-update-squash@npm:1.0.0"
+  bin:
+    patch-update-squash: index.js
+  checksum: 10c0/d5c09124ee1f833f8fc20b40e8e7a027f2dd165b4f4320f67e74d0ef39443d4824ef19f89e0bdc0c4c19ebb1e9d93e4bb3a98434daacca7d32947c203a686c7b
   languageName: node
   linkType: hard
 

@@ -78,6 +78,7 @@
     "@xenorange/esbuild-plugin-banned-dependencies": "1.0.0",
     "@xenorange/esbuild-plugin-faces-resource-loader": "1.0.0",
     "@xenorange/esbuild-plugin-load-from-expression": "1.0.0",
+    "@xenorange/yarn-patch-package-update-squash": "1.0.0",
     "esbuild": "0.25.0",
     "typescript": "5.7.3"
   },
