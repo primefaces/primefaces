@@ -1,5 +1,6 @@
-/** @import { BannedDependency } from "@xenorange/esbuild-plugin-banned-dependencies" */
 /** @import { BuildOptions, BuildResult, Metafile } from "esbuild" */
+/** @import { BannedDependency } from "@xenorange/esbuild-plugin-banned-dependencies" */
+/** @import { LoadFromExpressionPluginExpressions } from "@xenorange/esbuild-plugin-load-from-expression" */
 /** @import { FrontendProject} from "./common.mjs" */
 
 import * as path from "node:path";
@@ -31,6 +32,7 @@ main().catch(e => {
 async function main() {
     console.log(`Building PrimeFaces resources with mode ${Env.IsProduction ? "production" : "development"}...`);
 
+    console.log(`Ensuring target folder <${Env.TargetPrimeFacesResourceDir}> exists`)
     await fs.mkdir(Env.TargetPrimeFacesResourceDir, { recursive: true })
 
     // Create all bundles that need to be built.
@@ -144,7 +146,7 @@ async function failOnDuplicateModulesInOutputs(metaFile) {
             continue;
         }
         for (const input of Object.keys(inputs)) {
-            // This is our ESBuild plugin that loads resources from the global scope.
+            // This is the esbuild plugin that loads resources from the global scope.
             if (input.startsWith("load-from-expression/bare:") || input.startsWith("load-from-expression/module-path:")) {
                 continue;
             }
@@ -199,6 +201,7 @@ async function createFrontendBuildTask(project) {
     /** @type {BuildOptions[]} */
     const buildTasks = [];
 
+    // Create an esbuild task for the index.js file, if it exists
     if (project.indexScript !== undefined) {
         console.log(`Creating build task from <${path.relative(Env.MavenRootDir, project.indexScript)}> to <${path.relative(Env.MavenRootDir, targetPath)}.js>`);
         /** @type {BaseBuildOptions} */
@@ -207,6 +210,7 @@ async function createFrontendBuildTask(project) {
             entryPoints: [project.indexScript],
             outfile: `${targetPath}.js`,
         };
+        // Replace imports with window globals, e.g. <import "jquery"> with <window.$>
         if (buildSettings.loadFromExpression !== undefined) {
             buildOptions.plugins.push(loadFromExpressionPlugin({
                 expressions: buildSettings.loadFromExpression,
@@ -215,6 +219,7 @@ async function createFrontendBuildTask(project) {
         buildTasks.push(buildOptions);
     }
 
+    // Create an esbuild task for the index.css file, if it exists
     if (project.indexStyle !== undefined) {
         console.log(`Creating build task from <${path.relative(Env.MavenRootDir, project.indexStyle)}> to <${path.relative(Env.MavenRootDir, targetPath)}.css>`);
         /** @type {BaseBuildOptions} */
@@ -281,9 +286,17 @@ function createBaseOptions() {
 };
 
 /**
- * Merges all given ESBuild meta files into a single meta file.
- * @param {import("esbuild").Metafile[]} metaFiles 
- * @return {import("esbuild").Metafile}
+ * Merges all given esbuild meta files into a single meta file. An esbuild
+ * meta file contains data regarding the individual files that were combined into
+ * a single bundle.
+ * 
+ * We are creating multiple bundles such as core.js, components.js, or
+ * poll/poll.js. There's a separate esbuild task for each bundle, and each
+ * creates a meta file. This function combines all meta files into a single
+ * file.
+ * @param {import("esbuild").Metafile[]} metaFiles List of esbuild meta files
+ * to combine.
+ * @return {import("esbuild").Metafile} The combined meta file.
  */
 function mergeMetaFiles(metaFiles) {
     /** @type {import("esbuild").Metafile} */
@@ -306,9 +319,15 @@ function mergeMetaFiles(metaFiles) {
 }
 
 /**
- * Loads the build settings for the given frontend project (if it has any).
- * @param {import("./common.mjs").FrontendProject} frontendProject
- * @returns {Promise<BuildSettings>}
+ * Loads the build settings for the given frontend project (if it has any). Each
+ * frontend project, such as packages/core, packages/chart/chart,
+ * packages/gmap/gmap etc. can have an optional build-settings.json file with
+ * custom settings that affect how that bundle should be built.
+ * 
+ * @param {import("./common.mjs").FrontendProject} frontendProject The frontend
+ * project for which to load the build settings.
+ * @returns {Promise<BuildSettings>} The build settings for the frontend 
+ * project. An empty settings object if no build-settings.json exists.
  */
 export async function loadBuildSettings(frontendProject) {
     const path = frontendProject.buildSettings;
@@ -329,13 +348,12 @@ export async function loadBuildSettings(frontendProject) {
 undefined;
 
 /**
- * Allows a sub folder to affect the build settings when building the
- * frontend project (via esbuild).
- * @typedef {{
- * loadFromExpression?: {
- *  importSpecifier?: Record<string, string>;
- *  modulePath?: Record<string, string>;
- * };
- * }} BuildSettings
+ * Type for the build-settings.json file each frontend project can contain, which
+ * affects how the bundle is built via esbuild
+ * (e.g. packages/knob/knob/build-settings.json).
+ * @typedef {Object} BuildSettings
+ * @property {LoadFromExpressionPluginExpressions} [loadFromExpression] Settings
+ * for the esbuild-plugin-load-from-expression plugin that e.g. replacing
+ * <import "jquery"> with `window.$`.
  */
 undefined;

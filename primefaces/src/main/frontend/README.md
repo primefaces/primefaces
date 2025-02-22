@@ -57,6 +57,55 @@ to separate the individual packages from each other. The `references` section of
 `tsconfig.json` contains the (implicit) dependencies of each package, mirroring the
 `@ResourceDependency` annotations on each Java widget class.
 
+# Patching packages
+
+We use some old 3rd party packages that aren't maintained actively anymore and
+contain bugs that need to be fixed. Ideally, for the future, we'd replace them
+with active packages and fix bugs upstream.
+
+Sometimes fixing bugs upstream might not be feasible. In such cases, we need to
+patch these packages manually. yarn provides a built-in mechanism for this, see
+[yarn patch](https://yarnpkg.com/cli/patch) and
+[package patching](https://yarnpkg.com/features/patching).
+
+Previously, we just dumped the 3rd party library's source code into our own 
+repository and modified that source code -- which made it hard to understand
+what was changed and made it hard to update. 
+
+Patches are stored in `.yarn/patches`. For each patch file, we also create an
+accompanying `*.md` file that briefly explains the patch. This is not required,
+but makes it easier to understand why and what was done.
+
+The following is basically just copied from
+[yarn's official docs](https://yarnpkg.com/features/patching):
+
+## Adding a new patch
+
+When you need to patch a third party package that does not have a patch yet,
+first think again if you really need to and whether there is a different
+solution. If you really need to patch the package:
+
+```sh
+yarn patch <package>
+```
+
+This command will cause a package to be extracted in a temporary directory
+intended to be editable at will. The temporary directory is printed to stdout.
+
+Once you're done with your changes, run `yarn patch-commit -s path` (with path
+being the temporary directory you received) to generate a patchfile and register
+it into your top-level manifest via the [patch: protocol](https://yarnpkg.com/protocol/patch).
+
+Then, run `yarn install` to ensure everything is up-to-date.
+
+## Updating an existing patch
+
+Same as above, but add the `--update` flag to the patch command:
+
+```sh
+yarn patch <package> --update
+```
+
 # Linking packages
 
 As mentioned above, we still need to use the global scope for linking code from one
@@ -66,7 +115,8 @@ Each package can use `import` / `export` syntax internally. All modules reachabl
 `import` statements from the `index.ts` file will be included in the bundle.
 
 If a package contains code that needs to be used by another package, it must manually
-expose that part to the global scope. For example, the package `filedownload/filedownload`
+expose that part to the global scope. For example, the package `jquery/jquery`
+exposes jquery via `window.$` and `window.jQuery`. Or the package `filedownload/filedownload`
 contains the following code to make the download function available via `window.download`:
 
 ```js
@@ -102,12 +152,15 @@ loads the types:
 
 Finally, there are some cases where a package needs to import a dependency
 that was already exposed to the global scope by a different package. This
-usually happens when we import a dependency from NPM. For example, the package
-`schedule/schedule` imports the 3rd party library `@fullcalendar/moment`, which
-in turn imports `moment`. But `moment` is already provided and exposed by the
-package `moment/moment`. We can't modify the source code of the Full Calendar
-library. Instead, we use an ESBuild plugin that replaces the `import "moment"`
-and loads moment from the global scope instead.
+usually happens when we import a 3rd party package from NPM.
+
+For example, the package `schedule/schedule` imports the 3rd party library
+`@fullcalendar/moment`, which in turn imports `moment`. But `moment` is already
+provided and exposed by the package `moment/moment`.
+
+We can't really modify the source code of the Full Calendar library. Instead, we
+use an esbuild plugin that replaces the `import "moment"` and loads moment from
+the global scope instead.
 
 For that, each package may contain an optional `build-settings.json` file, next
 to the `index.ts` file. Here you can specify the name of the third-party library
