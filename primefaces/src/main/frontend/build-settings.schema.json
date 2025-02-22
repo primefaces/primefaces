@@ -20,7 +20,7 @@
                 },
                 "modulePath": {
                     "type": "object",
-                    "description": "A map of module paths to expressions. The module path is the resolved path of a file in a module. E.g. import(\"../moment\") would be resolved to file \"moment.js\" within the module \"moment\". To target that resolved file, you would use the key \"moment/moment.js\". The expression is the expression that should be used as the module's content.",
+                    "description": "A map of module paths to expressions. The module path is the resolved path of a file in a module. E.g. when import(\"../moment\") is inside the file \"locales/de.js\" of module \"moment\", it would be resolved to file \"moment.js\" within the module \"moment\". To target that resolved file, you would use the key \"moment/moment.js\". The expression is the expression that should be used as the module's content.",
                     "additionalProperties": {
                         "type": "string"
                     }

@@ -4,10 +4,11 @@ import * as path from "node:path";
 import * as fs from "node:fs/promises";
 
 import * as esbuild from "esbuild";
+
 import { facesResourceLoaderPlugin } from "@xenorange/esbuild-plugin-faces-resource-loader";
+import { loadFromExpressionPlugin } from "@xenorange/esbuild-plugin-load-from-expression";
 
 import { bannedDependenciesPlugin } from "../esbuild-plugin/banned-dependencies-plugin.mjs";
-import { loadFromExpressionPlugin } from "../esbuild-plugin/load-from-expression-plugin.mjs";
 
 import { Env, findFrontendProjects } from "./common.mjs";
 
@@ -330,7 +331,7 @@ undefined;
 
 /**
  * Allows a sub folder to affect the build settings when building the
- * frontend project (via ESBuild).
+ * frontend project (via esbuild).
  * @typedef {{
 * loadFromExpression?: {
 *  importSpecifier?: Record<string, string>;
