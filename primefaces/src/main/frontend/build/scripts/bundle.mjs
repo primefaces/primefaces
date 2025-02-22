@@ -1,20 +1,20 @@
+/** @import { BannedDependency } from "@xenorange/esbuild-plugin-banned-dependencies" */
+/** @import { BuildOptions, BuildResult, Metafile } from "esbuild" */
 /** @import { FrontendProject} from "./common.mjs" */
 
 import * as path from "node:path";
 import * as fs from "node:fs/promises";
 
 import * as esbuild from "esbuild";
-
+import { bannedDependenciesPlugin } from "@xenorange/esbuild-plugin-banned-dependencies";
 import { facesResourceLoaderPlugin } from "@xenorange/esbuild-plugin-faces-resource-loader";
 import { loadFromExpressionPlugin } from "@xenorange/esbuild-plugin-load-from-expression";
-
-import { bannedDependenciesPlugin } from "../esbuild-plugin/banned-dependencies-plugin.mjs";
 
 import { Env, findFrontendProjects } from "./common.mjs";
 
 /**
  * List of dependencies that are banned from being imported in the source code.
- * @type {import("../esbuild-plugin/banned-dependencies-plugin.mjs").BannedDependency[]}
+ * @type {BannedDependency[]}
  */
 const BannedDependencies = [
     {
@@ -68,7 +68,6 @@ async function main() {
 
     // Each NPM dependency should be included only in one bundle file to avoid duplicates
     failOnDuplicateModulesInOutputs(finalMetaFile)
-
 }
 
 /**
@@ -86,8 +85,8 @@ async function main() {
  * - https://esbuild.github.io/content-types/#default-interop
  * - https://github.com/evanw/esbuild/issues/2480
  * - https://github.com/evanw/esbuild/issues/3852
- * @param {esbuild.BuildOptions[]} buildTasks 
- * @returns {Promise<PromiseSettledResult<esbuild.BuildResult>[]>}
+ * @param {BuildOptions[]} buildTasks 
+ * @returns {Promise<PromiseSettledResult<BuildResult>[]>}
  */
 async function runEsBuild(buildTasks) {
     const original = await fs.readFile(Env.PackageJsonPath, "utf-8");
@@ -113,7 +112,7 @@ async function runEsBuild(buildTasks) {
  * 
  * You can upload and visualize the meta file at https://esbuild.github.io/analyze/
  * 
- * @param {esbuild.Metafile} metaFile Meta file to write to the dist dir.
+ * @param {Metafile} metaFile Meta file to write to the dist dir.
  */
 async function writeCombinedMetaFile(metaFile) {
     console.log("Combining build meta files from all bundles...");
@@ -133,7 +132,7 @@ async function writeCombinedMetaFile(metaFile) {
  * For example, jquery is already provided by the `jquery/jquery` package.
  * All other packages should use `window.$` to access the jquery module.
  *
- * @param {esbuild.Metafile} metaFile Meta file with the build results
+ * @param {Metafile} metaFile Meta file with the build results
  * to analyze for duplicate modules.
  */
 async function failOnDuplicateModulesInOutputs(metaFile) {
@@ -189,7 +188,7 @@ async function createFrontendBuildTasks() {
  * and `<TargetPrimeFacesResourceDir>/diagram/diagram.css`.
  * 
  * @param {FrontendProject} project A frontend project.
- * @returns {Promise<esbuild.BuildOptions[]>} The ESBuild tasks.
+ * @returns {Promise<BuildOptions[]>} The ESBuild tasks.
  */
 async function createFrontendBuildTask(project) {
     const buildSettings = await loadBuildSettings(project);
@@ -197,7 +196,7 @@ async function createFrontendBuildTask(project) {
     const fromRelative = path.relative(Env.PackagesDir, project.root);
     const targetPath = path.resolve(Env.TargetPrimeFacesResourceDir, fromRelative);
 
-    /** @type {esbuild.BuildOptions[]} */
+    /** @type {BuildOptions[]} */
     const buildTasks = [];
 
     if (project.indexScript !== undefined) {
@@ -325,7 +324,7 @@ export async function loadBuildSettings(frontendProject) {
 
 
 /**
- * @typedef {esbuild.BuildOptions & Required<Pick<esbuild.BuildOptions, "plugins">>} BaseBuildOptions
+ * @typedef {BuildOptions & Required<Pick<BuildOptions, "plugins">>} BaseBuildOptions
  */
 undefined;
 
@@ -333,10 +332,10 @@ undefined;
  * Allows a sub folder to affect the build settings when building the
  * frontend project (via esbuild).
  * @typedef {{
-* loadFromExpression?: {
-*  importSpecifier?: Record<string, string>;
-*  modulePath?: Record<string, string>;
-* };
-* }} BuildSettings
-*/
+ * loadFromExpression?: {
+ *  importSpecifier?: Record<string, string>;
+ *  modulePath?: Record<string, string>;
+ * };
+ * }} BuildSettings
+ */
 undefined;

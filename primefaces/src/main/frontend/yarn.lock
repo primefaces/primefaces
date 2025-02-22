@@ -315,6 +315,7 @@ __metadata:
     "@types/node": "npm:22.13.4"
     "@types/pnpapi": "npm:^0.0.5"
     "@types/raphael": "npm:2.3.9"
+    "@xenorange/esbuild-plugin-banned-dependencies": "npm:1.0.0"
     "@xenorange/esbuild-plugin-faces-resource-loader": "npm:1.0.0"
     "@xenorange/esbuild-plugin-load-from-expression": "npm:1.0.0"
     autonumeric: "patch:autonumeric@npm%3A4.10.7#~/.yarn/patches/autonumeric-npm-4.10.7-09183d353f.patch"
@@ -457,6 +458,15 @@ __metadata:
   version: 2.3.9
   resolution: "@types/sizzle@npm:2.3.9"
   checksum: 10c0/db0277ff62e8ebe6cdae2020fd045fd7fd19f29a3a2ce13c555b14fb00e105e79004883732118b9f2e8b943cb302645e9eddb4e7bdeef1a171da679cd4c32b72
+  languageName: node
+  linkType: hard
+
+"@xenorange/esbuild-plugin-banned-dependencies@npm:1.0.0":
+  version: 1.0.0
+  resolution: "@xenorange/esbuild-plugin-banned-dependencies@npm:1.0.0"
+  peerDependencies:
+    esbuild: 0.x.x
+  checksum: 10c0/b468b1d000c4fdd681d89e9061091ee8684fbf2845b4fa6b7bdc38ff6bd12fa07126e63263c26d92d5fe6522c56206d89259ebeeef1d8eb06b3378d21b59a067
   languageName: node
   linkType: hard
 
