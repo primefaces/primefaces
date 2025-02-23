@@ -59,7 +59,7 @@ public class Csv002Test extends AbstractColorPickerTest {
         page.selectBooleanCheckbox.uncheck();
 
         // Assert
-        Assertions.assertEquals("must be true.",
+        Assertions.assertEquals("yes/no: must be true.",
                 page.msgSelectBooleanCheckbox.getText());
 
         // Act
