@@ -14,10 +14,8 @@ It utilizes Tomcat Embedded, OpenWebBeans, RestEasy and different JSF implementa
 - Run integration tests with the _verify_ phase and profiles activated: `mvn verify -Pintegration-tests,parallel-execution,mojarra-4.0`
 - Run a single test with `mvn verify -Pintegration-tests,parallel-execution,mojarra-4.0 -Dit.test=DatePicker001Test`
 
-> :warning: **-Pparallel-execution** is currently not supported on Java8
-
 ## Run as web application
-- `mvn clean jetty:run -Pmojarra-4.0`
+- `mvn clean jetty:run -P"mojarra-4.0"`
 - Now you can open it on 'http://localhost:8080/integrationtests/'
 
 ## Profiles

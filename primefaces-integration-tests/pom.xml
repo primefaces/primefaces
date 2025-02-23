@@ -35,7 +35,7 @@
         <myfaces.version>4.0.2</myfaces.version>
         <tomcat.version>10.1.30</tomcat.version>
         <resteasy.version>6.2.11.Final</resteasy.version>
-        <jetty.version>9.4.56.v20240826</jetty.version>
+        <jetty.version>12.0.16</jetty.version>
     </properties>
 
     <dependencies>
@@ -292,16 +292,23 @@
                 <version>3.8.1</version>
             </plugin>
             <plugin>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
+                <groupId>org.eclipse.jetty.ee10</groupId>
+                <artifactId>jetty-ee10-maven-plugin</artifactId>
                 <version>${jetty.version}</version>
                 <configuration>
-                    <webAppConfig>
-                        <contextPath>/integrationtests</contextPath>
-                    </webAppConfig>
-                    <scanIntervalSeconds>5</scanIntervalSeconds>
+                    <httpConnector>
+                        <host>0.0.0.0</host>
+                        <port>8080</port>
+                    </httpConnector>
                     <webXml>${project.build.directory}/web.xml</webXml>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.eclipse.jetty.ee10</groupId>
+                        <artifactId>jetty-ee10-cdi</artifactId>
+                        <version>${jetty.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>
