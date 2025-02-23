@@ -30,6 +30,8 @@ copying their source code directly into our repository.
 
 # Code structure
 
+__TL;DR__ One package (TypeScript project reference) for each JavaScript / CSS file in the PrimeFaces JAR.
+
 When you take a look at the final PrimeFaces.jar file, you'll notice it contains a bunch of
 bundled JavaScript files:
 

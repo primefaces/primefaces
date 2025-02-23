@@ -179,11 +179,6 @@ public class HeadRenderer extends Renderer {
         if (configuration.isClientSideValidationEnabled()) {
             // moment is needed for Date validation
             ResourceUtils.addJavascriptResource(context, "moment/moment.js");
-
-            // BV CSV is optional and must be enabled by config
-            if (configuration.isBeanValidationEnabled()) {
-                ResourceUtils.addJavascriptResource(context, "validation/validation.bv.js");
-            }
         }
     }
 
