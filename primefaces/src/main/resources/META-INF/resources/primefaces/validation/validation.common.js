@@ -934,14 +934,15 @@ if (window.PrimeFaces) {
                             continue;
                         }
 
+                        var msgToRender = { detail: msg.detail, summary: msg.summary, severity: msg.severity };
                         if (!showSummary) {
-                            msg.summary = '';
+                            msgToRender.summary = '';
                         }
                         if (!showDetail) {
-                            msg.detail = '';
+                            msgToRender.detail = '';
                         }
+                        messagesWidget.appendMessage(msgToRender);
 
-                        messagesWidget.appendMessage(msg);
                         msg.rendered = true;
                     }
                 }
@@ -963,14 +964,15 @@ if (window.PrimeFaces) {
                             continue;
                         }
 
+                        var msgToRender = { detail: msg.detail, summary: msg.summary, severity: msg.severity };
                         if (!showSummary) {
-                            msg.summary = '';
+                            msgToRender.summary = '';
                         }
                         if (!showDetail) {
-                            msg.detail = '';
+                            msgToRender.detail = '';
                         }
+                        growlWidget.renderMessage(msgToRender);
 
-                        growlWidget.renderMessage(msg);
                         msg.rendered = true;
                     }
                 }
