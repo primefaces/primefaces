@@ -259,7 +259,7 @@ if (window.PrimeFaces) {
       "javax.faces.converter.NumberConverter.PERCENT_detail": "{2}: لا يمكن فهم &#39;{0}&#39; كنسبة مئوية. مثال 1}.",
       "javax.faces.converter.ShortConverter.SHORT": "{2}: يجب أن يكون &#39;{0}&#39; رقمًا يتكون من رقم واحد أو أكثر.",
       "javax.faces.converter.ShortConverter.SHORT_detail": "{2}: يجب أن يكون &#39;{0}&#39; رقمًا بين -32768 و32767. مثال: {1}.",
-      "javax.faces.validator.BeanValidator.MESSAGE": "{0}",
+      "javax.faces.validator.BeanValidator.MESSAGE": "{1}: {0}",
       "javax.faces.validator.DoubleRangeValidator.MAXIMUM": "{1}: خطأ في التحقق من الصحة: القيمة أكبر من الحد الأقصى المسموح به وهو &#39;{0}&#39;.",
       "javax.faces.validator.DoubleRangeValidator.MINIMUM": "{1}: خطأ في التحقق من الصحة: القيمة أقل من الحد الأدنى المسموح به وهو &#39;{0}&#39;.",
       "javax.faces.validator.DoubleRangeValidator.NOT_IN_RANGE": "{2}: خطأ في التحقق من الصحة: السمة المحددة ليست بين القيم المتوقعة لـ {0} و{1}.",

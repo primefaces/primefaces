@@ -208,7 +208,7 @@ if (window.PrimeFaces) {
       "javax.faces.converter.NumberConverter.PERCENT_detail": "{2}៖ &#39;{0}&#39; មិនអាចយល់បានថាជាភាគរយទេ។ ឧទាហរណ៍៖ {1}។",
       "javax.faces.converter.ShortConverter.SHORT": "{2}៖ &#39;{0}&#39; ត្រូវតែជាលេខដែលមានលេខមួយ ឬច្រើនខ្ទង់។",
       "javax.faces.converter.ShortConverter.SHORT_detail": "{2}៖ &#39;{0}&#39; ត្រូវតែជាលេខរវាង -32768 និង 32767។ ឧទាហរណ៍៖ {1}។",
-      "javax.faces.validator.BeanValidator.MESSAGE": "{0}",
+      "javax.faces.validator.BeanValidator.MESSAGE": "{1}: {0}",
       "javax.faces.validator.DoubleRangeValidator.MAXIMUM": "{1}៖ កំហុសក្នុងសុពលភាព៖ តម្លៃគឺធំជាងអតិបរមាដែលអាចអនុញ្ញាតបាននៃ &#39;{0}&#39;។",
       "javax.faces.validator.DoubleRangeValidator.MINIMUM": "{1}៖ កំហុសក្នុងសុពលភាព៖ តម្លៃគឺតិចជាងអប្បបរមាដែលអាចអនុញ្ញាតបាននៃ &#39;{0}&#39;។",
       "javax.faces.validator.DoubleRangeValidator.NOT_IN_RANGE": "{2}៖ កំហុសក្នុងសុពលភាព៖ គុណលក្ខណៈដែលបានបញ្ជាក់មិនស្ថិតនៅចន្លោះតម្លៃដែលរំពឹងទុកនៃ {0} និង {1} ទេ។",

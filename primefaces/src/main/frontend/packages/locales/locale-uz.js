@@ -232,7 +232,7 @@ if (window.PrimeFaces) {
       "primefaces.FileValidator.SIZE_LIMIT": "Noto'g'ri fayl o'lchami.",
       "primefaces.FileValidator.SIZE_LIMIT_detail": "Fayl '{0}' {1} dan katta bo'lmasligi kerak.",
       //optional for bean validation integration in client side validation
-      "javax.faces.validator.BeanValidator.MESSAGE": "{0}",
+      "javax.faces.validator.BeanValidator.MESSAGE": "{1}: {0}",
       "javax.validation.constraints.AssertFalse.message": "noto'g'ri bo'lishi kerak.",
       "javax.validation.constraints.AssertTrue.message": "to'g'ri bo'lishi kerak.",
       "javax.validation.constraints.DecimalMax.message": "{0} dan kam yoki teng bo'lishi kerak.",

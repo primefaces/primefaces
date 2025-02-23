@@ -207,7 +207,7 @@ if (window.PrimeFaces) {
       "javax.faces.converter.NumberConverter.PERCENT_detail": "{2}: &#39;{0}&#39; không thể hiểu được dưới dạng phần trăm. Ví dụ 1}.",
       "javax.faces.converter.ShortConverter.SHORT": "{2}: &#39;{0}&#39; phải là số có một hoặc nhiều chữ số.",
       "javax.faces.converter.ShortConverter.SHORT_detail": "{2}: &#39;{0}&#39; phải là số từ -32768 đến 32767. Ví dụ: {1}.",
-      "javax.faces.validator.BeanValidator.MESSAGE": "{0}",
+      "javax.faces.validator.BeanValidator.MESSAGE": "{1}: {0}",
       "javax.faces.validator.DoubleRangeValidator.MAXIMUM": "{1}: Lỗi xác thực: Giá trị lớn hơn mức tối đa cho phép là &#39;{0}&#39;.",
       "javax.faces.validator.DoubleRangeValidator.MINIMUM": "{1}: Lỗi xác thực: Giá trị nhỏ hơn mức tối thiểu cho phép là &#39;{0}&#39;.",
       "javax.faces.validator.DoubleRangeValidator.NOT_IN_RANGE": "{2}: Lỗi xác thực: Thuộc tính được chỉ định không nằm trong khoảng giá trị dự kiến của {0} và {1}.",

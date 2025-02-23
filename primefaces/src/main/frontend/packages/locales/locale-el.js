@@ -227,7 +227,7 @@ if (window.PrimeFaces) {
       "javax.faces.validator.RegexValidator.NOT_MATCHED_detail": "Το μοτίβο Κανονικών Εκφράσεων ''{0}'' δεν ταιριάζει",
       "javax.faces.validator.RegexValidator.MATCH_EXCEPTION": "Σφάλμα στην Κανονική Έκφραση.",
       "javax.faces.validator.RegexValidator.MATCH_EXCEPTION_detail": "Σφάλμα στην Κανονική Έκφραση, ''{0}''",
-      "javax.faces.validator.BeanValidator.MESSAGE": "{0}",
+      "javax.faces.validator.BeanValidator.MESSAGE": "{1}: {0}",
       "javax.validation.constraints.AssertFalse.message": "πρέπει να είναι ψευδής",
       "javax.validation.constraints.AssertTrue.message": "πρέπει να είναι αλήθεια",
       "javax.validation.constraints.DecimalMax.message": "πρέπει να είναι μικρότερο ή ίσο με {0}",

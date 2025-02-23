@@ -207,7 +207,7 @@ if (window.PrimeFaces) {
       "javax.faces.converter.NumberConverter.PERCENT_detail": "{2}: &#39;{0}&#39; пайыз катары түшүнүлгөн жок. Мисалы: {1}.",
       "javax.faces.converter.ShortConverter.SHORT": "{2}: &#39;{0}&#39; бир же бир нече цифрадан турган сан болушу керек.",
       "javax.faces.converter.ShortConverter.SHORT_detail": "{2}: &#39;{0}&#39; -32768 жана 32767 ортосундагы сан болушу керек. Мисал: {1}.",
-      "javax.faces.validator.BeanValidator.MESSAGE": "{0}",
+      "javax.faces.validator.BeanValidator.MESSAGE": "{1}: {0}",
       "javax.faces.validator.DoubleRangeValidator.MAXIMUM": "{1}: Текшерүү катасы: Мааниси уруксат берилген максималдуу &#39;{0}&#39;ден чоңураак.",
       "javax.faces.validator.DoubleRangeValidator.MINIMUM": "{1}: Текшерүү катасы: Маани уруксат берилген минималдуу &#39;{0}&#39;ден азыраак.",
       "javax.faces.validator.DoubleRangeValidator.NOT_IN_RANGE": "{2}: Текшерүү катасы: Көрсөтүлгөн атрибут күтүлгөн {0} жана {1} маанилеринин ортосунда эмес.",

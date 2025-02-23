@@ -229,7 +229,7 @@ if (window.PrimeFaces) {
       "primefaces.FileValidator.SIZE_LIMIT": "Geçersiz dosya boyutu.",
       "primefaces.FileValidator.SIZE_LIMIT_detail": "'{0}' dosyası {1} boyutundan büyük olmamalıdır.",
       //optional for bean validation integration in client side validation
-      "javax.faces.validator.BeanValidator.MESSAGE": "{0}",
+      "javax.faces.validator.BeanValidator.MESSAGE": "{1}: {0}",
       "javax.validation.constraints.AssertFalse.message": "yanlış olmalı",
       "javax.validation.constraints.AssertTrue.message": "doğru olmalı",
       "javax.validation.constraints.DecimalMax.message": "{0}&#39;dan küçük veya ona eşit olmalıdır",

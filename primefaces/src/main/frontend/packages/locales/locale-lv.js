@@ -226,7 +226,7 @@ if (window.PrimeFaces) {
       "primefaces.FileValidator.SIZE_LIMIT": "Nederīgs faila lielums.",
       "primefaces.FileValidator.SIZE_LIMIT_detail": "Fails '{0}' nedrīkst būt lielāks par {1}.",
       //optional for bean validation integration in client side validation
-      "javax.faces.validator.BeanValidator.MESSAGE": "{0}",
+      "javax.faces.validator.BeanValidator.MESSAGE": "{1}: {0}",
       "javax.validation.constraints.AssertFalse.message": "jābūt false.",
       "javax.validation.constraints.AssertTrue.message": "jābūt true.",
       "javax.validation.constraints.DecimalMax.message": "jābūt mazākam vai vienādam ar {0}.",

@@ -207,7 +207,7 @@ if (window.PrimeFaces) {
       "javax.faces.converter.NumberConverter.PERCENT_detail": "{2}: &#39;{0}&#39; tidak dapat difahami sebagai peratusan. Contoh: {1}.",
       "javax.faces.converter.ShortConverter.SHORT": "{2}: &#39;{0}&#39; mestilah nombor yang terdiri daripada satu atau lebih digit.",
       "javax.faces.converter.ShortConverter.SHORT_detail": "{2}: &#39;{0}&#39; mestilah nombor antara -32768 dan 32767. Contoh: {1}.",
-      "javax.faces.validator.BeanValidator.MESSAGE": "{0}",
+      "javax.faces.validator.BeanValidator.MESSAGE": "{1}: {0}",
       "javax.faces.validator.DoubleRangeValidator.MAXIMUM": "{1}: Ralat Pengesahan: Nilai lebih besar daripada maksimum yang dibenarkan iaitu &#39;{0}&#39;.",
       "javax.faces.validator.DoubleRangeValidator.MINIMUM": "{1}: Ralat Pengesahan: Nilai kurang daripada minimum &#39;{0}&#39; yang dibenarkan.",
       "javax.faces.validator.DoubleRangeValidator.NOT_IN_RANGE": "{2}: Ralat Pengesahan: Atribut yang ditentukan bukan antara nilai jangkaan {0} dan {1}.",

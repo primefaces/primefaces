@@ -268,7 +268,7 @@ if (window.PrimeFaces) {
       "javax.faces.converter.NumberConverter.PERCENT_detail": "{2}: '{0}' är inte ett procentuellt värde. Example: {1}",
       "javax.faces.converter.ShortConverter.SHORT": "{2}: '{0}' måste vara ett numeriskt värde bestående av 1 eller flera siffror.",
       "javax.faces.converter.ShortConverter.SHORT_detail": "{2}: '{0}' måste vara ett numeriskt värde mellan -32768 and 32767 Example: {1}",
-      "javax.faces.validator.BeanValidator.MESSAGE": "{0}",
+      "javax.faces.validator.BeanValidator.MESSAGE": "{1}: {0}",
       "javax.faces.validator.DoubleRangeValidator.MAXIMUM": "{1}: Valideringsfel: Värdet är större än det tillåtna värdet av '{0}'",
       "javax.faces.validator.DoubleRangeValidator.MINIMUM": "{1}: Valideringsfel: Värdet är mindre än tillåtna värdet av '{0}'",
       "javax.faces.validator.DoubleRangeValidator.NOT_IN_RANGE": "{2}: Valideringsfel: Det specifika attributet är inte mellan de förväntade värdena {0} och {1}",

@@ -207,7 +207,7 @@ if (window.PrimeFaces) {
       "javax.faces.converter.NumberConverter.PERCENT_detail": "{2}: «{0}» به عنوان درصد قابل درک نیست. مثال: {1}.",
       "javax.faces.converter.ShortConverter.SHORT": "{2}: «{0}» باید عددی متشکل از یک یا چند رقم باشد.",
       "javax.faces.converter.ShortConverter.SHORT_detail": "{2}: &#39;{0}&#39; باید عددی بین -32768 و 32767 باشد. مثال: {1}.",
-      "javax.faces.validator.BeanValidator.MESSAGE": "{0}",
+      "javax.faces.validator.BeanValidator.MESSAGE": "{1}: {0}",
       "javax.faces.validator.DoubleRangeValidator.MAXIMUM": "{1}: خطای اعتبارسنجی: مقدار از حداکثر مجاز &quot;{0}&quot; بیشتر است.",
       "javax.faces.validator.DoubleRangeValidator.MINIMUM": "{1}: خطای اعتبارسنجی: مقدار کمتر از حداقل مجاز «{0}» است.",
       "javax.faces.validator.DoubleRangeValidator.NOT_IN_RANGE": "{2}: خطای اعتبارسنجی: مشخصه مشخص شده بین مقادیر مورد انتظار {0} و {1} نیست.",

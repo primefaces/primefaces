@@ -209,7 +209,7 @@ if (window.PrimeFaces) {
       "javax.faces.converter.NumberConverter.PERCENT_detail": "{2}：“{0}”必须是有效的百分比数据类型！例如：{1}.",
       "javax.faces.converter.ShortConverter.SHORT": "{2}：“{0}”必须是短整型！",
       "javax.faces.converter.ShortConverter.SHORT_detail": "{2}：“{0}”必须是负2的15次方到2的15次方减1之间的整数！例如：{1}。",
-      "javax.faces.validator.BeanValidator.MESSAGE": "{0}",
+      "javax.faces.validator.BeanValidator.MESSAGE": "{1}: {0}",
       "javax.faces.validator.DoubleRangeValidator.MAXIMUM": "{1}：验证失败！值大于允许的最大值“{0}”。",
       "javax.faces.validator.DoubleRangeValidator.MINIMUM": "{1}：验证失败！值小于允许的最小值“{0}”。",
       "javax.faces.validator.DoubleRangeValidator.NOT_IN_RANGE": "{2}：验证失败！值不在“{0}和“{1}”之间。",

@@ -228,7 +228,7 @@ if (window.PrimeFaces) {
       "primefaces.FileValidator.ALLOW_TYPES_detail": "अमान्य फ़ाइल प्रकार: '{0}'। अनुमत प्रकार: '{1}'।",
       "primefaces.FileValidator.SIZE_LIMIT": "अमान्य फ़ाइल आकार।",
       "primefaces.FileValidator.SIZE_LIMIT_detail": "फ़ाइल '{0}' {1} से बड़ी नहीं होनी चाहिए।",
-      "javax.faces.validator.BeanValidator.MESSAGE": "{0}",
+      "javax.faces.validator.BeanValidator.MESSAGE": "{1}: {0}",
       "javax.validation.constraints.AssertFalse.message": "झूठा होना चाहिए",
       "javax.validation.constraints.AssertTrue.message": "सच होना चाहिए",
       "javax.validation.constraints.DecimalMax.message": "{0} से कम या बराबर होना चाहिए",

@@ -231,7 +231,7 @@ if (window.PrimeFaces) {
       "primefaces.FileValidator.SIZE_LIMIT": "Tamanho de arquivo inválido.",
       "primefaces.FileValidator.SIZE_LIMIT_detail": "O arquivo '{0}' não deve ser maior que {1}.",
       //optional for bean validation integration in client side validation
-      "javax.faces.validator.BeanValidator.MESSAGE": "{0}",
+      "javax.faces.validator.BeanValidator.MESSAGE": "{1}: {0}",
       "javax.validation.constraints.AssertFalse.message": "deve ser falso",
       "javax.validation.constraints.AssertTrue.message": "deve ser verdadeiro",
       "javax.validation.constraints.DecimalMax.message": "deve ser menor ou igual a {0}",
@@ -339,7 +339,7 @@ if (window.PrimeFaces) {
       "javax.faces.validator.RegexValidator.MATCH_EXCEPTION": "Erro na expressão regular.",
       "javax.faces.validator.RegexValidator.MATCH_EXCEPTION_detail": "Erro na expressão regular, '{0}'.",
       //optional for bean validation integration in client side validation
-      "javax.faces.validator.BeanValidator.MESSAGE": "{0}",
+      "javax.faces.validator.BeanValidator.MESSAGE": "{1}: {0}",
       "javax.validation.constraints.AssertFalse.message": "deve ser falso.",
       "javax.validation.constraints.AssertTrue.message": "deve ser verdadeiro.",
       "javax.validation.constraints.DecimalMax.message": "deve ser menor ou igual a {0}.",

@@ -207,7 +207,7 @@ if (window.PrimeFaces) {
       "javax.faces.converter.NumberConverter.PERCENT_detail": "{2}: '{0}' nemožno pochopiť ako percento. Príklad: {1}.",
       "javax.faces.converter.ShortConverter.SHORT": "{2}: '{0}' musí byť číslo pozostávajúce z jednej alebo viacerých číslic.",
       "javax.faces.converter.ShortConverter.SHORT_detail": "{2}: '{0}' musí byť číslo medzi -32768 a 32767. Príklad: {1}.",
-      "javax.faces.validator.BeanValidator.MESSAGE": "{0}",
+      "javax.faces.validator.BeanValidator.MESSAGE": "{1}: {0}",
       "javax.faces.validator.DoubleRangeValidator.MAXIMUM": "{1}: Chyba overenia: Hodnota je väčšia než povolené maximum '{0}'.",
       "javax.faces.validator.DoubleRangeValidator.MINIMUM": "{1}: Chyba overenia: Hodnota je menšia než povolené minimum '{0}'.",
       "javax.faces.validator.DoubleRangeValidator.NOT_IN_RANGE": "{2}: Chyba overenia: Zadaný atribút nie je medzi očakávanými hodnotami {0} a {1}.",

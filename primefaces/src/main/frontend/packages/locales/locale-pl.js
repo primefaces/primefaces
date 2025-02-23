@@ -209,7 +209,7 @@ if (window.PrimeFaces) {
       "javax.faces.converter.NumberConverter.PERCENT_detail": "{2}: „{0}” nie może być rozumiane jako wartość procentowa. Przykład 1}.",
       "javax.faces.converter.ShortConverter.SHORT": "{2}: „{0}” musi być liczbą składającą się z jednej lub więcej cyfr.",
       "javax.faces.converter.ShortConverter.SHORT_detail": "{2}: „{0}” musi być liczbą z zakresu od -32768 do 32767. Przykład: {1}.",
-      "javax.faces.validator.BeanValidator.MESSAGE": "{0}",
+      "javax.faces.validator.BeanValidator.MESSAGE": "{1}: {0}",
       "javax.faces.validator.DoubleRangeValidator.MAXIMUM": "{1}: Błąd sprawdzania poprawności: wartość jest większa niż dopuszczalne maksimum „{0}”.",
       "javax.faces.validator.DoubleRangeValidator.MINIMUM": "{1}: Błąd sprawdzania poprawności: wartość jest mniejsza niż dopuszczalne minimum „{0}”.",
       "javax.faces.validator.DoubleRangeValidator.NOT_IN_RANGE": "{2}: Błąd sprawdzania poprawności: określony atrybut nie mieści się pomiędzy oczekiwanymi wartościami {0} i {1}.",

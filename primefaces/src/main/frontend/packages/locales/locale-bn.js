@@ -230,7 +230,7 @@ if (window.PrimeFaces) {
       "primefaces.FileValidator.ALLOW_TYPES_detail": "অবৈধ ফাইল প্রকার: '{0}'. অনুমোদিত প্রকার: '{1}'.",
       "primefaces.FileValidator.SIZE_LIMIT": "অবৈধ ফাইল আকার।",
       "primefaces.FileValidator.SIZE_LIMIT_detail": "ফাইল '{0}' {1} এর চেয়ে বড় হতে পারবে না।",
-      "javax.faces.validator.BeanValidator.MESSAGE": "{0}",
+      "javax.faces.validator.BeanValidator.MESSAGE": "{1}: {0}",
       "javax.validation.constraints.AssertFalse.message": "মিথ্যা হতে হবে।",
       "javax.validation.constraints.AssertTrue.message": "সত্য হতে হবে।",
       "javax.validation.constraints.DecimalMax.message": "{0} এর চেয়ে কম বা সমান হতে হবে।",

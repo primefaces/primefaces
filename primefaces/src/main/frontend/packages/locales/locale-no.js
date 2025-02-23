@@ -224,7 +224,7 @@ if (window.PrimeFaces) {
       "primefaces.FileValidator.SIZE_LIMIT": "Ugyldig filstørrelse.",
       "primefaces.FileValidator.SIZE_LIMIT_detail": "Filen '{0}' må ikke være større enn {1}.",
       //valgfritt for integrasjon av bønnevalidering i validering på klientsiden
-      "javax.faces.validator.BeanValidator.MESSAGE": "{0}",
+      "javax.faces.validator.BeanValidator.MESSAGE": "{1}: {0}",
       "javax.validation.constraints.AssertFalse.message": "må være usann",
       "javax.validation.constraints.AssertTrue.message": "må være sant",
       "javax.validation.constraints.DecimalMax.message": "må være mindre enn eller lik {0}",

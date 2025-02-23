@@ -228,7 +228,7 @@ if (window.PrimeFaces) {
       "primefaces.FileValidator.SIZE_LIMIT": "Неверный размер файла.",
       "primefaces.FileValidator.SIZE_LIMIT_detail": "Файл '{0}' не должен быть больше {1}.",
       //Опционально для стороны клиента
-      "javax.faces.validator.BeanValidator.MESSAGE": "{0}",
+      "javax.faces.validator.BeanValidator.MESSAGE": "{1}: {0}",
       "javax.validation.constraints.AssertFalse.message": "должно быть ложным",
       "javax.validation.constraints.AssertTrue.message": "должно быть правдой",
       "javax.validation.constraints.DecimalMax.message": "должно быть меньше или равно {0}",

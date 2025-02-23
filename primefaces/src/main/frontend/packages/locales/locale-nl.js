@@ -225,7 +225,7 @@ if (window.PrimeFaces) {
       "primefaces.FileValidator.SIZE_LIMIT": "Ongeldige bestandsgrootte.",
       "primefaces.FileValidator.SIZE_LIMIT_detail": "Bestand '{0}' mag niet groter zijn dan {1}.",
       //optional for bean validation integration in client side validation
-      "javax.faces.validator.BeanValidator.MESSAGE": "{0}",
+      "javax.faces.validator.BeanValidator.MESSAGE": "{1}: {0}",
       "javax.validation.constraints.AssertFalse.message": "moet false (niet waar) zijn.",
       "javax.validation.constraints.AssertTrue.message": "moet true (waar) zijn.",
       "javax.validation.constraints.DecimalMax.message": "moet kleiner dan of gelijk aan zijn aan {0}.",
