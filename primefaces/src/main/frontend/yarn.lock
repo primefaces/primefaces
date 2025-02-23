@@ -315,13 +315,17 @@ __metadata:
     "@types/node": "npm:22.13.4"
     "@types/pnpapi": "npm:^0.0.5"
     "@types/raphael": "npm:2.3.9"
+    "@xenorange/esbuild-plugin-banned-dependencies": "npm:1.0.0"
+    "@xenorange/esbuild-plugin-faces-resource-loader": "npm:1.0.0"
+    "@xenorange/esbuild-plugin-load-from-expression": "npm:1.0.0"
+    "@xenorange/yarn-patch-package-update-squash": "npm:1.0.0"
     autonumeric: "patch:autonumeric@npm%3A4.10.7#~/.yarn/patches/autonumeric-npm-4.10.7-09183d353f.patch"
     autosize: "npm:6.0.1"
     blueimp-file-upload: "patch:blueimp-file-upload@npm%3A10.32.0#~/.yarn/patches/blueimp-file-upload-npm-10.32.0-61b944a244.patch"
     chart.js: "npm:4.4.8"
     chartjs-adapter-moment: "npm:1.0.1"
     chartjs-plugin-zoom: "npm:2.2.0"
-    component-emitter: "npm:2.0.0"
+    component-emitter: "npm:1.3.0"
     cropperjs: "npm:1.6.2"
     downloadjs: "patch:downloadjs@npm%3A1.4.7#~/.yarn/patches/downloadjs-npm-1.4.7-952a4ef987.patch"
     esbuild: "npm:0.25.0"
@@ -341,7 +345,7 @@ __metadata:
     moment: "npm:2.30.1"
     moment-jdateformatparser: "npm:1.2.1"
     moment-timezone: "npm:0.5.47"
-    propagating-hammerjs: "npm:3.0.0"
+    propagating-hammerjs: "npm:2.0.1"
     quill: "npm:2.0.3"
     rangyinputs: "npm:1.2.0"
     raphael: "npm:2.3.0"
@@ -455,6 +459,42 @@ __metadata:
   version: 2.3.9
   resolution: "@types/sizzle@npm:2.3.9"
   checksum: 10c0/db0277ff62e8ebe6cdae2020fd045fd7fd19f29a3a2ce13c555b14fb00e105e79004883732118b9f2e8b943cb302645e9eddb4e7bdeef1a171da679cd4c32b72
+  languageName: node
+  linkType: hard
+
+"@xenorange/esbuild-plugin-banned-dependencies@npm:1.0.0":
+  version: 1.0.0
+  resolution: "@xenorange/esbuild-plugin-banned-dependencies@npm:1.0.0"
+  peerDependencies:
+    esbuild: 0.x.x
+  checksum: 10c0/b468b1d000c4fdd681d89e9061091ee8684fbf2845b4fa6b7bdc38ff6bd12fa07126e63263c26d92d5fe6522c56206d89259ebeeef1d8eb06b3378d21b59a067
+  languageName: node
+  linkType: hard
+
+"@xenorange/esbuild-plugin-faces-resource-loader@npm:1.0.0":
+  version: 1.0.0
+  resolution: "@xenorange/esbuild-plugin-faces-resource-loader@npm:1.0.0"
+  peerDependencies:
+    esbuild: 0.x.x
+  checksum: 10c0/5f7cfb9a58175039a54d5bb8da89a0c9e726485956b1f44edd81bd59b5b52262321870f5294943cff48a95835590194fa7d90514e2a36436234b47740304fef9
+  languageName: node
+  linkType: hard
+
+"@xenorange/esbuild-plugin-load-from-expression@npm:1.0.0":
+  version: 1.0.0
+  resolution: "@xenorange/esbuild-plugin-load-from-expression@npm:1.0.0"
+  peerDependencies:
+    esbuild: 0.x.x
+  checksum: 10c0/fa2f5871d45da491561fe202b6265e488b226e65c50700f319b08281d4466968e34cf259572e14081624b13027fecb3cf67ccadfb8ada0c789c6d2cb15d06069
+  languageName: node
+  linkType: hard
+
+"@xenorange/yarn-patch-package-update-squash@npm:1.0.0":
+  version: 1.0.0
+  resolution: "@xenorange/yarn-patch-package-update-squash@npm:1.0.0"
+  bin:
+    patch-update-squash: index.js
+  checksum: 10c0/d5c09124ee1f833f8fc20b40e8e7a027f2dd165b4f4320f67e74d0ef39443d4824ef19f89e0bdc0c4c19ebb1e9d93e4bb3a98434daacca7d32947c203a686c7b
   languageName: node
   linkType: hard
 
@@ -580,10 +620,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"component-emitter@npm:2.0.0":
-  version: 2.0.0
-  resolution: "component-emitter@npm:2.0.0"
-  checksum: 10c0/65dfaf787ea49eb48f0ffec766bda7ec67e8dbeb3b406f08724dcae842e0aa274731fcccb9280b77d2b41693061731a9080b60d276020246a146544cd9900b83
+"component-emitter@npm:1.3.0":
+  version: 1.3.0
+  resolution: "component-emitter@npm:1.3.0"
+  checksum: 10c0/68774a0a3754fb6c0ba53c2e88886dfbd0c773931066abb1d7fd1b0c893b2a838d8f088ab4dca1f18cc1a4fc2e6932019eba3ded2d931b5ba2241ce40e93a24f
   languageName: node
   linkType: hard
 
@@ -920,12 +960,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"propagating-hammerjs@npm:3.0.0":
-  version: 3.0.0
-  resolution: "propagating-hammerjs@npm:3.0.0"
+"propagating-hammerjs@npm:2.0.1":
+  version: 2.0.1
+  resolution: "propagating-hammerjs@npm:2.0.1"
   peerDependencies:
     "@egjs/hammerjs": ^2.0.17
-  checksum: 10c0/ac3dd6e6fdf4c84abc148d2b656bb3a66dd9eadef65daa25ea1dc632334523e7b1e4f1bbffce3256e75bf77543f94f4e6334f153a8a5e98e0ea8eb47bb02fda2
+  checksum: 10c0/c708d4fc2e11ddcc59c4d84dcb5bebc27093cbb7cab63a328b1486599be3b57a061cf58baf1f375decb62d6479589dcc5af260ee2695bcddee84785cad8eabca
   languageName: node
   linkType: hard
 
@@ -987,11 +1027,11 @@ __metadata:
 
 "typescript@patch:typescript@npm%3A5.7.3#optional!builtin<compat/typescript>":
   version: 5.7.3
-  resolution: "typescript@patch:typescript@npm%3A5.7.3#optional!builtin<compat/typescript>::version=5.7.3&hash=cef18b"
+  resolution: "typescript@patch:typescript@npm%3A5.7.3#optional!builtin<compat/typescript>::version=5.7.3&hash=5786d5"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10c0/3b56d6afa03d9f6172d0b9cdb10e6b1efc9abc1608efd7a3d2f38773d5d8cfb9bbc68dfb72f0a7de5e8db04fc847f4e4baeddcd5ad9c9feda072234f0d788896
+  checksum: 10c0/6fd7e0ed3bf23a81246878c613423730c40e8bdbfec4c6e4d7bf1b847cbb39076e56ad5f50aa9d7ebd89877999abaee216002d3f2818885e41c907caaa192cc4
   languageName: node
   linkType: hard
 

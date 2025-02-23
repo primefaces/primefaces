@@ -11,9 +11,9 @@
     "directory": "src/main/web"
   },
   "scripts": {
-    "build:bundle": "node build/bin/bundle.mjs",
-    "clean": "node build/bin/clean.mjs",
-    "verify": "node build/bin/verify.mjs"
+    "build": "run build:bundle",
+    "build:bundle": "node build/scripts/bundle.mjs",
+    "verify": "node build/scripts/verify.mjs"
   },
   "jsdocs": {},
   "dependencies": {
@@ -43,7 +43,7 @@
     "chart.js": "4.4.8",
     "chartjs-adapter-moment": "1.0.1",
     "chartjs-plugin-zoom": "2.2.0",
-    "component-emitter": "2.0.0",
+    "component-emitter": "1.3.0",
     "cropperjs": "1.6.2",
     "downloadjs": "patch:downloadjs@npm%3A1.4.7#~/.yarn/patches/downloadjs-npm-1.4.7-952a4ef987.patch",
     "hammerjs": "2.0.8",
@@ -62,7 +62,7 @@
     "moment": "2.30.1",
     "moment-jdateformatparser": "1.2.1",
     "moment-timezone": "0.5.47",
-    "propagating-hammerjs": "3.0.0",
+    "propagating-hammerjs": "2.0.1",
     "quill": "2.0.3",
     "rangyinputs": "1.2.0",
     "raphael": "2.3.0",
@@ -76,6 +76,10 @@
   "devDependencies": {
     "@types/node": "22.13.4",
     "@types/pnpapi": "^0.0.5",
+    "@xenorange/esbuild-plugin-banned-dependencies": "1.0.0",
+    "@xenorange/esbuild-plugin-faces-resource-loader": "1.0.0",
+    "@xenorange/esbuild-plugin-load-from-expression": "1.0.0",
+    "@xenorange/yarn-patch-package-update-squash": "1.0.0",
     "esbuild": "0.25.0",
     "typescript": "5.7.3"
   },
@@ -120,5 +124,5 @@
     "jquery": "4.0.0-beta.2",
     "jquery-ui@npm:>=1.8": "patch:jquery-ui@npm%3A1.14.1#~/.yarn/patches/jquery-ui-npm-1.14.1-ce85202c00.patch"
   },
-  "packageManager": "yarn@4.5.1"
+  "packageManager": "yarn@4.6.0"
 }

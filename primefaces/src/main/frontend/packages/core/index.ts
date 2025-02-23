@@ -16,6 +16,7 @@ import "./src/validation/validation.common.js";
 import "./src/validation/validation.converters.js";
 import "./src/validation/validation.validators.js";
 import "./src/validation/validation.highlighters.js";
+import "./src/validation/validation.bv.js";
 
 declare global {
     interface Window {
