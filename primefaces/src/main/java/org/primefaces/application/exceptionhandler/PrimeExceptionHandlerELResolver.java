@@ -23,17 +23,14 @@
  */
 package org.primefaces.application.exceptionhandler;
 
-import org.primefaces.util.LangUtils;
-
-import java.beans.FeatureDescriptor;
-import java.util.Iterator;
-import java.util.Map;
-
 import jakarta.el.ELContext;
 import jakarta.el.ELResolver;
 import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.lifecycle.ClientWindow;
+import org.primefaces.util.LangUtils;
+
+import java.util.Map;
 
 public class PrimeExceptionHandlerELResolver extends ELResolver {
 
@@ -83,11 +80,6 @@ public class PrimeExceptionHandlerELResolver extends ELResolver {
     @Override
     public boolean isReadOnly(ELContext context, Object base, Object property) {
         return true;
-    }
-
-    @Override
-    public Iterator<FeatureDescriptor> getFeatureDescriptors(ELContext context, Object base) {
-        return null;
     }
 
     @Override
