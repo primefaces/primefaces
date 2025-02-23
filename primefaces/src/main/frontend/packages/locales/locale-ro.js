@@ -226,7 +226,7 @@ if (window.PrimeFaces) {
       "primefaces.FileValidator.SIZE_LIMIT": "Dimensiunea fișierului nevalidă.",
       "primefaces.FileValidator.SIZE_LIMIT_detail": "Fișierul „{0}” nu trebuie să fie mai mare de {1}.",
       //optional for bean validation integration in client side validation
-      "javax.faces.validator.BeanValidator.MESSAGE": "{0}",
+      "javax.faces.validator.BeanValidator.MESSAGE": "{1}: {0}",
       "javax.validation.constraints.AssertFalse.message": "trebuie să fie fals",
       "javax.validation.constraints.AssertTrue.message": "trebuie să fie adevărat",
       "javax.validation.constraints.DecimalMax.message": "trebuie să fie mai mic sau egal cu {0}",

@@ -28,15 +28,15 @@ MyFaces:
 jakarta.faces.validator.BeanValidator.MESSAGE={1}: {0}
 ```
 
-Default CSV messages follow the convention of Mojarra.  
+Default CSV messages follow the convention of MyFaces.  
 However if you prefer to display the label along with the message, you can override it by adding {1} to the message.
 
 Default:
 ```js
-PrimeFaces.locales['en_US'].messages['jakarta.faces.validator.BeanValidator.MESSAGE'] = '{0}';
+PrimeFaces.locales['en_US'].messages['jakarta.faces.validator.BeanValidator.MESSAGE'] = '{1}: {0}';
 ```
 
-With Label:
+Without Label:
 ```js
-PrimeFaces.locales['en_US'].messages['jakarta.faces.validator.BeanValidator.MESSAGE'] = '{1}: {0}';
+PrimeFaces.locales['en_US'].messages['jakarta.faces.validator.BeanValidator.MESSAGE'] = '{0}';
 ```

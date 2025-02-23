@@ -231,7 +231,7 @@ if (window.PrimeFaces) {
       "primefaces.FileValidator.SIZE_LIMIT": "Файл өлшемі жарамсыз.",
       "primefaces.FileValidator.SIZE_LIMIT_detail": "'{0}' файлы {1}-ден үлкен болмауы керек.",
       //optional for bean validation integration in client side validation
-      "javax.faces.validator.BeanValidator.MESSAGE": "{0}",
+      "javax.faces.validator.BeanValidator.MESSAGE": "{1}: {0}",
       "javax.validation.constraints.AssertFalse.message": "жалған болуы керек",
       "javax.validation.constraints.AssertTrue.message": "шын болуы керек",
       "javax.validation.constraints.DecimalMax.message": "{0} мәнінен кем немесе оған тең болуы керек",

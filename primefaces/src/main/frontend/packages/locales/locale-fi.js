@@ -207,7 +207,7 @@ if (window.PrimeFaces) {
       "javax.faces.converter.NumberConverter.PERCENT_detail": "{2}: &#39;{0}&#39; ei voitu ymmärtää prosentteina. Esimerkki: {1}.",
       "javax.faces.converter.ShortConverter.SHORT": "{2}: &#39;{0}&#39; on oltava numero, joka koostuu yhdestä tai useammasta numerosta.",
       "javax.faces.converter.ShortConverter.SHORT_detail": "{2}: &#39;{0}&#39; on oltava luku väliltä -32768 ja 32767. Esimerkki: {1}.",
-      "javax.faces.validator.BeanValidator.MESSAGE": "{0}",
+      "javax.faces.validator.BeanValidator.MESSAGE": "{1}: {0}",
       "javax.faces.validator.DoubleRangeValidator.MAXIMUM": "{1}: Vahvistusvirhe: Arvo on suurempi kuin sallittu enimmäisarvo &#39;{0}&#39;.",
       "javax.faces.validator.DoubleRangeValidator.MINIMUM": "{1}: Vahvistusvirhe: Arvo on pienempi kuin sallittu vähimmäisarvo &#39;{0}&#39;.",
       "javax.faces.validator.DoubleRangeValidator.NOT_IN_RANGE": "{2}: Vahvistusvirhe: Määritetty attribuutti ei ole odotettujen arvojen {0} ja {1} välissä.",

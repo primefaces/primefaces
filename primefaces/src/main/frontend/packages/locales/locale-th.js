@@ -207,7 +207,7 @@ if (window.PrimeFaces) {
       "javax.faces.converter.NumberConverter.PERCENT_detail": "{2}: &#39;{0}&#39; ไม่สามารถเข้าใจเป็นเปอร์เซ็นต์ได้ ตัวอย่าง: {1}",
       "javax.faces.converter.ShortConverter.SHORT": "{2}: &#39;{0}&#39; ต้องเป็นตัวเลขที่ประกอบด้วยตัวเลขตั้งแต่หนึ่งหลักขึ้นไป",
       "javax.faces.converter.ShortConverter.SHORT_detail": "{2}: &#39;{0}&#39; ต้องเป็นตัวเลขระหว่าง -32768 ถึง 32767 ตัวอย่าง: {1}",
-      "javax.faces.validator.BeanValidator.MESSAGE": "{0}",
+      "javax.faces.validator.BeanValidator.MESSAGE": "{1}: {0}",
       "javax.faces.validator.DoubleRangeValidator.MAXIMUM": "{1}: ข้อผิดพลาดในการตรวจสอบความถูกต้อง: ค่ามากกว่าค่าสูงสุดที่อนุญาตคือ &#39;{0}&#39;",
       "javax.faces.validator.DoubleRangeValidator.MINIMUM": "{1}: ข้อผิดพลาดในการตรวจสอบความถูกต้อง: ค่าน้อยกว่าค่าต่ำสุดที่อนุญาตคือ &#39;{0}&#39;",
       "javax.faces.validator.DoubleRangeValidator.NOT_IN_RANGE": "{2}: ข้อผิดพลาดในการตรวจสอบความถูกต้อง: คุณลักษณะที่ระบุไม่ได้อยู่ระหว่างค่าที่คาดไว้ของ {0} ถึง {1}",

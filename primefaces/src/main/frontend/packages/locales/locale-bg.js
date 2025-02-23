@@ -207,7 +207,7 @@ if (window.PrimeFaces) {
       "javax.faces.converter.NumberConverter.PERCENT_detail": "{2}: „{0}“ не може да бъде разбрано като процент. Пример: {1}.",
       "javax.faces.converter.ShortConverter.SHORT": "{2}: „{0}“ трябва да е число, състоящо се от една или повече цифри.",
       "javax.faces.converter.ShortConverter.SHORT_detail": "{2}: „{0}“ трябва да е число между -32768 и 32767. Пример: {1}.",
-      "javax.faces.validator.BeanValidator.MESSAGE": "{0}",
+      "javax.faces.validator.BeanValidator.MESSAGE": "{1}: {0}",
       "javax.faces.validator.DoubleRangeValidator.MAXIMUM": "{1}: Грешка при валидиране: Стойността е по-голяма от допустимия максимум от „{0}“.",
       "javax.faces.validator.DoubleRangeValidator.MINIMUM": "{1}: Грешка при валидиране: Стойността е по-малка от допустимия минимум от „{0}“.",
       "javax.faces.validator.DoubleRangeValidator.NOT_IN_RANGE": "{2}: Грешка при валидиране: Посоченият атрибут не е между очакваните стойности на {0} и {1}.",

@@ -223,7 +223,7 @@ if (window.PrimeFaces) {
       "primefaces.FileValidator.ALLOW_TYPES_detail": "Érvénytelen fájltípus: '{0}'. Engedélyezett típusok: '{1}'.",
       "primefaces.FileValidator.SIZE_LIMIT": "Érvénytelen fájlméret.",
       "primefaces.FileValidator.SIZE_LIMIT_detail": "A(z) '{0}' fájl nem lehet nagyobb, mint {1}.",
-      "javax.faces.validator.BeanValidator.MESSAGE": "{0}",
+      "javax.faces.validator.BeanValidator.MESSAGE": "{1}: {0}",
       "javax.validation.constraints.AssertFalse.message": "hamisnak kell lennie",
       "javax.validation.constraints.AssertTrue.message": "igaznak kell lennie",
       "javax.validation.constraints.DecimalMax.message": "kisebbnek vagy egyenlőnek kell lennie, mint {0}",

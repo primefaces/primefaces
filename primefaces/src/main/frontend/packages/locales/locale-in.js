@@ -232,7 +232,7 @@ if (window.PrimeFaces) {
       "primefaces.FileValidator.SIZE_LIMIT": "Ukuran berkas tidak valid.",
       "primefaces.FileValidator.SIZE_LIMIT_detail": "File '{0}' tidak boleh lebih besar dari {1}.",
       //optional for bean validation integration in client side validation
-      "javax.faces.validator.BeanValidator.MESSAGE": "{0}",
+      "javax.faces.validator.BeanValidator.MESSAGE": "{1}: {0}",
       "javax.validation.constraints.AssertFalse.message": "pasti salah",
       "javax.validation.constraints.AssertTrue.message": "pasti benar",
       "javax.validation.constraints.DecimalMax.message": "harus lebih kecil atau sama dengan {0}",

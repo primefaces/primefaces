@@ -207,7 +207,7 @@ if (window.PrimeFaces) {
       "javax.faces.converter.NumberConverter.PERCENT_detail": "{2}: &#39;{0}&#39; ni bilo mogoče razumeti kot odstotek. Primer: {1}.",
       "javax.faces.converter.ShortConverter.SHORT": "{2}: &#39;{0}&#39; mora biti število, sestavljeno iz ene ali več števk.",
       "javax.faces.converter.ShortConverter.SHORT_detail": "{2}: &#39;{0}&#39; mora biti število med -32768 in 32767. Primer: {1}.",
-      "javax.faces.validator.BeanValidator.MESSAGE": "{0}",
+      "javax.faces.validator.BeanValidator.MESSAGE": "{1}: {0}",
       "javax.faces.validator.DoubleRangeValidator.MAXIMUM": "{1}: Napaka pri preverjanju: vrednost je večja od dovoljene največje vrednosti &#39;{0}&#39;.",
       "javax.faces.validator.DoubleRangeValidator.MINIMUM": "{1}: Napaka pri preverjanju: vrednost je manjša od najmanjše dovoljene vrednosti &#39;{0}&#39;.",
       "javax.faces.validator.DoubleRangeValidator.NOT_IN_RANGE": "{2}: Napaka pri preverjanju: Podani atribut ni med pričakovanima vrednostma {0} in {1}.",

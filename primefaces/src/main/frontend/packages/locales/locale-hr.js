@@ -231,7 +231,7 @@ if (window.PrimeFaces) {
       "primefaces.FileValidator.SIZE_LIMIT": "Nevaljana veličina datoteke.",
       "primefaces.FileValidator.SIZE_LIMIT_detail": "Datoteka '{0}' ne smije biti veća od {1}.",
       //optional for bean validation integration in client side validation
-      "javax.faces.validator.BeanValidator.MESSAGE": "{0}",
+      "javax.faces.validator.BeanValidator.MESSAGE": "{1}: {0}",
       "javax.validation.constraints.AssertFalse.message": "mora biti lažno",
       "javax.validation.constraints.AssertTrue.message": "mora biti istina",
       "javax.validation.constraints.DecimalMax.message": "mora biti manje od ili jednako {0}",

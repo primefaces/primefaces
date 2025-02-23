@@ -230,7 +230,7 @@ if (window.PrimeFaces) {
       "primefaces.FileValidator.SIZE_LIMIT": "파일 크기가 잘못되었습니다.",
       "primefaces.FileValidator.SIZE_LIMIT_detail": "파일 '{0}'은(는) {1}보다 클 수 없습니다.",
       //optional for bean validation integration in client side validation
-      "javax.faces.validator.BeanValidator.MESSAGE": "{0}",
+      "javax.faces.validator.BeanValidator.MESSAGE": "{1}: {0}",
       "javax.validation.constraints.AssertFalse.message": "거짓이어야 한다",
       "javax.validation.constraints.AssertTrue.message": "반드시 사실이어야 합니다",
       "javax.validation.constraints.DecimalMax.message": "{0}보다 작거나 같아야 합니다.",

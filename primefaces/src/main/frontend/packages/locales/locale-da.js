@@ -208,7 +208,7 @@ if (window.PrimeFaces) {
       "javax.faces.converter.NumberConverter.PERCENT_detail": "{2}: '{0}' kunne ikke forstås som en procentdel. Eksempel: {1}.",
       "javax.faces.converter.ShortConverter.SHORT": "{2}: '{0}' skal være et tal bestående af et eller flere cifre.",
       "javax.faces.converter.ShortConverter.SHORT_detail": "{2}: '{0}' skal være et tal mellem -32768 og 32767. Eksempel: {1}.",
-      "javax.faces.validator.BeanValidator.MESSAGE": "{0}",
+      "javax.faces.validator.BeanValidator.MESSAGE": "{1}: {0}",
       "javax.faces.validator.DoubleRangeValidator.MAXIMUM": "{1}: Valideringsfejl: Værdien er større end det tilladte maksimum på '{0}'.",
       "javax.faces.validator.DoubleRangeValidator.MINIMUM": "{1}: Valideringsfejl: Værdien er mindre end det tilladte minimum af '{0}'.",
       "javax.faces.validator.DoubleRangeValidator.NOT_IN_RANGE": "{2}: Valideringsfejl: Den angivne attribut er ikke mellem de forventede værdier for {0} og {1}.",

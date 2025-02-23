@@ -231,7 +231,7 @@ if (window.PrimeFaces) {
       "primefaces.FileValidator.SIZE_LIMIT": "Netinkamas failo dydis.",
       "primefaces.FileValidator.SIZE_LIMIT_detail": "Failas '{0}' negali būti didesnis nei {1}.",
       //optional for bean validation integration in client side validation
-      "javax.faces.validator.BeanValidator.MESSAGE": "{0}",
+      "javax.faces.validator.BeanValidator.MESSAGE": "{1}: {0}",
       "javax.validation.constraints.AssertFalse.message": "turi būti neteisinga reikšmė.",
       "javax.validation.constraints.AssertTrue.message": "turi būti teisinga reikšmė.",
       "javax.validation.constraints.DecimalMax.message": "turi būti mažesnis ar lygus {0}.",

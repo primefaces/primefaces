@@ -207,7 +207,7 @@ if (window.PrimeFaces) {
       "javax.faces.converter.NumberConverter.PERCENT_detail": "{2}: &#39;{0}&#39; نەتوانرا وەک لەسەدا تێبگەین. نموونە: {1}.",
       "javax.faces.converter.ShortConverter.SHORT": "{2}: &#39;{0}&#39; دەبێت ژمارەیەک بێت کە لە ژمارەیەک یان چەند ژمارەیەک پێکهاتبێت.",
       "javax.faces.converter.ShortConverter.SHORT_detail": "{2}: &#39;{0}&#39; دەبێت ژمارەیەک بێت لە نێوان -32768 و 32767. نموونە: {1}.",
-      "javax.faces.validator.BeanValidator.MESSAGE": "{0}",
+      "javax.faces.validator.BeanValidator.MESSAGE": "{1}: {0}",
       "javax.faces.validator.DoubleRangeValidator.MAXIMUM": "{1}: هەڵەی چەسپاندن: بەها زیاترە لە زۆرترین ڕێگەپێدراو لە &#39;{0}&#39;.",
       "javax.faces.validator.DoubleRangeValidator.MINIMUM": "{1}: هەڵەی چەسپاندن: بەها کەمترە لە کەمترین ڕێگەپێدراو لە &#39;{0}&#39;.",
       "javax.faces.validator.DoubleRangeValidator.NOT_IN_RANGE": "{2}: هەڵەی چەسپاندن: تایبەتمەندی دیاریکراو لە نێوان بەها چاوەڕوانکراوەکانی {0} و {1} نییە.",

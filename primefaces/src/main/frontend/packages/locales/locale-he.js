@@ -228,7 +228,7 @@ if (window.PrimeFaces) {
       "primefaces.FileValidator.ALLOW_TYPES_detail": "סוג קובץ לא חוקי: '{0}'. סוגים מותרים: '{1}'.",
       "primefaces.FileValidator.SIZE_LIMIT": "גודל קובץ לא חוקי.",
       "primefaces.FileValidator.SIZE_LIMIT_detail": "הקובץ '{0}' לא יכול להיות גדול מ-{1}.",
-      "javax.faces.validator.BeanValidator.MESSAGE": "{0}",
+      "javax.faces.validator.BeanValidator.MESSAGE": "{1}: {0}",
       "javax.validation.constraints.AssertFalse.message": "חייב להיות שקר",
       "javax.validation.constraints.AssertTrue.message": "חייב להיות נכון",
       "javax.validation.constraints.DecimalMax.message": "חייב להיות קטן או שווה ל-{0}",

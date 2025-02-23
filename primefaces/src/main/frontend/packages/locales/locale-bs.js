@@ -230,7 +230,7 @@ if (window.PrimeFaces) {
       "primefaces.FileValidator.ALLOW_TYPES_detail": "Nevažeći tip datoteke: '{0}'. Dozvoljeni tipovi: '{1}'.",
       "primefaces.FileValidator.SIZE_LIMIT": "Nevažeća veličina datoteke.",
       "primefaces.FileValidator.SIZE_LIMIT_detail": "Datoteka '{0}' ne smije biti veća od {1}.",
-      "javax.faces.validator.BeanValidator.MESSAGE": "{0}",
+      "javax.faces.validator.BeanValidator.MESSAGE": "{1}: {0}",
       "javax.validation.constraints.AssertFalse.message": "mora biti netačno.",
       "javax.validation.constraints.AssertTrue.message": "mora biti tačno.",
       "javax.validation.constraints.DecimalMax.message": "mora biti manje ili jednako {0}.",
