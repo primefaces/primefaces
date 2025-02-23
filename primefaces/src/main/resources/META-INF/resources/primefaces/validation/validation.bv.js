@@ -118,7 +118,7 @@ if (window.PrimeFaces) {
         validate: function(element, value) {
             if(value !== null && !this.EMAIL_ADDRESS_REGEX.test(value)) {
                 var vc = PrimeFaces.validation.ValidationContext;
-                return vc.getMessageBV(element, this.MESSAGE_ID, element.data('p-email-msg'));
+                throw vc.getMessageBV(element, this.MESSAGE_ID, element.data('p-email-msg'));
             }
         }
     };
