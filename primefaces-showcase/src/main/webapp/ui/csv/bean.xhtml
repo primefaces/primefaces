@@ -109,6 +109,11 @@
                     <p:message for="@previous"/>
                     <h:outputText value="#{beanValidationView.positiveOrZero}"/>
 
+                    <p:outputLabel for="@next" value="Email: (@Email)"/>
+                    <p:inputText value="#{beanValidationView.email}" label="Email"/>
+                    <p:message for="@previous"/>
+                    <h:outputText value="#{beanValidationView.email}"/>
+
                     <p:outputLabel for="@next" value="Radio Input"/>
                     <p:selectOneRadio value="#{beanValidationView.bool}">
                         <f:selectItem itemValue="#{true}" itemLabel="True"/>
