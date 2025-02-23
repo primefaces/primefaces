@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.graphicimage;
 
-import javax.faces.component.html.HtmlGraphicImage;
+import jakarta.faces.component.html.HtmlGraphicImage;
 
 
 public abstract class GraphicImageBase extends HtmlGraphicImage {

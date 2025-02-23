@@ -27,8 +27,8 @@ import org.primefaces.component.api.Pageable;
 
 import java.io.IOException;
 
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
 
 public class PageLinkRenderer {
 

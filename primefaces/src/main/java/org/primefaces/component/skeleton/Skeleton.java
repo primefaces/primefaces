@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.skeleton;
 
-import javax.faces.application.ResourceDependency;
+import jakarta.faces.application.ResourceDependency;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 public class Skeleton extends SkeletonBase {

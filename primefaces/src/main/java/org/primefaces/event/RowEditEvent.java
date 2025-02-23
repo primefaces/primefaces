@@ -23,9 +23,9 @@
  */
 package org.primefaces.event;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.behavior.Behavior;
-import javax.faces.event.PhaseId;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.behavior.Behavior;
+import jakarta.faces.event.PhaseId;
 
 public class RowEditEvent<T> extends AbstractAjaxBehaviorEvent {
 

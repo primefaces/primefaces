@@ -35,12 +35,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.FacesException;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.faces.lifecycle.ClientWindow;
-import javax.faces.render.ResponseStateManager;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.faces.FacesException;
+import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.lifecycle.ClientWindow;
+import jakarta.faces.render.ResponseStateManager;
+import jakarta.servlet.http.HttpServletResponse;
 
 public class PrimeClientWindow extends ClientWindow {
 
@@ -95,7 +95,7 @@ public class PrimeClientWindow extends ClientWindow {
     /**
      * Constructs the URL for the initialRedirect, which equals the current requested URL + the window id candidate.
      * We cant use
-     * {@link javax.faces.application.ViewHandler#getBookmarkableURL(javax.faces.context.FacesContext, java.lang.String, java.util.Map, boolean)}
+     * {@link jakarta.faces.application.ViewHandler#getBookmarkableURL(jakarta.faces.context.FacesContext, java.lang.String, java.util.Map, boolean)}
      * as the ViewRoot isn't available yet in the {@link FacesContext}.
      * Same applies for {@link ExternalContext#encodeRedirectURL(java.lang.String, java.util.Map)}.
      *

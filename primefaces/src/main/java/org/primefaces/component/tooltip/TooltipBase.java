@@ -25,7 +25,7 @@ package org.primefaces.component.tooltip;
 
 import org.primefaces.component.api.Widget;
 
-import javax.faces.component.UIOutput;
+import jakarta.faces.component.UIOutput;
 
 public abstract class TooltipBase extends UIOutput implements Widget {
 

@@ -29,9 +29,9 @@ import java.util.EnumSet;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
-import javax.faces.component.search.SearchExpressionContext;
-import javax.faces.component.search.SearchExpressionHint;
-import javax.faces.context.FacesContext;
+import jakarta.faces.component.search.SearchExpressionContext;
+import jakarta.faces.component.search.SearchExpressionHint;
+import jakarta.faces.context.FacesContext;
 
 public abstract class TimelineUpdater {
 
@@ -51,7 +51,7 @@ public abstract class TimelineUpdater {
      *
      * @param expression The expression to find the Timeline instance.
      * @return TimelineUpdater instance.
-     * @throws javax.faces.component.search.ComponentNotFoundException if the Timeline component can not be found by the given expression.
+     * @throws jakarta.faces.component.search.ComponentNotFoundException if the Timeline component can not be found by the given expression.
      */
     public static TimelineUpdater getCurrentInstance(String expression) {
         FacesContext context = FacesContext.getCurrentInstance();

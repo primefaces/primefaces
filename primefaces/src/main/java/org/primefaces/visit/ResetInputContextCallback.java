@@ -23,11 +23,11 @@
  */
 package org.primefaces.visit;
 
-import javax.faces.component.ContextCallback;
-import javax.faces.component.EditableValueHolder;
-import javax.faces.component.UIComponent;
-import javax.faces.component.visit.VisitContext;
-import javax.faces.context.FacesContext;
+import jakarta.faces.component.ContextCallback;
+import jakarta.faces.component.EditableValueHolder;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.visit.VisitContext;
+import jakarta.faces.context.FacesContext;
 
 /**
  * Backwards compatible support for JSF 2.3 and below.

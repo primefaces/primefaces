@@ -237,7 +237,7 @@ if (!PrimeFaces.widget) {
          * ```
          *
          * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg The widget configuration to be used for this widget instance.
-         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * This widget configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this
          * component.
          */
         init(cfg) {

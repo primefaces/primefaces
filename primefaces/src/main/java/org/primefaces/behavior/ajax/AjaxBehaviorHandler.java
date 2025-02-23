@@ -28,12 +28,12 @@ import org.primefaces.component.api.PrimeClientBehaviorHolder;
 
 import java.util.Map;
 
-import javax.faces.component.UIComponent;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.BehaviorEvent;
-import javax.faces.view.facelets.BehaviorConfig;
-import javax.faces.view.facelets.FaceletContext;
-import javax.faces.view.facelets.TagAttribute;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.faces.event.BehaviorEvent;
+import jakarta.faces.view.facelets.BehaviorConfig;
+import jakarta.faces.view.facelets.FaceletContext;
+import jakarta.faces.view.facelets.TagAttribute;
 
 public class AjaxBehaviorHandler extends AbstractBehaviorHandler<AjaxBehavior> {
 

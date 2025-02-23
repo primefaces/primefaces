@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.focus;
 
-import javax.faces.component.UIComponentBase;
+import jakarta.faces.component.UIComponentBase;
 
 
 public abstract class FocusBase extends UIComponentBase {

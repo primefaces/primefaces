@@ -34,7 +34,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-import javax.faces.context.ExternalContext;
+import jakarta.faces.context.ExternalContext;
 
 public class ExternalContextMock extends ExternalContext {
 
@@ -207,6 +207,11 @@ public class ExternalContextMock extends ExternalContext {
 
     @Override
     public void redirect(String url) throws IOException {
+
+    }
+
+    @Override
+    public void release() {
 
     }
 

@@ -29,7 +29,7 @@ import org.primefaces.util.MapBuilder;
 import java.util.Map;
 import java.util.Optional;
 
-import javax.faces.FacesException;
+import jakarta.faces.FacesException;
 
 public final class FilterConstraints {
 

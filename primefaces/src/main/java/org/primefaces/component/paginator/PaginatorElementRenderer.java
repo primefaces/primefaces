@@ -27,7 +27,7 @@ import org.primefaces.component.api.Pageable;
 
 import java.io.IOException;
 
-import javax.faces.context.FacesContext;
+import jakarta.faces.context.FacesContext;
 
 public interface PaginatorElementRenderer {
 

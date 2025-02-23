@@ -27,9 +27,9 @@ import org.primefaces.util.LangUtils;
 
 import java.util.regex.Pattern;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
-import javax.faces.context.FacesContext;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UINamingContainer;
+import jakarta.faces.context.FacesContext;
 
 public interface Widget {
 

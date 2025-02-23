@@ -28,9 +28,9 @@ import org.primefaces.model.file.UploadedFile;
 import java.io.File;
 import java.io.IOException;
 
-import javax.faces.FacesException;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.faces.FacesException;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
 
 public interface FileUploadChunkDecoder<T extends HttpServletRequest> {
 

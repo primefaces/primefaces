@@ -23,7 +23,7 @@
  */
 package org.primefaces.convert;
 
-public class BigIntegerConverter extends javax.faces.convert.BigIntegerConverter implements ClientConverter {
+public class BigIntegerConverter extends jakarta.faces.convert.BigIntegerConverter implements ClientConverter {
 
     @Override
     public String getConverterId() {

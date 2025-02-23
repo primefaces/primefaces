@@ -23,7 +23,7 @@
  */
 package org.primefaces.util;
 
-import javax.faces.context.FacesContext;
+import jakarta.faces.context.FacesContext;
 
 public class SharedStringBuilder {
 

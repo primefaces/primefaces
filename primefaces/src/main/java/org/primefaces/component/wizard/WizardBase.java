@@ -26,8 +26,8 @@ package org.primefaces.component.wizard;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
 
-import javax.faces.component.UIComponentBase;
-import javax.faces.component.behavior.ClientBehaviorHolder;
+import jakarta.faces.component.UIComponentBase;
+import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class WizardBase extends UIComponentBase implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
@@ -96,11 +96,11 @@ public abstract class WizardBase extends UIComponentBase implements Widget, Clie
         getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
-    public javax.el.MethodExpression getFlowListener() {
-        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.flowListener, null);
+    public jakarta.el.MethodExpression getFlowListener() {
+        return (jakarta.el.MethodExpression) getStateHelper().eval(PropertyKeys.flowListener, null);
     }
 
-    public void setFlowListener(javax.el.MethodExpression flowListener) {
+    public void setFlowListener(jakarta.el.MethodExpression flowListener) {
         getStateHelper().put(PropertyKeys.flowListener, flowListener);
     }
 

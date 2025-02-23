@@ -25,9 +25,9 @@ package org.primefaces.component.radiobutton;
 
 import org.primefaces.expression.SearchExpressionUtils;
 
-import javax.faces.application.ResourceDependency;
-import javax.faces.component.UINamingContainer;
-import javax.faces.context.FacesContext;
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.UINamingContainer;
+import jakarta.faces.context.FacesContext;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")

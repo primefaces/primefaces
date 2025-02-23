@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.tag;
 
-import javax.faces.component.UIOutput;
+import jakarta.faces.component.UIOutput;
 
 public abstract class TagBase extends UIOutput {
     public static final String COMPONENT_FAMILY = "org.primefaces.component";

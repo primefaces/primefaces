@@ -26,9 +26,9 @@ package org.primefaces.application.resource;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
 
-import javax.faces.application.Resource;
-import javax.faces.application.ResourceWrapper;
-import javax.faces.context.FacesContext;
+import jakarta.faces.application.Resource;
+import jakarta.faces.application.ResourceWrapper;
+import jakarta.faces.context.FacesContext;
 
 /**
  * {@link ResourceWrapper} which appends the version of PrimeFaces to the URL.

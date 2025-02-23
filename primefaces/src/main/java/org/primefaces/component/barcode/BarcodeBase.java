@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.barcode;
 
-import javax.faces.component.html.HtmlGraphicImage;
+import jakarta.faces.component.html.HtmlGraphicImage;
 
 
 public abstract class BarcodeBase extends HtmlGraphicImage {

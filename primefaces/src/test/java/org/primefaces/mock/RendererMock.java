@@ -23,7 +23,7 @@
  */
 package org.primefaces.mock;
 
-import javax.faces.render.Renderer;
+import jakarta.faces.render.Renderer;
 
 public class RendererMock extends Renderer {
 

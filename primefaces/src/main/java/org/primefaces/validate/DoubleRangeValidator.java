@@ -28,7 +28,7 @@ import org.primefaces.util.HTML;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DoubleRangeValidator extends javax.faces.validator.DoubleRangeValidator implements ClientValidator {
+public class DoubleRangeValidator extends jakarta.faces.validator.DoubleRangeValidator implements ClientValidator {
 
     private boolean minimumSet;
     private boolean maximumSet;

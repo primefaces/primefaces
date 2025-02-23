@@ -30,8 +30,8 @@ import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.util.Callbacks;
 
-import javax.faces.component.UICommand;
-import javax.faces.component.behavior.ClientBehaviorHolder;
+import jakarta.faces.component.UICommand;
+import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
 
 public abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcomeTarget, MenuItem, Confirmable,

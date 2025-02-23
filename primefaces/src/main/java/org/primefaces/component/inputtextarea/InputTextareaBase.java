@@ -115,11 +115,11 @@ public abstract class InputTextareaBase extends AbstractPrimeHtmlInputTextArea i
         this.getStateHelper().put(PropertyKeys.countBytesAsChars, countBytesAsChars);
     }
 
-    public javax.el.MethodExpression getCompleteMethod() {
-        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.completeMethod, null);
+    public jakarta.el.MethodExpression getCompleteMethod() {
+        return (jakarta.el.MethodExpression) getStateHelper().eval(PropertyKeys.completeMethod, null);
     }
 
-    public void setCompleteMethod(javax.el.MethodExpression completeMethod) {
+    public void setCompleteMethod(jakarta.el.MethodExpression completeMethod) {
         getStateHelper().put(PropertyKeys.completeMethod, completeMethod);
     }
 

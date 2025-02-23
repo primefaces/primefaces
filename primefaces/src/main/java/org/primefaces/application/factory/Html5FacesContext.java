@@ -23,10 +23,10 @@
  */
 package org.primefaces.application.factory;
 
-import javax.faces.context.FacesContext;
-import javax.faces.context.FacesContextWrapper;
-import javax.faces.context.ResponseWriter;
-import javax.faces.context.ResponseWriterWrapper;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.FacesContextWrapper;
+import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.context.ResponseWriterWrapper;
 
 /**
  * JSF generates all script tags with 'type="text/javascript"' which throws HTML5 validation warnings.

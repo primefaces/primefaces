@@ -53,30 +53,30 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.el.ELException;
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
-import javax.faces.FacesWrapper;
-import javax.faces.application.ConfigurableNavigationHandler;
-import javax.faces.application.NavigationCase;
-import javax.faces.component.EditableValueHolder;
-import javax.faces.component.StateHelper;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
-import javax.faces.component.UINamingContainer;
-import javax.faces.component.UIParameter;
-import javax.faces.component.ValueHolder;
-import javax.faces.component.behavior.ClientBehavior;
-import javax.faces.component.behavior.ClientBehaviorHolder;
-import javax.faces.component.html.HtmlOutputFormat;
-import javax.faces.component.visit.VisitContext;
-import javax.faces.component.visit.VisitHint;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.convert.Converter;
-import javax.faces.convert.ConverterException;
-import javax.faces.render.Renderer;
+import jakarta.el.ELException;
+import jakarta.el.ValueExpression;
+import jakarta.faces.FacesException;
+import jakarta.faces.FacesWrapper;
+import jakarta.faces.application.ConfigurableNavigationHandler;
+import jakarta.faces.application.NavigationCase;
+import jakarta.faces.component.EditableValueHolder;
+import jakarta.faces.component.StateHelper;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIInput;
+import jakarta.faces.component.UINamingContainer;
+import jakarta.faces.component.UIParameter;
+import jakarta.faces.component.ValueHolder;
+import jakarta.faces.component.behavior.ClientBehavior;
+import jakarta.faces.component.behavior.ClientBehaviorHolder;
+import jakarta.faces.component.html.HtmlOutputFormat;
+import jakarta.faces.component.visit.VisitContext;
+import jakarta.faces.component.visit.VisitHint;
+import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.convert.Converter;
+import jakarta.faces.convert.ConverterException;
+import jakarta.faces.render.Renderer;
 
 public class ComponentUtils {
 
@@ -409,14 +409,14 @@ public class ComponentUtils {
      */
     public static String calculateViewId(FacesContext context) {
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-        String viewId = (String) requestMap.get("javax.servlet.include.path_info");
+        String viewId = (String) requestMap.get("jakarta.servlet.include.path_info");
 
         if (viewId == null) {
             viewId = context.getExternalContext().getRequestPathInfo();
         }
 
         if (viewId == null) {
-            viewId = (String) requestMap.get("javax.servlet.include.servlet_path");
+            viewId = (String) requestMap.get("jakarta.servlet.include.servlet_path");
         }
 
         if (viewId == null) {
@@ -577,7 +577,7 @@ public class ComponentUtils {
     public static boolean isNestedWithinIterator(UIComponent component) {
         UIComponent parent = component;
         while (null != (parent = parent.getParent())) {
-            if (parent instanceof javax.faces.component.UIData || isUIRepeat(parent)
+            if (parent instanceof jakarta.faces.component.UIData || isUIRepeat(parent)
                     || (parent instanceof UITabPanel && ((UITabPanel) parent).isRepeating())) {
                 return true;
             }

@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.fileupload;
 
-import javax.faces.context.FacesContext;
+import jakarta.faces.context.FacesContext;
 
 public interface FileUploadDecoder {
 

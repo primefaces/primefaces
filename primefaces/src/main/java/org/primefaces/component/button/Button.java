@@ -30,7 +30,7 @@ import org.primefaces.util.LangUtils;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.application.ResourceDependency;
+import jakarta.faces.application.ResourceDependency;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")

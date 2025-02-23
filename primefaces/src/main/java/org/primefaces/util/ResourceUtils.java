@@ -38,20 +38,20 @@ import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
-import javax.faces.application.Application;
-import javax.faces.application.Resource;
-import javax.faces.application.ResourceHandler;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIOutput;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
+import jakarta.el.ValueExpression;
+import jakarta.faces.FacesException;
+import jakarta.faces.application.Application;
+import jakarta.faces.application.Resource;
+import jakarta.faces.application.ResourceHandler;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIOutput;
+import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.FacesContext;
 
 public class ResourceUtils {
 
-    public static final String RENDERER_SCRIPT = "javax.faces.resource.Script";
-    public static final String RENDERER_STYLESHEET = "javax.faces.resource.Stylesheet";
+    public static final String RENDERER_SCRIPT = "jakarta.faces.resource.Script";
+    public static final String RENDERER_STYLESHEET = "jakarta.faces.resource.Stylesheet";
     public static final String RES_NOT_FOUND = "RES_NOT_FOUND";
 
     /**

@@ -40,14 +40,14 @@
  * 
  * @interface {PrimeFaces.widget.AjaxStatus.EventToCallbackMap} EventToCallbackMap Maps between the
  * {@link AjaxStatusEventType} and the corresponding event handlers. Used by the {@link AjaxStatus} component.
- * @prop {PrimeFaces.widget.AjaxStatus.PfAjaxCompleteCallback | jsf.ajax.OnEventCallback | jsf.ajax.OnErrorCallback} EventToCallbackMap.complete
+ * @prop {PrimeFaces.widget.AjaxStatus.PfAjaxCompleteCallback | faces.ajax.OnEventCallback | faces.ajax.OnErrorCallback} EventToCallbackMap.complete
  * Callback for when an AJAX request completes, either successfully or with an error. Usually set via
  * `<p:ajaxStatus oncomplete="..."/>`.
- * @prop {PrimeFaces.widget.AjaxStatus.PfAjaxErrorCallback | jsf.ajax.OnErrorCallback} EventToCallbackMap.error Callback
+ * @prop {PrimeFaces.widget.AjaxStatus.PfAjaxErrorCallback | faces.ajax.OnErrorCallback} EventToCallbackMap.error Callback
  * for when an AJAX request fails. Usually set via `<p:ajaxStatus onerror="..."/>`.
- * @prop {PrimeFaces.widget.AjaxStatus.PfAjaxStartCallback | jsf.ajax.OnEventCallback} EventToCallbackMap.start Callback
+ * @prop {PrimeFaces.widget.AjaxStatus.PfAjaxStartCallback | faces.ajax.OnEventCallback} EventToCallbackMap.start Callback
  * for when an AJAX request starts. Usually set via `<p:ajaxStatus onstart="..."/>`.
- * @prop {PrimeFaces.widget.AjaxStatus.PfAjaxSuccessCallback | jsf.ajax.OnEventCallback} EventToCallbackMap.success
+ * @prop {PrimeFaces.widget.AjaxStatus.PfAjaxSuccessCallback | faces.ajax.OnEventCallback} EventToCallbackMap.success
  * Callback for when an AJAX request succeeds. Usually set via `<p:ajaxStatus onsuccess="..."/>`.
  * 
  * @prop {number | null} timeout The set-timeout timer ID for the timer of the delay before the AJAX status is
@@ -59,15 +59,15 @@
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  * 
- * @prop {PrimeFaces.widget.AjaxStatus.PfAjaxCompleteCallback | jsf.ajax.OnEventCallback | jsf.ajax.OnErrorCallback} cfg.complete
+ * @prop {PrimeFaces.widget.AjaxStatus.PfAjaxCompleteCallback | faces.ajax.OnEventCallback | faces.ajax.OnErrorCallback} cfg.complete
  * Client-side callback for when the AJAX behavior completes, i.e. when the request finishes, irrespective of whether it
  * succeeded or failed. 
- * @prop {PrimeFaces.widget.AjaxStatus.PfAjaxErrorCallback | jsf.ajax.OnErrorCallback} cfg.error Client-side callback
+ * @prop {PrimeFaces.widget.AjaxStatus.PfAjaxErrorCallback | faces.ajax.OnErrorCallback} cfg.error Client-side callback
  * for when the AJAX behavior fails, i.e. when the request fails.
  * @prop {number} cfg.delay Delay in milliseconds before displaying the AJAX status. Default is `0`, meaning immediate.
- * @prop {PrimeFaces.widget.AjaxStatus.PfAjaxStartCallback | jsf.ajax.OnEventCallback} cfg.start Client-side callback
+ * @prop {PrimeFaces.widget.AjaxStatus.PfAjaxStartCallback | faces.ajax.OnEventCallback} cfg.start Client-side callback
  * for when the AJAX behavior starts, i.e. the request is about to be sent.
- * @prop {PrimeFaces.widget.AjaxStatus.PfAjaxSuccessCallback | jsf.ajax.OnEventCallback} cfg.success Client-side
+ * @prop {PrimeFaces.widget.AjaxStatus.PfAjaxSuccessCallback | faces.ajax.OnEventCallback} cfg.success Client-side
  * callback for when the AJAX  behavior completes successfully, i.e. when the request succeeds.
  */
 PrimeFaces.widget.AjaxStatus = class AjaxStatus extends PrimeFaces.widget.BaseWidget {
@@ -138,8 +138,8 @@ PrimeFaces.widget.AjaxStatus = class AjaxStatus extends PrimeFaces.widget.BaseWi
         // also bind to Faces (f:ajax) events
         // NOTE: PrimeFaces fires "complete" as the final event, while Faces ends with either "success" or "error", 
         // requiring us to manually trigger a "complete" event in those cases
-        if (window.jsf && jsf.ajax) {
-            jsf.ajax.addOnEvent(function(data) {
+        if (window.faces && faces.ajax) {
+            faces.ajax.addOnEvent(function(data) {
                 if(data.status === 'begin') {
 
                     $this.timeout = PrimeFaces.queueTask(function() {
@@ -156,7 +156,7 @@ PrimeFaces.widget.AjaxStatus = class AjaxStatus extends PrimeFaces.widget.BaseWi
                 }
             });
 
-            jsf.ajax.addOnError(function(data) {
+            faces.ajax.addOnError(function(data) {
                 PrimeFaces.error(data);
                 $this.deleteTimeout();
                 $this.trigger('error', arguments);

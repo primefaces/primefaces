@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.spacer;
 
-import javax.faces.component.UIComponentBase;
+import jakarta.faces.component.UIComponentBase;
 
 
 public abstract class SpacerBase extends UIComponentBase {

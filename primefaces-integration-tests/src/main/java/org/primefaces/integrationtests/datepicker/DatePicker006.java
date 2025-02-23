@@ -28,9 +28,9 @@ import org.primefaces.integrationtests.general.utilities.TestUtils;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-import javax.annotation.PostConstruct;
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
 
 import lombok.Data;
 

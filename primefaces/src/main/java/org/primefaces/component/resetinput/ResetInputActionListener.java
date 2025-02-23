@@ -30,14 +30,14 @@ import org.primefaces.visit.ResetInputVisitCallback;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.el.ELContext;
-import javax.el.ValueExpression;
-import javax.faces.component.UIComponent;
-import javax.faces.component.visit.VisitContext;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.ActionListener;
+import jakarta.el.ELContext;
+import jakarta.el.ValueExpression;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.visit.VisitContext;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AbortProcessingException;
+import jakarta.faces.event.ActionEvent;
+import jakarta.faces.event.ActionListener;
 
 public class ResetInputActionListener implements ActionListener, Serializable {
 

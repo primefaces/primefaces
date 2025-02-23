@@ -29,7 +29,7 @@ import org.primefaces.component.datatable.DataTableRenderer;
 import java.io.IOException;
 import java.util.Map;
 
-import javax.faces.context.FacesContext;
+import jakarta.faces.context.FacesContext;
 
 public class ScrollFeature implements DataTableFeature {
 

@@ -31,8 +31,8 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.faces.context.FacesContext;
-import javax.validation.Validation;
+import jakarta.faces.context.FacesContext;
+import jakarta.validation.Validation;
 
 public class PrimeEnvironment {
 
@@ -53,7 +53,7 @@ public class PrimeEnvironment {
     public PrimeEnvironment(FacesContext context) {
         atLeastJsf40 = LangUtils.isClassAvailable("jakarta.faces.lifecycle.ClientWindowScoped");
 
-        atLeastBv11 = LangUtils.isClassAvailable("javax.validation.executable.ExecutableValidator");
+        atLeastBv11 = LangUtils.isClassAvailable("jakarta.validation.executable.ExecutableValidator");
 
         beanValidationAvailable = resolveBeanValidationAvailable();
 
@@ -70,7 +70,7 @@ public class PrimeEnvironment {
     }
 
     protected boolean resolveBeanValidationAvailable() {
-        boolean beanValidationAvailable = LangUtils.isClassAvailable("javax.validation.Validation");
+        boolean beanValidationAvailable = LangUtils.isClassAvailable("jakarta.validation.Validation");
 
         if (beanValidationAvailable) {
             // Trial-error approach to check for Bean Validation impl existence.

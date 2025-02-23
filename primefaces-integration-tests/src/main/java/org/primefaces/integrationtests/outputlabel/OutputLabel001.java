@@ -25,11 +25,11 @@ package org.primefaces.integrationtests.outputlabel;
 
 import java.io.Serializable;
 
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import lombok.Data;
 

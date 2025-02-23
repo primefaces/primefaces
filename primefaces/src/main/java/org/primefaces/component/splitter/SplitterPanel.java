@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.splitter;
 
-import javax.faces.component.UIComponent;
+import jakarta.faces.component.UIComponent;
 
 public class SplitterPanel extends SplitterPanelBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.SplitterPanel";

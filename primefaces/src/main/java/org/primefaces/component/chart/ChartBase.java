@@ -26,8 +26,8 @@ package org.primefaces.component.chart;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
 
-import javax.faces.component.UIComponentBase;
-import javax.faces.component.behavior.ClientBehaviorHolder;
+import jakarta.faces.component.UIComponentBase;
+import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class ChartBase extends UIComponentBase implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 

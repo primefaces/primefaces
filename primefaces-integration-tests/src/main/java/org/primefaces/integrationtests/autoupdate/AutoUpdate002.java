@@ -25,8 +25,8 @@ package org.primefaces.integrationtests.autoupdate;
 
 import java.io.Serializable;
 
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Named;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Named;
 
 import lombok.Data;
 

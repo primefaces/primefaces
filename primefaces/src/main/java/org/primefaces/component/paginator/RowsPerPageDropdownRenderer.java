@@ -30,10 +30,10 @@ import org.primefaces.util.HTML;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
-import javax.faces.component.UINamingContainer;
-import javax.faces.component.UIViewRoot;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
+import jakarta.faces.component.UINamingContainer;
+import jakarta.faces.component.UIViewRoot;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
 
 public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
 

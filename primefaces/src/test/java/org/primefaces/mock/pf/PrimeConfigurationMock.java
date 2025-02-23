@@ -28,7 +28,7 @@ import org.primefaces.config.PrimeEnvironment;
 
 import java.util.Map;
 
-import javax.faces.context.FacesContext;
+import jakarta.faces.context.FacesContext;
 
 public class PrimeConfigurationMock extends PrimeConfiguration {
 

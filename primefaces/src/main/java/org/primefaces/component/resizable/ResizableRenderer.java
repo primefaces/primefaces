@@ -29,9 +29,9 @@ import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIGraphic;
-import javax.faces.context.FacesContext;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIGraphic;
+import jakarta.faces.context.FacesContext;
 
 public class ResizableRenderer extends CoreRenderer {
 

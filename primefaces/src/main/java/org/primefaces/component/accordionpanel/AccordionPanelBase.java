@@ -29,7 +29,7 @@ import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.UITabPanel;
 import org.primefaces.component.api.Widget;
 
-import javax.faces.component.behavior.ClientBehaviorHolder;
+import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class AccordionPanelBase extends UITabPanel implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder,
         MultiViewStateAware<AccordionState> {
@@ -155,11 +155,11 @@ public abstract class AccordionPanelBase extends UITabPanel implements Widget, R
         getStateHelper().put(PropertyKeys.tabindex, tabindex);
     }
 
-    public javax.el.MethodExpression getTabController() {
-        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.tabController, null);
+    public jakarta.el.MethodExpression getTabController() {
+        return (jakarta.el.MethodExpression) getStateHelper().eval(PropertyKeys.tabController, null);
     }
 
-    public void setTabController(javax.el.MethodExpression tabController) {
+    public void setTabController(jakarta.el.MethodExpression tabController) {
         getStateHelper().put(PropertyKeys.tabController, tabController);
     }
 

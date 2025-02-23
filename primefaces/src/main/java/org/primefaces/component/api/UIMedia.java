@@ -28,8 +28,8 @@ import org.primefaces.util.Lazy;
 
 import java.io.IOException;
 
-import javax.faces.component.UIComponentBase;
-import javax.faces.context.FacesContext;
+import jakarta.faces.component.UIComponentBase;
+import jakarta.faces.context.FacesContext;
 
 /**
  * Base class for HTML5 audio and video components.

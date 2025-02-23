@@ -37,12 +37,12 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.el.PropertyNotFoundException;
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.validation.MessageInterpolator;
-import javax.validation.metadata.ConstraintDescriptor;
+import jakarta.el.PropertyNotFoundException;
+import jakarta.faces.FacesException;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.validation.MessageInterpolator;
+import jakarta.validation.metadata.ConstraintDescriptor;
 
 public class BeanValidationMetadataMapper {
 

@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.scrollpanel;
 
-import javax.faces.application.ResourceDependency;
+import jakarta.faces.application.ResourceDependency;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "scrollpanel/scrollpanel.css")

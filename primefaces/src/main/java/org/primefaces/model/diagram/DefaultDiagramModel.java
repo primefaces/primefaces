@@ -31,7 +31,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.model.ListDataModel;
+import jakarta.faces.model.ListDataModel;
 
 public class DefaultDiagramModel extends ListDataModel<Element> implements DiagramModel, Serializable {
 

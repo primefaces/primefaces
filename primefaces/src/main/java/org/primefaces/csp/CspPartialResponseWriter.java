@@ -32,10 +32,10 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Map;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.PartialResponseWriter;
-import javax.faces.context.ResponseWriter;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.PartialResponseWriter;
+import jakarta.faces.context.ResponseWriter;
 
 public class CspPartialResponseWriter extends PrimePartialResponseWriter {
 

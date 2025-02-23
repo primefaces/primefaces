@@ -28,19 +28,19 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
-import javax.faces.model.DataModel;
-import javax.faces.model.DataModelEvent;
-import javax.faces.model.DataModelListener;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.convert.Converter;
+import jakarta.faces.model.DataModel;
+import jakarta.faces.model.DataModelEvent;
+import jakarta.faces.model.DataModelListener;
 
 /**
  * DataModel to deal with huge datasets with by lazy loading, page by page.
  *
  * As long {@link DataModel} is not serializable,
  * see <a href="https://github.com/jakartaee/faces/issues/1585">...</a>,
- * do no extend from {@link javax.faces.model.ListDataModel}
+ * do no extend from {@link jakarta.faces.model.ListDataModel}
  * see #7699
  *
  * @param <T> The model class.

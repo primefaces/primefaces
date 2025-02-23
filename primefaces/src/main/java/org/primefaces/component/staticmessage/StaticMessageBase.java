@@ -29,8 +29,8 @@ import org.primefaces.util.LangUtils;
 
 import java.util.Collection;
 
-import javax.faces.component.UIComponentBase;
-import javax.faces.component.behavior.ClientBehaviorHolder;
+import jakarta.faces.component.UIComponentBase;
+import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class StaticMessageBase extends UIComponentBase implements Widget, ClientBehaviorHolder, MixedClientBehaviorHolder {
 

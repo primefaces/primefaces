@@ -31,12 +31,12 @@ import org.primefaces.util.MapBuilder;
 import java.util.Collection;
 import java.util.Map;
 
-import javax.faces.application.ResourceDependency;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.BehaviorEvent;
-import javax.faces.event.FacesEvent;
-import javax.faces.render.Renderer;
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.faces.event.BehaviorEvent;
+import jakarta.faces.event.FacesEvent;
+import jakarta.faces.render.Renderer;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -96,8 +96,8 @@ public class CascadeSelect extends CascadeSelectBase {
             if ("itemSelect".equals(eventName)) {
                 Renderer renderer = ComponentUtils.getUnwrappedRenderer(
                         context,
-                        "javax.faces.SelectOne",
-                        "javax.faces.Listbox");
+                        "jakarta.faces.SelectOne",
+                        "jakarta.faces.Listbox");
                 Object item = renderer.getConvertedValue(context, this, getSubmittedValue());
                 wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), item);
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());

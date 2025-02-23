@@ -26,8 +26,8 @@ package org.primefaces.component.selectmanybutton;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
 
-import javax.faces.component.UISelectMany;
-import javax.faces.component.behavior.ClientBehaviorHolder;
+import jakarta.faces.component.UISelectMany;
+import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class SelectManyButtonBase extends UISelectMany implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 

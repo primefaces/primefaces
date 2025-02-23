@@ -29,13 +29,13 @@ import org.primefaces.metadata.transformer.impl.BeanValidationInputMetadataTrans
 import java.io.IOException;
 import java.util.Iterator;
 
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.PreRenderComponentEvent;
-import javax.faces.event.SystemEvent;
-import javax.faces.event.SystemEventListener;
+import jakarta.faces.FacesException;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AbortProcessingException;
+import jakarta.faces.event.PreRenderComponentEvent;
+import jakarta.faces.event.SystemEvent;
+import jakarta.faces.event.SystemEventListener;
 
 public class MetadataTransformerExecutor implements SystemEventListener {
 

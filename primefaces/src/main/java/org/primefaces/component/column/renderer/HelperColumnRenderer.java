@@ -27,7 +27,7 @@ import org.primefaces.component.column.Column;
 
 import java.io.IOException;
 
-import javax.faces.context.FacesContext;
+import jakarta.faces.context.FacesContext;
 
 public interface HelperColumnRenderer {
 

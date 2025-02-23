@@ -35,11 +35,11 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Objects;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.component.ContextCallback;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.component.ContextCallback;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
 
 public class MessageRenderer extends UINotificationRenderer {
 

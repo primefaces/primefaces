@@ -28,8 +28,8 @@ import org.primefaces.model.ScheduleEvent;
 
 import java.time.Duration;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.behavior.Behavior;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.behavior.Behavior;
 
 public class ScheduleEntryResizeEvent extends AbstractAjaxBehaviorEvent {
 

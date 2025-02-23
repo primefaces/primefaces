@@ -29,7 +29,7 @@ import org.primefaces.util.Callbacks;
 import java.util.List;
 import java.util.Map;
 
-import javax.el.MethodExpression;
+import jakarta.el.MethodExpression;
 
 public interface MenuItem extends MenuElement, Confirmable {
 

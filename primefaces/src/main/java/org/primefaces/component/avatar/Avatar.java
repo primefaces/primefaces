@@ -25,7 +25,7 @@ package org.primefaces.component.avatar;
 
 import org.primefaces.util.LangUtils;
 
-import javax.faces.application.ResourceDependency;
+import jakarta.faces.application.ResourceDependency;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 public class Avatar extends AvatarBase {

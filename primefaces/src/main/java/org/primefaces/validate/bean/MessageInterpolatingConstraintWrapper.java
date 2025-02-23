@@ -27,8 +27,8 @@ import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.validation.MessageInterpolator;
-import javax.validation.metadata.ConstraintDescriptor;
+import jakarta.validation.MessageInterpolator;
+import jakarta.validation.metadata.ConstraintDescriptor;
 
 public class MessageInterpolatingConstraintWrapper extends ConstraintDescriptorWrapper<Annotation> {
 

@@ -26,7 +26,7 @@ package org.primefaces.component.galleria;
 import java.util.Collection;
 import java.util.Collections;
 
-import javax.faces.application.ResourceDependency;
+import jakarta.faces.application.ResourceDependency;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "galleria/galleria.css")

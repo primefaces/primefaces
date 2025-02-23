@@ -29,9 +29,9 @@ import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 
-import javax.faces.application.ResourceDependency;
-import javax.faces.component.behavior.ClientBehaviorContext;
-import javax.faces.context.FacesContext;
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.behavior.ClientBehaviorContext;
+import jakarta.faces.context.FacesContext;
 
 import org.json.JSONObject;
 

@@ -27,8 +27,8 @@ import org.primefaces.component.api.Widget;
 
 import java.util.List;
 
-import javax.faces.component.UIInput;
-import javax.faces.component.behavior.ClientBehaviorHolder;
+import jakarta.faces.component.UIInput;
+import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class TextEditorBase extends UIInput implements Widget, ClientBehaviorHolder {
 

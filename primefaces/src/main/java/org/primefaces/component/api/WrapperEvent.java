@@ -23,10 +23,10 @@
  */
 package org.primefaces.component.api;
 
-import javax.faces.component.UIComponent;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.FacesListener;
-import javax.faces.event.PhaseId;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.event.FacesEvent;
+import jakarta.faces.event.FacesListener;
+import jakarta.faces.event.PhaseId;
 
 public class WrapperEvent extends FacesEvent {
 

@@ -25,7 +25,7 @@ package org.primefaces.component.imagecropper;
 
 import org.primefaces.component.api.Widget;
 
-import javax.faces.component.UIInput;
+import jakarta.faces.component.UIInput;
 
 public abstract class ImageCropperBase extends UIInput implements Widget {
 

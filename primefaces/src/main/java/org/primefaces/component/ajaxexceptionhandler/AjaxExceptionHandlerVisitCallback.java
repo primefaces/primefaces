@@ -28,11 +28,11 @@ import org.primefaces.util.LangUtils;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIData;
-import javax.faces.component.visit.VisitCallback;
-import javax.faces.component.visit.VisitContext;
-import javax.faces.component.visit.VisitResult;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIData;
+import jakarta.faces.component.visit.VisitCallback;
+import jakarta.faces.component.visit.VisitContext;
+import jakarta.faces.component.visit.VisitResult;
 
 /**
  * {@link VisitCallback} which collects all {@link AjaxExceptionHandler}s.

@@ -23,8 +23,8 @@
  */
 package org.primefaces.component.cache;
 
-import javax.faces.component.visit.VisitContext;
-import javax.faces.context.FacesContext;
+import jakarta.faces.component.visit.VisitContext;
+import jakarta.faces.context.FacesContext;
 
 
 public class UICache extends UICacheBase {

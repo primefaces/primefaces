@@ -25,10 +25,10 @@ package org.primefaces.component.poll;
 
 import org.primefaces.PrimeFaces;
 
-import javax.el.MethodExpression;
-import javax.el.ValueExpression;
-import javax.faces.application.ResourceDependency;
-import javax.faces.context.FacesContext;
+import jakarta.el.MethodExpression;
+import jakarta.el.ValueExpression;
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.context.FacesContext;
 
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
@@ -38,7 +38,7 @@ public class Poll extends PollBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.Poll";
 
     @Override
-    public void broadcast(javax.faces.event.FacesEvent event) throws javax.faces.event.AbortProcessingException {
+    public void broadcast(jakarta.faces.event.FacesEvent event) throws jakarta.faces.event.AbortProcessingException {
         super.broadcast(event); //backward compatibility
 
         FacesContext facesContext = getFacesContext();

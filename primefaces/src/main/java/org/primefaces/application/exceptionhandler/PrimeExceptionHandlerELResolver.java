@@ -29,11 +29,11 @@ import java.beans.FeatureDescriptor;
 import java.util.Iterator;
 import java.util.Map;
 
-import javax.el.ELContext;
-import javax.el.ELResolver;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.faces.lifecycle.ClientWindow;
+import jakarta.el.ELContext;
+import jakarta.el.ELResolver;
+import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.lifecycle.ClientWindow;
 
 public class PrimeExceptionHandlerELResolver extends ELResolver {
 

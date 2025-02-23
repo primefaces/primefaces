@@ -3,11 +3,11 @@
 // so... just check if primefaces.js was rendered
 if (window.PrimeFaces) {
 
-    PrimeFaces.converter['javax.faces.Integer'] = {
+    PrimeFaces.converter['jakarta.faces.Integer'] = {
 
         regex: /^[-+]?\d+$/,
 
-        MESSAGE_ID: 'javax.faces.converter.IntegerConverter.INTEGER',
+        MESSAGE_ID: 'jakarta.faces.converter.IntegerConverter.INTEGER',
 
         convert: function(element, submittedValue) {
             if(submittedValue === null) {
@@ -28,11 +28,11 @@ if (window.PrimeFaces) {
         }
     };
 
-    PrimeFaces.converter['javax.faces.Long'] = {
+    PrimeFaces.converter['jakarta.faces.Long'] = {
 
         regex: /^[-+]?\d+$/,
 
-        MESSAGE_ID: 'javax.faces.converter.LongConverter.LONG',
+        MESSAGE_ID: 'jakarta.faces.converter.LongConverter.LONG',
 
         convert: function(element, submittedValue) {
             if(submittedValue === null) {
@@ -53,11 +53,11 @@ if (window.PrimeFaces) {
         }
     };
 
-    PrimeFaces.converter['javax.faces.Double'] = {
+    PrimeFaces.converter['jakarta.faces.Double'] = {
 
         regex: /^[-+]?\d*(\.\d+)?[d]?$/,
 
-        MESSAGE_ID: 'javax.faces.converter.DoubleConverter.DOUBLE',
+        MESSAGE_ID: 'jakarta.faces.converter.DoubleConverter.DOUBLE',
 
         convert: function(element, submittedValue) {
             if(submittedValue === null) {
@@ -78,11 +78,11 @@ if (window.PrimeFaces) {
         }
     };
 
-    PrimeFaces.converter['javax.faces.Float'] = {
+    PrimeFaces.converter['jakarta.faces.Float'] = {
 
         regex: /^[-+]?\d+(\.\d+)?[f]?$/,
 
-        MESSAGE_ID: 'javax.faces.converter.FloatConverter.FLOAT',
+        MESSAGE_ID: 'jakarta.faces.converter.FloatConverter.FLOAT',
 
         convert: function(element, submittedValue) {
             if(submittedValue === null) {
@@ -103,11 +103,11 @@ if (window.PrimeFaces) {
         }
     };
 
-    PrimeFaces.converter['javax.faces.Short'] = {
+    PrimeFaces.converter['jakarta.faces.Short'] = {
 
         regex: /^[-+]?\d+$/,
 
-        MESSAGE_ID: 'javax.faces.converter.ShortConverter.SHORT',
+        MESSAGE_ID: 'jakarta.faces.converter.ShortConverter.SHORT',
 
         convert: function(element, submittedValue) {
             if(submittedValue === null) {
@@ -128,11 +128,11 @@ if (window.PrimeFaces) {
         }
     };
 
-    PrimeFaces.converter['javax.faces.BigInteger'] = {
+    PrimeFaces.converter['jakarta.faces.BigInteger'] = {
 
         regex: /^[-+]?\d+$/,
 
-        MESSAGE_ID: 'javax.faces.converter.BigIntegerConverter.BIGINTEGER',
+        MESSAGE_ID: 'jakarta.faces.converter.BigIntegerConverter.BIGINTEGER',
 
         convert: function(element, submittedValue) {
             if(submittedValue === null) {
@@ -153,11 +153,11 @@ if (window.PrimeFaces) {
         }
     };
 
-    PrimeFaces.converter['javax.faces.BigDecimal'] = {
+    PrimeFaces.converter['jakarta.faces.BigDecimal'] = {
 
         regex: /^[-+]?\d+(\.\d+)?[d]?$/,
 
-        MESSAGE_ID: 'javax.faces.converter.BigDecimalConverter.DECIMAL',
+        MESSAGE_ID: 'jakarta.faces.converter.BigDecimalConverter.DECIMAL',
 
         convert: function(element, submittedValue) {
             if(submittedValue === null) {
@@ -178,11 +178,11 @@ if (window.PrimeFaces) {
         }
     };
 
-    PrimeFaces.converter['javax.faces.Byte'] = {
+    PrimeFaces.converter['jakarta.faces.Byte'] = {
 
         regex: /^-?\d+$/,
 
-        MESSAGE_ID: 'javax.faces.converter.ByteConverter.BYTE',
+        MESSAGE_ID: 'jakarta.faces.converter.ByteConverter.BYTE',
 
         convert: function(element, submittedValue) {
             if(submittedValue === null) {
@@ -209,9 +209,9 @@ if (window.PrimeFaces) {
         }
     };
 
-    PrimeFaces.converter['javax.faces.Character'] = {
+    PrimeFaces.converter['jakarta.faces.Character'] = {
 
-        MESSAGE_ID: 'javax.faces.converter.CharacterConverter.CHARACTER',
+        MESSAGE_ID: 'jakarta.faces.converter.CharacterConverter.CHARACTER',
 
         convert: function(element, submittedValue) {
             if(submittedValue === null) {
@@ -233,11 +233,11 @@ if (window.PrimeFaces) {
         }
     };
 
-    PrimeFaces.converter['javax.faces.Boolean'] = {
+    PrimeFaces.converter['jakarta.faces.Boolean'] = {
 
         regex: /^[-+]?\d+$/,
 
-        MESSAGE_ID: 'javax.faces.converter.BooleanConverter.BOOLEAN',
+        MESSAGE_ID: 'jakarta.faces.converter.BooleanConverter.BOOLEAN',
 
         convert: function(element, submittedValue) {
             if(submittedValue === null) {
@@ -259,11 +259,11 @@ if (window.PrimeFaces) {
         }
     };
 
-    PrimeFaces.converter['javax.faces.DateTime'] = {
+    PrimeFaces.converter['jakarta.faces.DateTime'] = {
 
-        DATE_ID: 'javax.faces.converter.DateTimeConverter.DATE',
-        TIME_ID: 'javax.faces.converter.DateTimeConverter.TIME',
-        DATETIME_ID: 'javax.faces.converter.DateTimeConverter.DATETIME',
+        DATE_ID: 'jakarta.faces.converter.DateTimeConverter.DATE',
+        TIME_ID: 'jakarta.faces.converter.DateTimeConverter.TIME',
+        DATETIME_ID: 'jakarta.faces.converter.DateTimeConverter.DATETIME',
 
         convert: function(element, submittedValue) {
             if(submittedValue === null) {
@@ -328,12 +328,12 @@ if (window.PrimeFaces) {
         }
     };
 
-    PrimeFaces.converter['javax.faces.Number'] = {
+    PrimeFaces.converter['jakarta.faces.Number'] = {
 
-        CURRENCY_ID: 'javax.faces.converter.NumberConverter.CURRENCY',
-        NUMBER_ID: 'javax.faces.converter.NumberConverter.NUMBER',
-        PATTERN_ID: 'javax.faces.converter.NumberConverter.PATTERN',
-        PERCENT_ID: 'javax.faces.converter.NumberConverter.PERCENT',
+        CURRENCY_ID: 'jakarta.faces.converter.NumberConverter.CURRENCY',
+        NUMBER_ID: 'jakarta.faces.converter.NumberConverter.NUMBER',
+        PATTERN_ID: 'jakarta.faces.converter.NumberConverter.PATTERN',
+        PERCENT_ID: 'jakarta.faces.converter.NumberConverter.PERCENT',
         REGEX: /^[-+]?\d+(\,\d+)?(\.\d+)?[d]?$/,
 
         convert: function(element, submittedValue) {

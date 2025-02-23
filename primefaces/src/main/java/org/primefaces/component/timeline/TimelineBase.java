@@ -32,9 +32,9 @@ import org.primefaces.util.LocaleUtils;
 import java.time.LocalDateTime;
 import java.util.Locale;
 
-import javax.faces.component.UIComponentBase;
-import javax.faces.component.behavior.ClientBehaviorHolder;
-import javax.faces.context.FacesContext;
+import jakarta.faces.component.UIComponentBase;
+import jakarta.faces.component.behavior.ClientBehaviorHolder;
+import jakarta.faces.context.FacesContext;
 
 
 public abstract class TimelineBase extends UIComponentBase implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder {

@@ -33,8 +33,8 @@ import org.primefaces.util.ELUtils;
 
 import java.util.Collection;
 
-import javax.el.MethodExpression;
-import javax.faces.component.behavior.ClientBehaviorHolder;
+import jakarta.el.MethodExpression;
+import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class DataTableBase extends UIPageableData implements Widget, RTLAware, ClientBehaviorHolder,
         PrimeClientBehaviorHolder, UITable<DataTableState> {
@@ -654,11 +654,11 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         getStateHelper().put(PropertyKeys.rowDragSelector, rowDragSelector);
     }
 
-    public javax.el.MethodExpression getDraggableRowsFunction() {
-        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.draggableRowsFunction, null);
+    public jakarta.el.MethodExpression getDraggableRowsFunction() {
+        return (jakarta.el.MethodExpression) getStateHelper().eval(PropertyKeys.draggableRowsFunction, null);
     }
 
-    public void setDraggableRowsFunction(javax.el.MethodExpression draggableRowsFunction) {
+    public void setDraggableRowsFunction(jakarta.el.MethodExpression draggableRowsFunction) {
         getStateHelper().put(PropertyKeys.draggableRowsFunction, draggableRowsFunction);
     }
 

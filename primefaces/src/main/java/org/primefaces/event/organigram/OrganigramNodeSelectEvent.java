@@ -25,8 +25,8 @@ package org.primefaces.event.organigram;
 
 import org.primefaces.model.OrganigramNode;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.behavior.Behavior;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.behavior.Behavior;
 
 /**
  * Event class for the "select" event.

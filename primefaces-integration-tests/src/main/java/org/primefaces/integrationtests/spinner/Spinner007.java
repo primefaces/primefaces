@@ -25,11 +25,11 @@ package org.primefaces.integrationtests.spinner;
 
 import java.io.Serializable;
 
-import javax.annotation.PostConstruct;
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 
 import lombok.Data;
 

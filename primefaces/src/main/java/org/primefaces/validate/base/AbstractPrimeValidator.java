@@ -25,10 +25,10 @@ package org.primefaces.validate.base;
 
 import org.primefaces.el.ValueExpressionStateHelper;
 
-import javax.faces.component.PartialStateHolder;
-import javax.faces.component.StateHelper;
-import javax.faces.context.FacesContext;
-import javax.faces.validator.Validator;
+import jakarta.faces.component.PartialStateHolder;
+import jakarta.faces.component.StateHelper;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.validator.Validator;
 
 public abstract class AbstractPrimeValidator implements Validator, PartialStateHolder {
     private StateHelper stateHelper;

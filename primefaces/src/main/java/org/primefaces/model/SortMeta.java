@@ -33,10 +33,10 @@ import org.primefaces.util.LangUtils;
 import java.io.Serializable;
 import java.util.Objects;
 
-import javax.el.MethodExpression;
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
-import javax.faces.context.FacesContext;
+import jakarta.el.MethodExpression;
+import jakarta.el.ValueExpression;
+import jakarta.faces.FacesException;
+import jakarta.faces.context.FacesContext;
 
 public class SortMeta implements Serializable, Comparable<SortMeta> {
 

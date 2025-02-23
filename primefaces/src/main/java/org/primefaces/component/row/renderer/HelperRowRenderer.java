@@ -27,7 +27,7 @@ import org.primefaces.component.row.Row;
 
 import java.io.IOException;
 
-import javax.faces.context.FacesContext;
+import jakarta.faces.context.FacesContext;
 
 public interface HelperRowRenderer {
 

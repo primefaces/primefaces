@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.dock;
 
-import javax.faces.application.ResourceDependency;
+import jakarta.faces.application.ResourceDependency;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "dock/dock.css")

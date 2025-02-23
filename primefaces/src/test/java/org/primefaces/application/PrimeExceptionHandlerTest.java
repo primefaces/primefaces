@@ -29,8 +29,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.el.ELException;
-import javax.faces.FacesException;
+import jakarta.el.ELException;
+import jakarta.faces.FacesException;
 
 import org.junit.jupiter.api.Test;
 

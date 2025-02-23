@@ -36,8 +36,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.FacesException;
-import javax.faces.context.FacesContext;
+import jakarta.faces.FacesException;
+import jakarta.faces.context.FacesContext;
 
 public class SelectionFeature implements TreeTableFeature {
 

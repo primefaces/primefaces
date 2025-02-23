@@ -23,7 +23,7 @@
  */
 package org.primefaces.convert;
 
-public class IntegerConverter extends javax.faces.convert.IntegerConverter implements ClientConverter {
+public class IntegerConverter extends jakarta.faces.convert.IntegerConverter implements ClientConverter {
 
     @Override
     public String getConverterId() {

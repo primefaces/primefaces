@@ -30,10 +30,10 @@ import org.primefaces.util.WidgetBuilder;
 import java.awt.Color;
 import java.io.IOException;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.convert.ConverterException;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.convert.ConverterException;
 
 public class KnobRenderer extends CoreRenderer {
 

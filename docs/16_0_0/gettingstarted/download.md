@@ -7,26 +7,16 @@ it as a dependency.
 ## Download with Maven
 Group id is _org.primefaces_ and artifact id is _primefaces._
 
-### JSF / Java Server Faces (2.3, javax namespace)
+### Jakarta Faces (4.0 - 5.0, jakarta namespace)
 
 ```xml
 <dependency>
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces</artifactId>
-    <version>15.0.0</version>
+    <version>16.0.0</version>
 </dependency>
 ```
 
-### Jakarta Faces (3.0 - 4.X, jakarta namespace)
-
-```xml
-<dependency>
-    <groupId>org.primefaces</groupId>
-    <artifactId>primefaces</artifactId>
-    <version>15.0.0</version>
-    <classifier>jakarta</classifier>
-</dependency>
-```
 
 
 ### Additional themes
@@ -35,6 +25,6 @@ Group id is _org.primefaces_ and artifact id is _primefaces._
 <dependency>
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces-themes</artifactId>
-    <version>15.0.0</version>
+    <version>16.0.0</version>
 </dependency>
 ```

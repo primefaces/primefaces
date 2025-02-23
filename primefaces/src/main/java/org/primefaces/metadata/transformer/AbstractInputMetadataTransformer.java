@@ -28,12 +28,12 @@ import org.primefaces.context.PrimeApplicationContext;
 
 import java.io.IOException;
 
-import javax.faces.component.EditableValueHolder;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
-import javax.faces.component.html.HtmlInputSecret;
-import javax.faces.component.html.HtmlInputText;
-import javax.faces.context.FacesContext;
+import jakarta.faces.component.EditableValueHolder;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIInput;
+import jakarta.faces.component.html.HtmlInputSecret;
+import jakarta.faces.component.html.HtmlInputText;
+import jakarta.faces.context.FacesContext;
 
 public abstract class AbstractInputMetadataTransformer implements MetadataTransformer {
 

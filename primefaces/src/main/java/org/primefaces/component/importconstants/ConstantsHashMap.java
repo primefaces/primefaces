@@ -25,7 +25,7 @@ package org.primefaces.component.importconstants;
 
 import java.util.LinkedHashMap;
 
-import javax.faces.FacesException;
+import jakarta.faces.FacesException;
 
 /**
  * Custom {@link LinkedHashMap} which throws an {@link FacesException} if the key/constant does not exist.

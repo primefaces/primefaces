@@ -23,7 +23,7 @@
  */
 package org.primefaces.convert;
 
-public class BooleanConverter extends javax.faces.convert.BooleanConverter implements ClientConverter {
+public class BooleanConverter extends jakarta.faces.convert.BooleanConverter implements ClientConverter {
 
     @Override
     public String getConverterId() {

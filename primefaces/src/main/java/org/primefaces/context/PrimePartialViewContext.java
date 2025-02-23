@@ -32,13 +32,13 @@ import org.primefaces.util.LangUtils;
 import org.primefaces.visit.ResetInputContextCallback;
 import org.primefaces.visit.ResetInputVisitCallback;
 
-import javax.faces.component.EditableValueHolder;
-import javax.faces.component.visit.VisitContext;
-import javax.faces.context.FacesContext;
-import javax.faces.context.PartialResponseWriter;
-import javax.faces.context.PartialViewContext;
-import javax.faces.context.PartialViewContextWrapper;
-import javax.faces.event.PhaseId;
+import jakarta.faces.component.EditableValueHolder;
+import jakarta.faces.component.visit.VisitContext;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.PartialResponseWriter;
+import jakarta.faces.context.PartialViewContext;
+import jakarta.faces.context.PartialViewContextWrapper;
+import jakarta.faces.event.PhaseId;
 
 public class PrimePartialViewContext extends PartialViewContextWrapper {
 
@@ -102,7 +102,7 @@ public class PrimePartialViewContext extends PartialViewContextWrapper {
      * Visit the current renderIds and, if the component is
      * an instance of {@link EditableValueHolder},
      * call its {@link EditableValueHolder#resetValue} method.
-     * Use {@link javax.faces.component.UIComponent#visitTree} to do the visiting.</p>
+     * Use {@link jakarta.faces.component.UIComponent#visitTree} to do the visiting.</p>
      *
      * @param context The current {@link FacesContext}.
      * @see <a href="https://github.com/jakartaee/faces/issues/1936">Faces Issue #1936</a>

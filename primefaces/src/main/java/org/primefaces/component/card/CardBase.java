@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.card;
 
-import javax.faces.component.UIComponentBase;
+import jakarta.faces.component.UIComponentBase;
 
 public class CardBase extends UIComponentBase {
 

@@ -174,7 +174,7 @@ if (window.PrimeFaces) {
     },
     messages: {
       //optional for Client Side Validation
-      "javax.faces.component.UIInput.REQUIRED": "{0}: Greška validacije: Vrednost je obavezna.",
+      "jakarta.faces.component.UIInput.REQUIRED": "{0}: Greška validacije: Vrednost je obavezna.",
       // other messages...
     },
   });

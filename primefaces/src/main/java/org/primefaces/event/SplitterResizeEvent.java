@@ -25,8 +25,8 @@ package org.primefaces.event;
 
 import java.util.List;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.behavior.Behavior;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.behavior.Behavior;
 
 public class SplitterResizeEvent extends AbstractAjaxBehaviorEvent {
     private static final long serialVersionUID = 1L;

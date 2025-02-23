@@ -3,9 +3,9 @@
 // so... just check if primefaces.js was rendered
 if (window.PrimeFaces) {
 
-    PrimeFaces.validator['javax.faces.Length'] = {
-        MINIMUM_MESSAGE_ID: 'javax.faces.validator.LengthValidator.MINIMUM',
-        MAXIMUM_MESSAGE_ID: 'javax.faces.validator.LengthValidator.MAXIMUM',
+    PrimeFaces.validator['jakarta.faces.Length'] = {
+        MINIMUM_MESSAGE_ID: 'jakarta.faces.validator.LengthValidator.MINIMUM',
+        MAXIMUM_MESSAGE_ID: 'jakarta.faces.validator.LengthValidator.MAXIMUM',
 
         validate: function(element) {
             var length = element.val().length,
@@ -23,11 +23,11 @@ if (window.PrimeFaces) {
         }
     };
 
-    PrimeFaces.validator['javax.faces.LongRange'] = {
-        MINIMUM_MESSAGE_ID: 'javax.faces.validator.LongRangeValidator.MINIMUM',
-        MAXIMUM_MESSAGE_ID: 'javax.faces.validator.LongRangeValidator.MAXIMUM',
-        NOT_IN_RANGE_MESSAGE_ID: 'javax.faces.validator.LongRangeValidator.NOT_IN_RANGE',
-        TYPE_MESSAGE_ID: 'javax.faces.validator.LongRangeValidator.TYPE',
+    PrimeFaces.validator['jakarta.faces.LongRange'] = {
+        MINIMUM_MESSAGE_ID: 'jakarta.faces.validator.LongRangeValidator.MINIMUM',
+        MAXIMUM_MESSAGE_ID: 'jakarta.faces.validator.LongRangeValidator.MAXIMUM',
+        NOT_IN_RANGE_MESSAGE_ID: 'jakarta.faces.validator.LongRangeValidator.NOT_IN_RANGE',
+        TYPE_MESSAGE_ID: 'jakarta.faces.validator.LongRangeValidator.TYPE',
         regex: /^-?\d+$/,
 
         validate: function(element, value) {
@@ -53,11 +53,11 @@ if (window.PrimeFaces) {
         }
     };
 
-    PrimeFaces.validator['javax.faces.DoubleRange'] = {
-        MINIMUM_MESSAGE_ID: 'javax.faces.validator.DoubleRangeValidator.MINIMUM',
-        MAXIMUM_MESSAGE_ID: 'javax.faces.validator.DoubleRangeValidator.MAXIMUM',
-        NOT_IN_RANGE_MESSAGE_ID: 'javax.faces.validator.DoubleRangeValidator.NOT_IN_RANGE',
-        TYPE_MESSAGE_ID: 'javax.faces.validator.DoubleRangeValidator.TYPE',
+    PrimeFaces.validator['jakarta.faces.DoubleRange'] = {
+        MINIMUM_MESSAGE_ID: 'jakarta.faces.validator.DoubleRangeValidator.MINIMUM',
+        MAXIMUM_MESSAGE_ID: 'jakarta.faces.validator.DoubleRangeValidator.MAXIMUM',
+        NOT_IN_RANGE_MESSAGE_ID: 'jakarta.faces.validator.DoubleRangeValidator.NOT_IN_RANGE',
+        TYPE_MESSAGE_ID: 'jakarta.faces.validator.DoubleRangeValidator.TYPE',
         regex: /^[-+]?\d*(\.\d+)?[d]?$/,
 
         validate: function(element, value) {
@@ -83,10 +83,10 @@ if (window.PrimeFaces) {
         }
     };
 
-    PrimeFaces.validator['javax.faces.RegularExpression'] = {
-        PATTERN_NOT_SET_MESSAGE_ID: 'javax.faces.validator.RegexValidator.PATTERN_NOT_SET',
-        NOT_MATCHED_MESSAGE_ID: 'javax.faces.validator.RegexValidator.NOT_MATCHED',
-        MATCH_EXCEPTION_MESSAGE_ID: 'javax.faces.validator.RegexValidator.MATCH_EXCEPTION',
+    PrimeFaces.validator['jakarta.faces.RegularExpression'] = {
+        PATTERN_NOT_SET_MESSAGE_ID: 'jakarta.faces.validator.RegexValidator.PATTERN_NOT_SET',
+        NOT_MATCHED_MESSAGE_ID: 'jakarta.faces.validator.RegexValidator.NOT_MATCHED',
+        MATCH_EXCEPTION_MESSAGE_ID: 'jakarta.faces.validator.RegexValidator.MATCH_EXCEPTION',
 
         validate: function(element, value) {
             if(value !== null) {

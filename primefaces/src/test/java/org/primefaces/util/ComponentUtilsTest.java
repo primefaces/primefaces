@@ -25,10 +25,10 @@ package org.primefaces.util;
 
 import org.primefaces.component.accordionpanel.AccordionPanel;
 
-import javax.faces.component.TransientStateHelper;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIPanel;
-import javax.faces.context.FacesContext;
+import jakarta.faces.component.TransientStateHelper;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIPanel;
+import jakarta.faces.context.FacesContext;
 
 import org.junit.jupiter.api.Test;
 

@@ -23,9 +23,9 @@
  */
 package org.primefaces.context;
 
-import javax.faces.context.ExternalContext;
-import javax.faces.context.ExternalContextWrapper;
-import javax.faces.context.FacesContext;
+import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.ExternalContextWrapper;
+import jakarta.faces.context.FacesContext;
 
 public class PrimeExternalContext extends ExternalContextWrapper {
 

@@ -69,7 +69,7 @@ public final class ComponentUtils {
         return script.contains("PrimeFaces.ab(") || script.contains("pf.ab(")
                 || script.contains("mojarra.ab(")
                 || script.contains("myfaces.ab(")
-                || script.contains("jsf.ajax.request") || script.contains("faces.ajax.request");
+                || script.contains("faces.ajax.request");
     }
 
     public static String getWidgetConfiguration(WebElement element) {

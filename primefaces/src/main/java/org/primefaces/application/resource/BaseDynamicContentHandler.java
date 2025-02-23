@@ -28,7 +28,7 @@ import org.primefaces.util.ResourceUtils;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
-import javax.faces.context.ExternalContext;
+import jakarta.faces.context.ExternalContext;
 
 public abstract class BaseDynamicContentHandler implements DynamicContentHandler {
 

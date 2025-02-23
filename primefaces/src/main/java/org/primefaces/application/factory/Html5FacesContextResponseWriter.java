@@ -27,9 +27,9 @@ import org.primefaces.renderkit.RendererUtils;
 
 import java.io.IOException;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.ResponseWriter;
-import javax.faces.context.ResponseWriterWrapper;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.context.ResponseWriterWrapper;
 
 /**
  * JSF generates all script tags with 'type="text/javascript"' which throws HTML5 validation warnings.

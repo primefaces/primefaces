@@ -28,12 +28,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.UISelectOne;
-import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
-import javax.faces.model.SelectItem;
-import javax.faces.model.SelectItemGroup;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UISelectOne;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.convert.Converter;
+import jakarta.faces.model.SelectItem;
+import jakarta.faces.model.SelectItemGroup;
 
 public abstract class SelectOneRenderer extends SelectRenderer {
 

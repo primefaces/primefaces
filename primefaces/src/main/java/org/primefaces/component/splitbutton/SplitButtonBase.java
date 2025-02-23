@@ -29,7 +29,7 @@ import org.primefaces.component.api.MenuItemAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.model.menu.MenuModel;
 
-import javax.faces.component.html.HtmlCommandButton;
+import jakarta.faces.component.html.HtmlCommandButton;
 
 public abstract class SplitButtonBase extends HtmlCommandButton implements AjaxSource, Confirmable, Widget, MenuItemAware {
 

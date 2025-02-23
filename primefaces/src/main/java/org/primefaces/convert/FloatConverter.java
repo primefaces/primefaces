@@ -23,7 +23,7 @@
  */
 package org.primefaces.convert;
 
-public class FloatConverter extends javax.faces.convert.FloatConverter implements ClientConverter {
+public class FloatConverter extends jakarta.faces.convert.FloatConverter implements ClientConverter {
 
     @Override
     public String getConverterId() {

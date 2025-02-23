@@ -29,10 +29,10 @@ import org.primefaces.util.LangUtils;
 import java.util.Map;
 import java.util.Objects;
 
-import javax.faces.component.UIInput;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.servlet.ServletContext;
+import jakarta.faces.component.UIInput;
+import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.FacesContext;
+import jakarta.servlet.ServletContext;
 
 /**
  * Container for all config parameters.

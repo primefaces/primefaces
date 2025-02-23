@@ -23,10 +23,10 @@
  */
 package org.primefaces.util;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIForm;
-import javax.faces.component.UINamingContainer;
-import javax.faces.component.UIOutput;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIForm;
+import jakarta.faces.component.UINamingContainer;
+import jakarta.faces.component.UIOutput;
 
 import org.junit.jupiter.api.Test;
 

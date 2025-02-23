@@ -35,20 +35,20 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.RandomAccess;
 
-import javax.el.ELException;
-import javax.el.ExpressionFactory;
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
-import javax.faces.component.UISelectItem;
-import javax.faces.component.UISelectItems;
-import javax.faces.component.ValueHolder;
-import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
-import javax.faces.convert.ConverterException;
-import javax.faces.model.SelectItem;
-import javax.faces.model.SelectItemGroup;
+import jakarta.el.ELException;
+import jakarta.el.ExpressionFactory;
+import jakarta.el.ValueExpression;
+import jakarta.faces.FacesException;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIInput;
+import jakarta.faces.component.UISelectItem;
+import jakarta.faces.component.UISelectItems;
+import jakarta.faces.component.ValueHolder;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.convert.Converter;
+import jakarta.faces.convert.ConverterException;
+import jakarta.faces.model.SelectItem;
+import jakarta.faces.model.SelectItemGroup;
 
 public abstract class SelectRenderer extends InputRenderer {
 
@@ -377,7 +377,7 @@ public abstract class SelectRenderer extends InputRenderer {
      * @param submittedValues The submitted value(s)
      *
      * @return <code>newSubmittedValues</code> merged with checked, disabled <code>oldValues</code>
-     * @throws javax.faces.FacesException if client side manipulation has been detected, in order to reject the submission
+     * @throws jakarta.faces.FacesException if client side manipulation has been detected, in order to reject the submission
      */
     protected List<String> validateSubmittedValues(FacesContext context, UIInput component, Object[] oldValues, String... submittedValues)
             throws FacesException {

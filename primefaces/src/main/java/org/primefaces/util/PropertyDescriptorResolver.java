@@ -31,7 +31,7 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
-import javax.faces.FacesException;
+import jakarta.faces.FacesException;
 
 public interface PropertyDescriptorResolver {
 

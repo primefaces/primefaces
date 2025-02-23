@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.tree;
 
-import javax.faces.component.UIColumn;
+import jakarta.faces.component.UIColumn;
 
 
 public abstract class UITreeNodeBase extends UIColumn {

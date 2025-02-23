@@ -25,8 +25,8 @@ package org.primefaces.event.data;
 
 import org.primefaces.event.AbstractAjaxBehaviorEvent;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.behavior.Behavior;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.behavior.Behavior;
 
 public class PageEvent extends AbstractAjaxBehaviorEvent {
 

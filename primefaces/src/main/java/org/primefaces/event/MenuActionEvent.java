@@ -25,8 +25,8 @@ package org.primefaces.event;
 
 import org.primefaces.model.menu.MenuItem;
 
-import javax.faces.component.UIComponent;
-import javax.faces.event.ActionEvent;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.event.ActionEvent;
 
 public class MenuActionEvent extends ActionEvent {
 

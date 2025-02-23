@@ -25,7 +25,7 @@ package org.primefaces.util;
 
 import java.beans.PropertyDescriptor;
 
-import javax.faces.FacesException;
+import jakarta.faces.FacesException;
 
 import org.junit.jupiter.api.Test;
 

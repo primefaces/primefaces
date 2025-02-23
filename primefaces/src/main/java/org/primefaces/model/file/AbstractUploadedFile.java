@@ -31,7 +31,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 
-import javax.faces.FacesException;
+import jakarta.faces.FacesException;
 
 import org.apache.commons.io.input.BoundedInputStream;
 

@@ -26,10 +26,10 @@ package org.primefaces.component.api;
 import java.io.Serializable;
 import java.util.Objects;
 
-import javax.faces.component.EditableValueHolder;
+import jakarta.faces.component.EditableValueHolder;
 
 /**
- * Keeps state of a component implementing {@link javax.faces.component.EditableValueHolder}.
+ * Keeps state of a component implementing {@link jakarta.faces.component.EditableValueHolder}.
  */
 @SuppressWarnings({"SerializableHasSerializationMethods", "NonSerializableFieldInSerializableClass"})
 public class SavedState implements Serializable {

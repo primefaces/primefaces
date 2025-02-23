@@ -32,13 +32,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import javax.el.MethodExpression;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIParameter;
-import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.BehaviorEvent;
-import javax.faces.event.FacesEvent;
+import jakarta.el.MethodExpression;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIParameter;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.ActionEvent;
+import jakarta.faces.event.BehaviorEvent;
+import jakarta.faces.event.FacesEvent;
 
 
 public class UIMenuItem extends UIMenuItemBase implements DialogReturnAware {

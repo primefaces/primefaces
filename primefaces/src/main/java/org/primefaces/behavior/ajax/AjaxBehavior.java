@@ -31,10 +31,10 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
 
-import javax.el.MethodExpression;
-import javax.faces.application.ResourceDependency;
-import javax.faces.component.behavior.ClientBehaviorHint;
-import javax.faces.event.AjaxBehaviorListener;
+import jakarta.el.MethodExpression;
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.behavior.ClientBehaviorHint;
+import jakarta.faces.event.AjaxBehaviorListener;
 
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

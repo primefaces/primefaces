@@ -1489,49 +1489,49 @@ import Cookies from "js-cookie";
          * @type {string}
          * @readonly
          */
-        PARTIAL_REQUEST_PARAM : "javax.faces.partial.ajax",
+        PARTIAL_REQUEST_PARAM : "jakarta.faces.partial.ajax",
 
         /**
          * Name of the POST parameter that contains the list of components to be updated.
          * @type {string}
          * @readonly
          */
-        PARTIAL_UPDATE_PARAM : "javax.faces.partial.render",
+        PARTIAL_UPDATE_PARAM : "jakarta.faces.partial.render",
 
         /**
          * Name of the POST parameter that contains the list of components to process.
          * @type {string}
          * @readonly
          */
-        PARTIAL_PROCESS_PARAM : "javax.faces.partial.execute",
+        PARTIAL_PROCESS_PARAM : "jakarta.faces.partial.execute",
 
         /**
          * Name of the POST parameter that indicates which element or component triggered the AJAX request.
          * @type {string}
          * @readonly
          */
-        PARTIAL_SOURCE_PARAM : "javax.faces.source",
+        PARTIAL_SOURCE_PARAM : "jakarta.faces.source",
 
         /**
          * Name of the POST parameter that contains the name of the current behavior event.
          * @type {string}
          * @readonly
          */
-        BEHAVIOR_EVENT_PARAM : "javax.faces.behavior.event",
+        BEHAVIOR_EVENT_PARAM : "jakarta.faces.behavior.event",
 
         /**
          * Name of the POST parameter that contains the name of the current partial behavior event.
          * @type {string}
          * @readonly
          */
-        PARTIAL_EVENT_PARAM : "javax.faces.partial.event",
+        PARTIAL_EVENT_PARAM : "jakarta.faces.partial.event",
 
         /**
          * Name of the POST parameter that indicates whether forms should have their values reset.
          * @type {string}
          * @readonly
          */
-        RESET_VALUES_PARAM : "javax.faces.partial.resetValues",
+        RESET_VALUES_PARAM : "jakarta.faces.partial.resetValues",
 
         /**
          * Name of the POST parameter that indicates whether `<p:autoUpdate>` tags should be ignored.
@@ -1552,21 +1552,21 @@ import Cookies from "js-cookie";
          * @type {string}
          * @readonly
          */
-        VIEW_STATE : "javax.faces.ViewState",
+        VIEW_STATE : "jakarta.faces.ViewState",
 
         /**
          * Name of the POST parameter with the current client window.
          * @type {string}
          * @readonly
          */
-        CLIENT_WINDOW : "javax.faces.ClientWindow",
+        CLIENT_WINDOW : "jakarta.faces.ClientWindow",
 
         /**
          * Name of the POST parameter that contains the view root.
          * @type {string}
          * @readonly
          */
-        VIEW_ROOT : "javax.faces.ViewRoot",
+        VIEW_ROOT : "jakarta.faces.ViewRoot",
 
         /**
          * Name of the POST parameter with the current client ID
@@ -1576,11 +1576,11 @@ import Cookies from "js-cookie";
         CLIENT_ID_DATA : "primefaces.clientid",
 
         /**
-         * Name of the faces resource servlet, eg. `javax.faces.resource`.
+         * Name of the faces resource servlet, eg. `jakarta.faces.resource`.
          * @type {string}
          * @readonly
          */
-        RESOURCE_IDENTIFIER: 'javax.faces.resource',
+        RESOURCE_IDENTIFIER: 'jakarta.faces.resource',
 
         /**
          * The current version of PrimeFaces.

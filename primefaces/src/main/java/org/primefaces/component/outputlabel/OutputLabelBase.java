@@ -25,7 +25,7 @@ package org.primefaces.component.outputlabel;
 
 import org.primefaces.component.api.RTLAware;
 
-import javax.faces.component.html.HtmlOutputLabel;
+import jakarta.faces.component.html.HtmlOutputLabel;
 
 
 public abstract class OutputLabelBase extends HtmlOutputLabel implements RTLAware {

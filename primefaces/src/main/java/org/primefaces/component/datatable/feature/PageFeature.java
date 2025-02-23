@@ -30,7 +30,7 @@ import org.primefaces.event.data.PostPageEvent;
 
 import java.io.IOException;
 
-import javax.faces.context.FacesContext;
+import jakarta.faces.context.FacesContext;
 
 public class PageFeature implements DataTableFeature {
 

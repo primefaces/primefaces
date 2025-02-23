@@ -35,7 +35,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.faces.context.FacesContext;
+import jakarta.faces.context.FacesContext;
 
 public abstract class DataTableExporter<P, O extends ExporterOptions> extends TableExporter<DataTable, P, O> {
 

@@ -25,8 +25,8 @@ package org.primefaces.event;
 
 import org.primefaces.model.TreeNode;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.behavior.Behavior;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.behavior.Behavior;
 
 public class NodeCollapseEvent extends AbstractAjaxBehaviorEvent {
 

@@ -23,7 +23,7 @@
  */
 package org.primefaces.model;
 
-import javax.faces.model.SelectItem;
+import jakarta.faces.model.SelectItem;
 
 public class NestedSelectItem extends SelectItem {
 

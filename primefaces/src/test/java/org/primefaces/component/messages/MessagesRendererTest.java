@@ -25,8 +25,8 @@ package org.primefaces.component.messages;
 
 import org.primefaces.mock.FacesContextMock;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

@@ -29,11 +29,11 @@ import org.primefaces.util.WidgetBuilder;
 import java.io.IOException;
 import java.time.Duration;
 
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.PhaseId;
+import jakarta.faces.FacesException;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.ActionEvent;
+import jakarta.faces.event.PhaseId;
 
 public class PollRenderer extends CoreRenderer {
 

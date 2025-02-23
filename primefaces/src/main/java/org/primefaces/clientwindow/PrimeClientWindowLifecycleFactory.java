@@ -25,8 +25,8 @@ package org.primefaces.clientwindow;
 
 import java.util.Iterator;
 
-import javax.faces.lifecycle.Lifecycle;
-import javax.faces.lifecycle.LifecycleFactory;
+import jakarta.faces.lifecycle.Lifecycle;
+import jakarta.faces.lifecycle.LifecycleFactory;
 
 public class PrimeClientWindowLifecycleFactory extends LifecycleFactory {
 

@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.headerrow;
 
-import javax.faces.component.UIComponentBase;
+import jakarta.faces.component.UIComponentBase;
 
 
 public abstract class HeaderRowBase extends UIComponentBase {
@@ -118,11 +118,11 @@ public abstract class HeaderRowBase extends UIComponentBase {
         getStateHelper().put(PropertyKeys.colspan, colspan);
     }
 
-    public javax.el.MethodExpression getSortFunction() {
-        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.sortFunction, null);
+    public jakarta.el.MethodExpression getSortFunction() {
+        return (jakarta.el.MethodExpression) getStateHelper().eval(PropertyKeys.sortFunction, null);
     }
 
-    public void setSortFunction(javax.el.MethodExpression sortFunction) {
+    public void setSortFunction(jakarta.el.MethodExpression sortFunction) {
         getStateHelper().put(PropertyKeys.sortFunction, sortFunction);
     }
 

@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.panelgrid;
 
-import javax.faces.component.UIPanel;
+import jakarta.faces.component.UIPanel;
 
 
 public abstract class PanelGridBase extends UIPanel {

@@ -31,10 +31,10 @@ import org.primefaces.util.MapBuilder;
 import java.util.Collection;
 import java.util.Map;
 
-import javax.faces.application.ResourceDependency;
-import javax.faces.component.behavior.ClientBehaviorHolder;
-import javax.faces.context.FacesContext;
-import javax.faces.event.BehaviorEvent;
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.behavior.ClientBehaviorHolder;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.BehaviorEvent;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")

@@ -31,10 +31,10 @@ import org.primefaces.util.WidgetBuilder;
 import java.io.IOException;
 import java.util.Arrays;
 
-import javax.el.MethodExpression;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
+import jakarta.el.MethodExpression;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
 
 public class TerminalRenderer extends CoreRenderer {
 

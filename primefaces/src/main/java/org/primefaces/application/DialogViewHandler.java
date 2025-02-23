@@ -27,9 +27,9 @@ import org.primefaces.util.Constants;
 
 import java.util.Map;
 
-import javax.faces.application.ViewHandler;
-import javax.faces.application.ViewHandlerWrapper;
-import javax.faces.context.FacesContext;
+import jakarta.faces.application.ViewHandler;
+import jakarta.faces.application.ViewHandlerWrapper;
+import jakarta.faces.context.FacesContext;
 
 public class DialogViewHandler extends ViewHandlerWrapper {
 

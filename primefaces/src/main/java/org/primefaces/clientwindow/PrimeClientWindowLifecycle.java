@@ -23,10 +23,10 @@
  */
 package org.primefaces.clientwindow;
 
-import javax.faces.context.FacesContext;
-import javax.faces.lifecycle.ClientWindow;
-import javax.faces.lifecycle.Lifecycle;
-import javax.faces.lifecycle.LifecycleWrapper;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.lifecycle.ClientWindow;
+import jakarta.faces.lifecycle.Lifecycle;
+import jakarta.faces.lifecycle.LifecycleWrapper;
 
 // We can't use a ClientWindowFactory as this is registered in the faces-config.xml
 // if we would add the client-window-factory entry, pre JSF2.3 would crash

@@ -37,9 +37,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
-import javax.faces.context.FacesContext;
+import jakarta.el.ValueExpression;
+import jakarta.faces.FacesException;
+import jakarta.faces.context.FacesContext;
 
 public class SelectionFeature implements DataTableFeature {
 

@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.stack;
 
-import javax.faces.application.ResourceDependency;
+import jakarta.faces.application.ResourceDependency;
 
 @ResourceDependency(library = "primefaces", name = "stack/stack.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")

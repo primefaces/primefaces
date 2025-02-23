@@ -25,8 +25,8 @@ package org.primefaces.util;
 
 import org.primefaces.expression.SearchExpressionUtils;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
 
 /**
  * Helper to generate javascript code of a client side validation*

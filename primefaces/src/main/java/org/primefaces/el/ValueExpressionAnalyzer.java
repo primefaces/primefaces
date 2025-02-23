@@ -23,11 +23,11 @@
  */
 package org.primefaces.el;
 
-import javax.el.ELContext;
-import javax.el.PropertyNotFoundException;
-import javax.el.ValueExpression;
-import javax.el.ValueReference;
-import javax.faces.el.CompositeComponentExpressionHolder;
+import jakarta.el.ELContext;
+import jakarta.el.PropertyNotFoundException;
+import jakarta.el.ValueExpression;
+import jakarta.el.ValueReference;
+import jakarta.faces.el.CompositeComponentExpressionHolder;
 
 public class ValueExpressionAnalyzer {
 

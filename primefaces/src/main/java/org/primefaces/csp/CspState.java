@@ -33,8 +33,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
-import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.faces.context.FacesContext;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Manages Content Security Policy (CSP) state for PrimeFaces applications.
@@ -134,7 +134,7 @@ public class CspState {
     protected boolean isForward(FacesContext context) {
         Object request = context.getExternalContext().getRequest();
         if (request instanceof HttpServletRequest) {
-            return ((HttpServletRequest) request).getAttribute("javax.servlet.forward.request_uri") != null;
+            return ((HttpServletRequest) request).getAttribute("jakarta.servlet.forward.request_uri") != null;
         }
         return false;
     }

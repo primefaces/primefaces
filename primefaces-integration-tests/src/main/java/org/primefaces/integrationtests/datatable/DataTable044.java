@@ -28,10 +28,10 @@ import org.primefaces.model.LazyDataModel;
 
 import java.io.Serializable;
 
-import javax.annotation.PostConstruct;
-import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 import lombok.Getter;
 import lombok.Setter;

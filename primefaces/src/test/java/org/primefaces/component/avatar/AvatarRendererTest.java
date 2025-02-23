@@ -25,7 +25,7 @@ package org.primefaces.component.avatar;
 
 import java.util.stream.Stream;
 
-import javax.faces.context.FacesContext;
+import jakarta.faces.context.FacesContext;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;

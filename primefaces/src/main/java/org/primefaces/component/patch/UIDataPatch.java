@@ -36,33 +36,33 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
-import javax.faces.application.Application;
-import javax.faces.application.FacesMessage;
-import javax.faces.application.StateManager;
-import javax.faces.component.EditableValueHolder;
-import javax.faces.component.UIColumn;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIComponentBase;
-import javax.faces.component.UIData;
-import javax.faces.component.UIForm;
-import javax.faces.component.UINamingContainer;
-import javax.faces.component.UIViewRoot;
-import javax.faces.component.UniqueIdVendor;
-import javax.faces.component.visit.VisitCallback;
-import javax.faces.component.visit.VisitContext;
-import javax.faces.component.visit.VisitHint;
-import javax.faces.component.visit.VisitResult;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.FacesListener;
-import javax.faces.event.PhaseId;
-import javax.faces.event.PostValidateEvent;
-import javax.faces.event.PreValidateEvent;
-import javax.faces.model.DataModel;
-import javax.faces.render.Renderer;
+import jakarta.el.ValueExpression;
+import jakarta.faces.FacesException;
+import jakarta.faces.application.Application;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.application.StateManager;
+import jakarta.faces.component.EditableValueHolder;
+import jakarta.faces.component.UIColumn;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIComponentBase;
+import jakarta.faces.component.UIData;
+import jakarta.faces.component.UIForm;
+import jakarta.faces.component.UINamingContainer;
+import jakarta.faces.component.UIViewRoot;
+import jakarta.faces.component.UniqueIdVendor;
+import jakarta.faces.component.visit.VisitCallback;
+import jakarta.faces.component.visit.VisitContext;
+import jakarta.faces.component.visit.VisitHint;
+import jakarta.faces.component.visit.VisitResult;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AbortProcessingException;
+import jakarta.faces.event.FacesEvent;
+import jakarta.faces.event.FacesListener;
+import jakarta.faces.event.PhaseId;
+import jakarta.faces.event.PostValidateEvent;
+import jakarta.faces.event.PreValidateEvent;
+import jakarta.faces.model.DataModel;
+import jakarta.faces.render.Renderer;
 
 // ------------------------------------------------------------- Private Classes
 // Private class to represent saved state information
@@ -89,7 +89,7 @@ import javax.faces.render.Renderer;
  * property.</p> <p>Only children of type {@link UIColumn} should
  * be processed by renderers associated with this component.</p>
  * <p>By default, the <code>rendererType</code> property is set to
- * <code>javax.faces.Table</code>.  This value can be changed by calling
+ * <code>jakarta.faces.Table</code>.  This value can be changed by calling
  * the <code>setRendererType()</code> method.</p>
  */
 
@@ -657,8 +657,8 @@ public abstract class UIDataPatch extends UIData {
      *
      * @param context {@link FacesContext} for the current request
      * @throws NullPointerException if <code>context</code> is <code>null</code>
-     * @see javax.faces.event.PreValidateEvent
-     * @see javax.faces.event.PostValidateEvent
+     * @see jakarta.faces.event.PreValidateEvent
+     * @see jakarta.faces.event.PostValidateEvent
      */
     @Override
     public void processValidators(FacesContext context) {
@@ -1274,7 +1274,7 @@ public abstract class UIDataPatch extends UIData {
 
 
     /**
-     * Called by {@link javax.faces.component.UIData#visitTree} to determine whether or not the
+     * Called by {@link jakarta.faces.component.UIData#visitTree} to determine whether or not the
      * <code>visitTree</code> implementation should visit the rows of UIData
      * or by manipulating the row index before visiting the components themselves.
      *
