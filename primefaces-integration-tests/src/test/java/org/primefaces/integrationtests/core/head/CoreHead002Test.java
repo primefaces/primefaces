@@ -88,14 +88,13 @@ public class CoreHead002Test extends AbstractPrimePageTest {
         for (WebElement script : scriptElements) {
             System.out.println(script.getDomAttribute("src"));
         }
-        assertEquals(7, scriptElements.size());
+        assertEquals(6, scriptElements.size());
         assertTrue(scriptElements.get(0).getDomAttribute("src").contains("jquery/jquery.js"));
         assertTrue(scriptElements.get(1).getDomAttribute("src").contains("core.js"));
         assertTrue(scriptElements.get(2).getDomAttribute("src").contains("components.js"));
         assertTrue(scriptElements.get(3).getDomAttribute("src").contains("moment/moment.js"));
         assertTrue(scriptElements.get(4).getDomAttribute("src").contains("chart/chart.js"));
-        assertTrue(scriptElements.get(5).getDomAttribute("src").contains("validation/validation.bv.js"));
-        assertTrue(scriptElements.get(6).getDomAttribute("src").contains("locales/locale-en.js"));
+        assertTrue(scriptElements.get(5).getDomAttribute("src").contains("locales/locale-en.js"));
         assertNoJavascriptErrors();
     }
 
