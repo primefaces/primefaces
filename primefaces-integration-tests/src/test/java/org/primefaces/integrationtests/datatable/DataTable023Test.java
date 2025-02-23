@@ -37,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 /**
  * Test for multiple filtered columns added via
- * {@link javax.faces.view.facelets.FaceletContext#includeFacelet} and filtered
+ * {@link jakarta.faces.view.facelets.FaceletContext#includeFacelet} and filtered
  * via method
  */
 class DataTable023Test extends AbstractDataTableTest {

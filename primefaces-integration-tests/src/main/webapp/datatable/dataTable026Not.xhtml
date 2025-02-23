@@ -22,7 +22,7 @@
 
                 <p:column headerText="ID" field="id"/>
                 <p:column headerText="salary notEquals" field="salary" filterMatchMode="notEquals"
-                          converter="javax.faces.Integer"/>
+                          converter="jakarta.faces.Integer"/>
                 <p:column headerText="last login notBetween" field="lastLoginDateTime" filterMatchMode="notBetween">
                     <f:facet name="filter">
                         <p:datePicker selectionMode="range" onchange="PF('wgtTable').filter()" id="lastLoginDateTimeFilter"
