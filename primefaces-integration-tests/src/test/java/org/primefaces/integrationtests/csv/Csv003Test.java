@@ -57,7 +57,7 @@ public class Csv003Test extends AbstractPrimePageTest {
         page.btnSave.click();
 
         // Assert
-        assertMessage(page.msgDatePast, "must be a past date.");
+        assertMessage(page.msgDatePast, "Time (@Past): must be a past date.");
     }
 
     @Test
@@ -87,7 +87,7 @@ public class Csv003Test extends AbstractPrimePageTest {
         page.btnSave.click();
 
         // Assert
-        assertMessage(page.msgDatePastOrPresent, "must be a date in the past or in the present.");
+        assertMessage(page.msgDatePastOrPresent, "Date (@PastOrPresent): must be a date in the past or in the present.");
     }
 
     @Test
@@ -132,7 +132,7 @@ public class Csv003Test extends AbstractPrimePageTest {
         page.btnSave.click();
 
         // Assert
-        assertMessage(page.msgDateFuture, "must be a future date.");
+        assertMessage(page.msgDateFuture, "DateTime (@Future): must be a future date.");
     }
 
     @Test
@@ -162,7 +162,7 @@ public class Csv003Test extends AbstractPrimePageTest {
         page.btnSave.click();
 
         // Assert
-        assertMessage(page.msgDateFutureOrPresent, "must be a date in the present or in the future.");
+        assertMessage(page.msgDateFutureOrPresent, "Date (@FutureOrPresent): must be a date in the present or in the future.");
     }
 
     @Test
