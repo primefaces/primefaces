@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<faces-config version="2.0" xmlns="http://java.sun.com/xml/ns/javaee"
+<faces-config version="4.0" xmlns="https://jakarta.ee/xml/ns/jakartaee"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
+              xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-facesconfig_4_0.xsd">
 
     <name>primefaces</name>
 
