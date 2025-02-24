@@ -35,11 +35,11 @@ import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.stream.Stream;
 
-import javax.faces.FacesException;
-import javax.faces.application.Application;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.faces.validator.ValidatorException;
+import jakarta.faces.FacesException;
+import jakarta.faces.application.Application;
+import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.validator.ValidatorException;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

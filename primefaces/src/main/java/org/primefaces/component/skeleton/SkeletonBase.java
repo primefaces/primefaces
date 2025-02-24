@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.skeleton;
 
-import javax.faces.component.UIComponentBase;
+import jakarta.faces.component.UIComponentBase;
 
 public abstract class SkeletonBase extends UIComponentBase {
 

@@ -5,33 +5,33 @@ if (window.PrimeFaces) {
     /**
      * Bean Validation Integration for PrimeFaces Client Side Validation Framework
      */
-    PrimeFaces.locales['en_US'].messages['javax.faces.validator.BeanValidator.MESSAGE'] = '{0}';
-    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.AssertFalse.message'] = 'must be false.';
-    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.AssertTrue.message'] = 'must be true.';
-    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.DecimalMax.message'] = 'must be less than or equal to {0}.';
-    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.DecimalMin.message'] = 'must be greater than or equal to {0}.';
-    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.Digits.message'] = 'numeric value out of bounds (<{0} digits>.<{1} digits> expected).';
-    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.Email.message'] = 'must be a well-formed email address.';
-    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.Future.message'] = 'must be a future date.';
-    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.FutureOrPresent.message'] = 'must be a date in the present or in the future.';
-    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.Max.message'] = 'must be less than or equal to {0}.';
-    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.Min.message'] = 'must be greater than or equal to {0}.';
-    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.Negative.message'] = 'must be less than 0.';
-    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.NegativeOrZero.message'] = 'must be less than or equal to 0.';
-    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.NotBlank.message'] = 'must not be blank.';
-    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.NotEmpty.message'] = 'must not be empty.';
-    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.NotNull.message'] = 'must not be null.';
-    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.Null.message'] = 'must be null.';
-    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.Past.message'] = 'must be a past date.';
-    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.PastOrPresent.message'] = 'must be a date in the past or in the present.';
-    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.Pattern.message'] = 'must match "{0}".';
-    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.Positive.message'] = 'must be greater than 0.';
-    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.PositiveOrZero.message'] = 'must be greater than or equal to 0.';
-    PrimeFaces.locales['en_US'].messages['javax.validation.constraints.Size.message'] = 'size must be between {0} and {1}.';
+    PrimeFaces.locales['en_US'].messages['jakarta.faces.validator.BeanValidator.MESSAGE'] = '{0}';
+    PrimeFaces.locales['en_US'].messages['jakarta.validatio.constraints.AssertFalse.message'] = 'must be false.';
+    PrimeFaces.locales['en_US'].messages['jakarta.validatio.constraints.AssertTrue.message'] = 'must be true.';
+    PrimeFaces.locales['en_US'].messages['jakarta.validatio.constraints.DecimalMax.message'] = 'must be less than or equal to {0}.';
+    PrimeFaces.locales['en_US'].messages['jakarta.validatio.constraints.DecimalMin.message'] = 'must be greater than or equal to {0}.';
+    PrimeFaces.locales['en_US'].messages['jakarta.validatio.constraints.Digits.message'] = 'numeric value out of bounds (<{0} digits>.<{1} digits> expected).';
+    PrimeFaces.locales['en_US'].messages['jakarta.validatio.constraints.Email.message'] = 'must be a well-formed email address.';
+    PrimeFaces.locales['en_US'].messages['jakarta.validatio.constraints.Future.message'] = 'must be a future date.';
+    PrimeFaces.locales['en_US'].messages['jakarta.validatio.constraints.FutureOrPresent.message'] = 'must be a date in the present or in the future.';
+    PrimeFaces.locales['en_US'].messages['jakarta.validatio.constraints.Max.message'] = 'must be less than or equal to {0}.';
+    PrimeFaces.locales['en_US'].messages['jakarta.validatio.constraints.Min.message'] = 'must be greater than or equal to {0}.';
+    PrimeFaces.locales['en_US'].messages['jakarta.validatio.constraints.Negative.message'] = 'must be less than 0.';
+    PrimeFaces.locales['en_US'].messages['jakarta.validatio.constraints.NegativeOrZero.message'] = 'must be less than or equal to 0.';
+    PrimeFaces.locales['en_US'].messages['jakarta.validatio.constraints.NotBlank.message'] = 'must not be blank.';
+    PrimeFaces.locales['en_US'].messages['jakarta.validatio.constraints.NotEmpty.message'] = 'must not be empty.';
+    PrimeFaces.locales['en_US'].messages['jakarta.validatio.constraints.NotNull.message'] = 'must not be null.';
+    PrimeFaces.locales['en_US'].messages['jakarta.validatio.constraints.Null.message'] = 'must be null.';
+    PrimeFaces.locales['en_US'].messages['jakarta.validatio.constraints.Past.message'] = 'must be a past date.';
+    PrimeFaces.locales['en_US'].messages['jakarta.validatio.constraints.PastOrPresent.message'] = 'must be a date in the past or in the present.';
+    PrimeFaces.locales['en_US'].messages['jakarta.validatio.constraints.Pattern.message'] = 'must match "{0}".';
+    PrimeFaces.locales['en_US'].messages['jakarta.validatio.constraints.Positive.message'] = 'must be greater than 0.';
+    PrimeFaces.locales['en_US'].messages['jakarta.validatio.constraints.PositiveOrZero.message'] = 'must be greater than or equal to 0.';
+    PrimeFaces.locales['en_US'].messages['jakarta.validatio.constraints.Size.message'] = 'size must be between {0} and {1}.';
 
     PrimeFaces.validator['AssertFalse'] = {
 
-        MESSAGE_ID: 'javax.validation.constraints.AssertFalse.message',
+        MESSAGE_ID: 'jakarta.validatio.constraints.AssertFalse.message',
 
         validate: function(element, value) {
             if(value === true) {
@@ -43,7 +43,7 @@ if (window.PrimeFaces) {
 
     PrimeFaces.validator['AssertTrue'] = {
 
-        MESSAGE_ID: 'javax.validation.constraints.AssertTrue.message',
+        MESSAGE_ID: 'jakarta.validatio.constraints.AssertTrue.message',
 
         validate: function(element, value) {
             if(value === false) {
@@ -55,7 +55,7 @@ if (window.PrimeFaces) {
 
     PrimeFaces.validator['DecimalMax'] = {
 
-        MESSAGE_ID: 'javax.validation.constraints.DecimalMax.message',
+        MESSAGE_ID: 'jakarta.validatio.constraints.DecimalMax.message',
 
         validate: function(element, value) {
             if(value !== null) {
@@ -71,7 +71,7 @@ if (window.PrimeFaces) {
 
     PrimeFaces.validator['DecimalMin'] = {
 
-        MESSAGE_ID: 'javax.validation.constraints.DecimalMin.message',
+        MESSAGE_ID: 'jakarta.validatio.constraints.DecimalMin.message',
 
         validate: function(element, value) {
             if(value !== null) {
@@ -87,7 +87,7 @@ if (window.PrimeFaces) {
 
     PrimeFaces.validator['Digits'] = {
 
-        MESSAGE_ID: 'javax.validation.constraints.Digits.message',
+        MESSAGE_ID: 'jakarta.validatio.constraints.Digits.message',
 
         validate: function(element, value) {
             if(value !== null) {
@@ -110,7 +110,7 @@ if (window.PrimeFaces) {
 
     PrimeFaces.validator['Email'] = {
 
-        MESSAGE_ID: 'javax.validation.constraints.Email.message',
+        MESSAGE_ID: 'jakarta.validatio.constraints.Email.message',
 
         // source: https://stackoverflow.com/questions/13992403/regex-validation-of-email-addresses-according-to-rfc5321-rfc5322/26989421#26989421
         EMAIL_ADDRESS_REGEX: /^([!#-'*+\/-9=?A-Z^-~-]+(\.[!#-'*+\/-9=?A-Z^-~-]+)*|"([]!#-[^-~ \t]|(\\[\t -~]))+")@([!#-'*+\/-9=?A-Z^-~-]+(\.[!#-'*+\/-9=?A-Z^-~-]+)*|\[[\t -Z^-~]*\])$/,
@@ -125,7 +125,7 @@ if (window.PrimeFaces) {
 
     PrimeFaces.validator['Future'] = {
 
-        MESSAGE_ID: 'javax.validation.constraints.Future.message',
+        MESSAGE_ID: 'jakarta.validatio.constraints.Future.message',
 
         validate: function(element, value) {
             if(value !== null && value <= new Date()) {
@@ -137,7 +137,7 @@ if (window.PrimeFaces) {
 
     PrimeFaces.validator['FutureOrPresent'] = {
 
-        MESSAGE_ID: 'javax.validation.constraints.FutureOrPresent.message',
+        MESSAGE_ID: 'jakarta.validatio.constraints.FutureOrPresent.message',
 
         validate: function(element, value) {
             if(value !== null && value < new Date()) {
@@ -149,7 +149,7 @@ if (window.PrimeFaces) {
 
     PrimeFaces.validator['Max'] = {
 
-        MESSAGE_ID: 'javax.validation.constraints.Max.message',
+        MESSAGE_ID: 'jakarta.validatio.constraints.Max.message',
 
         validate: function(element, value) {
             if(value !== null) {
@@ -165,7 +165,7 @@ if (window.PrimeFaces) {
 
     PrimeFaces.validator['Min'] = {
 
-        MESSAGE_ID: 'javax.validation.constraints.Min.message',
+        MESSAGE_ID: 'jakarta.validatio.constraints.Min.message',
 
         validate: function(element, value) {
             if(value !== null) {
@@ -181,7 +181,7 @@ if (window.PrimeFaces) {
 
     PrimeFaces.validator['Negative'] = {
 
-        MESSAGE_ID: 'javax.validation.constraints.Negative.message',
+        MESSAGE_ID: 'jakarta.validatio.constraints.Negative.message',
 
         validate: function(element, value) {
             if(value !== null && value >= 0) {
@@ -194,7 +194,7 @@ if (window.PrimeFaces) {
 
     PrimeFaces.validator['NegativeOrZero'] = {
 
-        MESSAGE_ID: 'javax.validation.constraints.NegativeOrZero.message',
+        MESSAGE_ID: 'jakarta.validatio.constraints.NegativeOrZero.message',
 
         validate: function(element, value) {
             if(value !== null && value > 0) {
@@ -207,7 +207,7 @@ if (window.PrimeFaces) {
 
     PrimeFaces.validator['NotBlank'] = {
 
-        MESSAGE_ID: 'javax.validation.constraints.NotBlank.message',
+        MESSAGE_ID: 'jakarta.validatio.constraints.NotBlank.message',
 
         validate: function(element, value) {
             if(value === null || value === undefined || 0 === value.trim().length) {
@@ -219,7 +219,7 @@ if (window.PrimeFaces) {
 
     PrimeFaces.validator['NotEmpty'] = {
 
-        MESSAGE_ID: 'javax.validation.constraints.NotEmpty.message',
+        MESSAGE_ID: 'jakarta.validatio.constraints.NotEmpty.message',
 
         validate: function(element, value) {
             if(value === null || value === undefined || 0 === value.length) {
@@ -231,7 +231,7 @@ if (window.PrimeFaces) {
 
     PrimeFaces.validator['NotNull'] = {
 
-        MESSAGE_ID: 'javax.validation.constraints.NotNull.message',
+        MESSAGE_ID: 'jakarta.validatio.constraints.NotNull.message',
 
         validate: function(element, value) {
             if(value === null || value === undefined) {
@@ -243,7 +243,7 @@ if (window.PrimeFaces) {
 
     PrimeFaces.validator['Null'] = {
 
-        MESSAGE_ID: 'javax.validation.constraints.Null.message',
+        MESSAGE_ID: 'jakarta.validatio.constraints.Null.message',
 
         validate: function(element, value) {
             if(value !== null) {
@@ -255,7 +255,7 @@ if (window.PrimeFaces) {
 
     PrimeFaces.validator['Past'] = {
 
-        MESSAGE_ID: 'javax.validation.constraints.Past.message',
+        MESSAGE_ID: 'jakarta.validatio.constraints.Past.message',
 
         validate: function(element, value) {
             if(value !== null && value >= new Date()) {
@@ -267,7 +267,7 @@ if (window.PrimeFaces) {
 
     PrimeFaces.validator['PastOrPresent'] = {
 
-        MESSAGE_ID: 'javax.validation.constraints.PastOrPresent.message',
+        MESSAGE_ID: 'jakarta.validatio.constraints.PastOrPresent.message',
 
         validate: function(element, value) {
             if(value !== null && value > new Date()) {
@@ -279,7 +279,7 @@ if (window.PrimeFaces) {
 
     PrimeFaces.validator['Pattern'] = {
 
-        MESSAGE_ID: 'javax.validation.constraints.Pattern.message',
+        MESSAGE_ID: 'jakarta.validatio.constraints.Pattern.message',
 
         validate: function(element, value) {
             if(value !== null) {
@@ -296,7 +296,7 @@ if (window.PrimeFaces) {
 
     PrimeFaces.validator['Positive'] = {
 
-        MESSAGE_ID: 'javax.validation.constraints.Positive.message',
+        MESSAGE_ID: 'jakarta.validatio.constraints.Positive.message',
 
         validate: function(element, value) {
             if(value !== null && value <= 0) {
@@ -309,7 +309,7 @@ if (window.PrimeFaces) {
 
     PrimeFaces.validator['PositiveOrZero'] = {
 
-        MESSAGE_ID: 'javax.validation.constraints.PositiveOrZero.message',
+        MESSAGE_ID: 'jakarta.validatio.constraints.PositiveOrZero.message',
 
         validate: function(element, value) {
             if(value !== null && value < 0) {
@@ -322,7 +322,7 @@ if (window.PrimeFaces) {
 
     PrimeFaces.validator['Size'] = {
 
-        MESSAGE_ID: 'javax.validation.constraints.Size.message',
+        MESSAGE_ID: 'jakarta.validatio.constraints.Size.message',
 
         validate: function(element, value) {
             if(value !== null){
@@ -384,8 +384,8 @@ if (window.PrimeFaces) {
 
             // see #7069
             // simulate the message handling of the server side BeanValidator
-            var wrapperBundle = (locale.messages && locale.messages['javax.faces.validator.BeanValidator.MESSAGE']) ? locale : PrimeFaces.locales['en_US'];
-            var wrapper = wrapperBundle.messages['javax.faces.validator.BeanValidator.MESSAGE'];
+            var wrapperBundle = (locale.messages && locale.messages['jakarta.faces.validator.BeanValidator.MESSAGE']) ? locale : PrimeFaces.locales['en_US'];
+            var wrapper = wrapperBundle.messages['jakarta.faces.validator.BeanValidator.MESSAGE'];
             var label = PrimeFaces.validation.Utils.getLabel(element);
             summary = wrapper.replace("{0}", summary).replace("{1}", label);
             detail = wrapper.replace("{0}", detail).replace("{1}", label);

@@ -26,8 +26,8 @@ package org.primefaces.component.celleditor;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.treetable.TreeTable;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
 
 public class CellEditor extends CellEditorBase {
 

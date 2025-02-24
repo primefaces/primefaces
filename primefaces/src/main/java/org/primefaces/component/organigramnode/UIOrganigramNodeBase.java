@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.organigramnode;
 
-import javax.faces.component.UIComponentBase;
+import jakarta.faces.component.UIComponentBase;
 
 
 public abstract class UIOrganigramNodeBase extends UIComponentBase {

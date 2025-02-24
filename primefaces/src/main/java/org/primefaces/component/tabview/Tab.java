@@ -26,8 +26,8 @@ package org.primefaces.component.tabview;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.util.FacetUtils;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
 
 public class Tab extends TabBase {
 

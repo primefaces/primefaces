@@ -28,7 +28,7 @@ import org.primefaces.component.api.Confirmable;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
 
-import javax.faces.component.html.HtmlCommandLink;
+import jakarta.faces.component.html.HtmlCommandLink;
 
 
 public abstract class CommandLinkBase extends HtmlCommandLink implements AjaxSource, Widget, Confirmable, PrimeClientBehaviorHolder {

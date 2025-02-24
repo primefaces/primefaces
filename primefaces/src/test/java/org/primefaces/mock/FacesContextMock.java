@@ -29,24 +29,26 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.el.ELContext;
-import javax.faces.application.Application;
-import javax.faces.application.FacesMessage;
-import javax.faces.application.FacesMessage.Severity;
-import javax.faces.application.ProjectStage;
-import javax.faces.component.UIViewRoot;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.faces.context.PartialViewContext;
-import javax.faces.context.ResponseStream;
-import javax.faces.context.ResponseWriter;
-import javax.faces.render.RenderKit;
+import jakarta.el.ELContext;
+import jakarta.el.StandardELContext;
+import jakarta.faces.application.Application;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.application.FacesMessage.Severity;
+import jakarta.faces.application.ProjectStage;
+import jakarta.faces.component.UIViewRoot;
+import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.PartialViewContext;
+import jakarta.faces.context.ResponseStream;
+import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.lifecycle.Lifecycle;
+import jakarta.faces.render.RenderKit;
 
-import de.odysseus.el.util.SimpleContext;
+import org.apache.el.ExpressionFactoryImpl;
 
 public class FacesContextMock extends FacesContext {
 
-    private ELContext elContext = new SimpleContext();
+    private ELContext elContext = new StandardELContext(new ExpressionFactoryImpl());
     private ExternalContext externalContext = new ExternalContextMock();
     private Application application = new ApplicationMock();
     private PartialViewContext partialViewContext = new PartialViewContextMock();
@@ -212,5 +214,10 @@ public class FacesContextMock extends FacesContext {
     @Override
     public ELContext getELContext() {
         return elContext;
+    }
+
+    @Override
+    public Lifecycle getLifecycle() {
+        return null;
     }
 }

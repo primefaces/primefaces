@@ -25,12 +25,12 @@ package org.primefaces.validate.base;
 
 import org.primefaces.el.ValueExpressionStateHelper;
 
-import javax.faces.component.StateHelper;
-import javax.faces.view.facelets.FaceletContext;
-import javax.faces.view.facelets.MetaRule;
-import javax.faces.view.facelets.Metadata;
-import javax.faces.view.facelets.MetadataTarget;
-import javax.faces.view.facelets.TagAttribute;
+import jakarta.faces.component.StateHelper;
+import jakarta.faces.view.facelets.FaceletContext;
+import jakarta.faces.view.facelets.MetaRule;
+import jakarta.faces.view.facelets.Metadata;
+import jakarta.faces.view.facelets.MetadataTarget;
+import jakarta.faces.view.facelets.TagAttribute;
 
 public class PrimeValidatorMetaRule extends MetaRule {
     public static final PrimeValidatorMetaRule INSTANCE = new PrimeValidatorMetaRule();

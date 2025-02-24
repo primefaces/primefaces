@@ -39,9 +39,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
-import javax.faces.FacesException;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
+import jakarta.faces.FacesException;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
 
 public abstract class UICalendar extends AbstractPrimeHtmlInputText implements InputHolder, TouchAware {
 

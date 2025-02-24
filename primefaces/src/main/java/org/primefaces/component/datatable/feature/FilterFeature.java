@@ -40,9 +40,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import javax.el.ELContext;
-import javax.faces.context.FacesContext;
-import javax.faces.event.PhaseId;
+import jakarta.el.ELContext;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.PhaseId;
 
 public class FilterFeature implements DataTableFeature {
 

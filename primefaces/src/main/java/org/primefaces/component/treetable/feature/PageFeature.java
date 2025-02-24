@@ -29,7 +29,7 @@ import org.primefaces.model.TreeNode;
 
 import java.io.IOException;
 
-import javax.faces.context.FacesContext;
+import jakarta.faces.context.FacesContext;
 
 public class PageFeature implements TreeTableFeature {
 

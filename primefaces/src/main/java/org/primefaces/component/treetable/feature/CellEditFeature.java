@@ -32,8 +32,8 @@ import org.primefaces.model.TreeNode;
 import java.io.IOException;
 import java.util.Map;
 
-import javax.faces.FacesException;
-import javax.faces.context.FacesContext;
+import jakarta.faces.FacesException;
+import jakarta.faces.context.FacesContext;
 
 public class CellEditFeature implements TreeTableFeature {
 

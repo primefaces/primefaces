@@ -23,7 +23,7 @@
  */
 package org.primefaces.convert;
 
-public class LongConverter extends javax.faces.convert.LongConverter implements ClientConverter {
+public class LongConverter extends jakarta.faces.convert.LongConverter implements ClientConverter {
 
     @Override
     public String getConverterId() {

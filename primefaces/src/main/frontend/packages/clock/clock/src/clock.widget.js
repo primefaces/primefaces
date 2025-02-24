@@ -36,7 +36,7 @@ class SimpleDateFormat {
      * custom HTML on the client-side this is also the place where you should call your render method.
      * 
      * @param {Partial<TCfg>} cfg The widget configuration to be used for this widget instance. This widget
-     * configuration is usually created on the server by the `javax.faces.render.Renderer` for this component.
+     * configuration is usually created on the server by the `jakarta.faces.render.Renderer` for this component.
      */
     constructor(cfg) {
         this.cfg = cfg;

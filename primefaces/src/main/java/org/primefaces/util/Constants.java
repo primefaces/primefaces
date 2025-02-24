@@ -28,10 +28,10 @@ public class Constants {
     public static class ContextParams {
 
         // JSF context params
-        public static final String INTERPRET_EMPTY_STRING_AS_NULL = "javax.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL";
+        public static final String INTERPRET_EMPTY_STRING_AS_NULL = "jakarta.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL";
 
         // PF context params
-        public static final String BEAN_VALIDATION_DISABLED = "javax.faces.validator.DISABLE_DEFAULT_BEAN_VALIDATOR";
+        public static final String BEAN_VALIDATION_DISABLED = "jakarta.faces.validator.DISABLE_DEFAULT_BEAN_VALIDATOR";
         public static final String CACHE_PROVIDER = "primefaces.CACHE_PROVIDER";
         public static final String CLIENT_SIDE_LOCALISATION = "primefaces.CLIENT_SIDE_LOCALISATION";
         public static final String COOKIES_SAME_SITE = "primefaces.COOKIES_SAME_SITE";
@@ -65,12 +65,12 @@ public class Constants {
     public static class RequestParams {
 
         // JSF request params
-        public static final String PARTIAL_REQUEST_PARAM = "javax.faces.partial.ajax";
-        public static final String PARTIAL_UPDATE_PARAM = "javax.faces.partial.render";
-        public static final String PARTIAL_PROCESS_PARAM = "javax.faces.partial.execute";
-        public static final String PARTIAL_SOURCE_PARAM = "javax.faces.source";
-        public static final String PARTIAL_BEHAVIOR_EVENT_PARAM = "javax.faces.behavior.event";
-        public static final String RESET_VALUES_PARAM = "javax.faces.partial.resetValues";
+        public static final String PARTIAL_REQUEST_PARAM = "jakarta.faces.partial.ajax";
+        public static final String PARTIAL_UPDATE_PARAM = "jakarta.faces.partial.render";
+        public static final String PARTIAL_PROCESS_PARAM = "jakarta.faces.partial.execute";
+        public static final String PARTIAL_SOURCE_PARAM = "jakarta.faces.source";
+        public static final String PARTIAL_BEHAVIOR_EVENT_PARAM = "jakarta.faces.behavior.event";
+        public static final String RESET_VALUES_PARAM = "jakarta.faces.partial.resetValues";
 
         // PF request params
         public static final String IGNORE_AUTO_UPDATE_PARAM = "primefaces.ignoreautoupdate";

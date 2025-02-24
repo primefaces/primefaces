@@ -28,8 +28,8 @@ import org.primefaces.model.file.UploadedFile;
 
 import java.io.IOException;
 
-import javax.servlet.ServletRequestEvent;
-import javax.servlet.ServletRequestListener;
+import jakarta.servlet.ServletRequestEvent;
+import jakarta.servlet.ServletRequestListener;
 
 public class UploadedFileCleanerListener implements ServletRequestListener {
 

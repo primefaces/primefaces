@@ -26,13 +26,13 @@ package org.primefaces.expression;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.component.search.SearchExpressionContext;
-import javax.faces.component.search.SearchKeywordContext;
-import javax.faces.component.search.SearchKeywordResolver;
-import javax.faces.component.visit.VisitContext;
-import javax.faces.context.FacesContext;
+import jakarta.faces.FacesException;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.search.SearchExpressionContext;
+import jakarta.faces.component.search.SearchKeywordContext;
+import jakarta.faces.component.search.SearchKeywordResolver;
+import jakarta.faces.component.visit.VisitContext;
+import jakarta.faces.context.FacesContext;
 
 public class WidgetVarSearchKeywordResolver extends SearchKeywordResolver {
 

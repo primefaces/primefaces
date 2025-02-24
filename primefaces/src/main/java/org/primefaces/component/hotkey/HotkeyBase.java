@@ -25,7 +25,7 @@ package org.primefaces.component.hotkey;
 
 import org.primefaces.component.api.AjaxSource;
 
-import javax.faces.component.UICommand;
+import jakarta.faces.component.UICommand;
 
 
 public abstract class HotkeyBase extends UICommand implements AjaxSource {

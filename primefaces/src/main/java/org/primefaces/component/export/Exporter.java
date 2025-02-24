@@ -26,7 +26,7 @@ package org.primefaces.component.export;
 import java.io.IOException;
 import java.util.List;
 
-import javax.faces.context.FacesContext;
+import jakarta.faces.context.FacesContext;
 
 public interface Exporter<T> {
 

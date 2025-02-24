@@ -32,9 +32,9 @@ import org.primefaces.util.Constants;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.faces.application.ProjectStage;
-import javax.faces.component.UIComponent;
-import javax.faces.component.behavior.ClientBehaviorContext;
+import jakarta.faces.application.ProjectStage;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.behavior.ClientBehaviorContext;
 
 public class ClientValidatorBehavior extends AbstractBehavior {
 

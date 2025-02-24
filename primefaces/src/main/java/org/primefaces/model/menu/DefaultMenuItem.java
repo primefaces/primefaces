@@ -34,7 +34,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.UIComponent;
+import jakarta.faces.component.UIComponent;
 
 public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, Serializable {
 

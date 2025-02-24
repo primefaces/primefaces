@@ -31,7 +31,7 @@ import org.primefaces.model.ResponsiveOption;
 
 import java.util.List;
 
-import javax.faces.component.behavior.ClientBehaviorHolder;
+import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class CarouselBase extends UITabPanel implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, TouchAware {
 

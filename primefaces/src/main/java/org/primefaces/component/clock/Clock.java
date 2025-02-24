@@ -25,8 +25,8 @@ package org.primefaces.component.clock;
 
 import java.util.Map;
 
-import javax.faces.application.ResourceDependency;
-import javax.faces.context.FacesContext;
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.context.FacesContext;
 
 @ResourceDependency(library = "primefaces", name = "clock/clock.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")

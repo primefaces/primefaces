@@ -27,12 +27,12 @@ import org.primefaces.integrationtests.general.utilities.TestUtils;
 
 import java.io.Serializable;
 
-import javax.annotation.PostConstruct;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.convert.DateTimeConverter;
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.convert.DateTimeConverter;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
 
 import lombok.Data;
 

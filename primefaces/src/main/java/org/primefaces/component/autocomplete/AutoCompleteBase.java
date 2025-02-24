@@ -112,11 +112,11 @@ public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implem
         getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public javax.el.MethodExpression getCompleteMethod() {
-        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.completeMethod, null);
+    public jakarta.el.MethodExpression getCompleteMethod() {
+        return (jakarta.el.MethodExpression) getStateHelper().eval(PropertyKeys.completeMethod, null);
     }
 
-    public void setCompleteMethod(javax.el.MethodExpression completeMethod) {
+    public void setCompleteMethod(jakarta.el.MethodExpression completeMethod) {
         getStateHelper().put(PropertyKeys.completeMethod, completeMethod);
     }
 

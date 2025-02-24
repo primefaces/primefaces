@@ -26,12 +26,12 @@ package org.primefaces.integrationtests.inputnumber;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-import javax.annotation.PostConstruct;
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Positive;
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Positive;
 
 import lombok.Data;
 

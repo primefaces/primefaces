@@ -36,10 +36,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import javax.el.ELContext;
-import javax.faces.FacesException;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
+import jakarta.el.ELContext;
+import jakarta.faces.FacesException;
+import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.FacesContext;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

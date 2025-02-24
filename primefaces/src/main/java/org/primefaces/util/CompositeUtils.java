@@ -26,16 +26,16 @@ package org.primefaces.util;
 import java.beans.BeanInfo;
 import java.util.List;
 
-import javax.faces.FacesException;
-import javax.faces.component.ContextCallback;
-import javax.faces.component.EditableValueHolder;
-import javax.faces.component.UIComponent;
-import javax.faces.component.visit.VisitCallback;
-import javax.faces.component.visit.VisitContext;
-import javax.faces.component.visit.VisitResult;
-import javax.faces.context.FacesContext;
-import javax.faces.view.AttachedObjectTarget;
-import javax.faces.view.EditableValueHolderAttachedObjectTarget;
+import jakarta.faces.FacesException;
+import jakarta.faces.component.ContextCallback;
+import jakarta.faces.component.EditableValueHolder;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.visit.VisitCallback;
+import jakarta.faces.component.visit.VisitContext;
+import jakarta.faces.component.visit.VisitResult;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.view.AttachedObjectTarget;
+import jakarta.faces.view.EditableValueHolderAttachedObjectTarget;
 
 public class CompositeUtils {
 

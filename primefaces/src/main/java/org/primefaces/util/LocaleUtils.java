@@ -26,8 +26,8 @@ package org.primefaces.util;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
-import javax.faces.component.UIViewRoot;
-import javax.faces.context.FacesContext;
+import jakarta.faces.component.UIViewRoot;
+import jakarta.faces.context.FacesContext;
 
 public class LocaleUtils {
 

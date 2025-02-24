@@ -37,8 +37,8 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 
-import javax.faces.FacesException;
-import javax.faces.context.FacesContext;
+import jakarta.faces.FacesException;
+import jakarta.faces.context.FacesContext;
 
 public class TextExporter extends DataTableExporter<PrintWriter, ExporterOptions> implements Serializable {
 

@@ -26,10 +26,10 @@ package org.primefaces.mock;
 import java.util.Collection;
 import java.util.Set;
 
-import javax.faces.component.visit.VisitContext;
-import javax.faces.component.visit.VisitContextFactory;
-import javax.faces.component.visit.VisitHint;
-import javax.faces.context.FacesContext;
+import jakarta.faces.component.visit.VisitContext;
+import jakarta.faces.component.visit.VisitContextFactory;
+import jakarta.faces.component.visit.VisitHint;
+import jakarta.faces.context.FacesContext;
 
 public class TestVisitContextFactory extends VisitContextFactory {
 

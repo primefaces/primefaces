@@ -29,10 +29,10 @@ import org.primefaces.component.api.Confirmable;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.FacetUtils;
 
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.component.behavior.ClientBehaviorContext;
-import javax.faces.context.FacesContext;
+import jakarta.faces.FacesException;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.behavior.ClientBehaviorContext;
+import jakarta.faces.context.FacesContext;
 
 import org.json.JSONObject;
 

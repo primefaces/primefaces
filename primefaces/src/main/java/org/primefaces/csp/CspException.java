@@ -23,7 +23,7 @@
  */
 package org.primefaces.csp;
 
-import javax.faces.FacesException;
+import jakarta.faces.FacesException;
 
 public class CspException extends FacesException {
 

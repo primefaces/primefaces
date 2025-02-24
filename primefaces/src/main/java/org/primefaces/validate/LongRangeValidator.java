@@ -29,7 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class LongRangeValidator extends javax.faces.validator.LongRangeValidator implements ClientValidator {
+public class LongRangeValidator extends jakarta.faces.validator.LongRangeValidator implements ClientValidator {
 
     private boolean minimumSet;
     private boolean maximumSet;

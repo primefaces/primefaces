@@ -33,7 +33,7 @@ if (window.PrimeFaces) {
             'messages.WARN': 'გაფრთხილება'
         },
         messages: { //optional for Client Side Validation
-            'javax.faces.component.UIInput.REQUIRED': '{0}: შეცდომა: ველის შევსება აუცილებელია.'
+            'jakarta.faces.component.UIInput.REQUIRED': '{0}: შეცდომა: ველის შევსება აუცილებელია.'
         }
     };
 }

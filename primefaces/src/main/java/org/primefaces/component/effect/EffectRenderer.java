@@ -29,9 +29,9 @@ import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIParameter;
-import javax.faces.context.FacesContext;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIParameter;
+import jakarta.faces.context.FacesContext;
 
 public class EffectRenderer extends CoreRenderer {
 

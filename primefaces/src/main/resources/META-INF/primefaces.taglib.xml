@@ -11,43 +11,43 @@
     <function>
         <function-name>resolveClientId</function-name>
         <function-class>org.primefaces.expression.SearchExpressionUtils</function-class>
-        <function-signature>java.lang.String resolveClientId(java.lang.String, javax.faces.component.UIComponent)</function-signature>
+        <function-signature>java.lang.String resolveClientId(java.lang.String, jakarta.faces.component.UIComponent)</function-signature>
     </function>
 
     <function>
         <function-name>resolveComponent</function-name>
         <function-class>org.primefaces.expression.SearchExpressionUtils</function-class>
-        <function-signature>javax.faces.component.UIComponent resolveComponent(java.lang.String, javax.faces.component.UIComponent)</function-signature>
+        <function-signature>jakarta.faces.component.UIComponent resolveComponent(java.lang.String, jakarta.faces.component.UIComponent)</function-signature>
     </function>
 
     <function>
         <function-name>resolveClientIds</function-name>
         <function-class>org.primefaces.expression.SearchExpressionUtils</function-class>
-        <function-signature>java.lang.String resolveClientIds(java.lang.String, javax.faces.component.UIComponent)</function-signature>
+        <function-signature>java.lang.String resolveClientIds(java.lang.String, jakarta.faces.component.UIComponent)</function-signature>
     </function>
 
     <function>
         <function-name>resolveWidgetVar</function-name>
         <function-class>org.primefaces.expression.SearchExpressionUtils</function-class>
-        <function-signature>java.lang.String resolveWidgetVar(java.lang.String, javax.faces.component.UIComponent)</function-signature>
+        <function-signature>java.lang.String resolveWidgetVar(java.lang.String, jakarta.faces.component.UIComponent)</function-signature>
     </function>
 
     <function>
         <function-name>closestWidgetVar</function-name>
         <function-class>org.primefaces.expression.SearchExpressionUtils</function-class>
-        <function-signature>java.lang.String closestWidgetVar(javax.faces.component.UIComponent)</function-signature>
+        <function-signature>java.lang.String closestWidgetVar(jakarta.faces.component.UIComponent)</function-signature>
     </function>
 
     <function>
         <function-name>resolveFirstComponentWithId</function-name>
         <function-class>org.primefaces.util.ComponentTraversalUtils</function-class>
-        <function-signature>javax.faces.component.UIComponent firstWithId(java.lang.String,javax.faces.component.UIComponent)</function-signature>
+        <function-signature>jakarta.faces.component.UIComponent firstWithId(java.lang.String,jakarta.faces.component.UIComponent)</function-signature>
     </function>
 
     <function>
         <function-name>shouldRenderFacet</function-name>
         <function-class>org.primefaces.util.FacetUtils</function-class>
-        <function-signature>java.lang.Boolean shouldRenderFacet(javax.faces.component.UIComponent)</function-signature>
+        <function-signature>java.lang.Boolean shouldRenderFacet(jakarta.faces.component.UIComponent)</function-signature>
     </function>
 
     <function>
@@ -59,12 +59,12 @@
     <function>
         <function-name>dynamicColumnValue</function-name>
         <function-class>org.primefaces.util.ComponentUtils</function-class>
-        <function-signature>java.lang.Object getDynamicColumnValue(javax.faces.component.UIComponent)</function-signature>
+        <function-signature>java.lang.Object getDynamicColumnValue(jakarta.faces.component.UIComponent)</function-signature>
     </function>
     <function>
         <function-name>dynamicColumnValueAsString</function-name>
         <function-class>org.primefaces.util.ComponentUtils</function-class>
-        <function-signature>java.lang.String getDynamicColumnValueAsString(javax.faces.component.UIComponent)</function-signature>
+        <function-signature>java.lang.String getDynamicColumnValueAsString(jakarta.faces.component.UIComponent)</function-signature>
     </function>
 
     <function>
@@ -217,19 +217,19 @@
             <description>PreProcessor for the exported document.</description>
             <name>preProcessor</name>
             <required>false</required>
-            <type>javax.el.MethodExpression</type>
+            <type>jakarta.el.MethodExpression</type>
         </attribute>
         <attribute>
             <description>PostProcessor for the exported document.</description>
             <name>postProcessor</name>
             <required>false</required>
-            <type>javax.el.MethodExpression</type>
+            <type>jakarta.el.MethodExpression</type>
         </attribute>
         <attribute>
             <description>Row processor for the exported document.</description>
             <name>onRowExport</name>
             <required>false</required>
-            <type>javax.el.MethodExpression</type>
+            <type>jakarta.el.MethodExpression</type>
         </attribute>
         <attribute>
             <description>Character encoding to use.</description>
@@ -277,13 +277,13 @@
             <description>OnTableRender to be used to set the options of exported table.</description>
             <name>onTableRender</name>
             <required>false</required>
-            <type>javax.el.MethodExpression</type>
+            <type>jakarta.el.MethodExpression</type>
         </attribute>
         <attribute>
             <description>Control how many items are fetched at a time when DataTable#lazy is enabled. Retrieve the entire underlying dataset in smaller, manageable chunks rather than all at once.</description>
             <name>bufferSize</name>
             <required>false</required>
-            <type>javax.el.ValueExpression</type>
+            <type>jakarta.el.ValueExpression</type>
         </attribute>
     </tag>
 
@@ -334,7 +334,7 @@
             <description>Method to process in partial request.</description>
             <name>listener</name>
             <required>false</required>
-            <type>javax.el.MethodExpression</type>
+            <type>jakarta.el.MethodExpression</type>
         </attribute>
         <attribute>
             <description>Boolean value that determines the phaseId to execute listener. Default is false meaning "Invoke Application" phase, when true
@@ -713,7 +713,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -848,7 +848,7 @@
             </description>
             <name>tabController</name>
             <required>false</required>
-            <type>javax.el.MethodExpression</type>
+            <type>jakarta.el.MethodExpression</type>
         </attribute>
         <attribute>
             <description>
@@ -906,7 +906,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -972,7 +972,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -1070,7 +1070,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -1201,7 +1201,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -1218,7 +1218,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>javax.faces.convert.Converter</type>
+            <type>jakarta.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -1242,7 +1242,7 @@
             </description>
             <name>validator</name>
             <required>false</required>
-            <type>javax.faces.validator.Validator</type>
+            <type>jakarta.faces.validator.Validator</type>
         </attribute>
         <attribute>
             <description>
@@ -1250,7 +1250,7 @@
             </description>
             <name>valueChangeListener</name>
             <required>false</required>
-            <type>javax.faces.event.ValueChangeListener</type>
+            <type>jakarta.faces.event.ValueChangeListener</type>
         </attribute>
         <attribute>
             <description>
@@ -1666,7 +1666,7 @@
             </description>
             <name>completeMethod</name>
             <required>false</required>
-            <type>javax.el.MethodExpression</type>
+            <type>jakarta.el.MethodExpression</type>
         </attribute>
         <attribute>
             <description>
@@ -2060,7 +2060,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -2318,7 +2318,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -2408,7 +2408,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -2514,7 +2514,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -2836,7 +2836,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -2902,7 +2902,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -2919,7 +2919,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>javax.faces.convert.Converter</type>
+            <type>jakarta.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -2943,7 +2943,7 @@
             </description>
             <name>validator</name>
             <required>false</required>
-            <type>javax.faces.validator.Validator</type>
+            <type>jakarta.faces.validator.Validator</type>
         </attribute>
         <attribute>
             <description>
@@ -2951,7 +2951,7 @@
             </description>
             <name>valueChangeListener</name>
             <required>false</required>
-            <type>javax.faces.event.ValueChangeListener</type>
+            <type>jakarta.faces.event.ValueChangeListener</type>
         </attribute>
         <attribute>
             <description>
@@ -3834,7 +3834,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -3851,7 +3851,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>javax.faces.convert.Converter</type>
+            <type>jakarta.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -3875,7 +3875,7 @@
             </description>
             <name>validator</name>
             <required>false</required>
-            <type>javax.faces.validator.Validator</type>
+            <type>jakarta.faces.validator.Validator</type>
         </attribute>
         <attribute>
             <description>
@@ -3883,7 +3883,7 @@
             </description>
             <name>valueChangeListener</name>
             <required>false</required>
-            <type>javax.faces.event.ValueChangeListener</type>
+            <type>jakarta.faces.event.ValueChangeListener</type>
         </attribute>
         <attribute>
             <description>
@@ -4029,7 +4029,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -4238,7 +4238,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -4280,7 +4280,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -4378,7 +4378,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -4395,7 +4395,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>javax.faces.convert.Converter</type>
+            <type>jakarta.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -4419,7 +4419,7 @@
             </description>
             <name>validator</name>
             <required>false</required>
-            <type>javax.faces.validator.Validator</type>
+            <type>jakarta.faces.validator.Validator</type>
         </attribute>
         <attribute>
             <description>
@@ -4427,7 +4427,7 @@
             </description>
             <name>valueChangeListener</name>
             <required>false</required>
-            <type>javax.faces.event.ValueChangeListener</type>
+            <type>jakarta.faces.event.ValueChangeListener</type>
         </attribute>
         <attribute>
             <description>
@@ -4917,7 +4917,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -5015,7 +5015,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -5032,7 +5032,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>javax.faces.convert.Converter</type>
+            <type>jakarta.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -5056,7 +5056,7 @@
             </description>
             <name>validator</name>
             <required>false</required>
-            <type>javax.faces.validator.Validator</type>
+            <type>jakarta.faces.validator.Validator</type>
         </attribute>
         <attribute>
             <description>
@@ -5064,7 +5064,7 @@
             </description>
             <name>valueChangeListener</name>
             <required>false</required>
-            <type>javax.faces.event.ValueChangeListener</type>
+            <type>jakarta.faces.event.ValueChangeListener</type>
         </attribute>
         <attribute>
             <description>
@@ -5603,7 +5603,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -5676,7 +5676,7 @@
             </description>
             <name>sortFunction</name>
             <required>false</required>
-            <type>javax.el.MethodExpression</type>
+            <type>jakarta.el.MethodExpression</type>
         </attribute>
         <attribute>
             <description>
@@ -5828,7 +5828,7 @@
             </description>
             <name>filterFunction</name>
             <required>false</required>
-            <type>javax.el.MethodExpression</type>
+            <type>jakarta.el.MethodExpression</type>
         </attribute>
         <attribute>
             <description>
@@ -5892,7 +5892,7 @@
             </description>
             <name>exportFunction</name>
             <required>false</required>
-            <type>javax.el.MethodExpression</type>
+            <type>jakarta.el.MethodExpression</type>
         </attribute>
         <attribute>
             <description>
@@ -5998,7 +5998,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -6040,7 +6040,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -6111,7 +6111,7 @@
             </description>
             <name>sortFunction</name>
             <required>false</required>
-            <type>javax.el.MethodExpression</type>
+            <type>jakarta.el.MethodExpression</type>
         </attribute>
         <attribute>
             <description>
@@ -6280,7 +6280,7 @@
             </description>
             <name>filterFunction</name>
             <required>false</required>
-            <type>javax.el.MethodExpression</type>
+            <type>jakarta.el.MethodExpression</type>
         </attribute>
         <attribute>
             <description>
@@ -6344,7 +6344,7 @@
             </description>
             <name>exportFunction</name>
             <required>false</required>
-            <type>javax.el.MethodExpression</type>
+            <type>jakarta.el.MethodExpression</type>
         </attribute>
         <attribute>
             <description>
@@ -6451,7 +6451,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -6509,7 +6509,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -6525,7 +6525,7 @@
             </description>
             <name>actionListener</name>
             <required>false</required>
-            <type>javax.faces.event.ActionListener</type>
+            <type>jakarta.faces.event.ActionListener</type>
         </attribute>
         <attribute>
             <description>
@@ -6533,7 +6533,7 @@
             </description>
             <name>action</name>
             <required>false</required>
-            <type>javax.el.MethodExpression</type>
+            <type>jakarta.el.MethodExpression</type>
         </attribute>
         <attribute>
             <description>
@@ -6993,7 +6993,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -7009,7 +7009,7 @@
             </description>
             <name>actionListener</name>
             <required>false</required>
-            <type>javax.faces.event.ActionListener</type>
+            <type>jakarta.faces.event.ActionListener</type>
         </attribute>
         <attribute>
             <description>
@@ -7017,7 +7017,7 @@
             </description>
             <name>action</name>
             <required>false</required>
-            <type>javax.el.MethodExpression</type>
+            <type>jakarta.el.MethodExpression</type>
         </attribute>
         <attribute>
             <description>
@@ -7446,7 +7446,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -7616,7 +7616,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -7746,7 +7746,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -7850,7 +7850,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -8076,7 +8076,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -8301,7 +8301,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -8456,7 +8456,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -9097,7 +9097,7 @@
             </description>
             <name>draggableRowsFunction</name>
             <required>false</required>
-            <type>javax.el.MethodExpression</type>
+            <type>jakarta.el.MethodExpression</type>
         </attribute>
         <attribute>
             <description>
@@ -9161,7 +9161,7 @@
             </description>
             <name>globalFilterFunction</name>
             <required>false</required>
-            <type>javax.el.MethodExpression</type>
+            <type>jakarta.el.MethodExpression</type>
         </attribute>
         <attribute>
             <description>
@@ -9259,7 +9259,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -9483,7 +9483,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -9524,7 +9524,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
     </tag>
     <tag>
@@ -9558,7 +9558,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -9616,7 +9616,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -9640,7 +9640,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -9657,7 +9657,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>javax.faces.convert.Converter</type>
+            <type>jakarta.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -9722,7 +9722,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -10022,7 +10022,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -10120,7 +10120,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -10354,7 +10354,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -10476,7 +10476,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -10566,7 +10566,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -10631,7 +10631,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -10756,7 +10756,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -10773,7 +10773,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>javax.faces.convert.Converter</type>
+            <type>jakarta.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -10797,7 +10797,7 @@
             </description>
             <name>validator</name>
             <required>false</required>
-            <type>javax.faces.validator.Validator</type>
+            <type>jakarta.faces.validator.Validator</type>
         </attribute>
         <attribute>
             <description>
@@ -10805,7 +10805,7 @@
             </description>
             <name>valueChangeListener</name>
             <required>false</required>
-            <type>javax.faces.event.ValueChangeListener</type>
+            <type>jakarta.faces.event.ValueChangeListener</type>
         </attribute>
         <attribute>
             <description>
@@ -10883,7 +10883,7 @@
             </description>
             <name>listener</name>
             <required>false</required>
-            <type>javax.el.MethodExpression</type>
+            <type>jakarta.el.MethodExpression</type>
         </attribute>
         <attribute>
             <description>
@@ -11221,7 +11221,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -11279,7 +11279,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -11329,7 +11329,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -11570,7 +11570,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -11731,7 +11731,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -11775,7 +11775,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -12033,7 +12033,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -12163,7 +12163,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -12211,7 +12211,7 @@
             </description>
             <name>sortFunction</name>
             <required>false</required>
-            <type>javax.el.MethodExpression</type>
+            <type>jakarta.el.MethodExpression</type>
         </attribute>
         <attribute>
             <description>
@@ -12261,7 +12261,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -12269,7 +12269,7 @@
             </description>
             <name>actionListener</name>
             <required>false</required>
-            <type>javax.faces.event.ActionListener</type>
+            <type>jakarta.faces.event.ActionListener</type>
         </attribute>
         <attribute>
             <description>
@@ -12277,7 +12277,7 @@
             </description>
             <name>action</name>
             <required>false</required>
-            <type>javax.el.MethodExpression</type>
+            <type>jakarta.el.MethodExpression</type>
         </attribute>
         <attribute>
             <description>
@@ -12472,7 +12472,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -12546,7 +12546,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -12636,7 +12636,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -12653,7 +12653,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>javax.faces.convert.Converter</type>
+            <type>jakarta.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -12677,7 +12677,7 @@
             </description>
             <name>validator</name>
             <required>false</required>
-            <type>javax.faces.validator.Validator</type>
+            <type>jakarta.faces.validator.Validator</type>
         </attribute>
         <attribute>
             <description>
@@ -12685,7 +12685,7 @@
             </description>
             <name>valueChangeListener</name>
             <required>false</required>
-            <type>javax.faces.event.ValueChangeListener</type>
+            <type>jakarta.faces.event.ValueChangeListener</type>
         </attribute>
         <attribute>
             <description>
@@ -12871,7 +12871,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -12971,7 +12971,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -13125,7 +13125,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -13142,7 +13142,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>javax.faces.convert.Converter</type>
+            <type>jakarta.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -13166,7 +13166,7 @@
             </description>
             <name>validator</name>
             <required>false</required>
-            <type>javax.faces.validator.Validator</type>
+            <type>jakarta.faces.validator.Validator</type>
         </attribute>
         <attribute>
             <description>
@@ -13174,7 +13174,7 @@
             </description>
             <name>valueChangeListener</name>
             <required>false</required>
-            <type>javax.faces.event.ValueChangeListener</type>
+            <type>jakarta.faces.event.ValueChangeListener</type>
         </attribute>
         <attribute>
             <description>
@@ -13664,7 +13664,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -13681,7 +13681,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>javax.faces.convert.Converter</type>
+            <type>jakarta.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -13705,7 +13705,7 @@
             </description>
             <name>validator</name>
             <required>false</required>
-            <type>javax.faces.validator.Validator</type>
+            <type>jakarta.faces.validator.Validator</type>
         </attribute>
         <attribute>
             <description>
@@ -13713,7 +13713,7 @@
             </description>
             <name>valueChangeListener</name>
             <required>false</required>
-            <type>javax.faces.event.ValueChangeListener</type>
+            <type>jakarta.faces.event.ValueChangeListener</type>
         </attribute>
         <attribute>
             <description>
@@ -14323,7 +14323,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -14340,7 +14340,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>javax.faces.convert.Converter</type>
+            <type>jakarta.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -14364,7 +14364,7 @@
             </description>
             <name>validator</name>
             <required>false</required>
-            <type>javax.faces.validator.Validator</type>
+            <type>jakarta.faces.validator.Validator</type>
         </attribute>
         <attribute>
             <description>
@@ -14372,7 +14372,7 @@
             </description>
             <name>valueChangeListener</name>
             <required>false</required>
-            <type>javax.faces.event.ValueChangeListener</type>
+            <type>jakarta.faces.event.ValueChangeListener</type>
         </attribute>
         <attribute>
             <description>
@@ -14847,7 +14847,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -14864,7 +14864,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>javax.faces.convert.Converter</type>
+            <type>jakarta.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -14888,7 +14888,7 @@
             </description>
             <name>validator</name>
             <required>false</required>
-            <type>javax.faces.validator.Validator</type>
+            <type>jakarta.faces.validator.Validator</type>
         </attribute>
         <attribute>
             <description>
@@ -14896,7 +14896,7 @@
             </description>
             <name>valueChangeListener</name>
             <required>false</required>
-            <type>javax.faces.event.ValueChangeListener</type>
+            <type>jakarta.faces.event.ValueChangeListener</type>
         </attribute>
         <attribute>
             <description>
@@ -15336,7 +15336,7 @@
             </description>
             <name>completeMethod</name>
             <required>false</required>
-            <type>javax.el.MethodExpression</type>
+            <type>jakarta.el.MethodExpression</type>
         </attribute>
         <attribute>
             <description>
@@ -15402,7 +15402,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -15419,7 +15419,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>javax.faces.convert.Converter</type>
+            <type>jakarta.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -15443,7 +15443,7 @@
             </description>
             <name>validator</name>
             <required>false</required>
-            <type>javax.faces.validator.Validator</type>
+            <type>jakarta.faces.validator.Validator</type>
         </attribute>
         <attribute>
             <description>
@@ -15451,7 +15451,7 @@
             </description>
             <name>valueChangeListener</name>
             <required>false</required>
-            <type>javax.faces.event.ValueChangeListener</type>
+            <type>jakarta.faces.event.ValueChangeListener</type>
         </attribute>
         <attribute>
             <description>
@@ -15997,7 +15997,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -16087,7 +16087,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -16104,7 +16104,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>javax.faces.convert.Converter</type>
+            <type>jakarta.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -16128,7 +16128,7 @@
             </description>
             <name>validator</name>
             <required>false</required>
-            <type>javax.faces.validator.Validator</type>
+            <type>jakarta.faces.validator.Validator</type>
         </attribute>
         <attribute>
             <description>
@@ -16136,7 +16136,7 @@
             </description>
             <name>valueChangeListener</name>
             <required>false</required>
-            <type>javax.faces.event.ValueChangeListener</type>
+            <type>jakarta.faces.event.ValueChangeListener</type>
         </attribute>
         <attribute>
             <description>
@@ -16331,7 +16331,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -16373,7 +16373,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -16680,7 +16680,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -17019,7 +17019,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -17061,7 +17061,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -17167,7 +17167,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -17274,7 +17274,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -17429,7 +17429,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -17544,7 +17544,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -17713,7 +17713,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -17729,7 +17729,7 @@
             </description>
             <name>actionListener</name>
             <required>false</required>
-            <type>javax.faces.event.ActionListener</type>
+            <type>jakarta.faces.event.ActionListener</type>
         </attribute>
         <attribute>
             <description>
@@ -17737,7 +17737,7 @@
             </description>
             <name>action</name>
             <required>false</required>
-            <type>javax.el.MethodExpression</type>
+            <type>jakarta.el.MethodExpression</type>
         </attribute>
         <attribute>
             <description>
@@ -18070,7 +18070,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -18192,7 +18192,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -18347,7 +18347,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -18421,7 +18421,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -18438,7 +18438,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>javax.faces.convert.Converter</type>
+            <type>jakarta.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -18462,7 +18462,7 @@
             </description>
             <name>validator</name>
             <required>false</required>
-            <type>javax.faces.validator.Validator</type>
+            <type>jakarta.faces.validator.Validator</type>
         </attribute>
         <attribute>
             <description>
@@ -18470,7 +18470,7 @@
             </description>
             <name>valueChangeListener</name>
             <required>false</required>
-            <type>javax.faces.event.ValueChangeListener</type>
+            <type>jakarta.faces.event.ValueChangeListener</type>
         </attribute>
         <attribute>
             <description>
@@ -18592,7 +18592,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -18682,7 +18682,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -18699,7 +18699,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>javax.faces.convert.Converter</type>
+            <type>jakarta.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -18723,7 +18723,7 @@
             </description>
             <name>validator</name>
             <required>false</required>
-            <type>javax.faces.validator.Validator</type>
+            <type>jakarta.faces.validator.Validator</type>
         </attribute>
         <attribute>
             <description>
@@ -18731,7 +18731,7 @@
             </description>
             <name>valueChangeListener</name>
             <required>false</required>
-            <type>javax.faces.event.ValueChangeListener</type>
+            <type>jakarta.faces.event.ValueChangeListener</type>
         </attribute>
         <attribute>
             <description>
@@ -18908,7 +18908,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -19014,7 +19014,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -19112,7 +19112,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -19305,7 +19305,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>javax.faces.convert.Converter</type>
+            <type>jakarta.faces.convert.Converter</type>
         </attribute>
     </tag>
     <tag>
@@ -19339,7 +19339,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -19421,7 +19421,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -19616,7 +19616,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -19794,7 +19794,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -19892,7 +19892,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -19974,7 +19974,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -19991,7 +19991,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>javax.faces.convert.Converter</type>
+            <type>jakarta.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -20015,7 +20015,7 @@
             </description>
             <name>validator</name>
             <required>false</required>
-            <type>javax.faces.validator.Validator</type>
+            <type>jakarta.faces.validator.Validator</type>
         </attribute>
         <attribute>
             <description>
@@ -20023,7 +20023,7 @@
             </description>
             <name>valueChangeListener</name>
             <required>false</required>
-            <type>javax.faces.event.ValueChangeListener</type>
+            <type>jakarta.faces.event.ValueChangeListener</type>
         </attribute>
         <attribute>
             <description>
@@ -20562,7 +20562,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -20579,7 +20579,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>javax.faces.convert.Converter</type>
+            <type>jakarta.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -20603,7 +20603,7 @@
             </description>
             <name>validator</name>
             <required>false</required>
-            <type>javax.faces.validator.Validator</type>
+            <type>jakarta.faces.validator.Validator</type>
         </attribute>
         <attribute>
             <description>
@@ -20611,7 +20611,7 @@
             </description>
             <name>valueChangeListener</name>
             <required>false</required>
-            <type>javax.faces.event.ValueChangeListener</type>
+            <type>jakarta.faces.event.ValueChangeListener</type>
         </attribute>
         <attribute>
             <description>
@@ -20683,7 +20683,7 @@
             </description>
             <name>listener</name>
             <required>false</required>
-            <type>javax.el.MethodExpression</type>
+            <type>jakarta.el.MethodExpression</type>
         </attribute>
         <attribute>
             <description>
@@ -20789,7 +20789,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -20806,7 +20806,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>javax.faces.convert.Converter</type>
+            <type>jakarta.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -20830,7 +20830,7 @@
             </description>
             <name>validator</name>
             <required>false</required>
-            <type>javax.faces.validator.Validator</type>
+            <type>jakarta.faces.validator.Validator</type>
         </attribute>
         <attribute>
             <description>
@@ -20838,7 +20838,7 @@
             </description>
             <name>valueChangeListener</name>
             <required>false</required>
-            <type>javax.faces.event.ValueChangeListener</type>
+            <type>jakarta.faces.event.ValueChangeListener</type>
         </attribute>
         <attribute>
             <description>
@@ -21144,7 +21144,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -21176,7 +21176,7 @@
             </description>
             <name>listener</name>
             <required>false</required>
-            <type>javax.el.MethodExpression</type>
+            <type>jakarta.el.MethodExpression</type>
         </attribute>
         <attribute>
             <description>
@@ -21379,7 +21379,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -21525,7 +21525,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -21623,7 +21623,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -21640,7 +21640,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>javax.faces.convert.Converter</type>
+            <type>jakarta.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -21664,7 +21664,7 @@
             </description>
             <name>validator</name>
             <required>false</required>
-            <type>javax.faces.validator.Validator</type>
+            <type>jakarta.faces.validator.Validator</type>
         </attribute>
         <attribute>
             <description>
@@ -21672,7 +21672,7 @@
             </description>
             <name>valueChangeListener</name>
             <required>false</required>
-            <type>javax.faces.event.ValueChangeListener</type>
+            <type>jakarta.faces.event.ValueChangeListener</type>
         </attribute>
         <attribute>
             <description>
@@ -21802,7 +21802,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -21818,7 +21818,7 @@
             </description>
             <name>actionListener</name>
             <required>false</required>
-            <type>javax.faces.event.ActionListener</type>
+            <type>jakarta.faces.event.ActionListener</type>
         </attribute>
         <attribute>
             <description>
@@ -21826,7 +21826,7 @@
             </description>
             <name>action</name>
             <required>false</required>
-            <type>javax.el.MethodExpression</type>
+            <type>jakarta.el.MethodExpression</type>
         </attribute>
         <attribute>
             <description>
@@ -22023,7 +22023,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -22201,7 +22201,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -22251,7 +22251,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -22324,7 +22324,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -22366,7 +22366,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -22441,7 +22441,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -22797,7 +22797,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -22863,7 +22863,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -22880,7 +22880,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>javax.faces.convert.Converter</type>
+            <type>jakarta.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -22904,7 +22904,7 @@
             </description>
             <name>validator</name>
             <required>false</required>
-            <type>javax.faces.validator.Validator</type>
+            <type>jakarta.faces.validator.Validator</type>
         </attribute>
         <attribute>
             <description>
@@ -22912,7 +22912,7 @@
             </description>
             <name>valueChangeListener</name>
             <required>false</required>
-            <type>javax.faces.event.ValueChangeListener</type>
+            <type>jakarta.faces.event.ValueChangeListener</type>
         </attribute>
         <attribute>
             <description>
@@ -23082,7 +23082,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -23099,7 +23099,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>javax.faces.convert.Converter</type>
+            <type>jakarta.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -23123,7 +23123,7 @@
             </description>
             <name>validator</name>
             <required>false</required>
-            <type>javax.faces.validator.Validator</type>
+            <type>jakarta.faces.validator.Validator</type>
         </attribute>
         <attribute>
             <description>
@@ -23131,7 +23131,7 @@
             </description>
             <name>valueChangeListener</name>
             <required>false</required>
-            <type>javax.faces.event.ValueChangeListener</type>
+            <type>jakarta.faces.event.ValueChangeListener</type>
         </attribute>
         <attribute>
             <description>
@@ -23293,7 +23293,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -23310,7 +23310,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>javax.faces.convert.Converter</type>
+            <type>jakarta.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -23334,7 +23334,7 @@
             </description>
             <name>validator</name>
             <required>false</required>
-            <type>javax.faces.validator.Validator</type>
+            <type>jakarta.faces.validator.Validator</type>
         </attribute>
         <attribute>
             <description>
@@ -23342,7 +23342,7 @@
             </description>
             <name>valueChangeListener</name>
             <required>false</required>
-            <type>javax.faces.event.ValueChangeListener</type>
+            <type>jakarta.faces.event.ValueChangeListener</type>
         </attribute>
         <attribute>
             <description>
@@ -23653,7 +23653,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -23670,7 +23670,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>javax.faces.convert.Converter</type>
+            <type>jakarta.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -23694,7 +23694,7 @@
             </description>
             <name>validator</name>
             <required>false</required>
-            <type>javax.faces.validator.Validator</type>
+            <type>jakarta.faces.validator.Validator</type>
         </attribute>
         <attribute>
             <description>
@@ -23702,7 +23702,7 @@
             </description>
             <name>valueChangeListener</name>
             <required>false</required>
-            <type>javax.faces.event.ValueChangeListener</type>
+            <type>jakarta.faces.event.ValueChangeListener</type>
         </attribute>
         <attribute>
             <description>
@@ -23824,7 +23824,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -23841,7 +23841,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>javax.faces.convert.Converter</type>
+            <type>jakarta.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -23865,7 +23865,7 @@
             </description>
             <name>validator</name>
             <required>false</required>
-            <type>javax.faces.validator.Validator</type>
+            <type>jakarta.faces.validator.Validator</type>
         </attribute>
         <attribute>
             <description>
@@ -23873,7 +23873,7 @@
             </description>
             <name>valueChangeListener</name>
             <required>false</required>
-            <type>javax.faces.event.ValueChangeListener</type>
+            <type>jakarta.faces.event.ValueChangeListener</type>
         </attribute>
         <attribute>
             <description>
@@ -24032,7 +24032,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -24049,7 +24049,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>javax.faces.convert.Converter</type>
+            <type>jakarta.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -24073,7 +24073,7 @@
             </description>
             <name>validator</name>
             <required>false</required>
-            <type>javax.faces.validator.Validator</type>
+            <type>jakarta.faces.validator.Validator</type>
         </attribute>
         <attribute>
             <description>
@@ -24081,7 +24081,7 @@
             </description>
             <name>valueChangeListener</name>
             <required>false</required>
-            <type>javax.faces.event.ValueChangeListener</type>
+            <type>jakarta.faces.event.ValueChangeListener</type>
         </attribute>
         <attribute>
             <description>
@@ -24303,7 +24303,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -24320,7 +24320,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>javax.faces.convert.Converter</type>
+            <type>jakarta.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -24344,7 +24344,7 @@
             </description>
             <name>validator</name>
             <required>false</required>
-            <type>javax.faces.validator.Validator</type>
+            <type>jakarta.faces.validator.Validator</type>
         </attribute>
         <attribute>
             <description>
@@ -24352,7 +24352,7 @@
             </description>
             <name>valueChangeListener</name>
             <required>false</required>
-            <type>javax.faces.event.ValueChangeListener</type>
+            <type>jakarta.faces.event.ValueChangeListener</type>
         </attribute>
         <attribute>
             <description>
@@ -24482,7 +24482,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -24499,7 +24499,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>javax.faces.convert.Converter</type>
+            <type>jakarta.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -24523,7 +24523,7 @@
             </description>
             <name>validator</name>
             <required>false</required>
-            <type>javax.faces.validator.Validator</type>
+            <type>jakarta.faces.validator.Validator</type>
         </attribute>
         <attribute>
             <description>
@@ -24531,7 +24531,7 @@
             </description>
             <name>valueChangeListener</name>
             <required>false</required>
-            <type>javax.faces.event.ValueChangeListener</type>
+            <type>jakarta.faces.event.ValueChangeListener</type>
         </attribute>
         <attribute>
             <description>
@@ -24724,7 +24724,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -24741,7 +24741,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>javax.faces.convert.Converter</type>
+            <type>jakarta.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -24765,7 +24765,7 @@
             </description>
             <name>validator</name>
             <required>false</required>
-            <type>javax.faces.validator.Validator</type>
+            <type>jakarta.faces.validator.Validator</type>
         </attribute>
         <attribute>
             <description>
@@ -24773,7 +24773,7 @@
             </description>
             <name>valueChangeListener</name>
             <required>false</required>
-            <type>javax.faces.event.ValueChangeListener</type>
+            <type>jakarta.faces.event.ValueChangeListener</type>
         </attribute>
         <attribute>
             <description>
@@ -25119,7 +25119,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -25136,7 +25136,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>javax.faces.convert.Converter</type>
+            <type>jakarta.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -25160,7 +25160,7 @@
             </description>
             <name>validator</name>
             <required>false</required>
-            <type>javax.faces.validator.Validator</type>
+            <type>jakarta.faces.validator.Validator</type>
         </attribute>
         <attribute>
             <description>
@@ -25168,7 +25168,7 @@
             </description>
             <name>valueChangeListener</name>
             <required>false</required>
-            <type>javax.faces.event.ValueChangeListener</type>
+            <type>jakarta.faces.event.ValueChangeListener</type>
         </attribute>
         <attribute>
             <description>
@@ -25346,7 +25346,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -25404,7 +25404,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -25551,7 +25551,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -25568,7 +25568,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>javax.faces.convert.Converter</type>
+            <type>jakarta.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -25592,7 +25592,7 @@
             </description>
             <name>validator</name>
             <required>false</required>
-            <type>javax.faces.validator.Validator</type>
+            <type>jakarta.faces.validator.Validator</type>
         </attribute>
         <attribute>
             <description>
@@ -25600,7 +25600,7 @@
             </description>
             <name>valueChangeListener</name>
             <required>false</required>
-            <type>javax.faces.event.ValueChangeListener</type>
+            <type>jakarta.faces.event.ValueChangeListener</type>
         </attribute>
         <attribute>
             <description>
@@ -25810,7 +25810,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -25925,7 +25925,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -26095,7 +26095,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -26169,7 +26169,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -26186,7 +26186,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>javax.faces.convert.Converter</type>
+            <type>jakarta.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -26210,7 +26210,7 @@
             </description>
             <name>validator</name>
             <required>false</required>
-            <type>javax.faces.validator.Validator</type>
+            <type>jakarta.faces.validator.Validator</type>
         </attribute>
         <attribute>
             <description>
@@ -26218,7 +26218,7 @@
             </description>
             <name>valueChangeListener</name>
             <required>false</required>
-            <type>javax.faces.event.ValueChangeListener</type>
+            <type>jakarta.faces.event.ValueChangeListener</type>
         </attribute>
         <attribute>
             <description>
@@ -26788,7 +26788,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -26804,7 +26804,7 @@
             </description>
             <name>actionListener</name>
             <required>false</required>
-            <type>javax.faces.event.ActionListener</type>
+            <type>jakarta.faces.event.ActionListener</type>
         </attribute>
         <attribute>
             <description>
@@ -26812,7 +26812,7 @@
             </description>
             <name>action</name>
             <required>false</required>
-            <type>javax.el.MethodExpression</type>
+            <type>jakarta.el.MethodExpression</type>
         </attribute>
         <attribute>
             <description>
@@ -27310,7 +27310,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -27376,7 +27376,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -27458,7 +27458,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -27556,7 +27556,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -27646,7 +27646,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -27703,7 +27703,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -27785,7 +27785,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -27851,7 +27851,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -27859,7 +27859,7 @@
             </description>
             <name>listener</name>
             <required>false</required>
-            <type>javax.el.MethodExpression</type>
+            <type>jakarta.el.MethodExpression</type>
         </attribute>
     </tag>
     <tag>
@@ -27892,7 +27892,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -27990,7 +27990,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -28072,7 +28072,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -28291,7 +28291,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -28358,7 +28358,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -28406,7 +28406,7 @@
             </description>
             <name>commandHandler</name>
             <required>false</required>
-            <type>javax.el.MethodExpression</type>
+            <type>jakarta.el.MethodExpression</type>
         </attribute>
         <attribute>
             <description>
@@ -28456,7 +28456,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -28473,7 +28473,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>javax.faces.convert.Converter</type>
+            <type>jakarta.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -28497,7 +28497,7 @@
             </description>
             <name>validator</name>
             <required>false</required>
-            <type>javax.faces.validator.Validator</type>
+            <type>jakarta.faces.validator.Validator</type>
         </attribute>
         <attribute>
             <description>
@@ -28505,7 +28505,7 @@
             </description>
             <name>valueChangeListener</name>
             <required>false</required>
-            <type>javax.faces.event.ValueChangeListener</type>
+            <type>jakarta.faces.event.ValueChangeListener</type>
         </attribute>
         <attribute>
             <description>
@@ -28683,7 +28683,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -28831,7 +28831,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -29381,7 +29381,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -29398,7 +29398,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>javax.faces.convert.Converter</type>
+            <type>jakarta.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -29422,7 +29422,7 @@
             </description>
             <name>validator</name>
             <required>false</required>
-            <type>javax.faces.validator.Validator</type>
+            <type>jakarta.faces.validator.Validator</type>
         </attribute>
         <attribute>
             <description>
@@ -29430,7 +29430,7 @@
             </description>
             <name>valueChangeListener</name>
             <required>false</required>
-            <type>javax.faces.event.ValueChangeListener</type>
+            <type>jakarta.faces.event.ValueChangeListener</type>
         </attribute>
         <attribute>
             <description>
@@ -29584,7 +29584,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -29633,7 +29633,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -29691,7 +29691,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -29708,7 +29708,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>javax.faces.convert.Converter</type>
+            <type>jakarta.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -29911,7 +29911,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -30214,7 +30214,7 @@
             </description>
             <name>onDrop</name>
             <required>false</required>
-            <type>javax.el.MethodExpression</type>
+            <type>jakarta.el.MethodExpression</type>
         </attribute>
         <attribute>
             <description>
@@ -30230,7 +30230,7 @@
             </description>
             <name>filterFunction</name>
             <required>false</required>
-            <type>javax.el.MethodExpression</type>
+            <type>jakarta.el.MethodExpression</type>
         </attribute>
     </tag>
     <tag>
@@ -30263,7 +30263,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -30346,7 +30346,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -30777,7 +30777,7 @@
             </description>
             <name>globalFilterFunction</name>
             <required>false</required>
-            <type>javax.el.MethodExpression</type>
+            <type>jakarta.el.MethodExpression</type>
         </attribute>
         <attribute>
             <description>
@@ -30881,7 +30881,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -30898,7 +30898,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>javax.faces.convert.Converter</type>
+            <type>jakarta.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -30922,7 +30922,7 @@
             </description>
             <name>validator</name>
             <required>false</required>
-            <type>javax.faces.validator.Validator</type>
+            <type>jakarta.faces.validator.Validator</type>
         </attribute>
         <attribute>
             <description>
@@ -30930,7 +30930,7 @@
             </description>
             <name>valueChangeListener</name>
             <required>false</required>
-            <type>javax.faces.event.ValueChangeListener</type>
+            <type>jakarta.faces.event.ValueChangeListener</type>
         </attribute>
         <attribute>
             <description>
@@ -31108,7 +31108,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -31288,7 +31288,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -31328,7 +31328,7 @@
             </description>
             <name>flowListener</name>
             <required>false</required>
-            <type>javax.el.MethodExpression</type>
+            <type>jakarta.el.MethodExpression</type>
         </attribute>
         <attribute>
             <description>
@@ -31450,7 +31450,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -31548,7 +31548,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -31565,7 +31565,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>javax.faces.convert.Converter</type>
+            <type>jakarta.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -31589,7 +31589,7 @@
             </description>
             <name>validator</name>
             <required>false</required>
-            <type>javax.faces.validator.Validator</type>
+            <type>jakarta.faces.validator.Validator</type>
         </attribute>
         <attribute>
             <description>
@@ -31597,7 +31597,7 @@
             </description>
             <name>valueChangeListener</name>
             <required>false</required>
-            <type>javax.faces.event.ValueChangeListener</type>
+            <type>jakarta.faces.event.ValueChangeListener</type>
         </attribute>
         <attribute>
             <description>
@@ -32618,7 +32618,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -32756,7 +32756,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -32806,7 +32806,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -32912,7 +32912,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -33010,7 +33010,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -33027,7 +33027,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>javax.faces.convert.Converter</type>
+            <type>jakarta.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -33101,7 +33101,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -33191,7 +33191,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -33273,7 +33273,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -33363,7 +33363,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -33468,7 +33468,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -33557,7 +33557,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -33639,7 +33639,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -33720,7 +33720,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -33834,7 +33834,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>
@@ -33851,7 +33851,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>javax.faces.convert.Converter</type>
+            <type>jakarta.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -33875,7 +33875,7 @@
             </description>
             <name>validator</name>
             <required>false</required>
-            <type>javax.faces.validator.Validator</type>
+            <type>jakarta.faces.validator.Validator</type>
         </attribute>
         <attribute>
             <description>
@@ -33996,7 +33996,7 @@
             </description>
             <name>binding</name>
             <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
+            <type>jakarta.faces.component.UIComponent</type>
         </attribute>
         <attribute>
             <description>

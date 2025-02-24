@@ -28,7 +28,7 @@ import org.primefaces.component.api.UIPageableData;
 
 import java.io.IOException;
 
-import javax.faces.context.FacesContext;
+import jakarta.faces.context.FacesContext;
 
 public class FirstPageLinkRenderer extends PageLinkRenderer implements PaginatorElementRenderer {
 

@@ -26,7 +26,7 @@ package org.primefaces.util;
 import org.primefaces.mock.CollectingResponseWriter;
 import org.primefaces.mock.FacesContextMock;
 
-import javax.faces.context.FacesContext;
+import jakarta.faces.context.FacesContext;
 
 import org.junit.jupiter.api.Test;
 

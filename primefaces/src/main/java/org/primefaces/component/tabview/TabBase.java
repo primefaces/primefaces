@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.tabview;
 
-import javax.faces.component.UIPanel;
+import jakarta.faces.component.UIPanel;
 
 
 public abstract class TabBase extends UIPanel {

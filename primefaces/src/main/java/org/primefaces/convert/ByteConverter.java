@@ -23,7 +23,7 @@
  */
 package org.primefaces.convert;
 
-public class ByteConverter extends javax.faces.convert.ByteConverter implements ClientConverter {
+public class ByteConverter extends jakarta.faces.convert.ByteConverter implements ClientConverter {
 
     @Override
     public String getConverterId() {

@@ -29,8 +29,8 @@ import org.primefaces.component.api.UIPageableData;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
 
 public class CurrentPageReportRenderer implements PaginatorElementRenderer {
 

@@ -23,8 +23,8 @@
  */
 package org.primefaces.application.exceptionhandler;
 
-import javax.faces.context.ExceptionHandler;
-import javax.faces.context.ExceptionHandlerFactory;
+import jakarta.faces.context.ExceptionHandler;
+import jakarta.faces.context.ExceptionHandlerFactory;
 
 public class PrimeExceptionHandlerFactory extends ExceptionHandlerFactory {
 

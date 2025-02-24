@@ -25,7 +25,7 @@ package org.primefaces.component.blockui;
 
 import org.primefaces.component.api.Widget;
 
-import javax.faces.component.UIPanel;
+import jakarta.faces.component.UIPanel;
 
 public abstract class BlockUIBase extends UIPanel implements Widget {
 

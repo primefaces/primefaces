@@ -10,7 +10,7 @@ if (!PrimeFaces.resources) {
            * Builds a JSF resource URL for given resource.
            * 
            * ```javascript
-           * getFacesResource("main.css", "pf", "4.2.0") // => "https://www.primefaces.org/showcase/javax.faces.resource/main.css.xhtml?ln=pf&v=4.2.0"
+           * getFacesResource("main.css", "pf", "4.2.0") // => "https://www.primefaces.org/showcase/jakarta.faces.resource/main.css.xhtml?ln=pf&v=4.2.0"
            * ```
            *
            * @param {string} name The name of the resource, such as `primefaces.js`.
@@ -123,10 +123,10 @@ if (!PrimeFaces.resources) {
                       });
                   }
 
-                  // normal '/showcase/javax.faces.resource/jquery/jquery.js.xhtml?ln=primefaces&v=13.0.5'
+                  // normal '/showcase/jakarta.faces.resource/jquery/jquery.js.xhtml?ln=primefaces&v=13.0.5'
                   findScriptWithVersionParam($('script[src*="/' + PrimeFaces.RESOURCE_IDENTIFIER + '/"]'));
 
-                  // portlet 'javax.faces.resource=jquery/jquery.js.xhtml?ln=primefaces&v=13.0.5'
+                  // portlet 'jakarta.faces.resource=jquery/jquery.js.xhtml?ln=primefaces&v=13.0.5'
                   if (!PrimeFaces.resources.SCRIPT_URI) {
                       findScriptWithVersionParam($('script[src*="' + PrimeFaces.RESOURCE_IDENTIFIER + '="]'));
                   }

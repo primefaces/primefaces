@@ -27,7 +27,7 @@ import org.primefaces.util.LangUtils;
 
 import java.util.Collection;
 
-import javax.faces.application.ResourceDependency;
+import jakarta.faces.application.ResourceDependency;
 
 @ResourceDependency(library = "primefaces", name = "texteditor/texteditor.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")

@@ -29,13 +29,13 @@ import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.csp.CspResponseWriter;
 import org.primefaces.csp.CspState;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.component.UIInput;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.faces.context.FacesContextWrapper;
-import javax.faces.context.ResponseWriter;
-import javax.faces.context.ResponseWriterWrapper;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.component.UIInput;
+import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.FacesContextWrapper;
+import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.context.ResponseWriterWrapper;
 
 /**
  * Custom {@link FacesContextWrapper} to init and release our {@link PrimeRequestContext}.

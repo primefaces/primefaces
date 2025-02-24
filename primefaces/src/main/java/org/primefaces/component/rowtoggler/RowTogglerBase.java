@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.rowtoggler;
 
-import javax.faces.component.UIComponentBase;
+import jakarta.faces.component.UIComponentBase;
 
 
 public abstract class RowTogglerBase extends UIComponentBase {

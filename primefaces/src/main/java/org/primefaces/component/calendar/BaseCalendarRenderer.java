@@ -49,14 +49,14 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.TimeZone;
 
-import javax.el.ValueExpression;
-import javax.el.ValueReference;
-import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.convert.Converter;
-import javax.faces.convert.ConverterException;
+import jakarta.el.ValueExpression;
+import jakarta.el.ValueReference;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.convert.Converter;
+import jakarta.faces.convert.ConverterException;
 
 public abstract class BaseCalendarRenderer extends InputRenderer {
 
@@ -282,13 +282,13 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
         params[2] = ComponentUtils.getLabel(context, calendar);
 
         if (calendar.isTimeOnly()) {
-            message = MessageFactory.getFacesMessage(context, "javax.faces.converter.DateTimeConverter.TIME", FacesMessage.SEVERITY_ERROR, params);
+            message = MessageFactory.getFacesMessage(context, "jakarta.faces.converter.DateTimeConverter.TIME", FacesMessage.SEVERITY_ERROR, params);
         }
         else if (calendar.hasTime()) {
-            message = MessageFactory.getFacesMessage(context, "javax.faces.converter.DateTimeConverter.DATETIME", FacesMessage.SEVERITY_ERROR, params);
+            message = MessageFactory.getFacesMessage(context, "jakarta.faces.converter.DateTimeConverter.DATETIME", FacesMessage.SEVERITY_ERROR, params);
         }
         else {
-            message = MessageFactory.getFacesMessage(context, "javax.faces.converter.DateTimeConverter.DATE", FacesMessage.SEVERITY_ERROR, params);
+            message = MessageFactory.getFacesMessage(context, "jakarta.faces.converter.DateTimeConverter.DATE", FacesMessage.SEVERITY_ERROR, params);
         }
 
         return new ConverterException(message);

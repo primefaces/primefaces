@@ -25,8 +25,8 @@ package org.primefaces.integrationtests.iputtextarea;
 
 import java.io.Serializable;
 
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
 
 import lombok.Data;
 

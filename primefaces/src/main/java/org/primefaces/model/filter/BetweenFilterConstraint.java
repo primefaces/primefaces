@@ -26,7 +26,7 @@ package org.primefaces.model.filter;
 import java.util.List;
 import java.util.Locale;
 
-import javax.faces.context.FacesContext;
+import jakarta.faces.context.FacesContext;
 
 public class BetweenFilterConstraint implements FilterConstraint {
 

@@ -23,11 +23,11 @@
  */
 package org.primefaces.expression;
 
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.component.search.SearchExpressionContext;
-import javax.faces.component.search.SearchKeywordContext;
-import javax.faces.component.search.SearchKeywordResolver;
+import jakarta.faces.FacesException;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.search.SearchExpressionContext;
+import jakarta.faces.component.search.SearchKeywordContext;
+import jakarta.faces.component.search.SearchKeywordResolver;
 
 public class ObserverSearchKeywordResolver extends SearchKeywordResolver {
 

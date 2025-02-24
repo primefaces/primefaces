@@ -11,13 +11,11 @@ It utilizes Tomcat Embedded, OpenWebBeans, RestEasy and different JSF implementa
 
 - Build the project: `mvn clean package`
 - When running an integration test the profile `integration-tests` has to be activated and a JSF implementation has to be selected.
-- Run integration tests with the _verify_ phase and profiles activated: `mvn verify -Pintegration-tests,parallel-execution,mojarra-2.3`
-- Run a single test with `mvn verify -Pintegration-tests,parallel-execution,mojarra-2.3 -Dit.test=DatePicker001Test`
-
-> :warning: **-Pparallel-execution** is currently not supported on Java8
+- Run integration tests with the _verify_ phase and profiles activated: `mvn verify -Pintegration-tests,parallel-execution,mojarra-4.0`
+- Run a single test with `mvn verify -Pintegration-tests,parallel-execution,mojarra-4.0 -Dit.test=DatePicker001Test`
 
 ## Run as web application
-- `mvn clean jetty:run -Pmojarra-2.3`
+- `mvn clean jetty:run -P"mojarra-4.0"`
 - Now you can open it on 'http://localhost:8080/integrationtests/'
 
 ## Profiles
@@ -35,9 +33,8 @@ Keep in mind there are - as of january 2021 - following limitations for Safari w
 
 #### JSF Implementations
 
-  - `mojarra-2.3` - Mojarra 2.3 JSF implementation
-  - `myfaces-2.3` - MyFaces 2.3 JSF implementation
-  - `myfaces-next-2.3` - MyFaces 2.3 next JSF implementation
+  - `mojarra-4.0` - Mojarra 4.0 JSF implementation
+  - `myfaces-4.0` - MyFaces 4.0 JSF implementation
 
 #### Misc
 

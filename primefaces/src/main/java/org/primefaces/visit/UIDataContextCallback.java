@@ -25,11 +25,11 @@ package org.primefaces.visit;
 
 import org.primefaces.component.api.UITree;
 
-import javax.faces.component.ContextCallback;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIData;
-import javax.faces.component.UINamingContainer;
-import javax.faces.context.FacesContext;
+import jakarta.faces.component.ContextCallback;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIData;
+import jakarta.faces.component.UINamingContainer;
+import jakarta.faces.context.FacesContext;
 
 public class UIDataContextCallback implements ContextCallback {
 

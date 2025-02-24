@@ -25,7 +25,7 @@ package org.primefaces.component.photocam;
 
 import org.primefaces.component.api.Widget;
 
-import javax.faces.component.UIInput;
+import jakarta.faces.component.UIInput;
 
 public abstract class PhotoCamBase extends UIInput implements Widget {
 
@@ -101,11 +101,11 @@ public abstract class PhotoCamBase extends UIInput implements Widget {
         getStateHelper().put(PropertyKeys.update, update);
     }
 
-    public javax.el.MethodExpression getListener() {
-        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.listener, null);
+    public jakarta.el.MethodExpression getListener() {
+        return (jakarta.el.MethodExpression) getStateHelper().eval(PropertyKeys.listener, null);
     }
 
-    public void setListener(javax.el.MethodExpression listener) {
+    public void setListener(jakarta.el.MethodExpression listener) {
         getStateHelper().put(PropertyKeys.listener, listener);
     }
 

@@ -26,11 +26,11 @@ package org.primefaces.application;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 
-import javax.faces.context.FacesContext;
-import javax.faces.context.Flash;
-import javax.faces.event.PhaseEvent;
-import javax.faces.event.PhaseId;
-import javax.faces.event.PhaseListener;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.Flash;
+import jakarta.faces.event.PhaseEvent;
+import jakarta.faces.event.PhaseId;
+import jakarta.faces.event.PhaseListener;
 
 /**
  * Keeps objects within Flash during opening a Dialog Framework - dialog and so allows passing objects via Flash to a Dialog Framework - dialog.

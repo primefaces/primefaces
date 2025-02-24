@@ -25,19 +25,17 @@
         <primefaces.CSP>false</primefaces.CSP>
         <primefaces.THEME>saga-blue</primefaces.THEME>
         <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
-        <javax.faces.STATE_SAVING_METHOD>server</javax.faces.STATE_SAVING_METHOD>
+        <jakarta.faces.STATE_SAVING_METHOD>server</jakarta.faces.STATE_SAVING_METHOD>
 
         <sonar.skip>true</sonar.skip>
 
         <!-- dependency versions -->
-        <hibernate-validator.version>6.2.4.Final</hibernate-validator.version>
+        <hibernate-validator.version>8.0.2.Final</hibernate-validator.version>
         <lombok.version>1.18.36</lombok.version>
-        <myfaces.version>2.3.10</myfaces.version>
-        <myfaces-next.version>2.3-next-M8</myfaces-next.version>
-        <tomcat.version>9.0.98</tomcat.version>
-        <resteasy.version>5.0.9.Final</resteasy.version>
-        <owb.version>2.0.27</owb.version>
-        <jetty.version>9.4.56.v20240826</jetty.version>
+        <myfaces.version>4.0.2</myfaces.version>
+        <tomcat.version>10.1.30</tomcat.version>
+        <resteasy.version>6.2.11.Final</resteasy.version>
+        <jetty.version>12.0.16</jetty.version>
     </properties>
 
     <dependencies>
@@ -51,6 +49,14 @@
             <groupId>org.primefaces</groupId>
             <artifactId>primefaces-themes</artifactId>
             <version>${project.version}</version>
+        </dependency>
+
+        <!-- Jakarta EE API -->
+        <dependency>
+            <groupId>org.apache.tomee</groupId>
+            <artifactId>jakartaee-api</artifactId>
+            <version>10.0</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- FeedReader -->
@@ -126,36 +132,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- CDI - OWB -->
-        <dependency>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-atinject_1.0_spec</artifactId>
-            <version>1.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-jcdi_2.0_spec</artifactId>
-            <version>1.3</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.openwebbeans</groupId>
-            <artifactId>openwebbeans-impl</artifactId>
-            <version>${owb.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.openwebbeans</groupId>
-            <artifactId>openwebbeans-web</artifactId>
-            <version>${owb.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.openwebbeans</groupId>
-            <artifactId>openwebbeans-jsf</artifactId>
-            <version>${owb.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-
         <!-- JAXB required for JDK9+ -->
         <dependency>
             <groupId>com.sun.xml.bind</groupId>
@@ -164,52 +140,33 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- CDI / Weld -->
+        <dependency>
+            <groupId>org.jboss.weld.servlet</groupId>
+            <artifactId>weld-servlet-core</artifactId>
+            <version>5.1.3.Final</version>
+        </dependency>
+
         <!-- JAX-RS - RestEasy -->
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-core</artifactId>
             <version>${resteasy.version}</version>
-            <scope>runtime</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.jboss.spec.javax.xml.bind</groupId>
-                    <artifactId>jboss-jaxb-api_2.3_spec</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>jakarta.activation</groupId>
-                    <artifactId>jakarta.activation-api</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-servlet-initializer</artifactId>
             <version>${resteasy.version}</version>
-            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-cdi</artifactId>
             <version>${resteasy.version}</version>
-            <scope>runtime</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.jboss.weld</groupId>
-                    <artifactId>weld-api</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-jackson2-provider</artifactId>
             <version>${resteasy.version}</version>
-            <scope>runtime</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>jakarta.activation</groupId>
-                    <artifactId>jakarta.activation-api</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <!-- BV - Hibernate Validator -->
@@ -218,19 +175,6 @@
             <artifactId>hibernate-validator</artifactId>
             <version>${hibernate-validator.version}</version>
             <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.17.0</version>
-            <scope>runtime</scope>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-collections4</artifactId>
-            <version>4.4</version>
         </dependency>
 
         <dependency>
@@ -245,41 +189,6 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>javax.el</groupId>
-            <artifactId>javax.el-api</artifactId>
-            <version>3.0.0</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>4.0.1</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>javax.annotation</groupId>
-            <artifactId>javax.annotation-api</artifactId>
-            <version>1.3.2</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-            <version>2.0.1.Final</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>javax.ws.rs-api</artifactId>
-            <version>2.1.1</version>
             <scope>provided</scope>
         </dependency>
 
@@ -383,16 +292,23 @@
                 <version>3.8.1</version>
             </plugin>
             <plugin>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
+                <groupId>org.eclipse.jetty.ee10</groupId>
+                <artifactId>jetty-ee10-maven-plugin</artifactId>
                 <version>${jetty.version}</version>
                 <configuration>
-                    <webAppConfig>
-                        <contextPath>/integrationtests</contextPath>
-                    </webAppConfig>
-                    <scanIntervalSeconds>5</scanIntervalSeconds>
+                    <httpConnector>
+                        <host>0.0.0.0</host>
+                        <port>8080</port>
+                    </httpConnector>
                     <webXml>${project.build.directory}/web.xml</webXml>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.eclipse.jetty.ee10</groupId>
+                        <artifactId>jetty-ee10-cdi</artifactId>
+                        <version>${jetty.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>
@@ -475,7 +391,7 @@
         <profile>
             <id>client-state-saving</id>
             <properties>
-                <javax.faces.STATE_SAVING_METHOD>client</javax.faces.STATE_SAVING_METHOD>
+                <jakarta.faces.STATE_SAVING_METHOD>client</jakarta.faces.STATE_SAVING_METHOD>
             </properties>
         </profile>
         <profile>
@@ -497,7 +413,7 @@
             </properties>
         </profile>
         <profile>
-            <id>myfaces-2.3</id>
+            <id>myfaces-4.0</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
@@ -522,29 +438,7 @@
             </build>
         </profile>
         <profile>
-            <id>myfaces-next-2.3</id>
-            <dependencies>
-                <dependency>
-                    <groupId>org.apache.myfaces.core</groupId>
-                    <artifactId>myfaces-api</artifactId>
-                    <version>${myfaces-next.version}</version>
-                    <scope>compile</scope>
-                </dependency>
-                <dependency>
-                    <groupId>org.apache.myfaces.core</groupId>
-                    <artifactId>myfaces-impl</artifactId>
-                    <version>${myfaces-next.version}</version>
-                    <scope>compile</scope>
-                </dependency>
-            </dependencies>
-            <build>
-                <filters>
-                    <filter>${basedir}/src/main/resources/filters/myfaces.properties</filter>
-                </filters>
-            </build>
-        </profile>
-        <profile>
-            <id>mojarra-2.3</id>
+            <id>mojarra-4.0</id>
             <dependencies>
                 <dependency>
                     <groupId>org.glassfish</groupId>

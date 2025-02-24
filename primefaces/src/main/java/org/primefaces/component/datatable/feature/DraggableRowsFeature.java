@@ -30,8 +30,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import javax.el.MethodExpression;
-import javax.faces.context.FacesContext;
+import jakarta.el.MethodExpression;
+import jakarta.faces.context.FacesContext;
 
 public class DraggableRowsFeature implements DataTableFeature {
 

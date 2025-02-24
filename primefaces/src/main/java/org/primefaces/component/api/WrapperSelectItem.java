@@ -23,9 +23,9 @@
  */
 package org.primefaces.component.api;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.UISelectItem;
-import javax.faces.model.SelectItem;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UISelectItem;
+import jakarta.faces.model.SelectItem;
 
 /**
  * Wraps a SelectItem so its {@code <f:selectitem>} passthrough attributes can be used.

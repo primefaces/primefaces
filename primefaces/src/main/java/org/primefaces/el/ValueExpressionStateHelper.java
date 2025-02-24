@@ -31,9 +31,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-import javax.el.ValueExpression;
-import javax.faces.component.StateHelper;
-import javax.faces.context.FacesContext;
+import jakarta.el.ValueExpression;
+import jakarta.faces.component.StateHelper;
+import jakarta.faces.context.FacesContext;
 
 public class ValueExpressionStateHelper implements StateHelper {
     private static final Object UNKNOWN_VALUE = new Object();

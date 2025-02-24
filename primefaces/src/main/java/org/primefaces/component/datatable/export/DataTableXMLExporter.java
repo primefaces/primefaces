@@ -35,8 +35,8 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 
-import javax.faces.FacesException;
-import javax.faces.context.FacesContext;
+import jakarta.faces.FacesException;
+import jakarta.faces.context.FacesContext;
 
 public class DataTableXMLExporter extends DataTableExporter<PrintWriter, ExporterOptions> {
 

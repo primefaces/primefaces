@@ -25,8 +25,8 @@ package org.primefaces.event.timeline;
 
 import java.time.LocalDateTime;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.behavior.Behavior;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.behavior.Behavior;
 
 public class TimelineDragDropEvent<T> extends TimelineAddEvent {
 

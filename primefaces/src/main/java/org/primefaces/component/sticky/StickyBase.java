@@ -25,7 +25,7 @@ package org.primefaces.component.sticky;
 
 import org.primefaces.component.api.Widget;
 
-import javax.faces.component.UIPanel;
+import jakarta.faces.component.UIPanel;
 
 public abstract class StickyBase extends UIPanel implements Widget {
 

@@ -26,7 +26,7 @@ package org.primefaces.component.api;
 import java.util.Map;
 import java.util.Set;
 
-import javax.faces.event.BehaviorEvent;
+import jakarta.faces.event.BehaviorEvent;
 
 public interface PrimeClientBehaviorHolder {
 

@@ -30,12 +30,12 @@ import org.primefaces.util.CSVBuilder;
 
 import java.io.IOException;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.PhaseId;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UINamingContainer;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.event.ActionEvent;
+import jakarta.faces.event.PhaseId;
 
 public class RemoteCommandRenderer extends CoreRenderer {
 

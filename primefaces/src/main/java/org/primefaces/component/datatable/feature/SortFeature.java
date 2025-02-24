@@ -39,9 +39,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import javax.faces.FacesException;
-import javax.faces.context.FacesContext;
-import javax.faces.model.ListDataModel;
+import jakarta.faces.FacesException;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.model.ListDataModel;
 
 public class SortFeature implements DataTableFeature {
 
@@ -170,7 +170,7 @@ public class SortFeature implements DataTableFeature {
         }
         else {
             throw new FacesException(String.format("Data type should be java.util.List or %s instance to be sortable."
-                    , javax.faces.model.ListDataModel.class.getName()));
+                    , jakarta.faces.model.ListDataModel.class.getName()));
         }
     }
 }

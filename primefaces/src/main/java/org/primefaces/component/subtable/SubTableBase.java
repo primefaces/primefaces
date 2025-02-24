@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.subtable;
 
-import javax.faces.component.UIData;
+import jakarta.faces.component.UIData;
 
 public abstract class SubTableBase extends UIData {
 

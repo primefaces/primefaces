@@ -28,7 +28,7 @@ import org.primefaces.component.treetable.TreeTableRenderer;
 
 import java.io.IOException;
 
-import javax.faces.context.FacesContext;
+import jakarta.faces.context.FacesContext;
 
 public interface TreeTableFeature {
 

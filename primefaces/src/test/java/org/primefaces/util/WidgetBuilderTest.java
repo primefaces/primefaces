@@ -31,7 +31,7 @@ import org.primefaces.mock.pf.PrimeConfigurationMock;
 
 import java.io.IOException;
 
-import javax.faces.context.FacesContext;
+import jakarta.faces.context.FacesContext;
 
 import org.junit.jupiter.api.Test;
 

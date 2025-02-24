@@ -33,14 +33,14 @@ import org.primefaces.util.WidgetBuilder;
 import java.io.IOException;
 import java.util.List;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.UISelectMany;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.convert.Converter;
-import javax.faces.convert.ConverterException;
-import javax.faces.model.SelectItem;
-import javax.faces.render.Renderer;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UISelectMany;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.convert.Converter;
+import jakarta.faces.convert.ConverterException;
+import jakarta.faces.model.SelectItem;
+import jakarta.faces.render.Renderer;
 
 public class SelectManyMenuRenderer extends SelectManyRenderer {
 
@@ -48,8 +48,8 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
         Renderer renderer = ComponentUtils.getUnwrappedRenderer(
                 context,
-                "javax.faces.SelectMany",
-                "javax.faces.Menu");
+                "jakarta.faces.SelectMany",
+                "jakarta.faces.Menu");
         return renderer.getConvertedValue(context, component, submittedValue);
     }
 

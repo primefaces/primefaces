@@ -47,23 +47,23 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.el.ELException;
-import javax.faces.FacesException;
-import javax.faces.application.ProjectStage;
-import javax.faces.application.ViewExpiredException;
-import javax.faces.application.ViewHandler;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIViewRoot;
-import javax.faces.component.visit.VisitContext;
-import javax.faces.context.ExceptionHandler;
-import javax.faces.context.ExceptionHandlerWrapper;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.faces.context.PartialResponseWriter;
-import javax.faces.event.ExceptionQueuedEvent;
-import javax.faces.event.PhaseId;
-import javax.faces.lifecycle.ClientWindow;
-import javax.faces.view.ViewDeclarationLanguage;
+import jakarta.el.ELException;
+import jakarta.faces.FacesException;
+import jakarta.faces.application.ProjectStage;
+import jakarta.faces.application.ViewExpiredException;
+import jakarta.faces.application.ViewHandler;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIViewRoot;
+import jakarta.faces.component.visit.VisitContext;
+import jakarta.faces.context.ExceptionHandler;
+import jakarta.faces.context.ExceptionHandlerWrapper;
+import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.PartialResponseWriter;
+import jakarta.faces.event.ExceptionQueuedEvent;
+import jakarta.faces.event.PhaseId;
+import jakarta.faces.lifecycle.ClientWindow;
+import jakarta.faces.view.ViewDeclarationLanguage;
 
 public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
@@ -337,7 +337,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
             // Workaround for Mojarra
             // if UIViewRoot == null -> 'IllegalArgumentException' is thrown instead of 'ViewExpiredException'
             if (rootCause == null && throwable instanceof IllegalArgumentException) {
-                rootCause = new javax.faces.application.ViewExpiredException(viewId);
+                rootCause = new jakarta.faces.application.ViewExpiredException(viewId);
             }
         }
 

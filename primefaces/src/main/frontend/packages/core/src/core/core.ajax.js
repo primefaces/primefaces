@@ -44,19 +44,19 @@ if (!PrimeFaces.ajax) {
          * @type {string}
          * @readonly
          */
-        VIEW_HEAD: "javax.faces.ViewHead",
+        VIEW_HEAD: "jakarta.faces.ViewHead",
         /**
          * Name for the ID of the BODY element, used in AJAX requests.
          * @type {string}
          * @readonly
          */
-        VIEW_BODY: "javax.faces.ViewBody",
+        VIEW_BODY: "jakarta.faces.ViewBody",
         /**
          * Name for the ID of a resource entry, used in AJAX requests.
          * @type {string}
          * @readonly
          */
-        RESOURCE: "javax.faces.Resource",
+        RESOURCE: "jakarta.faces.Resource",
 
         /**
          * Parameter shortcut mapping for the method `PrimeFaces.ab`.
@@ -129,7 +129,7 @@ if (!PrimeFaces.ajax) {
              */
             getPostUrl: function(form) {
                 var postURL = form.attr('action');
-                var encodedURLInput = form.children("input[name*='javax.faces.encodedURL']");
+                var encodedURLInput = form.children("input[name*='jakarta.faces.encodedURL']");
 
                 if (encodedURLInput.length > 0) {
                     postURL = encodedURLInput.val();
@@ -147,7 +147,7 @@ if (!PrimeFaces.ajax) {
              * @return {string | null} The selector for the forms, or `null` when no forms need to be updated.
              */
             getPorletForms: function(form, parameterPrefix) {
-                var encodedURLInput = form.children("input[name*='javax.faces.encodedURL']");
+                var encodedURLInput = form.children("input[name*='jakarta.faces.encodedURL']");
 
                 if (encodedURLInput.length > 0) {
                     return 'form[id*="' + parameterPrefix + '"]';
@@ -216,7 +216,7 @@ if (!PrimeFaces.ajax) {
                 return script.includes("PrimeFaces.ab(") || script.includes("pf.ab(")
                     || script.includes("mojarra.ab(")
                     || script.includes("myfaces.ab(")
-                    || script.includes("jsf.ajax.request") || script.includes("faces.ajax.request");
+                    || script.includes("faces.ajax.request");
             },
 
             /**
@@ -599,7 +599,7 @@ if (!PrimeFaces.ajax) {
             /**
              * Handles the given AJAX request, either by sending it immediately (if `async` is set to `true`), or by
              * adding it to the AJAX queue otherwise. The AJAX queue ensures that requests are sent and handled in the
-             * order they were started. See also {@link jsf.ajax.request}.
+             * order they were started. See also {@link faces.ajax.request}.
              * @param {Partial<PrimeFaces.ajax.Configuration>} cfg Configuration for the AJAX request to send, such as
              * the HTTP method, the URL, and the content of the request.
              * @param {Partial<PrimeFaces.ajax.ConfigurationExtender>} [ext] Optional extender with additional options
@@ -1321,7 +1321,7 @@ if (!PrimeFaces.ajax) {
 
             /**
              * Handles the response of an AJAX request. The response consists of one or more actions such as executing a
-             * script or updating a DOM element. See also {@link jsf.ajax.response}.
+             * script or updating a DOM element. See also {@link faces.ajax.response}.
              *
              * Also updates the specified components if any and synchronizes the client side JSF state. DOM updates are
              * implemented using jQuery which uses a very algorithm.
@@ -1644,8 +1644,8 @@ if (!PrimeFaces.ajax) {
     });
 
     $(function() {
-        if (window.jsf && jsf.ajax) {
-            jsf.ajax.addOnError(function (data) {
+        if (window.faces && faces.ajax) {
+            faces.ajax.addOnError(function (data) {
 
                 // serverError means a real server-side exception where a p:ajaxExceptionHandler or error-page mapping might exist
                 if (data.status === "serverError") {

@@ -34,7 +34,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import javax.faces.context.FacesContext;
+import jakarta.faces.context.FacesContext;
 
 public abstract class TreeTableExporter<P, O extends ExporterOptions> extends TableExporter<TreeTable, P, O> {
 

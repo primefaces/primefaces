@@ -27,9 +27,9 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
+import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
 
 import lombok.Data;
 

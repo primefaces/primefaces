@@ -28,7 +28,7 @@ import java.util.Collection;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-import javax.faces.context.FacesContext;
+import jakarta.faces.context.FacesContext;
 
 public final class SecurityUtils {
 

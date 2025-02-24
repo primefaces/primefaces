@@ -25,9 +25,9 @@ package org.primefaces.component.terminal;
 
 import org.primefaces.facelets.MethodRule;
 
-import javax.faces.view.facelets.ComponentConfig;
-import javax.faces.view.facelets.ComponentHandler;
-import javax.faces.view.facelets.MetaRuleset;
+import jakarta.faces.view.facelets.ComponentConfig;
+import jakarta.faces.view.facelets.ComponentHandler;
+import jakarta.faces.view.facelets.MetaRuleset;
 
 public class TerminalHandler extends ComponentHandler {
 

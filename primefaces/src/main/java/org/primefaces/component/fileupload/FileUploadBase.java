@@ -26,7 +26,7 @@ package org.primefaces.component.fileupload;
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
-import javax.faces.component.UIInput;
+import jakarta.faces.component.UIInput;
 
 public abstract class FileUploadBase extends UIInput implements Widget {
 
@@ -132,11 +132,11 @@ public abstract class FileUploadBase extends UIInput implements Widget {
         getStateHelper().put(PropertyKeys.process, process);
     }
 
-    public javax.el.MethodExpression getListener() {
-        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.listener, null);
+    public jakarta.el.MethodExpression getListener() {
+        return (jakarta.el.MethodExpression) getStateHelper().eval(PropertyKeys.listener, null);
     }
 
-    public void setListener(javax.el.MethodExpression fileUploadListener) {
+    public void setListener(jakarta.el.MethodExpression fileUploadListener) {
         getStateHelper().put(PropertyKeys.listener, fileUploadListener);
     }
 

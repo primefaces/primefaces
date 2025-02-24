@@ -23,10 +23,10 @@
  */
 package org.primefaces.context;
 
-import javax.faces.FacesException;
-import javax.faces.context.FacesContext;
-import javax.faces.context.FacesContextFactory;
-import javax.faces.lifecycle.Lifecycle;
+import jakarta.faces.FacesException;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.FacesContextFactory;
+import jakarta.faces.lifecycle.Lifecycle;
 
 /**
  * {@link FacesContextFactory} to wrap the {@link FacesContext} with our {@link PrimeFacesContext}.

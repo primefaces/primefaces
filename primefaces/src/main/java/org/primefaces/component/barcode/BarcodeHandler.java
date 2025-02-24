@@ -36,9 +36,10 @@ import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
 import javax.imageio.ImageIO;
+
+import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.FacesContext;
 
 import uk.org.okapibarcode.backend.Codabar;
 import uk.org.okapibarcode.backend.Code128;

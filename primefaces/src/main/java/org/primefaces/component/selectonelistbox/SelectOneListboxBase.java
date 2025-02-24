@@ -27,7 +27,7 @@ import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
 
-import javax.faces.component.html.HtmlSelectOneListbox;
+import jakarta.faces.component.html.HtmlSelectOneListbox;
 
 public abstract class SelectOneListboxBase extends HtmlSelectOneListbox implements Widget, InputHolder, PrimeClientBehaviorHolder {
 

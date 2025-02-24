@@ -32,15 +32,15 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.FacesException;
-import javax.faces.application.ConfigurableNavigationHandler;
-import javax.faces.application.NavigationCase;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.event.ActionListener;
-import javax.faces.flow.FlowHandler;
-import javax.faces.lifecycle.ClientWindow;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.faces.FacesException;
+import jakarta.faces.application.ConfigurableNavigationHandler;
+import jakarta.faces.application.NavigationCase;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.ActionListener;
+import jakarta.faces.flow.FlowHandler;
+import jakarta.faces.lifecycle.ClientWindow;
+import jakarta.servlet.http.HttpServletRequest;
 
 public class OutcomeTargetRenderer extends CoreRenderer {
 

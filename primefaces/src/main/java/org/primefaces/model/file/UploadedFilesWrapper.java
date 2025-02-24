@@ -27,9 +27,9 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.faces.FacesWrapper;
-import javax.faces.component.StateHolder;
-import javax.faces.context.FacesContext;
+import jakarta.faces.FacesWrapper;
+import jakarta.faces.component.StateHolder;
+import jakarta.faces.context.FacesContext;
 
 /**
  * Internal wrapper to avoid the file binaries to beeing saved in the ViewState.

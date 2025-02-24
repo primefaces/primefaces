@@ -26,10 +26,10 @@ package org.primefaces.component.fileupload;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.facelets.MethodRule;
 
-import javax.faces.view.facelets.ComponentConfig;
-import javax.faces.view.facelets.ComponentHandler;
-import javax.faces.view.facelets.MetaRule;
-import javax.faces.view.facelets.MetaRuleset;
+import jakarta.faces.view.facelets.ComponentConfig;
+import jakarta.faces.view.facelets.ComponentHandler;
+import jakarta.faces.view.facelets.MetaRule;
+import jakarta.faces.view.facelets.MetaRuleset;
 
 public class FileUploadHandler extends ComponentHandler {
 

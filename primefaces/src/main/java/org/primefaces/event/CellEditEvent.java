@@ -35,11 +35,11 @@ import org.primefaces.util.FacetUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.FacesException;
-import javax.faces.component.EditableValueHolder;
-import javax.faces.component.UIComponent;
-import javax.faces.component.behavior.Behavior;
-import javax.faces.context.FacesContext;
+import jakarta.faces.FacesException;
+import jakarta.faces.component.EditableValueHolder;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.behavior.Behavior;
+import jakarta.faces.context.FacesContext;
 
 public class CellEditEvent<T> extends AbstractAjaxBehaviorEvent {
 

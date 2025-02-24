@@ -33,10 +33,10 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.faces.application.Resource;
-import javax.faces.application.ResourceHandler;
-import javax.faces.application.ResourceHandlerWrapper;
-import javax.faces.context.FacesContext;
+import jakarta.faces.application.Resource;
+import jakarta.faces.application.ResourceHandler;
+import jakarta.faces.application.ResourceHandlerWrapper;
+import jakarta.faces.context.FacesContext;
 
 public class PrimeResourceHandler extends ResourceHandlerWrapper {
 

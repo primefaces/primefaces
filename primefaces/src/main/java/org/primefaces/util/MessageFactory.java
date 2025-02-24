@@ -40,14 +40,14 @@ import java.util.MissingResourceException;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
-import javax.faces.application.Application;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.faces.context.FacesContextWrapper;
+import jakarta.faces.application.Application;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.FacesContextWrapper;
 
 public class MessageFactory {
 
-    private static final String DEFAULT_BUNDLE_BASENAME = "javax.faces.Messages";
+    private static final String DEFAULT_BUNDLE_BASENAME = "jakarta.faces.Messages";
     private static final String PRIMEFACES_BUNDLE_BASENAME = "org.primefaces.Messages";
     private static final String DEFAULT_DETAIL_SUFFIX = "_detail";
 

@@ -27,10 +27,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.inject.spi.CDI;
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.inject.spi.CDI;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

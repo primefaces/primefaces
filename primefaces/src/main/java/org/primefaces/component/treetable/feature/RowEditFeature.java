@@ -34,10 +34,10 @@ import org.primefaces.visit.ResetInputVisitCallback;
 import java.io.IOException;
 import java.util.Map;
 
-import javax.faces.component.EditableValueHolder;
-import javax.faces.component.UIComponent;
-import javax.faces.component.visit.VisitContext;
-import javax.faces.context.FacesContext;
+import jakarta.faces.component.EditableValueHolder;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.visit.VisitContext;
+import jakarta.faces.context.FacesContext;
 
 public class RowEditFeature implements TreeTableFeature {
 

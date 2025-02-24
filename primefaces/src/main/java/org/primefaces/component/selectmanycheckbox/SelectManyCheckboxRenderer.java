@@ -34,18 +34,18 @@ import org.primefaces.util.WidgetBuilder;
 import java.io.IOException;
 import java.util.List;
 
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
-import javax.faces.component.UINamingContainer;
-import javax.faces.component.UISelectMany;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.convert.Converter;
-import javax.faces.convert.ConverterException;
-import javax.faces.model.SelectItem;
-import javax.faces.model.SelectItemGroup;
-import javax.faces.render.Renderer;
+import jakarta.faces.FacesException;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIInput;
+import jakarta.faces.component.UINamingContainer;
+import jakarta.faces.component.UISelectMany;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.convert.Converter;
+import jakarta.faces.convert.ConverterException;
+import jakarta.faces.model.SelectItem;
+import jakarta.faces.model.SelectItemGroup;
+import jakarta.faces.render.Renderer;
 
 public class SelectManyCheckboxRenderer extends SelectManyRenderer {
 
@@ -53,8 +53,8 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
         Renderer renderer = ComponentUtils.getUnwrappedRenderer(
                 context,
-                "javax.faces.SelectMany",
-                "javax.faces.Checkbox");
+                "jakarta.faces.SelectMany",
+                "jakarta.faces.Checkbox");
         return renderer.getConvertedValue(context, component, submittedValue);
     }
 

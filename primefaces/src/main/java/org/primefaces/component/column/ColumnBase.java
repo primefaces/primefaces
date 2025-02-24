@@ -26,7 +26,7 @@ package org.primefaces.component.column;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.menu.MenuColumn;
 
-import javax.faces.component.UIColumn;
+import jakarta.faces.component.UIColumn;
 
 public abstract class ColumnBase extends UIColumn implements org.primefaces.component.api.UIColumn, MenuColumn {
 
@@ -120,11 +120,11 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
     }
 
     @Override
-    public javax.el.MethodExpression getSortFunction() {
-        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.sortFunction, null);
+    public jakarta.el.MethodExpression getSortFunction() {
+        return (jakarta.el.MethodExpression) getStateHelper().eval(PropertyKeys.sortFunction, null);
     }
 
-    public void setSortFunction(javax.el.MethodExpression sortFunction) {
+    public void setSortFunction(jakarta.el.MethodExpression sortFunction) {
         getStateHelper().put(PropertyKeys.sortFunction, sortFunction);
     }
 
@@ -300,11 +300,11 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
     }
 
     @Override
-    public javax.el.MethodExpression getFilterFunction() {
-        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.filterFunction, null);
+    public jakarta.el.MethodExpression getFilterFunction() {
+        return (jakarta.el.MethodExpression) getStateHelper().eval(PropertyKeys.filterFunction, null);
     }
 
-    public void setFilterFunction(javax.el.MethodExpression filterFunction) {
+    public void setFilterFunction(jakarta.el.MethodExpression filterFunction) {
         getStateHelper().put(PropertyKeys.filterFunction, filterFunction);
     }
 
@@ -372,11 +372,11 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
     }
 
     @Override
-    public javax.el.MethodExpression getExportFunction() {
-        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.exportFunction, null);
+    public jakarta.el.MethodExpression getExportFunction() {
+        return (jakarta.el.MethodExpression) getStateHelper().eval(PropertyKeys.exportFunction, null);
     }
 
-    public void setExportFunction(javax.el.MethodExpression exportFunction) {
+    public void setExportFunction(jakarta.el.MethodExpression exportFunction) {
         getStateHelper().put(PropertyKeys.exportFunction, exportFunction);
     }
 

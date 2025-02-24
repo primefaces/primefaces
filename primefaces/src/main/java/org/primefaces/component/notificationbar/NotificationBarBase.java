@@ -25,7 +25,7 @@ package org.primefaces.component.notificationbar;
 
 import org.primefaces.component.api.Widget;
 
-import javax.faces.component.UIComponentBase;
+import jakarta.faces.component.UIComponentBase;
 
 public abstract class NotificationBarBase extends UIComponentBase implements Widget {
 

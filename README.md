@@ -88,19 +88,11 @@ Version | JSF version | Java version | Binary | Source | Docs
 ##### SNAPSHOT
 
   ```xml
-  <!-- Java EE / javax.* / JSF 2.3 -->
-  <dependency>
-      <groupId>org.primefaces</groupId>
-      <artifactId>primefaces</artifactId>
-      <version>16.0.0-SNAPSHOT</version>
-  </dependency>
-
   <!-- Jakarta EE / jakarta.* / Faces 4.0+  -->
   <dependency>
       <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
       <version>16.0.0-SNAPSHOT</version>
-      <classifier>jakarta</classifier>
   </dependency>
 
   <repositories>

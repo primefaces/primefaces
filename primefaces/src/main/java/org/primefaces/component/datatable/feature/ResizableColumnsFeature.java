@@ -25,7 +25,7 @@ package org.primefaces.component.datatable.feature;
 
 import org.primefaces.component.datatable.DataTable;
 
-import javax.faces.context.FacesContext;
+import jakarta.faces.context.FacesContext;
 
 public class ResizableColumnsFeature implements DataTableFeature {
 

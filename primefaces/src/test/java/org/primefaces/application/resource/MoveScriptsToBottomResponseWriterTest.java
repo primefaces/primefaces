@@ -26,8 +26,8 @@ package org.primefaces.application.resource;
 
 import java.io.IOException;
 
-import javax.faces.FacesException;
-import javax.faces.context.ResponseWriter;
+import jakarta.faces.FacesException;
+import jakarta.faces.context.ResponseWriter;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

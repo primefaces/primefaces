@@ -28,7 +28,7 @@ import org.primefaces.util.HTML;
 import java.util.HashMap;
 import java.util.Map;
 
-public class NumberConverter extends javax.faces.convert.NumberConverter implements ClientConverter {
+public class NumberConverter extends jakarta.faces.convert.NumberConverter implements ClientConverter {
 
     @Override
     public Map<String, Object> getMetadata() {

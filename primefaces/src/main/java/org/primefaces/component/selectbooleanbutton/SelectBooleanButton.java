@@ -26,7 +26,7 @@ package org.primefaces.component.selectbooleanbutton;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 
-import javax.faces.application.ResourceDependency;
+import jakarta.faces.application.ResourceDependency;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")

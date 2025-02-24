@@ -36,10 +36,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.faces.application.Resource;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
+import jakarta.faces.application.Resource;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
 
 public class BarcodeRenderer extends CoreRenderer {
 

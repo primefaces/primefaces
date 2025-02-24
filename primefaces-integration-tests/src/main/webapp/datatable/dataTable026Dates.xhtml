@@ -32,7 +32,7 @@
                 <p:column headerText="last login date" field="lastLoginDate" filterMatchMode="between">
                     <f:facet name="filter">
                         <p:datePicker selectionMode="range" onchange="PF('wgtTable').filter()" id="lastLoginDateFilter"
-                                      pattern="yyyy-MM-dd" rangeSeparator="-" converter="javax.faces.DateTime" showOnFocus="false"/>
+                                      pattern="yyyy-MM-dd" rangeSeparator="-" converter="jakarta.faces.DateTime" showOnFocus="false"/>
                     </f:facet>
                 </p:column>
                 <p:column headerText="last login date time" field="lastLoginDateTime" filterMatchMode="lt">
@@ -47,7 +47,7 @@
                 <p:column headerText="last login date" field="lastLoginDate" filterMatchMode="lt">
                     <f:facet name="filter">
                         <p:datePicker onchange="PF('wgtTable').filter()" id="lastLoginDateFilter2" showOnFocus="false"
-                                      pattern="yyyy-MM-dd HH:mm:ss" showTime="true" converter="javax.faces.DateTime"/>
+                                      pattern="yyyy-MM-dd HH:mm:ss" showTime="true" converter="jakarta.faces.DateTime"/>
                     </f:facet>
                 </p:column>
 

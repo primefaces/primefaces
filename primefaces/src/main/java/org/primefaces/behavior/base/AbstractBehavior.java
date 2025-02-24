@@ -25,9 +25,9 @@ package org.primefaces.behavior.base;
 
 import org.primefaces.el.ValueExpressionStateHelper;
 
-import javax.faces.component.StateHelper;
-import javax.faces.component.behavior.ClientBehaviorBase;
-import javax.faces.context.FacesContext;
+import jakarta.faces.component.StateHelper;
+import jakarta.faces.component.behavior.ClientBehaviorBase;
+import jakarta.faces.context.FacesContext;
 
 public abstract class AbstractBehavior extends ClientBehaviorBase {
 

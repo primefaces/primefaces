@@ -25,7 +25,7 @@ package org.primefaces.component.captcha;
 
 import org.primefaces.component.api.Widget;
 
-import javax.faces.component.UIInput;
+import jakarta.faces.component.UIInput;
 
 public abstract class CaptchaBase extends UIInput implements Widget {
 

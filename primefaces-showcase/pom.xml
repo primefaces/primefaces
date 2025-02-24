@@ -55,7 +55,6 @@
             <groupId>org.primefaces</groupId>
             <artifactId>primefaces</artifactId>
             <version>${project.version}</version>
-            <classifier>jakarta</classifier>
         </dependency>
         <dependency>
             <groupId>org.primefaces</groupId>

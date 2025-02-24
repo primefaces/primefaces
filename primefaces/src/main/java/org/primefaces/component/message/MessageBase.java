@@ -26,7 +26,7 @@ package org.primefaces.component.message;
 import org.primefaces.component.api.UINotification;
 import org.primefaces.component.api.Widget;
 
-import javax.faces.component.UIMessage;
+import jakarta.faces.component.UIMessage;
 
 public abstract class MessageBase extends UIMessage implements UINotification, Widget {
 

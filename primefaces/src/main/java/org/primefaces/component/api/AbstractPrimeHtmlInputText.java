@@ -28,7 +28,7 @@ import org.primefaces.util.LangUtils;
 import java.util.Collection;
 import java.util.List;
 
-import javax.faces.component.html.HtmlInputText;
+import jakarta.faces.component.html.HtmlInputText;
 
 /**
  * Extended {@link HtmlInputText} to allow for new events such as "input" and "paste".

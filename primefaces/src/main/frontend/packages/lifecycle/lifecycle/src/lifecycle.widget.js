@@ -43,8 +43,8 @@ PrimeFaces.widget.Lifecycle = class Lifecycle extends PrimeFaces.widget.BaseWidg
             $(document).off('pfAjaxSuccess.'+this.id);
         });
 
-        if (window.jsf && window.jsf.ajax) {
-            jsf.ajax.addOnEvent(function(data) {
+        if (window.faces && window.faces.ajax) {
+            faces.ajax.addOnEvent(function(data) {
                 if (data.status === 'success') {
                     if (!$this.updating) {
                         PrimeFaces.queueTask(function() {

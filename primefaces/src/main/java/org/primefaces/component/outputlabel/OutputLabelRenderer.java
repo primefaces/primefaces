@@ -41,18 +41,18 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.el.PropertyNotFoundException;
-import javax.el.ValueExpression;
-import javax.faces.component.ContextCallback;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
-import javax.faces.component.UINamingContainer;
-import javax.faces.component.UISelectBoolean;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.validation.constraints.AssertTrue;
-import javax.validation.constraints.NotNull;
-import javax.validation.metadata.ConstraintDescriptor;
+import jakarta.el.PropertyNotFoundException;
+import jakarta.el.ValueExpression;
+import jakarta.faces.component.ContextCallback;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIInput;
+import jakarta.faces.component.UINamingContainer;
+import jakarta.faces.component.UISelectBoolean;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
+import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.metadata.ConstraintDescriptor;
 
 public class OutputLabelRenderer extends CoreRenderer {
 

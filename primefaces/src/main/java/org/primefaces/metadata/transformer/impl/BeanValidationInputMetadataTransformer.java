@@ -49,18 +49,18 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.el.PropertyNotFoundException;
-import javax.faces.component.UIInput;
-import javax.faces.context.FacesContext;
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.Future;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Past;
-import javax.validation.constraints.Size;
-import javax.validation.metadata.ConstraintDescriptor;
+import jakarta.el.PropertyNotFoundException;
+import jakarta.faces.component.UIInput;
+import jakarta.faces.context.FacesContext;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Size;
+import jakarta.validation.metadata.ConstraintDescriptor;
 
 public class BeanValidationInputMetadataTransformer extends AbstractInputMetadataTransformer {
 

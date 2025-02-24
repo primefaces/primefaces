@@ -25,7 +25,7 @@ package org.primefaces.component.sidebar;
 
 import org.primefaces.component.api.Widget;
 
-import javax.faces.component.UIComponentBase;
+import jakarta.faces.component.UIComponentBase;
 
 public abstract class SidebarBase extends UIComponentBase implements Widget {
 

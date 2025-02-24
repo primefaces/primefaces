@@ -31,7 +31,7 @@ import java.io.Serializable;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import javax.faces.FacesException;
+import jakarta.faces.FacesException;
 
 /**
  * Default implementation of a StreamedContent

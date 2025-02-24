@@ -28,7 +28,7 @@ import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.UITree;
 import org.primefaces.component.api.Widget;
 
-import javax.faces.component.behavior.ClientBehaviorHolder;
+import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class TreeBase extends UITree implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
@@ -262,11 +262,11 @@ public abstract class TreeBase extends UITree implements Widget, RTLAware, Clien
         getStateHelper().put(PropertyKeys.dropCopyNode, dropCopyNode);
     }
 
-    public javax.el.MethodExpression getOnDrop() {
-        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.onDrop, null);
+    public jakarta.el.MethodExpression getOnDrop() {
+        return (jakarta.el.MethodExpression) getStateHelper().eval(PropertyKeys.onDrop, null);
     }
 
-    public void setOnDrop(javax.el.MethodExpression onDrop) {
+    public void setOnDrop(jakarta.el.MethodExpression onDrop) {
         getStateHelper().put(PropertyKeys.onDrop, onDrop);
     }
 
@@ -278,11 +278,11 @@ public abstract class TreeBase extends UITree implements Widget, RTLAware, Clien
         getStateHelper().put(PropertyKeys.filterMode, filterMode);
     }
 
-    public javax.el.MethodExpression getFilterFunction() {
-        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.filterFunction, null);
+    public jakarta.el.MethodExpression getFilterFunction() {
+        return (jakarta.el.MethodExpression) getStateHelper().eval(PropertyKeys.filterFunction, null);
     }
 
-    public void setFilterFunction(javax.el.MethodExpression filterFunction) {
+    public void setFilterFunction(jakarta.el.MethodExpression filterFunction) {
         getStateHelper().put(PropertyKeys.filterFunction, filterFunction);
     }
 

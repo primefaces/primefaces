@@ -26,13 +26,13 @@ package org.primefaces.integrationtests.csv;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.annotation.PostConstruct;
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
-import javax.validation.constraints.Future;
-import javax.validation.constraints.FutureOrPresent;
-import javax.validation.constraints.Past;
-import javax.validation.constraints.PastOrPresent;
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.PastOrPresent;
 
 import lombok.Data;
 

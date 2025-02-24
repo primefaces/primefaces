@@ -23,9 +23,9 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import javax.annotation.PostConstruct;
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
 
 import lombok.Getter;
 import lombok.Setter;

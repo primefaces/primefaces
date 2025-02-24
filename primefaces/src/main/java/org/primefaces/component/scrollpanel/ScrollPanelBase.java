@@ -25,7 +25,7 @@ package org.primefaces.component.scrollpanel;
 
 import org.primefaces.component.api.Widget;
 
-import javax.faces.component.UIPanel;
+import jakarta.faces.component.UIPanel;
 
 public abstract class ScrollPanelBase extends UIPanel implements Widget {
 

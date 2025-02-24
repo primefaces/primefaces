@@ -31,7 +31,7 @@ import java.util.Collections;
 import java.util.Locale;
 import java.util.Objects;
 
-import javax.faces.context.FacesContext;
+import jakarta.faces.context.FacesContext;
 
 public class InFilterConstraint implements FilterConstraint {
 

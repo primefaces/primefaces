@@ -25,9 +25,9 @@ package org.primefaces.util;
 
 import java.util.function.Supplier;
 
-import javax.el.ELException;
-import javax.el.ValueExpression;
-import javax.faces.context.FacesContext;
+import jakarta.el.ELException;
+import jakarta.el.ValueExpression;
+import jakarta.faces.context.FacesContext;
 
 public class ELUtils {
 

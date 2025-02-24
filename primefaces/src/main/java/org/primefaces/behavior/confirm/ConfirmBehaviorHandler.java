@@ -25,7 +25,7 @@ package org.primefaces.behavior.confirm;
 
 import org.primefaces.behavior.base.AbstractBehaviorHandler;
 
-import javax.faces.view.facelets.BehaviorConfig;
+import jakarta.faces.view.facelets.BehaviorConfig;
 
 public class ConfirmBehaviorHandler extends AbstractBehaviorHandler<ConfirmBehavior> {
 

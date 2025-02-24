@@ -23,11 +23,11 @@
  */
 package org.primefaces.event;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.behavior.Behavior;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.AjaxBehaviorListener;
-import javax.faces.event.FacesListener;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.behavior.Behavior;
+import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.faces.event.AjaxBehaviorListener;
+import jakarta.faces.event.FacesListener;
 
 public abstract class AbstractAjaxBehaviorEvent extends AjaxBehaviorEvent {
 

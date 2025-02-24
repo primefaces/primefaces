@@ -31,7 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.event.PhaseId;
+import jakarta.faces.event.PhaseId;
 
 public class SubTable extends SubTableBase implements ColumnAware {
 

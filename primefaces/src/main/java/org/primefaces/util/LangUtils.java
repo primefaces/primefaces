@@ -46,8 +46,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import javax.faces.FacesException;
-import javax.xml.bind.DatatypeConverter;
+import jakarta.faces.FacesException;
+import jakarta.xml.bind.DatatypeConverter;
 
 public class LangUtils {
 

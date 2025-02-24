@@ -30,11 +30,10 @@ import org.primefaces.el.MyBean;
 import org.primefaces.el.MyContainer;
 import org.primefaces.mock.FacesContextMock;
 
-import javax.el.ExpressionFactory;
-import javax.el.ValueExpression;
-import javax.faces.context.FacesContext;
+import jakarta.el.ExpressionFactory;
+import jakarta.el.ValueExpression;
+import jakarta.faces.context.FacesContext;
 
-import de.odysseus.el.util.SimpleContext;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -84,7 +83,7 @@ class DataTableTest {
         container.setValue("MyValue");
         bean.setContainer(container);
 
-        ((SimpleContext) context.getELContext()).setVariable("column",
+        context.getELContext().getVariableMapper().setVariable("column",
                 expFactory.createValueExpression(bean, MyBean.class));
 
         // correct syntax

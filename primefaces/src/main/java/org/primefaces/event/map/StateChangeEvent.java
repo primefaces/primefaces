@@ -27,8 +27,8 @@ import org.primefaces.event.AbstractAjaxBehaviorEvent;
 import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.LatLngBounds;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.behavior.Behavior;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.behavior.Behavior;
 
 public class StateChangeEvent extends AbstractAjaxBehaviorEvent {
 

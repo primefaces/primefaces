@@ -27,10 +27,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UISelectMany;
-import javax.faces.context.FacesContext;
+import jakarta.faces.FacesException;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UISelectMany;
+import jakarta.faces.context.FacesContext;
 
 public abstract class SelectManyRenderer extends SelectRenderer {
 

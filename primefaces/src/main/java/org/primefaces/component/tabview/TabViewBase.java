@@ -31,7 +31,7 @@ import org.primefaces.component.api.UITabPanel;
 import org.primefaces.component.api.Widget;
 import org.primefaces.component.datalist.DataListBase;
 
-import javax.faces.component.behavior.ClientBehaviorHolder;
+import jakarta.faces.component.behavior.ClientBehaviorHolder;
 
 public abstract class TabViewBase extends UITabPanel implements Widget, RTLAware, TouchAware, ClientBehaviorHolder, PrimeClientBehaviorHolder,
         MultiViewStateAware<TabViewState> {

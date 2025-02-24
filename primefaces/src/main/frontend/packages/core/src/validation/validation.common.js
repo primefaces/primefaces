@@ -59,58 +59,58 @@ if (window.PrimeFaces) {
         decimalSeparator: '.',
         groupingSeparator: ',',
         messages: {
-            'javax.faces.component.UIInput.REQUIRED': '{0}: Validation Error: Value is required.',
-            'javax.faces.converter.IntegerConverter.INTEGER': '{2}: \'{0}\' must be a number consisting of one or more digits.',
-            'javax.faces.converter.IntegerConverter.INTEGER_detail': '{2}: \'{0}\' must be a number between -2147483648 and 2147483647 Example: {1}',
-            'javax.faces.converter.LongConverter.LONG': '{2}: \'{0}\' must be a number consisting of one or more digits.',
-            'javax.faces.converter.LongConverter.LONG_detail': '{2}: \'{0}\' must be a number between -9223372036854775808 to 9223372036854775807 Example: {1}',
-            'javax.faces.converter.DoubleConverter.DOUBLE': '{2}: \'{0}\' must be a number consisting of one or more digits.',
-            'javax.faces.converter.DoubleConverter.DOUBLE_detail': '{2}: \'{0}\' must be a number between 4.9E-324 and 1.7976931348623157E308  Example: {1}',
-            'javax.faces.converter.BigDecimalConverter.DECIMAL': '{2}: \'{0}\' must be a signed decimal number.',
-            'javax.faces.converter.BigDecimalConverter.DECIMAL_detail': '{2}: \'{0}\' must be a signed decimal number consisting of zero or more digits, that may be followed by a decimal point and fraction.  Example: {1}',
-            'javax.faces.converter.BigIntegerConverter.BIGINTEGER': '{2}: \'{0}\' must be a number consisting of one or more digits.',
-            'javax.faces.converter.BigIntegerConverter.BIGINTEGER_detail': '{2}: \'{0}\' must be a number consisting of one or more digits. Example: {1}',
-            'javax.faces.converter.ByteConverter.BYTE': '{2}: \'{0}\' must be a number between -128 and 127.',
-            'javax.faces.converter.ByteConverter.BYTE_detail': '{2}: \'{0}\' must be a number between -128 and 127.  Example: {1}',
-            'javax.faces.converter.CharacterConverter.CHARACTER': '{1}: \'{0}\' must be a valid character.',
-            'javax.faces.converter.CharacterConverter.CHARACTER_detail': '{1}: \'{0}\' must be a valid ASCII character.',
-            'javax.faces.converter.ShortConverter.SHORT': '{2}: \'{0}\' must be a number consisting of one or more digits.',
-            'javax.faces.converter.ShortConverter.SHORT_detail': '{2}: \'{0}\' must be a number between -32768 and 32767 Example: {1}',
-            'javax.faces.converter.BooleanConverter.BOOLEAN': '{1}: \'{0}\' must be \'true\' or \'false\'',
-            'javax.faces.converter.BooleanConverter.BOOLEAN_detail': '{1}: \'{0}\' must be \'true\' or \'false\'.  Any value other than \'true\' will evaluate to \'false\'.',
-            'javax.faces.validator.LongRangeValidator.MAXIMUM': '{1}: Validation Error: Value is greater than allowable maximum of \'{0}\'',
-            'javax.faces.validator.LongRangeValidator.MINIMUM': '{1}: Validation Error: Value is less than allowable minimum of \'{0}\'',
-            'javax.faces.validator.LongRangeValidator.NOT_IN_RANGE': '{2}: Validation Error: Specified attribute is not between the expected values of {0} and {1}.',
-            'javax.faces.validator.LongRangeValidator.TYPE={0}': 'Validation Error: Value is not of the correct type.',
-            'javax.faces.validator.DoubleRangeValidator.MAXIMUM': '{1}: Validation Error: Value is greater than allowable maximum of \'{0}\'',
-            'javax.faces.validator.DoubleRangeValidator.MINIMUM': '{1}: Validation Error: Value is less than allowable minimum of \'{0}\'',
-            'javax.faces.validator.DoubleRangeValidator.NOT_IN_RANGE': '{2}: Validation Error: Specified attribute is not between the expected values of {0} and {1}',
-            'javax.faces.validator.DoubleRangeValidator.TYPE={0}': 'Validation Error: Value is not of the correct type',
-            'javax.faces.converter.FloatConverter.FLOAT': '{2}: \'{0}\' must be a number consisting of one or more digits.',
-            'javax.faces.converter.FloatConverter.FLOAT_detail': '{2}: \'{0}\' must be a number between 1.4E-45 and 3.4028235E38  Example: {1}',
-            'javax.faces.converter.DateTimeConverter.DATE': '{2}: \'{0}\' could not be understood as a date.',
-            'javax.faces.converter.DateTimeConverter.DATE_detail': '{2}: \'{0}\' could not be understood as a date. Example: {1}',
-            'javax.faces.converter.DateTimeConverter.TIME': '{2}: \'{0}\' could not be understood as a time.',
-            'javax.faces.converter.DateTimeConverter.TIME_detail': '{2}: \'{0}\' could not be understood as a time. Example: {1}',
-            'javax.faces.converter.DateTimeConverter.DATETIME': '{2}: \'{0}\' could not be understood as a date and time.',
-            'javax.faces.converter.DateTimeConverter.DATETIME_detail': '{2}: \'{0}\' could not be understood as a date and time. Example: {1}',
-            'javax.faces.converter.DateTimeConverter.PATTERN_TYPE': '{1}: A \'pattern\' or \'type\' attribute must be specified to convert the value \'{0}\'',
-            'javax.faces.converter.NumberConverter.CURRENCY': '{2}: \'{0}\' could not be understood as a currency value.',
-            'javax.faces.converter.NumberConverter.CURRENCY_detail': '{2}: \'{0}\' could not be understood as a currency value. Example: {1}',
-            'javax.faces.converter.NumberConverter.PERCENT': '{2}: \'{0}\' could not be understood as a percentage.',
-            'javax.faces.converter.NumberConverter.PERCENT_detail': '{2}: \'{0}\' could not be understood as a percentage. Example: {1}',
-            'javax.faces.converter.NumberConverter.NUMBER': '{2}: \'{0}\' is not a number.',
-            'javax.faces.converter.NumberConverter.NUMBER_detail': '{2}: \'{0}\' is not a number. Example: {1}',
-            'javax.faces.converter.NumberConverter.PATTERN': '{2}: \'{0}\' is not a number pattern.',
-            'javax.faces.converter.NumberConverter.PATTERN_detail': '{2}: \'{0}\' is not a number pattern. Example: {1}',
-            'javax.faces.validator.LengthValidator.MINIMUM': '{1}: Validation Error: Length is less than allowable minimum of \'{0}\'',
-            'javax.faces.validator.LengthValidator.MAXIMUM': '{1}: Validation Error: Length is greater than allowable maximum of \'{0}\'',
-            'javax.faces.validator.RegexValidator.PATTERN_NOT_SET': 'Regex pattern must be set.',
-            'javax.faces.validator.RegexValidator.PATTERN_NOT_SET_detail': 'Regex pattern must be set to non-empty value.',
-            'javax.faces.validator.RegexValidator.NOT_MATCHED': 'Regex Pattern not matched',
-            'javax.faces.validator.RegexValidator.NOT_MATCHED_detail': 'Regex pattern of \'{0}\' not matched',
-            'javax.faces.validator.RegexValidator.MATCH_EXCEPTION': 'Error in regular expression.',
-            'javax.faces.validator.RegexValidator.MATCH_EXCEPTION_detail': 'Error in regular expression, \'{0}\''
+            'jakarta.faces.component.UIInput.REQUIRED': '{0}: Validation Error: Value is required.',
+            'jakarta.faces.converter.IntegerConverter.INTEGER': '{2}: \'{0}\' must be a number consisting of one or more digits.',
+            'jakarta.faces.converter.IntegerConverter.INTEGER_detail': '{2}: \'{0}\' must be a number between -2147483648 and 2147483647 Example: {1}',
+            'jakarta.faces.converter.LongConverter.LONG': '{2}: \'{0}\' must be a number consisting of one or more digits.',
+            'jakarta.faces.converter.LongConverter.LONG_detail': '{2}: \'{0}\' must be a number between -9223372036854775808 to 9223372036854775807 Example: {1}',
+            'jakarta.faces.converter.DoubleConverter.DOUBLE': '{2}: \'{0}\' must be a number consisting of one or more digits.',
+            'jakarta.faces.converter.DoubleConverter.DOUBLE_detail': '{2}: \'{0}\' must be a number between 4.9E-324 and 1.7976931348623157E308  Example: {1}',
+            'jakarta.faces.converter.BigDecimalConverter.DECIMAL': '{2}: \'{0}\' must be a signed decimal number.',
+            'jakarta.faces.converter.BigDecimalConverter.DECIMAL_detail': '{2}: \'{0}\' must be a signed decimal number consisting of zero or more digits, that may be followed by a decimal point and fraction.  Example: {1}',
+            'jakarta.faces.converter.BigIntegerConverter.BIGINTEGER': '{2}: \'{0}\' must be a number consisting of one or more digits.',
+            'jakarta.faces.converter.BigIntegerConverter.BIGINTEGER_detail': '{2}: \'{0}\' must be a number consisting of one or more digits. Example: {1}',
+            'jakarta.faces.converter.ByteConverter.BYTE': '{2}: \'{0}\' must be a number between -128 and 127.',
+            'jakarta.faces.converter.ByteConverter.BYTE_detail': '{2}: \'{0}\' must be a number between -128 and 127.  Example: {1}',
+            'jakarta.faces.converter.CharacterConverter.CHARACTER': '{1}: \'{0}\' must be a valid character.',
+            'jakarta.faces.converter.CharacterConverter.CHARACTER_detail': '{1}: \'{0}\' must be a valid ASCII character.',
+            'jakarta.faces.converter.ShortConverter.SHORT': '{2}: \'{0}\' must be a number consisting of one or more digits.',
+            'jakarta.faces.converter.ShortConverter.SHORT_detail': '{2}: \'{0}\' must be a number between -32768 and 32767 Example: {1}',
+            'jakarta.faces.converter.BooleanConverter.BOOLEAN': '{1}: \'{0}\' must be \'true\' or \'false\'',
+            'jakarta.faces.converter.BooleanConverter.BOOLEAN_detail': '{1}: \'{0}\' must be \'true\' or \'false\'.  Any value other than \'true\' will evaluate to \'false\'.',
+            'jakarta.faces.validator.LongRangeValidator.MAXIMUM': '{1}: Validation Error: Value is greater than allowable maximum of \'{0}\'',
+            'jakarta.faces.validator.LongRangeValidator.MINIMUM': '{1}: Validation Error: Value is less than allowable minimum of \'{0}\'',
+            'jakarta.faces.validator.LongRangeValidator.NOT_IN_RANGE': '{2}: Validation Error: Specified attribute is not between the expected values of {0} and {1}.',
+            'jakarta.faces.validator.LongRangeValidator.TYPE={0}': 'Validation Error: Value is not of the correct type.',
+            'jakarta.faces.validator.DoubleRangeValidator.MAXIMUM': '{1}: Validation Error: Value is greater than allowable maximum of \'{0}\'',
+            'jakarta.faces.validator.DoubleRangeValidator.MINIMUM': '{1}: Validation Error: Value is less than allowable minimum of \'{0}\'',
+            'jakarta.faces.validator.DoubleRangeValidator.NOT_IN_RANGE': '{2}: Validation Error: Specified attribute is not between the expected values of {0} and {1}',
+            'jakarta.faces.validator.DoubleRangeValidator.TYPE={0}': 'Validation Error: Value is not of the correct type',
+            'jakarta.faces.converter.FloatConverter.FLOAT': '{2}: \'{0}\' must be a number consisting of one or more digits.',
+            'jakarta.faces.converter.FloatConverter.FLOAT_detail': '{2}: \'{0}\' must be a number between 1.4E-45 and 3.4028235E38  Example: {1}',
+            'jakarta.faces.converter.DateTimeConverter.DATE': '{2}: \'{0}\' could not be understood as a date.',
+            'jakarta.faces.converter.DateTimeConverter.DATE_detail': '{2}: \'{0}\' could not be understood as a date. Example: {1}',
+            'jakarta.faces.converter.DateTimeConverter.TIME': '{2}: \'{0}\' could not be understood as a time.',
+            'jakarta.faces.converter.DateTimeConverter.TIME_detail': '{2}: \'{0}\' could not be understood as a time. Example: {1}',
+            'jakarta.faces.converter.DateTimeConverter.DATETIME': '{2}: \'{0}\' could not be understood as a date and time.',
+            'jakarta.faces.converter.DateTimeConverter.DATETIME_detail': '{2}: \'{0}\' could not be understood as a date and time. Example: {1}',
+            'jakarta.faces.converter.DateTimeConverter.PATTERN_TYPE': '{1}: A \'pattern\' or \'type\' attribute must be specified to convert the value \'{0}\'',
+            'jakarta.faces.converter.NumberConverter.CURRENCY': '{2}: \'{0}\' could not be understood as a currency value.',
+            'jakarta.faces.converter.NumberConverter.CURRENCY_detail': '{2}: \'{0}\' could not be understood as a currency value. Example: {1}',
+            'jakarta.faces.converter.NumberConverter.PERCENT': '{2}: \'{0}\' could not be understood as a percentage.',
+            'jakarta.faces.converter.NumberConverter.PERCENT_detail': '{2}: \'{0}\' could not be understood as a percentage. Example: {1}',
+            'jakarta.faces.converter.NumberConverter.NUMBER': '{2}: \'{0}\' is not a number.',
+            'jakarta.faces.converter.NumberConverter.NUMBER_detail': '{2}: \'{0}\' is not a number. Example: {1}',
+            'jakarta.faces.converter.NumberConverter.PATTERN': '{2}: \'{0}\' is not a number pattern.',
+            'jakarta.faces.converter.NumberConverter.PATTERN_detail': '{2}: \'{0}\' is not a number pattern. Example: {1}',
+            'jakarta.faces.validator.LengthValidator.MINIMUM': '{1}: Validation Error: Length is less than allowable minimum of \'{0}\'',
+            'jakarta.faces.validator.LengthValidator.MAXIMUM': '{1}: Validation Error: Length is greater than allowable maximum of \'{0}\'',
+            'jakarta.faces.validator.RegexValidator.PATTERN_NOT_SET': 'Regex pattern must be set.',
+            'jakarta.faces.validator.RegexValidator.PATTERN_NOT_SET_detail': 'Regex pattern must be set to non-empty value.',
+            'jakarta.faces.validator.RegexValidator.NOT_MATCHED': 'Regex Pattern not matched',
+            'jakarta.faces.validator.RegexValidator.NOT_MATCHED_detail': 'Regex pattern of \'{0}\' not matched',
+            'jakarta.faces.validator.RegexValidator.MATCH_EXCEPTION': 'Error in regular expression.',
+            'jakarta.faces.validator.RegexValidator.MATCH_EXCEPTION_detail': 'Error in regular expression, \'{0}\''
         }
     });
 
@@ -445,7 +445,7 @@ if (window.PrimeFaces) {
                 var requiredMessageStr = element.data('p-rmsg');
                 var requiredMsg = requiredMessageStr
                     ? { summary: requiredMessageStr, detail: requiredMessageStr }
-                    : vc.getMessage('javax.faces.component.UIInput.REQUIRED', vc.getLabel(element));
+                    : vc.getMessage('jakarta.faces.component.UIInput.REQUIRED', vc.getLabel(element));
 
                 vc.addMessage(element, requiredMsg);
 
@@ -585,8 +585,8 @@ if (window.PrimeFaces) {
 
             // also bind to JSF (f:ajax) events
             // NOTE: PF always fires "complete" as last event, whereas JSF last events are either "success" or "error"
-            if (window.jsf && jsf.ajax) {
-                jsf.ajax.addOnEvent(function(data) {
+            if (window.faces && faces.ajax) {
+                faces.ajax.addOnEvent(function(data) {
                     if(data.status === 'success' || data.status === 'error') {
                         $this.validateButtonsCsvRequirements();
                     }
@@ -709,8 +709,8 @@ if (window.PrimeFaces) {
 
         /**
          * Shortcut for PrimeFaces.validation.Utils.getMessage.
-         * @param {string} key The i18n key of a message, such as `javax.faces.component.UIInput.REQUIRED` or
-         * `javax.faces.validator.LengthValidator.MINIMUM`.
+         * @param {string} key The i18n key of a message, such as `jakarta.faces.component.UIInput.REQUIRED` or
+         * `jakarta.faces.validator.LengthValidator.MINIMUM`.
          * @return {PrimeFaces.FacesMessage | null} The localized faces message for the given key, or `null` if no
          * translation was found for the key.
          */
@@ -766,8 +766,8 @@ if (window.PrimeFaces) {
         /**
          * Finds the localized text of the given message key. When the current locale does not contain a translation,
          * falls back to the default English locale.
-         * @param {string} key The i18n key of a message, such as `javax.faces.component.UIInput.REQUIRED` or
-         * `javax.faces.validator.LengthValidator.MINIMUM`.
+         * @param {string} key The i18n key of a message, such as `jakarta.faces.component.UIInput.REQUIRED` or
+         * `jakarta.faces.validator.LengthValidator.MINIMUM`.
          * @param {string[]} params A list of parameters for the placeholders.
          * @return {PrimeFaces.FacesMessage | null} The localized faces message for the given key, or `null` if no
          * translation was found for the key.

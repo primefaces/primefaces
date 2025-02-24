@@ -23,11 +23,11 @@
  */
 package org.primefaces.integrationtests.general.component;
 
-import javax.faces.component.FacesComponent;
-import javax.faces.component.NamingContainer;
-import javax.faces.component.UIInput;
-import javax.faces.component.UINamingContainer;
-import javax.faces.context.FacesContext;
+import jakarta.faces.component.FacesComponent;
+import jakarta.faces.component.NamingContainer;
+import jakarta.faces.component.UIInput;
+import jakarta.faces.component.UINamingContainer;
+import jakarta.faces.context.FacesContext;
 
 @FacesComponent("inputTextComponent")
 public class InputTextComponent extends UIInput implements NamingContainer {

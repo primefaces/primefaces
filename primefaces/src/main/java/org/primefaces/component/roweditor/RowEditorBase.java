@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.roweditor;
 
-import javax.faces.component.UIComponentBase;
+import jakarta.faces.component.UIComponentBase;
 
 
 public abstract class RowEditorBase extends UIComponentBase {

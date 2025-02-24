@@ -34,12 +34,12 @@ import org.primefaces.validate.FileValidator;
 import java.util.Arrays;
 import java.util.Map;
 
-import javax.el.MethodExpression;
-import javax.faces.application.ResourceDependency;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.FacesEvent;
-import javax.faces.validator.ValidatorException;
+import jakarta.el.MethodExpression;
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AbortProcessingException;
+import jakarta.faces.event.FacesEvent;
+import jakarta.faces.validator.ValidatorException;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "fileupload/fileupload.css")

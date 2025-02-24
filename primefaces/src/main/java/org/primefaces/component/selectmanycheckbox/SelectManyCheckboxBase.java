@@ -26,7 +26,7 @@ package org.primefaces.component.selectmanycheckbox;
 import org.primefaces.component.api.FlexAware;
 import org.primefaces.component.api.Widget;
 
-import javax.faces.component.html.HtmlSelectManyCheckbox;
+import jakarta.faces.component.html.HtmlSelectManyCheckbox;
 
 public abstract class SelectManyCheckboxBase extends HtmlSelectManyCheckbox implements Widget, FlexAware {
 

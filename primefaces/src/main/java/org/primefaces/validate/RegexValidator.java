@@ -28,7 +28,7 @@ import org.primefaces.util.HTML;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RegexValidator extends javax.faces.validator.RegexValidator implements ClientValidator {
+public class RegexValidator extends jakarta.faces.validator.RegexValidator implements ClientValidator {
 
     @Override
     public Map<String, Object> getMetadata() {

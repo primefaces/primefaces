@@ -35,8 +35,8 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
 
 public class RowExpandFeature implements DataTableFeature {
 

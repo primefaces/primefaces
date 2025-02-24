@@ -28,11 +28,11 @@ import org.primefaces.util.LangUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.component.ContextCallback;
-import javax.faces.component.UIComponent;
-import javax.faces.component.search.SearchExpressionContext;
-import javax.faces.component.search.SearchExpressionHandler;
-import javax.faces.context.FacesContext;
+import jakarta.faces.component.ContextCallback;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.search.SearchExpressionContext;
+import jakarta.faces.component.search.SearchExpressionHandler;
+import jakarta.faces.context.FacesContext;
 
 public class SearchExpressionHandlerMock extends SearchExpressionHandler {
 

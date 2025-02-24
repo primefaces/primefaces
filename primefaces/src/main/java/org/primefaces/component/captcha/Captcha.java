@@ -38,11 +38,11 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
 
-import javax.el.ELException;
-import javax.faces.FacesException;
-import javax.faces.application.FacesMessage;
-import javax.faces.application.ResourceDependency;
-import javax.faces.context.FacesContext;
+import jakarta.el.ELException;
+import jakarta.faces.FacesException;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.context.FacesContext;
 
 import org.json.JSONObject;
 

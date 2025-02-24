@@ -36,10 +36,10 @@ import org.primefaces.util.WidgetBuilder;
 import java.io.IOException;
 import java.util.List;
 
-import javax.faces.FacesException;
-import javax.faces.component.UIForm;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
+import jakarta.faces.FacesException;
+import jakarta.faces.component.UIForm;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
 
 public class MenuButtonRenderer extends TieredMenuRenderer {
 

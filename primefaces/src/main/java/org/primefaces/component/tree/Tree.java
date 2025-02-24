@@ -42,15 +42,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.el.MethodExpression;
-import javax.faces.FacesException;
-import javax.faces.application.ResourceDependency;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.BehaviorEvent;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.PhaseId;
+import jakarta.el.MethodExpression;
+import jakarta.faces.FacesException;
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.faces.event.BehaviorEvent;
+import jakarta.faces.event.FacesEvent;
+import jakarta.faces.event.PhaseId;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -106,7 +106,7 @@ public class Tree extends TreeBase {
         UITreeNode node = getTreeNodes().get(type);
 
         if (node == null) {
-            throw new javax.faces.FacesException("Unsupported tree node type:" + type);
+            throw new jakarta.faces.FacesException("Unsupported tree node type:" + type);
         }
         else {
             return node;

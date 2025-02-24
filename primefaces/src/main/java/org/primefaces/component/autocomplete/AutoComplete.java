@@ -43,13 +43,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.el.MethodExpression;
-import javax.faces.FacesException;
-import javax.faces.application.ResourceDependency;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.FacesEvent;
+import jakarta.el.MethodExpression;
+import jakarta.faces.FacesException;
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.faces.event.FacesEvent;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -148,7 +148,7 @@ public class AutoComplete extends AutoCompleteBase {
     }
 
     @Override
-    public void broadcast(javax.faces.event.FacesEvent event) throws javax.faces.event.AbortProcessingException {
+    public void broadcast(jakarta.faces.event.FacesEvent event) throws jakarta.faces.event.AbortProcessingException {
         super.broadcast(event);
 
         if (!(event instanceof org.primefaces.event.AutoCompleteEvent)) {

@@ -7,16 +7,16 @@
     <display-name>primefaces-integration-tests</display-name>
 
     <context-param>
-        <param-name>javax.faces.PROJECT_STAGE</param-name>
+        <param-name>jakarta.faces.PROJECT_STAGE</param-name>
         <param-value>SystemTest</param-value>
     </context-param>
     <context-param>
-        <param-name>javax.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL</param-name>
+        <param-name>jakarta.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL</param-name>
         <param-value>true</param-value>
     </context-param>
     <context-param>
-        <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
-        <param-value>${javax.faces.STATE_SAVING_METHOD}</param-value>
+        <param-name>jakarta.faces.STATE_SAVING_METHOD</param-name>
+        <param-value>${jakarta.faces.STATE_SAVING_METHOD}</param-value>
     </context-param>
     <context-param>
         <param-name>org.apache.myfaces.USE_LAMBDA_METAFACTORY</param-name>
@@ -53,7 +53,7 @@
 
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
-        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <servlet-class>jakarta.faces.webapp.FacesServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
@@ -77,10 +77,6 @@
         <filter-name>No Cache Filter</filter-name>
         <servlet-name>Faces Servlet</servlet-name>
     </filter-mapping>
-
-    <listener>
-        <listener-class>org.apache.webbeans.servlet.WebBeansConfigurationListener</listener-class>
-    </listener>
 
     <listener>
         <listener-class>${jsfListener}</listener-class>

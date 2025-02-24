@@ -23,12 +23,9 @@
  */
 package org.primefaces.el;
 
-import java.beans.FeatureDescriptor;
-import java.util.Iterator;
-
-import javax.el.ELContext;
-import javax.el.ELResolver;
-import javax.el.ValueReference;
+import jakarta.el.ELContext;
+import jakarta.el.ELResolver;
+import jakarta.el.ValueReference;
 
 public class InterceptingResolver extends ELResolver {
 
@@ -73,11 +70,6 @@ public class InterceptingResolver extends ELResolver {
     }
 
     @Override
-    public Iterator<FeatureDescriptor> getFeatureDescriptors(ELContext context, Object base) {
-        return delegate.getFeatureDescriptors(context, base);
-    }
-
-    @Override
     public Class<?> getCommonPropertyType(ELContext context, Object base) {
         return delegate.getCommonPropertyType(context, base);
     }
@@ -92,7 +84,7 @@ public class InterceptingResolver extends ELResolver {
     }
 
     @Override
-    public Object convertToType(ELContext context, Object obj, Class<?> type) {
+    public <T> T convertToType(ELContext context, Object obj, Class<T> type) {
         return delegate.convertToType(context, obj, type);
     }
 }

@@ -31,13 +31,13 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIData;
-import javax.faces.component.search.SearchExpressionContext;
-import javax.faces.component.search.SearchKeywordContext;
-import javax.faces.component.search.SearchKeywordResolver;
-import javax.faces.context.FacesContext;
+import jakarta.faces.FacesException;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIData;
+import jakarta.faces.component.search.SearchExpressionContext;
+import jakarta.faces.component.search.SearchKeywordContext;
+import jakarta.faces.component.search.SearchKeywordResolver;
+import jakarta.faces.context.FacesContext;
 
 public class RowSearchKeywordResolver extends SearchKeywordResolver {
 

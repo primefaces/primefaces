@@ -26,10 +26,10 @@ package org.primefaces.integrationtests.csv;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
-import javax.validation.constraints.AssertTrue;
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
+import jakarta.validation.constraints.AssertTrue;
 
 import lombok.Data;
 

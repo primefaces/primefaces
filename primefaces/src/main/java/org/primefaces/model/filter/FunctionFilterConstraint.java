@@ -25,8 +25,8 @@ package org.primefaces.model.filter;
 
 import java.util.Locale;
 
-import javax.el.MethodExpression;
-import javax.faces.context.FacesContext;
+import jakarta.el.MethodExpression;
+import jakarta.faces.context.FacesContext;
 
 public class FunctionFilterConstraint implements FilterConstraint {
 

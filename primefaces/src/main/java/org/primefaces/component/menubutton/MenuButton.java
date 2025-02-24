@@ -23,8 +23,8 @@
  */
 package org.primefaces.component.menubutton;
 
-import javax.faces.application.ResourceDependency;
-import javax.faces.context.FacesContext;
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.context.FacesContext;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")

@@ -41,12 +41,12 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
-import javax.faces.component.html.HtmlInputFile;
-import javax.faces.context.FacesContext;
-import javax.faces.validator.ValidatorException;
-import javax.servlet.http.Part;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.html.HtmlInputFile;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.validator.ValidatorException;
+import jakarta.servlet.http.Part;
 
 public class FileValidator extends AbstractPrimeValidator implements ClientValidator {
 

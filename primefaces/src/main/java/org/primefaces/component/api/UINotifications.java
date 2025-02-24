@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.api;
 
-import javax.faces.component.UIMessages;
+import jakarta.faces.component.UIMessages;
 
 public abstract class UINotifications extends UIMessages implements UINotification {
 

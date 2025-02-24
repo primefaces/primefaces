@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import javax.validation.metadata.ConstraintDescriptor;
+import jakarta.validation.metadata.ConstraintDescriptor;
 
 public abstract class AbstractClientValidationConstraint implements ClientValidationConstraint {
 

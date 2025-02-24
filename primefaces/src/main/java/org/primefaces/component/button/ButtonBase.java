@@ -26,7 +26,7 @@ package org.primefaces.component.button;
 import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.component.api.Widget;
 
-import javax.faces.component.html.HtmlOutcomeTargetButton;
+import jakarta.faces.component.html.HtmlOutcomeTargetButton;
 
 public abstract class ButtonBase extends HtmlOutcomeTargetButton implements Widget, UIOutcomeTarget {
 

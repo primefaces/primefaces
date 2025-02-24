@@ -26,8 +26,8 @@ package org.primefaces.component.badge;
 import org.primefaces.model.badge.BadgeModel;
 import org.primefaces.model.badge.DefaultBadgeModel;
 
-import javax.faces.application.ResourceDependency;
-import javax.faces.context.FacesContext;
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.context.FacesContext;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 public class Badge extends BadgeBase {

@@ -25,7 +25,7 @@ package org.primefaces.component.divider;
 
 import org.primefaces.model.menu.Separator;
 
-import javax.faces.component.UIComponentBase;
+import jakarta.faces.component.UIComponentBase;
 
 public abstract class DividerBase extends UIComponentBase implements Separator {
     public static final String COMPONENT_FAMILY = "org.primefaces.component";

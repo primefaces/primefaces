@@ -23,7 +23,7 @@
  */
 package org.primefaces.virusscan;
 
-import javax.faces.FacesException;
+import jakarta.faces.FacesException;
 
 public class VirusException extends FacesException {
 

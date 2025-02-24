@@ -33,8 +33,8 @@ import org.primefaces.util.LocaleUtils;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;

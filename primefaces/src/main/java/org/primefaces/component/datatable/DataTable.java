@@ -75,26 +75,26 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import javax.el.ELContext;
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
-import javax.faces.application.ResourceDependency;
-import javax.faces.component.UIComponent;
-import javax.faces.component.visit.VisitCallback;
-import javax.faces.component.visit.VisitContext;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.BehaviorEvent;
-import javax.faces.event.ComponentSystemEvent;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.PhaseId;
-import javax.faces.event.PostRestoreStateEvent;
-import javax.faces.model.ArrayDataModel;
-import javax.faces.model.CollectionDataModel;
-import javax.faces.model.DataModel;
-import javax.faces.model.IterableDataModel;
-import javax.faces.model.ListDataModel;
+import jakarta.el.ELContext;
+import jakarta.el.ValueExpression;
+import jakarta.faces.FacesException;
+import jakarta.faces.application.ResourceDependency;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.visit.VisitCallback;
+import jakarta.faces.component.visit.VisitContext;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AbortProcessingException;
+import jakarta.faces.event.AjaxBehaviorEvent;
+import jakarta.faces.event.BehaviorEvent;
+import jakarta.faces.event.ComponentSystemEvent;
+import jakarta.faces.event.FacesEvent;
+import jakarta.faces.event.PhaseId;
+import jakarta.faces.event.PostRestoreStateEvent;
+import jakarta.faces.model.ArrayDataModel;
+import jakarta.faces.model.CollectionDataModel;
+import jakarta.faces.model.DataModel;
+import jakarta.faces.model.IterableDataModel;
+import jakarta.faces.model.ListDataModel;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")

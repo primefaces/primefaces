@@ -30,10 +30,10 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-import javax.annotation.PostConstruct;
-import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 import lombok.Data;
 
@@ -65,7 +65,7 @@ public class Tree004 implements Serializable {
         }
     }
 
-    public void filter(javax.faces.event.AjaxBehaviorEvent event) {
+    public void filter(jakarta.faces.event.AjaxBehaviorEvent event) {
         TestUtils.addMessage("filter-event");
     }
 

@@ -26,7 +26,7 @@ package org.primefaces.model.filter;
 import java.io.Serializable;
 import java.util.Locale;
 
-import javax.faces.context.FacesContext;
+import jakarta.faces.context.FacesContext;
 
 @FunctionalInterface
 public interface FilterConstraint extends Serializable {

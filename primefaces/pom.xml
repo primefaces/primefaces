@@ -32,7 +32,7 @@
     <dependencies>
         <dependency>
             <groupId>org.apache.tomee</groupId>
-            <artifactId>javaee-api</artifactId>
+            <artifactId>jakartaee-api</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -181,15 +181,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>de.odysseus.juel</groupId>
-            <artifactId>juel-impl</artifactId>
-            <version>2.2.7</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-jasper-el</artifactId>
-            <version>9.0.97</version>
+            <version>10.1.30</version>
             <scope>test</scope>
         </dependency>
         <!-- Content type validation in FileUploadUtilsTest -->
@@ -391,23 +385,23 @@
                             org.primefaces.shaded.owasp.encoder;version="${project.version}"
                         </Export-Package>
                         <Import-Package>
-                            javax.faces.component.search;resolution:=optional,
-                            javax.faces.component.search.*;resolution:=optional,
-                            javax.faces.flow;resolution:=optional,
-                            javax.faces;version="[2.0.0,3.0.0)",
-                            javax.faces.*;version="[2.0.0,3.0.0)",
-                            javax.inject;resolution:=optional,
-                            javax.inject.*;resolution:=optional,
-                            javax.enterprise;resolution:=optional,
-                            javax.enterprise.*;resolution:=optional,
-                            javax.validation;resolution:=optional,
-                            javax.validation.*;resolution:=optional,
-                            javax.validation.executable;resolution:=optional,
-                            javax.servlet;version="[3,5)",
-                            javax.servlet.annotation;version="[3,5)",
-                            javax.servlet.descriptor;version="[3,5)",
-                            javax.servlet.http;version="[3,5)",
-                            javax.*,
+                            jakarta.faces.component.search;resolution:=optional,
+                            jakarta.faces.component.search.*;resolution:=optional,
+                            jakarta.faces.flow;resolution:=optional,
+                            jakarta.faces;version="[2.0.0,3.0.0)",
+                            jakarta.faces.*;version="[2.0.0,3.0.0)",
+                            jakarta.inject;resolution:=optional,
+                            jakarta.inject.*;resolution:=optional,
+                            jakarta.enterprise;resolution:=optional,
+                            jakarta.enterprise.*;resolution:=optional,
+                            jakarta.validation;resolution:=optional,
+                            jakarta.validation.*;resolution:=optional,
+                            jakarta.validation.executable;resolution:=optional,
+                            jakarta.servlet;version="[3,5)",
+                            jakarta.servlet.annotation;version="[3,5)",
+                            jakarta.servlet.descriptor;version="[3,5)",
+                            jakarta.servlet.http;version="[3,5)",
+                            jakarta.*,
                             com.sun.faces;resolution:=optional,
                             net.glxn.qrgen;resolution:=optional,
                             org.krysalis.barcode4j.output;resolution:=optional,
@@ -621,281 +615,6 @@
                         <goals>
                             <goal>shade</goal>
                         </goals>
-                    </execution>
-                    <execution>
-                        <id>jakarta</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <skip>${jakarta.jar.skip}</skip>
-                            <shadedArtifactAttached>true</shadedArtifactAttached>
-                            <shadedClassifierName>jakarta</shadedClassifierName>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
-                                <transformer implementation="io.yupiik.maven.shade.transformer.RelocationTransformer">
-                                    <delegates>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer" />
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.XmlAppendingTransformer">
-                                            <resource>META-INF/faces-config.xml</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.XmlAppendingTransformer">
-                                            <resource>META-INF/primefaces.taglib.xml</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.XmlAppendingTransformer">
-                                            <resource>META-INF/primefaces.urn.taglib.xml</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/ajaxstatus/ajaxstatus.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/core.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/core/core.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/core/core.ajax.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/core/core.csp.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/validation/validation.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/validation/validation.bv.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/fileupload/fileupload.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/lifecycle/lifecycle.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-ar.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-bg.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-bn.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-bs.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-ca.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-cs.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-ckb.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-da.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-de.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-el.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-en.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-es.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-fa.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-fi.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-fr.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-he.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-hi.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-hr.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-hu.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-in.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-it.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-ja.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-ka.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-kk.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-km.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-ko.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-ky.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-lt.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-lv.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-ms.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-nl.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-no.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-pl.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-pt.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-ro.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-ru.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-sk.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-sl.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-sr.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-sv.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-th.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-tr.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-uk.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-uz.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-vi.js</resource>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                            <resource>META-INF/resources/primefaces/locales/locale-zh.js</resource>
-                                        </transformer>
-                                    </delegates>
-                                </transformer>
-                            </transformers>
-                            <artifactSet>
-                                <includes>
-                                    <include>${project.groupId}:${project.artifactId}</include>
-                                </includes>
-                            </artifactSet>
-                            <relocations>
-                                <relocation>
-                                    <pattern>javax.faces</pattern>
-                                    <shadedPattern>jakarta.faces</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>javax.el</pattern>
-                                    <shadedPattern>jakarta.el</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>javax.annotation</pattern>
-                                    <shadedPattern>jakarta.annotation</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>javax.servlet</pattern>
-                                    <shadedPattern>jakarta.servlet</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>javax.persistence</pattern>
-                                    <shadedPattern>jakarta.persistence</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>javax.enterprise</pattern>
-                                    <shadedPattern>jakarta.enterprise</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>javax.xml.bind</pattern>
-                                    <shadedPattern>jakarta.xml.bind</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>javax.validation</pattern>
-                                    <shadedPattern>jakarta.validation</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>javax.inject</pattern>
-                                    <shadedPattern>jakarta.inject</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>javax.activation</pattern>
-                                    <shadedPattern>jakarta.activation</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>javax.ws.rs</pattern>
-                                    <shadedPattern>jakarta.ws.rs</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>javax.jws</pattern>
-                                    <shadedPattern>jakarta.jws</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>javax.cache</pattern>
-                                    <shadedPattern>jakarta.cache</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>javax.xml.ws</pattern>
-                                    <shadedPattern>jakarta.xml.ws</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>javax.xml.soap</pattern>
-                                    <shadedPattern>jakarta.xml.soap</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>window.jsf</pattern>
-                                    <shadedPattern>window.faces</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>jsf.ajax</pattern>
-                                    <shadedPattern>faces.ajax</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>/javax.faces</pattern>
-                                    <shadedPattern>/jakarta.faces</shadedPattern>
-                                    <rawString>true</rawString>
-                                </relocation>
-                            </relocations>
-                        </configuration>
                     </execution>
                 </executions>
                 <dependencies>

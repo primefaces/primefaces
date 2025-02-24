@@ -38,11 +38,11 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.convert.ConverterException;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.convert.ConverterException;
 
-public class DateTimeConverter extends javax.faces.convert.DateTimeConverter implements ClientConverter {
+public class DateTimeConverter extends jakarta.faces.convert.DateTimeConverter implements ClientConverter {
 
     private Map<String, Object> metadata;
 
