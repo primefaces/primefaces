@@ -1362,7 +1362,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     }
                 },
                 'keydown.dataTable': function(e) {
-                    if (PrimeFaces.utils.isActionKey(e)) {
+                    if ($this.cfg.selectionRowMode === 'none' && PrimeFaces.utils.isActionKey(e)) {
                         $(this).trigger('click');
                         e.preventDefault();
                     }
