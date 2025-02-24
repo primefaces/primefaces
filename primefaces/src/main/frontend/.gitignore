@@ -7,3 +7,4 @@
 !.yarn/sdks
 !.yarn/versions
 dist
+.env.local

@@ -221,3 +221,29 @@ Same as above, but use the following command instead (see
 # <package> is the name of the NPM package, e.g. webcamjs
 yarn patch-update-squash <package>
 ```
+
+# Troubleshooting
+
+##  [ERROR] Could not resolve "..."
+
+When you:
+
+* are on a Windows machine
+* have the repository on a drive letter different from your `%HOMEDRIVE%`
+* are running yarn manually, i.e. not via Maven
+
+Then you might get many error like `[ERROR] Could not resolve "..."` when you
+try to run `yarn run build` or `yarn run build:bundle`.
+
+This is because Windows does not support relative paths between drives. You
+need to change yarn's cache folder to the same drive where the repository is.
+
+To solve this issue, set the following environment variable (the Maven build
+does this automatically):
+
+```
+# Adjust the drive letter accordingly
+YARN_GLOBAL_FOLDER=D:\.yarn\berry\cache
+```
+
+See [evanw/esbuild#3131](https://github.com/evanw/esbuild/issues/3131).
