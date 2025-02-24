@@ -33,7 +33,7 @@
         <hibernate-validator.version>8.0.2.Final</hibernate-validator.version>
         <lombok.version>1.18.36</lombok.version>
         <myfaces.version>4.0.2</myfaces.version>
-        <tomcat.version>10.1.30</tomcat.version>
+        <tomcat.version>10.1.34</tomcat.version>
         <resteasy.version>6.2.11.Final</resteasy.version>
         <jetty.version>12.0.16</jetty.version>
     </properties>
