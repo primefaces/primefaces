@@ -349,6 +349,7 @@
                             <directory>${frontend.directory}/.yarn</directory>
                             <followSymlinks>false</followSymlinks>
                             <excludes>
+				<exclude>cache/**</exclude>
                                 <exclude>patches/**</exclude>
                                 <exclude>plugins/**</exclude>
                                 <exclude>releases/**</exclude>
