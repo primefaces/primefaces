@@ -1363,7 +1363,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
                     }
                 },
                 'keydown.dataTable': function(e) {
-                    if (PrimeFaces.utils.isActionKey(e)) {
+                    if ($this.cfg.selectionRowMode === 'none' && PrimeFaces.utils.isActionKey(e)) {
                         $(this).trigger('click');
                         e.preventDefault();
                     }
