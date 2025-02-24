@@ -1,4 +1,4 @@
-@use 'sass:math';
+@use "sass:math";
 
 body {
   .ui-datepicker {
@@ -75,7 +75,8 @@ body {
         text-align: center;
 
         > a {
-          &:hover, &.ui-state-hover {
+          &:hover,
+          &.ui-state-hover {
             background: $calendarCellDateHoverBg;
             border-color: $calendarCellDateHoverBorderColor;
           }
@@ -108,7 +109,8 @@ body {
         &.ui-datepicker-today,
         &.ui-datepicker-current-day {
           > a {
-            &:hover, &.ui-state-hover {
+            &:hover,
+            &.ui-state-hover {
               background: $calendarCellDateHoverBg;
               border-color: $calendarCellDateHoverBorderColor;
             }
@@ -169,7 +171,8 @@ body {
         appearance: none;
         width: auto;
 
-        &:hover, &.ui-state-hover {
+        &:hover,
+        &.ui-state-hover {
           border-color: $inputHoverBorderColor;
         }
 
@@ -215,7 +218,8 @@ body {
       padding: $calendarCellPadding;
       border: $borderRadius;
 
-      &:hover, &.ui-state-hover {
+      &:hover,
+      &.ui-state-hover {
         background: $calendarCellDateHoverBg;
         border-color: $calendarCellDateHoverBorderColor;
       }
@@ -253,6 +257,19 @@ body {
 
     &.ui-datepicker-multi {
       width: auto !important;
+    }
+
+    @media (max-width: 480px) {
+      .ui-datepicker-calendar {
+        td {
+          > a,
+          > span {
+            width: math.div($calendarCellDateWidth * 0.6, 1);
+            height: math.div($calendarCellDateHeight * 0.6, 1);
+            line-height: math.div($calendarCellDateHeight * 0.6, 1);
+          }
+        }
+      }
     }
   }
 
