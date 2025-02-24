@@ -74,6 +74,7 @@
         <junit.version>5.12.0</junit.version>
         <poi.version>5.4.0</poi.version>
         <jacoco.version>0.8.12</jacoco.version>
+        <tomcat.version>10.1.34</tomcat.version>
 
         <sonar.skip>true</sonar.skip>
         <sonar.coverage.jacoco.xmlReportPaths>../primefaces-coverage/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
