@@ -69,7 +69,7 @@ import jakarta.faces.render.Renderer;
 
 /**
  * {@link UIDataPatch} is largely a copy of Mojarra 2.3.9's {@code UIData} and few bits from MyFaces
- * The idea is to make a clear distinction between what belongs to the JSF implementation
+ * The idea is to make a clear distinction between what belongs to the Jakarta Faces implementation
  * and PrimeFaces. The code replicates exactly the code of the original class with a few exceptions:
  * <ul>
  *   <li>All members become protected, so that it's possible for PrimeFaces to override methods if necessary.</li>

@@ -32,7 +32,7 @@ import jakarta.faces.component.html.HtmlInputText;
 
 /**
  * Extended {@link HtmlInputText} to allow for new events such as "input" and "paste".
- * Remove if JSF4.0 ever implements these events.
+ * Remove if Faces 5.0+ ever implements these events.
  */
 public abstract class AbstractPrimeHtmlInputText extends HtmlInputText {
 

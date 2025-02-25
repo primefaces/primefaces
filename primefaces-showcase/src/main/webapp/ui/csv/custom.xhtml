@@ -56,7 +56,7 @@
     </ui:define>
 
     <ui:define name="description">
-        A custom client converter or a validator can be implemented easily. Both JSF and Bean Validation APIs are supported.
+        A custom client converter or a validator can be implemented easily. Both Jakarta Faces and Bean Validation APIs are supported.
     </ui:define>
 
     <ui:param name="documentationLink" value="/core/csvJavascriptAPI"/>
@@ -68,7 +68,7 @@
                 <p:growl showDetail="true"/>
 
                 <h:panelGrid columns="4" cellpadding="7">
-                    <p:outputLabel for="email1" value="Email 1: (JSF Validation)"/>
+                    <p:outputLabel for="email1" value="Email 1: (Faces Validation)"/>
                     <p:inputText id="email1" value="#{customValidationView.text}">
                         <f:validator validatorId="custom.emailValidator"/>
                     </p:inputText>

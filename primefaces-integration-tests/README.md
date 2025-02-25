@@ -5,12 +5,12 @@
 
 To provide an integration and regression test suite for PrimeFaces, based on our own [PrimeFaces Selenium](https://github.com/primefaces/primefaces/tree/master/primefaces-selenium)
 
-It utilizes Tomcat Embedded, OpenWebBeans, RestEasy and different JSF implementations.
+It utilizes Tomcat Embedded, Weld, RestEasy and different Faces implementations.
 
 ## Build & Run
 
 - Build the project: `mvn clean package`
-- When running an integration test the profile `integration-tests` has to be activated and a JSF implementation has to be selected.
+- When running an integration test the profile `integration-tests` has to be activated and a Jakarta Faces implementation has to be selected.
 - Run integration tests with the _verify_ phase and profiles activated: `mvn verify -Pintegration-tests,parallel-execution,mojarra-4.0`
 - Run a single test with `mvn verify -Pintegration-tests,parallel-execution,mojarra-4.0 -Dit.test=DatePicker001Test`
 
@@ -31,15 +31,15 @@ Keep in mind there are - as of january 2021 - following limitations for Safari w
 - no parallel test-execution because Safari does not allow for concurrent sessions (https://github.com/SeleniumHQ/selenium/issues/2172)
 - Safari is only available on MacOS (and iOS / iPadOS)
 
-#### JSF Implementations
+#### Jakarta Faces Implementations
 
-  - `mojarra-4.0` - Mojarra 4.0 JSF implementation
-  - `myfaces-4.0` - MyFaces 4.0 JSF implementation
+  - `mojarra-4.0` - Mojarra 4.0 implementation
+  - `myfaces-4.0` - MyFaces 4.0 implementation
 
 #### Misc
 
   - `headless` - headless browser
-  - `client-state-saving` - ClientSide instead of ServerSide JSF state saving
+  - `client-state-saving` - ClientSide instead of ServerSide Faces state saving
   - `csp` - enabled Content Security Policy
   - `uploader-native` - FileUpload configured to use the native servlet implementation
   - `uploader-commons` - FileUpload configured to use the Apache commons-fileupload

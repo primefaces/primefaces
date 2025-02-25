@@ -27,7 +27,7 @@ public class Constants {
 
     public static class ContextParams {
 
-        // JSF context params
+        // Faces context params
         public static final String INTERPRET_EMPTY_STRING_AS_NULL = "jakarta.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL";
 
         // PF context params
@@ -44,7 +44,6 @@ public class Constants {
         public static final String EXCEPTION_TYPES_TO_IGNORE_IN_LOGGING = "primefaces.EXCEPTION_TYPES_TO_IGNORE_IN_LOGGING";
         public static final String FLEX = "primefaces.FLEX";
         public static final String HIDE_RESOURCE_VERSION = "primefaces.HIDE_RESOURCE_VERSION";
-        public static final String HTML5_COMPLIANCE = "primefaces.HTML5_COMPLIANCE";
         public static final String INTERPOLATE_CLIENT_SIDE_VALIDATION_MESSAGES = "primefaces.INTERPOLATE_CLIENT_SIDE_VALIDATION_MESSAGES";
         public static final String MARK_INPUT_AS_INVALID_ON_ERROR_MSG = "primefaces.MARK_INPUT_AS_INVALID_ON_ERROR_MSG";
         public static final String MOVE_SCRIPTS_TO_BOTTOM = "primefaces.MOVE_SCRIPTS_TO_BOTTOM";
@@ -64,7 +63,7 @@ public class Constants {
 
     public static class RequestParams {
 
-        // JSF request params
+        // Faces request params
         public static final String PARTIAL_REQUEST_PARAM = "jakarta.faces.partial.ajax";
         public static final String PARTIAL_UPDATE_PARAM = "jakarta.faces.partial.render";
         public static final String PARTIAL_PROCESS_PARAM = "jakarta.faces.partial.execute";

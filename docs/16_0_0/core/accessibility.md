@@ -38,12 +38,3 @@ bundle to provide your own values.
 Along with ARIA standards, PrimeFaces strives to be fully [W3C Validation](https://validator.w3.org/) compliant with the
 HTML5 specification.
 
-If running an application on Jakarta Faces lower than 4.0, the rendered HTML will always contain `type="text/javascript"` for Jakarta Faces generated script tags. 
-You can remove it this via our custom ResponseWrite via your `faces-config.xml`.
-
-```xml
-<factory>
-   <faces-context-factory>org.primefaces.application.factory.Html5FacesContextFactory</faces-context-factory>
-</factory>
-
-```

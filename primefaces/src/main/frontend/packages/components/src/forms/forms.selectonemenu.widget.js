@@ -1275,7 +1275,7 @@ PrimeFaces.widget.SelectOneMenu = class SelectOneMenu extends PrimeFaces.widget.
 
         var option = this.options.filter('[value=""]');
         if (option.length === 0) {
-            // if no empty value option found, fallback to first in list like JSF default
+            // if no empty value option found, fallback to first in list like Faces default
             option = this.options.eq(0);
         }
         this.selectItem(this.selectItemFromOption(option), silent);

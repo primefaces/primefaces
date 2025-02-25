@@ -253,7 +253,7 @@ public class Csv001Test extends AbstractColorPickerTest {
         Assertions.assertFalse(page.btnDisabled.isEnabled());
         Assertions.assertFalse(page.btnRemoteCommand.isEnabled());
 
-        page.selectOneMenu.select("JSF");
+        page.selectOneMenu.select("Faces");
 
         // Assert
         assertConfiguration();

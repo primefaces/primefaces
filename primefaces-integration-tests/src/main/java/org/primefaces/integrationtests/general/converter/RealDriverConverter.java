@@ -26,7 +26,6 @@ package org.primefaces.integrationtests.general.converter;
 import org.primefaces.integrationtests.general.model.Driver;
 import org.primefaces.integrationtests.general.service.RealDriverService;
 
-import jakarta.enterprise.inject.spi.CDI;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
@@ -37,7 +36,7 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
 @Named
-@FacesConverter(value = "realDriverConverter")
+@FacesConverter(value = "realDriverConverter", managed = true)
 public class RealDriverConverter implements Converter {
 
     @Inject
@@ -45,11 +44,6 @@ public class RealDriverConverter implements Converter {
 
     @Override
     public Object getAsObject(FacesContext fc, UIComponent uic, String value) {
-        // we run on JSF 2.2 too, there is no managed=true
-        if (driverService == null) {
-            driverService = CDI.current().select(RealDriverService.class).get();
-        }
-
         if (value != null && value.trim().length() > 0) {
             try {
                 int id = Integer.parseInt(value);

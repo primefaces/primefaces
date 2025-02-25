@@ -41,7 +41,7 @@ public class NoCacheFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
-        if (!httpRequest.getRequestURI().contains(ResourceHandler.RESOURCE_IDENTIFIER)) { // Skip JSF resources (CSS/JS/Images/etc)
+        if (!httpRequest.getRequestURI().contains(ResourceHandler.RESOURCE_IDENTIFIER)) { // Skip Faces resources (CSS/JS/Images/etc)
             httpResponse.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
             httpResponse.setHeader("Pragma", "no-cache"); // HTTP 1.0.
             httpResponse.setDateHeader("Expires", 0); // Proxies.

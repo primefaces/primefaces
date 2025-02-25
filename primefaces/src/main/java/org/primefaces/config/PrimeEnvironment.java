@@ -40,21 +40,13 @@ public class PrimeEnvironment {
 
     private final boolean beanValidationAvailable;
 
-    private final boolean atLeastJsf40;
-
     private final boolean mojarra;
-
-    private final boolean atLeastBv11;
 
     private final String buildVersion;
 
     private final boolean htmlSanitizerAvailable;
 
     public PrimeEnvironment(FacesContext context) {
-        atLeastJsf40 = LangUtils.isClassAvailable("jakarta.faces.lifecycle.ClientWindowScoped");
-
-        atLeastBv11 = LangUtils.isClassAvailable("jakarta.validation.executable.ExecutableValidator");
-
         beanValidationAvailable = resolveBeanValidationAvailable();
 
         buildVersion = resolveBuildVersion();
@@ -113,16 +105,8 @@ public class PrimeEnvironment {
         return beanValidationAvailable;
     }
 
-    public boolean isAtLeastJsf40() {
-        return atLeastJsf40;
-    }
-
     public boolean isMojarra() {
         return mojarra;
-    }
-
-    public boolean isAtLeastBv11() {
-        return atLeastBv11;
     }
 
     public String getBuildVersion() {

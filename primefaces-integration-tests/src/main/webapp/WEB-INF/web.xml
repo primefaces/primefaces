@@ -79,7 +79,7 @@
     </filter-mapping>
 
     <listener>
-        <listener-class>${jsfListener}</listener-class>
+        <listener-class>${facesListener}</listener-class>
     </listener>
 
     <error-page>

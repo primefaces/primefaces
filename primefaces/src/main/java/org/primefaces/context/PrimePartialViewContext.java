@@ -24,16 +24,9 @@
 package org.primefaces.context;
 
 import org.primefaces.config.PrimeConfiguration;
-import org.primefaces.config.PrimeEnvironment;
 import org.primefaces.csp.CspPartialResponseWriter;
-import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
-import org.primefaces.util.LangUtils;
-import org.primefaces.visit.ResetInputContextCallback;
-import org.primefaces.visit.ResetInputVisitCallback;
 
-import jakarta.faces.component.EditableValueHolder;
-import jakarta.faces.component.visit.VisitContext;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.PartialResponseWriter;
 import jakarta.faces.context.PartialViewContext;
@@ -50,14 +43,6 @@ public class PrimePartialViewContext extends PartialViewContextWrapper {
 
     @Override
     public void processPartial(PhaseId phaseId) {
-        if (phaseId == PhaseId.RENDER_RESPONSE) {
-            // fixed in Faces 4.0+ https://github.com/jakartaee/faces/issues/1936
-            PrimeEnvironment environment = PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getEnvironment();
-            if (!environment.isAtLeastJsf40()) {
-                resetValues(FacesContext.getCurrentInstance());
-            }
-        }
-
         getWrapped().processPartial(phaseId);
     }
 
@@ -95,49 +80,5 @@ public class PrimePartialViewContext extends PartialViewContextWrapper {
         return getWrapped().isPartialRequest()
                 || FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().containsKey(
                         Constants.RequestParams.PARTIAL_PROCESS_PARAM);
-    }
-
-     /**
-     * Backwards compatible support for JSF 2.3 and below.
-     * Visit the current renderIds and, if the component is
-     * an instance of {@link EditableValueHolder},
-     * call its {@link EditableValueHolder#resetValue} method.
-     * Use {@link jakarta.faces.component.UIComponent#visitTree} to do the visiting.</p>
-     *
-     * @param context The current {@link FacesContext}.
-     * @see <a href="https://github.com/jakartaee/faces/issues/1936">Faces Issue #1936</a>
-     */
-    private void resetValues(FacesContext context) {
-        Object resetValuesObject = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.RESET_VALUES_PARAM);
-        boolean resetValues = (null != resetValuesObject && "true".equals(resetValuesObject));
-
-        if (resetValues) {
-            VisitContext visitContext = null;
-            ResetInputContextCallback contextCallback = null;
-
-            for (String renderId : context.getPartialViewContext().getRenderIds()) {
-                String id = LangUtils.defaultIfBlank(renderId, Constants.EMPTY_STRING).trim();
-                if (LangUtils.isBlank(id) || "@none".equals(id)) {
-                    continue;
-                }
-
-                // lazy init
-                if (visitContext == null) {
-                    visitContext = VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
-                }
-
-                if ("@all".equals(id)) {
-                    context.getViewRoot().visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
-                }
-                else {
-                    // lazy init
-                    if (contextCallback == null) {
-                        contextCallback = new ResetInputContextCallback(visitContext);
-                    }
-
-                    context.getViewRoot().invokeOnComponent(context, id, contextCallback);
-                }
-            }
-        }
     }
 }

@@ -55,7 +55,7 @@ public class FacetUtils {
         // the facet contains multiple childs, so its wrapped inside a UIPanel
         // NOTE: we need a equals check as instanceof would also catch e.g. p:dialog
         if (facet.getClass().equals(UIPanel.class)) {
-            // For any future version of JSF where the f:facet gets a rendered attribute
+            // For any future version of Faces where the f:facet gets a rendered attribute
             if (!facet.isRendered()) {
                 return false;
             }

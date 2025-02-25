@@ -7,7 +7,7 @@ if (!PrimeFaces.resources) {
     */
     PrimeFaces.resources = {
           /**
-           * Builds a JSF resource URL for given resource.
+           * Builds a Faces resource URL for given resource.
            * 
            * ```javascript
            * getFacesResource("main.css", "pf", "4.2.0") // => "https://www.primefaces.org/showcase/jakarta.faces.resource/main.css.xhtml?ln=pf&v=4.2.0"
@@ -16,7 +16,7 @@ if (!PrimeFaces.resources) {
            * @param {string} name The name of the resource, such as `primefaces.js`.
            * @param {string} library The library of the resource, such as `primefaces`.
            * @param {string} version The version of the library, such as `5.1`.
-           * @return {string} The JSF resource URL for loading the resource.
+           * @return {string} The Faces resource URL for loading the resource.
            */
           getFacesResource : function(name, library, version) {
              // just get sure - name shoudln't start with a slash
@@ -24,7 +24,7 @@ if (!PrimeFaces.resources) {
                 name = name.substring(1, name.length);
              }
 
-             // find any JS served JSF resource
+             // find any JS served Faces resource
              var scriptURI = PrimeFaces.resources.getResourceScriptURI();
              var scriptName = PrimeFaces.resources.getResourceScriptName(scriptURI);
 
@@ -62,7 +62,7 @@ if (!PrimeFaces.resources) {
           /**
            * Checks if the FacesServlet is mapped with an extension mapping. Common extension mapping are for example:
            * 
-           * - .jsf
+           * - .faces
            * - .xhtml
            * 
            * @return {boolean} `true` if the FacesServlet is mapped with an extension mapping, `false` otherwise.
@@ -78,7 +78,7 @@ if (!PrimeFaces.resources) {
           },
 
           /**
-           * Finds the URL extension of currently included resources, such as `jsf` or `xhtml`.
+           * Finds the URL extension of currently included resources, such as `faces` or `xhtml`.
            * 
            * This should only be used if extensions mapping is used, see `PrimeFaces.isExtensionMapping`.
            * 
@@ -107,7 +107,7 @@ if (!PrimeFaces.resources) {
           },
 
           /**
-           * Gets the resource URI of the first Javascript JS file served as a JSF resource.
+           * Gets the resource URI of the first Javascript JS file served as a Faces resource.
            * 
            * @return {string} The first JavasScript resource URI.
            */

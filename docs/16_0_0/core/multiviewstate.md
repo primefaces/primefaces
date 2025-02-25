@@ -33,9 +33,8 @@ For this you can choose between:
 Enabled in faces-config.xml.
 ```xml
 <faces-config>
-    ...
     <factory>
-        <lifecycle-factory>org.primefaces.clientwindow.PrimeClientWindowLifecycleFactory</lifecycle-factory>
+        <client-window-factory>org.primefaces.clientwindow.PrimeClientWindowFactory</client-window-factory>
     </factory>
 </faces-config>
 ```
@@ -50,5 +49,6 @@ Enabled in web.xml
     <param-value>url</param-value>
 </context-param>
 ```
+
 ### Option 3 - Apache DeltaSpike Multi-Window Handling
 see https://deltaspike.apache.org/documentation/jsf.html#Multi-WindowHandling 

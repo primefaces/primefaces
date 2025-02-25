@@ -84,7 +84,7 @@ you must use `Primefaces.csp.eval` instead of `$.globalEval`.
 * [PrimeFaces.expressions](./modules/src_PrimeFaces.PrimeFaces.expressions.html) The search expressions module. It contains some
 methods to resolve search expressions such as `@form` on the client.
 * [PrimeFaces.resources](./modules/src_PrimeFaces.PrimeFaces.resources.html) The resources submodule. It contains some methods to
-generate JSF resource URLs.
+generate Faces resource URLs.
 * [PrimeFaces.settings](./modules/src_PrimeFaces.PrimeFaces.settings.html) The settings module which contains the locale
 (translations) shared by all widgets.
 * [PrimeFaces.utils](./modules/src_PrimeFaces.PrimeFaces.utils.html) The utility module with more advanced utility methods.

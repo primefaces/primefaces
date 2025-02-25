@@ -583,8 +583,8 @@ if (window.PrimeFaces) {
                 $this.validateButtonsCsvRequirements();
             });
 
-            // also bind to JSF (f:ajax) events
-            // NOTE: PF always fires "complete" as last event, whereas JSF last events are either "success" or "error"
+            // also bind to Jakarta Faces (f:ajax) events
+            // NOTE: PF always fires "complete" as last event, whereas Jakarta Faces last events are either "success" or "error"
             if (window.faces && faces.ajax) {
                 faces.ajax.addOnEvent(function(data) {
                     if(data.status === 'success' || data.status === 'error') {

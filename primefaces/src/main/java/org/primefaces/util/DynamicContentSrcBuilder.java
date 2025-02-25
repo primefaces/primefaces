@@ -100,7 +100,7 @@ public class DynamicContentSrcBuilder {
     public static String buildStreaming(FacesContext context, UIComponent component, ValueExpression valueExpression, boolean cache) {
 
         // just a dummy file for streaming
-        // JSF will also append the suffix (e.g. -> dynamiccontent.properties.xhtml)
+        // Faces will also append the suffix (e.g. -> dynamiccontent.properties.xhtml)
         // the real content type will be written to the response by the StreamedContentHandler
         Resource resource = context.getApplication().getResourceHandler().createResource(
                 "dynamiccontent.properties", "primefaces", "text/plain");

@@ -65,7 +65,7 @@ public interface MenuItem extends MenuElement, Confirmable {
     String getTarget();
 
     /**
-     * The JSF outcome of a navigation case which is resolved by the configured
+     * The Faces outcome of a navigation case which is resolved by the configured
      * {@code NavigationHandler}. Similar to {@code url}, but {@code url}
      * allows to specify fully qualified URLs.
      *

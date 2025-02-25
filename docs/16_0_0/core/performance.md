@@ -136,7 +136,7 @@ and Whitespace compression: https://myfaces.apache.org/#/coreConceptsWhitespaceC
 - If you don't use `@ViewScoped` beans, it's a good but small improvement to mark the view as stateless. e.g. `<f:view transient="true">`
 - Try using HTML over Jakarta Faces tags
     - Especially avoid using h:outputText if you don't need the escaping or other features like converters. Just use EL expressions inside your XHTML.
-    - The same applies for some other components like p:outputPanel. Just use a plain div. If you need to make it updateable, you can still use "passtrough elements" (`<div jsf:id="...">...</div>`)
+    - The same applies for some other components like p:outputPanel. Just use a plain div. If you need to make it updateable, you can still use "passtrough elements" (`<div faces:id="...">...</div>`)
 - Try to avoid logic in getters because they can be called multiple times - especially for the rendered attribute!
 - Avoid logic (like inline if-statements) in EL expression! It's better to move those logic into the bean. It's faster and often easier to read and maintain.
 - Prefer AJAX over a full postback

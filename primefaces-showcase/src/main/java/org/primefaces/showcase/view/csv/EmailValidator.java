@@ -36,7 +36,7 @@ import jakarta.faces.validator.Validator;
 import jakarta.faces.validator.ValidatorException;
 
 /**
- * Custom JSF Validator for Email input
+ * Custom Faces Validator for Email input
  */
 @FacesValidator("custom.emailValidator")
 public class EmailValidator implements Validator, ClientValidator {

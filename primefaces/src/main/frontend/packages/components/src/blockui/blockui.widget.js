@@ -1,7 +1,7 @@
 /**
  * __PrimeFaces BlockUI Widget__
  *
- * BlockUI is used to block interactivity of JSF components with optional AJAX integration.
+ * BlockUI is used to block interactivity of Faces components with optional AJAX integration.
  *
  * @prop {JQuery} target The DOM element for the overlay that blocks the UI.
  * @prop {JQuery} content The DOM element for the content of the blocker.

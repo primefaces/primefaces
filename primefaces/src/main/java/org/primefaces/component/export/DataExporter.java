@@ -74,7 +74,7 @@ public class DataExporter implements ActionListener, StateHolder {
 
     @Override
     public void processAction(ActionEvent event) {
-        FacesContext context = FacesContext.getCurrentInstance();
+        FacesContext context = event.getFacesContext();
         ELContext elContext = context.getELContext();
 
         String tables = (String) target.getValue(elContext);

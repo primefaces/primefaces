@@ -293,7 +293,7 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
     }
 
     /**
-     * Decode menu item not present in JSF tree but added using model attribute.
+     * Decode menu item not present in Faces tree but added using model attribute.
      * ID is in format UUID|COORDS.
      *
      * @param context the FacesContext

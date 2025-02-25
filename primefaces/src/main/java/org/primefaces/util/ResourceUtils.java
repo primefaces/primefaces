@@ -200,18 +200,15 @@ public class ResourceUtils {
         PrimeApplicationContext applicationContext = requestContext.getApplicationContext();
 
         boolean isSecure = requestContext.isSecure() && applicationContext.getConfig().isCookiesSecure();
-        boolean isJsf40OrHigher = applicationContext.getEnvironment().isAtLeastJsf40();
 
         properties.put("secure", isSecure);
 
-        if (isJsf40OrHigher) {
-            String sameSite = applicationContext.getConfig().getCookiesSameSite();
-            // "None" is only allowed when Secure attribute so default to Lax if unsecure
-            if (LangUtils.isBlank(sameSite) || (!isSecure && "None".equalsIgnoreCase(sameSite))) {
-                sameSite = "Lax";
-            }
-            properties.put("SameSite", sameSite);
+        String sameSite = applicationContext.getConfig().getCookiesSameSite();
+        // "None" is only allowed when Secure attribute so default to Lax if unsecure
+        if (LangUtils.isBlank(sameSite) || (!isSecure && "None".equalsIgnoreCase(sameSite))) {
+            sameSite = "Lax";
         }
+        properties.put("SameSite", sameSite);
 
         context.getExternalContext().addResponseCookie(name, value, properties);
     }
@@ -262,7 +259,7 @@ public class ResourceUtils {
     public static String getMonitorKeyCookieName(FacesContext context, ValueExpression monitorKey) {
         String monitorKeyCookieName = Constants.DOWNLOAD_COOKIE + context.getViewRoot().getViewId();
         monitorKeyCookieName = monitorKeyCookieName.replace('/', '_');
-        // #9521 remove file extension like .xhtml or .jsf as it violates cookie naming rules
+        // #9521 remove file extension like .xhtml or .faces as it violates cookie naming rules
         monitorKeyCookieName = monitorKeyCookieName.substring(0, monitorKeyCookieName.lastIndexOf('.'));
         if (monitorKey != null) {
             String evaluated = (String) monitorKey.getValue(context.getELContext());
@@ -279,7 +276,7 @@ public class ResourceUtils {
     }
 
     /**
-     * Per default the JSF implementation evaluates resource expressions as String and returns {@link Resource#getRequestPath()}.
+     * Per default the Faces implementation evaluates resource expressions as String and returns {@link Resource#getRequestPath()}.
      * This method resolves the expression to the {@link Resource} itself.
      *
      * @param facesContext The {@link FacesContext}
