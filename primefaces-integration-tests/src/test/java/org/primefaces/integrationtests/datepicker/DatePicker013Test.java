@@ -32,7 +32,6 @@ import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
 
@@ -42,7 +41,6 @@ class DatePicker013Test extends AbstractDatePickerTest {
 
     @Test
     @Order(1)
-    @Tag("Jsf22Exclude")
     @DisplayName("DatePicker: f:convertDateTime vs internal conversion")
     void fConvertDateTimeVsInternal(Page page) {
         // Arrange

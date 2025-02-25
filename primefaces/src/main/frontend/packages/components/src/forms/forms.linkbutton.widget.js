@@ -1,7 +1,7 @@
 /**
  * __PrimeFaces LinkButton Widget__
  * 
- * LinkButton a simple link, which is styled as a button and integrated with JSF navigation model.
+ * LinkButton a simple link, which is styled as a button and integrated with Faces navigation model.
  *
  * @prop {JQuery} link The DOM element for the link that is a child of the button.
  * 

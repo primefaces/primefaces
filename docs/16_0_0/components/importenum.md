@@ -28,12 +28,12 @@ Class whose enums would be imported is defined with type property and the var pr
 the variable name to use via EL.
 
 ```xhtml
-<p:importEnum type="jakarta.faces.application.ProjectStage" var="JsfProjectStages" />
-Development: \#{JsfProjectStages.Development}
+<p:importEnum type="jakarta.faces.application.ProjectStage" var="FacesProjectStages" />
+Development: \#{FacesProjectStages.Development}
 ```
 ```xhtml
 ALL
-<ui:repeat var="current" value="#{JsfProjectStages.ALL_VALUES}">
+<ui:repeat var="current" value="#{FacesProjectStages.ALL_VALUES}">
     <h:outputText value="#{current}" />
 </ui:repeat>
 ```

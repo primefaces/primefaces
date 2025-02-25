@@ -64,7 +64,7 @@ public class TomcatDeploymentAdapter implements DeploymentAdapter {
 
         Thread.sleep(1000);
 
-        // trigger jsf lazy startup
+        // trigger Jakarta Faces impl lazy startup
         URL url = new URL(getBaseUrl());
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");

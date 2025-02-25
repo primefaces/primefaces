@@ -1,7 +1,7 @@
 /**
  * __PrimeFaces Resizable Widget__
  * 
- * Resizable component is used to make another JSF component resizable.
+ * Resizable component is used to make another Faces component resizable.
  * 
  * @typedef PrimeFaces.widget.Resizable.OnResizeCallback Client-side callback to execute during resizing. See also
  * {@link ResizableCfg.onResize}.

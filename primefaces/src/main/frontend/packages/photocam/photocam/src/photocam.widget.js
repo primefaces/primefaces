@@ -3,7 +3,7 @@ import Webcam from "webcamjs";
 /**
  * __PrimeFaces PhotoCam Widget__
  *
- * PhotoCam is used to take photos with webcam and send them to the JSF backend model.
+ * PhotoCam is used to take photos with webcam and send them to the Faces backend model.
  *
  * @typedef PrimeFaces.widget.PhotoCam.onCameraError Callback invoked when an error is caught by the Webcam.js engine.
  * See also {@link PhotoCamCfg.onCameraError}.

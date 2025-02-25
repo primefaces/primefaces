@@ -1,7 +1,7 @@
 /**
  * __PrimeFaces Message Widget__
  * 
- * Message is a pre-skinned extended version of the standard JSF message component.
+ * Message is a pre-skinned extended version of the standard Jakarta Faces message component.
  * 
  * @interface {PrimeFaces.widget.MessageCfg} cfg The configuration for the {@link  Message| Message widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this

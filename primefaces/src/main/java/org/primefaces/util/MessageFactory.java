@@ -98,7 +98,7 @@ public class MessageFactory {
             }
         }
 
-        // fallback to default jsf bundle
+        // fallback to default Faces bundle
         if (summary == null) {
             try {
                 bundle = getBundle(DEFAULT_BUNDLE_BASENAME, locale, currentClassLoader, facesContext);
@@ -171,7 +171,7 @@ public class MessageFactory {
             }
         }
 
-        // fallback to default jsf bundle
+        // fallback to default Faces bundle
         if (summary == null) {
             try {
                 bundle = getBundle(DEFAULT_BUNDLE_BASENAME, locale, currentClassLoader, facesContext);
@@ -220,17 +220,17 @@ public class MessageFactory {
         }
         else if (DEFAULT_BUNDLE_BASENAME.equals(baseName)) {
 
-            ClassLoader jsfImplClassLoader = getJSFImplClassLoader(facesContext);
+            ClassLoader facesImplClassLoader = getFacesImplClassLoader(facesContext);
 
-            if (!jsfImplClassLoader.equals(classLoader)) {
-                return ResourceBundle.getBundle(baseName, locale, classLoader, new PrimeFacesControl(jsfImplClassLoader));
+            if (!facesImplClassLoader.equals(classLoader)) {
+                return ResourceBundle.getBundle(baseName, locale, classLoader, new PrimeFacesControl(facesImplClassLoader));
             }
         }
 
         return ResourceBundle.getBundle(baseName, locale, classLoader, new PrimeFacesControl(primeFacesClassLoader));
     }
 
-    private static ClassLoader getJSFImplClassLoader(FacesContext facesContext) {
+    private static ClassLoader getFacesImplClassLoader(FacesContext facesContext) {
         facesContext = unwrapFacesContext(facesContext);
 
         Class<? extends FacesContext> facesContextImplClass = FacesContext.class;

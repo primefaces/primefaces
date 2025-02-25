@@ -140,7 +140,7 @@ public class Csv002Test extends AbstractColorPickerTest {
                 page.msgSelectOneListbox.getText());
 
         // Act
-        page.selectOneListbox.findElement(By.cssSelector("ul li.ui-selectlistbox-item[aria-label=\"JSF\"]")).click();
+        page.selectOneListbox.findElement(By.cssSelector("ul li.ui-selectlistbox-item[aria-label=\"Faces\"]")).click();
 
         // Assert
         Assertions.assertEquals("", page.msgSelectOneListbox.getText());

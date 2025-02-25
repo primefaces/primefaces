@@ -96,7 +96,7 @@ public class DataTable009 implements Serializable {
         return progLanguages.stream().map(p -> p.getFirstAppeared()).distinct().sorted().collect(Collectors.toList());
     }
 
-    public void addJsfImplMessage()  {
-        TestUtils.addJsfImplMessage();
+    public void addFacesImplMessage()  {
+        TestUtils.addFacesImplMessage();
     }
 }

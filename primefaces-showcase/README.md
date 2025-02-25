@@ -45,7 +45,7 @@ mvn clean install            -- first build PrimeFaces
 cd primefaces-showcase
 ```
 
-##### Development Mode (runs MyFaces 4.0 in JSF Development mode)
+##### Development Mode (runs MyFaces 4.0 in Development mode)
 
 Requires Java 17+ (because of Jetty 12)
 

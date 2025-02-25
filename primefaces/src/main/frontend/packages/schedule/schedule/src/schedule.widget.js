@@ -11,7 +11,7 @@ import momentTimezonePlugin from "@fullcalendar/moment-timezone";
 /**
  * __PrimeFaces Schedule Widget__
  * 
- * Schedule provides an Outlook Calendar, iCal like JSF component to manage events.
+ * Schedule provides an Outlook Calendar, iCal like Faces component to manage events.
  * 
  * @typedef PrimeFaces.widget.Schedule.ScheduleExtender Name of JavaScript function to extend the options of the
  * underlying FullCalendar plugin. Access the this schedule widget via the this context, and change the FullCalendar

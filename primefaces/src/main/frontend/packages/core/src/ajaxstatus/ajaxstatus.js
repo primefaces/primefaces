@@ -86,7 +86,7 @@ PrimeFaces.widget.AjaxStatus = class AjaxStatus extends PrimeFaces.widget.BaseWi
 
     /**
      * Binds event handlers to AJAX events on the document element.
-     * Handles both PrimeFaces AJAX events and native JSF AJAX events.
+     * Handles both PrimeFaces AJAX events and native Jakarta Faces AJAX events.
      * 
      * For PrimeFaces AJAX events:
      * - pfAjaxStart: Triggered when AJAX request starts. After configured delay, triggers 'start' event.
@@ -94,7 +94,7 @@ PrimeFaces.widget.AjaxStatus = class AjaxStatus extends PrimeFaces.widget.BaseWi
      * - pfAjaxSuccess: Triggered when AJAX request succeeds. Triggers 'success' event with xhr, settings.
      * - pfAjaxComplete: Triggered after success/error. Clears timeout if no redirect. Triggers 'complete' event.
      * 
-     * For JSF AJAX events:
+     * For Jakarta Faces AJAX events:
      * - begin: Triggers 'start' event after configured delay
      * - complete: IGNORED since it fires before success/error
      * - success: Clears timeout, triggers 'success' then 'complete' events
@@ -147,7 +147,8 @@ PrimeFaces.widget.AjaxStatus = class AjaxStatus extends PrimeFaces.widget.BaseWi
                     }, $this.cfg.delay);
                 }
                 else if(data.status === 'complete') {
-                    // Ignore JSF complete event since it fires before success/error. We'll trigger complete manually after success/error to match PrimeFaces event order
+                    // Ignore Jakarta Faces complete event since it fires before success/error.
+                    // We'll trigger complete manually after success/error to match PrimeFaces event order
                 }
                 else if(data.status === 'success') {
                     $this.deleteTimeout();
@@ -214,7 +215,7 @@ PrimeFaces.widget.AjaxStatus = class AjaxStatus extends PrimeFaces.widget.BaseWi
                 // Skip hiding the previous facet (typically the start facet) if the request results in a redirect
                 // Note: This won't work properly with success/error facets since redirect info isn't available beforehand
                 // Only check for redirect if PrimeFaces is used
-                if (args.length > 1) { // PrimeFaces passes 3 args, JSF passes 1 arg
+                if (args.length > 1) { // PrimeFaces passes 3 args, Jakarta Faces passes 1 arg
                     var pfArgs = args[2];
                     if (!pfArgs || pfArgs.redirect) {
                         return;

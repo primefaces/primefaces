@@ -12,7 +12,7 @@
         <tracking-mode>COOKIE</tracking-mode>
     </session-config>
 
-   <!-- Load custom tag into JSF web application -->
+   <!-- Load custom tag into Faces web application -->
     <context-param>
         <param-name>jakarta.faces.FACELETS_LIBRARIES</param-name>
         <param-value>/WEB-INF/showcase.taglib.xml</param-value>
@@ -28,7 +28,7 @@
     </context-param>
     <context-param>
         <param-name>jakarta.faces.PROJECT_STAGE</param-name>
-        <param-value>${jsf.project.stage}</param-value>
+        <param-value>${faces.project.stage}</param-value>
     </context-param>
     <context-param>
         <param-name>jakarta.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
@@ -102,7 +102,7 @@
 <!--        <listener-class>${cdiListener}</listener-class>-->
 <!--    </listener>-->
     <listener>
-        <listener-class>${jsfListener}</listener-class>
+        <listener-class>${facesListener}</listener-class>
     </listener>
 
     <filter>
@@ -140,10 +140,6 @@
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>jakarta.faces.webapp.FacesServlet</servlet-class>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>Faces Servlet</servlet-name>
-        <url-pattern>*.jsf</url-pattern>
-    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.xhtml</url-pattern>

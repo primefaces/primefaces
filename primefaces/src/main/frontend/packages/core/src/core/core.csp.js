@@ -115,7 +115,7 @@ if (!PrimeFaces.csp) {
          */
         hasRegisteredAjaxifiedEvent: function(id, event) {
             if (PrimeFaces.isProductionProjectStage()) {
-                console.error("PrimeFaces CSP registry may not be used in JSF Production mode.");
+                console.error("PrimeFaces CSP registry may not be used in Jakarta Faces Production mode.");
                 return false;
             }
             if (PrimeFaces.csp.EVENT_REGISTRY.has(id)) {

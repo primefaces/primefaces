@@ -65,7 +65,7 @@ public class OrganigramView implements Serializable {
         OrganigramNode softwareDevelopment = addDivision(rootNode, "Software Development", "Ridvan Agar");
 
         OrganigramNode teamJavaEE = addDivision(softwareDevelopment, "Team JavaEE");
-        addDivision(teamJavaEE, "JSF", "Thomas Andraschko");
+        addDivision(teamJavaEE, "Faces", "Thomas Andraschko");
         addDivision(teamJavaEE, "Backend", "Marie Louise");
 
         OrganigramNode teamMobile = addDivision(softwareDevelopment, "Team Mobile");

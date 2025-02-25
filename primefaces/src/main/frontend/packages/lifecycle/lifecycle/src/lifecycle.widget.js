@@ -1,7 +1,7 @@
 /**
  * __PrimeFaces Lifecycle Widget__
  * 
- * Lifecycle is a utility component which displays the execution time of each JSF phase. It also synchronizes
+ * Lifecycle is a utility component which displays the execution time of each Faces phase. It also synchronizes
  * automatically after each AJAX request.
  * 
  * @prop {boolean} initialized Whether this widget was initialized.

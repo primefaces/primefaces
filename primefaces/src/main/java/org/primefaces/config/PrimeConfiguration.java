@@ -53,7 +53,6 @@ public class PrimeConfiguration {
     private final boolean earlyPostParamEvaluation;
     private final boolean moveScriptsToBottom;
     private final boolean moveScriptsToBottomDeferred;
-    private final String html5Compliance;
     private boolean csp;
     private boolean policyProvided;
     private String cspPolicy;
@@ -136,9 +135,6 @@ public class PrimeConfiguration {
                 break;
         }
 
-        value = externalContext.getInitParameter(Constants.ContextParams.HTML5_COMPLIANCE);
-        html5Compliance = LangUtils.isBlank(value) ? "auto" : value;
-
         value = Objects.toString(externalContext.getInitParameter(Constants.ContextParams.CSP));
         switch (value) {
             case "true":
@@ -171,10 +167,8 @@ public class PrimeConfiguration {
         value = externalContext.getInitParameter(Constants.ContextParams.MARK_INPUT_AS_INVALID_ON_ERROR_MSG);
         markInputAsInvalidOnErrorMsg = Boolean.parseBoolean(value);
 
-        if (environment.isAtLeastJsf40()) {
-            value = externalContext.getInitParameter(Constants.ContextParams.COOKIES_SAME_SITE);
-            cookiesSameSite = (value == null) ? "Strict" : value;
-        }
+        value = externalContext.getInitParameter(Constants.ContextParams.COOKIES_SAME_SITE);
+        cookiesSameSite = (value == null) ? "Strict" : value;
 
         cookiesSecure = true;
         if (externalContext.getContext() instanceof ServletContext) {
@@ -262,10 +256,6 @@ public class PrimeConfiguration {
 
     public boolean isMoveScriptsToBottomDeferred() {
         return moveScriptsToBottomDeferred;
-    }
-
-    public String getHtml5Compliance() {
-        return html5Compliance;
     }
 
     public boolean isStringConverterAvailable() {

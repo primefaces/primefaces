@@ -145,7 +145,7 @@ class DataTable009Test extends AbstractDataTableTest {
     @Order(3)
     @DisplayName("DataTable: filter - issue 7026 - https://github.com/primefaces/primefaces/issues/7026")
     void filterIssue7026(Page page) {
-        page.buttonJsfImpl.click();
+        page.buttonFacesImpl.click();
         if (page.messages.getMessage(0).getSummary().contains("Mojarra")) {
             // known issue with Mojarra 2.3.14, fixed since Mojarra 2.3.15
         }
@@ -201,8 +201,8 @@ class DataTable009Test extends AbstractDataTableTest {
         @FindBy(id = "form:buttonReportFilteredProgLanguages")
         CommandButton buttonReportFilteredProgLanguages;
 
-        @FindBy(id = "form:buttonJsfImpl")
-        CommandButton buttonJsfImpl;
+        @FindBy(id = "form:buttonFacesImpl")
+        CommandButton buttonFacesImpl;
 
         @FindBy(id = "form:datatable:firstAppearedFilter")
         SelectOneMenu firstAppearedFilter;

@@ -1,7 +1,7 @@
 /**
  * __PrimeFaces Terminal Widget__
  * 
- * Terminal is an AJAX-powered web-based terminal that brings desktop terminals to JSF.
+ * Terminal is an AJAX-powered web-based terminal that brings desktop terminals to Faces.
  * 
  * @prop {JQuery} content The DOM element for the content of this terminal.
  * @prop {string[]} commands List with all commands the user entered up until now. Used for a command history.

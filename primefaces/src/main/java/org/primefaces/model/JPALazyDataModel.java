@@ -466,7 +466,7 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
                         Converter converter = context.getApplication().createConverter(idType.getJavaType());
                         if (converter == null) {
                             throw new FacesException("Entity @Id is not a primitive and no Converter found for " + idType.getJavaType().getName()
-                                    + "! Either define a rowKeyField or create a JSF Converter for it!");
+                                    + "! Either define a rowKeyField or create a Converter for it!");
                         }
                     }
 

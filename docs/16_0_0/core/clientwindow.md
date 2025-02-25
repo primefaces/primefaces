@@ -33,15 +33,3 @@ PrimeFaces `ClientWindow` can be activated in `faces-config.xml`:
 ```
 
 As it´s a replacement for the standard Jakarta Faces-mechanism, make sure you dont have a `jakarta.faces.CLIENT_WINDOW_MODE` in your web.xml or configured to `none`.
-
-
-**Mojarra:**  
-For older Mojarra versions you must use the LifeCycleFactory because of this issue: https://github.com/eclipse-ee4j/mojarra/issues/5297
-```xml
-<faces-config>
-    <factory>
-        <lifecycle-factory>org.primefaces.clientwindow.PrimeClientWindowLifecycleFactory</lifecycle-factory>
-    </factory>
-</faces-config>
-```
-

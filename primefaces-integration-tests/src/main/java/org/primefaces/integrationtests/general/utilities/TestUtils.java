@@ -64,10 +64,10 @@ public class TestUtils {
     }
 
     /**
-     * Add´s a message containing JSF-impl and -version.
+     * Add´s a message containing Faces-impl and -version.
      * @return
      */
-    public static FacesMessage addJsfImplMessage() {
+    public static FacesMessage addFacesImplMessage() {
         Package p = FacesContext.class.getPackage();
         return addMessage(p.getImplementationTitle(), p.getImplementationVersion());
     }

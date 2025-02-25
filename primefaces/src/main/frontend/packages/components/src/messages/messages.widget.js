@@ -1,7 +1,7 @@
 /**
  * __PrimeFaces Messages Widget__
  * 
- * Messages is a pre-skinned extended version of the standard JSF messages component.
+ * Messages is a pre-skinned extended version of the standard Jakarta Faces messages component.
  * 
  * @prop {JQuery} closer The DOM element for the icon that closes this panel.
  * @interface {PrimeFaces.widget.MessagesCfg} cfg The configuration for the {@link  Messages| Messages widget}.

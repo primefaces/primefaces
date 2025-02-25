@@ -86,7 +86,7 @@ Currently, only the following components are implemented (partially):
 
 - Link
 
-#### JSF / PrimeFaces
+#### Jakarta Faces / PrimeFaces
 
 - AccordionPanel
 - AutoComplete

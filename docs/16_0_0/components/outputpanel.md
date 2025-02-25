@@ -5,7 +5,7 @@ OutputPanel is a panel component with the ability to deferred loading, which is 
 **NOTE**
 If you use the OutputPanel just as simple placeholder, it's better to use another approach since Jakarta Faces 2.2:
 ```xhtml
-<div jsf:id="..." jsf:rendered="#{...}">...</div>
+<div faces:id="..." faces:rendered="#{...}">...</div>
 ```
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.OutputPanel-1.html)

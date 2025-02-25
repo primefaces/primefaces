@@ -103,7 +103,7 @@ public class ComponentUtils {
     /**
      * Algorithm works as follows;
      * - If it's an input component, submitted value is checked first since it'd be the value to be used in case validation errors
-     * terminates jsf lifecycle
+     * terminates Faces lifecycle
      * - Finally the value of the component is retrieved from backing bean and if there's a converter, converted value is returned
      *
      * @param context       FacesContext instance
@@ -791,14 +791,14 @@ public class ComponentUtils {
         Converter targetConverter = context.getApplication().createConverter(valueType);
         if (targetConverter == null) {
             logger.log(Level.FINE, () -> "Skip conversion as no converter was found for " + valueType
-                    + "; Create a JSF Converter for it!");
+                    + "; Create a Converter for it!");
             return value;
         }
 
         Converter sourceConverter = context.getApplication().createConverter(value.getClass());
         if (sourceConverter == null) {
             logger.log(Level.FINE, () -> "Skip conversion as no converter was found for " + value.getClass()
-                    + "; Create a JSF Converter for it!");
+                    + "; Create a Converter for it!");
         }
 
         // first convert the object to string

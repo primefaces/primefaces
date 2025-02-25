@@ -128,27 +128,27 @@ if (!PrimeFaces.widget) {
      * 
      * @typedef PrimeFaces.widget.PreConstructCallback A callback for a PrimeFaces widget. An optional callback that is
      * invoked before a widget is created, at the beginning of the {@link BaseWidget.init | init} method. This is
-     * usually specified via the `widgetPreConstruct` attribute on the JSF component.
+     * usually specified via the `widgetPreConstruct` attribute on the Faces component.
      * @this {BaseWidget} PrimeFaces.widget.PreConstructCallback
      * @param {BaseWidget} PrimeFaces.widget.PreConstructCallback.cfg The widget configuration.
      * 
      * @typedef PrimeFaces.widget.PostConstructCallback A callback for a PrimeFaces widget. An optional callback that is
      * invoked after a widget was created successfully, at the end of the {@link BaseWidget.init | init} method. This is
-     * usually specified via the `widgetPostConstruct` attribute on the JSF component. Note that this is also called
+     * usually specified via the `widgetPostConstruct` attribute on the Faces component. Note that this is also called
      * during a `refresh` (AJAX update).
      * @this {BaseWidget} PrimeFaces.widget.PostConstructCallback
      * @param {BaseWidget} PrimeFaces.widget.PostConstructCallback.widget The widget that was constructed.
      * 
      * @typedef PrimeFaces.widget.PostRefreshCallback An optional callback that is invoked after a widget was refreshed
      * after an AJAX update, at the end of the {@link BaseWidget.refresh | refresh} method. This is usually specified
-     * via the `widgetPostRefresh` attribute on the JSF component.
+     * via the `widgetPostRefresh` attribute on the Faces component.
      * @this {BaseWidget} PrimeFaces.widget.PostRefreshCallback
      * @param {BaseWidget} PrimeFaces.widget.PostRefreshCallback.widget The widget that was refreshed.
      * 
      * @typedef PrimeFaces.widget.PreDestroyCallback An optional callback that is invoked before a widget is about to be
      * destroyed, e.g., when the component was removed at the end of an AJAX update. This is called at the beginning
      * of the {@link BaseWidget.destroy | destroy} method. This is usually specified via the `widgetPreDestroy`
-     * attribute on the JSF component.
+     * attribute on the Faces component.
      * @this {BaseWidget} PrimeFaces.widget.PreDestroyCallback
      * @param {BaseWidget} PrimeFaces.widget.PreDestroyCallback.widget The widget that is about to be destroyed.
      * 
@@ -195,15 +195,15 @@ if (!PrimeFaces.widget) {
      * multiple container elements (such as {@link Paginator}), this may also be an array if IDs.
      * @prop {PrimeFaces.widget.PostConstructCallback} cfg.postConstruct An optional callback that is invoked
      * after this widget was created successfully, at the end of the {@link BaseWidget.init | init} method. This is
-     * usually specified via the `widgetPostConstruct` attribute on the JSF component. Note that this is also called
+     * usually specified via the `widgetPostConstruct` attribute on the Faces component. Note that this is also called
      * during a `refresh` (AJAX update).
      * @prop {PrimeFaces.widget.PostRefreshCallback} cfg.postRefresh An optional callback that is invoked after
      * this widget was refreshed after an AJAX update, at the end of the {@link BaseWidget.refresh | refresh} method.
-     * This is usually specified via the `widgetPostRefresh` attribute on the JSF component.
+     * This is usually specified via the `widgetPostRefresh` attribute on the Faces component.
      * @prop {PrimeFaces.widget.PreDestroyCallback} cfg.preDestroy An optional callback that is invoked before
      * this widget is about to be destroyed, e.g., when the component was removed at the end of an AJAX update. This is
      * called at the beginning of the {@link BaseWidget.destroy | destroy} method. This is usually specified via the
-     * `widgetPreDestroy` attribute on the JSF component.
+     * `widgetPreDestroy` attribute on the Faces component.
      * @prop {string} cfg.widgetVar The name of the widget variables of this widget. The widget variable can be used to
      * access a widget instance by calling `PF("myWidgetVar")`.
      */
@@ -355,7 +355,7 @@ if (!PrimeFaces.widget) {
 
         /**
          * Each widget has got a container element, this method returns that container. This container element is
-         * usually also the element whose ID is the client-side ID of the JSF component.
+         * usually also the element whose ID is the client-side ID of the Faces component.
          * @return {JQuery} The jQuery instance representing the main HTML container element of this widget.
          */
         getJQ(){

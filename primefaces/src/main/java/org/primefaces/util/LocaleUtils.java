@@ -135,7 +135,7 @@ public class LocaleUtils {
                 locale = context.getExternalContext().getRequestLocale();
             }
 
-            // Then the JSF default locale.
+            // Then the Jakarta Faces default locale.
             if (locale == null) {
                 locale = context.getApplication().getDefaultLocale();
             }

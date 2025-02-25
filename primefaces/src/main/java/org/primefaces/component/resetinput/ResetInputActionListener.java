@@ -60,7 +60,7 @@ public class ResetInputActionListener implements ActionListener, Serializable {
 
     @Override
     public void processAction(ActionEvent event) throws AbortProcessingException {
-        FacesContext context = FacesContext.getCurrentInstance();
+        FacesContext context = event.getFacesContext();
         ELContext elContext = context.getELContext();
         VisitContext visitContext = VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
 

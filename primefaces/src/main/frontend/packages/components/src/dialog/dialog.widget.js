@@ -1114,9 +1114,9 @@ PrimeFaces.widget.ConfirmDialog = class ConfirmDialog extends PrimeFaces.widget.
 /**
  * __PrimeFaces Dynamic Dialog Widget__ 
  * 
- * Used by the dialog framework for displaying other JSF views or external pages in a dialog on the current.
+ * Used by the dialog framework for displaying other Faces views or external pages in a dialog on the current.
  * 
- * @interface {PrimeFaces.widget.DynamicDialogCfg} cfg The configuration for the {@link  DynamicDialog| DynamicDialog widget}.
+ * @interface {PrimeFaces.widget.DynamicDialogCfg} cfg The configuration for the {@link DynamicDialog| DynamicDialog widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.DialogCfg} cfg

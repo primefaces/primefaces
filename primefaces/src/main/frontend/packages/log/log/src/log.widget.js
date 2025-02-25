@@ -1,7 +1,7 @@
 /**
  * __PrimeFaces Log Widget__
  * 
- * Log component is a visual console to display logs on JSF pages.
+ * Log component is a visual console to display logs on Faces pages.
  * 
  * The Log API is also available via global PrimeFaces object in case you’d like to use the log component to display
  * your logs:

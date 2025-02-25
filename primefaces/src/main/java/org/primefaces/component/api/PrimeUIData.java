@@ -49,7 +49,7 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.PhaseId;
 
 /**
- * Enhanced version of the JSF UIData.
+ * Enhanced version of the Faces UIData.
  */
 public class PrimeUIData extends UIDataPatch {
 
