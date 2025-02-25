@@ -24,7 +24,6 @@
 package org.primefaces.component.hotkey;
 
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.util.AgentUtils;
 
 import java.io.IOException;
@@ -54,7 +53,6 @@ public class HotkeyRenderer extends CoreRenderer {
         String clientId = hotkey.getClientId(context);
 
         writer.startElement("script", null);
-        RendererUtils.encodeScriptTypeIfNecessary(context);
 
         String event = "keydown." + clientId;
         writer.write("$(function(){");

@@ -25,7 +25,6 @@ package org.primefaces.component.focus;
 
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.renderkit.RendererUtils;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -59,7 +58,6 @@ public class FocusRenderer extends CoreRenderer {
         writer.endElement("span");
 
         writer.startElement("script", focus);
-        RendererUtils.encodeScriptTypeIfNecessary(context);
 
         if (isValueBlank(focus.getFor())) {
             encodeImplicitFocus(context, focus);

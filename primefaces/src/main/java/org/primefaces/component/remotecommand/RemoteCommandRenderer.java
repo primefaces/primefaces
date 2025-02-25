@@ -25,7 +25,6 @@ package org.primefaces.component.remotecommand;
 
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.util.CSVBuilder;
 
 import java.io.IOException;
@@ -86,7 +85,6 @@ public class RemoteCommandRenderer extends CoreRenderer {
         //script
         writer.startElement("script", command);
         writer.writeAttribute("id", clientId, null);
-        RendererUtils.encodeScriptTypeIfNecessary(context);
 
         writer.write(name + " = function() {");
         writer.write(request);

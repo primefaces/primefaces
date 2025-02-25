@@ -205,7 +205,6 @@ public class HeadRenderer extends Renderer {
         ExternalContext externalContext = context.getExternalContext();
 
         writer.startElement("script", null);
-        RendererUtils.encodeScriptTypeIfNecessary(context);
         writer.write("if(window.PrimeFaces){");
 
         writer.write("PrimeFaces.settings={");
@@ -290,7 +289,6 @@ public class HeadRenderer extends Renderer {
         }
 
         writer.startElement("script", null);
-        RendererUtils.encodeScriptTypeIfNecessary(context);
 
         boolean moveScriptsToBottom = configuration.isMoveScriptsToBottom();
 

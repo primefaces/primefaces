@@ -25,7 +25,6 @@ package org.primefaces.util;
 
 import org.primefaces.component.api.Widget;
 import org.primefaces.config.PrimeConfiguration;
-import org.primefaces.renderkit.RendererUtils;
 
 import java.io.IOException;
 import java.util.Map;
@@ -135,7 +134,6 @@ public class WidgetBuilder {
         ResponseWriter rw = context.getResponseWriter();
         rw.startElement("script", null);
         rw.writeAttribute("id", id + "_s", null);
-        RendererUtils.encodeScriptTypeIfNecessary(context);
     }
 
     protected WidgetBuilder renderLifecycleCallbacks(UIComponent component) throws IOException {

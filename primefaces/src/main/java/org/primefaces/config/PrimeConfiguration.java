@@ -53,7 +53,6 @@ public class PrimeConfiguration {
     private final boolean earlyPostParamEvaluation;
     private final boolean moveScriptsToBottom;
     private final boolean moveScriptsToBottomDeferred;
-    private final String html5Compliance;
     private boolean csp;
     private boolean policyProvided;
     private String cspPolicy;
@@ -137,7 +136,6 @@ public class PrimeConfiguration {
         }
 
         value = externalContext.getInitParameter(Constants.ContextParams.HTML5_COMPLIANCE);
-        html5Compliance = LangUtils.isBlank(value) ? "auto" : value;
 
         value = Objects.toString(externalContext.getInitParameter(Constants.ContextParams.CSP));
         switch (value) {
@@ -262,10 +260,6 @@ public class PrimeConfiguration {
 
     public boolean isMoveScriptsToBottomDeferred() {
         return moveScriptsToBottomDeferred;
-    }
-
-    public String getHtml5Compliance() {
-        return html5Compliance;
     }
 
     public boolean isStringConverterAvailable() {
