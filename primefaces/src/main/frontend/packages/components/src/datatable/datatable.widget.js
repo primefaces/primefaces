@@ -3602,8 +3602,8 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
                         });
 
             // GitHub #433 Allow ENTER to submit ESC to cancel row editor
-            $(document).off("keydown" + namespace, "tr.ui-row-editing")
-                        .on("keydown" + namespace, "tr.ui-row-editing", function(e) {
+            $(document).off("keydown" + namespace, $this.jqId + " tr.ui-row-editing")
+                        .on("keydown" + namespace, $this.jqId + " tr.ui-row-editing", function(e) {
                             switch (e.key) {
                                 case 'Enter':
                                     var target = $(e.target);
