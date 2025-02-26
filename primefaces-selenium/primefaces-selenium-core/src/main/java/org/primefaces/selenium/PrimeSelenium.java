@@ -48,10 +48,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public final class PrimeSelenium {
 
-    private static final String HEADLESS_MODE_SYSPROP_NAME = "webdriver.headless";
-
-    private static final String HEADLESS_MODE_SYSPROP_VAL_DEFAULT = "false";
-
     private PrimeSelenium() {
         super();
     }
@@ -587,7 +583,7 @@ public final class PrimeSelenium {
      * @return true if headless, false if not
      */
     public static boolean isHeadless() {
-        return Boolean.parseBoolean(System.getProperty(HEADLESS_MODE_SYSPROP_NAME, HEADLESS_MODE_SYSPROP_VAL_DEFAULT));
+        return ConfigProvider.getInstance().isWebdriverHeadless();
     }
 
     /**
