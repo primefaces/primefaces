@@ -179,16 +179,22 @@ public class ConfigProvider {
         }
     }
 
-    private String getAndResolveProperty(Properties properties, String propertyKey) {
-        String val = properties.getProperty(propertyKey);
+    private String getAndResolveProperty(Properties configFileProperties, String propertyKey) {
+        String val = configFileProperties.getProperty(propertyKey);
+        String effectiveKey = propertyKey;
         if (val != null) {
             Matcher matcher = PROPERTY_ENV_PLACEHOLDER.matcher(val);
             if (matcher.matches()) {
-                String env = System.getenv(matcher.group(1));
-                if (env != null && !env.trim().isEmpty()) {
-                    return env;
-                }
+                effectiveKey = matcher.group(1);
             }
+        }
+        String valueCandidate = System.getProperty(effectiveKey);
+        if (valueCandidate != null && !valueCandidate.trim().isEmpty()) {
+            return valueCandidate;
+        }
+        valueCandidate = System.getenv(effectiveKey);
+        if (valueCandidate != null && !valueCandidate.trim().isEmpty()) {
+            return valueCandidate;
         }
         return val;
     }
