@@ -1122,7 +1122,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                             $this.unhighlightFocusedRow();
 
                             if($this.isCheckboxSelectionEnabled()) {
-                                row.find('> td.ui-selection-column .ui-chkbox input').trigger('focus');
+                                row.find('> td.ui-selection-column .ui-chkbox-box').trigger('focus');
                             }
                             else {
                                 $this.focusedRow = row;
