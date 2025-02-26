@@ -9278,6 +9278,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Name of iterator to refer each row index.]]>
+            </description>
+            <name>rowIndexVar</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Number of rows to display per page. Default value is 0 meaning to display all data available.]]>
             </description>
             <name>rows</name>
