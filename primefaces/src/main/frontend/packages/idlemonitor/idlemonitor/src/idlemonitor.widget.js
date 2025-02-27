@@ -44,14 +44,14 @@ PrimeFaces.widget.IdleMonitor = class IdleMonitor extends PrimeFaces.widget.Base
                 $this.cfg.onidle.call($this);
             }
 
-            $this.callBehavior('idle');
+            $this.callBehavior('idle', undefined, false);
         })
         .on("active.idleTimer" + this.cfg.id, function(){
             if($this.cfg.onactive) {
                 $this.cfg.onactive.call($this);
             }
 
-            $this.callBehavior('active');
+            $this.callBehavior('active', undefined, false);
         });
 
         $.idleTimer(this.cfg.timeout, document, this.cfg.id);
