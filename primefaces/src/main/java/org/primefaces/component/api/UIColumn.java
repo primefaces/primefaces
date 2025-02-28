@@ -25,8 +25,8 @@ package org.primefaces.component.api;
 
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.model.MatchMode;
+import org.primefaces.util.CompositeUtils;
 import org.primefaces.util.EditableValueHolderState;
-import org.primefaces.util.FacetUtils;
 import org.primefaces.util.LangUtils;
 
 import java.io.IOException;
@@ -253,7 +253,7 @@ public interface UIColumn {
         UIComponent filterFacet = getFacet("filter");
         if (filterFacet != null) {
             AtomicReference<EditableValueHolderState> stateRef = new AtomicReference<>(null);
-            FacetUtils.invokeOnEditableValueHolder(context, filterFacet, (fc, target) -> {
+            CompositeUtils.invokeOnDeepestEditableValueHolder(context, filterFacet, (fc, target) -> {
                 EditableValueHolderState state = new EditableValueHolderState();
                 state.setValue(((EditableValueHolder) target).getValue());
                 stateRef.set(state);
@@ -267,7 +267,7 @@ public interface UIColumn {
     default void setFilterValueToValueHolder(FacesContext context, Object value) {
         UIComponent filterFacet = getFacet("filter");
 
-        FacetUtils.invokeOnEditableValueHolder(context, filterFacet, (ctx, component) -> {
+        CompositeUtils.invokeOnDeepestEditableValueHolder(context, filterFacet, (ctx, component) -> {
             ((EditableValueHolder) component).setValue(value);
         });
     }
