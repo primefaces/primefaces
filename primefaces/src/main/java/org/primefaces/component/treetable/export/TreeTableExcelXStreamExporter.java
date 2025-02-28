@@ -54,7 +54,7 @@ public class TreeTableExcelXStreamExporter extends TreeTableExcelXExporter {
     protected void postExport(FacesContext context) throws IOException {
         super.postExport(context);
         SXSSFWorkbook sxssfWorkbook = ((SXSSFWorkbook) document);
-        sxssfWorkbook.dispose();
+        sxssfWorkbook.close();
     }
 
     @Override

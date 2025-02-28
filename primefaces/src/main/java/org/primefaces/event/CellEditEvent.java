@@ -30,7 +30,7 @@ import org.primefaces.component.api.UITree;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.treetable.TreeTable;
-import org.primefaces.util.FacetUtils;
+import org.primefaces.util.CompositeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +39,6 @@ import jakarta.faces.FacesException;
 import jakarta.faces.component.EditableValueHolder;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.behavior.Behavior;
-import jakarta.faces.context.FacesContext;
 
 public class CellEditEvent<T> extends AbstractAjaxBehaviorEvent {
 
@@ -161,7 +160,7 @@ public class CellEditEvent<T> extends AbstractAjaxBehaviorEvent {
 
                 List<Object> values = new ArrayList<>(1);
 
-                FacetUtils.invokeOnEditableValueHolder(FacesContext.getCurrentInstance(), inputFacet, (ctx, component) -> {
+                CompositeUtils.invokeOnDeepestEditableValueHolder(getFacesContext(), inputFacet, (ctx, component) -> {
                     values.add(((EditableValueHolder) component).getValue());
                 });
 

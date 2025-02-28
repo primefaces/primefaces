@@ -142,7 +142,7 @@
         <dependency>
             <groupId>org.jboss.weld.servlet</groupId>
             <artifactId>weld-servlet-core</artifactId>
-            <version>5.1.3.Final</version>
+            <version>5.1.5.Final</version>
         </dependency>
 
         <!-- JAX-RS - RestEasy -->
