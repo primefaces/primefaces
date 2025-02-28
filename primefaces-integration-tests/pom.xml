@@ -32,7 +32,7 @@
         <!-- dependency versions -->
         <hibernate-validator.version>8.0.2.Final</hibernate-validator.version>
         <lombok.version>1.18.36</lombok.version>
-        <resteasy.version>6.3.0.Final</resteasy.version>
+        <resteasy.version>6.2.11.Final</resteasy.version>
         <jetty.version>12.0.16</jetty.version>
     </properties>
 
@@ -150,6 +150,18 @@
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-core</artifactId>
             <version>${resteasy.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.jboss</groupId>
+                    <artifactId>jandex</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- for Weld -->
+        <dependency>
+            <groupId>org.jboss</groupId>
+            <artifactId>jandex</artifactId>
+            <version>3.2.7</version>
         </dependency>
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
