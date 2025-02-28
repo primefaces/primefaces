@@ -64,3 +64,15 @@ mvn clean jetty:run -Pnon-ee,mojarra-4.0
 ```
 mvn clean jetty:run -Pnon-ee,myfaces-4.0
 ```
+
+##### Mojarra 4.1
+
+```
+mvn clean jetty:run -Pnon-ee,mojarra-4.1
+```
+
+##### MyFaces 4.1
+
+```
+mvn clean jetty:run -Pnon-ee,myfaces-4.1
+```

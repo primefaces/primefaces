@@ -35,6 +35,8 @@ Keep in mind there are - as of january 2021 - following limitations for Safari w
 
   - `mojarra-4.0` - Mojarra 4.0 implementation
   - `myfaces-4.0` - MyFaces 4.0 implementation
+  - `mojarra-4.1` - Mojarra 4.1 implementation
+  - `myfaces-4.1` - MyFaces 4.1 implementation
 
 #### Misc
 
