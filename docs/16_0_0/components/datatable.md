@@ -897,7 +897,8 @@ public class CarBean {
 
             @Override
             public List<Car> load(int first, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
-                // load physical data
+                // load physical data and filter it
+                setRowCount(rows); // set new number of rows after filtering.
                 return requestedResultPage;
             }
         };

@@ -84,6 +84,7 @@ public class LazyCustomerDataModel extends LazyDataModel<Customer> {
         List<Customer> customers = datasource.stream()
                 .filter(o -> filter(FacesContext.getCurrentInstance(), filterBy.values(), o))
                 .collect(Collectors.toList());
+        setRowCount(customers.size());
 
         // sort
         if (!sortBy.isEmpty()) {

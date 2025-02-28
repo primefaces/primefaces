@@ -22,7 +22,7 @@
         <div class="card">
             <h:form id="form">
                 <p:dataTable var="customer" value="#{dtLazyView.lazyModel}" paginator="true" rows="10"
-                             paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              rowsPerPageTemplate="5,10,15" selectionMode="single"
                              selection="#{dtLazyView.selectedCustomer}"
                              id="customerTable">
