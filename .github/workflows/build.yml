@@ -45,8 +45,26 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        java: [11, 23]
-        facesimpl: [ 'mojarra-4.0', 'myfaces-4.0', 'mojarra-4.1', 'myfaces-4.1' ]
+        include:
+          # Java 11 with Faces 4.0
+          - java: 11
+            facesimpl: 'mojarra-4.0'
+          - java: 11
+            facesimpl: 'myfaces-4.0'
+          # Java 17 with Faces 4.1
+          - java: 17
+            facesimpl: 'mojarra-4.1'
+          - java: 17
+            facesimpl: 'myfaces-4.1'
+          # Java 23 with both Faces 4.0 and 4.1
+          - java: 23
+            facesimpl: 'mojarra-4.0'
+          - java: 23
+            facesimpl: 'myfaces-4.0'
+          - java: 23
+            facesimpl: 'mojarra-4.1'
+          - java: 23
+            facesimpl: 'myfaces-4.1'
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK ${{ matrix.java }}

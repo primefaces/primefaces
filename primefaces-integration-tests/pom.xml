@@ -31,9 +31,8 @@
 
         <!-- dependency versions -->
         <hibernate-validator.version>8.0.2.Final</hibernate-validator.version>
-        <lombok.version>1.18.36</lombok.version>
-        <resteasy.version>6.2.11.Final</resteasy.version>
         <jetty.version>12.0.16</jetty.version>
+        <lombok.version>1.18.36</lombok.version>
     </properties>
 
     <dependencies>
@@ -51,9 +50,9 @@
 
         <!-- Jakarta EE API -->
         <dependency>
-            <groupId>org.apache.tomee</groupId>
-            <artifactId>jakartaee-api</artifactId>
-            <version>10.0</version>
+            <groupId>jakarta.platform</groupId>
+            <artifactId>jakarta.jakartaee-api</artifactId>
+            <version>${jakarta.version}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -142,7 +141,7 @@
         <dependency>
             <groupId>org.jboss.weld.servlet</groupId>
             <artifactId>weld-servlet-core</artifactId>
-            <version>5.1.5.Final</version>
+            <version>${weld.version}</version>
         </dependency>
 
         <!-- JAX-RS - RestEasy -->
@@ -313,10 +312,30 @@
 
     <profiles>
         <profile>
+            <id>jdk-11</id>
+            <activation>
+                <jdk>11</jdk>
+            </activation>
+            <properties>
+                <resteasy.version>6.2.11.Final</resteasy.version>
+                <weld.version>5.1.5.Final</weld.version>
+                <jakarta.version>10.0.0</jakarta.version>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>jdk-17-or-greater</id>
+            <activation>
+                <jdk>[17,)</jdk>
+            </activation>
+            <properties>
+                <resteasy.version>7.0.0.Alpha4</resteasy.version>
+                <jakarta.version>11.0.0-M5</jakarta.version>
+                <weld.version>6.0.1.Final</weld.version>
+            </properties>
+        </profile>
+        <profile>
             <id>parallel-execution</id>
-<!--            <activation>-->
-<!--                <jdk>[9,)</jdk>-->
-<!--            </activation>-->
             <properties>
                 <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
             </properties>
@@ -478,6 +497,11 @@
                     <groupId>org.glassfish</groupId>
                     <artifactId>jakarta.faces</artifactId>
                     <version>4.1.2</version>
+                </dependency>
+                <dependency>
+                    <groupId>jakarta.enterprise</groupId>
+                    <artifactId>jakarta.enterprise.cdi-el-api</artifactId>
+                    <version>4.1.0</version>
                 </dependency>
             </dependencies>
             <build>
