@@ -825,38 +825,23 @@ PrimeFaces.widget.TabView = class TabView extends PrimeFaces.widget.DeferredWidg
 
     /**
      * Disables the tab at the given index. Disabled tabs may not be selected.
-     * @deprecated Use {@link disableTab} (where the argument is non-optional).
-     * @param {number} [index] 0-based index of the tab to disable. Defaults to 0 if omitted.
+     * @param {number} [index] 0-based index of the tab to disable. Disables all tabs when omitted.
      */
     disable(index) {
-        this.disableTab(index ?? 0);
-    }
-
-    /**
-     * Disables the tab at the given index. Disabled tabs may not be selected.
-     * @param {number} index 0-based index of the tab to disable.
-     */
-    disableTab(index) {
-        this.headerContainer.eq(index).addClass('ui-state-disabled').find('a').attr('tabindex', '-1');
+        const target = index !== null && index !== undefined ? this.headerContainer.eq(index) : this.headerContainer;
+        target.addClass('ui-state-disabled').find('a').attr('tabindex', '-1');
     }
 
     /**
      * Enables the tab at the given index. Enabled tabs may be selected.
      * @deprecated Use {@link enableTab} (where the argument is non-optional).
-     * @param {number} [index] 0-based index of the tab to enable. Defaults to 0 if omitted.
+     * @param {number} [index] 0-based index of the tab to enable. Enables all tabs when omitted.
      */
     enable(index) {
-        this.enableTab(index ?? 0);
+        const target = index !== null && index !== undefined ? this.headerContainer.eq(index) : this.headerContainer; 
+        target.removeClass('ui-state-disabled').find('a').attr('tabindex', this.tabindex);
     }
 
-    /**
-     * Enables the tab at the given index. Enabled tabs may be selected.
-     * @param {number} index 0-based index of the tab to enable.
-     */
-    enableTab(index) {
-        this.headerContainer.eq(index).removeClass('ui-state-disabled').find('a').attr('tabindex', this.tabindex);
-    }
-    
     /**
      * Callback that is invoked after a tab was shown.
      * @private
