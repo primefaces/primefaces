@@ -15,13 +15,23 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        java: [11, 17]
-        profile: [
-          'headless,firefox,myfaces-4.0,uploader-native', 'headless,firefox,mojarra-4.0,uploader-native',
-          'headless,firefox,myfaces-4.0,uploader-commons', 'headless,firefox,mojarra-4.0,uploader-commons',
-          'headless,chrome,myfaces-4.0,uploader-native', 'headless,chrome,mojarra-4.0,uploader-native',
-          'headless,chrome,myfaces-4.0,uploader-commons', 'headless,chrome,mojarra-4.0,uploader-commons'
-        ]
+        include:
+          - java: 11
+            profile: 'headless,firefox,myfaces-4.0'
+          - java: 11
+            profile: 'headless,firefox,mojarra-4.0'
+          - java: 11
+            profile: 'headless,chrome,myfaces-4.0'
+          - java: 11
+            profile: 'headless,chrome,mojarra-4.0'
+          - java: 17
+            profile: 'headless,firefox,myfaces-4.1'
+          - java: 17
+            profile: 'headless,firefox,mojarra-4.1'
+          - java: 17
+            profile: 'headless,chrome,myfaces-4.1'
+          - java: 17
+            profile: 'headless,chrome,mojarra-4.1'
 
     steps:
       - uses: actions/checkout@v4

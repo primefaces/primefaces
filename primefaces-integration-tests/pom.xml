@@ -364,7 +364,6 @@
                             <systemPropertyVariables>
                                 <webdriver.headless>${webdriver.headless}</webdriver.headless>
                                 <primefaces.CSP>${primefaces.CSP}</primefaces.CSP>
-                                <primefaces.UPLOADER>${primefaces.UPLOADER}</primefaces.UPLOADER>
                                 <primefaces.THEME>${primefaces.THEME}</primefaces.THEME>
                                 <junit.jupiter.execution.parallel.enabled>${junit.jupiter.execution.parallel.enabled}</junit.jupiter.execution.parallel.enabled>
                                 <junit.jupiter.execution.parallel.mode.default>same_thread</junit.jupiter.execution.parallel.mode.default>
