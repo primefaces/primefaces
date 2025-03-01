@@ -19,8 +19,33 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        java: [11, 17, 21]
-        profile: [ 'firefox,theme-saga,myfaces-4.0', 'firefox,csp,theme-saga,myfaces-4.0', 'chrome,theme-saga,myfaces-4.0','chrome,csp,theme-nova,myfaces-4.0', 'chrome,csp,theme-nova,mojarra-4.0', 'chrome,client-state-saving,theme-nova,mojarra-4.0' ]
+        include:
+          # Java 11 with Faces 4.0
+          - java: 11
+            profile: 'firefox,theme-saga,myfaces-4.0'
+          - java: 11
+            profile: 'firefox,csp,theme-saga,myfaces-4.0'
+          - java: 11
+            profile: 'chrome,theme-saga,myfaces-4.0'
+          - java: 11
+            profile: 'chrome,csp,theme-nova,myfaces-4.0'
+          - java: 11
+            profile: 'chrome,csp,theme-nova,mojarra-4.0'
+          - java: 11
+            profile: 'chrome,client-state-saving,theme-nova,mojarra-4.0'
+          # Java 17 with Faces 4.1
+          - java: 17
+            profile: 'firefox,theme-saga,myfaces-4.1'
+          - java: 17
+            profile: 'firefox,csp,theme-saga,myfaces-4.1'
+          - java: 17
+            profile: 'chrome,theme-saga,myfaces-4.1'
+          - java: 17
+            profile: 'chrome,csp,theme-nova,myfaces-4.1'
+          - java: 17
+            profile: 'chrome,csp,theme-nova,mojarra-4.1'
+          - java: 17
+            profile: 'chrome,client-state-saving,theme-nova,mojarra-4.1'
 
     steps:
       - uses: actions/checkout@v4
