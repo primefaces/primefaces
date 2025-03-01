@@ -1,3 +1,5 @@
+/// <reference types="moment-jdateformatparser" preserve="true" />
+
 import _moment from "moment";
 import _momentJDateFormatParserSetup from "moment-jdateformatparser";
 

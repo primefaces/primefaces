@@ -5,6 +5,7 @@
 		"rootDir": ".",
 		"outDir": "dist",
 		"types": [
+			"../../types/dist",
 			"../../jquery/jquery/dist",
 			"../../core/dist",
 			"../../components/dist"
@@ -12,6 +13,7 @@
 	},
     "include": ["src", "index.ts"],
 	"references": [
+		{ "path": "../../types" },
 		{ "path": "../../jquery/jquery" },
 		{ "path": "../../core" },
 		{ "path": "../../components" }

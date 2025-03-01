@@ -59,6 +59,14 @@ to separate the individual packages from each other. The `references` section of
 `tsconfig.json` contains the (implicit) dependencies of each package, mirroring the
 `@ResourceDependency` annotations on each Java widget class.
 
+# Type checking
+
+Types are checked during the Maven build. To do it manually, run:
+
+```sh
+yarn run tsc -b
+```
+
 # Building
 
 __TL;DR__ Just use `mvn package ...`, or `yarn run build` if you ever need.
@@ -221,3 +229,28 @@ Same as above, but use the following command instead (see
 # <package> is the name of the NPM package, e.g. webcamjs
 yarn patch-update-squash <package>
 ```
+
+## Notes on modern JavaScript and TypeScript
+
+* Only the `index.ts` should "do something" (in technical terms, have side effects).
+  E.g. register global event handlers or expose symbols to the global window scope.
+  All other files should simply define classes, functions, and constants.
+* We often aliased `this` as `$this` to be able to refer to it later inside a
+  `function() {}`. With arrow functions, the scope `this` is not changed, so this
+  workaround is not necessary anymore, just use `this`. TypeScript checks that
+  `this` actually refers to the surrounding class. There are some places where
+  `this` is still used to access the this argument passed to the function, such
+  as `$(...).on("click", function(){$(this).attr(...)})`. That can often be
+  refactored to retrieve the needed value from somewhere else, such as directly
+  from the JQuery instance `on` was called, or `event.target`. This needs to be
+  investigated and changed on an individual basis.
+* To allow widgets to be extended (subclassed), they should make their widget
+  configuration type parameter changeable, e.g.:
+  `export class PanelMenu<Cfg extends PanelMenuCfg> extends Menu<Cfg> { ... }`
+* Prefer to use `null` over `undefined`. JavaScript has 2 types of "missing"
+  values, which produces additional overhead. It helps to use only 1 of these.
+  As `undefined` is avoidable, as opposed to `null` which needs to be used
+  explicitly, use `undefined`.
+* Avoid optional function parameters. While sometimes convenient, it makes code
+  more error-prone. People may forget to pass a parameter even though they should
+  have -- TypeScript won't complain since it's optional.

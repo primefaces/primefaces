@@ -1,4 +1,3 @@
-
 /**
  * Namespace for the jQuery BlueImp File Upload plugin.
  * 
@@ -26,8 +25,8 @@ declare namespace JQueryFileUpload {
 
     /**
      * Represents the response of a successful or failed request.
-     * @typeparam TResponse Type of the response.
-     * @typeparam TFailure Type of the error.
+     * @typeParam TResponse Type of the response.
+     * @typeParam TFailure Type of the error.
      */
     type ResponseObject<TResponse = unknown, TFailure = unknown> =
         ResponseSuccess<TResponse> | ResponseFailure<TFailure>;
@@ -52,6 +51,16 @@ declare namespace JQueryFileUpload {
         (event: JQuery.TriggeredEvent, data: TData) => void;
 
     /**
+     * A callback for an XHR event that also receives some additional data, in addition to the event.
+     */
+    type XhrDataCallback<TData> =
+        /**
+         * @param xhr The XHR settings object.
+         * @param data Additional data passed to this callback. Specific to the event.
+         */
+        (xhr: JQuery.jqXHR, data: TData) => void;
+
+    /**
      * A callback for an event that receives some additional data and may also return a boolean that usually defines
      * whether the action that triggered this event is pursued further.
      */
@@ -59,9 +68,9 @@ declare namespace JQueryFileUpload {
         /**
          * @param event The event that triggered this callback.
          * @param data Additional data passed to this callback. Specific to the event.
-         * @return A boolean flag that indicates how event handling proceeds.
+         * @returns A boolean flag that indicates how event handling proceeds.
          */
-        (event: JQuery.TriggeredEvent, data: TData) => boolean;
+        (event: JQuery.TriggeredEvent, data: TData) => boolean | void;
 
     /**
      * A processing action that is available.
@@ -71,7 +80,7 @@ declare namespace JQueryFileUpload {
          * @param data A copy of the data object that is passed to the add callback, with data.files referencing the files
          * array.
          * @param options The options object of the current process action.
-         * @return Either the data object, or a Promise object which resolves or rejects with the data object as argument.
+         * @returns Either the data object, or a Promise object which resolves or rejects with the data object as argument.
          */
         (this: FileUpload, data: ProcessActionData, options: JQueryFileUpload.FileUploadOptions) => ProcessActionData | JQuery.Promise<ProcessActionData>;
 
@@ -309,9 +318,9 @@ declare namespace JQueryFileUpload {
          * Note: Additional form data is ignored when the multipart option is set to false.
          */
         formData: FormData
-        | NameValuePair<FormDataEntryValue>[]
-        | Record<string, FormDataEntryValue>
-        | ((this: unknown, form: JQuery<HTMLFormElement>) => NameValuePair<FormDataEntryValue>[]);
+            | NameValuePair<FormDataEntryValue | number | boolean>[]
+            | Record<string, FormDataEntryValue | number | boolean>
+            | ((this: unknown, form: JQuery<HTMLFormElement>) => NameValuePair<FormDataEntryValue | number | boolean>[]);
 
         // ===============================
         // === File processing options ===
@@ -748,18 +757,20 @@ declare namespace JQueryFileUpload {
         // === JQuery wrapper callbacks ===
         // ================================
 
+        beforeSend: XhrDataCallback<BeforeSendCallbackData> | null;
+
         /**
          * Callback for successful upload requests. This callback is the equivalent to the success callback provided by
          * jQuery ajax() and will also be called if the server returns a JSON response with an error property.
          */
-        done: DataCallback<JQueryAjaxCallbackData & ResponseObject>;
+        done: DataCallback<DoneCallbackData>;
 
         /**
          * Callback for failed (abort or error) upload requests. This callback is the equivalent to the error callback
          * provided by jQuery ajax() and will not be called if the server returns a JSON response with an error
          * property, as this counts as successful request due to the successful HTTP response.
          */
-        fail: DataCallback<JQueryAjaxCallbackData & ResponseObject>;
+        fail: DataCallback<FailCallbackData>;
 
         /**
          * Callback for completed (success, abort or error) upload requests. This callback is the equivalent to the
@@ -874,19 +885,30 @@ declare namespace JQueryFileUpload {
     // =====================
 
     /**
-     * Data passed to the drop zone event handlers.
+     * Base data passed to all callback handlers.
      */
-    interface DropzoneCallbackData {
+    interface FileCallbackData {
         /**
-         * An list of files.
+         * Holds a list of files for the upload request.
          */
         files: File[];
+
+        /**
+         * The originally uploaded files, unmodified.
+         */
+        originalFiles: File[];
+    }
+
+    /**
+     * Data passed to the drop zone event handlers.
+     */
+    interface DropzoneCallbackData extends FileCallbackData {
     }
 
     /**
      * Represents the data passed to file related event handlers.
      */
-    interface ChangeCallbackData {
+    interface ChangeCallbackData extends FileCallbackData {
         /**
          * The input element of type file.
          */
@@ -916,7 +938,7 @@ declare namespace JQueryFileUpload {
     /**
      * The data for the callback when a file is added.
      */
-    interface AddCallbackData extends ChangeCallbackData, ConvenienceMethods {
+    interface AddCallbackData extends ChangeCallbackData, ConvenienceMethods, FileCallbackData, Omit<JQueryAjaxCallbackData, keyof ConvenienceMethods> {
         /**
          * Name of the file input or inputs.
          */
@@ -924,9 +946,27 @@ declare namespace JQueryFileUpload {
     }
 
     /**
+     * The data for the callback just before a file is uploaded to the server.
+     */
+    interface BeforeSendCallbackData extends FileCallbackData, Omit<JQueryAjaxCallbackData, keyof ConvenienceMethods>, ConvenienceMethods {
+    }
+
+    /**
+     * The data for the callback just after the file was uploaded to the server.
+     */
+    interface DoneCallbackData extends FileCallbackData, Omit<JQueryAjaxCallbackData, keyof ConvenienceMethods>, ResponseSuccess, ConvenienceMethods {
+    }
+   
+    /**
+     * The data for the callback when the file could not be uploaded to the server.
+     */
+    interface FailCallbackData extends FileCallbackData, Omit<JQueryAjaxCallbackData, keyof ConvenienceMethods>, ResponseFailure, ConvenienceMethods {
+    }
+
+    /**
      * The data for when a file is processed.
      */
-    interface ProcessCallbackData extends ChangeCallbackData, ConvenienceMethods {
+    interface ProcessCallbackData extends ChangeCallbackData, ConvenienceMethods, FileCallbackData {
         /**
          * Name of the file input or inputs.
          */
@@ -936,7 +976,7 @@ declare namespace JQueryFileUpload {
     /**
      * The data for the callback when the widget is destroyed.
      */
-    interface DestroyCallbackData {
+    interface DestroyCallbackData extends FileCallbackData {
         /**
          * Download row
          */
@@ -961,19 +1001,19 @@ declare namespace JQueryFileUpload {
     /**
      * Represents the data passed to the global progress event handler.
      */
-    interface ProgressAllCallbackData extends UploadProgress {
+    interface ProgressAllCallbackData extends FileCallbackData, UploadProgress {
     }
 
     /**
      * Represents the data passed to various progress related event handlers.
      */
-    interface ProgressCallbackData extends FileUploadOptions, UploadProgress {
+    interface ProgressCallbackData extends FileCallbackData, FileUploadOptions, UploadProgress {
     }
 
     /**
      * Represents the callback data that is passed to various chunk related event handlers.
      */
-    interface ChunkCallbackData extends FileUploadOptions {
+    interface ChunkCallbackData extends FileCallbackData, FileUploadOptions {
         /**
          * The blob of the chunk that is being sent.
          */
@@ -1018,7 +1058,7 @@ declare namespace JQueryFileUpload {
         /**
          * Formats a file size as a human readable string.
          * @param size File size to format, in bytes.
-         * @return Humand-readable string of a file size.
+         * @returns Human-readable string of a file size.
          */
         formatFileSize(size: number): string;
 
@@ -1064,8 +1104,8 @@ declare namespace JQueryFileUpload {
     }
 
     /**
-     * @typeparam V Type of the property value.
-     * @typeparam V Type of the property name.
+     * @typeParam V Type of the property value.
+     * @typeParam V Type of the property name.
      * An object for a single property, with a name and value entry. 
      */
     interface NameValuePair<V, K = string> {
@@ -1085,7 +1125,7 @@ declare namespace JQueryFileUpload {
     interface ConvenienceMethods {
         /**
          * Aborts the file upload.
-         * @return A promise that resolves once the file upload is aborted.
+         * @returns A promise that resolves once the file upload is aborted.
          */
         abort(): JQuery.Promise<void>;
 
@@ -1093,7 +1133,7 @@ declare namespace JQueryFileUpload {
          * Adds the handlers to the process queue and returns the process queue.
          * @param resolveFunc Additional handler for chaining to the promise.
          * @param rejectFunc Additional handler for chaining to the promise.
-         * @return The process queue promise.
+         * @returns The process queue promise.
          */
         process<T>(
             resolveFunc: (value?: this) => JQuery.Promise<T> | JQuery.Thenable<T> | T,
@@ -1104,7 +1144,7 @@ declare namespace JQueryFileUpload {
          * Adds the handlers to the process queue and returns the process queue.
          * @param resolveFunc Additional handler for chaining to the promise.
          * @param rejectFunc Additional handler for chaining to the promise.
-         * @return The process queue promise.
+         * @returns The process queue promise.
          */
         process<T>(
             resolveFunc: undefined,
@@ -1113,37 +1153,37 @@ declare namespace JQueryFileUpload {
 
         /**
          * Retrieves the process queue.
-         * @return The process queue promise.
+         * @returns The process queue promise.
          */
         process(): JQuery.Promise<this>;
 
         /**
          * Checks whether any upload is being processed.
-         * @return Whether any upload is being processed.
+         * @returns Whether any upload is being processed.
          */
         processing(): boolean;
 
         /**
          * Retrieves the details about the current upload progress.
-         * @return Details about the current upload progress.
+         * @returns Details about the current upload progress.
          */
         progress(): UploadProgress;
 
         /**
          * Retrieves the current response object.
-         * @return The current response object with the response info.
+         * @returns The current response object with the response info.
          */
         response(): ResponseObject | Record<string, unknown>;
 
         /**
          * Submits the form.
-         * @return A promise that resolves when submission is done.
+         * @returns A promise that resolves when submission is done.
          */
         submit(): JQuery.Promise<unknown>;
 
         /**
          * Finds the current state of the file upload request.
-         * @return A promise that resolves with the current state of the file upload request.
+         * @returns A promise that resolves with the current state of the file upload request.
          */
         state(): JQuery.Promise<string>;
     }
@@ -1170,7 +1210,7 @@ declare namespace JQueryFileUpload {
 
     /**
      * Represents a response for a successful request.
-     * @typeparam TResponse Type of the response.
+     * @typeParam TResponse Type of the response.
      */
     interface ResponseSuccess<TResponse = unknown> {
         /**
@@ -1186,12 +1226,12 @@ declare namespace JQueryFileUpload {
         /**
          * The status text of the request.
          */
-        textStatus: string;
+        textStatus: JQuery.Ajax.SuccessTextStatus;
     }
 
     /**
      * Represents a response for a failed request.
-     * @typeparam TFailure Type of the error.
+     * @typeParam TFailure Type of the error.
      */
     interface ResponseFailure<TFailure = unknown> {
         /**
@@ -1207,7 +1247,7 @@ declare namespace JQueryFileUpload {
         /**
          * The status text of the request.
          */
-        textStatus: string;
+        textStatus: JQuery.Ajax.ErrorTextStatus;
     }
 
     /**
@@ -1278,9 +1318,9 @@ declare namespace JQueryFileUpload {
 
         /**
          * Sets the given option to the given value.
-         * @typeparam K Name of an option to set.
+         * @typeParam K Name of an option to set.
          * @param optionName Name of an option to set.
-         * @return The value of the given option
+         * @returns The value of the given option
          */
         option<K extends keyof JQueryFileUpload.FileUploadOptions>(optionName: K, optionValue: JQueryFileUpload.FileUploadOptions[K]): this;
 
@@ -1288,27 +1328,27 @@ declare namespace JQueryFileUpload {
          * Retrieves the value of the given option.
          * @param method The method to call on this file upload instance.
          * @param optionName Name of an option to retrieve.
-         * @return The value of the given option.
+         * @returns The value of the given option.
          */
         option<K extends keyof JQueryFileUpload.FileUploadOptions>(optionName: K): JQueryFileUpload.FileUploadOptions[K];
 
         /**
          * Sets the given options on this file upload instance.
          * @param options Options to apply.
-         * @return This JQuery instance for chaining.
+         * @returns This JQuery instance for chaining.
          */
         option(options: Partial<JQueryFileUpload.FileUploadOptions>): this;
 
         /**
          * Return the current set of options. This includes default options.
-         * @return An object with all options.
+         * @returns An object with all options.
          */
         option(): JQueryFileUpload.FileUploadOptions;
 
         /**
          * To remove the file upload widget functionality from the element node, call the destroy method. This will also
          * remove any added event listeners.
-         * @return This JQuery instance for chaining.
+         * @returns This JQuery instance for chaining.
          */
         destroy(): undefined;
 
@@ -1324,13 +1364,13 @@ declare namespace JQueryFileUpload {
 
         /**
          * Finds the overall progress of all uploads.
-         * @return The overall progress of all uploads.
+         * @returns The overall progress of all uploads.
          */
         progress(): JQueryFileUpload.UploadProgress;
 
         /**
          * Finds the number of currently active uploads.
-         * @return The number of active uploads.
+         * @returns The number of active uploads.
          */
         active(): number;
 
@@ -1343,7 +1383,7 @@ declare namespace JQueryFileUpload {
          * button or drag & drop.
          * 
          * @param filesAndOptions A list of files to add to this widget. You can also override options of this widget.
-         * @return This JQuery instance for chaining.
+         * @returns This JQuery instance for chaining.
          */
         add(filesAndOptions: JQueryFileUpload.FileUploadData): void;
 
@@ -1361,7 +1401,7 @@ declare namespace JQueryFileUpload {
          * API method instead.
          * 
          * @param filesAndOptions A list of files to add to this widget. You can also override options of this widget.
-         * @return A jqXHR object that allows to bind callbacks to the AJAX file upload requests.
+         * @returns A jqXHR object that allows to bind callbacks to the AJAX file upload requests.
          */
         send(filesAndOptions: JQueryFileUpload.FileUploadData): JQuery.jqXHR;
     }
@@ -1397,16 +1437,16 @@ interface JQuery {
      * but it can also be just the file input element itself for a customized UI and if a URL is provided as options
      * parameter.
      * @param settings Options for configuring the file upload.
-     * @return This JQuery instance for chaining.
+     * @returns This JQuery instance for chaining.
      */
     fileupload(settings?: Partial<JQueryFileUpload.FileUploadOptions>): this;
 
     /**
      * Sets the given option to the given value.
-     * @typeparam K Name of an option to set.
+     * @typeParam K Name of an option to set.
      * @param method The method to call on this file upload instance.
      * @param optionName Name of an option to set.
-     * @return The value of the given option
+     * @returns The value of the given option
      */
     fileupload<K extends keyof JQueryFileUpload.FileUploadOptions>(
         method: "option",
@@ -1416,10 +1456,10 @@ interface JQuery {
 
     /**
      * Retrieves the value of the given option.
-     * @typeparam K Name of an option to retrieve.
+     * @typeParam K Name of an option to retrieve.
      * @param method The method to call on this file upload instance.
      * @param optionName Name of an option to retrieve.
-     * @return The value of the given option.
+     * @returns The value of the given option.
      */
     fileupload<K extends keyof JQueryFileUpload.FileUploadOptions>(
         method: "option",
@@ -1430,14 +1470,14 @@ interface JQuery {
      * Sets the given options on this file upload instance.
      * @param method The method to call on this file upload instance.
      * @param options Options to apply.
-     * @return This JQuery instance for chaining.
+     * @returns This JQuery instance for chaining.
      */
     fileupload(method: "option", options: Partial<JQueryFileUpload.FileUploadOptions>): this;
 
     /**
      * Return the current set of options. This includes default options.
      * @param method The method to call on this file upload instance.
-     * @return An object with all options.
+     * @returns An object with all options.
      */
     fileupload(method: "option"): JQueryFileUpload.FileUploadOptions;
 
@@ -1445,7 +1485,7 @@ interface JQuery {
      * To remove the file upload widget functionality from the element node, call the destroy method. This will also
      * remove any added event listeners.
      * @param method The method to call on this file upload instance.
-     * @return This JQuery instance for chaining.
+     * @returns This JQuery instance for chaining.
      */
     fileupload(method: "destroy"): this;
 
@@ -1464,14 +1504,14 @@ interface JQuery {
     /**
      * Finds the overall progress of all uploads.
      * @param method The method to call on this file upload instance.
-     * @return The overall progress of all uploads.
+     * @returns The overall progress of all uploads.
      */
     fileupload(method: "progress"): JQueryFileUpload.UploadProgress;
 
     /**
      * Finds the number of currently active uploads.
      * @param method The method to call on this file upload instance.
-     * @return The number of active uploads.
+     * @returns The number of active uploads.
      */
     fileupload(method: "active"): number;
 
@@ -1485,7 +1525,7 @@ interface JQuery {
      * 
      * @param method The method to call on this file upload instance.
      * @param filesAndOptions A list of files to add to this widget. You can also override options of this widget.
-     * @return This JQuery instance for chaining.
+     * @returns This JQuery instance for chaining.
      */
     fileupload(method: "add", filesAndOptions: JQueryFileUpload.FileUploadData): this;
 
@@ -1504,7 +1544,7 @@ interface JQuery {
      * 
      * @param method The method to call on this file upload instance.
      * @param filesAndOptions A list of files to add to this widget. You can also override options of this widget.
-     * @return A jqXHR object that allows to bind callbacks to the AJAX file upload requests.
+     * @returns A jqXHR object that allows to bind callbacks to the AJAX file upload requests.
      */
     fileupload(method: "send", filesAndOptions: JQueryFileUpload.FileUploadData): JQuery.jqXHR;
 }

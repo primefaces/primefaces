@@ -5,15 +5,19 @@
 		"rootDir": ".",
 		"outDir": "dist",
 		"types": [
+			"../types/dist",
 			"../jquery/jquery/dist",
 			"../jquery/jquery-plugins/dist",
-			"../touch/touchswipe/dist"
+			"../touch/touchswipe/dist",
+			"../moment/moment/dist"
 		],
 	},
     "include": ["src", "index.ts"],
 	"references": [
+		{ "path": "../types" },
 		{ "path": "../jquery/jquery" },
 		{ "path": "../jquery/jquery-plugins" },
-		{ "path": "../touch/touchswipe" }
+		{ "path": "../touch/touchswipe" },
+		{ "path": "../moment/moment" },
 	]
 }

@@ -2842,7 +2842,7 @@ $.widget("prime.datePicker", {
             $(document).on('click', this.documentClickListener);
 
             // prevent tabbing outside of panel
-            PrimeFaces.utils.preventTabbing($this, $this.panel.id, $this.panel.zIndex(), function() {
+            PrimeFaces.utils.preventTabbing(undefined, $this.panel.id, $this.panel.zIndex(), function() {
                 return $this.panel.find(':tabbable');
             });
         }
