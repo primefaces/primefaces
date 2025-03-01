@@ -194,9 +194,9 @@ export class Utils {
      * @param tabbablesCallback A supplier function that return a list of tabbable elements. A
      * tabbable element is an element to which the user can navigate to via the tab key.
      */
-    preventTabbing(widget: BaseWidget, id: string, zIndex: number, tabbablesCallback: () => JQuery): void {
+    preventTabbing(widget: BaseWidget | undefined, id: string, zIndex: number, tabbablesCallback: () => JQuery): void {
         //Disable tabbing out of modal and stop events from targets outside of the overlay element
-        var $documentInIframe = widget.cfg && widget.cfg.iframe ? widget.cfg.iframe.get(0)?.contentWindow?.document : undefined;
+        var $documentInIframe = widget && widget.cfg && widget.cfg.iframe ? widget.cfg.iframe.get(0)?.contentWindow?.document : undefined;
         var $document = $($documentInIframe ? [document, $documentInIframe] : document);
         $document.on('focus.' + id + ' mousedown.' + id + ' mouseup.' + id, (event) => {
             var target = $(event.target);
@@ -286,8 +286,8 @@ export class Utils {
      * @param widget A modal overlay widget instance.
      * @param id ID of a modal overlay, usually the widget ID.
      */
-    enableTabbing(widget: BaseWidget, id: string): void {
-        var $documentInIframe = widget.cfg && widget.cfg.iframe ? widget.cfg.iframe.get(0)?.contentWindow?.document : undefined;
+    enableTabbing(widget: BaseWidget | undefined, id: string): void {
+        var $documentInIframe = widget && widget.cfg && widget.cfg.iframe ? widget.cfg.iframe.get(0)?.contentWindow?.document : undefined;
         var $document = $($documentInIframe ? [document, $documentInIframe] : document);
 
         $document.off('focus.' + id + ' mousedown.' + id + ' mouseup.' + id + ' keydown.' + id);

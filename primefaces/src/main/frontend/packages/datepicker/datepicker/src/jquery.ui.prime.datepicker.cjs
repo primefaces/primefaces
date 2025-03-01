@@ -2851,7 +2851,7 @@ $.widget("prime.datePicker", {
     unbindDocumentClickListener: function() {
         if (this.documentClickListener) {
             $(document).off('click', this.documentClickListener);
-            PrimeFaces.utils.enableTabbing(this, this.panel.id);
+            PrimeFaces.utils.enableTabbing(undefined, this.panel.id);
             this.documentClickListener = null;
         }
     },
