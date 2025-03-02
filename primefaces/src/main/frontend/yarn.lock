@@ -317,13 +317,13 @@ __metadata:
     "@types/js-cookie": "npm:3.0.6"
     "@types/jscrollpane": "npm:2.0.35"
     "@types/moment-jdateformatparser": "npm:1.2.0"
-    "@types/node": "npm:22.13.4"
+    "@types/node": "npm:22.13.8"
     "@types/pnpapi": "npm:0.0.5"
     "@types/rangyinputs": "npm:1.2.5"
     "@types/raphael": "npm:2.3.9"
     "@types/webcamjs": "npm:1.0.0"
     "@xenorange/esbuild-plugin-banned-dependencies": "npm:1.0.0"
-    "@xenorange/esbuild-plugin-faces-resource-loader": "npm:1.0.0"
+    "@xenorange/esbuild-plugin-faces-resource-loader": "npm:1.1.1"
     "@xenorange/esbuild-plugin-load-from-expression": "npm:1.0.0"
     "@xenorange/yarn-patch-package-update-squash": "npm:1.0.0"
     autonumeric: "patch:autonumeric@npm%3A4.10.7#~/.yarn/patches/autonumeric-npm-4.10.7-09183d353f.patch"
@@ -337,7 +337,7 @@ __metadata:
     downloadjs: "patch:downloadjs@npm%3A1.4.7#~/.yarn/patches/downloadjs-npm-1.4.7-952a4ef987.patch"
     esbuild: "npm:0.25.0"
     hammerjs: "npm:2.0.8"
-    inputmask: "npm:5.0.10-beta.32"
+    inputmask: "npm:5.0.10-beta.33"
     jquery: "npm:4.0.0-beta.2"
     jquery-cropper: "patch:jquery-cropper@npm%3A1.0.0#~/.yarn/patches/jquery-cropper-npm-1.0.0-148aa161fe.patch"
     jquery-mousewheel: "patch:jquery-mousewheel@npm%3A3.1.13#~/.yarn/patches/jquery-mousewheel-npm-3.1.13-854d2918be.patch"
@@ -352,11 +352,12 @@ __metadata:
     moment: "npm:2.30.1"
     moment-jdateformatparser: "npm:1.2.1"
     moment-timezone: "npm:0.5.47"
+    primeicons: "npm:7.0.0"
     propagating-hammerjs: "npm:2.0.1"
     quill: "npm:2.0.3"
     rangyinputs: "npm:1.2.0"
     raphael: "npm:2.3.0"
-    typescript: "npm:5.7.3"
+    typescript: "npm:5.8.2"
     uuid: "npm:9.0.1"
     vis-data: "npm:7.1.9"
     vis-timeline: "npm:7.7.3"
@@ -482,12 +483,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:22.13.4":
-  version: 22.13.4
-  resolution: "@types/node@npm:22.13.4"
+"@types/node@npm:22.13.8":
+  version: 22.13.8
+  resolution: "@types/node@npm:22.13.8"
   dependencies:
     undici-types: "npm:~6.20.0"
-  checksum: 10c0/3a234fa7766a3efc382cf81f66f474c26cdab2f54f43f757634c81c0444eb2160c2dabbde9741e4983078a318a88515b65416b5f1ab5478548579d7b3ead1d95
+  checksum: 10c0/bfc92b734a9dce6ac5daee0a52feccdf5dcb3804d895e4bc5384e2f4644612b8801725cd03c8c3c0888fb5eeb16b875877ac44b77641e0196dc1a837b1c2a366
   languageName: node
   linkType: hard
 
@@ -537,12 +538,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@xenorange/esbuild-plugin-faces-resource-loader@npm:1.0.0":
-  version: 1.0.0
-  resolution: "@xenorange/esbuild-plugin-faces-resource-loader@npm:1.0.0"
+"@xenorange/esbuild-plugin-faces-resource-loader@npm:1.1.1":
+  version: 1.1.1
+  resolution: "@xenorange/esbuild-plugin-faces-resource-loader@npm:1.1.1"
   peerDependencies:
     esbuild: 0.x.x
-  checksum: 10c0/5f7cfb9a58175039a54d5bb8da89a0c9e726485956b1f44edd81bd59b5b52262321870f5294943cff48a95835590194fa7d90514e2a36436234b47740304fef9
+  checksum: 10c0/7f9e87558333529f81d7843b14d96e31309fd29ec8b2a29dbda2d545178f39592c74335c7ae7553c7125e58e1efe2e156207452b71b54b406bfd6d8654cca478
   languageName: node
   linkType: hard
 
@@ -835,10 +836,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"inputmask@npm:5.0.10-beta.32":
-  version: 5.0.10-beta.32
-  resolution: "inputmask@npm:5.0.10-beta.32"
-  checksum: 10c0/4b61a7ee905036f7519e102dffd3beb1457b21435c0dc635fb6109598a45b990c379aec0e207a0466ef848a407e5b39347bbd77da7b336ae76ef8b047635541a
+"inputmask@npm:5.0.10-beta.33":
+  version: 5.0.10-beta.33
+  resolution: "inputmask@npm:5.0.10-beta.33"
+  checksum: 10c0/942656a64ba38140a17a380208797812875761d51079054b5aebdc096323f01def05a7125c16e99d6d61f385f5b70dd25fa8176798b6b9d746411bc40e5dfc76
   languageName: node
   linkType: hard
 
@@ -1026,6 +1027,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"primeicons@npm:7.0.0":
+  version: 7.0.0
+  resolution: "primeicons@npm:7.0.0"
+  checksum: 10c0/a7f6344d6db49e785d2040b35f8cae761d15bb8f8ee70ade8981d45438245414e913fe7235921122aade2b0a11a032c98b44dc527be2da11aa791ff145099c06
+  languageName: node
+  linkType: hard
+
 "propagating-hammerjs@npm:2.0.1":
   version: 2.0.1
   resolution: "propagating-hammerjs@npm:2.0.1"
@@ -1081,23 +1089,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:5.7.3":
-  version: 5.7.3
-  resolution: "typescript@npm:5.7.3"
+"typescript@npm:5.8.2":
+  version: 5.8.2
+  resolution: "typescript@npm:5.8.2"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10c0/b7580d716cf1824736cc6e628ab4cd8b51877408ba2be0869d2866da35ef8366dd6ae9eb9d0851470a39be17cbd61df1126f9e211d8799d764ea7431d5435afa
+  checksum: 10c0/5c4f6fbf1c6389b6928fe7b8fcd5dc73bb2d58cd4e3883f1d774ed5bd83b151cbac6b7ecf11723de56d4676daeba8713894b1e9af56174f2f9780ae7848ec3c6
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A5.7.3#optional!builtin<compat/typescript>":
-  version: 5.7.3
-  resolution: "typescript@patch:typescript@npm%3A5.7.3#optional!builtin<compat/typescript>::version=5.7.3&hash=5786d5"
+"typescript@patch:typescript@npm%3A5.8.2#optional!builtin<compat/typescript>":
+  version: 5.8.2
+  resolution: "typescript@patch:typescript@npm%3A5.8.2#optional!builtin<compat/typescript>::version=5.8.2&hash=5786d5"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10c0/6fd7e0ed3bf23a81246878c613423730c40e8bdbfec4c6e4d7bf1b847cbb39076e56ad5f50aa9d7ebd89877999abaee216002d3f2818885e41c907caaa192cc4
+  checksum: 10c0/5448a08e595cc558ab321e49d4cac64fb43d1fa106584f6ff9a8d8e592111b373a995a1d5c7f3046211c8a37201eb6d0f1566f15cdb7a62a5e3be01d087848e2
   languageName: node
   linkType: hard
 
