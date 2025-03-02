@@ -16,6 +16,7 @@
 		"allowUmdGlobalAccess": true,
 		"resolvePackageJsonExports": true,
 		"noResolve": false,
+		"erasableSyntaxOnly": true,
 		"esModuleInterop": false,
 		"isolatedDeclarations": true,
 		"isolatedModules": true,

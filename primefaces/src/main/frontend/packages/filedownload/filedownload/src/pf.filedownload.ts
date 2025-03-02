@@ -1,4 +1,4 @@
-import downloadJs = require("downloadjs");
+import downloadJs from "downloadjs";
 
 /**
  * Fetches the resource at the given URL and prompts the user to download that file, without leaving the current
