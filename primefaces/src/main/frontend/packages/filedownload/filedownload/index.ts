@@ -1,4 +1,4 @@
-import downloadJs = require("downloadjs");
+import downloadJs from "downloadjs";
 
 import { download as pfDownload } from "./src/pf.filedownload.js";
 

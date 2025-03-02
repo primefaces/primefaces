@@ -1,7 +1,7 @@
 import * as ChartJs from "chart.js";
 import "chartjs-adapter-moment";
 import zoomPlugin from "chartjs-plugin-zoom";
-import Hammer = require("hammerjs");
+import Hammer from "hammerjs";
 
 import "./src/chart.widget.js";
 import { createChartJsGlobal, type ChartJsGlobal } from "./src/chart.global.js";
