@@ -3,13 +3,13 @@
 /** @import { LoadFromExpressionPluginExpressions } from "@xenorange/esbuild-plugin-load-from-expression" */
 /** @import { FrontendProject} from "./common.mjs" */
 
-import * as path from "node:path";
 import * as fs from "node:fs/promises";
+import * as path from "node:path";
 
-import * as esbuild from "esbuild";
 import { bannedDependenciesPlugin } from "@xenorange/esbuild-plugin-banned-dependencies";
 import { facesResourceLoaderPlugin } from "@xenorange/esbuild-plugin-faces-resource-loader";
 import { loadFromExpressionPlugin } from "@xenorange/esbuild-plugin-load-from-expression";
+import * as esbuild from "esbuild";
 
 import { Env, findFrontendProjects } from "./common.mjs";
 
@@ -46,7 +46,7 @@ async function main() {
 
     const t2 = Date.now();
     console.log(`Created all bundles in ${t2 - t1}ms`);
-    
+
     // Start all promises and wait for them to finish.
     // This will build all tasks in parallel, speeding up the build process.
     const allResults = await runEsBuild(allBuildTasks);
@@ -145,7 +145,7 @@ async function failOnDuplicateModulesInOutputs(metaFile) {
     console.log("Checking for duplicate modules in built bundles...");
     /** @type {Map<string, string>} */
     const entryPointByInput = new Map();
-    for (const {entryPoint, inputs} of Object.values(metaFile.outputs)) {
+    for (const { entryPoint, inputs } of Object.values(metaFile.outputs)) {
         if (entryPoint === undefined) {
             continue;
         }
@@ -281,7 +281,7 @@ function createBaseOptions() {
         plugins: [
             bannedDependenciesPlugin({ bannedDependencies: BannedDependencies }),
             facesResourceLoaderPlugin({
-                extensions: ["png", "jpg", "jpeg", "gif", "svg", "woff", "woff2", "ttf", "eot"],
+                extensions: ["png", "jpg", "jpeg", "gif", "svg", "webp", "woff", "woff2", "ttf", "eot"],
                 inputDir: Env.PackagesDir,
                 outputDir: Env.TargetPrimeFacesResourceDir,
                 resourceBase: Env.TargetResourceDir,
@@ -340,7 +340,7 @@ export async function loadBuildSettings(frontendProject) {
     if (path === undefined) {
         return {};
     }
-    const buildSettingsJson = JSON.parse(await fs.readFile(path, { encoding: "utf8"} ));
+    const buildSettingsJson = JSON.parse(await fs.readFile(path, { encoding: "utf8" }));
     if (typeof buildSettingsJson !== "object" || buildSettingsJson === null) {
         throw new Error(`Build settings at ${path} must be a JSON object!`);
     }
