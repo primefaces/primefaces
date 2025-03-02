@@ -4,11 +4,12 @@ import { core, PF as _PF, type Core } from "./src/core/core.js";
 import { globalAjaxSetup } from "./src/core/core.ajax.js";
 import { globalUtilsSetup } from "./src/core/core.utils.js";
 
-import { AjaxExceptionHandler } from "./src/ajaxexceptionhandler/ajaxexceptionhandler.js";
-import { AjaxStatus } from "./src/ajaxstatus/ajaxstatus.js";
-import { BaseWidget, DeferredWidget, DynamicOverlayWidget } from "./src/core/core.widget.js";
-import { Poll, registerKillSwitchHookForPoll } from "./src/poll/poll.js";
+import type { AjaxExceptionHandler } from "./src/ajaxexceptionhandler/ajaxexceptionhandler.js";
+import type { AjaxStatus } from "./src/ajaxstatus/ajaxstatus.js";
+import type { BaseWidget, DeferredWidget, DynamicOverlayWidget } from "./src/core/core.widget.js";
+import type { Poll } from "./src/poll/poll.js";
 
+import { registerKillSwitchHookForPoll } from "./src/poll/poll.js";
 import { registerCommonConverters } from "./src/validation/validation.converters.js";
 import { registerCommonValidationMessages } from "./src/validation/validation.common.js";
 import { registerCommonValidators } from "./src/validation/validation.validators.js";

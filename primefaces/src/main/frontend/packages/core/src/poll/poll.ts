@@ -123,9 +123,9 @@ export class Poll<Cfg extends PollCfg = PollCfg> extends BaseWidget<Cfg> {
  * core. Stops all pollers when a kill signal is received.
  */
 export function registerKillSwitchHookForPoll(): void {
-    PrimeFaces.registerHook("killSwitch", {
+    core.registerHook("killSwitch", {
         kill: () => {
-            for (const widget of PrimeFaces.getWidgetsByType(Poll)) {
+            for (const widget of core.getWidgetsByType(Poll)) {
                 core.warn("Stopping Poll");
                 widget.stop();
             }

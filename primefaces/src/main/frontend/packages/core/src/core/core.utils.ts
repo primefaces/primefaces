@@ -1,8 +1,8 @@
+import { core } from "./core.js";
 import { ajax } from "./core.ajax.js";
 import { env } from "./core.env.js";
 import { expressions } from "./core.expressions.js";
-import { BaseWidget, DynamicOverlayWidget } from "./core.widget.js";
-import { core } from "./core.js";
+import type { BaseWidget, DynamicOverlayWidget } from "./core.widget.js";
 
 /**
  * The class with various utilities needed by PrimeFaces.

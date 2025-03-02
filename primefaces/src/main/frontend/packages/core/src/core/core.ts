@@ -1,18 +1,18 @@
 import Cookies from "js-cookie";
 
-import { Ajax, ajax } from "./core.ajax.js";
+import { ajax, type Ajax } from "./core.ajax.js";
 import { csp, type Csp } from "./core.csp.js";
 import { clientwindow, type ClientWindow } from "./core.clientwindow.js";
 import { env, type Environment } from "./core.env.js";
 import { expressions, type Expressions } from "./core.expressions.js";
-import type { Resources } from "./core.resources.js";
-import { resources } from "./core.resources.js";
+import { resources, type Resources } from "./core.resources.js";
 import { utils, type Utils } from "./core.utils.js";
 
 import { BaseWidget, DeferredWidget, DynamicOverlayWidget, type BaseWidgetCfg } from "./core.widget.js";
 import { AjaxExceptionHandler } from "../ajaxexceptionhandler/ajaxexceptionhandler.js";
 import { AjaxStatus } from "../ajaxstatus/ajaxstatus.js";
 import { Poll } from "../poll/poll.js";
+
 import { validation, type Validation } from "../validation/validation.common.js";
 import { validationHighlighter } from "../validation/validation.highlighters.js";
 
@@ -201,7 +201,7 @@ function toArticulateValidationConfiguration(cfg: PrimeType.validation.Shorthand
         // just pass though if no mapping is available
         if (validation.CFG_SHORTCUTS[option]) {
             // @ts-expect-error Can't really make renaming type safe, unless we spell out each key and create a new object
-            cfg[PrimeFaces.validation.CFG_SHORTCUTS[option]] = cfg[option];
+            cfg[validation.CFG_SHORTCUTS[option]] = cfg[option];
             // @ts-expect-error Can't really make renaming type safe, unless we spell out each key and create a new object
             delete cfg[option];
         }
@@ -678,7 +678,7 @@ export class Core {
     getWidgetTypeByName<
         TypeName extends keyof PrimeType.WidgetRegistry,
     >(type: TypeName): PrimeType.WidgetRegistry[TypeName] | undefined {
-        return PrimeFaces.widget[type];
+        return this.widget[type];
     }
 
     /**
@@ -694,7 +694,7 @@ export class Core {
      * could not possibly have an instance of it...)
      */
     isWidgetOfTypeName(widget: BaseWidget, typeName: string): boolean {
-        const type = (PrimeFaces.widget as unknown as Record<string, typeof BaseWidget<any>>)[typeName];
+        const type = (this.widget as unknown as Record<string, typeof BaseWidget<any>>)[typeName];
         return type !== undefined ? widget instanceof type : false;
     }
 

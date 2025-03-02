@@ -64,7 +64,7 @@ to separate the individual packages from each other. The `references` section of
 Types are checked during the Maven build. To do it manually, run:
 
 ```sh
-yarn run tsc -b
+yarn tsc -b
 ```
 
 # Building
