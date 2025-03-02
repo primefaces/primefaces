@@ -95,6 +95,7 @@ public class CountryService {
         locales.add(CountryService.toCountry(new Locale("da", "DK")));
         locales.add(CountryService.toCountry(new Locale("hi", "IN")));
         locales.add(CountryService.toCountry(new Locale("in", "ID")));
+        locales.add(CountryService.toCountry(new Locale("is", "IS")));
         locales.add(CountryService.toCountry(new Locale("hr", "HR")));
         locales.add(CountryService.toCountry(new Locale("ja", "JP")));
         locales.add(CountryService.toCountry(new Locale("hu", "HU")));
