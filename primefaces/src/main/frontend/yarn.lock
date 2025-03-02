@@ -276,9 +276,9 @@ __metadata:
   linkType: hard
 
 "@kurkle/color@npm:^0.3.0":
-  version: 0.3.2
-  resolution: "@kurkle/color@npm:0.3.2"
-  checksum: 10c0/a9e8e3e35dcd59dec4dd4f0105919c05e24823a96347bcf152965c29e48d6290b66d5fb96c071875db752e10930724c48ce6d338fefbd65e0ce5082d5c78970e
+  version: 0.3.4
+  resolution: "@kurkle/color@npm:0.3.4"
+  checksum: 10c0/0e9fd55c614b005c5f0c4c755bca19ec0293bc7513b4ea3ec1725234f9c2fa81afbc78156baf555c8b9cb0d305619253c3f5bca016067daeebb3d00ebb4ea683
   languageName: node
   linkType: hard
 
@@ -342,7 +342,7 @@ __metadata:
     jquery-cropper: "patch:jquery-cropper@npm%3A1.0.0#~/.yarn/patches/jquery-cropper-npm-1.0.0-148aa161fe.patch"
     jquery-mousewheel: "patch:jquery-mousewheel@npm%3A3.1.13#~/.yarn/patches/jquery-mousewheel-npm-3.1.13-854d2918be.patch"
     jquery-touchswipe: "npm:1.6.19"
-    jquery-ui: "patch:jquery-ui@npm%3A1.14.1#~/.yarn/patches/jquery-ui-npm-1.14.1-ce85202c00.patch"
+    jquery-ui: "npm:1.14.1"
     jquery-ui-timepicker-addon: "patch:jquery-ui-timepicker-addon@npm%3A1.6.3#~/.yarn/patches/jquery-ui-timepicker-addon-npm-1.6.3-b43c27b305.patch"
     jquery.browser: "npm:0.1.0"
     js-cookie: "npm:3.0.5"
@@ -898,21 +898,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jquery-ui@npm:1.14.1":
+"jquery-ui@npm:1.14.1, jquery-ui@npm:>=1.8":
   version: 1.14.1
   resolution: "jquery-ui@npm:1.14.1"
   dependencies:
     jquery: "npm:>=1.12.0 <5.0.0"
   checksum: 10c0/cf7a3c0aac369e513d78bc5864bbafb6ddf85a43513ca5d00b11d65e2890a6618ff2ef5b8cb2925db9a6b7d0c2482d717fb10cc813e419024ae8bc457e18f51d
-  languageName: node
-  linkType: hard
-
-"jquery-ui@patch:jquery-ui@npm%3A1.14.1#~/.yarn/patches/jquery-ui-npm-1.14.1-ce85202c00.patch":
-  version: 1.14.1
-  resolution: "jquery-ui@patch:jquery-ui@npm%3A1.14.1#~/.yarn/patches/jquery-ui-npm-1.14.1-ce85202c00.patch::version=1.14.1&hash=975b02"
-  dependencies:
-    jquery: "npm:>=1.12.0 <5.0.0"
-  checksum: 10c0/4b04bfd94c0400aead33099a1784b01eca93d35008a7d2a90ed939f2a253d043f5bc6ee238a6b4fbf648d78b679c7d0b99f9b35f9eb80dd0bc46fa930a14d831
   languageName: node
   linkType: hard
 
