@@ -1,3 +1,4 @@
+
 if (window.PrimeFaces) {
     /** Georgian */
     PrimeFaces.locales['ka'] = {

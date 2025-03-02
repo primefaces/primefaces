@@ -353,6 +353,7 @@ __metadata:
     moment-jdateformatparser: "npm:1.2.1"
     moment-timezone: "npm:0.5.47"
     primeicons: "npm:7.0.0"
+    primelocale: "npm:2.0.1"
     propagating-hammerjs: "npm:2.0.1"
     quill: "npm:2.0.3"
     rangyinputs: "npm:1.2.0"
@@ -1022,6 +1023,13 @@ __metadata:
   version: 7.0.0
   resolution: "primeicons@npm:7.0.0"
   checksum: 10c0/a7f6344d6db49e785d2040b35f8cae761d15bb8f8ee70ade8981d45438245414e913fe7235921122aade2b0a11a032c98b44dc527be2da11aa791ff145099c06
+  languageName: node
+  linkType: hard
+
+"primelocale@npm:2.0.1":
+  version: 2.0.1
+  resolution: "primelocale@npm:2.0.1"
+  checksum: 10c0/4edb2356ec24c42342b46e841e6bee3fc0bfcac1061532c07fa468b59533e91688d062c9478fa271fd9d5c078b0697ff30c31dd8ec6a52f4358f9006b4f1514d
   languageName: node
   linkType: hard
 

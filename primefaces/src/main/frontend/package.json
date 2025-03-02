@@ -1,6 +1,6 @@
 {
   "name": "@primefaces/primefaces",
-  "version": "15.0.0-SNAPSHOT",
+  "version": "16.0.0-SNAPSHOT",
   "type": "module",
   "private": true,
   "description": "Client-side implementation for PrimeFaces",
@@ -85,6 +85,7 @@
     "jscrollpane": "patch:jscrollpane@npm%3A2.2.3-rc.2#~/.yarn/patches/jscrollpane-npm-2.2.3-rc.2-173a004b4f.patch",
     "moment-jdateformatparser": "1.2.1",
     "primeicons": "7.0.0",
+    "primelocale": "2.0.1",
     "rangyinputs": "1.2.0",
     "raphael": "2.3.0",
     "typescript": "5.8.2",
