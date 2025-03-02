@@ -300,14 +300,14 @@ PrimeFaces.widget.SelectOneRadio = class SelectOneRadio extends PrimeFaces.widge
 
     /**
      * Disables a given radio button option of this widget.
-     * @param {number} index Index of the radio button option to disable.
+     * @param {number} [index] Index of the radio button option to disable. Disables all radio buttons if omitted.
      */
     disable(index) {
         if (this.cfg.readonly) {
             return;
         }
 
-        if(index == null) {
+        if (index === null || index === undefined) {
             this.inputs.attr('disabled', 'disabled');
             this.labels.addClass('ui-state-disabled');
             this.outputs.addClass('ui-state-disabled');
@@ -324,14 +324,14 @@ PrimeFaces.widget.SelectOneRadio = class SelectOneRadio extends PrimeFaces.widge
 
     /**
      * Enables a given radio button option of this widget.
-     * @param {number} index Index of the radio button option to enable.
+     * @param {number} [index] Index of the radio button option to enable. Enables all radio buttons if omitted.
      */
     enable(index) {
         if (this.cfg.readonly) {
             return;
         }
 
-        if(index == null) {
+        if (index === null || index === undefined) {
             this.inputs.removeAttr('disabled');
             this.labels.removeClass('ui-state-disabled');
             this.outputs.removeClass('ui-state-disabled');

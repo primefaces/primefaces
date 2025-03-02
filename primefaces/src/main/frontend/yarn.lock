@@ -305,16 +305,23 @@ __metadata:
     "@melloware/coloris": "npm:0.24.0"
     "@rwap/jquery-ui-touch-punch": "npm:1.1.5"
     "@types/autosize": "npm:4.0.3"
+    "@types/downloadjs": "npm:1.4.6"
     "@types/hammerjs": "npm:2.0.46"
     "@types/inputmask": "npm:5.0.7"
     "@types/jquery": "npm:3.5.32"
+    "@types/jquery-cropper": "npm:1.0.4"
     "@types/jquery-mousewheel": "npm:3.1.12"
+    "@types/jquery-touchswipe": "npm:1.6.0"
     "@types/jquery.browser": "npm:0.1.4"
+    "@types/jqueryui": "npm:1.12.23"
     "@types/js-cookie": "npm:3.0.6"
     "@types/jscrollpane": "npm:2.0.35"
+    "@types/moment-jdateformatparser": "npm:1.2.0"
     "@types/node": "npm:22.13.4"
-    "@types/pnpapi": "npm:^0.0.5"
+    "@types/pnpapi": "npm:0.0.5"
+    "@types/rangyinputs": "npm:1.2.5"
     "@types/raphael": "npm:2.3.9"
+    "@types/webcamjs": "npm:1.0.0"
     "@xenorange/esbuild-plugin-banned-dependencies": "npm:1.0.0"
     "@xenorange/esbuild-plugin-faces-resource-loader": "npm:1.0.0"
     "@xenorange/esbuild-plugin-load-from-expression": "npm:1.0.0"
@@ -375,6 +382,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/downloadjs@npm:1.4.6":
+  version: 1.4.6
+  resolution: "@types/downloadjs@npm:1.4.6"
+  checksum: 10c0/c807ce77cd5035c7a35e58e40b1a0331fd23bd9e7776b0bc7b34a7bc0e4d0e210d5b1304e1c34d236a6fd72f8d31924b08e0f7f657d5e18fba2a2144172d6547
+  languageName: node
+  linkType: hard
+
 "@types/hammerjs@npm:2.0.46, @types/hammerjs@npm:^2.0.36, @types/hammerjs@npm:^2.0.45":
   version: 2.0.46
   resolution: "@types/hammerjs@npm:2.0.46"
@@ -389,12 +403,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/jquery-cropper@npm:1.0.4":
+  version: 1.0.4
+  resolution: "@types/jquery-cropper@npm:1.0.4"
+  dependencies:
+    "@types/jquery": "npm:*"
+  checksum: 10c0/303e049df1b2bfdff54752a92d9f4f07e7f440a42ec0103c4e634f47af3cd93c85ecea0b71112385df380f911e75e2cffee396015bf8649e5c87d677bc5e9d20
+  languageName: node
+  linkType: hard
+
 "@types/jquery-mousewheel@npm:3.1.12":
   version: 3.1.12
   resolution: "@types/jquery-mousewheel@npm:3.1.12"
   dependencies:
     "@types/jquery": "npm:*"
   checksum: 10c0/d5a139197b7b0a8667806566ac5e2e2ed164691f2b32a88e762e5327484c1d0951a8c824fab979670d62b506e0f428079c61eea72346121d11ccbe879ba6f187
+  languageName: node
+  linkType: hard
+
+"@types/jquery-touchswipe@npm:1.6.0":
+  version: 1.6.0
+  resolution: "@types/jquery-touchswipe@npm:1.6.0"
+  peerDependencies:
+    "@types/jquery": "*"
+  checksum: 10c0/6c58874ad73d77e3d4a95c3a6fd9a2810ed1c74388403d463b8c6ce9939dc5e2a1d4a38bf63bbda720a7d5aaf33f07e88d751de018cd060ff59d1c7f6f4abea4
   languageName: node
   linkType: hard
 
@@ -416,6 +448,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/jqueryui@npm:1.12.23":
+  version: 1.12.23
+  resolution: "@types/jqueryui@npm:1.12.23"
+  dependencies:
+    "@types/jquery": "npm:*"
+  checksum: 10c0/2b28473f289dbdbac4b2932734b36ebf714cbdf9bff8127e9b3270ec6778ea5144b98788b963e2d23547d3a3c5b69db5892349d26a680872822471e95c12dab1
+  languageName: node
+  linkType: hard
+
 "@types/js-cookie@npm:3.0.6":
   version: 3.0.6
   resolution: "@types/js-cookie@npm:3.0.6"
@@ -432,6 +473,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/moment-jdateformatparser@npm:1.2.0":
+  version: 1.2.0
+  resolution: "@types/moment-jdateformatparser@npm:1.2.0"
+  peerDependencies:
+    moment: ^2
+  checksum: 10c0/0ec0983acdd1abf66469a15004131e5c20a1dbcee9ceb58565d135cacc86753a2d97878b3ec081fa2c115f0d8a83c2eb964da9ae8b5771a47593078f614237f9
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:22.13.4":
   version: 22.13.4
   resolution: "@types/node@npm:22.13.4"
@@ -441,10 +491,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/pnpapi@npm:^0.0.5":
+"@types/pnpapi@npm:0.0.5":
   version: 0.0.5
   resolution: "@types/pnpapi@npm:0.0.5"
   checksum: 10c0/2ade69b20d0ad5d16e6f709b1a40a8c43034ae5e8ca3b979a7fc7c26fbf0cc75791b7e8539f84e98c0e910b9c31d805fb420840e73482c6ed7bba9760ee938be
+  languageName: node
+  linkType: hard
+
+"@types/rangyinputs@npm:1.2.5":
+  version: 1.2.5
+  resolution: "@types/rangyinputs@npm:1.2.5"
+  dependencies:
+    "@types/jquery": "npm:*"
+  checksum: 10c0/09900cd941b682aedd862beec752797e656bc5c0bdea3f96bd8862c150a34f3dd5454484754af2481477ea10f53b200ee351646a3d92390c13828f4a3db0e01e
   languageName: node
   linkType: hard
 
@@ -459,6 +518,13 @@ __metadata:
   version: 2.3.9
   resolution: "@types/sizzle@npm:2.3.9"
   checksum: 10c0/db0277ff62e8ebe6cdae2020fd045fd7fd19f29a3a2ce13c555b14fb00e105e79004883732118b9f2e8b943cb302645e9eddb4e7bdeef1a171da679cd4c32b72
+  languageName: node
+  linkType: hard
+
+"@types/webcamjs@npm:1.0.0":
+  version: 1.0.0
+  resolution: "@types/webcamjs@npm:1.0.0"
+  checksum: 10c0/b3940919f7430c3942ed9cc33048d60b588742f2493877307e0adc9f98af8a89fad6ecd34d3cd384eab2da902471105bbd49182857b3e820ab2ab5075f53d1c4
   languageName: node
   linkType: hard
 

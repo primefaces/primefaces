@@ -100,10 +100,14 @@ async function runEsBuild(buildTasks) {
         /** @type {Partial<Record<string, unknown>>} */
         const packageJson = JSON.parse(original);
         delete packageJson.type;
+        console.log(`Temporarily setting {\"type\": \"module\"} in <${Env.PackageJsonPath}>...`);
         await fs.writeFile(Env.PackageJsonPath, JSON.stringify(packageJson, null, 2), "utf-8");
+        console.log("Running esbuild in parallel on all bundles...");
         const result = await Promise.allSettled(buildTasks.map(task => esbuild.build(task)));
+        console.log("All bundles built successfully");
         return result;
     } finally {
+        console.log(`Restoring <${Env.PackageJsonPath}> to its original state...`);
         await fs.writeFile(Env.PackageJsonPath, original, "utf-8");
     }
 }
@@ -164,6 +168,7 @@ async function failOnDuplicateModulesInOutputs(metaFile) {
             entryPointByInput.set(input, entryPoint);
         }
     }
+    console.log("No duplicates found");
 }
 
 /**
@@ -174,6 +179,7 @@ async function failOnDuplicateModulesInOutputs(metaFile) {
  * @returns {Promise<import("esbuild").BuildOptions[]>} The ESBuild tasks.
  */
 async function createFrontendBuildTasks() {
+    console.log(`Scanning <${Env.PackagesDir}> for frontend packages to build...`);
     const projects = await findFrontendProjects();
     const tasks = await Promise.all(projects.filter(project => project.name !== "types").map(createFrontendBuildTask));
     return tasks.flat();

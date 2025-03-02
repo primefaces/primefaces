@@ -20,6 +20,11 @@ nb-configuration.xml
 faces-config.NavData
 dependency-reduced-pom.xml
 
+# Snapshots taken by photocam when running the showcase
+primefaces-showcase/src/main/webapp/resources/demo/images/photocam/*.jpg
+primefaces-showcase/src/main/webapp/resources/demo/images/photocam/*.jpeg
+primefaces-showcase/src/main/webapp/resources/demo/images/photocam/*.png
+
 # Selenium Drivers
 *.exe
 
