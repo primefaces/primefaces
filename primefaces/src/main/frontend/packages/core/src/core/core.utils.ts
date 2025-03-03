@@ -735,13 +735,13 @@ export class Utils {
      * @return `true` if the key is a meta key, `false` or `undefined` otherwise.
      */
     isMetaKey(e: JQuery.TriggeredEvent): boolean | undefined {
-        if (e.originalEvent instanceof KeyboardEvent || e.originalEvent instanceof MouseEvent || e.originalEvent instanceof TouchEvent) {
+        if (e.originalEvent instanceof KeyboardEvent || e.originalEvent instanceof MouseEvent || (window.TouchEvent && e.originalEvent instanceof TouchEvent)) {
             // original event returns the metaKey value at the time the event was generated
             return env.browser?.mac ? e.originalEvent.metaKey : e.originalEvent.ctrlKey;
         }
         else {
             // jQuery returns the real time value of the meta key
-            return env.browser?.mac ? e.metaKey  : e.ctrlKey;
+            return env.browser?.mac ? e.metaKey : e.ctrlKey;
         }
     }
 

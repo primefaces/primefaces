@@ -42,7 +42,9 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AutoComplete005Test extends AbstractPrimePageTest {
 
@@ -80,8 +82,8 @@ class AutoComplete005Test extends AbstractPrimePageTest {
         WebElement hInputSelect = autoComplete.getWrappedElement().findElement(By.id(autoComplete.getId() + "_hinput"));
         List<WebElement> options = hInputSelect.findElements(By.cssSelector("option"));
         assertEquals(2, options.size());
-        assertEquals(Integer.toString(driverMax.getId()), options.get(0).getAttribute("value"));
-        assertEquals(Integer.toString(driverLando.getId()), options.get(1).getAttribute("value"));
+        assertEquals(Integer.toString(driverMax.getId()), options.get(0).getDomAttribute("value"));
+        assertEquals(Integer.toString(driverLando.getId()), options.get(1).getDomAttribute("value"));
 
         // Act
         page.buttonSubmit.click();
@@ -127,9 +129,9 @@ class AutoComplete005Test extends AbstractPrimePageTest {
         WebElement hInputSelect = autoComplete.getWrappedElement().findElement(By.id(autoComplete.getId() + "_hinput"));
         List<WebElement> options = hInputSelect.findElements(By.cssSelector("option"));
         assertEquals(3, options.size());
-        assertEquals(Integer.toString(driverMax.getId()), options.get(0).getAttribute("value"));
-        assertEquals(Integer.toString(driverLando.getId()), options.get(1).getAttribute("value"));
-        assertEquals("Chr", options.get(2).getAttribute("value"));
+        assertEquals(Integer.toString(driverMax.getId()), options.get(0).getDomAttribute("value"));
+        assertEquals(Integer.toString(driverLando.getId()), options.get(1).getDomAttribute("value"));
+        assertEquals("Chr", options.get(2).getDomAttribute("value"));
 
         assertConfiguration(autoComplete.getWidgetConfiguration());
     }
