@@ -313,7 +313,7 @@ __metadata:
     "@types/jquery-mousewheel": "npm:3.1.12"
     "@types/jquery-touchswipe": "npm:1.6.0"
     "@types/jquery.browser": "npm:0.1.4"
-    "@types/jqueryui": "npm:1.12.23"
+    "@types/jqueryui": "npm:1.12.24"
     "@types/js-cookie": "npm:3.0.6"
     "@types/jscrollpane": "npm:2.0.35"
     "@types/moment-jdateformatparser": "npm:1.2.0"
@@ -323,10 +323,10 @@ __metadata:
     "@types/raphael": "npm:2.3.9"
     "@types/webcamjs": "npm:1.0.0"
     "@xenorange/esbuild-plugin-banned-dependencies": "npm:1.0.0"
-    "@xenorange/esbuild-plugin-faces-resource-loader": "npm:1.1.1"
+    "@xenorange/esbuild-plugin-faces-resource-loader": "npm:1.1.2"
     "@xenorange/esbuild-plugin-load-from-expression": "npm:1.0.0"
     "@xenorange/yarn-patch-package-update-squash": "npm:1.0.0"
-    autonumeric: "patch:autonumeric@npm%3A4.10.7#~/.yarn/patches/autonumeric-npm-4.10.7-09183d353f.patch"
+    autonumeric: "npm:4.10.8"
     autosize: "npm:6.0.1"
     blueimp-file-upload: "patch:blueimp-file-upload@npm%3A10.32.0#~/.yarn/patches/blueimp-file-upload-npm-10.32.0-61b944a244.patch"
     chart.js: "npm:4.4.8"
@@ -450,12 +450,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jqueryui@npm:1.12.23":
-  version: 1.12.23
-  resolution: "@types/jqueryui@npm:1.12.23"
+"@types/jqueryui@npm:1.12.24":
+  version: 1.12.24
+  resolution: "@types/jqueryui@npm:1.12.24"
   dependencies:
     "@types/jquery": "npm:*"
-  checksum: 10c0/2b28473f289dbdbac4b2932734b36ebf714cbdf9bff8127e9b3270ec6778ea5144b98788b963e2d23547d3a3c5b69db5892349d26a680872822471e95c12dab1
+  checksum: 10c0/95afc94bfa4cf31de6b34b7770de849ccb2b5c2c9d8e092e6b9d3a1e0b4ee913659ede75eeebcbf8cb00a59d73da0da648da2be15fea2b94dd8ddeb237027bcf
   languageName: node
   linkType: hard
 
@@ -539,12 +539,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@xenorange/esbuild-plugin-faces-resource-loader@npm:1.1.1":
-  version: 1.1.1
-  resolution: "@xenorange/esbuild-plugin-faces-resource-loader@npm:1.1.1"
+"@xenorange/esbuild-plugin-faces-resource-loader@npm:1.1.2":
+  version: 1.1.2
+  resolution: "@xenorange/esbuild-plugin-faces-resource-loader@npm:1.1.2"
   peerDependencies:
     esbuild: 0.x.x
-  checksum: 10c0/7f9e87558333529f81d7843b14d96e31309fd29ec8b2a29dbda2d545178f39592c74335c7ae7553c7125e58e1efe2e156207452b71b54b406bfd6d8654cca478
+  checksum: 10c0/b2f674d8d22c86fdc4a96f2473819f2e94a1c438625c80e5aeea813163f14d96c1955ea7488134f51a2f88a179b413eaadeacbefa29c0918db2f0692012bb63c
   languageName: node
   linkType: hard
 
@@ -566,17 +566,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"autonumeric@npm:4.10.7":
-  version: 4.10.7
-  resolution: "autonumeric@npm:4.10.7"
-  checksum: 10c0/6f04d167d768255f5f4bb8152ffabbcec575ff77aed824021e4956b4e7ad4d1a38a38fb9805cf5a04ae11a7200867438f1262141b5b6232762b7dcc31d08be47
-  languageName: node
-  linkType: hard
-
-"autonumeric@patch:autonumeric@npm%3A4.10.7#~/.yarn/patches/autonumeric-npm-4.10.7-09183d353f.patch":
-  version: 4.10.7
-  resolution: "autonumeric@patch:autonumeric@npm%3A4.10.7#~/.yarn/patches/autonumeric-npm-4.10.7-09183d353f.patch::version=4.10.7&hash=c4d4e7"
-  checksum: 10c0/71345e6538fb75ff5be8f956a5e055254c9c02de1f25b3ac358294f0fd38e8dfdf036c49a4463c68c0c079092cfd103f3374f74bce1da8faf986c8a844ae2b2f
+"autonumeric@npm:4.10.8":
+  version: 4.10.8
+  resolution: "autonumeric@npm:4.10.8"
+  checksum: 10c0/ff507aace9164fad147d3eb27d395393e589ae86236c3e4d2a051818e3abd3230a8b3bd513a84756773b3304676ed1fc9a9758d5262e5b070792e52646088a3e
   languageName: node
   linkType: hard
 
