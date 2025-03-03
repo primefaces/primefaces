@@ -349,84 +349,84 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         return rowKey == null ? null : String.valueOf(rowKey);
     }
 
-    public static <T> Builder<T, JPALazyDataModel<T>> builder() {
+    public static <T> Builder<T, ? extends JPALazyDataModel<T>> builder() {
         return new Builder<>(new JPALazyDataModel<>());
     }
 
-    public static class Builder<TD, TM extends JPALazyDataModel<TD>> {
+    public static class Builder<T, TM extends JPALazyDataModel<T>> {
         protected TM model;
 
         public Builder(TM model) {
             this.model = model;
         }
 
-        public Builder<TD, TM> entityClass(Class<TD> entityClass) {
+        public Builder<T, TM> entityClass(Class<T> entityClass) {
             model.entityClass = entityClass;
             return this;
         }
 
-        public Builder<TD, TM> entityManager(Callbacks.SerializableSupplier<EntityManager> entityManager) {
+        public Builder<T, TM> entityManager(Callbacks.SerializableSupplier<EntityManager> entityManager) {
             model.entityManager = entityManager;
             return this;
         }
 
-        public Builder<TD, TM> rowKeyConverter(Converter<TD> rowKeyConverter) {
+        public Builder<T, TM> rowKeyConverter(Converter<T> rowKeyConverter) {
             model.rowKeyConverter = rowKeyConverter;
             return this;
         }
 
-        public Builder<TD, TM> rowKeyProvider(Callbacks.SerializableFunction<TD, Object> rowKeyProvider) {
+        public Builder<T, TM> rowKeyProvider(Callbacks.SerializableFunction<T, Object> rowKeyProvider) {
             model.rowKeyProvider = rowKeyProvider;
             return this;
         }
 
-        public Builder<TD, TM> rowKeyField(String rowKey) {
+        public Builder<T, TM> rowKeyField(String rowKey) {
             model.rowKeyField = rowKey;
             return this;
         }
 
-        public Builder<TD, TM> rowKeyField(SingularAttribute<TD, ?> rowKeyMetamodel) {
+        public Builder<T, TM> rowKeyField(SingularAttribute<T, ?> rowKeyMetamodel) {
             model.rowKeyField = rowKeyMetamodel.getName();
             model.rowKeyType = rowKeyMetamodel.getJavaType();
             return this;
         }
 
-        public Builder<TD, TM> rowKeyType(Class<?> rowKeyType) {
+        public Builder<T, TM> rowKeyType(Class<?> rowKeyType) {
             model.rowKeyType = rowKeyType;
             return this;
         }
 
-        public Builder<TD, TM> caseSensitive(boolean caseSensitive) {
+        public Builder<T, TM> caseSensitive(boolean caseSensitive) {
             model.caseSensitive = caseSensitive;
             return this;
         }
 
-        public Builder<TD, TM> wildcardSupport(boolean wildcardSupport) {
+        public Builder<T, TM> wildcardSupport(boolean wildcardSupport) {
             model.wildcardSupport = wildcardSupport;
             return this;
         }
 
-        public Builder<TD, TM> queryEnricher(QueryEnricher<TD> queryEnricher) {
+        public Builder<T, TM> queryEnricher(QueryEnricher<T> queryEnricher) {
             model.queryEnricher = queryEnricher;
             return this;
         }
 
-        public Builder<TD, TM> filterEnricher(FilterEnricher<TD> filterEnricher) {
+        public Builder<T, TM> filterEnricher(FilterEnricher<T> filterEnricher) {
             model.filterEnricher = filterEnricher;
             return this;
         }
 
-        public Builder<TD, TM> additionalFilterMeta(AdditionalFilterMeta additionalFilterMeta) {
+        public Builder<T, TM> additionalFilterMeta(AdditionalFilterMeta additionalFilterMeta) {
             model.additionalFilterMeta = additionalFilterMeta;
             return this;
         }
 
-        public Builder<TD, TM> sortEnricher(SortEnricher<TD> sortEnricher) {
+        public Builder<T, TM> sortEnricher(SortEnricher<T> sortEnricher) {
             model.sortEnricher = sortEnricher;
             return this;
         }
 
-        public Builder<TD, TM> resultEnricher(Callbacks.SerializableConsumer<List<TD>> resultEnricher) {
+        public Builder<T, TM> resultEnricher(Callbacks.SerializableConsumer<List<T>> resultEnricher) {
             model.resultEnricher = resultEnricher;
             return this;
         }
@@ -460,7 +460,7 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
                 if (model.rowKeyField == null) {
                     EntityManagerFactory emf = model.entityManager.get().getEntityManagerFactory();
 
-                    EntityType<TD> entityType = emf.getMetamodel().entity(model.entityClass);
+                    EntityType<T> entityType = emf.getMetamodel().entity(model.entityClass);
                     Type<?> idType = entityType.getIdType();
                     if (idType.getPersistenceType() != Type.PersistenceType.BASIC) {
                         throw new FacesException("Entity @Id is not a basic type. Define a rowKeyField!");
