@@ -234,29 +234,30 @@ PrimeFaces.widget.SelectCheckboxMenu = class SelectCheckboxMenu extends PrimeFac
      * @private
      */
     renderLabel() {
-        if (!this.cfg.updateLabel) {
-            this.registerTrigger();
-            return;
-        }
         if (this.cfg.multiple) {
+            // Get or initialize the container for multiple items
             this.multiItemContainer = this.multiItemContainer || this.jq.children('.ui-selectcheckboxmenu-multiple-container');
-            var items = this.multiItemContainer.children();
+            const items = this.multiItemContainer.children();
+            
+            // If no items selected, show empty label
             if (!items.length) {
-                this.multiItemContainer.empty().append('<li class="ui-selectcheckboxmenu-emptylabel">' + (this.multiItemContainer.data('label') || '&nbsp;') + '</li>');
+                const emptyLabel = this.multiItemContainer.data('label') || '&nbsp;';
+                this.multiItemContainer.empty().append(`<li class="ui-selectcheckboxmenu-emptylabel">${emptyLabel}</li>`);
             }
+            
+            this.registerTrigger();
         }
-        else {
-            // single select
+        else if (this.cfg.updateLabel) {
+            // For single select, store default label and add ellipsis styling
             this.defaultLabel = this.label.text();
             this.label.css({
                 'text-overflow': 'ellipsis',
-                overflow: 'hidden'
+                'overflow': 'hidden'
             });
 
             this.updateLabel();
+            this.registerTrigger();
         }
-        
-        this.registerTrigger();
     }
     
     /**
