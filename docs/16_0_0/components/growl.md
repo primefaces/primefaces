@@ -30,6 +30,7 @@ globalOnly | false | Boolean | When true, only facesmessages without clientids a
 life | 6000 | Integer | Duration in milliseconds to display non-sticky messages.
 redisplay | true | Boolean | Defines if already rendered messaged should be displayed.
 for | null | String | The clientId or name of associated key, takes precedence when used with globalOnly.
+forType | null | String | Defines how the `for` attribute is used to retrieve messages from `FacesContext#getMessages`. `key` defines that the `for` value is passed directly to `#getMessages`, whereas `expression` will be resolved by the `SearchExpressionHandler` first and then passed as `clientId` to `#getMessages`. Default is both.
 escape | true | Boolean | Defines whether HTML would be escaped or not.
 severity | null | String | Comma separated list of severities to display only.
 keepAlive | false | Boolean | Defines if previous messages should be kept on a new message is shown.
