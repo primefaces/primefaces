@@ -1083,6 +1083,18 @@ Map<String, FilterMeta> filterMeta = Collections.emptyMap();
 List<MyEntity> result = lazyDataModel.load(0, lazyDataModel.count(filterMeta), sortMeta, filterMeta);
 ```
 
+#### Extend `JPALazyDataModel`
+
+You can also extend the `JPALazyDataModel` and reuse the builder:
+
+```
+public class MyJPALazyDataModel<T> extends JPALazyDataModel<T> {
+
+    public static <T> Builder<T, MyJPALazyDataModel<T>> builder() {
+        return new Builder<>(new MyJPALazyDataModel<>());
+    }
+}
+```
 
 ### FlowLogix JPALazyDataModel (PrimeFaces Community)
 `JPALazyDataModel` implementation that's fully integrated with Jakarta EE and `@Inject`able.
