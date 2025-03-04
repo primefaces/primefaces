@@ -66,6 +66,14 @@ public class ProgressBarView implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Progress Completed"));
     }
 
+    public void onStart() {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Progress Started"));
+    }
+
+    public void onProgress() {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Progress Updated " + progress1));
+    }
+
     public void cancel() {
         progress1 = null;
         progress2 = null;
