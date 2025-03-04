@@ -51,7 +51,7 @@ appendTo | null | String | Appends the overlay to the element defined by search 
 tabindex | null | String | Position of the element in the tabbing order.
 title | null | String | Advisory tooltip information.
 showHeader | true | Boolean | When enabled, the header of panel is displayed.
-updateLabel | false | Boolean | When enabled, the selected items are displayed on label.
+updateLabel | false | Boolean | When enabled, the label is updated on every change, else it statically displays the `selectedLabel`.
 multiple | false | Boolean | Whether to show selected items as multiple labels.
 dynamic | false | Boolean | Defines if dynamic loading is enabled for the element's panel. If the value is "true", the overlay is not rendered on page load to improve performance.
 labelSeparator | , | String | Separator for joining item lables if updateLabel is set to true. Default is ",".

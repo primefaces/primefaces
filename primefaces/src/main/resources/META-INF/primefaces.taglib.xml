@@ -23545,7 +23545,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[When enabled, the selected items are displayed on label. Default is false.]]>
+                <![CDATA[When enabled, the label is updated on every change, else it statically displays the 'selectedLabel'. Default is false.]]>
             </description>
             <name>updateLabel</name>
             <required>false</required>
