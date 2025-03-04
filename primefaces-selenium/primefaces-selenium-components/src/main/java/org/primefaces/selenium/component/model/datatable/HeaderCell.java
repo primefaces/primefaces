@@ -74,8 +74,8 @@ public class HeaderCell extends Cell {
      * @param filterValue the value to set the filter
      */
     public void setFilterValue(JSONObject cfg, String filterValue) {
-        String filterEvent = cfg.getString("filterEvent");
-        int filterDelay = cfg.getInt("filterDelay");
+        String filterEvent = cfg.has("filterEvent") ? cfg.getString("filterEvent") : "keyup";
+        int filterDelay = cfg.has("filterDelay") ? cfg.getInt("filterDelay") : 0;
         setFilterValue(filterValue, filterEvent, filterDelay);
     }
 
