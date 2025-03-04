@@ -55,7 +55,7 @@ style | null | String | Inline style of the component.
 styleClass | null | String | Style class of the container.
 tabindex | null | String | Position of the element in the tabbing order.
 title | null | String | Advisory tooltip information.
-updateLabel | false | Boolean | When enabled, the selected items are displayed on label.
+updateLabel | false | Boolean | When enabled, the label is updated on every change, else it statically displays the `selectedLabel`.
 validator | null | MethodExpr | A method expression that refers to a method validating the input
 validatorMessage | null | String | Message to be displayed when validation fields.
 value | null | Object | Value of the component referring to a List.
