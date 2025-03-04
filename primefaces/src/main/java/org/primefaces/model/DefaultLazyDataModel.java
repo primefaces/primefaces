@@ -61,13 +61,13 @@ public class DefaultLazyDataModel<T> extends LazyDataModel<T> {
 
     private static final Logger LOGGER = Logger.getLogger(DefaultLazyDataModel.class.getName());
 
-    private String rowKeyField;
-    private FilterConstraint filter;
-    private Sorter<T> sorter;
-    private ValuesSupplier<T> valuesSupplier;
-    private Callbacks.SerializableFunction<T, Object> rowKeyProvider;
-    private Callbacks.SerializablePredicate<T> skipFiltering;
-    private Callbacks.SerializablePredicate<FilterMeta> ignoreFilter;
+    protected String rowKeyField;
+    protected FilterConstraint filter;
+    protected Sorter<T> sorter;
+    protected ValuesSupplier<T> valuesSupplier;
+    protected Callbacks.SerializableFunction<T, Object> rowKeyProvider;
+    protected Callbacks.SerializablePredicate<T> skipFiltering;
+    protected Callbacks.SerializablePredicate<FilterMeta> ignoreFilter;
 
     /**
      * For serialization only
@@ -170,7 +170,7 @@ public class DefaultLazyDataModel<T> extends LazyDataModel<T> {
                         // otherwise it's a user-defined filterBy expression
                         else {
                             if (source instanceof UITable) {
-                                UITable table = (UITable) source;
+                                UITable<?> table = (UITable<?>) source;
                                 table.invokeOnColumn(filterMeta.getColumnKey(), (column) -> {
                                     Object localValue = ComponentUtils.executeInRequestScope(context, table.getVar(), obj,
                                             () -> filterMeta.getLocalValue(context.getELContext(), column));
@@ -225,38 +225,38 @@ public class DefaultLazyDataModel<T> extends LazyDataModel<T> {
         return String.valueOf(rowKeyProvider.apply(obj));
     }
 
-    public static <T> Builder<T> builder() {
-        return new Builder<>();
+    public static <T> Builder<T, ? extends DefaultLazyDataModel<T>> builder() {
+        return new Builder<>(new DefaultLazyDataModel<>());
     }
 
-    public static class Builder<T> {
-        private final DefaultLazyDataModel<T> model;
+    public static class Builder<T, TM extends DefaultLazyDataModel<T>> {
+        protected TM model;
 
-        public Builder() {
-            model = new DefaultLazyDataModel<>();
+        public Builder(TM model) {
+            this.model = model;
         }
 
-        public Builder<T> valueSupplier(ValuesSupplier<T> valuesSupplier) {
+        public Builder<T, TM> valueSupplier(ValuesSupplier<T> valuesSupplier) {
             model.valuesSupplier = valuesSupplier;
             return this;
         }
 
-        public Builder<T> rowKeyField(String rowKey) {
+        public Builder<T, TM> rowKeyField(String rowKey) {
             model.rowKeyField = rowKey;
             return this;
         }
 
-        public Builder<T> rowKeyProvider(Callbacks.SerializableFunction<T, Object> rowKeyProvider) {
+        public Builder<T, TM> rowKeyProvider(Callbacks.SerializableFunction<T, Object> rowKeyProvider) {
             model.rowKeyProvider = rowKeyProvider;
             return this;
         }
 
-        public Builder<T> rowKeyConverter(Converter<T> rowKeyConverter) {
+        public Builder<T, TM> rowKeyConverter(Converter<T> rowKeyConverter) {
             model.rowKeyConverter = rowKeyConverter;
             return this;
         }
 
-        public Builder<T> filter(FilterConstraint filter) {
+        public Builder<T, TM> filter(FilterConstraint filter) {
             model.filter = filter;
             return this;
         }
@@ -268,7 +268,7 @@ public class DefaultLazyDataModel<T> extends LazyDataModel<T> {
          * @param skipFiltering the callback
          * @return the current builder
          */
-        public Builder<T> skipFiltering(Callbacks.SerializablePredicate<T> skipFiltering) {
+        public Builder<T, TM> skipFiltering(Callbacks.SerializablePredicate<T> skipFiltering) {
             model.skipFiltering = skipFiltering;
             return this;
         }
@@ -280,17 +280,17 @@ public class DefaultLazyDataModel<T> extends LazyDataModel<T> {
          * @param ignoreFilter the callback
          * @return the current builder
          */
-        public Builder<T> ignoreFilter(Callbacks.SerializablePredicate<FilterMeta> ignoreFilter) {
+        public Builder<T, TM> ignoreFilter(Callbacks.SerializablePredicate<FilterMeta> ignoreFilter) {
             model.ignoreFilter = ignoreFilter;
             return this;
         }
 
-        public Builder<T> sorter(Sorter<T> sorter) {
+        public Builder<T, TM> sorter(Sorter<T> sorter) {
             model.sorter = sorter;
             return this;
         }
 
-        public DefaultLazyDataModel<T> build() {
+        public TM build() {
             Objects.requireNonNull(model.valuesSupplier, "Value supplier not set");
 
             boolean requiresRowKeyProvider = model.rowKeyProvider == null && (model.rowKeyConverter != null || model.rowKeyField != null);
