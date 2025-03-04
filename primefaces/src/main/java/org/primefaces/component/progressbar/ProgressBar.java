@@ -58,7 +58,9 @@ public class ProgressBar extends ProgressBarBase {
     private static final String DEFAULT_EVENT = "complete";
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
+            .put("start", null)
             .put("complete", null)
+            .put("progress", null)
             .build();
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();

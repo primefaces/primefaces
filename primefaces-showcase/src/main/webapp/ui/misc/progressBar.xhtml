@@ -68,6 +68,8 @@
                                labelTemplate="{value}%" styleClass="mt-3" global="false">
                     <p:ajax event="complete" listener="#{progressBarView.onComplete}" update="growl"
                             oncomplete="PF('startButton2').enable()" />
+                    <p:ajax event="start" listener="#{progressBarView.onStart}" update="growl" />
+                    <p:ajax event="progress" listener="#{progressBarView.onProgress}" update="growl" />
                 </p:progressBar>
 
                 <h5>Ajax ProgressBar (with long running method)</h5>
