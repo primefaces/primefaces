@@ -254,15 +254,15 @@ declare global {
             /**
              * The total height in pixels of the content area of the dialog.
              */
-            contentHeight: number;
+            contentHeight: number | string;
             /**
              * The total width in pixels of the content area of the dialog..
              */
-            contentWidth: number;
+            contentWidth: number | string;
             /**
              * The total height of the dialog in pixels, including the header and its content.
              */
-            height: number;
+            height: number | string;
             /**
              * Vertical and horizontal offset of the top-left corner of the dialog.
              */
@@ -270,7 +270,7 @@ declare global {
             /**
              * The total width of the dialog in pixels, including the header and its content.
              */
-            width: number;
+            width: number | string;
             /**
              * Horizontal scroll position of the window.
              */

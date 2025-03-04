@@ -863,10 +863,10 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
      */
     protected saveState(): void {
         this.state = {
-            width: this.jq.width() ?? 0,
-            height: this.jq.height() ?? 0,
-            contentWidth: parseInt(this.content[0]?.style.width ?? "0") || (this.content.width() ?? 0),
-            contentHeight: this.content.height() ?? 0,
+            width: this.jq[0]?.style.width || this.jq.width() || 0,
+            height: this.jq[0]?.style.height || this.jq.height() || 0,
+            contentWidth: this.content[0]?.style.width || this.content.width() || 0,
+            contentHeight: this.content[0]?.style.height || this.content.height() || 0,
             offset: this.jq.offset() ?? { top: 0, left: 0},
             windowScrollLeft: $(window).scrollLeft() ?? 0,
             windowScrollTop: $(window).scrollTop() ?? 0,
@@ -879,8 +879,14 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
      */
     protected restoreState(): void {
         if (this.state) {
-            this.jq.width(this.state.width).height(this.state.height);
-            this.content.width(this.state.contentWidth).height(this.state.contentHeight);
+            this.jq.css({
+                'width': this.state.width,
+                'height': this.state.height
+            });
+            this.content.css({
+                'width': this.state.contentWidth,
+                'height': this.state.contentHeight
+            });
     
             this.jq.offset({
                 top: this.state.offset.top + (($(window).scrollTop() ?? 0) - this.state.windowScrollTop),
