@@ -175,10 +175,8 @@ public class AutoComplete extends AutoCompleteBase {
                             .field(field)
                             .order(SortOrder.ASCENDING)
                             .build());
-            int maxResults = getMaxResults();
-            suggestions = lazyModel.load(0, maxResults, sortBy, searchFilter);
-            List suggestionsList = (List) suggestions;
-            suggestionsCount = lazyModel.calculateRowCount(suggestionsList, searchFilter, 0, maxResults);
+            suggestions = lazyModel.load(0, getMaxResults(), sortBy, searchFilter);
+            suggestionsCount = lazyModel.count(searchFilter);
         }
         else {
             FacesContext facesContext = getFacesContext();

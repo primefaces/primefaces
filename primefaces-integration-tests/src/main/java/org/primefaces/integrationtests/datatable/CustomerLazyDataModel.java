@@ -26,11 +26,18 @@ package org.primefaces.integrationtests.datatable;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortMeta;
+import org.primefaces.model.filter.FilterConstraint;
 
+import java.beans.IntrospectionException;
+import java.beans.PropertyDescriptor;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import jakarta.faces.context.FacesContext;
 
 import org.apache.commons.collections4.ComparatorUtils;
 
@@ -65,26 +72,53 @@ public class CustomerLazyDataModel extends LazyDataModel<Customer> {
 
     @Override
     public int count(Map<String, FilterMeta> filterBy) {
-        return (int) datasource.size();
+        return (int) datasource.stream().filter(o -> filter(FacesContext.getCurrentInstance(), filterBy.values(), o)).count();
     }
 
     @Override
     public List<Customer> load(int offset, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
-        // apply offset & filters
+        // apply filters
         List<Customer> customers = datasource.stream()
-                .skip(offset)
-                .limit(pageSize)
+                .filter(o -> filter(FacesContext.getCurrentInstance(), filterBy.values(), o))
                 .collect(Collectors.toList());
 
         // sort
         if (!sortBy.isEmpty()) {
-            List<Comparator<Customer>> comparators = sortBy.values().stream()
-                    .map(o -> new CustomerLazySorter(o.getField(), o.getOrder()))
+            List<Comparator<Customer>> comparators = sortBy.values().stream().map(o -> new CustomerLazySorter(o.getField(), o.getOrder()))
                     .collect(Collectors.toList());
             Comparator<Customer> cp = ComparatorUtils.chainedComparator(comparators); // from apache
             customers.sort(cp);
         }
 
-        return customers;
+        // apply offset & limit
+        return customers.subList(offset, Math.min(offset + pageSize, customers.size()));
+    }
+
+    private boolean filter(FacesContext context, Collection<FilterMeta> filterBy, Object o) {
+        boolean matching = true;
+
+        for (FilterMeta filter : filterBy) {
+            FilterConstraint constraint = filter.getConstraint();
+            Object filterValue = filter.getFilterValue();
+
+            try {
+                Object columnValue = String.valueOf(getPropertyValueViaReflection(o, filter.getField()));
+                matching = constraint.isMatching(context, columnValue, filterValue, Locale.getDefault());
+            }
+            catch (ReflectiveOperationException | IntrospectionException e) {
+                System.err.println("Error getting property value via reflection: " + e.getMessage());
+                matching = false;
+            }
+
+            if (!matching) {
+                break;
+            }
+        }
+
+        return matching;
+    }
+
+    public Object getPropertyValueViaReflection(Object o, String field) throws ReflectiveOperationException, IllegalArgumentException, IntrospectionException {
+        return new PropertyDescriptor(field, o.getClass()).getReadMethod().invoke(o);
     }
 }

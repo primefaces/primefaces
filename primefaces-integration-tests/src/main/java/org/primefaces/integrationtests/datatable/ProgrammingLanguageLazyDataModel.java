@@ -59,7 +59,6 @@ public class ProgrammingLanguageLazyDataModel extends LazyDataModel<ProgrammingL
     @Override
     public List<ProgrammingLanguage> load(int first, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
         List<ProgrammingLanguage> langsFiltered = sortAndFilterInternal(sortBy, filterBy);
-        setRowCount(langsFiltered.size());
 
         return langsFiltered.stream()
                     .skip(first).limit(pageSize)

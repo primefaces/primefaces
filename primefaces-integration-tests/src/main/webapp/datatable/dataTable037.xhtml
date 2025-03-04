@@ -15,19 +15,20 @@
             <p:dataTable id="datatable" value="#{dataTable037.lazyModel}" var="customer" lazy="true"
                 paginator="true" rows="10"
                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                currentPageReportTemplate="Filtered Pages: {totalPages} page(s)"
                 rowsPerPageTemplate="5,10,15" sortBy="#{customer.representative}">
                 
-                <p:headerRow field="representative">
+                <p:headerRow field="representative" >
                     <p:column colspan="2">
                         #{customer.representative}
                     </p:column>
                 </p:headerRow>
 
-                <p:column headerText="Name" sortBy="#{customer.name}">
+                <p:column headerText="Name" sortBy="#{customer.name}" filterEvent="enter" filterDelay="100" filterBy="#{customer.name}">
                     #{customer.name}
                 </p:column>
 
-                <p:column headerText="Representative" sortBy="#{customer.representative}">
+                <p:column headerText="Representative" sortBy="#{customer.representative}" filterEvent="enter" filterDelay="100" filterBy="#{customer.representative}">
                     #{customer.representative}
                 </p:column>
 
