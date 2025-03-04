@@ -765,15 +765,14 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
      */
     saveState: function() {
         this.state = {
-            width: this.jq.width(),
-            height: this.jq.height(),
-            contentWidth: parseInt(this.content[0].style.width) || this.content.width(),
-            contentHeight: this.content.height()
+            width: this.jq[0].style.width || this.jq.width() || 0,
+            height: this.jq[0].style.height || this.jq.height() || 0,
+            contentWidth: this.content[0].style.width || this.content.width() || 0,
+            contentHeight: this.content[0].style.height || this.content.height() || 0,
+            offset: this.jq.offset() || 0,
+            windowScrollLeft: $(window).scrollLeft() || 0,
+            windowScrollTop: $(window).scrollTop() || 0,
         };
-
-        this.state.offset = this.jq.offset();
-        this.state.windowScrollLeft = $(window).scrollLeft();
-        this.state.windowScrollTop = $(window).scrollTop();
     },
 
     /**
@@ -781,13 +780,21 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
      * @protected
      */
     restoreState: function() {
-        this.jq.width(this.state.width).height(this.state.height);
-        this.content.width(this.state.contentWidth).height(this.state.contentHeight);
-
-        this.jq.offset({
+        if (this.state) {
+            this.jq.css({
+                'width': this.state.width,
+                'height': this.state.height
+            });
+            this.content.css({
+                'width': this.state.contentWidth,
+                'height': this.state.contentHeight
+            });
+    
+            this.jq.offset({
                 top: this.state.offset.top + ($(window).scrollTop() - this.state.windowScrollTop)
                 ,left: this.state.offset.left + ($(window).scrollLeft() - this.state.windowScrollLeft)
-        });
+            });
+        }
     },
 
     /**
