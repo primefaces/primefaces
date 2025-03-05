@@ -45,52 +45,48 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class ScheduleRenderer extends CoreRenderer {
+public class ScheduleRenderer extends CoreRenderer<Schedule> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
-        Schedule schedule = (Schedule) component;
-        String clientId = schedule.getClientId(context);
+    public void decode(FacesContext context, Schedule component) {
+        String clientId = component.getClientId(context);
         String viewId = clientId + "_view";
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
         if (params.containsKey(viewId)) {
-            schedule.setView(params.get(viewId));
+            component.setView(params.get(viewId));
         }
 
         decodeBehaviors(context, component);
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Schedule schedule = (Schedule) component;
-
-        if (ComponentUtils.isRequestSource(schedule, context) && schedule.isEventRequest(context)) {
-            encodeEvents(context, schedule);
+    public void encodeEnd(FacesContext context, Schedule component) throws IOException {
+        if (ComponentUtils.isRequestSource(component, context) && component.isEventRequest(context)) {
+            encodeEvents(context, component);
         }
         else {
-            encodeMarkup(context, schedule);
-            encodeScript(context, schedule);
+            encodeMarkup(context, component);
+            encodeScript(context, component);
         }
     }
 
-    protected void encodeEvents(FacesContext context, Schedule schedule) throws IOException {
-        String clientId = schedule.getClientId(context);
-        ScheduleModel model = schedule.getValue();
+    protected void encodeEvents(FacesContext context, Schedule component) throws IOException {
+        String clientId = component.getClientId(context);
+        ScheduleModel model = component.getValue();
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
         if (model instanceof LazyScheduleModel) {
             String startDateParam = params.get(clientId + "_start");
             String endDateParam = params.get(clientId + "_end");
 
-            ZoneId zoneId = CalendarUtils.calculateZoneId(schedule.getTimeZone());
+            ZoneId zoneId = CalendarUtils.calculateZoneId(component.getTimeZone());
             LocalDateTime startDate =  CalendarUtils.toLocalDateTime(zoneId, startDateParam);
             LocalDateTime endDate =  CalendarUtils.toLocalDateTime(zoneId, endDateParam);
 
@@ -99,11 +95,11 @@ public class ScheduleRenderer extends CoreRenderer {
             lazyModel.loadEvents(startDate, endDate); //Lazy load events
         }
 
-        encodeEventsAsJSON(context, schedule, model);
+        encodeEventsAsJSON(context, component, model);
     }
 
-    protected void encodeEventsAsJSON(FacesContext context, Schedule schedule, ScheduleModel model) throws IOException {
-        ZoneId zoneId = CalendarUtils.calculateZoneId(schedule.getTimeZone());
+    protected void encodeEventsAsJSON(FacesContext context, Schedule component, ScheduleModel model) throws IOException {
+        ZoneId zoneId = CalendarUtils.calculateZoneId(component.getTimeZone());
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME.withZone(zoneId);
 
@@ -174,83 +170,83 @@ public class ScheduleRenderer extends CoreRenderer {
         writer.write(jsonResponse.toString());
     }
 
-    protected void encodeScript(FacesContext context, Schedule schedule) throws IOException {
-        Locale locale = schedule.calculateLocale(context);
+    protected void encodeScript(FacesContext context, Schedule component) throws IOException {
+        Locale locale = component.calculateLocale(context);
         WidgetBuilder wb = getWidgetBuilder(context);
 
-        wb.init("Schedule", schedule)
-                .attr("urlTarget", schedule.getUrlTarget(), "_blank")
-                .attr("noOpener", schedule.isNoOpener(), true)
+        wb.init("Schedule", component)
+                .attr("urlTarget", component.getUrlTarget(), "_blank")
+                .attr("noOpener", component.isNoOpener(), true)
                 .attr("locale", locale.toString())
-                .attr("tooltip", schedule.isTooltip(), false);
+                .attr("tooltip", component.isTooltip(), false);
 
-        String columnFormat = schedule.getColumnHeaderFormat() != null ? schedule.getColumnHeaderFormat() : schedule.getColumnFormat();
+        String columnFormat = component.getColumnHeaderFormat() != null ? component.getColumnHeaderFormat() : component.getColumnFormat();
         if (columnFormat != null) {
             wb.append(",columnFormatOptions:{" + columnFormat + "}");
         }
 
-        String extender = schedule.getExtender();
+        String extender = component.getExtender();
         if (extender != null) {
             wb.nativeAttr("extender", extender);
         }
 
         wb.append(",options:{");
         wb.append("locale:\"").append(LocaleUtils.toJavascriptLocale(locale)).append("\",");
-        wb.append("initialView:\"").append(EscapeUtils.forJavaScript(translateViewName(schedule.getView().trim()))).append("\"");
-        wb.attr("dayMaxEventRows", schedule.getValue().isEventLimit(), false);
+        wb.append("initialView:\"").append(EscapeUtils.forJavaScript(translateViewName(component.getView().trim()))).append("\"");
+        wb.attr("dayMaxEventRows", component.getValue().isEventLimit(), false);
 
         //timeGrid offers an additional eventLimit - integer value; see https://fullcalendar.io/docs/v5/dayMaxEventRows; not exposed yet by PF-schedule
         wb.attr("lazyFetching", false);
 
-        Object initialDate = schedule.getInitialDate();
+        Object initialDate = component.getInitialDate();
         if (initialDate != null) {
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_DATE;
             wb.attr("initialDate", ((LocalDate) initialDate).format(dateTimeFormatter), null);
         }
 
-        if (schedule.isShowHeader()) {
+        if (component.isShowHeader()) {
             wb.append(",headerToolbar:{start:'")
-                    .append(schedule.getLeftHeaderTemplate()).append("'")
-                    .attr("center", schedule.getCenterHeaderTemplate())
-                    .attr("end", translateViewNames(schedule.getRightHeaderTemplate()))
+                    .append(component.getLeftHeaderTemplate()).append("'")
+                    .attr("center", component.getCenterHeaderTemplate())
+                    .attr("end", translateViewNames(component.getRightHeaderTemplate()))
                     .append("}");
         }
         else {
             wb.attr("headerToolbar", false);
         }
 
-        if (ComponentUtils.isRTL(context, schedule)) {
+        if (ComponentUtils.isRTL(context, component)) {
             wb.attr("direction", "rtl");
         }
 
-        boolean isShowWeekNumbers = schedule.isShowWeekNumbers();
+        boolean isShowWeekNumbers = component.isShowWeekNumbers();
 
-        wb.attr("allDaySlot", schedule.isAllDaySlot(), true)
-                .attr("height", schedule.getHeight(), null)
-                .attr("slotDuration", schedule.getSlotDuration(), "00:30:00")
-                .attr("scrollTime", schedule.getScrollTime(), "06:00:00")
-                .attr("timeZone", schedule.getClientTimeZone(), "local")
-                .attr("slotMinTime", schedule.getMinTime(), null)
-                .attr("slotMaxTime", schedule.getMaxTime(), null)
-                .attr("aspectRatio", schedule.getAspectRatio(), Double.MIN_VALUE)
-                .attr("weekends", schedule.isShowWeekends(), true)
-                .attr("eventStartEditable", schedule.isDraggable())
-                .attr("eventDurationEditable", schedule.isResizable())
-                .attr("selectable", schedule.isSelectable(), false)
-                .attr("slotLabelInterval", schedule.getSlotLabelInterval(), null)
-                .attr("eventTimeFormat", schedule.getTimeFormat(), null) //https://momentjs.com/docs/#/displaying/
+        wb.attr("allDaySlot", component.isAllDaySlot(), true)
+                .attr("height", component.getHeight(), null)
+                .attr("slotDuration", component.getSlotDuration(), "00:30:00")
+                .attr("scrollTime", component.getScrollTime(), "06:00:00")
+                .attr("timeZone", component.getClientTimeZone(), "local")
+                .attr("slotMinTime", component.getMinTime(), null)
+                .attr("slotMaxTime", component.getMaxTime(), null)
+                .attr("aspectRatio", component.getAspectRatio(), Double.MIN_VALUE)
+                .attr("weekends", component.isShowWeekends(), true)
+                .attr("eventStartEditable", component.isDraggable())
+                .attr("eventDurationEditable", component.isResizable())
+                .attr("selectable", component.isSelectable(), false)
+                .attr("slotLabelInterval", component.getSlotLabelInterval(), null)
+                .attr("eventTimeFormat", component.getTimeFormat(), null) //https://momentjs.com/docs/#/displaying/
                 .attr("weekNumbers", isShowWeekNumbers, false)
-                .attr("nextDayThreshold", schedule.getNextDayThreshold(), "09:00:00")
-                .attr("slotEventOverlap", schedule.isSlotEventOverlap(), true);
+                .attr("nextDayThreshold", component.getNextDayThreshold(), "09:00:00")
+                .attr("slotEventOverlap", component.isSlotEventOverlap(), true);
 
-        if (LangUtils.isNotBlank(schedule.getSlotLabelFormat())) {
+        if (LangUtils.isNotBlank(component.getSlotLabelFormat())) {
             wb.nativeAttr("slotLabelFormat",
-                    schedule.getSlotLabelFormat().startsWith("[")
-                        ? schedule.getSlotLabelFormat()
-                        : "['" + EscapeUtils.forJavaScript(schedule.getSlotLabelFormat()) + "']");
+                    component.getSlotLabelFormat().startsWith("[")
+                        ? component.getSlotLabelFormat()
+                        : "['" + EscapeUtils.forJavaScript(component.getSlotLabelFormat()) + "']");
         }
 
-        String displayEventEnd = schedule.getDisplayEventEnd();
+        String displayEventEnd = component.getDisplayEventEnd();
         if (displayEventEnd != null) {
             if ("true".equals(displayEventEnd) || "false".equals(displayEventEnd)) {
                 wb.nativeAttr("displayEventEnd", displayEventEnd);
@@ -261,13 +257,13 @@ public class ScheduleRenderer extends CoreRenderer {
         }
 
         if (isShowWeekNumbers) {
-            String weekNumCalculation = schedule.getWeekNumberCalculation();
-            String weekNumCalculator = schedule.getWeekNumberCalculator();
+            String weekNumCalculation = component.getWeekNumberCalculation();
+            String weekNumCalculator = component.getWeekNumberCalculator();
 
             if ("custom".equals(weekNumCalculation)) {
                 if (weekNumCalculator != null) {
                     wb.append(",weekNumberCalculation: function(date){ return ")
-                            .append(schedule.getWeekNumberCalculator())
+                            .append(component.getWeekNumberCalculator())
                             .append("}");
                 }
             }
@@ -278,31 +274,31 @@ public class ScheduleRenderer extends CoreRenderer {
 
         wb.append("}");
 
-        encodeClientBehaviors(context, schedule);
+        encodeClientBehaviors(context, component);
 
         wb.finish();
     }
 
-    protected void encodeMarkup(FacesContext context, Schedule schedule) throws IOException {
+    protected void encodeMarkup(FacesContext context, Schedule component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = schedule.getClientId(context);
+        String clientId = component.getClientId(context);
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
-        if (schedule.getStyle() != null) {
-            writer.writeAttribute("style", schedule.getStyle(), "style");
+        if (component.getStyle() != null) {
+            writer.writeAttribute("style", component.getStyle(), "style");
         }
-        if (schedule.getStyleClass() != null) {
-            writer.writeAttribute("class", schedule.getStyleClass(), "style");
+        if (component.getStyleClass() != null) {
+            writer.writeAttribute("class", component.getStyleClass(), "style");
         }
 
-        encodeStateParam(context, schedule);
+        encodeStateParam(context, component);
 
         writer.endElement("div");
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, Schedule component) throws IOException {
         //Do nothing
     }
 
@@ -311,9 +307,9 @@ public class ScheduleRenderer extends CoreRenderer {
         return true;
     }
 
-    protected void encodeStateParam(FacesContext context, Schedule schedule) throws IOException {
-        String id = schedule.getClientId(context) + "_view";
-        String view = schedule.getView();
+    protected void encodeStateParam(FacesContext context, Schedule component) throws IOException {
+        String id = component.getClientId(context) + "_view";
+        String view = component.getView();
 
         renderHiddenInput(context, id, view, false);
     }

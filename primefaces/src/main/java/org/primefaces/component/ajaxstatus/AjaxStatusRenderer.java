@@ -33,53 +33,51 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class AjaxStatusRenderer extends CoreRenderer {
+public class AjaxStatusRenderer extends CoreRenderer<AjaxStatus> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        AjaxStatus status = (AjaxStatus) component;
-
-        encodeMarkup(context, status);
-        encodeScript(context, status);
+    public void encodeEnd(FacesContext context, AjaxStatus component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    protected void encodeScript(FacesContext context, AjaxStatus status) throws IOException {
-        WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("AjaxStatus", status);
-        wb.attr("delay", status.getDelay());
+    protected void encodeScript(FacesContext context, AjaxStatus component) throws IOException {
+        WidgetBuilder wb = getWidgetBuilder(context)
+                .init("AjaxStatus", component)
+                .attr("delay", component.getDelay());
 
-        wb.callback(AjaxStatus.START, "function()", status.getOnstart())
-                .callback(AjaxStatus.ERROR, "function(xhr,settings,error)", status.getOnerror())
-                .callback(AjaxStatus.SUCCESS, "function(xhr,settings)", status.getOnsuccess())
-                .callback(AjaxStatus.COMPLETE, "function(xhr,settings,args)", status.getOncomplete());
+        wb.callback(AjaxStatus.START, "function()", component.getOnstart())
+                .callback(AjaxStatus.ERROR, "function(xhr,settings,error)", component.getOnerror())
+                .callback(AjaxStatus.SUCCESS, "function(xhr,settings)", component.getOnsuccess())
+                .callback(AjaxStatus.COMPLETE, "function(xhr,settings,args)", component.getOncomplete());
 
         wb.finish();
     }
 
-    protected void encodeMarkup(FacesContext context, AjaxStatus status) throws IOException {
+    protected void encodeMarkup(FacesContext context, AjaxStatus component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = status.getClientId(context);
+        String clientId = component.getClientId(context);
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
 
-        if (status.getStyle() != null) {
-            writer.writeAttribute("style", status.getStyle(), "style");
+        if (component.getStyle() != null) {
+            writer.writeAttribute("style", component.getStyle(), "style");
         }
-        if (status.getStyleClass() != null) {
-            writer.writeAttribute("class", status.getStyleClass(), "styleClass");
+        if (component.getStyleClass() != null) {
+            writer.writeAttribute("class", component.getStyleClass(), "styleClass");
         }
 
         for (int i = 0; i < AjaxStatus.EVENTS.size(); i++) {
             String event = AjaxStatus.EVENTS.get(i);
-            UIComponent facet = status.getFacet(event);
+            UIComponent facet = component.getFacet(event);
 
             if (FacetUtils.shouldRenderFacet(facet)) {
                 encodeFacet(context, clientId, facet, event, true);
             }
         }
 
-        UIComponent defaultFacet = status.getFacet(AjaxStatus.DEFAULT);
+        UIComponent defaultFacet = component.getFacet(AjaxStatus.DEFAULT);
         if (FacetUtils.shouldRenderFacet(defaultFacet)) {
             encodeFacet(context, clientId, defaultFacet, AjaxStatus.DEFAULT, false);
         }

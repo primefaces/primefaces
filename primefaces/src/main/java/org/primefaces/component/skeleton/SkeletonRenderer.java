@@ -28,33 +28,31 @@ import org.primefaces.util.LangUtils;
 
 import java.io.IOException;
 
-import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class SkeletonRenderer extends CoreRenderer {
+public class SkeletonRenderer extends CoreRenderer<Skeleton> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Skeleton skeleton = (Skeleton) component;
+    public void encodeEnd(FacesContext context, Skeleton component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String size = skeleton.getSize();
+        String size = component.getSize();
         String styleClass = getStyleClassBuilder(context)
                     .add(Skeleton.STYLE_CLASS)
-                    .add(skeleton.getStyleClass())
-                    .add("circle".equals(skeleton.getShape()), Skeleton.CIRCLE_CLASS)
-                    .add("none".equals(skeleton.getAnimation()), Skeleton.NONE_ANIMATION_CLASS)
+                    .add(component.getStyleClass())
+                    .add("circle".equals(component.getShape()), Skeleton.CIRCLE_CLASS)
+                    .add("none".equals(component.getAnimation()), Skeleton.NONE_ANIMATION_CLASS)
                     .build();
 
         String style = getStyleBuilder(context)
-                         .add(skeleton.getStyle())
-                         .add(size != null, "width", size, skeleton.getWidth())
-                         .add(size != null, "height", size, skeleton.getHeight())
-                         .add("border-radius", skeleton.getBorderRadius())
+                         .add(component.getStyle())
+                         .add(size != null, "width", size, component.getWidth())
+                         .add(size != null, "height", size, component.getHeight())
+                         .add("border-radius", component.getBorderRadius())
                          .build();
 
         writer.startElement("div", null);
-        writer.writeAttribute("id", skeleton.getClientId(context), "id");
+        writer.writeAttribute("id", component.getClientId(context), "id");
         writer.writeAttribute("class", styleClass, "styleClass");
         if (LangUtils.isNotBlank(style)) {
             writer.writeAttribute("style", style, "style");

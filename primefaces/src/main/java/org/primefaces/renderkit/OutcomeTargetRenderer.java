@@ -42,7 +42,7 @@ import jakarta.faces.flow.FlowHandler;
 import jakarta.faces.lifecycle.ClientWindow;
 import jakarta.servlet.http.HttpServletRequest;
 
-public class OutcomeTargetRenderer extends CoreRenderer {
+public class OutcomeTargetRenderer<T extends UIComponent> extends CoreRenderer<T> {
 
     protected NavigationCase findNavigationCase(FacesContext context, UIOutcomeTarget outcomeTarget) {
         ConfigurableNavigationHandler navigationHandler = (ConfigurableNavigationHandler) context.getApplication().getNavigationHandler();
@@ -155,16 +155,16 @@ public class OutcomeTargetRenderer extends CoreRenderer {
         String url;
 
         boolean clientWindowRenderingModeEnabled = false;
-        Object clientWindow = null;
+        ClientWindow clientWindow = null;
         try {
             if (outcomeTarget.isDisableClientWindow()) {
                 clientWindow = context.getExternalContext().getClientWindow();
 
                 if (clientWindow != null) {
-                    clientWindowRenderingModeEnabled = ((ClientWindow) clientWindow).isClientWindowRenderModeEnabled(context);
+                    clientWindowRenderingModeEnabled = clientWindow.isClientWindowRenderModeEnabled(context);
 
                     if (clientWindowRenderingModeEnabled) {
-                        ((ClientWindow) clientWindow).disableClientWindowRenderMode(context);
+                        clientWindow.disableClientWindowRenderMode(context);
                     }
                 }
             }
@@ -197,7 +197,7 @@ public class OutcomeTargetRenderer extends CoreRenderer {
         }
         finally {
             if (clientWindowRenderingModeEnabled) {
-                ((ClientWindow) clientWindow).enableClientWindowRenderMode(context);
+                clientWindow.enableClientWindowRenderMode(context);
             }
         }
 

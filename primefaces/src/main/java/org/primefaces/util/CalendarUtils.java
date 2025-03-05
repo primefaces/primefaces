@@ -185,7 +185,7 @@ public class CalendarUtils {
             }
         }
 
-        Converter converter = context.getApplication().createConverter(value.getClass());
+        Converter<?> converter = context.getApplication().createConverter(value.getClass());
         if (converter != null) {
             Object obj = converter.getAsObject(context, calendar, value.toString());
             if (obj instanceof LocalTime) {

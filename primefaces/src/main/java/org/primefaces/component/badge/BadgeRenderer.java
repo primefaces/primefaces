@@ -34,13 +34,12 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class BadgeRenderer extends CoreRenderer {
+public class BadgeRenderer extends CoreRenderer<Badge> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Badge badge = (Badge) component;
-        boolean hasChildren = badge.getChildCount() > 0;
-        encode(context, badge, null, hasChildren);
+    public void encodeEnd(FacesContext context, Badge component) throws IOException {
+        boolean hasChildren = component.getChildCount() > 0;
+        encode(context, component, null, hasChildren);
     }
 
     public static <T extends UIComponent> void encodeOverlayed(FacesContext context, Object badge,
@@ -79,13 +78,13 @@ public class BadgeRenderer extends CoreRenderer {
         context.getResponseWriter().endElement("div");
     }
 
-    protected void encode(FacesContext context, Badge badge, BadgeModel badgeModel, boolean renderChildren) throws IOException {
+    protected void encode(FacesContext context, Badge component, BadgeModel badgeModel, boolean renderChildren) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         BadgeModel model = badgeModel;
         if (model == null) {
-            model = badge.toBadgeModel();
+            model = component.toBadgeModel();
         }
-        String clientId = badge == null ? null : badge.getClientId(context);
+        String clientId = component == null ? null : component.getClientId(context);
         String value = model.getValue();
         boolean valueEmpty = LangUtils.isEmpty(value);
         String severity = model.getSeverity();
@@ -127,16 +126,16 @@ public class BadgeRenderer extends CoreRenderer {
             writer.writeAttribute("onclick", "$(this).next().click();", "onclick");
         }
 
-        encodeValue(context, badge, model);
+        encodeValue(context, component, model);
         writer.endElement("span");
 
         if (renderChildren) {
-            renderChildren(context, badge);
+            renderChildren(context, component);
             encodeOverlayEnd(context);
         }
     }
 
-    protected void encodeValue(FacesContext context, Badge badge, BadgeModel model) throws IOException {
+    protected void encodeValue(FacesContext context, Badge component, BadgeModel model) throws IOException {
         if (!model.isVisible()) {
             return;
         }
@@ -148,23 +147,23 @@ public class BadgeRenderer extends CoreRenderer {
         String iconPos = model.getIconPos();
 
         if (iconEmpty) {
-            encodeLabel(context, badge, value, valueEmpty);
+            encodeLabel(context, component, value, valueEmpty);
             return;
         }
 
         if ("left".equalsIgnoreCase(iconPos)) {
             // left icon
-            encodeIcon(context, badge, icon);
-            encodeLabel(context, badge, value, valueEmpty);
+            encodeIcon(context, component, icon);
+            encodeLabel(context, component, value, valueEmpty);
         }
         else {
             // right icon
-            encodeLabel(context, badge, value, valueEmpty);
-            encodeIcon(context, badge, icon);
+            encodeLabel(context, component, value, valueEmpty);
+            encodeIcon(context, component, icon);
         }
     }
 
-    protected void encodeIcon(FacesContext context, Badge badge, String icon) throws IOException {
+    protected void encodeIcon(FacesContext context, Badge component, String icon) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String iconStyleClass = getStyleClassBuilder(context)
                 .add(Badge.ICON_CLASS)
@@ -175,7 +174,7 @@ public class BadgeRenderer extends CoreRenderer {
         writer.endElement("span");
     }
 
-    protected void encodeLabel(FacesContext context, Badge badge, String value, boolean valueEmpty) throws IOException {
+    protected void encodeLabel(FacesContext context, Badge component, String value, boolean valueEmpty) throws IOException {
         if (!valueEmpty) {
             ResponseWriter writer = context.getResponseWriter();
             writer.startElement("span", null);
@@ -186,7 +185,7 @@ public class BadgeRenderer extends CoreRenderer {
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, Badge component) throws IOException {
         //Do nothing
     }
 

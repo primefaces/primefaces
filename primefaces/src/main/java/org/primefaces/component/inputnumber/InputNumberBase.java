@@ -26,7 +26,6 @@ package org.primefaces.component.inputnumber;
 import org.primefaces.component.api.AbstractPrimeHtmlInputText;
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LocaleUtils;
 
 public abstract class InputNumberBase extends AbstractPrimeHtmlInputText implements Widget, InputHolder {
@@ -159,7 +158,7 @@ public abstract class InputNumberBase extends AbstractPrimeHtmlInputText impleme
     }
 
     public String getDecimalSeparator() {
-        return ComponentUtils.eval(getStateHelper(), PropertyKeys.decimalSeparator,
+        return (String) getStateHelper().eval(PropertyKeys.decimalSeparator,
             () -> LocaleUtils.getDecimalSeparator(getFacesContext()));
     }
 
@@ -168,7 +167,7 @@ public abstract class InputNumberBase extends AbstractPrimeHtmlInputText impleme
     }
 
     public String getThousandSeparator() {
-        return ComponentUtils.eval(getStateHelper(), PropertyKeys.thousandSeparator,
+        return (String) getStateHelper().eval(PropertyKeys.thousandSeparator,
             () -> LocaleUtils.getThousandSeparator(getFacesContext()));
     }
 

@@ -117,7 +117,7 @@ public class DataList extends DataListBase {
         DataModel<?> model = getDataModel();
 
         if (model instanceof LazyDataModel) {
-            LazyDataModel<?> lazyModel = (LazyDataModel) model;
+            LazyDataModel<?> lazyModel = (LazyDataModel<?>) model;
 
             lazyModel.setRowCount(lazyModel.count(Collections.emptyMap()));
             calculateFirst();
@@ -162,7 +162,7 @@ public class DataList extends DataListBase {
                 int index = Integer.parseInt(params.get(clientId + "_item"));
                 setRowIndex(index);
 
-                SelectEvent<?> selectEvent = new SelectEvent(this, behaviorEvent.getBehavior(), getRowData());
+                SelectEvent<?> selectEvent = new SelectEvent<>(this, behaviorEvent.getBehavior(), getRowData());
                 selectEvent.setPhaseId(behaviorEvent.getPhaseId());
 
                 setRowIndex(-1);

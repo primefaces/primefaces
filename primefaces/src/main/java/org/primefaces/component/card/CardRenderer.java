@@ -33,45 +33,44 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class CardRenderer extends CoreRenderer {
+public class CardRenderer extends CoreRenderer<Card> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Card card = (Card) component;
+    public void encodeEnd(FacesContext context, Card component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = getStyleClassBuilder(context)
                 .add(Card.STYLE_CLASS)
-                .add(card.getStyleClass())
+                .add(component.getStyleClass())
                 .build();
 
-        writer.startElement("div", card);
-        writer.writeAttribute("id", card.getClientId(context), "id");
+        writer.startElement("div", component);
+        writer.writeAttribute("id", component.getClientId(context), "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        if (LangUtils.isNotBlank(card.getStyle())) {
-            writer.writeAttribute("style", card.getStyle(), "style");
+        if (LangUtils.isNotBlank(component.getStyle())) {
+            writer.writeAttribute("style", component.getStyle(), "style");
         }
 
         //header
-        encodeCardTextOrFacet(context, card, card.getHeader(), "header", Card.HEADER_CLASS);
+        encodeCardTextOrFacet(context, component, component.getHeader(), "header", Card.HEADER_CLASS);
 
         //BODY START
         writer.startElement("div", null);
         writer.writeAttribute("class", Card.BODY_CLASS, null);
 
         //title
-        encodeCardTextOrFacet(context, card, card.getTitle(), "title", Card.TITLE_CLASS);
+        encodeCardTextOrFacet(context, component, component.getTitle(), "title", Card.TITLE_CLASS);
 
         //subtitle
-        encodeCardTextOrFacet(context, card, card.getSubtitle(), "subtitle", Card.SUBTITLE_CLASS);
+        encodeCardTextOrFacet(context, component, component.getSubtitle(), "subtitle", Card.SUBTITLE_CLASS);
 
         //content
         writer.startElement("div", null);
         writer.writeAttribute("class", Card.CONTENT_CLASS, null);
-        renderChildren(context, card);
+        renderChildren(context, component);
         writer.endElement("div");
 
         //footer
-        encodeCardTextOrFacet(context, card, card.getFooter(), "footer", Card.FOOTER_CLASS);
+        encodeCardTextOrFacet(context, component, component.getFooter(), "footer", Card.FOOTER_CLASS);
 
         writer.endElement("div");
         //BODY END
@@ -85,11 +84,11 @@ public class CardRenderer extends CoreRenderer {
     }
 
     @Override
-    public void encodeChildren(final FacesContext fc, final UIComponent component) {
+    public void encodeChildren(FacesContext fc, Card component) {
         // nothing to do
     }
 
-    protected void encodeCardTextOrFacet(FacesContext context, Card card, String value, String facetName, String cssClass) throws IOException {
+    protected void encodeCardTextOrFacet(FacesContext context, Card component, String value, String facetName, String cssClass) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         if (LangUtils.isNotBlank(value)) {
@@ -99,7 +98,7 @@ public class CardRenderer extends CoreRenderer {
             writer.endElement("div");
         }
         else {
-            UIComponent facet = card.getFacet(facetName);
+            UIComponent facet = component.getFacet(facetName);
             if (FacetUtils.shouldRenderFacet(facet)) {
                 writer.startElement("div", null);
                 writer.writeAttribute("class", cssClass, null);

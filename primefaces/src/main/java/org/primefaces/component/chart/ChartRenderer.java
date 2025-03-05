@@ -36,28 +36,26 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class ChartRenderer extends CoreRenderer {
+public class ChartRenderer extends CoreRenderer<Chart> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
+    public void decode(FacesContext context, Chart component) {
         super.decodeBehaviors(context, component);
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Chart chart = (Chart) component;
-
-        encodeMarkup(context, chart);
-        encodeScript(context, chart);
+    public void encodeEnd(FacesContext context, Chart component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    protected void encodeMarkup(FacesContext context, Chart chart) throws IOException {
+    protected void encodeMarkup(FacesContext context, Chart component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = chart.getClientId(context);
-        String style = chart.getStyle();
-        String styleClass = chart.getStyleClass();
-        String canvasStyle = chart.getCanvasStyle();
-        String canvasStyleClass = chart.getCanvasStyleClass();
+        String clientId = component.getClientId(context);
+        String style = component.getStyle();
+        String styleClass = component.getStyleClass();
+        String canvasStyle = component.getCanvasStyle();
+        String canvasStyleClass = component.getCanvasStyleClass();
         styleClass = (styleClass != null) ? "ui-chart " + styleClass : "ui-chart";
 
         writer.startElement("div", null);
@@ -70,7 +68,7 @@ public class ChartRenderer extends CoreRenderer {
         writer.startElement("canvas", null);
         writer.writeAttribute("id", clientId + "_canvas", null);
         writer.writeAttribute(HTML.ARIA_ROLE, "img", null);
-        writer.writeAttribute(HTML.ARIA_LABEL, chart.getAriaLabel(), null);
+        writer.writeAttribute(HTML.ARIA_LABEL, component.getAriaLabel(), null);
         if (LangUtils.isNotEmpty(canvasStyle)) {
             writer.writeAttribute("style", canvasStyle, null);
         }
@@ -82,13 +80,13 @@ public class ChartRenderer extends CoreRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeScript(FacesContext context, Chart chart) throws IOException {
+    protected void encodeScript(FacesContext context, Chart component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Chart", chart)
-                .nativeAttr("config", renderConfig(context, chart))
-                .nativeAttr("extender", chart.getExtender());
+        wb.init("Chart", component)
+                .nativeAttr("config", renderConfig(context, component))
+                .nativeAttr("extender", component.getExtender());
 
-        encodeClientBehaviors(context, chart);
+        encodeClientBehaviors(context, component);
 
         wb.finish();
     }
@@ -96,8 +94,8 @@ public class ChartRenderer extends CoreRenderer {
     /**
      * Allow value to be a property or a facet of raw JSON.
      */
-    protected String renderConfig(FacesContext context, Chart chart) throws IOException {
-        UIComponent facet = chart.getFacet("value");
+    protected String renderConfig(FacesContext context, Chart component) throws IOException {
+        UIComponent facet = component.getFacet("value");
         if (FacetUtils.shouldRenderFacet(facet)) {
             // swap writers
             ResponseWriter originalWriter = context.getResponseWriter();
@@ -113,7 +111,7 @@ public class ChartRenderer extends CoreRenderer {
             return fsw.toString();
         }
         else {
-            return chart.getValue();
+            return component.getValue();
         }
     }
 

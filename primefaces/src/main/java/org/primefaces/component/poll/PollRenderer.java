@@ -30,42 +30,38 @@ import java.io.IOException;
 import java.time.Duration;
 
 import jakarta.faces.FacesException;
-import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.ActionEvent;
 import jakarta.faces.event.PhaseId;
 
-public class PollRenderer extends CoreRenderer {
+public class PollRenderer extends CoreRenderer<Poll> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
-        Poll poll = (Poll) component;
-
-        if (context.getExternalContext().getRequestParameterMap().containsKey(poll.getClientId(context))) {
-            ActionEvent event = new ActionEvent(poll);
-            if (poll.isImmediate()) {
+    public void decode(FacesContext context, Poll component) {
+        if (context.getExternalContext().getRequestParameterMap().containsKey(component.getClientId(context))) {
+            ActionEvent event = new ActionEvent(component);
+            if (component.isImmediate()) {
                 event.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             }
             else {
                 event.setPhaseId(PhaseId.INVOKE_APPLICATION);
             }
 
-            poll.queueEvent(event);
+            component.queueEvent(event);
         }
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Poll poll = (Poll) component;
-        String clientId = poll.getClientId(context);
+    public void encodeEnd(FacesContext context, Poll component) throws IOException {
+        String clientId = component.getClientId(context);
 
         renderDummyMarkup(context, component, clientId);
 
-        String request = preConfiguredAjaxRequestBuilder(context, poll)
-                .params(poll)
+        String request = preConfiguredAjaxRequestBuilder(context, component)
+                .params(component)
                 .build();
 
-        Object interval = poll.getInterval();
+        Object interval = component.getInterval();
 
         long convertedInterval;
         if (interval instanceof Number) {
@@ -87,12 +83,12 @@ public class PollRenderer extends CoreRenderer {
         }
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Poll", poll)
+        wb.init("Poll", component)
                 .attr("frequency", convertedInterval)
-                .attr("autoStart", poll.isAutoStart())
-                .attr("intervalType", poll.getIntervalType(), "second")
-                .callback("onActivated", "function()", poll.getOnactivated())
-                .callback("onDeactivated", "function()", poll.getOndeactivated())
+                .attr("autoStart", component.isAutoStart())
+                .attr("intervalType", component.getIntervalType(), "second")
+                .callback("onActivated", "function()", component.getOnactivated())
+                .callback("onDeactivated", "function()", component.getOndeactivated())
                 .callback("fn", "function()", request);
 
         wb.finish();

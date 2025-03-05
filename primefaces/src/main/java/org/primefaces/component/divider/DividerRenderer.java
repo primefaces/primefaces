@@ -28,24 +28,22 @@ import org.primefaces.util.HTML;
 
 import java.io.IOException;
 
-import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class DividerRenderer extends CoreRenderer {
+public class DividerRenderer extends CoreRenderer<Divider> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Divider divider = (Divider) component;
+    public void encodeEnd(FacesContext context, Divider component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String layout = divider.getLayout();
-        String align = divider.getAlign();
-        String type = divider.getType();
+        String layout = component.getLayout();
+        String align = component.getAlign();
+        String type = component.getType();
         boolean isHorizontal = "horizontal".equals(layout);
         boolean isVertical = "vertical".equals(layout);
         String styleClass = getStyleClassBuilder(context)
                     .add(Divider.STYLE_CLASS)
-                    .add(divider.getStyleClass())
+                    .add(component.getStyleClass())
                     .add(isHorizontal, Divider.HORIZONTAL_CLASS)
                     .add(isVertical, Divider.VERTICAL_CLASS)
                     .add("solid".equals(type), Divider.SOLID_CLASS)
@@ -59,26 +57,26 @@ public class DividerRenderer extends CoreRenderer {
                     .build();
 
         writer.startElement("div", null);
-        writer.writeAttribute("id", divider.getClientId(context), "id");
+        writer.writeAttribute("id", component.getClientId(context), "id");
         writer.writeAttribute("role", HTML.ARIA_ROLE_SEPARATOR, "role");
         writer.writeAttribute("class", styleClass, "styleClass");
-        if (divider.getStyle() != null) {
-            writer.writeAttribute("style", divider.getStyle(), "style");
+        if (component.getStyle() != null) {
+            writer.writeAttribute("style", component.getStyle(), "style");
         }
-        if (divider.getTitle() != null) {
-            writer.writeAttribute("title", divider.getTitle(), "title");
+        if (component.getTitle() != null) {
+            writer.writeAttribute("title", component.getTitle(), "title");
         }
-        if (divider.getChildCount() > 0) {
+        if (component.getChildCount() > 0) {
             writer.startElement("div", null);
             writer.writeAttribute("class", Divider.CONTENT_CLASS, "styleClass");
-            renderChildren(context, divider);
+            renderChildren(context, component);
             writer.endElement("div");
         }
         writer.endElement("div");
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, Divider component) throws IOException {
         //Do nothing
     }
 

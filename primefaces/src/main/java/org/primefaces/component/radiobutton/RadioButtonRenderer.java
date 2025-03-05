@@ -31,21 +31,19 @@ import org.primefaces.util.SharedStringBuilder;
 
 import java.io.IOException;
 
-import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class RadioButtonRenderer extends InputRenderer {
+public class RadioButtonRenderer extends InputRenderer<RadioButton> {
 
     private static final String SB_BUILD_EVENT = RadioButtonRenderer.class.getName() + "#buildEvent";
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        RadioButton radioButton = (RadioButton) component;
+    public void encodeEnd(FacesContext context, RadioButton component) throws IOException {
         SelectOneRadio selectOneRadio = (SelectOneRadio) SearchExpressionUtils.contextlessResolveComponent(
-                context, radioButton, radioButton.getFor());
+                context, component, component.getFor());
 
-        encodeMarkup(context, radioButton, selectOneRadio);
+        encodeMarkup(context, component, selectOneRadio);
     }
 
     protected void encodeMarkup(FacesContext context, RadioButton radio, SelectOneRadio selectOneRadio) throws IOException {

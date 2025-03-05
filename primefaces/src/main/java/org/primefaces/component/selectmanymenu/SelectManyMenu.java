@@ -105,13 +105,13 @@ public class SelectManyMenu extends SelectManyMenuBase {
             AjaxBehaviorEvent ajaxBehaviorEvent = (AjaxBehaviorEvent) event;
             if ("itemSelect".equals(eventName)) {
                 Object selectedItemValue = ComponentUtils.getConvertedValue(context, this, params.get(getClientId(context) + "_itemSelect"));
-                SelectEvent selectEvent = new SelectEvent(this, ((AjaxBehaviorEvent) event).getBehavior(), selectedItemValue);
+                SelectEvent<?> selectEvent = new SelectEvent<>(this, ((AjaxBehaviorEvent) event).getBehavior(), selectedItemValue);
                 selectEvent.setPhaseId(event.getPhaseId());
                 super.queueEvent(selectEvent);
             }
             else if ("itemUnselect".equals(eventName)) {
                 Object unselectedItemValue = ComponentUtils.getConvertedValue(context, this, params.get(getClientId(context) + "_itemUnselect"));
-                UnselectEvent unselectEvent = new UnselectEvent(this, ajaxBehaviorEvent.getBehavior(), unselectedItemValue);
+                UnselectEvent<?> unselectEvent = new UnselectEvent<>(this, ajaxBehaviorEvent.getBehavior(), unselectedItemValue);
                 unselectEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
                 super.queueEvent(unselectEvent);
             }

@@ -33,52 +33,50 @@ import java.io.IOException;
 
 import jakarta.faces.application.Resource;
 import jakarta.faces.application.ResourceHandler;
-import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class GraphicImageRenderer extends CoreRenderer {
+public class GraphicImageRenderer extends CoreRenderer<GraphicImage> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
+    public void decode(FacesContext context, GraphicImage component) {
         decodeBehaviors(context, component);
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+    public void encodeEnd(FacesContext context, GraphicImage component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        GraphicImage image = (GraphicImage) component;
-        String clientId = image.getClientId(context);
-        String imageSrc = getImageSrc(context, image);
+        String clientId = component.getClientId(context);
+        String imageSrc = getImageSrc(context, component);
 
-        writer.startElement("img", image);
+        writer.startElement("img", component);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("src", imageSrc, null);
 
-        if (image.getAlt() == null) {
+        if (component.getAlt() == null) {
             writer.writeAttribute("alt", "", null);
         }
-        if (image.getStyleClass() != null) {
-            writer.writeAttribute("class", image.getStyleClass(), "styleClass");
+        if (component.getStyleClass() != null) {
+            writer.writeAttribute("class", component.getStyleClass(), "styleClass");
         }
 
-        renderDomEvents(context, image, HTML.IMG_ATTRS);
+        renderDomEvents(context, component, HTML.IMG_ATTRS);
 
         writer.endElement("img");
     }
 
-    protected String getImageSrc(FacesContext context, GraphicImage image) {
-        String name = image.getName();
+    protected String getImageSrc(FacesContext context, GraphicImage component) {
+        String name = component.getName();
 
         if (name != null) {
-            String library = image.getLibrary();
+            String library = component.getLibrary();
             ResourceHandler handler = context.getApplication().getResourceHandler();
             Resource resource = handler.createResource(name, library);
             if (resource == null) {
                 return "RES_NOT_FOUND";
             }
 
-            if (image.isStream()) {
+            if (component.isStream()) {
                 String requestPath = resource.getRequestPath();
                 return context.getExternalContext().encodeResourceURL(requestPath);
             }
@@ -87,8 +85,8 @@ public class GraphicImageRenderer extends CoreRenderer {
             }
         }
         else {
-            return DynamicContentSrcBuilder.build(context, image, image.getValueExpression(GraphicImage.PropertyKeys.value.name()),
-                    new Lazy<>(() -> image.getValue()), image.isCache(), image.isStream());
+            return DynamicContentSrcBuilder.build(context, component, component.getValueExpression(GraphicImage.PropertyKeys.value.name()),
+                    new Lazy<>(() -> component.getValue()), component.isCache(), component.isStream());
         }
     }
 }

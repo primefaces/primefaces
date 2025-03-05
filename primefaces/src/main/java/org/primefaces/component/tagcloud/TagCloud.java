@@ -85,7 +85,7 @@ public class TagCloud extends TagCloudBase {
 
                 if (model != null) {
                     TagCloudItem item = model.getTags().get(itemIndex);
-                    SelectEvent selectEvent = new SelectEvent(this, behaviorEvent.getBehavior(), item);
+                    SelectEvent<?> selectEvent = new SelectEvent<>(this, behaviorEvent.getBehavior(), item);
                     selectEvent.setPhaseId(behaviorEvent.getPhaseId());
 
                     super.queueEvent(selectEvent);

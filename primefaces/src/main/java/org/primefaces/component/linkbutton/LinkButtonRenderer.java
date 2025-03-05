@@ -31,42 +31,39 @@ import org.primefaces.util.WidgetBuilder;
 import java.io.IOException;
 import java.util.Objects;
 
-import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class LinkButtonRenderer extends OutcomeTargetRenderer {
+public class LinkButtonRenderer extends OutcomeTargetRenderer<LinkButton> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        LinkButton linkButton = (LinkButton) component;
-
-        encodeMarkup(context, linkButton);
-        encodeScript(context, linkButton);
+    public void encodeEnd(FacesContext context, LinkButton component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    protected void encodeMarkup(FacesContext context, LinkButton linkButton) throws IOException {
+    protected void encodeMarkup(FacesContext context, LinkButton component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        boolean disabled = linkButton.isDisabled();
-        boolean hasIcon = LangUtils.isNotBlank(linkButton.getIcon());
-        boolean hasValue = LangUtils.isNotBlank(getValueAsString(linkButton)) || linkButton.hasDisplayedChildren();
+        boolean disabled = component.isDisabled();
+        boolean hasIcon = LangUtils.isNotBlank(component.getIcon());
+        boolean hasValue = LangUtils.isNotBlank(getValueAsString(component)) || component.hasDisplayedChildren();
         boolean isTextAndIcon = hasValue && hasIcon;
 
-        String style = linkButton.getStyle();
-        String title = linkButton.getTitle();
+        String style = component.getStyle();
+        String title = component.getTitle();
         String styleClass = getStyleClassBuilder(context)
                     .add("ui-linkbutton")
-                    .add(linkButton.getStyleClass())
+                    .add(component.getStyleClass())
                     .add(hasValue && !hasIcon, HTML.BUTTON_TEXT_ONLY_BUTTON_CLASS)
                     .add(!hasValue && hasIcon, HTML.BUTTON_ICON_ONLY_BUTTON_CLASS)
-                    .add(isTextAndIcon && "left".equals(linkButton.getIconPos()), HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS)
-                    .add(isTextAndIcon && "right".equals(linkButton.getIconPos()), HTML.BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS)
+                    .add(isTextAndIcon && "left".equals(component.getIconPos()), HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS)
+                    .add(isTextAndIcon && "right".equals(component.getIconPos()), HTML.BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS)
                     .add(disabled, "ui-state-disabled")
                     .build();
 
-        writer.startElement("span", linkButton);
-        writer.writeAttribute("id", linkButton.getClientId(context), "id");
+        writer.startElement("span", component);
+        writer.writeAttribute("id", component.getClientId(context), "id");
         writer.writeAttribute("class", styleClass, "styleClass");
         if (style != null) {
             writer.writeAttribute("style", style, "style");
@@ -74,35 +71,35 @@ public class LinkButtonRenderer extends OutcomeTargetRenderer {
         if (title != null) {
             writer.writeAttribute("title", title, "title");
         }
-        renderPassThruAttributes(context, linkButton, HTML.OUTPUT_EVENTS_WITHOUT_CLICK);
+        renderPassThruAttributes(context, component, HTML.OUTPUT_EVENTS_WITHOUT_CLICK);
 
-        String targetURL = getTargetURL(context, linkButton);
+        String targetURL = getTargetURL(context, component);
         if (targetURL == null) {
             targetURL = "#";
         }
 
         writer.startElement("a", null);
         writer.writeAttribute("href", targetURL, null);
-        renderPassThruAttributes(context, linkButton, HTML.LINK_ATTRS_WITHOUT_EVENTS_AND_STYLE, HTML.TITLE);
-        renderDomEvents(context, linkButton, HTML.OUTPUT_EVENTS);
-        renderContent(context, linkButton);
+        renderPassThruAttributes(context, component, HTML.LINK_ATTRS_WITHOUT_EVENTS_AND_STYLE, HTML.TITLE);
+        renderDomEvents(context, component, HTML.OUTPUT_EVENTS);
+        renderContent(context, component);
         writer.endElement("a");
 
         writer.endElement("span");
     }
 
-    protected void encodeScript(FacesContext context, LinkButton button) throws IOException {
+    protected void encodeScript(FacesContext context, LinkButton component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("LinkButton", button);
+        wb.init("LinkButton", component);
         wb.finish();
     }
 
-    protected void renderContent(FacesContext context, LinkButton linkButton) throws IOException {
+    protected void renderContent(FacesContext context, LinkButton component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        String icon = linkButton.getIcon();
+        String icon = component.getIcon();
         if (!isValueBlank(icon)) {
-            String defaultIconClass = linkButton.getIconPos().equals("left") ? HTML.BUTTON_LEFT_ICON_CLASS : HTML.BUTTON_RIGHT_ICON_CLASS;
+            String defaultIconClass = component.getIconPos().equals("left") ? HTML.BUTTON_LEFT_ICON_CLASS : HTML.BUTTON_RIGHT_ICON_CLASS;
             String iconClass = defaultIconClass + " " + icon;
 
             writer.startElement("span", null);
@@ -113,23 +110,23 @@ public class LinkButtonRenderer extends OutcomeTargetRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
 
-        String value = getValueAsString(linkButton);
-        if (LangUtils.isBlank(value) && linkButton.hasDisplayedChildren()) {
-            renderChildren(context, linkButton);
+        String value = getValueAsString(component);
+        if (LangUtils.isBlank(value) && component.hasDisplayedChildren()) {
+            renderChildren(context, component);
         }
         else {
-            renderButtonValue(writer, linkButton.isEscape(), value, linkButton.getTitle(), linkButton.getAriaLabel());
+            renderButtonValue(writer, component.isEscape(), value, component.getTitle(), component.getAriaLabel());
         }
 
         writer.endElement("span");
     }
 
-    protected String getValueAsString(LinkButton linkButton) {
-        return Objects.toString(linkButton.getValue(), null);
+    protected String getValueAsString(LinkButton component) {
+        return Objects.toString(component.getValue(), null);
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, LinkButton component) throws IOException {
         //Do nothing
     }
 

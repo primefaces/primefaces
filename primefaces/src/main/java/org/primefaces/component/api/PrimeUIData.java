@@ -61,7 +61,7 @@ public class PrimeUIData extends UIDataPatch {
     }
 
     public boolean isLazy() {
-        return ComponentUtils.eval(getStateHelper(), PrimeUIData.PropertyKeys.lazy, () -> {
+        return (boolean) getStateHelper().eval(PropertyKeys.lazy, () -> {
             boolean lazy = false;
             FacesContext context = getFacesContext();
 

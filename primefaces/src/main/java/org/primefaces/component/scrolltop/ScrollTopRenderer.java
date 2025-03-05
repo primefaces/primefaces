@@ -28,47 +28,44 @@ import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 
-import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class ScrollTopRenderer extends CoreRenderer {
+public class ScrollTopRenderer extends CoreRenderer<ScrollTop> {
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        ScrollTop scrollTop = (ScrollTop) component;
-
-        encodeMarkup(context, scrollTop);
-        encodeScript(context, scrollTop);
+    public void encodeEnd(FacesContext context, ScrollTop component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    protected void encodeMarkup(FacesContext context, ScrollTop scrollTop) throws IOException {
+    protected void encodeMarkup(FacesContext context, ScrollTop component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = getStyleClassBuilder(context)
                     .add(ScrollTop.STYLE_CLASS)
-                    .add(scrollTop.getStyleClass())
-                    .add("parent".equals(scrollTop.getTarget()), ScrollTop.STICKY_CLASS)
+                    .add(component.getStyleClass())
+                    .add("parent".equals(component.getTarget()), ScrollTop.STICKY_CLASS)
                     .build();
-        String style = scrollTop.getStyle() != null ? "display: none;" + scrollTop.getStyle() : "display: none;";
+        String style = component.getStyle() != null ? "display: none;" + component.getStyle() : "display: none;";
 
         writer.startElement("a", null);
-        writer.writeAttribute("id", scrollTop.getClientId(context), "id");
+        writer.writeAttribute("id", component.getClientId(context), "id");
         writer.writeAttribute("href", "#", null);
         writer.writeAttribute("tabindex", "0", "tabindex");
         writer.writeAttribute("class", styleClass, "styleClass");
         writer.writeAttribute("style", style, "style");
 
-        writer.startElement("span", scrollTop);
-        writer.writeAttribute("class", ScrollTop.ICON_CLASS + " " + scrollTop.getIcon(), null);
+        writer.startElement("span", component);
+        writer.writeAttribute("class", ScrollTop.ICON_CLASS + " " + component.getIcon(), null);
         writer.endElement("span");
         writer.endElement("a");
     }
 
-    protected void encodeScript(FacesContext context, ScrollTop scrollTop) throws IOException {
+    protected void encodeScript(FacesContext context, ScrollTop component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("ScrollTop", scrollTop)
-                .attr("target", scrollTop.getTarget())
-                .attr("threshold", scrollTop.getThreshold())
-                .attr("behavior", scrollTop.getBehavior());
+        wb.init("ScrollTop", component)
+                .attr("target", component.getTarget())
+                .attr("threshold", component.getThreshold())
+                .attr("behavior", component.getBehavior());
         wb.finish();
     }
 }

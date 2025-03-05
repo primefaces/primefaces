@@ -37,23 +37,21 @@ import java.util.Map;
 import java.util.UUID;
 
 import jakarta.faces.application.Resource;
-import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class BarcodeRenderer extends CoreRenderer {
+public class BarcodeRenderer extends CoreRenderer<Barcode> {
 
     private static final String SB_BUILD = BarcodeRenderer.class.getName() + "#build";
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+    public void encodeEnd(FacesContext context, Barcode component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        Barcode barcode = (Barcode) component;
-        String clientId = barcode.getClientId(context);
-        String styleClass = barcode.getStyleClass();
+        String clientId = component.getClientId(context);
+        String styleClass = component.getStyleClass();
         String src = null;
-        Object value = barcode.getValue();
-        String type = barcode.getType();
+        Object value = component.getValue();
+        String type = component.getType();
         DynamicContentType dynamicContentType = "qr".equals(type) ? DynamicContentType.QR_CODE : DynamicContentType.BARCODE;
 
         if (value == null) {
@@ -77,19 +75,19 @@ public class BarcodeRenderer extends CoreRenderer {
             src = builder.append(resourcePath).append("&").append(Constants.DYNAMIC_CONTENT_PARAM).append("=").append(URLEncoder.encode(sessionKey, "UTF-8"))
                     .append("&").append(Constants.DYNAMIC_CONTENT_TYPE_PARAM).append("=").append(dynamicContentType.toString())
                     .append("&gen=").append(type)
-                    .append("&fmt=").append(barcode.getFormat())
-                    .append("&qrec=").append(barcode.getQrErrorCorrection())
-                    .append("&hrp=").append(barcode.getHrp())
-                    .append("&").append(Constants.DYNAMIC_CONTENT_CACHE_PARAM).append("=").append(barcode.isCache())
-                    .append("&ori=").append(barcode.getOrientation())
-                    .append("&mag=").append(barcode.getMagnification())
+                    .append("&fmt=").append(component.getFormat())
+                    .append("&qrec=").append(component.getQrErrorCorrection())
+                    .append("&hrp=").append(component.getHrp())
+                    .append("&").append(Constants.DYNAMIC_CONTENT_CACHE_PARAM).append("=").append(component.isCache())
+                    .append("&ori=").append(component.getOrientation())
+                    .append("&mag=").append(component.getMagnification())
                     .toString();
         }
         catch (UnsupportedEncodingException ex) {
             throw new IOException(ex);
         }
 
-        writer.startElement("img", barcode);
+        writer.startElement("img", component);
         if (shouldWriteId(component)) {
             writer.writeAttribute("id", clientId, "id");
         }
@@ -99,7 +97,7 @@ public class BarcodeRenderer extends CoreRenderer {
 
         writer.writeAttribute("src", context.getExternalContext().encodeResourceURL(src), null);
 
-        renderPassThruAttributes(context, barcode, HTML.IMG_ATTRS);
+        renderPassThruAttributes(context, component, HTML.IMG_ATTRS);
 
         writer.endElement("img");
     }

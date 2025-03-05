@@ -89,7 +89,7 @@ public class Mindmap extends MindmapBase {
             MindmapNode node = "root".equals(nodeKey) ? getValue() : findNode(getValue(), nodeKey);
             selectedNode = node;
 
-            super.queueEvent(new SelectEvent(this, behaviorEvent.getBehavior(), node));
+            super.queueEvent(new SelectEvent<>(this, behaviorEvent.getBehavior(), node));
         }
     }
 

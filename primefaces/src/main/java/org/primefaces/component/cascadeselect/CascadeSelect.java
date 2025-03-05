@@ -99,7 +99,7 @@ public class CascadeSelect extends CascadeSelectBase {
                         "jakarta.faces.SelectOne",
                         "jakarta.faces.Listbox");
                 Object item = renderer.getConvertedValue(context, this, getSubmittedValue());
-                wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), item);
+                wrapperEvent = new SelectEvent<>(this, behaviorEvent.getBehavior(), item);
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             }
             super.queueEvent(wrapperEvent);

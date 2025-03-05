@@ -41,18 +41,17 @@ import jakarta.faces.component.UIParameter;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class MediaRenderer extends CoreRenderer {
+public class MediaRenderer extends CoreRenderer<Media> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Media media = (Media) component;
-        MediaPlayer player = resolvePlayer(context, media);
+    public void encodeEnd(FacesContext context, Media component) throws IOException {
+        MediaPlayer player = resolvePlayer(context, component);
         ResponseWriter writer = context.getResponseWriter();
         String src;
         try {
-            src = DynamicContentSrcBuilder.build(context, media,
-                    media.getValueExpression(Media.PropertyKeys.value.name()),
-                    new Lazy<>(() -> media.getValue()), media.isCache(), true);
+            src = DynamicContentSrcBuilder.build(context, component,
+                    component.getValueExpression(Media.PropertyKeys.value.name()),
+                    new Lazy<>(() -> component.getValue()), component.isCache(), true);
         }
         catch (Exception ex) {
             throw new IOException(ex);
@@ -61,8 +60,8 @@ public class MediaRenderer extends CoreRenderer {
         String sourceParam = player.getSourceParam();
         String type = player.getType();
         if (type != null && PDFPlayer.MIME_TYPE.equals(type)) {
-            String view = media.getView();
-            String zoom = media.getZoom();
+            String view = component.getView();
+            String zoom = component.getZoom();
 
             if (view != null) {
                 src = src + "#view=" + view;
@@ -73,22 +72,22 @@ public class MediaRenderer extends CoreRenderer {
             }
         }
 
-        writer.startElement("object", media);
+        writer.startElement("object", component);
         writer.writeAttribute("type", player.getType(), null);
         writer.writeAttribute("data", src, null);
 
-        if (media.getStyleClass() != null) {
-            writer.writeAttribute("class", media.getStyleClass(), null);
+        if (component.getStyleClass() != null) {
+            writer.writeAttribute("class", component.getStyleClass(), null);
         }
 
-        renderPassThruAttributes(context, media, Media.MEDIA_ATTRS);
+        renderPassThruAttributes(context, component, Media.MEDIA_ATTRS);
 
         if (sourceParam != null) {
             encodeParam(writer, player.getSourceParam(), src, false);
         }
 
-        if (media.getChildCount() > 0) {
-            for (UIComponent child : media.getChildren()) {
+        if (component.getChildCount() > 0) {
+            for (UIComponent child : component.getChildren()) {
                 if (child instanceof UIParameter) {
                     UIParameter param = (UIParameter) child;
 
@@ -97,7 +96,7 @@ public class MediaRenderer extends CoreRenderer {
             }
         }
 
-        renderChildren(context, media);
+        renderChildren(context, component);
 
         writer.endElement("object");
     }
@@ -163,7 +162,7 @@ public class MediaRenderer extends CoreRenderer {
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, Media component) throws IOException {
         //Do nothing
     }
 

@@ -40,13 +40,13 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.ConverterException;
 
-public abstract class InputRenderer extends CoreRenderer {
+public abstract class InputRenderer<T extends UIComponent> extends CoreRenderer<T> {
 
     private static final String SB_STYLECLASS = InputRenderer.class.getName() + "#createStyleClass";
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
-        Converter converter = ComponentUtils.getConverter(context, component);
+        Converter<?> converter = ComponentUtils.getConverter(context, component);
 
         if (converter != null) {
             String convertableValue = submittedValue == null ? null : submittedValue.toString();

@@ -118,7 +118,7 @@ public class SelectOneMenu extends SelectOneMenuBase {
                         "jakarta.faces.Menu");
 
                 Object item = renderer.getConvertedValue(context, this, getSubmittedValue());
-                SelectEvent selectEvent = new SelectEvent(this, behaviorEvent.getBehavior(), item);
+                SelectEvent<?> selectEvent = new SelectEvent<>(this, behaviorEvent.getBehavior(), item);
                 selectEvent.setPhaseId(event.getPhaseId());
                 super.queueEvent(selectEvent);
             }

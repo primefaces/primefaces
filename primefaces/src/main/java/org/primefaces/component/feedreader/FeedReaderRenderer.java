@@ -34,22 +34,20 @@ import java.util.Map;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 
-public class FeedReaderRenderer extends CoreRenderer {
+public class FeedReaderRenderer extends CoreRenderer<FeedReader> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        FeedReader reader = (FeedReader) component;
-
+    public void encodeEnd(FacesContext context, FeedReader component) throws IOException {
         try {
             Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-            String var = reader.getVar();
-            int size = reader.getSize();
-            String url = reader.getValue();
-            List<FeedItem> entries = RSSUtils.parse(url, size, reader.isPodcast());
+            String var = component.getVar();
+            int size = component.getSize();
+            String url = component.getValue();
+            List<FeedItem> entries = RSSUtils.parse(url, size, component.isPodcast());
 
             for (FeedItem item : entries) {
                 requestMap.put(var, item);
-                renderChildren(context, reader);
+                renderChildren(context, component);
             }
 
             requestMap.remove(var);
@@ -57,7 +55,7 @@ public class FeedReaderRenderer extends CoreRenderer {
         }
         catch (Exception e) {
             logDevelopmentWarning(context, this, String.format("Unexpected RSS error: %s", e.getMessage()));
-            UIComponent errorFacet = reader.getFacet("error");
+            UIComponent errorFacet = component.getFacet("error");
             if (FacetUtils.shouldRenderFacet(errorFacet)) {
                 errorFacet.encodeAll(context);
             }
@@ -65,7 +63,7 @@ public class FeedReaderRenderer extends CoreRenderer {
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, FeedReader component) throws IOException {
         //Do nothing
     }
 

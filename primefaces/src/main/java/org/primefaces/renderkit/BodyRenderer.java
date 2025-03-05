@@ -35,7 +35,7 @@ import jakarta.faces.component.UIViewRoot;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class BodyRenderer extends CoreRenderer {
+public class BodyRenderer extends CoreRenderer<UIComponent> {
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
@@ -48,7 +48,7 @@ public class BodyRenderer extends CoreRenderer {
         }
 
         String styleClass = (String) component.getAttributes().get("styleClass");
-        if (styleClass != null && styleClass.length() != 0) {
+        if (styleClass != null && !styleClass.isEmpty()) {
             writer.writeAttribute("class", styleClass, "styleClass");
         }
 

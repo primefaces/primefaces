@@ -36,146 +36,144 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class DataGridRenderer extends DataRenderer {
+public class DataGridRenderer extends DataRenderer<DataGrid> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
+    public void decode(FacesContext context, DataGrid component) {
         decodeBehaviors(context, component);
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        DataGrid grid = (DataGrid) component;
+    public void encodeEnd(FacesContext context, DataGrid component) throws IOException {
+        if (component.isPaginationRequest(context)) {
+            component.updatePaginationData(context);
 
-        if (grid.isPaginationRequest(context)) {
-            grid.updatePaginationData(context);
-
-            if (grid.isLazy()) {
-                grid.loadLazyData();
+            if (component.isLazy()) {
+                component.loadLazyData();
             }
 
-            encodeContent(context, grid);
+            encodeContent(context, component);
 
-            if (grid.isMultiViewState()) {
-                DataGridState gs = grid.getMultiViewState(true);
-                gs.setFirst(grid.getFirst());
-                gs.setRows(grid.getRows());
+            if (component.isMultiViewState()) {
+                DataGridState gs = component.getMultiViewState(true);
+                gs.setFirst(component.getFirst());
+                gs.setRows(component.getRows());
             }
         }
         else {
-            if (grid.isMultiViewState()) {
-                grid.restoreMultiViewState();
+            if (component.isMultiViewState()) {
+                component.restoreMultiViewState();
             }
 
-            encodeMarkup(context, grid);
-            encodeScript(context, grid);
+            encodeMarkup(context, component);
+            encodeScript(context, component);
         }
     }
 
-    protected void encodeScript(FacesContext context, DataGrid grid) throws IOException {
+    protected void encodeScript(FacesContext context, DataGrid component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("DataGrid", grid);
+        wb.init("DataGrid", component);
 
-        if (grid.isPaginator()) {
-            encodePaginatorConfig(context, grid, wb);
+        if (component.isPaginator()) {
+            encodePaginatorConfig(context, component, wb);
         }
 
-        encodeClientBehaviors(context, grid);
+        encodeClientBehaviors(context, component);
 
         wb.finish();
     }
 
-    protected void encodeMarkup(FacesContext context, DataGrid grid) throws IOException {
-        if (grid.isLazy()) {
-            grid.loadLazyData();
+    protected void encodeMarkup(FacesContext context, DataGrid component) throws IOException {
+        if (component.isLazy()) {
+            component.loadLazyData();
         }
 
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = grid.getClientId(context);
-        boolean hasPaginator = grid.isPaginator();
-        boolean empty = grid.getRowCount() == 0;
-        String paginatorPosition = grid.getPaginatorPosition();
-        boolean flex = ComponentUtils.isFlex(context, grid);
+        String clientId = component.getClientId(context);
+        boolean hasPaginator = component.isPaginator();
+        boolean empty = component.getRowCount() == 0;
+        String paginatorPosition = component.getPaginatorPosition();
+        boolean flex = ComponentUtils.isFlex(context, component);
         String layoutClass = DataGrid.GRID_CONTENT_CLASS + " " + GridLayoutUtils.getResponsiveClass(flex);
-        String style = grid.getStyle();
-        String styleClass = grid.getStyleClass() == null ? DataGrid.DATAGRID_CLASS : DataGrid.DATAGRID_CLASS + " " + grid.getStyleClass();
+        String style = component.getStyle();
+        String styleClass = component.getStyleClass() == null ? DataGrid.DATAGRID_CLASS : DataGrid.DATAGRID_CLASS + " " + component.getStyleClass();
         String contentClass = empty ? DataGrid.EMPTY_CONTENT_CLASS : layoutClass;
 
         if (hasPaginator) {
-            grid.calculateFirst();
+            component.calculateFirst();
         }
 
-        writer.startElement("div", grid);
+        writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
 
-        encodeFacet(context, grid, "header", DataGrid.HEADER_CLASS);
+        encodeFacet(context, component, "header", DataGrid.HEADER_CLASS);
 
         if (hasPaginator && !"bottom".equalsIgnoreCase(paginatorPosition)) {
-            encodePaginatorMarkup(context, grid, "top");
+            encodePaginatorMarkup(context, component, "top");
         }
 
-        writer.startElement("div", grid);
+        writer.startElement("div", component);
         writer.writeAttribute("id", clientId + "_content", null);
         writer.writeAttribute("class", contentClass, null);
 
         if (empty) {
-            UIComponent emptyFacet = grid.getFacet("emptyMessage");
+            UIComponent emptyFacet = component.getFacet("emptyMessage");
             if (FacetUtils.shouldRenderFacet(emptyFacet)) {
                 emptyFacet.encodeAll(context);
             }
             else {
-                writer.writeText(grid.getEmptyMessage(), "emptyMessage");
+                writer.writeText(component.getEmptyMessage(), "emptyMessage");
             }
         }
         else {
-            encodeContent(context, grid);
+            encodeContent(context, component);
         }
 
         writer.endElement("div");
 
         if (hasPaginator && !"top".equalsIgnoreCase(paginatorPosition)) {
-            encodePaginatorMarkup(context, grid, "bottom");
+            encodePaginatorMarkup(context, component, "bottom");
         }
 
-        encodeFacet(context, grid, "footer", DataGrid.FOOTER_CLASS);
+        encodeFacet(context, component, "footer", DataGrid.FOOTER_CLASS);
 
         writer.endElement("div");
     }
 
-    protected void encodeContent(FacesContext context, DataGrid grid) throws IOException {
-        encodeGrid(context, grid);
+    protected void encodeContent(FacesContext context, DataGrid component) throws IOException {
+        encodeGrid(context, component);
     }
 
-    protected void encodeGrid(FacesContext context, DataGrid grid) throws IOException {
+    protected void encodeGrid(FacesContext context, DataGrid component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        int columns = grid.getColumns();
-        int rowIndex = grid.getFirst();
-        int rows = grid.getRows();
-        int itemsToRender = rows != 0 ? rows : grid.getRowCount();
+        int columns = component.getColumns();
+        int rowIndex = component.getFirst();
+        int rows = component.getRows();
+        int itemsToRender = rows != 0 ? rows : component.getRowCount();
         int numberOfRowsToRender = (itemsToRender + columns - 1) / columns;
         int displayedItemsToRender = rowIndex + itemsToRender;
-        String columnInlineStyle = grid.getRowStyle();
-        boolean flex = ComponentUtils.isFlex(context, grid);
+        String columnInlineStyle = component.getRowStyle();
+        boolean flex = ComponentUtils.isFlex(context, component);
 
         String columnClass = getStyleClassBuilder(context)
                 .add(DataGrid.COLUMN_CLASS)
                 .add(GridLayoutUtils.getColumnClass(flex, columns))
-                .add(grid.getRowStyleClass())
+                .add(component.getRowStyleClass())
                 .build();
 
         writer.startElement("div", null);
 
         writer.writeAttribute("class", GridLayoutUtils.getFlexGridClass(flex), null);
-        writer.writeAttribute("title", grid.getRowTitle(), null);
+        writer.writeAttribute("title", component.getRowTitle(), null);
 
         for (int i = 0; i < numberOfRowsToRender; i++) {
-            grid.setRowIndex(rowIndex);
-            if (!grid.isRowAvailable()) {
+            component.setRowIndex(rowIndex);
+            if (!component.isRowAvailable()) {
                 break;
             }
 
@@ -187,9 +185,9 @@ public class DataGridRenderer extends DataRenderer {
                     writer.writeAttribute("style", columnInlineStyle, null);
                 }
 
-                grid.setRowIndex(rowIndex);
-                if (grid.isRowAvailable()) {
-                    renderChildren(context, grid);
+                component.setRowIndex(rowIndex);
+                if (component.isRowAvailable()) {
+                    renderChildren(context, component);
                 }
                 rowIndex++;
 
@@ -203,11 +201,11 @@ public class DataGridRenderer extends DataRenderer {
 
         writer.endElement("div");
 
-        grid.setRowIndex(-1); //cleanup
+        component.setRowIndex(-1); //cleanup
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, DataGrid component) throws IOException {
         //Rendering happens on encodeEnd
     }
 

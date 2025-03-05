@@ -45,7 +45,7 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.ConverterException;
 
-public class InputNumberRenderer extends InputRenderer {
+public class InputNumberRenderer extends InputRenderer<InputNumber> {
 
     // Default values for "minValue"/"maxValue" properties of the AutoNumeric Plugin
     private static final BigDecimal DEFAULT_MIN_VALUE = new BigDecimal("-10000000000000");
@@ -58,16 +58,14 @@ public class InputNumberRenderer extends InputRenderer {
     }
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
-        InputNumber inputNumber = (InputNumber) component;
-
-        if (!shouldDecode(inputNumber)) {
+    public void decode(FacesContext context, InputNumber component) {
+        if (!shouldDecode(component)) {
             return;
         }
 
-        decodeBehaviors(context, inputNumber);
+        decodeBehaviors(context, component);
 
-        String inputId = inputNumber.getClientId(context) + "_hinput";
+        String inputId = component.getClientId(context) + "_hinput";
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(inputId);
 
         if (submittedValue == null) {
@@ -76,35 +74,33 @@ public class InputNumberRenderer extends InputRenderer {
 
         try {
             if (LangUtils.isBlank(submittedValue)) {
-                Class<?> type = getTypeFromValueExpression(context, inputNumber);
-                if (type != null && type.isPrimitive() && LangUtils.isNotBlank(inputNumber.getMinValue())) {
+                Class<?> type = getTypeFromValueExpression(context, component);
+                if (type != null && type.isPrimitive() && LangUtils.isNotBlank(component.getMinValue())) {
                     // avoid coercion of null or empty string to 0 which may be out of [minValue, maxValue] range
-                    submittedValue = String.valueOf(new BigDecimal(inputNumber.getMinValue()).doubleValue());
+                    submittedValue = String.valueOf(new BigDecimal(component.getMinValue()).doubleValue());
                 }
-                else if (type != null && type.isPrimitive() && LangUtils.isNotBlank(inputNumber.getMaxValue())) {
+                else if (type != null && type.isPrimitive() && LangUtils.isNotBlank(component.getMaxValue())) {
                     // avoid coercion of null or empty string to 0 which may be out of [minValue, maxValue] range
-                    submittedValue = String.valueOf(new BigDecimal(inputNumber.getMaxValue()).doubleValue());
+                    submittedValue = String.valueOf(new BigDecimal(component.getMaxValue()).doubleValue());
                 }
             }
             else {
                 // Coerce submittedValue to (effective) range of [minValue, maxValue]
                 BigDecimal value = new BigDecimal(submittedValue);
-                submittedValue = coerceValueInRange(value, inputNumber).toString();
+                submittedValue = coerceValueInRange(value, component).toString();
             }
         }
         catch (NumberFormatException ex) {
             throw new FacesException("Invalid number", ex);
         }
 
-        inputNumber.setSubmittedValue(submittedValue);
+        component.setSubmittedValue(submittedValue);
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        InputNumber inputNumber = (InputNumber) component;
-
-        Object value = inputNumber.getValue();
-        String valueToRender = ComponentUtils.getValueToRender(context, inputNumber, value);
+    public void encodeEnd(FacesContext context, InputNumber component) throws IOException {
+        Object value = component.getValue();
+        String valueToRender = ComponentUtils.getValueToRender(context, component, value);
         if (isValueBlank(valueToRender)) {
             valueToRender = "";
         }
@@ -118,37 +114,37 @@ public class InputNumberRenderer extends InputRenderer {
             catch (Exception e) {
                 throw new IllegalArgumentException("Error converting  [" + valueToRender + "] to a decimal value;", e);
             }
-            valueToRender = formatForPlugin(coerceValueInRange(decimalToRender, inputNumber));
+            valueToRender = formatForPlugin(coerceValueInRange(decimalToRender, component));
         }
 
-        encodeMarkup(context, inputNumber, value, valueToRender);
-        encodeScript(context, inputNumber, value, valueToRender);
+        encodeMarkup(context, component, value, valueToRender);
+        encodeScript(context, component, value, valueToRender);
     }
 
-    protected void encodeMarkup(FacesContext context, InputNumber inputNumber, Object value, String valueToRender)
+    protected void encodeMarkup(FacesContext context, InputNumber component, Object value, String valueToRender)
             throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = inputNumber.getClientId(context);
+        String clientId = component.getClientId(context);
 
-        String styleClass = inputNumber.getStyleClass();
+        String styleClass = component.getStyleClass();
         styleClass = styleClass == null ? InputNumber.STYLE_CLASS : InputNumber.STYLE_CLASS + " " + styleClass;
-        styleClass = inputNumber.isValid() ? styleClass : styleClass + " ui-state-error"; // see #3706
+        styleClass = component.isValid() ? styleClass : styleClass + " ui-state-error"; // see #3706
 
-        writer.startElement("span", inputNumber);
+        writer.startElement("span", component);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, "styleClass");
 
-        if (inputNumber.getStyle() != null) {
-            writer.writeAttribute("style", inputNumber.getStyle(), "style");
+        if (component.getStyle() != null) {
+            writer.writeAttribute("style", component.getStyle(), "style");
         }
 
-        encodeInput(context, inputNumber, clientId, valueToRender);
-        encodeHiddenInput(context, inputNumber, clientId, valueToRender);
+        encodeInput(context, component, clientId, valueToRender);
+        encodeHiddenInput(context, component, clientId, valueToRender);
 
         writer.endElement("span");
     }
 
-    protected void encodeHiddenInput(FacesContext context, InputNumber inputNumber, String clientId, String valueToRender) throws IOException {
+    protected void encodeHiddenInput(FacesContext context, InputNumber component, String clientId, String valueToRender) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String inputId = clientId + "_hinput";
 
@@ -158,44 +154,44 @@ public class InputNumberRenderer extends InputRenderer {
         writer.writeAttribute("type", "hidden", null);
         writer.writeAttribute("value", valueToRender, null);
 
-        if (inputNumber.getOnchange() != null) {
-            writer.writeAttribute("onchange", inputNumber.getOnchange(), null);
+        if (component.getOnchange() != null) {
+            writer.writeAttribute("onchange", component.getOnchange(), null);
         }
 
-        if (inputNumber.getOnkeydown() != null) {
-            writer.writeAttribute("onkeydown", inputNumber.getOnkeydown(), null);
+        if (component.getOnkeydown() != null) {
+            writer.writeAttribute("onkeydown", component.getOnkeydown(), null);
         }
 
-        if (inputNumber.getOnkeyup() != null) {
-            writer.writeAttribute("onkeyup", inputNumber.getOnkeyup(), null);
+        if (component.getOnkeyup() != null) {
+            writer.writeAttribute("onkeyup", component.getOnkeyup(), null);
         }
 
-        renderValidationMetadata(context, inputNumber);
+        renderValidationMetadata(context, component);
 
         writer.endElement("input");
 
     }
 
-    protected void encodeInput(FacesContext context, InputNumber inputNumber, String clientId, String valueToRender)
+    protected void encodeInput(FacesContext context, InputNumber component, String clientId, String valueToRender)
             throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
         String inputId = clientId + "_input";
 
-        String inputStyle = inputNumber.getInputStyle();
+        String inputStyle = component.getInputStyle();
         String style = inputStyle;
-        String styleClass = createStyleClass(inputNumber, InputNumber.PropertyKeys.inputStyleClass.name(), InputText.STYLE_CLASS) ;
-        String inputMode = inputNumber.getInputmode();
+        String styleClass = createStyleClass(component, InputNumber.PropertyKeys.inputStyleClass.name(), InputText.STYLE_CLASS) ;
+        String inputMode = component.getInputmode();
         if (inputMode == null) {
-            boolean isIntegral = isIntegral(context, inputNumber, inputNumber.getValue());
-            String decimalPlaces = getDecimalPlaces(isIntegral, inputNumber);
+            boolean isIntegral = isIntegral(context, component, component.getValue());
+            String decimalPlaces = getDecimalPlaces(isIntegral, component);
             inputMode = "0".equals(decimalPlaces) ? "numeric" : "decimal";
-            inputNumber.setInputmode(inputMode);
+            component.setInputmode(inputMode);
         }
         writer.startElement("input", null);
         writer.writeAttribute("id", inputId, null);
         writer.writeAttribute("name", inputId, null);
-        writer.writeAttribute("type", inputNumber.getType(), null);
+        writer.writeAttribute("type", component.getType(), null);
         writer.writeAttribute("autocomplete", "off", null);
         writer.writeAttribute("value", valueToRender, null);
 
@@ -205,51 +201,51 @@ public class InputNumberRenderer extends InputRenderer {
 
         writer.writeAttribute("class", styleClass, null);
 
-        renderAccessibilityAttributes(context, inputNumber);
-        renderPassThruAttributes(context, inputNumber, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
-        renderDomEvents(context, inputNumber, HTML.INPUT_TEXT_EVENTS);
-        renderValidationMetadata(context, inputNumber);
+        renderAccessibilityAttributes(context, component);
+        renderPassThruAttributes(context, component, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
+        renderDomEvents(context, component, HTML.INPUT_TEXT_EVENTS);
+        renderValidationMetadata(context, component);
 
         writer.endElement("input");
     }
 
-    protected void encodeScript(FacesContext context, InputNumber inputNumber, Object value, String valueToRender)
+    protected void encodeScript(FacesContext context, InputNumber component, Object value, String valueToRender)
             throws IOException {
-        String emptyValue = isValueBlank(inputNumber.getEmptyValue()) || "empty".equalsIgnoreCase(inputNumber.getEmptyValue())
+        String emptyValue = isValueBlank(component.getEmptyValue()) || "empty".equalsIgnoreCase(component.getEmptyValue())
                 ? "null"
-                : inputNumber.getEmptyValue();
-        String digitGroupSeparator = isValueBlank(inputNumber.getThousandSeparator())
+                : component.getEmptyValue();
+        String digitGroupSeparator = isValueBlank(component.getThousandSeparator())
                 ? Constants.EMPTY_STRING
-                : inputNumber.getThousandSeparator();
+                : component.getThousandSeparator();
 
-        String decimalSeparator = isValueBlank(inputNumber.getDecimalSeparator())
+        String decimalSeparator = isValueBlank(component.getDecimalSeparator())
                     ? "."
-                    : inputNumber.getDecimalSeparator();
+                    : component.getDecimalSeparator();
 
-        boolean isIntegral = isIntegral(context, inputNumber, value);
+        boolean isIntegral = isIntegral(context, component, value);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init(InputNumber.class.getSimpleName(), inputNumber);
-        wb.attr("disabled", inputNumber.isDisabled())
+        wb.init(InputNumber.class.getSimpleName(), component);
+        wb.attr("disabled", component.isDisabled())
             .attr("valueToRender", valueToRender)
             .attr("decimalCharacter", decimalSeparator, ".")
-            .attr("decimalCharacterAlternative", inputNumber.getDecimalSeparatorAlternative(), null)
-            .attr("decimalPlaces", getDecimalPlaces(isIntegral, inputNumber))
-            .attr("decimalPlacesRawValue", inputNumber.getDecimalPlacesRawValue())
+            .attr("decimalCharacterAlternative", component.getDecimalSeparatorAlternative(), null)
+            .attr("decimalPlaces", getDecimalPlaces(isIntegral, component))
+            .attr("decimalPlacesRawValue", component.getDecimalPlacesRawValue())
             .attr("digitGroupSeparator", digitGroupSeparator, ",")
-            .attr("currencySymbol", inputNumber.getSymbol())
-            .attr("currencySymbolPlacement", inputNumber.getSymbolPosition(), "p")
-            .attr("negativePositiveSignPlacement", inputNumber.getSignPosition(), null)
-            .attr("minimumValue", getMinimum(isIntegral, inputNumber))
-            .attr("maximumValue", getMaximum(isIntegral, inputNumber))
+            .attr("currencySymbol", component.getSymbol())
+            .attr("currencySymbolPlacement", component.getSymbolPosition(), "p")
+            .attr("negativePositiveSignPlacement", component.getSignPosition(), null)
+            .attr("minimumValue", getMinimum(isIntegral, component))
+            .attr("maximumValue", getMaximum(isIntegral, component))
             .attr("emptyInputBehavior", emptyValue, "focus")
-            .attr("leadingZero", inputNumber.getLeadingZero(), "deny")
-            .attr("allowDecimalPadding", inputNumber.getPadControl(), "true")
-            .attr("modifyValueOnWheel", inputNumber.isModifyValueOnWheel(), true)
-            .attr("modifyValueOnUpDownArrow", inputNumber.isModifyValueOnUpDownArrow(), true)
-            .attr("roundingMethod", inputNumber.getRoundMethod(), "S")
-            .attr("caretPositionOnFocus", inputNumber.getCaretPositionOnFocus(), null)
-            .attr("selectOnFocus", inputNumber.isSelectOnFocus(), true)
+            .attr("leadingZero", component.getLeadingZero(), "deny")
+            .attr("allowDecimalPadding", component.getPadControl(), "true")
+            .attr("modifyValueOnWheel", component.isModifyValueOnWheel(), true)
+            .attr("modifyValueOnUpDownArrow", component.isModifyValueOnUpDownArrow(), true)
+            .attr("roundingMethod", component.getRoundMethod(), "S")
+            .attr("caretPositionOnFocus", component.getCaretPositionOnFocus(), null)
+            .attr("selectOnFocus", component.isSelectOnFocus(), true)
             .attr("showWarnings", false, true);
 
         wb.finish();
@@ -262,11 +258,11 @@ public class InputNumberRenderer extends InputRenderer {
 
     /**
      * Get the effective minimum Value (as interpreted in the AutoNumeric plugin)
-     * @param inputNumber the InputNumber component
+     * @param component the InputNumber component
      * @return the minimumValue property as BigDecimal, or the AutoNumeric default value if empty
      */
-    private BigDecimal getEffectiveMinValue(InputNumber inputNumber) {
-        String minimumValue = inputNumber.getMinValue();
+    private BigDecimal getEffectiveMinValue(InputNumber component) {
+        String minimumValue = component.getMinValue();
         if (minimumValue == null) {
             return DEFAULT_MIN_VALUE;
         }
@@ -280,11 +276,11 @@ public class InputNumberRenderer extends InputRenderer {
 
     /**
      * Get the effective maximum Value (as interpreted in the AutoNumeric plugin)
-     * @param inputNumber the InputNumber component
+     * @param component the InputNumber component
      * @return the maximumValue property as BigDecimal, or the AutoNumeric default value if empty
      */
-    private BigDecimal getEffectiveMaxValue(InputNumber inputNumber) {
-        String maximumValue = inputNumber.getMaxValue();
+    private BigDecimal getEffectiveMaxValue(InputNumber component) {
+        String maximumValue = component.getMaxValue();
         if (maximumValue == null) {
             return DEFAULT_MAX_VALUE;
         }
@@ -299,11 +295,11 @@ public class InputNumberRenderer extends InputRenderer {
     /**
      * Coerce the provided value to the range defined by the effective minimum and maximum numbers.
      * @param value the value to render
-     * @param inputNumber the component for which the minValue and maxValue properties define the range
+     * @param component the component for which the minValue and maxValue properties define the range
      * @return the value if inside the range, or else the nearest boundary that is still inside the range
      */
-    private BigDecimal coerceValueInRange(BigDecimal value, InputNumber inputNumber) {
-        return coerceValueInRange(value, getEffectiveMinValue(inputNumber), getEffectiveMaxValue(inputNumber));
+    private BigDecimal coerceValueInRange(BigDecimal value, InputNumber component) {
+        return coerceValueInRange(value, getEffectiveMinValue(component), getEffectiveMaxValue(component));
     }
 
     /**
@@ -356,12 +352,12 @@ public class InputNumberRenderer extends InputRenderer {
      * Else, if this is an integer type number then default to 0
      * decimal places if none was declared else default to 2.
      * @param isIntegral flag whether the (expected) value is integral
-     * @param inputNumber the component
+     * @param component the component
      * @return the number of decimal places to use
      */
-    private String getDecimalPlaces(boolean isIntegral, InputNumber inputNumber) {
-        if (inputNumber.getDecimalPlaces() != null) {
-            return inputNumber.getDecimalPlaces();
+    private String getDecimalPlaces(boolean isIntegral, InputNumber component) {
+        if (component.getDecimalPlaces() != null) {
+            return component.getDecimalPlaces();
         }
         if (isIntegral) {
             return "0";
@@ -372,11 +368,11 @@ public class InputNumberRenderer extends InputRenderer {
     /**
      * If using @Positive annotation and this is an Integer default to 0 instead of 0.0001.
      * @param isIntegral flag whether the (expected) value is integral
-     * @param inputNumber the component
+     * @param component the component
      * @return the minimum value of the component
      */
-    private String getMinimum(boolean isIntegral, InputNumber inputNumber) {
-        String minimum = inputNumber.getMinValue();
+    private String getMinimum(boolean isIntegral, InputNumber component) {
+        String minimum = component.getMinValue();
         if (isIntegral && PositiveClientValidationConstraint.MIN_VALUE.equals(minimum)) {
             minimum = "0";
         }
@@ -386,18 +382,18 @@ public class InputNumberRenderer extends InputRenderer {
     /**
      * If using @Negative annotation and this is an Integer default to 0 instead of -0.0001.
      * @param isIntegral flag whether the (expected) value is integral
-     * @param inputNumber the component
+     * @param component the component
      * @return the maximum value of the component
      */
-    private String getMaximum(boolean isIntegral, InputNumber inputNumber) {
-        String maximum = inputNumber.getMaxValue();
+    private String getMaximum(boolean isIntegral, InputNumber component) {
+        String maximum = component.getMaxValue();
         if (isIntegral && NegativeClientValidationConstraint.MAX_VALUE.equals(maximum)) {
             maximum = "0";
         }
         return formatForPlugin(maximum);
     }
 
-    protected boolean isIntegral(FacesContext context, InputNumber inputNumber, Object value) {
+    protected boolean isIntegral(FacesContext context, InputNumber component, Object value) {
         if (value != null) {
             return value instanceof Long
                     || value instanceof Integer
@@ -406,7 +402,7 @@ public class InputNumberRenderer extends InputRenderer {
                     || value instanceof Byte;
         }
 
-        Class<?> type = getTypeFromValueExpression(context, inputNumber);
+        Class<?> type = getTypeFromValueExpression(context, component);
 
         // #11791 Number is the superclass for all the types so it could be a decimal
         if (type == null || type == Number.class) {
@@ -420,8 +416,8 @@ public class InputNumberRenderer extends InputRenderer {
                 || type.isAssignableFrom(Byte.class);
     }
 
-    public Class<?> getTypeFromValueExpression(FacesContext context, InputNumber inputNumber) {
-        ValueExpression valueExpression = inputNumber.getValueExpression("value");
+    public Class<?> getTypeFromValueExpression(FacesContext context, InputNumber component) {
+        ValueExpression valueExpression = component.getValueExpression("value");
         if (valueExpression == null) {
             return null;
         }

@@ -36,36 +36,32 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class InputTextRenderer extends InputRenderer {
+public class InputTextRenderer extends InputRenderer<InputText> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
-        InputText inputText = (InputText) component;
-
-        if (!shouldDecode(inputText)) {
+    public void decode(FacesContext context, InputText component) {
+        if (!shouldDecode(component)) {
             return;
         }
 
-        decodeBehaviors(context, inputText);
+        decodeBehaviors(context, component);
 
-        String clientId = inputText.getClientId(context);
+        String clientId = component.getClientId(context);
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId);
 
         if (submittedValue != null) {
-            int maxlength = inputText.getMaxlength();
+            int maxlength = component.getMaxlength();
             if (maxlength > 0 && submittedValue.length() > maxlength) {
                 submittedValue = LangUtils.substring(submittedValue, 0, maxlength);
             }
-            inputText.setSubmittedValue(submittedValue);
+            component.setSubmittedValue(submittedValue);
         }
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        InputText inputText = (InputText) component;
-
-        encodeMarkup(context, inputText);
-        encodeScript(context, inputText);
+    public void encodeEnd(FacesContext context, InputText component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
     protected void encodeScript(FacesContext context, InputText inputText) throws IOException {
@@ -87,31 +83,31 @@ public class InputTextRenderer extends InputRenderer {
         wb.finish();
     }
 
-    protected void encodeMarkup(FacesContext context, InputText inputText) throws IOException {
+    protected void encodeMarkup(FacesContext context, InputText component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = inputText.getClientId(context);
+        String clientId = component.getClientId(context);
 
-        writer.startElement("input", inputText);
+        writer.startElement("input", component);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("name", clientId, null);
-        writer.writeAttribute("type", inputText.getType(), null);
+        writer.writeAttribute("type", component.getType(), null);
 
-        String valueToRender = ComponentUtils.getValueToRender(context, inputText);
+        String valueToRender = ComponentUtils.getValueToRender(context, component);
         if (valueToRender != null) {
             writer.writeAttribute("value", valueToRender, null);
         }
 
-        if (inputText.getStyle() != null) {
-            writer.writeAttribute("style", inputText.getStyle(), null);
+        if (component.getStyle() != null) {
+            writer.writeAttribute("style", component.getStyle(), null);
         }
 
-        writer.writeAttribute("class", createStyleClass(inputText, InputText.STYLE_CLASS), "styleClass");
+        writer.writeAttribute("class", createStyleClass(component, InputText.STYLE_CLASS), "styleClass");
 
-        renderAccessibilityAttributes(context, inputText);
-        renderRTLDirection(context, inputText);
-        renderPassThruAttributes(context, inputText, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
-        renderDomEvents(context, inputText, HTML.INPUT_TEXT_EVENTS);
-        renderValidationMetadata(context, inputText);
+        renderAccessibilityAttributes(context, component);
+        renderRTLDirection(context, component);
+        renderPassThruAttributes(context, component, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
+        renderDomEvents(context, component, HTML.INPUT_TEXT_EVENTS);
+        renderValidationMetadata(context, component);
 
         writer.endElement("input");
     }

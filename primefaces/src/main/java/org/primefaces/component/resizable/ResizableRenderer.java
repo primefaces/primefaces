@@ -33,21 +33,20 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIGraphic;
 import jakarta.faces.context.FacesContext;
 
-public class ResizableRenderer extends CoreRenderer {
+public class ResizableRenderer extends CoreRenderer<Resizable> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
+    public void decode(FacesContext context, Resizable component) {
         decodeBehaviors(context, component);
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Resizable resizable = (Resizable) component;
-        String clientId = resizable.getClientId(context);
+    public void encodeEnd(FacesContext context, Resizable component) throws IOException {
+        String clientId = component.getClientId(context);
 
-        UIComponent target = SearchExpressionUtils.contextlessOptionalResolveComponent(context, resizable, resizable.getFor());
+        UIComponent target = SearchExpressionUtils.contextlessOptionalResolveComponent(context, component, component.getFor());
         if (target == null) {
-            target = resizable.getParent();
+            target = component.getParent();
         }
 
         String targetId = target.getClientId(context);
@@ -55,43 +54,43 @@ public class ResizableRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
 
         if (target instanceof UIGraphic) {
-            wb.initWithComponentLoad("Resizable", resizable.resolveWidgetVar(context), clientId, targetId);
+            wb.initWithComponentLoad("Resizable", component.resolveWidgetVar(context), clientId, targetId);
         }
         else {
-            wb.init("Resizable", resizable);
+            wb.init("Resizable", component);
         }
 
         wb.attr("target", targetId)
-                .attr("minWidth", resizable.getMinWidth(), Integer.MIN_VALUE)
-                .attr("maxWidth", resizable.getMaxWidth(), Integer.MAX_VALUE)
-                .attr("minHeight", resizable.getMinHeight(), Integer.MIN_VALUE)
-                .attr("maxHeight", resizable.getMaxHeight(), Integer.MAX_VALUE);
+                .attr("minWidth", component.getMinWidth(), Integer.MIN_VALUE)
+                .attr("maxWidth", component.getMaxWidth(), Integer.MAX_VALUE)
+                .attr("minHeight", component.getMinHeight(), Integer.MIN_VALUE)
+                .attr("maxHeight", component.getMaxHeight(), Integer.MAX_VALUE);
 
-        if (resizable.isAnimate()) {
+        if (component.isAnimate()) {
             wb.attr("animate", true)
-                    .attr("animateEasing", resizable.getEffect())
-                    .attr("animateDuration", resizable.getEffectDuration());
+                    .attr("animateEasing", component.getEffect())
+                    .attr("animateDuration", component.getEffectDuration());
         }
 
-        if (resizable.isProxy()) {
+        if (component.isProxy()) {
             wb.attr("helper", "ui-resizable-proxy");
         }
 
-        wb.attr("handles", resizable.getHandles(), null)
-                .attr("grid", resizable.getGrid(), 1)
-                .attr("aspectRatio", resizable.isAspectRatio(), false)
-                .attr("ghost", resizable.isGhost(), false);
+        wb.attr("handles", component.getHandles(), null)
+                .attr("grid", component.getGrid(), 1)
+                .attr("aspectRatio", component.isAspectRatio(), false)
+                .attr("ghost", component.isGhost(), false);
 
-        if (resizable.isContainment()) {
+        if (component.isContainment()) {
             wb.attr("isContainment", true);
-            wb.attr("parentComponentId", resizable.getParent().getClientId(context));
+            wb.attr("parentComponentId", component.getParent().getClientId(context));
         }
 
-        wb.callback("onStart", "function(event,ui)", resizable.getOnStart())
-                .callback("onResize", "function(event,ui)", resizable.getOnResize())
-                .callback("onStop", "function(event,ui)", resizable.getOnStop());
+        wb.callback("onStart", "function(event,ui)", component.getOnStart())
+                .callback("onResize", "function(event,ui)", component.getOnResize())
+                .callback("onStop", "function(event,ui)", component.getOnStop());
 
-        encodeClientBehaviors(context, resizable);
+        encodeClientBehaviors(context, component);
 
         wb.finish();
     }

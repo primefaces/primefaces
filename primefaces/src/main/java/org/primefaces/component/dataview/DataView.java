@@ -146,10 +146,10 @@ public class DataView extends DataViewBase {
     }
 
     public void loadLazyData() {
-        DataModel model = getDataModel();
+        DataModel<?> model = getDataModel();
 
         if (model instanceof LazyDataModel) {
-            LazyDataModel lazyModel = (LazyDataModel) model;
+            LazyDataModel<?> lazyModel = (LazyDataModel<?>) model;
 
             lazyModel.setRowCount(lazyModel.count(Collections.emptyMap()));
             calculateFirst();

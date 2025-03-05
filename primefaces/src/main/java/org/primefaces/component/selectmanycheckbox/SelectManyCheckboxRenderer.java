@@ -36,9 +36,7 @@ import java.util.List;
 
 import jakarta.faces.FacesException;
 import jakarta.faces.component.UIComponent;
-import jakarta.faces.component.UIInput;
 import jakarta.faces.component.UINamingContainer;
-import jakarta.faces.component.UISelectMany;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.Converter;
@@ -47,7 +45,7 @@ import jakarta.faces.model.SelectItem;
 import jakarta.faces.model.SelectItemGroup;
 import jakarta.faces.render.Renderer;
 
-public class SelectManyCheckboxRenderer extends SelectManyRenderer {
+public class SelectManyCheckboxRenderer extends SelectManyRenderer<SelectManyCheckbox> {
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
@@ -59,51 +57,49 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        SelectManyCheckbox checkbox = (SelectManyCheckbox) component;
-
-        encodeMarkup(context, checkbox);
-        encodeScript(context, checkbox);
+    public void encodeEnd(FacesContext context, SelectManyCheckbox component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    protected void encodeMarkup(FacesContext context, SelectManyCheckbox checkbox) throws IOException {
+    protected void encodeMarkup(FacesContext context, SelectManyCheckbox component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String layout = checkbox.getLayout();
+        String layout = component.getLayout();
         if (LangUtils.isEmpty(layout)) {
-            layout = FacetUtils.shouldRenderFacet(checkbox.getFacet("custom")) ? "custom" : "lineDirection";
+            layout = FacetUtils.shouldRenderFacet(component.getFacet("custom")) ? "custom" : "lineDirection";
         }
         boolean custom = ("custom".equals(layout));
 
         if (custom) {
-            writer.startElement("span", checkbox);
-            writer.writeAttribute("id", checkbox.getClientId(context), "id");
+            writer.startElement("span", component);
+            writer.writeAttribute("id", component.getClientId(context), "id");
             writer.writeAttribute("class", "ui-helper-hidden", null);
-            renderARIARequired(context, checkbox);
-            encodeCustomLayout(context, checkbox);
+            renderARIARequired(context, component);
+            encodeCustomLayout(context, component);
             writer.endElement("span");
         }
         else if ("grid".equals(layout)) {
             throw new FacesException(layout + " is not a valid value for SelectManyCheckbox layout.");
         }
         else {
-            encodeResponsiveLayout(context, checkbox, layout);
+            encodeResponsiveLayout(context, component, layout);
         }
     }
 
-    protected void encodeScript(FacesContext context, SelectManyCheckbox checkbox) throws IOException {
+    protected void encodeScript(FacesContext context, SelectManyCheckbox component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        String layout = checkbox.getLayout();
+        String layout = component.getLayout();
         boolean custom = (layout != null && "custom".equals(layout));
 
-        wb.init("SelectManyCheckbox", checkbox)
+        wb.init("SelectManyCheckbox", component)
                 .attr("custom", custom, false).finish();
     }
 
-    protected void encodeResponsiveLayout(FacesContext context, SelectManyCheckbox checkbox, String layout) throws IOException {
+    protected void encodeResponsiveLayout(FacesContext context, SelectManyCheckbox component, String layout) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = checkbox.getClientId(context);
-        String style = checkbox.getStyle();
-        boolean flex = ComponentUtils.isFlex(context, checkbox);
+        String clientId = component.getClientId(context);
+        String style = component.getStyle();
+        boolean flex = ComponentUtils.isFlex(context, component);
         if (flex) {
             layout = "responsive";
         }
@@ -112,9 +108,9 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
                 .add(lineDirection, "layout-line-direction")
                 .add(SelectManyCheckbox.STYLE_CLASS)
                 .add(GridLayoutUtils.getResponsiveClass(flex))
-                .add(checkbox.getStyleClass())
+                .add(component.getStyleClass())
                 .build();
-        int columns = checkbox.getColumns();
+        int columns = component.getColumns();
 
         if (lineDirection || "pageDirection".equals(layout)) {
             columns = 1;
@@ -124,18 +120,18 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
             throw new FacesException("The value of columns attribute must be greater than zero.");
         }
 
-        writer.startElement("div", checkbox);
+        writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
-        renderARIARequired(context, checkbox);
+        renderARIARequired(context, component);
 
-        List<SelectItem> selectItems = getSelectItems(context, checkbox);
-        Converter converter = checkbox.getConverter();
-        Object values = getValues(checkbox);
-        Object submittedValues = getSubmittedValues(checkbox);
+        List<SelectItem> selectItems = getSelectItems(context, component);
+        Converter converter = component.getConverter();
+        Object values = getValues(component);
+        Object submittedValues = getSubmittedValues(component);
 
         int idx = 0;
         int groupIdx = 0;
@@ -146,7 +142,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
             if (selectItem instanceof SelectItemGroup) {
                 writer.startElement("div", null);
                 writer.writeAttribute("class", "ui-selectmanycheckbox-responsive-group", null);
-                encodeGroupLabel(context, checkbox, (SelectItemGroup) selectItem);
+                encodeGroupLabel(context, component, (SelectItemGroup) selectItem);
                 writer.endElement("div");
 
                 if (flex) {
@@ -165,7 +161,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
 
                     writer.startElement("div", null);
                     writer.writeAttribute("class", GridLayoutUtils.getColumnClass(flex, columns), null);
-                    encodeOption(context, checkbox, values, submittedValues, converter, childSelectItem, groupIdx);
+                    encodeOption(context, component, values, submittedValues, converter, childSelectItem, groupIdx);
                     writer.endElement("div");
 
                     idx++;
@@ -191,7 +187,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
 
                 writer.startElement("div", null);
                 writer.writeAttribute("class", GridLayoutUtils.getColumnClass(flex, columns), null);
-                encodeOption(context, checkbox, values, submittedValues, converter, selectItem, idx);
+                encodeOption(context, component, values, submittedValues, converter, selectItem, idx);
                 writer.endElement("div");
 
                 idx++;
@@ -210,11 +206,11 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeOptionInput(FacesContext context, SelectManyCheckbox checkbox, String id, String name, boolean checked,
+    protected void encodeOptionInput(FacesContext context, SelectManyCheckbox component, String id, String name, boolean checked,
                                      boolean disabled, String value) throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
-        String tabindex = checkbox.getTabindex();
+        String tabindex = component.getTabindex();
 
         writer.startElement("div", null);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
@@ -228,7 +224,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
             writer.writeAttribute("tabindex", tabindex, null);
         }
 
-        renderOnchange(context, checkbox);
+        renderOnchange(context, component);
 
         if (checked) {
             writer.writeAttribute("checked", "checked", null);
@@ -237,14 +233,14 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
             writer.writeAttribute("disabled", "disabled", null);
         }
 
-        renderValidationMetadata(context, checkbox);
+        renderValidationMetadata(context, component);
 
         writer.endElement("input");
 
         writer.endElement("div");
     }
 
-    protected void encodeOptionLabel(FacesContext context, SelectManyCheckbox checkbox, String containerClientId, SelectItem option,
+    protected void encodeOptionLabel(FacesContext context, SelectManyCheckbox component, String containerClientId, SelectItem option,
                                      boolean disabled) throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
@@ -270,7 +266,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         writer.endElement("label");
     }
 
-    protected void encodeGroupLabel(FacesContext context, SelectManyCheckbox checkbox, SelectItemGroup group) throws IOException {
+    protected void encodeGroupLabel(FacesContext context, SelectManyCheckbox component, SelectItemGroup group) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("span", null);
@@ -286,9 +282,9 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         writer.endElement("span");
     }
 
-    protected void encodeOptionOutput(FacesContext context, SelectManyCheckbox checkbox, boolean checked, boolean disabled) throws IOException {
+    protected void encodeOptionOutput(FacesContext context, SelectManyCheckbox component, boolean checked, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String boxClass = createStyleClass(checkbox, null, HTML.CHECKBOX_BOX_CLASS);
+        String boxClass = createStyleClass(component, null, HTML.CHECKBOX_BOX_CLASS);
         boxClass = checked ? boxClass + " ui-state-active" : boxClass;
         boxClass = disabled ? boxClass + " ui-state-disabled" : boxClass;
 
@@ -304,17 +300,17 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeCustomLayout(FacesContext context, SelectManyCheckbox checkbox) throws IOException {
-        List<SelectItem> selectItems = getSelectItems(context, checkbox);
-        Converter converter = checkbox.getConverter();
-        Object values = getValues(checkbox);
-        Object submittedValues = getSubmittedValues(checkbox);
+    protected void encodeCustomLayout(FacesContext context, SelectManyCheckbox component) throws IOException {
+        List<SelectItem> selectItems = getSelectItems(context, component);
+        Converter converter = component.getConverter();
+        Object values = getValues(component);
+        Object submittedValues = getSubmittedValues(component);
 
         int idx = 0;
         for (int i = 0; i < selectItems.size(); i++) {
             SelectItem selectItem = selectItems.get(i);
-            String itemValueAsString = getOptionAsString(context, checkbox, converter, selectItem.getValue());
-            String name = checkbox.getClientId(context);
+            String itemValueAsString = getOptionAsString(context, component, converter, selectItem.getValue());
+            String name = component.getClientId(context);
             String id = name + UINamingContainer.getSeparatorChar(context) + idx;
 
             Object valuesArray;
@@ -328,27 +324,26 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
                 itemValue = selectItem.getValue();
             }
 
-            boolean selected = isSelected(context, checkbox, itemValue, valuesArray, converter);
+            boolean selected = isSelected(context, component, itemValue, valuesArray, converter);
             if (selectItem.isNoSelectionOption() && values != null && !selected) {
                 return;
             }
 
-            boolean disabled = selectItem.isDisabled() || checkbox.isDisabled();
+            boolean disabled = selectItem.isDisabled() || component.isDisabled();
 
-            encodeOptionInput(context, checkbox, id, name, selected, disabled, itemValueAsString);
+            encodeOptionInput(context, component, id, name, selected, disabled, itemValueAsString);
             idx++;
         }
     }
 
-    protected void encodeOption(FacesContext context, UIInput component, Object values, Object submittedValues, Converter converter,
+    protected void encodeOption(FacesContext context, SelectManyCheckbox component, Object values, Object submittedValues, Converter converter,
                                 SelectItem option, int idx) throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
-        SelectManyCheckbox checkbox = (SelectManyCheckbox) component;
         String itemValueAsString = getOptionAsString(context, component, converter, option.getValue());
-        String name = checkbox.getClientId(context);
+        String name = component.getClientId(context);
         String id = name + UINamingContainer.getSeparatorChar(context) + idx;
-        boolean disabled = option.isDisabled() || checkbox.isDisabled();
+        boolean disabled = option.isDisabled() || component.isDisabled();
 
         Object valuesArray;
         Object itemValue;
@@ -369,16 +364,16 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         writer.startElement("div", getSelectItemComponent(option));
         writer.writeAttribute("class", HTML.CHECKBOX_CLASS, null);
 
-        encodeOptionInput(context, checkbox, id, name, selected, disabled, itemValueAsString);
-        encodeOptionOutput(context, checkbox, selected, disabled);
+        encodeOptionInput(context, component, id, name, selected, disabled, itemValueAsString);
+        encodeOptionOutput(context, component, selected, disabled);
 
         writer.endElement("div");
-        encodeOptionLabel(context, checkbox, id, option, disabled);
+        encodeOptionLabel(context, component, id, option, disabled);
     }
 
     @Override
-    protected String getSubmitParam(FacesContext context, UISelectMany selectMany) {
-        return selectMany.getClientId(context);
+    protected String getSubmitParam(FacesContext context, SelectManyCheckbox component) {
+        return component.getClientId(context);
     }
 
     @Override

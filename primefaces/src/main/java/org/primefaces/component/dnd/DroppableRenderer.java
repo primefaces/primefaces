@@ -32,41 +32,40 @@ import java.io.IOException;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 
-public class DroppableRenderer extends CoreRenderer {
+public class DroppableRenderer extends CoreRenderer<Droppable> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
+    public void decode(FacesContext context, Droppable component) {
         decodeBehaviors(context, component);
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Droppable droppable = (Droppable) component;
-        String clientId = droppable.getClientId(context);
+    public void encodeEnd(FacesContext context, Droppable component) throws IOException {
+        String clientId = component.getClientId(context);
 
         renderDummyMarkup(context, component, clientId);
 
-        UIComponent target = SearchExpressionUtils.contextlessOptionalResolveComponent(context, droppable, droppable.getFor());
+        UIComponent target = SearchExpressionUtils.contextlessOptionalResolveComponent(context, component, component.getFor());
         if (target == null) {
-            target = droppable.getParent();
+            target = component.getParent();
         }
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Droppable", droppable)
+        wb.init("Droppable", component)
                 .attr("target", target.getClientId(context))
-                .attr("disabled", droppable.isDisabled(), false)
-                .attr("hoverClass", droppable.getHoverStyleClass(), null)
-                .attr("activeClass", droppable.getActiveStyleClass(), null)
-                .attr("accept", droppable.getAccept(), null)
-                .attr("scope", droppable.getScope(), null)
-                .attr("tolerance", droppable.getTolerance(), null)
-                .attr("greedy", droppable.isGreedy(), false);
+                .attr("disabled", component.isDisabled(), false)
+                .attr("hoverClass", component.getHoverStyleClass(), null)
+                .attr("activeClass", component.getActiveStyleClass(), null)
+                .attr("accept", component.getAccept(), null)
+                .attr("scope", component.getScope(), null)
+                .attr("tolerance", component.getTolerance(), null)
+                .attr("greedy", component.isGreedy(), false);
 
-        if (droppable.getOnDrop() != null) {
-            wb.append(",onDrop:").append(droppable.getOnDrop());
+        if (component.getOnDrop() != null) {
+            wb.append(",onDrop:").append(component.getOnDrop());
         }
 
-        encodeClientBehaviors(context, droppable);
+        encodeClientBehaviors(context, component);
 
         wb.finish();
     }

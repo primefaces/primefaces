@@ -32,9 +32,7 @@ import java.io.IOException;
 import java.util.List;
 
 import jakarta.faces.component.UIComponent;
-import jakarta.faces.component.UIInput;
 import jakarta.faces.component.UINamingContainer;
-import jakarta.faces.component.UISelectMany;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.Converter;
@@ -42,7 +40,7 @@ import jakarta.faces.convert.ConverterException;
 import jakarta.faces.model.SelectItem;
 import jakarta.faces.render.Renderer;
 
-public class SelectManyButtonRenderer extends SelectManyRenderer {
+public class SelectManyButtonRenderer extends SelectManyRenderer<SelectManyButton> {
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
@@ -54,11 +52,9 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        SelectManyButton button = (SelectManyButton) component;
-
-        encodeMarkup(context, button);
-        encodeScript(context, button);
+    public void encodeEnd(FacesContext context, SelectManyButton component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
     protected void encodeMarkup(FacesContext context, SelectManyButton button) throws IOException {
@@ -82,27 +78,26 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeSelectItems(FacesContext context, SelectManyButton button, List<SelectItem> selectItems) throws IOException {
-        Converter converter = button.getConverter();
-        Object values = getValues(button);
-        Object submittedValues = getSubmittedValues(button);
+    protected void encodeSelectItems(FacesContext context, SelectManyButton component, List<SelectItem> selectItems) throws IOException {
+        Converter<?> converter = component.getConverter();
+        Object values = getValues(component);
+        Object submittedValues = getSubmittedValues(component);
 
         for (int i = 0; i < selectItems.size(); i++) {
             SelectItem selectItem = selectItems.get(i);
-            encodeOption(context, button, values, submittedValues, converter, selectItem, i, selectItems.size());
+            encodeOption(context, component, values, submittedValues, converter, selectItem, i, selectItems.size());
         }
     }
 
-    protected void encodeOption(FacesContext context, UIInput component, Object values, Object submittedValues, Converter converter,
+    protected void encodeOption(FacesContext context, SelectManyButton component, Object values, Object submittedValues, Converter converter,
                                 SelectItem option, int idx, int size) throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
-        SelectManyButton button = (SelectManyButton) component;
         String itemValueAsString = getOptionAsString(context, component, converter, option.getValue());
-        String name = button.getClientId(context);
+        String name = component.getClientId(context);
         String id = name + UINamingContainer.getSeparatorChar(context) + idx;
-        boolean disabled = option.isDisabled() || button.isDisabled();
-        String tabindex = button.getTabindex();
+        boolean disabled = option.isDisabled() || component.isDisabled();
+        String tabindex = component.getTabindex();
 
         Object valuesArray;
         Object itemValue;
@@ -140,7 +135,7 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
         writer.writeAttribute(HTML.ARIA_LABEL, option.getLabel(), null);
 
-        renderOnchange(context, button);
+        renderOnchange(context, component);
 
         if (selected) {
             writer.writeAttribute("checked", "checked", null);
@@ -149,7 +144,7 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
             writer.writeAttribute("tabindex", tabindex, null);
         }
 
-        renderAccessibilityAttributes(context, button);
+        renderAccessibilityAttributes(context, component);
         writer.endElement("input");
 
         //item label
@@ -168,14 +163,14 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeScript(FacesContext context, SelectManyButton button) throws IOException {
+    protected void encodeScript(FacesContext context, SelectManyButton component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SelectManyButton", button).finish();
+        wb.init("SelectManyButton", component).finish();
     }
 
     @Override
-    protected String getSubmitParam(FacesContext context, UISelectMany selectMany) {
-        return selectMany.getClientId(context);
+    protected String getSubmitParam(FacesContext context, SelectManyButton component) {
+        return component.getClientId(context);
     }
 
 }

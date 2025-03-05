@@ -66,17 +66,16 @@ import jakarta.faces.component.UINamingContainer;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class DataTableRenderer extends DataRenderer {
+public class DataTableRenderer extends DataRenderer<DataTable> {
 
     private static final Logger LOGGER = Logger.getLogger(DataTableRenderer.class.getName());
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
-        DataTable table = (DataTable) component;
+    public void decode(FacesContext context, DataTable component) {
 
         for (DataTableFeature feature : DataTableFeatures.all()) {
-            if (feature.shouldDecode(context, table)) {
-                feature.decode(context, table);
+            if (feature.shouldDecode(context, component)) {
+                feature.decode(context, component);
             }
         }
 
@@ -84,25 +83,23 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        DataTable table = (DataTable) component;
-
-        if (table.shouldEncodeFeature(context)) {
+    public void encodeEnd(FacesContext context, DataTable component) throws IOException {
+        if (component.shouldEncodeFeature(context)) {
             for (DataTableFeature feature : DataTableFeatures.all()) {
-                if (feature.shouldEncode(context, table)) {
-                    feature.encode(context, this, table);
+                if (feature.shouldEncode(context, component)) {
+                    feature.encode(context, this, component);
                 }
             }
 
-            if (table.isFullUpdateRequest(context)) {
-                render(context, table);
+            if (component.isFullUpdateRequest(context)) {
+                render(context, component);
             }
         }
         else {
-            render(context, table);
+            render(context, component);
         }
 
-        context.getApplication().publishEvent(context, PostRenderEvent.class, table);
+        context.getApplication().publishEvent(context, PostRenderEvent.class, component);
     }
 
     protected void render(FacesContext context, DataTable table) throws IOException {
@@ -116,150 +113,150 @@ public class DataTableRenderer extends DataRenderer {
         }
     }
 
-    protected void preRender(FacesContext context, DataTable table) {
+    protected void preRender(FacesContext context, DataTable component) {
         // trigger init, otherwise column state might be confused when rendering and init at the same time
-        table.getSortByAsMap();
-        table.getFilterByAsMap();
+        component.getSortByAsMap();
+        component.getFilterByAsMap();
 
-        if (table.isMultiViewState()) {
-            table.restoreMultiViewState();
+        if (component.isMultiViewState()) {
+            component.restoreMultiViewState();
         }
 
-        if (table.isLiveScroll()) {
-            table.setScrollOffset(0);
+        if (component.isLiveScroll()) {
+            component.setScrollOffset(0);
         }
 
-        if (!table.loadLazyDataIfEnabled()) {
-            if (table.isFilteringCurrentlyActive()) {
-                DataTableFeatures.filterFeature().filter(context, table);
+        if (!component.loadLazyDataIfEnabled()) {
+            if (component.isFilteringCurrentlyActive()) {
+                DataTableFeatures.filterFeature().filter(context, component);
             }
 
-            if (table.isSortingCurrentlyActive()) {
-                DataTableFeatures.sortFeature().sort(context, table);
-                table.setRowIndex(-1); // why?
+            if (component.isSortingCurrentlyActive()) {
+                DataTableFeatures.sortFeature().sort(context, component);
+                component.setRowIndex(-1); // why?
             }
         }
 
-        if (table.isSelectionEnabled()) {
-            DataTableFeatures.selectionFeature().decodeSelectionRowKeys(context, table);
+        if (component.isSelectionEnabled()) {
+            DataTableFeatures.selectionFeature().decodeSelectionRowKeys(context, component);
         }
 
-        if (table.isPaginator()) {
-            table.calculateRows();
-            table.calculateFirst();
+        if (component.isPaginator()) {
+            component.calculateRows();
+            component.calculateFirst();
         }
     }
 
-    protected void encodeScript(FacesContext context, DataTable table) throws IOException {
-        String selectionMode = table.resolveSelectionMode();
-        boolean isFrozenTable = (table.getFrozenColumns() > 0);
+    protected void encodeScript(FacesContext context, DataTable component) throws IOException {
+        String selectionMode = component.resolveSelectionMode();
+        boolean isFrozenTable = (component.getFrozenColumns() > 0);
         String widgetClass = isFrozenTable ? "FrozenDataTable" : "DataTable";
 
-        if (isFrozenTable && !table.isScrollable()) {
+        if (isFrozenTable && !component.isScrollable()) {
             throw new FacesException("Frozen columns can only be used with a table set scrollable='true'.");
         }
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init(widgetClass, table);
+        wb.init(widgetClass, component);
 
         //Pagination
-        if (table.isPaginator()) {
-            encodePaginatorConfig(context, table, wb);
+        if (component.isPaginator()) {
+            encodePaginatorConfig(context, component, wb);
         }
 
         //Selection
         wb.attr("selectionMode", selectionMode, null)
-                .attr("selectionPageOnly", table.isSelectionPageOnly(), true)
-                .attr("selectionRowMode", table.getSelectionRowMode(), "new")
-                .attr("nativeElements", table.isNativeElements(), false)
-                .attr("rowSelector", table.getRowSelector(), null)
-                .attr("disabledTextSelection", table.isSelectionTextDisabled(), true);
+                .attr("selectionPageOnly", component.isSelectionPageOnly(), true)
+                .attr("selectionRowMode", component.getSelectionRowMode(), "new")
+                .attr("nativeElements", component.isNativeElements(), false)
+                .attr("rowSelector", component.getRowSelector(), null)
+                .attr("disabledTextSelection", component.isSelectionTextDisabled(), true);
 
         //Filtering
-        if (table.isFilteringEnabled()) {
+        if (component.isFilteringEnabled()) {
             wb.attr("filter", true)
-                    .attr("filterEvent", table.getFilterEvent(), null)
-                    .attr("filterDelay", table.getFilterDelay(), Integer.MAX_VALUE);
+                    .attr("filterEvent", component.getFilterEvent(), null)
+                    .attr("filterDelay", component.getFilterDelay(), Integer.MAX_VALUE);
         }
 
         //Row expansion
-        if (table.getRowExpansion() != null) {
-            wb.attr("expansion", true).attr("rowExpandMode", table.getRowExpandMode());
+        if (component.getRowExpansion() != null) {
+            wb.attr("expansion", true).attr("rowExpandMode", component.getRowExpandMode());
         }
 
         //Scrolling
-        if (table.isScrollable()) {
+        if (component.isScrollable()) {
             wb.attr("scrollable", true)
-                    .attr("liveScroll", table.isLiveScroll())
-                    .attr("scrollStep", table.getScrollRows())
-                    .attr("scrollLimit", table.getRowCount())
-                    .attr("scrollWidth", table.getScrollWidth(), null)
-                    .attr("scrollHeight", table.getScrollHeight(), null)
-                    .attr("frozenColumns", table.getFrozenColumns(), 0)
-                    .attr("frozenColumnsAlignment", table.getFrozenColumnsAlignment(), "left")
-                    .attr("liveScrollBuffer", table.getLiveScrollBuffer())
-                    .attr("virtualScroll", table.isVirtualScroll())
+                    .attr("liveScroll", component.isLiveScroll())
+                    .attr("scrollStep", component.getScrollRows())
+                    .attr("scrollLimit", component.getRowCount())
+                    .attr("scrollWidth", component.getScrollWidth(), null)
+                    .attr("scrollHeight", component.getScrollHeight(), null)
+                    .attr("frozenColumns", component.getFrozenColumns(), 0)
+                    .attr("frozenColumnsAlignment", component.getFrozenColumnsAlignment(), "left")
+                    .attr("liveScrollBuffer", component.getLiveScrollBuffer())
+                    .attr("virtualScroll", component.isVirtualScroll())
                     .attr("touchable", false,  true);
         }
         else {
             // only allow swipe if not scrollable
-            wb.attr("touchable", ComponentUtils.isTouchable(context, table),  true);
+            wb.attr("touchable", ComponentUtils.isTouchable(context, component),  true);
         }
 
         //Resizable/Draggable Columns
-        wb.attr("resizableColumns", table.isResizableColumns(), false)
-                .attr("liveResize", table.isLiveResize(), false)
-                .attr("draggableColumns", table.isDraggableColumns(), false)
-                .attr("resizeMode", table.getResizeMode(), "fit");
+        wb.attr("resizableColumns", component.isResizableColumns(), false)
+                .attr("liveResize", component.isLiveResize(), false)
+                .attr("draggableColumns", component.isDraggableColumns(), false)
+                .attr("resizeMode", component.getResizeMode(), "fit");
 
         //Draggable Rows
-        wb.attr("draggableRows", table.isDraggableRows(), false)
-                .attr("rowDragSelector", table.getRowDragSelector(), null);
+        wb.attr("draggableRows", component.isDraggableRows(), false)
+                .attr("rowDragSelector", component.getRowDragSelector(), null);
 
         //Editing
-        if (table.isEditable()) {
+        if (component.isEditable()) {
             wb.attr("editable", true)
-                    .attr("editMode", table.getEditMode())
-                    .attr("cellSeparator", table.getCellSeparator(), null)
-                    .attr("saveOnCellBlur", table.isSaveOnCellBlur(), true)
-                    .attr("cellEditMode", table.getCellEditMode(), "eager")
-                    .attr("editInitEvent", table.getEditInitEvent())
-                    .attr("rowEditMode", table.getRowEditMode(), "eager");
+                    .attr("editMode", component.getEditMode())
+                    .attr("cellSeparator", component.getCellSeparator(), null)
+                    .attr("saveOnCellBlur", component.isSaveOnCellBlur(), true)
+                    .attr("cellEditMode", component.getCellEditMode(), "eager")
+                    .attr("editInitEvent", component.getEditInitEvent())
+                    .attr("rowEditMode", component.getRowEditMode(), "eager");
         }
 
         //Sorting
-        if (table.isSortingEnabled()) {
+        if (component.isSortingEnabled()) {
             wb.attr("sorting", true);
 
-            if (table.isMultiSort()) {
+            if (component.isMultiSort()) {
                 wb.attr("multiSort", true)
-                        .nativeAttr("sortMetaOrder", table.getSortMetaAsString(), null);
+                        .nativeAttr("sortMetaOrder", component.getSortMetaAsString(), null);
             }
 
-            if (table.isAllowUnsorting()) {
+            if (component.isAllowUnsorting()) {
                 wb.attr("allowUnsorting", true);
             }
         }
 
-        if (table.isStickyHeader()) {
+        if (component.isStickyHeader()) {
             wb.attr("stickyHeader", true)
-                    .attr("stickyTopAt", table.getStickyTopAt(), null);
+                    .attr("stickyTopAt", component.getStickyTopAt(), null);
         }
 
-        wb.attr("tabindex", table.getTabindex(), "0")
-                .attr("reflow", table.isReflow(), false)
-                .attr("rowHover", table.isRowHover(), false)
-                .attr("clientCache", table.isClientCache(), false)
-                .attr("multiViewState", table.isMultiViewState(), false)
-                .attr("cellNavigation", table.isCellNavigation())
-                .attr("partialUpdate", table.isPartialUpdate(), true)
-                .nativeAttr("groupColumnIndexes", table.getGroupedColumnIndexes(), null)
-                .callback("onRowClick", "function(row)", table.getOnRowClick());
+        wb.attr("tabindex", component.getTabindex(), "0")
+                .attr("reflow", component.isReflow(), false)
+                .attr("rowHover", component.isRowHover(), false)
+                .attr("clientCache", component.isClientCache(), false)
+                .attr("multiViewState", component.isMultiViewState(), false)
+                .attr("cellNavigation", component.isCellNavigation())
+                .attr("partialUpdate", component.isPartialUpdate(), true)
+                .nativeAttr("groupColumnIndexes", component.getGroupedColumnIndexes(), null)
+                .callback("onRowClick", "function(row)", component.getOnRowClick());
 
-        wb.attr("disableContextMenuIfEmpty", table.isDisableContextMenuIfEmpty());
+        wb.attr("disableContextMenuIfEmpty", component.isDisableContextMenuIfEmpty());
 
         //Behaviors
-        encodeClientBehaviors(context, table);
+        encodeClientBehaviors(context, component);
 
         wb.finish();
     }
@@ -471,7 +468,7 @@ public class DataTableRenderer extends DataRenderer {
         }
     }
 
-    protected void encodeFrozenArea(FacesContext context, DataTable table, int columnStart, int columnEnd, String tableStyle, String tableStyleClass,
+    protected void encodeFrozenArea(FacesContext context, DataTable component, int columnStart, int columnEnd, String tableStyle, String tableStyleClass,
             boolean isVirtualScroll, String clientId) throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
@@ -480,26 +477,26 @@ public class DataTableRenderer extends DataRenderer {
         writer.writeAttribute("class", "ui-datatable-frozenlayout-left", null);
         writer.startElement("div", null);
         writer.writeAttribute("class", "ui-datatable-frozen-container", null);
-        encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_HEADER_CLASS, DataTable.SCROLLABLE_HEADER_BOX_CLASS, tableStyle, tableStyleClass);
-        encodeThead(context, table, columnStart, columnEnd, clientId + "_frozenThead", "frozenHeader");
-        encodeFrozenRows(context, table, columnStart, columnEnd);
+        encodeScrollAreaStart(context, component, DataTable.SCROLLABLE_HEADER_CLASS, DataTable.SCROLLABLE_HEADER_BOX_CLASS, tableStyle, tableStyleClass);
+        encodeThead(context, component, columnStart, columnEnd, clientId + "_frozenThead", "frozenHeader");
+        encodeFrozenRows(context, component, columnStart, columnEnd);
         encodeScrollAreaEnd(context);
 
         if (isVirtualScroll) {
-            encodeVirtualScrollBody(context, table, tableStyle, tableStyleClass, columnStart, columnEnd, clientId + "_frozenTbody");
+            encodeVirtualScrollBody(context, component, tableStyle, tableStyleClass, columnStart, columnEnd, clientId + "_frozenTbody");
         }
         else {
-            encodeScrollBody(context, table, tableStyle, tableStyleClass, columnStart, columnEnd, clientId + "_frozenTbody");
+            encodeScrollBody(context, component, tableStyle, tableStyleClass, columnStart, columnEnd, clientId + "_frozenTbody");
         }
 
-        encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_FOOTER_CLASS, DataTable.SCROLLABLE_FOOTER_BOX_CLASS, tableStyle, tableStyleClass);
-        encodeTFoot(context, table, columnStart, columnEnd, clientId + "_frozenTfoot", "frozenFooter");
+        encodeScrollAreaStart(context, component, DataTable.SCROLLABLE_FOOTER_CLASS, DataTable.SCROLLABLE_FOOTER_BOX_CLASS, tableStyle, tableStyleClass);
+        encodeTFoot(context, component, columnStart, columnEnd, clientId + "_frozenTfoot", "frozenFooter");
         encodeScrollAreaEnd(context);
         writer.endElement("div");
         writer.endElement("td");
     }
 
-    protected void encodeScrollableArea(FacesContext context, DataTable table, int columnStart, int columnEnd, String tableStyle, String tableStyleClass,
+    protected void encodeScrollableArea(FacesContext context, DataTable component, int columnStart, int columnEnd, String tableStyle, String tableStyleClass,
             boolean isVirtualScroll, String clientId) throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
@@ -509,26 +506,26 @@ public class DataTableRenderer extends DataRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", "ui-datatable-scrollable-container", null);
 
-        encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_HEADER_CLASS, DataTable.SCROLLABLE_HEADER_BOX_CLASS, tableStyle, tableStyleClass);
-        encodeThead(context, table, columnStart, columnEnd, clientId + "_scrollableThead", "scrollableHeader");
-        encodeFrozenRows(context, table, columnStart, columnEnd);
+        encodeScrollAreaStart(context, component, DataTable.SCROLLABLE_HEADER_CLASS, DataTable.SCROLLABLE_HEADER_BOX_CLASS, tableStyle, tableStyleClass);
+        encodeThead(context, component, columnStart, columnEnd, clientId + "_scrollableThead", "scrollableHeader");
+        encodeFrozenRows(context, component, columnStart, columnEnd);
         encodeScrollAreaEnd(context);
 
         if (isVirtualScroll) {
-            encodeVirtualScrollBody(context, table, tableStyle, tableStyleClass, columnStart, columnEnd, clientId + "_scrollableTbody");
+            encodeVirtualScrollBody(context, component, tableStyle, tableStyleClass, columnStart, columnEnd, clientId + "_scrollableTbody");
         }
         else {
-            encodeScrollBody(context, table, tableStyle, tableStyleClass, columnStart, columnEnd, clientId + "_scrollableTbody");
+            encodeScrollBody(context, component, tableStyle, tableStyleClass, columnStart, columnEnd, clientId + "_scrollableTbody");
         }
 
-        encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_FOOTER_CLASS, DataTable.SCROLLABLE_FOOTER_BOX_CLASS, tableStyle, tableStyleClass);
-        encodeTFoot(context, table, columnStart, columnEnd, clientId + "_scrollableTfoot", "scrollableFooter");
+        encodeScrollAreaStart(context, component, DataTable.SCROLLABLE_FOOTER_CLASS, DataTable.SCROLLABLE_FOOTER_BOX_CLASS, tableStyle, tableStyleClass);
+        encodeTFoot(context, component, columnStart, columnEnd, clientId + "_scrollableTfoot", "scrollableFooter");
         encodeScrollAreaEnd(context);
         writer.endElement("div");
         writer.endElement("td");
     }
 
-    protected void encodeScrollAreaStart(FacesContext context, DataTable table, String containerClass, String containerBoxClass,
+    protected void encodeScrollAreaStart(FacesContext context, DataTable component, String containerClass, String containerBoxClass,
                                          String tableStyle, String tableStyleClass) throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
@@ -747,7 +744,7 @@ public class DataTableRenderer extends DataRenderer {
         return sortIcon;
     }
 
-    protected void encodeColumnHeaderContent(FacesContext context, DataTable table, UIColumn column,
+    protected void encodeColumnHeaderContent(FacesContext context, DataTable component, UIColumn column,
                 SortMeta sortMeta) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
@@ -761,7 +758,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", titleStyleClass, null);
 
-        if (FacetUtils.shouldRenderFacet(headerFacet, table.isRenderEmptyFacets())) {
+        if (FacetUtils.shouldRenderFacet(headerFacet, component.isRenderEmptyFacets())) {
             headerFacet.encodeAll(context);
         }
         else if (headerText != null) {
@@ -769,7 +766,7 @@ public class DataTableRenderer extends DataRenderer {
             if (LangUtils.isNotBlank(title)) {
                 writer.writeAttribute("title", title, null);
             }
-            if (table.isEscapeText()) {
+            if (component.isEscapeText()) {
                 writer.writeText(headerText, "headerText");
             }
             else {
@@ -786,7 +783,7 @@ public class DataTableRenderer extends DataRenderer {
                 writer.writeAttribute("class", sortIcon, null);
                 writer.endElement("span");
 
-                if (table.isMultiSort()) {
+                if (component.isMultiSort()) {
                     writer.startElement("span", null);
                     writer.writeAttribute("class", DataTable.SORTABLE_PRIORITY_CLASS, null);
                     writer.endElement("span");
@@ -795,19 +792,19 @@ public class DataTableRenderer extends DataRenderer {
         }
     }
 
-    protected void encodeFilter(FacesContext context, DataTable table, UIColumn column) throws IOException {
-        if (table.isGlobalFilterOnly()) {
+    protected void encodeFilter(FacesContext context, DataTable component, UIColumn column) throws IOException {
+        if (component.isGlobalFilterOnly()) {
             return;
         }
 
         ResponseWriter writer = context.getResponseWriter();
         UIComponent filterFacet = column.getFacet("filter");
 
-        if (!FacetUtils.shouldRenderFacet(filterFacet, table.isRenderEmptyFacets())) {
-            encodeDefaultFilter(context, table, column, writer);
+        if (!FacetUtils.shouldRenderFacet(filterFacet, component.isRenderEmptyFacets())) {
+            encodeDefaultFilter(context, component, column, writer);
         }
         else {
-            Object filterValue = table.getFilterValue(column);
+            Object filterValue = component.getFilterValue(column);
             column.setFilterValueToValueHolder(context, filterValue);
 
             writer.startElement("div", null);
@@ -817,12 +814,12 @@ public class DataTableRenderer extends DataRenderer {
         }
     }
 
-    protected void encodeDefaultFilter(FacesContext context, DataTable table, UIColumn column,
+    protected void encodeDefaultFilter(FacesContext context, DataTable component, UIColumn column,
             ResponseWriter writer) throws IOException {
         String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
-        boolean disableTabbing = table.getScrollWidth() != null;
+        boolean disableTabbing = component.getScrollWidth() != null;
         String filterId = column.getContainerClientId(context) + separator + "filter";
-        Object filterValue = findFilterValueForColumn(context, table, column, filterId);
+        Object filterValue = findFilterValueForColumn(context, component, column, filterId);
         String filterStyleClass = column.getFilterStyleClass();
         encodeFilterInput(column, writer, disableTabbing, filterId, filterStyleClass, filterValue);
     }
@@ -861,15 +858,15 @@ public class DataTableRenderer extends DataRenderer {
         writer.endElement("input");
     }
 
-    protected Object findFilterValueForColumn(FacesContext context, DataTable table,
+    protected Object findFilterValueForColumn(FacesContext context, DataTable component,
         UIColumn column, String filterId) {
 
         Object filterValue;
-        if (table.isReset()) {
+        if (component.isReset()) {
             filterValue = Constants.EMPTY_STRING;
         }
         else {
-            filterValue = table.getFilterValue(column);
+            filterValue = component.getFilterValue(column);
             if (filterValue == null) {
                 Map<String, String> params = context.getExternalContext().getRequestParameterMap();
                 if (params.containsKey(filterId)) {
@@ -1447,12 +1444,12 @@ public class DataTableRenderer extends DataRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeStateHolder(FacesContext context, DataTable table, String id, String value) throws IOException {
+    protected void encodeStateHolder(FacesContext context, DataTable component, String id, String value) throws IOException {
         renderHiddenInput(context, id, value, false);
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, DataTable component) throws IOException {
         //Rendering happens on encodeEnd
     }
 
@@ -1461,11 +1458,11 @@ public class DataTableRenderer extends DataRenderer {
         return true;
     }
 
-    protected void encodeRadio(FacesContext context, DataTable table, boolean checked, boolean disabled) throws IOException {
+    protected void encodeRadio(FacesContext context, DataTable component, boolean checked, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        if (table.isNativeElements()) {
-            encodeNativeRadio(context, table, checked, disabled);
+        if (component.isNativeElements()) {
+            encodeNativeRadio(context, component, checked, disabled);
         }
         else {
             String iconClass = checked ? HTML.RADIOBUTTON_CHECKED_ICON_CLASS : HTML.RADIOBUTTON_UNCHECKED_ICON_CLASS;
@@ -1480,7 +1477,7 @@ public class DataTableRenderer extends DataRenderer {
 
             writer.startElement("div", null);
             writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
-            encodeNativeRadio(context, table, checked, disabled);
+            encodeNativeRadio(context, component, checked, disabled);
             writer.endElement("div");
 
             writer.startElement("div", null);
@@ -1495,46 +1492,46 @@ public class DataTableRenderer extends DataRenderer {
         }
     }
 
-    protected void encodeColumnSelection(FacesContext context, DataTable table, UIColumn column, boolean selected, boolean rowSelectionEnabled)
+    protected void encodeColumnSelection(FacesContext context, DataTable component, UIColumn column, boolean selected, boolean rowSelectionEnabled)
             throws IOException {
 
-        String selectionMode = table.getSelectionMode();
+        String selectionMode = component.getSelectionMode();
 
         if ("single".equalsIgnoreCase(selectionMode)) {
-            encodeRadio(context, table, selected, !rowSelectionEnabled);
+            encodeRadio(context, component, selected, !rowSelectionEnabled);
         }
         else if ("multiple".equalsIgnoreCase(selectionMode)) {
-            encodeCheckbox(context, table, selected, !rowSelectionEnabled, HTML.CHECKBOX_CLASS, false);
+            encodeCheckbox(context, component, selected, !rowSelectionEnabled, HTML.CHECKBOX_CLASS, false);
         }
         else {
             throw new FacesException("Invalid column selection mode:" + selectionMode);
         }
     }
 
-    protected void encodeCheckbox(FacesContext context, DataTable table, boolean checked, boolean disabled, String styleClass,
+    protected void encodeCheckbox(FacesContext context, DataTable component, boolean checked, boolean disabled, String styleClass,
                                   boolean isHeaderCheckbox) throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
 
-        if (table.isNativeElements()) {
-            encodeNativeCheckbox(context, table, checked, disabled);
+        if (component.isNativeElements()) {
+            encodeNativeCheckbox(context, component, checked, disabled);
         }
         else {
-            String ariaRowLabel = table.getAriaRowLabel();
+            String ariaRowLabel = component.getAriaRowLabel();
             String boxClass = getStyleClassBuilder(context)
                         .add(HTML.CHECKBOX_BOX_CLASS)
                         .add(disabled, "ui-state-disabled")
                         .add(checked, "ui-state-active")
                         .build();
             String iconClass = checked ? HTML.CHECKBOX_CHECKED_ICON_CLASS : HTML.CHECKBOX_UNCHECKED_ICON_CLASS;
-            Object rowKey = isHeaderCheckbox ? "head" : table.getRowKey();
+            Object rowKey = isHeaderCheckbox ? "head" : component.getRowKey();
 
             writer.startElement("div", null);
             writer.writeAttribute("class", styleClass, "styleClass");
 
             writer.startElement("div", null);
 
-            writer.writeAttribute("id", table.getClientId(context) + "_" + rowKey + "_checkbox", null);
+            writer.writeAttribute("id", component.getClientId(context) + "_" + rowKey + "_checkbox", null);
             writer.writeAttribute("role", "checkbox", null);
             writer.writeAttribute("tabindex", disabled ? "-1" : "0", null);
             writer.writeAttribute(HTML.ARIA_LABEL, ariaRowLabel, null);
@@ -1555,13 +1552,13 @@ public class DataTableRenderer extends DataRenderer {
         }
     }
 
-    protected void encodeNativeCheckbox(FacesContext context, DataTable table, boolean checked, boolean disabled) throws IOException {
+    protected void encodeNativeCheckbox(FacesContext context, DataTable component, boolean checked, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        String ariaRowLabel = table.getAriaRowLabel();
+        String ariaRowLabel = component.getAriaRowLabel();
         writer.startElement("input", null);
         writer.writeAttribute("type", "checkbox", null);
-        writer.writeAttribute("name", table.getClientId(context) + "_checkbox", null);
+        writer.writeAttribute("name", component.getClientId(context) + "_checkbox", null);
         writer.writeAttribute(HTML.ARIA_LABEL, ariaRowLabel, null);
         writer.writeAttribute(HTML.ARIA_CHECKED, String.valueOf(checked), null);
 
@@ -1576,14 +1573,14 @@ public class DataTableRenderer extends DataRenderer {
         writer.endElement("input");
     }
 
-    protected void encodeNativeRadio(FacesContext context, DataTable table, boolean checked, boolean disabled) throws IOException {
+    protected void encodeNativeRadio(FacesContext context, DataTable component, boolean checked, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        String ariaRowLabel = table.getAriaRowLabel();
+        String ariaRowLabel = component.getAriaRowLabel();
 
         writer.startElement("input", null);
         writer.writeAttribute("type", "radio", null);
-        writer.writeAttribute("name", table.getClientId(context) + "_radio", null);
+        writer.writeAttribute("name", component.getClientId(context) + "_radio", null);
         writer.writeAttribute(HTML.ARIA_LABEL, ariaRowLabel, null);
 
         if (checked) {
@@ -1597,10 +1594,10 @@ public class DataTableRenderer extends DataRenderer {
         writer.endElement("input");
     }
 
-    protected void encodeSubTable(FacesContext context, DataTable table, SubTable subTable, int first, int last) throws IOException {
+    protected void encodeSubTable(FacesContext context, DataTable component, SubTable subTable, int first, int last) throws IOException {
         for (int i = first; i < last; i++) {
-            table.setRowIndex(i);
-            if (!table.isRowAvailable()) {
+            component.setRowIndex(i);
+            if (!component.isRowAvailable()) {
                 break;
             }
 
@@ -1608,7 +1605,7 @@ public class DataTableRenderer extends DataRenderer {
         }
     }
 
-    protected boolean isInSameGroup(FacesContext context, DataTable table, int currentRowIndex, int step, ValueExpression groupByVE,
+    protected boolean isInSameGroup(FacesContext context, DataTable component, int currentRowIndex, int step, ValueExpression groupByVE,
                                     boolean loadFirstRowOfNextPage) {
         ELContext elContext = context.getELContext();
         Object currentGroupByData = groupByVE.getValue(elContext);
@@ -1618,34 +1615,34 @@ public class DataTableRenderer extends DataRenderer {
         // An additional check is required to ensure summaryRow will be rendered in case
         // number of rows of the current page is equals to the number of items in the current group (otherwise, it'll never be rendered)
         // see #9077
-        if (loadFirstRowOfNextPage && table.isLazy()) {
-            Object nextRowData = table.getLazyDataModel().loadOne(nextRowIndex, table.getActiveSortMeta(), table.getActiveFilterMeta());
+        if (loadFirstRowOfNextPage && component.isLazy()) {
+            Object nextRowData = component.getLazyDataModel().loadOne(nextRowIndex, component.getActiveSortMeta(), component.getActiveFilterMeta());
             if (nextRowData == null) {
                 return false;
             }
 
-            nextGroupByData = ComponentUtils.executeInRequestScope(context, table.getVar(), nextRowData, () -> groupByVE.getValue(elContext));
+            nextGroupByData = ComponentUtils.executeInRequestScope(context, component.getVar(), nextRowData, () -> groupByVE.getValue(elContext));
         }
         else {
-            table.setRowIndex(nextRowIndex);
-            if (!table.isRowAvailable()) {
-                table.setRowIndex(currentRowIndex); // restore row index
+            component.setRowIndex(nextRowIndex);
+            if (!component.isRowAvailable()) {
+                component.setRowIndex(currentRowIndex); // restore row index
                 return false;
             }
 
             nextGroupByData = groupByVE.getValue(elContext);
-            table.setRowIndex(currentRowIndex); // restore row index
+            component.setRowIndex(currentRowIndex); // restore row index
         }
 
         return Objects.equals(nextGroupByData, currentGroupByData);
     }
 
-    protected void encodeSortableHeaderOnReflow(FacesContext context, DataTable table) throws IOException {
+    protected void encodeSortableHeaderOnReflow(FacesContext context, DataTable component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        Map<SortMeta, String> headers = getSortableColumnHeaders(context, table);
+        Map<SortMeta, String> headers = getSortableColumnHeaders(context, component);
 
         if (!headers.isEmpty()) {
-            String reflowId = table.getContainerClientId(context) + "_reflowDD";
+            String reflowId = component.getContainerClientId(context) + "_reflowDD";
 
             writer.startElement("label", null);
             writer.writeAttribute("id", reflowId + "_label", null);
@@ -1679,10 +1676,10 @@ public class DataTableRenderer extends DataRenderer {
         }
     }
 
-    protected Map<SortMeta, String> getSortableColumnHeaders(FacesContext context, DataTable table) {
+    protected Map<SortMeta, String> getSortableColumnHeaders(FacesContext context, DataTable component) {
         AtomicReference<String> headerLabel = new AtomicReference<>(null);
 
-        Map<String, SortMeta> sortByAsMap = table.getSortByAsMap();
+        Map<String, SortMeta> sortByAsMap = component.getSortByAsMap();
         Map<SortMeta, String> headers = new LinkedHashMap<>(sortByAsMap.size());
         for (SortMeta sortMeta : sortByAsMap.values()) {
             if (sortMeta.isHeaderRow()) {
@@ -1690,7 +1687,7 @@ public class DataTableRenderer extends DataRenderer {
             }
 
             headerLabel.set(null);
-            table.invokeOnColumn(sortMeta.getColumnKey(), (column) -> {
+            component.invokeOnColumn(sortMeta.getColumnKey(), (column) -> {
                 String label = resolveColumnAriaHeaderText(context, column);
                 headerLabel.set(label);
             });

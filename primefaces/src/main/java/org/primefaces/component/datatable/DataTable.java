@@ -601,10 +601,10 @@ public class DataTable extends DataTableBase {
         return ComponentTraversalUtils.firstChildRendered(SubTable.class, this);
     }
 
-    public String getRowKey(Object object) {
-        DataModel model = getDataModel();
+    public <T> String getRowKey(T object) {
+        DataModel<T> model = getDataModel();
         if (model instanceof SelectableDataModel) {
-            return ((SelectableDataModel) model).getRowKey(object);
+            return ((SelectableDataModel<T>) model).getRowKey(object);
         }
         else {
             boolean hasRowKeyVe = getValueExpression(PropertyKeys.rowKey.name()) != null;
@@ -616,14 +616,14 @@ public class DataTable extends DataTableBase {
         }
     }
 
-    public Object getRowData(String rowKey) {
-        DataModel model = getDataModel();
+    public <T> T getRowData(String rowKey) {
+        DataModel<T> model = getDataModel();
         if (model instanceof SelectableDataModel) {
-            return ((SelectableDataModel) model).getRowData(rowKey);
+            return ((SelectableDataModel<T>) model).getRowData(rowKey);
         }
         else {
-            Collection data = (Collection) getDataModel().getWrappedData();
-            for (Object o : data) {
+            Collection<T> data = (Collection<T>) getDataModel().getWrappedData();
+            for (T o : data) {
                 if (Objects.equals(rowKey, getRowKey(o))) {
                     return o;
                 }
@@ -634,7 +634,7 @@ public class DataTable extends DataTableBase {
     }
 
     public Set<String> getExpandedRowKeys() {
-        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.expandedRowKeys, Collections::emptySet);
+        return (Set<String>) getStateHelper().eval(InternalPropertyKeys.expandedRowKeys, Collections::emptySet);
     }
 
     public void setExpandedRowKeys(Set<String> expandedRowKeys) {
@@ -642,7 +642,7 @@ public class DataTable extends DataTableBase {
     }
 
     public Set<String> getSelectedRowKeys() {
-        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.selectedRowKeys, Collections::emptySet);
+        return (Set<String>) getStateHelper().eval(InternalPropertyKeys.selectedRowKeys, Collections::emptySet);
     }
 
     public void setSelectedRowKeys(Set<String> selectedRowKeys) {
@@ -657,7 +657,7 @@ public class DataTable extends DataTableBase {
     }
 
     public boolean isSelectAll() {
-        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.selectAll, () -> false);
+        return (boolean) getStateHelper().eval(InternalPropertyKeys.selectAll, () -> false);
     }
 
     public void setSelectAll(boolean selectAll) {
@@ -1013,7 +1013,7 @@ public class DataTable extends DataTableBase {
 
     @Override
     public Map<String, FilterMeta> getFilterByAsMap() {
-        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.filterByAsMap, () -> initFilterBy(getFacesContext()));
+        return (Map<String, FilterMeta>) getStateHelper().eval(InternalPropertyKeys.filterByAsMap, () -> initFilterBy(getFacesContext()));
     }
 
     @Override
@@ -1124,11 +1124,11 @@ public class DataTable extends DataTableBase {
         }
     }
 
-    public LazyDataModel<Object> getLazyDataModel() {
+    public <T> LazyDataModel<T> getLazyDataModel() {
         if (isLazy()) {
-            DataModel<Object> value = getDataModel();
+            DataModel<T> value = getDataModel();
             if (value instanceof LazyDataModel) {
-                return (LazyDataModel<Object>) value;
+                return (LazyDataModel<T>) value;
             }
         }
         return null;

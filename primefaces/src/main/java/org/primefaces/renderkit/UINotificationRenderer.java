@@ -39,9 +39,9 @@ import jakarta.faces.component.ContextCallback;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 
-public class UINotificationRenderer extends CoreRenderer {
+public class UINotificationRenderer<T extends UIComponent & UINotification> extends CoreRenderer<T> {
 
-    protected boolean shouldRender(UINotification component, FacesMessage message, String severityName) {
+    protected boolean shouldRender(T component, FacesMessage message, String severityName) {
         String severityLevel = component.getSeverity();
         return (!message.isRendered() || component.isRedisplay())
                 && (severityLevel == null || severityLevel.contains(severityName));
@@ -74,7 +74,7 @@ public class UINotificationRenderer extends CoreRenderer {
         return severity;
     }
 
-    protected boolean hasDisplayableMessage(UINotification component, UIComponent target, FacesContext context) {
+    protected boolean hasDisplayableMessage(T component, UIComponent target, FacesContext context) {
         String clientId = target.getClientId(context);
         Iterator<FacesMessage> msgs = context.getMessages(clientId);
         while (msgs.hasNext()) {

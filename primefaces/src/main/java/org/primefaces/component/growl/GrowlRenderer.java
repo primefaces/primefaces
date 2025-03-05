@@ -34,50 +34,47 @@ import java.util.List;
 import java.util.Objects;
 
 import jakarta.faces.application.FacesMessage;
-import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class GrowlRenderer extends UINotificationRenderer {
+public class GrowlRenderer extends UINotificationRenderer<Growl> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+    public void encodeEnd(FacesContext context, Growl component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        Growl growl = (Growl) component;
-        String clientId = growl.getClientId(context);
-        String widgetVar = growl.resolveWidgetVar(context);
+        String clientId = component.getClientId(context);
 
-        writer.startElement("span", growl);
+        writer.startElement("span", component);
         writer.writeAttribute("id", clientId, "id");
 
         if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             writer.writeAttribute("class", "ui-growl-pl", null);
-            writer.writeAttribute("data-global", growl.isGlobalOnly(), null);
-            writer.writeAttribute("data-summary", growl.isShowSummary(), null);
-            writer.writeAttribute("data-detail", growl.isShowDetail(), null);
-            writer.writeAttribute("data-severity", getClientSideSeverity(growl.getSeverity()), null);
-            writer.writeAttribute("data-redisplay", String.valueOf(growl.isRedisplay()), null);
+            writer.writeAttribute("data-global", component.isGlobalOnly(), null);
+            writer.writeAttribute("data-summary", component.isShowSummary(), null);
+            writer.writeAttribute("data-detail", component.isShowDetail(), null);
+            writer.writeAttribute("data-severity", getClientSideSeverity(component.getSeverity()), null);
+            writer.writeAttribute("data-redisplay", String.valueOf(component.isRedisplay()), null);
         }
 
         writer.endElement("span");
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Growl", growl)
-                .attr("sticky", growl.isSticky())
-                .attr("life", growl.getLife())
-                .attr("escape", growl.isEscape())
-                .attr("keepAlive", growl.isKeepAlive());
+        wb.init("Growl", component)
+                .attr("sticky", component.isSticky())
+                .attr("life", component.getLife())
+                .attr("escape", component.isEscape())
+                .attr("keepAlive", component.isKeepAlive());
 
         writer.write(",msgs:");
-        encodeMessages(context, growl);
+        encodeMessages(context, component);
 
         wb.finish();
     }
 
-    protected void encodeMessages(FacesContext context, Growl growl) throws IOException {
+    protected void encodeMessages(FacesContext context, Growl component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         boolean first = true;
-        List<FacesMessage> messages = collectFacesMessages(growl, context);
+        List<FacesMessage> messages = collectFacesMessages(component, context);
 
         writer.write("[");
 
@@ -86,7 +83,7 @@ public class GrowlRenderer extends UINotificationRenderer {
                 FacesMessage message = messages.get(i);
                 String severityName = getSeverityName(message);
 
-                if (shouldRender(growl, message, severityName)) {
+                if (shouldRender(component, message, severityName)) {
                     if (!first) {
                         writer.write(",");
                     }
@@ -99,16 +96,16 @@ public class GrowlRenderer extends UINotificationRenderer {
 
                     writer.write("{");
 
-                    if (growl.isShowSummary() && growl.isShowDetail()) {
-                        if (growl.isSkipDetailIfEqualsSummary() && Objects.equals(summary, detail)) {
+                    if (component.isShowSummary() && component.isShowDetail()) {
+                        if (component.isSkipDetailIfEqualsSummary() && Objects.equals(summary, detail)) {
                             detail = Constants.EMPTY_STRING;
                         }
                         writer.writeText("summary:\"" + summary + "\",detail:\"" + detail + "\"", null);
                     }
-                    else if (growl.isShowSummary() && !growl.isShowDetail()) {
+                    else if (component.isShowSummary() && !component.isShowDetail()) {
                         writer.writeText("summary:\"" + summary + "\",detail:\"\"", null);
                     }
-                    else if (!growl.isShowSummary() && growl.isShowDetail()) {
+                    else if (!component.isShowSummary() && component.isShowDetail()) {
                         writer.writeText("summary:\"\",detail:\"" + detail + "\"", null);
                     }
 

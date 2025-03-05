@@ -34,23 +34,21 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class ConfirmPopupRenderer extends CoreRenderer {
+public class ConfirmPopupRenderer extends CoreRenderer<ConfirmPopup> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        ConfirmPopup popup = (ConfirmPopup) component;
-
-        encodeMarkup(context, popup);
-        encodeScript(context, popup);
+    public void encodeEnd(FacesContext context, ConfirmPopup component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    protected void encodeMarkup(FacesContext context, ConfirmPopup popup) throws IOException {
+    protected void encodeMarkup(FacesContext context, ConfirmPopup component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = popup.getClientId(context);
-        String style = popup.getStyle();
+        String clientId = component.getClientId(context);
+        String style = component.getStyle();
         String styleClass = getStyleClassBuilder(context)
                 .add(ConfirmPopup.STYLE_CLASS)
-                .add(popup.getStyleClass())
+                .add(component.getStyleClass())
                 .build();
 
         writer.startElement("div", null);
@@ -61,24 +59,24 @@ public class ConfirmPopupRenderer extends CoreRenderer {
             writer.writeAttribute("style", style, null);
         }
 
-        encodeContent(context, popup);
-        encodeFooter(context, popup);
+        encodeContent(context, component);
+        encodeFooter(context, component);
 
         writer.endElement("div");
     }
 
-    protected void encodeContent(FacesContext context, ConfirmPopup popup) throws IOException {
+    protected void encodeContent(FacesContext context, ConfirmPopup component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String messageText = popup.getMessage();
-        UIComponent messageFacet = popup.getFacet("message");
+        String messageText = component.getMessage();
+        UIComponent messageFacet = component.getFacet("message");
         String iconStyleClass = getStyleClassBuilder(context)
                 .add(ConfirmPopup.ICON_CLASS)
-                .add(popup.getIcon())
+                .add(component.getIcon())
                 .build();
 
         writer.startElement("div", null);
         writer.writeAttribute("class", ConfirmPopup.CONTENT_CLASS, null);
-        writer.writeAttribute("id", popup.getClientId(context) + "_content", null);
+        writer.writeAttribute("id", component.getClientId(context) + "_content", null);
 
         //icon
         writer.startElement("i", null);
@@ -111,19 +109,19 @@ public class ConfirmPopupRenderer extends CoreRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeScript(FacesContext context, ConfirmPopup popup) throws IOException {
+    protected void encodeScript(FacesContext context, ConfirmPopup component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
 
-        wb.init("ConfirmPopup", popup)
-            .attr("appendTo", SearchExpressionUtils.resolveOptionalClientIdForClientSide(context, popup, popup.getAppendTo()))
-            .attr("global", popup.isGlobal(), false)
-            .attr("dismissable", popup.isDismissable(), true);
+        wb.init("ConfirmPopup", component)
+            .attr("appendTo", SearchExpressionUtils.resolveOptionalClientIdForClientSide(context, component, component.getAppendTo()))
+            .attr("global", component.isGlobal(), false)
+            .attr("dismissable", component.isDismissable(), true);
 
         wb.finish();
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, ConfirmPopup component) throws IOException {
         //Do Nothing
     }
 
