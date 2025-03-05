@@ -109,7 +109,7 @@ public class Schedule extends ScheduleBase {
                 String selectedDateStr = params.get(clientId + "_selectedDate");
                 ZoneId zoneId = CalendarUtils.calculateZoneId(this.getTimeZone());
                 LocalDateTime selectedDate =  CalendarUtils.toLocalDateTime(zoneId, selectedDateStr);
-                SelectEvent<?> selectEvent = new SelectEvent(this, behaviorEvent.getBehavior(), selectedDate);
+                SelectEvent<?> selectEvent = new SelectEvent<>(this, behaviorEvent.getBehavior(), selectedDate);
                 selectEvent.setPhaseId(behaviorEvent.getPhaseId());
 
                 wrapperEvent = selectEvent;
@@ -128,7 +128,7 @@ public class Schedule extends ScheduleBase {
                 String selectedEventId = params.get(clientId + "_selectedEventId");
                 ScheduleEvent<?> selectedEvent = getValue().getEvent(selectedEventId);
 
-                wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), selectedEvent);
+                wrapperEvent = new SelectEvent<>(this, behaviorEvent.getBehavior(), selectedEvent);
             }
             else if ("eventMove".equals(eventName)) {
                 String movedEventId = params.get(clientId + "_movedEventId");
@@ -177,7 +177,7 @@ public class Schedule extends ScheduleBase {
                         endDeltaYear, endDeltaMonth, endDeltaDay, endDeltaMinute);
             }
             else if ("viewChange".equals(eventName)) {
-                wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), getView());
+                wrapperEvent = new SelectEvent<>(this, behaviorEvent.getBehavior(), getView());
             }
 
             if (wrapperEvent == null) {

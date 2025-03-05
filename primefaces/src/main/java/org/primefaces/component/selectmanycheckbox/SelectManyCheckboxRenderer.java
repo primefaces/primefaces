@@ -36,9 +36,7 @@ import java.util.List;
 
 import jakarta.faces.FacesException;
 import jakarta.faces.component.UIComponent;
-import jakarta.faces.component.UIInput;
 import jakarta.faces.component.UINamingContainer;
-import jakarta.faces.component.UISelectMany;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.Converter;
@@ -338,15 +336,14 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer<SelectManyChe
         }
     }
 
-    protected void encodeOption(FacesContext context, UIInput component, Object values, Object submittedValues, Converter converter,
+    protected void encodeOption(FacesContext context, SelectManyCheckbox component, Object values, Object submittedValues, Converter converter,
                                 SelectItem option, int idx) throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
-        SelectManyCheckbox checkbox = (SelectManyCheckbox) component;
         String itemValueAsString = getOptionAsString(context, component, converter, option.getValue());
-        String name = checkbox.getClientId(context);
+        String name = component.getClientId(context);
         String id = name + UINamingContainer.getSeparatorChar(context) + idx;
-        boolean disabled = option.isDisabled() || checkbox.isDisabled();
+        boolean disabled = option.isDisabled() || component.isDisabled();
 
         Object valuesArray;
         Object itemValue;
@@ -367,16 +364,16 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer<SelectManyChe
         writer.startElement("div", getSelectItemComponent(option));
         writer.writeAttribute("class", HTML.CHECKBOX_CLASS, null);
 
-        encodeOptionInput(context, checkbox, id, name, selected, disabled, itemValueAsString);
-        encodeOptionOutput(context, checkbox, selected, disabled);
+        encodeOptionInput(context, component, id, name, selected, disabled, itemValueAsString);
+        encodeOptionOutput(context, component, selected, disabled);
 
         writer.endElement("div");
-        encodeOptionLabel(context, checkbox, id, option, disabled);
+        encodeOptionLabel(context, component, id, option, disabled);
     }
 
     @Override
-    protected String getSubmitParam(FacesContext context, UISelectMany selectMany) {
-        return selectMany.getClientId(context);
+    protected String getSubmitParam(FacesContext context, SelectManyCheckbox component) {
+        return component.getClientId(context);
     }
 
     @Override

@@ -46,7 +46,7 @@ public abstract class InputRenderer<T extends UIComponent> extends CoreRenderer<
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
-        Converter converter = ComponentUtils.getConverter(context, component);
+        Converter<?> converter = ComponentUtils.getConverter(context, component);
 
         if (converter != null) {
             String convertableValue = submittedValue == null ? null : submittedValue.toString();

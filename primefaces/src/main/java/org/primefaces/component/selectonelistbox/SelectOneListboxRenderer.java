@@ -33,7 +33,6 @@ import java.io.IOException;
 import java.util.List;
 
 import jakarta.faces.component.UIComponent;
-import jakarta.faces.component.UISelectOne;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.Converter;
@@ -354,8 +353,8 @@ public class SelectOneListboxRenderer extends SelectOneRenderer<SelectOneListbox
     }
 
     @Override
-    protected String getSubmitParam(FacesContext context, UISelectOne selectOne) {
-        return selectOne.getClientId(context) + "_input";
+    protected String getSubmitParam(FacesContext context, SelectOneListbox component) {
+        return component.getClientId(context) + "_input";
     }
 
     @Override

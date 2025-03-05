@@ -34,7 +34,6 @@ import java.util.List;
 
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UINamingContainer;
-import jakarta.faces.component.UISelectOne;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.Converter;
@@ -172,7 +171,7 @@ public class SelectOneButtonRenderer extends SelectOneRenderer<SelectOneButton> 
     }
 
     @Override
-    protected String getSubmitParam(FacesContext context, UISelectOne component) {
+    protected String getSubmitParam(FacesContext context, SelectOneButton component) {
         return component.getClientId(context);
     }
 }

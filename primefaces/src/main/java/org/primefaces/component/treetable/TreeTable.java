@@ -42,6 +42,7 @@ import org.primefaces.model.ColumnMeta;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.TreeNode;
+import org.primefaces.model.TreeNodeChildren;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
@@ -159,14 +160,14 @@ public class TreeTable extends TreeTableBase {
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             String clientId = getClientId(context);
             FacesEvent wrapperEvent = null;
-            TreeNode root = getValue();
+            TreeNode<?> root = getValue();
 
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
             if ("expand".equals(eventName)) {
                 String nodeKey = params.get(clientId + "_expand");
                 setRowKey(root, nodeKey);
-                TreeNode node = getRowNode();
+                TreeNode<?> node = getRowNode();
 
                 wrapperEvent = new NodeExpandEvent(this, behaviorEvent.getBehavior(), node);
                 wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
@@ -174,7 +175,7 @@ public class TreeTable extends TreeTableBase {
             else if ("collapse".equals(eventName)) {
                 String nodeKey = params.get(clientId + "_collapse");
                 setRowKey(root, nodeKey);
-                TreeNode node = getRowNode();
+                TreeNode<?> node = getRowNode();
                 node.setExpanded(false);
 
                 wrapperEvent = new NodeCollapseEvent(this, behaviorEvent.getBehavior(), node);
@@ -183,7 +184,7 @@ public class TreeTable extends TreeTableBase {
             else if ("select".equals(eventName)) {
                 String nodeKey = params.get(clientId + "_instantSelection");
                 setRowKey(root, nodeKey);
-                TreeNode node = getRowNode();
+                TreeNode<?> node = getRowNode();
 
                 wrapperEvent = new NodeSelectEvent(this, behaviorEvent.getBehavior(), node);
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
@@ -191,7 +192,7 @@ public class TreeTable extends TreeTableBase {
             else if ("contextMenu".equals(eventName)) {
                 String nodeKey = params.get(clientId + "_instantSelection");
                 setRowKey(root, nodeKey);
-                TreeNode node = getRowNode();
+                TreeNode<?> node = getRowNode();
 
                 wrapperEvent = new NodeSelectEvent(this, behaviorEvent.getBehavior(), node, true);
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
@@ -200,7 +201,7 @@ public class TreeTable extends TreeTableBase {
             else if ("unselect".equals(eventName)) {
                 String nodeKey = params.get(clientId + "_instantUnselection");
                 setRowKey(root, nodeKey);
-                TreeNode node = getRowNode();
+                TreeNode<?> node = getRowNode();
 
                 wrapperEvent = new NodeUnselectEvent(this, behaviorEvent.getBehavior(), node);
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
@@ -222,7 +223,7 @@ public class TreeTable extends TreeTableBase {
             else if ("rowEdit".equals(eventName) || "rowEditCancel".equals(eventName) || "rowEditInit".equals(eventName)) {
                 String nodeKey = params.get(clientId + "_rowEditIndex");
                 setRowKey(root, nodeKey);
-                wrapperEvent = new RowEditEvent(this, behaviorEvent.getBehavior(), getRowNode());
+                wrapperEvent = new RowEditEvent<>(this, behaviorEvent.getBehavior(), getRowNode());
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             }
             else if ("cellEdit".equals(eventName) || "cellEditCancel".equals(eventName) || "cellEditInit".equals(eventName)) {
@@ -243,7 +244,7 @@ public class TreeTable extends TreeTableBase {
                     }
                 }
 
-                wrapperEvent = new CellEditEvent(this, behaviorEvent.getBehavior(), column, rowKey);
+                wrapperEvent = new CellEditEvent<>(this, behaviorEvent.getBehavior(), column, rowKey);
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             }
             else if ("page".equals(eventName)) {
@@ -370,12 +371,12 @@ public class TreeTable extends TreeTableBase {
 
     @Override
     public int getRowCount() {
-        TreeNode root = getValue();
+        TreeNode<?> root = getValue();
         if (root == null) {
             return (-1);
         }
         else {
-            List<TreeNode> children = root.getChildren();
+            TreeNodeChildren<?> children = root.getChildren();
             return children == null ? -1 : children.size();
         }
     }
@@ -460,7 +461,7 @@ public class TreeTable extends TreeTableBase {
         }
     }
 
-    public void updateFilteredValue(FacesContext context, TreeNode node) {
+    public void updateFilteredValue(FacesContext context, TreeNode<?> node) {
         ValueExpression ve = getValueExpression(PropertyKeys.filteredValue.name());
 
         if (ve != null) {
@@ -607,7 +608,7 @@ public class TreeTable extends TreeTableBase {
     }
 
     @Override
-    protected void processNode(FacesContext context, PhaseId phaseId, TreeNode root, TreeNode treeNode, String rowKey) {
+    protected void processNode(FacesContext context, PhaseId phaseId, TreeNode<?> root, TreeNode<?> treeNode, String rowKey) {
         if (!isPaginator() || root != treeNode) {
             super.processNode(context, phaseId, root, treeNode, rowKey);
         }
@@ -618,7 +619,7 @@ public class TreeTable extends TreeTableBase {
 
                 processColumnChildren(context, phaseId, root, rowKey);
 
-                List<TreeNode> children = root.getChildren();
+                TreeNodeChildren<?> children = root.getChildren();
                 int childCount = root.getChildCount();
                 int last = (first + rows);
                 if (last > childCount) {
@@ -626,7 +627,7 @@ public class TreeTable extends TreeTableBase {
                 }
 
                 for (int i = first; i < last; i++) {
-                    TreeNode child = children.get(i);
+                    TreeNode<?> child = children.get(i);
                     String childRowKey = childRowKey(rowKey, i);
                     processNode(context, phaseId, root, child, childRowKey);
                 }

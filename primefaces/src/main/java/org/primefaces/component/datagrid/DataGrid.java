@@ -81,10 +81,10 @@ public class DataGrid extends DataGridBase {
     public void loadLazyData() {
         // duplicate of DataView#loadLazyData
 
-        DataModel model = getDataModel();
+        DataModel<?> model = getDataModel();
 
         if (model instanceof LazyDataModel) {
-            LazyDataModel lazyModel = (LazyDataModel) model;
+            LazyDataModel<?> lazyModel = (LazyDataModel<?>) model;
 
             if (getFirst() > 0) {
                 lazyModel.setRowCount(lazyModel.count(Collections.emptyMap()));

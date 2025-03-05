@@ -51,7 +51,7 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class DataRenderer<T extends UIComponent> extends CoreRenderer<T> {
+public class DataRenderer<T extends UIComponent & Pageable> extends CoreRenderer<T> {
 
     private static final Map<String, PaginatorElementRenderer> PAGINATOR_ELEMENTS = MapBuilder.<String, PaginatorElementRenderer>builder()
             .put("{CurrentPageReport}", new CurrentPageReportRenderer())
@@ -73,7 +73,7 @@ public class DataRenderer<T extends UIComponent> extends CoreRenderer<T> {
         return PAGINATOR_ELEMENTS.remove(element);
     }
 
-    protected void encodePaginatorMarkup(FacesContext context, Pageable pageable, String position) throws IOException {
+    protected void encodePaginatorMarkup(FacesContext context, T pageable, String position) throws IOException {
         if (!pageable.isPaginatorAlwaysVisible() && pageable.getPageCount() <= 1) {
             return;
         }
@@ -151,7 +151,7 @@ public class DataRenderer<T extends UIComponent> extends CoreRenderer<T> {
         writer.endElement("div");
     }
 
-    protected void encodePaginatorConfig(FacesContext context, Pageable pageable, WidgetBuilder wb) throws IOException {
+    protected void encodePaginatorConfig(FacesContext context, T pageable, WidgetBuilder wb) throws IOException {
         String clientId = pageable.getClientId(context);
         String paginatorPosition = pageable.getPaginatorPosition();
         String paginatorContainers = null;

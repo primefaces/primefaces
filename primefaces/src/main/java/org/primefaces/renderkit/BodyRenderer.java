@@ -48,7 +48,7 @@ public class BodyRenderer extends CoreRenderer<UIComponent> {
         }
 
         String styleClass = (String) component.getAttributes().get("styleClass");
-        if (styleClass != null && styleClass.length() != 0) {
+        if (styleClass != null && !styleClass.isEmpty()) {
             writer.writeAttribute("class", styleClass, "styleClass");
         }
 

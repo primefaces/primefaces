@@ -79,7 +79,7 @@ public class TreeRenderer extends CoreRenderer<Tree> {
         decodeBehaviors(context, component);
     }
 
-    public void decodeSelection(FacesContext context, Tree component, TreeNode root) {
+    public void decodeSelection(FacesContext context, Tree component, TreeNode<?> root) {
         boolean multiple = component.isMultipleSelectionMode();
         Class<?> selectionType = component.getSelectionType();
         boolean hasSelectionType = selectionType != null;
@@ -105,17 +105,19 @@ public class TreeRenderer extends CoreRenderer<Tree> {
             String[] selectedRowKeys = selection.split(",");
 
             if (multiple) {
-                List<TreeNode> selectedNodes = new ArrayList<>();
+                List<TreeNode<?>> selectedNodes = new ArrayList<>();
 
                 for (int i = 0; i < selectedRowKeys.length; i++) {
                     component.setRowKey(root, selectedRowKeys[i]);
-                    TreeNode rowNode = component.getRowNode();
+                    TreeNode<?> rowNode = component.getRowNode();
                     if (rowNode != null) {
                         selectedNodes.add(rowNode);
                     }
                 }
 
-                component.setSelection(selectionType.isArray() ? selectedNodes.toArray(new TreeNode[selectedNodes.size()]) : selectedNodes);
+                component.setSelection(selectionType.isArray()
+                        ? selectedNodes.toArray(new TreeNode[selectedNodes.size()])
+                        : selectedNodes);
             }
             else {
                 component.setRowKey(root, selectedRowKeys[0]);
@@ -128,7 +130,7 @@ public class TreeRenderer extends CoreRenderer<Tree> {
         if (component.isCheckboxSelectionMode() && component.isDynamic() && component.isSelectionRequest(context) && component.isPropagateSelectionDown()) {
             String selectedNodeRowKey = params.get(clientId + "_instantSelection");
             component.setRowKey(root, selectedNodeRowKey);
-            TreeNode selectedNode = component.getRowNode();
+            TreeNode<?> selectedNode = component.getRowNode();
             List<String> descendantRowKeys = new ArrayList<>();
             component.populateRowKeys(selectedNode, descendantRowKeys);
             int size = descendantRowKeys.size();
@@ -146,7 +148,7 @@ public class TreeRenderer extends CoreRenderer<Tree> {
         }
     }
 
-    public void decodeDragDrop(FacesContext context, Tree component, TreeNode root) {
+    public void decodeDragDrop(FacesContext context, Tree component, TreeNode<?> root) {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String clientId = component.getClientId(context);
         String dragNodeRowKey = params.get(clientId + "_dragNode");
@@ -155,7 +157,7 @@ public class TreeRenderer extends CoreRenderer<Tree> {
         int dndIndex = Integer.parseInt(params.get(clientId + "_dndIndex"));
         boolean isDroppedNodeCopy = Boolean.parseBoolean(params.get(clientId + "_isDroppedNodeCopy"));
         String[] dragNodeRowKeyArr = dragNodeRowKey.split(",");
-        List<TreeNode> dragNodeList = new ArrayList<>();
+        List<TreeNode<?>> dragNodeList = new ArrayList<>();
         TreeNode dropNode;
 
         for (String rowKey : dragNodeRowKeyArr) {
@@ -217,7 +219,7 @@ public class TreeRenderer extends CoreRenderer<Tree> {
 
     @Override
     public void encodeEnd(FacesContext context, Tree component) throws IOException {
-        TreeNode root = component.getValue();
+        TreeNode<?> root = component.getValue();
 
         //enable RTL
         if (ComponentUtils.isRTL(context, component)) {
@@ -236,7 +238,7 @@ public class TreeRenderer extends CoreRenderer<Tree> {
             }
             else {
                 component.setRowKey(root, rowKey);
-                TreeNode node = component.getRowNode();
+                TreeNode<?> node = component.getRowNode();
                 node.setExpanded(true);
 
                 if (vertical) {
@@ -289,7 +291,7 @@ public class TreeRenderer extends CoreRenderer<Tree> {
             FilterConstraint filterConstraint = getFilterConstraint(component);
 
             for (int i = 0; i < childCount; i++) {
-                TreeNode childNode = node.getChildren().get(i);
+                TreeNode<?> childNode = node.getChildren().get(i);
                 requestMap.put(var, childNode.getData());
 
                 Object value = component.getFilterFunction() == null
@@ -357,7 +359,7 @@ public class TreeRenderer extends CoreRenderer<Tree> {
 
     protected void encodeMarkup(FacesContext context, Tree component) throws IOException {
         boolean vertical = component.getOrientation().equals("vertical");
-        TreeNode root = component.getValue();
+        TreeNode<?> root = component.getValue();
 
         if (root != null && root.getRowKey() == null) {
             root.setRowKey(UITree.ROOT_ROW_KEY);
@@ -373,7 +375,7 @@ public class TreeRenderer extends CoreRenderer<Tree> {
         }
     }
 
-    public void encodeVerticalTree(FacesContext context, Tree component, TreeNode root) throws IOException {
+    public void encodeVerticalTree(FacesContext context, Tree component, TreeNode<?> root) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = component.getClientId(context);
         boolean dynamic = component.isDynamic();
@@ -456,7 +458,7 @@ public class TreeRenderer extends CoreRenderer<Tree> {
         writer.endElement("div");
     }
 
-    protected void encodeHorizontalTree(FacesContext context, Tree component, TreeNode root) throws IOException {
+    protected void encodeHorizontalTree(FacesContext context, Tree component, TreeNode<?> root) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = component.getClientId(context);
         boolean dynamic = component.isDynamic();
@@ -486,7 +488,7 @@ public class TreeRenderer extends CoreRenderer<Tree> {
         writer.endElement("div");
     }
 
-    protected void encodeHorizontalTreeNode(FacesContext context, Tree component, TreeNode root, TreeNode node, String clientId,
+    protected void encodeHorizontalTreeNode(FacesContext context, Tree component, TreeNode<?> root, TreeNode<?> node, String clientId,
                                             String rowKey, NodeOrder nodeOrder, boolean dynamic, boolean checkbox)
             throws IOException {
 
@@ -593,7 +595,7 @@ public class TreeRenderer extends CoreRenderer<Tree> {
         writer.endElement("table");
     }
 
-    protected void encodeHorizontalTreeNodeChildren(FacesContext context, Tree component, TreeNode root, TreeNode node,
+    protected void encodeHorizontalTreeNodeChildren(FacesContext context, Tree component, TreeNode<?> root, TreeNode<?> node,
                                                     String clientId, String rowKey, boolean dynamic, boolean checkbox)
             throws IOException {
 
@@ -602,7 +604,7 @@ public class TreeRenderer extends CoreRenderer<Tree> {
         }
 
         int childIndex = 0;
-        for (Iterator<TreeNode> iterator = node.getChildren().iterator(); iterator.hasNext(); ) {
+        for (Iterator<? extends TreeNode<?>> iterator = node.getChildren().iterator(); iterator.hasNext(); ) {
             String childRowKey = rowKey == null ? String.valueOf(childIndex) : rowKey + UITree.SEPARATOR + childIndex;
 
             NodeOrder no = null;
@@ -657,8 +659,9 @@ public class TreeRenderer extends CoreRenderer<Tree> {
         writer.endElement("td");
     }
 
-    public void encodeTreeNode(FacesContext context, Tree component, TreeNode root, TreeNode node, String clientId, boolean dynamic, boolean checkbox,
-                               boolean dragdrop) throws IOException {
+    public void encodeTreeNode(FacesContext context, Tree component, TreeNode<?> root, TreeNode<?> node, String clientId,
+                               boolean dynamic, boolean checkbox, boolean dragdrop)
+            throws IOException {
 
         //preselection
         String rowKey = node.getRowKey();

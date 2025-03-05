@@ -135,14 +135,13 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
         }
     }
 
-    @SuppressWarnings("unchecked")
     public void encodeResults(FacesContext context, UIComponent component) throws IOException {
         AutoComplete ac = (AutoComplete) component;
         Object results = ac.getSuggestions();
         int maxResults = ac.getMaxResults();
 
         if (ac.isServerQueryMode() && maxResults != Integer.MAX_VALUE && results != null && ((List) results).size() > maxResults) {
-            results = ((List) results).subList(0, ac.getMaxResults());
+            results = ((List<?>) results).subList(0, ac.getMaxResults());
         }
 
         encodeSuggestions(context, ac, results);
@@ -370,14 +369,14 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
         String clientId = component.getClientId(context);
         String inputId = clientId + "_input";
 
-        List values;
+        List<?> values;
         if (component.isValid()) {
-            values = (List) component.getValue();
+            values = (List<?>) component.getValue();
         }
         else {
             Object submittedValue = component.getSubmittedValue();
             try {
-                values = (List) getConvertedValue(context, component, submittedValue);
+                values = (List<?>) getConvertedValue(context, component, submittedValue);
             }
             catch (ConverterException ce) {
                 values = Arrays.asList((String[]) submittedValue);
@@ -423,7 +422,7 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
             String var = component.getVar();
             boolean pojo = var != null;
 
-            Collection<Object> items = component.isUnique() ? new LinkedHashSet<>(values) : values;
+            Collection<?> items = component.isUnique() ? new LinkedHashSet<>(values) : values;
             for (Object value : items) {
                 Object itemValue = null;
                 String itemLabel = null;

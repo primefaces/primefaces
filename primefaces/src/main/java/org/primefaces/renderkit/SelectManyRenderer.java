@@ -28,14 +28,13 @@ import java.util.List;
 import java.util.Map;
 
 import jakarta.faces.FacesException;
-import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UISelectMany;
 import jakarta.faces.context.FacesContext;
 
 public abstract class SelectManyRenderer<T extends UISelectMany> extends SelectRenderer<T> {
 
     @Override
-    public void decode(FacesContext context, UISelectMany component) {
+    public void decode(FacesContext context, T component) {
         if (!shouldDecode(component)) {
             return;
         }
@@ -50,7 +49,7 @@ public abstract class SelectManyRenderer<T extends UISelectMany> extends SelectR
         decodeBehaviors(context, component);
     }
 
-    protected Object getValues(UISelectMany component) {
+    protected Object getValues(T component) {
         Object value = component.getValue();
 
         if (value != null) {
@@ -68,10 +67,9 @@ public abstract class SelectManyRenderer<T extends UISelectMany> extends SelectR
         return null;
     }
 
-    protected Object getSubmittedValues(UIComponent component) {
-        UISelectMany select = (UISelectMany) component;
-        return select.getSubmittedValue();
+    protected Object getSubmittedValues(T component) {
+        return component.getSubmittedValue();
     }
 
-    protected abstract String getSubmitParam(FacesContext context, UISelectMany selectMany);
+    protected abstract String getSubmitParam(FacesContext context, T component);
 }

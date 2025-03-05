@@ -116,11 +116,11 @@ public class OrderList extends OrderListBase {
                     int itemIndex = Integer.parseInt(params.get(clientId + "_itemIndex"));
                     boolean metaKey = Boolean.parseBoolean(params.get(clientId + "_metaKey"));
                     boolean ctrlKey = Boolean.parseBoolean(params.get(clientId + "_ctrlKey"));
-                    wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), list.get(itemIndex), metaKey, ctrlKey);
+                    wrapperEvent = new SelectEvent<>(this, behaviorEvent.getBehavior(), list.get(itemIndex), metaKey, ctrlKey);
                 }
                 else if ("unselect".equals(eventName)) {
                     int itemIndex = Integer.parseInt(params.get(clientId + "_itemIndex"));
-                    wrapperEvent = new UnselectEvent(this, behaviorEvent.getBehavior(), list.get(itemIndex));
+                    wrapperEvent = new UnselectEvent<>(this, behaviorEvent.getBehavior(), list.get(itemIndex));
                 }
                 else if ("reorder".equals(eventName)) {
                     wrapperEvent = behaviorEvent;
