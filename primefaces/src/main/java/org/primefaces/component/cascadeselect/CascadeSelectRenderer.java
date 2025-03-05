@@ -119,7 +119,7 @@ public class CascadeSelectRenderer extends SelectOneRenderer {
     protected void encodeLabel(FacesContext context, CascadeSelect cascadeSelect, List<SelectItem> itemList, String valueToRender) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        Converter converter = ComponentUtils.getConverter(context, cascadeSelect);
+        Converter<?> converter = ComponentUtils.getConverter(context, cascadeSelect);
         String itemLabel = valueToRender;
         SelectItem foundItem = findSelectItemByValue(context, cascadeSelect, converter, itemList, valueToRender);
         if (foundItem != null) {

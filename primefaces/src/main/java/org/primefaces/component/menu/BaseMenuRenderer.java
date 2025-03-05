@@ -46,26 +46,25 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
+public abstract class BaseMenuRenderer<T extends AbstractMenu> extends MenuItemAwareRenderer<T> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        AbstractMenu menu = (AbstractMenu) component;
-        MenuModel model = menu.getModel();
-        if (model != null && menu.getElementsCount() > 0) {
+    public void encodeEnd(FacesContext context, T component) throws IOException {
+        MenuModel model = component.getModel();
+        if (model != null && component.getElementsCount() > 0) {
             model.generateUniqueIds();
         }
-        if (shouldBeRendered(context, menu)) {
-            encodeMarkup(context, menu);
-            encodeScript(context, menu);
+        if (shouldBeRendered(context, component)) {
+            encodeMarkup(context, component);
+            encodeScript(context, component);
         }
         else {
-            encodePlaceholder(context, menu);
+            encodePlaceholder(context, component);
         }
     }
 
     @Override
-    public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext facesContext, T component) throws IOException {
         //Do nothing
     }
 
@@ -74,7 +73,7 @@ public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
         return true;
     }
 
-    protected void encodePlaceholder(FacesContext context, AbstractMenu menu) throws IOException {
+    protected void encodePlaceholder(FacesContext context, T menu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("div", menu);
         writer.writeAttribute("id", menu.getClientId(context), "id");
@@ -82,24 +81,24 @@ public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
         writer.endElement("div");
     }
 
-    protected abstract void encodeMarkup(FacesContext context, AbstractMenu menu) throws IOException;
+    protected abstract void encodeMarkup(FacesContext context, T menu) throws IOException;
 
-    protected abstract void encodeScript(FacesContext context, AbstractMenu menu) throws IOException;
+    protected abstract void encodeScript(FacesContext context, T menu) throws IOException;
 
     protected String getLinkStyleClass(MenuItem menuItem) {
         String styleClass = menuItem.getStyleClass();
         return AbstractMenu.MENUITEM_LINK_CLASS + (styleClass != null ? " " + styleClass : Constants.EMPTY_STRING);
     }
 
-    protected void encodeMenuItem(FacesContext context, AbstractMenu menu, MenuItem menuitem) throws IOException {
+    protected void encodeMenuItem(FacesContext context, T menu, MenuItem menuitem) throws IOException {
         encodeMenuItem(context, menu, menuitem, "-1");
     }
 
-    protected void encodeMenuItem(FacesContext context, AbstractMenu menu, MenuItem menuitem, String tabindex) throws IOException {
+    protected void encodeMenuItem(FacesContext context, T menu, MenuItem menuitem, String tabindex) throws IOException {
         encodeMenuItem(context, menu, menuitem, tabindex, new SimpleEntry<>(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUITEM));
     }
 
-    protected void encodeMenuItem(FacesContext context, AbstractMenu menu, MenuItem menuitem, String tabindex, Entry<String, String> aria) throws IOException {
+    protected void encodeMenuItem(FacesContext context, T menu, MenuItem menuitem, String tabindex, Entry<String, String> aria) throws IOException {
         boolean isMenuItemComponent = menuitem instanceof UIComponent;
 
         try {
@@ -186,7 +185,7 @@ public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
         }
     }
 
-    protected void encodeMenuItemContent(FacesContext context, AbstractMenu menu, MenuItem menuitem) throws IOException {
+    protected void encodeMenuItemContent(FacesContext context, T menu, MenuItem menuitem) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Object value = menuitem.getValue();
         String iconPos = menuitem.getIconPos();
@@ -220,7 +219,7 @@ public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
         }
     }
 
-    protected void encodeIcon(ResponseWriter writer, AbstractMenu menu, MenuItem menuitem, String iconPos) throws IOException {
+    protected void encodeIcon(ResponseWriter writer, T menu, MenuItem menuitem, String iconPos) throws IOException {
         String icon = menuitem.getIcon();
         if (icon != null && LangUtils.isNotBlank(iconPos)) {
             writer.startElement("span", null);
@@ -242,7 +241,7 @@ public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
         }
     }
 
-    protected void encodeFacet(FacesContext context, AbstractMenu menu, String facetName, String styleClass) throws IOException {
+    protected void encodeFacet(FacesContext context, T menu, String facetName, String styleClass) throws IOException {
         UIComponent facet = menu.getFacet(facetName);
         if (FacetUtils.shouldRenderFacet(facet)) {
             ResponseWriter writer = context.getResponseWriter();
@@ -289,9 +288,9 @@ public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
         writer.endElement("span");
     }
 
-    protected boolean shouldBeRendered(FacesContext context, AbstractMenu abstractMenu) {
-        boolean rendered = super.shouldBeRendered(context, abstractMenu);
-        rendered = rendered || abstractMenu.getFacets().values().stream().anyMatch(FacetUtils::shouldRenderFacet);
+    protected boolean shouldBeRendered(FacesContext context, T component) {
+        boolean rendered = super.shouldBeRendered(context, component);
+        rendered = rendered || component.getFacets().values().stream().anyMatch(FacetUtils::shouldRenderFacet);
         return rendered;
     }
 

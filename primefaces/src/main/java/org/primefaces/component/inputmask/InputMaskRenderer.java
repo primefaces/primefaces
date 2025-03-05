@@ -34,43 +34,40 @@ import org.primefaces.util.WidgetBuilder;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
-import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class InputMaskRenderer extends InputRenderer {
+public class InputMaskRenderer extends InputRenderer<InputMask> {
 
     private static final String REGEX_METACHARS = "<([{\\^-=$!|]})?*+.>";
     private static final String SB_PATTERN = InputMaskRenderer.class.getName() + "#translateMaskIntoRegex";
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
-        InputMask inputMask = (InputMask) component;
-
-        if (!shouldDecode(inputMask)) {
+    public void decode(FacesContext context, InputMask component) {
+        if (!shouldDecode(component)) {
             return;
         }
 
-        decodeBehaviors(context, inputMask);
+        decodeBehaviors(context, component);
 
-        String clientId = inputMask.getClientId(context);
+        String clientId = component.getClientId(context);
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId);
 
         if (submittedValue != null) {
             // #6469/#11958 strip mask characters in case of optional values
-            String mask = inputMask.getMask();
+            String mask = component.getMask();
             if (isMaskOptional(mask)) {
-                submittedValue = submittedValue.replace(inputMask.getSlotChar(), Constants.EMPTY_STRING);
+                submittedValue = submittedValue.replace(component.getSlotChar(), Constants.EMPTY_STRING);
             }
 
-            if (inputMask.isValidateMask() && !LangUtils.isEmpty(submittedValue) && LangUtils.isNotBlank(mask)) {
+            if (component.isValidateMask() && !LangUtils.isEmpty(submittedValue) && LangUtils.isNotBlank(mask)) {
                 Pattern pattern = translateMaskIntoRegex(context, mask);
                 if (!pattern.matcher(submittedValue).matches()) {
                     submittedValue = Constants.EMPTY_STRING;
                 }
             }
 
-            inputMask.setSubmittedValue(submittedValue);
+            component.setSubmittedValue(submittedValue);
         }
     }
 
@@ -169,60 +166,58 @@ public class InputMaskRenderer extends InputRenderer {
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        InputMask inputMask = (InputMask) component;
-
-        encodeMarkup(context, inputMask);
-        encodeScript(context, inputMask);
+    public void encodeEnd(FacesContext context, InputMask component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    protected void encodeScript(FacesContext context, InputMask inputMask) throws IOException {
-        String mask = inputMask.getMask();
+    protected void encodeScript(FacesContext context, InputMask component) throws IOException {
+        String mask = component.getMask();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("InputMask", inputMask);
+        wb.init("InputMask", component);
 
         if (mask != null) {
             // autoclear must be false when using optional mask
-            boolean autoClear = inputMask.isAutoClear();
+            boolean autoClear = component.isAutoClear();
             if (isMaskOptional(mask)) {
                 autoClear = false;
             }
             wb.attr("mask", mask)
-                .attr("placeholder", inputMask.getSlotChar(), "_")
+                .attr("placeholder", component.getSlotChar(), "_")
                 .attr("autoClear", autoClear, true)
-                .attr("showMaskOnFocus", inputMask.isShowMaskOnFocus(), true)
-                .attr("showMaskOnHover", inputMask.isShowMaskOnHover(), true);
+                .attr("showMaskOnFocus", component.isShowMaskOnFocus(), true)
+                .attr("showMaskOnHover", component.isShowMaskOnHover(), true);
         }
 
         wb.finish();
     }
 
-    protected void encodeMarkup(FacesContext context, InputMask inputMask) throws IOException {
+    protected void encodeMarkup(FacesContext context, InputMask component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = inputMask.getClientId(context);
-        String styleClass = createStyleClass(inputMask, InputMask.STYLE_CLASS);
+        String clientId = component.getClientId(context);
+        String styleClass = createStyleClass(component, InputMask.STYLE_CLASS);
 
         writer.startElement("input", null);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("name", clientId, null);
-        writer.writeAttribute("type", inputMask.getType(), "text");
+        writer.writeAttribute("type", component.getType(), "text");
 
-        String valueToRender = ComponentUtils.getValueToRender(context, inputMask);
+        String valueToRender = ComponentUtils.getValueToRender(context, component);
         if (valueToRender != null) {
             writer.writeAttribute("value", valueToRender, null);
         }
 
-        renderAccessibilityAttributes(context, inputMask);
-        renderPassThruAttributes(context, inputMask, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
-        renderDomEvents(context, inputMask, HTML.INPUT_TEXT_EVENTS);
+        renderAccessibilityAttributes(context, component);
+        renderPassThruAttributes(context, component, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
+        renderDomEvents(context, component, HTML.INPUT_TEXT_EVENTS);
 
-        if (inputMask.getStyle() != null) {
-            writer.writeAttribute("style", inputMask.getStyle(), "style");
+        if (component.getStyle() != null) {
+            writer.writeAttribute("style", component.getStyle(), "style");
         }
 
         writer.writeAttribute("class", styleClass, "styleClass");
 
-        renderValidationMetadata(context, inputMask);
+        renderValidationMetadata(context, component);
 
         writer.endElement("input");
     }

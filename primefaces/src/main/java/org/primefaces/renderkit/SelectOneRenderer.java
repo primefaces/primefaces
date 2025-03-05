@@ -35,25 +35,24 @@ import jakarta.faces.convert.Converter;
 import jakarta.faces.model.SelectItem;
 import jakarta.faces.model.SelectItemGroup;
 
-public abstract class SelectOneRenderer extends SelectRenderer {
+public abstract class SelectOneRenderer<T extends UISelectOne> extends SelectRenderer<T> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
-        UISelectOne selectOne = (UISelectOne) component;
-        if (!shouldDecode(selectOne)) {
+    public void decode(FacesContext context, T component) {
+        if (!shouldDecode(component)) {
             return;
         }
 
-        String clientId = getSubmitParam(context, selectOne);
+        String clientId = getSubmitParam(context, component);
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
         String submittedValue = params.containsKey(clientId) ? params.get(clientId) : "";
-        List<String> validSubmittedValues = validateSubmittedValues(context, selectOne, (Object[]) getValues(selectOne), submittedValue);
-        selectOne.setSubmittedValue(validSubmittedValues.isEmpty() || validSubmittedValues.contains(submittedValue)
+        List<String> validSubmittedValues = validateSubmittedValues(context, component, (Object[]) getValues(component), submittedValue);
+        component.setSubmittedValue(validSubmittedValues.isEmpty() || validSubmittedValues.contains(submittedValue)
                 ? submittedValue
                 : validSubmittedValues.get(0));
 
-        decodeBehaviors(context, selectOne);
+        decodeBehaviors(context, component);
     }
 
     protected Object getValues(UISelectOne selectOne) {

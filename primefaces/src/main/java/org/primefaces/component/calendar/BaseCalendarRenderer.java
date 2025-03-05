@@ -58,47 +58,44 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.ConverterException;
 
-public abstract class BaseCalendarRenderer extends InputRenderer {
+public abstract class BaseCalendarRenderer<T extends UICalendar> extends InputRenderer<T> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
-        UICalendar uicalendar = (UICalendar) component;
-
-        if (!shouldDecode(uicalendar)) {
+    public void decode(FacesContext context, T component) {
+        if (!shouldDecode(component)) {
             return;
         }
 
-        String param = uicalendar.getClientId(context) + "_input";
+        String param = component.getClientId(context) + "_input";
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(param);
 
         if (submittedValue != null) {
-            uicalendar.setSubmittedValue(submittedValue);
+            component.setSubmittedValue(submittedValue);
         }
 
-        decodeBehaviors(context, uicalendar);
+        decodeBehaviors(context, component);
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        UICalendar uicalendar = (UICalendar) component;
-        String markupValue = CalendarUtils.getValueAsString(context, uicalendar);
-        String widgetValue = uicalendar.isTimeOnly() ? CalendarUtils.getTimeOnlyValueAsString(context, uicalendar) : markupValue;
+    public void encodeEnd(FacesContext context, T component) throws IOException {
+        String markupValue = CalendarUtils.getValueAsString(context, component);
+        String widgetValue = component.isTimeOnly() ? CalendarUtils.getTimeOnlyValueAsString(context, component) : markupValue;
 
         // #6068 ensure min is before max
-        uicalendar.validateMinMax(context);
+        component.validateMinMax(context);
 
-        encodeMarkup(context, uicalendar, markupValue);
-        encodeScript(context, uicalendar, widgetValue);
+        encodeMarkup(context, component, markupValue);
+        encodeScript(context, component, widgetValue);
     }
 
-    protected abstract void encodeMarkup(FacesContext context, UICalendar uicalendar, String value) throws IOException;
+    protected abstract void encodeMarkup(FacesContext context, T component, String value) throws IOException;
 
-    protected abstract void encodeScript(FacesContext context, UICalendar uicalendar, String value) throws IOException;
+    protected abstract void encodeScript(FacesContext context, T component, String value) throws IOException;
 
-    protected void encodeInput(FacesContext context, UICalendar uicalendar, String id, String value, boolean popup) throws IOException {
+    protected void encodeInput(FacesContext context, T component, String id, String value, boolean popup) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String type = popup ? uicalendar.getType() : "hidden";
-        String inputStyle = uicalendar.getInputStyle();
+        String type = popup ? component.getType() : "hidden";
+        String inputStyle = component.getInputStyle();
 
         writer.startElement("input", null);
         writer.writeAttribute("id", id, null);
@@ -113,27 +110,27 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
         boolean disabled = false;
 
         if (popup) {
-            String inputStyleClass = createStyleClass(uicalendar, UICalendar.PropertyKeys.inputStyleClass.name(), UICalendar.INPUT_STYLE_CLASS);
-            readonly = uicalendar.isReadonly() || uicalendar.isReadonlyInput();
-            disabled = uicalendar.isDisabled();
+            String inputStyleClass = createStyleClass(component, UICalendar.PropertyKeys.inputStyleClass.name(), UICalendar.INPUT_STYLE_CLASS);
+            readonly = component.isReadonly() || component.isReadonlyInput();
+            disabled = component.isDisabled();
 
             writer.writeAttribute("class", inputStyleClass, null);
             writer.writeAttribute(HTML.ARIA_ROLE, "combobox", null);
             writer.writeAttribute(HTML.ARIA_AUTOCOMPLETE, "none", null);
             writer.writeAttribute(HTML.ARIA_HASPOPUP, "dialog", null);
             writer.writeAttribute(HTML.ARIA_EXPANDED, "false", null);
-            writer.writeAttribute(HTML.ARIA_CONTROLS,  uicalendar.getClientId() + "_panel", null);
+            writer.writeAttribute(HTML.ARIA_CONTROLS,  component.getClientId() + "_panel", null);
 
             if (inputStyle != null) {
                 writer.writeAttribute("style", inputStyle, null);
             }
 
-            renderPassThruAttributes(context, uicalendar, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
-            renderDomEvents(context, uicalendar, HTML.INPUT_TEXT_EVENTS);
+            renderPassThruAttributes(context, component, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
+            renderDomEvents(context, component, HTML.INPUT_TEXT_EVENTS);
         }
 
-        renderAccessibilityAttributes(context, uicalendar, disabled, readonly);
-        renderValidationMetadata(context, uicalendar);
+        renderAccessibilityAttributes(context, component, disabled, readonly);
+        renderValidationMetadata(context, component);
 
         writer.endElement("input");
     }
@@ -145,12 +142,12 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
             return null;
         }
 
-        UICalendar calendar = (UICalendar) component;
+        T calendar = (T) component;
 
         //Delegate to user supplied converter if defined
         Class<?> type = resolveDateType(context, calendar);
         if (type != null) {
-            Converter converter = resolveConverter(context, calendar, type);
+            Converter<?> converter = resolveConverter(context, calendar, type);
             if (converter != null) {
                 try {
                     return converter.getAsObject(context, calendar, submittedValue);
@@ -182,30 +179,30 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
         return null;
     }
 
-    protected Date convertToLegacyDateAPI(FacesContext context, UICalendar calendar, String submittedValue) {
+    protected Date convertToLegacyDateAPI(FacesContext context, T component, String submittedValue) {
         //Code for backward-compatibility with java.util.Date - may be removed at some point in the future
-        SimpleDateFormat format = new SimpleDateFormat(calendar.calculatePattern(), calendar.calculateLocale(context));
+        SimpleDateFormat format = new SimpleDateFormat(component.calculatePattern(), component.calculateLocale(context));
         format.setLenient(false);
-        format.setTimeZone(TimeZone.getTimeZone(CalendarUtils.calculateZoneId(calendar.getTimeZone())));
+        format.setTimeZone(TimeZone.getTimeZone(CalendarUtils.calculateZoneId(component.getTimeZone())));
 
         try {
             return format.parse(submittedValue);
         }
         catch (ParseException e) {
-            throw createConverterException(context, calendar, submittedValue, format.format(new Date()));
+            throw createConverterException(context, component, submittedValue, format.format(new Date()));
         }
     }
 
-    protected Temporal convertToJava8DateTimeAPI(FacesContext context, UICalendar calendar, Class<?> type, String submittedValue) {
-        if (type == LocalDate.class || type == YearMonth.class || (type == LocalDateTime.class && !calendar.hasTime())) {
+    protected Temporal convertToJava8DateTimeAPI(FacesContext context, T component, Class<?> type, String submittedValue) {
+        if (type == LocalDate.class || type == YearMonth.class || (type == LocalDateTime.class && !component.hasTime())) {
             DateTimeFormatter formatter = new DateTimeFormatterBuilder()
                     .parseCaseInsensitive()
-                    .appendPattern(calendar.calculatePattern())
+                    .appendPattern(component.calculatePattern())
                     .parseDefaulting(ChronoField.DAY_OF_MONTH, 1) //because of Month Picker which does not contain day of month
                     .parseDefaulting(ChronoField.ERA, 1)
-                    .toFormatter(calendar.calculateLocale(context))
-                    .withZone(CalendarUtils.calculateZoneId(calendar.getTimeZone()))
-                    .withResolverStyle(resolveResolverStyle(calendar.getResolverStyle()));
+                    .toFormatter(component.calculateLocale(context))
+                    .withZone(CalendarUtils.calculateZoneId(component.getTimeZone()))
+                    .withResolverStyle(resolveResolverStyle(component.getResolverStyle()));
 
             try {
                 Temporal result;
@@ -222,37 +219,37 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
                 return result;
             }
             catch (DateTimeParseException e) {
-                throw createConverterException(context, calendar, submittedValue, formatter.format(LocalDateTime.now()));
+                throw createConverterException(context, component, submittedValue, formatter.format(LocalDateTime.now()));
             }
         }
         else if (type == LocalTime.class) {
-            String pattern = calendar instanceof Calendar ? calendar.calculatePattern() : calendar.calculateTimeOnlyPattern();
+            String pattern = component instanceof Calendar ? component.calculatePattern() : component.calculateTimeOnlyPattern();
             DateTimeFormatter formatter = DateTimeFormatter
-                    .ofPattern(pattern, calendar.calculateLocale(context))
-                    .withZone(CalendarUtils.calculateZoneId(calendar.getTimeZone()))
-                    .withResolverStyle(resolveResolverStyle(calendar.getResolverStyle()));
+                    .ofPattern(pattern, component.calculateLocale(context))
+                    .withZone(CalendarUtils.calculateZoneId(component.getTimeZone()))
+                    .withResolverStyle(resolveResolverStyle(component.getResolverStyle()));
 
             try {
                 return LocalTime.parse(submittedValue, formatter);
             }
             catch (DateTimeParseException e) {
-                throw createConverterException(context, calendar, submittedValue, formatter.format(LocalDateTime.now()));
+                throw createConverterException(context, component, submittedValue, formatter.format(LocalDateTime.now()));
             }
         }
         else if (type == LocalDateTime.class) {
             DateTimeFormatter formatter = new DateTimeFormatterBuilder()
                     .parseCaseInsensitive()
-                    .appendPattern(calendar.calculatePattern())
+                    .appendPattern(component.calculatePattern())
                     .parseDefaulting(ChronoField.ERA, 1)
-                    .toFormatter(calendar.calculateLocale(context))
-                    .withZone(CalendarUtils.calculateZoneId(calendar.getTimeZone()))
-                    .withResolverStyle(resolveResolverStyle(calendar.getResolverStyle()));
+                    .toFormatter(component.calculateLocale(context))
+                    .withZone(CalendarUtils.calculateZoneId(component.getTimeZone()))
+                    .withResolverStyle(resolveResolverStyle(component.getResolverStyle()));
 
             try {
                 return LocalDateTime.parse(submittedValue, formatter);
             }
             catch (DateTimeParseException e) {
-                throw createConverterException(context, calendar, submittedValue, formatter.format(LocalDateTime.now()));
+                throw createConverterException(context, component, submittedValue, formatter.format(LocalDateTime.now()));
             }
         }
 
@@ -270,21 +267,21 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
     }
 
     protected ConverterException createConverterException(FacesContext context,
-                                                          UICalendar calendar,
+                                                          T component,
                                                           String submittedValue,
                                                           Object param1) {
-        calendar.setConversionFailed(true);
+        component.setConversionFailed(true);
 
         FacesMessage message = null;
         Object[] params = new Object[3];
         params[0] = submittedValue;
         params[1] = param1;
-        params[2] = ComponentUtils.getLabel(context, calendar);
+        params[2] = ComponentUtils.getLabel(context, component);
 
-        if (calendar.isTimeOnly()) {
+        if (component.isTimeOnly()) {
             message = MessageFactory.getFacesMessage(context, "jakarta.faces.converter.DateTimeConverter.TIME", FacesMessage.SEVERITY_ERROR, params);
         }
-        else if (calendar.hasTime()) {
+        else if (component.hasTime()) {
             message = MessageFactory.getFacesMessage(context, "jakarta.faces.converter.DateTimeConverter.DATETIME", FacesMessage.SEVERITY_ERROR, params);
         }
         else {
@@ -294,8 +291,8 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
         return new ConverterException(message);
     }
 
-    protected Class<?> resolveDateType(FacesContext context, UICalendar calendar) {
-        ValueExpression ve = calendar.getValueExpression("value");
+    protected Class<?> resolveDateType(FacesContext context, T component) {
+        ValueExpression ve = component.getValueExpression("value");
 
         Class<?> type = null;
         if (ve != null) {
@@ -308,10 +305,10 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
         b) some Usecases with generics - see https://github.com/primefaces/primefaces/issues/5913
         */
         if (type == null || type.equals(Object.class)) {
-            if (calendar.isTimeOnly()) {
+            if (component.isTimeOnly()) {
                 type = LocalTime.class;
             }
-            else if (calendar.hasTime()) {
+            else if (component.hasTime()) {
                 type = LocalDateTime.class;
             }
             else {
@@ -330,7 +327,7 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
         return type;
     }
 
-    protected Converter resolveConverter(FacesContext context, UICalendar calendar, Class<?> type) {
+    protected Converter resolveConverter(FacesContext context, T calendar, Class<?> type) {
         //Delegate to user supplied converter if defined
         Converter converter = calendar.getConverter();
         if (converter != null) {

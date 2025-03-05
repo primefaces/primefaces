@@ -30,78 +30,73 @@ import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 
-import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class KeyboardRenderer extends InputRenderer {
+public class KeyboardRenderer extends InputRenderer<Keyboard> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
-        Keyboard keyboard = (Keyboard) component;
-
-        if (!shouldDecode(keyboard)) {
+    public void decode(FacesContext context, Keyboard component) {
+        if (!shouldDecode(component)) {
             return;
         }
 
-        decodeBehaviors(context, keyboard);
+        decodeBehaviors(context, component);
 
-        String clientId = keyboard.getClientId(context);
+        String clientId = component.getClientId(context);
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId);
 
         if (submittedValue != null) {
-            keyboard.setSubmittedValue(submittedValue);
+            component.setSubmittedValue(submittedValue);
         }
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Keyboard keyboard = (Keyboard) component;
-
-        encodeMarkup(context, keyboard);
-        encodeScript(context, keyboard);
+    public void encodeEnd(FacesContext context, Keyboard component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    protected void encodeScript(FacesContext context, Keyboard keyboard) throws IOException {
+    protected void encodeScript(FacesContext context, Keyboard component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Keyboard", keyboard)
+        wb.init("Keyboard", component)
                 .attr("useThemeRoller", true)
-                .attr("showOn", keyboard.getShowMode())
-                .attr("showAnim", keyboard.getEffect())
-                .attr("buttonImageOnly", keyboard.isButtonImageOnly(), false)
-                .attr("duration", keyboard.getEffectDuration(), null);
+                .attr("showOn", component.getShowMode())
+                .attr("showAnim", component.getEffect())
+                .attr("buttonImageOnly", component.isButtonImageOnly(), false)
+                .attr("duration", component.getEffectDuration(), null);
 
-        if (keyboard.getButtonImage() != null) {
-            wb.attr("buttonImage", getResourceURL(context, keyboard.getButtonImage()));
+        if (component.getButtonImage() != null) {
+            wb.attr("buttonImage", getResourceURL(context, component.getButtonImage()));
         }
 
-        if (!keyboard.isKeypadOnly()) {
+        if (!component.isKeypadOnly()) {
             wb.attr("keypadOnly", false)
-                    .attr("layoutName", keyboard.getLayout())
-                    .attr("layoutTemplate", keyboard.getLayoutTemplate(), null);
+                    .attr("layoutName", component.getLayout())
+                    .attr("layoutTemplate", component.getLayoutTemplate(), null);
         }
 
-        if (ComponentUtils.isRTL(context, keyboard)) {
+        if (ComponentUtils.isRTL(context, component)) {
             wb.attr("isRTL", true);
         }
 
-        wb.attr("keypadClass", keyboard.getStyleClass(), null)
-                .attr("prompt", keyboard.getPromptLabel(), null)
-                .attr("backText", keyboard.getBackspaceLabel(), null)
-                .attr("clearText", keyboard.getClearLabel(), null)
-                .attr("closeText", keyboard.getCloseLabel(), null);
+        wb.attr("keypadClass", component.getStyleClass(), null)
+                .attr("prompt", component.getPromptLabel(), null)
+                .attr("backText", component.getBackspaceLabel(), null)
+                .attr("clearText", component.getClearLabel(), null)
+                .attr("closeText", component.getCloseLabel(), null);
 
         wb.finish();
     }
 
-    protected void encodeMarkup(FacesContext context, Keyboard keyboard) throws IOException {
+    protected void encodeMarkup(FacesContext context, Keyboard component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = keyboard.getClientId(context);
-        String type = keyboard.isPassword() ? "password" : "text";
-        String styleClass = createStyleClass(keyboard, Keyboard.STYLE_CLASS) ;
-        String valueToRender = ComponentUtils.getValueToRender(context, keyboard);
+        String clientId = component.getClientId(context);
+        String type = component.isPassword() ? "password" : "text";
+        String styleClass = createStyleClass(component, Keyboard.STYLE_CLASS) ;
+        String valueToRender = ComponentUtils.getValueToRender(context, component);
 
-        writer.startElement("input", keyboard);
+        writer.startElement("input", component);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("name", clientId, null);
         writer.writeAttribute("type", type, null);
@@ -112,14 +107,14 @@ public class KeyboardRenderer extends InputRenderer {
 
         writer.writeAttribute("class", styleClass, "styleClass");
 
-        if (keyboard.getStyle() != null) {
-            writer.writeAttribute("style", keyboard.getStyle(), "style");
+        if (component.getStyle() != null) {
+            writer.writeAttribute("style", component.getStyle(), "style");
         }
 
-        renderAccessibilityAttributes(context, keyboard);
-        renderPassThruAttributes(context, keyboard, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
-        renderDomEvents(context, keyboard, HTML.INPUT_TEXT_EVENTS);
-        renderValidationMetadata(context, keyboard);
+        renderAccessibilityAttributes(context, component);
+        renderPassThruAttributes(context, component, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
+        renderDomEvents(context, component, HTML.INPUT_TEXT_EVENTS);
+        renderValidationMetadata(context, component);
 
         writer.endElement("input");
     }

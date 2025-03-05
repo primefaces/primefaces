@@ -28,52 +28,49 @@ import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 
-import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class ScrollPanelRenderer extends CoreRenderer {
+public class ScrollPanelRenderer extends CoreRenderer<ScrollPanel> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        ScrollPanel panel = (ScrollPanel) component;
-
-        encodeMarkup(context, panel);
-        encodeScript(context, panel);
+    public void encodeEnd(FacesContext context, ScrollPanel component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    protected void encodeMarkup(FacesContext context, ScrollPanel panel) throws IOException {
+    protected void encodeMarkup(FacesContext context, ScrollPanel component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = panel.getClientId(context);
-        boolean nativeMode = panel.getMode().equals("native");
+        String clientId = component.getClientId(context);
+        boolean nativeMode = component.getMode().equals("native");
 
         String defaultStyleClass = nativeMode ? ScrollPanel.SCROLL_PANEL_NATIVE_CLASS : ScrollPanel.SCROLL_PANEL_CLASS;
-        String style = panel.getStyle();
-        String styleClass = panel.getStyleClass();
+        String style = component.getStyle();
+        String styleClass = component.getStyleClass();
         styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
 
-        writer.startElement("div", panel);
+        writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
 
-        renderChildren(context, panel);
+        renderChildren(context, component);
 
         writer.endElement("div");
     }
 
-    protected void encodeScript(FacesContext context, ScrollPanel panel) throws IOException {
-        boolean nativeMode = panel.getMode().equals("native");
+    protected void encodeScript(FacesContext context, ScrollPanel component) throws IOException {
+        boolean nativeMode = component.getMode().equals("native");
         if (!nativeMode) {
             WidgetBuilder wb = getWidgetBuilder(context);
-            wb.init("ScrollPanel", panel).finish();
+            wb.init("ScrollPanel", component).finish();
         }
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, ScrollPanel component) throws IOException {
         //Do nothing
     }
 

@@ -28,20 +28,18 @@ import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 
-import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.event.PhaseId;
 
-public class LifecycleRenderer extends CoreRenderer {
+public class LifecycleRenderer extends CoreRenderer<Lifecycle> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Lifecycle lifecycle = (Lifecycle) component;
-        String clientId = lifecycle.getClientId(context);
+    public void encodeEnd(FacesContext context, Lifecycle component) throws IOException {
+        String clientId = component.getClientId(context);
         ResponseWriter writer = context.getResponseWriter();
 
-        writer.startElement("table", lifecycle);
+        writer.startElement("table", component);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", Lifecycle.STYLE_CLASS, null);
 
@@ -57,7 +55,7 @@ public class LifecycleRenderer extends CoreRenderer {
         writer.endElement("table");
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Lifecycle", lifecycle);
+        wb.init("Lifecycle", component);
         wb.finish();
     }
 

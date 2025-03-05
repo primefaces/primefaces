@@ -44,68 +44,64 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.ConverterException;
 
-public class TextEditorRenderer extends InputRenderer {
+public class TextEditorRenderer extends InputRenderer<TextEditor> {
 
     private static final Logger LOGGER = Logger.getLogger(TextEditorRenderer.class.getName());
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
-        TextEditor editor = (TextEditor) component;
-
-        if (!shouldDecode(editor)) {
+    public void decode(FacesContext context, TextEditor component) {
+        if (!shouldDecode(component)) {
             return;
         }
 
-        decodeBehaviors(context, editor);
+        decodeBehaviors(context, component);
 
-        String inputParam = editor.getClientId(context) + "_input";
+        String inputParam = component.getClientId(context) + "_input";
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String value = sanitizeHtml(context, editor, params.get(inputParam));
+        String value = sanitizeHtml(context, component, params.get(inputParam));
 
         if ("<br/>".equals(value)) {
             value = Constants.EMPTY_STRING;
         }
 
-        editor.setSubmittedValue(value);
+        component.setSubmittedValue(value);
     }
 
     @Override
-    public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
-        TextEditor editor = (TextEditor) component;
-
+    public void encodeEnd(FacesContext facesContext, TextEditor component) throws IOException {
         // #5163 fail rendering if insecure
-        checkSecurity(facesContext, editor);
+        checkSecurity(facesContext, component);
 
-        encodeMarkup(facesContext, editor);
-        encodeScript(facesContext, editor);
+        encodeMarkup(facesContext, component);
+        encodeScript(facesContext, component);
     }
 
-    protected void encodeMarkup(FacesContext context, TextEditor editor) throws IOException {
+    protected void encodeMarkup(FacesContext context, TextEditor component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = editor.getClientId(context);
-        String valueToRender = sanitizeHtml(context, editor, ComponentUtils.getValueToRender(context, editor));
+        String clientId = component.getClientId(context);
+        String valueToRender = sanitizeHtml(context, component, ComponentUtils.getValueToRender(context, component));
         String inputId = clientId + "_input";
         String editorId = clientId + "_editor";
-        UIComponent toolbar = editor.getFacet("toolbar");
+        UIComponent toolbar = component.getFacet("toolbar");
 
         String style = getStyleBuilder(context)
-                .add(editor.getStyle())
+                .add(component.getStyle())
                 .build();
 
-        String styleClass = createStyleClass(editor, TextEditor.EDITOR_CLASS);
+        String styleClass = createStyleClass(component, TextEditor.EDITOR_CLASS);
 
-        writer.startElement("div", editor);
+        writer.startElement("div", component);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);
         if (LangUtils.isNotBlank(style)) {
             writer.writeAttribute("style", style, null);
         }
 
-        renderARIARequired(context, editor);
-        renderARIAInvalid(context, editor);
+        renderARIARequired(context, component);
+        renderARIAInvalid(context, component);
 
-        if (editor.isToolbarVisible() && FacetUtils.shouldRenderFacet(toolbar)) {
-            writer.startElement("div", editor);
+        if (component.isToolbarVisible() && FacetUtils.shouldRenderFacet(toolbar)) {
+            writer.startElement("div", component);
             writer.writeAttribute("id", clientId + "_toolbar", null);
             writer.writeAttribute("class", "ui-editor-toolbar", null);
             toolbar.encodeAll(context);
@@ -113,10 +109,10 @@ public class TextEditorRenderer extends InputRenderer {
         }
 
         String innerStyle = getStyleBuilder(context)
-                .add("height", editor.getHeight())
+                .add("height", component.getHeight())
                 .build();
 
-        writer.startElement("div", editor);
+        writer.startElement("div", component);
         writer.writeAttribute("id", editorId, null);
         if (LangUtils.isNotBlank(innerStyle)) {
             writer.writeAttribute("style", innerStyle, null);
@@ -126,20 +122,20 @@ public class TextEditorRenderer extends InputRenderer {
         }
         writer.endElement("div");
 
-        renderHiddenInput(context, inputId, valueToRender, editor.isDisabled());
+        renderHiddenInput(context, inputId, valueToRender, component.isDisabled());
 
         writer.endElement("div");
     }
 
-    private void encodeScript(FacesContext context, TextEditor editor) throws IOException {
+    private void encodeScript(FacesContext context, TextEditor component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("TextEditor", editor)
-                .attr("toolbarVisible", editor.isToolbarVisible())
-                .attr("readOnly", editor.isReadonly(), false)
-                .attr("disabled", editor.isDisabled(), false)
-                .attr("placeholder", editor.getPlaceholder(), null);
+        wb.init("TextEditor", component)
+                .attr("toolbarVisible", component.isToolbarVisible())
+                .attr("readOnly", component.isReadonly(), false)
+                .attr("disabled", component.isDisabled(), false)
+                .attr("placeholder", component.getPlaceholder(), null);
 
-        List formats = editor.getFormats();
+        List formats = component.getFormats();
         if (formats != null) {
             wb.append(",formats:[");
             for (int i = 0; i < formats.size(); i++) {
@@ -152,7 +148,7 @@ public class TextEditorRenderer extends InputRenderer {
             wb.append("]");
         }
 
-        encodeClientBehaviors(context, editor);
+        encodeClientBehaviors(context, component);
         wb.finish();
     }
 
@@ -166,11 +162,11 @@ public class TextEditorRenderer extends InputRenderer {
      * with secure="false" will they opt-out of security.
      *
      * @param context the FacesContext
-     * @param editor the editor to check for security
+     * @param component the editor to check for security
      */
-    private void checkSecurity(FacesContext context, TextEditor editor) {
+    private void checkSecurity(FacesContext context, TextEditor component) {
         boolean sanitizerAvailable = PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isHtmlSanitizerAvailable();
-        if (editor.isSecure() && !sanitizerAvailable) {
+        if (component.isSecure() && !sanitizerAvailable) {
             throw new FacesException("TextEditor component is marked secure='true' but the HTML Sanitizer was not found on the classpath. "
                         + "Either add the HTML sanitizer to the classpath per the documentation"
                         + " or mark secure='false' if you would like to use the component without the sanitizer.");
@@ -181,20 +177,20 @@ public class TextEditorRenderer extends InputRenderer {
      * If security is enabled sanitize the HTML string to prevent XSS.
      *
      * @param context the FacesContext
-     * @param editor the TextEditor instance
+     * @param component the TextEditor instance
      * @param value the value to sanitize
      * @return the sanitized value
      */
-    private String sanitizeHtml(FacesContext context, TextEditor editor, String value) {
+    private String sanitizeHtml(FacesContext context, TextEditor component, String value) {
         String result = value;
-        if (editor.isSecure() && PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isHtmlSanitizerAvailable()) {
+        if (component.isSecure() && PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isHtmlSanitizerAvailable()) {
             result = HtmlSanitizer.sanitizeHtml(value,
-                    editor.isAllowBlocks(), editor.isAllowFormatting(),
-                    editor.isAllowLinks(), editor.isAllowStyles(), editor.isAllowImages());
+                    component.isAllowBlocks(), component.isAllowFormatting(),
+                    component.isAllowLinks(), component.isAllowStyles(), component.isAllowImages());
         }
         else {
-            if (!editor.isAllowBlocks() || !editor.isAllowFormatting()
-                    || !editor.isAllowLinks() || !editor.isAllowStyles() || !editor.isAllowImages()) {
+            if (!component.isAllowBlocks() || !component.isAllowFormatting()
+                    || !component.isAllowLinks() || !component.isAllowStyles() || !component.isAllowImages()) {
                 LOGGER.warning("HTML sanitizer not available - skip sanitizing....");
             }
         }

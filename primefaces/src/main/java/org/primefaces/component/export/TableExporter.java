@@ -465,7 +465,7 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
 
             Converter converter = valueHolder.getConverter();
             if (converter == null) {
-                Class valueType = value.getClass();
+                Class<?> valueType = value.getClass();
                 converter = context.getApplication().createConverter(valueType);
             }
 

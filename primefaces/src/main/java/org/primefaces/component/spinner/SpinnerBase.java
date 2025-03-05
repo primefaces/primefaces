@@ -26,7 +26,6 @@ package org.primefaces.component.spinner;
 import org.primefaces.component.api.AbstractPrimeHtmlInputText;
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LocaleUtils;
 
 public abstract class SpinnerBase extends AbstractPrimeHtmlInputText implements Widget, InputHolder {
@@ -137,7 +136,7 @@ public abstract class SpinnerBase extends AbstractPrimeHtmlInputText implements 
     }
 
     public String getDecimalSeparator() {
-        return ComponentUtils.eval(getStateHelper(), PropertyKeys.decimalSeparator,
+        return (String) getStateHelper().eval(PropertyKeys.decimalSeparator,
             () -> LocaleUtils.getDecimalSeparator(getFacesContext()));
     }
 
@@ -146,7 +145,7 @@ public abstract class SpinnerBase extends AbstractPrimeHtmlInputText implements 
     }
 
     public String getThousandSeparator() {
-        return ComponentUtils.eval(getStateHelper(), PropertyKeys.thousandSeparator,
+        return (String) getStateHelper().eval(PropertyKeys.thousandSeparator,
             () -> LocaleUtils.getThousandSeparator(getFacesContext()));
     }
 

@@ -23,7 +23,6 @@
  */
 package org.primefaces.component.steps;
 
-import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
@@ -34,28 +33,26 @@ import org.primefaces.util.WidgetBuilder;
 import java.io.IOException;
 import java.util.List;
 
-import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class StepsRenderer extends BaseMenuRenderer {
+public class StepsRenderer extends BaseMenuRenderer<Steps> {
 
     @Override
-    protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {
+    protected void encodeMarkup(FacesContext context, Steps component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        Steps steps = (Steps) abstractMenu;
-        String clientId = steps.getClientId(context);
-        String styleClass = steps.getStyleClass();
-        String containerClass = steps.isReadonly() ? Steps.READONLY_CONTAINER_CLASS : Steps.CONTAINER_CLASS;
+        String clientId = component.getClientId(context);
+        String styleClass = component.getStyleClass();
+        String containerClass = component.isReadonly() ? Steps.READONLY_CONTAINER_CLASS : Steps.CONTAINER_CLASS;
         styleClass = styleClass == null ? containerClass : containerClass + " " + styleClass;
-        int activeIndex = steps.getActiveIndex();
-        List<MenuElement> elements = steps.getElements();
+        int activeIndex = component.getActiveIndex();
+        List<MenuElement> elements = component.getElements();
 
-        writer.startElement("div", steps);
+        writer.startElement("div", component);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, "styleClass");
-        if (steps.getStyle() != null) {
-            writer.writeAttribute("style", steps.getStyle(), "style");
+        if (component.getStyle() != null) {
+            writer.writeAttribute("style", component.getStyle(), "style");
         }
 
         writer.startElement("ul", null);
@@ -65,7 +62,7 @@ public class StepsRenderer extends BaseMenuRenderer {
         if (elements != null && !elements.isEmpty()) {
             for (MenuElement element : elements) {
                 if (element.isRendered() && (element instanceof MenuItem)) {
-                    encodeItem(context, steps, (MenuItem) element, activeIndex, i);
+                    encodeItem(context, component, (MenuItem) element, activeIndex, i);
                     i++;
                 }
             }
@@ -76,21 +73,21 @@ public class StepsRenderer extends BaseMenuRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeItem(FacesContext context, Steps steps, MenuItem item, int activeIndex, int index) throws IOException {
+    protected void encodeItem(FacesContext context, Steps component, MenuItem item, int activeIndex, int index) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         String containerStyle = item.getContainerStyle();
         StyleClassBuilder containerStyleClass = getStyleClassBuilder(context)
                 .add(item.getContainerStyleClass());
 
-        if (steps.isReadonly() || item.isDisabled()) {
+        if (component.isReadonly() || item.isDisabled()) {
             containerStyleClass.add(index == activeIndex, Steps.ACTIVE_ITEM_CLASS, Steps.INACTIVE_ITEM_CLASS);
         }
         else {
             if (index == activeIndex) {
                 containerStyleClass.add(Steps.ACTIVE_ITEM_CLASS);
 
-                containerStyleClass.add(steps.isActiveStepExecutable(), Steps.EXECUTABLE_ITEM_CLASS);
+                containerStyleClass.add(component.isActiveStepExecutable(), Steps.EXECUTABLE_ITEM_CLASS);
             }
             else if (index < activeIndex) {
                 containerStyleClass.add(Steps.VISITED_ITEM_CLASS)
@@ -109,12 +106,12 @@ public class StepsRenderer extends BaseMenuRenderer {
             writer.writeAttribute("style", containerStyle, null);
         }
 
-        encodeMenuItem(context, steps, item, activeIndex, index);
+        encodeMenuItem(context, component, item, activeIndex, index);
 
         writer.endElement("li");
     }
 
-    protected void encodeMenuItem(FacesContext context, Steps steps, MenuItem menuitem, int activeIndex, int index) throws IOException {
+    protected void encodeMenuItem(FacesContext context, Steps component, MenuItem menuitem, int activeIndex, int index) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String title = menuitem.getTitle();
         String style = menuitem.getStyle();
@@ -134,18 +131,18 @@ public class StepsRenderer extends BaseMenuRenderer {
             writer.writeAttribute("style", style, null);
         }
 
-        boolean isDisabled = steps.isActiveStepExecutable() ? activeIndex < index : activeIndex <= index;
-        if (steps.isReadonly() || menuitem.isDisabled() || isDisabled) {
+        boolean isDisabled = component.isActiveStepExecutable() ? activeIndex < index : activeIndex <= index;
+        if (component.isReadonly() || menuitem.isDisabled() || isDisabled) {
             writer.writeAttribute("tabindex", "-1", null);
             writer.writeAttribute("href", "#", null);
             writer.writeAttribute("onclick", "return false;", null);
         }
         else {
-            writer.writeAttribute("tabindex", steps.getTabindex(), null);
-            encodeOnClick(context, steps, menuitem);
+            writer.writeAttribute("tabindex", component.getTabindex(), null);
+            encodeOnClick(context, component, menuitem);
         }
 
-        writer.startElement("span", steps);
+        writer.startElement("span", component);
         writer.writeAttribute("class", Steps.STEP_NUMBER_CLASS, null);
         if (LangUtils.isNotEmpty(menuitem.getIcon())) {
             writer.startElement("span", null);
@@ -159,7 +156,7 @@ public class StepsRenderer extends BaseMenuRenderer {
 
         Object value = menuitem.getValue();
         if (value != null) {
-            writer.startElement("span", steps);
+            writer.startElement("span", component);
             writer.writeAttribute("class", Steps.STEP_TITLE_CLASS, null);
             writer.writeText(value, null);
             writer.endElement("span");
@@ -169,15 +166,14 @@ public class StepsRenderer extends BaseMenuRenderer {
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, Steps component) throws IOException {
         // Do nothing
     }
 
     @Override
-    protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
-        Steps menu = (Steps) abstractMenu;
+    protected void encodeScript(FacesContext context, Steps component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Steps", menu);
+        wb.init("Steps", component);
         wb.finish();
     }
 

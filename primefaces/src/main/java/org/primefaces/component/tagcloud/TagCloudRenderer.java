@@ -30,34 +30,31 @@ import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 
-import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class TagCloudRenderer extends CoreRenderer {
+public class TagCloudRenderer extends CoreRenderer<TagCloud> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
+    public void decode(FacesContext context, TagCloud component) {
         decodeBehaviors(context, component);
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        TagCloud tagCloud = (TagCloud) component;
-
-        encodeMarkup(context, tagCloud);
-        encodeScript(context, tagCloud);
+    public void encodeEnd(FacesContext context, TagCloud component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    protected void encodeMarkup(FacesContext context, TagCloud tagCloud) throws IOException {
+    protected void encodeMarkup(FacesContext context, TagCloud component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        TagCloudModel model = tagCloud.getModel();
-        String styleClass = tagCloud.getStyleClass();
-        String style = tagCloud.getStyle();
+        TagCloudModel model = component.getModel();
+        String styleClass = component.getStyleClass();
+        String style = component.getStyle();
         styleClass = styleClass == null ? TagCloud.STYLE_CLASS : TagCloud.STYLE_CLASS + " " + styleClass;
 
-        writer.startElement("div", tagCloud);
-        writer.writeAttribute("id", tagCloud.getClientId(context), "id");
+        writer.startElement("div", component);
+        writer.writeAttribute("id", component.getClientId(context), "id");
         writer.writeAttribute("class", styleClass, "styleClass");
         if (style != null) {
             writer.writeAttribute("style", style, "style");
@@ -85,11 +82,11 @@ public class TagCloudRenderer extends CoreRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeScript(FacesContext context, TagCloud tagCloud) throws IOException {
+    protected void encodeScript(FacesContext context, TagCloud component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("TagCloud", tagCloud);
+        wb.init("TagCloud", component);
 
-        encodeClientBehaviors(context, tagCloud);
+        encodeClientBehaviors(context, component);
 
         wb.finish();
     }

@@ -27,30 +27,28 @@ import org.primefaces.renderkit.CoreRenderer;
 
 import java.io.IOException;
 
-import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
 @Deprecated(since = "15.0", forRemoval = true)
-public class SeparatorRenderer extends CoreRenderer {
+public class SeparatorRenderer extends CoreRenderer<UISeparator> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+    public void encodeEnd(FacesContext context, UISeparator component) throws IOException {
         logDevelopmentWarning(context, this, "Separator is deprecated please switch to Divider.");
-        UISeparator separator = (UISeparator) component;
         ResponseWriter writer = context.getResponseWriter();
-        String styleClass = separator.getStyleClass();
+        String styleClass = component.getStyleClass();
         styleClass = styleClass == null ? UISeparator.DEFAULT_STYLE_CLASS : UISeparator.DEFAULT_STYLE_CLASS + " " + styleClass;
 
-        writer.startElement("hr", separator);
-        writer.writeAttribute("id", separator.getClientId(context), "id");
+        writer.startElement("hr", component);
+        writer.writeAttribute("id", component.getClientId(context), "id");
         writer.writeAttribute("class", styleClass, "styleClass");
 
-        if (separator.getTitle() != null) {
-            writer.writeAttribute("title", separator.getTitle(), "title");
+        if (component.getTitle() != null) {
+            writer.writeAttribute("title", component.getTitle(), "title");
         }
-        if (separator.getStyle() != null) {
-            writer.writeAttribute("style", separator.getStyle(), "style");
+        if (component.getStyle() != null) {
+            writer.writeAttribute("style", component.getStyle(), "style");
         }
 
         writer.endElement("hr");

@@ -29,33 +29,30 @@ import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 
-import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class AjaxExceptionHandlerRenderer extends CoreRenderer {
+public class AjaxExceptionHandlerRenderer extends CoreRenderer<AjaxExceptionHandler> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        AjaxExceptionHandler ajaxExceptionHandler = (AjaxExceptionHandler) component;
-
-        encodeMarkup(context, ajaxExceptionHandler);
-        encodeScript(context, ajaxExceptionHandler);
+    public void encodeEnd(FacesContext context, AjaxExceptionHandler component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    protected void encodeScript(FacesContext context, AjaxExceptionHandler ajaxExceptionHandler) throws IOException {
+    protected void encodeScript(FacesContext context, AjaxExceptionHandler component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("AjaxExceptionHandler", ajaxExceptionHandler);
-        wb.attr("exceptionType", ajaxExceptionHandler.getType())
-                .attr("update", SearchExpressionUtils.resolveClientIdsForClientSide(context, ajaxExceptionHandler, ajaxExceptionHandler.getUpdate()))
-                .callback("onexception", "function(errorName, errorMessage)", ajaxExceptionHandler.getOnexception());
+        wb.init("AjaxExceptionHandler", component);
+        wb.attr("exceptionType", component.getType())
+                .attr("update", SearchExpressionUtils.resolveClientIdsForClientSide(context, component, component.getUpdate()))
+                .callback("onexception", "function(errorName, errorMessage)", component.getOnexception());
 
         wb.finish();
     }
 
-    protected void encodeMarkup(FacesContext context, AjaxExceptionHandler ajaxExceptionHandler) throws IOException {
+    protected void encodeMarkup(FacesContext context, AjaxExceptionHandler component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = ajaxExceptionHandler.getClientId(context);
+        String clientId = component.getClientId(context);
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);

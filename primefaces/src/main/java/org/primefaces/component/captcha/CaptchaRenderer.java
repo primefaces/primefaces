@@ -35,67 +35,64 @@ import java.util.logging.Logger;
 
 import jakarta.el.ELException;
 import jakarta.faces.FacesException;
-import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class CaptchaRenderer extends CoreRenderer {
+public class CaptchaRenderer extends CoreRenderer<Captcha> {
 
     private static final Logger LOGGER = Logger.getLogger(CaptchaRenderer.class.getName());
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
-        Captcha captcha = (Captcha) component;
+    public void decode(FacesContext context, Captcha component) {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
-        String answer = params.get(String.format("%s-response", captcha.getType()));
+        String answer = params.get(String.format("%s-response", component.getType()));
 
         if (answer != null) {
-            captcha.setSubmittedValue(answer);
+            component.setSubmittedValue(answer);
         }
         else {
-            captcha.setSubmittedValue(Constants.EMPTY_STRING);
+            component.setSubmittedValue(Constants.EMPTY_STRING);
         }
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Captcha captcha = (Captcha) component;
-        String publicKey = getPublicKey(context, captcha);
+    public void encodeEnd(FacesContext context, Captcha component) throws IOException {
+        String publicKey = getPublicKey(context, component);
 
         if (publicKey == null) {
             throw new FacesException("Cannot find public key for catpcha, use " + Captcha.PUBLIC_KEY + " context-param to define one");
         }
 
-        switch (captcha.getType()) {
+        switch (component.getType()) {
             case Captcha.RECAPTCHA:
-                if (LangUtils.isBlank(captcha.getSourceUrl())) {
-                    captcha.setSourceUrl("https://www.google.com/recaptcha/api.js");
+                if (LangUtils.isBlank(component.getSourceUrl())) {
+                    component.setSourceUrl("https://www.google.com/recaptcha/api.js");
                 }
-                if (LangUtils.isBlank(captcha.getVerifyUrl())) {
-                    captcha.setVerifyUrl("https://www.google.com/recaptcha/api/siteverify");
+                if (LangUtils.isBlank(component.getVerifyUrl())) {
+                    component.setVerifyUrl("https://www.google.com/recaptcha/api/siteverify");
                 }
-                if (LangUtils.isBlank(captcha.getExecutor())) {
-                    captcha.setExecutor("grecaptcha");
+                if (LangUtils.isBlank(component.getExecutor())) {
+                    component.setExecutor("grecaptcha");
                 }
                 break;
             case Captcha.HCAPTCHA:
-                if (LangUtils.isBlank(captcha.getSourceUrl())) {
-                    captcha.setSourceUrl("https://js.hcaptcha.com/1/api.js");
+                if (LangUtils.isBlank(component.getSourceUrl())) {
+                    component.setSourceUrl("https://js.hcaptcha.com/1/api.js");
                 }
-                if (LangUtils.isBlank(captcha.getVerifyUrl())) {
-                    captcha.setVerifyUrl("https://api.hcaptcha.com/siteverify");
+                if (LangUtils.isBlank(component.getVerifyUrl())) {
+                    component.setVerifyUrl("https://api.hcaptcha.com/siteverify");
                 }
-                if (LangUtils.isBlank(captcha.getExecutor())) {
-                    captcha.setExecutor("hcaptcha");
+                if (LangUtils.isBlank(component.getExecutor())) {
+                    component.setExecutor("hcaptcha");
                 }
                 break;
             default:
                 throw new FacesException(String.format("Captcha type must be one of %s", List.of(Captcha.RECAPTCHA, Captcha.HCAPTCHA)));
         }
 
-        encodeMarkup(context, captcha, publicKey);
-        encodeScript(context, captcha, publicKey);
+        encodeMarkup(context, component, publicKey);
+        encodeScript(context, component, publicKey);
     }
 
     protected void encodeMarkup(FacesContext context, Captcha captcha, String publicKey) throws IOException {

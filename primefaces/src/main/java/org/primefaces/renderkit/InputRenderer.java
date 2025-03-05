@@ -40,7 +40,7 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.ConverterException;
 
-public abstract class InputRenderer extends CoreRenderer {
+public abstract class InputRenderer<T extends UIComponent> extends CoreRenderer<T> {
 
     private static final String SB_STYLECLASS = InputRenderer.class.getName() + "#createStyleClass";
 

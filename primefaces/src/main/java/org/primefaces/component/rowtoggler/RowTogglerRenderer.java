@@ -29,30 +29,28 @@ import org.primefaces.util.HTML;
 
 import java.io.IOException;
 
-import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class RowTogglerRenderer extends CoreRenderer {
+public class RowTogglerRenderer extends CoreRenderer<RowToggler> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+    public void encodeEnd(FacesContext context, RowToggler component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        RowToggler toggler = (RowToggler) component;
-        DataTable parentTable = toggler.getParentTable(context);
+        DataTable parentTable = component.getParentTable(context);
         String rowKey = parentTable.getRowKey(parentTable.getRowData());
         boolean expanded = parentTable.isExpandedRow() || parentTable.getExpandedRowKeys().contains(rowKey);
-        String expandIcon = toggler.getExpandIcon();
-        String collapseIcon = toggler.getCollapseIcon();
+        String expandIcon = component.getExpandIcon();
+        String collapseIcon = component.getCollapseIcon();
         String icon = "ui-icon " + (expanded ? collapseIcon : expandIcon);
-        String expandLabel = toggler.getExpandLabel();
-        String collapseLabel = toggler.getCollapseLabel();
+        String expandLabel = component.getExpandLabel();
+        String collapseLabel = component.getCollapseLabel();
         boolean iconOnly = (expandLabel == null && collapseLabel == null);
         String togglerClass = iconOnly ? DataTable.ROW_TOGGLER_CLASS + " " + icon : DataTable.ROW_TOGGLER_CLASS;
 
-        writer.startElement("div", toggler);
+        writer.startElement("div", component);
         writer.writeAttribute("class", togglerClass, null);
-        writer.writeAttribute("tabindex", toggler.getTabindex(), null);
+        writer.writeAttribute("tabindex", component.getTabindex(), null);
         writer.writeAttribute("role", "button", null);
         writer.writeAttribute("data-expand-icon", expandIcon, null);
         writer.writeAttribute("data-collapse-icon", collapseIcon, null);

@@ -42,7 +42,7 @@ import java.util.List;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class TieredMenuRenderer extends BaseMenuRenderer {
+public class TieredMenuRenderer extends BaseMenuRenderer<AbstractMenu> {
 
     @Override
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {

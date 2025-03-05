@@ -38,45 +38,43 @@ import java.util.List;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class MenuRenderer extends BaseMenuRenderer {
+public class MenuRenderer extends BaseMenuRenderer<Menu> {
 
     @Override
-    protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
-        Menu menu = (Menu) abstractMenu;
-
+    protected void encodeScript(FacesContext context, Menu component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("PlainMenu", menu)
-                .attr("appendTo", SearchExpressionUtils.resolveOptionalClientIdForClientSide(context, menu, menu.getAppendTo()))
-                .attr("toggleable", menu.isToggleable(), false)
-                .attr("tabIndex", menu.getTabindex(), "0")
-                .attr("statefulGlobal", menu.isStatefulGlobal(), false);
+        wb.init("PlainMenu", component)
+                .attr("appendTo", SearchExpressionUtils.resolveOptionalClientIdForClientSide(context, component, component.getAppendTo()))
+                .attr("toggleable", component.isToggleable(), false)
+                .attr("tabIndex", component.getTabindex(), "0")
+                .attr("statefulGlobal", component.isStatefulGlobal(), false);
 
-        if (menu.isOverlay()) {
-            encodeOverlayConfig(context, menu, wb);
-            wb.attr("collision", menu.getCollision());
+        if (component.isOverlay()) {
+            encodeOverlayConfig(context, component, wb);
+            wb.attr("collision", component.getCollision());
         }
 
         wb.finish();
     }
 
     @Override
-    protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {
+    protected void encodeMarkup(FacesContext context, Menu component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        Menu menu = (Menu) abstractMenu;
-        String clientId = menu.getClientId(context);
-        boolean isOverlay = menu.isOverlay();
-        String maxHeight = menu.getMaxHeight();
+
+        String clientId = component.getClientId(context);
+        boolean isOverlay = component.isOverlay();
+        String maxHeight = component.getMaxHeight();
         boolean hasMaxHeight = LangUtils.isNotEmpty(maxHeight);
         String styleClass = getStyleClassBuilder(context)
-                .add(menu.getStyleClass())
+                .add(component.getStyleClass())
                 .add(isOverlay, Menu.DYNAMIC_CONTAINER_CLASS)
                 .add(!isOverlay, Menu.STATIC_CONTAINER_CLASS)
-                .add(menu.isToggleable(), Menu.TOGGLEABLE_MENU_CLASS)
+                .add(component.isToggleable(), Menu.TOGGLEABLE_MENU_CLASS)
                 .add(hasMaxHeight, Menu.CONTAINER_MAXHEIGHT_CLASS)
                 .build();
 
         String style = getStyleBuilder(context)
-                .add(menu.getStyle())
+                .add(component.getStyle())
                 .add(hasMaxHeight, "max-height", maxHeight)
                 .build();
 
@@ -88,7 +86,7 @@ public class MenuRenderer extends BaseMenuRenderer {
             }
         }
 
-        writer.startElement("div", menu);
+        writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
         if (style != null) {
@@ -96,21 +94,21 @@ public class MenuRenderer extends BaseMenuRenderer {
         }
         writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENU, null);
 
-        if (menu.getElementsCount() > 0) {
+        if (component.getElementsCount() > 0) {
             writer.writeAttribute("tabindex", "-1", "tabindex");
             writer.startElement("ul", null);
             writer.writeAttribute("class", Menu.LIST_CLASS, null);
-            encodeElements(context, menu, menu.getElements(), false, true);
+            encodeElements(context, component, component.getElements(), false, true);
             writer.endElement("ul");
         }
 
         writer.endElement("div");
     }
 
-    protected void encodeElements(FacesContext context, Menu menu, List<MenuElement> elements, boolean isSubmenu, boolean visible)
+    protected void encodeElements(FacesContext context, Menu component, List<MenuElement> elements, boolean isSubmenu, boolean visible)
             throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        boolean toggleable = menu.isToggleable();
+        boolean toggleable = component.isToggleable();
 
         for (MenuElement element : elements) {
             if (element.isRendered()) {
@@ -137,11 +135,11 @@ public class MenuRenderer extends BaseMenuRenderer {
                     if (LangUtils.isNotBlank(containerStyle)) {
                         writer.writeAttribute("style", containerStyle, null);
                     }
-                    encodeMenuItem(context, menu, menuItem, "-1");
+                    encodeMenuItem(context, component, menuItem, "-1");
                     writer.endElement("li");
                 }
                 else if (element instanceof Submenu) {
-                    encodeSubmenu(context, menu, (Submenu) element);
+                    encodeSubmenu(context, component, (Submenu) element);
                 }
                 else if (element instanceof Separator) {
                     encodeSeparator(context, (Separator) element);
@@ -150,14 +148,14 @@ public class MenuRenderer extends BaseMenuRenderer {
         }
     }
 
-    protected void encodeSubmenu(FacesContext context, Menu menu, Submenu submenu) throws IOException {
+    protected void encodeSubmenu(FacesContext context, Menu component, Submenu submenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String label = submenu.getLabel();
         String icon = submenu.getIcon();
         String style = submenu.getStyle();
         String styleClass = submenu.getStyleClass();
         styleClass = styleClass == null ? Menu.SUBMENU_TITLE_CLASS : Menu.SUBMENU_TITLE_CLASS + " " + styleClass;
-        boolean toggleable = menu.isToggleable();
+        boolean toggleable = component.isToggleable();
         boolean expanded = !toggleable || submenu.isExpanded();
 
         //title
@@ -172,7 +170,7 @@ public class MenuRenderer extends BaseMenuRenderer {
 
         writer.startElement("h3", null);
 
-        if (menu.isToggleable()) {
+        if (component.isToggleable()) {
             encodeIcon(context, label, expanded ? Menu.EXPANDED_SUBMENU_HEADER_ICON_CLASS : Menu.COLLAPSED_SUBMENU_HEADER_ICON_CLASS);
         }
 
@@ -188,7 +186,7 @@ public class MenuRenderer extends BaseMenuRenderer {
 
         writer.endElement("li");
 
-        encodeElements(context, menu, submenu.getElements(), true, expanded);
+        encodeElements(context, component, submenu.getElements(), true, expanded);
     }
 
     protected void encodeIcon(FacesContext context, String label, String styleClass) throws IOException {

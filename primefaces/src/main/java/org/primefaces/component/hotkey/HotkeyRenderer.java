@@ -30,28 +30,25 @@ import org.primefaces.util.AgentUtils;
 import java.io.IOException;
 import java.util.Map;
 
-import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.event.ActionEvent;
 
-public class HotkeyRenderer extends CoreRenderer {
+public class HotkeyRenderer extends CoreRenderer<Hotkey> {
 
     @Override
-    public void decode(FacesContext facesContext, UIComponent component) {
+    public void decode(FacesContext facesContext, Hotkey component) {
         Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
-        Hotkey hotkey = (Hotkey) component;
 
-        if (params.containsKey(hotkey.getClientId(facesContext))) {
-            hotkey.queueEvent(new ActionEvent(hotkey));
+        if (params.containsKey(component.getClientId(facesContext))) {
+            component.queueEvent(new ActionEvent(component));
         }
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+    public void encodeEnd(FacesContext context, Hotkey component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        Hotkey hotkey = (Hotkey) component;
-        String clientId = hotkey.getClientId(context);
+        String clientId = component.getClientId(context);
 
         writer.startElement("script", null);
         RendererUtils.encodeScriptTypeIfNecessary(context);
@@ -59,22 +56,22 @@ public class HotkeyRenderer extends CoreRenderer {
         String event = "keydown." + clientId;
         writer.write("$(function(){");
 
-        if (!hotkey.isDisabled()) {
-            String bind = hotkey.getBindMac() != null && AgentUtils.isMac(context)
-                    ? hotkey.getBindMac()
-                    : hotkey.getBind();
+        if (!component.isDisabled()) {
+            String bind = component.getBindMac() != null && AgentUtils.isMac(context)
+                    ? component.getBindMac()
+                    : component.getBind();
 
             writer.write("$(document).off('" + event + "').on('" + event + "',null,'" + bind + "',function(){");
 
-            if (hotkey.isAjaxified()) {
-                String request = preConfiguredAjaxRequestBuilder(context, hotkey)
-                        .params(hotkey)
+            if (component.isAjaxified()) {
+                String request = preConfiguredAjaxRequestBuilder(context, component)
+                        .params(component)
                         .build();
 
                 writer.write(request);
             }
             else {
-                writer.write(hotkey.getHandler());
+                writer.write(component.getHandler());
             }
             writer.write(";return false;});});");
         }

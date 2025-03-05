@@ -35,7 +35,7 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.ConverterException;
 
-public class KnobRenderer extends CoreRenderer {
+public class KnobRenderer extends CoreRenderer<Knob> {
 
     public static final String RENDERER_TYPE = "org.primefaces.component.KnobRenderer";
 
@@ -60,101 +60,97 @@ public class KnobRenderer extends CoreRenderer {
     }
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
-
+    public void decode(FacesContext context, Knob component) {
         decodeBehaviors(context, component);
 
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(component.getClientId(context) + "_hidden");
 
-        Knob knob = (Knob) component;
-
         if (!LangUtils.isEmpty(submittedValue)) {
             int submittedInt = Integer.parseInt(submittedValue);
-            if (submittedInt < knob.getMin() || submittedInt > knob.getMax()) {
+            if (submittedInt < component.getMin() || submittedInt > component.getMax()) {
                 return;
             }
         }
 
-        knob.setSubmittedValue(submittedValue);
+        component.setSubmittedValue(submittedValue);
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        encodeMarkup(context, (Knob) component);
-        encodeScript(context, (Knob) component);
+    public void encodeEnd(FacesContext context, Knob component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    private void encodeMarkup(FacesContext context, Knob knob) throws IOException {
-
+    private void encodeMarkup(FacesContext context, Knob component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        Object value = knob.getValue() != null ? knob.getValue() : 0;
+        Object value = component.getValue() != null ? component.getValue() : 0;
 
-        writer.startElement("input", knob);
-        writer.writeAttribute("id", knob.getClientId(), null);
-        writer.writeAttribute("name", knob.getClientId(), null);
+        writer.startElement("input", component);
+        writer.writeAttribute("id", component.getClientId(), null);
+        writer.writeAttribute("name", component.getClientId(), null);
         writer.writeAttribute("disabled", true, null);
         writer.writeAttribute("value", value.toString(), null);
-        writer.writeAttribute("data-min", knob.getMin(), null);
-        writer.writeAttribute("data-step", knob.getStep(), null);
-        writer.writeAttribute("data-max", knob.getMax(), null);
-        writer.writeAttribute("data-displayInput", Boolean.toString(knob.isShowLabel()), null);
-        writer.writeAttribute("data-readOnly", Boolean.toString(knob.isDisabled()), null);
-        writer.writeAttribute("data-cursor", Boolean.toString(knob.isCursor()), null);
-        writer.writeAttribute("data-linecap", knob.getLineCap(), "butt");
+        writer.writeAttribute("data-min", component.getMin(), null);
+        writer.writeAttribute("data-step", component.getStep(), null);
+        writer.writeAttribute("data-max", component.getMax(), null);
+        writer.writeAttribute("data-displayInput", Boolean.toString(component.isShowLabel()), null);
+        writer.writeAttribute("data-readOnly", Boolean.toString(component.isDisabled()), null);
+        writer.writeAttribute("data-cursor", Boolean.toString(component.isCursor()), null);
+        writer.writeAttribute("data-linecap", component.getLineCap(), "butt");
 
-        if (knob.getThickness() != null) {
-            writer.writeAttribute("data-thickness", knob.getThickness(), null);
+        if (component.getThickness() != null) {
+            writer.writeAttribute("data-thickness", component.getThickness(), null);
         }
 
-        if (knob.getWidth() != null) {
-            writer.writeAttribute("data-width", knob.getWidth().toString(), null);
+        if (component.getWidth() != null) {
+            writer.writeAttribute("data-width", component.getWidth().toString(), null);
         }
 
-        if (knob.getHeight() != null) {
-            writer.writeAttribute("data-height", knob.getHeight().toString(), null);
+        if (component.getHeight() != null) {
+            writer.writeAttribute("data-height", component.getHeight().toString(), null);
         }
 
         writer.writeAttribute("class", "knob", null);
 
         writer.endElement("input");
 
-        renderHiddenInput(context, knob.getClientId() + "_hidden", value.toString(), knob.isDisabled());
+        renderHiddenInput(context, component.getClientId() + "_hidden", value.toString(), component.isDisabled());
     }
 
-    private void encodeScript(FacesContext context, Knob knob) throws IOException {
-        String styleClass = knob.getStyleClass() != null ? "ui-knob " + knob.getStyleClass() : "ui-knob";
+    private void encodeScript(FacesContext context, Knob component) throws IOException {
+        String styleClass = component.getStyleClass() != null ? "ui-knob " + component.getStyleClass() : "ui-knob";
 
         WidgetBuilder wb = getWidgetBuilder(context);
 
-        wb.init("Knob", knob);
-        wb.attr("labelTemplate", knob.getLabelTemplate())
-                .attr("colorTheme", knob.getColorTheme())
+        wb.init("Knob", component);
+        wb.attr("labelTemplate", component.getLabelTemplate())
+                .attr("colorTheme", component.getColorTheme())
                 .attr("styleClass", styleClass)
-                .callback("onchange", "function(value)", knob.getOnchange());
+                .callback("onchange", "function(value)", component.getOnchange());
 
-        if (knob.getForegroundColor() != null) {
+        if (component.getForegroundColor() != null) {
             String fg;
-            if (knob.getForegroundColor() instanceof Color) {
-                fg = colorToHex((Color) knob.getForegroundColor());
+            if (component.getForegroundColor() instanceof Color) {
+                fg = colorToHex((Color) component.getForegroundColor());
             }
             else {
-                fg = knob.getForegroundColor().toString();
+                fg = component.getForegroundColor().toString();
             }
             wb.attr("fgColor", fg);
         }
 
-        if (knob.getBackgroundColor() != null) {
+        if (component.getBackgroundColor() != null) {
             String bg;
-            if (knob.getBackgroundColor() instanceof Color) {
-                bg = colorToHex((Color) knob.getBackgroundColor());
+            if (component.getBackgroundColor() instanceof Color) {
+                bg = colorToHex((Color) component.getBackgroundColor());
             }
             else {
-                bg = knob.getBackgroundColor().toString();
+                bg = component.getBackgroundColor().toString();
             }
             wb.attr("bgColor", bg);
         }
-        encodeClientBehaviors(context, knob);
+        encodeClientBehaviors(context, component);
 
         wb.finish();
     }

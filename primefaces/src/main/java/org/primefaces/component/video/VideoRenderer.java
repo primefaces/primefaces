@@ -29,7 +29,6 @@ import org.primefaces.util.LangUtils;
 
 import java.io.IOException;
 
-import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
@@ -38,65 +37,64 @@ import org.apache.commons.io.FilenameUtils;
 /**
  * The HTML <video> element is used to embed sound content in documents.
  */
-public class VideoRenderer extends CoreRenderer {
+public class VideoRenderer extends CoreRenderer<Video> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Video media = (Video) component;
-        String clientId = media.getClientId(context);
+    public void encodeEnd(FacesContext context, Video component) throws IOException {
+        String clientId = component.getClientId(context);
         ResponseWriter writer = context.getResponseWriter();
 
-        writer.startElement("div", media);
+        writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
         renderPassThruAttributes(context, component, HTML.LABEL_ATTRS_WITHOUT_EVENTS);
 
-        String styleClass = media.getStyleClass();
+        String styleClass = component.getStyleClass();
         styleClass = styleClass == null ? Video.CONTAINER_CLASS : Video.CONTAINER_CLASS + " " + styleClass;
         writer.writeAttribute("class", styleClass, null);
 
-        if (LangUtils.isNotBlank(media.getStyle())) {
-            writer.writeAttribute("style", media.getStyle(), null);
+        if (LangUtils.isNotBlank(component.getStyle())) {
+            writer.writeAttribute("style", component.getStyle(), null);
         }
-        encodeVideo(context, media);
+        encodeVideo(context, component);
         writer.endElement("div");
     }
 
-    public void encodeVideo(FacesContext context, Video media) throws IOException {
+    public void encodeVideo(FacesContext context, Video component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = media.getClientId(context) + "_video";
+        String clientId = component.getClientId(context) + "_video";
         writer.startElement("video", null);
         writer.writeAttribute("id", clientId, "id");
-        renderPassThruAttributes(context, media, HTML.MEDIA_ATTRS_WITH_EVENTS);
+        renderPassThruAttributes(context, component, HTML.MEDIA_ATTRS_WITH_EVENTS);
 
-        if (LangUtils.isNotBlank(media.getHeight())) {
-            writer.writeAttribute("height", media.getHeight(), null);
+        if (LangUtils.isNotBlank(component.getHeight())) {
+            writer.writeAttribute("height", component.getHeight(), null);
         }
-        if (LangUtils.isNotBlank(media.getWidth())) {
-            writer.writeAttribute("width", media.getWidth(), null);
+        if (LangUtils.isNotBlank(component.getWidth())) {
+            writer.writeAttribute("width", component.getWidth(), null);
         }
-        if (LangUtils.isNotBlank(media.getPreload())) {
-            writer.writeAttribute("preload", media.getPreload(), null);
+        if (LangUtils.isNotBlank(component.getPreload())) {
+            writer.writeAttribute("preload", component.getPreload(), null);
         }
-        if (LangUtils.isNotBlank(media.getPoster())) {
-            writer.writeAttribute("poster", media.getPoster(), null);
+        if (LangUtils.isNotBlank(component.getPoster())) {
+            writer.writeAttribute("poster", component.getPoster(), null);
         }
 
-        VideoType player = resolvePlayer(context, media);
+        VideoType player = resolvePlayer(context, component);
         writer.startElement("source", null);
-        writer.writeAttribute("src", media.resolveSource(context, media), null);
+        writer.writeAttribute("src", component.resolveSource(context, component), null);
         writer.writeAttribute("type", player.getMediaType(), null);
         writer.endElement("source");
 
-        renderChildren(context, media);
+        renderChildren(context, component);
         writer.endElement("video");
     }
 
-    protected VideoType resolvePlayer(FacesContext context, Video media) {
-        if (LangUtils.isNotBlank(media.getPlayer())) {
-            return VideoType.valueOf(media.getPlayer().toUpperCase());
+    protected VideoType resolvePlayer(FacesContext context, Video component) {
+        if (LangUtils.isNotBlank(component.getPlayer())) {
+            return VideoType.valueOf(component.getPlayer().toUpperCase());
         }
-        else if (media.getValue() instanceof String) {
-            String extension = FilenameUtils.getExtension((String) media.getValue());
+        else if (component.getValue() instanceof String) {
+            String extension = FilenameUtils.getExtension((String) component.getValue());
 
             for (VideoType mediaType : VideoType.values()) {
                 if (mediaType.getFileExtension().equalsIgnoreCase(extension)) {
@@ -106,11 +104,11 @@ public class VideoRenderer extends CoreRenderer {
         }
 
         throw new IllegalArgumentException("Cannot resolve mediaplayer for video component '"
-                + media.getClientId(context) + "', cannot play source:" + media.getValue());
+                + component.getClientId(context) + "', cannot play source:" + component.getValue());
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, Video component) throws IOException {
         //Do nothing
     }
 

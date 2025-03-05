@@ -42,7 +42,7 @@ import jakarta.faces.flow.FlowHandler;
 import jakarta.faces.lifecycle.ClientWindow;
 import jakarta.servlet.http.HttpServletRequest;
 
-public class OutcomeTargetRenderer extends CoreRenderer {
+public class OutcomeTargetRenderer<T extends UIComponent> extends CoreRenderer<T> {
 
     protected NavigationCase findNavigationCase(FacesContext context, UIOutcomeTarget outcomeTarget) {
         ConfigurableNavigationHandler navigationHandler = (ConfigurableNavigationHandler) context.getApplication().getNavigationHandler();

@@ -36,45 +36,41 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.ConverterException;
 
-public class SelectBooleanButtonRenderer extends InputRenderer {
+public class SelectBooleanButtonRenderer extends InputRenderer<SelectBooleanButton> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
-        SelectBooleanButton button = (SelectBooleanButton) component;
-
-        if (!shouldDecode(button)) {
+    public void decode(FacesContext context, SelectBooleanButton component) {
+        if (!shouldDecode(component)) {
             return;
         }
 
-        decodeBehaviors(context, button);
+        decodeBehaviors(context, component);
 
-        String clientId = button.getClientId(context);
+        String clientId = component.getClientId(context);
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
         boolean checked = "on".equalsIgnoreCase(submittedValue);
-        button.setSubmittedValue(checked);
+        component.setSubmittedValue(checked);
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        SelectBooleanButton button = (SelectBooleanButton) component;
-
-        encodeMarkup(context, button);
-        encodeScript(context, button);
+    public void encodeEnd(FacesContext context, SelectBooleanButton component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
 
-    protected void encodeMarkup(FacesContext context, SelectBooleanButton button) throws IOException {
+    protected void encodeMarkup(FacesContext context, SelectBooleanButton component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = button.getClientId(context);
-        boolean checked = Boolean.parseBoolean(ComponentUtils.getValueToRender(context, button));
-        boolean disabled = button.isDisabled();
+        String clientId = component.getClientId(context);
+        boolean checked = Boolean.parseBoolean(ComponentUtils.getValueToRender(context, component));
+        boolean disabled = component.isDisabled();
         String inputId = clientId + "_input";
-        String label = checked ? button.getOnLabel() : button.getOffLabel();
-        String icon = checked ? button.getOnIcon() : button.getOffIcon();
+        String label = checked ? component.getOnLabel() : component.getOffLabel();
+        String icon = checked ? component.getOnIcon() : component.getOffIcon();
         boolean hasIcon = icon != null;
-        String title = button.getTitle();
-        String style = button.getStyle();
-        String styleClass = "ui-selectbooleanbutton " + button.resolveStyleClass(checked, disabled);
+        String title = component.getTitle();
+        String style = component.getStyle();
+        String styleClass = "ui-selectbooleanbutton " + component.resolveStyleClass(checked, disabled);
 
         // button
         writer.startElement("div", null);
@@ -101,11 +97,11 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
             writer.writeAttribute("checked", "checked", null);
         }
 
-        renderValidationMetadata(context, button);
-        renderAccessibilityAttributes(context, button);
-        renderPassThruAttributes(context, button, HTML.TAB_INDEX);
-        renderOnchange(context, button);
-        renderDomEvents(context, button, HTML.BLUR_FOCUS_EVENTS);
+        renderValidationMetadata(context, component);
+        renderAccessibilityAttributes(context, component);
+        renderPassThruAttributes(context, component, HTML.TAB_INDEX);
+        renderOnchange(context, component);
+        renderDomEvents(context, component, HTML.BLUR_FOCUS_EVENTS);
 
         writer.endElement("input");
 
@@ -122,20 +118,20 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
 
-        renderButtonValue(writer, true, label, button.getTitle(), button.getAriaLabel());
+        renderButtonValue(writer, true, label, component.getTitle(), component.getAriaLabel());
 
         writer.endElement("span");
 
         writer.endElement("div");
     }
 
-    protected void encodeScript(FacesContext context, SelectBooleanButton button) throws IOException {
+    protected void encodeScript(FacesContext context, SelectBooleanButton component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SelectBooleanButton", button)
-                    .attr("onLabel", button.getOnLabel(), null)
-                    .attr("offLabel", button.getOffLabel())
-                    .attr("onIcon", button.getOnIcon(), null)
-                    .attr("offIcon", button.getOffIcon(), null);
+        wb.init("SelectBooleanButton", component)
+                    .attr("onLabel", component.getOnLabel(), null)
+                    .attr("offLabel", component.getOffLabel())
+                    .attr("onIcon", component.getOnIcon(), null)
+                    .attr("offIcon", component.getOffIcon(), null);
 
         wb.finish();
     }

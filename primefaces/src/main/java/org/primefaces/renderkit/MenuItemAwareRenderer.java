@@ -62,12 +62,12 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.event.PhaseId;
 
-public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
+public class MenuItemAwareRenderer<T extends UIComponent> extends OutcomeTargetRenderer<T> {
 
     private static final Logger LOGGER = Logger.getLogger(MenuItemAwareRenderer.class.getName());
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
+    public void decode(FacesContext context, T component) {
         decodeDynamicMenuItem(context, component);
     }
 

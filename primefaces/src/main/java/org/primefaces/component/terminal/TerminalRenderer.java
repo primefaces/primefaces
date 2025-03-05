@@ -32,45 +32,42 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import jakarta.el.MethodExpression;
-import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class TerminalRenderer extends CoreRenderer {
+public class TerminalRenderer extends CoreRenderer<Terminal> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
+    public void decode(FacesContext context, Terminal component) {
         decodeBehaviors(context, component);
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Terminal terminal = (Terminal) component;
-
-        if (terminal.isCommandRequest()) {
-            handleCommand(context, terminal);
+    public void encodeEnd(FacesContext context, Terminal component) throws IOException {
+        if (component.isCommandRequest()) {
+            handleCommand(context, component);
         }
-        else if (terminal.isAutoCompleteRequest()) {
-            autoCompleteCommand(context, terminal);
+        else if (component.isAutoCompleteRequest()) {
+            autoCompleteCommand(context, component);
         }
         else {
-            encodeMarkup(context, terminal);
-            encodeScript(context, terminal);
+            encodeMarkup(context, component);
+            encodeScript(context, component);
         }
     }
 
-    protected void encodeMarkup(FacesContext context, Terminal terminal) throws IOException {
-        String clientId = terminal.getClientId(context);
-        String style = terminal.getStyle();
-        String styleClass = terminal.getStyleClass();
+    protected void encodeMarkup(FacesContext context, Terminal component) throws IOException {
+        String clientId = component.getClientId(context);
+        String style = component.getStyle();
+        String styleClass = component.getStyleClass();
         styleClass = (styleClass == null) ? Terminal.CONTAINER_CLASS : Terminal.CONTAINER_CLASS + " " + styleClass;
-        String welcomeMessage = terminal.getWelcomeMessage();
-        String prompt = terminal.getPrompt();
+        String welcomeMessage = component.getWelcomeMessage();
+        String prompt = component.getPrompt();
         String inputId = clientId + "_input";
 
         ResponseWriter writer = context.getResponseWriter();
 
-        writer.startElement("div", terminal);
+        writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
         if (style != null) {
@@ -79,7 +76,7 @@ public class TerminalRenderer extends CoreRenderer {
 
         if (welcomeMessage != null) {
             writer.startElement("div", null);
-            if (terminal.isEscape()) {
+            if (component.isEscape()) {
                 writer.writeText(welcomeMessage, null);
             }
             else {
@@ -95,7 +92,7 @@ public class TerminalRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.startElement("span", null);
         writer.writeAttribute("class", Terminal.PROMPT_CLASS, null);
-        if (terminal.isEscape()) {
+        if (component.isEscape()) {
             writer.writeText(prompt, null);
         }
         else {
@@ -115,43 +112,43 @@ public class TerminalRenderer extends CoreRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeScript(FacesContext context, Terminal terminal) throws IOException {
+    protected void encodeScript(FacesContext context, Terminal component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Terminal", terminal);
-        encodeClientBehaviors(context, terminal);
+        wb.init("Terminal", component);
+        encodeClientBehaviors(context, component);
         wb.finish();
     }
 
-    protected void handleCommand(FacesContext context, Terminal terminal) throws IOException {
-        String[] tokens = getValueTokens(context, terminal);
+    protected void handleCommand(FacesContext context, Terminal component) throws IOException {
+        String[] tokens = getValueTokens(context, component);
         String command = tokens[0];
         String[] args = Arrays.copyOfRange(tokens, 1, tokens.length);
 
-        MethodExpression commandHandler = terminal.getCommandHandler();
+        MethodExpression commandHandler = component.getCommandHandler();
         String result = (String) commandHandler.invoke(context.getELContext(), new Object[]{command, args});
 
         ResponseWriter writer = context.getResponseWriter();
         writer.writeText(result, null);
     }
 
-    protected void autoCompleteCommand(FacesContext context, Terminal terminal) throws IOException {
-        String[] tokens = getValueTokens(context, terminal);
+    protected void autoCompleteCommand(FacesContext context, Terminal component) throws IOException {
+        String[] tokens = getValueTokens(context, component);
         String command = tokens[0];
         String[] args = Arrays.copyOfRange(tokens, 1, tokens.length);
 
-        TerminalAutoCompleteModel autoCompleteModel = terminal.getAutoCompleteModel();
+        TerminalAutoCompleteModel autoCompleteModel = component.getAutoCompleteModel();
         ResponseWriter writer = context.getResponseWriter();
         if (autoCompleteModel == null) {
             writer.write("null");
         }
         else {
-            TerminalAutoCompleteMatches matches = terminal.traverseAutoCompleteModel(autoCompleteModel, command, args);
+            TerminalAutoCompleteMatches matches = component.traverseAutoCompleteModel(autoCompleteModel, command, args);
             writer.writeText(matches.toString(), null);
         }
     }
 
-    private String[] getValueTokens(FacesContext context, Terminal terminal) {
-        String clientId = terminal.getClientId(context);
+    private String[] getValueTokens(FacesContext context, Terminal component) {
+        String clientId = component.getClientId(context);
         String value = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
         String[] tokens = value.trim().split(" ");
 

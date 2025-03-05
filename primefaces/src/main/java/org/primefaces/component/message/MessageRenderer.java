@@ -41,20 +41,18 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class MessageRenderer extends UINotificationRenderer {
+public class MessageRenderer extends UINotificationRenderer<Message> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Message uiMessage = (Message) component;
-
-        UIComponent target = SearchExpressionUtils.contextlessResolveComponent(context, uiMessage, uiMessage.getFor());
+    public void encodeEnd(FacesContext context, Message component) throws IOException {
+        UIComponent target = SearchExpressionUtils.contextlessResolveComponent(context, component, component.getFor());
         final MessageState state = new MessageState();
         state.setTargetId(target.getClientId(context));
         state.setTooltipTargetId(getTooltipTargetId(target, context));
 
-        if (!hasDisplayableMessage(uiMessage, target, context) && CompositeUtils.isComposite(target)) {
+        if (!hasDisplayableMessage(component, target, context) && CompositeUtils.isComposite(target)) {
             ContextCallback callback = (FacesContext fc, UIComponent comp) -> {
-                if (hasDisplayableMessage(uiMessage, comp, fc)) {
+                if (hasDisplayableMessage(component, comp, fc)) {
                     state.setTargetId(comp.getClientId(fc));
                     state.setTooltipTargetId(getTooltipTargetId(comp, fc));
                 }
@@ -62,23 +60,23 @@ public class MessageRenderer extends UINotificationRenderer {
             CompositeUtils.invokeOnDeepestEditableValueHolder(context, target, callback);
         }
 
-        encodeMarkup(context, uiMessage, state.getTargetId());
-        encodeScript(context, uiMessage, state.getTooltipTargetId());
+        encodeMarkup(context, component, state.getTargetId());
+        encodeScript(context, component, state.getTooltipTargetId());
     }
 
-    protected void encodeMarkup(FacesContext context, Message uiMessage, String targetClientId) throws IOException {
+    protected void encodeMarkup(FacesContext context, Message component, String targetClientId) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String display = uiMessage.getDisplay();
+        String display = component.getDisplay();
         boolean iconOnly = "icon".equals(display);
-        String style = uiMessage.getStyle();
+        String style = component.getStyle();
         StyleClassBuilder styleClassBuilder = getStyleClassBuilder(context)
-                .add("ui-message", uiMessage.getStyleClass())
+                .add("ui-message", component.getStyleClass())
                 .add("tooltip".equals(display), "ui-helper-hidden");
 
         Iterator<FacesMessage> msgs = context.getMessages(targetClientId);
 
-        writer.startElement("div", uiMessage);
-        writer.writeAttribute("id", uiMessage.getClientId(context), null);
+        writer.startElement("div", component);
+        writer.writeAttribute("id", component.getClientId(context), null);
         writer.writeAttribute("role", "alert", null);
         writer.writeAttribute(HTML.ARIA_ATOMIC, "true", null);
         writer.writeAttribute(HTML.ARIA_LIVE, "polite", null);
@@ -90,7 +88,7 @@ public class MessageRenderer extends UINotificationRenderer {
         if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             writer.writeAttribute("data-display", display, null);
             writer.writeAttribute("data-target", targetClientId, null);
-            writer.writeAttribute("data-redisplay", String.valueOf(uiMessage.isRedisplay()), null);
+            writer.writeAttribute("data-redisplay", String.valueOf(component.isRedisplay()), null);
         }
 
         boolean hasMessage = false;
@@ -98,7 +96,7 @@ public class MessageRenderer extends UINotificationRenderer {
             FacesMessage msg = msgs.next();
             String severityName = getSeverityName(msg);
 
-            if (shouldRender(uiMessage, msg, severityName)) {
+            if (shouldRender(component, msg, severityName)) {
 
                 styleClassBuilder.add("ui-message-" + severityName + " ui-widget");
                 styleClassBuilder.add(iconOnly, "ui-message-icon-only ui-helper-clearfix");
@@ -114,15 +112,15 @@ public class MessageRenderer extends UINotificationRenderer {
                 if (!iconOnly) {
                     String summary = msg.getSummary();
                     String detail = msg.getDetail();
-                    if (uiMessage.isSkipDetailIfEqualsSummary() && Objects.equals(summary, detail)) {
+                    if (component.isSkipDetailIfEqualsSummary() && Objects.equals(summary, detail)) {
                         detail = "";
                     }
 
-                    if (uiMessage.isShowSummary()) {
-                        encodeText(context, uiMessage, summary, severityName + "-summary");
+                    if (component.isShowSummary()) {
+                        encodeText(context, component, summary, severityName + "-summary");
                     }
-                    if (uiMessage.isShowDetail()) {
-                        encodeText(context, uiMessage, detail, severityName + "-detail");
+                    if (component.isShowDetail()) {
+                        encodeText(context, component, detail, severityName + "-detail");
                     }
                 }
                 writer.endElement("div");
@@ -141,13 +139,13 @@ public class MessageRenderer extends UINotificationRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeText(FacesContext context, Message uiMessage, String text, String severity) throws IOException {
+    protected void encodeText(FacesContext context, Message component, String text, String severity) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("span", null);
         writer.writeAttribute("class", "ui-message-" + severity, null);
-        writer.writeAttribute("id", uiMessage.getClientId(context) + '_' + severity, null);
+        writer.writeAttribute("id", component.getClientId(context) + '_' + severity, null);
 
-        if (uiMessage.isEscape()) {
+        if (component.isEscape()) {
             writer.writeText(text, null);
         }
         else {
@@ -166,12 +164,12 @@ public class MessageRenderer extends UINotificationRenderer {
         writer.endElement("span");
     }
 
-    protected void encodeScript(FacesContext context, Message uiMessage, String targetClientId) throws IOException {
-        boolean tooltip = "tooltip".equals(uiMessage.getDisplay());
-        if (tooltip || uiMessage.isShowDetail()) {
+    protected void encodeScript(FacesContext context, Message component, String targetClientId) throws IOException {
+        boolean tooltip = "tooltip".equals(component.getDisplay());
+        if (tooltip || component.isShowDetail()) {
             WidgetBuilder wb = getWidgetBuilder(context);
 
-            wb.init("Message", uiMessage)
+            wb.init("Message", component)
                     .attr("target", targetClientId)
                     .attr("tooltip", tooltip, false)
                     .finish();

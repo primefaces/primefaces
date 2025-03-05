@@ -637,7 +637,7 @@ public class DataTable extends DataTableBase {
     }
 
     public Set<String> getExpandedRowKeys() {
-        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.expandedRowKeys, Collections::emptySet);
+        return (Set<String>) getStateHelper().eval(InternalPropertyKeys.expandedRowKeys, Collections::emptySet);
     }
 
     public void setExpandedRowKeys(Set<String> expandedRowKeys) {
@@ -645,7 +645,7 @@ public class DataTable extends DataTableBase {
     }
 
     public Set<String> getSelectedRowKeys() {
-        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.selectedRowKeys, Collections::emptySet);
+        return (Set<String>) getStateHelper().eval(InternalPropertyKeys.selectedRowKeys, Collections::emptySet);
     }
 
     public void setSelectedRowKeys(Set<String> selectedRowKeys) {
@@ -660,7 +660,7 @@ public class DataTable extends DataTableBase {
     }
 
     public boolean isSelectAll() {
-        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.selectAll, () -> false);
+        return (boolean) getStateHelper().eval(InternalPropertyKeys.selectAll, () -> false);
     }
 
     public void setSelectAll(boolean selectAll) {
@@ -1016,7 +1016,7 @@ public class DataTable extends DataTableBase {
 
     @Override
     public Map<String, FilterMeta> getFilterByAsMap() {
-        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.filterByAsMap, () -> initFilterBy(getFacesContext()));
+        return (Map<String, FilterMeta>) getStateHelper().eval(InternalPropertyKeys.filterByAsMap, () -> initFilterBy(getFacesContext()));
     }
 
     @Override

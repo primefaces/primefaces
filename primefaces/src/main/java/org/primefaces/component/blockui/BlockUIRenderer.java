@@ -29,50 +29,46 @@ import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 
-import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class BlockUIRenderer extends CoreRenderer {
+public class BlockUIRenderer extends CoreRenderer<BlockUI> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        BlockUI blockUI = (BlockUI) component;
-
+    public void encodeEnd(FacesContext context, BlockUI component) throws IOException {
         encodeMarkup(context, component);
-        encodeScript(context, blockUI);
+        encodeScript(context, component);
     }
 
-    protected void encodeScript(FacesContext context, BlockUI blockUI) throws IOException {
+    protected void encodeScript(FacesContext context, BlockUI component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("BlockUI", blockUI);
+        wb.init("BlockUI", component);
 
-        wb.attr("block", SearchExpressionUtils.resolveClientIdsForClientSide(context, blockUI, blockUI.getBlock()))
-            .attr("triggers", SearchExpressionUtils.resolveClientIdsForClientSide(context, blockUI, blockUI.getTrigger()))
-            .attr("blocked", blockUI.isBlocked(), false)
-            .attr("animate", blockUI.isAnimate(), true)
-            .attr("styleClass", blockUI.getStyleClass(), null)
-            .attr("delay", blockUI.getDelay(), 0);
+        wb.attr("block", SearchExpressionUtils.resolveClientIdsForClientSide(context, component, component.getBlock()))
+            .attr("triggers", SearchExpressionUtils.resolveClientIdsForClientSide(context, component, component.getTrigger()))
+            .attr("blocked", component.isBlocked(), false)
+            .attr("animate", component.isAnimate(), true)
+            .attr("styleClass", component.getStyleClass(), null)
+            .attr("delay", component.getDelay(), 0);
 
         wb.finish();
     }
 
-    protected void encodeMarkup(FacesContext context, UIComponent component) throws IOException {
+    protected void encodeMarkup(FacesContext context, BlockUI component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        BlockUI blockUI = (BlockUI) component;
-        String clientId = blockUI.getClientId(context);
+        String clientId = component.getClientId(context);
 
-        writer.startElement("div", blockUI);
+        writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", "ui-blockui-content ui-widget ui-widget-content ui-helper-hidden ui-shadow", null);
 
-        renderChildren(context, blockUI);
+        renderChildren(context, component);
 
         writer.endElement("div");
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, BlockUI component) throws IOException {
         //Do nothing
     }
 

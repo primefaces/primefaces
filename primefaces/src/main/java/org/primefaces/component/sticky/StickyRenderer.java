@@ -29,33 +29,30 @@ import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 
-import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class StickyRenderer extends CoreRenderer {
+public class StickyRenderer extends CoreRenderer<Sticky> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Sticky sticky = (Sticky) component;
-
-        encodeMarkup(context, sticky);
-        encodeScript(context, sticky);
+    public void encodeEnd(FacesContext context, Sticky component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    protected void encodeMarkup(FacesContext context, Sticky sticky) throws IOException {
+    protected void encodeMarkup(FacesContext context, Sticky component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        writer.startElement("div", sticky);
-        writer.writeAttribute("id", sticky.getClientId(context), null);
+        writer.startElement("div", component);
+        writer.writeAttribute("id", component.getClientId(context), null);
         writer.endElement("div");
     }
 
-    protected void encodeScript(FacesContext context, Sticky sticky) throws IOException {
-        String target = sticky.getTarget();
+    protected void encodeScript(FacesContext context, Sticky component) throws IOException {
+        String target = component.getTarget();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Sticky", sticky)
-            .attr("target", SearchExpressionUtils.resolveClientIdsForClientSide(context, sticky, target))
-            .attr("margin", sticky.getMargin(), 0)
+        wb.init("Sticky", component)
+            .attr("target", SearchExpressionUtils.resolveClientIdsForClientSide(context, component, target))
+            .attr("margin", component.getMargin(), 0)
             .finish();
     }
 }

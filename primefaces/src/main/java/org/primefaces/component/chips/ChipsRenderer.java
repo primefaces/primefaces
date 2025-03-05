@@ -44,14 +44,13 @@ import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.ConverterException;
 
-public class ChipsRenderer extends InputRenderer {
+public class ChipsRenderer extends InputRenderer<Chips> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
-        Chips chips = (Chips) component;
-        String clientId = chips.getClientId(context);
+    public void decode(FacesContext context, Chips component) {
+        String clientId = component.getClientId(context);
 
-        if (!shouldDecode(chips)) {
+        if (!shouldDecode(component)) {
             return;
         }
 
@@ -65,53 +64,51 @@ public class ChipsRenderer extends InputRenderer {
             submittedValues = LangUtils.concat(submittedValues, new String[]{inputValue});
         }
 
-        if (submittedValues.length > chips.getMax()) {
+        if (submittedValues.length > component.getMax()) {
             return;
         }
 
         if (submittedValues.length > 0) {
-            if (chips.isUnique()) {
+            if (component.isUnique()) {
                 submittedValues = Stream.of(submittedValues).distinct().toArray(String[]::new);
             }
-            chips.setSubmittedValue(submittedValues);
+            component.setSubmittedValue(submittedValues);
         }
         else {
-            chips.setSubmittedValue("");
+            component.setSubmittedValue("");
         }
 
-        decodeBehaviors(context, chips);
+        decodeBehaviors(context, component);
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Chips chips = (Chips) component;
-
-        encodeMarkup(context, chips);
-        encodeScript(context, chips);
+    public void encodeEnd(FacesContext context, Chips component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    protected void encodeMarkup(FacesContext context, Chips chips) throws IOException {
+    protected void encodeMarkup(FacesContext context, Chips component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = chips.getClientId(context);
+        String clientId = component.getClientId(context);
         String inputId = clientId + "_input";
         List<String> stringValues = new ArrayList<>();
-        String title = chips.getTitle();
+        String title = component.getTitle();
 
-        String style = chips.getStyle();
-        String styleClass = chips.getStyleClass();
+        String style = component.getStyle();
+        String styleClass = component.getStyleClass();
         styleClass = styleClass == null ? Chips.STYLE_CLASS : Chips.STYLE_CLASS + " " + styleClass;
 
-        String inputStyle = chips.getInputStyle();
-        String listClass = createStyleClass(chips, Chips.PropertyKeys.inputStyleClass.name(), Chips.CONTAINER_CLASS);
+        String inputStyle = component.getInputStyle();
+        String listClass = createStyleClass(component, Chips.PropertyKeys.inputStyleClass.name(), Chips.CONTAINER_CLASS);
 
         Collection values;
-        if (chips.isValid()) {
-            values = (Collection) chips.getValue();
+        if (component.isValid()) {
+            values = (Collection) component.getValue();
         }
         else {
-            Object submittedValue = chips.getSubmittedValue();
+            Object submittedValue = component.getSubmittedValue();
             try {
-                values = (Collection) getConvertedValue(context, chips, submittedValue);
+                values = (Collection) getConvertedValue(context, component, submittedValue);
             }
             catch (ConverterException ce) {
                 values = Arrays.asList((String[]) submittedValue);
@@ -133,14 +130,14 @@ public class ChipsRenderer extends InputRenderer {
         if (inputStyle != null) {
             writer.writeAttribute("style", inputStyle, null);
         }
-        renderARIARequired(context, chips);
+        renderARIARequired(context, component);
 
         if (values != null && !values.isEmpty()) {
-            Converter converter = ComponentUtils.getConverter(context, chips);
+            Converter converter = ComponentUtils.getConverter(context, component);
 
-            Collection<Object> items = chips.isUnique() ? new LinkedHashSet<>(values) : values;
+            Collection<Object> items = component.isUnique() ? new LinkedHashSet<>(values) : values;
             for (Object value : items) {
-                String tokenValue = converter != null ? converter.getAsString(context, chips, value) : String.valueOf(value);
+                String tokenValue = converter != null ? converter.getAsString(context, component, value) : String.valueOf(value);
 
                 writer.startElement("li", null);
                 writer.writeAttribute("data-token-value", tokenValue, null);
@@ -170,21 +167,21 @@ public class ChipsRenderer extends InputRenderer {
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("autocomplete", "off", null);
 
-        renderAccessibilityAttributes(context, chips);
-        renderPassThruAttributes(context, chips, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
-        renderDomEvents(context, chips, HTML.INPUT_TEXT_EVENTS);
+        renderAccessibilityAttributes(context, component);
+        renderPassThruAttributes(context, component, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
+        renderDomEvents(context, component, HTML.INPUT_TEXT_EVENTS);
 
         writer.endElement("input");
         writer.endElement("li");
 
         writer.endElement("ul");
 
-        encodeHiddenSelect(context, chips, clientId, stringValues);
+        encodeHiddenSelect(context, component, clientId, stringValues);
 
         writer.endElement("div");
     }
 
-    protected void encodeHiddenSelect(FacesContext context, Chips chips, String clientId, List<String> values) throws IOException {
+    protected void encodeHiddenSelect(FacesContext context, Chips component, String clientId, List<String> values) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String id = clientId + "_hinput";
 
@@ -194,7 +191,7 @@ public class ChipsRenderer extends InputRenderer {
         writer.writeAttribute("multiple", "multiple", null);
         writer.writeAttribute("class", "ui-helper-hidden", null);
 
-        if (chips.isDisabled()) {
+        if (component.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", "disabled");
         }
 

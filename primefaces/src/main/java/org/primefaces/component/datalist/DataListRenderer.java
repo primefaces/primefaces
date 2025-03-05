@@ -36,122 +36,120 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class DataListRenderer extends DataRenderer {
+public class DataListRenderer extends DataRenderer<DataList> {
 
     private static final Logger LOGGER = Logger.getLogger(DataListRenderer.class.getName());
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
+    public void decode(FacesContext context, DataList component) {
         decodeBehaviors(context, component);
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        DataList list = (DataList) component;
+    public void encodeEnd(FacesContext context, DataList component) throws IOException {
+        if (component.isPaginationRequest(context)) {
+            component.updatePaginationData(context);
 
-        if (list.isPaginationRequest(context)) {
-            list.updatePaginationData(context);
-
-            if (list.isLazy()) {
-                list.loadLazyData();
+            if (component.isLazy()) {
+                component.loadLazyData();
             }
 
-            if (list.getType().equals("none")) {
-                encodeFreeList(context, list);
+            if (component.getType().equals("none")) {
+                encodeFreeList(context, component);
             }
             else {
-                encodeStrictList(context, list);
+                encodeStrictList(context, component);
             }
 
-            if (list.isMultiViewState()) {
-                DataListState ls = list.getMultiViewState(true);
-                ls.setFirst(list.getFirst());
-                ls.setRows(list.getRows());
+            if (component.isMultiViewState()) {
+                DataListState ls = component.getMultiViewState(true);
+                ls.setFirst(component.getFirst());
+                ls.setRows(component.getRows());
             }
         }
         else {
-            if (list.isMultiViewState()) {
-                list.restoreMultiViewState();
+            if (component.isMultiViewState()) {
+                component.restoreMultiViewState();
             }
 
-            encodeMarkup(context, list);
-            encodeScript(context, list);
+            encodeMarkup(context, component);
+            encodeScript(context, component);
 
-            if (list.isPaginator() && list.getRows() == 0) {
-                LOGGER.log(Level.WARNING, "DataList with paginator=true should also set the rows attribute. ClientId: {0}", list.getClientId());
+            if (component.isPaginator() && component.getRows() == 0) {
+                LOGGER.log(Level.WARNING, "DataList with paginator=true should also set the rows attribute. ClientId: {0}", component.getClientId());
             }
         }
     }
 
-    protected void encodeMarkup(FacesContext context, DataList list) throws IOException {
-        if (list.isLazy()) {
-            list.loadLazyData();
+    protected void encodeMarkup(FacesContext context, DataList component) throws IOException {
+        if (component.isLazy()) {
+            component.loadLazyData();
         }
 
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = list.getClientId(context);
-        boolean hasPaginator = list.isPaginator();
-        boolean empty = (list.getRowCount() == 0);
-        String paginatorPosition = list.getPaginatorPosition();
-        String styleClass = getStyleClassBuilder(context).add(DataList.DATALIST_CLASS).add(list.getStyleClass()).build();
-        String style = list.getStyle();
+        String clientId = component.getClientId(context);
+        boolean hasPaginator = component.isPaginator();
+        boolean empty = (component.getRowCount() == 0);
+        String paginatorPosition = component.getPaginatorPosition();
+        String styleClass = getStyleClassBuilder(context).add(DataList.DATALIST_CLASS).add(component.getStyleClass()).build();
+        String style = component.getStyle();
 
         if (hasPaginator) {
-            list.calculateFirst();
+            component.calculateFirst();
         }
 
-        writer.startElement("div", list);
+        writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
 
-        encodeFacet(context, list, "header", DataList.HEADER_CLASS);
+        encodeFacet(context, component, "header", DataList.HEADER_CLASS);
 
         if (hasPaginator && !"bottom".equalsIgnoreCase(paginatorPosition)) {
-            encodePaginatorMarkup(context, list, "top");
+            encodePaginatorMarkup(context, component, "top");
         }
 
-        writer.startElement("div", list);
+        writer.startElement("div", component);
         writer.writeAttribute("id", clientId + "_content", "id");
         writer.writeAttribute("class", DataList.CONTENT_CLASS, "styleClass");
 
         if (empty) {
-            writer.startElement("div", list);
+            writer.startElement("div", component);
             writer.writeAttribute("class", DataList.DATALIST_EMPTY_MESSAGE_CLASS, null);
-            writer.writeText(list.getEmptyMessage(), "emptyMessage");
+            writer.writeText(component.getEmptyMessage(), "emptyMessage");
             writer.endElement("div");
         }
         else {
-            if (list.getType().equals("none")) {
-                encodeFreeList(context, list);
+            if (component.getType().equals("none")) {
+                encodeFreeList(context, component);
             }
             else {
-                encodeStrictList(context, list);
+                encodeStrictList(context, component);
             }
         }
 
         writer.endElement("div");
 
         if (hasPaginator && !"top".equalsIgnoreCase(paginatorPosition)) {
-            encodePaginatorMarkup(context, list, "bottom");
+            encodePaginatorMarkup(context, component, "bottom");
         }
 
-        encodeFacet(context, list, "footer", DataList.FOOTER_CLASS);
+        encodeFacet(context, component, "footer", DataList.FOOTER_CLASS);
 
         writer.endElement("div");
     }
 
-    protected void encodeScript(FacesContext context, DataList list) throws IOException {
+    protected void encodeScript(FacesContext context, DataList component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("DataList", list);
+        wb.init("DataList", component);
 
-        if (list.isPaginator()) {
-            encodePaginatorConfig(context, list, wb);
+        if (component.isPaginator()) {
+            encodePaginatorConfig(context, component, wb);
         }
 
-        encodeClientBehaviors(context, list);
+        encodeClientBehaviors(context, component);
 
         wb.finish();
     }
@@ -212,13 +210,13 @@ public class DataListRenderer extends DataRenderer {
      * Renders items with no strict markup
      *
      * @param context FacesContext instance
-     * @param list    DataList component
+     * @param component    DataList component
      * @throws IOException
      */
-    protected void encodeFreeList(FacesContext context, DataList list) throws IOException {
-        list.forEachRow((status) -> {
+    protected void encodeFreeList(FacesContext context, DataList component) throws IOException {
+        component.forEachRow((status) -> {
             try {
-                renderChildren(context, list);
+                renderChildren(context, component);
             }
             catch (IOException e) {
                 throw new FacesException(e);
@@ -227,7 +225,7 @@ public class DataListRenderer extends DataRenderer {
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, DataList component) throws IOException {
         //Do Nothing
     }
 

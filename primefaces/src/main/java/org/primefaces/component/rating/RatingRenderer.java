@@ -31,20 +31,18 @@ import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 
-import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class RatingRenderer extends InputRenderer {
+public class RatingRenderer extends InputRenderer<Rating> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
-        Rating rating = (Rating) component;
-        if (!shouldDecode(rating)) {
+    public void decode(FacesContext context, Rating component) {
+        if (!shouldDecode(component)) {
             return;
         }
 
-        String clientId = rating.getClientId(context);
+        String clientId = component.getClientId(context);
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
 
         if (LangUtils.isNotEmpty(submittedValue)) {
@@ -52,23 +50,21 @@ public class RatingRenderer extends InputRenderer {
             if (submittedStars == 0) {
                 submittedValue = Constants.EMPTY_STRING;
             }
-            else if (submittedStars < 1 || submittedStars > rating.getStars()) {
+            else if (submittedStars < 1 || submittedStars > component.getStars()) {
                 // prevent form post of invalid value
                 return;
             }
         }
 
-        rating.setSubmittedValue(submittedValue);
+        component.setSubmittedValue(submittedValue);
 
-        decodeBehaviors(context, rating);
+        decodeBehaviors(context, component);
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Rating rating = (Rating) component;
-
-        encodeMarkup(context, rating);
-        encodeScript(context, rating);
+    public void encodeEnd(FacesContext context, Rating component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
     private void encodeScript(FacesContext context, Rating rating) throws IOException {
@@ -127,7 +123,7 @@ public class RatingRenderer extends InputRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeInput(FacesContext context, Rating rating, String id, String value) throws IOException {
+    protected void encodeInput(FacesContext context, Rating component, String id, String value) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         //input for accessibility
@@ -139,13 +135,13 @@ public class RatingRenderer extends InputRenderer {
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "range", null);
         writer.writeAttribute("min", "0", null);
-        writer.writeAttribute("max", rating.getStars(), null);
+        writer.writeAttribute("max", component.getStars(), null);
         writer.writeAttribute("autocomplete", "off", null);
         writer.writeAttribute("value", LangUtils.defaultIfBlank(value, "0"), null);
         //for keyboard accessibility and ScreenReader
-        writer.writeAttribute("tabindex", rating.getTabindex(), null);
+        writer.writeAttribute("tabindex", component.getTabindex(), null);
 
-        if (rating.isDisabled()) {
+        if (component.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", null);
         }
 

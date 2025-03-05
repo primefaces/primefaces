@@ -36,71 +36,69 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class DialogRenderer extends CoreRenderer {
+public class DialogRenderer extends CoreRenderer<Dialog> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
+    public void decode(FacesContext context, Dialog component) {
         super.decodeBehaviors(context, component);
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Dialog dialog = (Dialog) component;
-
-        if (dialog.isContentLoadRequest(context)) {
+    public void encodeEnd(FacesContext context, Dialog component) throws IOException {
+        if (component.isContentLoadRequest(context)) {
             renderChildren(context, component);
         }
         else {
-            encodeMarkup(context, dialog);
-            encodeScript(context, dialog);
+            encodeMarkup(context, component);
+            encodeScript(context, component);
         }
     }
 
-    protected void encodeScript(FacesContext context, Dialog dialog) throws IOException {
+    protected void encodeScript(FacesContext context, Dialog component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Dialog", dialog);
+        wb.init("Dialog", component);
 
-        wb.attr("visible", dialog.isVisible(), false)
-                .attr("draggable", dialog.isDraggable(), true)
-                .attr("resizable", dialog.isResizable(), true)
-                .attr("modal", dialog.isModal(), false)
-                .attr("blockScroll", dialog.isBlockScroll(), false)
-                .attr("width", dialog.getWidth(), null)
-                .attr("height", dialog.getHeight(), null)
-                .attr("minWidth", dialog.getMinWidth(), Integer.MIN_VALUE)
-                .attr("minHeight", dialog.getMinHeight(), Integer.MIN_VALUE)
-                .attr("appendTo", SearchExpressionUtils.resolveOptionalClientIdForClientSide(context, dialog, dialog.getAppendTo()))
-                .attr("dynamic", dialog.isDynamic(), false)
-                .attr("showEffect", dialog.getShowEffect(), null)
-                .attr("hideEffect", dialog.getHideEffect(), null)
-                .attr("my", dialog.getMy(), null)
-                .attr("position", dialog.getPosition(), null)
-                .attr("closeOnEscape", dialog.isCloseOnEscape(), false)
-                .attr("fitViewport", dialog.isFitViewport(), false)
-                .attr("responsive", dialog.isResponsive(), true)
-                .attr("cache", dialog.isCache(), true)
-                .callback("onHide", "function()", dialog.getOnHide())
-                .callback("onShow", "function()", dialog.getOnShow());
+        wb.attr("visible", component.isVisible(), false)
+                .attr("draggable", component.isDraggable(), true)
+                .attr("resizable", component.isResizable(), true)
+                .attr("modal", component.isModal(), false)
+                .attr("blockScroll", component.isBlockScroll(), false)
+                .attr("width", component.getWidth(), null)
+                .attr("height", component.getHeight(), null)
+                .attr("minWidth", component.getMinWidth(), Integer.MIN_VALUE)
+                .attr("minHeight", component.getMinHeight(), Integer.MIN_VALUE)
+                .attr("appendTo", SearchExpressionUtils.resolveOptionalClientIdForClientSide(context, component, component.getAppendTo()))
+                .attr("dynamic", component.isDynamic(), false)
+                .attr("showEffect", component.getShowEffect(), null)
+                .attr("hideEffect", component.getHideEffect(), null)
+                .attr("my", component.getMy(), null)
+                .attr("position", component.getPosition(), null)
+                .attr("closeOnEscape", component.isCloseOnEscape(), false)
+                .attr("fitViewport", component.isFitViewport(), false)
+                .attr("responsive", component.isResponsive(), true)
+                .attr("cache", component.isCache(), true)
+                .callback("onHide", "function()", component.getOnHide())
+                .callback("onShow", "function()", component.getOnShow());
 
-        String focusExpressions = SearchExpressionUtils.resolveOptionalClientIdsForClientSide(context, dialog, dialog.getFocus());
+        String focusExpressions = SearchExpressionUtils.resolveOptionalClientIdsForClientSide(context, component, component.getFocus());
         if (focusExpressions != null) {
             wb.attr("focus", focusExpressions);
         }
 
-        encodeClientBehaviors(context, dialog);
+        encodeClientBehaviors(context, component);
 
         wb.finish();
     }
 
-    protected void encodeMarkup(FacesContext context, Dialog dialog) throws IOException {
+    protected void encodeMarkup(FacesContext context, Dialog component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = dialog.getClientId(context);
-        String positionType = dialog.getPositionType();
-        String style = getStyleBuilder(context).add(dialog.getStyle()).add("display", "none").build();
-        String styleClass = dialog.getStyleClass();
+        String clientId = component.getClientId(context);
+        String positionType = component.getPositionType();
+        String style = getStyleBuilder(context).add(component.getStyle()).add("display", "none").build();
+        String styleClass = component.getStyleClass();
         styleClass = styleClass == null ? Dialog.CONTAINER_CLASS : Dialog.CONTAINER_CLASS + " " + styleClass;
 
-        if (ComponentUtils.isRTL(context, dialog)) {
+        if (ComponentUtils.isRTL(context, component)) {
             styleClass += " ui-dialog-rtl";
         }
 
@@ -116,28 +114,28 @@ public class DialogRenderer extends CoreRenderer {
             writer.writeAttribute("style", style, null);
         }
 
-        if (dialog.isShowHeader()) {
-            encodeHeader(context, dialog);
+        if (component.isShowHeader()) {
+            encodeHeader(context, component);
         }
 
-        encodeContent(context, dialog);
+        encodeContent(context, component);
 
-        encodeFooter(context, dialog);
+        encodeFooter(context, component);
 
         writer.endElement("div");
     }
 
-    protected void encodeHeader(FacesContext context, Dialog dialog) throws IOException {
+    protected void encodeHeader(FacesContext context, Dialog component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String header = dialog.getHeader();
-        UIComponent headerFacet = dialog.getFacet("header");
+        String header = component.getHeader();
+        UIComponent headerFacet = component.getFacet("header");
 
         writer.startElement("div", null);
         writer.writeAttribute("class", Dialog.TITLE_BAR_CLASS, null);
 
         //title
         writer.startElement("span", null);
-        writer.writeAttribute("id", dialog.getClientId(context) + "_title", null);
+        writer.writeAttribute("id", component.getClientId(context) + "_title", null);
         writer.writeAttribute("class", Dialog.TITLE_CLASS, null);
 
         if (FacetUtils.shouldRenderFacet(headerFacet)) {
@@ -149,15 +147,15 @@ public class DialogRenderer extends CoreRenderer {
 
         writer.endElement("span");
 
-        if (dialog.isClosable()) {
+        if (component.isClosable()) {
             encodeIcon(context, Dialog.TITLE_BAR_CLOSE_CLASS, Dialog.CLOSE_ICON_CLASS, null);
         }
 
-        if (dialog.isMaximizable()) {
+        if (component.isMaximizable()) {
             encodeIcon(context, Dialog.TITLE_BAR_MAXIMIZE_CLASS, Dialog.MAXIMIZE_ICON_CLASS, null);
         }
 
-        if (dialog.isMinimizable()) {
+        if (component.isMinimizable()) {
             encodeIcon(context, Dialog.TITLE_BAR_MINIMIZE_CLASS, Dialog.MINIMIZE_ICON_CLASS, null);
         }
 
@@ -221,7 +219,7 @@ public class DialogRenderer extends CoreRenderer {
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, Dialog component) throws IOException {
         //Rendering happens on encodeEnd
     }
 

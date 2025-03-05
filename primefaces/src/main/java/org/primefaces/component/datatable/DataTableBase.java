@@ -28,7 +28,6 @@ import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.UIPageableData;
 import org.primefaces.component.api.UITable;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.ELUtils;
 
 import java.util.Collection;
@@ -170,7 +169,7 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
     }
 
     public String getSelectionMode() {
-        return ComponentUtils.eval(getStateHelper(), PropertyKeys.selectionMode, () -> {
+        return (String) getStateHelper().eval(PropertyKeys.selectionMode, () -> {
             // if not set by xhtml, we need to check the type of the value binding
             Class<?> type = ELUtils.getType(getFacesContext(),
                     getValueExpression(PropertyKeys.selection.toString()),

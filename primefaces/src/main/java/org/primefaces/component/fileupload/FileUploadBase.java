@@ -24,7 +24,6 @@
 package org.primefaces.component.fileupload;
 
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.ComponentUtils;
 
 import jakarta.faces.component.UIInput;
 
@@ -437,7 +436,7 @@ public abstract class FileUploadBase extends UIInput implements Widget {
     }
 
     public boolean isDisplayFilename() {
-        return ComponentUtils.eval(getStateHelper(), PropertyKeys.displayFilename, () -> !(getMode().equals("simple") && isAuto()));
+        return (boolean) getStateHelper().eval(PropertyKeys.displayFilename, () -> !(getMode().equals("simple") && isAuto()));
     }
 
     public void setDisplayFilename(boolean displayFilename) {
