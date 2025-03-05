@@ -75,4 +75,8 @@ public class ContextMenuRenderer extends TieredMenuRenderer {
         encodeMenu(context, menu, style, styleClass, HTML.ARIA_ORIENTATION_VERTICAL);
     }
 
+    @Override
+    protected boolean shouldBeRendered(FacesContext context, AbstractMenu abstractMenu) {
+        return true; // GitHub #13465 we should always render the context menu
+    }
 }
