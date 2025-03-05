@@ -122,13 +122,13 @@ public class AutoComplete extends AutoCompleteBase {
 
             if ("itemSelect".equals(eventName)) {
                 Object selectedItemValue = ComponentUtils.getConvertedValue(context, this, params.get(getClientId(context) + "_itemSelect"));
-                SelectEvent selectEvent = new SelectEvent(this, ajaxBehaviorEvent.getBehavior(), selectedItemValue);
+                SelectEvent<?> selectEvent = new SelectEvent<>(this, ajaxBehaviorEvent.getBehavior(), selectedItemValue);
                 selectEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
                 super.queueEvent(selectEvent);
             }
             else if ("itemUnselect".equals(eventName)) {
                 Object unselectedItemValue = ComponentUtils.getConvertedValue(context, this, params.get(getClientId(context) + "_itemUnselect"));
-                UnselectEvent unselectEvent = new UnselectEvent(this, ajaxBehaviorEvent.getBehavior(), unselectedItemValue);
+                UnselectEvent<?> unselectEvent = new UnselectEvent<>(this, ajaxBehaviorEvent.getBehavior(), unselectedItemValue);
                 unselectEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
                 super.queueEvent(unselectEvent);
             }
@@ -156,7 +156,7 @@ public class AutoComplete extends AutoCompleteBase {
         }
 
         String query = ((org.primefaces.event.AutoCompleteEvent) event).getQuery();
-        LazyDataModel lazyModel = getLazyModel();
+        LazyDataModel<?> lazyModel = getLazyModel();
         if (lazyModel != null) {
             String field = getLazyField();
             if (LangUtils.isEmpty(field)) {
@@ -177,7 +177,7 @@ public class AutoComplete extends AutoCompleteBase {
                             .build());
             int maxResults = getMaxResults();
             suggestions = lazyModel.load(0, maxResults, sortBy, searchFilter);
-            List suggestionsList = (List) suggestions;
+            List<?> suggestionsList = (List<?>) suggestions;
             suggestionsCount = lazyModel.calculateRowCount(suggestionsList, searchFilter, 0, maxResults);
         }
         else {
@@ -197,7 +197,7 @@ public class AutoComplete extends AutoCompleteBase {
     }
 
     protected boolean hasMoreSuggestions() {
-        int count = suggestionsCount != null ? suggestionsCount : ((List) getSuggestions()).size();
+        int count = suggestionsCount != null ? suggestionsCount : ((List<?>) getSuggestions()).size();
         return count > getMaxResults();
     }
 

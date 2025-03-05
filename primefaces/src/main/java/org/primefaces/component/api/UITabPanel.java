@@ -182,35 +182,35 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         return _dataModelMap.computeIfAbsent(clientID, k -> createDataModel());
     }
 
-    private DataModel createDataModel() {
+    private DataModel<?> createDataModel() {
         Object value = getValue();
 
         if (value == null) {
             return EMPTY_MODEL;
         }
         else if (value instanceof DataModel) {
-            return (DataModel) value;
+            return (DataModel<?>) value;
         }
         else if (value instanceof List) {
-            return new ListDataModel((List<?>) value);
+            return new ListDataModel<>((List<?>) value);
         }
         else if (OBJECT_ARRAY_CLASS.isAssignableFrom(value.getClass())) {
-            return new ArrayDataModel((Object[]) value);
+            return new ArrayDataModel<>((Object[]) value);
         }
         else if (value instanceof Collection) {
-            return new CollectionDataModel((Collection) value);
+            return new CollectionDataModel<>((Collection<?>) value);
         }
         else if (value instanceof Iterable) {
-            return new IterableDataModel((Iterable<?>) value);
+            return new IterableDataModel<>((Iterable<?>) value);
         }
         else if (value instanceof ResultSet) {
             return new ResultSetDataModel((ResultSet) value);
         }
         else if (value instanceof Map) {
-            return new IterableDataModel(((Map<?, ?>) value).entrySet());
+            return new IterableDataModel<>(((Map<?, ?>) value).entrySet());
         }
         else {
-            return new ScalarDataModel(value);
+            return new ScalarDataModel<>(value);
         }
     }
 

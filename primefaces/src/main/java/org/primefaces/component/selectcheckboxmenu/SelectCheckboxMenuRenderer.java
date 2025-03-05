@@ -41,7 +41,6 @@ import java.util.stream.Stream;
 
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UINamingContainer;
-import jakarta.faces.component.UISelectMany;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.Converter;
@@ -719,8 +718,8 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer<SelectCheckbo
     }
 
     @Override
-    protected String getSubmitParam(FacesContext context, UISelectMany selectMany) {
-        return selectMany.getClientId(context);
+    protected String getSubmitParam(FacesContext context, SelectCheckboxMenu component) {
+        return component.getClientId(context);
     }
 
     protected void encodeKeyboardTarget(FacesContext context, SelectCheckboxMenu component) throws IOException {

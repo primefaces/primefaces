@@ -236,10 +236,10 @@ public class PickList extends PickListBase {
                     int itemIndex = Integer.parseInt(params.get(clientId + "_itemIndex"));
 
                     if ("target".equals(listName)) {
-                        wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), list.getTarget().get(itemIndex));
+                        wrapperEvent = new SelectEvent<>(this, behaviorEvent.getBehavior(), list.getTarget().get(itemIndex));
                     }
                     else {
-                        wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), list.getSource().get(itemIndex));
+                        wrapperEvent = new SelectEvent<>(this, behaviorEvent.getBehavior(), list.getSource().get(itemIndex));
                     }
                 }
                 else if ("unselect".equals(eventName)) {
@@ -247,10 +247,10 @@ public class PickList extends PickListBase {
                     int itemIndex = Integer.parseInt(params.get(clientId + "_itemIndex"));
 
                     if ("target".equals(listName)) {
-                        wrapperEvent = new UnselectEvent(this, behaviorEvent.getBehavior(), list.getTarget().get(itemIndex));
+                        wrapperEvent = new UnselectEvent<>(this, behaviorEvent.getBehavior(), list.getTarget().get(itemIndex));
                     }
                     else {
-                        wrapperEvent = new UnselectEvent(this, behaviorEvent.getBehavior(), list.getSource().get(itemIndex));
+                        wrapperEvent = new UnselectEvent<>(this, behaviorEvent.getBehavior(), list.getSource().get(itemIndex));
                     }
                 }
                 else if ("reorder".equals(eventName)) {

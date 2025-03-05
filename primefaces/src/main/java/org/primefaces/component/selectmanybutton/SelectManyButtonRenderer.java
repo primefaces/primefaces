@@ -32,9 +32,7 @@ import java.io.IOException;
 import java.util.List;
 
 import jakarta.faces.component.UIComponent;
-import jakarta.faces.component.UIInput;
 import jakarta.faces.component.UINamingContainer;
-import jakarta.faces.component.UISelectMany;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.Converter;
@@ -91,16 +89,15 @@ public class SelectManyButtonRenderer extends SelectManyRenderer<SelectManyButto
         }
     }
 
-    protected void encodeOption(FacesContext context, UIInput component, Object values, Object submittedValues, Converter converter,
+    protected void encodeOption(FacesContext context, SelectManyButton component, Object values, Object submittedValues, Converter converter,
                                 SelectItem option, int idx, int size) throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
-        SelectManyButton button = (SelectManyButton) component;
         String itemValueAsString = getOptionAsString(context, component, converter, option.getValue());
-        String name = button.getClientId(context);
+        String name = component.getClientId(context);
         String id = name + UINamingContainer.getSeparatorChar(context) + idx;
-        boolean disabled = option.isDisabled() || button.isDisabled();
-        String tabindex = button.getTabindex();
+        boolean disabled = option.isDisabled() || component.isDisabled();
+        String tabindex = component.getTabindex();
 
         Object valuesArray;
         Object itemValue;
@@ -138,7 +135,7 @@ public class SelectManyButtonRenderer extends SelectManyRenderer<SelectManyButto
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
         writer.writeAttribute(HTML.ARIA_LABEL, option.getLabel(), null);
 
-        renderOnchange(context, button);
+        renderOnchange(context, component);
 
         if (selected) {
             writer.writeAttribute("checked", "checked", null);
@@ -147,7 +144,7 @@ public class SelectManyButtonRenderer extends SelectManyRenderer<SelectManyButto
             writer.writeAttribute("tabindex", tabindex, null);
         }
 
-        renderAccessibilityAttributes(context, button);
+        renderAccessibilityAttributes(context, component);
         writer.endElement("input");
 
         //item label
@@ -172,7 +169,7 @@ public class SelectManyButtonRenderer extends SelectManyRenderer<SelectManyButto
     }
 
     @Override
-    protected String getSubmitParam(FacesContext context, UISelectMany component) {
+    protected String getSubmitParam(FacesContext context, SelectManyButton component) {
         return component.getClientId(context);
     }
 

@@ -27,33 +27,31 @@ import org.primefaces.renderkit.CoreRenderer;
 
 import java.io.IOException;
 
-import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class AvatarGroupRenderer extends CoreRenderer {
+public class AvatarGroupRenderer extends CoreRenderer<AvatarGroup> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        AvatarGroup avatarGroup = (AvatarGroup) component;
+    public void encodeEnd(FacesContext context, AvatarGroup component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = getStyleClassBuilder(context)
                 .add(AvatarGroup.STYLE_CLASS)
-                .add(avatarGroup.getStyleClass())
+                .add(component.getStyleClass())
                 .build();
 
         writer.startElement("div", null);
-        writer.writeAttribute("id", avatarGroup.getClientId(context), "id");
+        writer.writeAttribute("id", component.getClientId(context), "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        if (avatarGroup.getStyle() != null) {
-            writer.writeAttribute("style", avatarGroup.getStyle(), "style");
+        if (component.getStyle() != null) {
+            writer.writeAttribute("style", component.getStyle(), "style");
         }
-        renderChildren(context, avatarGroup);
+        renderChildren(context, component);
         writer.endElement("div");
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, AvatarGroup component) throws IOException {
         //Do nothing
     }
 

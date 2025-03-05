@@ -50,7 +50,7 @@ import jakarta.faces.convert.ConverterException;
 import jakarta.faces.model.SelectItem;
 import jakarta.faces.model.SelectItemGroup;
 
-public abstract class SelectRenderer<T extends UIComponent> extends InputRenderer<T> {
+public abstract class SelectRenderer<T extends UIInput> extends InputRenderer<T> {
 
     protected boolean isHideNoSelection(UIComponent component) {
         Object attribute = component.getAttributes().get("hideNoSelectionOption");
@@ -60,14 +60,14 @@ public abstract class SelectRenderer<T extends UIComponent> extends InputRendere
         return Boolean.TRUE.equals(attribute);
     }
 
-    protected void addSelectItem(UIInput component, List<SelectItem> selectItems, SelectItem item, boolean hideNoSelectOption) {
+    protected void addSelectItem(T component, List<SelectItem> selectItems, SelectItem item, boolean hideNoSelectOption) {
         if (hideNoSelectOption && item.isNoSelectionOption()) {
             return;
         }
         selectItems.add(item);
     }
 
-    protected List<SelectItem> getSelectItems(FacesContext context, UIInput component) {
+    protected List<SelectItem> getSelectItems(FacesContext context, T component) {
         List<SelectItem> selectItems = new ArrayList<>();
         boolean hideNoSelectOption = isHideNoSelection(component);
         SelectItem selectItem;
@@ -108,7 +108,7 @@ public abstract class SelectRenderer<T extends UIComponent> extends InputRendere
                         }
                     }
                     else if (value instanceof Map) {
-                        Map<?, ?> map = (Map) value;
+                        Map<?, ?> map = (Map<?, ?>) value;
 
                         for (Map.Entry<?, ?> entry : map.entrySet()) {
                             selectItem = createSelectItem(context, uiSelectItems, entry.getValue(), String.valueOf(entry.getKey()));
@@ -116,7 +116,7 @@ public abstract class SelectRenderer<T extends UIComponent> extends InputRendere
                         }
                     }
                     else if (value instanceof List && value instanceof RandomAccess) {
-                        List<?> list = (List) value;
+                        List<?> list = (List<?>) value;
 
                         for (int j = 0; j < list.size(); j++) {
                             Object item = list.get(j);
@@ -130,7 +130,7 @@ public abstract class SelectRenderer<T extends UIComponent> extends InputRendere
                         }
                     }
                     else if (value instanceof Collection) {
-                        Collection<?> collection = (Collection) value;
+                        Collection<?> collection = (Collection<?>) value;
 
                         for (Object item : collection) {
                             if (item instanceof SelectItem) {
@@ -224,7 +224,7 @@ public abstract class SelectRenderer<T extends UIComponent> extends InputRendere
         return value;
     }
 
-    protected String getOptionAsString(FacesContext context, UIComponent component, Converter converter, Object value) throws ConverterException {
+    protected String getOptionAsString(FacesContext context, T component, Converter converter, Object value) throws ConverterException {
         if (!(component instanceof ValueHolder)) {
             return value == null ? null : value.toString();
         }
@@ -247,7 +247,7 @@ public abstract class SelectRenderer<T extends UIComponent> extends InputRendere
         }
     }
 
-    protected Converter findImplicitConverter(FacesContext context, UIComponent component) {
+    protected Converter<?> findImplicitConverter(FacesContext context, T component) {
         ValueExpression ve = component.getValueExpression("value");
 
         if (ve != null) {
@@ -379,7 +379,7 @@ public abstract class SelectRenderer<T extends UIComponent> extends InputRendere
      * @return <code>newSubmittedValues</code> merged with checked, disabled <code>oldValues</code>
      * @throws jakarta.faces.FacesException if client side manipulation has been detected, in order to reject the submission
      */
-    protected List<String> validateSubmittedValues(FacesContext context, UIInput component, Object[] oldValues, String... submittedValues)
+    protected List<String> validateSubmittedValues(FacesContext context, T component, Object[] oldValues, String... submittedValues)
             throws FacesException {
         return doValidateSubmittedValues(
                 context,
@@ -391,7 +391,7 @@ public abstract class SelectRenderer<T extends UIComponent> extends InputRendere
 
     private List<String> doValidateSubmittedValues(
             FacesContext context,
-            UIInput component,
+            T component,
             Object[] oldValues,
             List<SelectItem> selectItems,
             String... submittedValues) {

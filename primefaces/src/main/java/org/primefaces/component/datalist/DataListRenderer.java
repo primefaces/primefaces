@@ -159,7 +159,7 @@ public class DataListRenderer extends DataRenderer<DataList> {
      *
      * @param context FacesContext instance
      * @param list    DataList component
-     * @throws IOException
+     * @throws IOException if an input/ output error occurs
      */
     protected void encodeStrictList(FacesContext context, DataList list) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
@@ -211,7 +211,7 @@ public class DataListRenderer extends DataRenderer<DataList> {
      *
      * @param context FacesContext instance
      * @param component    DataList component
-     * @throws IOException
+     * @throws IOException if an input/ output error occurs
      */
     protected void encodeFreeList(FacesContext context, DataList component) throws IOException {
         component.forEachRow((status) -> {

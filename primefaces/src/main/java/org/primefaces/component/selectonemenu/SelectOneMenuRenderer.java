@@ -40,7 +40,6 @@ import java.util.Objects;
 
 import jakarta.el.ValueExpression;
 import jakarta.faces.component.UIComponent;
-import jakarta.faces.component.UISelectOne;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.Converter;
@@ -645,7 +644,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer<SelectOneMenu> {
     }
 
     @Override
-    protected String getSubmitParam(FacesContext context, UISelectOne component) {
+    protected String getSubmitParam(FacesContext context, SelectOneMenu component) {
         return component.getClientId(context) + "_input";
     }
 

@@ -107,7 +107,7 @@ public class Calendar extends CalendarBase {
 
         if (isValid() && ComponentUtils.isRequestSource(this, context) && customEvents != null) {
             for (Map.Entry<String, AjaxBehaviorEvent> event : customEvents.entrySet()) {
-                SelectEvent selectEvent = new SelectEvent(this, event.getValue().getBehavior(), getValue());
+                SelectEvent<?> selectEvent = new SelectEvent<>(this, event.getValue().getBehavior(), getValue());
 
                 if (event.getValue().getPhaseId().equals(PhaseId.APPLY_REQUEST_VALUES)) {
                     selectEvent.setPhaseId(PhaseId.PROCESS_VALIDATIONS);

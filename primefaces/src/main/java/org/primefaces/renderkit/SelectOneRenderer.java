@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UISelectOne;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.convert.Converter;
@@ -55,8 +54,8 @@ public abstract class SelectOneRenderer<T extends UISelectOne> extends SelectRen
         decodeBehaviors(context, component);
     }
 
-    protected Object getValues(UISelectOne selectOne) {
-        Object value = selectOne.getValue();
+    protected Object getValues(T component) {
+        Object value = component.getValue();
 
         if (value != null) {
             return new Object[]{value};
@@ -65,10 +64,8 @@ public abstract class SelectOneRenderer<T extends UISelectOne> extends SelectRen
         return null;
     }
 
-    protected Object getSubmittedValues(UIComponent component) {
-        UISelectOne select = (UISelectOne) component;
-
-        Object val = select.getSubmittedValue();
+    protected Object getSubmittedValues(T component) {
+        Object val = component.getSubmittedValue();
         if (val != null) {
             return new Object[]{val};
         }
@@ -85,7 +82,7 @@ public abstract class SelectOneRenderer<T extends UISelectOne> extends SelectRen
      * @param valueOrLabel the input value/label to search for
      * @return either the SelectItem found or NULL if not found
      */
-    protected SelectItem findSelectItemByLabel(FacesContext fc, UIComponent component, Converter converter, List<SelectItem> selectItems,
+    protected SelectItem findSelectItemByLabel(FacesContext fc, T component, Converter converter, List<SelectItem> selectItems,
                 String valueOrLabel) {
         return findSelectItem(fc, component, converter, selectItems, valueOrLabel, false);
     }
@@ -99,7 +96,7 @@ public abstract class SelectOneRenderer<T extends UISelectOne> extends SelectRen
      * @param valueOrLabel the input value/label to search for
      * @return either the SelectItem found or NULL if not found
      */
-    protected SelectItem findSelectItemByValue(FacesContext fc, UIComponent component, Converter converter, List<SelectItem> selectItems,
+    protected SelectItem findSelectItemByValue(FacesContext fc, T component, Converter converter, List<SelectItem> selectItems,
                 String valueOrLabel) {
         return findSelectItem(fc, component, converter, selectItems, valueOrLabel, true);
     }
@@ -114,7 +111,7 @@ public abstract class SelectOneRenderer<T extends UISelectOne> extends SelectRen
      * @param byValue true if searching by value false if by label
      * @return either the SelectItem found or NULL if not found
      */
-    private SelectItem findSelectItem(FacesContext fc, UIComponent component, Converter converter, List<SelectItem> selectItems,
+    private SelectItem findSelectItem(FacesContext fc, T component, Converter converter, List<SelectItem> selectItems,
                 String valueOrLabel, boolean byValue) {
 
         for (int i = 0; i < selectItems.size(); i++) {
@@ -146,5 +143,5 @@ public abstract class SelectOneRenderer<T extends UISelectOne> extends SelectRen
         return null;
     }
 
-    protected abstract String getSubmitParam(FacesContext context, UISelectOne selectOne);
+    protected abstract String getSubmitParam(FacesContext context, T component);
 }

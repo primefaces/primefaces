@@ -57,6 +57,6 @@ public interface DialogReturnAware {
         Object selectedValue = session.get(dcid);
         session.remove(dcid);
 
-        queueEvent.accept(new SelectEvent(source, behaviorEvent.getBehavior(), selectedValue));
+        queueEvent.accept(new SelectEvent<>(source, behaviorEvent.getBehavior(), selectedValue));
     }
 }

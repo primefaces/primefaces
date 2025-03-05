@@ -722,7 +722,7 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
         ResponseWriter writer = context.getResponseWriter();
         UIComponent comp = (UIComponent) component;
 
-        Converter converter;
+        Converter<?> converter;
 
         try {
             converter = ComponentUtils.getConverter(context, comp);
@@ -785,9 +785,9 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
         }
 
         //validators
-        Validator[] validators = component.getValidators();
+        Validator<?>[] validators = component.getValidators();
         if (validators != null) {
-            for (Validator validator : validators) {
+            for (Validator<?> validator : validators) {
                 if (validator instanceof ClientValidator) {
                     ClientValidator clientValidator = (ClientValidator) validator;
                     if (validatorIds == null) {
@@ -802,7 +802,7 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
                 }
             }
         }
-        if (clientValidators != null && clientValidators.length > 0) {
+        if (clientValidators != null) {
             for (ClientValidator clientValidator : clientValidators) {
                 if (validatorIds == null) {
                     validatorIds = new ArrayList<>(5);
@@ -878,7 +878,7 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
      * @param context the {@link FacesContext}.
      * @param component the widget without actual HTML markup.
      * @param clientId the component clientId.
-     * @throws IOException
+     * @throws IOException if an input/ output error occurs.
      */
     protected void renderDummyMarkup(FacesContext context, UIComponent component, String clientId) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
@@ -899,7 +899,7 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
      * @param context the {@link FacesContext}.
      * @param component the {@link UIComponent} to render.
      * @param index the index number to append to the ID
-     * @throws IOException if any IO error occurs
+     * @throws IOException if an input/ output error occurs.
      */
     protected void encodeIndexedId(FacesContext context, UIComponent component, int index) throws IOException {
         ComponentUtils.encodeIndexedId(context, component, index);

@@ -155,16 +155,16 @@ public class OutcomeTargetRenderer<T extends UIComponent> extends CoreRenderer<T
         String url;
 
         boolean clientWindowRenderingModeEnabled = false;
-        Object clientWindow = null;
+        ClientWindow clientWindow = null;
         try {
             if (outcomeTarget.isDisableClientWindow()) {
                 clientWindow = context.getExternalContext().getClientWindow();
 
                 if (clientWindow != null) {
-                    clientWindowRenderingModeEnabled = ((ClientWindow) clientWindow).isClientWindowRenderModeEnabled(context);
+                    clientWindowRenderingModeEnabled = clientWindow.isClientWindowRenderModeEnabled(context);
 
                     if (clientWindowRenderingModeEnabled) {
-                        ((ClientWindow) clientWindow).disableClientWindowRenderMode(context);
+                        clientWindow.disableClientWindowRenderMode(context);
                     }
                 }
             }
@@ -197,7 +197,7 @@ public class OutcomeTargetRenderer<T extends UIComponent> extends CoreRenderer<T
         }
         finally {
             if (clientWindowRenderingModeEnabled) {
-                ((ClientWindow) clientWindow).enableClientWindowRenderMode(context);
+                clientWindow.enableClientWindowRenderMode(context);
             }
         }
 

@@ -96,9 +96,9 @@ public class Tree extends TreeBase {
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
     private Map<String, UITreeNode> nodes;
-    private TreeNode dragNode;
-    private TreeNode[] dragNodes;
-    private TreeNode dropNode;
+    private TreeNode<?> dragNode;
+    private TreeNode<?>[] dragNodes;
+    private TreeNode<?> dropNode;
     private boolean retValOnDrop = true;
     private List<String> filteredRowKeys = new ArrayList<>();
 
@@ -163,18 +163,18 @@ public class Tree extends TreeBase {
             String clientId = getClientId(context);
             FacesEvent wrapperEvent = null;
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
-            TreeNode root = getValue();
+            TreeNode<?> root = getValue();
 
             if ("expand".equals(eventName)) {
                 setRowKey(root, params.get(clientId + "_expandNode"));
-                TreeNode expandedNode = getRowNode();
+                TreeNode<?> expandedNode = getRowNode();
                 expandedNode.setExpanded(true);
 
                 wrapperEvent = new NodeExpandEvent(this, behaviorEvent.getBehavior(), expandedNode);
             }
             else if ("collapse".equals(eventName)) {
                 setRowKey(root, params.get(clientId + "_collapseNode"));
-                TreeNode collapsedNode = getRowNode();
+                TreeNode<?> collapsedNode = getRowNode();
                 collapsedNode.setExpanded(false);
 
                 wrapperEvent = new NodeCollapseEvent(this, behaviorEvent.getBehavior(), collapsedNode);
@@ -279,39 +279,39 @@ public class Tree extends TreeBase {
         }
     }
 
-    TreeNode getDragNode() {
+    TreeNode<?> getDragNode() {
         return dragNode;
     }
 
-    void setDragNode(TreeNode dragNode) {
+    void setDragNode(TreeNode<?> dragNode) {
         this.dragNode = dragNode;
     }
 
-    TreeNode[] getDragNodes() {
+    TreeNode<?>[] getDragNodes() {
         return dragNodes;
     }
 
-    void setDragNodes(TreeNode[] dragNodes) {
+    void setDragNodes(TreeNode<?>[] dragNodes) {
         this.dragNodes = dragNodes;
     }
 
-    TreeNode getDropNode() {
+    TreeNode<?> getDropNode() {
         return dropNode;
     }
 
-    void setDropNode(TreeNode dropNode) {
+    void setDropNode(TreeNode<?> dropNode) {
         this.dropNode = dropNode;
     }
 
     @Override
-    protected boolean shouldVisitNode(TreeNode node) {
+    protected boolean shouldVisitNode(TreeNode<?> node) {
         return !isDynamic() || (node.isExpanded() || node.getParent() == null);
     }
 
     @Override
-    protected void processColumnChildren(FacesContext context, PhaseId phaseId, TreeNode root, String nodeKey) {
+    protected void processColumnChildren(FacesContext context, PhaseId phaseId, TreeNode<?> root, String nodeKey) {
         setRowKey(root, nodeKey);
-        TreeNode treeNode = getRowNode();
+        TreeNode<?> treeNode = getRowNode();
 
         if (treeNode == null) {
             return;
@@ -349,13 +349,13 @@ public class Tree extends TreeBase {
         }
     }
 
-    public TreeNode createCopyOfTreeNode(TreeNode<?> node) {
+    public TreeNode<?> createCopyOfTreeNode(TreeNode<?> node) {
         TreeNode newNode;
         if (node instanceof CheckboxTreeNode) {
-            newNode = new CheckboxTreeNode(node.getData());
+            newNode = new CheckboxTreeNode<>(node.getData());
         }
         else {
-            newNode = new DefaultTreeNode(node.getData());
+            newNode = new DefaultTreeNode<>(node.getData());
         }
 
         newNode.setType(node.getType());

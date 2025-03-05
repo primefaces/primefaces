@@ -40,11 +40,6 @@ public class AutoUpdatePhaseListener implements PhaseListener {
     private static final long serialVersionUID = 1L;
 
     @Override
-    public void afterPhase(PhaseEvent phaseEvent) {
-
-    }
-
-    @Override
     public void beforePhase(PhaseEvent phaseEvent) {
         FacesContext context = phaseEvent.getFacesContext();
         if (!context.isPostback() || PrimeRequestContext.getCurrentInstance(context).isIgnoreAutoUpdate()) {
