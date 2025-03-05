@@ -36,31 +36,28 @@ import java.util.Map;
 import java.util.Objects;
 
 import jakarta.faces.application.FacesMessage;
-import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class MessagesRenderer extends UINotificationRenderer {
+public class MessagesRenderer extends UINotificationRenderer<Messages> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Messages uiMessages = (Messages) component;
-
-        encodeMarkup(context, uiMessages);
-        encodeScript(context, uiMessages);
+    public void encodeEnd(FacesContext context, Messages component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    protected void encodeMarkup(FacesContext context, Messages uiMessages) throws IOException {
+    protected void encodeMarkup(FacesContext context, Messages component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = uiMessages.getClientId(context);
-        boolean globalOnly = uiMessages.isGlobalOnly();
-        String containerClass = uiMessages.isShowIcon() ? Messages.CONTAINER_CLASS : Messages.ICONLESS_CONTAINER_CLASS;
-        String style = uiMessages.getStyle();
-        String styleClass = uiMessages.getStyleClass();
+        String clientId = component.getClientId(context);
+        boolean globalOnly = component.isGlobalOnly();
+        String containerClass = component.isShowIcon() ? Messages.CONTAINER_CLASS : Messages.ICONLESS_CONTAINER_CLASS;
+        String style = component.getStyle();
+        String styleClass = component.getStyleClass();
         styleClass = (styleClass == null) ? containerClass : containerClass + " " + styleClass;
 
         Map<String, List<FacesMessage>> messagesBySeverity = null;
-        List<FacesMessage> messages = collectFacesMessages(uiMessages, context);
+        List<FacesMessage> messages = collectFacesMessages(component, context);
         if (messages != null && !messages.isEmpty()) {
             messagesBySeverity = new HashMap<>(4);
 
@@ -69,21 +66,21 @@ public class MessagesRenderer extends UINotificationRenderer {
                 FacesMessage.Severity severity = message.getSeverity();
 
                 if (severity.equals(FacesMessage.SEVERITY_INFO)) {
-                    addMessage(uiMessages, message, messagesBySeverity, "info");
+                    addMessage(component, message, messagesBySeverity, "info");
                 }
                 else if (severity.equals(FacesMessage.SEVERITY_WARN)) {
-                    addMessage(uiMessages, message, messagesBySeverity, "warn");
+                    addMessage(component, message, messagesBySeverity, "warn");
                 }
                 else if (severity.equals(FacesMessage.SEVERITY_ERROR)) {
-                    addMessage(uiMessages, message, messagesBySeverity, "error");
+                    addMessage(component, message, messagesBySeverity, "error");
                 }
                 else if (severity.equals(FacesMessage.SEVERITY_FATAL)) {
-                    addMessage(uiMessages, message, messagesBySeverity, "fatal");
+                    addMessage(component, message, messagesBySeverity, "fatal");
                 }
             }
         }
 
-        writer.startElement("div", uiMessages);
+        writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, null);
 
@@ -95,47 +92,47 @@ public class MessagesRenderer extends UINotificationRenderer {
 
         if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             writer.writeAttribute("data-global", String.valueOf(globalOnly), null);
-            writer.writeAttribute("data-summary", uiMessages.isShowSummary(), null);
-            writer.writeAttribute("data-detail", uiMessages.isShowDetail(), null);
-            writer.writeAttribute("data-severity", getClientSideSeverity(uiMessages.getSeverity()), null);
-            writer.writeAttribute("data-redisplay", String.valueOf(uiMessages.isRedisplay()), null);
+            writer.writeAttribute("data-summary", component.isShowSummary(), null);
+            writer.writeAttribute("data-detail", component.isShowDetail(), null);
+            writer.writeAttribute("data-severity", getClientSideSeverity(component.getSeverity()), null);
+            writer.writeAttribute("data-redisplay", String.valueOf(component.isRedisplay()), null);
         }
 
         if (messagesBySeverity != null) {
             for (Map.Entry<String, List<FacesMessage>> entry : messagesBySeverity.entrySet()) {
-                encodeMessages(context, uiMessages, entry.getKey(), entry.getValue());
+                encodeMessages(context, component, entry.getKey(), entry.getValue());
             }
         }
 
         writer.endElement("div");
     }
 
-    protected void encodeScript(FacesContext context, Messages uiMessages) throws IOException {
+    protected void encodeScript(FacesContext context, Messages component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Messages", uiMessages)
+        wb.init("Messages", component)
                 .finish();
     }
 
-    protected void addMessage(Messages uiMessages, FacesMessage message, Map<String, List<FacesMessage>> messagesBySeverity, String severity) {
-        if (shouldRender(uiMessages, message, severity)) {
+    protected void addMessage(Messages component, FacesMessage message, Map<String, List<FacesMessage>> messagesBySeverity, String severity) {
+        if (shouldRender(component, message, severity)) {
             List<FacesMessage> severityMessages = messagesBySeverity.computeIfAbsent(severity, k -> new ArrayList<>());
             severityMessages.add(message);
         }
     }
 
-    protected void encodeMessages(FacesContext context, Messages uiMessages, String severity, List<FacesMessage> messages) throws IOException {
+    protected void encodeMessages(FacesContext context, Messages component, String severity, List<FacesMessage> messages) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String styleClassPrefix = Messages.SEVERITY_PREFIX_CLASS + severity;
-        boolean escape = uiMessages.isEscape();
+        boolean escape = component.isEscape();
 
         writer.startElement("div", null);
         writer.writeAttribute("class", styleClassPrefix, null);
 
-        if (uiMessages.isClosable()) {
-            encodeCloseIcon(context, uiMessages);
+        if (component.isClosable()) {
+            encodeCloseIcon(context, component);
         }
 
-        if (uiMessages.isShowIcon()) {
+        if (component.isShowIcon()) {
             writer.startElement("span", null);
             writer.writeAttribute("class", styleClassPrefix + "-icon", null);
             writer.endElement("span");
@@ -145,7 +142,7 @@ public class MessagesRenderer extends UINotificationRenderer {
 
         for (int i = 0; i < messages.size(); i++) {
             FacesMessage message = messages.get(i);
-            encodeMessage(writer, uiMessages, message, styleClassPrefix, escape);
+            encodeMessage(writer, component, message, styleClassPrefix, escape);
             message.rendered();
         }
 
@@ -154,7 +151,7 @@ public class MessagesRenderer extends UINotificationRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeMessage(ResponseWriter writer, Messages uiMessages, FacesMessage message, String styleClassPrefix, boolean escape)
+    protected void encodeMessage(ResponseWriter writer, Messages component, FacesMessage message, String styleClassPrefix, boolean escape)
             throws IOException {
 
         writer.startElement("li", null);
@@ -164,11 +161,11 @@ public class MessagesRenderer extends UINotificationRenderer {
 
         String summary = message.getSummary() != null ? message.getSummary() : "";
         String detail = message.getDetail() != null ? message.getDetail() : summary;
-        if (uiMessages.isSkipDetailIfEqualsSummary() && Objects.equals(summary, detail)) {
+        if (component.isSkipDetailIfEqualsSummary() && Objects.equals(summary, detail)) {
             detail = "";
         }
 
-        if (uiMessages.isShowSummary()) {
+        if (component.isShowSummary()) {
             writer.startElement("span", null);
             writer.writeAttribute("class", styleClassPrefix + "-summary", null);
 
@@ -182,7 +179,7 @@ public class MessagesRenderer extends UINotificationRenderer {
             writer.endElement("span");
         }
 
-        if (uiMessages.isShowDetail()) {
+        if (component.isShowDetail()) {
             writer.startElement("span", null);
             writer.writeAttribute("class", styleClassPrefix + "-detail", null);
 
@@ -199,7 +196,7 @@ public class MessagesRenderer extends UINotificationRenderer {
         writer.endElement("li");
     }
 
-    protected void encodeCloseIcon(FacesContext context, Messages uiMessages) throws IOException {
+    protected void encodeCloseIcon(FacesContext context, Messages component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("a", null);

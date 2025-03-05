@@ -33,25 +33,23 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class ChronolineRenderer extends CoreRenderer {
+public class ChronolineRenderer extends CoreRenderer<Chronoline> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Chronoline chronoline = (Chronoline) component;
-
+    public void encodeEnd(FacesContext context, Chronoline component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = chronoline.getClientId();
-        String style = chronoline.getStyle();
+        String clientId = component.getClientId();
+        String style = component.getStyle();
         String styleClass = getStyleClassBuilder(context)
                 .add(Chronoline.STYLE_CLASS)
-                .add(chronoline.getStyleClass())
-                .add("left".equals(chronoline.getAlign()), Chronoline.ALIGN_LEFT_CLASS)
-                .add("right".equals(chronoline.getAlign()), Chronoline.ALIGN_RIGHT_CLASS)
-                .add("top".equals(chronoline.getAlign()), Chronoline.ALIGN_TOP_CLASS)
-                .add("bottom".equals(chronoline.getAlign()), Chronoline.ALIGN_BOTTOM_CLASS)
-                .add("alternate".equals(chronoline.getAlign()), Chronoline.ALIGN_ALTERNATE_CLASS)
-                .add("horizontal".equals(chronoline.getLayout()), Chronoline.LAYOUT_HORIZONTAL_CLASS)
-                .add("vertical".equals(chronoline.getLayout()), Chronoline.LAYOUT_VERTICAL_CLASS)
+                .add(component.getStyleClass())
+                .add("left".equals(component.getAlign()), Chronoline.ALIGN_LEFT_CLASS)
+                .add("right".equals(component.getAlign()), Chronoline.ALIGN_RIGHT_CLASS)
+                .add("top".equals(component.getAlign()), Chronoline.ALIGN_TOP_CLASS)
+                .add("bottom".equals(component.getAlign()), Chronoline.ALIGN_BOTTOM_CLASS)
+                .add("alternate".equals(component.getAlign()), Chronoline.ALIGN_ALTERNATE_CLASS)
+                .add("horizontal".equals(component.getLayout()), Chronoline.LAYOUT_HORIZONTAL_CLASS)
+                .add("vertical".equals(component.getLayout()), Chronoline.LAYOUT_VERTICAL_CLASS)
                 .build();
 
         writer.startElement("div", null);
@@ -61,37 +59,37 @@ public class ChronolineRenderer extends CoreRenderer {
             writer.writeAttribute("style", style, null);
         }
 
-        encodeEvents(context, chronoline);
+        encodeEvents(context, component);
 
         writer.endElement("div");
     }
 
-    protected void encodeEvents(FacesContext context, Chronoline chronoline) throws IOException {
+    protected void encodeEvents(FacesContext context, Chronoline component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        Collection<?> value = (Collection<?>) chronoline.getValue();
+        Collection<?> value = (Collection<?>) component.getValue();
 
         if (value != null) {
-            int rowCount = chronoline.getRowCount();
+            int rowCount = component.getRowCount();
             for (int i = 0; i < rowCount; i++) {
-                chronoline.setRowIndex(i);
+                component.setRowIndex(i);
 
                 writer.startElement("div", null);
                 writer.writeAttribute("class", Chronoline.EVENT_CLASS, null);
 
-                encodeOppositeContent(context, chronoline);
-                encodeSeparator(context, chronoline, i == rowCount - 1);
-                encodeContent(context, chronoline);
+                encodeOppositeContent(context, component);
+                encodeSeparator(context, component, i == rowCount - 1);
+                encodeContent(context, component);
 
                 writer.endElement("div");
             }
 
-            chronoline.setRowIndex(-1);
+            component.setRowIndex(-1);
         }
     }
 
-    protected void encodeOppositeContent(FacesContext context, Chronoline chronoline) throws IOException {
+    protected void encodeOppositeContent(FacesContext context, Chronoline component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        UIComponent oppositeFacet = chronoline.getFacet("opposite");
+        UIComponent oppositeFacet = component.getFacet("opposite");
 
         writer.startElement("div", null);
         writer.writeAttribute("class", Chronoline.EVENT_OPPOSITE_CLASS, null);
@@ -106,9 +104,9 @@ public class ChronolineRenderer extends CoreRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeSeparator(FacesContext context, Chronoline chronoline, boolean isLastItem) throws IOException {
+    protected void encodeSeparator(FacesContext context, Chronoline component, boolean isLastItem) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        UIComponent markerFacet = chronoline.getFacet("marker");
+        UIComponent markerFacet = component.getFacet("marker");
 
         writer.startElement("div", null);
         writer.writeAttribute("class", Chronoline.EVENT_SEPARATOR_CLASS, null);
@@ -131,17 +129,17 @@ public class ChronolineRenderer extends CoreRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeContent(FacesContext context, Chronoline chronoline) throws IOException {
+    protected void encodeContent(FacesContext context, Chronoline component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", null);
         writer.writeAttribute("class", Chronoline.EVENT_CONTENT_CLASS, null);
-        renderChildren(context, chronoline);
+        renderChildren(context, component);
         writer.endElement("div");
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, Chronoline component) throws IOException {
         //Do nothing
     }
 

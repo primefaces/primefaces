@@ -50,7 +50,7 @@ import jakarta.faces.convert.ConverterException;
 import jakarta.faces.model.SelectItem;
 import jakarta.faces.model.SelectItemGroup;
 
-public abstract class SelectRenderer extends InputRenderer {
+public abstract class SelectRenderer<T extends UIComponent> extends InputRenderer<T> {
 
     protected boolean isHideNoSelection(UIComponent component) {
         Object attribute = component.getAttributes().get("hideNoSelectionOption");

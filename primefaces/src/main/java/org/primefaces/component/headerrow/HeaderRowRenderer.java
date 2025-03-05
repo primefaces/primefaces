@@ -37,14 +37,13 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class HeaderRowRenderer extends CoreRenderer {
+public class HeaderRowRenderer extends CoreRenderer<HeaderRow> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        HeaderRow row = (HeaderRow) component;
+    public void encodeEnd(FacesContext context, HeaderRow component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        boolean expandable = row.isExpandable();
-        boolean expanded = row.isExpanded();
+        boolean expandable = component.isExpandable();
+        boolean expanded = component.isExpanded();
 
         // GitHub #7296 prevent issue with PanelGrid rendering
         Object helperRenderer = context.getAttributes().remove(Constants.HELPER_RENDERER);
@@ -52,10 +51,10 @@ public class HeaderRowRenderer extends CoreRenderer {
         writer.startElement("tr", null);
         writer.writeAttribute("class", DataTable.HEADER_ROW_CLASS, null);
 
-        if (row.getChildCount() > 0) {
+        if (component.getChildCount() > 0) {
             boolean firstColumn = true;
-            for (int i = 0; i < row.getChildCount(); i++) {
-                UIComponent child = row.getChildren().get(i);
+            for (int i = 0; i < component.getChildCount(); i++) {
+                UIComponent child = component.getChildren().get(i);
                 if (child.isRendered() && child instanceof Column) {
                     Column column = (Column) child;
                     encodeHeaderRowWithColumn(context, column, expandable, expanded, firstColumn);
@@ -65,7 +64,7 @@ public class HeaderRowRenderer extends CoreRenderer {
         }
         else {
             DataTable table = (DataTable) component.getParent();
-            encodeHeaderRowWithoutColumn(context, row, table, expandable, expanded);
+            encodeHeaderRowWithoutColumn(context, component, table, expandable, expanded);
         }
 
         writer.endElement("tr");
@@ -151,7 +150,7 @@ public class HeaderRowRenderer extends CoreRenderer {
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, HeaderRow component) throws IOException {
         //Rendering happens on encodeEnd
     }
 

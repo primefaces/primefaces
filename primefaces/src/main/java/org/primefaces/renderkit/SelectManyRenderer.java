@@ -32,28 +32,26 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UISelectMany;
 import jakarta.faces.context.FacesContext;
 
-public abstract class SelectManyRenderer extends SelectRenderer {
+public abstract class SelectManyRenderer<T extends UISelectMany> extends SelectRenderer<T> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
-        UISelectMany selectMany = (UISelectMany) component;
-        if (!shouldDecode(selectMany)) {
+    public void decode(FacesContext context, UISelectMany component) {
+        if (!shouldDecode(component)) {
             return;
         }
 
-        String submitParam = getSubmitParam(context, selectMany);
+        String submitParam = getSubmitParam(context, component);
         Map<String, String[]> params = context.getExternalContext().getRequestParameterValuesMap();
 
         String[] submittedValues = params.containsKey(submitParam) ? params.get(submitParam) : new String[0];
-        List<String> validSubmittedValues = validateSubmittedValues(context, selectMany, (Object[]) getValues(selectMany), submittedValues);
-        selectMany.setSubmittedValue(validSubmittedValues.toArray(new String[validSubmittedValues.size()]));
+        List<String> validSubmittedValues = validateSubmittedValues(context, component, (Object[]) getValues(component), submittedValues);
+        component.setSubmittedValue(validSubmittedValues.toArray(new String[validSubmittedValues.size()]));
 
-        decodeBehaviors(context, selectMany);
+        decodeBehaviors(context, component);
     }
 
-    protected Object getValues(UIComponent component) {
-        UISelectMany selectMany = (UISelectMany) component;
-        Object value = selectMany.getValue();
+    protected Object getValues(UISelectMany component) {
+        Object value = component.getValue();
 
         if (value != null) {
             if (value instanceof Collection) {

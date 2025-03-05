@@ -32,21 +32,19 @@ import java.io.IOException;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 
-public class DefaultCommandRenderer extends CoreRenderer {
+public class DefaultCommandRenderer extends CoreRenderer<DefaultCommand> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        DefaultCommand command = (DefaultCommand) component;
-
-        UIComponent target = SearchExpressionUtils.contextlessResolveComponent(context, command, command.getTarget());
+    public void encodeEnd(FacesContext context, DefaultCommand component) throws IOException {
+        UIComponent target = SearchExpressionUtils.contextlessResolveComponent(context, component, component.getTarget());
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("DefaultCommand", command)
+        wb.init("DefaultCommand", component)
                 .attr("target", target.getClientId(context));
 
-        String scope = command.getScope();
+        String scope = component.getScope();
         if (scope != null) {
-            UIComponent scopeComponent = SearchExpressionUtils.contextlessResolveComponent(context, command, scope);
+            UIComponent scopeComponent = SearchExpressionUtils.contextlessResolveComponent(context, component, scope);
             wb.attr("scope", scopeComponent.getClientId(context));
         }
 

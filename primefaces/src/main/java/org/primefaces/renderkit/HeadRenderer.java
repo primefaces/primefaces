@@ -70,7 +70,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * - Head Content
  * - Last Facet
  */
-public class HeadRenderer extends Renderer {
+public class HeadRenderer extends Renderer<UIComponent> {
 
     private static final Logger LOGGER = Logger.getLogger(HeadRenderer.class.getName());
     private static final String LIBRARY = "primefaces";

@@ -23,7 +23,6 @@
  */
 package org.primefaces.component.datepicker;
 
-import org.primefaces.component.api.UICalendar;
 import org.primefaces.util.CalendarUtils;
 
 import java.time.LocalDate;
@@ -77,23 +76,23 @@ class DatePickerTest {
     class MyDatePickerRenderer extends DatePickerRenderer {
 
         @Override
-        public Class<?> resolveDateType(FacesContext context, UICalendar calendar) {
-            return super.resolveDateType(context, calendar);
+        public Class<?> resolveDateType(FacesContext context, DatePicker component) {
+            return super.resolveDateType(context, component);
         }
 
         @Override
-        public Temporal convertToJava8DateTimeAPI(FacesContext context, UICalendar calendar, Class<?> type, String submittedValue) {
+        public Temporal convertToJava8DateTimeAPI(FacesContext context, DatePicker calendar, Class<?> type, String submittedValue) {
             return super.convertToJava8DateTimeAPI(context, calendar, type, submittedValue);
         }
 
         @Override
-        public Date convertToLegacyDateAPI(FacesContext context, UICalendar calendar, String submittedValue) {
-            return super.convertToLegacyDateAPI(context, calendar, submittedValue);
+        public Date convertToLegacyDateAPI(FacesContext context, DatePicker component, String submittedValue) {
+            return super.convertToLegacyDateAPI(context, component, submittedValue);
         }
 
         @Override
-        public ConverterException createConverterException(FacesContext context, UICalendar calendar, String submittedValue, Object param1) {
-            return super.createConverterException(context, calendar, submittedValue, param1);
+        public ConverterException createConverterException(FacesContext context, DatePicker component, String submittedValue, Object param1) {
+            return super.createConverterException(context, component, submittedValue, param1);
         }
     }
 

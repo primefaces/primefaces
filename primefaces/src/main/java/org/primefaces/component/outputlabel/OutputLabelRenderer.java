@@ -54,31 +54,30 @@ import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.metadata.ConstraintDescriptor;
 
-public class OutputLabelRenderer extends CoreRenderer {
+public class OutputLabelRenderer extends CoreRenderer<OutputLabel> {
 
     private static final Logger LOGGER = Logger.getLogger(OutputLabelRenderer.class.getName());
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+    public void encodeEnd(FacesContext context, OutputLabel component) throws IOException {
         final ResponseWriter writer = context.getResponseWriter();
-        final OutputLabel label = (OutputLabel) component;
-        final String clientId = label.getClientId(context);
-        final String value = ComponentUtils.getValueToRender(context, label);
+        final String clientId = component.getClientId(context);
+        final String value = ComponentUtils.getValueToRender(context, component);
 
         final StyleClassBuilder styleClassBuilder = getStyleClassBuilder(context)
                 .add(OutputLabel.STYLE_CLASS)
-                .add(ComponentUtils.isRTL(context, label), OutputLabel.RTL_CLASS)
-                .add(label.getStyleClass());
+                .add(ComponentUtils.isRTL(context, component), OutputLabel.RTL_CLASS)
+                .add(component.getStyleClass());
 
         EditableValueHolderState forState = null;
 
-        final String indicateRequired = label.getIndicateRequired();
+        final String indicateRequired = component.getIndicateRequired();
         boolean isAuto = "auto".equals(indicateRequired) || "autoSkipDisabled".equals(indicateRequired);
 
-        String _for = label.getFor();
+        String _for = component.getFor();
         if (!isValueBlank(_for)) {
-            UIComponent forComponent = SearchExpressionUtils.contextlessResolveComponent(context, label, _for);
-            ContextCallbackFor callback = new ContextCallbackFor(clientId, indicateRequired, isAuto, label, styleClassBuilder, value);
+            UIComponent forComponent = SearchExpressionUtils.contextlessResolveComponent(context, component, _for);
+            ContextCallbackFor callback = new ContextCallbackFor(clientId, indicateRequired, isAuto, component, styleClassBuilder, value);
             forState = callback.getState();
 
             if (CompositeUtils.isComposite(forComponent)) {
@@ -95,12 +94,12 @@ public class OutputLabelRenderer extends CoreRenderer {
             styleClassBuilder.add("ui-required");
         }
 
-        writer.startElement("label", label);
+        writer.startElement("label", component);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClassBuilder.build(), "styleClass");
-        renderPassThruAttributes(context, label, HTML.LABEL_ATTRS);
-        renderDomEvents(context, label, HTML.LABEL_EVENTS);
-        renderRTLDirection(context, label);
+        renderPassThruAttributes(context, component, HTML.LABEL_ATTRS);
+        renderDomEvents(context, component, HTML.LABEL_EVENTS);
+        renderRTLDirection(context, component);
 
         if (!isValueBlank(_for) && forState != null) {
             writer.writeAttribute("for", forState.getClientId(), "for");
@@ -109,7 +108,7 @@ public class OutputLabelRenderer extends CoreRenderer {
         if (value != null) {
             writer.startElement("span", null);
             writer.writeAttribute("class", "ui-outputlabel-label", null);
-            if (label.isEscape()) {
+            if (component.isEscape()) {
                 writer.writeText(value, "value");
             }
             else {
@@ -118,17 +117,17 @@ public class OutputLabelRenderer extends CoreRenderer {
             writer.endElement("span");
         }
 
-        renderChildren(context, label);
+        renderChildren(context, component);
 
         if (withRequiredIndicator) {
-            encodeRequiredIndicator(writer, label);
+            encodeRequiredIndicator(writer, component);
         }
 
         writer.endElement("label");
     }
 
-    protected void encodeRequiredIndicator(ResponseWriter writer, OutputLabel label) throws IOException {
-        writer.startElement("span", label);
+    protected void encodeRequiredIndicator(ResponseWriter writer, OutputLabel component) throws IOException {
+        writer.startElement("span", component);
         writer.writeAttribute("class", OutputLabel.REQUIRED_FIELD_INDICATOR_CLASS, null);
         writer.write("*");
         writer.endElement("span");
@@ -176,7 +175,7 @@ public class OutputLabelRenderer extends CoreRenderer {
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, OutputLabel component) throws IOException {
         // Do nothing
     }
 

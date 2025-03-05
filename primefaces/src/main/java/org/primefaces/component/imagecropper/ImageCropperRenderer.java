@@ -58,52 +58,49 @@ import jakarta.faces.convert.ConverterException;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.input.BoundedInputStream;
 
-public class ImageCropperRenderer extends CoreRenderer {
+public class ImageCropperRenderer extends CoreRenderer<ImageCropper> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
-        ImageCropper cropper = (ImageCropper) component;
+    public void decode(FacesContext context, ImageCropper component) {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String coordsParam = cropper.getClientId(context) + "_coords";
+        String coordsParam = component.getClientId(context) + "_coords";
 
         if (params.containsKey(coordsParam)) {
-            cropper.setSubmittedValue(params.get(coordsParam));
+            component.setSubmittedValue(params.get(coordsParam));
         }
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        ImageCropper cropper = (ImageCropper) component;
-
-        encodeMarkup(context, cropper);
-        encodeScript(context, cropper);
+    public void encodeEnd(FacesContext context, ImageCropper component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    protected void encodeScript(FacesContext context, ImageCropper cropper) throws IOException {
-        String widgetVar = cropper.resolveWidgetVar(context);
-        String clientId = cropper.getClientId(context);
+    protected void encodeScript(FacesContext context, ImageCropper component) throws IOException {
+        String widgetVar = component.resolveWidgetVar(context);
+        String clientId = component.getClientId(context);
         String image = clientId + "_image";
         String select = null;
 
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithComponentLoad("ImageCropper", widgetVar, clientId, image)
                 .attr("image", image)
-                .attr("viewMode", cropper.getViewMode(), 0)
-                .attr("aspectRatio", cropper.getAspectRatio(), Double.MIN_VALUE)
-                .attr("responsive", cropper.isResponsive(), true)
-                .attr("zoomOnTouch", cropper.isZoomOnTouch(), true)
-                .attr("zoomOnWheel", cropper.isZoomOnWheel(), true)
-                .attr("guides", cropper.isGuides(), true);
+                .attr("viewMode", component.getViewMode(), 0)
+                .attr("aspectRatio", component.getAspectRatio(), Double.MIN_VALUE)
+                .attr("responsive", component.isResponsive(), true)
+                .attr("zoomOnTouch", component.isZoomOnTouch(), true)
+                .attr("zoomOnWheel", component.isZoomOnWheel(), true)
+                .attr("guides", component.isGuides(), true);
 
-        if (cropper.getMinSize() != null) {
-            wb.append(",minSize:[").append(cropper.getMinSize()).append("]");
+        if (component.getMinSize() != null) {
+            wb.append(",minSize:[").append(component.getMinSize()).append("]");
         }
 
-        if (cropper.getMaxSize() != null) {
-            wb.append(",maxSize:[").append(cropper.getMaxSize()).append("]");
+        if (component.getMaxSize() != null) {
+            wb.append(",maxSize:[").append(component.getMaxSize()).append("]");
         }
 
-        Object value = cropper.getValue();
+        Object value = component.getValue();
         if (value != null) {
             CroppedImage croppedImage = (CroppedImage) value;
 
@@ -114,8 +111,8 @@ public class ImageCropperRenderer extends CoreRenderer {
 
             select = "[" + x + "," + y + "," + x2 + "," + y2 + "]";
         }
-        else if (LangUtils.isNotBlank(cropper.getInitialCoords())) {
-            select = "[" + cropper.getInitialCoords() + "]";
+        else if (LangUtils.isNotBlank(component.getInitialCoords())) {
+            select = "[" + component.getInitialCoords() + "]";
         }
 
         if (select != null) {
@@ -125,44 +122,44 @@ public class ImageCropperRenderer extends CoreRenderer {
         wb.finish();
     }
 
-    protected void encodeMarkup(FacesContext context, ImageCropper cropper) throws IOException {
+    protected void encodeMarkup(FacesContext context, ImageCropper component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = cropper.getClientId(context);
+        String clientId = component.getClientId(context);
         String coordsHolderId = clientId + "_coords";
 
-        writer.startElement("div", cropper);
+        writer.startElement("div", component);
         writer.writeAttribute("id", clientId, null);
 
         String style = Constants.EMPTY_STRING;
-        if (cropper.getBoxHeight() > 0) {
-            style = style + " max-height:" + cropper.getBoxHeight() + "px; ";
+        if (component.getBoxHeight() > 0) {
+            style = style + " max-height:" + component.getBoxHeight() + "px; ";
         }
 
-        if (cropper.getBoxWidth() > 0) {
-            style = style + " max-width:" + cropper.getBoxWidth() + "px; ";
+        if (component.getBoxWidth() > 0) {
+            style = style + " max-width:" + component.getBoxWidth() + "px; ";
         }
         if (LangUtils.isNotBlank(style)) {
             writer.writeAttribute("style", style, null);
         }
 
-        renderImage(context, cropper, clientId);
+        renderImage(context, component, clientId);
 
         renderHiddenInput(context, coordsHolderId, null, false);
 
         writer.endElement("div");
     }
 
-    private void renderImage(FacesContext context, ImageCropper cropper, String clientId) throws IOException {
+    private void renderImage(FacesContext context, ImageCropper component, String clientId) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String alt = cropper.getAlt() == null ? Constants.EMPTY_STRING : cropper.getAlt();
+        String alt = component.getAlt() == null ? Constants.EMPTY_STRING : component.getAlt();
 
         writer.startElement("img", null);
         writer.writeAttribute("id", clientId + "_image", null);
         writer.writeAttribute("alt", alt, null);
 
-        String src = DynamicContentSrcBuilder.build(context, cropper,
-                cropper.getValueExpression(ImageCropperBase.PropertyKeys.image.name()),
-                new Lazy<>(cropper::getImage), cropper.isCache(), true);
+        String src = DynamicContentSrcBuilder.build(context, component,
+                component.getValueExpression(ImageCropperBase.PropertyKeys.image.name()),
+                new Lazy<>(component::getImage), component.isCache(), true);
         writer.writeAttribute("src", src, null);
 
         writer.writeAttribute("height", "auto", null);
@@ -254,14 +251,14 @@ public class ImageCropperRenderer extends CoreRenderer {
         return format;
     }
 
-    protected StreamedContent createStreamedContentForCropping(FacesContext context, ImageCropper cropper) throws IOException {
+    protected StreamedContent createStreamedContentForCropping(FacesContext context, ImageCropper component) throws IOException {
         InputStream inputStream = null;
         String contentType = null;
         String imagePath = null;
         String originalFileName = null;
 
         // try to evaluate as Resource object, otherwise we would need to handle the Resource#resourcePath which would be more awkward
-        ValueExpression imageVE = cropper.getValueExpression(ImageCropperBase.PropertyKeys.image.toString());
+        ValueExpression imageVE = component.getValueExpression(ImageCropperBase.PropertyKeys.image.toString());
         Resource resource = ResourceUtils.evaluateResourceExpression(context, imageVE);
         if (resource != null) {
             inputStream = resource.getInputStream();
@@ -269,7 +266,7 @@ public class ImageCropperRenderer extends CoreRenderer {
             originalFileName = resource.getResourceName();
         }
         else {
-            Object imageObject = cropper.getImage();
+            Object imageObject = component.getImage();
             if (imageObject instanceof String) {
                 imagePath = (String) imageObject;
                 originalFileName = imagePath;
@@ -310,8 +307,8 @@ public class ImageCropperRenderer extends CoreRenderer {
         }
 
         // wrap input stream by BoundedInputStream to prevent uncontrolled resource consumption (#3286)
-        if (cropper.getSizeLimit() != null) {
-            inputStream = new BoundedInputStream(inputStream, cropper.getSizeLimit());
+        if (component.getSizeLimit() != null) {
+            inputStream = new BoundedInputStream(inputStream, component.getSizeLimit());
         }
 
         originalFileName = FilenameUtils.getName(originalFileName);

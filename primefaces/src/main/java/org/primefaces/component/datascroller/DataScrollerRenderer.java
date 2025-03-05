@@ -39,53 +39,52 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class DataScrollerRenderer extends CoreRenderer {
+public class DataScrollerRenderer extends CoreRenderer<DataScroller> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        DataScroller ds = (DataScroller) component;
+    public void encodeEnd(FacesContext context, DataScroller component) throws IOException {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String clientId = ds.getClientId(context);
-        int chunkSize = ds.getChunkSize();
+        String clientId = component.getClientId(context);
+        int chunkSize = component.getChunkSize();
 
-        if (ds.isLoadRequest()) {
+        if (component.isLoadRequest()) {
             int offset = Integer.parseInt(context.getExternalContext().getRequestParameterMap().get(clientId + "_offset"));
 
-            loadChunk(context, ds, offset, ds.getChunkSize());
+            loadChunk(context, component, offset, component.getChunkSize());
         }
-        else if (ds.isVirtualScrollingRequest(context)) {
+        else if (component.isVirtualScrollingRequest(context)) {
             int offset = Integer.parseInt(params.get(clientId + "_first"));
-            int rowCount = ds.getRowCount();
+            int rowCount = component.getRowCount();
             int virtualScrollRows = (chunkSize * 2);
             int scrollRows = (offset + virtualScrollRows) > rowCount ? (rowCount - offset) : virtualScrollRows;
 
-            loadChunk(context, ds, offset, scrollRows);
+            loadChunk(context, component, offset, scrollRows);
         }
         else {
             if (chunkSize == 0) {
-                chunkSize = ds.getRowCount();
+                chunkSize = component.getRowCount();
             }
 
-            encodeMarkup(context, ds, chunkSize);
-            encodeScript(context, ds, chunkSize);
+            encodeMarkup(context, component, chunkSize);
+            encodeScript(context, component, chunkSize);
         }
     }
 
-    protected void encodeMarkup(FacesContext context, DataScroller ds, int chunkSize) throws IOException {
+    protected void encodeMarkup(FacesContext context, DataScroller component, int chunkSize) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = ds.getClientId(context);
-        boolean inline = ds.getMode().equals("inline");
-        boolean isLazy = ds.isLazy();
-        UIComponent header = ds.getFacet("header");
-        UIComponent loader = ds.getFacet("loader");
-        UIComponent loading = ds.getFacet("loading");
+        String clientId = component.getClientId(context);
+        boolean inline = component.getMode().equals("inline");
+        boolean isLazy = component.isLazy();
+        UIComponent header = component.getFacet("header");
+        UIComponent loader = component.getFacet("loader");
+        UIComponent loading = component.getFacet("loading");
         String containerClass = inline ? DataScroller.INLINE_CONTAINER_CLASS : DataScroller.CONTAINER_CLASS;
 
-        String style = ds.getStyle();
-        String userStyleClass = ds.getStyleClass();
+        String style = component.getStyle();
+        String userStyleClass = component.getStyleClass();
         String styleClass = (userStyleClass == null) ? containerClass : containerClass + " " + userStyleClass;
 
-        writer.startElement("div", ds);
+        writer.startElement("div", component);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);
         if (style != null) {
@@ -93,17 +92,17 @@ public class DataScrollerRenderer extends CoreRenderer {
         }
 
         if (FacetUtils.shouldRenderFacet(header)) {
-            writer.startElement("div", ds);
+            writer.startElement("div", component);
             writer.writeAttribute("class", DataScroller.HEADER_CLASS, null);
             header.encodeAll(context);
             writer.endElement("div");
 
         }
 
-        writer.startElement("div", ds);
+        writer.startElement("div", component);
         writer.writeAttribute("class", DataScroller.CONTENT_CLASS, null);
         if (inline) {
-            writer.writeAttribute("style", "height:" + ds.getScrollHeight() + "px", null);
+            writer.writeAttribute("style", "height:" + component.getScrollHeight() + "px", null);
         }
 
         writer.startElement("div", null);
@@ -118,31 +117,31 @@ public class DataScrollerRenderer extends CoreRenderer {
         }
         writer.endElement("div");
 
-        int rowCount = ds.getRowCount();
+        int rowCount = component.getRowCount();
         int start = 0;
 
-        if (inline && ds.isVirtualScroll()) {
+        if (inline && component.isVirtualScroll()) {
             int virtualScrollRowCount = (chunkSize * 2);
             int rowCountToRender = (isLazy && rowCount == 0)
                     ? virtualScrollRowCount
                     : Math.min(virtualScrollRowCount, rowCount);
 
-            if (ds.isStartAtBottom()) {
+            if (component.isStartAtBottom()) {
                 int totalPage = (int) Math.ceil(rowCount * 1d / chunkSize);
                 start = Math.max((totalPage - 2) * chunkSize, 0);
             }
 
-            encodeVirtualScrollList(context, ds, start, rowCountToRender);
+            encodeVirtualScrollList(context, component, start, rowCountToRender);
         }
         else {
-            if (ds.isStartAtBottom()) {
+            if (component.isStartAtBottom()) {
                 start = rowCount > chunkSize ? rowCount - chunkSize : 0;
             }
 
-            encodeList(context, ds, start, chunkSize);
+            encodeList(context, component, start, chunkSize);
 
-            if (ds.isLazy()) {
-                rowCount = ds.getRowCount();
+            if (component.isLazy()) {
+                rowCount = component.getRowCount();
             }
 
             writer.startElement("div", null);
@@ -158,65 +157,65 @@ public class DataScrollerRenderer extends CoreRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeList(FacesContext context, DataScroller ds, int start, int chunkSize) throws IOException {
+    protected void encodeList(FacesContext context, DataScroller component, int start, int chunkSize) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        writer.startElement("ul", ds);
+        writer.startElement("ul", component);
         writer.writeAttribute("class", DataScroller.LIST_CLASS, null);
-        loadChunk(context, ds, start, chunkSize);
-        ds.setRowIndex(-1);
+        loadChunk(context, component, start, chunkSize);
+        component.setRowIndex(-1);
         writer.endElement("ul");
     }
 
-    protected void encodeVirtualScrollList(FacesContext context, DataScroller ds, int start, int chunkSize) throws IOException {
+    protected void encodeVirtualScrollList(FacesContext context, DataScroller component, int start, int chunkSize) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", null);
         writer.writeAttribute("class", DataScroller.VIRTUALSCROLL_WRAPPER_CLASS, null);
 
-        encodeList(context, ds, start, chunkSize);
+        encodeList(context, component, start, chunkSize);
 
         writer.endElement("div");
     }
 
-    protected void encodeScript(FacesContext context, DataScroller ds, int chunkSize) throws IOException {
-        String loadEvent = ds.getFacet("loader") == null ? "scroll" : "manual";
+    protected void encodeScript(FacesContext context, DataScroller component, int chunkSize) throws IOException {
+        String loadEvent = component.getFacet("loader") == null ? "scroll" : "manual";
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("DataScroller", ds)
+        wb.init("DataScroller", component)
                 .attr("chunkSize", chunkSize)
-                .attr("totalSize", getTotalSize(ds))
+                .attr("totalSize", getTotalSize(component))
                 .attr("loadEvent", loadEvent)
-                .attr("mode", ds.getMode(), "document")
-                .attr("buffer", ds.getBuffer())
-                .attr("virtualScroll", ds.isVirtualScroll())
-                .attr("startAtBottom", ds.isStartAtBottom());
+                .attr("mode", component.getMode(), "document")
+                .attr("buffer", component.getBuffer())
+                .attr("virtualScroll", component.isVirtualScroll())
+                .attr("startAtBottom", component.isStartAtBottom());
 
-        encodeClientBehaviors(context, ds);
+        encodeClientBehaviors(context, component);
 
         wb.finish();
     }
 
-    protected int getTotalSize(DataScroller ds) {
-        if (ds.isLazy()) {
-            LazyDataModel lazyModel = (LazyDataModel) ds.getValue();
+    protected int getTotalSize(DataScroller component) {
+        if (component.isLazy()) {
+            LazyDataModel<?> lazyModel = (LazyDataModel<?>) component.getValue();
             if (lazyModel != null) {
                 return lazyModel.count(Collections.emptyMap());
             }
         }
-        return ds.getRowCount();
+        return component.getRowCount();
     }
 
-    protected void loadChunk(FacesContext context, DataScroller ds, int start, int size) throws IOException {
+    protected void loadChunk(FacesContext context, DataScroller component, int start, int size) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        boolean isLazy = ds.isLazy();
+        boolean isLazy = component.isLazy();
         int _start = start < 0 ? 0 : start;
 
         if (isLazy) {
-            loadLazyData(context, ds, _start, size);
+            loadLazyData(context, component, _start, size);
         }
 
-        String rowIndexVar = ds.getRowIndexVar();
+        String rowIndexVar = component.getRowIndexVar();
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
 
         int lastIndex = (_start + size);
@@ -224,30 +223,30 @@ public class DataScrollerRenderer extends CoreRenderer {
         lastIndex = start < 0 ? lastIndex + start : lastIndex;
 
         for (int i = _start; i < lastIndex; i++) {
-            ds.setRowIndex(i);
+            component.setRowIndex(i);
 
             if (rowIndexVar != null) {
                 requestMap.put(rowIndexVar, i);
             }
 
-            if (!ds.isRowAvailable()) {
+            if (!component.isRowAvailable()) {
                 break;
             }
 
             writer.startElement("li", null);
             writer.writeAttribute("class", DataScroller.ITEM_CLASS, null);
-            renderChildren(context, ds);
+            renderChildren(context, component);
             writer.endElement("li");
         }
-        ds.setRowIndex(-1);
+        component.setRowIndex(-1);
 
         if (rowIndexVar != null) {
             requestMap.remove(rowIndexVar);
         }
     }
 
-    protected void loadLazyData(FacesContext context, DataScroller ds, int start, int size) {
-        LazyDataModel lazyModel = (LazyDataModel) ds.getValue();
+    protected void loadLazyData(FacesContext context, DataScroller component, int start, int size) {
+        LazyDataModel<?> lazyModel = (LazyDataModel<?>) component.getValue();
 
         if (lazyModel != null) {
             List<?> data = lazyModel.load(start, size, Collections.emptyMap(), Collections.emptyMap());
@@ -255,14 +254,14 @@ public class DataScrollerRenderer extends CoreRenderer {
             lazyModel.setWrappedData(data);
 
             //Update virtualscoller for callback
-            if (ComponentUtils.isRequestSource(ds, context) && ds.isVirtualScroll()) {
+            if (ComponentUtils.isRequestSource(component, context) && component.isVirtualScroll()) {
                 PrimeFaces.current().ajax().addCallbackParam("totalSize", lazyModel.getRowCount());
             }
         }
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, DataScroller component) throws IOException {
         //Rendering happens on encodeEnd
     }
 

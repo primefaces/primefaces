@@ -28,34 +28,31 @@ import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 
-import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class ImageCompareRenderer extends CoreRenderer {
+public class ImageCompareRenderer extends CoreRenderer<ImageCompare> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        ImageCompare compare = (ImageCompare) component;
-
-        encodeMarkup(context, compare);
-        encodeScript(context, compare);
+    public void encodeEnd(FacesContext context, ImageCompare component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    protected void encodeScript(FacesContext context, ImageCompare compare) throws IOException {
+    protected void encodeScript(FacesContext context, ImageCompare component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("ImageCompare", compare)
-                .attr("leftimage", getResourceURL(context, compare.getLeftImage()))
-                .attr("rightimage", getResourceURL(context, compare.getRightImage()));
+        wb.init("ImageCompare", component)
+                .attr("leftimage", getResourceURL(context, component.getLeftImage()))
+                .attr("rightimage", getResourceURL(context, component.getRightImage()));
         wb.finish();
     }
 
-    protected void encodeMarkup(FacesContext context, ImageCompare compare) throws IOException {
+    protected void encodeMarkup(FacesContext context, ImageCompare component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        writer.startElement("div", compare);
-        writer.writeAttribute("style", "width: " + compare.getWidth() + "px;" + "height: " + compare.getHeight() + "px;", null);
-        writer.writeAttribute("id", compare.getClientId(context), "id");
-        renderDynamicPassThruAttributes(context, compare);
+        writer.startElement("div", component);
+        writer.writeAttribute("style", "width: " + component.getWidth() + "px;" + "height: " + component.getHeight() + "px;", null);
+        writer.writeAttribute("id", component.getClientId(context), "id");
+        renderDynamicPassThruAttributes(context, component);
         writer.endElement("div");
     }
 

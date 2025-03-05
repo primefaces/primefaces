@@ -42,7 +42,7 @@ import jakarta.faces.convert.ConverterException;
 import jakarta.faces.model.SelectItem;
 import jakarta.faces.render.Renderer;
 
-public class SelectManyButtonRenderer extends SelectManyRenderer {
+public class SelectManyButtonRenderer extends SelectManyRenderer<SelectManyButton> {
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
@@ -54,11 +54,9 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        SelectManyButton button = (SelectManyButton) component;
-
-        encodeMarkup(context, button);
-        encodeScript(context, button);
+    public void encodeEnd(FacesContext context, SelectManyButton component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
     protected void encodeMarkup(FacesContext context, SelectManyButton button) throws IOException {
@@ -82,14 +80,14 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeSelectItems(FacesContext context, SelectManyButton button, List<SelectItem> selectItems) throws IOException {
-        Converter converter = button.getConverter();
-        Object values = getValues(button);
-        Object submittedValues = getSubmittedValues(button);
+    protected void encodeSelectItems(FacesContext context, SelectManyButton component, List<SelectItem> selectItems) throws IOException {
+        Converter<?> converter = component.getConverter();
+        Object values = getValues(component);
+        Object submittedValues = getSubmittedValues(component);
 
         for (int i = 0; i < selectItems.size(); i++) {
             SelectItem selectItem = selectItems.get(i);
-            encodeOption(context, button, values, submittedValues, converter, selectItem, i, selectItems.size());
+            encodeOption(context, component, values, submittedValues, converter, selectItem, i, selectItems.size());
         }
     }
 
@@ -168,14 +166,14 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeScript(FacesContext context, SelectManyButton button) throws IOException {
+    protected void encodeScript(FacesContext context, SelectManyButton component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SelectManyButton", button).finish();
+        wb.init("SelectManyButton", component).finish();
     }
 
     @Override
-    protected String getSubmitParam(FacesContext context, UISelectMany selectMany) {
-        return selectMany.getClientId(context);
+    protected String getSubmitParam(FacesContext context, UISelectMany component) {
+        return component.getClientId(context);
     }
 
 }

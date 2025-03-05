@@ -30,42 +30,38 @@ import org.primefaces.util.CSVBuilder;
 
 import java.io.IOException;
 
-import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UINamingContainer;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.event.ActionEvent;
 import jakarta.faces.event.PhaseId;
 
-public class RemoteCommandRenderer extends CoreRenderer {
+public class RemoteCommandRenderer extends CoreRenderer<RemoteCommand> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
-        RemoteCommand command = (RemoteCommand) component;
-
-        if (context.getExternalContext().getRequestParameterMap().containsKey(command.getClientId(context))) {
-            ActionEvent event = new ActionEvent(command);
-            if (command.isImmediate()) {
+    public void decode(FacesContext context, RemoteCommand component) {
+        if (context.getExternalContext().getRequestParameterMap().containsKey(component.getClientId(context))) {
+            ActionEvent event = new ActionEvent(component);
+            if (component.isImmediate()) {
                 event.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             }
             else {
                 event.setPhaseId(PhaseId.INVOKE_APPLICATION);
             }
 
-            command.queueEvent(event);
+            component.queueEvent(event);
         }
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        RemoteCommand command = (RemoteCommand) component;
+    public void encodeEnd(FacesContext context, RemoteCommand component) throws IOException {
         PrimeRequestContext requestContext = PrimeRequestContext.getCurrentInstance(context);
-        boolean csvEnabled = requestContext.getApplicationContext().getConfig().isClientSideValidationEnabled() && command.isValidateClient();
+        boolean csvEnabled = requestContext.getApplicationContext().getConfig().isClientSideValidationEnabled() && component.isValidateClient();
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = command.getClientId(context);
-        String name = resolveName(command, context);
+        String clientId = component.getClientId(context);
+        String name = resolveName(component, context);
 
-        String request = preConfiguredAjaxRequestBuilder(context, command)
+        String request = preConfiguredAjaxRequestBuilder(context, component)
                 .passParams()
                 .build();
 
@@ -74,8 +70,8 @@ public class RemoteCommandRenderer extends CoreRenderer {
             request = csvb.init()
                         .source("this")
                         .ajax(true)
-                        .process(command, command.getProcess())
-                        .update(command, command.getUpdate())
+                        .process(component, component.getProcess())
+                        .update(component, component.getUpdate())
                         .command("return " + request)
                         .build();
         }
@@ -84,7 +80,7 @@ public class RemoteCommandRenderer extends CoreRenderer {
         }
 
         //script
-        writer.startElement("script", command);
+        writer.startElement("script", component);
         writer.writeAttribute("id", clientId, null);
         RendererUtils.encodeScriptTypeIfNecessary(context);
 
@@ -92,7 +88,7 @@ public class RemoteCommandRenderer extends CoreRenderer {
         writer.write(request);
         writer.write("}");
 
-        if (command.isAutoRun()) {
+        if (component.isAutoRun()) {
             writer.write(";$(function() {");
             writer.write(name + "();");
             writer.write("});");
@@ -101,14 +97,14 @@ public class RemoteCommandRenderer extends CoreRenderer {
         writer.endElement("script");
     }
 
-    protected String resolveName(RemoteCommand command, FacesContext context) {
-        String userName = command.getName();
+    protected String resolveName(RemoteCommand component, FacesContext context) {
+        String userName = component.getName();
 
         if (userName != null) {
             return userName;
         }
         else {
-            return "command_" + command.getClientId(context).replaceAll("-|" + UINamingContainer.getSeparatorChar(context), "_");
+            return "command_" + component.getClientId(context).replaceAll("-|" + UINamingContainer.getSeparatorChar(context), "_");
         }
     }
 }

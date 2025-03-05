@@ -30,7 +30,6 @@ import org.primefaces.component.api.UICalendar;
 import org.primefaces.component.api.Widget;
 import org.primefaces.model.datepicker.DateMetadataModel;
 import org.primefaces.util.CalendarUtils;
-import org.primefaces.util.ComponentUtils;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -185,7 +184,7 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
 
     @Override
     public String getSelectionMode() {
-        return ComponentUtils.eval(getStateHelper(), PropertyKeys.selectionMode,
+        return (String) getStateHelper().eval(PropertyKeys.selectionMode,
                 () -> "week".equals(getView()) ? "range" : "single");
     }
 
@@ -478,7 +477,7 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
     }
 
     public boolean isShowWeek() {
-        return ComponentUtils.eval(getStateHelper(), PropertyKeys.showWeek,
+        return (boolean) getStateHelper().eval(PropertyKeys.showWeek,
                 () -> "week".equals(getView()));
     }
 
@@ -607,7 +606,7 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
 
     @Override
     public boolean isReadonlyInput() {
-        return ComponentUtils.eval(getStateHelper(), UICalendar.PropertyKeys.readonlyInput,
+        return (boolean) getStateHelper().eval(UICalendar.PropertyKeys.readonlyInput,
                 () -> "week".equals(getView()) ? true : false);
     }
 

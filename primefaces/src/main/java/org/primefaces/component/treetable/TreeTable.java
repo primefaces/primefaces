@@ -540,7 +540,7 @@ public class TreeTable extends TreeTableBase {
 
     @Override
     public Map<String, FilterMeta> getFilterByAsMap() {
-        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.filterByAsMap.name(), () -> initFilterBy(getFacesContext()));
+        return (Map<String, FilterMeta>) getStateHelper().eval(InternalPropertyKeys.filterByAsMap.name(), () -> initFilterBy(getFacesContext()));
     }
 
     @Override

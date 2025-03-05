@@ -30,57 +30,53 @@ import org.primefaces.util.WidgetBuilder;
 import java.io.IOException;
 import java.util.Map;
 
-import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class SignatureRenderer extends InputRenderer {
+public class SignatureRenderer extends InputRenderer<Signature> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
-        Signature signature = (Signature) component;
-        if (!shouldDecode(signature)) {
+    public void decode(FacesContext context, Signature component) {
+        if (!shouldDecode(component)) {
             return;
         }
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
         // JSON value
-        String value = params.get(signature.getClientId(context) + "_value");
-        signature.setSubmittedValue(value);
+        String value = params.get(component.getClientId(context) + "_value");
+        component.setSubmittedValue(value);
 
         // printed text value
-        String textValue = params.get(signature.getClientId(context) + "_text");
+        String textValue = params.get(component.getClientId(context) + "_text");
         if (LangUtils.isNotBlank(textValue)) {
-            signature.setTextValue(textValue);
+            component.setTextValue(textValue);
         }
 
         // base64 image value
-        String base64Value = params.get(signature.getClientId(context) + "_base64");
+        String base64Value = params.get(component.getClientId(context) + "_base64");
         if (base64Value != null) {
-            signature.setBase64Value(base64Value);
+            component.setBase64Value(base64Value);
         }
 
-        decodeBehaviors(context, signature);
+        decodeBehaviors(context, component);
     }
 
     @Override
-    public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
-        Signature signature = (Signature) component;
-
-        encodeMarkup(facesContext, signature);
-        encodeScript(facesContext, signature);
+    public void encodeEnd(FacesContext facesContext, Signature component) throws IOException {
+        encodeMarkup(facesContext, component);
+        encodeScript(facesContext, component);
     }
 
-    protected void encodeMarkup(FacesContext context, Signature signature) throws IOException {
+    protected void encodeMarkup(FacesContext context, Signature component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = signature.getClientId(context);
-        String style = signature.getStyle();
+        String clientId = component.getClientId(context);
+        String style = component.getStyle();
         String styleClass = getStyleClassBuilder(context)
                 .add(Signature.STYLE_CLASS)
-                .add(signature.getStyleClass())
-                .add(signature.isReadonly(), Signature.READONLY_STYLE_CLASS)
-                .add(signature.isDisabled(), "ui-state-disabled")
-                .add(!signature.isValid(), "ui-state-error")
+                .add(component.getStyleClass())
+                .add(component.isReadonly(), Signature.READONLY_STYLE_CLASS)
+                .add(component.isDisabled(), "ui-state-disabled")
+                .add(!component.isValid(), "ui-state-error")
                 .build();
 
         writer.startElement("div", null);
@@ -90,11 +86,11 @@ public class SignatureRenderer extends InputRenderer {
             writer.writeAttribute("style", style, null);
         }
 
-        encodeInputField(context, signature, clientId + "_value", signature.getValue());
-        encodeInputField(context, signature, clientId + "_text", signature.getTextValue());
+        encodeInputField(context, component, clientId + "_value", component.getValue());
+        encodeInputField(context, component, clientId + "_text", component.getTextValue());
 
-        if (signature.getValueExpression(Signature.PropertyKeys.base64Value.toString()) != null) {
-            encodeInputField(context, signature, clientId + "_base64", null);
+        if (component.getValueExpression(Signature.PropertyKeys.base64Value.toString()) != null) {
+            encodeInputField(context, component, clientId + "_base64", null);
         }
 
         writer.endElement("div");

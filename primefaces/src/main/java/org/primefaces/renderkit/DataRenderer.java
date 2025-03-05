@@ -51,7 +51,7 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class DataRenderer extends CoreRenderer {
+public class DataRenderer<T extends UIComponent> extends CoreRenderer<T> {
 
     private static final Map<String, PaginatorElementRenderer> PAGINATOR_ELEMENTS = MapBuilder.<String, PaginatorElementRenderer>builder()
             .put("{CurrentPageReport}", new CurrentPageReportRenderer())

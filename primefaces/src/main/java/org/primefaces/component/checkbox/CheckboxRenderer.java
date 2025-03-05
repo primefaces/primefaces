@@ -32,21 +32,19 @@ import org.primefaces.util.SharedStringBuilder;
 
 import java.io.IOException;
 
-import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class CheckboxRenderer extends InputRenderer {
+public class CheckboxRenderer extends InputRenderer<Checkbox> {
 
     private static final String SB_BUILD_EVENT = RadioButtonRenderer.class.getName() + "#buildEvent";
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Checkbox checkbox = (Checkbox) component;
+    public void encodeEnd(FacesContext context, Checkbox component) throws IOException {
         SelectManyCheckbox selectManyCheckbox = (SelectManyCheckbox) SearchExpressionUtils.contextlessResolveComponent(
-                context, checkbox, checkbox.getFor());
+                context, component, component.getFor());
 
-        encodeMarkup(context, checkbox, selectManyCheckbox);
+        encodeMarkup(context, component, selectManyCheckbox);
     }
 
     protected void encodeMarkup(FacesContext context, Checkbox checkbox, SelectManyCheckbox selectManyCheckbox) throws IOException {

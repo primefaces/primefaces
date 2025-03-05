@@ -28,61 +28,59 @@ import org.primefaces.util.ComponentUtils;
 
 import java.io.IOException;
 
-import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class TagRenderer extends CoreRenderer {
+public class TagRenderer extends CoreRenderer<Tag> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Tag tag = (Tag) component;
+    public void encodeEnd(FacesContext context, Tag component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String severity = tag.getSeverity();
+        String severity = component.getSeverity();
         String styleClass = getStyleClassBuilder(context)
                     .add(Tag.STYLE_CLASS)
-                    .add(tag.getStyleClass())
+                    .add(component.getStyleClass())
                     .add("info".equals(severity), Tag.SEVERITY_INFO_CLASS)
                     .add("success".equals(severity), Tag.SEVERITY_SUCCESS_CLASS)
                     .add("warning".equals(severity), Tag.SEVERITY_WARNING_CLASS)
                     .add("danger".equals(severity), Tag.SEVERITY_DANGER_CLASS)
-                    .add(tag.isRounded(), Tag.ROUNDED_CLASS)
+                    .add(component.isRounded(), Tag.ROUNDED_CLASS)
                     .build();
 
         writer.startElement("span", null);
-        writer.writeAttribute("id", tag.getClientId(context), "id");
+        writer.writeAttribute("id", component.getClientId(context), "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        if (tag.getStyle() != null) {
-            writer.writeAttribute("style", tag.getStyle(), "style");
+        if (component.getStyle() != null) {
+            writer.writeAttribute("style", component.getStyle(), "style");
         }
 
-        if (tag.getChildCount() > 0) {
-            renderChildren(context, tag);
+        if (component.getChildCount() > 0) {
+            renderChildren(context, component);
         }
         else {
-            encodeDefaultContent(context, tag);
+            encodeDefaultContent(context, component);
         }
 
         writer.endElement("span");
     }
 
-    public void encodeDefaultContent(FacesContext context, Tag tag) throws IOException {
+    public void encodeDefaultContent(FacesContext context, Tag component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        if (tag.getIcon() != null) {
+        if (component.getIcon() != null) {
             String iconStyleClass = getStyleClassBuilder(context)
                     .add(Tag.ICON_CLASS)
-                    .add(tag.getIcon())
+                    .add(component.getIcon())
                     .build();
 
-            writer.startElement("span", tag);
+            writer.startElement("span", component);
             writer.writeAttribute("class", iconStyleClass, null);
             writer.endElement("span");
         }
 
-        String value = ComponentUtils.getValueToRender(context, tag);
+        String value = ComponentUtils.getValueToRender(context, component);
         if (value != null) {
-            writer.startElement("span", tag);
+            writer.startElement("span", component);
             writer.writeAttribute("class", Tag.VALUE_CLASS, null);
             writer.writeText(value, "value");
             writer.endElement("span");
@@ -95,7 +93,7 @@ public class TagRenderer extends CoreRenderer {
     }
 
     @Override
-    public void encodeChildren(final FacesContext fc, final UIComponent component) {
+    public void encodeChildren(FacesContext fc, Tag component) {
         // nothing to do
     }
 }

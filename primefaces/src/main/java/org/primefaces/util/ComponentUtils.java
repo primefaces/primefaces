@@ -178,12 +178,12 @@ public class ComponentUtils {
      * @param component ValueHolder instance to look up converter for
      * @return          Converter
      */
-    public static Converter getConverter(FacesContext context, UIComponent component) {
+    public static Converter<?> getConverter(FacesContext context, UIComponent component) {
         if (!(component instanceof ValueHolder)) {
             return null;
         }
 
-        Converter converter = ((ValueHolder) component).getConverter();
+        Converter<?> converter = ((ValueHolder) component).getConverter();
         if (converter != null) {
             return converter;
         }
@@ -202,7 +202,7 @@ public class ComponentUtils {
     }
 
     public static Object getConvertedValue(FacesContext context, UIComponent component, Object converter, Object value) {
-        Converter converterObject = toConverter(context, converter);
+        Converter<?> converterObject = toConverter(context, converter);
         if (converterObject != null) {
             String submittedValue = Objects.toString(value, null);
             if (LangUtils.isBlank(submittedValue)) {
@@ -232,7 +232,7 @@ public class ComponentUtils {
         return Objects.toString(value, null);
     }
 
-    public static Converter getConverter(FacesContext context, Class<?> forClass) {
+    public static Converter<?> getConverter(FacesContext context, Class<?> forClass) {
         if (forClass == null
                 || forClass == Object.class
                 || (forClass == String.class
@@ -243,12 +243,12 @@ public class ComponentUtils {
         return context.getApplication().createConverter(forClass);
     }
 
-    public static Converter toConverter(FacesContext context, Object converter) {
+    public static Converter<?> toConverter(FacesContext context, Object converter) {
         if (converter == null) {
             return null;
         }
         if (converter instanceof Converter) {
-            return (Converter) converter;
+            return (Converter<?>) converter;
         }
         if (converter instanceof String) {
             return context.getApplication().createConverter((String) converter);
@@ -510,27 +510,7 @@ public class ComponentUtils {
      * then it is retrieved from defaultValueSupplier.
      *
      * Should be removed when {@link StateHelper} is extended with similar functionality.
-     * (see https://github.com/eclipse-ee4j/mojarra/issues/4568 for details)
-     * @param stateHelper The stateHelper to try to retrieve value from
-     * @param key The key under which value is stored in the stateHelper
-     * @param defaultValueSupplier The object, from which default value is retrieved
-     * @param <T> the expected type of returned value
-     * @return value from stateHelper or defaultValueSupplier
-     */
-    public static <T> T eval(StateHelper stateHelper, Serializable key, Supplier<T> defaultValueSupplier) {
-        T value = (T) stateHelper.eval(key, null);
-        if (value == null) {
-            value = defaultValueSupplier.get();
-        }
-        return value;
-    }
-
-    /**
-     * Tries to retrieve value from stateHelper by key first. If the value is not present (or is null),
-     * then it is retrieved from defaultValueSupplier.
-     *
-     * Should be removed when {@link StateHelper} is extended with similar functionality.
-     * (see https://github.com/eclipse-ee4j/mojarra/issues/4568 for details)
+     * (see https://github.com/jakartaee/faces/issues/2024 for details)
      * @param stateHelper The stateHelper to try to retrieve value from
      * @param key The key under which value is stored in the stateHelper
      * @param defaultValueSupplier The object, from which default value is retrieved

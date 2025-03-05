@@ -50,7 +50,7 @@ import jakarta.faces.model.SelectItem;
 import jakarta.faces.model.SelectItemGroup;
 import jakarta.faces.render.Renderer;
 
-public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
+public class SelectCheckboxMenuRenderer extends SelectManyRenderer<SelectCheckboxMenu> {
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
@@ -62,16 +62,14 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
     }
 
     @Override
-    public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext facesContext, SelectCheckboxMenu component) throws IOException {
         //Rendering happens on encodeEnd
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        SelectCheckboxMenu menu = (SelectCheckboxMenu) component;
-
-        encodeMarkup(context, menu);
-        encodeScript(context, menu);
+    public void encodeEnd(FacesContext context, SelectCheckboxMenu component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
     @Override
@@ -79,18 +77,18 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         return true;
     }
 
-    protected void encodeMarkup(FacesContext context, SelectCheckboxMenu menu) throws IOException {
+    protected void encodeMarkup(FacesContext context, SelectCheckboxMenu component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = menu.getClientId(context);
-        List<SelectItem> selectItems = getSelectItems(context, menu);
-        boolean valid = menu.isValid();
-        String title = menu.getTitle();
+        String clientId = component.getClientId(context);
+        List<SelectItem> selectItems = getSelectItems(context, component);
+        boolean valid = component.isValid();
+        String title = component.getTitle();
 
-        String style = menu.getStyle();
-        String styleclass = createStyleClass(menu, SelectCheckboxMenu.STYLE_CLASS);
-        styleclass = menu.isMultiple() ? SelectCheckboxMenu.MULTIPLE_CLASS + " " + styleclass : styleclass;
+        String style = component.getStyle();
+        String styleclass = createStyleClass(component, SelectCheckboxMenu.STYLE_CLASS);
+        styleclass = component.isMultiple() ? SelectCheckboxMenu.MULTIPLE_CLASS + " " + styleclass : styleclass;
 
-        writer.startElement("div", menu);
+        writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleclass, "styleclass");
         if (style != null) {
@@ -100,28 +98,28 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
             writer.writeAttribute("title", title, "title");
         }
 
-        encodeKeyboardTarget(context, menu);
-        encodeInputs(context, menu, selectItems);
-        if (menu.isMultiple()) {
-            encodeMultipleLabel(context, menu, selectItems);
+        encodeKeyboardTarget(context, component);
+        encodeInputs(context, component, selectItems);
+        if (component.isMultiple()) {
+            encodeMultipleLabel(context, component, selectItems);
         }
         else {
-            encodeLabel(context, menu, valid);
+            encodeLabel(context, component, valid);
         }
 
-        encodeMenuIcon(context, menu, valid);
-        encodePanel(context, menu, selectItems);
+        encodeMenuIcon(context, component, valid);
+        encodePanel(context, component, selectItems);
 
         writer.endElement("div");
     }
 
-    protected void encodeInputs(FacesContext context, SelectCheckboxMenu menu, List<SelectItem> selectItems) throws IOException {
+    protected void encodeInputs(FacesContext context, SelectCheckboxMenu component, List<SelectItem> selectItems) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        Converter converter = menu.getConverter();
-        Object values = getValues(menu);
-        Object submittedValues = getSubmittedValues(menu);
+        Converter converter = component.getConverter();
+        Object values = getValues(component);
+        Object submittedValues = getSubmittedValues(component);
 
-        writer.startElement("div", menu);
+        writer.startElement("div", component);
         writer.writeAttribute("class", "ui-helper-hidden", null);
 
         int idx = -1;
@@ -132,30 +130,30 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
                 String selectItemGroupLabel = selectItemGroup.getLabel() == null ? Constants.EMPTY_STRING : selectItemGroup.getLabel();
                 for (SelectItem childSelectItem : selectItemGroup.getSelectItems()) {
                     idx++;
-                    encodeOption(context, menu, values, submittedValues, converter, childSelectItem, idx, selectItemGroupLabel);
+                    encodeOption(context, component, values, submittedValues, converter, childSelectItem, idx, selectItemGroupLabel);
                 }
             }
             else {
                 idx++;
-                encodeOption(context, menu, values, submittedValues, converter, selectItem, idx);
+                encodeOption(context, component, values, submittedValues, converter, selectItem, idx);
             }
         }
 
         writer.endElement("div");
     }
 
-    protected void encodeOption(FacesContext context, SelectCheckboxMenu menu, Object values, Object submittedValues,
+    protected void encodeOption(FacesContext context, SelectCheckboxMenu component, Object values, Object submittedValues,
                                 Converter converter, SelectItem option, int idx) throws IOException {
-        encodeOption(context, menu, values, submittedValues, converter, option, idx, null);
+        encodeOption(context, component, values, submittedValues, converter, option, idx, null);
     }
 
-    protected void encodeOption(FacesContext context, SelectCheckboxMenu menu, Object values, Object submittedValues,
+    protected void encodeOption(FacesContext context, SelectCheckboxMenu component, Object values, Object submittedValues,
                                 Converter converter, SelectItem option, int idx, String selectItemGroupLabel) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String itemValueAsString = getOptionAsString(context, menu, converter, option.getValue());
-        String name = menu.getClientId(context);
+        String itemValueAsString = getOptionAsString(context, component, converter, option.getValue());
+        String name = component.getClientId(context);
         String id = name + UINamingContainer.getSeparatorChar(context) + idx;
-        boolean disabled = option.isDisabled() || menu.isDisabled();
+        boolean disabled = option.isDisabled() || component.isDisabled();
         boolean escaped = option.isEscape();
         String itemLabel = option.getLabel();
         itemLabel = isValueBlank(itemLabel) ? "&nbsp;" : itemLabel;
@@ -171,7 +169,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
             itemValue = option.getValue();
         }
 
-        boolean checked = isSelected(context, menu, itemValue, valuesArray, converter);
+        boolean checked = isSelected(context, component, itemValue, valuesArray, converter);
         //"SelectItem" with 'noSelectionOption="true" doesn't make sense for "SelectCheckboxMenu"...just in case
         if (option.isNoSelectionOption() && values != null && !checked) {
             return;
@@ -193,10 +191,10 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         if (option.getDescription() != null) {
             writer.writeAttribute("title", option.getDescription(), null);
         }
-        if (menu.getOnchange() != null) {
-            writer.writeAttribute("onchange", menu.getOnchange(), null);
+        if (component.getOnchange() != null) {
+            writer.writeAttribute("onchange", component.getOnchange(), null);
         }
-        renderAccessibilityAttributes(context, menu, option.isDisabled(), false);
+        renderAccessibilityAttributes(context, component, option.isDisabled(), false);
 
         writer.endElement("input");
 
@@ -222,9 +220,9 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.endElement("label");
     }
 
-    protected void encodeLabel(FacesContext context, SelectCheckboxMenu menu, boolean valid) throws IOException {
+    protected void encodeLabel(FacesContext context, SelectCheckboxMenu component, boolean valid) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String label = menu.getLabel();
+        String label = component.getLabel();
         String labelClass = !valid ? SelectCheckboxMenu.LABEL_CLASS + " ui-state-error" : SelectCheckboxMenu.LABEL_CLASS;
         if (label == null) {
             label = Constants.EMPTY_STRING;
@@ -318,67 +316,67 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.endElement("ul");
     }
 
-    protected void encodeMenuIcon(FacesContext context, SelectCheckboxMenu menu, boolean valid) throws IOException {
+    protected void encodeMenuIcon(FacesContext context, SelectCheckboxMenu component, boolean valid) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String iconClass = valid ? SelectCheckboxMenu.TRIGGER_CLASS : SelectCheckboxMenu.TRIGGER_CLASS + " ui-state-error";
 
-        writer.startElement("div", menu);
+        writer.startElement("div", component);
         writer.writeAttribute("class", iconClass, null);
 
-        writer.startElement("span", menu);
+        writer.startElement("span", component);
         writer.writeAttribute("class", "ui-icon ui-icon-triangle-1-s", null);
         writer.endElement("span");
 
         writer.endElement("div");
     }
 
-    protected void encodePanel(FacesContext context, SelectCheckboxMenu menu, List<SelectItem> selectItems) throws IOException {
+    protected void encodePanel(FacesContext context, SelectCheckboxMenu component, List<SelectItem> selectItems) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String panelStyle = menu.getPanelStyle();
+        String panelStyle = component.getPanelStyle();
         String panelStyleClass = SelectCheckboxMenu.PANEL_CLASS;
-        if (menu.getPanelStyleClass() != null) {
-            panelStyleClass += " " + menu.getPanelStyleClass();
+        if (component.getPanelStyleClass() != null) {
+            panelStyleClass += " " + component.getPanelStyleClass();
         }
 
-        String maxScrollHeight = getMaxScrollHeight(menu);
+        String maxScrollHeight = getMaxScrollHeight(component);
 
         writer.startElement("div", null);
-        writer.writeAttribute("id", menu.getClientId(context) + "_panel", null);
+        writer.writeAttribute("id", component.getClientId(context) + "_panel", null);
         writer.writeAttribute("class", panelStyleClass, null);
         writer.writeAttribute(HTML.ARIA_ROLE, "dialog", null);
         if (panelStyle != null) {
             writer.writeAttribute("style", panelStyle, null);
         }
 
-        if (menu.isShowHeader()) {
-            encodePanelHeader(context, menu, selectItems);
+        if (component.isShowHeader()) {
+            encodePanelHeader(context, component, selectItems);
         }
 
         writer.startElement("div", null);
         writer.writeAttribute("class", SelectCheckboxMenu.ITEMS_WRAPPER_CLASS, null);
         writer.writeAttribute("style", "max-height:" + maxScrollHeight, null);
 
-        if (!menu.isDynamic()) {
-            encodePanelContent(context, menu, selectItems);
+        if (!component.isDynamic()) {
+            encodePanelContent(context, component, selectItems);
         }
 
         writer.endElement("div");
 
-        encodePanelFooter(context, menu);
+        encodePanelFooter(context, component);
         writer.endElement("div");
     }
 
-    private void encodePanelHeader(FacesContext context, SelectCheckboxMenu menu, List<SelectItem> selectItems) throws IOException {
+    private void encodePanelHeader(FacesContext context, SelectCheckboxMenu component, List<SelectItem> selectItems) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        Converter converter = menu.getConverter();
-        Object submittedValues = getSubmittedValues(menu);
-        Object values = getValues(menu);
+        Converter converter = component.getConverter();
+        Object submittedValues = getSubmittedValues(component);
+        Object values = getValues(component);
         Object valuesArray = (submittedValues != null) ? submittedValues : values;
 
         writer.startElement("div", null);
         writer.writeAttribute("class", SelectCheckboxMenu.HEADER_CLASS, null);
 
-        if (menu.isShowSelectAll()) {
+        if (component.isShowSelectAll()) {
             // determine if any of the items is not selected
             boolean notChecked = selectItems.stream().flatMap(selectItem -> {
                 if (selectItem instanceof SelectItemGroup) {
@@ -393,13 +391,13 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
                 final Object value;
                 if (submittedValues != null) {
                     // use submitted string representations of values
-                    value = getOptionAsString(context, menu, converter, selectItem.getValue());
+                    value = getOptionAsString(context, component, converter, selectItem.getValue());
                 }
                 else {
                     // use initial values
                     value = selectItem.getValue();
                 }
-                return !isSelected(context, menu, value, valuesArray, converter);
+                return !isSelected(context, component, value, valuesArray, converter);
             });
 
             // toggler
@@ -407,8 +405,8 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         }
 
         //filter
-        if (menu.isFilter()) {
-            encodeFilter(context, menu);
+        if (component.isFilter()) {
+            encodeFilter(context, component);
         }
 
         //closer
@@ -425,9 +423,9 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeFilter(FacesContext context, SelectCheckboxMenu menu) throws IOException {
+    protected void encodeFilter(FacesContext context, SelectCheckboxMenu component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String id = menu.getClientId(context) + "_filter";
+        String id = component.getClientId(context) + "_filter";
 
         writer.startElement("div", null);
         writer.writeAttribute("class", SelectCheckboxMenu.FILTER_CONTAINER_CLASS, null);
@@ -439,13 +437,13 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
         writer.writeAttribute(HTML.ARIA_AUTOCOMPLETE, "list", null);
-        writer.writeAttribute(HTML.ARIA_CONTROLS, menu.getClientId(context) + "_table", null);
+        writer.writeAttribute(HTML.ARIA_CONTROLS, component.getClientId(context) + "_table", null);
         writer.writeAttribute("aria-disabled", false, null);
         writer.writeAttribute("aria-multiline", false, null);
         writer.writeAttribute("aria-readonly", false, null);
 
-        if (menu.getFilterPlaceholder() != null) {
-            writer.writeAttribute("placeholder", menu.getFilterPlaceholder(), null);
+        if (component.getFilterPlaceholder() != null) {
+            writer.writeAttribute("placeholder", component.getFilterPlaceholder(), null);
         }
 
         writer.endElement("input");
@@ -457,22 +455,22 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.endElement("div");
     }
 
-    protected void encodePanelContent(FacesContext context, SelectCheckboxMenu menu, List<SelectItem> selectItems) throws IOException {
+    protected void encodePanelContent(FacesContext context, SelectCheckboxMenu component, List<SelectItem> selectItems) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        boolean customContent = menu.getVar() != null;
+        boolean customContent = component.getVar() != null;
 
         if (customContent) {
             ComponentUtils.runWithoutFacesContextVar(context, Constants.HELPER_RENDERER, () -> {
-                List<Column> columns = menu.getColumns();
+                List<Column> columns = component.getColumns();
 
                 writer.startElement("table", null);
-                writer.writeAttribute("id", menu.getClientId(context) + "_list", null);
+                writer.writeAttribute("id", component.getClientId(context) + "_list", null);
                 writer.writeAttribute("class", SelectCheckboxMenu.TABLE_CLASS, null);
                 writer.writeAttribute(HTML.ARIA_ROLE, "listbox", null);
                 writer.writeAttribute(HTML.ARIA_MULITSELECTABLE, "true", null);
-                encodeColumnsHeader(context, menu, columns);
+                encodeColumnsHeader(context, component, columns);
                 writer.startElement("tbody", null);
-                encodeOptionsAsTable(context, menu, selectItems, columns);
+                encodeOptionsAsTable(context, component, selectItems, columns);
                 writer.endElement("tbody");
                 writer.endElement("table");
             });
@@ -482,8 +480,8 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         }
     }
 
-    protected void encodePanelFooter(FacesContext context, SelectCheckboxMenu menu) throws IOException {
-        UIComponent facet = menu.getFacet("footer");
+    protected void encodePanelFooter(FacesContext context, SelectCheckboxMenu component) throws IOException {
+        UIComponent facet = component.getFacet("footer");
         if (!FacetUtils.shouldRenderFacet(facet)) {
             return;
         }
@@ -495,7 +493,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeColumnsHeader(FacesContext context, SelectCheckboxMenu menu, List<Column> columns) throws IOException {
+    protected void encodeColumnsHeader(FacesContext context, SelectCheckboxMenu component, List<Column> columns) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         boolean hasHeader = false;
 
@@ -544,27 +542,29 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         }
     }
 
-    protected void encodeOptionsAsTable(FacesContext context, SelectCheckboxMenu menu, List<SelectItem> selectItems, List<Column> columns) throws IOException {
+    protected void encodeOptionsAsTable(FacesContext context, SelectCheckboxMenu component, List<SelectItem> selectItems, List<Column> columns)
+            throws IOException {
+
         int idx = -1;
         int totalItems = selectItems.size();
         for (int i = 0; i < totalItems; i++) {
             SelectItem selectItem = selectItems.get(i);
             if (selectItem instanceof SelectItemGroup) {
                 SelectItemGroup selectItemGroup = (SelectItemGroup) selectItem;
-                encodeTableOption(context, menu, selectItemGroup, columns, idx, totalItems);
+                encodeTableOption(context, component, selectItemGroup, columns, idx, totalItems);
 
                 for (SelectItem groupSelectItem : selectItemGroup.getSelectItems()) {
                     idx++;
-                    encodeTableOption(context, menu, groupSelectItem, columns, idx, totalItems);
+                    encodeTableOption(context, component, groupSelectItem, columns, idx, totalItems);
                 }
             }
             else {
-                encodeTableOption(context, menu, selectItem, columns, idx, totalItems);
+                encodeTableOption(context, component, selectItem, columns, idx, totalItems);
             }
         }
     }
 
-    protected void encodeTableOption(FacesContext context, SelectCheckboxMenu menu, SelectItem selectItem, List<Column> columns, int index, int totalItems)
+    protected void encodeTableOption(FacesContext context, SelectCheckboxMenu component, SelectItem selectItem, List<Column> columns, int index, int totalItems)
         throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         boolean checked = false;
@@ -576,24 +576,24 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
             rowStyleClass = SelectCheckboxMenu.ROW_ITEM_GROUP_CLASS;
         }
         else {
-            Converter converter = menu.getConverter();
+            Converter converter = component.getConverter();
 
             //checked flag
-            Object submittedValues = getSubmittedValues(menu);
-            Object values = getValues(menu);
+            Object submittedValues = getSubmittedValues(component);
+            Object values = getValues(component);
             Object valuesArray;
             Object value;
             if (submittedValues != null) {
                 //use submitted string representations of values
                 valuesArray = submittedValues;
-                value = getOptionAsString(context, menu, converter, selectItem.getValue());
+                value = getOptionAsString(context, component, converter, selectItem.getValue());
             }
             else {
                 //use initial values
                 valuesArray = values;
                 value = selectItem.getValue();
             }
-            checked = isSelected(context, menu, value, valuesArray, converter);
+            checked = isSelected(context, component, value, valuesArray, converter);
             //"SelectItem" with 'noSelectionOption="true" doesn't make sense for "SelectCheckboxMenu"...just in case
             if (selectItem.isNoSelectionOption() && !checked) {
                 return;
@@ -608,10 +608,10 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
             if (selectItem.isDisabled()) {
                 rowStyleClass += " ui-state-disabled";
             }
-            itemValueAsString = getOptionAsString(context, menu, converter, selectItem.getValue());
+            itemValueAsString = getOptionAsString(context, component, converter, selectItem.getValue());
 
             //init variable for column rendering
-            String var = menu.getVar();
+            String var = component.getVar();
             Object varValue = selectItem.getValue();
             context.getExternalContext().getRequestMap().put(var, varValue);
         }
@@ -620,7 +620,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.startElement("tr", getSelectItemComponent(selectItem));
         writer.writeAttribute("class", rowStyleClass, null);
         writer.writeAttribute("data-label", itemLabel, null);
-        if ((itemValueAsString != null) && menu.isMultiple()) {
+        if ((itemValueAsString != null) && component.isMultiple()) {
             writer.writeAttribute("data-item-value", itemValueAsString, null);
         }
         if (selectItem.getDescription() != null) {
@@ -639,7 +639,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         }
         else {
             String uuid = UUID.randomUUID().toString();
-            boolean disabled = selectItem.isDisabled() || menu.isDisabled();
+            boolean disabled = selectItem.isDisabled() || component.isDisabled();
 
             //input
             writer.startElement("td", null);
@@ -671,45 +671,45 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.endElement("tr");
     }
 
-    protected void encodeScript(FacesContext context, SelectCheckboxMenu menu) throws IOException {
+    protected void encodeScript(FacesContext context, SelectCheckboxMenu component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SelectCheckboxMenu", menu)
-                .callback("onShow", "function()", menu.getOnShow())
-                .callback("onHide", "function()", menu.getOnHide())
-                .callback("onChange", "function()", menu.getOnchange())
-                .attr("scrollHeight", getMaxScrollHeight(menu), null)
-                .attr("showHeader", menu.isShowHeader(), true)
-                .attr("updateLabel", menu.isUpdateLabel(), false)
-                .attr("labelSeparator", menu.getLabelSeparator(), ", ")
-                .attr("emptyLabel", menu.getEmptyLabel())
-                .attr("selectedLabel", menu.getSelectedLabel(), null)
-                .attr("multiple", menu.isMultiple(), false)
-                .attr("dynamic", menu.isDynamic(), false)
-                .attr("renderPanelContentOnClient", menu.getVar() == null,  false)
-                .attr("appendTo", SearchExpressionUtils.resolveOptionalClientIdForClientSide(context, menu, menu.getAppendTo()));
+        wb.init("SelectCheckboxMenu", component)
+                .callback("onShow", "function()", component.getOnShow())
+                .callback("onHide", "function()", component.getOnHide())
+                .callback("onChange", "function()", component.getOnchange())
+                .attr("scrollHeight", getMaxScrollHeight(component), null)
+                .attr("showHeader", component.isShowHeader(), true)
+                .attr("updateLabel", component.isUpdateLabel(), false)
+                .attr("labelSeparator", component.getLabelSeparator(), ", ")
+                .attr("emptyLabel", component.getEmptyLabel())
+                .attr("selectedLabel", component.getSelectedLabel(), null)
+                .attr("multiple", component.isMultiple(), false)
+                .attr("dynamic", component.isDynamic(), false)
+                .attr("renderPanelContentOnClient", component.getVar() == null,  false)
+                .attr("appendTo", SearchExpressionUtils.resolveOptionalClientIdForClientSide(context, component, component.getAppendTo()));
 
-        if (menu.isFilter()) {
+        if (component.isFilter()) {
             wb.attr("filter", true)
-                    .attr("filterMatchMode", menu.getFilterMatchMode(), null)
-                    .nativeAttr("filterFunction", menu.getFilterFunction(), null)
-                    .attr("caseSensitive", menu.isCaseSensitive(), false)
-                    .attr("filterPlaceholder", menu.getFilterPlaceholder(), null)
-                    .attr("filterNormalize", menu.isFilterNormalize(), false);
+                    .attr("filterMatchMode", component.getFilterMatchMode(), null)
+                    .nativeAttr("filterFunction", component.getFilterFunction(), null)
+                    .attr("caseSensitive", component.isCaseSensitive(), false)
+                    .attr("filterPlaceholder", component.getFilterPlaceholder(), null)
+                    .attr("filterNormalize", component.isFilterNormalize(), false);
         }
 
-        wb.attr("panelStyle", menu.getPanelStyle(), null).attr("panelStyleClass", menu.getPanelStyleClass(), null);
+        wb.attr("panelStyle", component.getPanelStyle(), null).attr("panelStyleClass", component.getPanelStyleClass(), null);
 
-        encodeClientBehaviors(context, menu);
+        encodeClientBehaviors(context, component);
 
         wb.finish();
     }
 
-    protected String getMaxScrollHeight(SelectCheckboxMenu menu) {
+    protected String getMaxScrollHeight(SelectCheckboxMenu component) {
         try {
-            return Integer.parseInt(menu.getScrollHeight()) + "px";
+            return Integer.parseInt(component.getScrollHeight()) + "px";
         }
         catch (NumberFormatException e) {
-            return menu.getScrollHeight();
+            return component.getScrollHeight();
         }
     }
 
@@ -723,20 +723,20 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         return selectMany.getClientId(context);
     }
 
-    protected void encodeKeyboardTarget(FacesContext context, SelectCheckboxMenu menu) throws IOException {
+    protected void encodeKeyboardTarget(FacesContext context, SelectCheckboxMenu component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String inputId = menu.getClientId(context) + "_focus";
-        String tabindex = menu.isDisabled() ? "-1" : Objects.toString(menu.getTabindex(), "0");
+        String inputId = component.getClientId(context) + "_focus";
+        String tabindex = component.isDisabled() ? "-1" : Objects.toString(component.getTabindex(), "0");
 
         writer.startElement("div", null);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
-        writer.startElement("input", menu);
+        writer.startElement("input", component);
         writer.writeAttribute("id", inputId, null);
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("tabindex", tabindex, null);
-        renderARIACombobox(context, menu);
-        renderAccessibilityAttributes(context, menu);
+        renderARIACombobox(context, component);
+        renderAccessibilityAttributes(context, component);
         writer.endElement("input");
         writer.endElement("div");
     }

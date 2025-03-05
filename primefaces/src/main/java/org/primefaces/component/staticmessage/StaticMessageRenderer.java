@@ -24,54 +24,51 @@
 package org.primefaces.component.staticmessage;
 
 import org.primefaces.component.messages.Messages;
-import org.primefaces.renderkit.UINotificationRenderer;
+import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 
-import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class StaticMessageRenderer extends UINotificationRenderer {
+public class StaticMessageRenderer extends CoreRenderer<StaticMessage> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
+    public void decode(FacesContext context, StaticMessage component) {
         decodeBehaviors(context, component);
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        StaticMessage staticMessage = (StaticMessage) component;
-
+    public void encodeEnd(FacesContext context, StaticMessage component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        String display = staticMessage.getDisplay();
+        String display = component.getDisplay();
         boolean iconOnly = "icon".equals(display);
-        boolean escape = staticMessage.isEscape();
-        String summary = staticMessage.getSummary();
-        String detail = staticMessage.getDetail();
-        String severity = staticMessage.getSeverity();
+        boolean escape = component.isEscape();
+        String summary = component.getSummary();
+        String detail = component.getDetail();
+        String severity = component.getSeverity();
         severity = severity == null ? "info" : severity.toLowerCase();
 
         String styleClass = getStyleClassBuilder(context)
                 .add("ui-message ui-staticmessage ui-message-" + severity + " ui-widget")
                 .add(iconOnly, "ui-message-icon-only ui-helper-clearfix")
-                .add(staticMessage.getStyleClass())
+                .add(component.getStyleClass())
                 .build();
 
-        String style = staticMessage.getStyle();
+        String style = component.getStyle();
 
-        writer.startElement("div", staticMessage);
-        writer.writeAttribute("id", staticMessage.getClientId(context), null);
+        writer.startElement("div", component);
+        writer.writeAttribute("id", component.getClientId(context), null);
         writer.writeAttribute("aria-live", "polite", null);
         writer.writeAttribute("class", styleClass, null);
         if (style != null) {
             writer.writeAttribute("style", style, null);
         }
 
-        if (staticMessage.isClosable()) {
-            encodeCloseIcon(context, staticMessage);
+        if (component.isClosable()) {
+            encodeCloseIcon(context, component);
         }
 
         if (!"text".equals(display)) {
@@ -84,7 +81,7 @@ public class StaticMessageRenderer extends UINotificationRenderer {
 
         writer.endElement("div");
 
-        encodeScript(context, staticMessage);
+        encodeScript(context, component);
     }
 
     protected void encodeText(ResponseWriter writer, String text, String severity, boolean escape) throws IOException {
@@ -112,7 +109,7 @@ public class StaticMessageRenderer extends UINotificationRenderer {
         writer.endElement("span");
     }
 
-    protected void encodeCloseIcon(FacesContext context, StaticMessage staticMessage) throws IOException {
+    protected void encodeCloseIcon(FacesContext context, StaticMessage component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("a", null);
@@ -127,11 +124,11 @@ public class StaticMessageRenderer extends UINotificationRenderer {
         writer.endElement("a");
     }
 
-    protected void encodeScript(FacesContext context, StaticMessage staticMessage) throws IOException {
+    protected void encodeScript(FacesContext context, StaticMessage component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("StaticMessage", staticMessage);
+        wb.init("StaticMessage", component);
 
-        encodeClientBehaviors(context, staticMessage);
+        encodeClientBehaviors(context, component);
 
         wb.finish();
     }

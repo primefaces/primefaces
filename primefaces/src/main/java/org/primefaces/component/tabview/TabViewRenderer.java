@@ -39,20 +39,19 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class TabViewRenderer extends CoreRenderer {
+public class TabViewRenderer extends CoreRenderer<TabView> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
+    public void decode(FacesContext context, TabView component) {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        TabView tabView = (TabView) component;
-        String activeIndexValue = params.get(tabView.getClientId(context) + "_activeIndex");
+        String activeIndexValue = params.get(component.getClientId(context) + "_activeIndex");
 
         if (LangUtils.isNotBlank(activeIndexValue)) {
-            tabView.setActiveIndex(Integer.parseInt(activeIndexValue));
+            component.setActiveIndex(Integer.parseInt(activeIndexValue));
 
-            if (tabView.isMultiViewState()) {
-                TabViewState ts = tabView.getMultiViewState(true);
-                ts.setActiveIndex(tabView.getActiveIndex());
+            if (component.isMultiViewState()) {
+                TabViewState ts = component.getMultiViewState(true);
+                ts.setActiveIndex(component.getActiveIndex());
             }
         }
 
@@ -60,7 +59,7 @@ public class TabViewRenderer extends CoreRenderer {
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+    public void encodeEnd(FacesContext context, TabView component) throws IOException {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         TabView tabView = (TabView) component;
         String clientId = tabView.getClientId(context);
@@ -101,85 +100,85 @@ public class TabViewRenderer extends CoreRenderer {
         }
     }
 
-    protected void encodeScript(FacesContext context, TabView tabView) throws IOException {
-        boolean dynamic = tabView.isDynamic();
+    protected void encodeScript(FacesContext context, TabView component) throws IOException {
+        boolean dynamic = component.isDynamic();
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("TabView", tabView);
+        wb.init("TabView", component);
 
         if (dynamic) {
-            wb.attr("dynamic", true).attr("cache", tabView.isCache());
+            wb.attr("dynamic", true).attr("cache", component.isCache());
         }
 
-        wb.callback("onTabChange", "function(index)", tabView.getOnTabChange())
-                .callback("onTabShow", "function(index)", tabView.getOnTabShow())
-                .callback("onTabClose", "function(index)", tabView.getOnTabClose());
+        wb.callback("onTabChange", "function(index)", component.getOnTabChange())
+                .callback("onTabShow", "function(index)", component.getOnTabShow())
+                .callback("onTabClose", "function(index)", component.getOnTabClose());
 
-        wb.attr("effect", tabView.getEffect(), null)
-                .attr("effectDuration", tabView.getEffectDuration(), null)
-                .attr("scrollable", tabView.isScrollable())
-                .attr("tabindex", tabView.getTabindex(), null)
-                .attr("focusOnError", tabView.isFocusOnError(), false)
-                .attr("focusOnLastActiveTab", tabView.isFocusOnLastActiveTab(), false)
-                .attr("touchable", ComponentUtils.isTouchable(context, tabView),  true)
-                .attr("multiViewState", tabView.isMultiViewState(), false);
+        wb.attr("effect", component.getEffect(), null)
+                .attr("effectDuration", component.getEffectDuration(), null)
+                .attr("scrollable", component.isScrollable())
+                .attr("tabindex", component.getTabindex(), null)
+                .attr("focusOnError", component.isFocusOnError(), false)
+                .attr("focusOnLastActiveTab", component.isFocusOnLastActiveTab(), false)
+                .attr("touchable", ComponentUtils.isTouchable(context, component),  true)
+                .attr("multiViewState", component.isMultiViewState(), false);
 
-        encodeClientBehaviors(context, tabView);
+        encodeClientBehaviors(context, component);
 
         wb.finish();
     }
 
-    protected void encodeMarkup(FacesContext context, TabView tabView) throws IOException {
+    protected void encodeMarkup(FacesContext context, TabView component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = tabView.getClientId(context);
-        String widgetVar = tabView.resolveWidgetVar(context);
-        String orientation = tabView.getOrientation();
+        String clientId = component.getClientId(context);
+        String widgetVar = component.resolveWidgetVar(context);
+        String orientation = component.getOrientation();
         String styleClass = getStyleClassBuilder(context)
                 .add(TabView.CONTAINER_CLASS)
                 .add("ui-tabs-" + orientation)
-                .add(tabView.isScrollable(), TabView.SCROLLABLE_TABS_CLASS)
-                .add(tabView.getStyleClass())
-                .add(ComponentUtils.isRTL(context, tabView), "ui-tabs-rtl")
+                .add(component.isScrollable(), TabView.SCROLLABLE_TABS_CLASS)
+                .add(component.getStyleClass())
+                .add(ComponentUtils.isRTL(context, component), "ui-tabs-rtl")
                 .build();
 
-        writer.startElement("div", tabView);
+        writer.startElement("div", component);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, "styleClass");
-        if (tabView.getStyle() != null) {
-            writer.writeAttribute("style", tabView.getStyle(), "style");
+        if (component.getStyle() != null) {
+            writer.writeAttribute("style", component.getStyle(), "style");
         }
 
         writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
 
         if ("bottom".equals(orientation)) {
-            encodeFooter(context, tabView);
-            encodeContents(context, tabView);
-            encodeHeaders(context, tabView);
+            encodeFooter(context, component);
+            encodeContents(context, component);
+            encodeHeaders(context, component);
         }
         else {
-            encodeHeaders(context, tabView);
-            encodeContents(context, tabView);
-            encodeFooter(context, tabView);
+            encodeHeaders(context, component);
+            encodeContents(context, component);
+            encodeFooter(context, component);
         }
 
-        encodeStateHolder(context, tabView, clientId + "_activeIndex", String.valueOf(tabView.getActiveIndex()));
+        encodeStateHolder(context, component, clientId + "_activeIndex", String.valueOf(component.getActiveIndex()));
 
-        if (tabView.isScrollable()) {
+        if (component.isScrollable()) {
             String scrollParam = clientId + "_scrollState";
             String scrollState = context.getExternalContext().getRequestParameterMap().get(scrollParam);
             String scrollValue = scrollState == null ? "0" : scrollState;
-            encodeStateHolder(context, tabView, scrollParam, scrollValue);
+            encodeStateHolder(context, component, scrollParam, scrollValue);
         }
 
         writer.endElement("div");
     }
 
-    protected void encodeStateHolder(FacesContext facesContext, TabView tabView, String name, String value) throws IOException {
+    protected void encodeStateHolder(FacesContext facesContext, TabView component, String name, String value) throws IOException {
         renderHiddenInput(facesContext, name, value, false);
     }
 
-    protected void encodeFooter(FacesContext context, TabView tabView) throws IOException {
-        UIComponent footerFacet = tabView.getFacet("footer");
+    protected void encodeFooter(FacesContext context, TabView component) throws IOException {
+        UIComponent footerFacet = component.getFacet("footer");
         if (FacetUtils.shouldRenderFacet(footerFacet)) {
             ResponseWriter writer = context.getResponseWriter();
             writer.startElement("div", null);
@@ -189,16 +188,16 @@ public class TabViewRenderer extends CoreRenderer {
         }
     }
 
-    protected void encodeHeaders(FacesContext context, TabView tabView) throws IOException {
+    protected void encodeHeaders(FacesContext context, TabView component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        boolean scrollable = tabView.isScrollable();
+        boolean scrollable = component.isScrollable();
 
         if (scrollable) {
             writer.startElement("div", null);
             writer.writeAttribute("class", TabView.NAVIGATOR_SCROLLER_CLASS, null);
 
-            encodeScrollerButton(context, tabView, TabView.NAVIGATOR_LEFT_CLASS, TabView.NAVIGATOR_LEFT_ICON_CLASS);
-            encodeScrollerButton(context, tabView, TabView.NAVIGATOR_RIGHT_CLASS, TabView.NAVIGATOR_RIGHT_ICON_CLASS);
+            encodeScrollerButton(context, component, TabView.NAVIGATOR_LEFT_CLASS, TabView.NAVIGATOR_LEFT_ICON_CLASS);
+            encodeScrollerButton(context, component, TabView.NAVIGATOR_RIGHT_CLASS, TabView.NAVIGATOR_RIGHT_ICON_CLASS);
         }
 
         writer.startElement("ul", null);
@@ -206,9 +205,9 @@ public class TabViewRenderer extends CoreRenderer {
         writer.writeAttribute("role", "tablist", null);
 
         AtomicBoolean withActiveFacet = new AtomicBoolean(false);
-        tabView.forEachTab((tab, i, active) -> {
+        component.forEachTab((tab, i, active) -> {
             try {
-                if (encodeTabHeader(context, tabView, tab, i, active)) {
+                if (encodeTabHeader(context, component, tab, i, active)) {
                     withActiveFacet.set(true);
                 }
             }
@@ -217,7 +216,7 @@ public class TabViewRenderer extends CoreRenderer {
             }
         });
 
-        UIComponent actionsFacet = tabView.getFacet("actions");
+        UIComponent actionsFacet = component.getFacet("actions");
         if (FacetUtils.shouldRenderFacet(actionsFacet)) {
             writer.startElement("li", null);
             writer.writeAttribute("class", "ui-tabs-actions ui-tabs-actions-global", null);
@@ -233,7 +232,7 @@ public class TabViewRenderer extends CoreRenderer {
         }
     }
 
-    protected boolean encodeTabHeader(FacesContext context, TabView tabView, Tab tab, int index, boolean active)
+    protected boolean encodeTabHeader(FacesContext context, TabView component, Tab tab, int index, boolean active)
             throws IOException {
         boolean withFacet = false;
         ResponseWriter writer = context.getResponseWriter();
@@ -243,7 +242,7 @@ public class TabViewRenderer extends CoreRenderer {
                 .add(tab.getTitleStyleClass())
                 .build();
         UIComponent titleFacet = tab.getFacet("title");
-        String tabindex = tab.isDisabled() ? "-1" : tabView.getTabindex();
+        String tabindex = tab.isDisabled() ? "-1" : component.getTabindex();
 
         //header container
         writer.startElement("li", tab);
@@ -304,17 +303,17 @@ public class TabViewRenderer extends CoreRenderer {
         return active && withFacet;
     }
 
-    protected void encodeContents(FacesContext context, TabView tabView) throws IOException {
+    protected void encodeContents(FacesContext context, TabView component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        boolean dynamic = tabView.isDynamic();
-        boolean repeating = tabView.isRepeating();
+        boolean dynamic = component.isDynamic();
+        boolean repeating = component.isRepeating();
 
         writer.startElement("div", null);
         writer.writeAttribute("class", TabView.PANELS_CLASS, null);
 
-        tabView.forEachTab((tab, i, active) -> {
+        component.forEachTab((tab, i, active) -> {
             try {
-                String tabindex = Boolean.TRUE.equals(active) ? tabView.getTabindex() : "-1";
+                String tabindex = Boolean.TRUE.equals(active) ? component.getTabindex() : "-1";
                 encodeTabContent(context, tab, i, active, dynamic, repeating, tabindex);
             }
             catch (IOException ex) {
@@ -373,7 +372,7 @@ public class TabViewRenderer extends CoreRenderer {
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, TabView component) throws IOException {
         //Rendering happens on encodeEnd
     }
 

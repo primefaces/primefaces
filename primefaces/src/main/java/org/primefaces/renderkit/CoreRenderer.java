@@ -74,7 +74,7 @@ import jakarta.faces.convert.Converter;
 import jakarta.faces.render.Renderer;
 import jakarta.faces.validator.Validator;
 
-public abstract class CoreRenderer extends Renderer {
+public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
 
     private static final Logger LOGGER = Logger.getLogger(CoreRenderer.class.getName());
 

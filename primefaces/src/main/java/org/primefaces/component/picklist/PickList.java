@@ -302,7 +302,7 @@ public class PickList extends PickListBase {
 
     @SuppressWarnings("unchecked")
     public void populateModel(FacesContext context, String[] values, List model) {
-        Converter converter = getConverter();
+        Converter<?> converter = getConverter();
 
         if (values != null) {
             for (String item : values) {

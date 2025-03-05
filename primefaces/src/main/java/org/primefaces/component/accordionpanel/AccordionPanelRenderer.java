@@ -43,29 +43,28 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class AccordionPanelRenderer extends CoreRenderer {
+public class AccordionPanelRenderer extends CoreRenderer<AccordionPanel> {
 
     private static final String SB_RESOLVE_ACTIVE_INDEX = AccordionPanelRenderer.class.getName() + "#resolveActiveIndex";
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
-        AccordionPanel acco = (AccordionPanel) component;
+    public void decode(FacesContext context, AccordionPanel component) {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String active = params.get(acco.getClientId(context) + "_active");
+        String active = params.get(component.getClientId(context) + "_active");
 
         if (active != null) {
             if (isValueBlank(active)) {
                 // set an empty string instead of null - otherwise the stateHelper will re-evaluate to the default value
                 // see GitHub #3140
-                acco.setActiveIndex("");
+                component.setActiveIndex("");
             }
             else {
-                acco.setActiveIndex(active);
+                component.setActiveIndex(active);
             }
 
-            if (acco.isMultiViewState()) {
-                AccordionState as = acco.getMultiViewState(true);
-                as.setActiveIndex(acco.getActiveIndex());
+            if (component.isMultiViewState()) {
+                AccordionState as = component.getMultiViewState(true);
+                as.setActiveIndex(component.getActiveIndex());
             }
         }
 
@@ -73,140 +72,139 @@ public class AccordionPanelRenderer extends CoreRenderer {
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+    public void encodeEnd(FacesContext context, AccordionPanel component) throws IOException {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        AccordionPanel acco = (AccordionPanel) component;
 
-        if (acco.isContentLoadRequest(context)) {
-            String clientId = acco.getClientId(context);
+        if (component.isContentLoadRequest(context)) {
+            String clientId = component.getClientId(context);
 
-            if (acco.isRepeating()) {
+            if (component.isRepeating()) {
                 int index = Integer.parseInt(params.get(clientId + "_tabindex"));
-                acco.setIndex(index);
+                component.setIndex(index);
 
-                Tab tabToLoad = acco.getDynamicTab();
+                Tab tabToLoad = component.getDynamicTab();
                 tabToLoad.encodeAll(context);
 
-                if (acco.isDynamic()) {
+                if (component.isDynamic()) {
                     tabToLoad.setLoaded(index, true);
                 }
 
-                acco.setIndex(-1);
+                component.setIndex(-1);
             }
             else {
                 String tabClientId = params.get(clientId + "_currentTab");
-                Tab tabToLoad = acco.findTab(tabClientId);
+                Tab tabToLoad = component.findTab(tabClientId);
                 tabToLoad.encodeAll(context);
                 tabToLoad.setLoaded(true);
             }
         }
         else {
-            acco.resetLoadedTabsState();
+            component.resetLoadedTabsState();
 
-            if (acco.isMultiViewState()) {
-                acco.restoreMultiViewState();
+            if (component.isMultiViewState()) {
+                component.restoreMultiViewState();
             }
 
-            encodeMarkup(context, acco);
-            encodeScript(context, acco);
+            encodeMarkup(context, component);
+            encodeScript(context, component);
         }
     }
 
-    protected void encodeMarkup(FacesContext context, AccordionPanel acco) throws IOException {
+    protected void encodeMarkup(FacesContext context, AccordionPanel component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = acco.getClientId(context);
-        String widgetVar = acco.resolveWidgetVar(context);
-        String styleClass = acco.getStyleClass();
+        String clientId = component.getClientId(context);
+        String widgetVar = component.resolveWidgetVar(context);
+        String styleClass = component.getStyleClass();
         styleClass = styleClass == null ? AccordionPanel.CONTAINER_CLASS : AccordionPanel.CONTAINER_CLASS + " " + styleClass;
 
-        String activeIndex = resolveActiveIndex(context, acco);
+        String activeIndex = resolveActiveIndex(context, component);
 
-        if (ComponentUtils.isRTL(context, acco)) {
+        if (ComponentUtils.isRTL(context, component)) {
             styleClass = styleClass + " ui-accordion-rtl";
         }
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);
-        if (acco.getStyle() != null) {
-            writer.writeAttribute("style", acco.getStyle(), null);
+        if (component.getStyle() != null) {
+            writer.writeAttribute("style", component.getStyle(), null);
         }
 
         writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
 
-        renderDynamicPassThruAttributes(context, acco);
+        renderDynamicPassThruAttributes(context, component);
 
-        encodeTabs(context, acco, activeIndex);
+        encodeTabs(context, component, activeIndex);
 
-        encodeStateHolder(context, acco, activeIndex);
+        encodeStateHolder(context, component, activeIndex);
 
         writer.endElement("div");
     }
 
-    protected void encodeScript(FacesContext context, AccordionPanel acco) throws IOException {
-        boolean multiple = acco.isMultiple();
+    protected void encodeScript(FacesContext context, AccordionPanel component) throws IOException {
+        boolean multiple = component.isMultiple();
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("AccordionPanel", acco);
+        wb.init("AccordionPanel", component);
 
-        if (acco.isDynamic()) {
-            wb.attr("dynamic", true).attr("cache", acco.isCache());
+        if (component.isDynamic()) {
+            wb.attr("dynamic", true).attr("cache", component.isCache());
         }
 
         wb.attr("multiple", multiple, false)
-                .attr("toggleSpeed", acco.getToggleSpeed())
-                .attr("scrollIntoView", acco.getScrollIntoView(), null)
-                .callback("onTabChange", "function(panel)", acco.getOnTabChange())
-                .callback("onTabShow", "function(panel)", acco.getOnTabShow())
-                .callback("onTabClose", "function(panel)", acco.getOnTabClose())
-                .attr("multiViewState", acco.isMultiViewState(), false);
+                .attr("toggleSpeed", component.getToggleSpeed())
+                .attr("scrollIntoView", component.getScrollIntoView(), null)
+                .callback("onTabChange", "function(panel)", component.getOnTabChange())
+                .callback("onTabShow", "function(panel)", component.getOnTabShow())
+                .callback("onTabClose", "function(panel)", component.getOnTabClose())
+                .attr("multiViewState", component.isMultiViewState(), false);
 
-        if (acco.getTabController() != null) {
+        if (component.getTabController() != null) {
             wb.attr("controlled", true);
         }
 
-        encodeClientBehaviors(context, acco);
+        encodeClientBehaviors(context, component);
 
         wb.finish();
     }
 
-    protected void encodeStateHolder(FacesContext context, AccordionPanel accordionPanel, String activeIndex) throws IOException {
-        String clientId = accordionPanel.getClientId(context);
+    protected void encodeStateHolder(FacesContext context, AccordionPanel component, String activeIndex) throws IOException {
+        String clientId = component.getClientId(context);
         String stateHolderId = clientId + "_active";
 
         renderHiddenInput(context, stateHolderId, activeIndex, false);
     }
 
-    protected void encodeTabs(FacesContext context, AccordionPanel acco, String activeIndex) throws IOException {
-        boolean dynamic = acco.isDynamic();
-        boolean repeating = acco.isRepeating();
-        boolean rtl = acco.getDir().equalsIgnoreCase("rtl");
+    protected void encodeTabs(FacesContext context, AccordionPanel component, String activeIndex) throws IOException {
+        boolean dynamic = component.isDynamic();
+        boolean repeating = component.isRepeating();
+        boolean rtl = component.getDir().equalsIgnoreCase("rtl");
 
         List<String> activeIndexes = activeIndex == null
                                      ? Collections.<String>emptyList()
                                      : Arrays.asList(activeIndex.split(","));
 
         if (repeating) {
-            int dataCount = acco.getRowCount();
-            Tab tab = acco.getDynamicTab();
+            int dataCount = component.getRowCount();
+            Tab tab = component.getDynamicTab();
 
             for (int i = 0; i < dataCount; i++) {
-                acco.setIndex(i);
+                component.setIndex(i);
                 boolean active = isActive(tab, activeIndexes, i);
-                encodeTab(context, acco, tab, i, active, dynamic, repeating, rtl);
+                encodeTab(context, component, tab, i, active, dynamic, repeating, rtl);
             }
 
-            acco.setIndex(-1);
+            component.setIndex(-1);
         }
         else {
             int j = 0;
 
-            for (int i = 0; i < acco.getChildCount(); i++) {
-                UIComponent child = acco.getChildren().get(i);
+            for (int i = 0; i < component.getChildCount(); i++) {
+                UIComponent child = component.getChildren().get(i);
                 if (child.isRendered() && child instanceof Tab) {
                     Tab tab = (Tab) child;
                     boolean active = isActive(tab, activeIndexes, j);
-                    encodeTab(context, acco, tab, j, active, dynamic, repeating, rtl);
+                    encodeTab(context, component, tab, j, active, dynamic, repeating, rtl);
                     j++;
                 }
             }
@@ -218,7 +216,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
         return active && !tab.isDisabled();
     }
 
-    protected void encodeTab(FacesContext context, AccordionPanel accordionPanel, Tab tab, int index, boolean active, boolean dynamic,
+    protected void encodeTab(FacesContext context, AccordionPanel component, Tab tab, int index, boolean active, boolean dynamic,
             boolean repeating, boolean rtl) throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
@@ -243,7 +241,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
 
         UIComponent titleFacet = tab.getFacet("title");
         String title = tab.getTitle();
-        String tabindex = tab.isDisabled() ? "-1" : accordionPanel.getTabindex();
+        String tabindex = tab.isDisabled() ? "-1" : component.getTabindex();
 
         //header container
         writer.startElement("div", null);
@@ -330,7 +328,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, AccordionPanel component) throws IOException {
         //Do nothing
     }
 

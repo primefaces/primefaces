@@ -33,26 +33,25 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIParameter;
 import jakarta.faces.context.FacesContext;
 
-public class EffectRenderer extends CoreRenderer {
+public class EffectRenderer extends CoreRenderer<Effect> {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Effect effect = (Effect) component;
+    public void encodeEnd(FacesContext context, Effect component) throws IOException {
         String source = component.getParent().getClientId(context);
-        String event = effect.getEvent();
-        int delay = effect.getDelay();
+        String event = component.getEvent();
+        int delay = component.getDelay();
 
-        UIComponent target = SearchExpressionUtils.contextlessOptionalResolveComponent(context, effect, effect.getFor());
+        UIComponent target = SearchExpressionUtils.contextlessOptionalResolveComponent(context, component, component.getFor());
         if (target == null) {
-            target = effect.getParent();
+            target = component.getParent();
         }
 
         String targetId = target.getClientId(context);
 
-        String animation = getEffectBuilder(effect, targetId).build();
+        String animation = getEffectBuilder(component, targetId).build();
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Effect", effect)
+        wb.init("Effect", component)
                 .attr("source", source)
                 .attr("event", event)
                 .attr("delay", delay)
@@ -61,10 +60,10 @@ public class EffectRenderer extends CoreRenderer {
         wb.finish();
     }
 
-    private EffectBuilder getEffectBuilder(Effect effect, String effectedComponentClientId) {
-        EffectBuilder effectBuilder = new EffectBuilder(effect.getType(), effectedComponentClientId, effect.isQueue());
+    private EffectBuilder getEffectBuilder(Effect component, String effectedComponentClientId) {
+        EffectBuilder effectBuilder = new EffectBuilder(component.getType(), effectedComponentClientId, component.isQueue());
 
-        for (UIComponent child : effect.getChildren()) {
+        for (UIComponent child : component.getChildren()) {
             if (child instanceof UIParameter) {
                 UIParameter param = (UIParameter) child;
 
@@ -72,7 +71,7 @@ public class EffectRenderer extends CoreRenderer {
             }
         }
 
-        effectBuilder.atSpeed(effect.getSpeed());
+        effectBuilder.atSpeed(component.getSpeed());
 
         return effectBuilder;
     }

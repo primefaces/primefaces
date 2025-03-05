@@ -28,93 +28,90 @@ import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
 
-import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class ChipRenderer extends CoreRenderer {
+public class ChipRenderer extends CoreRenderer<Chip> {
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
+    public void decode(FacesContext context, Chip component) {
         decodeBehaviors(context, component);
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Chip chip = (Chip) component;
-
-        encodeMarkup(context, chip);
-        encodeScript(context, chip);
+    public void encodeEnd(FacesContext context, Chip component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    protected void encodeMarkup(FacesContext context, Chip chip) throws IOException {
+    protected void encodeMarkup(FacesContext context, Chip component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = getStyleClassBuilder(context)
                     .add(Chip.STYLE_CLASS)
-                    .add(chip.getStyleClass())
-                    .add(chip.getImage() != null, Chip.IMAGE_CLASS)
+                    .add(component.getStyleClass())
+                    .add(component.getImage() != null, Chip.IMAGE_CLASS)
                     .build();
 
         writer.startElement("div", null);
-        writer.writeAttribute("id", chip.getClientId(context), "id");
+        writer.writeAttribute("id", component.getClientId(context), "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        if (chip.getStyle() != null) {
-            writer.writeAttribute("style", chip.getStyle(), "style");
+        if (component.getStyle() != null) {
+            writer.writeAttribute("style", component.getStyle(), "style");
         }
 
-        if (chip.getChildCount() > 0) {
-            renderChildren(context, chip);
+        if (component.getChildCount() > 0) {
+            renderChildren(context, component);
         }
         else {
-            encodeDefaultContent(context, chip);
+            encodeDefaultContent(context, component);
         }
 
         writer.endElement("div");
     }
 
-    protected void encodeDefaultContent(FacesContext context, Chip chip) throws IOException {
+    protected void encodeDefaultContent(FacesContext context, Chip component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        if (chip.getImage() != null) {
+        if (component.getImage() != null) {
             writer.startElement("img", null);
-            writer.writeAttribute("src", chip.getImage(), null);
+            writer.writeAttribute("src", component.getImage(), null);
             writer.endElement("img");
         }
-        else if (chip.getIcon() != null) {
+        else if (component.getIcon() != null) {
             String iconStyleClass = getStyleClassBuilder(context)
                     .add(Chip.ICON_CLASS)
-                    .add(chip.getIcon())
+                    .add(component.getIcon())
                     .build();
 
-            writer.startElement("span", chip);
+            writer.startElement("span", component);
             writer.writeAttribute("class", iconStyleClass, null);
             writer.endElement("span");
         }
 
-        if (chip.getLabel() != null) {
-            writer.startElement("div", chip);
+        if (component.getLabel() != null) {
+            writer.startElement("div", component);
             writer.writeAttribute("class", Chip.TEXT_CLASS, null);
-            writer.writeText(chip.getLabel(), "label");
+            writer.writeText(component.getLabel(), "label");
             writer.endElement("div");
         }
 
-        if (chip.getRemovable()) {
+        if (component.getRemovable()) {
             String removeIconStyleClass = getStyleClassBuilder(context)
                     .add(Chip.REMOVE_ICON_CLASS)
-                    .add(chip.getRemoveIcon())
+                    .add(component.getRemoveIcon())
                     .build();
 
-            writer.startElement("span", chip);
+            writer.startElement("span", component);
             writer.writeAttribute("tabindex", "0", null);
             writer.writeAttribute("class", removeIconStyleClass, null);
             writer.endElement("span");
         }
     }
 
-    protected void encodeScript(FacesContext context, Chip chip) throws IOException {
+    protected void encodeScript(FacesContext context, Chip component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Chip", chip);
-        encodeClientBehaviors(context, chip);
+        wb.init("Chip", component);
+        encodeClientBehaviors(context, component);
         wb.finish();
     }
 
@@ -124,7 +121,7 @@ public class ChipRenderer extends CoreRenderer {
     }
 
     @Override
-    public void encodeChildren(final FacesContext fc, final UIComponent component) {
+    public void encodeChildren(FacesContext fc, Chip component) {
         // nothing to do
     }
 }

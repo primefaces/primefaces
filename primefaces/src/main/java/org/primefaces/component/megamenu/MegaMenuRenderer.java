@@ -43,37 +43,34 @@ import java.util.List;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 
-public class MegaMenuRenderer extends BaseMenuRenderer {
+public class MegaMenuRenderer extends BaseMenuRenderer<MegaMenu> {
 
     @Override
-    protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
-        MegaMenu menu = (MegaMenu) abstractMenu;
-
+    protected void encodeScript(FacesContext context, MegaMenu component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("MegaMenu", menu)
-                .attr("tabIndex", menu.getTabindex(), "0")
-                .attr("autoDisplay", menu.isAutoDisplay())
-                .attr("delay", menu.getDelay())
-                .attr("activeIndex", menu.getActiveIndex(), Integer.MIN_VALUE);
+        wb.init("MegaMenu", component)
+                .attr("tabIndex", component.getTabindex(), "0")
+                .attr("autoDisplay", component.isAutoDisplay())
+                .attr("delay", component.getDelay())
+                .attr("activeIndex", component.getActiveIndex(), Integer.MIN_VALUE);
 
         wb.finish();
     }
 
     @Override
-    protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {
+    protected void encodeMarkup(FacesContext context, MegaMenu component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        MegaMenu menu = (MegaMenu) abstractMenu;
-        boolean vertical = menu.getOrientation().equals("vertical");
-        String clientId = menu.getClientId(context);
-        String style = menu.getStyle();
+        boolean vertical = component.getOrientation().equals("vertical");
+        String clientId = component.getClientId(context);
+        String style = component.getStyle();
         String styleClass = getStyleClassBuilder(context)
                 .add(MegaMenu.CONTAINER_CLASS)
-                .add(menu.getStyleClass())
+                .add(component.getStyleClass())
                 .add(vertical, MegaMenu.VERTICAL_CLASS)
-                .add(ComponentUtils.isRTL(context, abstractMenu), AbstractMenu.MENU_RTL_CLASS)
+                .add(ComponentUtils.isRTL(context, component), AbstractMenu.MENU_RTL_CLASS)
                 .build();
 
-        writer.startElement("div", menu);
+        writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
         writer.writeAttribute("tabindex", "-1", "tabindex");
@@ -85,23 +82,23 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_MENUBAR, null);
         writer.writeAttribute("class", Menu.LIST_CLASS, null);
 
-        encodeFacet(context, menu, "start", Menu.START_CLASS);
+        encodeFacet(context, component, "start", Menu.START_CLASS);
 
-        if (menu.getElementsCount() > 0) {
-            encodeRootItems(context, menu);
+        if (component.getElementsCount() > 0) {
+            encodeRootItems(context, component);
         }
 
-        encodeFacet(context, menu, "options", Menu.OPTIONS_CLASS);
-        encodeFacet(context, menu, "end", Menu.END_CLASS);
+        encodeFacet(context, component, "options", Menu.OPTIONS_CLASS);
+        encodeFacet(context, component, "end", Menu.END_CLASS);
 
         writer.endElement("ul");
 
         writer.endElement("div");
     }
 
-    protected void encodeRootItems(FacesContext context, MegaMenu menu) throws IOException {
+    protected void encodeRootItems(FacesContext context, MegaMenu component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        List<MenuElement> elements = menu.getElements();
+        List<MenuElement> elements = component.getElements();
 
         for (MenuElement element : elements) {
             if (element.isRendered()) {
@@ -109,11 +106,11 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
                     writer.startElement("li", null);
                     writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
                     writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
-                    encodeMenuItem(context, menu, (MenuItem) element, "-1");
+                    encodeMenuItem(context, component, (MenuItem) element, "-1");
                     writer.endElement("li");
                 }
                 else if (element instanceof Submenu) {
-                    encodeRootSubmenu(context, menu, (Submenu) element);
+                    encodeRootSubmenu(context, component, (Submenu) element);
                 }
                 else if (element instanceof Separator) {
                     encodeSeparator(context, (Separator) element);
@@ -122,10 +119,10 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         }
     }
 
-    protected void encodeRootSubmenu(FacesContext context, MegaMenu menu, Submenu submenu) throws IOException {
+    protected void encodeRootSubmenu(FacesContext context, MegaMenu component, Submenu submenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        boolean isRtl = ComponentUtils.isRTL(context, menu);
-        boolean isVertical = menu.getOrientation().equals("vertical");
+        boolean isRtl = ComponentUtils.isRTL(context, component);
+        boolean isVertical = component.getOrientation().equals("vertical");
         String style = submenu.getStyle();
         String styleClass = getStyleClassBuilder(context)
                 .add(Menu.TIERED_SUBMENU_CLASS)
@@ -176,7 +173,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
 
             for (MenuElement submenuElement : submenuElements) {
                 if (submenuElement.isRendered() && submenuElement instanceof MenuColumn) {
-                    encodeColumn(context, menu, (MenuColumn) submenuElement);
+                    encodeColumn(context, component, (MenuColumn) submenuElement);
                 }
             }
 
@@ -190,7 +187,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         writer.endElement("li");
     }
 
-    protected void encodeColumn(FacesContext context, MegaMenu menu, MenuColumn column) throws IOException {
+    protected void encodeColumn(FacesContext context, MegaMenu component, MenuColumn column) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("td", null);
@@ -206,7 +203,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
             for (MenuElement element : columnElements) {
                 if (element.isRendered()) {
                     if (element instanceof Submenu) {
-                        encodeDescendantSubmenu(context, menu, (Submenu) element);
+                        encodeDescendantSubmenu(context, component, (Submenu) element);
                     }
                     else if (element instanceof Separator) {
                         encodeSubmenuSeparator(context, (Separator) element);

@@ -34,10 +34,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 
-public class RowRenderer extends CoreRenderer {
+public class RowRenderer extends CoreRenderer<Row> {
 
     static final Map<String, HelperRowRenderer> RENDERERS;
 
@@ -49,24 +48,23 @@ public class RowRenderer extends CoreRenderer {
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Row row = (Row) component;
+    public void encodeEnd(FacesContext context, Row component) throws IOException {
         String helperKey = (String) context.getAttributes().get(Constants.HELPER_RENDERER);
 
         if (helperKey != null) {
             HelperRowRenderer renderer = RENDERERS.get(helperKey);
 
             if (renderer != null) {
-                renderer.encode(context, row);
+                renderer.encode(context, component);
             }
         }
         else {
-            renderChildren(context, row);
+            renderChildren(context, component);
         }
     }
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, Row component) throws IOException {
         //Do nothing
     }
 
