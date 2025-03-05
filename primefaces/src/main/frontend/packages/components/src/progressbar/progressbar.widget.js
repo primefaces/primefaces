@@ -84,6 +84,8 @@ PrimeFaces.widget.ProgressBar = class ProgressBar extends PrimeFaces.widget.Base
 
         if (this.cfg.ajax) {
 
+            $this.callBehavior('start');
+
             this.progressPoll = setInterval(function () {
                 var options = {
                     source: $this.id,
@@ -98,6 +100,9 @@ PrimeFaces.widget.ProgressBar = class ProgressBar extends PrimeFaces.widget.Base
                         //trigger complete listener
                         if (value === 100) {
                             $this.fireCompleteEvent();
+                        }
+                        else {
+                            $this.callBehavior('progress');
                         }
                     }
                 };
