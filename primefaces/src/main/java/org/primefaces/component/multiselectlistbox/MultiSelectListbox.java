@@ -28,7 +28,6 @@ import org.primefaces.event.UnselectEvent;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.MapBuilder;
 
 import java.util.Collection;
 import java.util.Map;
@@ -54,11 +53,11 @@ public class MultiSelectListbox extends MultiSelectListboxBase {
     public static final String ITEM_CLASS = "ui-multiselectlistbox-item";
 
     private static final String DEFAULT_EVENT = "change";
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("change", null)
-            .put("itemSelect", SelectEvent.class)
-            .put("itemUnselect", UnselectEvent.class)
-            .build();
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Map.ofEntries(
+            Map.entry("change", null),
+            Map.entry("itemSelect", SelectEvent.class),
+            Map.entry("itemUnselect", UnselectEvent.class)
+    );
     private static final Collection<String> EVENT_NAMES = LangUtils.concat(BEHAVIOR_EVENT_MAPPING.keySet(), DEFAULT_SELECT_EVENT_NAMES);
 
     @Override

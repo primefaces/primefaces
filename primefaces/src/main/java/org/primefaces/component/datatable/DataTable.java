@@ -58,7 +58,6 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.ELUtils;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.MapBuilder;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -179,33 +178,33 @@ public class DataTable extends DataTableBase {
 
     private static final Logger LOGGER = Logger.getLogger(DataTable.class.getName());
 
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("page", PageEvent.class)
-            .put("sort", SortEvent.class)
-            .put("filter", FilterEvent.class)
-            .put("rowSelect", SelectEvent.class)
-            .put("rowUnselect", UnselectEvent.class)
-            .put("rowEdit", RowEditEvent.class)
-            .put("rowEditInit", RowEditEvent.class)
-            .put("rowEditCancel", RowEditEvent.class)
-            .put("colResize", ColumnResizeEvent.class)
-            .put("toggleSelect", ToggleSelectEvent.class)
-            .put("colReorder", null)
-            .put("contextMenu", SelectEvent.class)
-            .put("rowSelectRadio", SelectEvent.class)
-            .put("rowSelectCheckbox", SelectEvent.class)
-            .put("rowUnselectCheckbox", UnselectEvent.class)
-            .put("rowDblselect", SelectEvent.class)
-            .put("rowToggle", ToggleEvent.class)
-            .put("cellEditInit", CellEditEvent.class)
-            .put("cellEdit", CellEditEvent.class)
-            .put("rowReorder", ReorderEvent.class)
-            .put("tap", SelectEvent.class)
-            .put("taphold", SelectEvent.class)
-            .put("cellEditCancel", CellEditEvent.class)
-            .put("virtualScroll", PageEvent.class)
-            .put("liveScroll", PageEvent.class)
-            .build();
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Map.ofEntries(
+            Map.entry("page", PageEvent.class),
+            Map.entry("sort", SortEvent.class),
+            Map.entry("filter", FilterEvent.class),
+            Map.entry("rowSelect", SelectEvent.class),
+            Map.entry("rowUnselect", UnselectEvent.class),
+            Map.entry("rowEdit", RowEditEvent.class),
+            Map.entry("rowEditInit", RowEditEvent.class),
+            Map.entry("rowEditCancel", RowEditEvent.class),
+            Map.entry("colResize", ColumnResizeEvent.class),
+            Map.entry("toggleSelect", ToggleSelectEvent.class),
+            Map.entry("colReorder", null),
+            Map.entry("contextMenu", SelectEvent.class),
+            Map.entry("rowSelectRadio", SelectEvent.class),
+            Map.entry("rowSelectCheckbox", SelectEvent.class),
+            Map.entry("rowUnselectCheckbox", UnselectEvent.class),
+            Map.entry("rowDblselect", SelectEvent.class),
+            Map.entry("rowToggle", ToggleEvent.class),
+            Map.entry("cellEditInit", CellEditEvent.class),
+            Map.entry("cellEdit", CellEditEvent.class),
+            Map.entry("rowReorder", ReorderEvent.class),
+            Map.entry("tap", SelectEvent.class),
+            Map.entry("taphold", SelectEvent.class),
+            Map.entry("cellEditCancel", CellEditEvent.class),
+            Map.entry("virtualScroll", PageEvent.class),
+            Map.entry("liveScroll", PageEvent.class)
+    );
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 

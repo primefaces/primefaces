@@ -32,7 +32,6 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.MapBuilder;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -69,11 +68,11 @@ public class DataList extends DataListBase {
     public static final String FOOTER_CLASS = "ui-datalist-footer ui-widget-header";
     public static final String DATALIST_EMPTY_MESSAGE_CLASS = "ui-datalist-empty-message";
 
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("page", PageEvent.class)
-            .put("tap", SelectEvent.class)
-            .put("taphold", SelectEvent.class)
-            .build();
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Map.ofEntries(
+            Map.entry("page", PageEvent.class),
+            Map.entry("tap", SelectEvent.class),
+            Map.entry("taphold", SelectEvent.class)
+    );
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 

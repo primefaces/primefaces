@@ -24,7 +24,6 @@
 package org.primefaces.component.overlaypanel;
 
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.MapBuilder;
 
 import java.util.Collection;
 import java.util.Map;
@@ -47,11 +46,11 @@ public class OverlayPanel extends OverlayPanelBase {
 
     private static final String DEFAULT_EVENT = "show";
 
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("show", null)
-            .put("hide", null)
-            .put("loadContent", null)
-            .build();
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Map.ofEntries(
+            Map.entry("show", null),
+            Map.entry("hide", null),
+            Map.entry("loadContent", null)
+    );
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
     public OverlayPanelRenderer getRenderer() {

@@ -27,7 +27,6 @@ import org.primefaces.event.DragDropEvent;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
 
 import java.util.Collection;
 import java.util.Map;
@@ -50,9 +49,9 @@ public class Droppable extends DroppableBase {
 
     private static final String DEFAULT_EVENT = "drop";
 
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("drop", null)
-            .build();
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Map.ofEntries(
+            Map.entry("drop", null)
+    );
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 

@@ -32,7 +32,6 @@ import org.primefaces.model.Visibility;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.FacetUtils;
-import org.primefaces.util.MapBuilder;
 
 import java.util.Collection;
 import java.util.Map;
@@ -63,10 +62,10 @@ public class Panel extends PanelBase {
     public static final String PANEL_FOOTER_CLASS = "ui-panel-footer ui-widget-content";
     public static final String PANEL_ACTIONS_CLASS = "ui-panel-actions";
 
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("toggle", ToggleEvent.class)
-            .put("close", CloseEvent.class)
-            .build();
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Map.ofEntries(
+            Map.entry("toggle", ToggleEvent.class),
+            Map.entry("close", CloseEvent.class)
+    );
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 

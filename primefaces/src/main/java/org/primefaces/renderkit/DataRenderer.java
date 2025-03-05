@@ -41,7 +41,6 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.MapBuilder;
 import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
@@ -53,17 +52,17 @@ import jakarta.faces.context.ResponseWriter;
 
 public class DataRenderer<T extends UIComponent & Pageable> extends CoreRenderer<T> {
 
-    private static final Map<String, PaginatorElementRenderer> PAGINATOR_ELEMENTS = MapBuilder.<String, PaginatorElementRenderer>builder()
-            .put("{CurrentPageReport}", new CurrentPageReportRenderer())
-            .put("{FirstPageLink}", new FirstPageLinkRenderer())
-            .put("{PreviousPageLink}", new PrevPageLinkRenderer())
-            .put("{NextPageLink}", new NextPageLinkRenderer())
-            .put("{LastPageLink}", new LastPageLinkRenderer())
-            .put("{PageLinks}", new PageLinksRenderer())
-            .put("{RowsPerPageDropdown}", new RowsPerPageDropdownRenderer())
-            .put("{JumpToPageDropdown}", new JumpToPageDropdownRenderer())
-            .put("{JumpToPageInput}", new JumpToPageInputRenderer())
-            .build();
+    private static final Map<String, PaginatorElementRenderer> PAGINATOR_ELEMENTS = Map.ofEntries(
+            Map.entry("{CurrentPageReport}", new CurrentPageReportRenderer()),
+            Map.entry("{FirstPageLink}", new FirstPageLinkRenderer()),
+            Map.entry("{PreviousPageLink}", new PrevPageLinkRenderer()),
+            Map.entry("{NextPageLink}", new NextPageLinkRenderer()),
+            Map.entry("{LastPageLink}", new LastPageLinkRenderer()),
+            Map.entry("{PageLinks}", new PageLinksRenderer()),
+            Map.entry("{RowsPerPageDropdown}", new RowsPerPageDropdownRenderer()),
+            Map.entry("{JumpToPageDropdown}", new JumpToPageDropdownRenderer()),
+            Map.entry("{JumpToPageInput}", new JumpToPageInputRenderer())
+    );
 
     public static void addPaginatorElement(String element, PaginatorElementRenderer renderer) {
         PAGINATOR_ELEMENTS.put(element, renderer);

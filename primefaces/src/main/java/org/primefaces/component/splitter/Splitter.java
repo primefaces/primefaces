@@ -26,7 +26,6 @@ package org.primefaces.component.splitter;
 import org.primefaces.event.SplitterResizeEvent;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -54,9 +53,9 @@ public class Splitter extends SplitterBase {
     public static final String GUTTER_HANDLE_CLASS = "ui-splitter-gutter-handle";
 
     private static final String DEFAULT_EVENT = "resizeEnd";
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put(DEFAULT_EVENT, SplitterResizeEvent.class)
-            .build();
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Map.ofEntries(
+            Map.entry(DEFAULT_EVENT, SplitterResizeEvent.class)
+    );
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
     @Override

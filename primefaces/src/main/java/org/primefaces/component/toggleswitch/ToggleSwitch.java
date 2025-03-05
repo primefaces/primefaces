@@ -23,8 +23,6 @@
  */
 package org.primefaces.component.toggleswitch;
 
-import org.primefaces.util.MapBuilder;
-
 import java.util.Collection;
 import java.util.Map;
 
@@ -45,9 +43,9 @@ public class ToggleSwitch extends ToggleSwitchBase {
     public static final String CHECKED_CLASS = "ui-toggleswitch-checked";
 
     private static final String DEFAULT_EVENT = "change";
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("change", null)
-            .build();
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Map.ofEntries(
+            Map.entry("change", null)
+    );
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
     @Override

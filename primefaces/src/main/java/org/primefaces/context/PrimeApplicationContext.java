@@ -47,7 +47,6 @@ import org.primefaces.metadata.transformer.MetadataTransformer;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.Lazy;
-import org.primefaces.util.MapBuilder;
 import org.primefaces.util.PropertyDescriptorResolver;
 import org.primefaces.validate.bean.ClientValidationConstraint;
 import org.primefaces.virusscan.VirusScannerService;
@@ -190,23 +189,24 @@ public class PrimeApplicationContext {
     }
 
     private void registerDefaultExporters() {
-        MapBuilder.builder(exporters)
-                .put(DataTable.class, MapBuilder.<String, Class<? extends Exporter<?>>>builder()
-                        .put("xls", DataTableExcelExporter.class)
-                        .put("pdf", DataTablePDFExporter.class)
-                        .put("csv", DataTableCSVExporter.class)
-                        .put("xml", DataTableXMLExporter.class)
-                        .put("xlsx", DataTableExcelXExporter.class)
-                        .put("xlsxstream", DataTableExcelXStreamExporter.class)
-                        .build())
-                .put(TreeTable.class, MapBuilder.<String, Class<? extends Exporter<?>>>builder()
-                        .put("xls", TreeTableExcelExporter.class)
-                        .put("pdf", TreeTablePDFExporter.class)
-                        .put("csv", TreeTableCSVExporter.class)
-                        .put("xml", TreeTableXMLExporter.class)
-                        .put("xlsx", TreeTableExcelXExporter.class)
-                        .put("xlsxstream", TreeTableExcelXStreamExporter.class)
-                        .build());
+        exporters.putAll(Map.ofEntries(
+            Map.entry(DataTable.class, Map.ofEntries(
+                Map.entry("xls", DataTableExcelExporter.class),
+                Map.entry("pdf", DataTablePDFExporter.class),
+                Map.entry("csv", DataTableCSVExporter.class),
+                Map.entry("xml", DataTableXMLExporter.class),
+                Map.entry("xlsx", DataTableExcelXExporter.class),
+                Map.entry("xlsxstream", DataTableExcelXStreamExporter.class)
+            )),
+            Map.entry(TreeTable.class, Map.ofEntries(
+                Map.entry("xls", TreeTableExcelExporter.class),
+                Map.entry("pdf", TreeTablePDFExporter.class),
+                Map.entry("csv", TreeTableCSVExporter.class),
+                Map.entry("xml", TreeTableXMLExporter.class),
+                Map.entry("xlsx", TreeTableExcelXExporter.class),
+                Map.entry("xlsxstream", TreeTableExcelXStreamExporter.class)
+            ))
+        ));
     }
 
     private void resolveFileTypeDetector() {

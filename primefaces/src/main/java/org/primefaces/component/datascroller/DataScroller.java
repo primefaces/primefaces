@@ -23,8 +23,6 @@
  */
 package org.primefaces.component.datascroller;
 
-import org.primefaces.util.MapBuilder;
-
 import java.util.Collection;
 import java.util.Map;
 
@@ -52,9 +50,9 @@ public class DataScroller extends DataScrollerBase {
     public static final String VIRTUALSCROLL_WRAPPER_CLASS = "ui-datascroller-virtualscroll-wrapper";
 
     private static final String DEFAULT_EVENT = "load";
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-                .put(DEFAULT_EVENT, null)
-                .build();
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Map.ofEntries(
+            Map.entry(DEFAULT_EVENT, null)
+    );
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 

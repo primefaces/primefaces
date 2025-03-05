@@ -23,8 +23,6 @@
  */
 package org.primefaces.component.idlemonitor;
 
-import org.primefaces.util.MapBuilder;
-
 import java.util.Collection;
 import java.util.Map;
 
@@ -38,10 +36,10 @@ public class IdleMonitor extends IdleMonitorBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.IdleMonitor";
 
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("idle", null)
-            .put("active", null)
-            .build();
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Map.ofEntries(
+            Map.entry("idle", null),
+            Map.entry("active", null)
+    );
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 

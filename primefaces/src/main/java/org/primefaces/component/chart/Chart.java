@@ -24,7 +24,6 @@
 package org.primefaces.component.chart;
 
 import org.primefaces.event.ItemSelectEvent;
-import org.primefaces.util.MapBuilder;
 
 import java.util.Collection;
 import java.util.Map;
@@ -42,10 +41,9 @@ import jakarta.faces.event.FacesEvent;
 public class Chart extends ChartBase {
 
     private static final String DEFAULT_EVENT = "itemSelect";
-
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("itemSelect", ItemSelectEvent.class)
-            .build();
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Map.ofEntries(
+            Map.entry("itemSelect", ItemSelectEvent.class)
+    );
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 

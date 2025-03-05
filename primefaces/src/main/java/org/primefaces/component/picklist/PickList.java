@@ -30,7 +30,6 @@ import org.primefaces.model.DualListModel;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.MapBuilder;
 import org.primefaces.util.MessageFactory;
 
 import java.util.ArrayList;
@@ -93,12 +92,12 @@ public class PickList extends PickListBase {
     public static final String FILTER_CLASS = "ui-picklist-filter ui-inputfield ui-inputtext ui-widget ui-state-default";
     public static final String FILTER_CONTAINER = "ui-picklist-filter-container";
 
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("transfer", TransferEvent.class)
-            .put("select", SelectEvent.class)
-            .put("unselect", UnselectEvent.class)
-            .put("reorder", null)
-            .build();
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Map.ofEntries(
+            Map.entry("transfer", TransferEvent.class),
+            Map.entry("select", SelectEvent.class),
+            Map.entry("unselect", UnselectEvent.class),
+            Map.entry("reorder", null)
+    );
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
     private Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>(1);

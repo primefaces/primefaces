@@ -27,23 +27,23 @@ import java.util.Map;
 
 public class GridLayoutUtils {
 
-    private static final Map<Integer, String> GRID_COLUMN_MAP = MapBuilder.<Integer, String>builder()
-            .put(1, "ui-g-12 ui-md-12")
-            .put(2, "ui-g-12 ui-md-6")
-            .put(3, "ui-g-12 ui-md-4")
-            .put(4, "ui-g-12 ui-md-3")
-            .put(6, "ui-g-12 ui-md-2")
-            .put(12, "ui-g-12 ui-md-1")
-            .build();
+    private static final Map<Integer, String> GRID_COLUMN_MAP = Map.ofEntries(
+            Map.entry(1, "ui-g-12 ui-md-12"),
+            Map.entry(2, "ui-g-12 ui-md-6"),
+            Map.entry(3, "ui-g-12 ui-md-4"),
+            Map.entry(4, "ui-g-12 ui-md-3"),
+            Map.entry(6, "ui-g-12 ui-md-2"),
+            Map.entry(12, "ui-g-12 ui-md-1")
+    );
 
-    private static final Map<Integer, String> FLEX_COLUMN_MAP = MapBuilder.<Integer, String>builder()
-            .put(1, "col-12 md:col-12")
-            .put(2, "col-12 md:col-6")
-            .put(3, "col-12 md:col-4")
-            .put(4, "col-12 md:col-3")
-            .put(6, "col-12 md:col-2")
-            .put(12, "col-12 md:col-1")
-            .build();
+    private static final Map<Integer, String> FLEX_COLUMN_MAP = Map.ofEntries(
+            Map.entry(1, "col-12 md:col-12"),
+            Map.entry(2, "col-12 md:col-6"),
+            Map.entry(3, "col-12 md:col-4"),
+            Map.entry(4, "col-12 md:col-3"),
+            Map.entry(6, "col-12 md:col-2"),
+            Map.entry(12, "col-12 md:col-1")
+    );
 
     private GridLayoutUtils() {
     }

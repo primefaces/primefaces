@@ -28,7 +28,6 @@ import org.primefaces.event.UnselectEvent;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.MapBuilder;
 
 import java.util.Collection;
 import java.util.List;
@@ -57,10 +56,10 @@ public class SelectOneListbox extends SelectOneListboxBase {
     public static final String FILTER_ICON_CLASS = "ui-icon ui-icon-search";
     public static final List<String> DOM_EVENTS = LangUtils.unmodifiableList("onchange", "onclick", "ondblclick");
 
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("itemSelect", SelectEvent.class)
-            .put("itemUnselect", UnselectEvent.class)
-            .build();
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Map.ofEntries(
+            Map.entry("itemSelect", SelectEvent.class),
+            Map.entry("itemUnselect", UnselectEvent.class)
+    );
 
     private static final Collection<String> EVENT_NAMES = LangUtils.concat(BEHAVIOR_EVENT_MAPPING.keySet(), DEFAULT_SELECT_EVENT_NAMES);
 

@@ -28,7 +28,6 @@ import org.primefaces.model.dashboard.DashboardModel;
 import org.primefaces.model.dashboard.DashboardWidget;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
 
 import java.util.Collection;
 import java.util.Map;
@@ -53,9 +52,9 @@ public class Dashboard extends DashboardBase {
     public static final String COLUMN_CLASS = "ui-dashboard-column";
     public static final String PANEL_CLASS = "ui-dashboard-panel";
 
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("reorder", DashboardReorderEvent.class)
-            .build();
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Map.ofEntries(
+            Map.entry("reorder", DashboardReorderEvent.class)
+    );
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 

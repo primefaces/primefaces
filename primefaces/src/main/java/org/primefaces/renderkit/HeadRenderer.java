@@ -30,7 +30,6 @@ import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.LocaleUtils;
-import org.primefaces.util.MapBuilder;
 import org.primefaces.util.ResourceUtils;
 
 import java.io.IOException;
@@ -75,11 +74,11 @@ public class HeadRenderer extends Renderer<UIComponent> {
     private static final Logger LOGGER = Logger.getLogger(HeadRenderer.class.getName());
     private static final String LIBRARY = "primefaces";
 
-    private static final Map<String, String> THEME_MAPPING = MapBuilder.<String, String>builder()
-            .put("saga", "saga-blue")
-            .put("arya", "arya-blue")
-            .put("vela", "vela-blue")
-            .build();
+    private static final Map<String, String> THEME_MAPPING = Map.ofEntries(
+            Map.entry("saga", "saga-blue"),
+            Map.entry("arya", "arya-blue"),
+            Map.entry("vela", "vela-blue")
+    );
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {

@@ -29,7 +29,6 @@ import org.primefaces.event.MoveEvent;
 import org.primefaces.event.ResizeEvent;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
 
 import java.util.Collection;
 import java.util.Map;
@@ -65,18 +64,18 @@ public class Dialog extends DialogBase {
 
     private static final String DEFAULT_EVENT = "close";
 
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("close", CloseEvent.class)
-            .put("minimize", null)
-            .put("maximize", null)
-            .put("move", MoveEvent.class)
-            .put("restoreMinimize", null)
-            .put("restoreMaximize", null)
-            .put("open", null)
-            .put("loadContent", null)
-            .put("resizeStart", ResizeEvent.class)
-            .put("resizeStop", ResizeEvent.class)
-            .build();
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Map.ofEntries(
+            Map.entry("close", CloseEvent.class),
+            Map.entry("minimize", null),
+            Map.entry("maximize", null),
+            Map.entry("move", MoveEvent.class),
+            Map.entry("restoreMinimize", null),
+            Map.entry("restoreMaximize", null),
+            Map.entry("open", null),
+            Map.entry("loadContent", null),
+            Map.entry("resizeStart", ResizeEvent.class),
+            Map.entry("resizeStop", ResizeEvent.class)
+    );
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
     @Override

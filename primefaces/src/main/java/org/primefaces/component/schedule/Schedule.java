@@ -33,7 +33,6 @@ import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LocaleUtils;
-import org.primefaces.util.MapBuilder;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -63,16 +62,16 @@ public class Schedule extends ScheduleBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Schedule";
 
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("dateSelect", SelectEvent.class)
-            .put("dateDblSelect", SelectEvent.class)
-            .put("eventSelect", SelectEvent.class)
-            .put("eventDblSelect", SelectEvent.class)
-            .put("eventMove", ScheduleEntryMoveEvent.class)
-            .put("eventResize", ScheduleEntryResizeEvent.class)
-            .put("viewChange", SelectEvent.class)
-            .put("rangeSelect", ScheduleRangeEvent.class)
-            .build();
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Map.ofEntries(
+            Map.entry("dateSelect", SelectEvent.class),
+            Map.entry("dateDblSelect", SelectEvent.class),
+            Map.entry("eventSelect", SelectEvent.class),
+            Map.entry("eventDblSelect", SelectEvent.class),
+            Map.entry("eventMove", ScheduleEntryMoveEvent.class),
+            Map.entry("eventResize", ScheduleEntryResizeEvent.class),
+            Map.entry("viewChange", SelectEvent.class),
+            Map.entry("rangeSelect", ScheduleRangeEvent.class)
+    );
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
     @Override

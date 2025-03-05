@@ -23,8 +23,6 @@
  */
 package org.primefaces.component.outputpanel;
 
-import org.primefaces.util.MapBuilder;
-
 import java.util.Collection;
 import java.util.Map;
 
@@ -44,9 +42,9 @@ public class OutputPanel extends OutputPanelBase {
     public static final String CONTAINER_CLASS = "ui-outputpanel ui-widget";
     public static final String LOADING_CLASS = "ui-outputpanel-loading ui-icon pi pi-spin pi-spinner";
     private static final String DEFAULT_EVENT = "load";
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("load", null)
-            .build();
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Map.ofEntries(
+            Map.entry("load", null)
+    );
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 

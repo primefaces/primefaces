@@ -37,7 +37,6 @@ import org.primefaces.model.map.Marker;
 import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,16 +59,16 @@ public class GMap extends GMapBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.GMap";
 
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("overlaySelect", OverlaySelectEvent.class)
-            .put("overlayDblSelect", OverlaySelectEvent.class)
-            .put("stateChange", StateChangeEvent.class)
-            .put("pointSelect", PointSelectEvent.class)
-            .put("pointDblSelect", PointSelectEvent.class)
-            .put("markerDrag", MarkerDragEvent.class)
-            .put("geocode", GeocodeEvent.class)
-            .put("reverseGeocode", ReverseGeocodeEvent.class)
-            .build();
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Map.ofEntries(
+            Map.entry("overlaySelect", OverlaySelectEvent.class),
+            Map.entry("overlayDblSelect", OverlaySelectEvent.class),
+            Map.entry("stateChange", StateChangeEvent.class),
+            Map.entry("pointSelect", PointSelectEvent.class),
+            Map.entry("pointDblSelect", PointSelectEvent.class),
+            Map.entry("markerDrag", MarkerDragEvent.class),
+            Map.entry("geocode", GeocodeEvent.class),
+            Map.entry("reverseGeocode", ReverseGeocodeEvent.class)
+    );
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 

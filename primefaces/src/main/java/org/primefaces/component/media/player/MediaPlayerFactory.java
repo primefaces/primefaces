@@ -23,18 +23,16 @@
  */
 package org.primefaces.component.media.player;
 
-import org.primefaces.util.MapBuilder;
-
 import java.util.Map;
 
 public class MediaPlayerFactory {
 
-    private static final Map<String, MediaPlayer> PLAYERS = MapBuilder.<String, MediaPlayer>builder()
-            .put(MediaPlayer.QUICKTIME, new QuickTimePlayer())
-            .put(MediaPlayer.WINDOWS, new WindowsPlayer())
-            .put(MediaPlayer.REAL, new RealPlayer())
-            .put(MediaPlayer.PDF, new PDFPlayer())
-            .build();
+    private static final Map<String, MediaPlayer> PLAYERS = Map.ofEntries(
+            Map.entry(MediaPlayer.QUICKTIME, new QuickTimePlayer()),
+            Map.entry(MediaPlayer.WINDOWS, new WindowsPlayer()),
+            Map.entry(MediaPlayer.REAL, new RealPlayer()),
+            Map.entry(MediaPlayer.PDF, new PDFPlayer())
+    );
 
     private MediaPlayerFactory() {
     }

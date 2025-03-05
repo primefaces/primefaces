@@ -25,7 +25,6 @@ package org.primefaces.component.commandlink;
 
 import org.primefaces.component.api.DialogReturnAware;
 import org.primefaces.event.SelectEvent;
-import org.primefaces.util.MapBuilder;
 
 import java.util.Collection;
 import java.util.Map;
@@ -46,10 +45,10 @@ public class CommandLink extends CommandLinkBase implements DialogReturnAware {
     public static final String STYLE_CLASS = "ui-commandlink ui-widget";
     public static final String DISABLED_STYLE_CLASS = "ui-commandlink ui-widget ui-state-disabled";
 
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("click", null)
-            .put(EVENT_DIALOG_RETURN, SelectEvent.class)
-            .build();
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Map.ofEntries(
+            Map.entry("click", null),
+            Map.entry(EVENT_DIALOG_RETURN, SelectEvent.class)
+    );
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
     private String confirmationScript;

@@ -46,7 +46,6 @@ import org.primefaces.model.TreeNodeChildren;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.MapBuilder;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -117,23 +116,23 @@ public class TreeTable extends TreeTableBase {
     public static final String SMALL_SIZE_CLASS = "ui-treetable-sm";
     public static final String LARGE_SIZE_CLASS = "ui-treetable-lg";
 
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("contextMenu", NodeSelectEvent.class)
-            .put("select", NodeSelectEvent.class)
-            .put("unselect", NodeUnselectEvent.class)
-            .put("expand", NodeExpandEvent.class)
-            .put("collapse", NodeCollapseEvent.class)
-            .put("colResize", ColumnResizeEvent.class)
-            .put("sort", SortEvent.class)
-            .put("filter", FilterEvent.class)
-            .put("rowEdit", RowEditEvent.class)
-            .put("rowEditInit", RowEditEvent.class)
-            .put("rowEditCancel", RowEditEvent.class)
-            .put("cellEdit", CellEditEvent.class)
-            .put("cellEditInit", CellEditEvent.class)
-            .put("cellEditCancel", CellEditEvent.class)
-            .put("page", PageEvent.class)
-            .build();
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Map.ofEntries(
+            Map.entry("contextMenu", NodeSelectEvent.class),
+            Map.entry("select", NodeSelectEvent.class),
+            Map.entry("unselect", NodeUnselectEvent.class),
+            Map.entry("expand", NodeExpandEvent.class),
+            Map.entry("collapse", NodeCollapseEvent.class),
+            Map.entry("colResize", ColumnResizeEvent.class),
+            Map.entry("sort", SortEvent.class),
+            Map.entry("filter", FilterEvent.class),
+            Map.entry("rowEdit", RowEditEvent.class),
+            Map.entry("rowEditInit", RowEditEvent.class),
+            Map.entry("rowEditCancel", RowEditEvent.class),
+            Map.entry("cellEdit", CellEditEvent.class),
+            Map.entry("cellEditInit", CellEditEvent.class),
+            Map.entry("cellEditCancel", CellEditEvent.class),
+            Map.entry("page", PageEvent.class)
+    );
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 

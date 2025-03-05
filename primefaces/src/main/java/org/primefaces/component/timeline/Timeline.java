@@ -33,7 +33,6 @@ import org.primefaces.model.timeline.TimelineEvent;
 import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
 import org.primefaces.visit.UIDataContextCallback;
 
 import java.time.ZoneId;
@@ -58,18 +57,18 @@ public class Timeline extends TimelineBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Timeline";
 
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("add", TimelineAddEvent.class)
-            .put("change", TimelineModificationEvent.class)
-            .put("changed", TimelineModificationEvent.class)
-            .put("edit", TimelineModificationEvent.class)
-            .put("delete", TimelineModificationEvent.class)
-            .put("select", TimelineSelectEvent.class)
-            .put("rangechange", TimelineRangeEvent.class)
-            .put("rangechanged", TimelineRangeEvent.class)
-            .put("lazyload", TimelineLazyLoadEvent.class)
-            .put("drop", TimelineDragDropEvent.class)
-            .build();
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Map.ofEntries(
+            Map.entry("add", TimelineAddEvent.class),
+            Map.entry("change", TimelineModificationEvent.class),
+            Map.entry("changed", TimelineModificationEvent.class),
+            Map.entry("edit", TimelineModificationEvent.class),
+            Map.entry("delete", TimelineModificationEvent.class),
+            Map.entry("select", TimelineSelectEvent.class),
+            Map.entry("rangechange", TimelineRangeEvent.class),
+            Map.entry("rangechanged", TimelineRangeEvent.class),
+            Map.entry("lazyload", TimelineLazyLoadEvent.class),
+            Map.entry("drop", TimelineDragDropEvent.class)
+    );
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 

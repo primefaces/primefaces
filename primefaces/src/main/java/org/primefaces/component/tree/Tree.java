@@ -34,7 +34,6 @@ import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -84,15 +83,15 @@ public class Tree extends TreeBase {
     public static final String NODE_ICON_CLASS = "ui-treenode-icon ui-icon";
     public static final String NODE_LABEL_CLASS = "ui-treenode-label";
 
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("select", NodeSelectEvent.class)
-            .put("unselect", NodeUnselectEvent.class)
-            .put("expand", NodeExpandEvent.class)
-            .put("collapse", NodeCollapseEvent.class)
-            .put("dragdrop", TreeDragDropEvent.class)
-            .put("contextMenu", NodeSelectEvent.class)
-            .put("filter", null)
-            .build();
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Map.ofEntries(
+            Map.entry("select", NodeSelectEvent.class),
+            Map.entry("unselect", NodeUnselectEvent.class),
+            Map.entry("expand", NodeExpandEvent.class),
+            Map.entry("collapse", NodeCollapseEvent.class),
+            Map.entry("dragdrop", TreeDragDropEvent.class),
+            Map.entry("contextMenu", NodeSelectEvent.class),
+            Map.entry("filter", null)
+    );
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
     private Map<String, UITreeNode> nodes;

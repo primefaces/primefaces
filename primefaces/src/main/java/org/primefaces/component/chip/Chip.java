@@ -23,8 +23,6 @@
  */
 package org.primefaces.component.chip;
 
-import org.primefaces.util.MapBuilder;
-
 import java.util.Collection;
 import java.util.Map;
 
@@ -46,10 +44,10 @@ public class Chip extends ChipBase {
     public static final String REMOVE_ICON_CLASS = "ui-chip-remove-icon";
 
     private static final String DEFAULT_EVENT = "select";
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("select", null)
-            .put("close", null)
-            .build();
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Map.ofEntries(
+            Map.entry("select", null),
+            Map.entry("close", null)
+    );
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
     @Override

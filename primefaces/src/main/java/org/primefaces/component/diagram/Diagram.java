@@ -32,7 +32,6 @@ import org.primefaces.model.diagram.Element;
 import org.primefaces.model.diagram.endpoint.EndPoint;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
 
 import java.util.Collection;
 import java.util.Map;
@@ -58,12 +57,12 @@ public class Diagram extends DiagramBase {
     public static final String ELEMENT_CLASS = "ui-diagram-element";
     public static final String DRAGGABLE_ELEMENT_CLASS = "ui-diagram-draggable";
 
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("connect", ConnectEvent.class)
-            .put("disconnect", DisconnectEvent.class)
-            .put("connectionChange", ConnectionChangeEvent.class)
-            .put("positionChange", PositionChangeEvent.class)
-            .build();
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Map.ofEntries(
+            Map.entry("connect", ConnectEvent.class),
+            Map.entry("disconnect", DisconnectEvent.class),
+            Map.entry("connectionChange", ConnectionChangeEvent.class),
+            Map.entry("positionChange", PositionChangeEvent.class)
+    );
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
     @Override

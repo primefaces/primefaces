@@ -29,7 +29,6 @@ import org.primefaces.model.LazyDataModel;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.MapBuilder;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -67,9 +66,9 @@ public class DataView extends DataViewBase {
     public static final String GRID_LAYOUT_ROW_CLASS = "ui-dataview-row";
     public static final String GRID_LAYOUT_COLUMN_CLASS = "ui-dataview-column";
 
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("page", PageEvent.class)
-            .build();
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Map.ofEntries(
+            Map.entry("page", PageEvent.class)
+    );
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 

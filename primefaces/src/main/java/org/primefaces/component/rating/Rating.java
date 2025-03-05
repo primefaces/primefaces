@@ -25,7 +25,6 @@ package org.primefaces.component.rating;
 
 import org.primefaces.event.RateEvent;
 import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -51,10 +50,10 @@ public class Rating extends RatingBase {
     public static final String STAR_ON_CLASS = "ui-rating-star ui-rating-star-on";
 
     private static final String DEFAULT_EVENT = "rate";
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("rate", RateEvent.class)
-            .put("cancel", RateEvent.class)
-            .build();
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Map.ofEntries(
+            Map.entry("rate", RateEvent.class),
+            Map.entry("cancel", RateEvent.class)
+    );
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
     private Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>(1);

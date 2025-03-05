@@ -27,7 +27,6 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -65,11 +64,11 @@ public class OrderList extends OrderListBase {
     public static final String MOVE_BOTTOM_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrowstop-1-s";
     public static final String CONTROLS_RIGHT_CLASS = "ui-orderlist-controls-right";
 
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("select", SelectEvent.class)
-            .put("unselect", UnselectEvent.class)
-            .put("reorder", null)
-            .build();
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Map.ofEntries(
+            Map.entry("select", SelectEvent.class),
+            Map.entry("unselect", UnselectEvent.class),
+            Map.entry("reorder", null)
+    );
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
     private Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>(1);

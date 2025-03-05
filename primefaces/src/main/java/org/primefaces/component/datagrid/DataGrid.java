@@ -29,7 +29,6 @@ import org.primefaces.model.LazyDataModel;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.MapBuilder;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -62,9 +61,9 @@ public class DataGrid extends DataGridBase {
     public static final String GRID_CONTENT_CLASS = "ui-datagrid-content ui-widget-content";
     public static final String COLUMN_CLASS = "ui-datagrid-column";
 
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("page", PageEvent.class)
-            .build();
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Map.ofEntries(
+            Map.entry("page", PageEvent.class)
+    );
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 

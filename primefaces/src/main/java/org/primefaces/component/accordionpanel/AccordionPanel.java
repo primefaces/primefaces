@@ -31,7 +31,6 @@ import org.primefaces.event.TabCloseEvent;
 import org.primefaces.event.TabEvent;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
 
 import java.util.Collection;
 import java.util.Map;
@@ -68,10 +67,10 @@ public class AccordionPanel extends AccordionPanelBase {
 
     private static final String DEFAULT_EVENT = "tabChange";
 
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("tabChange", TabChangeEvent.class)
-            .put("tabClose", TabCloseEvent.class)
-            .build();
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Map.ofEntries(
+            Map.entry("tabChange", TabChangeEvent.class),
+            Map.entry("tabClose", TabCloseEvent.class)
+    );
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 

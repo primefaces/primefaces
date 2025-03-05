@@ -25,7 +25,6 @@ package org.primefaces.validate.bean;
 
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.metadata.BeanValidationMetadataExtractor;
-import org.primefaces.util.MapBuilder;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -48,31 +47,30 @@ public class BeanValidationMetadataMapper {
 
     private static final Logger LOGGER = Logger.getLogger(BeanValidationMetadataMapper.class.getName());
 
-    private static final Map<String, ClientValidationConstraint> CONSTRAINT_MAPPING
-            = MapBuilder.<String, ClientValidationConstraint>builder()
-                    .put(AssertFalseClientValidationConstraint.CONSTRAINT_CLASS_NAME, new AssertFalseClientValidationConstraint())
-                    .put(AssertTrueClientValidationConstraint.CONSTRAINT_CLASS_NAME, new AssertTrueClientValidationConstraint())
-                    .put(DecimalMaxClientValidationConstraint.CONSTRAINT_CLASS_NAME, new DecimalMaxClientValidationConstraint())
-                    .put(DecimalMinClientValidationConstraint.CONSTRAINT_CLASS_NAME, new DecimalMinClientValidationConstraint())
-                    .put(DigitsClientValidationConstraint.CONSTRAINT_CLASS_NAME, new DigitsClientValidationConstraint())
-                    .put(EmailClientValidationConstraint.CONSTRAINT_CLASS_NAME, new EmailClientValidationConstraint())
-                    .put(FutureClientValidationConstraint.CONSTRAINT_CLASS_NAME, new FutureClientValidationConstraint())
-                    .put(FutureOrPresentClientValidationConstraint.CONSTRAINT_CLASS_NAME, new FutureOrPresentClientValidationConstraint())
-                    .put(MaxClientValidationConstraint.CONSTRAINT_CLASS_NAME, new MaxClientValidationConstraint())
-                    .put(MinClientValidationConstraint.CONSTRAINT_CLASS_NAME, new MinClientValidationConstraint())
-                    .put(NegativeClientValidationConstraint.CONSTRAINT_CLASS_NAME, new NegativeClientValidationConstraint())
-                    .put(NegativeOrZeroClientValidationConstraint.CONSTRAINT_CLASS_NAME, new NegativeOrZeroClientValidationConstraint())
-                    .put(NotBlankClientValidationConstraint.CONSTRAINT_CLASS_NAME, new NotBlankClientValidationConstraint())
-                    .put(NotEmptyClientValidationConstraint.CONSTRAINT_CLASS_NAME, new NotEmptyClientValidationConstraint())
-                    .put(NotNullClientValidationConstraint.CONSTRAINT_CLASS_NAME, new NotNullClientValidationConstraint())
-                    .put(NullClientValidationConstraint.CONSTRAINT_CLASS_NAME, new NullClientValidationConstraint())
-                    .put(PastClientValidationConstraint.CONSTRAINT_CLASS_NAME, new PastClientValidationConstraint())
-                    .put(PastOrPresentClientValidationConstraint.CONSTRAINT_CLASS_NAME, new PastOrPresentClientValidationConstraint())
-                    .put(PatternClientValidationConstraint.CONSTRAINT_CLASS_NAME, new PatternClientValidationConstraint())
-                    .put(PositiveClientValidationConstraint.CONSTRAINT_CLASS_NAME, new PositiveClientValidationConstraint())
-                    .put(PositiveOrZeroClientValidationConstraint.CONSTRAINT_CLASS_NAME, new PositiveOrZeroClientValidationConstraint())
-                    .put(SizeClientValidationConstraint.CONSTRAINT_CLASS_NAME, new SizeClientValidationConstraint())
-                    .build();
+    private static final Map<String, ClientValidationConstraint> CONSTRAINT_MAPPING = Map.ofEntries(
+            Map.entry(AssertFalseClientValidationConstraint.CONSTRAINT_CLASS_NAME, new AssertFalseClientValidationConstraint()),
+            Map.entry(AssertTrueClientValidationConstraint.CONSTRAINT_CLASS_NAME, new AssertTrueClientValidationConstraint()),
+            Map.entry(DecimalMaxClientValidationConstraint.CONSTRAINT_CLASS_NAME, new DecimalMaxClientValidationConstraint()),
+            Map.entry(DecimalMinClientValidationConstraint.CONSTRAINT_CLASS_NAME, new DecimalMinClientValidationConstraint()),
+            Map.entry(DigitsClientValidationConstraint.CONSTRAINT_CLASS_NAME, new DigitsClientValidationConstraint()),
+            Map.entry(EmailClientValidationConstraint.CONSTRAINT_CLASS_NAME, new EmailClientValidationConstraint()),
+            Map.entry(FutureClientValidationConstraint.CONSTRAINT_CLASS_NAME, new FutureClientValidationConstraint()),
+            Map.entry(FutureOrPresentClientValidationConstraint.CONSTRAINT_CLASS_NAME, new FutureOrPresentClientValidationConstraint()),
+            Map.entry(MaxClientValidationConstraint.CONSTRAINT_CLASS_NAME, new MaxClientValidationConstraint()),
+            Map.entry(MinClientValidationConstraint.CONSTRAINT_CLASS_NAME, new MinClientValidationConstraint()),
+            Map.entry(NegativeClientValidationConstraint.CONSTRAINT_CLASS_NAME, new NegativeClientValidationConstraint()),
+            Map.entry(NegativeOrZeroClientValidationConstraint.CONSTRAINT_CLASS_NAME, new NegativeOrZeroClientValidationConstraint()),
+            Map.entry(NotBlankClientValidationConstraint.CONSTRAINT_CLASS_NAME, new NotBlankClientValidationConstraint()),
+            Map.entry(NotEmptyClientValidationConstraint.CONSTRAINT_CLASS_NAME, new NotEmptyClientValidationConstraint()),
+            Map.entry(NotNullClientValidationConstraint.CONSTRAINT_CLASS_NAME, new NotNullClientValidationConstraint()),
+            Map.entry(NullClientValidationConstraint.CONSTRAINT_CLASS_NAME, new NullClientValidationConstraint()),
+            Map.entry(PastClientValidationConstraint.CONSTRAINT_CLASS_NAME, new PastClientValidationConstraint()),
+            Map.entry(PastOrPresentClientValidationConstraint.CONSTRAINT_CLASS_NAME, new PastOrPresentClientValidationConstraint()),
+            Map.entry(PatternClientValidationConstraint.CONSTRAINT_CLASS_NAME, new PatternClientValidationConstraint()),
+            Map.entry(PositiveClientValidationConstraint.CONSTRAINT_CLASS_NAME, new PositiveClientValidationConstraint()),
+            Map.entry(PositiveOrZeroClientValidationConstraint.CONSTRAINT_CLASS_NAME, new PositiveOrZeroClientValidationConstraint()),
+            Map.entry(SizeClientValidationConstraint.CONSTRAINT_CLASS_NAME, new SizeClientValidationConstraint())
+    );
 
     private BeanValidationMetadataMapper() {
     }

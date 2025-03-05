@@ -30,7 +30,6 @@ import org.primefaces.event.organigram.OrganigramNodeSelectEvent;
 import org.primefaces.model.OrganigramNode;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
 
 import java.util.Collection;
 import java.util.Map;
@@ -53,13 +52,13 @@ public class Organigram extends OrganigramBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.Organigram";
 
     private static final String DEFAULT_EVENT = "select";
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("select", OrganigramNodeSelectEvent.class)
-            .put("expand", OrganigramNodeExpandEvent.class)
-            .put("collapse", OrganigramNodeCollapseEvent.class)
-            .put("dragdrop", OrganigramNodeDragDropEvent.class)
-            .put("contextmenu", OrganigramNodeSelectEvent.class)
-            .build();
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Map.ofEntries(
+            Map.entry("select", OrganigramNodeSelectEvent.class),
+            Map.entry("expand", OrganigramNodeExpandEvent.class),
+            Map.entry("collapse", OrganigramNodeCollapseEvent.class),
+            Map.entry("dragdrop", OrganigramNodeDragDropEvent.class),
+            Map.entry("contextmenu", OrganigramNodeSelectEvent.class)
+    );
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
     @Override

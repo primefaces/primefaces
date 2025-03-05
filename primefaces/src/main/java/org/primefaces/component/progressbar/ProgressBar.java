@@ -24,7 +24,6 @@
 package org.primefaces.component.progressbar;
 
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.MapBuilder;
 
 import java.util.Collection;
 import java.util.Map;
@@ -57,11 +56,11 @@ public class ProgressBar extends ProgressBarBase {
 
     private static final String DEFAULT_EVENT = "complete";
 
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("start", null)
-            .put("complete", null)
-            .put("progress", null)
-            .build();
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Map.ofEntries(
+            Map.entry("start", null),
+            Map.entry("complete", null),
+            Map.entry("progress", null)
+    );
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 

@@ -26,7 +26,6 @@ package org.primefaces.component.cascadeselect;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
 
 import java.util.Collection;
 import java.util.Map;
@@ -63,9 +62,9 @@ public class CascadeSelect extends CascadeSelectBase {
     public static final String LABEL_EMPTY_CLASS = "ui-cascadeselect-label-empty";
 
     private static final String DEFAULT_EVENT = "itemSelect";
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("itemSelect", SelectEvent.class)
-            .build();
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Map.ofEntries(
+            Map.entry("itemSelect", SelectEvent.class)
+    );
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
     @Override

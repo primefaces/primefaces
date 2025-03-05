@@ -27,7 +27,6 @@ import org.primefaces.component.api.DialogReturnAware;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.MapBuilder;
 
 import java.util.Collection;
 import java.util.Map;
@@ -46,10 +45,10 @@ public class CommandButton extends CommandButtonBase implements DialogReturnAwar
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.CommandButton";
 
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("click", null)
-            .put(EVENT_DIALOG_RETURN, SelectEvent.class)
-            .build();
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Map.ofEntries(
+            Map.entry("click", null),
+            Map.entry(EVENT_DIALOG_RETURN, SelectEvent.class)
+    );
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
     private String confirmationScript;
 

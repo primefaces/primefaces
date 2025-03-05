@@ -31,7 +31,6 @@ import org.primefaces.event.ToggleEvent;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.Visibility;
 import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -55,10 +54,10 @@ public class ColumnToggler extends ColumnTogglerBase {
 
     private static final String DEFAULT_EVENT = "toggle";
 
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("toggle", ToggleEvent.class)
-            .put("close", ToggleCloseEvent.class)
-            .build();
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Map.ofEntries(
+            Map.entry("toggle", ToggleEvent.class),
+            Map.entry("close", ToggleCloseEvent.class)
+    );
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 

@@ -26,7 +26,6 @@ package org.primefaces.component.carousel;
 import org.primefaces.event.PageChangeEvent;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
 
 import java.util.Collection;
 import java.util.Map;
@@ -64,9 +63,9 @@ public class Carousel extends CarouselBase {
     public static final String ITEM_CLASS = "ui-carousel-item";
 
     private static final String DEFAULT_EVENT = "pageChange";
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put(DEFAULT_EVENT, PageChangeEvent.class)
-            .build();
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Map.ofEntries(
+            Map.entry(DEFAULT_EVENT, PageChangeEvent.class)
+    );
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
     @Override

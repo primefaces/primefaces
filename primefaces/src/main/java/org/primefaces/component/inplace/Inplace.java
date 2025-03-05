@@ -23,8 +23,6 @@
  */
 package org.primefaces.component.inplace;
 
-import org.primefaces.util.MapBuilder;
-
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
@@ -53,10 +51,10 @@ public class Inplace extends InplaceBase {
     public static final String DISPLAY_INLINE = "inline";
     public static final String DISPLAY_NONE = "none";
 
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("save", null)
-            .put("cancel", null)
-            .build();
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Map.ofEntries(
+            Map.entry("save", null),
+            Map.entry("cancel", null)
+    );
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 

@@ -31,7 +31,6 @@ import org.primefaces.event.TabEvent;
 import org.primefaces.util.Callbacks;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
 
 import java.util.Collection;
 import java.util.Map;
@@ -71,10 +70,10 @@ public class TabView extends TabViewBase {
     public static final String NAVIGATOR_RIGHT_ICON_CLASS = "ui-icon ui-icon-carat-1-e";
     public static final String SCROLLABLE_TABS_CLASS = "ui-tabs-scrollable";
 
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("tabChange", TabChangeEvent.class)
-            .put("tabClose", TabCloseEvent.class)
-            .build();
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Map.ofEntries(
+            Map.entry("tabChange", TabChangeEvent.class),
+            Map.entry("tabClose", TabCloseEvent.class)
+    );
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
     @Override

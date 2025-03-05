@@ -28,7 +28,6 @@ import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.MapBuilder;
 
 import java.util.Collection;
 import java.util.Map;
@@ -57,10 +56,10 @@ public class Wizard extends WizardBase {
     public static final String BACK_BUTTON_CLASS = "ui-wizard-nav-back";
     public static final String NEXT_BUTTON_CLASS = "ui-wizard-nav-next";
 
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
-            .put("next", null)
-            .put("back", null)
-            .build();
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Map.ofEntries(
+            Map.entry("next", null),
+            Map.entry("back", null)
+    );
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
