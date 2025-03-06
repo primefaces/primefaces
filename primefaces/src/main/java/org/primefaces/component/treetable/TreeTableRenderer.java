@@ -189,13 +189,15 @@ public class TreeTableRenderer extends DataRenderer<TreeTable> {
             component.initPreselection();
         }
 
-        String containerClass = component.isResizableColumns() ? TreeTable.RESIZABLE_CONTAINER_CLASS : TreeTable.CONTAINER_CLASS;
-        containerClass = scrollable ? containerClass + " " + TreeTable.SCROLLABLE_CONTAINER_CLASS : containerClass;
-        containerClass = component.getStyleClass() == null ? containerClass : containerClass + " " + component.getStyleClass();
-        containerClass = component.isShowUnselectableCheckbox() ? containerClass + " ui-treetable-checkbox-all" : containerClass;
-        containerClass = component.isShowGridlines() ? containerClass + " " + TreeTable.GRIDLINES_CLASS : containerClass;
-        containerClass = "small".equals(component.getSize()) ? containerClass + " " + TreeTable.SMALL_SIZE_CLASS : containerClass;
-        containerClass = "large".equals(component.getSize()) ? containerClass + " " + TreeTable.LARGE_SIZE_CLASS : containerClass;
+        String containerClass = getStyleClassBuilder(context)
+                .add(component.isResizableColumns(), TreeTable.RESIZABLE_CONTAINER_CLASS, TreeTable.CONTAINER_CLASS)
+                .add(scrollable, TreeTable.SCROLLABLE_CONTAINER_CLASS)
+                .add(component.getStyleClass())
+                .add(component.isShowUnselectableCheckbox(), "ui-treetable-checkbox-all")
+                .add(component.isShowGridlines(), TreeTable.GRIDLINES_CLASS)
+                .add("small".equals(component.getSize()), TreeTable.SMALL_SIZE_CLASS)
+                .add("large".equals(component.getSize()), TreeTable.LARGE_SIZE_CLASS)
+                .build();
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, "id");
@@ -226,7 +228,7 @@ public class TreeTableRenderer extends DataRenderer<TreeTable> {
         writer.endElement("div");
     }
 
-    protected void encodeScrollableMarkup(FacesContext context, TreeTable component, TreeNode root) throws IOException {
+    protected void encodeScrollableMarkup(FacesContext context, TreeTable component, TreeNode<?> root) throws IOException {
         String tableStyle = component.getTableStyle();
         String tableStyleClass = component.getTableStyleClass();
         boolean hasPaginator = component.isPaginator();

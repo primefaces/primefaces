@@ -50,7 +50,7 @@ public class Poll extends PollBase {
 
         ValueExpression expr = getValueExpression(PropertyKeys.stop.toString());
         if (expr != null) {
-            Boolean stop = (Boolean) expr.getValue(facesContext.getELContext());
+            Boolean stop = expr.getValue(facesContext.getELContext());
 
             if (Boolean.TRUE.equals(stop)) {
                 String widgetVar = resolveWidgetVar();

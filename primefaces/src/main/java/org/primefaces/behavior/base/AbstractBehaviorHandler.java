@@ -169,7 +169,7 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
         else {
             FaceletContext faceletContext = getFaceletContext(FacesContext.getCurrentInstance());
             ValueExpression expression = event.getValueExpression(faceletContext, String.class);
-            return (String) expression.getValue(faceletContext);
+            return expression.getValue(faceletContext);
         }
     }
 

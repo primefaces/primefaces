@@ -64,7 +64,7 @@ public class ResetInputActionListener implements ActionListener, Serializable {
         ELContext elContext = context.getELContext();
         VisitContext visitContext = VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
 
-        String expressions = (String) target.getValue(elContext);
+        String expressions = target.getValue(elContext);
         boolean resetModel = false;
         if (clearModel != null) {
             resetModel = clearModel.isLiteralText()

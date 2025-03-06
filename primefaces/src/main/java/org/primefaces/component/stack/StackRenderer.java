@@ -38,12 +38,11 @@ public class StackRenderer extends BaseMenuRenderer<Stack> {
 
     @Override
     protected void encodeScript(FacesContext context, Stack component) throws IOException {
-        Stack stack = (Stack) component;
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Stack", stack)
-                .attr("openSpeed", stack.getOpenSpeed())
-                .attr("closeSpeed", stack.getCloseSpeed())
-                .attr("expanded", stack.isExpanded(), false);
+        wb.init("Stack", component)
+                .attr("openSpeed", component.getOpenSpeed())
+                .attr("closeSpeed", component.getCloseSpeed())
+                .attr("expanded", component.isExpanded(), false);
 
         wb.finish();
     }

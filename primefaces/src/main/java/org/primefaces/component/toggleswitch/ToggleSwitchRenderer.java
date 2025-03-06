@@ -154,8 +154,10 @@ public class ToggleSwitchRenderer extends InputRenderer<ToggleSwitch> {
     }
 
     protected boolean isChecked(String value) {
-        return value != null
-                && ("on".equalsIgnoreCase(value) || "yes".equalsIgnoreCase(value) || "true".equalsIgnoreCase(value));
+        if (value == null) {
+            return false;
+        }
+        return "on".equalsIgnoreCase(value) || "yes".equalsIgnoreCase(value) || "true".equalsIgnoreCase(value);
     }
 
     @Override

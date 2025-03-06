@@ -376,7 +376,7 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
                         ClientBehavior behavior = behaviors.get(i);
                         if (cbc == null) {
                             cbc = ClientBehaviorContext.createClientBehaviorContext(context, component, behaviorEventName,
-                                    component.getClientId(context), Collections.<ClientBehaviorContext.Parameter>emptyList());
+                                    component.getClientId(context), Collections.emptyList());
                         }
                         String script = behavior.getScript(cbc);
 
@@ -405,7 +405,7 @@ public abstract class CoreRenderer<T extends UIComponent> extends Renderer<T> {
             else {
                 if (hasBehaviors) {
                     ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(
-                            context, component, behaviorEventName, component.getClientId(context), Collections.<ClientBehaviorContext.Parameter>emptyList());
+                            context, component, behaviorEventName, component.getClientId(context), Collections.emptyList());
                     ClientBehavior behavior = behaviors.get(0);
                     String script = behavior.getScript(cbc);
                     if (script != null) {

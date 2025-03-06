@@ -74,7 +74,7 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
     public void processAction(ActionEvent actionEvent) throws AbortProcessingException {
         FacesContext context = FacesContext.getCurrentInstance();
         ELContext elContext = context.getELContext();
-        StreamedContent content = (StreamedContent) value.getValue(elContext);
+        StreamedContent content = value.getValue(elContext);
 
         if (content == null) {
             return;

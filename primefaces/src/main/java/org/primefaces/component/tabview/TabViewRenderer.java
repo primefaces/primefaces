@@ -61,42 +61,41 @@ public class TabViewRenderer extends CoreRenderer<TabView> {
     @Override
     public void encodeEnd(FacesContext context, TabView component) throws IOException {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        TabView tabView = (TabView) component;
-        String clientId = tabView.getClientId(context);
+        String clientId = component.getClientId(context);
 
-        if (tabView.isContentLoadRequest(context)) {
-            if (tabView.isRepeating()) {
+        if (component.isContentLoadRequest(context)) {
+            if (component.isRepeating()) {
                 int index = Integer.parseInt(params.get(clientId + "_tabindex"));
-                tabView.setIndex(index);
+                component.setIndex(index);
 
-                Tab tabToLoad = tabView.getDynamicTab();
+                Tab tabToLoad = component.getDynamicTab();
                 tabToLoad.encodeAll(context);
 
-                if (tabView.isDynamic()) {
+                if (component.isDynamic()) {
                     tabToLoad.setLoaded(index, true);
                 }
 
-                tabView.setIndex(-1);
+                component.setIndex(-1);
             }
             else {
                 String tabClientId = params.get(clientId + "_currentTab");
-                Tab tabToLoad = tabView.findTab(tabClientId);
+                Tab tabToLoad = component.findTab(tabClientId);
                 tabToLoad.encodeAll(context);
 
-                if (tabView.isDynamic()) {
+                if (component.isDynamic()) {
                     tabToLoad.setLoaded(true);
                 }
             }
         }
         else {
-            if (tabView.isMultiViewState()) {
-                tabView.restoreMultiViewState();
+            if (component.isMultiViewState()) {
+                component.restoreMultiViewState();
             }
 
-            tabView.resetLoadedTabsState();
+            component.resetLoadedTabsState();
 
-            encodeMarkup(context, tabView);
-            encodeScript(context, tabView);
+            encodeMarkup(context, component);
+            encodeScript(context, component);
         }
     }
 

@@ -54,10 +54,8 @@ public class SelectManyMenuRenderer extends SelectManyRenderer<SelectManyMenu> {
 
     @Override
     public void encodeEnd(FacesContext context, SelectManyMenu component) throws IOException {
-        SelectManyMenu menu = (SelectManyMenu) component;
-
-        encodeMarkup(context, menu);
-        encodeScript(context, menu);
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
     protected void encodeMarkup(FacesContext context, SelectManyMenu component) throws IOException {

@@ -80,7 +80,7 @@ public interface UIColumn {
                 exprStr = matcher.group(1);
                 expression = context.getApplication().getExpressionFactory()
                         .createValueExpression(elContext, "#{" + exprStr  + "}", String.class);
-                return (String) expression.getValue(elContext);
+                return expression.getValue(elContext);
             }
         }
         else {

@@ -904,7 +904,7 @@ public class DataTable extends DataTableBase {
     public List<?> getFilteredValue() {
         ValueExpression ve = getValueExpression(PropertyKeys.filteredValue.name());
         if (ve != null) {
-            return (List<?>) ve.getValue(getFacesContext().getELContext());
+            return ve.getValue(getFacesContext().getELContext());
         }
         return null;
     }

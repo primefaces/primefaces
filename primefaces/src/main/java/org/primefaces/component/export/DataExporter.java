@@ -77,13 +77,13 @@ public class DataExporter implements ActionListener, StateHolder {
         FacesContext context = event.getFacesContext();
         ELContext elContext = context.getELContext();
 
-        String tables = (String) target.getValue(elContext);
-        String exportAs = (String) type.getValue(elContext);
-        String outputFileName = (String) fileName.getValue(elContext);
+        String tables = target.getValue(elContext);
+        String exportAs = type.getValue(elContext);
+        String outputFileName = fileName.getValue(elContext);
 
         String encodingType = StandardCharsets.UTF_8.name();
         if (encoding != null) {
-            encodingType = (String) encoding.getValue(elContext);
+            encodingType = encoding.getValue(elContext);
         }
 
         boolean isPageOnly = false;
@@ -123,12 +123,12 @@ public class DataExporter implements ActionListener, StateHolder {
 
         ExporterOptions exporterOptions = null;
         if (options != null) {
-            exporterOptions = (ExporterOptions) options.getValue(elContext);
+            exporterOptions = options.getValue(elContext);
         }
 
         Integer bufferSizeTmp = null;
         if (bufferSize != null) {
-            bufferSizeTmp = (Integer) bufferSize.getValue(elContext);
+            bufferSizeTmp = bufferSize.getValue(elContext);
         }
 
         try {
