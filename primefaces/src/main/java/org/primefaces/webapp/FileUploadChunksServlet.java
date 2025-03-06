@@ -73,7 +73,7 @@ public class FileUploadChunksServlet extends HttpServlet {
             resp.setContentType("application/json");
             JSONObject json = new JSONObject();
             json.put("uploadedBytes", uploadedBytes);
-            w.print(json.toString());
+            w.print(json);
         }
         catch (IOException | JSONException ex) {
             sendError(resp, ex);

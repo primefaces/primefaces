@@ -44,6 +44,7 @@ public class TimelineListener implements SystemEventListener {
             if (listener instanceof DefaultTimelineUpdater
                     && ((DefaultTimelineUpdater) listener).getWidgetVar().equals(widgetVar)) {
                 alreadyRegistred = true;
+                break;
             }
         }
 

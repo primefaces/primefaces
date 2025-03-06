@@ -162,10 +162,10 @@ public class DialogRenderer extends CoreRenderer<Dialog> {
         writer.endElement("div");
     }
 
-    protected void encodeFooter(FacesContext context, Dialog dialog) throws IOException {
+    protected void encodeFooter(FacesContext context, Dialog component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String footer = dialog.getFooter();
-        UIComponent footerFacet = dialog.getFacet("footer");
+        String footer = component.getFooter();
+        UIComponent footerFacet = component.getFacet("footer");
 
         if (footer == null && (footerFacet == null || !footerFacet.isRendered())) {
             return;
@@ -187,15 +187,15 @@ public class DialogRenderer extends CoreRenderer<Dialog> {
 
     }
 
-    protected void encodeContent(FacesContext context, Dialog dialog) throws IOException {
+    protected void encodeContent(FacesContext context, Dialog component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", null);
         writer.writeAttribute("class", Dialog.CONTENT_CLASS, null);
-        writer.writeAttribute("id", dialog.getClientId(context) + "_content", null);
+        writer.writeAttribute("id", component.getClientId(context) + "_content", null);
 
-        if (!dialog.isDynamic()) {
-            renderChildren(context, dialog);
+        if (!component.isDynamic()) {
+            renderChildren(context, component);
         }
 
         writer.endElement("div");

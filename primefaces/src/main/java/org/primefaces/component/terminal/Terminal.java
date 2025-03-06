@@ -87,7 +87,7 @@ public class Terminal extends TerminalBase {
     }
 
     TerminalAutoCompleteMatches traverseAutoCompleteModel(TerminalAutoCompleteModel commandModel, String input, String[] args) {
-        ArrayDeque<String> argumentQueue = new ArrayDeque(Arrays.asList(args));
+        ArrayDeque<String> argumentQueue = new ArrayDeque<>(Arrays.asList(args));
         return traverseAutoCompleteModel(commandModel, input, argumentQueue);
     }
 

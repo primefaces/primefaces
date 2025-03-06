@@ -82,25 +82,21 @@ public class ConstraintDescriptorWrapper<T extends Annotation> implements Constr
         return wrapped;
     }
 
-    //@Override - BV 1.1
     @Override
     public String getMessageTemplate() {
         return wrapped.getMessageTemplate();
     }
 
-    //@Override - BV 1.1
     @Override
     public ConstraintTarget getValidationAppliesTo() {
         return wrapped.getValidationAppliesTo();
     }
 
-    //BV 2.0.2
     @Override
     public jakarta.validation.metadata.ValidateUnwrappedValue getValueUnwrapping() {
         return wrapped.getValueUnwrapping();
     }
 
-    //BV 2.0.2
     @Override
     public <U> U unwrap(Class<U> type) {
         return wrapped.unwrap(type);

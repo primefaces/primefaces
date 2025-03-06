@@ -37,7 +37,7 @@ public class BetweenFilterConstraint implements FilterConstraint {
         if (filter != null && !(filter instanceof List)) {
             throw new IllegalArgumentException("Filter should be a java.util.List");
         }
-        List<?> filterList = (List) filter;
+        List<?> filterList = (List<?>) filter;
         if (filterList == null || filterList.size() != 2 || value == null) {
             return false;
         }

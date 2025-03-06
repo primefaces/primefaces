@@ -74,7 +74,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
     public PrimeExceptionHandler(ExceptionHandler wrapped) {
         super(wrapped);
-        this.config = new Lazy(() -> PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConfig());
+        this.config = new Lazy<>(() -> PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConfig());
     }
 
     @Override

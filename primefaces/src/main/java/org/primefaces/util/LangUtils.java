@@ -289,7 +289,7 @@ public class LangUtils {
     }
 
     @SafeVarargs
-    public static final <T> List<T> unmodifiableList(T... args) {
+    public static <T> List<T> unmodifiableList(T... args) {
         return Collections.unmodifiableList(Arrays.asList(args));
     }
 
@@ -370,7 +370,7 @@ public class LangUtils {
      *
      * @return true if the given class is a known proxy class, false otherwise
      */
-    public static boolean isProxiedClass(Class currentClass) {
+    public static boolean isProxiedClass(Class<?> currentClass) {
         if (currentClass == null || currentClass.getSuperclass() == null) {
             return false;
         }
@@ -397,8 +397,8 @@ public class LangUtils {
         try {
             Map<Type, Type> genericTypeArgs2ActualTypeArgs = new HashMap<>();
 
-            Class baseClass = getUnproxiedClass(base.getClass());
-            Class superClass = baseClass.getSuperclass();
+            Class<?> baseClass = getUnproxiedClass(base.getClass());
+            Class<?> superClass = baseClass.getSuperclass();
             Type genericSuperclass = baseClass.getGenericSuperclass();
 
             /*
@@ -414,7 +414,7 @@ public class LangUtils {
                     List<Type> genericTypeArgs;
 
                     if (parameterizedType.getRawType() instanceof Class) {
-                        Class<?> rawSuperClass = (Class) parameterizedType.getRawType();
+                        Class<?> rawSuperClass = (Class<?>) parameterizedType.getRawType();
                         genericTypeArgs = Arrays.asList(rawSuperClass.getTypeParameters());
 
                         for (int i = 0; i < genericTypeArgs.size(); i++) {
@@ -438,7 +438,7 @@ public class LangUtils {
 
                         Type listType = pt.getActualTypeArguments()[0];
                         if (listType  instanceof TypeVariable) {
-                            TypeVariable typeVar = (TypeVariable) listType;
+                            TypeVariable<?> typeVar = (TypeVariable<?>) listType;
                             Type typeVarResolved = genericTypeArgs2ActualTypeArgs.get(typeVar);
                             return loadClassForName(typeVarResolved.getTypeName());
                         }

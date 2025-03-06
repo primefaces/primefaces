@@ -30,8 +30,8 @@ import org.primefaces.util.HTML;
 import org.primefaces.util.SharedStringBuilder;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -58,34 +58,30 @@ public class BarcodeRenderer extends CoreRenderer<Barcode> {
             return;
         }
 
-        try {
-            Resource resource = context.getApplication().getResourceHandler().createResource("dynamiccontent.properties", "primefaces", "image/png");
-            String resourcePath = resource.getRequestPath();
+        Resource resource = context.getApplication().getResourceHandler().createResource("dynamiccontent.properties", "primefaces", "image/png");
+        String resourcePath = resource.getRequestPath();
 
-            String sessionKey = UUID.randomUUID().toString();
-            Map<String, Object> session = context.getExternalContext().getSessionMap();
-            Map<String, String> barcodeMapping = (Map) session.get(Constants.BARCODE_MAPPING);
-            if (barcodeMapping == null) {
-                barcodeMapping = new HashMap<>();
-                session.put(Constants.BARCODE_MAPPING, barcodeMapping);
-            }
-            barcodeMapping.put(sessionKey, (String) value);
-            StringBuilder builder = SharedStringBuilder.get(context, SB_BUILD);
+        String sessionKey = UUID.randomUUID().toString();
+        Map<String, Object> session = context.getExternalContext().getSessionMap();
+        Map<String, String> barcodeMapping = (Map<String, String>) session.get(Constants.BARCODE_MAPPING);
+        if (barcodeMapping == null) {
+            barcodeMapping = new HashMap<>();
+            session.put(Constants.BARCODE_MAPPING, barcodeMapping);
+        }
+        barcodeMapping.put(sessionKey, (String) value);
+        StringBuilder builder = SharedStringBuilder.get(context, SB_BUILD);
 
-            src = builder.append(resourcePath).append("&").append(Constants.DYNAMIC_CONTENT_PARAM).append("=").append(URLEncoder.encode(sessionKey, "UTF-8"))
-                    .append("&").append(Constants.DYNAMIC_CONTENT_TYPE_PARAM).append("=").append(dynamicContentType.toString())
-                    .append("&gen=").append(type)
-                    .append("&fmt=").append(component.getFormat())
-                    .append("&qrec=").append(component.getQrErrorCorrection())
-                    .append("&hrp=").append(component.getHrp())
-                    .append("&").append(Constants.DYNAMIC_CONTENT_CACHE_PARAM).append("=").append(component.isCache())
-                    .append("&ori=").append(component.getOrientation())
-                    .append("&mag=").append(component.getMagnification())
-                    .toString();
-        }
-        catch (UnsupportedEncodingException ex) {
-            throw new IOException(ex);
-        }
+        src = builder.append(resourcePath)
+                .append("&").append(Constants.DYNAMIC_CONTENT_PARAM).append("=").append(URLEncoder.encode(sessionKey, StandardCharsets.UTF_8))
+                .append("&").append(Constants.DYNAMIC_CONTENT_TYPE_PARAM).append("=").append(dynamicContentType)
+                .append("&gen=").append(type)
+                .append("&fmt=").append(component.getFormat())
+                .append("&qrec=").append(component.getQrErrorCorrection())
+                .append("&hrp=").append(component.getHrp())
+                .append("&").append(Constants.DYNAMIC_CONTENT_CACHE_PARAM).append("=").append(component.isCache())
+                .append("&ori=").append(component.getOrientation())
+                .append("&mag=").append(component.getMagnification())
+                .toString();
 
         writer.startElement("img", component);
         if (shouldWriteId(component)) {

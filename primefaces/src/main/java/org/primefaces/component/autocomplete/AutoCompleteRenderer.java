@@ -506,7 +506,7 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
 
     protected void encodeSuggestions(FacesContext context, AutoComplete component, Object items) throws IOException {
         boolean customContent = !component.getColums().isEmpty();
-        Converter converter = ComponentUtils.getConverter(context, component);
+        Converter<?> converter = ComponentUtils.getConverter(context, component);
 
         if (customContent) {
             ComponentUtils.runWithoutFacesContextVar(context, Constants.HELPER_RENDERER, () -> {
@@ -531,11 +531,11 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
         }
     }
 
-    protected void encodeSuggestionsAsTable(FacesContext context, AutoComplete component, Object items, Converter converter)
+    protected void encodeSuggestionsAsTable(FacesContext context, AutoComplete component, Object items, Converter<?> converter)
             throws IOException {
 
         // do not render table if empty message and there are no records
-        if (items == null || ((Collection) items).isEmpty()) {
+        if (items == null || ((Collection<?>) items).isEmpty()) {
             return;
         }
         ResponseWriter writer = context.getResponseWriter();
@@ -601,7 +601,7 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
                 }
             }
             else {
-                for (Object item : (List) items) {
+                for (Object item : (List<?>) items) {
                     encodeSuggestionItemsAsTable(context, component, item, converter, pojo, var, null, index++);
                 }
 
@@ -832,14 +832,14 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
         boolean isMultiple = ac.isMultiple();
 
         if (submittedValue == null || submittedValue.equals("") || ac.isMoreTextRequest(context)) {
-            return isMultiple ? new ArrayList() : null;
+            return isMultiple ? new ArrayList<>() : null;
         }
 
-        Converter converter = ComponentUtils.getConverter(context, component);
+        Converter<?> converter = ComponentUtils.getConverter(context, component);
 
         if (isMultiple) {
             String[] values = (String[]) submittedValue;
-            List list = new ArrayList();
+            List<Object> list = new ArrayList<>();
 
             for (String value : values) {
                 if (isValueBlank(value)) {

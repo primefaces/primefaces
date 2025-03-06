@@ -29,9 +29,9 @@ import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.model.StreamedContent;
 
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
@@ -107,7 +107,7 @@ public class DynamicContentSrcBuilder {
         String resourcePath = resource.getRequestPath();
 
         Map<String, Object> session = context.getExternalContext().getSessionMap();
-        Map<String, String> dynamicResourcesMapping = (Map) session.get(Constants.DYNAMIC_RESOURCES_MAPPING);
+        Map<String, String> dynamicResourcesMapping = (Map<String, String>) session.get(Constants.DYNAMIC_RESOURCES_MAPPING);
         if (dynamicResourcesMapping == null) {
             int limit = PrimeApplicationContext.getCurrentInstance(context).getConfig().getDynamicContentLimit();
             dynamicResourcesMapping = new LimitedSizeHashMap<>(limit);
@@ -119,35 +119,30 @@ public class DynamicContentSrcBuilder {
 
         dynamicResourcesMapping.put(resourceKey, expressionString);
 
-        try {
-            StringBuilder builder = SharedStringBuilder.get(context, SB_BUILD_STREAMING);
-            builder.append(resourcePath)
-                    .append("&").append(Constants.DYNAMIC_CONTENT_PARAM).append("=").append(URLEncoder.encode(resourceKey, "UTF-8"))
-                    .append("&").append(Constants.DYNAMIC_CONTENT_TYPE_PARAM).append("=").append(DynamicContentType.STREAMED_CONTENT.toString());
+        StringBuilder builder = SharedStringBuilder.get(context, SB_BUILD_STREAMING);
+        builder.append(resourcePath)
+                .append("&").append(Constants.DYNAMIC_CONTENT_PARAM).append("=").append(URLEncoder.encode(resourceKey, StandardCharsets.UTF_8))
+                .append("&").append(Constants.DYNAMIC_CONTENT_TYPE_PARAM).append("=").append(DynamicContentType.STREAMED_CONTENT);
 
-            if (component != null) {
-                for (int i = 0; i < component.getChildCount(); i++) {
-                    UIComponent child = component.getChildren().get(i);
-                    if (child instanceof UIParameter) {
-                        UIParameter param = (UIParameter) child;
-                        if (!param.isDisable()) {
-                            Object paramValue = param.getValue();
+        if (component != null) {
+            for (int i = 0; i < component.getChildCount(); i++) {
+                UIComponent child = component.getChildren().get(i);
+                if (child instanceof UIParameter) {
+                    UIParameter param = (UIParameter) child;
+                    if (!param.isDisable()) {
+                        Object paramValue = param.getValue();
 
-                            builder.append("&").append(param.getName()).append("=");
+                        builder.append("&").append(param.getName()).append("=");
 
-                            if (paramValue != null) {
-                                builder.append(URLEncoder.encode(paramValue.toString(), "UTF-8"));
-                            }
+                        if (paramValue != null) {
+                            builder.append(URLEncoder.encode(paramValue.toString(), StandardCharsets.UTF_8));
                         }
                     }
                 }
             }
+        }
 
-            return ResourceUtils.encodeResourceURL(context, builder.toString(), cache);
-        }
-        catch (UnsupportedEncodingException ex) {
-            throw new FacesException(ex);
-        }
+        return ResourceUtils.encodeResourceURL(context, builder.toString(), cache);
     }
 
     protected static String md5(String input) {

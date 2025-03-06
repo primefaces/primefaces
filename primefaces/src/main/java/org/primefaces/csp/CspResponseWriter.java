@@ -200,7 +200,7 @@ public class CspResponseWriter extends ResponseWriterWrapper {
             // no id written -> generate a new one and write it
             // otherwise we can't identify the element for our scripts
             if (LangUtils.isBlank(id)) {
-                id = lastElement.toLowerCase() + "-" + UUID.randomUUID().toString();
+                id = lastElement.toLowerCase() + "-" + UUID.randomUUID();
                 getWrapped().writeAttribute("id", id, null);
             }
 

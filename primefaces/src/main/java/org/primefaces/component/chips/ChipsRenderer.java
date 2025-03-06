@@ -227,9 +227,9 @@ public class ChipsRenderer extends InputRenderer<Chips> {
             return null;
         }
 
-        Converter converter = ComponentUtils.getConverter(context, component);
+        Converter<?> converter = ComponentUtils.getConverter(context, component);
         String[] values = (String[]) submittedValue;
-        List list = new ArrayList();
+        List<Object> list = new ArrayList<>();
 
         for (String value : values) {
             if (isValueBlank(value)) {
