@@ -166,7 +166,7 @@ public class DefaultTreeNodeChildren<T> extends ArrayList<TreeNode<T>> implement
         }
 
         TreeNode node = (TreeNode) object;
-        if (super.indexOf(node) != -1) {
+        if (super.contains(node)) {
             node.clearParent();
         }
 

@@ -85,7 +85,7 @@ public class GMap extends GMapBase {
 
     @Override
     public void queueEvent(FacesEvent event) {
-        FacesContext context = getFacesContext();
+        FacesContext context = event.getFacesContext();
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
         String clientId = getClientId(context);
@@ -96,7 +96,7 @@ public class GMap extends GMapBase {
             FacesEvent wrapperEvent = null;
 
             if ("overlaySelect".equals(eventName) || "overlayDblSelect".equals(eventName)) {
-                wrapperEvent = new OverlaySelectEvent(this, behaviorEvent.getBehavior(), getModel().findOverlay(params.get(clientId + "_overlayId")));
+                wrapperEvent = new OverlaySelectEvent<>(this, behaviorEvent.getBehavior(), getModel().findOverlay(params.get(clientId + "_overlayId")));
 
                 //if there is info window, update and show it
                 GMapInfoWindow infoWindow = getInfoWindow();
@@ -123,12 +123,12 @@ public class GMap extends GMapBase {
                 wrapperEvent = new PointSelectEvent(this, behaviorEvent.getBehavior(), position);
             }
             else if ("markerDrag".equals(eventName)) {
-                Marker marker = (Marker) getModel().findOverlay(params.get(clientId + "_markerId"));
+                Marker<?> marker = (Marker<?>) getModel().findOverlay(params.get(clientId + "_markerId"));
                 double lat = Double.parseDouble(params.get(clientId + "_lat"));
                 double lng = Double.parseDouble(params.get(clientId + "_lng"));
                 marker.setLatlng(new LatLng(lat, lng));
 
-                wrapperEvent = new MarkerDragEvent(this, behaviorEvent.getBehavior(), marker);
+                wrapperEvent = new MarkerDragEvent<>(this, behaviorEvent.getBehavior(), marker);
             }
             else if ("geocode".equals(eventName)) {
                 List<GeocodeResult> results = new ArrayList<>();

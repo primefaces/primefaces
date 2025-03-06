@@ -31,7 +31,6 @@ import java.io.IOException;
 import java.util.List;
 
 import jakarta.faces.component.UIComponent;
-import jakarta.faces.component.UISelectOne;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.Converter;
@@ -40,7 +39,7 @@ import jakarta.faces.model.SelectItem;
 import jakarta.faces.model.SelectItemGroup;
 import jakarta.faces.render.Renderer;
 
-public class MultiSelectListboxRenderer extends SelectOneRenderer {
+public class MultiSelectListboxRenderer extends SelectOneRenderer<MultiSelectListbox> {
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
@@ -52,55 +51,53 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
     }
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        MultiSelectListbox listbox = (MultiSelectListbox) component;
-
-        encodeMarkup(context, listbox);
-        encodeScript(context, listbox);
+    public void encodeEnd(FacesContext context, MultiSelectListbox component) throws IOException {
+        encodeMarkup(context, component);
+        encodeScript(context, component);
     }
 
-    protected void encodeMarkup(FacesContext context, MultiSelectListbox listbox) throws IOException {
+    protected void encodeMarkup(FacesContext context, MultiSelectListbox component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = listbox.getClientId(context);
-        List<SelectItem> selectItems = getSelectItems(context, listbox);
-        String style = listbox.getStyle();
-        String styleClass = createStyleClass(listbox, MultiSelectListbox.CONTAINER_CLASS);
+        String clientId = component.getClientId(context);
+        List<SelectItem> selectItems = getSelectItems(context, component);
+        String style = component.getStyle();
+        String styleClass = createStyleClass(component, MultiSelectListbox.CONTAINER_CLASS);
 
-        writer.startElement("div", listbox);
+        writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
 
-        encodeInput(context, listbox);
-        encodeLists(context, listbox, selectItems);
+        encodeInput(context, component);
+        encodeLists(context, component, selectItems);
 
         writer.endElement("div");
     }
 
-    protected void encodeLists(FacesContext context, MultiSelectListbox listbox, List<SelectItem> itemList) throws IOException {
+    protected void encodeLists(FacesContext context, MultiSelectListbox component, List<SelectItem> itemList) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         SelectItem[] items = (itemList == null) ? null : itemList.toArray(new SelectItem[itemList.size()]);
-        String header = listbox.getHeader();
+        String header = component.getHeader();
         String listStyleClass = MultiSelectListbox.LIST_CLASS;
 
-        writer.startElement("div", listbox);
+        writer.startElement("div", component);
         writer.writeAttribute("class", MultiSelectListbox.LIST_CONTAINER_CLASS, null);
 
         if (header != null) {
-            writer.startElement("div", listbox);
+            writer.startElement("div", component);
             writer.writeAttribute("class", MultiSelectListbox.LIST_HEADER_CLASS, null);
             writer.writeText(header, null);
             writer.endElement("div");
         }
 
-        writer.startElement("ul", listbox);
+        writer.startElement("ul", component);
         writer.writeAttribute("class", listStyleClass, null);
-        renderARIARequired(context, listbox);
+        renderARIARequired(context, component);
 
         if (items != null) {
-            encodeListItems(context, listbox, items);
+            encodeListItems(context, component, items);
         }
 
         writer.endElement("ul");
@@ -108,20 +105,20 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeListItems(FacesContext context, MultiSelectListbox listbox, SelectItem[] selectItems) throws IOException {
+    protected void encodeListItems(FacesContext context, MultiSelectListbox component, SelectItem[] selectItems) throws IOException {
         if (selectItems != null && selectItems.length > 0) {
             ResponseWriter writer = context.getResponseWriter();
-            Converter converter = ComponentUtils.getConverter(context, listbox);
+            Converter converter = ComponentUtils.getConverter(context, component);
             String itemValue = null;
 
             for (int i = 0; i < selectItems.length; i++) {
                 SelectItem selectItem = selectItems[i];
-                itemValue = converter != null ? converter.getAsString(context, listbox, selectItem.getValue()) : String.valueOf(selectItem.getValue());
+                itemValue = converter != null ? converter.getAsString(context, component, selectItem.getValue()) : String.valueOf(selectItem.getValue());
                 writer.startElement("li", null);
                 writer.writeAttribute("class", MultiSelectListbox.ITEM_CLASS, null);
                 writer.writeAttribute("data-value", itemValue, null);
 
-                writer.startElement("span", listbox);
+                writer.startElement("span", component);
                 writer.writeText(selectItem.getLabel(), null);
                 writer.endElement("span");
 
@@ -130,7 +127,7 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
                     SelectItem[] groupItems = group.getSelectItems();
 
                     if (groupItems != null && groupItems.length > 0) {
-                        encodeGroupItems(context, listbox, group.getSelectItems());
+                        encodeGroupItems(context, component, group.getSelectItems());
                     }
                 }
 
@@ -139,34 +136,34 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
         }
     }
 
-    protected void encodeGroupItems(FacesContext context, MultiSelectListbox listbox, SelectItem[] selectItems) throws IOException {
+    protected void encodeGroupItems(FacesContext context, MultiSelectListbox component, SelectItem[] selectItems) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        writer.startElement("ul", listbox);
+        writer.startElement("ul", component);
         writer.writeAttribute("class", "ui-helper-hidden", null);
-        encodeListItems(context, listbox, selectItems);
+        encodeListItems(context, component, selectItems);
         writer.endElement("ul");
     }
 
-    protected void encodeScript(FacesContext context, MultiSelectListbox listbox) throws IOException {
+    protected void encodeScript(FacesContext context, MultiSelectListbox component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
 
-        wb.init("MultiSelectListbox", listbox)
-                .attr("effect", listbox.getEffect(), null)
-                .attr("showHeaders", listbox.isShowHeaders(), false);
-        encodeClientBehaviors(context, listbox);
+        wb.init("MultiSelectListbox", component)
+                .attr("effect", component.getEffect(), null)
+                .attr("showHeaders", component.isShowHeaders(), false);
+        encodeClientBehaviors(context, component);
         wb.finish();
     }
 
-    protected void encodeInput(FacesContext context, MultiSelectListbox listbox) throws IOException {
-        String inputId = listbox.getClientId(context) + "_input";
-        String valueToRender = ComponentUtils.getValueToRender(context, listbox);
+    protected void encodeInput(FacesContext context, MultiSelectListbox component) throws IOException {
+        String inputId = component.getClientId(context) + "_input";
+        String valueToRender = ComponentUtils.getValueToRender(context, component);
 
-        renderHiddenInput(context, inputId, valueToRender, listbox.isDisabled());
+        renderHiddenInput(context, inputId, valueToRender, component.isDisabled());
     }
 
     @Override
-    protected String getSubmitParam(FacesContext context, UISelectOne selectOne) {
-        return selectOne.getClientId(context) + "_input";
+    protected String getSubmitParam(FacesContext context, MultiSelectListbox component) {
+        return component.getClientId(context) + "_input";
     }
 }

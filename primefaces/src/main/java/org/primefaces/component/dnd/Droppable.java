@@ -73,7 +73,7 @@ public class Droppable extends DroppableBase {
 
     @Override
     public void queueEvent(FacesEvent event) {
-        FacesContext context = getFacesContext();
+        FacesContext context = event.getFacesContext();
 
         if (ComponentUtils.isRequestSource(this, context)) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
@@ -85,7 +85,7 @@ public class Droppable extends DroppableBase {
             if ("drop".equals(eventName)) {
                 String dragId = params.get(clientId + "_dragId");
                 String dropId = params.get(clientId + "_dropId");
-                DragDropEvent dndEvent = null;
+                DragDropEvent<?> dndEvent = null;
                 String datasourceId = getDatasource();
 
                 if (datasourceId != null) {
@@ -96,10 +96,10 @@ public class Droppable extends DroppableBase {
                     Object data = datasource.getRowData();
                     datasource.setRowIndex(-1);
 
-                    dndEvent = new DragDropEvent(this, behaviorEvent.getBehavior(), dragId, dropId, data);
+                    dndEvent = new DragDropEvent<>(this, behaviorEvent.getBehavior(), dragId, dropId, data);
                 }
                 else {
-                    dndEvent = new DragDropEvent(this, behaviorEvent.getBehavior(), dragId, dropId);
+                    dndEvent = new DragDropEvent<>(this, behaviorEvent.getBehavior(), dragId, dropId);
                 }
 
                 super.queueEvent(dndEvent);

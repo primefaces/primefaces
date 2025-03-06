@@ -39,6 +39,7 @@ import java.io.Serializable;
 import java.io.UncheckedIOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
@@ -391,11 +392,11 @@ public class ComponentUtils {
         return visitContext.getHints().contains(VisitHint.SKIP_ITERATION);
     }
 
-    public static <T extends Renderer> T getUnwrappedRenderer(FacesContext context, String family, String rendererType) {
-        Renderer renderer = context.getRenderKit().getRenderer(family, rendererType);
+    public static <T extends Renderer<?>> T getUnwrappedRenderer(FacesContext context, String family, String rendererType) {
+        Renderer<?> renderer = context.getRenderKit().getRenderer(family, rendererType);
 
         while (renderer instanceof FacesWrapper) {
-            renderer = (Renderer) ((FacesWrapper) renderer).getWrapped();
+            renderer = (Renderer<?>) ((FacesWrapper<?>) renderer).getWrapped();
         }
 
         return (T) renderer;
@@ -443,7 +444,7 @@ public class ComponentUtils {
             return null;
         }
 
-        return URLEncoder.encode(string, "UTF-8")
+        return URLEncoder.encode(string, StandardCharsets.UTF_8)
                 .replace("+", "%20")
                 .replace("%21", "!")
                 .replace("%27", "'")

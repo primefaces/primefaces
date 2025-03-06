@@ -44,7 +44,7 @@ public class ContentRange {
         this.packet = chunkRangeBegin / chunkSize;
     }
 
-    public static final ContentRange of(String contentRange, long chunkSize) {
+    public static ContentRange of(String contentRange, long chunkSize) {
         Matcher matcher = CONTENT_RANGE_PATTERN.matcher(contentRange);
         if (matcher.find()) {
             return new ContentRange(Long.parseLong(matcher.group(1)), Long.parseLong(matcher.group(2)), Long.parseLong(matcher.group(3)), chunkSize);

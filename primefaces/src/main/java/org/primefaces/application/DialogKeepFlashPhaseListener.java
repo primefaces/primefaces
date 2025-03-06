@@ -40,11 +40,6 @@ public class DialogKeepFlashPhaseListener implements PhaseListener {
     private static final long serialVersionUID = 1L;
 
     @Override
-    public void afterPhase(PhaseEvent event) {
-
-    }
-
-    @Override
     public void beforePhase(PhaseEvent event) {
         if (isInDialogPreparation()) {
             Flash flash = FacesContext.getCurrentInstance().getExternalContext().getFlash();

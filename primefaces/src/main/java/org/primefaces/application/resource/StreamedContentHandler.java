@@ -59,7 +59,7 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
             try {
                 ExternalContext externalContext = context.getExternalContext();
                 Map<String, Object> session = externalContext.getSessionMap();
-                Map<String, String> dynamicResourcesMapping = (Map) session.get(Constants.DYNAMIC_RESOURCES_MAPPING);
+                Map<String, String> dynamicResourcesMapping = (Map<String, String>) session.get(Constants.DYNAMIC_RESOURCES_MAPPING);
 
                 if (dynamicResourcesMapping != null) {
                     String dynamicContentEL = dynamicResourcesMapping.get(resourceKey);

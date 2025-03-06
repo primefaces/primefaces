@@ -52,7 +52,7 @@ public class MoveScriptsToBottomState implements Serializable {
     }
 
     public void addInclude(String type, Map<String, String> includeAttributes) {
-        if (includeAttributes.size() > 0) {
+        if (!includeAttributes.isEmpty()) {
             List<Map<String, String>> includeList = includes.computeIfAbsent(type, k -> new ArrayList<>(20));
             includeList.add(new LinkedHashMap<>(includeAttributes));
         }
