@@ -573,11 +573,13 @@ export class FileUpload<Cfg extends FileUploadCfg> extends PrimeFaces.widget.Bas
                 }
             },
             always: function(e, data) {
-                if($this.cfg.global) {
-                    $(document).trigger('pfAjaxComplete', [data.jqXHR, this, data.jqXHR.pfArgs]);
-                }
-                if($this.cfg.oncomplete) {
-                    $this.cfg.oncomplete.call($this, data.jqXHR.pfArgs ?? {}, data);
+                if (data.jqXHR) {
+                    if ($this.cfg.global) {
+                        $(document).trigger('pfAjaxComplete', [data.jqXHR, this, data.jqXHR.pfArgs]);
+                    }
+                    if ($this.cfg.oncomplete) {
+                        $this.cfg.oncomplete.call($this, data.jqXHR.pfArgs ?? {}, data);
+                    }
                 }
             },
 
