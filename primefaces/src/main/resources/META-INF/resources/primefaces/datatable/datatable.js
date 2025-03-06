@@ -5727,7 +5727,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         // update the visibility of columns but ignore expanded rows and GitHub #7255 grouped headers
         if(this.headers && !this.hasColGroup()) {
-            var rows = this.tbody.find('> tr:not(.ui-expanded-row-content)');
+            var rows = this.tbody.find('> tr:not(.ui-expanded-row-content):not(.ui-datatable-headerrow)');
             for(var i = 0; i < rows.length; i++) {
                 var row = rows.eq(i);
                 var columns = row.find('td');
