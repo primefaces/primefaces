@@ -89,7 +89,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer<SelectManyChe
     protected void encodeScript(FacesContext context, SelectManyCheckbox component) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
         String layout = component.getLayout();
-        boolean custom = (layout != null && "custom".equals(layout));
+        boolean custom = "custom".equals(layout);
 
         wb.init("SelectManyCheckbox", component)
                 .attr("custom", custom, false).finish();

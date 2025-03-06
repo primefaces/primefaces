@@ -892,21 +892,18 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
 
         int responsivePriority = column.getResponsivePriority();
         String style = column.getStyle();
-        String styleClass = column.getStyleClass();
-        styleClass = styleClass == null ? DataTable.COLUMN_FOOTER_CLASS : DataTable.COLUMN_FOOTER_CLASS + " " + styleClass;
 
         boolean columnVisible = column.isVisible();
         if (columnMeta != null && columnMeta.getVisible() != null) {
             columnVisible = columnMeta.getVisible();
         }
 
-        if (!columnVisible) {
-            styleClass = styleClass + " " + DataTable.HIDDEN_COLUMN_CLASS;
-        }
-
-        if (responsivePriority > 0) {
-            styleClass = styleClass + " ui-column-p-" + responsivePriority;
-        }
+        String styleClass = getStyleClassBuilder(context)
+                .add(DataTable.COLUMN_FOOTER_CLASS)
+                .add(column.getStyleClass())
+                .add(!columnVisible, DataTable.HIDDEN_COLUMN_CLASS)
+                .add(responsivePriority > 0, "ui-column-p-" + responsivePriority)
+                .build();
 
         writer.startElement("td", null);
         if (LangUtils.isNotBlank(styleClass)) {

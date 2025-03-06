@@ -106,7 +106,7 @@ public class HeadRenderer extends Renderer<UIComponent> {
             ExpressionFactory expressionFactory = context.getApplication().getExpressionFactory();
             ValueExpression ve = expressionFactory.createValueExpression(elContext, themeParamValue, String.class);
 
-            theme = (String) ve.getValue(elContext);
+            theme = ve.getValue(elContext);
         }
         else {
             theme = "saga-blue";     //default

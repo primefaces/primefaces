@@ -30,7 +30,7 @@ import java.util.List;
  */
 public class BeanUtils {
 
-    private static final List<Class<?>> PRIMITIVES = LangUtils.<Class<?>>unmodifiableList(Boolean.class,
+    private static final List<Class<?>> PRIMITIVES = LangUtils.unmodifiableList(Boolean.class,
             Byte.class,
             Character.class,
             Double.class,

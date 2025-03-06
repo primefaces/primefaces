@@ -263,7 +263,7 @@ public class PrimeRequestContext {
     public boolean isIgnoreAutoUpdate() {
         if (ignoreAutoUpdate == null) {
             Object ignoreAutoUpdateObject = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.IGNORE_AUTO_UPDATE_PARAM);
-            ignoreAutoUpdate = (null != ignoreAutoUpdateObject && "true".equals(ignoreAutoUpdateObject));
+            ignoreAutoUpdate = "true".equals(ignoreAutoUpdateObject);
         }
 
         return ignoreAutoUpdate;
@@ -288,7 +288,7 @@ public class PrimeRequestContext {
                 ELContext elContext = context.getELContext();
                 ExpressionFactory expressionFactory = context.getApplication().getExpressionFactory();
                 ValueExpression expression = expressionFactory.createValueExpression(elContext, param, String.class);
-                String expressionValue = (String) expression.getValue(elContext);
+                String expressionValue = expression.getValue(elContext);
 
                 rtl = "rtl".equalsIgnoreCase(expressionValue);
             }
@@ -330,7 +330,7 @@ public class PrimeRequestContext {
             ELContext elContext = context.getELContext();
             ExpressionFactory expressionFactory = context.getApplication().getExpressionFactory();
             ValueExpression expression = expressionFactory.createValueExpression(elContext, paramValue, String.class);
-            String expressionValue = (String) expression.getValue(elContext);
+            String expressionValue = expression.getValue(elContext);
             return expressionValue == null || Boolean.parseBoolean(expressionValue);
         }
     }

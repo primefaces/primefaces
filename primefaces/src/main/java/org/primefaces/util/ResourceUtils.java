@@ -221,7 +221,7 @@ public class ResourceUtils {
         url += Constants.DYNAMIC_CONTENT_CACHE_PARAM + "=" + cache;
 
         if (!cache) {
-            url += "&uid=" + UUID.randomUUID().toString();
+            url += "&uid=" + UUID.randomUUID();
         }
         return url;
     }
@@ -262,7 +262,7 @@ public class ResourceUtils {
         // #9521 remove file extension like .xhtml or .faces as it violates cookie naming rules
         monitorKeyCookieName = monitorKeyCookieName.substring(0, monitorKeyCookieName.lastIndexOf('.'));
         if (monitorKey != null) {
-            String evaluated = (String) monitorKey.getValue(context.getELContext());
+            String evaluated = monitorKey.getValue(context.getELContext());
             if (LangUtils.isNotBlank(evaluated)) {
                 monitorKeyCookieName += "_" + evaluated;
             }

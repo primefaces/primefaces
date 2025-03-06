@@ -59,7 +59,7 @@ public class MediaRenderer extends CoreRenderer<Media> {
 
         String sourceParam = player.getSourceParam();
         String type = player.getType();
-        if (type != null && PDFPlayer.MIME_TYPE.equals(type)) {
+        if (PDFPlayer.MIME_TYPE.equals(type)) {
             String view = component.getView();
             String zoom = component.getZoom();
 

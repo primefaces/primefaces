@@ -181,7 +181,7 @@ public class AccordionPanelRenderer extends CoreRenderer<AccordionPanel> {
         boolean rtl = component.getDir().equalsIgnoreCase("rtl");
 
         List<String> activeIndexes = activeIndex == null
-                                     ? Collections.<String>emptyList()
+                                     ? Collections.emptyList()
                                      : Arrays.asList(activeIndex.split(","));
 
         if (repeating) {
