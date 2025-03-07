@@ -534,7 +534,13 @@ export class TieredMenu<Cfg extends TieredMenuCfg = TieredMenuCfg> extends Menu<
             }, this.cfg.hideDelay);
         }
         else {
-            this.reset();
+            if (PrimeFaces.widget.Menubar && $this instanceof PrimeFaces.widget.Menubar) {
+                // #13323 MenuBar only for hideDelay=0 only closes on document.click
+                e.stopPropagation();
+            }
+            else {
+                this.reset();
+            }
         }
     }
 
