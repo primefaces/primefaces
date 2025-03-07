@@ -494,7 +494,13 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
             }, this.cfg.hideDelay);
         }
         else {
-            this.reset();
+            if (PrimeFaces.widget.Menubar && $this instanceof PrimeFaces.widget.Menubar) {
+                // #13323 MenuBar only for hideDelay=0 only closes on document.click
+                e.stopPropagation();
+            }
+            else {
+                this.reset();
+            }
         }
     }
 
