@@ -31,7 +31,6 @@ import org.primefaces.selenium.component.InputTextarea;
 import org.primefaces.selenium.component.SelectBooleanCheckbox;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -65,7 +64,6 @@ class InputTextArea003Test extends AbstractPrimePageTest {
     @Test
     @Order(2)
     @DisplayName("InputTextarea: MaxLength using less than max # of characters, including one Emoji, countBytesAsChars=true")
-    @Disabled
     void maxLengthLessThan_WithEmoji(Page page) {
         // Arrange
         InputTextarea inputText = page.inputtext;
@@ -85,7 +83,6 @@ class InputTextArea003Test extends AbstractPrimePageTest {
     @Test
     @Order(3)
     @DisplayName("InputTextarea: MaxLength using less than max # of characters, including one Emoji, countBytesAsChars=true")
-    @Disabled
     void maxLengthLessThan_WithEmoji_CountBytesAsChar(Page page) {
         // Arrange
         InputTextarea inputText = page.inputtext;
