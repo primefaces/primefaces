@@ -40,7 +40,9 @@ public abstract class BarcodeBase extends HtmlGraphicImage {
         orientation,
         qrErrorCorrection,
         hrp,
-        magnification
+        magnification,
+        quietZoneHorizontal,
+        quietZoneVertical
     }
 
     public BarcodeBase() {
@@ -106,6 +108,22 @@ public abstract class BarcodeBase extends HtmlGraphicImage {
 
     public void setMagnification(double magnification) {
         getStateHelper().put(PropertyKeys.magnification, magnification);
+    }
+
+    public int getQuietZoneHorizontal() {
+        return (Integer) getStateHelper().eval(PropertyKeys.quietZoneHorizontal, 10);
+    }
+
+    public void setQuietZoneHorizontal(int quietZoneHorizontal) {
+        getStateHelper().put(PropertyKeys.quietZoneHorizontal, quietZoneHorizontal);
+    }
+
+    public int getQuietZoneVertical() {
+        return (Integer) getStateHelper().eval(PropertyKeys.quietZoneVertical, 1);
+    }
+
+    public void setQuietZoneVertical(int quietZoneVertical) {
+        getStateHelper().put(PropertyKeys.quietZoneVertical, quietZoneVertical);
     }
 
 }
