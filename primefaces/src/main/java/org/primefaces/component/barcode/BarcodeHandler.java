@@ -103,9 +103,13 @@ public class BarcodeHandler extends BaseDynamicContentHandler {
             int rotation = Integers.normalizeRotation(Integer.parseInt(params.get("ori")));
             double magnification = Double.parseDouble(params.get("mag"));
             boolean cache = Boolean.parseBoolean(params.get(Constants.DYNAMIC_CONTENT_CACHE_PARAM));
+            int quietZoneHorizontal = Integer.parseInt(params.get("mh"));
+            int quietZoneVertical = Integer.parseInt(params.get("mv"));
 
             generator.setHumanReadableLocation(HumanReadableLocation.valueOf(hrp.toUpperCase(Locale.ROOT)));
             generator.setContent(value);
+            generator.setQuietZoneHorizontal(quietZoneHorizontal);
+            generator.setQuietZoneVertical(quietZoneVertical);
 
             if (generator instanceof QrCode) {
                 ((QrCode) generator).setPreferredEccLevel(EccLevel.valueOf(params.get("qrec")));
