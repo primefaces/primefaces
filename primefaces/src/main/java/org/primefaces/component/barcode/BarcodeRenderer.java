@@ -83,6 +83,8 @@ public class BarcodeRenderer extends CoreRenderer {
                     .append("&").append(Constants.DYNAMIC_CONTENT_CACHE_PARAM).append("=").append(barcode.isCache())
                     .append("&ori=").append(barcode.getOrientation())
                     .append("&mag=").append(barcode.getMagnification())
+                    .append("&mh=").append(barcode.getQuietZoneHorizontal())
+                    .append("&mv=").append(barcode.getQuietZoneVertical())
                     .toString();
         }
         catch (UnsupportedEncodingException ex) {
