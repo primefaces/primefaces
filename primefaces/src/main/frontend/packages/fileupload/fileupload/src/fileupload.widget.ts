@@ -412,11 +412,25 @@ export class FileUpload<Cfg extends FileUploadCfg> extends PrimeFaces.widget.Bas
                 var file = data.files ? data.files[0] : null;
                 if (file) {
                     this.clearMessages();
-
-                    // we need to pass the real invisible input, which contains the file list
-                    var validationResult = PrimeFaces.validation.validate(this.jq, dataFileInput, update, true, true, true, true, false);
+ 
+                    // #13211 Create a new DataTransfer object to hold just the current file
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(file);
+                    // Create a temporary file input element
+                    const singleFileInput = $<HTMLInputElement>('<input type="file" />');
+                    // Set the files on the temporary input
+                    (singleFileInput[0] as HTMLInputElement).files = dataTransfer.files;
+                    // Copy validation metadata from original input to temporary one
+                    singleFileInput.data(dataFileInput.data());
+ 
+                    // pass the single file input being processed
+                    const validationResult = PrimeFaces.validation.validate(this.jq, singleFileInput, update, true, true, true, true, false);
+ 
+                    // clean up the temporary file input
+                    singleFileInput.remove();
+ 
+                    // if the file is invalid, show the message
                     if (!validationResult.valid) {
-
                         // if the messages hasn't been rendered, use our internal messages display
                         for (let clientId in validationResult.messages) {
                             for (let msg of validationResult.messages[clientId] ?? []) {
