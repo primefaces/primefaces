@@ -244,8 +244,6 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             return;
         }
         
-        $('body').addClass('ui-overflow-hidden');
-        
         // Remember the focused element before we opened the dialog
         // so we can return focus to it once we close the dialog.
         this.focusedElementBeforeDialogOpened = document.activeElement;
@@ -365,11 +363,6 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 this.disableModality();
             }
             this.onHide(duration);
-        }
-
-        var otherDialogs = $(".ui-dialog:visible").length > 0;
-        if (!otherDialogs) {
-            $('body').removeClass('ui-overflow-hidden');
         }
     },
 
