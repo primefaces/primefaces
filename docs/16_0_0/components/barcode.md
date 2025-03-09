@@ -41,6 +41,8 @@ Barcode component is used to display various barcode formats.
 | onmouseup | null | String | onmouseup DOM event handler
 | orientation | 0 | Integer | Orientation in terms of angle. (0, 90, 180, 270)
 | qrErrorConnection | L | String | The QR Code error correction level. L (default) - up to 7% damage. M - up to 15% damage. Q - up to 25% damage. H - up to 30% damage
+| quietZoneHorizontal | 10 | Integer | The horizontal quiet zone of the barcode in pixels.
+| quietZoneVertical | 1 | Integer | The vertical quiet zone of the barcode in pixels.
 | style | null | String | Style of the image
 | styleClass | null | String | Style class of the image
 | title | null | String | Title of the image
@@ -94,6 +96,6 @@ Barcode component uses **Okapi** library underneath to generate barcodes. The fo
 <dependency>
     <groupId>uk.org.okapibarcode</groupId>
     <artifactId>okapibarcode</artifactId>
-    <version>0.4.9</version>
+    <version>0.5.0</version>
 </dependency>
 ```

@@ -81,6 +81,8 @@ public class BarcodeRenderer extends CoreRenderer<Barcode> {
                 .append("&").append(Constants.DYNAMIC_CONTENT_CACHE_PARAM).append("=").append(component.isCache())
                 .append("&ori=").append(component.getOrientation())
                 .append("&mag=").append(component.getMagnification())
+                .append("&mh=").append(component.getQuietZoneHorizontal())
+                .append("&mv=").append(component.getQuietZoneVertical())
                 .toString();
 
         writer.startElement("img", component);

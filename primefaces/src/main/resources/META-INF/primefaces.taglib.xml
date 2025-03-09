@@ -2104,6 +2104,22 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[The horizontal quiet zone of the barcode in pixels. Default is 10 pixels.]]>
+            </description>
+            <name>quietZoneHorizontal</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The vertical quiet zone of the barcode in pixels. Default is 1 pixel.]]>
+            </description>
+            <name>quietZoneVertical</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[The QR Code error correction level. L (default) - up to 7% damage. M - up to 15% damage. Q - up to 25% damage. H - up to 30% damage]]>
             </description>
             <name>qrErrorCorrection</name>
