@@ -116,6 +116,9 @@ public class DialogRenderer extends CoreRenderer {
             writer.writeAttribute("style", style, null);
         }
 
+        writer.startElement("div", null);
+        writer.writeAttribute("class", "ui-dialog-container", null);
+
         if (dialog.isShowHeader()) {
             encodeHeader(context, dialog);
         }
@@ -123,6 +126,8 @@ public class DialogRenderer extends CoreRenderer {
         encodeContent(context, dialog);
 
         encodeFooter(context, dialog);
+
+        writer.endElement("div");
 
         writer.endElement("div");
     }
