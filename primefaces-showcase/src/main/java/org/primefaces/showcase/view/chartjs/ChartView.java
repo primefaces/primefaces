@@ -75,7 +75,6 @@ import software.xdev.chartjs.model.options.Options;
 import software.xdev.chartjs.model.options.Plugins;
 import software.xdev.chartjs.model.options.RadarOptions;
 import software.xdev.chartjs.model.options.Title;
-import software.xdev.chartjs.model.options.Tooltip;
 import software.xdev.chartjs.model.options.elements.Fill;
 import software.xdev.chartjs.model.options.scale.Scales;
 import software.xdev.chartjs.model.options.scale.cartesian.CartesianScaleOptions;
@@ -85,6 +84,7 @@ import software.xdev.chartjs.model.options.scale.radial.AngleLines;
 import software.xdev.chartjs.model.options.scale.radial.PointLabels;
 import software.xdev.chartjs.model.options.scale.radial.RadialLinearScaleOptions;
 import software.xdev.chartjs.model.options.scale.radial.RadialTickOptions;
+import software.xdev.chartjs.model.options.tooltip.TooltipOptions;
 
 
 @Named
@@ -297,7 +297,7 @@ public class ChartView implements Serializable {
                                         .setTicks(new CartesianTickOptions()))
                         )
                         .setPlugins(new Plugins()
-                                .setTooltip(new Tooltip().setMode("index"))
+                                .setTooltip(new TooltipOptions().setMode("index"))
                                 .setTitle(new Title()
                                         .setDisplay(true)
                                         .setText("Bar Chart - Stacked")))
@@ -425,7 +425,7 @@ public class ChartView implements Serializable {
                         .setResponsive(true)
                         .setMaintainAspectRatio(false)
                         .setPlugins(new Plugins()
-                                .setTooltip(new Tooltip().setMode("index"))
+                                .setTooltip(new TooltipOptions().setMode("index"))
                                 .setTitle(new Title()
                                         .setDisplay(true)
                                         .setText("Mixed Chart")
