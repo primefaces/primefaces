@@ -1,8 +1,8 @@
-import { nb_no } from "primelocale/js/nb_no.js";
+import { nb_NO } from "primelocale/js/nb_NO.js";
 
 if (window.PrimeFaces) {
   /** Norwegian */
-  PrimeFaces.locales["no"] = nb_no;
+  PrimeFaces.locales["no"] = nb_NO;
 
   // custom PF labels
   PrimeFaces.locales["no"] = $.extend(true, {}, PrimeFaces.locales["no"], {
