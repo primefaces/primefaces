@@ -98,7 +98,7 @@ public class DialogRenderer extends CoreRenderer {
         String positionType = dialog.getPositionType();
         String style = getStyleBuilder(context).add(dialog.getStyle()).add("display", "none").build();
         String styleClass = dialog.getStyleClass();
-        styleClass = styleClass == null ? Dialog.CONTAINER_CLASS : Dialog.CONTAINER_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? Dialog.DIALOG_CLASS : Dialog.DIALOG_CLASS + " " + styleClass;
 
         if (ComponentUtils.isRTL(context, dialog)) {
             styleClass += " ui-dialog-rtl";
@@ -117,7 +117,7 @@ public class DialogRenderer extends CoreRenderer {
         }
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", "ui-dialog-container", null);
+        writer.writeAttribute("class", Dialog.CONTAINER_CLASS, null);
 
         if (dialog.isShowHeader()) {
             encodeHeader(context, dialog);
