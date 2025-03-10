@@ -109,6 +109,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.jqEl = this.jq[0];
 
         this.positionInitialized = false;
+        this.containerMargin = 20;
 
         //configuration
         this.cfg.width = this.cfg.width||'auto';
@@ -208,7 +209,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         var contentPadding = this.content.innerHeight() - this.content.height();
         var footerHeight = this.footer.outerHeight(true) || 0;
 
-        var maxHeight = windowHeight - (margin + headerHeight + contentPadding + footerHeight);
+        var maxHeight = windowHeight - (margin + headerHeight + contentPadding + footerHeight) - this.containerMargin * 2;
 
         this.content.css('max-height', maxHeight + 'px');
 
@@ -243,7 +244,9 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         if(this.isVisible()) {
             return;
         }
-        
+
+        $('body').addClass('ui-dialog-open');
+
         // Remember the focused element before we opened the dialog
         // so we can return focus to it once we close the dialog.
         this.focusedElementBeforeDialogOpened = document.activeElement;
@@ -363,6 +366,11 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 this.disableModality();
             }
             this.onHide(duration);
+        }
+
+        var otherDialogs = $(".ui-dialog:visible").length > 0;
+        if (!otherDialogs) {
+            $('body').removeClass('ui-dialog-open');
         }
     },
 
@@ -484,7 +492,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.container.draggable({
             cancel: '.ui-dialog-content, .ui-dialog-titlebar-close',
             handle: '.ui-dialog-titlebar',
-            containment : $this.cfg.absolutePositioned ? 'document' : $this.jq,
+            containment : $this.jq,
             start: function( event, ui ) {
                 $this.jq.addClass('ui-overflow-hidden');
             },
@@ -534,8 +542,6 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 }
             },
             stop: function(event, ui) {
-                $this.container.css('position', 'fixed');
-
                 if($this.cfg.hasIframe) {
                     $this.iframeFix.remove();
                 }
@@ -580,18 +586,12 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
                         my: this.cfg.my
                         ,at: this.cfg.position
                         ,collision: 'fit'
-                        ,of: window
+                        ,of: $this.cfg.absolutePositioned ? window : $this.jq
                         //make sure dialog stays in viewport
                         ,using: function(pos) {
                             var l = pos.left < 0 ? 0 : pos.left,
-                            t = pos.top < 0 ? 0 : pos.top,
-                            scrollTop = $(window).scrollTop();
-
-                            //offset
-                            if($this.cfg.absolutePositioned) {
-                                t += scrollTop;
-                                $this.lastScrollTop = scrollTop;
-                            }
+                            t = pos.top < 0 ? 0 : pos.top;
+                            t = Math.max(pos.top < 0 ? 0 : pos.top, $this.containerMargin);
 
                             $(this).css({
                                 left: l + 'px'
@@ -886,12 +886,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
                     $this.fitViewport();
                 }
 
-                if (!$this.cfg.absolutePositioned) {
-                    $this.initPosition();
-                }
-                else {
-                    $this.positionInitialized = false;
-                }
+                $this.positionInitialized = false;
             }
         }
 
