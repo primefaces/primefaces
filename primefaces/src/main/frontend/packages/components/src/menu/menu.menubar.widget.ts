@@ -22,6 +22,13 @@ export interface MenubarCfg extends TieredMenuCfg {
  */
 export class Menubar<Cfg extends MenubarCfg = MenubarCfg> extends TieredMenu<Cfg> {
 
+    override init(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
+        super.init(cfg);
+
+        // #13323 MenuBar only for hideDelay=0 only closes on document.click
+        this.cfg.hideOnDocumentClick = this.cfg.hideDelay === 0;
+    }
+
     override showSubmenu(menuitem: JQuery, submenu: JQuery, focus?: boolean): void {
         let pos: JQueryUI.JQueryPositionOptions | null = null;
 
