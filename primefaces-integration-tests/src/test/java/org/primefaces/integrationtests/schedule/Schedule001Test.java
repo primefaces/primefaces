@@ -120,7 +120,7 @@ public class Schedule001Test extends AbstractPrimePageTest {
         // Assert
         msg = page.messages.getMessage(0);
         int hour = 10 - calcOffsetInHoursBetweenClientAndServerAndTimezone(startOfWeek.atStartOfDay(ZoneId.of(ALTERNATIV_SERVER_TIMEZONE)));
-        // Message is created by server, so we see date selected transfered into server-timezone, what may be confusing from a user perspective
+        // Message is created by server, so we see date selected transferred into server-timezone, what may be confusing from a user perspective
 
         // different ST/DST-scenarios
         String hourCurrent = String.format("T%02d:00", hour);
@@ -169,7 +169,7 @@ public class Schedule001Test extends AbstractPrimePageTest {
         // Assert
         assertMessage(page, "Event selected");
         assertEquals(schedule001.getEventModel().getEvents().get(0).getTitle(), page.selectedEventTitle.getValue());
-        // DatePicker does not recognize clientTimeZone, so we see startDate and endDate transfered into server-timezone,
+        // DatePicker does not recognize clientTimeZone, so we see startDate and endDate transferred into server-timezone,
         // what may be confusing from a user perspective
         assertEquals(schedule001.getEventModel().getEvents().get(0).getStartDate(), page.selectedEventStartDate.getValue());
         assertEquals(schedule001.getEventModel().getEvents().get(0).getEndDate(), page.selectedEventEndDate.getValue());

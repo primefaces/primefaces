@@ -968,7 +968,7 @@ public class DataTable extends DataTableBase {
         // 2) view state
         // 3) request state
         // in general multi-view state should only be restored on the initial request to a view
-        // and then transfered into view state
+        // and then transferred into view state
         // this means that restoring MVS is NOT required on a postback actually
         if (getFacesContext().isPostback()) {
             return;

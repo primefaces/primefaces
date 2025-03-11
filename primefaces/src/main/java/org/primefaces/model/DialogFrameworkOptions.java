@@ -603,7 +603,7 @@ public class DialogFrameworkOptions implements Serializable {
         }
 
         /**
-         * Dialog size might exceeed viewport if content is bigger than viewport in terms of height.
+         * Dialog size might exceed viewport if content is bigger than viewport in terms of height.
          * fitViewport option automatically adjusts height to fit dialog within the viewport.
          * @param fitViewport
          * @return
