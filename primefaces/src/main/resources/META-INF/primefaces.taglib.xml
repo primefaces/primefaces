@@ -918,7 +918,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Client side callback to execute after a exception with this type occured.]]>
+                <![CDATA[Client side callback to execute after a exception with this type occurred.]]>
             </description>
             <name>onexception</name>
             <required>false</required>
@@ -926,7 +926,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Components to update after a exception with this type occured.]]>
+                <![CDATA[Components to update after a exception with this type occurred.]]>
             </description>
             <name>update</name>
             <required>false</required>

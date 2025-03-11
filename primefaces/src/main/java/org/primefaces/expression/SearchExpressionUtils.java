@@ -214,7 +214,7 @@ public class SearchExpressionUtils {
             }
         }
 
-        return null; // won't occure, a ComponentNotFoundException will be thrown
+        return null; // won't occur, a ComponentNotFoundException will be thrown
     }
 
     // used by p:closestWidgetVar

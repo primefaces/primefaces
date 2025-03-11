@@ -67,7 +67,7 @@ declare namespace JQueryPrimeDatePicker {
     export type BaseCallback = (this: PickerInstance) => void
 
     /**
-     * Base callback that, in addition to the current date picker instance, is also passed the event that occured.
+     * Base callback that, in addition to the current date picker instance, is also passed the event that occurred.
      */
     export type BaseEventCallback =
         /**
