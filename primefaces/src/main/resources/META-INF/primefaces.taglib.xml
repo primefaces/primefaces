@@ -9983,7 +9983,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Dialog size might exceeed viewport if content is bigger than viewport in terms of height. fitViewport option automatically
+                <![CDATA[Dialog size might exceed viewport if content is bigger than viewport in terms of height. fitViewport option automatically
                 adjusts height to fit dialog within the viewport.]]>
             </description>
             <name>fitViewport</name>
@@ -21121,7 +21121,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines if items should be transfered on dblclick. Default is true.]]>
+                <![CDATA[Defines if items should be transferred on dblclick. Default is true.]]>
             </description>
             <name>transferOnDblclick</name>
             <required>false</required>
@@ -21129,7 +21129,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines if items should be transfered, instead of selected, on checkbox click. This only works in combination with showCheckbox=true. Default is false.]]>
+                <![CDATA[Defines if items should be transferred, instead of selected, on checkbox click. This only works in combination with showCheckbox=true. Default is false.]]>
             </description>
             <name>transferOnCheckboxClick</name>
             <required>false</required>
