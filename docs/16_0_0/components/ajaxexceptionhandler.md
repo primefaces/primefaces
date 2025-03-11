@@ -18,8 +18,8 @@ AjaxExceptionHandler is a utility component for the built-in ExceptionHandler.
 | id | null | String | Unique identifier of the component. |
 | rendered | true | Boolean | Boolean value to specify the rendering of the component. |
 | binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean |
-| onexception | null | String | Client side callback to execute after a exceptionwith this type occured. |
-| update | null | String | Components to update after a exception with this type occured. |
+| onexception | null | String | Client side callback to execute after a exception with this type occurred. |
+| update | null | String | Components to update after a exception with this type occurred. |
 | type | null | String | Exception type to handle. |
 
 ## Getting Started with AjaxExceptionHandler
@@ -33,7 +33,7 @@ Following example shows the exception in a dialog on the same page:
 
 ```xhtml
 <p:ajaxExceptionHandler type="jakarta.faces.application.ViewExpiredException" update="exceptionDialog" onexception="PF('exceptionDialog').show();" />
-<p:dialog id="exceptionDialog" header="Exception: #{pfExceptionHandler.type} occured!" widgetVar="exceptionDialog" height="500px">
+<p:dialog id="exceptionDialog" header="Exception: #{pfExceptionHandler.type} occurred!" widgetVar="exceptionDialog" height="500px">
     Message: #{pfExceptionHandler.message} <br/>
     StackTrace: <h:outputText value="#{pfExceptionHandler.formattedStackTrace}" escape="false" />
     <p:button onclick="document.location.href = document.location.href;" value="Reload!"/>

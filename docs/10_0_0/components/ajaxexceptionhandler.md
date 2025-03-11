@@ -18,8 +18,8 @@ AjaxExceptionHandler is a utility component for the built-in ExceptionHandler.
 | id | null | String | Unique identifier of the component. |
 | rendered | true | Boolean | Boolean value to specify the rendering of the component. |
 | binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean |
-| onexception | null | String | Client side callback to execute after a exceptionwith this type occured. |
-| update | null | String | Components to update after a exception with this type occured. |
+| onexception | null | String | Client side callback to execute after a exception with this type occurred. |
+| update | null | String | Components to update after a exception with this type occurred. |
 | type | null | String | Exception type to handle. |
 
 ## Getting Started with AjaxExceptionHandler
