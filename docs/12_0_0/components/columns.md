@@ -46,7 +46,7 @@ Columns is used by datatable to create columns dynamically.
 | responsivePriority | 0 | Integer | Responsive priority of the column, lower values have more priority.
 | sortable | true | Boolean | Boolean value to mark column as sortable.
 | filterable | true | Boolean | Boolean value to mark column as filterable.
-| visible | true | Boolean | Controls the visibilty of the column.
+| visible | true | Boolean | Controls the visibility of the column.
 | selectRow | true | Boolean | Whether clicking the column selects the row when parent component has row selection enabled, default is true.
 | ariaHeaderText | null | String | Accessible label for screen readers. IMPORTANT: Overrides headerText and headerFacet if specified. Only necessary when the column header is not human readable (e.g. empty header or icon-only header).
 | exportFunction | null | MethodExpression | Custom pluggable exportFunction.

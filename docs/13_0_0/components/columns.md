@@ -62,7 +62,7 @@ Columns is used by datatable to create columns dynamically.
 | toggleable | true | Boolean | Defines if columns are toggleable by columnToggler component. Default value is true and a false value marks the column as static.
 | value | null | Object | Data to represent columns.
 | var | null | String | Name of iterator to access a column.
-| visible | true | Boolean | Controls the visibilty of the column.
+| visible | true | Boolean | Controls the visibility of the column.
 | width | null | String | Width in pixels or percentage.
 
 ## Getting Started with Columns

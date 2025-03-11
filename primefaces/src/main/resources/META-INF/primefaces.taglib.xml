@@ -5880,7 +5880,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Controls the visibilty of the column, default is true.]]>
+                <![CDATA[Controls the visibility of the column, default is true.]]>
             </description>
             <name>visible</name>
             <required>false</required>
@@ -6332,7 +6332,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Controls the visibilty of the column, default is true.]]>
+                <![CDATA[Controls the visibility of the column, default is true.]]>
             </description>
             <name>visible</name>
             <required>false</required>
