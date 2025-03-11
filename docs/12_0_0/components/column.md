@@ -58,7 +58,7 @@ treetable and more.
 | style | null | String | Inline style of the column.
 | styleClass | null | String | Style class of the column.
 | toggleable | true | Boolean | Defines if column is toggleable by columnToggler component. Default value is true and a false value marks the column as static.
-| visible | true | Boolean | Controls the visibilty of the column.
+| visible | true | Boolean | Controls the visibility of the column.
 | width | null | String | The width of the column ('px' as default if no length unit is defined)
 
 ## Getting Started with Column
