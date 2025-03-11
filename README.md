@@ -29,9 +29,9 @@ Please check the following link for informations about [Long Term Support (LTS)]
 
 What does that mean?
 - PrimeFaces is developed by PrimeTek and the open source community.
-- The most contributers here on GitHub are working on PrimeFaces in their spare time.
+- The most contributors here on GitHub are working on PrimeFaces in their spare time.
 - PrimeTek pushes fixes and new features from their closed source LTS and Pro repositories to the community edition.
-- We, the community on GitHub, only provide support for issues, which are reproducable with the current major release or SNAPSHOT.
+- We, the community on GitHub, only provide support for issues, which are reproducible with the current major release or SNAPSHOT.
 - We are NOT able to port bugfixes to elite releases. This is up to PrimeTek and can e.g. be triggered with [PrimeFaces PRO](https://www.primefaces.org/support/).
 
 ### Versions
@@ -113,7 +113,7 @@ Version | JSF version | Java version | Binary | Source | Docs
 ### Tag Library
 ***
 
-The VDL documentation for the PrimeFaces tag libary can be found here: https://primefaces.github.io/primefaces/vdldoc/
+The VDL documentation for the PrimeFaces tag library can be found here: https://primefaces.github.io/primefaces/vdldoc/
 
 ### Usage
 ***
