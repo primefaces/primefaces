@@ -12,8 +12,21 @@
  * @prop {number} [timeoutId] Timeout ID, used for the animation when the menu is shown.
  * 
  * @prop {number} cfg.delay Delay in milliseconds before displaying the sub menu. Default is 0 meaning immediate.
+ * @prop {boolean} cfg.hideOnDocumentClick Whether to hide the menu on document click only if hideDelay is 0. Default is `false`.
  */
 PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
+
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
+    init: function (cfg) {
+        this._super(cfg);
+
+        // #13323 MenuBar only for hideDelay=0 only closes on document.click
+        this.cfg.hideOnDocumentClick = this.cfg.hideDelay === 0;
+    },
 
     /**
      * @override

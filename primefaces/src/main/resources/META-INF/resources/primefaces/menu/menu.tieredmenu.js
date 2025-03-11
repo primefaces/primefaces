@@ -26,6 +26,7 @@
  * When set to `false`, click event is required to display this tiered menu.
  * @prop {number} cfg.showDelay Number of milliseconds before displaying menu. Default to 0 immediate.
  * @prop {number} cfg.hideDelay Number of milliseconds before hiding menu, if 0 not hidden until document.click.
+ * @prop {boolean} cfg.hideOnDocumentClick Whether to hide the menu on document click only if hideDelay is 0. Default is `false`.
  * @prop {PrimeFaces.widget.TieredMenu.ToggleEvent} cfg.toggleEvent Event to toggle the submenus.
  */
 PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
@@ -494,7 +495,13 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
             }, this.cfg.hideDelay);
         }
         else {
-            this.reset();
+            if (e && this.cfg.hideOnDocumentClick) {
+                // #13323 MenuBar only for hideDelay=0 only closes on document.click
+                e.stopPropagation();
+            }
+            else {
+                this.reset();
+            }
         }
     }
 
