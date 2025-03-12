@@ -25,11 +25,9 @@ package org.primefaces.component.captcha;
 
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.Constants;
-import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -62,33 +60,6 @@ public class CaptchaRenderer extends CoreRenderer<Captcha> {
 
         if (publicKey == null) {
             throw new FacesException("Cannot find public key for catpcha, use " + Captcha.PUBLIC_KEY + " context-param to define one");
-        }
-
-        switch (component.getType()) {
-            case Captcha.RECAPTCHA:
-                if (LangUtils.isBlank(component.getSourceUrl())) {
-                    component.setSourceUrl("https://www.google.com/recaptcha/api.js");
-                }
-                if (LangUtils.isBlank(component.getVerifyUrl())) {
-                    component.setVerifyUrl("https://www.google.com/recaptcha/api/siteverify");
-                }
-                if (LangUtils.isBlank(component.getExecutor())) {
-                    component.setExecutor("grecaptcha");
-                }
-                break;
-            case Captcha.HCAPTCHA:
-                if (LangUtils.isBlank(component.getSourceUrl())) {
-                    component.setSourceUrl("https://js.hcaptcha.com/1/api.js");
-                }
-                if (LangUtils.isBlank(component.getVerifyUrl())) {
-                    component.setVerifyUrl("https://api.hcaptcha.com/siteverify");
-                }
-                if (LangUtils.isBlank(component.getExecutor())) {
-                    component.setExecutor("hcaptcha");
-                }
-                break;
-            default:
-                throw new FacesException(String.format("Captcha type must be one of %s", List.of(Captcha.RECAPTCHA, Captcha.HCAPTCHA)));
         }
 
         encodeMarkup(context, component, publicKey);
