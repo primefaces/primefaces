@@ -501,7 +501,7 @@ export class TieredMenu<Cfg extends TieredMenuCfg = TieredMenuCfg> extends Menu<
     }
 
     /**
-     * Deactivates all items and resets the state of this widget to its orignal state such that only the top-level menu
+     * Deactivates all items and resets the state of this widget to its original state such that only the top-level menu
      * items are shown. 
      */
     reset(): void {

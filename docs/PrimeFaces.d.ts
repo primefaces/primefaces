@@ -5826,7 +5826,7 @@ declare namespace PrimeFaces.widget {
          * });
          * ```
          * @override
-         * @param cfg the widget configuraton
+         * @param cfg the widget configuration
          *
          * (from super type BaseWidget) The widget configuration to be used for this widget instance.
          * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
@@ -8555,7 +8555,7 @@ declare namespace PrimeFaces.widget {
          * });
          * ```
          * @override
-         * @param cfg the widget configuraton
+         * @param cfg the widget configuration
          *
          * (from super type BaseWidget) The widget configuration to be used for this widget instance.
          * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
@@ -13289,7 +13289,7 @@ declare namespace PrimeFaces.widget {
          * });
          * ```
          * @override
-         * @param cfg the widget configuraton
+         * @param cfg the widget configuration
          *
          * (from super type BaseWidget) The widget configuration to be used for this widget instance.
          * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
@@ -13388,7 +13388,7 @@ declare namespace PrimeFaces.widget {
         show(duration?: number | string): void;
         /**
          * Toggle maxification, as if the user had clicked the maximize button. If this dialog is not yet maximized,
-         * maximizes it. If this dialog is already maximized, reverts it back to its orignal size.
+         * maximizes it. If this dialog is already maximized, reverts it back to its original size.
          */
         toggleMaximize(): void;
         /**
@@ -13615,7 +13615,7 @@ declare namespace PrimeFaces.widget {
          * });
          * ```
          * @override
-         * @param cfg the widget configuraton
+         * @param cfg the widget configuration
          *
          * (from super type BaseWidget) The widget configuration to be used for this widget instance.
          * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
@@ -16331,7 +16331,7 @@ declare namespace PrimeFaces.widget {
          * });
          * ```
          * @override
-         * @param cfg the widget configuraton
+         * @param cfg the widget configuration
          *
          * (from super type BaseWidget) The widget configuration to be used for this widget instance.
          * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
@@ -25565,7 +25565,7 @@ declare namespace PrimeFaces.widget {
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
         /**
-         * Deactivates all items and resets the state of this widget to its orignal state such that only the top-level menu
+         * Deactivates all items and resets the state of this widget to its original state such that only the top-level menu
          * items are shown.
          */
         reset(): void;
@@ -26572,7 +26572,7 @@ declare namespace PrimeFaces.widget {
          * });
          * ```
          * @override
-         * @param cfg the widget configuraton
+         * @param cfg the widget configuration
          *
          * (from super type BaseWidget) The widget configuration to be used for this widget instance.
          * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
@@ -29552,7 +29552,7 @@ declare namespace PrimeFaces.widget {
          * });
          * ```
          * @override
-         * @param cfg the widget configuraton
+         * @param cfg the widget configuration
          *
          * (from super type BaseWidget) The widget configuration to be used for this widget instance.
          * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
