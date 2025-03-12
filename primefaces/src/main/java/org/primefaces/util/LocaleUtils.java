@@ -51,7 +51,7 @@ public class LocaleUtils {
             throw new IllegalArgumentException("Invalid locale format: " + str);
         }
         if (len == 2) {
-            return Locale.of(str, "");
+            return new Locale(str, "");
         }
         else {
             if (str.charAt(2) != '_') {
@@ -59,20 +59,20 @@ public class LocaleUtils {
             }
             char ch3 = str.charAt(3);
             if (ch3 == '_') {
-                return Locale.of(str.substring(0, 2), "", str.substring(4));
+                return new Locale(str.substring(0, 2), "", str.substring(4));
             }
             char ch4 = str.charAt(4);
             if (ch3 < 'A' || ch3 > 'Z' || ch4 < 'A' || ch4 > 'Z') {
                 throw new IllegalArgumentException("Invalid locale format: " + str);
             }
             if (len == 5) {
-                return Locale.of(str.substring(0, 2), str.substring(3, 5));
+                return new Locale(str.substring(0, 2), str.substring(3, 5));
             }
             else {
                 if (str.charAt(5) != '_') {
                     throw new IllegalArgumentException("Invalid locale format: " + str);
                 }
-                return Locale.of(str.substring(0, 2), str.substring(3, 5), str.substring(6));
+                return new Locale(str.substring(0, 2), str.substring(3, 5), str.substring(6));
             }
         }
     }
