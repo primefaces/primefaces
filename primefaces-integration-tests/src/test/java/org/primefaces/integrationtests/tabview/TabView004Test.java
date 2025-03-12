@@ -62,8 +62,8 @@ class TabView004Test extends AbstractPrimePageTest {
         @FindBy(id = "form:tabview:selectonemenu")
         SelectOneMenu selectonemenu;
 
-        @FindBy(id = "form:tabview:secound")
-        WebElement secound;
+        @FindBy(id = "form:tabview:second")
+        WebElement second;
 
         @FindBy(id = "form:button")
         CommandButton button;
