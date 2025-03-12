@@ -598,7 +598,6 @@ public class AppMenu {
         miscMenuItems.add(new MenuItem("ProgressBar", "/ui/misc/progressBar"));
         miscMenuItems.add(new MenuItem("ResetInput", "/ui/misc/resetInput"));
         miscMenuItems.add(new MenuItem("Resizable", "/ui/misc/resizable"));
-        miscMenuItems.add(new MenuItem("Separator", "/ui/misc/separator", "Deprecated"));
         miscMenuItems.add(new MenuItem("Spacer", "/ui/misc/spacer", "Deprecated"));
         miscMenuItems.add(new MenuItem("Spotlight", "/ui/misc/spotlight"));
         miscMenuItems.add(new MenuItem("Sticky", "/ui/misc/sticky"));

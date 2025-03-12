@@ -25341,64 +25341,6 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[Seperator displays a horizontal line to separate content.]]>
-        </description>
-        <tag-name>separator</tag-name>
-        <component>
-            <component-type>org.primefaces.component.Separator</component-type>
-            <renderer-type>org.primefaces.component.SeparatorRenderer</renderer-type>
-        </component>
-        <attribute>
-            <description>
-                <![CDATA[Unique identifier of the component in a namingContainer.]]>
-            </description>
-            <name>id</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
-            </description>
-            <name>rendered</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
-            </description>
-            <name>binding</name>
-            <required>false</required>
-            <type>jakarta.faces.component.UIComponent</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Advisory tooltip information.]]>
-            </description>
-            <name>title</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Inline style of the separator.]]>
-            </description>
-            <name>style</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Style class of the separator.]]>
-            </description>
-            <name>styleClass</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-    </tag>
-    <tag>
-        <description>
             <![CDATA[Sidebar is a panel component displayed as an overlay.]]>
         </description>
         <tag-name>sidebar</tag-name>

@@ -33,7 +33,7 @@ FeedReader requires a feed URL to display and renders its content for each feed 
 <p:feedReader value="http://rss.news.yahoo.com/rss/sports" var="feed">
     <h:outputText value="#{feed.title}" style="font-weight: bold"/>
     <h:outputText value="#{feed.description}" escape="false"/>
-    <p:separator />
+    <p:divider />
     <f:facet name="error">
         Something went wrong.
     </f:facet>

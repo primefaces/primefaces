@@ -181,7 +181,7 @@ public class MenuBean {
     }
 }
 ```
-For all UI component counterpart such as p:menuitem, p:submenu, p:separator a corresponding
+For all UI component counterpart such as p:menuitem, p:submenu, p:divider a corresponding
 interface with a default implementation exists in MenuModel API. Regarding actions, if you need to
 pass parameters in ajax or non-ajax commands, use setParam(key, value) method.
 

@@ -51,12 +51,12 @@
     display: block;
 }
 
-.p-datepicker-panel .ui-timepicker > .ui-separator {
+.p-datepicker-panel .ui-timepicker > .ui-divider {
     margin-left: 0;
     min-width: .75em;
 }
 
-.p-datepicker-panel .ui-timepicker > .ui-separator button {
+.p-datepicker-panel .ui-timepicker > .ui-divider button {
     visibility: hidden;
     opacity: 0;
 }
