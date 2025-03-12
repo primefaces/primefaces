@@ -36,7 +36,7 @@ displayEventEnd | null | String | Whether or not to display an event's end time 
 draggable | true | Boolean | When true, events are draggable.
 extender | null | String | Name of JavaScript function to extend the options of the underlying FullCalendar plugin.
 height | null | String | Sets the height of the entire calendar, including header and footer. By default, this option is unset and the calendar’s height is calculated by aspectRatio. If "auto" is specified, the view’s contents will assume a natural height and no scrollbars will be used.
-initialDate | null | java.time.LocalDate | The initial date that is used when schedule loads. If ommitted, the schedule starts on the current date
+initialDate | null | java.time.LocalDate | The initial date that is used when schedule loads. If omitted, the schedule starts on the current date
 leftHeaderTemplate | prev, next, today | String | Content of left side of header.
 maxTime | null | String | Maximum time to display in a day view.
 minTime | null | String | Minimum time to display in a day view.

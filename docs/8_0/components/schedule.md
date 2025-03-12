@@ -25,7 +25,7 @@ value | null | Object | An org.primefaces.model.ScheduleModel instance represent
 locale | null | Object | Locale for localization, can be String or a java.util.Locale instance
 aspectRatio | null | Float | Ratio of calendar width to height, higher the value shorter the height is
 view | dayGridMonth | String | The view type to use, possible values are 'dayGridMonth', 'dayGridWeek', 'dayGridDay', 'timeGridWeek', 'timeGridDay', 'listYear' , 'listMonth', 'listWeek', 'listDay'.
-initialDate | null | java.time.LocalDate | The initial date that is used when schedule loads. If ommitted, the schedule starts on the current date
+initialDate | null | java.time.LocalDate | The initial date that is used when schedule loads. If omitted, the schedule starts on the current date
 showWeekends | true | Boolean | Specifies inclusion Saturday/Sunday columns in any of the views
 style | null | String | Style of the main container element of schedule
 styleClass | null | String | Style class of the main container element of schedule
