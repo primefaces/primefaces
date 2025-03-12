@@ -81,7 +81,6 @@ public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implem
         scrollHeight,
         selectLimit,
         showEmptyMessage,
-        type,
         unique,
         var,
         widgetVar,
@@ -352,14 +351,6 @@ public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implem
         getStateHelper().put(PropertyKeys.active, active);
     }
 
-    public String getType() {
-        return (String) getStateHelper().eval(PropertyKeys.type, "text");
-    }
-
-    public void setType(String type) {
-        getStateHelper().put(PropertyKeys.type, type);
-    }
-
     public String getMoreText() {
         return (String) getStateHelper().eval(PropertyKeys.moreText, "...");
     }
@@ -424,11 +415,11 @@ public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implem
         getStateHelper().put(PropertyKeys.completeEndpoint, completeEndpoint);
     }
 
-    public LazyDataModel getLazyModel() {
-        return (LazyDataModel) getStateHelper().eval(PropertyKeys.lazyModel, null);
+    public LazyDataModel<?> getLazyModel() {
+        return (LazyDataModel<?>) getStateHelper().eval(PropertyKeys.lazyModel, null);
     }
 
-    public void setLazyModel(LazyDataModel lazyModel) {
+    public void setLazyModel(LazyDataModel<?> lazyModel) {
         getStateHelper().put(PropertyKeys.lazyModel, lazyModel);
     }
 
