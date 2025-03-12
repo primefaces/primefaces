@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.imagecropper;
 
+import jakarta.faces.FacesException;
 import org.primefaces.model.CroppedImage;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
@@ -281,7 +282,7 @@ public class ImageCropperRenderer extends CoreRenderer<ImageCropper> {
                         url = new URI(imagePath).toURL();
                     }
                     catch (URISyntaxException e) {
-                        throw new RuntimeException(e);
+                        throw new FacesException(e);
                     }
                     URLConnection urlConnection = url.openConnection();
                     inputStream = urlConnection.getInputStream();
