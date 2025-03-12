@@ -44,8 +44,8 @@ class CurrencyValidatorTest {
     private static String customCurrencySymbol;
     private static DecimalFormat uk = (DecimalFormat) DecimalFormat.getCurrencyInstance(Locale.UK);
     private static DecimalFormat us = (DecimalFormat) DecimalFormat.getCurrencyInstance(Locale.US);
-    private static DecimalFormat brazil = (DecimalFormat) DecimalFormat.getCurrencyInstance(new Locale("pt", "BR"));
-    private static DecimalFormat custom = (DecimalFormat) DecimalFormat.getCurrencyInstance(new Locale("es", "US"));
+    private static DecimalFormat brazil = (DecimalFormat) DecimalFormat.getCurrencyInstance(Locale.of("pt", "BR"));
+    private static DecimalFormat custom = (DecimalFormat) DecimalFormat.getCurrencyInstance(Locale.of("es", "US"));
 
     @BeforeAll
     protected static void setUp() throws Exception {
