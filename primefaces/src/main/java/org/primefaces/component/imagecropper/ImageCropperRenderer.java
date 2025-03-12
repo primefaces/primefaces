@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.imagecropper;
 
+import jakarta.faces.FacesException;
 import org.primefaces.model.CroppedImage;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
