@@ -209,7 +209,7 @@ Here are more examples based on different templates;
 - _{PreviousPageLink} {CurrentPageReport} {NextPageLink}_
 
 ## Paginator Position
-Paginator can be positoned using `paginatorPosition` attribute in three different locations, "top",
+Paginator can be positioned using `paginatorPosition` attribute in three different locations, "top",
 "bottom" or "both" (default).
 
 ## Custom Content in Paginator

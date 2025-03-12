@@ -214,7 +214,7 @@ _org.primefaces.model.DashboardModel_ ( _org.primefaces.model.map.DefaultDashboa
 | List<DashboardColumn> getColumns() | Returns all columns in dashboard
 | int getColumnCount() | Returns the number of columns in dashboard
 | DashboardColumn getColumn(int index) | Returns the dashboard column at given index
-| void transferWidget(DashboardColumn from, DashboardColumn to, String widgetId, int index) |Relocates the widget identifed with widget id to the given index of the new column from old column.
+| void transferWidget(DashboardColumn from, DashboardColumn to, String widgetId, int index) |Relocates the widget identified with widget id to the given index of the new column from old column.
 
 _org.primefaces.model.DashboardColumn_ ( _org.primefaces.model.map.DefaultDashboardModel_ is
 the default implementation)
