@@ -34,6 +34,8 @@ import org.primefaces.virusscan.VirusScanner;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
@@ -118,12 +120,12 @@ public class VirusTotalReportScanner implements VirusScanner {
             String key = ctx.getInitParameter(CONTEXT_PARAM_KEY);
 
             String hash = LangUtils.md5Hex(file.getContent());
-            URL url = new URL(String.format(API_ENDPOINT, EscapeUtils.forUriComponent(key), EscapeUtils.forUriComponent(hash)));
+            URL url = new URI(String.format(API_ENDPOINT, EscapeUtils.forUriComponent(key), EscapeUtils.forUriComponent(hash))).toURL();
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.connect();
         }
-        catch (IOException e) {
+        catch (IOException | URISyntaxException e) {
             throw new FacesException(e);
         }
 

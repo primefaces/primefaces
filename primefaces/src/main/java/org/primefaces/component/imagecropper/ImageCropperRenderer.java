@@ -40,6 +40,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.Files;
@@ -274,7 +276,13 @@ public class ImageCropperRenderer extends CoreRenderer<ImageCropper> {
                 boolean isExternal = imagePath.startsWith("http");
 
                 if (isExternal) {
-                    URL url = new URL(imagePath);
+                    URL url;
+                    try {
+                        url = new URI(imagePath).toURL();
+                    }
+                    catch (URISyntaxException e) {
+                        throw new RuntimeException(e);
+                    }
                     URLConnection urlConnection = url.openConnection();
                     inputStream = urlConnection.getInputStream();
                     contentType = urlConnection.getContentType();

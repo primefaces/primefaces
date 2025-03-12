@@ -89,9 +89,6 @@ public class DefaultTreeNodeChildren<T> extends ArrayList<TreeNode<T>> implement
         boolean changed = false;
         while (elements.hasNext()) {
             TreeNode node = elements.next();
-            if (node == null) {
-                throw new NullPointerException();
-            }
 
             eraseParent(node);
             super.add(node);
@@ -113,9 +110,6 @@ public class DefaultTreeNodeChildren<T> extends ArrayList<TreeNode<T>> implement
         boolean changed = false;
         while (elements.hasNext()) {
             TreeNode node = elements.next();
-            if (node == null) {
-                throw new NullPointerException();
-            }
 
             eraseParent(node);
             super.add(index++, node);

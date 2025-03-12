@@ -38,7 +38,6 @@ public abstract class InputTextBase extends AbstractPrimeHtmlInputText implement
 
         placeholder,
         widgetVar,
-        type,
         counter,
         counterTemplate,
         countBytesAsChars,
@@ -67,14 +66,6 @@ public abstract class InputTextBase extends AbstractPrimeHtmlInputText implement
 
     public void setWidgetVar(String widgetVar) {
         getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public String getType() {
-        return (String) getStateHelper().eval(PropertyKeys.type, "text");
-    }
-
-    public void setType(String type) {
-        getStateHelper().put(PropertyKeys.type, type);
     }
 
     public String getCounter() {
