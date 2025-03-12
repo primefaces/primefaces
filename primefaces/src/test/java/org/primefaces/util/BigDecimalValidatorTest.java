@@ -39,8 +39,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 class BigDecimalValidatorTest {
 
     private static final DecimalFormat US = (DecimalFormat) DecimalFormat.getInstance(Locale.US);
-    private static final DecimalFormat EC = (DecimalFormat) DecimalFormat.getInstance(new Locale("es", "EC"));
-    private static final DecimalFormat CUSTOM = new DecimalFormat("#,##0.00", new DecimalFormatSymbols(new Locale("es", "US")));
+    private static final DecimalFormat EC = (DecimalFormat) DecimalFormat.getInstance(Locale.of("es", "EC"));
+    private static final DecimalFormat CUSTOM = new DecimalFormat("#,##0.00", new DecimalFormatSymbols(Locale.of("es", "US")));
 
     private static int getVersion() {
         String version = System.getProperty("java.version");
