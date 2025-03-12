@@ -426,17 +426,17 @@ declare namespace JQueryUITimepickerAddon {
          */
         minuteGrid: number;
         /**
-         * Default: `0` - When greater than `0` a label grid will be genereated under the slider. This number represents
+         * Default: `0` - When greater than `0` a label grid will be generated under the slider. This number represents
          * the units (in seconds) between labels.
          */
         secondGrid: number;
         /**
-         * Default: `0` - When greater than `0` a label grid will be genereated under the slider. This number represents
+         * Default: `0` - When greater than `0` a label grid will be generated under the slider. This number represents
          * the units (in milliseconds) between labels.
          */
         millisecGrid: number;
         /**
-         * Default: `0` - When greater than `0` a label grid will be genereated under the slider. This number represents
+         * Default: `0` - When greater than `0` a label grid will be generated under the slider. This number represents
          * the units (in microseconds) between labels.
          */
         microsecGrid: number;

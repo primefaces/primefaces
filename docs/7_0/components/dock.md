@@ -56,7 +56,7 @@ Menus can be created programmatically as well, see the dynamic menus part in men
 section for more information and an example.
 
 ## Skinning
-Following is the list of structural style classes, {positon} can be _top_ or _bottom_.
+Following is the list of structural style classes, {position} can be _top_ or _bottom_.
 
 | Class | Applies | 
 | --- | --- | 

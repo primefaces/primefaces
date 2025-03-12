@@ -3546,7 +3546,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
     }
     
     /**
-     * Enables all cell editors that were previously disabled by the UI and not alreayd disabled from user.
+     * Enables all cell editors that were previously disabled by the UI and not already disabled from user.
      * @private
      * @param {JQuery} element the row or cell to find inputs to enable for editing
      */

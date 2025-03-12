@@ -3475,17 +3475,17 @@ declare namespace JQueryUITimepickerAddon {
          */
         minuteGrid: number;
         /**
-         * Default: `0` - When greater than `0` a label grid will be genereated under the slider. This number represents
+         * Default: `0` - When greater than `0` a label grid will be generated under the slider. This number represents
          * the units (in seconds) between labels.
          */
         secondGrid: number;
         /**
-         * Default: `0` - When greater than `0` a label grid will be genereated under the slider. This number represents
+         * Default: `0` - When greater than `0` a label grid will be generated under the slider. This number represents
          * the units (in milliseconds) between labels.
          */
         millisecGrid: number;
         /**
-         * Default: `0` - When greater than `0` a label grid will be genereated under the slider. This number represents
+         * Default: `0` - When greater than `0` a label grid will be generated under the slider. This number represents
          * the units (in microseconds) between labels.
          */
         microsecGrid: number;
@@ -3818,7 +3818,7 @@ declare namespace PrimeFaces.widget {
          */
         private configureLocale(): void;
         /**
-         * Creates and initializes the confiugration options for the time picker.
+         * Creates and initializes the configuration options for the time picker.
          */
         private configureTimePicker(): void;
         /**
@@ -5101,7 +5101,7 @@ declare namespace PrimeFaces.widget {
          */
         second_hand: import("raphael").RaphaelElement;
         /**
-         * Draws this clock according the the current widget configuation.
+         * Draws this clock according the the current widget configuration.
          */
         private draw(): void;
         /**
@@ -6151,7 +6151,7 @@ declare namespace PrimeFaces.ajax {
          * Later the namespace is used for all post params.
          * @param form An HTML FORM element.
          * @return The namespace for the parameters of the given form, or `null` when the form does
-         * not specifiy a namespace.
+         * not specify a namespace.
          */
         extractParameterNamespace(form: JQuery): string | null;
         /**
@@ -10087,7 +10087,7 @@ declare namespace PrimeFaces.widget {
          */
         private doRowEditRequest(rowEditor: JQuery, action: PrimeFaces.widget.DataTable.RowEditAction): void;
         /**
-         * Enables all cell editors that were previously disabled by the UI and not alreayd disabled from user.
+         * Enables all cell editors that were previously disabled by the UI and not already disabled from user.
          * @param element the row or cell to find inputs to enable for editing
          */
         private enableCellEditors(element: JQuery): void;
@@ -34637,7 +34637,7 @@ declare namespace PrimeFaces.widget {
          */
         private removeDescendantsFromSelection(rowKey: string): void;
         /**
-         * Removes the given row from the list of currenlty selected rows.
+         * Removes the given row from the list of currently selected rows.
          * @param nodeKey A row that was unselected.
          */
         removeSelection(nodeKey: string): void;
