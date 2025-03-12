@@ -40,6 +40,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.Files;
@@ -48,6 +50,7 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 
 import jakarta.el.ValueExpression;
+import jakarta.faces.FacesException;
 import jakarta.faces.application.Resource;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.ExternalContext;
@@ -274,7 +277,13 @@ public class ImageCropperRenderer extends CoreRenderer<ImageCropper> {
                 boolean isExternal = imagePath.startsWith("http");
 
                 if (isExternal) {
-                    URL url = new URL(imagePath);
+                    URL url;
+                    try {
+                        url = new URI(imagePath).toURL();
+                    }
+                    catch (URISyntaxException e) {
+                        throw new FacesException(e);
+                    }
                     URLConnection urlConnection = url.openConnection();
                     inputStream = urlConnection.getInputStream();
                     contentType = urlConnection.getContentType();
