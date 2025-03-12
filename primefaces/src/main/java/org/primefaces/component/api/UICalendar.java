@@ -79,8 +79,7 @@ public abstract class UICalendar extends AbstractPrimeHtmlInputText implements I
         resolverStyle,
         timeOnly,
         timeZone,
-        touchable,
-        type
+        touchable
     }
 
     public Object getLocale() {
@@ -157,14 +156,6 @@ public abstract class UICalendar extends AbstractPrimeHtmlInputText implements I
 
     public void setInputStyleClass(String inputStyleClass) {
         getStateHelper().put(PropertyKeys.inputStyleClass, inputStyleClass);
-    }
-
-    public String getType() {
-        return (String) getStateHelper().eval(PropertyKeys.type, "text");
-    }
-
-    public void setType(String type) {
-        getStateHelper().put(PropertyKeys.type, type);
     }
 
     public int getDefaultHour() {

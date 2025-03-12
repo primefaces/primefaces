@@ -39,7 +39,6 @@ public abstract class InputMaskBase extends AbstractPrimeHtmlInputText implement
         mask,
         slotChar,
         autoClear,
-        type,
         validateMask,
         showMaskOnFocus,
         showMaskOnHover
@@ -92,14 +91,6 @@ public abstract class InputMaskBase extends AbstractPrimeHtmlInputText implement
 
     public void setAutoClear(boolean autoClear) {
         getStateHelper().put(PropertyKeys.autoClear, autoClear);
-    }
-
-    public String getType() {
-        return (String) getStateHelper().eval(PropertyKeys.type, "text");
-    }
-
-    public void setType(String type) {
-        getStateHelper().put(PropertyKeys.type, type);
     }
 
     public boolean isValidateMask() {
