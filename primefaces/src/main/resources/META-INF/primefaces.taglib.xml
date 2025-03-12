@@ -1008,7 +1008,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Client side callback to execute after ajax requests completed succesfully.]]>
+                <![CDATA[Client side callback to execute after ajax requests completed successfully.]]>
             </description>
             <name>onsuccess</name>
             <required>false</required>
@@ -13103,7 +13103,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines the default mode to display (input or ouput). Default: output.]]>
+                <![CDATA[Defines the default mode to display (input or output). Default: output.]]>
             </description>
             <name>mode</name>
             <required>false</required>
@@ -22517,7 +22517,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[The initial date that is used when schedule loads. If ommitted, the schedule starts on the current date.]]>
+                <![CDATA[The initial date that is used when schedule loads. If omitted, the schedule starts on the current date.]]>
             </description>
             <name>initialDate</name>
             <required>false</required>

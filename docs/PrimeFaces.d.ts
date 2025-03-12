@@ -3598,7 +3598,7 @@ declare namespace JQueryUITimepickerAddon {
          */
         max: number;
         /**
-         * Minumum allowed value for the time unit the user may select.
+         * Minimum allowed value for the time unit the user may select.
          */
         min: number;
         /**
@@ -3617,7 +3617,7 @@ declare namespace JQueryUITimepickerAddon {
          * @param container The container element to which the created control must be appended.
          * @param unit The type of control for which to set the value.
          * @param val Initial value for the control
-         * @param min Minumum allowed value for the time unit the user may select.
+         * @param min Minimum allowed value for the time unit the user may select.
          * @param max Maximum allowed value for the time unit the user may select.
          * @param step Desired step size for selecting a value.
          * @return The `container` element as passed to this method.
