@@ -918,7 +918,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Client side callback to execute after a exception with this type occured.]]>
+                <![CDATA[Client side callback to execute after a exception with this type occurred.]]>
             </description>
             <name>onexception</name>
             <required>false</required>
@@ -926,7 +926,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Components to update after a exception with this type occured.]]>
+                <![CDATA[Components to update after a exception with this type occurred.]]>
             </description>
             <name>update</name>
             <required>false</required>
@@ -1008,7 +1008,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Client side callback to execute after ajax requests completed succesfully.]]>
+                <![CDATA[Client side callback to execute after ajax requests completed successfully.]]>
             </description>
             <name>onsuccess</name>
             <required>false</required>
@@ -5880,7 +5880,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Controls the visibilty of the column, default is true.]]>
+                <![CDATA[Controls the visibility of the column, default is true.]]>
             </description>
             <name>visible</name>
             <required>false</required>
@@ -6332,7 +6332,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Controls the visibilty of the column, default is true.]]>
+                <![CDATA[Controls the visibility of the column, default is true.]]>
             </description>
             <name>visible</name>
             <required>false</required>
@@ -9983,7 +9983,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Dialog size might exceeed viewport if content is bigger than viewport in terms of height. fitViewport option automatically
+                <![CDATA[Dialog size might exceed viewport if content is bigger than viewport in terms of height. fitViewport option automatically
                 adjusts height to fit dialog within the viewport.]]>
             </description>
             <name>fitViewport</name>
@@ -13103,7 +13103,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines the default mode to display (input or ouput). Default: output.]]>
+                <![CDATA[Defines the default mode to display (input or output). Default: output.]]>
             </description>
             <name>mode</name>
             <required>false</required>
@@ -21121,7 +21121,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines if items should be transfered on dblclick. Default is true.]]>
+                <![CDATA[Defines if items should be transferred on dblclick. Default is true.]]>
             </description>
             <name>transferOnDblclick</name>
             <required>false</required>
@@ -21129,7 +21129,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines if items should be transfered, instead of selected, on checkbox click. This only works in combination with showCheckbox=true. Default is false.]]>
+                <![CDATA[Defines if items should be transferred, instead of selected, on checkbox click. This only works in combination with showCheckbox=true. Default is false.]]>
             </description>
             <name>transferOnCheckboxClick</name>
             <required>false</required>
@@ -22517,7 +22517,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[The initial date that is used when schedule loads. If ommitted, the schedule starts on the current date.]]>
+                <![CDATA[The initial date that is used when schedule loads. If omitted, the schedule starts on the current date.]]>
             </description>
             <name>initialDate</name>
             <required>false</required>
