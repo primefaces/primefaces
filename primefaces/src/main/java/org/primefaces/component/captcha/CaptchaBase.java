@@ -24,6 +24,7 @@
 package org.primefaces.component.captcha;
 
 import org.primefaces.component.api.Widget;
+import org.primefaces.util.ComponentUtils;
 
 import javax.faces.component.UIInput;
 
@@ -122,7 +123,17 @@ public abstract class CaptchaBase extends UIInput implements Widget {
     }
 
     public String getExecutor() {
-        return (String) getStateHelper().eval(PropertyKeys.executor, null);
+        return ComponentUtils.eval(getStateHelper(), PropertyKeys.executor, () -> {
+            String type = this.getType();
+            switch (type) {
+                case Captcha.RECAPTCHA:
+                    return "grecaptcha";
+                case Captcha.HCAPTCHA:
+                    return "hcaptcha";
+                default:
+                    return null;
+            }
+        });
     }
 
     public void setExecutor(String executor) {
@@ -130,7 +141,17 @@ public abstract class CaptchaBase extends UIInput implements Widget {
     }
 
     public String getSourceUrl() {
-        return (String) getStateHelper().eval(PropertyKeys.sourceUrl, null);
+        return ComponentUtils.eval(getStateHelper(), PropertyKeys.sourceUrl, () -> {
+            String type = this.getType();
+            switch (type) {
+                case Captcha.RECAPTCHA:
+                    return "https://www.google.com/recaptcha/api.js";
+                case Captcha.HCAPTCHA:
+                    return "https://js.hcaptcha.com/1/api.js";
+                default:
+                    return null;
+            }
+        });
     }
 
     public void setSourceUrl(String sourceUrl) {
@@ -138,7 +159,17 @@ public abstract class CaptchaBase extends UIInput implements Widget {
     }
 
     public String getVerifyUrl() {
-        return (String) getStateHelper().eval(PropertyKeys.verifyUrl, null);
+        return ComponentUtils.eval(getStateHelper(), PropertyKeys.verifyUrl, () -> {
+            String type = this.getType();
+            switch (type) {
+                case Captcha.RECAPTCHA:
+                    return "https://www.google.com/recaptcha/api/siteverify";
+                case Captcha.HCAPTCHA:
+                    return "https://api.hcaptcha.com/siteverify";
+                default:
+                    return null;
+            }
+        });
     }
 
     public void setVerifyUrl(String verifyUrl) {
