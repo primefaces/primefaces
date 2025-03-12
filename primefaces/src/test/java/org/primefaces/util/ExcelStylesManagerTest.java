@@ -46,8 +46,8 @@ public class ExcelStylesManagerTest {
     private static String customCurrencySymbol;
     private static DecimalFormat uk = (DecimalFormat) DecimalFormat.getCurrencyInstance(Locale.UK);
     private static DecimalFormat us = (DecimalFormat) DecimalFormat.getCurrencyInstance(Locale.US);
-    private static DecimalFormat customNumber = new DecimalFormat("#,##0.##", new DecimalFormatSymbols(Locale.of("es", "US")));
-    private static DecimalFormat customCurrency = new DecimalFormat("¤#,##0.##", new DecimalFormatSymbols(Locale.of("es", "US")));
+    private static DecimalFormat customNumber = new DecimalFormat("#,##0.##", new DecimalFormatSymbols(new Locale("es", "US")));
+    private static DecimalFormat customCurrency = new DecimalFormat("¤#,##0.##", new DecimalFormatSymbols(new Locale("es", "US")));
 
     @BeforeAll
     protected static void setUp() {
@@ -94,7 +94,7 @@ public class ExcelStylesManagerTest {
     }
 
     public static List<Locale> testLocales() {
-        return Arrays.asList(Locale.US, Locale.UK, Locale.of("es", "US"));
+        return Arrays.asList(Locale.US, Locale.UK, new Locale("es", "US"));
     }
 
     public static List<Arguments> testNumberDecimalFormats() {
