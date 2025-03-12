@@ -268,7 +268,7 @@ public class CustomizedDocumentsView implements Serializable {
         excelOpt.setCellFontSize("8");
         excelOpt.setStronglyTypedCells(true);
         excelOpt.setNumberFormat(new DecimalFormat("#,##0.00"));
-        excelOpt.setCurrencyFormat(DecimalFormat.getCurrencyInstance(new Locale("es", "US")));
+        excelOpt.setCurrencyFormat(DecimalFormat.getCurrencyInstance(Locale.of("es", "US")));
     }
 
     public ExcelOptions getExcelOpt() {
