@@ -55,7 +55,7 @@ public class DatePicker015 implements Serializable {
 
     public void submit() {
         TestUtils.addMessage("German", german.format(DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a").withLocale(Locale.GERMAN)));
-        TestUtils.addMessage("Spanish", spanish.format(DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a").withLocale(Locale.of("es"))));
+        TestUtils.addMessage("Spanish", spanish.format(DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a").withLocale(new Locale("es"))));
         TestUtils.addMessage("English", english.format(DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a").withLocale(Locale.ENGLISH)));
     }
 }

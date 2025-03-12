@@ -86,7 +86,7 @@ class DatePicker015Test extends AbstractDatePickerTest {
         DatePicker datePicker = page.spanish;
         LocalDateTime expected = LocalDateTime.of(2021, 4, 13, 5, 21, 0);
         String expectedString = "04/13/2021 05:21 ";
-        DateFormatSymbols symbols = new DateFormatSymbols(Locale.of("es"));
+        DateFormatSymbols symbols = new DateFormatSymbols(new Locale("es"));
         String[] ampm = symbols.getAmPmStrings();
         String am = ampm[0];
         String pm = ampm[1];
