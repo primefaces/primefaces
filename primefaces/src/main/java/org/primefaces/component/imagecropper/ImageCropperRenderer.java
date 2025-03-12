@@ -23,7 +23,6 @@
  */
 package org.primefaces.component.imagecropper;
 
-import jakarta.faces.FacesException;
 import org.primefaces.model.CroppedImage;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
@@ -51,6 +50,7 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 
 import jakarta.el.ValueExpression;
+import jakarta.faces.FacesException;
 import jakarta.faces.application.Resource;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.ExternalContext;
