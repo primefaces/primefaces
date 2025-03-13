@@ -357,7 +357,7 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
     private highlightNext(event: JQuery.TriggeredEvent): void {
         const highlightedItem = this.menuitems.filter('.ui-state-hover');
         const nextItems = highlightedItem.length
-            ? highlightedItem.nextAll(':not(.ui-separator, .ui-widget-header):visible')
+            ? highlightedItem.nextAll(':not(.ui-divider, .ui-widget-header):visible')
             : this.menuitems.filter(':visible').eq(0);
 
         if(nextItems.length) {
@@ -375,7 +375,7 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
     private highlightPrev(event: JQuery.TriggeredEvent): void {
         const highlightedItem = this.menuitems.filter('.ui-state-hover');
         const prevItems = highlightedItem.length 
-            ? highlightedItem.prevAll(':not(.ui-separator, .ui-widget-header):visible')
+            ? highlightedItem.prevAll(':not(.ui-divider, .ui-widget-header):visible')
             : null;
 
         if(prevItems && prevItems.length) {
@@ -473,7 +473,7 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
         if(filterValue === '') {
             this.menuitems.filter(':hidden').show();
             this.menuitemContainer.children('.ui-widget-header').show();
-            this.menuitemContainer.children('.ui-separator').show();
+            this.menuitemContainer.children('.ui-divider').show();
         }
         else {
             for(let i = 0; i < this.menuitems.length; i++) {
@@ -512,7 +512,7 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
                 }
             }
 
-            const separators = this.menuitemContainer.children('.ui-separator');
+            const separators = this.menuitemContainer.children('.ui-divider');
             for(let s = 0; s < separators.length; s++) {
                 const separator = separators.eq(s);
                 if(separator.nextAll().filter(':visible').length === 0 || separator.prevAll().filter(':visible').length === 0) {

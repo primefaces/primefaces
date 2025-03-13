@@ -1780,11 +1780,11 @@ $.widget("prime.datePicker", {
     },
 
     renderSeparator: function() {
-        return this.renderTimeElements("ui-separator", '<span>:</span>', -1);
+        return this.renderTimeElements("ui-divider", '<span>:</span>', -1);
     },
 
     renderFractionSeparator: function() {
-        return this.renderTimeElements("ui-separator", '<span>.</span>', -1);
+        return this.renderTimeElements("ui-divider", '<span>.</span>', -1);
     },
 
     renderTimeElements: function(containerClass, text, type) {
