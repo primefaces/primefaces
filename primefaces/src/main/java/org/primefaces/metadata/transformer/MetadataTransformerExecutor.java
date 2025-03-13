@@ -27,7 +27,7 @@ import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.metadata.transformer.impl.BeanValidationInputMetadataTransformer;
 
 import java.io.IOException;
-import java.util.Iterator;
+import java.util.List;
 
 import jakarta.faces.FacesException;
 import jakarta.faces.component.UIComponent;
@@ -84,16 +84,15 @@ public class MetadataTransformerExecutor implements SystemEventListener {
     }
 
     public static MetadataTransformer removeMetadataTransformer(final Class<? extends MetadataTransformer> clazz) {
-        Iterator<MetadataTransformer> iterator = PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance())
-                .getMetadataTransformers().iterator();
-        while (iterator.hasNext()) {
-            MetadataTransformer metadataTransformer = iterator.next();
-            if (metadataTransformer.getClass().equals(clazz)) {
-                iterator.remove();
-                return metadataTransformer;
-            }
+        List<MetadataTransformer> transformers = PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance())
+                .getMetadataTransformers();
+        MetadataTransformer transformer = transformers.stream()
+                .filter(t -> t.getClass().equals(clazz))
+                .findFirst()
+                .orElse(null);
+        if (transformer != null) {
+            transformers.remove(transformer);
         }
-
-        return null;
+        return transformer;
     }
 }
