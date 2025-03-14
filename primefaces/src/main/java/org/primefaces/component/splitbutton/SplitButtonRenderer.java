@@ -106,9 +106,6 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         writer.startElement("div", button);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "id");
-        writer.writeAttribute(HTML.ARIA_HASPOPUP, Boolean.toString(hasOverlay), null);
-        writer.writeAttribute(HTML.ARIA_CONTROLS, menuId, null);
-        writer.writeAttribute(HTML.ARIA_EXPANDED, "false", null);
         if (button.getStyle() != null) {
             writer.writeAttribute("style", button.getStyle(), "id");
         }
@@ -116,7 +113,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         encodeDefaultButton(context, button, buttonId);
         OverlayPanel customOverlay = button.getCustomOverlay();
         if (customOverlay != null || button.getElementsCount() > 0) {
-            encodeMenuIcon(context, button, menuButtonId);
+            encodeMenuIcon(context, button, menuButtonId, menuId, hasOverlay);
             if (hasOverlay) {
                 encodeMenu(context, button, menuId);
             }
@@ -187,7 +184,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         writer.endElement("button");
     }
 
-    protected void encodeMenuIcon(FacesContext context, SplitButton button, String id) throws IOException {
+    protected void encodeMenuIcon(FacesContext context, SplitButton button, String id, String menuId, boolean hasOverlay) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String buttonClass = SplitButton.MENU_ICON_BUTTON_CLASS;
         if (button.isDisabled()) {
@@ -199,6 +196,9 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "button", null);
         writer.writeAttribute("class", buttonClass, null);
+        writer.writeAttribute(HTML.ARIA_HASPOPUP, hasOverlay ? "menu" : "false", null);
+        writer.writeAttribute(HTML.ARIA_CONTROLS, menuId, null);
+        writer.writeAttribute(HTML.ARIA_EXPANDED, "false", null);
 
         if (button.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", "disabled");
