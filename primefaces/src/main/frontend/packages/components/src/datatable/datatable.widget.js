@@ -1498,7 +1498,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
         var $this = this;
         var targetSelector = targetId + ' tbody.ui-datatable-data > tr.ui-widget-content';
         var targetEvent = cfg.event + '.row' + this.id;
-        var containerEvent = cfg.event + '.datatable' + this.id;
+        var containerEvent = cfg.event.split(' ').map(e => e + '.datatable' + this.id).join(' ');
         this.contextMenuWidget = menuWidget;
 
         $(document).off(targetEvent, targetSelector).on(targetEvent, targetSelector, null, function(e) {
