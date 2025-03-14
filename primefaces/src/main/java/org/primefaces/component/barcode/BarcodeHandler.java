@@ -105,6 +105,25 @@ public class BarcodeHandler extends BaseDynamicContentHandler {
             int quietZoneHorizontal = Integer.parseInt(params.get("mh"));
             int quietZoneVertical = Integer.parseInt(params.get("mv"));
 
+            // #13548 be lenient with EAN13 and EAN8 for check digits
+            if (generator instanceof Ean) {
+                Ean ean = (Ean) generator;
+                if (ean.getMode() == Ean.Mode.EAN13 && value.length() == 13) {
+                    value = value.substring(0, 12);
+                }
+                else if (ean.getMode() == Ean.Mode.EAN8 && value.length() == 8) {
+                    value = value.substring(0, 7);
+                }
+            }
+
+            // #13548 be lenient with UPC-A for check digits
+            if (generator instanceof Upc) {
+                Upc upc = (Upc) generator;
+                if (upc.getMode() == Mode.UPCA && value.length() == 12) {
+                    value = value.substring(0, 11);
+                }
+            }
+
             generator.setHumanReadableLocation(HumanReadableLocation.valueOf(hrp.toUpperCase(Locale.ROOT)));
             generator.setContent(value);
             generator.setQuietZoneHorizontal(quietZoneHorizontal);
