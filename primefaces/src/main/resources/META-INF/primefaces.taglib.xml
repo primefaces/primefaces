@@ -11995,7 +11995,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Controls browser caching mode of the resource. Default is true]]>
+                <![CDATA[Controls browser caching mode of the resource. Default is false.]]>
             </description>
             <name>cache</name>
             <required>false</required>

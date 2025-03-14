@@ -25,20 +25,14 @@ Legacy way to do this is to come up with a Servlet that does the streaming, Grap
 id | null | String | Unique identifier of the component
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-value | null | Object | Binary data to stream or context relative path.
 alt | null | String | Alternate text for the image
-url | null | String | Alias to value attribute
-width | null | String | Width of the image
-height | null | String | Height of the image
-title | null | String | Title of the image
+cache | false | String | Enables/Disables browser from caching the image
 dir | null | String | Direction of the text displayed
-lang | null | String | Language code
+height | null | String | Height of the image
 ismap | false | Boolean | Specifies to use a server-side image map
-usemap | null | String | Name of the client side map
-sizes | null | String | One or more strings separated by commas, indicating a set of source sizes.
-srcset | null | String | One or more strings separated by commas, indicating possible image sources for the user agent to use.
-style | null | String | Style of the image
-styleClass | null | String | Style class of the image
+lang | null | String | Language code
+library | null | String | Library name of the image.
+name | null | String | Name of the image.
 onclick | null | String | onclick DOM event handler
 ondblclick | null | String | ondblclick DOM event handler
 onkeydown | null | String | onkeydown DOM event handler
@@ -49,10 +43,16 @@ onmousemove | null | String | onmousemove DOM event handler
 onmouseout | null | String | onmouseout DOM event handler
 onmouseover | null | String | onmouseover DOM event handler
 onmouseup | null | String | onmouseup DOM event handler
-cache | true | String | Enables/Disables browser from caching the image
-name | null | String | Name of the image.
-library | null | String | Library name of the image.
+sizes | null | String | One or more strings separated by commas, indicating a set of source sizes.
+srcset | null | String | One or more strings separated by commas, indicating possible image sources for the user agent to use.
 stream | true | Boolean | Defines if the image is streamed or rendered directly as data uri / base64 with ViewScoped support.
+style | null | String | Style of the image
+styleClass | null | String | Style class of the image
+title | null | String | Title of the image
+url | null | String | Alias to value attribute
+usemap | null | String | Name of the client side map
+value | null | Object | Binary data to stream or context relative path.
+width | null | String | Width of the image
 
 ## Getting started with GraphicImage
 GraphicImage requires an _org.primefaces.model.StreamedContent_ content as it’s value for dynamic
