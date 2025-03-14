@@ -120,6 +120,7 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
         this.button.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
 
         // toggle menu
+        this.menuButton.attr('aria-label', this.getAriaLabel('listLabel'));
         this.menuButton.on('click.splitbutton', function() {
             if(!$this.cfg.disabled && $this.menu.is(':hidden'))
                 $this.show();
@@ -487,7 +488,7 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
                 onEntered: function() {
                     $this.bindPanelEvents();
 
-                    $this.jq.attr('aria-expanded', true);
+                    $this.menuButton.attr('aria-expanded', true);
 
                     if ($this.cfg.filter && $this.cfg.filterInputAutoFocus) {
                         $this.filterInput.trigger('focus');
@@ -513,7 +514,7 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
                     $this.unbindPanelEvents();
                 },
                 onExited: function() {
-                    $this.jq.attr('aria-expanded', false);
+                    $this.menuButton.attr('aria-expanded', false);
                     $this.menuitems.filter('.ui-state-hover').removeClass('ui-state-hover');
                     $this.menuButton.removeClass('ui-state-focus');
                 }
