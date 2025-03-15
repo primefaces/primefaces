@@ -171,7 +171,10 @@ PrimeFaces.widget.SelectOneRadio = class SelectOneRadio extends PrimeFaces.widge
                 else
                     radio = target.children('.ui-radiobutton-box'); //custom layout
 
-                radio.trigger('click.selectOneRadio');
+                // #13546 only trigger radio if its not already active
+                if (!radio.hasClass('ui-state-active')) {
+                    radio.trigger('click.selectOneRadio');
+                }
 
                 e.preventDefault();
             });
