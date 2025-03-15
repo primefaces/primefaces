@@ -12,6 +12,12 @@ Following components support MultiViewState:
 
 Per default MultiViewState is stored per session. As an alternative it can be stored per client window to support multi-window usage.
 
+## General Requirements
+
+MultiViewState requires AJAX to work properly to persist its state. See [AJAX Processing Requirements](ajaxProcessing.md) for more information.
+
+## Client Window Mode
+
 This can be configured in web.xml
 ```xml
 <context-param>

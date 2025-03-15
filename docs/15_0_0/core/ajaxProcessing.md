@@ -1,3 +1,22 @@
+# AJAX Processing Requirements
+
+AJAX requires a form to submit requests. When looking for a form to use, components will search in this order:
+
+1. If an explicit form ID is defined in the component configuration, it will use that form
+2. Otherwise, it will look for the closest parent form of the component
+3. If no parent form exists, it will use the first form found in the document
+
+If no form is available, AJAX will not function correctly and each AJAX request will throw an HTTP 405 Method Not Allowed. Therefore, ensure your components that use AJAX are placed within a form element.
+
+```xml
+<h:body>
+   <h:form id="emptyForm"></h:form>
+   <p:accordionPanel>
+   ...
+
+</h:body>
+```
+
 # Partial Processing
 
 In Partial Page Rendering, only specified components are rendered, similarly in Partial Processing
