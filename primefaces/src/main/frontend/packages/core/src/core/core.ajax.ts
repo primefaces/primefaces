@@ -49,6 +49,22 @@ export class AjaxUtils {
     }
 
     /**
+     * Checks if the given form is a Faces form.
+     * @param form The form to check.
+     * @return `true` if the form is a Faces form.
+     */
+    isFacesForm(form: HTMLFormElement): boolean {
+        if (form.method === 'post') {
+            for (let child of form.children) {
+                if (child instanceof HTMLInputElement && child.name && child.name.includes(core.VIEW_STATE)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
      * Resolves the URL which should be used for the POST request.
      * For portlets, a different URL is used.
      *
@@ -651,7 +667,9 @@ export class AjaxRequest {
 
             //source has no parent form so use first form in document
             if (form.length === 0) {
-                form = $('form').eq(0);
+                form = $('form').filter(function(index, element) {
+                    return core.ajax.Utils.isFacesForm(element);
+                }).first();
             }
         }
 
