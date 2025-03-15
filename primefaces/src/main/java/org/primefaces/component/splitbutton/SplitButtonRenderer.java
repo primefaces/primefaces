@@ -104,9 +104,6 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer<SplitButton> {
         writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "id");
-        writer.writeAttribute(HTML.ARIA_HASPOPUP, Boolean.toString(hasOverlay), null);
-        writer.writeAttribute(HTML.ARIA_CONTROLS, menuId, null);
-        writer.writeAttribute(HTML.ARIA_EXPANDED, "false", null);
         if (component.getStyle() != null) {
             writer.writeAttribute("style", component.getStyle(), "id");
         }
@@ -114,7 +111,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer<SplitButton> {
         encodeDefaultButton(context, component, buttonId);
         OverlayPanel customOverlay = component.getCustomOverlay();
         if (customOverlay != null || component.getElementsCount() > 0) {
-            encodeMenuIcon(context, component, menuButtonId);
+            encodeMenuIcon(context, component, menuButtonId, menuId, hasOverlay);
             if (hasOverlay) {
                 encodeMenu(context, component, menuId);
             }
@@ -185,7 +182,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer<SplitButton> {
         writer.endElement("button");
     }
 
-    protected void encodeMenuIcon(FacesContext context, SplitButton component, String id) throws IOException {
+    protected void encodeMenuIcon(FacesContext context, SplitButton component, String id, String menuId, boolean hasOverlay) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String buttonClass = SplitButton.MENU_ICON_BUTTON_CLASS;
         if (component.isDisabled()) {
@@ -197,6 +194,9 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer<SplitButton> {
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "button", null);
         writer.writeAttribute("class", buttonClass, null);
+        writer.writeAttribute(HTML.ARIA_HASPOPUP, hasOverlay ? "menu" : "false", null);
+        writer.writeAttribute(HTML.ARIA_CONTROLS, menuId, null);
+        writer.writeAttribute(HTML.ARIA_EXPANDED, "false", null);
 
         if (component.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", "disabled");

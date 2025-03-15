@@ -1717,6 +1717,7 @@ declare global {
             "jumpToPageDropdownLabel"?: string;
             "jumpToPageInputLabel"?: string;
             "lastPageLabel"?: string;
+            "listLabel"?: string;
             "listView"?: string;
             "moveAllToSource"?: string;
             "moveAllToTarget"?: string;
