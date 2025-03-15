@@ -16,7 +16,7 @@
             &lt;dependency&gt;
                &lt;groupId>uk.org.okapibarcode&lt;/groupId&gt;
                &lt;artifactId>okapibarcode&lt;/artifactId&gt;
-               &lt;version>0.4.9&lt;/version&gt;
+               &lt;version>0.5.0&lt;/version&gt;
             &lt;/dependency&gt;
             </code></pre>
     </ui:define>
@@ -39,16 +39,16 @@
                 <p:barcode value="0123456789" type="code128"/>
 
                 <h:outputText value="EAN-8"/>
-                <p:barcode value="1234567" type="ean8"/>
+                <p:barcode value="12345670" type="ean8"/>
 
                 <h:outputText value="EAN-13"/>
-                <p:barcode value="123456789012+12345" type="ean13"/>
+                <p:barcode value="1234567890128" type="ean13"/>
 
                 <h:outputText value="UPC-A (PNG)"/>
-                <p:barcode value="01234567895" type="upca" format="png"/>
+                <p:barcode value="012345678958" type="upca" format="png"/>
 
                 <h:outputText value="UPC-E (Vertical)"/>
-                <p:barcode value="0123457" type="upce" orientation="90"/>
+                <p:barcode value="0123456" type="upce" orientation="90"/>
 
                 <h:outputText value="PDF417"/>
                 <p:barcode value="0123456789" type="pdf417"/>
