@@ -41,7 +41,8 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.Temporal;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -637,19 +638,30 @@ public class CalendarUtils {
         return now;
     }
 
-    public static List<String> splitRange(final String dateRange, final String pattern, final String separator) {
-        final String token = Constants.SPACE + separator + Constants.SPACE;
-        if (pattern.contains(token)) {
-            throw new FacesException("Pattern '" + pattern + "' contains separator '" + token + "'");
+    public static List<String> splitRange(String input, String datePattern, String rangeSeparator,
+                                          boolean week) {
+
+        // security check
+        String token = Constants.SPACE + rangeSeparator + Constants.SPACE;
+        if (datePattern.contains(token)) {
+            throw new FacesException("Pattern '" + datePattern + "' contains separator '" + token + "'");
         }
-        final List<String> dates = new ArrayList<>();
-        if (!dateRange.contains(token)) {
-            return dates;
+
+        // fast return
+        if (!input.contains(token)) {
+            return Collections.emptyList();
         }
-        final int index = dateRange.indexOf(token);
-        dates.add(dateRange.substring(0, index));
-        dates.add(dateRange.substring(index + token.length()));
-        return dates;
+
+        int tokenIndex = input.indexOf(token);
+        String from = input.substring(0, tokenIndex);
+        String to = input.substring(tokenIndex + token.length());
+        if (week) {
+            // hardcoded pattern, see JS:
+            // formattedValue += ' (' + this.options.locale.weekHeader + ' ' + week + ')';
+            to = to.substring(0, to.lastIndexOf(" ("));
+        }
+
+        return Arrays.asList(from, to);
     }
 
 }

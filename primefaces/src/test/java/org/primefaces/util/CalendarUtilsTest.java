@@ -217,18 +217,33 @@ class CalendarUtilsTest {
 
     @Test
     void splitRange() {
-        List<String> splitRange = CalendarUtils.splitRange("2021-03-01 - 2021-03-31", "yyyy-MM-dd", "-");
+        List<String> splitRange = CalendarUtils.splitRange("2021-03-01 - 2021-03-31", "yyyy-MM-dd", "-", false);
         assertEquals(2, splitRange.size());
         assertEquals("2021-03-01", splitRange.get(0));
         assertEquals("2021-03-31", splitRange.get(1));
-        splitRange = CalendarUtils.splitRange("2021-03-01", "yyyy-MM-dd", "-");
+        splitRange = CalendarUtils.splitRange("2021-03-01", "yyyy-MM-dd", "-", false);
         assertTrue(splitRange.isEmpty());
-        splitRange = CalendarUtils.splitRange("", "yyyy-MM-dd", "-");
+        splitRange = CalendarUtils.splitRange("", "yyyy-MM-dd", "-", false);
         assertTrue(splitRange.isEmpty());
 
         assertThrows(FacesException.class, () -> {
-            CalendarUtils.splitRange("2021 - 03 - 01 - 2021 - 03 - 31", "yyyy - MM - dd", "-");
+            CalendarUtils.splitRange("2021 - 03 - 01 - 2021 - 03 - 31", "yyyy - MM - dd", "-", false);
         });
     }
 
+    @Test
+    void splitRangeWeek() {
+        List<String> splitRange = CalendarUtils.splitRange("2021-03-01 - 2021-03-31 (Wk 21)", "yyyy-MM-dd", "-", true);
+        assertEquals(2, splitRange.size());
+        assertEquals("2021-03-01", splitRange.get(0));
+        assertEquals("2021-03-31", splitRange.get(1));
+        splitRange = CalendarUtils.splitRange("2021-03-01 (Wk 21)", "yyyy-MM-dd", "-", true);
+        assertTrue(splitRange.isEmpty());
+        splitRange = CalendarUtils.splitRange("", "yyyy-MM-dd (Wk 21)", "-", true);
+        assertTrue(splitRange.isEmpty());
+
+        assertThrows(FacesException.class, () -> {
+            CalendarUtils.splitRange("2021 - 03 - 01 - 2021 - 03 - 31 (Wk 21)", "yyyy - MM - dd", "-", true);
+        });
+    }
 }
