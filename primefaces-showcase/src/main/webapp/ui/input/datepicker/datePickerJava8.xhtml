@@ -70,7 +70,9 @@
 
                     <div class="field col-12 md:col-4">
                         <p:outputLabel for="@next" value="Week Picker" />
-                        <p:datePicker id="week" view="week" value="#{calendarJava8View.week}" />
+                        <p:datePicker id="week" view="week" value="#{calendarJava8View.week}">
+                            <p:ajax event="dateSelect" listener="#{calendarJava8View.onDateRangeSelect}" update="msgs" />
+                        </p:datePicker>
                     </div>
 
                     <div class="field col-12 md:col-4">
