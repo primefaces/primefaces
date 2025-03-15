@@ -142,9 +142,9 @@ public class CalendarJava8View implements Serializable {
     public void onDateRangeSelect(SelectEvent<List<LocalDate>> event) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        String range = event.getObject().getFirst().format(formatter)
+        String range = event.getObject().get(0).format(formatter)
                 + " - "
-                + event.getObject().getLast().format(formatter);
+                + event.getObject().get(event.getObject().size() - 1).format(formatter);
         facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Range Selected", range));
     }
 
