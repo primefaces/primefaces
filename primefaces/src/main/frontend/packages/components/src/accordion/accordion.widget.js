@@ -367,7 +367,8 @@ PrimeFaces.widget.AccordionPanel = class AccordionPanel extends PrimeFaces.widge
                 params: [
                     { name: this.id + '_contentLoad', value: true },
                     { name: this.id + '_currentTab', value: panel.attr('id') },
-                    { name: this.id + '_tabindex', value: parseInt(panel.index() / 2) }
+                    { name: this.id + '_tabindex', value: parseInt(panel.index() / 2) },
+                    { name: this.id + '_active', value: this.cfg.active } // #13551: normally set through hidden state input but necessary here for accordion not wrapped in form
                 ],
                 onsuccess: function(responseXML, status, xhr) {
                     PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
