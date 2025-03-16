@@ -116,6 +116,11 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
     closeIcon: JQuery = $();
 
     /**
+     * DOM element of the dialog box.
+     */
+    box: JQuery = $();
+
+    /**
      * DOM element of the container for the content of this dialog.
      */
     content: JQuery = $();
@@ -152,9 +157,9 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
     jqEl: HTMLElement | undefined;
 
     /**
-     * The last known vertical scrolling position.
+     * The last known [ top, left ] offset.
      */
-    lastScrollTop?: number;
+    lastOffset?: number[];
 
     /**
      * Whether the dialog content was already loaded (when dynamic loading via AJAX is
@@ -224,9 +229,10 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
     override init(cfg: PrimeType.widget.PartialWidgetCfg<Cfg>): void {
         super.init(cfg);
 
-        this.content = this.jq.children('.ui-dialog-content');
-        this.titlebar = this.jq.children('.ui-dialog-titlebar');
-        this.footer = this.jq.find('.ui-dialog-footer');
+        this.box = this.jq.children('.ui-dialog-box');
+        this.content = this.box.children('.ui-dialog-content');
+        this.titlebar = this.box.children('.ui-dialog-titlebar');
+        this.footer = this.box.find('.ui-dialog-footer');
         this.icons = this.titlebar.children('.ui-dialog-titlebar-icon');
         this.closeIcon = this.titlebar.children('.ui-dialog-titlebar-close');
         this.minimizeIcon = this.titlebar.children('.ui-dialog-titlebar-minimize');
@@ -304,7 +310,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
      * Computes and applies the correct size for this dialog, according to the current configuration.
      */
     protected initSize(): void {
-        this.jq.css({
+        this.box.css({
             'width': String(this.cfg.width),
             'height': 'auto'
         });
@@ -322,7 +328,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
     protected fitViewport(): void {
         const windowHeight = $(window).height() ?? 0;
 
-        const margin = (this.jq.outerHeight(true) ?? 0) - (this.jq.outerHeight() ?? 0);
+        const margin = (this.box.outerHeight(true) ?? 0) - (this.box.outerHeight() ?? 0);
         const headerHeight = this.titlebar.outerHeight(true) ?? 0;
         const contentPadding = (this.content.innerHeight() ?? 0) - (this.content.height() ?? 0);
         const footerHeight = this.footer.outerHeight(true) || 0;
@@ -343,7 +349,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
     protected override getModalTabbables(): JQuery {
         const tabbablesInIframe = this.cfg.getModalTabbables ? this.cfg.getModalTabbables() : $();
         
-        return this.jq.find(':tabbable').add(tabbablesInIframe).add(this.footer.find(':tabbable'));
+        return this.box.find(':tabbable').add(tabbablesInIframe).add(this.footer.find(':tabbable'));
     }
 
     /**
@@ -359,6 +365,8 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
         if(this.isVisible()) {
             return;
         }
+
+        $('body').addClass('ui-dialog-open');
         
         // Remember the focused element before we opened the dialog
         // so we can return focus to it once we close the dialog.
@@ -396,10 +404,8 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
         this.moveToTop();
 
         //offset
-        if(this.cfg.absolutePositioned) {
-            var winScrollTop = $(window).scrollTop() ?? 0;
-            this.jq.css('top', parseFloat(this.jq.css('top')) + (winScrollTop - (this.lastScrollTop ?? 0)) + 'px');
-            this.lastScrollTop = winScrollTop;
+        if(this.cfg.absolutePositioned && this.lastOffset?.length === 2) {
+            this.box.css({ top: this.lastOffset[0], left: this.lastOffset[1] });
         }
 
         if (this.cfg.showEffect) {
@@ -456,6 +462,8 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
             return;
         }
 
+        this.lastOffset = [ this.box.css('top'), this.box.css('left') ];
+
         if (this.cfg.hideEffect) {
             this.jq.hide(this.cfg.hideEffect, duration, 'normal', () => {
                 if(this.cfg.modal) {
@@ -470,6 +478,11 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
                 this.disableModality();
             }
             this.onHide(duration);
+        }
+
+        var otherDialogs = $(".ui-dialog:visible").length > 0;
+        if (!otherDialogs) {
+            $('body').removeClass('ui-dialog-open');
         }
     }
 
@@ -589,11 +602,15 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
     protected setupDraggable(): void {
         var $this = this;
 
-        this.jq.draggable({
+        this.box.draggable({
             cancel: '.ui-dialog-content, .ui-dialog-titlebar-close',
             handle: '.ui-dialog-titlebar',
-            containment : $this.cfg.absolutePositioned ? 'document' : 'window',
+            containment : $this.jq,
+            start: function( event, ui ) {
+                $this.jq.addClass('ui-overflow-hidden');
+            },
             stop: function( event, ui ) {
+                $this.jq.removeClass('ui-overflow-hidden');
                 if($this.hasBehavior('move')) {
                     var ext = {
                         params: [
@@ -611,15 +628,16 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
      * Sets up all event listeners required to make this dialog resizable.
      */
     protected setupResizable(): void {
-        this.jq.resizable({
+        this.box.resizable({
             handles : 'n,s,e,w,ne,nw,se,sw',
             minWidth : this.cfg.minWidth,
             minHeight : this.cfg.minHeight,
             alsoResize : this.content,
-            containment: 'document',
+            containment : this.jq,
             start: (_, ui) => {
-                const offset: JQuery.Coordinates = this.jq.offset() ?? { left: 0, top: 0 };
-                this.jq.data('offset', offset);
+                this.jq.addClass('ui-overflow-hidden');
+                const offset: JQuery.Coordinates = this.box.offset() ?? { left: 0, top: 0 };
+                this.box.data('offset', offset);
 
                 if(this.cfg.hasIframe) {
                     this.iframeFix = $('<div style="position:absolute;background-color:transparent;width:100%;height:100%;top:0;left:0;"></div>').appendTo(this.content);
@@ -636,8 +654,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
                 }
             },
             stop: (_, ui) => {
-                this.jq.css('position', 'fixed');
-
+                this.jq.removeClass('ui-overflow-hidden');
                 if(this.cfg.hasIframe) {
                     this.iframeFix?.remove();
                 }
@@ -654,7 +671,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
             }
         });
 
-        this.resizers = this.jq.children('.ui-resizable-handle');
+        this.resizers = this.box.children('.ui-resizable-handle');
     }
     
     /**
@@ -671,27 +688,20 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
         var $this = this;
 
         //reset
-        this.jq.css({left:'0',top:'0'});
+        this.box.css({left:'0',top:'0'});
 
         if(/(center|left|top|right|bottom)/.test(this.cfg.position ?? "")) {
             this.cfg.position = this.cfg.position?.replace(',', ' ');
 
-            this.jq.position({
+            this.box.position({
                         my: this.cfg.my,
                         at: this.cfg.position,
                         collision: 'fit',
-                        of: window,
+                        of: $this.cfg.absolutePositioned ? window : $this.jq,
                         //make sure dialog stays in viewport
                         using: function(pos: JQuery.Coordinates) {
                             const l = pos.left < 0 ? 0 : pos.left;
-                            let t = pos.top < 0 ? 0 : pos.top;
-                            const scrollTop = $(window).scrollTop() ?? 0;
-
-                            //offset
-                            if($this.cfg.absolutePositioned) {
-                                t += scrollTop;
-                                $this.lastScrollTop = scrollTop;
-                            }
+                            const t = pos.top < 0 ? 0 : pos.top;
 
                             $(this).css({
                                 left: l + 'px',
@@ -705,13 +715,15 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
             const x = PrimeFaces.trim(coords[0]);
             const y = PrimeFaces.trim(coords[1]);
 
-            this.jq.offset({
+            this.box.offset({
                 left: parseFloat(x),
                 top: parseFloat(y),
             });
         }
 
-        this.positionInitialized = true;
+        if(!$this.cfg.absolutePositioned) {
+            this.positionInitialized = true;
+        }
     }
 
     /**
@@ -774,7 +786,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
             var contentPadding = (this.content.innerHeight() ?? 0) - (this.content.height() ?? 0);
             this.content.css({
                 width: 'auto',
-                height: String((this.jq.height() ?? 0) - (this.titlebar.outerHeight() ?? 0) - contentPadding)
+                height: String((this.box.height() ?? 0) - (this.titlebar.outerHeight() ?? 0) - contentPadding)
             });
 
             this.maximizeIcon.removeClass('ui-state-hover').children('.ui-icon').removeClass('ui-icon-extlink').addClass('ui-icon-newwin');
@@ -863,11 +875,11 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
      */
     protected saveState(): void {
         this.state = {
-            width: this.jq[0]?.style.width || this.jq.width() || 0,
-            height: this.jq[0]?.style.height || this.jq.height() || 0,
+            width: this.box[0]?.style.width || this.box.width() || 0,
+            height: this.box[0]?.style.height || this.box.height() || 0,
             contentWidth: this.content[0]?.style.width || this.content.width() || 0,
             contentHeight: this.content[0]?.style.height || this.content.height() || 0,
-            offset: this.jq.offset() ?? { top: 0, left: 0},
+            offset: this.box.offset() ?? { top: 0, left: 0},
             windowScrollLeft: $(window).scrollLeft() ?? 0,
             windowScrollTop: $(window).scrollTop() ?? 0,
         };
@@ -879,7 +891,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
      */
     protected restoreState(): void {
         if (this.state) {
-            this.jq.css({
+            this.box.css({
                 'width': this.state.width,
                 'height': this.state.height
             });
@@ -888,7 +900,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
                 'height': this.state.contentHeight
             });
     
-            this.jq.offset({
+            this.box.offset({
                 top: this.state.offset.top + (($(window).scrollTop() ?? 0) - this.state.windowScrollTop),
                 left: this.state.offset.left + (($(window).scrollLeft() ?? 0) - this.state.windowScrollLeft),
             });
@@ -970,7 +982,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
 
         // internal function to handle resize or scrolling
         function handleResize() {
-            if ($this.isVisible()) {
+            if ($this.isVisible() && !$this.box.hasClass("ui-resizable-resizing")) {
                 if ($this.cfg.fitViewport) {
                     $this.fitViewport();
                 }
@@ -978,14 +990,10 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
                 if (!$this.cfg.absolutePositioned) {
                     $this.initPosition();
                 }
-                else {
-                    $this.positionInitialized = false;
-                }
             }
         }
 
         PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', null, handleResize);
-        PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id + '_align', handleResize);
 
         // #11578 if not using dialog framework (it has its own observer) then resize if the dialog is resized
         if (!this.cfg.hasIframe && !this.cfg.resizable) {
@@ -1254,7 +1262,7 @@ export class DynamicDialog<Cfg extends DynamicDialogCfg = DynamicDialogCfg> exte
         this.jq.show();
 
         if(this.cfg.height != "auto") {
-            this.content.height((this.jq.outerHeight() ?? 0) - (this.titlebar.outerHeight(true) ?? 0));
+            this.content.height((this.box.outerHeight() ?? 0) - (this.titlebar.outerHeight(true) ?? 0));
         }
 
         this.postShow();
@@ -1265,7 +1273,7 @@ export class DynamicDialog<Cfg extends DynamicDialogCfg = DynamicDialogCfg> exte
     }
 
     protected override initSize(): void {
-        this.jq.css({
+        this.box.css({
             'width': String(this.cfg.width),
             'height': String(this.cfg.height)
         });
