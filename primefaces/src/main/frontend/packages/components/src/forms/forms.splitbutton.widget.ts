@@ -177,6 +177,7 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
         this.button.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
 
         // toggle menu
+        this.menuButton.attr('aria-label', this.getAriaLabel('listLabel'));
         this.menuButton.on('click.splitbutton', () => {
             if(!this.cfg.disabled && this.menu.is(':hidden'))
                 this.show();
@@ -544,7 +545,7 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
                 onEntered: () => {
                     this.bindPanelEvents();
 
-                    this.jq.attr('aria-expanded', "true");
+                    this.menuButton.attr('aria-expanded', "true");
 
                     if (this.cfg.filter && this.cfg.filterInputAutoFocus) {
                         this.filterInput.trigger('focus');
@@ -567,7 +568,7 @@ export class SplitButton<Cfg extends SplitButtonCfg = SplitButtonCfg> extends Pr
                     this.unbindPanelEvents();
                 },
                 onExited: () => {
-                    this.jq.attr('aria-expanded', "false");
+                    this.menuButton.attr('aria-expanded', "false");
                     this.menuitems.filter('.ui-state-hover').removeClass('ui-state-hover');
                     this.menuButton.removeClass('ui-state-focus');
                 }
