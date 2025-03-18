@@ -49,7 +49,7 @@ Columns is used by datatable to create columns dynamically.
 | selectRow | true | Boolean | Whether clicking the column selects the row when parent component has row selection enabled, default is true.
 | ariaHeaderText | null | String | Accessible label for screen readers. IMPORTANT: Overrides headerText and headerFacet if specified. Only necessary when the column header is not human readable (e.g. empty header or icon-only header).
 | exportFunction | null | MethodExpression | Custom pluggable exportFunction.
-| groupRow | false | Boolean | Speficies whether to group rows based on the column data.
+| groupRow | false | Boolean | Specifies whether to group rows based on the column data.
 | exportHeaderValue | null | String | Defines if the header value of column to be exported.
 | exportFooterValue | null | String | Defines if the footer value of column to be exported.
 

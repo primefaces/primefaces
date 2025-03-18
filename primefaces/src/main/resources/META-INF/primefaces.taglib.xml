@@ -111,7 +111,7 @@
 
     <tag>
         <description>
-            <![CDATA[`p:validateFile` is a validator which can be used to validate single and mulitple files, either of `p:fileUpload` or `h:inputFile`.]]>
+            <![CDATA[`p:validateFile` is a validator which can be used to validate single and multiple files, either of `p:fileUpload` or `h:inputFile`.]]>
         </description>
         <tag-name>validateFile</tag-name>
         <validator>
@@ -5912,7 +5912,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Speficies whether to group rows based on the column data.]]>
+                <![CDATA[Specifies whether to group rows based on the column data.]]>
             </description>
             <name>groupRow</name>
             <required>false</required>
@@ -6364,7 +6364,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Speficies whether to group rows based on the column data.]]>
+                <![CDATA[Specifies whether to group rows based on the column data.]]>
             </description>
             <name>groupRow</name>
             <required>false</required>
@@ -12965,7 +12965,7 @@
     <tag>
         <description>
             <![CDATA[Inplace provides easy inplace editing and inline content display.
-        Inplace consists of two members, display element is the inital clickable label and inline element is the hidden content
+        Inplace consists of two members, display element is the initial clickable label and inline element is the hidden content
         that'll be displayed when display element is toggled.]]>
         </description>
         <tag-name>inplace</tag-name>

@@ -35,7 +35,7 @@
  * @prop {PrimeFaces.widget.DataScroller.LoadEvent} cfg.loadEvent Defines when more items are loaded.
  * @prop {PrimeFaces.widget.DataScroller.Mode} cfg.mode Defines the target to listen for scroll event.
  * @prop {number} cfg.offset Number of additional items currently loaded.
- * @prop {boolean} cfg.startAtBottom `true` to set the scroll position to the bottom initally and load data from the
+ * @prop {boolean} cfg.startAtBottom `true` to set the scroll position to the bottom initially and load data from the
  * bottom, or `false` otherwise.
  * @prop {number} cfg.totalSize The total number of items that can be displayed.
  * @prop {boolean} cfg.virtualScroll Loads data on demand as the scrollbar gets close to the bottom.

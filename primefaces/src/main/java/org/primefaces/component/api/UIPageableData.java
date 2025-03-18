@@ -210,7 +210,7 @@ public class UIPageableData extends PrimeUIData implements Pageable, TouchAware 
             //ValueExpression --> remove state to ensure the VE is re-evaluated
             getStateHelper().remove(PropertyKeys.rows);
         }
-        //normal attribute value --> restore inital rows
+        //normal attribute value --> restore initial rows
         Object rows = getStateHelper().eval(InternalPropertyKeys.rowsInitialValue);
         if (rows != null) {
             setRows((int) rows);
