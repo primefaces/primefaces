@@ -3078,7 +3078,7 @@ $.widget("prime.datePicker", {
         var date = new Date(dateMeta.year, dateMeta.month, dateMeta.day);
 
         if (this.options.showTime) {
-            var time = this.isDate(this.value) ? this.value : this.getNow();
+            var time = this.getCurrentTime();
             date.setHours(time.getHours());
             date.setMinutes(this.stepMinute(time.getMinutes()));
             date.setSeconds(time.getSeconds());
