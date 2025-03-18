@@ -96,6 +96,7 @@ class MenuBar001bTest extends AbstractPrimePageTest {
         assertTrue(page.messages.getMessage(0).getSummary().contains("Main C"));
 
         // Act
+        page.messages.click();
         WebElement eltMenuMainA = menubar.selectMenuitemByValue("Main A");
         menubar.selectMenuitemByValue(eltMenuMainA, "Sub A-2");
 
