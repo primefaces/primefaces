@@ -337,10 +337,10 @@ __metadata:
     downloadjs: "patch:downloadjs@npm%3A1.4.7#~/.yarn/patches/downloadjs-npm-1.4.7-952a4ef987.patch"
     esbuild: "npm:0.25.1"
     hammerjs: "npm:2.0.8"
-    inputmask: "npm:5.0.10-beta.34"
+    inputmask: "npm:5.0.10-beta.37"
     jquery: "npm:4.0.0-beta.2"
     jquery-cropper: "npm:1.0.2"
-    jquery-mousewheel: "patch:jquery-mousewheel@npm%3A3.1.13#~/.yarn/patches/jquery-mousewheel-npm-3.1.13-854d2918be.patch"
+    jquery-mousewheel: "npm:3.2.2"
     jquery-touchswipe: "npm:1.6.19"
     jquery-ui: "npm:1.14.1"
     jquery-ui-timepicker-addon: "patch:jquery-ui-timepicker-addon@npm%3A1.6.3#~/.yarn/patches/jquery-ui-timepicker-addon-npm-1.6.3-b43c27b305.patch"
@@ -353,7 +353,7 @@ __metadata:
     moment-jdateformatparser: "npm:1.2.1"
     moment-timezone: "npm:0.5.47"
     primeicons: "npm:7.0.0"
-    primelocale: "npm:2.1.0"
+    primelocale: "npm:2.1.1"
     propagating-hammerjs: "npm:2.0.1"
     quill: "npm:2.0.3"
     rangyinputs: "npm:1.2.0"
@@ -830,10 +830,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"inputmask@npm:5.0.10-beta.34":
-  version: 5.0.10-beta.34
-  resolution: "inputmask@npm:5.0.10-beta.34"
-  checksum: 10c0/69f51cddc930ff5bfd92262533ad546d8d7593d730c875290b5842dd4f7acf5eccc46d0b57a31bd2d9057c21db0c632151908c992c767620af6a80c5375c9cc6
+"inputmask@npm:5.0.10-beta.37":
+  version: 5.0.10-beta.37
+  resolution: "inputmask@npm:5.0.10-beta.37"
+  checksum: 10c0/96a26a663ad00d4cf4d5253310b2ed7355bda8dd67280e211deb3f63d85ce3c8118ea5924a912e09bf5c7b4f1ad07e4904caaf810dd845d8f7200d5007bed0df
   languageName: node
   linkType: hard
 
@@ -847,17 +847,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jquery-mousewheel@npm:3.1.13":
-  version: 3.1.13
-  resolution: "jquery-mousewheel@npm:3.1.13"
-  checksum: 10c0/acd57dfe7d2268ddddb906cfca6316fb364aeb74dc4d15379baa60c88b5fd3cc0aa7830e09cb6e702a4de9306e467519f147396e49f2f9c9f2c7118537721fab
-  languageName: node
-  linkType: hard
-
-"jquery-mousewheel@patch:jquery-mousewheel@npm%3A3.1.13#~/.yarn/patches/jquery-mousewheel-npm-3.1.13-854d2918be.patch":
-  version: 3.1.13
-  resolution: "jquery-mousewheel@patch:jquery-mousewheel@npm%3A3.1.13#~/.yarn/patches/jquery-mousewheel-npm-3.1.13-854d2918be.patch::version=3.1.13&hash=94e45a"
-  checksum: 10c0/234f722030a64eceb0ea93f46b686921e15126c4626033a8b5a205c46bf122cdfecd7891811e33031b25db4a6ac7e3c94cad1196e2a26454a3973bab8109f7cf
+"jquery-mousewheel@npm:3.2.2":
+  version: 3.2.2
+  resolution: "jquery-mousewheel@npm:3.2.2"
+  dependencies:
+    jquery: "npm:>=1.2.6"
+  checksum: 10c0/a8b45ae7759ce14134284cb6a2f2446f16d43325550c2e25653de572ca3e197b471b8322afb11ec114ab3b0f26b7072a7b47de7ed6617e9417328a94eac30740
   languageName: node
   linkType: hard
 
@@ -1009,10 +1004,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"primelocale@npm:2.1.0":
-  version: 2.1.0
-  resolution: "primelocale@npm:2.1.0"
-  checksum: 10c0/805e752016d40b8d00f8e302d9f302738d144c2728844fc15814078d45bffc5b988cf6f784848ec22f2b8f0b215dbcf516029cd04455eeb62d5e2c3df2cc4ff6
+"primelocale@npm:2.1.1":
+  version: 2.1.1
+  resolution: "primelocale@npm:2.1.1"
+  checksum: 10c0/f6449dbb16b107e9742f90074a9c33829464ada590ee06ba580128abb5f381e22c2f52ea1b399a88305d534a55c4a2cc70e59fb67dc00d38220a6851b5750d04
   languageName: node
   linkType: hard
 
