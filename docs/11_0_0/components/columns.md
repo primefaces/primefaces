@@ -51,7 +51,7 @@ Columns is used by datatable to create columns dynamically.
 | ariaHeaderText | null | String | Accessible label for screen readers. IMPORTANT: Overrides headerText and headerFacet if specified. Only necessary when the column header is not human readable (e.g. empty header or icon-only header).
 | exportFunction | null | MethodExpression | Custom pluggable exportFunction.
 | exportValue | null | String | Defines the value of the cell to be exported if something other than the cell contents or exportFunction.
-| groupRow | false | Boolean | Speficies whether to group rows based on the column data.
+| groupRow | false | Boolean | Specifies whether to group rows based on the column data.
 | exportHeaderValue | null | String | Defines if the header value of column to be exported.
 | exportFooterValue | null | String | Defines if the footer value of column to be exported.
 | nullSortOrder             | 1                  | Integer          |  Defines where the null values are placed in ascending sort order. Default value is "1" meaning null values are placed at the end in ascending mode and at beginning in descending mode. Set to "-1" for the opposite behavior.

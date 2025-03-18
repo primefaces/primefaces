@@ -9086,7 +9086,7 @@ declare namespace PrimeFaces.widget {
          */
         offset: number;
         /**
-         * `true` to set the scroll position to the bottom initally and load data from the
+         * `true` to set the scroll position to the bottom initially and load data from the
          * bottom, or `false` otherwise.
          */
         startAtBottom: boolean;

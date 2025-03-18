@@ -40,7 +40,7 @@ class TreeTable005Test extends AbstractTreeTableTest {
 
     @Test
     @Order(6)
-    @DisplayName("TreeTable: inital empty")
+    @DisplayName("TreeTable: initial empty")
     void showSelectedNodes(Page page) {
         TreeTable treeTable = page.treeTable;
 

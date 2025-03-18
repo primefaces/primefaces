@@ -45,7 +45,7 @@ Columns is used by datatable to create columns dynamically.
 | filterValue | null | Object | Value of the filter field.
 | filterable | true | Boolean | Boolean value to mark column as filterable.
 | footerText | null | String | Shortcut for footer facet.
-| groupRow | false | Boolean | Speficies whether to group rows based on the column data.
+| groupRow | false | Boolean | Specifies whether to group rows based on the column data.
 | headerText | null | String | Shortcut for header facet.
 | nullSortOrder             | 1                  | Integer          |  Defines where the null values are placed in ascending sort order. Default value is "1" meaning null values are placed at the end in ascending mode and at beginning in descending mode. Set to "-1" for the opposite behavior.
 | resizable | true | Boolean | Specifies resizable feature at column level. Datatable's resizableColumns must be enabled to use this option.
