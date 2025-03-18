@@ -191,7 +191,7 @@ PrimeFaces.widget.Signature = class Signature extends PrimeFaces.widget.BaseWidg
 
     /**
      * Draws the given line data to this signature widget viewport.
-     * @param {string | JQuerySignature.SignatureJson} value The signatue data to draw.
+     * @param {string | JQuerySignature.SignatureJson} value The signature data to draw.
      */
     draw(value) {
         if (value) {

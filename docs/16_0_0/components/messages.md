@@ -27,7 +27,7 @@ globalOnly | false | String | When true, only facesmessages with no clientIds ar
 redisplay | true | Boolean | Defines if already rendered messages should be displayed
 for | null | String | The clientId or name of associated key, takes precedence when used with globalOnly.
 forType | null | String | Defines how the `for` attribute is used to retrieve messages from `FacesContext#getMessages`. `key` defines that the `for` value is passed directly to `#getMessages`, whereas `expression` will be resolved by the `SearchExpressionHandler` first and then passed as `clientId` to `#getMessages`. Default is both.
-forIgnores | null | String | Defines a list of keys and clientIds, which should NOT be rendered by this component. Seperated by space or comma.
+forIgnores | null | String | Defines a list of keys and clientIds, which should NOT be rendered by this component. Separated by space or comma.
 escape | true | Boolean | Defines whether HTML would be escaped or not.
 severity | null | String | Comma separated list of severities to display only.
 closable | false | Boolean | Adds a close icon to hide the messages.
