@@ -8873,7 +8873,7 @@ declare namespace PrimeFaces.widget {
         paginator: PrimeFaces.widget.Paginator;
         /**
          * Retrieves the paginator widget used by this data grid for pagination. You can use this widget to switch to a
-         * different page programatically.
+         * different page programmatically.
          * @return The paginator widget, or `undefined` when pagination is not
          * enabled.
          */
@@ -11081,7 +11081,7 @@ declare namespace PrimeFaces.widget {
         private bindEvents(): void;
         /**
          * Retrieves the paginator widget used by this data grid for pagination. You can use this widget to switch to a
-         * different page programatically.
+         * different page programmatically.
          * @return The paginator widget, or `undefined` when pagination is not
          * enabled.
          */
@@ -20783,7 +20783,7 @@ declare namespace PrimeFaces.widget {
      * __PrimeFaces ImageCompare Widget__
      *
      * ImageCompare provides a user interface to compare two images. Uses the `ImageCompare` library. To access an instance
-     * of the image slider programatically, you can use the list of instantiated sliders:
+     * of the image slider programmatically, you can use the list of instantiated sliders:
      *
      * ```javascript
      * const widget = PF("myImageCompareWidget");
@@ -21486,7 +21486,7 @@ declare namespace PrimeFaces.widget {
      * __PrimeFaces ImageSwitch Widget__
      *
      * ImageSwitch is an image gallery component with 25+ effects. Use the JQuery cycle plugin. You can also interact with
-     * the imageswitch programatically via `$.fn.cycle`:
+     * the imageswitch programmatically via `$.fn.cycle`:
      *
      * ```javascript
      * const widget = PF("myImageSwitchWidget");

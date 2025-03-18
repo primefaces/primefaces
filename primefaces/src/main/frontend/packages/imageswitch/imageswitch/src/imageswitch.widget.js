@@ -2,7 +2,7 @@
  * __PrimeFaces ImageSwitch Widget__
  *
  * ImageSwitch is an image gallery component with 25+ effects. Use the JQuery cycle plugin. You can also interact with
- * the imageswitch programatically via `$.fn.cycle`:
+ * the imageswitch programmatically via `$.fn.cycle`:
  *
  * ```javascript
  * const widget = PF("myImageSwitchWidget");

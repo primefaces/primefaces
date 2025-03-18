@@ -1099,7 +1099,7 @@ Widget: _PrimeFaces.widget.DataTable_
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |
-| getPaginator() | - | Paginator | Returns the paginator insance.
+| getPaginator() | - | Paginator | Returns the paginator instance.
 | clearFilters() | - | void | Clears all column filters
 | getSelectedRowsCount() | - | Number | Returns number of selected rows.
 | selectRow(r, silent) | r : number or tr element as jQuery object, silent : flag to fire row select ajax behavior | void | Selects the given row.
