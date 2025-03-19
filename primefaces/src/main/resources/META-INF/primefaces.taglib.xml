@@ -12133,7 +12133,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Comma seperated list of severities to display only.]]>
+                <![CDATA[Comma separated list of severities to display only.]]>
             </description>
             <name>severity</name>
             <required>false</required>
@@ -18277,7 +18277,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Comma seperated list of severities to display only.]]>
+                <![CDATA[Comma separated list of severities to display only.]]>
             </description>
             <name>severity</name>
             <required>false</required>
@@ -18325,7 +18325,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines a list of keys and clientIds, which should NOT be rendered by this component. Seperated by space or comma.]]>
+                <![CDATA[Defines a list of keys and clientIds, which should NOT be rendered by this component. Separated by space or comma.]]>
             </description>
             <name>forIgnores</name>
             <required>false</required>

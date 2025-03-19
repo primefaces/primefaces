@@ -112,8 +112,8 @@ built-in keys.
 - space
 - halfspace
 
-All other text in a layout is realized as seperate keys so "prime" would create 5 keys as "p" "r" "i"
-"m" "e". Use dash to seperate each member in layout and use commas to create a new row.
+All other text in a layout is realized as separate keys so "prime" would create 5 keys as "p" "r" "i"
+"m" "e". Use dash to separate each member in layout and use commas to create a new row.
 
 ## Keypad
 By default keyboard displays whole keys, if you only need the numbers use the keypad mode.
