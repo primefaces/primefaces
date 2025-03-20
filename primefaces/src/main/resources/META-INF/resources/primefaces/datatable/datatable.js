@@ -4417,11 +4417,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         var resetWidget = function(widgetElement) {
+            const selector = ':input:not(:disabled):not([readonly]), textarea:not(:disabled):not([readonly])';
             var widget = PrimeFaces.getWidgetById(widgetElement.attr('id'));
             if (widget && typeof widget.resetValue === 'function') {
                 widget.resetValue(true);
+            } else if (widgetElement.is(selector)) {
+                resetInputFields(widgetElement);
             } else {
-                resetInputFields(widgetElement.find(':input:not(:disabled):not([readonly]), textarea:not(:disabled):not([readonly])'));
+                resetInputFields($(this).find(selector));
             }
         };
 
