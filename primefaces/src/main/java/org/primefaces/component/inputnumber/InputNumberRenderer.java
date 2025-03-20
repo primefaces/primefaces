@@ -89,7 +89,7 @@ public class InputNumberRenderer extends InputRenderer {
             else {
                 // Coerce submittedValue to (effective) range of [minValue, maxValue]
                 BigDecimal value = new BigDecimal(submittedValue);
-                submittedValue = coerceValueInRange(value, inputNumber).toString();
+                submittedValue = coerceValueInRange(context, value, inputNumber).toString();
             }
         }
         catch (NumberFormatException ex) {
@@ -118,7 +118,7 @@ public class InputNumberRenderer extends InputRenderer {
             catch (Exception e) {
                 throw new IllegalArgumentException("Error converting  [" + valueToRender + "] to a decimal value;", e);
             }
-            valueToRender = formatForPlugin(coerceValueInRange(decimalToRender, inputNumber));
+            valueToRender = formatForPlugin(coerceValueInRange(context, decimalToRender, inputNumber));
         }
 
         encodeMarkup(context, inputNumber, value, valueToRender);
@@ -262,12 +262,36 @@ public class InputNumberRenderer extends InputRenderer {
 
     /**
      * Get the effective minimum Value (as interpreted in the AutoNumeric plugin)
-     * @param inputNumber the InputNumber component
+     * @param context the FacesContext
+     * @param component the InputNumber component
      * @return the minimumValue property as BigDecimal, or the AutoNumeric default value if empty
      */
-    private BigDecimal getEffectiveMinValue(InputNumber inputNumber) {
-        String minimumValue = inputNumber.getMinValue();
+    private BigDecimal getEffectiveMinValue(FacesContext context, InputNumber component) {
+        String minimumValue = component.getMinValue();
         if (minimumValue == null) {
+            Class<?> type = getTypeFromValueExpression(context, component);
+            if (type == null) {
+                return DEFAULT_MIN_VALUE;
+            }
+            if (type.equals(Integer.class)) {
+                return BigDecimal.valueOf(Integer.MIN_VALUE);
+            }
+            if (type.equals(Long.class)) {
+                return BigDecimal.valueOf(Long.MIN_VALUE);
+            }
+            if (type.equals(Short.class)) {
+                return BigDecimal.valueOf(Short.MIN_VALUE);
+            }
+            if (type.equals(Byte.class)) {
+                return BigDecimal.valueOf(Byte.MIN_VALUE);
+            }
+            if (type.equals(Double.class)) {
+                return BigDecimal.valueOf(Double.MIN_VALUE);
+            }
+            if (type.equals(Float.class)) {
+                return BigDecimal.valueOf(Float.MIN_VALUE);
+            }
+
             return DEFAULT_MIN_VALUE;
         }
         try {
@@ -280,12 +304,35 @@ public class InputNumberRenderer extends InputRenderer {
 
     /**
      * Get the effective maximum Value (as interpreted in the AutoNumeric plugin)
-     * @param inputNumber the InputNumber component
+     * @param context the FacesContext
+     * @param component the InputNumber component
      * @return the maximumValue property as BigDecimal, or the AutoNumeric default value if empty
      */
-    private BigDecimal getEffectiveMaxValue(InputNumber inputNumber) {
-        String maximumValue = inputNumber.getMaxValue();
+    private BigDecimal getEffectiveMaxValue(FacesContext context, InputNumber component) {
+        String maximumValue = component.getMaxValue();
         if (maximumValue == null) {
+            Class<?> type = getTypeFromValueExpression(context, component);
+            if (type == null) {
+                return DEFAULT_MAX_VALUE;
+            }
+            if (type.equals(Integer.class)) {
+                return BigDecimal.valueOf(Integer.MAX_VALUE);
+            }
+            if (type.equals(Long.class)) {
+                return BigDecimal.valueOf(Long.MAX_VALUE);
+            }
+            if (type.equals(Short.class)) {
+                return BigDecimal.valueOf(Short.MAX_VALUE);
+            }
+            if (type.equals(Byte.class)) {
+                return BigDecimal.valueOf(Byte.MAX_VALUE);
+            }
+            if (type.equals(Double.class)) {
+                return BigDecimal.valueOf(Double.MAX_VALUE);
+            }
+            if (type.equals(Float.class)) {
+                return BigDecimal.valueOf(Float.MAX_VALUE);
+            }
             return DEFAULT_MAX_VALUE;
         }
         try {
@@ -298,12 +345,13 @@ public class InputNumberRenderer extends InputRenderer {
 
     /**
      * Coerce the provided value to the range defined by the effective minimum and maximum numbers.
+     * @param context the FacesContext
      * @param value the value to render
-     * @param inputNumber the component for which the minValue and maxValue properties define the range
+     * @param component the component for which the minValue and maxValue properties define the range
      * @return the value if inside the range, or else the nearest boundary that is still inside the range
      */
-    private BigDecimal coerceValueInRange(BigDecimal value, InputNumber inputNumber) {
-        return coerceValueInRange(value, getEffectiveMinValue(inputNumber), getEffectiveMaxValue(inputNumber));
+    private BigDecimal coerceValueInRange(FacesContext context, BigDecimal value, InputNumber component) {
+        return coerceValueInRange(value, getEffectiveMinValue(context, component), getEffectiveMaxValue(context, component));
     }
 
     /**
@@ -323,6 +371,13 @@ public class InputNumberRenderer extends InputRenderer {
         return value;
     }
 
+    /**
+     * Format a String value as value/minValue/maxValue for the AutoNumeric plugin.
+     * @param valueToRender the String value to render
+     * @return formatted String value for the plugin, null if input is null, empty string if input is blank,
+     *         or decimal value formatted via {@link #formatForPlugin(BigDecimal)}
+     * @throws IllegalArgumentException if the String value cannot be converted to a BigDecimal
+     */
     private String formatForPlugin(String valueToRender) {
         if (valueToRender == null) {
             return null;
