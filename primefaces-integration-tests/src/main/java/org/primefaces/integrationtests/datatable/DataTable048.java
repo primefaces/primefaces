@@ -25,32 +25,43 @@ package org.primefaces.integrationtests.datatable;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
-import lombok.AllArgsConstructor;
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.model.SelectItem;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
+@Named
+@ViewScoped
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class ProgrammingLanguage implements Serializable {
-    private static final long serialVersionUID = 398626647627541586L;
-    private Integer id;
-    private String name;
-    private Integer firstAppeared;
-    private ProgrammingLanguageType type;
-    private boolean selectable;
-    private BigDecimal popularity;
+public class DataTable048 implements Serializable {
 
-    public ProgrammingLanguage(Integer id, String name, Integer firstAppeared, ProgrammingLanguageType type) {
-        this.id = id;
-        this.name = name;
-        this.firstAppeared = firstAppeared;
-        this.type = type;
+    private static final long serialVersionUID = 1L;
+
+    private List<ProgrammingLanguage> progLanguages;
+    private List<SelectItem> popularities;
+
+    @Inject
+    private ProgrammingLanguageService service;
+
+    @PostConstruct
+    public void init() {
+        progLanguages = service.getLangs();
+        popularities = new ArrayList<>(progLanguages.size());
+        popularities.add(new SelectItem(null, "Empty"));
+        progLanguages.forEach(p -> {
+            int id = p.getId();
+            BigDecimal popularity = id % 2 == 0 ? BigDecimal.valueOf(id) : null;
+            if (popularity != null) {
+                popularities.add(new SelectItem(popularity, popularity.toString()));
+                p.setPopularity(popularity);
+            }
+        });
     }
 
-    public enum ProgrammingLanguageType {
-        COMPILED,
-        INTERPRETED
-    }
 }

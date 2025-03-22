@@ -23,17 +23,14 @@
  */
 package org.primefaces.model.filter;
 
-import org.primefaces.util.LangUtils;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Locale;
-import java.util.Objects;
 
 import jakarta.faces.context.FacesContext;
 
-public class InFilterConstraint implements FilterConstraint {
+public class InFilterConstraint extends EqualsFilterConstraint {
 
     private static final long serialVersionUID = 1L;
 
@@ -55,22 +52,9 @@ public class InFilterConstraint implements FilterConstraint {
         }
 
         for (Object filterValue : collection) {
-            if (Objects.equals(value, filterValue)) {
+            // Return true on the first matching value
+            if (super.isMatching(ctxt, value, filterValue, locale)) {
                 return true;
-            }
-
-            // GitHub #8106 check for "" comparison
-            if (filterValue instanceof String && LangUtils.isEmpty((String) filterValue) && value == null) {
-                return true;
-            }
-
-            // #10730
-            // the value might be a enum but the filter is a string
-            if (filterValue instanceof String && LangUtils.isNotEmpty((String) filterValue)
-                    && value != null && value.getClass().isEnum()) {
-                if (Objects.equals(value.toString(), filterValue)) {
-                    return true;
-                }
             }
         }
 

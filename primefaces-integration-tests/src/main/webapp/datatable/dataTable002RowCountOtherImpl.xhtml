@@ -27,7 +27,7 @@
 
                 <p:column field="firstAppeared" filterMatchMode="gte"/>
 
-                <p:column field="type" filterMatchMode="exact">
+                <p:column field="type" filterMatchMode="in">
                     <f:facet name="filter">
                         <p:selectCheckboxMenu id="filterType" onchange="PF('datatable').filter()" multiple="true" updateLabel="true">
                             <f:selectItems value="#{dataTable002RowCountOtherImpl.types}"/>
