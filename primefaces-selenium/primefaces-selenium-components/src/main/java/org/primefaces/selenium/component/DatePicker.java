@@ -299,7 +299,7 @@ public abstract class DatePicker extends AbstractInputComponent {
     }
 
     /**
-     * Select a month from the drodown.
+     * Select a month from the dropdown.
      *
      * @param month the month to select
      */
