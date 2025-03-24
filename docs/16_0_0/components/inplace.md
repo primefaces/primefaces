@@ -128,6 +128,13 @@ toggle() | - | void | Toggles visibility of between content and display element.
 save() | - | void | Triggers an ajax request to process inplace input.
 cancel() | - | void | Triggers an ajax request to revert inplace input.
 
+## Ajax Behavior Events
+
+| Event | Listener Parameter | Fired |
+| --- | --- | --- |
+| save | jakarta.faces.event.AjaxBehaviorEvent | When save is clicked.
+| cancel | jakarta.faces.event.AjaxBehaviorEvent | When cancel is clicked.
+
 ## Skinning
 Inplace resides in a main container element which _style_ and _styleClass_ options apply. Following is
 the list of structural style classes;
