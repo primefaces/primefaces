@@ -3538,9 +3538,9 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
             $(element).find(":input:enabled").attr('disabled', 'disabled');
         }
         else {
-            $(".ui-cell-editor-input :input:enabled").attr('disabled', 'disabled').attr("data-disabled-by-editor", "true");
+            this.tbody.find(".ui-cell-editor-input :input:enabled").attr('disabled', 'disabled').attr("data-disabled-by-editor", "true");
             //#13159: re-enable for all rows that are rowEditing="true"
-            this.enableCellEditors($('.ui-row-editing'));
+            this.enableCellEditors(this.tbody.find('.ui-row-editing'));
             
         }
     }
