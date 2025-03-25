@@ -77,8 +77,6 @@ public abstract class FileUploadBase extends UIInput implements Widget {
         uploadButtonTitle,
         uploadIcon,
         uploadLabel,
-        validateContentType,
-        virusScan,
         widgetVar
     }
 
@@ -321,22 +319,6 @@ public abstract class FileUploadBase extends UIInput implements Widget {
 
     public void setOnAdd(String onAdd) {
         getStateHelper().put(PropertyKeys.onAdd, onAdd);
-    }
-
-    public boolean isValidateContentType() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.validateContentType, false);
-    }
-
-    public void setValidateContentType(boolean validateContentType) {
-        getStateHelper().put(PropertyKeys.validateContentType, validateContentType);
-    }
-
-    public boolean isVirusScan() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.virusScan, false);
-    }
-
-    public void setVirusScan(boolean virusScan) {
-        getStateHelper().put(PropertyKeys.virusScan, virusScan);
     }
 
     public Long getMaxChunkSize() {

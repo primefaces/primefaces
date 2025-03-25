@@ -69,8 +69,8 @@
     margin: .5rem auto auto auto;
 }
 
-.ui-datatable.ui-filter-togglable thead .ui-column-customfilter,
-.ui-datatable.ui-filter-togglable thead .ui-column-filter {
+.ui-datatable.ui-filter-toggleable thead .ui-column-customfilter,
+.ui-datatable.ui-filter-toggleable thead .ui-column-filter {
     display:none;
 }
 
@@ -111,7 +111,7 @@
 .ui-datatable-scrollable .ui-datatable-scrollable-header,
 .ui-datatable-scrollable .ui-datatable-scrollable-footer {
     position: relative;
-} 
+}
 
 .ui-datatable-scrollable .ui-datatable-scrollable-header td {
     font-weight: normal;
@@ -262,7 +262,7 @@
     direction: rtl;
 }
 
-.ui-datatable-rtl.ui-datatable thead th, 
+.ui-datatable-rtl.ui-datatable thead th,
 .ui-datatable-rtl.ui-datatable tfoot td {
     text-align: right;
 }
@@ -348,7 +348,7 @@
         display: none;
     }
 
-    .ui-datatable-reflow .ui-datatable-data td[role="gridcell"]:not(.ui-helper-hidden) { 
+    .ui-datatable-reflow .ui-datatable-data td[role="gridcell"]:not(.ui-helper-hidden) {
         -moz-box-sizing: border-box;
         -webkit-box-sizing: border-box;
         box-sizing: border-box;
@@ -359,36 +359,36 @@
         text-align: left !important;
         width: 100% !important;
     }
-    
+
     .ui-datatable-reflow .ui-datatable-data.ui-widget-content {
         border: 0px none;
     }
-    
+
     .ui-datatable-reflow .ui-datatable-data tr.ui-widget-content {
         border-left: 0px none;
         border-right: 0px none;
     }
 
-    .ui-datatable-reflow .ui-datatable-data td[role="gridcell"] .ui-column-title { 
+    .ui-datatable-reflow .ui-datatable-data td[role="gridcell"] .ui-column-title {
         display: inline-block;
         font-weight: bold;
         margin: -.4em 1em -.4em -.4em;
         min-width: 30%;
-        max-width: 35%; 
+        max-width: 35%;
         padding: .4em;
     }
-    
+
     .ui-datatable-reflow .ui-reflow-label,
     .ui-datatable-reflow .ui-reflow-dropdown {
         display: inline-block;
     }
-    
+
     .ui-datatable-reflow .ui-reflow-dropdown {
         margin-left: 5px;
         border-top-left-radius: 3px;
         border-bottom-left-radius: 3px;
     }
-    
+
     .ui-datatable-reflow tr.ui-datatable-empty-message > td {
         display: block;
         border: 0 none;

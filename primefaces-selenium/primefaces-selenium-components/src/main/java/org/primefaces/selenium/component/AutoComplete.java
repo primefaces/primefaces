@@ -123,7 +123,7 @@ public abstract class AutoComplete extends AbstractInputComponent {
     }
 
     /**
-     * Gets the actual token elements in mutliple mode.
+     * Gets the actual token elements in multiple mode.
      *
      * @return the List of tokens
      */

@@ -55,11 +55,11 @@ class DataTable048Test extends AbstractDataTableTest {
         assertNotNull(filter1);
         assertNotNull(filter2);
 
-        filter1.togglPanel();
+        filter1.togglePanel();
         List<WebElement> filterTypeCheckboxes = filter1.getPanel().findElements(By.cssSelector(".ui-chkbox-box"));
         // In filter all
         PrimeSelenium.guardAjax(filterTypeCheckboxes.get(0)).click();
-        filter1.togglPanel();
+        filter1.togglePanel();
 
         // Equals filter 2
         filter2.toggleDropdown();
@@ -76,12 +76,12 @@ class DataTable048Test extends AbstractDataTableTest {
         // Equals filter null (all)
         filter2.select("Empty");
 
-        filter1.togglPanel();
+        filter1.togglePanel();
         filterTypeCheckboxes = filter1.getPanel().findElements(By.cssSelector(".ui-chkbox-box"));
         PrimeSelenium.guardAjax(filterTypeCheckboxes.get(0)).click();
         // In filter null
         PrimeSelenium.guardAjax(filterTypeCheckboxes.get(1)).click();
-        filter1.togglPanel();
+        filter1.togglePanel();
 
         // Assert
         rows = dataTable.getRows();
