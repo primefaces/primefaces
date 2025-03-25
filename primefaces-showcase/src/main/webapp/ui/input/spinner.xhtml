@@ -26,6 +26,11 @@
                     </div>
 
                     <div class="field col-12 md:col-4">
+                        <p:outputLabel for="@next" value="RTL"/>
+                        <p:spinner id="rtl" value="#{spinnerView.number1}" dir="rtl"/>
+                    </div>
+
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel for="@next" value="Step Factor"/>
                         <p:spinner id="step" value="#{spinnerView.number2}" stepFactor="0.25"/>
                     </div>

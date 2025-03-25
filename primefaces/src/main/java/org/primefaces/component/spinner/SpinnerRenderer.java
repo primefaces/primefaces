@@ -122,6 +122,7 @@ public class SpinnerRenderer extends InputRenderer<Spinner> {
         String styleClass = getStyleClassBuilder(context)
                 .add(createStyleClass(component, Spinner.CONTAINER_CLASS))
                 .add(Spinner.BUTTONS_CLASS_PREFIX + getButtonsClassSuffix(component))
+                .add(ComponentUtils.isRTL(context, component), "ui-spinner-rtl")
                 .build();
 
         writer.startElement("span", null);
@@ -199,6 +200,7 @@ public class SpinnerRenderer extends InputRenderer<Spinner> {
         }
 
         renderAccessibilityAttributes(context, component);
+        renderRTLDirection(context, component);
         renderPassThruAttributes(context, component, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, component, HTML.INPUT_TEXT_EVENTS);
         renderValidationMetadata(context, component);
