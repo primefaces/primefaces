@@ -648,17 +648,22 @@ public class CalendarUtils {
         }
 
         // fast return
-        if (!input.contains(token)) {
+        if (input == null || !input.contains(token)) {
             return Collections.emptyList();
         }
 
         int tokenIndex = input.indexOf(token);
         String from = input.substring(0, tokenIndex);
         String to = input.substring(tokenIndex + token.length());
+
         if (week) {
             // hardcoded pattern, see JS:
             // formattedValue += ' (' + this.options.locale.weekHeader + ' ' + week + ')';
-            to = to.substring(0, to.lastIndexOf(" ("));
+            int weekNumberIndex = to.lastIndexOf(" (");
+            // there are cases when weeknumber might not get displayed on client and therefore not submitted
+            if (weekNumberIndex != -1) {
+                to = to.substring(0, weekNumberIndex);
+            }
         }
 
         return Arrays.asList(from, to);
