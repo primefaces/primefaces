@@ -11119,22 +11119,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Whether content type validation should be performed, based on the types defined in the accept attribute. Default is false.]]>
-            </description>
-            <name>validateContentType</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Whether virus scan should be performed. Default is false.]]>
-            </description>
-            <name>virusScan</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Native title tooltip for simple mode.]]>
             </description>
             <name>title</name>
