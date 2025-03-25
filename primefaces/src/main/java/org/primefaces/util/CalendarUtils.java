@@ -648,7 +648,7 @@ public class CalendarUtils {
         }
 
         // fast return
-        if (!input.contains(token)) {
+        if (input == null || !input.contains(token)) {
             return Collections.emptyList();
         }
 
