@@ -685,7 +685,7 @@
                                 formattedValue += ' ' + this.options.rangeSeparator + ' ' + this.formatDateTime(endDate);
                             }
 
-                            if (this.options.view === 'week') {
+                            if (this.options.view === 'week' && this.options.showWeek) {
                                 var startDateMeta = { day: startDate.getDate(), month: startDate.getMonth(), year: startDate.getFullYear() };
                                 var week = this.options.weekCalculator(startDateMeta);
                                 formattedValue += ' (' + this.options.locale.weekHeader + ' ' + week + ')';
