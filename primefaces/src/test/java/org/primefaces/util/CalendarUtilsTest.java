@@ -221,8 +221,10 @@ class CalendarUtilsTest {
         assertEquals(2, splitRange.size());
         assertEquals("2021-03-01", splitRange.get(0));
         assertEquals("2021-03-31", splitRange.get(1));
+
         splitRange = CalendarUtils.splitRange("2021-03-01", "yyyy-MM-dd", "-", false);
         assertTrue(splitRange.isEmpty());
+
         splitRange = CalendarUtils.splitRange("", "yyyy-MM-dd", "-", false);
         assertTrue(splitRange.isEmpty());
 
@@ -237,13 +239,26 @@ class CalendarUtilsTest {
         assertEquals(2, splitRange.size());
         assertEquals("2021-03-01", splitRange.get(0));
         assertEquals("2021-03-31", splitRange.get(1));
+
         splitRange = CalendarUtils.splitRange("2021-03-01 (Wk 21)", "yyyy-MM-dd", "-", true);
         assertTrue(splitRange.isEmpty());
+
         splitRange = CalendarUtils.splitRange("", "yyyy-MM-dd (Wk 21)", "-", true);
         assertTrue(splitRange.isEmpty());
+
+        splitRange = CalendarUtils.splitRange("2021-03-01 - 2021-03-31 (Wk NaN)", "yyyy-MM-dd", "-", true);
+        assertEquals(2, splitRange.size());
+        assertEquals("2021-03-01", splitRange.get(0));
+        assertEquals("2021-03-31", splitRange.get(1));
+
+        splitRange = CalendarUtils.splitRange("2021-03-01 - 2021-03-31", "yyyy-MM-dd", "-", true);
+        assertEquals(2, splitRange.size());
+        assertEquals("2021-03-01", splitRange.get(0));
+        assertEquals("2021-03-31", splitRange.get(1));
 
         assertThrows(FacesException.class, () -> {
             CalendarUtils.splitRange("2021 - 03 - 01 - 2021 - 03 - 31 (Wk 21)", "yyyy - MM - dd", "-", true);
         });
     }
+
 }
