@@ -82,7 +82,7 @@ public class TreeNode {
     }
 
     public List<TreeNode> getChildren() {
-        // we need a xpath selector as selenium doesnt support direct child selector like #findElements(">...")
+        // we need a xpath selector as selenium doesn't support direct child selector like #findElements(">...")
         return getWebElement()
                 .findElements(By.xpath("./ul/li[contains(@class, 'ui-treenode')]")).stream()
                 .map(e -> new TreeNode(tree, e.getDomAttribute("data-rowkey"), this))

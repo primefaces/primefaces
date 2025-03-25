@@ -193,7 +193,7 @@ class DataTable002Test extends AbstractDataTableTest {
         dataTable.selectPage(1);
         dataTable.sort("First Appeared");
         SelectCheckboxMenu filterType = getFilterType();
-        filterType.togglPanel();
+        filterType.togglePanel();
         List<WebElement> filterTypeCheckboxes = filterType.getPanel().findElements(By.cssSelector(".ui-chkbox-box"));
         PrimeSelenium.guardAjax(filterTypeCheckboxes.get(1)).click();
 
