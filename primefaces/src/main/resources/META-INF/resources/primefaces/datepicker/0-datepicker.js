@@ -270,6 +270,8 @@
                 }
             }
             this.bindResponsiveResizeListener();
+            // #13634 ensure input is formatted correctly after AJAX update
+            this.inputfield.val(this.getValueToRender());
         },
 
         parseOptionValue: function(option) {
