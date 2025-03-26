@@ -5145,10 +5145,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             }
 
             var totalEnabled = enabledCheckboxes.length;
-            if(totalEnabled && totalEnabled === selectedCheckboxes.length)
-               this.checkHeaderCheckbox();
-            else
-               this.uncheckHeaderCheckbox();
+            if (this.cfg.selectionPageOnly) {
+                if(totalEnabled && totalEnabled === selectedCheckboxes.length)
+                    this.checkHeaderCheckbox();
+                else
+                    this.uncheckHeaderCheckbox();
+            }
 
             if(checkboxes.length === disabledCheckboxes.length)
                this.disableHeaderCheckbox();
