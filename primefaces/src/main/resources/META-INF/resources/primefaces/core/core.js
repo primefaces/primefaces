@@ -43,8 +43,9 @@
         /**
          * Creates an ID to a CSS ID selector that matches elements with that ID. For example:
          * ```
-         * PrimeFaces.escapeClientId("form:input"); // => "#form\:input"
+         * PrimeFaces.escapeClientId("form:input"); // => "#form\\:input"
          * PrimeFaces.escapeClientId("form#input"); // => "#form#input"
+         * PrimeFaces.escapeClientId("_5e08119c-7a6e-4fad-8061-51208ade4c4f|2"); // => "#_5e08119c-7a6e-4fad-8061-51208ade4c4f\\|2"
          * ```
          *
          * __Please note that this method does not escape all characters that need to be escaped and will not work with arbitrary IDs__
@@ -52,7 +53,7 @@
          * @return {string} A CSS ID selector for the given ID.
          */
         escapeClientId : function(id) {
-            return "#" + id.replace(/:/g,"\\:");
+            return "#" + id.replace(/[:|]/g,"\\$&");
         },
 
         /**
