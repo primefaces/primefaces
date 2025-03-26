@@ -14,6 +14,11 @@ input.ui-spinner-input {
     box-sizing: border-box;
     width: 100%;
 }
+input.ui-spinner-input[dir="rtl"] {
+    text-align: left;
+    padding-right: unset;
+    padding-left: 20px;
+}
 .ui-spinner.text-left .ui-spinner-input {
     text-align: left;
 }
@@ -75,7 +80,8 @@ body .ui-spinner.ui-spinner-horizontal-after .ui-spinner-button.ui-button.ui-spi
     border-radius: 0;
 }
 
-.ui-spinner-horizontal .ui-spinner-button, .ui-spinner-horizontal-after .ui-spinner-button {
+.ui-spinner-horizontal .ui-spinner-button,
+.ui-spinner-horizontal-after .ui-spinner-button {
     height: 100%;
     top: 0;
 }
@@ -84,7 +90,8 @@ body .ui-spinner.ui-spinner-horizontal-after .ui-spinner-button.ui-button.ui-spi
     right: unset;
 }
 
-body .ui-fluid .ui-spinner-horizontal-after .ui-spinner-input, body .ui-spinner-horizontal-after .ui-spinner-input {
+body .ui-fluid .ui-spinner-horizontal-after .ui-spinner-input,
+body .ui-spinner-horizontal-after .ui-spinner-input {
     padding-right: 5.214rem;
 }
 
@@ -92,7 +99,8 @@ body .ui-fluid .ui-spinner-horizontal-after .ui-spinner-input, body .ui-spinner-
     right: 2.357rem;
 }
 
-body .ui-fluid .ui-spinner.ui-spinner-vertical .ui-spinner-input, body .ui-spinner.ui-spinner-vertical .ui-spinner-input {
+body .ui-fluid .ui-spinner.ui-spinner-vertical .ui-spinner-input,
+body .ui-spinner.ui-spinner-vertical .ui-spinner-input {
     padding: 2.857rem 0;
     text-align: center;
 }
@@ -114,4 +122,8 @@ body .ui-spinner.ui-spinner-vertical .ui-spinner-button.ui-button.ui-spinner-up 
 
 body .ui-spinner.ui-spinner-vertical .ui-spinner-button.ui-button.ui-spinner-down {
     border-radius: 0 0 4px 4px;
+}
+
+body .ui-spinner.ui-spinner-rtl .ui-spinner-button {
+    right: unset;
 }

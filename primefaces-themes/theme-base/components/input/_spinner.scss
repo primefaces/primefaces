@@ -24,7 +24,7 @@ body {
         border-top-right-radius: $borderRadius;
 
         .ui-icon-triangle-1-n {
-          @include icon-override ("\e933");
+          @include icon-override("\e933");
         }
       }
 
@@ -32,7 +32,29 @@ body {
         border-bottom-right-radius: $borderRadius;
 
         .ui-icon-triangle-1-s {
-          @include icon-override ("\e930");
+          @include icon-override("\e930");
+        }
+      }
+    }
+
+    &.ui-spinner-rtl {
+      .ui-spinner-input {
+        padding-right: 0;
+        padding-left: $buttonIconOnlyWidth + $inlineSpacing;
+      }
+
+      .ui-spinner-button.ui-button {
+        right: auto;
+        left: 0;
+
+        &.ui-spinner-up {
+          border-top-right-radius: 0;
+          border-top-left-radius: $borderRadius;
+        }
+
+        &.ui-spinner-down {
+          border-bottom-right-radius: 0;
+          border-bottom-left-radius: $borderRadius;
         }
       }
     }
@@ -42,6 +64,13 @@ body {
     .ui-spinner {
       .ui-spinner-input {
         padding-right: $buttonIconOnlyWidth + $inlineSpacing;
+      }
+
+      &.ui-spinner-rtl {
+        .ui-spinner-input {
+          padding-right: 0;
+          padding-left: $buttonIconOnlyWidth + $inlineSpacing;
+        }
       }
     }
   }
