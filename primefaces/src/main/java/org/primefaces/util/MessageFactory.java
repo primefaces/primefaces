@@ -86,9 +86,6 @@ public class MessageFactory {
         if (summary == null) {
             try {
                 bundle = getBundle(PRIMEFACES_BUNDLE_BASENAME, locale, currentClassLoader, facesContext);
-                if (bundle == null) {
-                    throw new NullPointerException();
-                }
                 if (bundle.containsKey(messageId)) {
                     summary = bundle.getString(messageId);
                 }
@@ -102,9 +99,6 @@ public class MessageFactory {
         if (summary == null) {
             try {
                 bundle = getBundle(DEFAULT_BUNDLE_BASENAME, locale, currentClassLoader, facesContext);
-                if (bundle == null) {
-                    throw new NullPointerException();
-                }
                 if (bundle.containsKey(messageId)) {
                     summary = bundle.getString(messageId);
                 }
@@ -159,9 +153,6 @@ public class MessageFactory {
         if (summary == null) {
             try {
                 bundle = getBundle(PRIMEFACES_BUNDLE_BASENAME, locale, currentClassLoader, facesContext);
-                if (bundle == null) {
-                    throw new NullPointerException();
-                }
                 if (bundle.containsKey(messageId)) {
                     summary = bundle.getString(messageId);
                 }
@@ -175,9 +166,6 @@ public class MessageFactory {
         if (summary == null) {
             try {
                 bundle = getBundle(DEFAULT_BUNDLE_BASENAME, locale, currentClassLoader, facesContext);
-                if (bundle == null) {
-                    throw new NullPointerException();
-                }
                 if (bundle.containsKey(messageId)) {
                     summary = bundle.getString(messageId);
                 }

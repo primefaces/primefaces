@@ -73,12 +73,10 @@ powered rich solution with graceful degradation for legacy browsers.
 | uploadButtonTitle | null                                         | String | Native title tooltip for upload button
 | uploadIcon | pi pi-upload                                 | String | The icon of upload button
 | uploadLabel | Upload                                       | String | Label of the upload button.
-| validateContentType | false                                        | Boolean | Whether content type validation should be performed, based on the types defined in the accept attribute. Default is false.
 | validator | null                                         | MethodExpr | A method expression that refers to a method validating the input.
 | validatorMessage | null                                         | String | Message to be displayed when validation fails.
 | value | null                                         | Object | Value of the component than can be either an EL expression of a literal text.
 | valueChangeListener | null                                         | MethodExpr | A method expression that refers to a method for handling a valuchangeevent.
-| virusScan | false                                        | Boolean | Whether virus scan should be performed. Default is false.
 | widgetVar | null                                         | String | Name of the client side widget.
 
 
@@ -410,16 +408,16 @@ File uploads per se introduce some security risks, for best practices you should
 ### Measures
 
 Here are some measures that can be taken into account when using PrimeFaces's `fileUpload` component:
-1. Consider **limiting the size** of uploaded files. As of PrimeFaces 6.2 this will be double-checked at server side as well: `p:fileUpload sizeLimit="1024"`. See https://github.com/primefaces/primefaces/issues/3290.
-2. Consider **restricting file names** of uploaded files. As of PrimeFaces 7.0 this will be double-checked at server side as well: `p:fileUpload allowTypes="/(\.|\/)(gif|jpeg|jpg|png)$/"`. See https://github.com/primefaces/primefaces/issues/2791.
-3. Consider **enabling content type validation**. This feature has been introduced with PrimeFaces 7.0 and can be used by combining the `accept` and `validateContentType` attributes: `p:fileUpload accept="image/*" validateContentType="true"`.
+1. Consider **limiting the size** of uploaded files. This will be double-checked at server side as well: `p:validateFile sizeLimit="1024"`.
+2. Consider **restricting file names** of uploaded files. This will be double-checked at server side as well: `p:validateFile allowTypes="/(\.|\/)(gif|jpeg|jpg|png)$/"`.
+3. Consider **enabling content type validation**. This can be used by combining the `contentType` attributes: `p:validateFile allowTypes="/(\.|\/)(gif|jpeg|jpg|png)$/" contentType="true"`.
    For reliable content type validation we recommend to use [Apache Tika](https://tika.apache.org/) or [mime-types](https://github.com/overview/mime-types), which will be picked up automatically if available in classpath.
    If you wish to use your own [FileTypeDetector](https://docs.oracle.com/javase/8/docs/api/java/nio/file/spi/FileTypeDetector.html) or use one which is not registered as a SPI service, then register it in your webapp in `META-INF/services` directory with filename `java.nio.file.spi.FileTypeDetector`.
    Finally, if you need to execute several FileTypeDetector, you can control order of execution over your SPI file.
 4. Consider **enabling virus scanning**. This feature has been introduced with PrimeFaces 7.0 and can be enabled with `p:fileUpload virusScan="true"`. See https://github.com/primefaces/primefaces/issues/4256.
-   * **Built-in implementation**: You may either make use of PrimeFaces' basic built-in implementation, that just searches for the file's hash at VirusTotal. Therefore you have to configure accordingly the context param `primefaces.virusscan.VIRUSTOTAL_KEY` in `web.xml`; a key can be obtained for free at [VirusTotal](https://www.virustotal.com/#/join-us).
-   * **Built-in implementation**: ClamAV Daemon which can send a file over TCP to a running ClamAV service in your network. You have to configure the host/port context params `primefaces.virusscan.CLAMAV_HOST` and `primefaces.virusscan.CLAMAV_PORT` in `web.xml`; More information at [ClamAV API](https://linux.die.net/man/8/clamd).
-   * **Custom implementation**: Or if more sophisticated virus scanning is required, you can just drop in your custom service provider implementation that will be picked up automatically once available in classpath. In your custom implementation you may leverage your system's virus scanner by using its appropriate API for example.
+    * **Built-in implementation**: You may either make use of PrimeFaces' basic built-in implementation, that just searches for the file's hash at VirusTotal. Therefore you have to configure accordingly the context param `primefaces.virusscan.VIRUSTOTAL_KEY` in `web.xml`; a key can be obtained for free at [VirusTotal](https://www.virustotal.com/#/join-us).
+    * **Built-in implementation**: ClamAV Daemon which can send a file over TCP to a running ClamAV service in your network. You have to configure the host/port context params `primefaces.virusscan.CLAMAV_HOST` and `primefaces.virusscan.CLAMAV_PORT` in `web.xml`; More information at [ClamAV API](https://linux.die.net/man/8/clamd).
+    * **Custom implementation**: Or if more sophisticated virus scanning is required, you can just drop in your custom service provider implementation that will be picked up automatically once available in classpath. In your custom implementation you may leverage your system's virus scanner by using its appropriate API for example.
 
       * Implementation skeleton
 

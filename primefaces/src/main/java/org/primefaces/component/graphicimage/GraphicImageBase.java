@@ -52,7 +52,7 @@ public abstract class GraphicImageBase extends HtmlGraphicImage {
     }
 
     public boolean isCache() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.cache, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.cache, false);
     }
 
     public void setCache(boolean cache) {

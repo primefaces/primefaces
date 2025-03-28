@@ -21,13 +21,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.model;
+package org.primefaces.integrationtests.datepicker;
 
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 
-@Deprecated
-public class TreeNodeList<T> extends ArrayList<TreeNode<T>> {
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
+
+import lombok.Data;
+
+@Named
+@ViewScoped
+@Data
+public class DatePicker016 implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    private List<LocalDate> week;
+
+    @PostConstruct
+    public void init() {
+        week = new ArrayList<>();
+        week.add(LocalDate.of(2020, 8, 16));
+        week.add(LocalDate.of(2020, 8, 22));
+    }
+
+    public void submit() {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        FacesContext.getCurrentInstance().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_INFO,
+                        "Selected Week",
+                        dateTimeFormatter.format(week.get(0)) + " - " + dateTimeFormatter.format(week.get(1))));
+    }
 }

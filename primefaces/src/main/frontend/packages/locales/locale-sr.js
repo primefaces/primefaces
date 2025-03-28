@@ -1,8 +1,8 @@
-import { sr_rs } from "primelocale/js/sr_rs.js";
+import { sr_RS } from "primelocale/js/sr_RS.js";
 
 if (window.PrimeFaces) {
   /** Serbian Latin*/
-  PrimeFaces.locales["sr"] = sr_rs;
+  PrimeFaces.locales["sr"] = sr_RS;
 
   // custom PF labels
   PrimeFaces.locales["sr"] = $.extend(true, {}, PrimeFaces.locales["sr"], {

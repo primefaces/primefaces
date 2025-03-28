@@ -196,12 +196,12 @@
 
         <div class="card">
             <h5>Filter toggling</h5>
-            <p>1. Hide filter components initially by adding <code>ui-filter-togglable</code> as <em>styleClass</em> to the datatable. <br/>
+            <p>1. Hide filter components initially by adding <code>ui-filter-toggleable</code> as <em>styleClass</em> to the datatable. <br/>
                 2. To show/hide the filter components call <code>PF('customersTable4').toggleFilter()</code>.</p>
             <h:form id="customersForm4">
                 <p:dataTable id="customers" var="customer" value="#{dtFilterView.customers1}" widgetVar="customersTable4"
                              emptyMessage="No customers found with given criteria" stickyHeader="true" stickyTopAt=".layout-topbar"
-                             filteredValue="#{dtFilterView.filteredCustomers1}" styleClass="ui-filter-togglable">
+                             filteredValue="#{dtFilterView.filteredCustomers1}" styleClass="ui-filter-toggleable">
 
                     <f:facet name="header">
                         <div class="flex align-items-center justify-content-between">

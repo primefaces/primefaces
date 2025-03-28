@@ -37,6 +37,8 @@ import jakarta.faces.context.FacesContext;
  */
 public class UploadedFileWrapper implements UploadedFile, FacesWrapper<UploadedFile>, StateHolder, Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private UploadedFile wrapped;
 
     public UploadedFileWrapper() {

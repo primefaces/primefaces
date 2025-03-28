@@ -46,7 +46,7 @@ public class GenerateAjaxBehaviorDoc {
         try {
             for (String className : args) {
                 Class<?> clazz = Class.forName(className);
-                generateMarkdown((UIComponentBase) clazz.newInstance());
+                generateMarkdown((UIComponentBase) clazz.getDeclaredConstructor().newInstance());
             }
         }
         catch (Exception e) {
@@ -68,7 +68,7 @@ public class GenerateAjaxBehaviorDoc {
         System.out.println("**Available Events:** `" + eventString + "`  ");
         System.out.println();
         System.out.println("```xhtml");
-        System.out.println(String.format("<p:ajax event=\"%s\" listener=\"#{bean.handle%s}\" update=\"msgs\" />", defaultEvent, defaultEvent));
+        System.out.printf("<p:ajax event=\"%s\" listener=\"#{bean.handle%s}\" update=\"msgs\" />%n", defaultEvent, defaultEvent);
         System.out.println("```");
     }
 

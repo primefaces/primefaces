@@ -46,7 +46,7 @@ will be displayed with a slide animation.
     <p:submenu label="Non-Ajax Menuitem" icon="ui-icon-newwin">
         <p:menuitem value="Delete" action="#{buttonBean.delete}" update="messages" ajax="false" icon="ui-icon-close"/>
     </p:submenu>
-    <p:separator />
+    <p:divider />
     <p:submenu label="Navigations" icon="ui-icon-extlink">
         <p:submenu label="Prime Links">
             <p:menuitem value="Prime" url="http://www.prime.com.tr" />

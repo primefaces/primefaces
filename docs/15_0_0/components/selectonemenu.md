@@ -100,7 +100,7 @@ public class MenuBean {
     </p:column>
 
     <f:facet name="footer">
-         <p:separator />
+         <p:divider />
          <h:outputText value="#{menuBean.players.size()} available players" style="font-weight:bold;"/>
     </f:facet>
 </p:selectOneMenu>

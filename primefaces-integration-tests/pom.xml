@@ -31,7 +31,7 @@
 
         <!-- dependency versions -->
         <hibernate-validator.version>8.0.2.Final</hibernate-validator.version>
-        <jetty.version>12.0.17</jetty.version>
+        <jetty.version>12.0.18</jetty.version>
         <lombok.version>1.18.36</lombok.version>
     </properties>
 
@@ -434,13 +434,13 @@
                 <dependency>
                     <groupId>org.apache.myfaces.core</groupId>
                     <artifactId>myfaces-api</artifactId>
-                    <version>4.0.2</version>
+                    <version>4.0.3</version>
                     <scope>compile</scope>
                 </dependency>
                 <dependency>
                     <groupId>org.apache.myfaces.core</groupId>
                     <artifactId>myfaces-impl</artifactId>
-                    <version>4.0.2</version>
+                    <version>4.0.3</version>
                     <scope>compile</scope>
                 </dependency>
             </dependencies>
@@ -456,13 +456,13 @@
                 <dependency>
                     <groupId>org.apache.myfaces.core</groupId>
                     <artifactId>myfaces-api</artifactId>
-                    <version>4.1.0</version>
+                    <version>4.1.1</version>
                     <scope>compile</scope>
                 </dependency>
                 <dependency>
                     <groupId>org.apache.myfaces.core</groupId>
                     <artifactId>myfaces-impl</artifactId>
-                    <version>4.1.0</version>
+                    <version>4.1.1</version>
                     <scope>compile</scope>
                 </dependency>
             </dependencies>

@@ -62,7 +62,7 @@ About the code you contribute
 #### Use index-loop over for-each over ArrayLists (especially for looping through the Faces component tree)
 See:  https://issues.apache.org/jira/browse/MYFACES-3130
 
-Our loops ususally looks like:
+Our loops usually looks like:
 ```
 for (int i = 0; i < component.getChildCount(); i++) {
     UIComponent child = component.getChildren().get(i);
@@ -70,7 +70,7 @@ for (int i = 0; i < component.getChildCount(); i++) {
 }
 ```
 This has 2 benefits:
-1) Avoid a internal List instance when there are no childs, as they are initialized lazy by the Faces implementation (because we do `component.getChildCount()` over `component.getChildren().size()`)
+1) Avoid an internal List instance when there are no childs, as they are initialized lazy by the Faces implementation (because we do `component.getChildCount()` over `component.getChildren().size()`)
 2) Avoid a new iterator instance on each loop. This might not be faster in modern VMs but reduces GC a lot.
 
 ### Detailed Java code quality standards:
@@ -94,7 +94,7 @@ This has 2 benefits:
 ### Detailed HTML/XML code quality standards:
 
   - All tags, CSS styles, file names, etc. must be **in English**.
-  - Lower case should be prefered for HTML/XML artifacts. The only exceptions are `DOCTYPE` and `CDATA` clauses.
+  - Lower case should be preferred for HTML/XML artifacts. The only exceptions are `DOCTYPE` and `CDATA` clauses.
   - All HTML code should be XML-valid (i.e. all tags should be closed, attributes surrounded by commas, etc.)
   - Maximum line size is 160 characters.
   - Indentation should be made with 4 spaces, not tabs.

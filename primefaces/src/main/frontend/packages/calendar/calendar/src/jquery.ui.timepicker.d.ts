@@ -426,17 +426,17 @@ declare namespace JQueryUITimepickerAddon {
          */
         minuteGrid: number;
         /**
-         * Default: `0` - When greater than `0` a label grid will be genereated under the slider. This number represents
+         * Default: `0` - When greater than `0` a label grid will be generated under the slider. This number represents
          * the units (in seconds) between labels.
          */
         secondGrid: number;
         /**
-         * Default: `0` - When greater than `0` a label grid will be genereated under the slider. This number represents
+         * Default: `0` - When greater than `0` a label grid will be generated under the slider. This number represents
          * the units (in milliseconds) between labels.
          */
         millisecGrid: number;
         /**
-         * Default: `0` - When greater than `0` a label grid will be genereated under the slider. This number represents
+         * Default: `0` - When greater than `0` a label grid will be generated under the slider. This number represents
          * the units (in microseconds) between labels.
          */
         microsecGrid: number;
@@ -552,7 +552,7 @@ declare namespace JQueryUITimepickerAddon {
          */
         max: number;
         /**
-         * Minumum allowed value for the time unit the user may select.
+         * Minimum allowed value for the time unit the user may select.
          */
         min: number;
         /**
@@ -572,7 +572,7 @@ declare namespace JQueryUITimepickerAddon {
          * @param container The container element to which the created control must be appended.
          * @param unit The type of control for which to set the value.
          * @param val Initial value for the control
-         * @param min Minumum allowed value for the time unit the user may select.
+         * @param min Minimum allowed value for the time unit the user may select.
          * @param max Maximum allowed value for the time unit the user may select.
          * @param step Desired step size for selecting a value.
          * @return The `container` element as passed to this method.

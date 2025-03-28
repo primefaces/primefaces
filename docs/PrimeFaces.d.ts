@@ -3475,17 +3475,17 @@ declare namespace JQueryUITimepickerAddon {
          */
         minuteGrid: number;
         /**
-         * Default: `0` - When greater than `0` a label grid will be genereated under the slider. This number represents
+         * Default: `0` - When greater than `0` a label grid will be generated under the slider. This number represents
          * the units (in seconds) between labels.
          */
         secondGrid: number;
         /**
-         * Default: `0` - When greater than `0` a label grid will be genereated under the slider. This number represents
+         * Default: `0` - When greater than `0` a label grid will be generated under the slider. This number represents
          * the units (in milliseconds) between labels.
          */
         millisecGrid: number;
         /**
-         * Default: `0` - When greater than `0` a label grid will be genereated under the slider. This number represents
+         * Default: `0` - When greater than `0` a label grid will be generated under the slider. This number represents
          * the units (in microseconds) between labels.
          */
         microsecGrid: number;
@@ -3598,7 +3598,7 @@ declare namespace JQueryUITimepickerAddon {
          */
         max: number;
         /**
-         * Minumum allowed value for the time unit the user may select.
+         * Minimum allowed value for the time unit the user may select.
          */
         min: number;
         /**
@@ -3617,7 +3617,7 @@ declare namespace JQueryUITimepickerAddon {
          * @param container The container element to which the created control must be appended.
          * @param unit The type of control for which to set the value.
          * @param val Initial value for the control
-         * @param min Minumum allowed value for the time unit the user may select.
+         * @param min Minimum allowed value for the time unit the user may select.
          * @param max Maximum allowed value for the time unit the user may select.
          * @param step Desired step size for selecting a value.
          * @return The `container` element as passed to this method.
@@ -3818,7 +3818,7 @@ declare namespace PrimeFaces.widget {
          */
         private configureLocale(): void;
         /**
-         * Creates and initializes the confiugration options for the time picker.
+         * Creates and initializes the configuration options for the time picker.
          */
         private configureTimePicker(): void;
         /**
@@ -5101,7 +5101,7 @@ declare namespace PrimeFaces.widget {
          */
         second_hand: import("raphael").RaphaelElement;
         /**
-         * Draws this clock according the the current widget configuation.
+         * Draws this clock according the the current widget configuration.
          */
         private draw(): void;
         /**
@@ -5826,7 +5826,7 @@ declare namespace PrimeFaces.widget {
          * });
          * ```
          * @override
-         * @param cfg the widget configuraton
+         * @param cfg the widget configuration
          *
          * (from super type BaseWidget) The widget configuration to be used for this widget instance.
          * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
@@ -6151,7 +6151,7 @@ declare namespace PrimeFaces.ajax {
          * Later the namespace is used for all post params.
          * @param form An HTML FORM element.
          * @return The namespace for the parameters of the given form, or `null` when the form does
-         * not specifiy a namespace.
+         * not specify a namespace.
          */
         extractParameterNamespace(form: JQuery): string | null;
         /**
@@ -8555,7 +8555,7 @@ declare namespace PrimeFaces.widget {
          * });
          * ```
          * @override
-         * @param cfg the widget configuraton
+         * @param cfg the widget configuration
          *
          * (from super type BaseWidget) The widget configuration to be used for this widget instance.
          * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
@@ -8873,7 +8873,7 @@ declare namespace PrimeFaces.widget {
         paginator: PrimeFaces.widget.Paginator;
         /**
          * Retrieves the paginator widget used by this data grid for pagination. You can use this widget to switch to a
-         * different page programatically.
+         * different page programmatically.
          * @return The paginator widget, or `undefined` when pagination is not
          * enabled.
          */
@@ -9086,7 +9086,7 @@ declare namespace PrimeFaces.widget {
          */
         offset: number;
         /**
-         * `true` to set the scroll position to the bottom initally and load data from the
+         * `true` to set the scroll position to the bottom initially and load data from the
          * bottom, or `false` otherwise.
          */
         startAtBottom: boolean;
@@ -10087,7 +10087,7 @@ declare namespace PrimeFaces.widget {
          */
         private doRowEditRequest(rowEditor: JQuery, action: PrimeFaces.widget.DataTable.RowEditAction): void;
         /**
-         * Enables all cell editors that were previously disabled by the UI and not alreayd disabled from user.
+         * Enables all cell editors that were previously disabled by the UI and not already disabled from user.
          * @param element the row or cell to find inputs to enable for editing
          */
         private enableCellEditors(element: JQuery): void;
@@ -11081,7 +11081,7 @@ declare namespace PrimeFaces.widget {
         private bindEvents(): void;
         /**
          * Retrieves the paginator widget used by this data grid for pagination. You can use this widget to switch to a
-         * different page programatically.
+         * different page programmatically.
          * @return The paginator widget, or `undefined` when pagination is not
          * enabled.
          */
@@ -11209,7 +11209,7 @@ declare namespace JQueryPrimeDatePicker {
      */
     export type BaseCallback = (this: PickerInstance) => void;
     /**
-     * Base callback that, in addition to the current date picker instance, is also passed the event that occured.
+     * Base callback that, in addition to the current date picker instance, is also passed the event that occurred.
      */
     export type BaseEventCallback =
     /**
@@ -11837,7 +11837,7 @@ declare namespace JQueryPrimeDatePicker {
          * @param second Current second.
          * @param millisecond Current millisecond.
          */
-        updateTime(event: JQuery.TriggeredEvent, hour: HourOfTheDay, minute: MinuteOfTheHour, second: SecondOfTheMinute, millsecond: MillisecondOfTheSecond): void;
+        updateTime(event: JQuery.TriggeredEvent, hour: HourOfTheDay, minute: MinuteOfTheHour, second: SecondOfTheMinute, millisecond: MillisecondOfTheSecond): void;
         /**
          * After a time was entered, updates the time display so that is shows the given time.
          * @param event Event that occurred.
@@ -13289,7 +13289,7 @@ declare namespace PrimeFaces.widget {
          * });
          * ```
          * @override
-         * @param cfg the widget configuraton
+         * @param cfg the widget configuration
          *
          * (from super type BaseWidget) The widget configuration to be used for this widget instance.
          * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
@@ -13388,7 +13388,7 @@ declare namespace PrimeFaces.widget {
         show(duration?: number | string): void;
         /**
          * Toggle maxification, as if the user had clicked the maximize button. If this dialog is not yet maximized,
-         * maximizes it. If this dialog is already maximized, reverts it back to its orignal size.
+         * maximizes it. If this dialog is already maximized, reverts it back to its original size.
          */
         toggleMaximize(): void;
         /**
@@ -13615,7 +13615,7 @@ declare namespace PrimeFaces.widget {
          * });
          * ```
          * @override
-         * @param cfg the widget configuraton
+         * @param cfg the widget configuration
          *
          * (from super type BaseWidget) The widget configuration to be used for this widget instance.
          * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
@@ -16331,7 +16331,7 @@ declare namespace PrimeFaces.widget {
          * });
          * ```
          * @override
-         * @param cfg the widget configuraton
+         * @param cfg the widget configuration
          *
          * (from super type BaseWidget) The widget configuration to be used for this widget instance.
          * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
@@ -20783,7 +20783,7 @@ declare namespace PrimeFaces.widget {
      * __PrimeFaces ImageCompare Widget__
      *
      * ImageCompare provides a user interface to compare two images. Uses the `ImageCompare` library. To access an instance
-     * of the image slider programatically, you can use the list of instantiated sliders:
+     * of the image slider programmatically, you can use the list of instantiated sliders:
      *
      * ```javascript
      * const widget = PF("myImageCompareWidget");
@@ -21486,7 +21486,7 @@ declare namespace PrimeFaces.widget {
      * __PrimeFaces ImageSwitch Widget__
      *
      * ImageSwitch is an image gallery component with 25+ effects. Use the JQuery cycle plugin. You can also interact with
-     * the imageswitch programatically via `$.fn.cycle`:
+     * the imageswitch programmatically via `$.fn.cycle`:
      *
      * ```javascript
      * const widget = PF("myImageSwitchWidget");
@@ -25565,7 +25565,7 @@ declare namespace PrimeFaces.widget {
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
         /**
-         * Deactivates all items and resets the state of this widget to its orignal state such that only the top-level menu
+         * Deactivates all items and resets the state of this widget to its original state such that only the top-level menu
          * items are shown.
          */
         reset(): void;
@@ -26572,7 +26572,7 @@ declare namespace PrimeFaces.widget {
          * });
          * ```
          * @override
-         * @param cfg the widget configuraton
+         * @param cfg the widget configuration
          *
          * (from super type BaseWidget) The widget configuration to be used for this widget instance.
          * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
@@ -29552,7 +29552,7 @@ declare namespace PrimeFaces.widget {
          * });
          * ```
          * @override
-         * @param cfg the widget configuraton
+         * @param cfg the widget configuration
          *
          * (from super type BaseWidget) The widget configuration to be used for this widget instance.
          * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
@@ -30045,7 +30045,7 @@ declare namespace PrimeFaces.widget {
         disable(): void;
         /**
          * Draws the given line data to this signature widget viewport.
-         * @param value The signatue data to draw.
+         * @param value The signature data to draw.
          */
         draw(value: string | JQuerySignature.SignatureJson): void;
         /**
@@ -34637,7 +34637,7 @@ declare namespace PrimeFaces.widget {
          */
         private removeDescendantsFromSelection(rowKey: string): void;
         /**
-         * Removes the given row from the list of currenlty selected rows.
+         * Removes the given row from the list of currently selected rows.
          * @param nodeKey A row that was unselected.
          */
         removeSelection(nodeKey: string): void;

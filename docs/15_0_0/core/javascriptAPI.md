@@ -35,6 +35,7 @@ well:
 [PrimeFaces.queueTask(fn, delay)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#queueTask) | Queues a microtask if delay is 0 or less and setTimeout if > 0.
 [PrimeFaces.scrollTo(scrollTarget, duration, topOffset)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#scrollTo) | Scrolls to a component with given client id or jQuery element. The scroll animation can be customized with a duration and an optional offset from the top of the target element.
 [PrimeFaces.setCookie(name, value, cfg)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#setCookie) | Sets a cookie with given name, value and options. e.g. PrimeFaces.setCookie('name', 'test'); PrimeFaces.setCookie('name','test',{expires:7, path:'/'}) Second example creates cookie for entire site that expires in 7 days.
+[PrimeFaces.setGlobalLocaleValue(name, value)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#setGlobalLocaleValue) | Overwrites the given locale setting for all locales: PrimeFaces.setGlobalLocaleValue('firstDayOfWeek', 1);
 [PrimeFaces.skinInput(input)](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#skinInput) | Progressively enhances an input element with theming.
 
 ## PrimeFaces Utilities (PrimeFaces.utils.*)

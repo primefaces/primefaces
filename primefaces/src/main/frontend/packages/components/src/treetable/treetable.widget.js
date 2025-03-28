@@ -1380,7 +1380,7 @@ PrimeFaces.widget.TreeTable = class TreeTable extends PrimeFaces.widget.Deferred
     }
 
     /**
-     * Removes the given row from the list of currenlty selected rows.
+     * Removes the given row from the list of currently selected rows.
      * @param {string} nodeKey A row that was unselected.
      */
     removeSelection(nodeKey) {

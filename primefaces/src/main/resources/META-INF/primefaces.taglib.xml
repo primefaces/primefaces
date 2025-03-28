@@ -111,7 +111,7 @@
 
     <tag>
         <description>
-            <![CDATA[`p:validateFile` is a validator which can be used to validate single and mulitple files, either of `p:fileUpload` or `h:inputFile`.]]>
+            <![CDATA[`p:validateFile` is a validator which can be used to validate single and multiple files, either of `p:fileUpload` or `h:inputFile`.]]>
         </description>
         <tag-name>validateFile</tag-name>
         <validator>
@@ -918,7 +918,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Client side callback to execute after a exception with this type occured.]]>
+                <![CDATA[Client side callback to execute after a exception with this type occurred.]]>
             </description>
             <name>onexception</name>
             <required>false</required>
@@ -926,7 +926,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Components to update after a exception with this type occured.]]>
+                <![CDATA[Components to update after a exception with this type occurred.]]>
             </description>
             <name>update</name>
             <required>false</required>
@@ -1008,7 +1008,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Client side callback to execute after ajax requests completed succesfully.]]>
+                <![CDATA[Client side callback to execute after ajax requests completed successfully.]]>
             </description>
             <name>onsuccess</name>
             <required>false</required>
@@ -2101,6 +2101,22 @@
             <name>magnification</name>
             <required>false</required>
             <type>java.lang.Double</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The horizontal quiet zone of the barcode in pixels. Default is 10 pixels.]]>
+            </description>
+            <name>quietZoneHorizontal</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The vertical quiet zone of the barcode in pixels. Default is 1 pixel.]]>
+            </description>
+            <name>quietZoneVertical</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
         </attribute>
         <attribute>
             <description>
@@ -5864,7 +5880,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Controls the visibilty of the column, default is true.]]>
+                <![CDATA[Controls the visibility of the column, default is true.]]>
             </description>
             <name>visible</name>
             <required>false</required>
@@ -5896,7 +5912,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Speficies whether to group rows based on the column data.]]>
+                <![CDATA[Specifies whether to group rows based on the column data.]]>
             </description>
             <name>groupRow</name>
             <required>false</required>
@@ -6316,7 +6332,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Controls the visibilty of the column, default is true.]]>
+                <![CDATA[Controls the visibility of the column, default is true.]]>
             </description>
             <name>visible</name>
             <required>false</required>
@@ -6348,7 +6364,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Speficies whether to group rows based on the column data.]]>
+                <![CDATA[Specifies whether to group rows based on the column data.]]>
             </description>
             <name>groupRow</name>
             <required>false</required>
@@ -9967,7 +9983,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Dialog size might exceeed viewport if content is bigger than viewport in terms of height. fitViewport option automatically
+                <![CDATA[Dialog size might exceed viewport if content is bigger than viewport in terms of height. fitViewport option automatically
                 adjusts height to fit dialog within the viewport.]]>
             </description>
             <name>fitViewport</name>
@@ -11103,22 +11119,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Whether content type validation should be performed, based on the types defined in the accept attribute. Default is false.]]>
-            </description>
-            <name>validateContentType</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Whether virus scan should be performed. Default is false.]]>
-            </description>
-            <name>virusScan</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Native title tooltip for simple mode.]]>
             </description>
             <name>title</name>
@@ -11979,7 +11979,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Controls browser caching mode of the resource. Default is true]]>
+                <![CDATA[Controls browser caching mode of the resource. Default is false.]]>
             </description>
             <name>cache</name>
             <required>false</required>
@@ -12117,7 +12117,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Comma seperated list of severities to display only.]]>
+                <![CDATA[Comma separated list of severities to display only.]]>
             </description>
             <name>severity</name>
             <required>false</required>
@@ -12949,7 +12949,7 @@
     <tag>
         <description>
             <![CDATA[Inplace provides easy inplace editing and inline content display.
-        Inplace consists of two members, display element is the inital clickable label and inline element is the hidden content
+        Inplace consists of two members, display element is the initial clickable label and inline element is the hidden content
         that'll be displayed when display element is toggled.]]>
         </description>
         <tag-name>inplace</tag-name>
@@ -13087,7 +13087,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines the default mode to display (input or ouput). Default: output.]]>
+                <![CDATA[Defines the default mode to display (input or output). Default: output.]]>
             </description>
             <name>mode</name>
             <required>false</required>
@@ -18261,7 +18261,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Comma seperated list of severities to display only.]]>
+                <![CDATA[Comma separated list of severities to display only.]]>
             </description>
             <name>severity</name>
             <required>false</required>
@@ -18309,7 +18309,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines a list of keys and clientIds, which should NOT be rendered by this component. Seperated by space or comma.]]>
+                <![CDATA[Defines a list of keys and clientIds, which should NOT be rendered by this component. Separated by space or comma.]]>
             </description>
             <name>forIgnores</name>
             <required>false</required>
@@ -21105,7 +21105,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines if items should be transfered on dblclick. Default is true.]]>
+                <![CDATA[Defines if items should be transferred on dblclick. Default is true.]]>
             </description>
             <name>transferOnDblclick</name>
             <required>false</required>
@@ -21113,7 +21113,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines if items should be transfered, instead of selected, on checkbox click. This only works in combination with showCheckbox=true. Default is false.]]>
+                <![CDATA[Defines if items should be transferred, instead of selected, on checkbox click. This only works in combination with showCheckbox=true. Default is false.]]>
             </description>
             <name>transferOnCheckboxClick</name>
             <required>false</required>
@@ -22501,7 +22501,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[The initial date that is used when schedule loads. If ommitted, the schedule starts on the current date.]]>
+                <![CDATA[The initial date that is used when schedule loads. If omitted, the schedule starts on the current date.]]>
             </description>
             <name>initialDate</name>
             <required>false</required>
@@ -25319,64 +25319,6 @@
                 <![CDATA[Comma separated list of column style classes.]]>
             </description>
             <name>columnClasses</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-    </tag>
-    <tag>
-        <description>
-            <![CDATA[Seperator displays a horizontal line to separate content.]]>
-        </description>
-        <tag-name>separator</tag-name>
-        <component>
-            <component-type>org.primefaces.component.Separator</component-type>
-            <renderer-type>org.primefaces.component.SeparatorRenderer</renderer-type>
-        </component>
-        <attribute>
-            <description>
-                <![CDATA[Unique identifier of the component in a namingContainer.]]>
-            </description>
-            <name>id</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
-            </description>
-            <name>rendered</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
-            </description>
-            <name>binding</name>
-            <required>false</required>
-            <type>jakarta.faces.component.UIComponent</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Advisory tooltip information.]]>
-            </description>
-            <name>title</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Inline style of the separator.]]>
-            </description>
-            <name>style</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Style class of the separator.]]>
-            </description>
-            <name>styleClass</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>

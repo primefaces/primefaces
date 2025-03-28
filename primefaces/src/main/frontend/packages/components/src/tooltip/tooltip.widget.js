@@ -64,8 +64,8 @@ PrimeFaces.widget.Tooltip = class Tooltip extends PrimeFaces.widget.BaseWidget {
     init(cfg) {
         super.init(cfg);
 
-        this.cfg.showEvent = this.cfg.showEvent ? this.cfg.showEvent + '.tooltip' : 'mouseenter.tooltip';
-        this.cfg.hideEvent = this.cfg.hideEvent ? this.cfg.hideEvent + '.tooltip' : 'mouseleave.tooltip';
+        this.cfg.showEvent = this.cfg.showEvent ? this.cfg.showEvent.split(' ').map(e => e + '.tooltip').join(' ') : 'mouseenter.tooltip';
+        this.cfg.hideEvent = this.cfg.hideEvent ? this.cfg.hideEvent.split(' ').map(e => e + '.tooltip').join(' ') : 'mouseleave.tooltip';
         this.cfg.showEffect = this.cfg.showEffect ? this.cfg.showEffect : 'fade';
         this.cfg.hideEffect = this.cfg.hideEffect ? this.cfg.hideEffect : 'fade';
         this.cfg.showDelay = PrimeFaces.utils.defaultNumeric(this.cfg.showDelay, 400);
@@ -130,7 +130,7 @@ PrimeFaces.widget.Tooltip = class Tooltip extends PrimeFaces.widget.BaseWidget {
         this.cfg.globalSelector = this.cfg.globalSelector || 'a,:input,:button';
         var $this = this;
 
-        var namespace = '.tooltip' + this.id;
+        var namespace = '.' + this.id;
         $(document).off(this.cfg.showEvent + namespace + ' ' + this.cfg.hideEvent + namespace, this.cfg.globalSelector)
             .on(this.cfg.showEvent + namespace, this.cfg.globalSelector, function(e) {
                 $this._hide();
@@ -210,7 +210,7 @@ PrimeFaces.widget.Tooltip = class Tooltip extends PrimeFaces.widget.BaseWidget {
             var matchResult = this.cfg.target.match('@\\((.+)\\)');
             var targetSelector = (matchResult && matchResult.length > 1) ? matchResult[1] : "*[id='" + this.target.attr('id') + "']";
 
-            var namespace = '.tooltip' + this.id;
+            var namespace = '.' + this.id;
             $(document).off(this.cfg.showEvent + namespace + ' ' + this.cfg.hideEvent + namespace, targetSelector)
                 .on(this.cfg.showEvent + namespace, targetSelector, function(e) {
                     if ($this.cfg.trackMouse) {
@@ -247,7 +247,7 @@ PrimeFaces.widget.Tooltip = class Tooltip extends PrimeFaces.widget.BaseWidget {
                         $this.show();
                     }
                 })
-                .on(this.cfg.hideEvent + '.tooltip', function(e) {
+                .on(this.cfg.hideEvent, function(e) {
                     $this.shouldAllowHideBasedOnMouseTarget(e);
                 });
 
@@ -289,6 +289,28 @@ PrimeFaces.widget.Tooltip = class Tooltip extends PrimeFaces.widget.BaseWidget {
                 $this.shouldAllowHideBasedOnMouseTarget(e);
             });
     }
+
+    /**
+     * Sets up the escape key event listener to hide the tooltip when escape is pressed.
+     * @private
+     */
+    bindEscapeKey() {
+        var $this = this;
+        $(document).off('keydown.tooltip' + this.id).on('keydown.tooltip' + this.id, function(e) {
+            if(!e.isDefaultPrevented() && e.key === 'Escape' && $this.isVisible()) {
+                $this.hide();
+            }
+        });
+    }
+
+    /**
+     * Removes the escape key event listener.
+     * @private
+     */
+    unbindEscapeKey() {
+        $(document).off('keydown.tooltip' + this.id);
+    }
+
     /**
      * Determines if the tooltip should be allowed to hide based on the mouse event's related target.
      * @param {JQuery.TriggeredEvent} e - The jQuery event object that triggered the mouse event.
@@ -444,6 +466,8 @@ PrimeFaces.widget.Tooltip = class Tooltip extends PrimeFaces.widget.BaseWidget {
             }
         }
 
+        this.bindEscapeKey();
+
         // allow pointer events when autohide is disabled
         var pointerEvents = '';
         if (this.isAutoHide()) {
@@ -506,6 +530,8 @@ PrimeFaces.widget.Tooltip = class Tooltip extends PrimeFaces.widget.BaseWidget {
                 $this.target = null;
                 $this.jq.children('.ui-tooltip-text').removeClass('ui-state-error');
             }
+
+            this.unbindEscapeKey();
         }
     }
 

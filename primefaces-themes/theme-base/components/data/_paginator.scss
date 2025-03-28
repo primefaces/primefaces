@@ -95,6 +95,7 @@ body {
         margin: $paginatorElementMargin;
         border-radius: $paginatorElementBorderRadius;
         transition: $transition;
+        width: unset;
 
         &.ui-state-active {
           background: $highlightBg;

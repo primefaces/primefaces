@@ -15,7 +15,7 @@ Most of the PrimeFaces components have the same structure, HTML markup and a scr
 | init() | Called when constructing the component to initialize it.
 | refresh() | Refreshes the component after configuration changes such as a AJAX update.
 | destroy() | Destroys the widget which removes the association to the DOM element.
-| getJQ() | A wrapper funtion to the jQuery object, as if selecting with `$()`.
+| getJQ() | A wrapper function to the jQuery object, as if selecting with `$()`.
 
 **Properties**
 

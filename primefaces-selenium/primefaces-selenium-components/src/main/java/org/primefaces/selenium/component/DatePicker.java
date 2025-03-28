@@ -244,6 +244,15 @@ public abstract class DatePicker extends AbstractInputComponent {
     }
 
     /**
+     * Gets the input value from the widget.
+     *
+     * @return the input value or null
+     */
+    public String getInputValue() {
+        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".input.val();");
+    }
+
+    /**
      * Widget API call to update the overlay popup to this epoch in millis.
      *
      * @param epoch epoch in milliseconds
@@ -299,7 +308,7 @@ public abstract class DatePicker extends AbstractInputComponent {
     }
 
     /**
-     * Select a month from the drodown.
+     * Select a month from the dropdown.
      *
      * @param month the month to select
      */

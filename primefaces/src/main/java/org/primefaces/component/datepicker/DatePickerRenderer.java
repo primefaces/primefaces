@@ -371,7 +371,8 @@ public class DatePickerRenderer extends BaseCalendarRenderer<DatePicker> {
 
                 return multi;
             case "range":
-                List<String> rangeStr = CalendarUtils.splitRange(submittedValue, datePicker.calculatePattern(), datePicker.getRangeSeparator());
+                List<String> rangeStr = CalendarUtils.splitRange(submittedValue, datePicker.calculatePattern(),
+                        datePicker.getRangeSeparator(), "week".equals(datePicker.getView()));
                 List<Object> range = new ArrayList<>();
                 if (rangeStr.size() == 2) {
                     for (int i = 0; i < rangeStr.size(); i++) {

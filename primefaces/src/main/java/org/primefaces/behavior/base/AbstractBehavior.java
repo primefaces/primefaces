@@ -68,10 +68,13 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
             }
         }
         else {
-            values = new Object[stateHelper == null ? 1 : 2];
-
-            values[0] = superState;
-            if (stateHelper != null) {
+            if (stateHelper == null) {
+                values = new Object[1];
+                values[0] = superState;
+            }
+            else {
+                values = new Object[2];
+                values[0] = superState;
                 values[1] = stateHelper.saveState(context);
             }
         }

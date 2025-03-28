@@ -13,7 +13,13 @@ Following components support MultiViewState:
 - [TabView](/components/tabview.md)
 - [TreeTable](/components/treetable.md) (partial support)
 
-Per default MultiViewState is stored per session. As an alternative it can be stored per client window to support multi-window usage.
+Per default MultiViewState is stored per session. As an alternative it can be stored per client window to support multi-window usage. 
+
+## General Requirements
+
+MultiViewState requires AJAX to work properly to persist its state. See [AJAX Processing Requirements](ajaxProcessing.md) for more information.
+
+## Client Window Mode
 
 This can be configured in web.xml
 ```xml
@@ -23,7 +29,7 @@ This can be configured in web.xml
 </context-param>
 ```
 
-## Requirements
+## Client Window Requirements
 
 For multi-window usage you need an implementation that adds jfwid-parameter to all request.
 

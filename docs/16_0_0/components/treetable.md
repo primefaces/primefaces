@@ -55,7 +55,7 @@ propagateSelectionDown | true | Boolean | Defines downwards selection propagatio
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 required | false | Boolean | Validation constraint for selection.
 requiredMessage | null | String | Message for required selection validation.
-resizableColumns | false | Boolean | Defines if colums can be resized or not.
+resizableColumns | false | Boolean | Defines if columns can be resized or not.
 rows | 0 | Integer | Number of rows to display per page. Default value is 0 meaning to display all data available.
 rowsPerPageTemplate | null | String | Template of the rowsPerPage dropdown.
 rowStyleClass | null | String | Style class for each row.

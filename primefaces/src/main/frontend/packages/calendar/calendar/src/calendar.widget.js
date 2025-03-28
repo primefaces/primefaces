@@ -469,7 +469,7 @@ PrimeFaces.widget.Calendar = class Calendar extends PrimeFaces.widget.BaseWidget
     }
 
     /**
-     * Creates and initializes the confiugration options for the time picker.
+     * Creates and initializes the configuration options for the time picker.
      * @private
      */
     configureTimePicker() {

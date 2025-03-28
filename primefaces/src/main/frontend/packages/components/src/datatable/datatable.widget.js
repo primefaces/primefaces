@@ -1498,7 +1498,7 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
         var $this = this;
         var targetSelector = targetId + ' tbody.ui-datatable-data > tr.ui-widget-content';
         var targetEvent = cfg.event + '.row' + this.id;
-        var containerEvent = cfg.event + '.datatable' + this.id;
+        var containerEvent = cfg.event.split(' ').map(e => e + '.datatable' + this.id).join(' ');
         this.contextMenuWidget = menuWidget;
 
         $(document).off(targetEvent, targetSelector).on(targetEvent, targetSelector, null, function(e) {
@@ -3538,15 +3538,15 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
             $(element).find(":input:enabled").attr('disabled', 'disabled');
         }
         else {
-            $(".ui-cell-editor-input :input:enabled").attr('disabled', 'disabled').attr("data-disabled-by-editor", "true");
+            this.tbody.find(".ui-cell-editor-input :input:enabled").attr('disabled', 'disabled').attr("data-disabled-by-editor", "true");
             //#13159: re-enable for all rows that are rowEditing="true"
-            this.enableCellEditors($('.ui-row-editing'));
+            this.enableCellEditors(this.tbody.find('.ui-row-editing'));
             
         }
     }
     
     /**
-     * Enables all cell editors that were previously disabled by the UI and not alreayd disabled from user.
+     * Enables all cell editors that were previously disabled by the UI and not already disabled from user.
      * @private
      * @param {JQuery} element the row or cell to find inputs to enable for editing
      */
@@ -4418,11 +4418,14 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
         };
 
         var resetWidget = function(widgetElement) {
+            const selector = ':input:not(:disabled):not([readonly]), textarea:not(:disabled):not([readonly])';
             var widget = PrimeFaces.getWidgetById(widgetElement.attr('id'));
             if (widget && typeof widget.resetValue === 'function') {
                 widget.resetValue(true);
+            } else if (widgetElement.is(selector)) {
+                resetInputFields(widgetElement);
             } else {
-                resetInputFields(widgetElement.find(':input:not(:disabled):not([readonly]), textarea:not(:disabled):not([readonly])'));
+                resetInputFields($(this).find(selector));
             }
         };
 
@@ -5143,10 +5146,12 @@ PrimeFaces.widget.DataTable = class DataTable extends PrimeFaces.widget.Deferred
             }
 
             var totalEnabled = enabledCheckboxes.length;
-            if(totalEnabled && totalEnabled === selectedCheckboxes.length)
-               this.checkHeaderCheckbox();
-            else
-               this.uncheckHeaderCheckbox();
+            if (this.cfg.selectionPageOnly) {
+                if(totalEnabled && totalEnabled === selectedCheckboxes.length)
+                    this.checkHeaderCheckbox();
+                else
+                    this.uncheckHeaderCheckbox();
+            }
 
             if(checkboxes.length === disabledCheckboxes.length)
                this.disableHeaderCheckbox();

@@ -67,7 +67,7 @@ declare namespace JQueryPrimeDatePicker {
     export type BaseCallback = (this: PickerInstance) => void
 
     /**
-     * Base callback that, in addition to the current date picker instance, is also passed the event that occured.
+     * Base callback that, in addition to the current date picker instance, is also passed the event that occurred.
      */
     export type BaseEventCallback =
         /**
@@ -758,7 +758,7 @@ declare namespace JQueryPrimeDatePicker {
          * @param second Current second.
          * @param millisecond Current millisecond.
          */
-        updateTime(event: JQuery.TriggeredEvent, hour: HourOfTheDay, minute: MinuteOfTheHour, second: SecondOfTheMinute, millsecond: MillisecondOfTheSecond): void;
+        updateTime(event: JQuery.TriggeredEvent, hour: HourOfTheDay, minute: MinuteOfTheHour, second: SecondOfTheMinute, millisecond: MillisecondOfTheSecond): void;
 
         /**
          * After a time was entered, updates the time display so that is shows the given time.

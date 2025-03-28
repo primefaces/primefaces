@@ -195,7 +195,7 @@ Here are more examples based on different templates;
 - _{PreviousPageLink} {CurrentPageReport} {NextPageLink}_
 
 ## Paginator Position
-Paginator can be positoned using _paginatorPosition_ attribute in three different locations, "top",
+Paginator can be positioned using _paginatorPosition_ attribute in three different locations, "top",
 "bottom" or "both" (default).
 
 ## Custom Content in Paginator
@@ -954,7 +954,7 @@ Widget: _PrimeFaces.widget.DataTable_
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |
-| getPaginator() | - | Paginator | Returns the paginator insance.
+| getPaginator() | - | Paginator | Returns the paginator instance.
 | clearFilters() | - | void | Clears all column filters
 | getSelectedRowsCount() | - | Number | Returns number of selected rows.
 | selectRow(r, silent) | r : number or tr element as jQuery object, silent : flag to fire row select ajax behavior | void | Selects the given row.

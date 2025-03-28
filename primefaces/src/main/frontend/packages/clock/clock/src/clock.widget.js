@@ -548,7 +548,7 @@ PrimeFaces.widget.Clock = class Clock extends PrimeFaces.widget.BaseWidget {
     }
 
     /**
-     * Draws this clock according the the current widget configuation.
+     * Draws this clock according the the current widget configuration.
      * @private
      */
     draw() {

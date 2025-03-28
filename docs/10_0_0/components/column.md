@@ -41,7 +41,7 @@ treetable and more.
 | filterStyleClass | null | String | Style class of the filter element
 | filterValue | null | Object | Value of the filter field.
 | footerText | null | String | Shortcut for footer facet.
-| groupRow | false | Boolean | Speficies whether to group rows based on the column data.
+| groupRow | false | Boolean | Specifies whether to group rows based on the column data.
 | headerText | null | String | Shortcut for header facet.
 | nullSortOrder             | 1                  | Integer          | Defines where the null values are placed in ascending sort order. Default value is "1" meaning null values are placed at the end in ascending mode and at beginning in descending mode. Set to "-1" for the opposite behavior.
 | resizable | true | Boolean | Specifies resizable feature at column level. Datatable's resizableColumns must be enabled to use this option.
@@ -57,7 +57,7 @@ treetable and more.
 | style | null | String | Inline style of the column.
 | styleClass | null | String | Style class of the column.
 | toggleable | true | Boolean | Defines if column is toggleable by columnToggler component. Default value is true and a false value marks the column as static.
-| visible | true | Boolean | Controls the visibilty of the column.
+| visible | true | Boolean | Controls the visibility of the column.
 | width | null | String | The width of the column ('px' as default if no length unit is defined)
 
 ## Getting Started with Column

@@ -1,6 +1,6 @@
 # validateFile
 
-`p:validateFile` is a validator which can be used to validate single and mulitple files, either of `p:fileUpload` or `h:inputFile`.
+`p:validateFile` is a validator which can be used to validate single and multiple files, either of `p:fileUpload` or `h:inputFile`.
 By default it will validate on the server side but you can enable [client side validation (CSV)](/core/csv.md) to avoid roundtrips to the server.
 
 ## Info

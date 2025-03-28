@@ -17,6 +17,10 @@ export interface TieredMenuCfg extends MenuCfg {
      */
     hideDelay: number;
     /**
+     * Whether to hide the menu on document click only if hideDelay is 0. Default is `false`.
+     */
+    hideOnDocumentClick: boolean;
+    /**
      * Number of milliseconds before displaying menu. Default to 0 immediate.
      */
     showDelay: number;
@@ -25,7 +29,7 @@ export interface TieredMenuCfg extends MenuCfg {
      */
     toggleEvent: PrimeType.widget.TieredMenu.ToggleEvent;
 }
-    
+
 /**
  * __PrimeFaces TieredMenu Widget__
  * 
@@ -136,7 +140,7 @@ export class TieredMenu<Cfg extends TieredMenuCfg = TieredMenuCfg> extends Menu<
         // Build event string based on toggle mode
         var focusOnClick = this.cfg.toggleEvent === 'click';
         var linkEvents = "mouseenter.tieredFocus" + (focusOnClick ? " click.tieredFocus" : "");
-        
+
         // Bind mouse/click events to manage focus
         this.links.on(linkEvents, function(e) {
             var $link = $(this),
@@ -265,7 +269,7 @@ export class TieredMenu<Cfg extends TieredMenuCfg = TieredMenuCfg> extends Menu<
                 if (submenu.length === 1) {
                     $this.deactivate(menuitem);
                     $this.deactivate(submenu);
-                    $this.activate(submenu, true,false);
+                    $this.activate(submenu, true, false);
                 }
             }
 
@@ -497,7 +501,7 @@ export class TieredMenu<Cfg extends TieredMenuCfg = TieredMenuCfg> extends Menu<
     }
 
     /**
-     * Deactivates all items and resets the state of this widget to its orignal state such that only the top-level menu
+     * Deactivates all items and resets the state of this widget to its original state such that only the top-level menu
      * items are shown. 
      */
     reset(): void {
@@ -534,7 +538,13 @@ export class TieredMenu<Cfg extends TieredMenuCfg = TieredMenuCfg> extends Menu<
             }, this.cfg.hideDelay);
         }
         else {
-            this.reset();
+            if (this.cfg.hideOnDocumentClick) {
+                // #13323 MenuBar only for hideDelay=0 only closes on document.click
+                e?.stopPropagation();
+            }
+            else {
+                this.reset();
+            }
         }
     }
 

@@ -209,7 +209,7 @@ Here are more examples based on different templates;
 - _{PreviousPageLink} {CurrentPageReport} {NextPageLink}_
 
 ## Paginator Position
-Paginator can be positoned using `paginatorPosition` attribute in three different locations, "top",
+Paginator can be positioned using `paginatorPosition` attribute in three different locations, "top",
 "bottom" or "both" (default).
 
 ## Custom Content in Paginator
@@ -1134,7 +1134,7 @@ Widget: `PrimeFaces.widget.DataTable`
 | clearFilters() | - | void | Clears all column filters
 | collapseAllRows() | - | void | Collapses all rows that are currently expanded.
 | filter() | - | void | Filters the data.
-| getPaginator() | - | Paginator | Returns the paginator insance.
+| getPaginator() | - | Paginator | Returns the paginator instance.
 | getSelectedRowsCount() | - | Number | Returns number of selected rows.
 | selectAllRows() | - | void | Select all rows.
 | selectAllRowsOnPage() | - | void | Select all rows on current page.

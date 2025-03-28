@@ -96,9 +96,9 @@ public abstract class SelectCheckboxMenu extends AbstractInputComponent {
     }
 
     /**
-     * Bring up the overlay panel if its not showing or hide it if it is showing.
+     * Bring up the overlay panel if it's not showing or hide it if it is showing.
      */
-    public void togglPanel() {
+    public void togglePanel() {
         PrimeSelenium.executeScript(getWidgetByIdScript() + ".togglePanel();");
     }
 

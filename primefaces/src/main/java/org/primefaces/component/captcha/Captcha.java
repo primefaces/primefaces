@@ -32,6 +32,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
@@ -71,7 +72,7 @@ public class Captcha extends CaptchaBase {
             boolean result = false;
 
             try {
-                URL url = new URL(getVerifyUrl());
+                URL url = new URI(getVerifyUrl()).toURL();
                 URLConnection conn = url.openConnection();
                 conn.setDoInput(true);
                 conn.setDoOutput(true);

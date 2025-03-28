@@ -1,5 +1,5 @@
 import { pt } from "primelocale/js/pt.js";
-import { pt_br } from "primelocale/js/pt_br.js";
+import { pt_BR } from "primelocale/js/pt_BR.js";
 
 if (window.PrimeFaces) {
   /** Portuguese */
@@ -126,7 +126,7 @@ if (window.PrimeFaces) {
   });
 
   /** Portuguese - Brazilian */
-  PrimeFaces.locales["pt_BR"] = $.extend(true, {}, PrimeFaces.locales["pt"], pt_br);
+  PrimeFaces.locales["pt_BR"] = $.extend(true, {}, PrimeFaces.locales["pt"], pt_BR);
 
   PrimeFaces.locales["pt_BR"] = $.extend(true, {}, PrimeFaces.locales["pt_BR"], {
     weekNumberTitle: "Sm",

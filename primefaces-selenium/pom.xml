@@ -16,7 +16,7 @@
 
     <name>PrimeFaces Selenium</name>
     <description>
-        <![CDATA[PrimeFaces testing support based on Selenium and the concept of page ojects / fragements.]]>
+        <![CDATA[PrimeFaces testing support based on Selenium and the concept of page objects / fragments.]]>
     </description>
 
     <modules>

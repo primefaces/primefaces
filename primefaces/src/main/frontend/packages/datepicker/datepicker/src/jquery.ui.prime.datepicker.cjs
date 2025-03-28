@@ -255,6 +255,8 @@ $.widget("prime.datePicker", {
             }
         }
         this.bindResponsiveResizeListener();
+        // #13634 ensure input is formatted correctly after AJAX update
+        this.inputfield.val(this.getValueToRender());
     },
 
     parseOptionValue: function(option) {
@@ -670,7 +672,7 @@ $.widget("prime.datePicker", {
                             formattedValue += ' ' + this.options.rangeSeparator + ' ' + this.formatDateTime(endDate);
                         }
 
-                        if (this.options.view === 'week') {
+                        if (this.options.view === 'week' && this.options.showWeek) {
                             var startDateMeta = { day: startDate.getDate(), month: startDate.getMonth(), year: startDate.getFullYear() };
                             var week = this.options.weekCalculator(startDateMeta);
                             formattedValue += ' (' + this.options.locale.weekHeader + ' ' + week + ')';
@@ -1780,11 +1782,11 @@ $.widget("prime.datePicker", {
     },
 
     renderSeparator: function() {
-        return this.renderTimeElements("ui-separator", '<span>:</span>', -1);
+        return this.renderTimeElements("ui-divider", '<span>:</span>', -1);
     },
 
     renderFractionSeparator: function() {
-        return this.renderTimeElements("ui-separator", '<span>.</span>', -1);
+        return this.renderTimeElements("ui-divider", '<span>.</span>', -1);
     },
 
     renderTimeElements: function(containerClass, text, type) {
@@ -3078,7 +3080,7 @@ $.widget("prime.datePicker", {
         var date = new Date(dateMeta.year, dateMeta.month, dateMeta.day);
 
         if (this.options.showTime) {
-            var time = this.isDate(this.value) ? this.value : this.getNow();
+            var time = this.getCurrentTime();
             date.setHours(time.getHours());
             date.setMinutes(this.stepMinute(time.getMinutes()));
             date.setSeconds(time.getSeconds());

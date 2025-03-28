@@ -56,7 +56,6 @@ public abstract class InputNumberBase extends AbstractPrimeHtmlInputText impleme
         symbol,
         symbolPosition,
         thousandSeparator,
-        type,
         widgetVar
     }
 
@@ -83,14 +82,6 @@ public abstract class InputNumberBase extends AbstractPrimeHtmlInputText impleme
 
     public void setWidgetVar(String widgetVar) {
         getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public String getType() {
-        return (String) getStateHelper().eval(PropertyKeys.type, "text");
-    }
-
-    public void setType(String type) {
-        getStateHelper().put(PropertyKeys.type, type);
     }
 
     public String getSymbol() {

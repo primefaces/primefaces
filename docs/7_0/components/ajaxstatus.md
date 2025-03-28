@@ -22,7 +22,7 @@ AjaxStatus is a global notifier for ajax requests.
 | binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean |
 | onstart | null | String | Client side callback to execute after ajax requests start. |
 | oncomplete | null | String | Client side callback to execute after ajax requests complete. |
-| onsuccess | null | String | Client side callback to execute after ajax requests completed succesfully. |
+| onsuccess | null | String | Client side callback to execute after ajax requests completed successfully. |
 | onerror | null | String | Client side callback to execute when an ajax request fails. |
 | style | null | String | Inline style of the component. |
 | styleClass | null | String | Style class of the component. |

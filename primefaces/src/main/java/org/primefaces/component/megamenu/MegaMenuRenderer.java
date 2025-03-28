@@ -23,10 +23,10 @@
  */
 package org.primefaces.component.megamenu;
 
+import org.primefaces.component.divider.Divider;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
-import org.primefaces.component.separator.UISeparator;
 import org.primefaces.model.menu.MenuColumn;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
@@ -268,7 +268,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer<MegaMenu> {
         String title = separator.getTitle();
         String style = separator.getStyle();
         String styleClass = getStyleClassBuilder(context)
-                .add(UISeparator.DEFAULT_STYLE_CLASS)
+                .add(Divider.STYLE_CLASS)
                 .add(separator.getStyleClass())
                 .build();
 

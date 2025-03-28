@@ -29,9 +29,9 @@ Please check the following link for informations about [Long Term Support (LTS)]
 
 What does that mean?
 - PrimeFaces is developed by PrimeTek and the open source community.
-- The most contributers here on GitHub are working on PrimeFaces in their spare time.
+- The most contributors here on GitHub are working on PrimeFaces in their spare time.
 - PrimeTek pushes fixes and new features from their closed source LTS and Pro repositories to the community edition.
-- We, the community on GitHub, only provide support for issues, which are reproducable with the current major release or SNAPSHOT.
+- We, the community on GitHub, only provide support for issues, which are reproducible with the current major release or SNAPSHOT.
 - We are NOT able to port bugfixes to elite releases. This is up to PrimeTek and can e.g. be triggered with [PrimeFaces PRO](https://www.primefaces.org/support/).
 
 ### Versions
@@ -39,7 +39,7 @@ What does that mean?
 
 Version | JSF version | Java version | Binary | Source | Docs | Showcase Binary
 ------------ | ------------- | ------------- | -------------  | ------------- | ------------- | ------------- |
-![15.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=15&color=cyan)| ![JSF23](https://img.shields.io/badge/JSF-2.3-purple.svg) -  ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) | ![Java](https://img.shields.io/badge/Java%2011+-blue.svg) | [JAR](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/15.0.0-RC1/primefaces-15.0.0-RC1.jar)  | [Sources](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/15.0.0-RC1/primefaces-15.0.0-RC1-sources.jar) | [Docs](https://primefaces.github.io/primefaces/15_0_0/#/) | [WAR](https://repo1.maven.org/maven2/org/primefaces/primefaces-showcase/15.0.0-RC1/primefaces-showcase-15.0.0-RC1.war)
+![15.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=15&color=cyan)| ![JSF23](https://img.shields.io/badge/JSF-2.3-purple.svg) -  ![JSF40](https://img.shields.io/badge/JSF-4.1-green.svg) | ![Java](https://img.shields.io/badge/Java%2011+-blue.svg) | [JAR](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/15.0.3/primefaces-15.0.3.jar)  | [Sources](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/15.0.3/primefaces-15.0.3-sources.jar) | [Docs](https://primefaces.github.io/primefaces/15_0_0/#/) | [WAR](https://repo1.maven.org/maven2/org/primefaces/primefaces-showcase/15.0.3/primefaces-showcase-15.0.3.war)
 ![14.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=14&color=cyan)| ![JSF23](https://img.shields.io/badge/JSF-2.3-purple.svg) -  ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) | ![Java](https://img.shields.io/badge/Java%2011+-blue.svg) | [JAR](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/14.0.12/primefaces-14.0.12.jar)  | [Sources](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/14.0.12/primefaces-14.0.12-sources.jar) | [Docs](https://primefaces.github.io/primefaces/14_0_0/#/) | [WAR](https://repo1.maven.org/maven2/org/primefaces/primefaces-showcase/14.0.12/primefaces-showcase-14.0.12.war)
 ![13.0.x](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg?versionPrefix=13&color=cyan)| ![JSF20](https://img.shields.io/badge/JSF-2.0-yellow.svg) -  ![JSF40](https://img.shields.io/badge/JSF-4.0-green.svg) |  ![Java](https://img.shields.io/badge/Java%208+-blue.svg) | [JAR](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/13.0.10/primefaces-13.0.10.jar)  | [Sources](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/13.0.10/primefaces-13.0.10-sources.jar) | [Docs](https://primefaces.github.io/primefaces/13_0_0/#/) | [WAR](https://repo1.maven.org/maven2/org/primefaces/primefaces-showcase/13.0.10/primefaces-showcase-13.0.10.war)
 
@@ -73,14 +73,14 @@ Version | JSF version | Java version | Binary | Source | Docs
   <dependency>
       <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
-      <version>15.0.0</version>
+      <version>15.0.3</version>
   </dependency>
 
   <!-- Jakarta EE / jakarta.* / Faces 4.0+  -->	
   <dependency>
       <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
-      <version>15.0.0</version>
+      <version>15.0.3</version>
       <classifier>jakarta</classifier>
   </dependency>
   ```
@@ -113,7 +113,7 @@ Version | JSF version | Java version | Binary | Source | Docs
 ### Tag Library
 ***
 
-The VDL documentation for the PrimeFaces tag libary can be found here: https://primefaces.github.io/primefaces/vdldoc/
+The VDL documentation for the PrimeFaces tag library can be found here: https://primefaces.github.io/primefaces/vdldoc/
 
 ### Usage
 ***
@@ -151,9 +151,9 @@ Visit the [contribution](./CONTRIBUTING.md) page for detailed information.
 
 ### Release Instructions
 ***
-- Run `mvn versions:set -DgenerateBackupPoms=false -DnewVersion=15.0.0` to update all modules versions
+- Run `mvn versions:set -DgenerateBackupPoms=false -DnewVersion=15.0.3` to update all modules versions
 - Commit and push the changes to GitHub
-- In GitHub create a new Release titled `15.0.0` to tag this release
+- In GitHub create a new Release titled `15.0.3` to tag this release
 - Run `mvn clean deploy -Prelease` to push to Maven Central
 - Rename Milestone in GitHub Issues and close it
 - Create a new Milestone
