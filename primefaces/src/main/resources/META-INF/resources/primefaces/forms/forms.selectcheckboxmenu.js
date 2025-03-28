@@ -234,6 +234,10 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     renderLabel: function() {
+        if (!this.cfg.updateLabel) {
+            this.registerTrigger();
+            return;
+        }
         if (this.cfg.multiple) {
             // Get or initialize the container for multiple items
             this.multiItemContainer = this.multiItemContainer || this.jq.children('.ui-selectcheckboxmenu-multiple-container');
@@ -244,8 +248,6 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                 const emptyLabel = this.multiItemContainer.data('label') || '&nbsp;';
                 this.multiItemContainer.empty().append(`<li class="ui-selectcheckboxmenu-emptylabel">${emptyLabel}</li>`);
             }
-            
-            this.registerTrigger();
         }
         else if (this.cfg.updateLabel) {
             // For single select, store default label and add ellipsis styling
@@ -256,10 +258,10 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             });
 
             this.updateLabel();
-            this.registerTrigger();
         }
+        this.registerTrigger();
     },
-    
+  
     /**
      * Mark trigger and descandants of trigger as a trigger for a primefaces overlay.
      * @private
