@@ -135,12 +135,10 @@ export class DialogHandler {
         const dialogWidgetVar = cfg.options.widgetVar || cfg.sourceComponentId.replace(/:/g, '_') + '_dlgwidget';
 
         const styleClass = cfg.options.styleClass || '';
-        const dialogDOM = $('<div id="' + dialogId + '" class="ui-dialog ui-widget ui-hidden-container ui-overlay-hidden ' + styleClass + '"' +
-            ' data-pfdlgcid="' + PrimeFaces.escapeHTML(cfg.pfdlgcid) + '" data-widget="' + dialogWidgetVar + '"></div>')
-            .append($('<div class="ui-dialog-box ui-widget-content ui-shadow"></div>').append('<div class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix"><span id="' + dialogId + '_title" class="ui-dialog-title"></span></div>'))
-            .find('.ui-dialog');
+        const dialogDOM = $('<div id="' + dialogId + '" class="ui-dialog ui-widget ui-hidden-container ui-overlay-hidden ' + styleClass + '" data-pfdlgcid="' + PrimeFaces.escapeHTML(cfg.pfdlgcid) + '" data-widget="' + dialogWidgetVar + '"></div>');
+        const box = $('<div class="ui-dialog-box ui-widget-content ui-shadow"></div>').appendTo(dialogDOM);
+        const titlebar = $('<div class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix"><span id="' + dialogId + '_title" class="ui-dialog-title"></span></div>').appendTo(box);
 
-        const titlebar = dialogDOM.children('.ui-dialog-titlebar');
         if (cfg.options.closable !== false) {
             titlebar.append('<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-close" href="#" role="button"><span class="ui-icon ui-icon-closethick"></span></a>');
         }
@@ -154,7 +152,7 @@ export class DialogHandler {
         }
 
         var iframeStyleClass = cfg.options.iframeStyleClass || '';
-        dialogDOM.append('<div class="ui-dialog-content ui-widget-content ui-df-content" style="height: auto;">' +
+        box.append('<div class="ui-dialog-content ui-widget-content ui-df-content" style="height: auto;">' +
             '<iframe class="' + iframeStyleClass + '" style="border:0 none" frameborder="0"></iframe>' +
             '</div>');
 
