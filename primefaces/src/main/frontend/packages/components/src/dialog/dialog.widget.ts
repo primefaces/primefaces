@@ -609,6 +609,11 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
             start: function( event, ui ) {
                 $this.jq.addClass('ui-overflow-hidden');
             },
+            drag: function( event, ui ) {
+                if ($this.cfg.absolutePositioned && $(window).scrollTop() > $this.box.offset().top) {
+                    $this.box[0].scrollIntoView();
+                }
+            },
             stop: function( event, ui ) {
                 $this.jq.removeClass('ui-overflow-hidden');
                 if($this.hasBehavior('move')) {
@@ -655,6 +660,7 @@ export class Dialog<Cfg extends DialogCfg = DialogCfg> extends PrimeFaces.widget
             },
             stop: (_, ui) => {
                 this.jq.removeClass('ui-overflow-hidden');
+
                 if(this.cfg.hasIframe) {
                     this.iframeFix?.remove();
                 }

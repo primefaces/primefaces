@@ -14,13 +14,20 @@ body {
     overflow-y: auto;
     outline: 0;
 
-    &.ui-overflow-hidden {
+    &.ui-overflow-hidden, &.ui-dialog-absolute, &.ui-dialog-fitviewport {
       overflow-y: hidden;
+    }
+
+    &.ui-dialog-absolute {
+      .ui-dialog-box {
+        position: absolute;
+      }
     }
 
     .ui-dialog-box {
       position: relative;
       display: inline-flex;
+      flex-direction: column;
       padding: 0;
       box-shadow: $overlayContainerShadow;
       border: $overlayContentBorder;

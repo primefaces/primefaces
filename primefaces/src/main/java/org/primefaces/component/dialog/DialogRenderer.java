@@ -114,6 +114,10 @@ public class DialogRenderer extends CoreRenderer<Dialog> {
             styleClass += " ui-dialog-absolute";
         }
 
+        if (component.isFitViewport()) {
+            styleClass += " ui-dialog-fitviewport";
+        }
+
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);
