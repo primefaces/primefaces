@@ -670,23 +670,7 @@ public class DataTableRenderer extends DataRenderer {
             }
         }
 
-        String style = column.getStyle();
-        String width = column.getWidth();
-
-        if (columnMeta != null && columnMeta.getWidth() != null) {
-            width = columnMeta.getWidth();
-        }
-
-        if (width != null) {
-            String unit = endsWithLenghtUnit(width) ? Constants.EMPTY_STRING : "px";
-            if (style != null) {
-                style = style + ";width:" + width + unit;
-            }
-            else {
-                style = "width:" + width + unit;
-            }
-        }
-
+        String style = resolveColumnStyle(columnMeta, column);
         String ariaHeaderLabel = resolveColumnAriaHeaderText(context, column);
         UIComponent component = (column instanceof UIComponent) ? (UIComponent) column : null;
 
@@ -732,6 +716,27 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         writer.endElement("th");
+    }
+
+    protected String resolveColumnStyle(ColumnMeta columnMeta, UIColumn column) {
+        String style = column.getStyle();
+        String width = column.getWidth();
+
+        if (columnMeta != null && columnMeta.getWidth() != null) {
+            width = columnMeta.getWidth();
+        }
+
+        if (width != null) {
+            String unit = endsWithLenghtUnit(width) ? Constants.EMPTY_STRING : "px";
+            if (style != null) {
+                style = style + ";width:" + width + unit;
+            }
+            else {
+                style = "width:" + width + unit;
+            }
+        }
+
+        return style;
     }
 
     protected String resolveDefaultSortIcon(SortMeta sortMeta) {
@@ -894,7 +899,7 @@ public class DataTableRenderer extends DataRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         int responsivePriority = column.getResponsivePriority();
-        String style = column.getStyle();
+        String style = resolveColumnStyle(columnMeta, column);
         String styleClass = column.getStyleClass();
         styleClass = styleClass == null ? DataTable.COLUMN_FOOTER_CLASS : DataTable.COLUMN_FOOTER_CLASS + " " + styleClass;
 
